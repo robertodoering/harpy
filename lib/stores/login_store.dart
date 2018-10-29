@@ -1,6 +1,7 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/core/app_configuration.dart';
 
 class LoginStore extends Store {
   static final Action<TwitterLoginResult> twitterLogin = Action();
@@ -9,20 +10,18 @@ class LoginStore extends Store {
   Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
 
   final _twitterLogin = TwitterLogin(
-    consumerKey: "todo",
-    consumerSecret: "todo",
+    consumerKey: AppConfiguration().applicationConfig.consumerKey,
+    consumerSecret: AppConfiguration().applicationConfig.consumerSecret,
   );
 
-  TweetService tweetService;
+  TweetService tweetService = TweetService();
 
   LoginStore() {
-    tweetService = TweetService();
-
     triggerOnAction(twitterLogin, (_) async {
       final TwitterLoginResult result = await _twitterLogin.authorize();
 
-      tweetService.getTweets(result.session.token).then((response) {
-        print(response);
+      tweetService.getTweets().then((response) {
+        print(response.body);
       }).catchError((error) {
         print(error);
       });

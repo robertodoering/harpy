@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 //TODO remove
 
 class TweetService {
-  Future<http.Response> getTweets(String accessToken) async {
+  Future<http.Response> getTweets() async {
     Http http = Http();
     http.dispatcher = TwitterAuthDispatcher();
 
