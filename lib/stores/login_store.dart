@@ -22,7 +22,7 @@ class LoginStore extends Store {
       final TwitterLoginResult result = await _twitterLogin.authorize();
 
       tweetService.getTweets(result.session.token).then((response) {
-        print(response.body);
+        print(response);
       }).catchError((error) {
         print(error);
       });

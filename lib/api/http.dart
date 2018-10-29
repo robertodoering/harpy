@@ -1,4 +1,5 @@
 import 'package:harpy/api/dispatcher.dart';
+import 'package:harpy/api/request_data.dart';
 import 'package:http/http.dart' as http;
 
 class Http {
@@ -7,16 +8,17 @@ class Http {
   set dispatcher(Dispatcher dispatcher) => _dispatcher = dispatcher;
 
   Future<http.Response> get(String url, {Map<String, String> headers}) {
-    _invokeDispatcher(url, headers);
+    _invokeDispatcher("GET", url, headers);
     return http.get(url, headers: headers);
   }
 
-  Future<http.Response> post(String url, {Map<String, String> headers}) {
-    _invokeDispatcher(url, headers);
+  Future<http.Response> post(String url, {Map<String, String> headers, body}) {
+    _invokeDispatcher("POST", url, headers, body: body);
     return http.post(url, headers: headers);
   }
 
-  _invokeDispatcher(String url, Map<String, String> headers) {
-    _dispatcher?.send(url, headers);
+  _invokeDispatcher(String method, String url, Map<String, String> headers,
+      {body}) {
+    _dispatcher?.send(RequestData(method, url, headers, body));
   }
 }

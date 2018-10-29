@@ -1,3 +1,5 @@
+import 'package:harpy/api/request_data.dart';
+
 abstract class Dispatcher {
-  send(String url, Map<String, String> headers);
+  send(RequestData requestData);
 }
