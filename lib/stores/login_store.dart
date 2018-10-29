@@ -13,7 +13,6 @@ class LoginStore extends Store {
     triggerOnAction(twitterLogin, (_) async {
       final TwitterLoginResult result = await _twitterLogin.authorize();
       print(result.status);
-      return result;
     });
   }
 }
