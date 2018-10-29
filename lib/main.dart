@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/stores/login_store.dart';
 
-void main() {
+void main() async {
+  await AppConfiguration().init();
+
   runApp(MaterialApp(
     theme: ThemeData.dark(),
     title: "Flutter Led",
