@@ -20,13 +20,24 @@ class LoginStore extends Store {
     triggerOnAction(twitterLogin, (_) async {
       final TwitterLoginResult result = await _twitterLogin.authorize();
 
-      tweetService.getTweets().then((response) {
-        print(response.body);
-      }).catchError((error) {
-        print(error);
-      });
+      print("Login: " + result.status.toString());
 
-      return result;
+      switch (result.status) {
+        case TwitterLoginStatus.loggedIn:
+          AppConfiguration().twitterSession = result.session;
+
+          tweetService.getTweets().then((response) {
+            print(response.body);
+          }).catchError((error) {
+            print(error);
+          });
+
+          break;
+        case TwitterLoginStatus.cancelledByUser:
+          break;
+        case TwitterLoginStatus.error:
+          break;
+      }
     });
   }
 }
