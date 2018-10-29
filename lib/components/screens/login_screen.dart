@@ -90,14 +90,13 @@ class __LoginButtonState extends State<_LoginButton>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1, milliseconds: 250),
+      duration: Duration(seconds: 1),
     );
 
     _animation = CurveTween(curve: Curves.fastOutSlowIn).animate(_controller)
       ..addListener(() => setState(() {}));
 
-    Future.delayed(Duration(milliseconds: 750))
-        .then((_) => _controller.forward());
+    Future.delayed(Duration(seconds: 1)).then((_) => _controller.forward());
 
     super.initState();
   }
@@ -114,7 +113,7 @@ class __LoginButtonState extends State<_LoginButton>
       child: Opacity(
         opacity: _animation.value,
         child: Transform.translate(
-          offset: Offset(0.0, (1 - _animation.value) * 100),
+          offset: Offset(0.0, (1 - _animation.value) * 50),
           child: RaisedButton(
             child: Text(
               "Login with Twitter",
