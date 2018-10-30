@@ -10,7 +10,7 @@ dependencies:
   flutter_twitter_login:
     git: git://github.com/eudangeld/flutter_twitter_login.git
   flutter_flux: ^4.1.2
-  random_string: 0.0.2
+  oauth1: ^1.0.1
 
   flutter:
     sdk: flutter

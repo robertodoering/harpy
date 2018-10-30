@@ -1,14 +1,10 @@
-import 'package:harpy/api/http.dart';
-import 'package:harpy/api/twitter/twitter_auth_dispatcher.dart';
+import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:http/http.dart' as http;
 //TODO remove
 
-class TweetService {
-  Future<http.Response> getTweets() async {
-    Http http = Http();
-    http.dispatcher = TwitterAuthDispatcher();
-
-    final response = await http
+class TweetService extends TwitterService {
+  Future<http.Response> getHomeTimeline() async {
+    final response = await client
         .get("https://api.twitter.com/1.1/statuses/home_timeline.json");
 
     if (response.statusCode == 200) {
