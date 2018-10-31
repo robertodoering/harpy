@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/stores/login_store.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -6,22 +7,65 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with StoreWatcherMixin {
+  LoginStore store;
+
+  bool loggedIn = false;
+
+  _LoginScreenState() {
+    store = listenToStore(loginStoreToken);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    unlistenFromStore(store);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Theme.of(context).primaryColor,
       child: Column(
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: _LoginTitle(),
-          ),
-          Expanded(
-            child: _LoginButton(),
-          )
+          Expanded(flex: 2, child: _LoginTitle()),
+          Expanded(child: _buildLoginButton()),
         ],
       ),
+    );
+  }
+
+  /// Checks if a session exists and we are logged in.
+  ///
+  /// Builds the [_LoginButton] if we are not logged in.
+  /// Routes to the [HomeScreen] if we are logged in.
+  /// Shows a [CircularProgressIndicator] while obtaining the login information.
+  Widget _buildLoginButton() {
+    return FutureBuilder(
+      future: store.loggedIn,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data as bool) {
+            // logged in, go to home screen
+            if (loggedIn) _navigateToHomeScreen();
+
+            return Container();
+          } else {
+            // not logged in, show login button
+            return _LoginButton();
+          }
+        } else {
+          // loading last session
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  Future<void> _navigateToHomeScreen() async {
+    await Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Container()),
     );
   }
 }
