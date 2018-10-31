@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/stores/login_store.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +15,13 @@ class _LoginScreenState extends State<LoginScreen> with StoreWatcherMixin {
 
   _LoginScreenState() {
     store = listenToStore(loginStoreToken);
+  }
+
+  @override
+  void initState() {
+    _checkLoginState();
+
+    super.initState();
   }
 
   @override
@@ -35,38 +43,31 @@ class _LoginScreenState extends State<LoginScreen> with StoreWatcherMixin {
     );
   }
 
-  /// Checks if a session exists and we are logged in.
-  ///
   /// Builds the [_LoginButton] if we are not logged in.
-  /// Routes to the [HomeScreen] if we are logged in.
   /// Shows a [CircularProgressIndicator] while obtaining the login information.
   Widget _buildLoginButton() {
-    return FutureBuilder(
-      future: store.loggedIn,
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data as bool) {
-            // logged in, go to home screen
-            if (loggedIn) _navigateToHomeScreen();
-
-            return Container();
-          } else {
-            // not logged in, show login button
-            return _LoginButton();
-          }
-        } else {
-          // loading last session
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
+    if (!loggedIn) {
+      // not logged in, show login button
+      return _LoginButton();
+    }
+    return Center(child: CircularProgressIndicator());
   }
 
-  Future<void> _navigateToHomeScreen() async {
-    await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => Container()),
-    );
+  /// Checks the login state and navigates to [HomeScreen] when logged in.
+  Future<void> _checkLoginState() async {
+    loggedIn = await store.loggedIn;
+
+    if (loggedIn) {
+      print("navigating to home screen");
+
+      // todo: maybe wait for title animation to finish?
+      // or don't display the login screen at all
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    }
   }
 }
 
