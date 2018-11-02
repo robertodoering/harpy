@@ -1,67 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/stores/login_store.dart';
+import 'package:harpy/theme.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with StoreWatcherMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with StoreWatcherMixin<LoginScreen> {
   LoginStore store;
-
-  bool loggedIn = false;
-
-  _LoginScreenState() {
-    store = listenToStore(loginStoreToken);
-  }
 
   @override
   void initState() {
-    _checkLoginState();
-
     super.initState();
+
+    store = listenToStore(loginStoreToken);
   }
 
   @override
   void dispose() {
     super.dispose();
+
     unlistenFromStore(store);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).primaryColor,
-      child: Column(
-        children: <Widget>[
-          Expanded(flex: 2, child: _LoginTitle()),
-          Expanded(child: _buildLoginButton()),
-        ],
+    return Theme(
+      data: HarpyTheme.theme,
+      child: Material(
+        color: HarpyTheme.primaryColor,
+        child: Column(
+          children: <Widget>[
+            Expanded(flex: 2, child: _LoginTitle()),
+            Expanded(child: _LoginButton(_onLoginAttempt)),
+          ],
+        ),
       ),
     );
   }
 
-  /// Builds the [_LoginButton] if we are not logged in.
-  /// Shows a [CircularProgressIndicator] while obtaining the login information.
-  Widget _buildLoginButton() {
-    if (!loggedIn) {
-      // not logged in, show login button
-      return _LoginButton();
-    }
-    return Center(child: CircularProgressIndicator());
-  }
+  Future<void> _onLoginAttempt() async {
+    TwitterLoginResult result = await store.login;
 
-  /// Checks the login state and navigates to [HomeScreen] when logged in.
-  Future<void> _checkLoginState() async {
-    loggedIn = await store.loggedIn;
-
-    if (loggedIn) {
-      print("navigating to home screen");
-
-      // todo: maybe wait for title animation to finish?
-      // or don't display the login screen at all
+    if (result.status == TwitterLoginStatus.loggedIn) {
+      // successfully logged in; save session and navigate to home screen
+      LoginStore.setSession(result.session);
 
       Navigator.pushReplacement(
         context,
@@ -122,6 +110,10 @@ class _LoginTitleState extends State<_LoginTitle>
 
 /// A login button that slides into position with a delay upon creation.
 class _LoginButton extends StatefulWidget {
+  final VoidCallback onLoginAttempt;
+
+  _LoginButton(this.onLoginAttempt);
+
   @override
   __LoginButtonState createState() => __LoginButtonState();
 }
@@ -164,7 +156,7 @@ class __LoginButtonState extends State<_LoginButton>
               "Login with Twitter",
               style: Theme.of(context).textTheme.button,
             ),
-            onPressed: LoginStore.twitterLogin,
+            onPressed: widget.onLoginAttempt,
           ),
         ),
       ),

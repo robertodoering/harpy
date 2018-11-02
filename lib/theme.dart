@@ -4,9 +4,11 @@ class HarpyTheme {
   static TextTheme _textTheme =
       ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
 
+  static const Color primaryColor = Colors.indigo;
+
   static ThemeData get theme {
     return ThemeData.light().copyWith(
-      primaryColor: Colors.indigo,
+      primaryColor: primaryColor,
       buttonColor: Colors.white,
 
       // text
@@ -19,7 +21,7 @@ class HarpyTheme {
           fontWeight: FontWeight.w300,
         ),
         button: _textTheme.button.copyWith(
-          color: Colors.indigo,
+          color: primaryColor,
         ),
       ),
     );

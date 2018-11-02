@@ -4,38 +4,20 @@ import 'package:harpy/core/app_configuration.dart';
 
 class LoginStore extends Store {
   static final Action<TwitterLoginResult> twitterLogin = Action();
-
-  Future<bool> get loggedIn => _twitterLogin.isSessionActive;
-  Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
+  static final Action<TwitterSession> setSession = Action();
 
   final _twitterLogin = TwitterLogin(
     consumerKey: AppConfiguration().applicationConfig.consumerKey,
     consumerSecret: AppConfiguration().applicationConfig.consumerSecret,
   );
 
+  Future<bool> get loggedIn => _twitterLogin.isSessionActive;
+  Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
+
+  Future<TwitterLoginResult> get login async => await _twitterLogin.authorize();
+
   LoginStore() {
-    triggerOnAction(twitterLogin, (_) async {
-      final TwitterLoginResult result = await _twitterLogin.authorize();
-
-      print("Login: " + result.status.toString());
-
-      switch (result.status) {
-        case TwitterLoginStatus.loggedIn:
-          AppConfiguration().twitterSession = result.session;
-
-//          TweetService().getHomeTimeline().then((response) {
-//            print(response.body);
-//          }).catchError((error) {
-//            print(error);
-//          });
-
-          break;
-        case TwitterLoginStatus.cancelledByUser:
-          break;
-        case TwitterLoginStatus.error:
-          break;
-      }
-    });
+    setSession.listen((session) => AppConfiguration().twitterSession = session);
   }
 }
 
