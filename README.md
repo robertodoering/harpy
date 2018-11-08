@@ -6,3 +6,6 @@ A new Flutter project.
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+
+To generate json_serializable models: flutter packages pub run build_runner build
+

@@ -1,5 +1,6 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/app_configuration.dart';
 
 class LoginStore extends Store {
@@ -23,11 +24,11 @@ class LoginStore extends Store {
         case TwitterLoginStatus.loggedIn:
           AppConfiguration().twitterSession = result.session;
 
-//          TweetService().getHomeTimeline().then((response) {
-//            print(response.body);
-//          }).catchError((error) {
-//            print(error);
-//          });
+          TweetService().getHomeTimeline().then((response) {
+            print(response.toString());
+          }).catchError((error) {
+            print(error);
+          });
 
           break;
         case TwitterLoginStatus.cancelledByUser:
