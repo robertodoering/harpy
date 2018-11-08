@@ -20,7 +20,7 @@ class Http {
   _invokeDispatcher(String method, String url, Map<String, String> headers,
       {body}) {
     if (headers == null) {
-      headers = new Map<String, String>();
+      headers ?? headers = Map<String, String>();
     }
     _dispatcher?.send(RequestData(method, url, headers, body));
   }
