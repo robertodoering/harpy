@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/stores/login_store.dart';
 
 class LoginScreen extends StatefulWidget {
