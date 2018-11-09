@@ -14,6 +14,7 @@ dependencies:
   json_annotation: ^2.0.0
   path_provider: ^0.4.1
   logging: ^0.11.3+2
+  intl: ^0.15.7
 
   flutter:
     sdk: flutter
