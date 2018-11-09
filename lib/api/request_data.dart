@@ -1,7 +1,7 @@
 class RequestData {
   String _method;
   String _url;
-  var _body;
+  dynamic _body;
   Map<String, String> _headers;
 
   RequestData(this._method, this._url, this._headers, this._body);
