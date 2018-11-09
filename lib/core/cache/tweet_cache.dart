@@ -7,7 +7,7 @@ import 'package:harpy/core/filesystem/cache_dir_service.dart';
 import 'package:logging/logging.dart';
 
 class TweetCache {
-  final Logger log = new Logger('TweetCache');
+  final Logger log = Logger('TweetCache');
 
   CacheDirectoryService _cacheDirService;
 
@@ -32,7 +32,7 @@ class TweetCache {
   }
 
   void cacheTweets(List<Tweet> tweets) {
-    tweets.forEach((tweet) => cacheTweet(tweet));
+    tweets.forEach(cacheTweet);
   }
 
   bool _isFileValidForCache(File file) {

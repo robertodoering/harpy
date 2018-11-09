@@ -5,7 +5,7 @@ import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:logging/logging.dart';
 
 class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
-  final Logger log = new Logger('CachedTweetServiceImpl');
+  final Logger log = Logger('CachedTweetServiceImpl');
 
   TweetCache _tweetCache;
 
