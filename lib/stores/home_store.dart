@@ -1,6 +1,6 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
 
 class HomeStore extends Store {
   static final Action initTweets = Action();
@@ -11,7 +11,7 @@ class HomeStore extends Store {
 
   HomeStore() {
     triggerOnAction(initTweets, (_) async {
-      _tweets = await TweetService().getHomeTimeline();
+      _tweets = await CachedTweetServiceImpl().getHomeTimeline();
     });
   }
 }
