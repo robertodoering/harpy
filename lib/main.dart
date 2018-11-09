@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/screens/main_screen.dart';
+import 'package:harpy/components/screens/main/main_screen.dart';
 import 'package:logging/logging.dart';
 
 void main() {

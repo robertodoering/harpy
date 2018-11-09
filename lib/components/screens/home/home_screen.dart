@@ -5,9 +5,7 @@ import 'package:harpy/stores/tokens.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  HomeScreenState createState() {
-    return new HomeScreenState();
-  }
+  HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen>
