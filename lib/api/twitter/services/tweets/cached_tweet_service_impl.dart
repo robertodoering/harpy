@@ -57,9 +57,7 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
   }
 
   void _cacheTweet(Tweet tweet) {
-    String fileName = tweet.id as String;
-    fileName += "_";
-    fileName += DateTime.now().toIso8601String();
+    String fileName = "${tweet.id}_${DateTime.now().toIso8601String()}";
 
     _cacheDirService.createFile(
       currentBucketName,

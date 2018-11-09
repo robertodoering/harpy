@@ -43,11 +43,16 @@ abstract class DirectoryService {
   Future<List<File>> listFiles(String bucket) async {
     await _requestPathIfNeeded();
     List<File> files = [];
-    Directory('$path/$bucket').listSync().forEach((fileSystemEntry) {
-      files.add(File(fileSystemEntry.path));
-    });
+    Directory dirToRead = Directory('$path/$bucket');
 
-    return files;
+    if (!dirToRead.existsSync()) {
+      return files;
+    } else {
+      dirToRead.listSync().forEach((fileSystemEntry) {
+        files.add(File(fileSystemEntry.path));
+      });
+      return files;
+    }
   }
 
   String _getFilePath(String bucket, String fileName, String fileExtension) {
