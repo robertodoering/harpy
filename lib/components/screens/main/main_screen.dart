@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
-import 'package:harpy/components/screens/home_screen.dart';
-import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/screens/home/home_screen.dart';
+import 'package:harpy/components/screens/login/login_screen.dart';
 import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
@@ -16,9 +16,7 @@ import 'package:harpy/theme.dart';
 /// the [HomeScreen] if the user is already logged in.
 class MainScreen extends StatefulWidget {
   @override
-  MainScreenState createState() {
-    return new MainScreenState();
-  }
+  MainScreenState createState() => MainScreenState();
 }
 
 class MainScreenState extends State<MainScreen>
@@ -32,7 +30,7 @@ class MainScreenState extends State<MainScreen>
     // init tokens
     Tokens();
 
-    // init tweets if already logged in
+    // init tweets if already logged in before showing home screen
     if (loginStore.loggedIn) {
       await HomeStore.initTweets();
     }
