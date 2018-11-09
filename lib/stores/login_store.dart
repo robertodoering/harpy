@@ -6,15 +6,10 @@ class LoginStore extends Store {
   static final Action<TwitterLoginResult> twitterLogin = Action();
   static final Action<TwitterSession> setSession = Action();
 
-  final _twitterLogin = TwitterLogin(
-    consumerKey: AppConfiguration().applicationConfig.consumerKey,
-    consumerSecret: AppConfiguration().applicationConfig.consumerSecret,
-  );
+  bool get loggedIn => AppConfiguration().twitterSession != null;
 
-  Future<bool> get loggedIn => _twitterLogin.isSessionActive;
-  Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
-
-  Future<TwitterLoginResult> get login async => await _twitterLogin.authorize();
+  Future<TwitterLoginResult> get login async =>
+      await AppConfiguration().twitterLogin.authorize();
 
   LoginStore() {
     setSession.listen((session) => AppConfiguration().twitterSession = session);

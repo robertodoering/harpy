@@ -10,22 +10,25 @@ class AppConfiguration {
 
   AppConfiguration._();
 
-  ApplicationConfiguration _applicationConfig;
+  // todo: persist to shared preferences?
+  TwitterSession twitterSession;
+  ApplicationConfiguration applicationConfig;
 
-  TwitterSession _twitterSession;
+  TwitterLogin twitterLogin;
 
-  init() async {
+  Future<void> init() async {
+    // init config
     String appConfigAsString = await rootBundle.loadString('app_config.yaml');
     var appConfigAsDocument = loadYaml(appConfigAsString);
+    applicationConfig = ApplicationConfiguration(appConfigAsDocument);
 
-    _applicationConfig = ApplicationConfiguration(appConfigAsDocument);
+    // init twitter login
+    twitterLogin = TwitterLogin(
+      consumerKey: applicationConfig.consumerKey,
+      consumerSecret: applicationConfig.consumerSecret,
+    );
+
+    // init active twitter session
+    twitterSession = await twitterLogin.currentSession;
   }
-
-  TwitterSession get twitterSession => _twitterSession;
-
-  ApplicationConfiguration get applicationConfig => _applicationConfig;
-
-  set twitterSession(TwitterSession twitterSession) =>
-      //TODO persist to shared preferences?
-      _twitterSession = twitterSession;
 }
