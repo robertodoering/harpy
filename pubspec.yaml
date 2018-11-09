@@ -12,6 +12,8 @@ dependencies:
   flutter_flux: ^4.1.2
   oauth1: ^1.0.1
   json_annotation: ^2.0.0
+  path_provider: ^0.4.1
+  logging: ^0.11.3+2
 
   flutter:
     sdk: flutter

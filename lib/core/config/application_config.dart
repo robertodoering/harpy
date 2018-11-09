@@ -1,4 +1,3 @@
-//TODO Load from .yaml file
 class ApplicationConfiguration {
   String _consumerKey;
   String _consumerSecret;

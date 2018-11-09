@@ -2,10 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/core/json/json_mapper.dart';
 
-class TweetService extends TwitterService with JsonMapper<Tweet> {
+class TweetServiceImpl extends TwitterService
+    with JsonMapper<Tweet>
+    implements TweetService {
+  @override
   Future<List<Tweet>> getHomeTimeline() async {
     final response = await client
         .get("https://api.twitter.com/1.1/statuses/home_timeline.json");
