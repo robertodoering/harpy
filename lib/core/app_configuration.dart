@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:yaml/yaml.dart';
 
 class AppConfiguration {
-  final Logger log = new Logger('AppConfiguration');
+  final Logger log = Logger('AppConfiguration');
 
   static AppConfiguration _instance = AppConfiguration._();
 
@@ -13,7 +13,6 @@ class AppConfiguration {
 
   AppConfiguration._();
 
-  // todo: persist to shared preferences?
   TwitterSession twitterSession;
   ApplicationConfiguration applicationConfig;
 
