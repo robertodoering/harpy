@@ -2,6 +2,6 @@ class CacheConfiguration {
   int tweetCacheTimeInHours;
 
   CacheConfiguration(yamlDoc) {
-    tweetCacheTimeInHours = yamlDoc["tweet"];
+    tweetCacheTimeInHours = yamlDoc["tweet"] != null ? yamlDoc["tweet"] : 4;
   }
 }
