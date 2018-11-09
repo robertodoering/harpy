@@ -16,13 +16,15 @@ class LoginStore extends Store {
   Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
 
   Future<TwitterLoginResult> get login async {
-    await _twitterLogin.authorize();
+    var result = await _twitterLogin.authorize();
 
     TweetService().getHomeTimeline().then((response) {
       print(response.toString());
     }).catchError((error) {
       print(error);
     });
+
+    return result;
   }
 
   LoginStore() {
