@@ -15,5 +15,3 @@ class LoginStore extends Store {
     setSession.listen((session) => AppConfiguration().twitterSession = session);
   }
 }
-
-StoreToken loginStoreToken = StoreToken(LoginStore());

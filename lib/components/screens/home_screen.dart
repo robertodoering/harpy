@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/stores/home_store.dart';
+import 'package:harpy/stores/tokens.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,9 +18,9 @@ class HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    store = listenToStore(homeStoreToken);
+    store = listenToStore(Tokens.home);
 
-    HomeStore.refreshTweets();
+    HomeStore.initTweets();
   }
 
   @override
@@ -41,7 +42,7 @@ class HomeScreenState extends State<HomeScreen>
 
   Widget _buildBody() {
     if (store.tweets == null) {
-      return Center(child: Text("no tweets"));
+      return Center(child: CircularProgressIndicator());
     } else {
       return ListView(
         children: store.tweets.map((tweet) {

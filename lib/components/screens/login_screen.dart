@@ -3,6 +3,7 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/stores/login_store.dart';
+import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
 
-    store = listenToStore(loginStoreToken);
+    store = listenToStore(Tokens.login);
   }
 
   @override
