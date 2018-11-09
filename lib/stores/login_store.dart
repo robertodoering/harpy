@@ -13,5 +13,29 @@ class LoginStore extends Store {
 
   LoginStore() {
     setSession.listen((session) => AppConfiguration().twitterSession = session);
+
+    // todo: fix merge
+//    triggerOnAction(twitterLogin, (_) async {
+//      final TwitterLoginResult result = await _twitterLogin.authorize();
+//
+//      print("Login: " + result.status.toString());
+//
+//      switch (result.status) {
+//        case TwitterLoginStatus.loggedIn:
+//          AppConfiguration().twitterSession = result.session;
+//
+//          CachedTweetServiceImpl().getHomeTimeline().then((response) {
+//            print(response.toString());
+//          }).catchError((error) {
+//            print(error);
+//          });
+//
+//          break;
+//        case TwitterLoginStatus.cancelledByUser:
+//          break;
+//        case TwitterLoginStatus.error:
+//          break;
+//      }
+//    });
   }
 }

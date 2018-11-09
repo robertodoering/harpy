@@ -1,11 +1,16 @@
-//TODO Load from .yaml file
+import 'package:harpy/core/config/cache_configuration.dart';
+
 class ApplicationConfiguration {
   String _consumerKey;
   String _consumerSecret;
 
+  CacheConfiguration cacheConfiguration;
+
   ApplicationConfiguration(yamlDoc) {
     _consumerKey = yamlDoc["twitter"]["consumerKey"];
     _consumerSecret = yamlDoc["twitter"]["consumerSecret"];
+
+    cacheConfiguration = CacheConfiguration(yamlDoc["cache"]);
   }
 
   String get consumerKey => _consumerKey;
