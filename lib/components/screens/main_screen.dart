@@ -3,6 +3,7 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/theme.dart';
@@ -31,15 +32,18 @@ class MainScreenState extends State<MainScreen>
     // init tokens
     Tokens();
 
-    loginStore = listenToStore(Tokens.login);
+    // init tweets if already logged in
+    if (loginStore.loggedIn) {
+      await HomeStore.initTweets();
+    }
 
     _checkLoggedIn();
   }
 
   /// Checks if the user is logged in and navigates to the [HomeScreen] or the
   /// [LoginScreen] depending on the login state.
-  Future<void> _checkLoggedIn() async {
-    if (await loginStore.loggedIn) {
+  void _checkLoggedIn() {
+    if (loginStore.loggedIn) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -55,6 +59,8 @@ class MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
+
+    loginStore = listenToStore(Tokens.login);
 
     _init();
   }

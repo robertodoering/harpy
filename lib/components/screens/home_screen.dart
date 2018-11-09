@@ -19,8 +19,6 @@ class HomeScreenState extends State<HomeScreen>
     super.initState();
 
     store = listenToStore(Tokens.home);
-
-    HomeStore.initTweets();
   }
 
   @override
@@ -42,7 +40,7 @@ class HomeScreenState extends State<HomeScreen>
 
   Widget _buildBody() {
     if (store.tweets == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: Text("no tweets ;w;"));
     } else {
       return ListView(
         children: store.tweets.map((tweet) {
