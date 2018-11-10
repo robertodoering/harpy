@@ -31,6 +31,16 @@ class TweetCache {
     return tweets;
   }
 
+  void clearCache() async {
+    log.fine("Clear bucket $currentBucketName");
+    List<File> files = await _cacheDirService.listFiles(currentBucketName);
+
+    files.forEach((file) {
+      log.fine("Try to delete ${file.path}");
+      file.deleteSync();
+    });
+  }
+
   void cacheTweets(List<Tweet> tweets) {
     tweets.forEach(cacheTweet);
   }
@@ -44,7 +54,7 @@ class TweetCache {
   }
 
   void cacheTweet(Tweet tweet) {
-    String fileName = "${tweet.id}_${DateTime.now().toIso8601String()}";
+    String fileName = "${tweet.id}";
 
     _cacheDirService.createFile(
       currentBucketName,
