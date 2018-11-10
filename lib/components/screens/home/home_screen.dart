@@ -63,13 +63,18 @@ class TweetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: tweets.length,
-      itemBuilder: (context, index) {
-        return TweetTile(tweets[index]);
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
+    return RefreshIndicator(
+      child: ListView.separated(
+        itemCount: tweets.length,
+        itemBuilder: (context, index) {
+          return TweetTile(tweets[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
+      ),
+      onRefresh: () async {
+        await HomeStore.updateTweets();
       },
     );
   }
@@ -82,8 +87,6 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("image url: ${tweet.user.profileImageUrl}");
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -112,9 +115,26 @@ class TweetTile extends StatelessWidget {
             // name
             Text(tweet.user.name),
 
-            // username
-            Text("@${tweet.user.screenName}",
-                style: HarpyTheme.theme.textTheme.caption),
+            Row(
+              children: <Widget>[
+                // username
+                Text(
+                  "@${tweet.user.screenName}",
+                  style: HarpyTheme.theme.textTheme.caption,
+                ),
+
+                Text(
+                  " \u00b7 ", // middle dot
+                  style: HarpyTheme.theme.textTheme.caption,
+                ),
+
+                // date // todo: get actual created at date
+                Text(
+                  "${DateTime.now().difference(DateTime.now().subtract(Duration(hours: 3))).inHours}h",
+                  style: HarpyTheme.theme.textTheme.caption,
+                ),
+              ],
+            ),
           ],
         ),
       ],
