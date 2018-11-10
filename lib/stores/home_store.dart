@@ -10,7 +10,7 @@ class HomeStore extends Store {
   List<Tweet> get tweets => _tweets;
 
   HomeStore() {
-    triggerOnAction(initTweets, (_) async {
+    initTweets.listen((_) async {
       _tweets = await CachedTweetServiceImpl().getHomeTimeline();
     });
   }
