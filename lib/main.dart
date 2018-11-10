@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/log/harpy_logger.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
-import 'package:logging/logging.dart';
 
 void main() {
   // Setup Logger
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    print(
-        '${rec.level.name} :: ${rec.loggerName} :: ${rec.time} :: ${rec.message}');
-  });
+  HarpyLogger().init();
 
   runApp(MaterialApp(
     title: "Harpy",

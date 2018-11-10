@@ -36,4 +36,8 @@ class AppConfiguration {
     // init active twitter session
     twitterSession = await twitterLogin.currentSession;
   }
+
+  void initForUnitTesting() {
+    applicationConfig = ApplicationConfiguration.UnitTesting();
+  }
 }

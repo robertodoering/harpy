@@ -14,6 +14,7 @@ dependencies:
   json_annotation: ^2.0.0
   path_provider: ^0.4.1
   logging: ^0.11.3+2
+  intl: ^0.15.7
 
   flutter:
     sdk: flutter
@@ -25,6 +26,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.0.0
   json_serializable: ^2.0.0
+  mockito: ^4.0.0
 
 flutter:
   uses-material-design: true

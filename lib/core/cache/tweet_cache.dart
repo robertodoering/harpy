@@ -59,4 +59,8 @@ class TweetCache {
     String currentUserId = AppConfiguration().twitterSession.userId;
     return "tweets/$currentUserId";
   }
+
+  set cacheDirService(CacheDirectoryService value) {
+    _cacheDirService = value;
+  }
 }
