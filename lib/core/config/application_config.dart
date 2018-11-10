@@ -12,6 +12,9 @@ class ApplicationConfiguration {
 
     cacheConfiguration = CacheConfiguration(yamlDoc["cache"]);
   }
+  ApplicationConfiguration.UnitTesting() {
+    cacheConfiguration = CacheConfiguration.UnitTesting();
+  }
 
   String get consumerKey => _consumerKey;
 
