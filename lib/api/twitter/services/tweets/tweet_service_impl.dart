@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
@@ -11,8 +8,8 @@ class TweetServiceImpl extends TwitterService
     implements TweetService {
   @override
   Future<List<Tweet>> getHomeTimeline() async {
-    final response = await client
-        .get("https://api.twitter.com/1.1/statuses/home_timeline.json");
+    final response = await client.get(
+        "https://api.twitter.com/1.1/statuses/home_timeline.json?count=100");
 
 //    var response = await rootBundle.loadString("example_tweet.json");
 
