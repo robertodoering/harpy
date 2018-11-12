@@ -5,6 +5,7 @@ import 'package:harpy/core/app_configuration.dart';
 class LoginStore extends Store {
   static final Action<TwitterLoginResult> twitterLogin = Action();
   static final Action<TwitterSession> setSession = Action();
+  static final Action twitterLogout = Action();
 
   bool get loggedIn => AppConfiguration().twitterSession != null;
 
@@ -13,5 +14,9 @@ class LoginStore extends Store {
 
   LoginStore() {
     setSession.listen((session) => AppConfiguration().twitterSession = session);
+
+    twitterLogout.listen((_) async {
+      await AppConfiguration().twitterLogin.logOut();
+    });
   }
 }

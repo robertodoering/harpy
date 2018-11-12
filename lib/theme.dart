@@ -25,6 +25,16 @@ class HarpyTheme {
             color: primaryColor,
           ),
 
+          // drawer username
+          display1: _textTheme.display1.copyWith(
+            fontSize: 14.0,
+          ),
+
+          // drawer name
+          display2: _textTheme.display2.copyWith(
+            fontSize: 24.0,
+          ),
+
           // default text
           body1: _textTheme.body1.copyWith(
             fontSize: 14.0,

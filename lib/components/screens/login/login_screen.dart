@@ -18,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen>
     with StoreWatcherMixin<LoginScreen> {
   LoginStore store;
 
+  bool loggingIn = false;
+
   @override
   void initState() {
     super.initState();
@@ -49,7 +51,14 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Future<void> _onLoginAttempt() async {
+    setState(() {
+      loggingIn = true;
+    });
+
     TwitterLoginResult result = await store.login;
+
+    // todo: show hero animation
+    await Future.delayed(Duration(milliseconds: 600));
 
     if (result.status == TwitterLoginStatus.loggedIn) {
       // successfully logged in; save session and navigate to home screen
@@ -62,6 +71,11 @@ class _LoginScreenState extends State<LoginScreen>
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
+    } else {
+      // todo: maybe show error
+      setState(() {
+        loggingIn = false;
+      });
     }
   }
 }

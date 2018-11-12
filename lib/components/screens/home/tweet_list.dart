@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/screens/home/tweet_action.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
 
+/// The list containing many [TweetTile]s.
 class TweetList extends StatelessWidget {
   final List<Tweet> tweets;
 
@@ -40,6 +42,7 @@ class TweetList extends StatelessWidget {
   }
 }
 
+/// A single tile that display information and [TweetAction]s for a [Tweet].
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
@@ -48,7 +51,7 @@ class TweetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -86,8 +89,9 @@ class TweetTile extends StatelessWidget {
                   style: HarpyTheme.theme.textTheme.caption,
                 ),
 
+                // middle dot
                 Text(
-                  " \u00b7 ", // middle dot
+                  " \u00b7 ",
                   style: HarpyTheme.theme.textTheme.caption,
                 ),
 
@@ -114,87 +118,39 @@ class TweetTile extends StatelessWidget {
   Widget _buildActionRow() {
     return Row(
       children: <Widget>[
+        // comment action
         TweetAction(
-          iconData: Icons.chat_bubble_outline,
+          active: true,
+          inactiveIconData: Icons.chat_bubble_outline,
+          activeIconData: Icons.chat_bubble,
           value: 69,
-          tapColor: Colors.blue,
-          onTap: () {},
+          color: Colors.blue,
+          activate: () {},
+          deactivate: () {},
         ),
+
+        // retweet action
         TweetAction(
-          iconData: Icons.repeat,
+          active: true,
+          inactiveIconData: Icons.repeat,
+          activeIconData: Icons.repeat,
           value: 13,
-          tapColor: Colors.green,
-          onTap: () {},
+          color: Colors.green,
+          activate: () {},
+          deactivate: () {},
         ),
+
+        // favorite action
         TweetAction(
-          iconData: Icons.favorite_border,
+          active: false,
+          inactiveIconData: Icons.favorite_border,
+          activeIconData: Icons.favorite,
           value: 37,
-          tapColor: Colors.red,
-          onTap: () {},
+          color: Colors.red,
+          activate: () {},
+          deactivate: () {},
         ),
       ],
-    );
-  }
-}
-
-class TweetAction extends StatefulWidget {
-  final IconData iconData;
-  final int value;
-  final Color tapColor;
-  final VoidCallback onTap;
-
-  TweetAction({
-    this.iconData,
-    this.value,
-    this.tapColor,
-    this.onTap,
-  });
-
-  @override
-  _TweetActionState createState() => _TweetActionState();
-}
-
-class _TweetActionState extends State<TweetAction> {
-  bool drawColored = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTapDown: (_) => setState(() {
-            drawColored = true;
-          }),
-      onTapUp: (_) => setState(() {
-            drawColored = false;
-          }),
-      onTapCancel: () => setState(() {
-            drawColored = false;
-          }),
-      onTap: widget.onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              widget.iconData,
-              size: 18.0,
-              color: drawColored
-                  ? widget.tapColor
-                  : Theme.of(context).iconTheme.color,
-            ),
-            SizedBox(width: 8.0),
-            Text(
-              "${widget.value}",
-              style: drawColored
-                  ? Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(color: widget.tapColor)
-                  : Theme.of(context).textTheme.body1,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
