@@ -19,8 +19,8 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(updateTweets, (_) async {
-      // todo: use cached tweet service updateHomeTimeline when implemented
-      _tweets = await TweetServiceImpl().getHomeTimeline();
+      _tweets =
+          await CachedTweetServiceImpl().getHomeTimeline(forceUpdate: true);
     });
 
     clearCache.listen((_) => TweetCache().clearCache());

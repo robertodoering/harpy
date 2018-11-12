@@ -20,23 +20,18 @@ String fillStringToLength(String data, int length, {String filler = " "}) {
 }
 
 String formatTwitterDateString(String twitterDateString) {
-  log.fine("Try to convert TwitterDate $twitterDateString to normal one.");
   String dateString = "";
 
   List<String> splitDate = twitterDateString.split(" ");
-  log.fine("Removing ${splitDate[0]} from String");
   splitDate.removeAt(0);
 
   splitDate.forEach((currentString) {
     if (!currentString.startsWith("+")) {
       dateString += " " + currentString;
-    } else {
-      log.fine("Removed $currentString (TimeZone) from date string");
     }
   });
 
   dateString = dateString.trim();
 
-  log.fine("Got $dateString");
   return dateString;
 }

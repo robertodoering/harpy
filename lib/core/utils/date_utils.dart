@@ -9,8 +9,6 @@ DateTime convertFromTwitterDateString(String twitterDateString) {
     return DateTime.parse(twitterDateString);
   } catch (ex) {
     String dateString = formatTwitterDateString(twitterDateString);
-
-    log.fine("Convert $dateString to DateTime");
     return DateFormat("MMM dd HH:mm:ss yyyy").parse(dateString);
   }
 }

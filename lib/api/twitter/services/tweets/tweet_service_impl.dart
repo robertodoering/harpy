@@ -11,8 +11,6 @@ class TweetServiceImpl extends TwitterService
     final response = await client.get(
         "https://api.twitter.com/1.1/statuses/home_timeline.json?count=100");
 
-//    var response = await rootBundle.loadString("example_tweet.json");
-
     if (response.statusCode == 200) {
       List<Tweet> tweets = map((map) {
         return Tweet.fromJson(map);
