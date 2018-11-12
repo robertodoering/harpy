@@ -23,4 +23,20 @@ void main() {
     String actualResult = formatTwitterDateString(testData);
     expect(actualResult, matches(expectedResult));
   });
+
+  test("explodeListToSeparatedString multiple strings", () {
+    List<String> testData = ["1", "3", "5"];
+
+    String expectedResult = "1,3,5";
+    String actualResult = explodeListToSeparatedString(testData);
+    expect(actualResult, matches(expectedResult));
+  });
+
+  test("explodeListToSeparatedString sigle strings", () {
+    List<String> testData = ["1"];
+
+    String expectedResult = "1";
+    String actualResult = explodeListToSeparatedString(testData);
+    expect(actualResult, matches(expectedResult));
+  });
 }
