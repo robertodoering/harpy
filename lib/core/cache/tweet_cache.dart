@@ -84,14 +84,6 @@ class TweetCache {
             .tweetCacheTimeInHours;
   }
 
-  bool isFileValidForCache(File file) {
-    return file.lastModifiedSync().difference(DateTime.now()).inHours ==
-        AppConfiguration()
-            .applicationConfig
-            .cacheConfiguration
-            .tweetCacheTimeInHours;
-  }
-
   void cacheTweet(Tweet tweet) {
     String fileName = "${tweet.id}";
 
