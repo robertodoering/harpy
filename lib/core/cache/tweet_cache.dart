@@ -11,23 +11,35 @@ class TweetCache {
 
   CacheDirectoryService _cacheDirService;
 
+  String _lastUpdatedStorageFileName = "last_updated";
+
   TweetCache() {
     _cacheDirService = CacheDirectoryService();
   }
 
   Future<List<Tweet>> checkCacheForTweets() async {
     List<Tweet> tweets = [];
-    List<File> files = await _cacheDirService.listFiles(currentBucketName);
+
+    if (await _cacheNeedsToUpdate()) {
+      log.shout("Cache needs to update!");
+      return tweets;
+    }
+
+    tweets = await getCachedTweets();
+
+    return tweets;
+  }
+
+  Future<List<Tweet>> getCachedTweets() async {
+    List<Tweet> tweets = [];
+
+    List<File> files = await _cacheDirService.listFiles(currentBucketName,
+        allowedFileExtension: ".json");
     log.fine("Found ${files.length} cached Tweets!");
 
     files.forEach((file) {
-      if (_isFileValidForCache(file)) {
-        file.deleteSync();
-      } else {
-        tweets.add(Tweet.fromJson(jsonDecode(file.readAsStringSync())));
-      }
+      tweets.add(Tweet.fromJson(jsonDecode(file.readAsStringSync())));
     });
-
     return tweets;
   }
 
@@ -43,10 +55,29 @@ class TweetCache {
 
   void cacheTweets(List<Tweet> tweets) {
     tweets.forEach(cacheTweet);
+    _setLastUpdatedDate();
   }
 
-  bool _isFileValidForCache(File file) {
-    return file.lastModifiedSync().difference(DateTime.now()).inHours ==
+  void _setLastUpdatedDate() async {
+    _cacheDirService.createFile(currentBucketName, _lastUpdatedStorageFileName,
+        ".txt", DateTime.now().toString());
+  }
+
+  Future<DateTime> _getLastUpdatedTime() async {
+    try {
+      return DateTime.parse(await _cacheDirService.readFile(
+          currentBucketName, _lastUpdatedStorageFileName, ".txt"));
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  Future<bool> _cacheNeedsToUpdate() async {
+    DateTime lastUpdate = await _getLastUpdatedTime();
+    if (lastUpdate == null) {
+      return true;
+    }
+    return DateTime.now().difference(lastUpdate).inMinutes >=
         AppConfiguration()
             .applicationConfig
             .cacheConfiguration
