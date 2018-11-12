@@ -21,7 +21,7 @@ void main() {
 
     String expectedResult = "Apr 06 15:24:15 2017";
     String actualResult = formatTwitterDateString(testData);
-    expect(actualResult, matches(expectedResult));
+    expect(actualResult, expectedResult);
   });
 
   test("explodeListToSeparatedString multiple strings", () {
@@ -29,7 +29,7 @@ void main() {
 
     String expectedResult = "1,3,5";
     String actualResult = explodeListToSeparatedString(testData);
-    expect(actualResult, matches(expectedResult));
+    expect(actualResult, expectedResult);
   });
 
   test("explodeListToSeparatedString sigle strings", () {
@@ -37,6 +37,6 @@ void main() {
 
     String expectedResult = "1";
     String actualResult = explodeListToSeparatedString(testData);
-    expect(actualResult, matches(expectedResult));
+    expect(actualResult, expectedResult);
   });
 }

@@ -44,7 +44,7 @@ String explodeListToSeparatedString(List<String> list,
     result += "$currentString$separator";
   });
 
-  result.replaceRange(result.length - 2, result.length - 1, "");
+  result = result.replaceRange(result.length - 1, result.length, "");
 
   return result;
 }
