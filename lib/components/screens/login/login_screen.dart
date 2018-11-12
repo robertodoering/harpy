@@ -43,7 +43,8 @@ class _LoginScreenState extends State<LoginScreen>
         child: Column(
           children: <Widget>[
             Expanded(flex: 2, child: LoginTitle()),
-            Expanded(child: LoginButton(_onLoginAttempt)),
+            Expanded(
+                child: loggingIn ? Container() : LoginButton(_onLoginAttempt)),
           ],
         ),
       ),
@@ -51,21 +52,21 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Future<void> _onLoginAttempt() async {
-    setState(() {
-      loggingIn = true;
-    });
-
     TwitterLoginResult result = await store.login;
 
-    // todo: show hero animation
-    await Future.delayed(Duration(milliseconds: 600));
-
     if (result.status == TwitterLoginStatus.loggedIn) {
+      setState(() {
+        loggingIn = true;
+      });
+
       // successfully logged in; save session and navigate to home screen
       LoginStore.setSession(result.session);
 
       // init tweets before navigating
       await HomeStore.initTweets();
+
+      // todo: show hero animation
+      await Future.delayed(Duration(milliseconds: 600));
 
       Navigator.pushReplacement(
         context,
