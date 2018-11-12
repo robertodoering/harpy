@@ -1,0 +1,45 @@
+import 'package:harpy/api/twitter/data/media_size.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'twitter_media.g.dart';
+
+@JsonSerializable()
+class TwitterMedia {
+  @JsonKey(name: "id")
+  int id;
+  @JsonKey(name: "id_str")
+  String idStr;
+  @JsonKey(name: "indices")
+  List<int> indices;
+  @JsonKey(name: "media_url")
+  String mediaUrl;
+  @JsonKey(name: "media_url_https")
+  String mediaUrlHttps;
+  @JsonKey(name: "url")
+  String url;
+  @JsonKey(name: "display_url")
+  String displayUrl;
+  @JsonKey(name: "expanded_url")
+  String expandedUrl;
+  @JsonKey(name: "type")
+  String type;
+  @JsonKey(name: "sizes")
+  Map<String, MediaSize> sizes;
+
+  TwitterMedia(
+      this.id,
+      this.idStr,
+      this.indices,
+      this.mediaUrl,
+      this.mediaUrlHttps,
+      this.url,
+      this.displayUrl,
+      this.expandedUrl,
+      this.type,
+      this.sizes);
+
+  factory TwitterMedia.fromJson(Map<String, dynamic> json) =>
+      _$TwitterMediaFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TwitterMediaToJson(this);
+}

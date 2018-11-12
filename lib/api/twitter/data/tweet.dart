@@ -1,5 +1,7 @@
+import 'package:harpy/api/twitter/data/entity.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:harpy/core/utils/date_utils.dart';
 
 part 'tweet.g.dart';
 
@@ -7,11 +9,12 @@ part 'tweet.g.dart';
 class Tweet {
   @JsonKey(name: 'user')
   User user;
-
+  @JsonKey(name: 'entity')
+  Entity entity;
   @JsonKey(name: 'truncated')
   bool truncated;
-//  @JsonKey(name: 'created_at')
-//  DateTime createdAt;
+  @JsonKey(name: 'created_at')
+  DateTime createdAt;
   @JsonKey(name: 'favorited')
   bool favorited;
   @JsonKey(name: 'id_str')
@@ -34,7 +37,7 @@ class Tweet {
   Tweet(
       this.user,
       this.truncated,
-//      this.createdAt,
+      this.createdAt,
       this.favorited,
       this.idStr,
       this.inReplyToUserIdStr,
