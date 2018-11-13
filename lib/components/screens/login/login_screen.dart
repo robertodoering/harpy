@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
@@ -15,16 +17,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen>
-    with StoreWatcherMixin<LoginScreen> {
+    with StoreWatcherMixin<LoginScreen>, TickerProviderStateMixin {
   LoginStore store;
 
   bool loggingIn = false;
+  AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
     store = listenToStore(Tokens.login);
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 400,
+      ),
+    )..addListener(() => setState(() {}));
   }
 
   @override
@@ -32,17 +41,42 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
 
     unlistenFromStore(store);
+    _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double titlePosition = MediaQuery.of(context).size.height / 3;
+
+    // todo:
+    // draw title separately from login screen
+    // only draw login button in login screen below the title
+    // when already logged in fade title to top and navigate to home screen
+
     return Theme(
       data: HarpyTheme.theme,
       child: Material(
         color: HarpyTheme.primaryColor,
         child: Column(
           children: <Widget>[
-            Expanded(flex: 2, child: LoginTitle()),
+            Expanded(
+              flex: 2,
+              child: Opacity(
+                opacity: lerpDouble(1.0, 0.0, _controller.value),
+                child: Transform.translate(
+                  offset: Offset(
+                    0.0,
+                    lerpDouble(
+                        titlePosition, titlePosition / 2.5, _controller.value),
+                  ),
+                  child: Transform.scale(
+                    alignment: Alignment.topCenter,
+                    scale: lerpDouble(1.0, 0.8, _controller.value),
+                    child: LoginTitle(),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
                 child: loggingIn ? Container() : LoginButton(_onLoginAttempt)),
           ],
@@ -66,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen>
       await HomeStore.initTweets();
 
       // todo: show hero animation
-      await Future.delayed(Duration(milliseconds: 600));
+      await _controller.forward();
+//      await Future.delayed(Duration(milliseconds: 600));
 
       Navigator.pushReplacement(
         context,

@@ -23,6 +23,7 @@ class HarpyTheme {
           ),
           button: _textTheme.button.copyWith(
             color: primaryColor,
+            fontSize: 16.0,
           ),
 
           // drawer username

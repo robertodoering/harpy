@@ -25,6 +25,15 @@ Entity _$EntityFromJson(Map<String, dynamic> json) {
           ?.map((e) => e == null
               ? null
               : TwitterMedia.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      (json['user_mentions'] as List)
+          ?.map((e) => e == null
+              ? null
+              : UserMention.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      (json['polls'] as List)
+          ?.map((e) =>
+              e == null ? null : Poll.fromJson(e as Map<String, dynamic>))
           ?.toList());
 }
 
@@ -32,5 +41,7 @@ Map<String, dynamic> _$EntityToJson(Entity instance) => <String, dynamic>{
       'hashtags': instance.hashtags,
       'symbols': instance.symbols,
       'urls': instance.urls,
-      'media': instance.media
+      'media': instance.media,
+      'user_mentions': instance.userMentions,
+      'polls': instance.polls
     };
