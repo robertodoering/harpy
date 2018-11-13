@@ -1,7 +1,6 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
-import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 
 class HomeStore extends Store {
