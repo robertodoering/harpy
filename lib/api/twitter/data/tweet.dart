@@ -9,7 +9,7 @@ part 'tweet.g.dart';
 class Tweet {
   @JsonKey(name: 'user')
   User user;
-  @JsonKey(name: 'entity')
+  @JsonKey(name: 'entities')
   Entity entity;
   @JsonKey(name: 'truncated')
   bool truncated;
@@ -33,9 +33,14 @@ class Tweet {
   bool retweeted;
   @JsonKey(name: 'source')
   String source;
+  @JsonKey(name: "reply_count")
+  int replyCount;
+  @JsonKey(name: "favorite_count")
+  int favoriteCount;
 
   Tweet(
       this.user,
+      this.entity,
       this.truncated,
       this.createdAt,
       this.favorited,
@@ -46,7 +51,9 @@ class Tweet {
       this.retweetCount,
       this.inReplyToStatusIdStr,
       this.retweeted,
-      this.source);
+      this.source,
+      this.replyCount,
+      this.favoriteCount);
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
