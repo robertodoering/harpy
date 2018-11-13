@@ -35,3 +35,16 @@ String formatTwitterDateString(String twitterDateString) {
 
   return dateString;
 }
+
+String explodeListToSeparatedString(List<String> list,
+    {String separator = ","}) {
+  String result = "";
+
+  list.forEach((currentString) {
+    result += "$currentString$separator";
+  });
+
+  result = result.replaceRange(result.length - 1, result.length, "");
+
+  return result;
+}
