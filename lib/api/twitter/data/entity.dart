@@ -29,4 +29,14 @@ class Entity {
   factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$EntityToJson(this);
+
+  @override
+  String toString() {
+    return 'Entity{hashtags: $hashtags,\n'
+        'symbols: $symbols,\n'
+        'urls: $urls,\n'
+        'media: $media,\n'
+        'userMentions: $userMentions,\n'
+        'polls: $polls}';
+  }
 }

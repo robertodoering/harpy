@@ -1,6 +1,6 @@
 import 'package:harpy/api/twitter/data/poll_option.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:harpy/core/utils/date_utils.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'poll.g.dart';
 
@@ -18,4 +18,9 @@ class Poll {
   factory Poll.fromJson(Map<String, dynamic> json) => _$PollFromJson(json);
 
   Map<String, dynamic> toJson() => _$PollToJson(this);
+
+  @override
+  String toString() {
+    return 'Poll{endDatetime: $endDatetime, duration: $duration, pollOptions: $pollOptions}';
+  }
 }

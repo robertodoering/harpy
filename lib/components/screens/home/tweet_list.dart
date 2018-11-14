@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/screens/home/tweet_action.dart';
+import 'package:harpy/components/screens/home/twitter_text.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
@@ -50,6 +51,16 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("-----------");
+    print(this.tweet.text);
+    if (this.tweet.entity != null) {
+      print("");
+      print(this.tweet.entity.toString());
+      print("");
+    }
+    print("-----------");
+    print("");
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
       child: Column(
@@ -111,7 +122,7 @@ class TweetTile extends StatelessWidget {
   Widget _buildText() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Text(tweet.text),
+      child: TwitterText(tweet),
     );
   }
 

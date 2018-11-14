@@ -15,4 +15,9 @@ class Hashtag {
       _$HashtagFromJson(json);
 
   Map<String, dynamic> toJson() => _$HashtagToJson(this);
+
+  @override
+  String toString() {
+    return 'Hashtag{text: $text, indices: $indices}';
+  }
 }

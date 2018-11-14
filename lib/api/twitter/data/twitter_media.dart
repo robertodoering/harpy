@@ -42,4 +42,9 @@ class TwitterMedia {
       _$TwitterMediaFromJson(json);
 
   Map<String, dynamic> toJson() => _$TwitterMediaToJson(this);
+
+  @override
+  String toString() {
+    return 'TwitterMedia{id: $id, idStr: $idStr, indices: $indices, mediaUrl: $mediaUrl, mediaUrlHttps: $mediaUrlHttps, url: $url, displayUrl: $displayUrl, expandedUrl: $expandedUrl, type: $type, sizes: $sizes}';
+  }
 }

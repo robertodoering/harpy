@@ -18,4 +18,9 @@ class Url {
   factory Url.fromJson(Map<String, dynamic> json) => _$UrlFromJson(json);
 
   Map<String, dynamic> toJson() => _$UrlToJson(this);
+
+  @override
+  String toString() {
+    return 'Url{url: $url, expandedUrl: $expandedUrl, displayUrl: $displayUrl, indices: $indices}';
+  }
 }

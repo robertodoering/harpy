@@ -15,4 +15,9 @@ class TwitterSymbol {
       _$TwitterSymbolFromJson(json);
 
   Map<String, dynamic> toJson() => _$TwitterSymbolToJson(this);
+
+  @override
+  String toString() {
+    return 'TwitterSymbol{text: $text, indices: $indices}';
+  }
 }

@@ -21,4 +21,9 @@ class UserMention {
       _$UserMentionFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserMentionToJson(this);
+
+  @override
+  String toString() {
+    return 'UserMention{screenName: $screenName, name: $name, id: $id, idStr: $idStr, indices: $indices}';
+  }
 }
