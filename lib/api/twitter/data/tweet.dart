@@ -33,7 +33,7 @@ class Tweet {
   bool retweeted;
   @JsonKey(name: 'source')
   String source;
-  @JsonKey(name: "reply_count")
+  @JsonKey(name: "reply_count") // todo: can be removed
   int replyCount;
   @JsonKey(name: "favorite_count")
   int favoriteCount;

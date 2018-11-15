@@ -9,6 +9,7 @@ import 'package:harpy/components/screens/login/login_title.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
+import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -98,6 +99,9 @@ class _LoginScreenState extends State<LoginScreen>
 
       // init tweets before navigating
       await HomeStore.initTweets();
+
+      // init logged in user
+      await UserStore.initLoggedInUser();
 
       // todo: show hero animation
       await _controller.forward();

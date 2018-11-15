@@ -42,12 +42,6 @@ class HomeScreenState extends State<HomeScreen>
               fontSize: 20.0,
             ),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: HomeStore.clearCache,
-            )
-          ],
         ),
         body: _buildBody(),
         drawer: HomeDrawer(),

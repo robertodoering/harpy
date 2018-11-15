@@ -6,6 +6,7 @@ import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
+import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
 
 /// The entry screen of the app.
@@ -33,6 +34,8 @@ class MainScreenState extends State<MainScreen>
     // init tweets if already logged in before showing home screen
     if (loginStore.loggedIn) {
       await HomeStore.initTweets();
+      // init user
+      await UserStore.initLoggedInUser();
     }
 
     _checkLoggedIn();
