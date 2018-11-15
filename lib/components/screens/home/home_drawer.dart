@@ -67,6 +67,7 @@ class HomeDrawer extends StatelessWidget {
   }
 }
 
+/// The [Drawer] header that contains information about the logged in [User].
 class UserDrawerHeader extends StatefulWidget {
   @override
   _UserDrawerHeaderState createState() => _UserDrawerHeaderState();
@@ -90,9 +91,6 @@ class _UserDrawerHeaderState extends State<UserDrawerHeader>
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "MediaQuery.of(context).padding.top: ${MediaQuery.of(context).padding.top}");
-
     return Container(
       margin: const EdgeInsets.only(bottom: 8.0),
       padding: EdgeInsets.fromLTRB(
@@ -118,9 +116,9 @@ class _UserDrawerHeaderState extends State<UserDrawerHeader>
             ),
           ),
           SizedBox(height: 8.0),
-          Text(store.loggedInUser.screenName,
+          Text(store.loggedInUser.name,
               style: Theme.of(context).textTheme.display2),
-          Text("@${store.loggedInUser.name}",
+          Text("@${store.loggedInUser.screenName}",
               style: Theme.of(context).textTheme.display1),
         ],
       ),
