@@ -8,6 +8,9 @@ class HomeStore extends Store {
   static final Action updateTweets = Action();
   static final Action clearCache = Action();
 
+  static final Action<Tweet> favoriteTweet = Action();
+  static final Action<Tweet> retweetTweet = Action();
+
   List<Tweet> _tweets;
 
   List<Tweet> get tweets => _tweets;
@@ -23,5 +26,30 @@ class HomeStore extends Store {
     });
 
     clearCache.listen((_) => TweetCache().clearCache());
+
+    triggerOnAction(favoriteTweet, (Tweet tweet) {
+      tweet.favorited = !tweet.favorited;
+
+      if (tweet.favorited) {
+        tweet.favoriteCount++;
+      } else {
+        tweet.favoriteCount--;
+      }
+
+      // todo: call to favorite / unfavorite tweet
+      // don't await the api call, have a callback to revert the changes instead
+    });
+
+    triggerOnAction(retweetTweet, (Tweet tweet) {
+      tweet.retweeted = !tweet.retweeted;
+
+      if (tweet.retweeted) {
+        tweet.retweetCount++;
+      } else {
+        tweet.retweetCount--;
+      }
+
+      // todo: call to retweet / unretweet tweet
+    });
   }
 }

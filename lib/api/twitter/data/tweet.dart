@@ -1,7 +1,7 @@
 import 'package:harpy/api/twitter/data/entity.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:harpy/core/utils/date_utils.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'tweet.g.dart';
 
@@ -61,6 +61,6 @@ class Tweet {
 
   @override
   String toString() {
-    return 'Tweet{user: $user, truncated: $truncated, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, text: $text, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source}';
+    return 'Tweet{user: $user,\n entity: $entity,\n truncated: $truncated,\n createdAt: $createdAt,\n favorited: $favorited,\n idStr: $idStr,\n inReplyToUserIdStr: $inReplyToUserIdStr,\n text: $text,\n id: $id,\n retweetCount: $retweetCount,\n inReplyToStatusIdStr: $inReplyToStatusIdStr,\n retweeted: $retweeted,\n source: $source,\n replyCount: $replyCount,\n favoriteCount: $favoriteCount}';
   }
 }

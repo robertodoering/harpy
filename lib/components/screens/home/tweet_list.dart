@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/screens/home/tweet_action.dart';
-import 'package:harpy/components/screens/home/twitter_text.dart';
+import 'package:harpy/components/screens/home/tweet_text.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
@@ -52,10 +53,10 @@ class TweetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("-----------");
-    print(this.tweet.text);
-    if (this.tweet.entity != null) {
+    print(tweet.text);
+    if (tweet.entity != null) {
       print("");
-      print(this.tweet.entity.toString());
+      print(tweet.entity.toString());
       print("");
     }
     print("-----------");
@@ -82,7 +83,9 @@ class TweetTile extends StatelessWidget {
           padding: const EdgeInsets.only(right: 8.0),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
-            backgroundImage: Image.network(tweet.user.profileImageUrl).image,
+            backgroundImage: CachedNetworkImageProvider(
+              tweet.user.profileImageUrl,
+            ),
           ),
         ),
 
@@ -92,26 +95,10 @@ class TweetTile extends StatelessWidget {
             // name
             Text(tweet.user.name),
 
-            Row(
-              children: <Widget>[
-                // username
-                Text(
-                  "@${tweet.user.screenName}",
-                  style: HarpyTheme.theme.textTheme.caption,
-                ),
-
-                // middle dot
-                Text(
-                  " \u00b7 ",
-                  style: HarpyTheme.theme.textTheme.caption,
-                ),
-
-                // date // todo: get actual created at date
-                Text(
-                  "${DateTime.now().difference(DateTime.now().subtract(Duration(hours: 3))).inHours}h",
-                  style: HarpyTheme.theme.textTheme.caption,
-                ),
-              ],
+            // username · time since tweet in hours
+            Text(
+              "@${tweet.user.screenName} \u00b7 ${DateTime.now().difference(tweet.createdAt).inHours}h",
+              style: HarpyTheme.theme.textTheme.caption,
             ),
           ],
         ),
@@ -122,44 +109,44 @@ class TweetTile extends StatelessWidget {
   Widget _buildText() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: TwitterText(tweet),
+      child: TweetText(tweet),
     );
   }
 
   Widget _buildActionRow() {
     return Row(
       children: <Widget>[
-        // comment action
-        TweetAction(
-          active: true,
-          inactiveIconData: Icons.chat_bubble_outline,
-          activeIconData: Icons.chat_bubble,
-          value: 69,
-          color: Colors.blue,
-          activate: () {},
-          deactivate: () {},
-        ),
+        // comment action // not available for free twitter api users
+//        TweetAction(
+//          active: true,
+//          inactiveIconData: Icons.chat_bubble_outline,
+//          activeIconData: Icons.chat_bubble,
+//          value: 0,
+//          color: Colors.blue,
+//          activate: () {},
+//          deactivate: () {},
+//        ),
 
         // retweet action
         TweetAction(
-          active: true,
+          active: tweet.retweeted,
           inactiveIconData: Icons.repeat,
           activeIconData: Icons.repeat,
           value: tweet.retweetCount,
           color: Colors.green,
-          activate: () {},
-          deactivate: () {},
+          activate: () => HomeStore.retweetTweet(tweet),
+          deactivate: () => HomeStore.retweetTweet(tweet),
         ),
 
         // favorite action
         TweetAction(
-          active: false,
+          active: tweet.favorited,
           inactiveIconData: Icons.favorite_border,
           activeIconData: Icons.favorite,
           value: tweet.favoriteCount,
           color: Colors.red,
-          activate: () {},
-          deactivate: () {},
+          activate: () => HomeStore.favoriteTweet(tweet),
+          deactivate: () => HomeStore.favoriteTweet(tweet),
         ),
       ],
     );

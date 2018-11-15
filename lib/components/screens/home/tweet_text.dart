@@ -3,16 +3,16 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 
-class TwitterText extends StatelessWidget {
+class TweetText extends StatelessWidget {
   final Tweet tweet;
 
-  const TwitterText(this.tweet);
+  const TweetText(this.tweet);
 
   @override
   Widget build(BuildContext context) {
     List<TextSpan> textSpans = [];
 
-    var twitterLinks = TwitterLinks(tweet);
+    var twitterLinks = TweetLinks(tweet);
 
     TwitterLinkModel nextLink;
     int textStart = 0;
@@ -42,7 +42,10 @@ class TwitterText extends StatelessWidget {
       if (nextLink != null) {
         textSpans.add(TextSpan(
           text: nextLink.displayUrl,
-          style: Theme.of(context).textTheme.body1.copyWith(color: Colors.blue),
+          style: Theme.of(context)
+              .textTheme
+              .body1 // todo: custom color (logged in user color?)
+              .copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
         ));
 
         textStart = nextLink.endIndex + 1;
@@ -57,7 +60,7 @@ class TwitterText extends StatelessWidget {
   }
 }
 
-class TwitterLinks {
+class TweetLinks {
   List<TwitterLinkModel> links = [];
 
   void _addLink(TwitterLinkModel link) {
@@ -71,7 +74,7 @@ class TwitterLinks {
     links.add(link);
   }
 
-  TwitterLinks(Tweet tweet) {
+  TweetLinks(Tweet tweet) {
     for (var hashtag in tweet.entity.hashtags) {
       var link = TwitterLinkModel(
         hashtag.indices[0],
@@ -88,6 +91,16 @@ class TwitterLinks {
         url.indices[1],
         url.expandedUrl,
         url.displayUrl,
+      );
+      _addLink(link);
+    }
+
+    for (var userMention in tweet.entity.userMentions) {
+      var link = TwitterLinkModel(
+        userMention.indices[0],
+        userMention.indices[1],
+        userMention.screenName, // todo: as url
+        "@${userMention.screenName}",
       );
       _addLink(link);
     }
