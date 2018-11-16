@@ -27,9 +27,6 @@ class TweetText extends StatelessWidget {
         textEnd = tweet.text.length;
       }
 
-      print("text start: $textStart, end: $textEnd");
-      print("link start: ${nextLink?.startIndex}, end: ${nextLink?.endIndex}");
-
       // text
       if (textStart < textEnd) {
         textSpans.add(TextSpan(

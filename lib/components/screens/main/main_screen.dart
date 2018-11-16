@@ -61,7 +61,7 @@ class MainScreenState extends State<MainScreen>
     // only navigate when ready
     if (this.initialized && this.animationFinished) {
       if (loginStore.loggedIn) {
-        await harpyTitle.fadeOut();
+//        await harpyTitle.fadeOut();
 
         Navigator.pushReplacement(
           context,

@@ -52,16 +52,6 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("-----------");
-    print(tweet.text);
-    if (tweet.entity != null) {
-      print("");
-      print(tweet.entity.toString());
-      print("");
-    }
-    print("-----------");
-    print("");
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
       child: Column(
@@ -135,7 +125,7 @@ class TweetTile extends StatelessWidget {
           value: tweet.retweetCount,
           color: Colors.green,
           activate: () => HomeStore.retweetTweet(tweet),
-          deactivate: () => HomeStore.retweetTweet(tweet),
+          deactivate: () => HomeStore.unretweetTweet(tweet),
         ),
 
         // favorite action
@@ -146,7 +136,7 @@ class TweetTile extends StatelessWidget {
           value: tweet.favoriteCount,
           color: Colors.red,
           activate: () => HomeStore.favoriteTweet(tweet),
-          deactivate: () => HomeStore.favoriteTweet(tweet),
+          deactivate: () => HomeStore.unfavoriteTweet(tweet),
         ),
       ],
     );

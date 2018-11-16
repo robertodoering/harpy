@@ -1,6 +1,7 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
+import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 
 class HomeStore extends Store {
@@ -9,7 +10,9 @@ class HomeStore extends Store {
   static final Action clearCache = Action();
 
   static final Action<Tweet> favoriteTweet = Action();
+  static final Action<Tweet> unfavoriteTweet = Action();
   static final Action<Tweet> retweetTweet = Action();
+  static final Action<Tweet> unretweetTweet = Action();
 
   List<Tweet> _tweets;
 
@@ -28,28 +31,40 @@ class HomeStore extends Store {
     clearCache.listen((_) => TweetCache().clearCache());
 
     triggerOnAction(favoriteTweet, (Tweet tweet) {
-      tweet.favorited = !tweet.favorited;
+      tweet.favorited = true;
+      tweet.favoriteCount++;
 
-      if (tweet.favorited) {
-        tweet.favoriteCount++;
-      } else {
-        tweet.favoriteCount--;
-      }
+      TweetServiceImpl().favorite(tweet.idStr);
+      // todo: catch error and unfavorite again
+      // unless error is
+      // {"errors":[{"code":139,"message":"You have already favorited this status."}]}
+    });
 
-      // todo: call to favorite / unfavorite tweet
-      // don't await the api call, have a callback to revert the changes instead
+    triggerOnAction(unfavoriteTweet, (Tweet tweet) {
+      tweet.favorited = false;
+      tweet.favoriteCount--;
+
+      TweetServiceImpl().unfavorite(tweet.idStr);
     });
 
     triggerOnAction(retweetTweet, (Tweet tweet) {
-      tweet.retweeted = !tweet.retweeted;
+      tweet.retweeted = true;
+      tweet.retweetCount++;
 
-      if (tweet.retweeted) {
-        tweet.retweetCount++;
-      } else {
+      TweetServiceImpl().retweet(tweet.idStr).catchError(() {
+        tweet.retweeted = false;
         tweet.retweetCount--;
-      }
+      });
+    });
 
-      // todo: call to retweet / unretweet tweet
+    triggerOnAction(unretweetTweet, (Tweet tweet) {
+      tweet.retweeted = false;
+      tweet.retweetCount--;
+
+      TweetServiceImpl().unretweet(tweet.idStr).catchError(() {
+        tweet.retweeted = true;
+        tweet.retweetCount++;
+      });
     });
   }
 }

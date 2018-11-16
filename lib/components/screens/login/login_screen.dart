@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen>
       // init logged in user
       await UserStore.initLoggedInUser();
 
-      await loginTitle.fadeOut();
+//      await loginTitle.fadeOut();
 
       Navigator.pushReplacement(
         context,
