@@ -6,13 +6,17 @@ abstract class TwitterService {
 
   TwitterClient get client => _twitterClient;
 
-  handleResponse(Response response, onSuccess(Response response),
-      {onFail() = null}) {
+  handleResponse(Response response,
+      {onSuccess(Response response) = null, onFail(Response response) = null}) {
     if (response.statusCode == 200) {
-      onSuccess(response);
+      if (onSuccess != null) {
+        onSuccess(response);
+      } else {
+        return Future<Response>(() => response);
+      }
     } else {
       if (onFail != null) {
-        onFail();
+        onFail(response);
       } else {
         return Future.error(response.body);
       }
