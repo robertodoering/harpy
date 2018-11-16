@@ -31,4 +31,9 @@ class TwitterClient {
   Future<Response> get(String url, {Map<String, String> headers}) {
     return _client.get(url, headers: headers);
   }
+
+  Future<Response> post(String url,
+      {Map<String, String> headers, body, encoding}) {
+    return _client.post(url, headers: headers, body: body, encoding: encoding);
+  }
 }

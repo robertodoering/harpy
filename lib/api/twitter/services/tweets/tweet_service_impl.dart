@@ -20,4 +20,44 @@ class TweetServiceImpl extends TwitterService
       return Future.error(response.body);
     }
   }
+
+  @override
+  Future<void> retweet(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/statuses/retweet/$tweetId.json");
+
+    return handleResponse(response, (response) {
+      return Future(null);
+    });
+  }
+
+  @override
+  Future<void> unretweet(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json");
+
+    return handleResponse(response, (response) {
+      return Future(null);
+    });
+  }
+
+  @override
+  Future<void> favorite(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/favorites/create.json?id=$tweetId");
+
+    return handleResponse(response, (response) {
+      return Future(null);
+    });
+  }
+
+  @override
+  Future<void> unfavorite(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId");
+
+    return handleResponse(response, (response) {
+      return Future(null);
+    });
+  }
 }
