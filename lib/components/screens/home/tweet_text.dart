@@ -42,7 +42,10 @@ class TweetText extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .body1 // todo: custom color (logged in user color?)
-              .copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
+              .copyWith(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
         ));
 
         textStart = nextLink.endIndex + 1;
@@ -76,7 +79,7 @@ class TweetLinks {
       var link = TwitterLinkModel(
         hashtag.indices[0],
         hashtag.indices[1],
-        hashtag.text, // todo: as url
+        hashtag.text, // todo: make request for hashtag
         "#${hashtag.text}",
       );
       _addLink(link);
@@ -86,7 +89,7 @@ class TweetLinks {
       var link = TwitterLinkModel(
         url.indices[0],
         url.indices[1],
-        url.expandedUrl,
+        url.expandedUrl, // todo: open link in browser
         url.displayUrl,
       );
       _addLink(link);
@@ -96,7 +99,7 @@ class TweetLinks {
       var link = TwitterLinkModel(
         userMention.indices[0],
         userMention.indices[1],
-        userMention.screenName, // todo: as url
+        userMention.screenName, // todo: go to profile
         "@${userMention.screenName}",
       );
       _addLink(link);

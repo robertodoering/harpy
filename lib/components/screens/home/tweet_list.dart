@@ -6,6 +6,7 @@ import 'package:harpy/components/screens/home/tweet_text.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
+import 'package:intl/intl.dart';
 
 /// The list containing many [TweetTile]s.
 class TweetList extends StatelessWidget {
@@ -66,6 +67,14 @@ class TweetTile extends StatelessWidget {
   }
 
   Widget _buildNameRow() {
+    String time;
+    Duration timeDifference = DateTime.now().difference(tweet.createdAt);
+    if (timeDifference.inHours <= 24) {
+      time = "${timeDifference.inHours}h";
+    } else {
+      time = DateFormat("MMMd").format(tweet.createdAt);
+    }
+
     return Row(
       children: <Widget>[
         // avatar
@@ -87,7 +96,7 @@ class TweetTile extends StatelessWidget {
 
             // username · time since tweet in hours
             Text(
-              "@${tweet.user.screenName} \u00b7 ${DateTime.now().difference(tweet.createdAt).inHours}h",
+              "@${tweet.user.screenName} \u00b7 $time",
               style: HarpyTheme.theme.textTheme.caption,
             ),
           ],
