@@ -11,6 +11,12 @@ class SlideFadeInAnimation extends StatefulWidget {
   /// The offset that the child will have before it slides into position.
   final Offset offset;
 
+  /// Skips the intro animation if set to `true`.
+  final bool skipIntroAnimation;
+
+  /// An optional callback when the animation has completed.
+  final VoidCallback finishCallback;
+
   /// The child to animate.
   final Widget child;
 
@@ -18,6 +24,8 @@ class SlideFadeInAnimation extends StatefulWidget {
     this.duration = const Duration(seconds: 1),
     this.delay = Duration.zero,
     this.offset = Offset.zero,
+    this.skipIntroAnimation = false,
+    this.finishCallback = null,
     @required this.child,
   });
 
@@ -36,6 +44,19 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
       vsync: this,
       duration: widget.duration,
     );
+
+    if (widget.skipIntroAnimation) {
+      _controller.value = 1.0;
+    }
+
+    // callback when animation has completed
+    if (widget.finishCallback != null) {
+      _controller.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          widget.finishCallback();
+        }
+      });
+    }
 
     _animation = CurveTween(curve: Curves.fastOutSlowIn).animate(_controller)
       ..addListener(() => setState(() {}));

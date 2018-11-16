@@ -12,7 +12,6 @@ class LoginButton extends StatelessWidget {
     return Center(
       child: SlideFadeInAnimation(
         duration: Duration(seconds: 1),
-        delay: Duration(seconds: 1),
         offset: Offset(0.0, 50.0),
         child: RaisedButton(
           child: Text(
