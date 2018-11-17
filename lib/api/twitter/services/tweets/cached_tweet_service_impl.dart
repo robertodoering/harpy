@@ -15,7 +15,7 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
 
   @override
   Future<List<Tweet>> getHomeTimeline({bool forceUpdate = false}) async {
-    log.finest("Tryin to get Home Timeline Data");
+    log.finest("Trying to get Home Timeline Data");
     List<Tweet> tweets = [];
     tweets = await _tweetCache.checkCacheForTweets();
 

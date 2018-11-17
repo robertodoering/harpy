@@ -48,7 +48,7 @@ class TweetText extends StatelessWidget {
               ),
         ));
 
-        textStart = nextLink.endIndex + 1;
+        textStart = nextLink.endIndex;
       }
     } while (nextLink != null);
 
