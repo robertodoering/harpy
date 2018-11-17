@@ -115,17 +115,6 @@ class TweetTile extends StatelessWidget {
   Widget _buildActionRow() {
     return Row(
       children: <Widget>[
-        // comment action // not available for free twitter api users
-//        TweetAction(
-//          active: true,
-//          inactiveIconData: Icons.chat_bubble_outline,
-//          activeIconData: Icons.chat_bubble,
-//          value: 0,
-//          color: Colors.blue,
-//          activate: () {},
-//          deactivate: () {},
-//        ),
-
         // retweet action
         TweetAction(
           active: tweet.retweeted,

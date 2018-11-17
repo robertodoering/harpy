@@ -38,7 +38,7 @@ class TweetText extends StatelessWidget {
       // link
       if (nextLink != null) {
         textSpans.add(TextSpan(
-          text: nextLink.displayUrl,
+          text: "${nextLink.displayUrl} ",
           style: Theme.of(context)
               .textTheme
               .body1 // todo: custom color (logged in user color?)
@@ -48,7 +48,7 @@ class TweetText extends StatelessWidget {
               ),
         ));
 
-        textStart = nextLink.endIndex;
+        textStart = nextLink.endIndex + 1;
       }
     } while (nextLink != null);
 
