@@ -2,7 +2,6 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/core/json/json_mapper.dart';
-import 'package:http/http.dart';
 
 class TweetServiceImpl extends TwitterService
     with JsonMapper<Tweet>
@@ -23,7 +22,7 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<Response> retweet(String tweetId) async {
+  Future retweet(String tweetId) async {
     final response = await client
         .post("https://api.twitter.com/1.1/statuses/retweet/$tweetId.json");
 
@@ -31,7 +30,7 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<void> unretweet(String tweetId) async {
+  Future unretweet(String tweetId) async {
     final response = await client
         .post("https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json");
 
@@ -39,7 +38,7 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<void> favorite(String tweetId) async {
+  Future favorite(String tweetId) async {
     final response = await client
         .post("https://api.twitter.com/1.1/favorites/create.json?id=$tweetId");
 
@@ -47,7 +46,7 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<void> unfavorite(String tweetId) async {
+  Future unfavorite(String tweetId) async {
     final response = await client
         .post("https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId");
 

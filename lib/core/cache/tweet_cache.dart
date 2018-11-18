@@ -41,6 +41,7 @@ class TweetCache {
       tweets.add(Tweet.fromJson(jsonDecode(file.readAsStringSync())));
     });
 
+    // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
 
     return tweets;

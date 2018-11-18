@@ -37,4 +37,9 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
 
     return tweets;
   }
+
+  void updateCache(Tweet tweet) {
+    log.fine("updated tweet");
+    _tweetCache.cacheTweet(tweet);
+  }
 }
