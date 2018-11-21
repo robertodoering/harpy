@@ -1,18 +1,35 @@
 import 'dart:core';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/core/utils/url_launcher.dart';
 
-class TweetText extends StatelessWidget {
+class TweetText extends StatefulWidget {
   final Tweet tweet;
 
   const TweetText(this.tweet);
 
   @override
+  TweetTextState createState() {
+    return new TweetTextState();
+  }
+}
+
+class TweetTextState extends State<TweetText> {
+  List<GestureRecognizer> gestureRecognizer = [];
+
+  @override
+  void dispose() {
+    super.dispose();
+    gestureRecognizer.forEach((recognizer) => recognizer.dispose());
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<TextSpan> textSpans = [];
 
-    var twitterLinks = TweetLinks(tweet);
+    var twitterLinks = TweetLinks(widget.tweet);
 
     TwitterLinkModel nextLink;
     int textStart = 0;
@@ -24,28 +41,37 @@ class TweetText extends StatelessWidget {
       if (nextLink != null) {
         textEnd = nextLink.startIndex;
       } else {
-        textEnd = tweet.text.length;
+        textEnd = widget.tweet.text.length;
       }
 
       // text
       if (textStart < textEnd) {
         textSpans.add(TextSpan(
-          text: tweet.text.substring(textStart, textEnd),
+          text: widget.tweet.text.substring(textStart, textEnd),
           style: Theme.of(context).textTheme.body1,
         ));
       }
 
       // link
       if (nextLink != null) {
+        GestureRecognizer recognizer = null;
+        if (nextLink.type == LinkType.url) {
+          String url = nextLink.url;
+
+          recognizer = TapGestureRecognizer()..onTap = () => launchUrl(url);
+          gestureRecognizer.add(recognizer);
+        }
+
         textSpans.add(TextSpan(
           text: "${nextLink.displayUrl} ",
           style: Theme.of(context)
               .textTheme
               .body1 // todo: custom color (logged in user color?)
               .copyWith(
-                color: Colors.blue,
+                color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.bold,
               ),
+          recognizer: recognizer,
         ));
 
         textStart = nextLink.endIndex + 1;
@@ -81,6 +107,7 @@ class TweetLinks {
         hashtag.indices[1],
         hashtag.text, // todo: make request for hashtag
         "#${hashtag.text}",
+        LinkType.hashtag,
       );
       _addLink(link);
     }
@@ -91,6 +118,7 @@ class TweetLinks {
         url.indices[1],
         url.expandedUrl, // todo: open link in browser
         url.displayUrl,
+        LinkType.url,
       );
       _addLink(link);
     }
@@ -101,6 +129,7 @@ class TweetLinks {
         userMention.indices[1],
         userMention.screenName, // todo: go to profile
         "@${userMention.screenName}",
+        LinkType.mention,
       );
       _addLink(link);
     }
@@ -116,12 +145,14 @@ class TwitterLinkModel {
   final int endIndex;
   final String url;
   final String displayUrl;
+  final LinkType type;
 
   const TwitterLinkModel(
     this.startIndex,
     this.endIndex,
     this.url,
     this.displayUrl,
+    this.type,
   );
 
   @override
@@ -132,5 +163,6 @@ class TwitterLinkModel {
 
 enum LinkType {
   hashtag,
+  mention,
   url,
 }
