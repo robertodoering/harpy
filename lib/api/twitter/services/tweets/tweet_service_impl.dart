@@ -15,6 +15,7 @@ class TweetServiceImpl extends TwitterService
       List<Tweet> tweets = map((map) {
         return Tweet.fromJson(map);
       }, response.body);
+
       return Future<List<Tweet>>(() => tweets);
     } else {
       return Future.error(response.body);

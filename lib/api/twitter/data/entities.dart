@@ -6,10 +6,10 @@ import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user_mention.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'entity.g.dart';
+part 'entities.g.dart';
 
 @JsonSerializable()
-class Entity {
+class Entities {
   @JsonKey(name: "hashtags")
   List<Hashtag> hashtags;
   @JsonKey(name: "symbols")
@@ -23,12 +23,19 @@ class Entity {
   @JsonKey(name: "polls")
   List<Poll> polls;
 
-  Entity(this.hashtags, this.symbols, this.urls, this.media, this.userMentions,
-      this.polls);
+  Entities(
+    this.hashtags,
+    this.symbols,
+    this.urls,
+    this.media,
+    this.userMentions,
+    this.polls,
+  );
 
-  factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
+  factory Entities.fromJson(Map<String, dynamic> json) =>
+      _$EntitiesFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EntityToJson(this);
+  Map<String, dynamic> toJson() => _$EntitiesToJson(this);
 
   @override
   String toString() {
