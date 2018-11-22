@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
@@ -11,10 +8,8 @@ class TweetServiceImpl extends TwitterService
     implements TweetService {
   @override
   Future<List<Tweet>> getHomeTimeline() async {
-    final response = await client
-        .get("https://api.twitter.com/1.1/statuses/home_timeline.json");
-
-//    var response = await rootBundle.loadString("example_tweet.json");
+    final response = await client.get(
+        "https://api.twitter.com/1.1/statuses/home_timeline.json?count=100");
 
     if (response.statusCode == 200) {
       List<Tweet> tweets = map((map) {
@@ -24,5 +19,37 @@ class TweetServiceImpl extends TwitterService
     } else {
       return Future.error(response.body);
     }
+  }
+
+  @override
+  Future retweet(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/statuses/retweet/$tweetId.json");
+
+    return handleResponse(response);
+  }
+
+  @override
+  Future unretweet(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json");
+
+    return handleResponse(response);
+  }
+
+  @override
+  Future favorite(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/favorites/create.json?id=$tweetId");
+
+    return handleResponse(response);
+  }
+
+  @override
+  Future unfavorite(String tweetId) async {
+    final response = await client
+        .post("https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId");
+
+    return handleResponse(response);
   }
 }

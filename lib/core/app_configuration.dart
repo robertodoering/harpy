@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:yaml/yaml.dart';
 
 class AppConfiguration {
-  final Logger log = new Logger('AppConfiguration');
+  final Logger log = Logger('AppConfiguration');
 
   static AppConfiguration _instance = AppConfiguration._();
 
@@ -13,25 +13,31 @@ class AppConfiguration {
 
   AppConfiguration._();
 
-  ApplicationConfiguration _applicationConfig;
+  TwitterSession twitterSession;
+  ApplicationConfiguration applicationConfig;
 
-  TwitterSession _twitterSession;
+  TwitterLogin twitterLogin;
 
-  init() async {
+  Future<void> init() async {
+    // init config
     log.fine("init was called");
     String appConfigAsString = await rootBundle.loadString('app_config.yaml');
-    log.fine("got Config: \n $appConfigAsString");
+    log.fine("got Config: \n$appConfigAsString");
 
     var appConfigAsDocument = loadYaml(appConfigAsString);
+    applicationConfig = ApplicationConfiguration(appConfigAsDocument);
 
-    _applicationConfig = ApplicationConfiguration(appConfigAsDocument);
+    // init twitter login
+    twitterLogin = TwitterLogin(
+      consumerKey: applicationConfig.consumerKey,
+      consumerSecret: applicationConfig.consumerSecret,
+    );
+
+    // init active twitter session
+    twitterSession = await twitterLogin.currentSession;
   }
 
-  TwitterSession get twitterSession => _twitterSession;
-
-  ApplicationConfiguration get applicationConfig => _applicationConfig;
-
-  set twitterSession(TwitterSession twitterSession) =>
-      //TODO persist to shared preferences?
-      _twitterSession = twitterSession;
+  void initForUnitTesting() {
+    applicationConfig = ApplicationConfiguration.UnitTesting();
+  }
 }

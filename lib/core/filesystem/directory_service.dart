@@ -40,7 +40,8 @@ abstract class DirectoryService {
     return file.readAsStringSync();
   }
 
-  Future<List<File>> listFiles(String bucket) async {
+  Future<List<File>> listFiles(String bucket,
+      {String allowedFileExtension = " "}) async {
     await _requestPathIfNeeded();
     List<File> files = [];
     Directory dirToRead = Directory('$path/$bucket');
@@ -49,7 +50,10 @@ abstract class DirectoryService {
       return files;
     } else {
       dirToRead.listSync().forEach((fileSystemEntry) {
-        files.add(File(fileSystemEntry.path));
+        if (allowedFileExtension == " " ||
+            fileSystemEntry.path.endsWith(allowedFileExtension)) {
+          files.add(File(fileSystemEntry.path));
+        }
       });
       return files;
     }

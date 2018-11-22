@@ -1,4 +1,6 @@
+import 'package:harpy/api/twitter/data/entity.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/core/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'tweet.g.dart';
@@ -7,11 +9,12 @@ part 'tweet.g.dart';
 class Tweet {
   @JsonKey(name: 'user')
   User user;
-
+  @JsonKey(name: 'entities')
+  Entity entity;
   @JsonKey(name: 'truncated')
   bool truncated;
-//  @JsonKey(name: 'created_at')
-//  DateTime createdAt;
+  @JsonKey(name: 'created_at')
+  DateTime createdAt;
   @JsonKey(name: 'favorited')
   bool favorited;
   @JsonKey(name: 'id_str')
@@ -30,11 +33,16 @@ class Tweet {
   bool retweeted;
   @JsonKey(name: 'source')
   String source;
+  @JsonKey(name: "reply_count") // todo: can be removed
+  int replyCount;
+  @JsonKey(name: "favorite_count")
+  int favoriteCount;
 
   Tweet(
       this.user,
+      this.entity,
       this.truncated,
-//      this.createdAt,
+      this.createdAt,
       this.favorited,
       this.idStr,
       this.inReplyToUserIdStr,
@@ -43,7 +51,9 @@ class Tweet {
       this.retweetCount,
       this.inReplyToStatusIdStr,
       this.retweeted,
-      this.source);
+      this.source,
+      this.replyCount,
+      this.favoriteCount);
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
@@ -51,6 +61,6 @@ class Tweet {
 
   @override
   String toString() {
-    return 'Tweet{user: $user, truncated: $truncated, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, text: $text, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source}';
+    return 'Tweet{user: $user,\n entity: $entity,\n truncated: $truncated,\n createdAt: $createdAt,\n favorited: $favorited,\n idStr: $idStr,\n inReplyToUserIdStr: $inReplyToUserIdStr,\n text: $text,\n id: $id,\n retweetCount: $retweetCount,\n inReplyToStatusIdStr: $inReplyToStatusIdStr,\n retweeted: $retweeted,\n source: $source,\n replyCount: $replyCount,\n favoriteCount: $favoriteCount}';
   }
 }

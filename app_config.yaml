@@ -1,5 +1,0 @@
-twitter:
-  consumerKey: "Never commit your consumerKey"
-  consumerSecret: "Never commit your consumerSecret"
-cache:
-  tweet: 4

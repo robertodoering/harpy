@@ -1,44 +1,22 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
-import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
 import 'package:harpy/core/app_configuration.dart';
 
 class LoginStore extends Store {
   static final Action<TwitterLoginResult> twitterLogin = Action();
+  static final Action<TwitterSession> setSession = Action();
+  static final Action twitterLogout = Action();
 
-  Future<bool> get loggedIn => _twitterLogin.isSessionActive;
-  Future<TwitterSession> get currentSession => _twitterLogin.currentSession;
+  bool get loggedIn => AppConfiguration().twitterSession != null;
 
-  final _twitterLogin = TwitterLogin(
-    consumerKey: AppConfiguration().applicationConfig.consumerKey,
-    consumerSecret: AppConfiguration().applicationConfig.consumerSecret,
-  );
+  Future<TwitterLoginResult> get login async =>
+      await AppConfiguration().twitterLogin.authorize();
 
   LoginStore() {
-    triggerOnAction(twitterLogin, (_) async {
-      final TwitterLoginResult result = await _twitterLogin.authorize();
+    setSession.listen((session) => AppConfiguration().twitterSession = session);
 
-      print("Login: " + result.status.toString());
-
-      switch (result.status) {
-        case TwitterLoginStatus.loggedIn:
-          AppConfiguration().twitterSession = result.session;
-
-          CachedTweetServiceImpl().getHomeTimeline().then((response) {
-            print(response.toString());
-          }).catchError((error) {
-            print(error);
-          });
-
-          break;
-        case TwitterLoginStatus.cancelledByUser:
-          break;
-        case TwitterLoginStatus.error:
-          break;
-      }
+    twitterLogout.listen((_) async {
+      await AppConfiguration().twitterLogin.logOut();
     });
   }
 }
-
-StoreToken loginStoreToken = StoreToken(LoginStore());
