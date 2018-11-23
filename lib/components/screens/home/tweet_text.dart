@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 
@@ -29,7 +30,7 @@ class TweetTextState extends State<TweetText> {
   Widget build(BuildContext context) {
     List<TextSpan> textSpans = [];
 
-    var twitterLinks = TweetLinks(widget.tweet);
+    var twitterLinks = TweetLinks(widget.tweet.entities);
 
     TwitterLinkModel nextLink;
     int textStart = 0;
@@ -41,13 +42,13 @@ class TweetTextState extends State<TweetText> {
       if (nextLink != null) {
         textEnd = nextLink.startIndex;
       } else {
-        textEnd = widget.tweet.text.length;
+        textEnd = widget.tweet.full_text.length;
       }
 
       // text
       if (textStart < textEnd) {
         textSpans.add(TextSpan(
-          text: widget.tweet.text.substring(textStart, textEnd),
+          text: widget.tweet.full_text.substring(textStart, textEnd),
           style: Theme.of(context).textTheme.body1,
         ));
       }
@@ -100,8 +101,8 @@ class TweetLinks {
     links.add(link);
   }
 
-  TweetLinks(Tweet tweet) {
-    for (var hashtag in tweet.entity.hashtags) {
+  TweetLinks(Entities entities) {
+    for (var hashtag in entities.hashtags) {
       var link = TwitterLinkModel(
         hashtag.indices[0],
         hashtag.indices[1],
@@ -112,7 +113,7 @@ class TweetLinks {
       _addLink(link);
     }
 
-    for (var url in tweet.entity.urls) {
+    for (var url in entities.urls) {
       var link = TwitterLinkModel(
         url.indices[0],
         url.indices[1],
@@ -123,7 +124,7 @@ class TweetLinks {
       _addLink(link);
     }
 
-    for (var userMention in tweet.entity.userMentions) {
+    for (var userMention in entities.userMentions) {
       var link = TwitterLinkModel(
         userMention.indices[0],
         userMention.indices[1],

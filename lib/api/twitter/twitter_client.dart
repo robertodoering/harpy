@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:oauth1/oauth1.dart' as OAuth1;
 
 class TwitterClient {
@@ -28,12 +32,23 @@ class TwitterClient {
             AppConfiguration().twitterSession.secret));
   }
 
-  Future<Response> get(String url, {Map<String, String> headers}) {
+  Future<Response> get(
+    String url, {
+    Map<String, String> headers,
+    Map<String, String> params,
+  }) {
+    url = appendParamsToUrl(url, params);
+    Logger("TwitterClient").fine("sending get request: $url");
     return _client.get(url, headers: headers);
   }
 
-  Future<Response> post(String url,
-      {Map<String, String> headers, body, encoding}) {
+  Future<Response> post(
+    String url, {
+    Map<String, String> headers,
+    dynamic body,
+    Encoding encoding,
+  }) {
+    Logger("TwitterClient").fine("sending post request: $url");
     return _client.post(url, headers: headers, body: body, encoding: encoding);
   }
 }

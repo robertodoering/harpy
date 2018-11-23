@@ -48,3 +48,20 @@ String explodeListToSeparatedString(List<String> list,
 
   return result;
 }
+
+String appendParamsToUrl(String url, Map<String, String> params) {
+  if (params == null || params.isEmpty) {
+    return url;
+  }
+
+  String paramsString = "?";
+
+  for (int i = 0; i < params.length; i++) {
+    if (i != 0) {
+      paramsString += "&";
+    }
+    paramsString += "${params.keys.elementAt(i)}=${params.values.elementAt(i)}";
+  }
+
+  return url + paramsString;
+}

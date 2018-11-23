@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entity.dart';
+part of 'entities.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Entity _$EntityFromJson(Map<String, dynamic> json) {
-  return Entity(
+Entities _$EntitiesFromJson(Map<String, dynamic> json) {
+  return Entities(
       (json['hashtags'] as List)
           ?.map((e) =>
               e == null ? null : Hashtag.fromJson(e as Map<String, dynamic>))
@@ -37,7 +37,7 @@ Entity _$EntityFromJson(Map<String, dynamic> json) {
           ?.toList());
 }
 
-Map<String, dynamic> _$EntityToJson(Entity instance) => <String, dynamic>{
+Map<String, dynamic> _$EntitiesToJson(Entities instance) => <String, dynamic>{
       'hashtags': instance.hashtags,
       'symbols': instance.symbols,
       'urls': instance.urls,

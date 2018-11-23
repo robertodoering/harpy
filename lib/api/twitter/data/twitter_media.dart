@@ -27,16 +27,17 @@ class TwitterMedia {
   Map<String, MediaSize> sizes;
 
   TwitterMedia(
-      this.id,
-      this.idStr,
-      this.indices,
-      this.mediaUrl,
-      this.mediaUrlHttps,
-      this.url,
-      this.displayUrl,
-      this.expandedUrl,
-      this.type,
-      this.sizes);
+    this.id,
+    this.idStr,
+    this.indices,
+    this.mediaUrl,
+    this.mediaUrlHttps,
+    this.url,
+    this.displayUrl,
+    this.expandedUrl,
+    this.type,
+    this.sizes,
+  );
 
   factory TwitterMedia.fromJson(Map<String, dynamic> json) =>
       _$TwitterMediaFromJson(json);
