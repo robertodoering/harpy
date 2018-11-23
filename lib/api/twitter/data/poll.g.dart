@@ -10,7 +10,7 @@ Poll _$PollFromJson(Map<String, dynamic> json) {
   return Poll(
       json['end_datetime'] == null
           ? null
-          : convertFromTwitterDateString(json['created_at'] as String),
+          : convertFromTwitterDateString(json['end_datetime'] as String),
       json['duration_minutes'] as int,
       (json['options'] as List)
           ?.map((e) =>
