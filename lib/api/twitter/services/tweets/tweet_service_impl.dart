@@ -7,9 +7,16 @@ class TweetServiceImpl extends TwitterService
     with JsonMapper<Tweet>
     implements TweetService {
   @override
-  Future<List<Tweet>> getHomeTimeline() async {
+  Future<List<Tweet>> getHomeTimeline({
+    Map<String, String> params,
+  }) async {
+    params ??= Map();
+    params["count"] ??= "200";
+
     final response = await client.get(
-        "https://api.twitter.com/1.1/statuses/home_timeline.json?count=100");
+      "https://api.twitter.com/1.1/statuses/home_timeline.json",
+      params: params,
+    );
 
     if (response.statusCode == 200) {
       List<Tweet> tweets = map((map) {

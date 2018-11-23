@@ -5,10 +5,9 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/filesystem/cache_dir_service.dart';
-import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:test_api/test_api.dart';
 
 void main() {
   TweetCache tweetCache;

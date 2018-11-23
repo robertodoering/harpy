@@ -26,8 +26,9 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(updateTweets, (_) async {
-      _tweets =
-          await CachedTweetServiceImpl().getHomeTimeline(forceUpdate: true);
+      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
+        forceUpdate: true,
+      );
     });
 
     clearCache.listen((_) => TweetCache().clearCache());

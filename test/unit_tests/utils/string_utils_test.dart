@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:test_api/test_api.dart';
 
 void main() {
   test("fillStringToLength with default filler", () {
@@ -32,11 +32,24 @@ void main() {
     expect(actualResult, expectedResult);
   });
 
-  test("explodeListToSeparatedString sigle strings", () {
+  test("explodeListToSeparatedString single strings", () {
     List<String> testData = ["1"];
 
     String expectedResult = "1";
     String actualResult = explodeListToSeparatedString(testData);
     expect(actualResult, expectedResult);
+  });
+
+  test("appendParamsToUrl", () {
+    String url = "https://google.com";
+    var params = <String, String>{
+      "count": "69",
+      "max_id": "1337",
+    };
+
+    String actual = appendParamsToUrl(url, params);
+    String expected = "https://google.com?count=69&max_id=1337";
+
+    expect(actual, expected);
   });
 }
