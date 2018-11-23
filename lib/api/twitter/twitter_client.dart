@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:oauth1/oauth1.dart' as OAuth1;
 
 class TwitterClient {
@@ -37,6 +38,7 @@ class TwitterClient {
     Map<String, String> params,
   }) {
     url = appendParamsToUrl(url, params);
+    Logger("TwitterClient").fine("sending get request: $url");
     return _client.get(url, headers: headers);
   }
 
@@ -46,6 +48,7 @@ class TwitterClient {
     dynamic body,
     Encoding encoding,
   }) {
+    Logger("TwitterClient").fine("sending post request: $url");
     return _client.post(url, headers: headers, body: body, encoding: encoding);
   }
 }

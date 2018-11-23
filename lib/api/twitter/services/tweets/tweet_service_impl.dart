@@ -11,7 +11,8 @@ class TweetServiceImpl extends TwitterService
     Map<String, String> params,
   }) async {
     params ??= Map();
-    params["count"] ??= "200";
+    params["count"] ??= "800"; // max: 800
+    params["tweet_mode"] ??= "extended";
 
     final response = await client.get(
       "https://api.twitter.com/1.1/statuses/home_timeline.json",
@@ -23,7 +24,7 @@ class TweetServiceImpl extends TwitterService
         return Tweet.fromJson(map);
       }, response.body);
 
-      return Future<List<Tweet>>(() => tweets);
+      return tweets;
     } else {
       return Future.error(response.body);
     }

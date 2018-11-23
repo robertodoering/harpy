@@ -8,6 +8,10 @@ abstract class JsonMapper<T> {
       Set<Map<String, dynamic>> set = Set.from(objects);
       set.forEach((currentObj) {
         decodedObjects.add(mapSingleType(currentObj));
+
+//        print(" ----- ");
+//        currentObj.forEach((val1, val2) => print("$val1: $val2"));
+//        print(" ----- ");
       });
       return decodedObjects;
     } else {

@@ -1,5 +1,4 @@
 import 'package:harpy/api/twitter/data/entities.dart';
-import 'package:harpy/api/twitter/data/extended_tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,7 +10,7 @@ class Tweet {
   @JsonKey(name: 'user')
   User user;
   @JsonKey(name: 'entities')
-  Entities entity;
+  Entities entities;
   @JsonKey(name: 'truncated')
   bool truncated;
   @JsonKey(name: 'created_at')
@@ -22,8 +21,8 @@ class Tweet {
   String idStr;
   @JsonKey(name: 'in_reply_to_user_id_str')
   String inReplyToUserIdStr;
-  @JsonKey(name: 'text')
-  String text;
+  @JsonKey(name: 'full_text')
+  String full_text;
   @JsonKey(name: 'id')
   int id;
   @JsonKey(name: 'retweet_count')
@@ -36,25 +35,22 @@ class Tweet {
   String source;
   @JsonKey(name: "favorite_count")
   int favoriteCount;
-  @JsonKey(name: 'extended_tweet')
-  ExtendedTweet extendedTweet;
 
   Tweet(
     this.user,
-    this.entity,
+    this.entities,
     this.truncated,
     this.createdAt,
     this.favorited,
     this.idStr,
     this.inReplyToUserIdStr,
-    this.text,
+    this.full_text,
     this.id,
     this.retweetCount,
     this.inReplyToStatusIdStr,
     this.retweeted,
     this.source,
     this.favoriteCount,
-    this.extendedTweet,
   );
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
@@ -63,6 +59,6 @@ class Tweet {
 
   @override
   String toString() {
-    return 'Tweet{user: $user, entity: $entity, truncated: $truncated, createdAt: $createdAt, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, text: $text, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source, favoriteCount: $favoriteCount, extendedTweet: $extendedTweet}';
+    return 'Tweet{user: $user, entities: $entities, truncated: $truncated, createdAt: $createdAt, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, full_text: $full_text, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source, favoriteCount: $favoriteCount}';
   }
 }
