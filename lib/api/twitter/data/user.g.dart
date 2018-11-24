@@ -37,7 +37,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
       json['friends_count'] as int,
       json['following'] as bool,
       json['show_all_inline_media'] as bool,
-      json['screen_name'] as String);
+      json['screen_name'] as String,
+      json['entities'] == null
+          ? null
+          : UserEntities.fromJson(json['entities'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -71,5 +74,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'friends_count': instance.friendsCount,
       'following': instance.following,
       'show_all_inline_media': instance.showAllInlineMedia,
-      'screen_name': instance.screenName
+      'screen_name': instance.screenName,
+      'entities': instance.entities
     };

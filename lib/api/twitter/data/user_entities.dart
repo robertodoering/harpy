@@ -5,8 +5,8 @@ part 'user_entities.g.dart';
 
 @JsonSerializable()
 class UserEntities {
-  List<Url> url;
-  List<Url> description;
+  UserEntityUrl url;
+  UserEntityUrl description;
 
   UserEntities(this.url, this.description);
 
@@ -14,4 +14,16 @@ class UserEntities {
       _$UserEntitiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserEntitiesToJson(this);
+}
+
+@JsonSerializable()
+class UserEntityUrl {
+  List<Url> urls;
+
+  UserEntityUrl(this.urls);
+
+  factory UserEntityUrl.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityUrlFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserEntityUrlToJson(this);
 }

@@ -1,3 +1,4 @@
+import 'package:harpy/api/twitter/data/user_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -63,6 +64,7 @@ class User {
   bool showAllInlineMedia;
   @JsonKey(name: 'screen_name')
   String screenName;
+  UserEntities entities;
 
   User(
     this.name,
@@ -95,6 +97,7 @@ class User {
     this.following,
     this.showAllInlineMedia,
     this.screenName,
+    this.entities,
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
