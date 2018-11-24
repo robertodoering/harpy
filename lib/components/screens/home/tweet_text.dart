@@ -6,6 +6,8 @@ import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 
+import 'dart:convert' as convert;
+
 class TweetText extends StatefulWidget {
   final Tweet tweet;
 
@@ -47,8 +49,13 @@ class TweetTextState extends State<TweetText> {
 
       // text
       if (textStart < textEnd) {
+        String decodedText = convert.utf8.decode(
+          widget.tweet.full_text.substring(textStart, textEnd).codeUnits,
+          allowMalformed: true,
+        );
+
         textSpans.add(TextSpan(
-          text: widget.tweet.full_text.substring(textStart, textEnd),
+          text: decodedText,
           style: Theme.of(context).textTheme.body1,
         ));
       }

@@ -30,9 +30,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 user: widget.user,
               ),
               Text("User tweets go here \o/"),
-              Text("User tweets go here \o/"),
-              Text("User tweets go here \o/"),
-              Text("User tweets go here \o/"),
             ],
           ),
         ),
@@ -51,6 +48,7 @@ class UserHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildUserInfo(context),
           SizedBox(height: 8.0),
