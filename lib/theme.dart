@@ -21,6 +21,13 @@ class HarpyTheme {
             fontFamily: "Comfortaa",
             fontWeight: FontWeight.w300,
           ),
+          subtitle: _textTheme.subtitle.copyWith(
+            fontSize: 18.0,
+            letterSpacing: 2.0,
+            color: Colors.white,
+            fontFamily: "Comfortaa",
+            fontWeight: FontWeight.w300,
+          ),
           button: _textTheme.button.copyWith(
             color: primaryColor,
             fontSize: 16.0,

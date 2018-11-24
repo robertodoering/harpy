@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/home/home_drawer.dart';
-import 'package:harpy/components/screens/home/tweet_list.dart';
 import 'package:harpy/theme.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -26,10 +23,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           user: widget.user,
           body: Column(
             children: <Widget>[
-              UserHeader(
-                user: widget.user,
-              ),
-              Text("User tweets go here \o/"),
+              UserHeader(user: widget.user),
+              Text("User tweets go here \\o/"),
             ],
           ),
         ),
@@ -71,12 +66,12 @@ class UserHeader extends StatelessWidget {
       children: <Widget>[
         CircleAvatar(
           radius: 36.0,
-          backgroundImage:
-              CachedNetworkImageProvider(user.userProfileImageOriginal),
+          backgroundColor: Colors.transparent,
+          backgroundImage: CachedNetworkImageProvider(
+            user.userProfileImageOriginal,
+          ),
         ),
-        SizedBox(
-          width: 8.0,
-        ),
+        SizedBox(width: 8.0),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -95,40 +90,79 @@ class UserHeader extends StatelessWidget {
   }
 }
 
-class UserScaffold extends StatelessWidget {
+class UserScaffold extends StatefulWidget {
   final User user;
   final Widget body;
 
   const UserScaffold({@required this.user, @required this.body});
 
   @override
+  UserScaffoldState createState() {
+    return new UserScaffoldState();
+  }
+}
+
+class UserScaffoldState extends State<UserScaffold> {
+  ScrollController _controller;
+  double _opacity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = ScrollController()
+      ..addListener(() {
+        if (_controller.offset >= 100 && _controller.offset <= 160) {
+          double val = _controller.offset - 100;
+          setState(() {
+            _opacity = val / 60.0;
+          });
+        } else if (_controller.offset < 100 && _opacity != 0.0) {
+          setState(() {
+            _opacity = 0.0;
+          });
+        } else if (_controller.offset > 160 && _opacity != 1.0) {
+          setState(() {
+            _opacity = 1.0;
+          });
+        }
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        controller: _controller,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
               expandedHeight: 200.0,
               pinned: true,
-              floating: false,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text(
-                  user.name,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
+                title: Opacity(
+                  opacity: _opacity,
+                  child: Text(
+                    widget.user.name,
+                    style: Theme.of(context).textTheme.subtitle,
                   ),
                 ),
                 background: Image.network(
-                  user.profileBackgroundImageUrl,
+                  widget.user.profileBackgroundImageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
-            )
+            ),
           ];
         },
-        body: body,
+        body: widget.body,
       ),
     );
   }
