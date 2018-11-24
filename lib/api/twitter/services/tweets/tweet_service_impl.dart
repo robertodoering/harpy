@@ -11,7 +11,7 @@ class TweetServiceImpl extends TwitterService
     Map<String, String> params,
   }) async {
     params ??= Map();
-    params["count"] ??= "1"; // max: 800
+    params["count"] ??= "800"; // max: 800
     params["tweet_mode"] ??= "extended";
 
     final response = await client.get(
