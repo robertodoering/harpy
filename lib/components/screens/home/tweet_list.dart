@@ -83,7 +83,7 @@ class TweetTile extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
-              tweet.user.profileImageUrl,
+              tweet.user.userProfileImageOriginal,
             ),
           ),
         ),

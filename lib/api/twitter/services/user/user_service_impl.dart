@@ -3,10 +3,22 @@ import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/api/twitter/services/user/user_service.dart';
 import 'package:harpy/core/json/json_mapper.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:meta/meta.dart';
 
 class UserServiceImpl extends TwitterService
     with JsonMapper<User>
     implements UserService {
+  Future getUserDetails({@required String id}) async {
+    var response = await client.get(
+      "https://api.twitter.com/1.1/users/show.json",
+      params: {"user_id": id, "include_entities": "true"},
+    );
+
+    return handleResponse(response, onSuccess: (response) {
+      return map((map) => User.fromJson(map), response.body);
+    });
+  }
+
   @override
   Future<User> getUserById(String ids) async {
     try {
