@@ -6,17 +6,13 @@ import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 
-import 'package:utf/utf.dart' as utf;
-
 class TweetText extends StatefulWidget {
   final Tweet tweet;
 
   const TweetText(this.tweet);
 
   @override
-  TweetTextState createState() {
-    return new TweetTextState();
-  }
+  TweetTextState createState() => TweetTextState();
 }
 
 class TweetTextState extends State<TweetText> {
@@ -51,8 +47,18 @@ class TweetTextState extends State<TweetText> {
       if (textStart < textEnd) {
         String text = widget.tweet.full_text.substring(textStart, textEnd);
 
-        // fuck u gronkh
-        text = utf.decodeUtf8(text.codeUnits);
+        print("-----");
+        print(text);
+
+        for (int i = 0; i < text.codeUnits.length; i++) {
+          int codeUnit = text.codeUnits[i];
+
+          print("codeUnit $i: $codeUnit");
+          print(
+              "String.fromCharCode(codeUnit): ${String.fromCharCode(codeUnit)}");
+        }
+
+//        text = utf.decodeUtf8(text.codeUnits);
 
         textSpans.add(TextSpan(
           text: text,
