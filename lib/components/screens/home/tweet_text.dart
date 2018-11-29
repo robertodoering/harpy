@@ -33,12 +33,26 @@ class TweetTextState extends State<TweetText> {
     TwitterLinkModel nextLink;
     int textStart = 0;
 
+    print("----------");
+    print(widget.tweet.full_text);
+    print(widget.tweet.entities);
+
+    if (widget.tweet.id == 1066732186068545537) {
+      for (int i = 0; i < widget.tweet.full_text.codeUnits.length; i++) {
+        int codeUnit = widget.tweet.full_text.codeUnits[i];
+
+        print("codeUnit $i: $codeUnit");
+        print(
+            "String.fromCharCode(codeUnit): ${String.fromCharCode(codeUnit)}");
+      }
+    }
+
     do {
       nextLink = twitterLinks.getNext();
       int textEnd;
 
       if (nextLink != null) {
-        textEnd = nextLink.startIndex;
+        textEnd = nextLink.startIndex + 1;
       } else {
         textEnd = widget.tweet.full_text.length;
       }
@@ -48,17 +62,12 @@ class TweetTextState extends State<TweetText> {
         String text = widget.tweet.full_text.substring(textStart, textEnd);
 
         print("-----");
+        print("${widget.tweet.id}");
         print(text);
 
-        for (int i = 0; i < text.codeUnits.length; i++) {
-          int codeUnit = text.codeUnits[i];
+        print("----------");
 
-          print("codeUnit $i: $codeUnit");
-          print(
-              "String.fromCharCode(codeUnit): ${String.fromCharCode(codeUnit)}");
-        }
-
-//        text = utf.decodeUtf8(text.codeUnits);
+        // text = utf.decodeUtf8(text.codeUnits);
 
         textSpans.add(TextSpan(
           text: text,
