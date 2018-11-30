@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 /// A tappable button that can be [active] and draw a different icon with a
 /// different [VoidCallback].
-class TweetAction extends StatefulWidget {
-  /// Whether or not the [TweetAction] is [active].
+class TwitterButton extends StatefulWidget {
+  /// Whether or not the [TwitterButton] is [active].
   final bool active;
 
-  /// The [IconData] to draw when the [TweetAction] is not [active].
+  /// The [IconData] to draw when the [TwitterButton] is not [active].
   final IconData inactiveIconData;
 
-  /// The [IconData] to draw when the [TweetAction] is [active].
+  /// The [IconData] to draw when the [TwitterButton] is [active].
   final IconData activeIconData;
 
   /// The number next to the action.
@@ -18,7 +18,7 @@ class TweetAction extends StatefulWidget {
   /// The color of the action.
   ///
   /// If [active] is `true` the icon and value will be colored.
-  /// Otherwise only when tapping the [TweetAction] the icon, value and splash
+  /// Otherwise only when tapping the [TwitterButton] the icon, value and splash
   /// will use this [color].
   final Color color;
 
@@ -28,7 +28,7 @@ class TweetAction extends StatefulWidget {
   /// The callback when the action has been tapped if it is [active].
   final VoidCallback deactivate;
 
-  TweetAction({
+  TwitterButton({
     @required this.active,
     @required this.inactiveIconData,
     @required this.activeIconData,
@@ -39,10 +39,10 @@ class TweetAction extends StatefulWidget {
   });
 
   @override
-  _TweetActionState createState() => _TweetActionState();
+  _TwitterButtonState createState() => _TwitterButtonState();
 }
 
-class _TweetActionState extends State<TweetAction> {
+class _TwitterButtonState extends State<TwitterButton> {
   bool drawColored = false;
 
   @override
