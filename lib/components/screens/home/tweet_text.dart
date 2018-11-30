@@ -3,19 +3,29 @@ import 'dart:core';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/entities.dart';
-import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/core/utils/url_launcher.dart';
+import 'package:harpy/theme.dart';
 
-class TweetText extends StatefulWidget {
-  final Tweet tweet;
+/// Creates a [RichText] from the given [text].
+///
+/// The [Entities] will be parsed and appear in the [entityColor].
+class TwitterText extends StatefulWidget {
+  final String text;
+  final Entities entities;
+  final Color entityColor;
+  final ValueChanged<TwitterEntityModel> onEntityTap;
 
-  const TweetText(this.tweet);
+  const TwitterText({
+    @required this.text,
+    this.entities,
+    this.entityColor = HarpyTheme.primaryColor,
+    this.onEntityTap,
+  });
 
   @override
-  TweetTextState createState() => TweetTextState();
+  TwitterTextState createState() => TwitterTextState();
 }
 
-class TweetTextState extends State<TweetText> {
+class TwitterTextState extends State<TwitterText> {
   List<GestureRecognizer> gestureRecognizer = [];
 
   @override
@@ -28,46 +38,59 @@ class TweetTextState extends State<TweetText> {
   Widget build(BuildContext context) {
     List<TextSpan> textSpans = [];
 
-    var twitterLinks = TweetLinks(widget.tweet.entities);
+    var twitterEntities = TwitterEntities(
+      widget.text,
+      widget.entities,
+    );
 
-    TwitterLinkModel nextLink;
+    TwitterEntityModel nextEntity;
     int textStart = 0;
 
     print("----------");
-    print(widget.tweet.full_text);
-    print(widget.tweet.entities);
+    print(widget.text);
+    print(widget.entities);
 
-    if (widget.tweet.id == 1066732186068545537) {
-      for (int i = 0; i < widget.tweet.full_text.codeUnits.length; i++) {
-        int codeUnit = widget.tweet.full_text.codeUnits[i];
-
-        print("codeUnit $i: $codeUnit");
-        print(
-            "String.fromCharCode(codeUnit): ${String.fromCharCode(codeUnit)}");
-      }
-    }
+//    for (var entityModel in twitterEntities.entityModels) {
+//
+//      // twitter entity
+//      GestureRecognizer recognizer = null;
+//      if (nextEntity.type == EntityType.url) {
+//        recognizer = TapGestureRecognizer()
+//          ..onTap = () => widget.onEntityTap(nextEntity);
+//        gestureRecognizer.add(recognizer);
+//      }
+//
+//      textSpans.add(TextSpan(
+//        text: "${nextEntity.displayUrl} ",
+//        style: Theme.of(context).textTheme.body1.copyWith(
+//          color: widget.entityColor,
+//          fontWeight: FontWeight.bold,
+//        ),
+//        recognizer: recognizer,
+//      ));
+//
+//      textStart = nextEntity.endIndex + 1;
+//
+//    }
 
     do {
-      nextLink = twitterLinks.getNext();
+      nextEntity = twitterEntities.getNext();
       int textEnd;
 
-      if (nextLink != null) {
-        textEnd = nextLink.startIndex + 1;
+      if (nextEntity != null) {
+        textEnd = nextEntity.startIndex;
       } else {
-        textEnd = widget.tweet.full_text.length;
+        textEnd = widget.text.length;
       }
 
       // text
       if (textStart < textEnd) {
-        String text = widget.tweet.full_text.substring(textStart, textEnd);
+        String text = widget.text.substring(textStart, textEnd);
 
         print("-----");
-        print("${widget.tweet.id}");
         print(text);
 
         print("----------");
-
-        // text = utf.decodeUtf8(text.codeUnits);
 
         textSpans.add(TextSpan(
           text: text,
@@ -75,31 +98,27 @@ class TweetTextState extends State<TweetText> {
         ));
       }
 
-      // link
-      if (nextLink != null) {
+      // twitter entity
+      if (nextEntity != null) {
         GestureRecognizer recognizer = null;
-        if (nextLink.type == LinkType.url) {
-          String url = nextLink.url;
-
-          recognizer = TapGestureRecognizer()..onTap = () => launchUrl(url);
+        if (nextEntity.type == EntityType.url) {
+          recognizer = TapGestureRecognizer()
+            ..onTap = () => widget.onEntityTap(nextEntity);
           gestureRecognizer.add(recognizer);
         }
 
         textSpans.add(TextSpan(
-          text: "${nextLink.displayUrl} ",
-          style: Theme.of(context)
-              .textTheme
-              .body1 // todo: custom color (logged in user color?)
-              .copyWith(
-                color: Theme.of(context).primaryColor,
+          text: "${nextEntity.displayUrl} ",
+          style: Theme.of(context).textTheme.body1.copyWith(
+                color: widget.entityColor,
                 fontWeight: FontWeight.bold,
               ),
           recognizer: recognizer,
         ));
 
-        textStart = nextLink.endIndex + 1;
+        textStart = nextEntity.endIndex + 1;
       }
-    } while (nextLink != null);
+    } while (nextEntity != null);
 
     return RichText(
       text: TextSpan(
@@ -109,82 +128,119 @@ class TweetTextState extends State<TweetText> {
   }
 }
 
-class TweetLinks {
-  List<TwitterLinkModel> links = [];
+/// Takes a [String] and [Entities] and creates a list of [TwitterEntityModel]
+/// an entry for each entity.
+class TwitterEntities {
+  /// A list of [TwitterEntityModel].
+  var entityModels = <TwitterEntityModel>[];
 
-  void _addLink(TwitterLinkModel link) {
-    for (int i = 0; i < links.length; i++) {
-      if (link.startIndex < links[i].startIndex) {
-        links.insert(i, link);
-        return;
-      }
-    }
+  /// A map that contains the end index of each entity to find the next
+  /// occurrence of a duplicate entity.
+  var _entityMap = <String, int>{};
 
-    links.add(link);
-  }
-
-  TweetLinks(Entities entities) {
+  TwitterEntities(String text, Entities entities) {
     for (var hashtag in entities.hashtags) {
-      var link = TwitterLinkModel(
-        hashtag.indices[0],
-        hashtag.indices[1],
-        hashtag.text, // todo: make request for hashtag
-        "#${hashtag.text}",
-        LinkType.hashtag,
+      var indices = _findIndices(text, "#${hashtag.text}");
+      if (indices == null) break;
+
+      var link = TwitterEntityModel(
+        startIndex: indices[0],
+        endIndex: indices[1],
+        url: hashtag.text, // todo: make request for hashtag
+        displayUrl: "#${hashtag.text}",
+        type: EntityType.hashtag,
       );
       _addLink(link);
     }
 
     for (var url in entities.urls) {
-      var link = TwitterLinkModel(
-        url.indices[0],
-        url.indices[1],
-        url.expandedUrl, // todo: open link in browser
-        url.displayUrl,
-        LinkType.url,
+      var indices = _findIndices(text, url.url);
+      if (indices == null) break;
+
+      var link = TwitterEntityModel(
+        startIndex: indices[0],
+        endIndex: indices[1],
+        url: url.expandedUrl, // todo: open link in browser
+        displayUrl: url.displayUrl,
+        type: EntityType.url,
       );
       _addLink(link);
     }
 
     for (var userMention in entities.userMentions) {
-      var link = TwitterLinkModel(
-        userMention.indices[0],
-        userMention.indices[1],
-        userMention.screenName, // todo: go to profile
-        "@${userMention.screenName}",
-        LinkType.mention,
+      var indices = _findIndices(text, "@${userMention.screenName}");
+      if (indices == null) break;
+
+      var link = TwitterEntityModel(
+        startIndex: indices[0],
+        endIndex: indices[1],
+        url: userMention.screenName, // todo: go to profile
+        displayUrl: "@${userMention.screenName}",
+        type: EntityType.mention,
       );
       _addLink(link);
     }
   }
 
-  TwitterLinkModel getNext() {
-    return links.isNotEmpty ? links.removeAt(0) : null;
+  /// Finds and returns the start and end index for the [entity] in the [text].
+  ///
+  /// Returns `null` if the entity has not been found in the text.
+  List<int> _findIndices(String text, String entity) {
+    print("find indice of $entity in $text");
+
+    int start = text.indexOf(entity, _entityMap[entity] ?? 0);
+
+    if (start != -1) {
+      int end = start + entity.length;
+      _entityMap[entity] = end + 1;
+
+      print("found ${[start, end]}");
+
+      return [start, end];
+    }
+
+    return null;
+  }
+
+  /// Adds a [link] to the [entityModels] list at the position where the
+  /// indices are sorted ascending.
+  void _addLink(TwitterEntityModel link) {
+    for (int i = 0; i < entityModels.length; i++) {
+      if (link.startIndex < entityModels[i].startIndex) {
+        entityModels.insert(i, link);
+        return;
+      }
+    }
+
+    entityModels.add(link);
+  }
+
+  /// Returns the next [TwitterEntityModel] or null if there aren't any more.
+  TwitterEntityModel getNext() {
+    return entityModels.isNotEmpty ? entityModels.removeAt(0) : null;
   }
 }
 
-class TwitterLinkModel {
+/// A simple model for the [Entities].
+///
+/// The [EntityType] can be used to differentiate between each entity.
+class TwitterEntityModel {
   final int startIndex;
   final int endIndex;
   final String url;
   final String displayUrl;
-  final LinkType type;
+  final EntityType type;
 
-  const TwitterLinkModel(
+  const TwitterEntityModel({
     this.startIndex,
     this.endIndex,
     this.url,
     this.displayUrl,
     this.type,
-  );
-
-  @override
-  String toString() {
-    return 'TwitterLink{startIndex: $startIndex, endIndex: $endIndex, url: $url, displayUrl: $displayUrl}';
-  }
+  });
 }
 
-enum LinkType {
+enum EntityType {
   hashtag,
   mention,
   url,

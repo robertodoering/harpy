@@ -108,7 +108,10 @@ class TweetTile extends StatelessWidget {
   Widget _buildText() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: TweetText(tweet),
+      child: TwitterText(
+        text: tweet.full_text,
+        entities: tweet.entities,
+      ),
     );
   }
 
