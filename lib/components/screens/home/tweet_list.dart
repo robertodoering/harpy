@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/components/screens/home/tweet_action.dart';
 import 'package:harpy/components/shared/animations.dart';
+import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
@@ -46,7 +46,7 @@ class TweetList extends StatelessWidget {
   }
 }
 
-/// A single tile that display information and [TweetAction]s for a [Tweet].
+/// A single tile that display information and [TwitterButton]s for a [Tweet].
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
@@ -125,7 +125,7 @@ class TweetTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         // retweet action
-        TweetAction(
+        TwitterButton(
           active: tweet.retweeted,
           inactiveIconData: Icons.repeat,
           activeIconData: Icons.repeat,
@@ -136,7 +136,7 @@ class TweetTile extends StatelessWidget {
         ),
 
         // favorite action
-        TweetAction(
+        TwitterButton(
           active: tweet.favorited,
           inactiveIconData: Icons.favorite_border,
           activeIconData: Icons.favorite,
