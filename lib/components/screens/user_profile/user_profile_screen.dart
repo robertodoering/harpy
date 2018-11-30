@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/theme.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -19,8 +20,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       length: 3,
       child: Theme(
         data: HarpyTheme.theme,
-        child: UserScaffold(
-          user: widget.user,
+        child: FadingNestedScaffold(
+          title: widget.user.name,
+          background: Image.network(
+            widget.user.profileBackgroundImageUrl,
+            fit: BoxFit.cover,
+          ),
           body: Column(
             children: <Widget>[
               UserHeader(user: widget.user),
@@ -86,82 +91,6 @@ class UserHeader extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class UserScaffold extends StatefulWidget {
-  final User user;
-  final Widget body;
-
-  const UserScaffold({@required this.user, @required this.body});
-
-  @override
-  UserScaffoldState createState() => UserScaffoldState();
-}
-
-class UserScaffoldState extends State<UserScaffold> {
-  ScrollController _controller;
-  double _opacity = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = ScrollController()
-      ..addListener(() {
-        if (_controller.offset >= 100 && _controller.offset <= 160) {
-          double val = _controller.offset - 100;
-          setState(() {
-            _opacity = val / 60.0;
-          });
-        } else if (_controller.offset < 100 && _opacity != 0.0) {
-          setState(() {
-            _opacity = 0.0;
-          });
-        } else if (_controller.offset > 160 && _opacity != 1.0) {
-          setState(() {
-            _opacity = 1.0;
-          });
-        }
-      });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        controller: _controller,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200.0,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Opacity(
-                  opacity: _opacity,
-                  child: Text(
-                    widget.user.name,
-                    style: Theme.of(context).textTheme.subtitle,
-                  ),
-                ),
-                background: Image.network(
-                  widget.user.profileBackgroundImageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ];
-        },
-        body: widget.body,
-      ),
     );
   }
 }
