@@ -26,110 +26,88 @@ class TwitterText extends StatefulWidget {
 }
 
 class TwitterTextState extends State<TwitterText> {
-  List<GestureRecognizer> gestureRecognizer = [];
+  /// A list of [GestureRecognizer] for each entity.
+  ///
+  /// It's necessary to keep the reference so that we can dispose them.
+  List<GestureRecognizer> _gestureRecognizer = [];
+
+  List<TextSpan> _textSpans = [];
 
   @override
-  void dispose() {
-    super.dispose();
-    gestureRecognizer.forEach((recognizer) => recognizer.dispose());
-  }
+  void initState() {
+    super.initState();
 
-  @override
-  Widget build(BuildContext context) {
-    List<TextSpan> textSpans = [];
-
+    // parse text
     var twitterEntities = TwitterEntities(
       widget.text,
       widget.entities,
     );
 
-    TwitterEntityModel nextEntity;
     int textStart = 0;
 
-    print("----------");
-    print(widget.text);
-    print(widget.entities);
+    // add the text spans
+    for (var entityModel in twitterEntities.entityModels) {
+      int textEnd = entityModel.startIndex;
 
-//    for (var entityModel in twitterEntities.entityModels) {
-//
-//      // twitter entity
-//      GestureRecognizer recognizer = null;
-//      if (nextEntity.type == EntityType.url) {
-//        recognizer = TapGestureRecognizer()
-//          ..onTap = () => widget.onEntityTap(nextEntity);
-//        gestureRecognizer.add(recognizer);
-//      }
-//
-//      textSpans.add(TextSpan(
-//        text: "${nextEntity.displayUrl} ",
-//        style: Theme.of(context).textTheme.body1.copyWith(
-//          color: widget.entityColor,
-//          fontWeight: FontWeight.bold,
-//        ),
-//        recognizer: recognizer,
-//      ));
-//
-//      textStart = nextEntity.endIndex + 1;
-//
-//    }
+      _addText(textStart, textEnd);
+      _addEntityModel(entityModel);
 
-    do {
-      nextEntity = twitterEntities.getNext();
-      int textEnd;
+      textStart = entityModel.endIndex + 1;
+    }
 
-      if (nextEntity != null) {
-        textEnd = nextEntity.startIndex;
-      } else {
-        textEnd = widget.text.length;
-      }
+    int textEnd = widget.text.length;
 
-      // text
-      if (textStart < textEnd) {
-        String text = widget.text.substring(textStart, textEnd);
+    _addText(textStart, textEnd);
+  }
 
-        print("-----");
-        print(text);
+  void _addText(int start, int end) {
+    if (start < end && end <= widget.text.length) {
+      String text = widget.text.substring(start, end);
 
-        print("----------");
+      _textSpans.add(TextSpan(
+        text: text,
+        style: HarpyTheme.theme.textTheme.body1,
+      ));
+    }
+  }
 
-        textSpans.add(TextSpan(
-          text: text,
-          style: Theme.of(context).textTheme.body1,
-        ));
-      }
+  void _addEntityModel(TwitterEntityModel entityModel) {
+    GestureRecognizer recognizer = null;
 
-      // twitter entity
-      if (nextEntity != null) {
-        GestureRecognizer recognizer = null;
-        if (nextEntity.type == EntityType.url) {
-          recognizer = TapGestureRecognizer()
-            ..onTap = () => widget.onEntityTap(nextEntity);
-          gestureRecognizer.add(recognizer);
-        }
+    if (widget.onEntityTap != null) {
+      recognizer = TapGestureRecognizer()
+        ..onTap = () => widget.onEntityTap(entityModel);
+      _gestureRecognizer.add(recognizer);
+    }
 
-        textSpans.add(TextSpan(
-          text: "${nextEntity.displayUrl} ",
-          style: Theme.of(context).textTheme.body1.copyWith(
-                color: widget.entityColor,
-                fontWeight: FontWeight.bold,
-              ),
-          recognizer: recognizer,
-        ));
+    _textSpans.add(TextSpan(
+      text: "${entityModel.displayUrl} ",
+      style: HarpyTheme.theme.textTheme.body1.copyWith(
+        color: widget.entityColor,
+        fontWeight: FontWeight.bold,
+      ),
+      recognizer: recognizer,
+    ));
+  }
 
-        textStart = nextEntity.endIndex + 1;
-      }
-    } while (nextEntity != null);
+  @override
+  void dispose() {
+    super.dispose();
+    _gestureRecognizer.forEach((recognizer) => recognizer.dispose());
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        children: textSpans,
+        children: _textSpans,
       ),
     );
   }
 }
 
 /// Takes a [String] and [Entities] and creates a list of [TwitterEntityModel]
-/// an entry for each entity.
+/// with an entry for each entity.
 class TwitterEntities {
   /// A list of [TwitterEntityModel].
   var entityModels = <TwitterEntityModel>[];
@@ -143,42 +121,42 @@ class TwitterEntities {
       var indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
-      var link = TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: hashtag.text, // todo: make request for hashtag
+        url: hashtag.text,
         displayUrl: "#${hashtag.text}",
         type: EntityType.hashtag,
       );
-      _addLink(link);
+      _addEntityModel(entityModel);
     }
 
     for (var url in entities.urls) {
       var indices = _findIndices(text, url.url);
       if (indices == null) break;
 
-      var link = TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: url.expandedUrl, // todo: open link in browser
+        url: url.expandedUrl,
         displayUrl: url.displayUrl,
         type: EntityType.url,
       );
-      _addLink(link);
+      _addEntityModel(entityModel);
     }
 
     for (var userMention in entities.userMentions) {
       var indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
-      var link = TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: userMention.screenName, // todo: go to profile
+        url: userMention.screenName,
         displayUrl: "@${userMention.screenName}",
         type: EntityType.mention,
       );
-      _addLink(link);
+      _addEntityModel(entityModel);
     }
   }
 
@@ -186,15 +164,11 @@ class TwitterEntities {
   ///
   /// Returns `null` if the entity has not been found in the text.
   List<int> _findIndices(String text, String entity) {
-    print("find indice of $entity in $text");
-
     int start = text.indexOf(entity, _entityMap[entity] ?? 0);
 
     if (start != -1) {
       int end = start + entity.length;
       _entityMap[entity] = end + 1;
-
-      print("found ${[start, end]}");
 
       return [start, end];
     }
@@ -202,17 +176,17 @@ class TwitterEntities {
     return null;
   }
 
-  /// Adds a [link] to the [entityModels] list at the position where the
-  /// indices are sorted ascending.
-  void _addLink(TwitterEntityModel link) {
+  /// Adds an [TwitterEntityModel] to the [entityModels] list at the position
+  /// where the indices are sorted ascending.
+  void _addEntityModel(TwitterEntityModel entityModel) {
     for (int i = 0; i < entityModels.length; i++) {
-      if (link.startIndex < entityModels[i].startIndex) {
-        entityModels.insert(i, link);
+      if (entityModel.startIndex < entityModels[i].startIndex) {
+        entityModels.insert(i, entityModel);
         return;
       }
     }
 
-    entityModels.add(link);
+    entityModels.add(entityModel);
   }
 
   /// Returns the next [TwitterEntityModel] or null if there aren't any more.

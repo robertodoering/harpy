@@ -97,9 +97,7 @@ class UserScaffold extends StatefulWidget {
   const UserScaffold({@required this.user, @required this.body});
 
   @override
-  UserScaffoldState createState() {
-    return new UserScaffoldState();
-  }
+  UserScaffoldState createState() => UserScaffoldState();
 }
 
 class UserScaffoldState extends State<UserScaffold> {
