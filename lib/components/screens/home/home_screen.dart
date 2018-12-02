@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/home/home_drawer.dart';
-import 'package:harpy/components/screens/home/tweet_list.dart';
+import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/theme.dart';

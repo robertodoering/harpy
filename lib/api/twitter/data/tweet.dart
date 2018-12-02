@@ -11,6 +11,8 @@ class Tweet {
   User user;
   @JsonKey(name: 'entities')
   Entities entities;
+  @JsonKey(name: 'extended_entities')
+  Entities extended_entities;
   @JsonKey(name: 'truncated')
   bool truncated;
   @JsonKey(name: 'created_at')
