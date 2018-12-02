@@ -17,8 +17,11 @@ TwitterMedia _$TwitterMediaFromJson(Map<String, dynamic> json) {
       json['display_url'] as String,
       json['expanded_url'] as String,
       json['type'] as String,
-      (json['sizes'] as Map<String, dynamic>)?.map((k, e) => MapEntry(k,
-          e == null ? null : MediaSize.fromJson(e as Map<String, dynamic>))));
+      (json['sizes'] as Map<String, dynamic>)?.map((k, e) => MapEntry(
+          k, e == null ? null : MediaSize.fromJson(e as Map<String, dynamic>))),
+      json['video_info'] == null
+          ? null
+          : VideoInfo.fromJson(json['video_info'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$TwitterMediaToJson(TwitterMedia instance) =>
@@ -32,5 +35,6 @@ Map<String, dynamic> _$TwitterMediaToJson(TwitterMedia instance) =>
       'display_url': instance.displayUrl,
       'expanded_url': instance.expandedUrl,
       'type': instance.type,
-      'sizes': instance.sizes
+      'sizes': instance.sizes,
+      'video_info': instance.videoInfo
     };

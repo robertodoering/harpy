@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:video_player/video_player.dart';
 
 // media types
 const String photo = "photo";
@@ -101,8 +102,56 @@ class CollapsibleMedia extends StatelessWidget {
           ),
         ),
       );
+    } else if (media.type == video) {
+      return TwitterVideoPlayer(media.videoInfo.variants.first.url);
     } else {
       return Container();
     }
+  }
+}
+
+class TwitterVideoPlayer extends StatefulWidget {
+  final String url;
+
+  const TwitterVideoPlayer(this.url);
+
+  @override
+  _TwitterVideoPlayerState createState() => _TwitterVideoPlayerState();
+}
+
+class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
+  VideoPlayerController _controller;
+  bool _isPlaying;
+
+  @override
+  void initState() {
+    super.initState();
+
+    print("playing video from url: ${widget.url}");
+
+    _controller = VideoPlayerController.network(widget.url)
+      ..addListener(() {
+        final bool isPlaying = _controller.value.isPlaying;
+        if (isPlaying != _isPlaying) {
+          setState(() {
+            _isPlaying = isPlaying;
+          });
+        }
+      })
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+//    _controller.play();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _controller.value.initialized
+        ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          )
+        : Container();
   }
 }

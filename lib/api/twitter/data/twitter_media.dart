@@ -1,4 +1,5 @@
 import 'package:harpy/api/twitter/data/media_size.dart';
+import 'package:harpy/api/twitter/data/video_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'twitter_media.g.dart';
@@ -25,6 +26,8 @@ class TwitterMedia {
   String type;
   @JsonKey(name: "sizes")
   Map<String, MediaSize> sizes;
+  @JsonKey(name: "video_info")
+  VideoInfo videoInfo;
 
   TwitterMedia(
     this.id,
@@ -37,6 +40,7 @@ class TwitterMedia {
     this.expandedUrl,
     this.type,
     this.sizes,
+    this.videoInfo,
   );
 
   factory TwitterMedia.fromJson(Map<String, dynamic> json) =>
