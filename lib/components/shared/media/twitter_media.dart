@@ -42,13 +42,28 @@ class MediaModel {
 }
 
 /// Builds a column of media that can be collapsed.
-class CollapsibleMedia extends StatelessWidget {
+class CollapsibleMedia extends StatefulWidget {
   final List<TwitterMedia> media;
+
+  CollapsibleMedia(this.media);
+
+  @override
+  CollapsibleMediaState createState() {
+    return new CollapsibleMediaState();
+  }
+}
+
+class CollapsibleMediaState extends State<CollapsibleMedia> {
   final List<MediaModel> mediaModels = [];
 
-  CollapsibleMedia(this.media) {
+  @override
+  void initState() {
+    super.initState();
+
     // init media models
-    for (var media in media) {
+    for (int i = 0; i < widget.media.length; i++) {
+      var media = widget.media[i];
+
       if (media.type == photo || media.type == animatedGif) {
         int width = media.largeWidth ?? media.mediumWidth ?? media.smallWidth;
         int height =
@@ -58,28 +73,32 @@ class CollapsibleMedia extends StatelessWidget {
         mediaModels.add(
           MediaModel(
             type: media.type,
-            widget: CachedNetworkImage(
-              imageUrl: media.mediaUrl,
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
+            widget: GestureDetector(
+              onTap: () => _onShowFullscreenDialog(i),
+              child: CachedNetworkImage(
+                imageUrl: media.mediaUrl,
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
+              ),
             ),
             width: width.toDouble(),
             height: height.toDouble(),
           ),
         );
       } else if (media.type == video) {
-        double thumbnailAspectRatio =
-            media.videoInfo.aspectRatio[0] / media.videoInfo.aspectRatio[1];
+        double thumbnailAspectRatio = media.videoInfo.aspectRatio[0] /
+            media.videoInfo.aspectRatio[1]; // todo: if null
 
         // twitter video player
         mediaModels.add(
           MediaModel(
             type: media.type,
             widget: TwitterVideoPlayer(
-              videoUrl: media.videoInfo.variants.first.url, // todo
+              videoUrl: media.videoInfo.variants.first.url, // todo: quality
               thumbnail: media.mediaUrl,
               thumbnailAspectRatio: thumbnailAspectRatio,
+              onShowFullscreen: () => _onShowFullscreenDialog(i),
             ),
           ),
         );
@@ -87,12 +106,18 @@ class CollapsibleMedia extends StatelessWidget {
     }
   }
 
-  // todo: test gif
-  // todo: click on media to open in fullscreen dialog
+  void _onShowFullscreenDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return MediaDialog(mediaModels: mediaModels, index: index);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(media);
+    print(widget.media);
 
     return ExpansionTile(
       title: Container(),
@@ -100,7 +125,7 @@ class CollapsibleMedia extends StatelessWidget {
       children: <Widget>[
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: media.any((media) => media.type == video)
+            maxHeight: widget.media.any((media) => media.type == video)
                 ? double.infinity
                 : 250.0,
           ),
@@ -113,13 +138,13 @@ class CollapsibleMedia extends StatelessWidget {
   Widget _buildMedia(BuildContext context) {
     final double padding = 2.0;
 
-    if (media.length == 1) {
+    if (widget.media.length == 1) {
       return Row(
         children: <Widget>[
           _buildMediaWidget(mediaModels[0], context),
         ],
       );
-    } else if (media.length == 2) {
+    } else if (widget.media.length == 2) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -128,7 +153,7 @@ class CollapsibleMedia extends StatelessWidget {
           _buildMediaWidget(mediaModels[1], context),
         ],
       );
-    } else if (media.length == 3) {
+    } else if (widget.media.length == 3) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -145,7 +170,7 @@ class CollapsibleMedia extends StatelessWidget {
           ),
         ],
       );
-    } else if (media.length == 4) {
+    } else if (widget.media.length == 4) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -179,20 +204,7 @@ class CollapsibleMedia extends StatelessWidget {
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        child: GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return MediaDialog(
-                  mediaModels: mediaModels,
-                  index: mediaModels.indexOf(mediaModel),
-                );
-              },
-            );
-          },
-          child: mediaModel.widget,
-        ),
+        child: mediaModel.widget,
       ),
     );
   }

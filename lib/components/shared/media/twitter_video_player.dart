@@ -12,11 +12,13 @@ class TwitterVideoPlayer extends StatefulWidget {
   final String videoUrl;
   final String thumbnail;
   final double thumbnailAspectRatio;
+  final VoidCallback onShowFullscreen;
 
   const TwitterVideoPlayer({
     @required this.videoUrl,
     @required this.thumbnail,
     @required this.thumbnailAspectRatio,
+    this.onShowFullscreen,
   });
 
   @override
@@ -129,16 +131,23 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
           // todo: volume changer
 
-          // todo: fullscreen button
+          // todo: better fullscreen button
           Align(
             alignment: Alignment.bottomRight,
-            child: IconButton(
-              icon: const Icon(
-                Icons.fullscreen,
-                color: Colors.white,
-                size: 36.0,
+            child: Material(
+              color: Colors.transparent,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.fullscreen,
+                  color: Colors.white,
+                  size: 36.0,
+                ),
+                onPressed: () {
+                  if (widget.onShowFullscreen != null) {
+                    widget.onShowFullscreen();
+                  }
+                },
               ),
-              onPressed: () {},
             ),
           ),
 

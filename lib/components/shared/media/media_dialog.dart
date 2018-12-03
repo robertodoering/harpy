@@ -3,6 +3,8 @@ import 'package:harpy/components/shared/media/twitter_media.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+/// The [MediaDialog] that contains a list of [MediaModel] to display a
+/// [MediaWidgetGallery] for the [TwitterMedia].
 class MediaDialog extends StatelessWidget {
   final List<MediaModel> mediaModels;
   final int index;
@@ -22,30 +24,42 @@ class MediaDialog extends StatelessWidget {
         resizeDuration: null,
         movementDuration: Duration(milliseconds: 200),
         onDismissed: (_) => Navigator.of(context).pop(),
-        child: MediaWidgetGallery(
-          mediaWidgetOptions: mediaModels.map((mediaModel) {
-            double width;
-            double height;
-
-            if (mediaModel.width == null || mediaModel.height == null) {
-              // fallback if no size was available for image
-              width = MediaQuery.of(context).size.width;
-              height = MediaQuery.of(context).size.height / 2;
-            } else {
-              width = mediaModel.width;
-              height = mediaModel.height;
-            }
-
-            return MediaWidgetOption(
-              widget: mediaModel.widget,
-              minScale: PhotoViewComputedScale.contained,
-              size: Size(width, height),
-            );
-          }).toList(),
-          initialPage: index,
-        ),
+        child: _buildCenterMedia(context),
       ),
     );
+  }
+
+  Widget _buildCenterMedia(BuildContext context) {
+    if (mediaModels.any((model) => model.type == video)) {
+      // videos
+      return Center(
+        child: mediaModels.first.widget, // todo
+      );
+    } else {
+      // photos / gifs
+      return MediaWidgetGallery(
+        mediaWidgetOptions: mediaModels.map((mediaModel) {
+          double width;
+          double height;
+
+          if (mediaModel.width == null || mediaModel.height == null) {
+            // fallback if no size was available for image
+            width = MediaQuery.of(context).size.width;
+            height = MediaQuery.of(context).size.height / 2;
+          } else {
+            width = mediaModel.width;
+            height = mediaModel.height;
+          }
+
+          return MediaWidgetOption(
+            widget: mediaModel.widget,
+            minScale: PhotoViewComputedScale.contained,
+            size: Size(width, height),
+          );
+        }).toList(),
+        initialPage: index,
+      );
+    }
   }
 }
 
