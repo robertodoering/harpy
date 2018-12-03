@@ -29,6 +29,22 @@ class TwitterMedia {
   @JsonKey(name: "video_info")
   VideoInfo videoInfo;
 
+  int get thumbWidth => sizes["thumb"]?.w;
+  int get thumbHeight => sizes["thumb"]?.h;
+  String get thumbResize => sizes["thumb"]?.resize;
+
+  int get smallWidth => sizes["small"]?.w;
+  int get smallHeight => sizes["small"]?.h;
+  String get smallResize => sizes["small"]?.resize;
+
+  int get mediumWidth => sizes["medium"]?.w;
+  int get mediumHeight => sizes["medium"]?.h;
+  String get mediumResize => sizes["medium"]?.resize;
+
+  int get largeWidth => sizes["large"]?.w;
+  int get largeHeight => sizes["large"]?.h;
+  String get largeResize => sizes["large"]?.resize;
+
   TwitterMedia(
     this.id,
     this.idStr,

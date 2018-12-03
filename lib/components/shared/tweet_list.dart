@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
-import 'package:harpy/components/shared/twitter_media.dart';
+import 'package:harpy/components/shared/media/twitter_media.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
