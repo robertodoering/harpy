@@ -86,3 +86,64 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
     );
   }
 }
+
+/// Fades in upon creation.
+class FadeAnimation extends StatefulWidget {
+  final Widget child;
+  final Duration duration;
+
+  const FadeAnimation({
+    this.child,
+    this.duration = const Duration(milliseconds: 500),
+  });
+
+  @override
+  _FadeAnimationState createState() => _FadeAnimationState();
+}
+
+class _FadeAnimationState extends State<FadeAnimation>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(duration: widget.duration, vsync: this)
+      ..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      })
+      ..forward();
+  }
+
+  @override
+  void deactivate() {
+    _controller.stop();
+    super.deactivate();
+  }
+
+  @override
+  void didUpdateWidget(FadeAnimation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.child != widget.child) {
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _controller.isAnimating
+        ? Opacity(
+            opacity: 1.0 - _controller.value,
+            child: widget.child,
+          )
+        : Container();
+  }
+}

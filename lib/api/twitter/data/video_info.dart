@@ -38,4 +38,9 @@ class Variants {
       _$VariantsFromJson(json);
 
   Map<String, dynamic> toJson() => _$VariantsToJson(this);
+
+  @override
+  String toString() {
+    return 'Variants{bitrate: $bitrate, contentType: $contentType, url: $url}';
+  }
 }
