@@ -15,11 +15,12 @@ class TwitterText extends StatefulWidget {
   final ValueChanged<TwitterEntityModel> onEntityTap;
 
   const TwitterText({
+    key,
     @required this.text,
     this.entities,
     this.entityColor = HarpyTheme.primaryColor,
     this.onEntityTap,
-  });
+  }) : super(key: key);
 
   @override
   TwitterTextState createState() => TwitterTextState();
@@ -33,14 +34,16 @@ class TwitterTextState extends State<TwitterText> {
 
   List<TextSpan> _textSpans = [];
 
+  // todo: parse html symbols when they sometimes appear as '&lt;' instead of '<'
+
   @override
   void initState() {
     super.initState();
 
-    print("------");
-    print(widget.text);
-    print(widget.entities);
-    print("------");
+//    print("------");
+//    print(widget.text);
+//    print(widget.entities);
+//    print("------");
 
     // parse text
     var twitterEntities = TwitterEntities(

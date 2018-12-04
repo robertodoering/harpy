@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/shared/media/media_dismissable.dart';
 import 'package:harpy/components/shared/media/twitter_media.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -14,19 +15,11 @@ class MediaDialog extends StatelessWidget {
     this.index = 0,
   });
 
+  // todo: hide on background click
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Dismissible(
-        key: UniqueKey(),
-        direction: DismissDirection.up,
-        dismissThresholds: {DismissDirection.up: 0.2},
-        resizeDuration: null,
-        movementDuration: Duration(milliseconds: 200),
-        onDismissed: (_) => Navigator.of(context).pop(),
-        child: _buildCenterMedia(context),
-      ),
-    );
+    return Center(child: _buildCenterMedia(context));
   }
 
   Widget _buildCenterMedia(BuildContext context) {
@@ -55,6 +48,7 @@ class MediaDialog extends StatelessWidget {
             widget: mediaModel.widget,
             minScale: PhotoViewComputedScale.contained,
             size: Size(width, height),
+            heroTag: mediaModel.heroTag,
           );
         }).toList(),
         initialPage: index,
@@ -87,13 +81,11 @@ class MediaWidgetGallery extends StatefulWidget {
   final List<MediaWidgetOption> mediaWidgetOptions;
   final int initialPage;
   final PhotoViewGalleryPageChangedCallback onPageChanged;
-  final PhotoViewScaleStateChangedCallback scaleStateChangedCallback;
 
   const MediaWidgetGallery({
     @required this.mediaWidgetOptions,
     this.initialPage,
     this.onPageChanged,
-    this.scaleStateChangedCallback,
   });
 
   @override
@@ -115,14 +107,9 @@ class _MediaWidgetGalleryState extends State<MediaWidgetGallery> {
     setState(() {
       _locked = scaleState != PhotoViewScaleState.initial;
     });
-    widget.scaleStateChangedCallback != null
-        ? widget.scaleStateChangedCallback(scaleState)
-        : null;
   }
 
-  int get actualPage {
-    return _controller.hasClients ? _controller.page.floor() : 0;
-  }
+  int get actualPage => _controller.hasClients ? _controller.page.floor() : 0;
 
   @override
   Widget build(BuildContext context) {
@@ -138,15 +125,19 @@ class _MediaWidgetGalleryState extends State<MediaWidgetGallery> {
   Widget _buildItem(context, int index) {
     var mediaWidgetOption = widget.mediaWidgetOptions[index];
 
-    return PhotoView.customChild(
-      key: ObjectKey(index),
-      child: mediaWidgetOption.widget,
-      childSize: mediaWidgetOption.size,
-      minScale: mediaWidgetOption.minScale,
-      maxScale: mediaWidgetOption.maxScale,
-      heroTag: mediaWidgetOption.heroTag,
-      scaleStateChangedCallback: _scaleStateChangedCallback,
-      backgroundDecoration: BoxDecoration(color: Colors.transparent),
+    return MediaDismissible(
+      disableDismiss: _locked,
+      onDismissed: () => Navigator.of(context).pop(),
+      child: PhotoView.customChild(
+        key: ObjectKey(index),
+        child: mediaWidgetOption.widget,
+        childSize: mediaWidgetOption.size,
+        minScale: mediaWidgetOption.minScale,
+        maxScale: mediaWidgetOption.maxScale,
+        heroTag: mediaWidgetOption.heroTag,
+        scaleStateChangedCallback: _scaleStateChangedCallback,
+        backgroundDecoration: BoxDecoration(color: Colors.transparent),
+      ),
     );
   }
 }

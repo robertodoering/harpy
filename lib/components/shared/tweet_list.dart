@@ -19,7 +19,7 @@ class TweetList extends StatelessWidget {
   // todo:
   // to animate new tweets in after a refresh:
   // maybe have 2 list of tweets,
-  // wrap the new tweets into a single widget / into a listview
+  // wrap the new tweets into a single widget / into a list view
   // set the initial index of the main list view to the old tweets
   // scroll up
 
@@ -62,22 +62,23 @@ class TweetTile extends StatelessWidget {
         children: <Widget>[
           _buildNameRow(),
           _buildText(),
-          _buildActionRow(),
           _buildMedia(),
+          _buildActionRow(),
         ],
       ),
     );
   }
 
-  Widget _buildNameRow() {
-    String time;
+  String get displayTime {
     Duration timeDifference = DateTime.now().difference(tweet.createdAt);
     if (timeDifference.inHours <= 24) {
-      time = "${timeDifference.inHours}h";
+      return "${timeDifference.inHours}h";
     } else {
-      time = DateFormat("MMMd").format(tweet.createdAt);
+      return DateFormat("MMMd").format(tweet.createdAt);
     }
+  }
 
+  Widget _buildNameRow() {
     return Row(
       children: <Widget>[
         // avatar
@@ -99,7 +100,7 @@ class TweetTile extends StatelessWidget {
 
             // username · time since tweet in hours
             Text(
-              "@${tweet.user.screenName} \u00b7 $time",
+              "@${tweet.user.screenName} \u00b7 $displayTime",
               style: HarpyTheme.theme.textTheme.caption,
             ),
           ],
@@ -112,6 +113,7 @@ class TweetTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: TwitterText(
+        key: Key("${tweet.id}"),
         text: tweet.full_text,
         entities: tweet.entities,
         onEntityTap: (model) {
@@ -153,7 +155,10 @@ class TweetTile extends StatelessWidget {
 
   Widget _buildMedia() {
     if (tweet.extended_entities?.media != null) {
-      return CollapsibleMedia(tweet.extended_entities.media);
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: CollapsibleMedia(tweet.extended_entities.media),
+      );
     } else {
       return Container();
     }
