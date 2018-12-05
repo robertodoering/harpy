@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:video_player/video_player.dart';
 
+typedef HideFullscreenCallback(BuildContext context);
+
 /// The [TwitterVideoPlayer] for Twitter videos.
 ///
 /// Wraps a [VideoPlayer] with custom controls.
@@ -13,19 +15,26 @@ class TwitterVideoPlayer extends StatefulWidget {
   final String thumbnail;
   final double thumbnailAspectRatio;
   final VoidCallback onShowFullscreen;
+  final HideFullscreenCallback onHideFullscreen;
+  final VideoPlayerController controller;
+
+  // todo: take a TwitterMedia as parameter and calculate aspect ratio here
 
   const TwitterVideoPlayer({
+    key,
     @required this.videoUrl,
     @required this.thumbnail,
     @required this.thumbnailAspectRatio,
     this.onShowFullscreen,
-  });
+    this.onHideFullscreen,
+    this.controller,
+  }) : super(key: key);
 
   @override
-  _TwitterVideoPlayerState createState() => _TwitterVideoPlayerState();
+  TwitterVideoPlayerState createState() => TwitterVideoPlayerState();
 }
 
-class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
+class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
   static const Icon play = Icon(
     Icons.play_arrow,
     size: 100.0,
@@ -38,8 +47,9 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
     color: Colors.white,
   );
 
-  VideoPlayerController _controller;
+  VideoPlayerController controller;
   bool _isPlaying;
+  bool _isFullscreen = false;
 
   FadeAnimation _fadeAnimation = FadeAnimation(child: play);
 
@@ -47,9 +57,11 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.videoUrl)
+    controller = widget.controller != null
+        ? widget.controller
+        : VideoPlayerController.network(widget.videoUrl)
       ..addListener(() {
-        final bool isPlaying = _controller.value.isPlaying;
+        final bool isPlaying = controller.value.isPlaying;
 
         if (isPlaying != _isPlaying) {
           setState(() {
@@ -65,7 +77,7 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return _controller.value.initialized
+    return controller.value.initialized
         ? _buildVideoPlayer()
         : _buildThumbnail();
   }
@@ -74,8 +86,10 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
     return GestureDetector(
       // initialize and start the video when clicking on the thumbnail
       onTap: () {
-        _controller.initialize().then((_) {
-          setState(() => _controller.play());
+        controller.initialize().then((_) {
+          setState(() {
+            controller.play();
+          });
         });
       },
       child: AspectRatio(
@@ -83,7 +97,12 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
         child: Stack(
           children: <Widget>[
             // thumbnail as an image
-            CachedNetworkImage(imageUrl: widget.thumbnail),
+            CachedNetworkImage(
+              imageUrl: widget.thumbnail,
+              fit: BoxFit.cover,
+              height: double.infinity,
+              width: double.infinity,
+            ),
 
             // play icon
             Center(
@@ -101,21 +120,21 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
   Widget _buildVideoPlayer() {
     return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
+      aspectRatio: controller.value.aspectRatio,
       child: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
           // video
           GestureDetector(
-            child: VideoPlayer(_controller),
+            child: VideoPlayer(controller),
             onTap: () {
-              if (!_controller.value.initialized) {
+              if (!controller.value.initialized) {
                 return;
               }
-              if (_controller.value.isPlaying) {
-                _controller.pause();
+              if (controller.value.isPlaying) {
+                controller.pause();
               } else {
-                _controller.play();
+                controller.play();
               }
             },
           ),
@@ -124,7 +143,7 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
           Align(
             alignment: Alignment.bottomCenter,
             child: VideoProgressIndicator(
-              _controller,
+              controller,
               allowScrubbing: true,
             ),
           ),
@@ -136,18 +155,7 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
             alignment: Alignment.bottomRight,
             child: Material(
               color: Colors.transparent,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.fullscreen,
-                  color: Colors.white,
-                  size: 36.0,
-                ),
-                onPressed: () {
-                  if (widget.onShowFullscreen != null) {
-                    widget.onShowFullscreen();
-                  }
-                },
-              ),
+              child: _buildFullscreenButton(),
             ),
           ),
 
@@ -156,11 +164,34 @@ class _TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
           // buffer indicator
           Center(
-              child: _controller.value.isBuffering
+              child: controller.value.isBuffering
                   ? const CircularProgressIndicator()
                   : null),
         ],
       ),
+    );
+  }
+
+  Widget _buildFullscreenButton() {
+    Icon icon = Icon(
+      _isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
+      color: Colors.white,
+      size: 36.0,
+    );
+
+    return IconButton(
+      icon: icon,
+      onPressed: () {
+        if (!_isFullscreen && widget.onShowFullscreen != null) {
+          widget.onShowFullscreen();
+        } else if (_isFullscreen && widget.onHideFullscreen != null) {
+          widget.onHideFullscreen(context);
+        }
+
+        setState(() {
+          _isFullscreen = !_isFullscreen;
+        });
+      },
     );
   }
 }

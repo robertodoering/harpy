@@ -1,72 +1,68 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/media/media_dismissable.dart';
-import 'package:harpy/components/shared/media/twitter_media.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-/// The [MediaDialog] that contains a list of [MediaModel] to display a
-/// [MediaWidgetGallery] for the [TwitterMedia].
-class MediaDialog extends StatelessWidget {
-  final List<MediaModel> mediaModels;
+/// The [PhotoMediaDialog] that contains a list of [media] to display a
+/// [MediaWidgetGallery].
+class PhotoMediaDialog extends StatelessWidget {
+  /// The list of [TwitterMedia] for the [MediaWidgetGallery] to display.
+  final List<TwitterMedia> media;
+
+  /// The initial index of the [MediaWidgetGallery].
   final int index;
 
-  const MediaDialog({
-    @required this.mediaModels,
+  const PhotoMediaDialog({
+    @required this.media,
     this.index = 0,
   });
 
-  // todo: hide on background click
-
   @override
   Widget build(BuildContext context) {
-    return Center(child: _buildCenterMedia(context));
-  }
+    return MediaWidgetGallery(
+      mediaWidgetOptions: media.map((m) {
+        double width = m.largeWidth?.toDouble() ??
+            m.mediumWidth?.toDouble() ??
+            m.smallWidth?.toDouble() ??
+            MediaQuery.of(context).size.width;
+        double height = m.largeHeight?.toDouble() ??
+            m.mediumHeight?.toDouble() ??
+            m.smallHeight?.toDouble() ??
+            MediaQuery.of(context).size.height / 2;
 
-  Widget _buildCenterMedia(BuildContext context) {
-    if (mediaModels.any((model) => model.type == video)) {
-      // videos
-      return Center(
-        child: mediaModels.first.widget, // todo
-      );
-    } else {
-      // photos / gifs
-      return MediaWidgetGallery(
-        mediaWidgetOptions: mediaModels.map((mediaModel) {
-          double width;
-          double height;
+        Widget mediaWidget = CachedNetworkImage(
+          imageUrl: m.mediaUrl,
+          fit: BoxFit.cover,
+          height: double.infinity,
+          width: double.infinity,
+        );
 
-          if (mediaModel.width == null || mediaModel.height == null) {
-            // fallback if no size was available for image
-            width = MediaQuery.of(context).size.width;
-            height = MediaQuery.of(context).size.height / 2;
-          } else {
-            width = mediaModel.width;
-            height = mediaModel.height;
-          }
+        String heroTag = m.mediaUrl + "${media.indexOf(m)}";
 
-          return MediaWidgetOption(
-            widget: mediaModel.widget,
-            minScale: PhotoViewComputedScale.contained,
-            size: Size(width, height),
-            heroTag: mediaModel.heroTag,
-          );
-        }).toList(),
-        initialPage: index,
-      );
-    }
+        return MediaGalleryEntry(
+          widget: mediaWidget,
+          minScale: PhotoViewComputedScale.contained,
+          size: Size(width, height),
+          heroTag: heroTag,
+        );
+      }).toList(),
+      initialPage: index,
+    );
   }
 }
 
 /// A helper class that contains information to build a [PhotoView.customChild]
 /// in a [MediaWidgetGallery].
-class MediaWidgetOption {
+class MediaGalleryEntry {
   final Widget widget;
   final Object heroTag;
   final dynamic minScale;
   final dynamic maxScale;
   final Size size;
 
-  const MediaWidgetOption({
+  const MediaGalleryEntry({
     @required this.widget,
     this.heroTag,
     this.minScale,
@@ -76,9 +72,9 @@ class MediaWidgetOption {
 }
 
 /// A [MediaWidgetGallery] that builds [PhotoView.customChild]s from a list of
-/// [MediaWidgetOption].
+/// [MediaGalleryEntry].
 class MediaWidgetGallery extends StatefulWidget {
-  final List<MediaWidgetOption> mediaWidgetOptions;
+  final List<MediaGalleryEntry> mediaWidgetOptions;
   final int initialPage;
   final PhotoViewGalleryPageChangedCallback onPageChanged;
 
