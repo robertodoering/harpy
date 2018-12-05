@@ -41,7 +41,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: widget.media.any((media) => media.type == video)
-                ? 500.0 // todo: limit to screen height
+                ? double.infinity // todo: limit to screen height
                 : 250.0,
           ),
           child: _buildMediaLayout(context),
@@ -141,10 +141,8 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
       // gif
       mediaWidget = Container(height: 50.0, child: Center(child: Text("gif")));
     } else if (media.type == video) {
-      double thumbnailAspectRatio =
-          media.videoInfo?.aspectRatio[0]?.toDouble() ??
-              1.0 / media.videoInfo.aspectRatio[1]?.toDouble() ??
-              1.0;
+      double thumbnailAspectRatio = (media.videoInfo?.aspectRatio[0] ?? 1) /
+          (media.videoInfo.aspectRatio[1] ?? 1);
 
       var key = GlobalKey<TwitterVideoPlayerState>();
 
@@ -186,9 +184,8 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     GlobalKey<TwitterVideoPlayerState> key,
     TwitterMedia media,
   ) {
-    double thumbnailAspectRatio = media.videoInfo?.aspectRatio[0]?.toDouble() ??
-        1.0 / media.videoInfo.aspectRatio[1]?.toDouble() ??
-        1.0;
+    double thumbnailAspectRatio = (media.videoInfo?.aspectRatio[0] ?? 1) /
+        (media.videoInfo.aspectRatio[1] ?? 1);
 
     Navigator.of(context).push(HeroDialogRoute(
       builder: (context) {
