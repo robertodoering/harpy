@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/media/media_dialog.dart';
+import 'package:harpy/components/shared/media/twitter_gif_player.dart';
 import 'package:harpy/components/shared/media/twitter_video_player.dart';
 import 'package:harpy/components/shared/routes.dart';
 
@@ -137,9 +138,15 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 
       tapCallback = () => _showMediaGallery(index);
     } else if (media.type == animatedGif) {
-      // todo: support gifs
-      // gif
-      mediaWidget = Container(height: 50.0, child: Center(child: Text("gif")));
+      var key = GlobalKey<TwitterGifPlayerState>();
+
+      // twitter gif player
+      mediaWidget = TwitterGifPlayer(
+        key: key,
+        media: media,
+        onShowFullscreen: () => _showGifFullscreen(key, media),
+        onHideFullscreen: (context) => Navigator.maybePop(context),
+      );
     } else if (media.type == video) {
       var key = GlobalKey<TwitterVideoPlayerState>();
 
@@ -183,6 +190,25 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
       HeroDialogRoute(builder: (context) {
         return Center(
           child: TwitterVideoPlayer(
+            media: media,
+            isFullscreen: true,
+            onHideFullscreen: (context) => Navigator.maybePop(context),
+            controller: key.currentState.controller,
+            initializing: key.currentState.initializing,
+          ),
+        );
+      }),
+    );
+  }
+
+  void _showGifFullscreen(
+    GlobalKey<TwitterGifPlayerState> key,
+    TwitterMedia media,
+  ) {
+    Navigator.of(context).push(
+      HeroDialogRoute(builder: (context) {
+        return Center(
+          child: TwitterGifPlayer(
             media: media,
             isFullscreen: true,
             onHideFullscreen: (context) => Navigator.maybePop(context),

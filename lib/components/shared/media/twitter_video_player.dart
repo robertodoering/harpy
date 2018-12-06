@@ -37,13 +37,13 @@ class TwitterVideoPlayer extends StatefulWidget {
 class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
   static const play = Icon(
     Icons.play_arrow,
-    size: 100.0,
+    size: 72.0,
     color: Colors.white,
   );
 
   static const pause = Icon(
     Icons.pause,
-    size: 100.0,
+    size: 72.0,
     color: Colors.white,
   );
 
@@ -194,24 +194,24 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    var body = Material(
+      color: Colors.transparent,
+      child: RotatedBox(
+        quarterTurns: _rotation,
+        child: AspectRatio(
+          aspectRatio: _aspectRatio,
+          child: controller.value.initialized
+              ? _buildVideoPlayer()
+              : _buildThumbnail(),
+        ),
+      ),
+    );
+
     return Container(
       width: widget.isFullscreen ? double.infinity : null,
       height: widget.isFullscreen ? double.infinity : null,
       color: widget.isFullscreen ? Colors.black : Colors.transparent,
-      child: Center(
-        child: Material(
-          color: Colors.transparent,
-          child: RotatedBox(
-            quarterTurns: _rotation,
-            child: AspectRatio(
-              aspectRatio: _aspectRatio,
-              child: controller.value.initialized
-                  ? _buildVideoPlayer()
-                  : _buildThumbnail(),
-            ),
-          ),
-        ),
-      ),
+      child: widget.isFullscreen ? Center(child: body) : body,
     );
   }
 
@@ -231,7 +231,9 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
           ),
 
           // center icon
-          Center(child: initializing ? bufferIndicator : play),
+          Center(
+              child:
+                  initializing ? bufferIndicator : CircleButton(child: play)),
 
           _buildFullscreenButton(),
         ],
