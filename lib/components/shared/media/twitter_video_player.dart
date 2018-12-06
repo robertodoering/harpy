@@ -314,9 +314,18 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
   }
 
   Widget _buildDoubleTapGesture() {
+    // skip forward 10% of the video length when double clicking on the right
+    // side of the video or
+    // rewind 10% of the video length when double clicking on the left side of
+    // the video
+
+    Duration skip =
+        Duration(milliseconds: controller.value.duration.inMilliseconds ~/ 10);
+
     final back = () {
       Duration position = controller.value.position;
-      controller.seekTo(position - Duration(seconds: 10));
+
+      controller.seekTo(position - skip);
 
       setState(() {
         _rewindFadeAnimation = FadeAnimation(
@@ -329,7 +338,7 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
     final forward = () {
       Duration position = controller.value.position;
-      controller.seekTo(position + Duration(seconds: 10));
+      controller.seekTo(position + skip);
 
       setState(() {
         _forwardFadeAnimation = FadeAnimation(
