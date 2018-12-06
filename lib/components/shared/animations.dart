@@ -93,9 +93,10 @@ class FadeAnimation extends StatefulWidget {
   final Duration duration;
 
   const FadeAnimation({
+    Key key,
     this.child,
     this.duration = const Duration(milliseconds: 500),
-  });
+  }) : super(key: key);
 
   @override
   _FadeAnimationState createState() => _FadeAnimationState();

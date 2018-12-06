@@ -90,3 +90,39 @@ class _TwitterButtonState extends State<TwitterButton> {
     });
   }
 }
+
+class CircleButton extends StatelessWidget {
+  final Widget child;
+  final Color backgroundColor;
+  final Color highlightColor;
+  final Color splashColor;
+  final EdgeInsets padding;
+  final VoidCallback onPressed;
+
+  const CircleButton({
+    @required this.child,
+    this.backgroundColor = Colors.black26,
+    this.highlightColor = Colors.white10,
+    this.splashColor = Colors.white24,
+    this.padding = const EdgeInsets.all(8.0),
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Material(
+        color: backgroundColor,
+        child: InkWell(
+          highlightColor: highlightColor,
+          splashColor: splashColor,
+          child: Padding(
+            padding: padding,
+            child: child,
+          ),
+          onTap: onPressed,
+        ),
+      ),
+    );
+  }
+}

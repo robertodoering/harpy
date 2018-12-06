@@ -141,17 +141,12 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
       // gif
       mediaWidget = Container(height: 50.0, child: Center(child: Text("gif")));
     } else if (media.type == video) {
-      double thumbnailAspectRatio = (media.videoInfo?.aspectRatio[0] ?? 1) /
-          (media.videoInfo.aspectRatio[1] ?? 1);
-
       var key = GlobalKey<TwitterVideoPlayerState>();
 
       // twitter video player
       mediaWidget = TwitterVideoPlayer(
         key: key,
-        videoUrl: media.videoInfo.variants.first.url, // todo: quality
-        thumbnail: media.mediaUrl,
-        thumbnailAspectRatio: thumbnailAspectRatio,
+        media: media,
         onShowFullscreen: () => _showVideoFullscreen(key, media),
         onHideFullscreen: (context) => Navigator.maybePop(context),
       );
@@ -184,20 +179,18 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     GlobalKey<TwitterVideoPlayerState> key,
     TwitterMedia media,
   ) {
-    double thumbnailAspectRatio = (media.videoInfo?.aspectRatio[0] ?? 1) /
-        (media.videoInfo.aspectRatio[1] ?? 1);
-
-    Navigator.of(context).push(HeroDialogRoute(
-      builder: (context) {
+    Navigator.of(context).push(
+      HeroDialogRoute(builder: (context) {
         return Center(
-            child: TwitterVideoPlayer(
-          videoUrl: media.videoInfo.variants.first.url,
-          thumbnail: media.mediaUrl,
-          thumbnailAspectRatio: thumbnailAspectRatio,
-          onHideFullscreen: (context) => Navigator.maybePop(context),
-          controller: key.currentState.controller,
-        ));
-      },
-    ));
+          child: TwitterVideoPlayer(
+            media: media,
+            isFullscreen: true,
+            onHideFullscreen: (context) => Navigator.maybePop(context),
+            controller: key.currentState.controller,
+            initializing: key.currentState.initializing,
+          ),
+        );
+      }),
+    );
   }
 }
