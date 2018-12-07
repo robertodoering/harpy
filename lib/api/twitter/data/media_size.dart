@@ -17,4 +17,9 @@ class MediaSize {
       _$MediaSizeFromJson(json);
 
   Map<String, dynamic> toJson() => _$MediaSizeToJson(this);
+
+  @override
+  String toString() {
+    return 'MediaSize{w: $w, h: $h, resize: $resize}';
+  }
 }

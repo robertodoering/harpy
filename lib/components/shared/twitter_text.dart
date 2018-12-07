@@ -15,11 +15,12 @@ class TwitterText extends StatefulWidget {
   final ValueChanged<TwitterEntityModel> onEntityTap;
 
   const TwitterText({
+    key,
     @required this.text,
     this.entities,
     this.entityColor = HarpyTheme.primaryColor,
     this.onEntityTap,
-  });
+  }) : super(key: key);
 
   @override
   TwitterTextState createState() => TwitterTextState();
@@ -33,9 +34,16 @@ class TwitterTextState extends State<TwitterText> {
 
   List<TextSpan> _textSpans = [];
 
+  // todo: parse html symbols when they sometimes appear as '&lt;' instead of '<'
+
   @override
   void initState() {
     super.initState();
+
+//    print("------");
+//    print(widget.text);
+//    print(widget.entities);
+//    print("------");
 
     // parse text
     var twitterEntities = TwitterEntities(
@@ -72,6 +80,8 @@ class TwitterTextState extends State<TwitterText> {
   }
 
   void _addEntityModel(TwitterEntityModel entityModel) {
+    if (entityModel.type == EntityType.media) return;
+
     GestureRecognizer recognizer = null;
 
     if (widget.onEntityTap != null) {
@@ -117,7 +127,7 @@ class TwitterEntities {
   var _entityMap = <String, int>{};
 
   TwitterEntities(String text, Entities entities) {
-    for (var hashtag in entities.hashtags) {
+    for (var hashtag in entities.hashtags ?? []) {
       var indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
@@ -131,7 +141,7 @@ class TwitterEntities {
       _addEntityModel(entityModel);
     }
 
-    for (var url in entities.urls) {
+    for (var url in entities.urls ?? []) {
       var indices = _findIndices(text, url.url);
       if (indices == null) break;
 
@@ -145,7 +155,7 @@ class TwitterEntities {
       _addEntityModel(entityModel);
     }
 
-    for (var userMention in entities.userMentions) {
+    for (var userMention in entities.userMentions ?? []) {
       var indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
@@ -156,6 +166,19 @@ class TwitterEntities {
         displayUrl: "@${userMention.screenName}",
         type: EntityType.mention,
       );
+      _addEntityModel(entityModel);
+    }
+
+    for (var media in entities.media ?? []) {
+      var indices = _findIndices(text, media.url);
+      if (indices == null) break;
+
+      var entityModel = TwitterEntityModel(
+          startIndex: indices[0],
+          endIndex: indices[1],
+          url: media.expandedUrl,
+          displayUrl: media.displayUrl,
+          type: EntityType.media);
       _addEntityModel(entityModel);
     }
   }
@@ -218,4 +241,5 @@ enum EntityType {
   hashtag,
   mention,
   url,
+  media,
 }

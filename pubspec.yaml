@@ -17,6 +17,9 @@ dependencies:
   intl: ^0.15.7
   cached_network_image: ^0.5.0+1
   url_launcher: ^4.0.1
+  video_player: ^0.7.2
+  photo_view:
+    git: https://github.com/robertodoering/photo_view.git
 
   flutter:
     sdk: flutter
