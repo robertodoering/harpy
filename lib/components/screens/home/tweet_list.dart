@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/components/screens/home/tweet_text.dart';
+import 'package:harpy/components/shared/animations.dart';
+import 'package:harpy/components/shared/twitter_text.dart';
+import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/stores/home_store.dart';
@@ -83,7 +85,7 @@ class TweetTile extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
-              tweet.user.profileImageUrl,
+              tweet.user.userProfileImageOriginal,
             ),
           ),
         ),
@@ -108,7 +110,15 @@ class TweetTile extends StatelessWidget {
   Widget _buildText() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: TweetText(tweet),
+      child: TwitterText(
+        text: tweet.full_text,
+        entities: tweet.entities,
+        onEntityTap: (model) {
+          if (model.type == EntityType.url) {
+            launchUrl(model.url);
+          }
+        },
+      ),
     );
   }
 

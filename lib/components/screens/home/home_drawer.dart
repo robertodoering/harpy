@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
+import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -91,36 +92,63 @@ class _UserDrawerHeaderState extends State<UserDrawerHeader>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
-      padding: EdgeInsets.fromLTRB(
-        16.0,
-        16.0 + MediaQuery.of(context).padding.top, // + statusbar height
-        16.0,
-        8.0,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: Divider.createBorderSide(context),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(width: double.infinity),
-          CircleAvatar(
-            radius: 32.0,
-            backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(
-              store.loggedInUser.profileImageUrl,
-            ),
+    return InkWell(
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UserProfileScreen(
+                      user: store.loggedInUser,
+                    )),
           ),
-          SizedBox(height: 8.0),
-          Text(store.loggedInUser.name,
-              style: Theme.of(context).textTheme.display2),
-          Text("@${store.loggedInUser.screenName}",
-              style: Theme.of(context).textTheme.display1),
-        ],
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8.0),
+        padding: EdgeInsets.fromLTRB(
+          16.0,
+          16.0 + MediaQuery.of(context).padding.top, // + statusbar height
+          16.0,
+          8.0,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: Divider.createBorderSide(context),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(width: double.infinity),
+            CircleAvatar(
+              radius: 32.0,
+              backgroundColor: Colors.transparent,
+              backgroundImage: CachedNetworkImageProvider(
+                store.loggedInUser.userProfileImageOriginal,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(store.loggedInUser.name,
+                style: Theme.of(context).textTheme.display2),
+            Text("@${store.loggedInUser.screenName}",
+                style: Theme.of(context).textTheme.display1),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "Followers: ${store.loggedInUser.followersCount}",
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      "Following: ${store.loggedInUser.friendsCount}",
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

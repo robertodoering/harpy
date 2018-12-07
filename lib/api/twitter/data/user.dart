@@ -1,3 +1,4 @@
+import 'package:harpy/api/twitter/data/user_entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -63,6 +64,7 @@ class User {
   bool showAllInlineMedia;
   @JsonKey(name: 'screen_name')
   String screenName;
+  UserEntities entities;
 
   User(
     this.name,
@@ -95,6 +97,7 @@ class User {
     this.following,
     this.showAllInlineMedia,
     this.screenName,
+    this.entities,
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -105,4 +108,10 @@ class User {
   String toString() {
     return 'User{name: $name, profileSidebarFillColor: $profileSidebarFillColor, profileBackgroundTitle: $profileBackgroundTitle, profileImageUrl: $profileImageUrl, createdAt: $createdAt, defaultProfile: $defaultProfile, url: $url, contributorsEnabled: $contributorsEnabled, favouritesCount: $favouritesCount, profileImageUrlHttps: $profileImageUrlHttps, id: $id, listedCount: $listedCount, profileUseBackgroundImage: $profileUseBackgroundImage, profileTextColor: $profileTextColor, followersCount: $followersCount, lang: $lang, protected: $protected, geoEnabled: $geoEnabled, notifications: $notifications, description: $description, profileBackground_Color: $profileBackground_Color, verified: $verified, profileBackgroundImageUrlHttps: $profileBackgroundImageUrlHttps, statusesCount: $statusesCount, profileBackgroundImageUrl: $profileBackgroundImageUrl, defaultProfileImage: $defaultProfileImage, friendsCount: $friendsCount, following: $following, showAllInlineMedia: $showAllInlineMedia, screenName: $screenName}';
   }
+
+  String get userProfileImageOriginal =>
+      profileImageUrlHttps.replaceFirst("_normal", "");
+
+  String get userProfileImageBigger =>
+      profileImageUrlHttps.replaceFirst("normal", "bigger");
 }

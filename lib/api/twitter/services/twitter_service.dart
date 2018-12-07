@@ -17,13 +17,13 @@ abstract class TwitterService {
 
     if (response.statusCode == 200) {
       if (onSuccess != null) {
-        onSuccess(response);
+        return onSuccess(response);
       } else {
         return Future<Response>(() => response);
       }
     } else {
       if (onFail != null) {
-        onFail(response);
+        return onFail(response);
       } else {
         return Future.error(response.body);
       }

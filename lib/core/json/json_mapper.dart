@@ -3,6 +3,7 @@ import 'dart:convert';
 abstract class JsonMapper<T> {
   dynamic map(T mapSingleType(Map<String, dynamic> data), String data) {
     var objects = jsonDecode(data);
+//    print(objects);
     if (objects is List) {
       List<T> decodedObjects = [];
       Set<Map<String, dynamic>> set = Set.from(objects);
