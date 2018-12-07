@@ -65,3 +65,18 @@ String appendParamsToUrl(String url, Map<String, String> params) {
 
   return url + paramsString;
 }
+
+Map<String, String> htmlEntities = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+};
+
+/// Parses <, > and & when they appear as html entities.
+String parseHtmlEntities(String source) {
+  htmlEntities.forEach((entity, value) {
+    source = source.replaceAll(entity, value);
+  });
+
+  return source;
+}
