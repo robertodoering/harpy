@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/media/media_dialog.dart';
+import 'package:harpy/components/shared/media/media_expansion.dart';
 import 'package:harpy/components/shared/media/twitter_video_player.dart';
 import 'package:harpy/components/shared/routes.dart';
 
@@ -10,20 +11,14 @@ const String photo = "photo";
 const String video = "video";
 const String animatedGif = "animated_gif";
 
-/// Builds a column of media that can be collapsed.
+/// Builds a column of [media] that can be collapsed.
 class CollapsibleMedia extends StatefulWidget {
   final List<TwitterMedia> media;
 
   const CollapsibleMedia(this.media);
 
-  // todo: instead of using a ExpansionTile, build own widget where the expand
-  // icon is stacked on the media, so the title of the ExpansionTile doesn't
-  // take up so much space
-
   @override
-  CollapsibleMediaState createState() {
-    return new CollapsibleMediaState();
-  }
+  CollapsibleMediaState createState() => CollapsibleMediaState();
 }
 
 class CollapsibleMediaState extends State<CollapsibleMedia> {
@@ -34,19 +29,15 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Container(),
-      initiallyExpanded: true,
-      children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: widget.media.any((media) => media.type == video)
-                ? double.infinity // todo: limit to screen height
-                : 250.0,
-          ),
-          child: _buildMediaLayout(context),
+    return MediaExpansion(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: widget.media.any((media) => media.type == photo)
+              ? 250.0
+              : double.infinity,
         ),
-      ],
+        child: _buildMediaLayout(context),
+      ),
     );
   }
 
@@ -119,6 +110,8 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     }
   }
 
+  /// Builds a [CachedNetworkImage], [TwitterGifPlayer] or [TwitterVideoPlayer]
+  /// for images, gifs and videos.
   Widget _buildMediaWidget(TwitterMedia media, BuildContext context) {
     Widget mediaWidget;
 
@@ -166,7 +159,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
           child: Hero(
             tag: heroTag,
             placeholderBuilder: (context, widget) => widget,
-            child: mediaWidget,
+            child: mediaWidget ?? Container(),
           ),
         ),
       ),
