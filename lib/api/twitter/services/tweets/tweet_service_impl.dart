@@ -31,6 +31,30 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
+  Future<List<Tweet>> getUserTimeline({
+    Map<String, String> params,
+  }) async {
+    params ??= Map();
+    params["count"] ??= "800";
+    params["tweet_mode"] ??= "extended";
+
+    final response = await client.get(
+      "https://api.twitter.com/1.1/statuses/user_timeline.json",
+      params: params,
+    );
+
+    if (response.statusCode == 200) {
+      List<Tweet> tweets = map((map) {
+        return Tweet.fromJson(map);
+      }, response.body);
+
+      return tweets;
+    } else {
+      return Future.error(response.body);
+    }
+  }
+
+  @override
   Future retweet(String tweetId) async {
     final response = await client
         .post("https://api.twitter.com/1.1/statuses/retweet/$tweetId.json");

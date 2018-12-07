@@ -7,11 +7,7 @@ import 'package:logging/logging.dart';
 class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
   final Logger log = Logger('CachedTweetServiceImpl');
 
-  TweetCache _tweetCache;
-
-  CachedTweetServiceImpl() {
-    _tweetCache = TweetCache();
-  }
+  TweetCache _tweetCache = TweetCache();
 
   @override
   Future<List<Tweet>> getHomeTimeline({
@@ -19,6 +15,7 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     bool forceUpdate = false,
   }) async {
     log.finest("Trying to get Home Timeline Data");
+
     List<Tweet> tweets = [];
     tweets = await _tweetCache.checkCacheForTweets();
 
@@ -41,8 +38,17 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     return tweets;
   }
 
-  void updateCache(Tweet tweet) {
-    log.fine("updated tweet");
-    _tweetCache.cacheTweet(tweet);
+  void updateCache(Tweet tweet) async {
+    log.fine("updating tweet");
+
+    bool exists = await _tweetCache.tweetExists(tweet);
+
+    if (exists) {
+      log.fine("tweet updated");
+      _tweetCache.cacheTweet(tweet);
+      return;
+    }
+
+    log.warning("tweet unable to update");
   }
 }

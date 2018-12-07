@@ -6,16 +6,18 @@ import 'package:harpy/core/app_configuration.dart';
 import 'package:harpy/core/filesystem/cache_dir_service.dart';
 import 'package:logging/logging.dart';
 
+const String lastUpdated = "last_updated";
+
+const String homeTimeline = "home_timeline";
+
 class TweetCache {
   final Logger log = Logger('TweetCache');
 
-  CacheDirectoryService _cacheDirService;
+  final String type;
 
-  String _lastUpdatedStorageFileName = "last_updated";
+  CacheDirectoryService cacheDirService = CacheDirectoryService();
 
-  TweetCache() {
-    _cacheDirService = CacheDirectoryService();
-  }
+  TweetCache() : type = homeTimeline;
 
   Future<List<Tweet>> checkCacheForTweets() async {
     List<Tweet> tweets = [];
@@ -33,8 +35,10 @@ class TweetCache {
   Future<List<Tweet>> getCachedTweets() async {
     List<Tweet> tweets = [];
 
-    List<File> files = await _cacheDirService.listFiles(currentBucketName,
-        allowedFileExtension: ".json");
+    List<File> files = await cacheDirService.listFiles(
+      currentBucketName,
+      allowedFileExtension: ".json",
+    );
     log.fine("Found ${files.length} cached Tweets!");
 
     files.forEach((file) {
@@ -47,9 +51,26 @@ class TweetCache {
     return tweets;
   }
 
+  Future<bool> tweetExists(Tweet tweet) async {
+    List<File> files = await cacheDirService.listFiles(
+      currentBucketName,
+      allowedFileExtension: ".json",
+    );
+
+    return files.where((file) {
+      // parse the id from the file path
+      String id = file.path.substring(
+        file.path.lastIndexOf("/") + 1,
+        file.path.lastIndexOf("."),
+      );
+
+      return (tweet.id.toString() == id);
+    }).isNotEmpty;
+  }
+
   void clearCache() async {
     log.fine("Clear bucket $currentBucketName");
-    List<File> files = await _cacheDirService.listFiles(currentBucketName);
+    List<File> files = await cacheDirService.listFiles(currentBucketName);
 
     files.forEach((file) {
       log.fine("Try to delete ${file.path}");
@@ -57,20 +78,22 @@ class TweetCache {
     });
   }
 
-  void cacheTweets(List<Tweet> tweets) {
-    tweets.forEach(cacheTweet);
-    _setLastUpdatedDate();
-  }
-
   void _setLastUpdatedDate() async {
-    _cacheDirService.createFile(currentBucketName, _lastUpdatedStorageFileName,
-        ".txt", DateTime.now().toString());
+    cacheDirService.createFile(
+      currentBucketName,
+      lastUpdated,
+      ".txt",
+      DateTime.now().toString(),
+    );
   }
 
   Future<DateTime> _getLastUpdatedTime() async {
     try {
-      return DateTime.parse(await _cacheDirService.readFile(
-          currentBucketName, _lastUpdatedStorageFileName, ".txt"));
+      return DateTime.parse(await cacheDirService.readFile(
+        currentBucketName,
+        lastUpdated,
+        ".txt",
+      ));
     } catch (ex) {
       return null;
     }
@@ -88,10 +111,15 @@ class TweetCache {
             .tweetCacheTimeInHours;
   }
 
+  void cacheTweets(List<Tweet> tweets) {
+    tweets.forEach(cacheTweet);
+    _setLastUpdatedDate();
+  }
+
   void cacheTweet(Tweet tweet) {
     String fileName = "${tweet.id}";
 
-    _cacheDirService.createFile(
+    cacheDirService.createFile(
       currentBucketName,
       fileName,
       "json",
@@ -102,10 +130,6 @@ class TweetCache {
 
   String get currentBucketName {
     String currentUserId = AppConfiguration().twitterSession.userId;
-    return "tweets/$currentUserId";
-  }
-
-  set cacheDirService(CacheDirectoryService value) {
-    _cacheDirService = value;
+    return "tweets/$type/$currentUserId";
   }
 }
