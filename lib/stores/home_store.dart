@@ -31,7 +31,7 @@ class HomeStore extends Store {
       );
     });
 
-    clearCache.listen((_) => TweetCache.homeTimeline().clearCache());
+    clearCache.listen((_) => TweetCache().clearCache());
 
     // favorite / retweet actions
     triggerOnAction(favoriteTweet, (Tweet tweet) {

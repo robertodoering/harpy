@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/stores/home_store.dart';
@@ -8,28 +9,58 @@ import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/stores/user_store.dart';
 
-class HomeDrawer extends StatelessWidget {
+void _navigateToProfileScreen(BuildContext context, User user) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => UserProfileScreen(user: user),
+    ),
+  );
+}
+
+class HomeDrawer extends StatefulWidget {
+  @override
+  HomeDrawerState createState() {
+    return new HomeDrawerState();
+  }
+}
+
+class HomeDrawerState extends State<HomeDrawer> with StoreWatcherMixin {
+  UserStore store;
+
+  @override
+  void initState() {
+    super.initState();
+    store = listenToStore(Tokens.user);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    unlistenFromStore(store);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UserDrawerHeader(),
-          _buildActions(),
+          UserDrawerHeader(store.loggedInUser),
+          _buildActions(context),
           _buildBottomActions(context),
         ],
       ),
     );
   }
 
-  Widget _buildActions() {
+  Widget _buildActions(BuildContext context) {
     return Column(
       children: <Widget>[
         ListTile(
           leading: Icon(Icons.face),
           title: Text("Profile"),
-          onTap: () {},
+          onTap: () => _navigateToProfileScreen(context, store.loggedInUser),
         ),
         ListTile(
           leading: Icon(Icons.bookmark_border),
@@ -69,86 +100,68 @@ class HomeDrawer extends StatelessWidget {
 }
 
 /// The [Drawer] header that contains information about the logged in [User].
-class UserDrawerHeader extends StatefulWidget {
-  @override
-  _UserDrawerHeaderState createState() => _UserDrawerHeaderState();
-}
+class UserDrawerHeader extends StatelessWidget {
+  final User user;
 
-class _UserDrawerHeaderState extends State<UserDrawerHeader>
-    with StoreWatcherMixin {
-  UserStore store;
-
-  @override
-  void initState() {
-    super.initState();
-    store = listenToStore(Tokens.user);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    unlistenFromStore(store);
-  }
+  const UserDrawerHeader(this.user);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => UserProfileScreen(
-                      user: store.loggedInUser,
-                    )),
-          ),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8.0),
-        padding: EdgeInsets.fromLTRB(
-          16.0,
-          16.0 + MediaQuery.of(context).padding.top, // + statusbar height
-          16.0,
-          8.0,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.fromLTRB(
+        16.0,
+        16.0 + MediaQuery.of(context).padding.top, // + statusbar height
+        16.0,
+        8.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: Divider.createBorderSide(context),
         ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: Divider.createBorderSide(context),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(width: double.infinity),
-            CircleAvatar(
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(width: double.infinity),
+          GestureDetector(
+            onTap: () => _navigateToProfileScreen(context, user),
+            child: CircleAvatar(
               radius: 32.0,
               backgroundColor: Colors.transparent,
               backgroundImage: CachedNetworkImageProvider(
-                store.loggedInUser.userProfileImageOriginal,
+                user.userProfileImageOriginal,
               ),
             ),
-            SizedBox(height: 8.0),
-            Text(store.loggedInUser.name,
-                style: Theme.of(context).textTheme.display2),
-            Text("@${store.loggedInUser.screenName}",
-                style: Theme.of(context).textTheme.display1),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Followers: ${store.loggedInUser.followersCount}",
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      "Following: ${store.loggedInUser.friendsCount}",
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          SizedBox(height: 8.0),
+          Text(user.name, style: Theme.of(context).textTheme.display2),
+          Text("@${user.screenName}",
+              style: Theme.of(context).textTheme.display1),
+          SizedBox(height: 8.0),
+          _buildFollowersCount(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFollowersCount(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          Text(
+            "Followers: ${user.followersCount}",
+            style: Theme.of(context).textTheme.display1,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "Following: ${user.friendsCount}",
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ),
+        ],
       ),
     );
   }
