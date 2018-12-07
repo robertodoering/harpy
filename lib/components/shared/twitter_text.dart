@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/entities.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/theme.dart';
 
 /// Creates a [RichText] from the given [text].
@@ -33,8 +34,6 @@ class TwitterTextState extends State<TwitterText> {
   List<GestureRecognizer> _gestureRecognizer = [];
 
   List<TextSpan> _textSpans = [];
-
-  // todo: parse html symbols when they sometimes appear as '&lt;' instead of '<'
 
   @override
   void initState() {
@@ -71,6 +70,7 @@ class TwitterTextState extends State<TwitterText> {
   void _addText(int start, int end) {
     if (start < end && end <= widget.text.length) {
       String text = widget.text.substring(start, end);
+      text = parseHtmlEntities(text);
 
       _textSpans.add(TextSpan(
         text: text,

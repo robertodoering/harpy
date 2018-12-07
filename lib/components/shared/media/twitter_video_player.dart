@@ -1,20 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
+import 'package:harpy/components/shared/media/twitter_video_player_mixin.dart';
 import 'package:video_player/video_player.dart';
 
-typedef HideFullscreenCallback(BuildContext context);
-
 /// The [TwitterVideoPlayer] for Twitter videos.
-///
-/// Wraps a [VideoPlayer] with custom controls.
-///
-/// The [thumbnail] will be shown initially and loads the [videoUrl] on tap.
 class TwitterVideoPlayer extends StatefulWidget {
   final TwitterMedia media;
-  final bool isFullscreen;
+  final bool fullscreen;
   final VoidCallback onShowFullscreen;
   final HideFullscreenCallback onHideFullscreen;
   final VideoPlayerController controller;
@@ -23,7 +17,7 @@ class TwitterVideoPlayer extends StatefulWidget {
   const TwitterVideoPlayer({
     Key key,
     @required this.media,
-    this.isFullscreen = false,
+    this.fullscreen = false,
     this.onShowFullscreen,
     this.onHideFullscreen,
     this.controller,
@@ -34,45 +28,8 @@ class TwitterVideoPlayer extends StatefulWidget {
   TwitterVideoPlayerState createState() => TwitterVideoPlayerState();
 }
 
-class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
-  static const play = Icon(
-    Icons.play_arrow,
-    size: 72.0,
-    color: Colors.white,
-  );
-
-  static const pause = Icon(
-    Icons.pause,
-    size: 72.0,
-    color: Colors.white,
-  );
-
-  static const bufferIndicator = CircularProgressIndicator(
-    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-  );
-
-  /// The [VideoPlayerController] for the video.
-  ///
-  /// Equal to the [widget.controller] if it's not null.
-  VideoPlayerController controller;
-
-  /// `true` while the [controller] is initially loading the video.
-  bool initializing = false;
-
-  /// `true` while the video is playing.
-  bool _playing = false;
-
-  /// `true` while the video is buffering.
-  bool _buffering = false;
-
-  /// `true` when the [controller] position reached the end of the video.
-  bool _finished = false;
-
-  /// The [VideoPlayerValue] of the last [_listener] call.
-  ///
-  /// Used to determine whether or not the video is [_buffering].
-  VideoPlayerValue _lastValue;
-
+class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
+    with TwitterVideoPlayerMixin<TwitterVideoPlayer> {
   /// The pause / play [FadeAnimation].
   FadeAnimation _fadeAnimation;
 
@@ -82,37 +39,18 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
   /// The forward [FadeAnimation].
   FadeAnimation _forwardFadeAnimation;
 
-  /// The url of the thumbnail to display when the [controller] has not been
-  /// initialized.
-  String get _thumbnailUrl => widget.media.mediaUrl;
-
-  /// The aspect ratio of the video.
-  ///
-  /// If the [controller] has not been initialized it will calculate the aspect
-  /// ratio from the [TwitterMedia].
-  double get _aspectRatio {
-    return controller.value.initialized
-        ? controller.value.aspectRatio
-        : (widget.media.videoInfo?.aspectRatio[0] ?? 1) /
-            (widget.media.videoInfo.aspectRatio[1] ?? 1);
-  }
-
-  /// The url of the video for the [controller] to load.
-  String get _videoUrl =>
-      widget.media.videoInfo.variants.first.url; // todo: quality
-
-  /// Determines whether the [RotatedBox] should rotate the video / thumbnail by
-  /// one quarter or not.
-  int get _rotation => widget.isFullscreen && _aspectRatio > 1 ? 1 : 0;
-
   @override
   void initState() {
     super.initState();
 
+    media = widget.media;
+    onShowFullscreen = widget.onShowFullscreen;
+    onHideFullscreen = widget.onHideFullscreen;
+    fullscreen = widget.fullscreen;
     initializing = widget.initializing;
 
-    controller = widget.controller ?? VideoPlayerController.network(_videoUrl)
-      ..addListener(_listener);
+    controller = widget.controller ?? VideoPlayerController.network(videoUrl)
+      ..addListener(listener);
   }
 
   @override
@@ -122,61 +60,10 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
     if (widget.controller != null) {
       // this widget is not using a self created controller, don't dispose it
       // only remove the listener
-      controller.removeListener(_listener);
+      controller.removeListener(listener);
     } else {
       // this widget created the controller, dispose it
       controller.dispose();
-    }
-  }
-
-  void _listener() {
-    final playing = controller.value.isPlaying;
-
-    if (_playing != playing) {
-      setState(() {
-        _playing = playing;
-      });
-    }
-
-    final finished = controller.value.position >= controller.value.duration;
-
-    if (_finished != finished) {
-      setState(() {
-        _finished = finished;
-      });
-    }
-
-    // buffering workaround
-    // the video player buffering start / end event is never fired on android,
-    // so instead assume buffering when the video is playing but the position
-    // is not changing.
-    final buffering = (_lastValue?.isPlaying ?? false) &&
-        !_finished &&
-        controller.value.isPlaying &&
-        controller.value.position == _lastValue.position;
-
-    if (_buffering != buffering) {
-      setState(() {
-        _buffering = buffering;
-      });
-    }
-
-    _lastValue = controller.value;
-  }
-
-  /// Initializes the controller and plays the video.
-  void _initializeController() {
-    if (!initializing && !controller.value.initialized) {
-      setState(() {
-        initializing = true;
-      });
-
-      controller.initialize().then((_) {
-        setState(() {
-          initializing = false;
-          controller.play();
-        });
-      });
     }
   }
 
@@ -197,47 +84,21 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
     var body = Material(
       color: Colors.transparent,
       child: RotatedBox(
-        quarterTurns: _rotation,
+        quarterTurns: rotation,
         child: AspectRatio(
-          aspectRatio: _aspectRatio,
+          aspectRatio: aspectRatio,
           child: controller.value.initialized
               ? _buildVideoPlayer()
-              : _buildThumbnail(),
+              : buildThumbnail(CircleButton(child: play)),
         ),
       ),
     );
 
     return Container(
-      width: widget.isFullscreen ? double.infinity : null,
-      height: widget.isFullscreen ? double.infinity : null,
-      color: widget.isFullscreen ? Colors.black : Colors.transparent,
-      child: widget.isFullscreen ? Center(child: body) : body,
-    );
-  }
-
-  Widget _buildThumbnail() {
-    return GestureDetector(
-      // initialize and start the video when clicking on the thumbnail
-      onTap: _initializeController,
-      child: Stack(
-        fit: StackFit.passthrough,
-        children: <Widget>[
-          // thumbnail as an image
-          CachedNetworkImage(
-            imageUrl: _thumbnailUrl,
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-          ),
-
-          // center icon
-          Center(
-              child:
-                  initializing ? bufferIndicator : CircleButton(child: play)),
-
-          _buildFullscreenButton(),
-        ],
-      ),
+      width: widget.fullscreen ? double.infinity : null,
+      height: widget.fullscreen ? double.infinity : null,
+      color: widget.fullscreen ? Colors.black : Colors.transparent,
+      child: widget.fullscreen ? Center(child: body) : body,
     );
   }
 
@@ -270,48 +131,17 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
 
         // todo: quality selection
 
-        _buildFullscreenButton(),
+        buildFullscreenButton(),
 
         // play / pause icon fade animation
         Center(child: _fadeAnimation),
 
         // buffer indicator
-        Center(
-          child: _buffering ? bufferIndicator : null,
-        ),
+        Center(child: buffering ? bufferIndicator : null),
 
         // play again
-        Center(
-          child: _finished ? _buildPlayAgainButton() : null,
-        )
+        Center(child: finished ? _buildPlayAgainButton() : null)
       ],
-    );
-  }
-
-  Widget _buildFullscreenButton() {
-    final icon = Icon(
-      widget.isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
-      color: Colors.white,
-      size: 36.0,
-    );
-
-    final onPressed = () {
-      if (!widget.isFullscreen && widget.onShowFullscreen != null) {
-        widget.onShowFullscreen();
-      } else if (widget.isFullscreen && widget.onHideFullscreen != null) {
-        widget.onHideFullscreen(context);
-      }
-    };
-
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: CircleButton(
-          child: icon,
-          onPressed: onPressed,
-        ),
-      ),
     );
   }
 
@@ -388,6 +218,124 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer> {
         child: icon,
         onPressed: onPressed,
       ),
+    );
+  }
+}
+
+/// The [TwitterGifPlayer] for Twitter gifs.
+///
+/// Twitter gifs are just videos. Instead of showing the same video player for
+/// videos and gifs, this [TwitterGifPlayer] is suited for gifs.
+class TwitterGifPlayer extends StatefulWidget {
+  final TwitterMedia media;
+  final bool fullscreen;
+  final VoidCallback onShowFullscreen;
+  final HideFullscreenCallback onHideFullscreen;
+  final VideoPlayerController controller;
+  final bool initializing;
+
+  const TwitterGifPlayer({
+    Key key,
+    @required this.media,
+    this.fullscreen = false,
+    this.onShowFullscreen,
+    this.onHideFullscreen,
+    this.controller,
+    this.initializing = false,
+  }) : super(key: key);
+
+  @override
+  TwitterGifPlayerState createState() => TwitterGifPlayerState();
+}
+
+class TwitterGifPlayerState extends State<TwitterGifPlayer>
+    with TwitterVideoPlayerMixin<TwitterGifPlayer> {
+  @override
+  void initState() {
+    super.initState();
+
+    media = widget.media;
+    onShowFullscreen = widget.onShowFullscreen;
+    onHideFullscreen = widget.onHideFullscreen;
+    fullscreen = widget.fullscreen;
+    initializing = widget.initializing;
+
+    controller = widget.controller ?? VideoPlayerController.network(videoUrl)
+      ..setLooping(true);
+    ;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    if (widget.controller == null) {
+      // this widget created the controller, dispose it
+      controller.dispose();
+    }
+  }
+
+  /// Initializes the controller and plays the video.
+  void initializeController() {
+    if (!initializing && !controller.value.initialized) {
+      setState(() {
+        initializing = true;
+      });
+
+      controller.initialize().then((_) {
+        setState(() {
+          initializing = false;
+          controller.play();
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var body = Material(
+      color: Colors.transparent,
+      child: RotatedBox(
+        quarterTurns: rotation,
+        child: AspectRatio(
+          aspectRatio: aspectRatio,
+          child: controller.value.initialized
+              ? _buildVideoPlayer()
+              : buildThumbnail(CircleButton(
+                  child: Text(
+                    "GIF",
+                    style: Theme.of(context)
+                        .textTheme
+                        .display2
+                        .copyWith(color: Colors.white),
+                  ),
+                )),
+        ),
+      ),
+    );
+
+    return Container(
+      width: widget.fullscreen ? double.infinity : null,
+      height: widget.fullscreen ? double.infinity : null,
+      color: widget.fullscreen ? Colors.black : Colors.transparent,
+      child: widget.fullscreen ? Center(child: body) : body,
+    );
+  }
+
+  Widget _buildVideoPlayer() {
+    return Stack(
+      fit: StackFit.passthrough,
+      children: <Widget>[
+        // video
+        VideoPlayer(controller),
+
+        // todo: quality selection
+
+        // buffer indicator
+        Center(child: buffering ? bufferIndicator : null),
+
+        buildFullscreenButton(),
+      ],
     );
   }
 }

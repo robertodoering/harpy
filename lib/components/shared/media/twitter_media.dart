@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/media/media_dialog.dart';
-import 'package:harpy/components/shared/media/twitter_gif_player.dart';
 import 'package:harpy/components/shared/media/twitter_video_player.dart';
 import 'package:harpy/components/shared/routes.dart';
 
@@ -191,7 +190,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         return Center(
           child: TwitterVideoPlayer(
             media: media,
-            isFullscreen: true,
+            fullscreen: true,
             onHideFullscreen: (context) => Navigator.maybePop(context),
             controller: key.currentState.controller,
             initializing: key.currentState.initializing,
@@ -210,7 +209,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         return Center(
           child: TwitterGifPlayer(
             media: media,
-            isFullscreen: true,
+            fullscreen: true,
             onHideFullscreen: (context) => Navigator.maybePop(context),
             controller: key.currentState.controller,
             initializing: key.currentState.initializing,
