@@ -4,6 +4,7 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -13,7 +14,7 @@ void _navigateToProfileScreen(BuildContext context, User user) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => UserProfileScreen(user: user),
+      builder: (context) => UserProfileScreen(user),
     ),
   );
 }
@@ -146,23 +147,14 @@ class UserDrawerHeader extends StatelessWidget {
   }
 
   Widget _buildFollowersCount(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Text(
-            "Followers: ${user.followersCount}",
-            style: Theme.of(context).textTheme.display1,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Following: ${user.friendsCount}",
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ),
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        Text(formatNumber(user.friendsCount)),
+        Text(" Following", style: Theme.of(context).textTheme.display1),
+        SizedBox(width: 16),
+        Text(formatNumber(user.followersCount)),
+        Text(" Followers", style: Theme.of(context).textTheme.display1),
+      ],
     );
   }
 }

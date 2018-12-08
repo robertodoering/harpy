@@ -7,7 +7,7 @@ import 'package:harpy/theme.dart';
 class UserProfileScreen extends StatefulWidget {
   final User user;
 
-  UserProfileScreen({@required this.user});
+  UserProfileScreen(this.user);
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -16,22 +16,19 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Theme(
-        data: HarpyTheme.theme,
-        child: FadingNestedScaffold(
-          title: widget.user.name,
-          background: Image.network(
-            widget.user.profileBackgroundImageUrl,
-            fit: BoxFit.cover,
-          ),
-          body: Column(
-            children: <Widget>[
-              UserHeader(user: widget.user),
-              Text("User tweets go here \\o/"),
-            ],
-          ),
+    return Theme(
+      data: HarpyTheme.theme,
+      child: FadingNestedScaffold(
+        title: widget.user.name,
+        background: Image.network(
+          widget.user.profileBackgroundImageUrl,
+          fit: BoxFit.cover,
+        ),
+        body: Column(
+          children: <Widget>[
+            UserHeader(user: widget.user),
+            Text("User tweets go here \\o/"),
+          ],
         ),
       ),
     );
