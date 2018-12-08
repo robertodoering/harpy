@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/components/shared/media/twitter_media.dart';
@@ -51,7 +52,7 @@ class TweetList extends StatelessWidget {
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
-  TweetTile(this.tweet);
+  const TweetTile(this.tweet);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class TweetTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildNameRow(),
+          _buildNameRow(context),
           _buildText(),
           _buildMedia(),
           _buildActionRow(),
@@ -78,16 +79,28 @@ class TweetTile extends StatelessWidget {
     }
   }
 
-  Widget _buildNameRow() {
+  void _openUserProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserProfileScreen(tweet.user),
+      ),
+    );
+  }
+
+  Widget _buildNameRow(BuildContext context) {
     return Row(
       children: <Widget>[
         // avatar
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(
-              tweet.user.userProfileImageOriginal,
+          child: GestureDetector(
+            onTap: () => _openUserProfile(context),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage: CachedNetworkImageProvider(
+                tweet.user.userProfileImageOriginal,
+              ),
             ),
           ),
         ),
