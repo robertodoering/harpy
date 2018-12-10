@@ -36,7 +36,10 @@ class TweetList extends StatelessWidget {
           itemBuilder: (context, index) {
             return SlideFadeInAnimation(
               duration: Duration(milliseconds: 500),
-              child: TweetTile(tweets[index]),
+              child: TweetTile(
+                key: Key("${tweets[index].id}"),
+                tweet: tweets[index],
+              ),
             );
           },
           separatorBuilder: (context, index) {
@@ -55,7 +58,10 @@ class TweetList extends StatelessWidget {
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
-  const TweetTile(this.tweet);
+  const TweetTile({
+    Key key,
+    this.tweet,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +133,6 @@ class TweetTile extends StatelessWidget {
 
   Widget _buildText() {
     return TwitterText(
-      key: Key("${tweet.id}"),
       text: tweet.full_text,
       entities: tweet.entities,
       onEntityTap: (model) {

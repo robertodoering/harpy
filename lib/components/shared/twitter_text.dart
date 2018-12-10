@@ -16,12 +16,11 @@ class TwitterText extends StatefulWidget {
   final ValueChanged<TwitterEntityModel> onEntityTap;
 
   const TwitterText({
-    key,
     @required this.text,
     this.entities,
     this.entityColor = HarpyTheme.primaryColor,
     this.onEntityTap,
-  }) : super(key: key);
+  });
 
   @override
   TwitterTextState createState() => TwitterTextState();

@@ -77,7 +77,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               if (content[index] is Tweet) {
                 return SlideFadeInAnimation(
                   duration: Duration(milliseconds: 500),
-                  child: TweetTile(store.userTweets[index]),
+                  child: TweetTile(
+                    key: Key("${store.userTweets[index].id}"),
+                    tweet: store.userTweets[index],
+                  ),
                 );
               } else {
                 return content[index];
