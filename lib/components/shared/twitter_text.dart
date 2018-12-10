@@ -82,7 +82,7 @@ class TwitterTextState extends State<TwitterText> {
   void _addEntityModel(TwitterEntityModel entityModel) {
     if (entityModel.type == EntityType.media) return;
 
-    GestureRecognizer recognizer = null;
+    GestureRecognizer recognizer;
 
     if (widget.onEntityTap != null) {
       recognizer = TapGestureRecognizer()

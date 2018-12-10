@@ -12,3 +12,7 @@ DateTime convertFromTwitterDateString(String twitterDateString) {
     return DateFormat("MMM dd HH:mm:ss yyyy").parse(dateString);
   }
 }
+
+String formatCreatedAt(DateTime createdAt) {
+  return DateFormat("MMMM yyyy").format(createdAt);
+}

@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 class TweetList extends StatelessWidget {
   final List<Tweet> tweets;
 
-  TweetList(this.tweets);
+  const TweetList(this.tweets);
 
   // todo:
   // to animate new tweets in after a refresh:
@@ -34,10 +34,13 @@ class TweetList extends StatelessWidget {
         child: ListView.separated(
           itemCount: tweets.length,
           itemBuilder: (context, index) {
-            return TweetTile(tweets[index]);
+            return SlideFadeInAnimation(
+              duration: Duration(milliseconds: 500),
+              child: TweetTile(tweets[index]),
+            );
           },
           separatorBuilder: (context, index) {
-            return Divider();
+            return Divider(height: 0.0);
           },
         ),
       ),
@@ -57,11 +60,12 @@ class TweetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildNameRow(context),
+          SizedBox(height: 8.0),
           _buildText(),
           _buildMedia(),
           _buildActionRow(),
@@ -92,18 +96,17 @@ class TweetTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         // avatar
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: GestureDetector(
-            onTap: () => _openUserProfile(context),
-            child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              backgroundImage: CachedNetworkImageProvider(
-                tweet.user.userProfileImageOriginal,
-              ),
+        GestureDetector(
+          onTap: () => _openUserProfile(context),
+          child: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            backgroundImage: CachedNetworkImageProvider(
+              tweet.user.userProfileImageOriginal,
             ),
           ),
         ),
+
+        SizedBox(width: 8.0),
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,18 +126,15 @@ class TweetTile extends StatelessWidget {
   }
 
   Widget _buildText() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: TwitterText(
-        key: Key("${tweet.id}"),
-        text: tweet.full_text,
-        entities: tweet.entities,
-        onEntityTap: (model) {
-          if (model.type == EntityType.url) {
-            launchUrl(model.url);
-          }
-        },
-      ),
+    return TwitterText(
+      key: Key("${tweet.id}"),
+      text: tweet.full_text,
+      entities: tweet.entities,
+      onEntityTap: (model) {
+        if (model.type == EntityType.url) {
+          launchUrl(model.url);
+        }
+      },
     );
   }
 

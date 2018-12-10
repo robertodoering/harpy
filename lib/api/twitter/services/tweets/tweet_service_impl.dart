@@ -31,10 +31,12 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<List<Tweet>> getUserTimeline({
+  Future<List<Tweet>> getUserTimeline(
+    String userId, {
     Map<String, String> params,
   }) async {
     params ??= Map();
+    params["user_id"] = userId;
     params["count"] ??= "800";
     params["tweet_mode"] ??= "extended";
 

@@ -30,14 +30,14 @@ class TwitterVideoPlayer extends StatefulWidget {
 
 class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
     with TwitterVideoPlayerMixin<TwitterVideoPlayer> {
-  /// The pause / play [FadeAnimation].
-  FadeAnimation _fadeAnimation;
+  /// The pause / play [FadeOutAnimation].
+  FadeOutAnimation _fadeAnimation;
 
-  /// The rewind [FadeAnimation].
-  FadeAnimation _rewindFadeAnimation;
+  /// The rewind [FadeOutAnimation].
+  FadeOutAnimation _rewindFadeAnimation;
 
-  /// The forward [FadeAnimation].
-  FadeAnimation _forwardFadeAnimation;
+  /// The forward [FadeOutAnimation].
+  FadeOutAnimation _forwardFadeAnimation;
 
   @override
   void initState() {
@@ -71,10 +71,10 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
     if (controller.value.initialized) {
       if (controller.value.isPlaying) {
         controller.pause();
-        _fadeAnimation = FadeAnimation(child: pause);
+        _fadeAnimation = FadeOutAnimation(child: pause);
       } else {
         controller.play();
-        _fadeAnimation = FadeAnimation(child: play);
+        _fadeAnimation = FadeOutAnimation(child: play);
       }
     }
   }
@@ -160,7 +160,7 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
       controller.seekTo(position - skip);
 
       setState(() {
-        _rewindFadeAnimation = FadeAnimation(
+        _rewindFadeAnimation = FadeOutAnimation(
           key: UniqueKey(),
           child:
               const Icon(Icons.fast_rewind, size: 100.0, color: Colors.white70),
@@ -173,7 +173,7 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
       controller.seekTo(position + skip);
 
       setState(() {
-        _forwardFadeAnimation = FadeAnimation(
+        _forwardFadeAnimation = FadeOutAnimation(
           key: UniqueKey(),
           child: const Icon(Icons.fast_forward,
               size: 100.0, color: Colors.white70),
