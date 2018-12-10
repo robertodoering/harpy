@@ -12,7 +12,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
       json['profile_sidebar_fill_color'] as String,
       json['profile_background_title'] as bool,
       json['profile_image_url'] as String,
-      json['created_at'] as String,
+      json['created_at'] == null
+          ? null
+          : convertFromTwitterDateString(json['created_at'] as String),
       json['default_profile'] as bool,
       json['url'] as String,
       json['contributors_enabled'] as bool,
@@ -41,7 +43,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
       json['entities'] == null
           ? null
           : UserEntities.fromJson(json['entities'] as Map<String, dynamic>),
-      json['profile_banner_url'] as String);
+      json['profile_banner_url'] as String,
+      json['location'] as String);
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -49,7 +52,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profile_sidebar_fill_color': instance.profileSidebarFillColor,
       'profile_background_title': instance.profileBackgroundTitle,
       'profile_image_url': instance.profileImageUrl,
-      'created_at': instance.createdAt,
+      'created_at': instance.createdAt?.toIso8601String(),
       'default_profile': instance.defaultProfile,
       'url': instance.url,
       'contributors_enabled': instance.contributorsEnabled,
@@ -77,5 +80,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'show_all_inline_media': instance.showAllInlineMedia,
       'screen_name': instance.screenName,
       'entities': instance.entities,
-      'profile_banner_url': instance.profile_banner_url
+      'profile_banner_url': instance.profile_banner_url,
+      'location': instance.location
     };
