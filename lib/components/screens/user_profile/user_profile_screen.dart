@@ -185,6 +185,11 @@ class UserHeaderState extends State<UserHeader> {
         TwitterText(
           text: widget.user.description,
           entities: widget.user.entities.asEntities,
+          onEntityTap: (entityModel) {
+            if (entityModel.type == EntityType.url) {
+              launchUrl(entityModel.url);
+            }
+          },
         ),
       ],
     );
