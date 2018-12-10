@@ -117,7 +117,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     Widget mediaWidget;
 
     int index = widget.media.indexOf(media);
-    String heroTag = media.mediaUrl + "$index";
+    String heroTag = media.mediaUrl + "$index"; // todo: with tweet id
     GestureTapCallback tapCallback;
 
     if (media.type == photo) {
