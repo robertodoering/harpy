@@ -40,7 +40,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
       json['screen_name'] as String,
       json['entities'] == null
           ? null
-          : UserEntities.fromJson(json['entities'] as Map<String, dynamic>));
+          : UserEntities.fromJson(json['entities'] as Map<String, dynamic>),
+      json['profile_banner_url'] as String);
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -75,5 +76,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'following': instance.following,
       'show_all_inline_media': instance.showAllInlineMedia,
       'screen_name': instance.screenName,
-      'entities': instance.entities
+      'entities': instance.entities,
+      'profile_banner_url': instance.profile_banner_url
     };

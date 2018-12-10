@@ -65,6 +65,7 @@ class User {
   @JsonKey(name: 'screen_name')
   String screenName;
   UserEntities entities;
+  String profile_banner_url;
 
   User(
     this.name,
@@ -98,6 +99,7 @@ class User {
     this.showAllInlineMedia,
     this.screenName,
     this.entities,
+    this.profile_banner_url,
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

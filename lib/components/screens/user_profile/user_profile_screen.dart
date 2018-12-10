@@ -21,12 +21,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       child: FadingNestedScaffold(
         title: widget.user.name,
         background: Image.network(
-          widget.user.profileBackgroundImageUrl,
+          widget.user.profile_banner_url,
           fit: BoxFit.cover,
         ),
         body: Column(
           children: <Widget>[
             UserHeader(user: widget.user),
+            Divider(),
             Text("User tweets go here \\o/"),
           ],
         ),
