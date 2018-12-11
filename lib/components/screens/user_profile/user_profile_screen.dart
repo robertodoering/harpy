@@ -5,6 +5,7 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/home/home_drawer.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
@@ -145,6 +146,11 @@ class UserHeaderState extends State<UserHeader> {
           _buildUserDescription(),
           SizedBox(height: 8.0),
           _buildAdditionalInfo(),
+          SizedBox(height: 8.0),
+          FollowersCount(
+            followers: widget.user.followersCount,
+            following: widget.user.friendsCount,
+          )
         ],
       ),
     );
@@ -205,11 +211,11 @@ class UserHeaderState extends State<UserHeader> {
             ? _buildLink()
             : Container(),
         widget.user.location?.isNotEmpty ?? false
-            ? _buildIconRow(Icons.place, Text(widget.user.location))
+            ? _buildIconRow(Icons.place, widget.user.location)
             : Container(),
         widget.user.createdAt != null
             ? _buildIconRow(Icons.date_range,
-                Text("joined ${formatCreatedAt(widget.user.createdAt)}"))
+                "joined ${formatCreatedAt(widget.user.createdAt)}")
             : Container(),
       ],
     );
@@ -234,12 +240,17 @@ class UserHeaderState extends State<UserHeader> {
     return _buildIconRow(Icons.link, text);
   }
 
-  Widget _buildIconRow(IconData icon, Widget text) {
+  Widget _buildIconRow(IconData icon, dynamic text) {
     return Row(
       children: <Widget>[
         Icon(icon, size: 20.0),
         SizedBox(width: 8.0),
-        text,
+        text is Widget
+            ? text
+            : Text(
+                text,
+                style: Theme.of(context).textTheme.display1,
+              ),
       ],
     );
   }

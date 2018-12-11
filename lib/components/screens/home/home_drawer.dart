@@ -140,19 +140,33 @@ class UserDrawerHeader extends StatelessWidget {
           Text("@${user.screenName}",
               style: Theme.of(context).textTheme.display1),
           SizedBox(height: 8.0),
-          _buildFollowersCount(context),
+          FollowersCount(
+            followers: user.followersCount,
+            following: user.friendsCount,
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFollowersCount(BuildContext context) {
+class FollowersCount extends StatelessWidget {
+  final int following;
+  final int followers;
+
+  const FollowersCount({
+    this.following,
+    this.followers,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text(formatNumber(user.friendsCount)),
+        Text(formatNumber(following)),
         Text(" Following", style: Theme.of(context).textTheme.display1),
         SizedBox(width: 16),
-        Text(formatNumber(user.followersCount)),
+        Text(formatNumber(followers)),
         Text(" Followers", style: Theme.of(context).textTheme.display1),
       ],
     );
