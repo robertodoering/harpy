@@ -233,14 +233,15 @@ class _UserHeaderState extends State<UserHeader> {
       ..onTap = () => launchUrl(url.url);
 
     Widget text = RichText(
-        text: TextSpan(
-      text: "${url.displayUrl} ",
-      style: HarpyTheme.theme.textTheme.body1.copyWith(
-        color: HarpyTheme.primaryColor, // todo: user color?
-        fontWeight: FontWeight.bold,
+      text: TextSpan(
+        text: "${url.displayUrl} ",
+        style: HarpyTheme.theme.textTheme.body1.copyWith(
+          color: HarpyTheme.primaryColor, // todo: user color?
+          fontWeight: FontWeight.bold,
+        ),
+        recognizer: _linkGestureRecognizer,
       ),
-      recognizer: _linkGestureRecognizer,
-    ));
+    );
 
     return _buildIconRow(Icons.link, text);
   }
