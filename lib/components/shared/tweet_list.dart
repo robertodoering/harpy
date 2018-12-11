@@ -12,7 +12,7 @@ import 'package:harpy/theme.dart';
 import 'package:intl/intl.dart';
 
 /// A list containing many [TweetTile]s.
-class TweetList extends StatelessWidget {
+class TweetList extends StatefulWidget {
   final List<Tweet> tweets;
 
   const TweetList(this.tweets);
@@ -26,7 +26,33 @@ class TweetList extends StatelessWidget {
 
   // maybe stay on the old index and scroll up when rebuilding
 
-  // todo: refactor for home screen use
+  @override
+  TweetListState createState() => TweetListState();
+}
+
+class TweetListState extends State<TweetList> {
+  ScrollController _controller;
+
+  bool _requestingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController()..addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_controller.position.extentAfter < 500.0 && !_requestingMore) {
+      setState(() {
+        _requestingMore = true;
+        HomeStore.tweetsAfter("${widget.tweets.last.id}").then((_) {
+          setState(() {
+            _requestingMore = false;
+          });
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +60,12 @@ class TweetList extends StatelessWidget {
       child: SlideFadeInAnimation(
         offset: const Offset(0.0, 100.0),
         child: ListView.separated(
-          itemCount: tweets.length,
+          controller: _controller,
+          itemCount: widget.tweets.length,
           itemBuilder: (context, index) {
             return TweetTile(
-              key: Key("${tweets[index].id}"),
-              tweet: tweets[index],
+              key: Key("${widget.tweets[index].id}"),
+              tweet: widget.tweets[index],
             );
           },
           separatorBuilder: (context, index) => Divider(height: 0.0),

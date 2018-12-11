@@ -46,9 +46,8 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     if (exists) {
       log.fine("tweet updated");
       _tweetCache.cacheTweet(tweet);
-      return;
+    } else {
+      log.warning("tweet unable to update");
     }
-
-    log.warning("tweet unable to update");
   }
 }
