@@ -59,6 +59,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       UserHeader(user: widget.user),
     ];
 
+    // add tweets or loading indicator to the content list
     _addListBody(content);
 
     return Theme(
@@ -75,21 +76,14 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             padding: EdgeInsets.zero,
             itemCount: content.length,
             itemBuilder: (context, index) {
-              if (content[index] is Tweet) {
-                return SlideFadeInAnimation(
-                  duration: Duration(milliseconds: 500),
-                  child: TweetTile(
-                    key: Key("${store.userTweets[index - 1].id}"),
-                    tweet: store.userTweets[index - 1],
-                  ),
-                );
-              } else {
-                return content[index];
-              }
+              return content[index] is Tweet
+                  ? TweetTile(
+                      key: Key("${store.userTweets[index - 1].id}"),
+                      tweet: store.userTweets[index - 1],
+                    )
+                  : content[index];
             },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
+            separatorBuilder: (context, index) => Divider(height: 0.0),
           ),
         ),
       ),
@@ -124,19 +118,17 @@ class UserHeader extends StatefulWidget {
   const UserHeader({@required this.user});
 
   @override
-  UserHeaderState createState() {
-    return new UserHeaderState();
-  }
+  _UserHeaderState createState() => _UserHeaderState();
 }
 
-class UserHeaderState extends State<UserHeader> {
-  GestureRecognizer linkGestureRecognizer;
+class _UserHeaderState extends State<UserHeader> {
+  GestureRecognizer _linkGestureRecognizer;
 
   @override
   void dispose() {
     super.dispose();
 
-    linkGestureRecognizer?.dispose();
+    _linkGestureRecognizer?.dispose();
   }
 
   @override
@@ -237,7 +229,7 @@ class UserHeaderState extends State<UserHeader> {
   Widget _buildLink() {
     Url url = widget.user.entities.url.urls.first;
 
-    linkGestureRecognizer = TapGestureRecognizer()
+    _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () => launchUrl(url.url);
 
     Widget text = RichText(
@@ -247,7 +239,7 @@ class UserHeaderState extends State<UserHeader> {
         color: HarpyTheme.primaryColor, // todo: user color?
         fontWeight: FontWeight.bold,
       ),
-      recognizer: linkGestureRecognizer,
+      recognizer: _linkGestureRecognizer,
     ));
 
     return _buildIconRow(Icons.link, text);
