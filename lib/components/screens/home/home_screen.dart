@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/home/home_drawer.dart';
+import 'package:harpy/components/screens/new_tweet_screen.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -34,6 +35,10 @@ class HomeScreenState extends State<HomeScreen>
     return Theme(
       data: HarpyTheme.theme,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _openNewTweetScreen(context),
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -47,6 +52,13 @@ class HomeScreenState extends State<HomeScreen>
         drawer: HomeDrawer(),
       ),
     );
+  }
+
+  void _openNewTweetScreen(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewTweetScreen(), fullscreenDialog: true));
   }
 
   Widget _buildBody() {

@@ -12,4 +12,6 @@ abstract class TweetService {
   Future unfavorite(String tweetId);
 
   Future retweet(String tweetId);
+
+  Future createTweet(String text);
 }

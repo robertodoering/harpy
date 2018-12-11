@@ -87,4 +87,13 @@ class TweetServiceImpl extends TwitterService
 
     return handleResponse(response);
   }
+
+  @override
+  Future createTweet(String text) async {
+    final response = await client.post(
+      "https://api.twitter.com/1.1/statuses/update.json",
+      params: {"status": Uri.encodeFull(text)},
+    );
+    return handleResponse(response);
+  }
 }
