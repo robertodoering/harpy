@@ -96,6 +96,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
+  /// Adds the tweets of the user timeline to the list body once they have been
+  /// loaded.
+  ///
+  /// A [CircularProgressIndicator] is shown if [_loadingTweets] is true.
   void _addListBody(List content) {
     if (_loadingTweets) {
       content.add(Padding(
@@ -113,6 +117,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 }
 
+/// The [UserHeader] containing the information about the [User].
 class UserHeader extends StatefulWidget {
   final User user;
 
@@ -144,9 +149,7 @@ class UserHeaderState extends State<UserHeader> {
           _buildUserInfo(),
           SizedBox(height: 8.0),
           _buildUserDescription(),
-          SizedBox(height: 8.0),
           _buildAdditionalInfo(),
-          SizedBox(height: 8.0),
           FollowersCount(
             followers: widget.user.followersCount,
             following: widget.user.friendsCount,
@@ -204,23 +207,33 @@ class UserHeaderState extends State<UserHeader> {
     );
   }
 
+  /// Builds a [Column] of icon rows with additional information such as the
+  /// link, date joined or location of the [User].
   Widget _buildAdditionalInfo() {
-    return Column(
-      children: <Widget>[
-        widget.user?.entities?.url?.urls?.isNotEmpty ?? false
-            ? _buildLink()
-            : Container(),
-        widget.user.location?.isNotEmpty ?? false
-            ? _buildIconRow(Icons.place, widget.user.location)
-            : Container(),
-        widget.user.createdAt != null
-            ? _buildIconRow(Icons.date_range,
-                "joined ${formatCreatedAt(widget.user.createdAt)}")
-            : Container(),
-      ],
-    );
+    List<Widget> children = [];
+
+    if (widget.user?.entities?.url?.urls?.isNotEmpty ?? false) {
+      children.add(_buildLink());
+    }
+
+    if (widget.user.location?.isNotEmpty ?? false) {
+      children.add(_buildIconRow(Icons.place, widget.user.location));
+    }
+
+    if (widget.user.createdAt != null) {
+      children.add(_buildIconRow(Icons.date_range,
+          "joined ${formatCreatedAt(widget.user.createdAt)}"));
+    }
+
+    return children.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(children: children),
+          )
+        : Container();
   }
 
+  /// A helper method to create a link in [_buildAdditionalInfo].
   Widget _buildLink() {
     Url url = widget.user.entities.url.urls.first;
 
@@ -240,6 +253,9 @@ class UserHeaderState extends State<UserHeader> {
     return _buildIconRow(Icons.link, text);
   }
 
+  /// A helper method to create an icon row for [_buildAdditionalInfo].
+  ///
+  /// [text] can either be a [Widget] or a [String].
   Widget _buildIconRow(IconData icon, dynamic text) {
     return Row(
       children: <Widget>[
