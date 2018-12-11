@@ -27,7 +27,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   void initState() {
     super.initState();
 
-    double fadeStart = widget.expandedAppBarSpace - 100;
+    double fadeStart = widget.expandedAppBarSpace - 125;
     double fadeEnd = widget.expandedAppBarSpace - 40;
     double difference = fadeEnd - fadeStart;
 

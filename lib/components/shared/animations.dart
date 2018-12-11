@@ -21,13 +21,14 @@ class SlideFadeInAnimation extends StatefulWidget {
   final Widget child;
 
   SlideFadeInAnimation({
+    Key key,
     this.duration = const Duration(seconds: 1),
     this.delay = Duration.zero,
     this.offset = Offset.zero,
     this.skipIntroAnimation = false,
     this.finishCallback = null,
     @required this.child,
-  });
+  }) : super(key: key);
 
   @override
   _SlideFadeInAnimationState createState() => _SlideFadeInAnimationState();
@@ -87,22 +88,22 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
   }
 }
 
-/// Fades in upon creation.
-class FadeAnimation extends StatefulWidget {
+/// Fades out upon creation.
+class FadeOutAnimation extends StatefulWidget {
   final Widget child;
   final Duration duration;
 
-  const FadeAnimation({
+  const FadeOutAnimation({
     Key key,
     this.child,
     this.duration = const Duration(milliseconds: 500),
   }) : super(key: key);
 
   @override
-  _FadeAnimationState createState() => _FadeAnimationState();
+  _FadeOutAnimationState createState() => _FadeOutAnimationState();
 }
 
-class _FadeAnimationState extends State<FadeAnimation>
+class _FadeOutAnimationState extends State<FadeOutAnimation>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
@@ -125,7 +126,7 @@ class _FadeAnimationState extends State<FadeAnimation>
   }
 
   @override
-  void didUpdateWidget(FadeAnimation oldWidget) {
+  void didUpdateWidget(FadeOutAnimation oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.child != widget.child) {
       _controller.forward(from: 0.0);

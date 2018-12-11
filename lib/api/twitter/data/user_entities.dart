@@ -1,3 +1,4 @@
+import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,6 +15,10 @@ class UserEntities {
       _$UserEntitiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserEntitiesToJson(this);
+
+  /// Returns the [description] as the [urls] of an [Entities] object.
+  Entities get asEntities =>
+      Entities(null, null, description.urls, null, null, null);
 }
 
 @JsonSerializable()

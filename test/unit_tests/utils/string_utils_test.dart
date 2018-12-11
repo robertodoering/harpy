@@ -52,4 +52,18 @@ void main() {
 
     expect(actual, expected);
   });
+
+  test("formatNumber", () {
+    expect(formatNumber(431), "431");
+
+    expect(formatNumber(1234), "1.2K");
+
+    expect(formatNumber(43219), "43.2K");
+
+    expect(formatNumber(999999), "999.9K");
+
+    expect(formatNumber(5500000), "5.5M");
+
+    expect(formatNumber(77000001), "77.0M");
+  });
 }

@@ -16,12 +16,11 @@ class TwitterText extends StatefulWidget {
   final ValueChanged<TwitterEntityModel> onEntityTap;
 
   const TwitterText({
-    key,
     @required this.text,
     this.entities,
     this.entityColor = HarpyTheme.primaryColor,
     this.onEntityTap,
-  }) : super(key: key);
+  });
 
   @override
   TwitterTextState createState() => TwitterTextState();
@@ -82,7 +81,7 @@ class TwitterTextState extends State<TwitterText> {
   void _addEntityModel(TwitterEntityModel entityModel) {
     if (entityModel.type == EntityType.media) return;
 
-    GestureRecognizer recognizer = null;
+    GestureRecognizer recognizer;
 
     if (widget.onEntityTap != null) {
       recognizer = TapGestureRecognizer()

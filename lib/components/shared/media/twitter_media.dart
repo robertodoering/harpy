@@ -34,7 +34,8 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         constraints: BoxConstraints(
           maxHeight: widget.media.any((media) => media.type == photo)
               ? 250.0
-              : double.infinity,
+              // max video height: screen height - appbar - padding
+              : MediaQuery.of(context).size.height - 80 - 24,
         ),
         child: _buildMediaLayout(context),
       ),
@@ -116,7 +117,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     Widget mediaWidget;
 
     int index = widget.media.indexOf(media);
-    String heroTag = media.mediaUrl + "$index";
+    String heroTag = media.mediaUrl + "$index"; // todo: with tweet id
     GestureTapCallback tapCallback;
 
     if (media.type == photo) {

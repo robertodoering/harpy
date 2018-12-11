@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/components/shared/media/twitter_media.dart';
@@ -14,7 +15,7 @@ import 'package:intl/intl.dart';
 class TweetList extends StatelessWidget {
   final List<Tweet> tweets;
 
-  TweetList(this.tweets);
+  const TweetList(this.tweets);
 
   // todo:
   // to animate new tweets in after a refresh:
@@ -25,6 +26,8 @@ class TweetList extends StatelessWidget {
 
   // maybe stay on the old index and scroll up when rebuilding
 
+  // todo: refactor for home screen use
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -33,11 +36,12 @@ class TweetList extends StatelessWidget {
         child: ListView.separated(
           itemCount: tweets.length,
           itemBuilder: (context, index) {
-            return TweetTile(tweets[index]);
+            return TweetTile(
+              key: Key("${tweets[index].id}"),
+              tweet: tweets[index],
+            );
           },
-          separatorBuilder: (context, index) {
-            return Divider();
-          },
+          separatorBuilder: (context, index) => Divider(height: 0.0),
         ),
       ),
       onRefresh: () async {
@@ -51,20 +55,27 @@ class TweetList extends StatelessWidget {
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
-  TweetTile(this.tweet);
+  const TweetTile({
+    Key key,
+    this.tweet,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildNameRow(),
-          _buildText(),
-          _buildMedia(),
-          _buildActionRow(),
-        ],
+    return SlideFadeInAnimation(
+      duration: const Duration(milliseconds: 500),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildNameRow(context),
+            SizedBox(height: 8.0),
+            _buildText(),
+            _buildMedia(),
+            _buildActionRow(),
+          ],
+        ),
       ),
     );
   }
@@ -78,12 +89,21 @@ class TweetTile extends StatelessWidget {
     }
   }
 
-  Widget _buildNameRow() {
+  void _openUserProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserProfileScreen(tweet.user),
+      ),
+    );
+  }
+
+  Widget _buildNameRow(BuildContext context) {
     return Row(
       children: <Widget>[
         // avatar
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+        GestureDetector(
+          onTap: () => _openUserProfile(context),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
@@ -91,6 +111,8 @@ class TweetTile extends StatelessWidget {
             ),
           ),
         ),
+
+        SizedBox(width: 8.0),
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,18 +132,14 @@ class TweetTile extends StatelessWidget {
   }
 
   Widget _buildText() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: TwitterText(
-        key: Key("${tweet.id}"),
-        text: tweet.full_text,
-        entities: tweet.entities,
-        onEntityTap: (model) {
-          if (model.type == EntityType.url) {
-            launchUrl(model.url);
-          }
-        },
-      ),
+    return TwitterText(
+      text: tweet.full_text,
+      entities: tweet.entities,
+      onEntityTap: (model) {
+        if (model.type == EntityType.url) {
+          launchUrl(model.url);
+        }
+      },
     );
   }
 

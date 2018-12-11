@@ -1,4 +1,5 @@
 import 'package:harpy/api/twitter/data/user_entities.dart';
+import 'package:harpy/core/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -13,7 +14,7 @@ class User {
   @JsonKey(name: 'profile_image_url')
   String profileImageUrl;
   @JsonKey(name: 'created_at')
-  String createdAt;
+  DateTime createdAt;
   @JsonKey(name: 'default_profile')
   bool defaultProfile;
   @JsonKey(name: 'url')
@@ -65,6 +66,8 @@ class User {
   @JsonKey(name: 'screen_name')
   String screenName;
   UserEntities entities;
+  String profile_banner_url;
+  String location;
 
   User(
     this.name,
@@ -98,6 +101,8 @@ class User {
     this.showAllInlineMedia,
     this.screenName,
     this.entities,
+    this.profile_banner_url,
+    this.location,
   );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

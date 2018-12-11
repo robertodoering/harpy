@@ -100,7 +100,7 @@ class HomeStore extends Store {
     });
   }
 
-  /// Returns `true` the error contains any of the following error codes:
+  /// Returns `true` if the error contains any of the following error codes:
   ///
   /// 139: already favorited (trying to favorite a tweet twice)
   /// 327: already retweeted

@@ -11,7 +11,14 @@ abstract class JsonMapper<T> {
         decodedObjects.add(mapSingleType(currentObj));
 
 //        print(" ----- ");
-//        currentObj.forEach((val1, val2) => print("$val1: $val2"));
+//        currentObj.forEach((val1, val2) {
+//          if (val2 is Map) {
+//            print("$val1:");
+//            val2.forEach((val2_1, val2_2) => print("    $val2_1: $val2_2"));
+//          } else {
+//            print("$val1: $val2");
+//          }
+//        });
 //        print(" ----- ");
       });
       return decodedObjects;
