@@ -38,6 +38,17 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     return tweets;
   }
 
+  @override
+  Future<Tweet> createTweet(String text) async {
+    log.fine("Send Tweet to api");
+    Tweet newTweet = await super.createTweet(text);
+
+    log.fine("Cache new Tweet");
+    _tweetCache.cacheTweet(newTweet);
+
+    return newTweet;
+  }
+
   void updateCache(Tweet tweet) async {
     log.fine("updating tweet");
 

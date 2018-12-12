@@ -89,11 +89,19 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future createTweet(String text) async {
+  Future<Tweet> createTweet(String text) async {
     final response = await client.post(
       "https://api.twitter.com/1.1/statuses/update.json",
-      params: {"status": Uri.encodeFull(text)},
+      body: {"status": text},
     );
-    return handleResponse(response);
+
+    if (response.statusCode == 200) {
+      Tweet tweet = map((map) {
+        return Tweet.fromJson(map);
+      }, response.body);
+      return tweet;
+    } else {
+      return Future.error(response.body);
+    }
   }
 }

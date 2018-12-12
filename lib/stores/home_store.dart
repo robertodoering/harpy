@@ -16,6 +16,8 @@ class HomeStore extends Store {
   static final Action<Tweet> retweetTweet = Action();
   static final Action<Tweet> unretweetTweet = Action();
 
+  static final Action<Tweet> createTweet = Action();
+
   List<Tweet> _tweets;
 
   List<Tweet> get tweets => _tweets;
@@ -29,6 +31,10 @@ class HomeStore extends Store {
       _tweets = await CachedTweetServiceImpl().getHomeTimeline(
         forceUpdate: true,
       );
+    });
+
+    triggerOnAction(createTweet, (Tweet tweet) async {
+//      _tweets.add(tweet);
     });
 
     clearCache.listen((_) => TweetCache().clearCache());

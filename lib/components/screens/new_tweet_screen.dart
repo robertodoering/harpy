@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
-import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
+import 'package:harpy/stores/home_store.dart';
+import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/theme.dart';
 
 class NewTweetScreen extends StatefulWidget {
@@ -8,13 +12,29 @@ class NewTweetScreen extends StatefulWidget {
   _NewTweetScreenState createState() => _NewTweetScreenState();
 }
 
-class _NewTweetScreenState extends State<NewTweetScreen> {
+class _NewTweetScreenState extends State<NewTweetScreen>
+    with StoreWatcherMixin<NewTweetScreen> {
   TextEditingController _textEditingController;
   TweetService _tweetService;
+  HomeStore _homeStore;
 
   _NewTweetScreenState() {
     _textEditingController = TextEditingController();
-    _tweetService = TweetServiceImpl();
+    _tweetService = CachedTweetServiceImpl();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _homeStore = listenToStore(Tokens.home);
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    unlistenFromStore(_homeStore);
+    super.dispose();
   }
 
   @override
@@ -61,15 +81,11 @@ class _NewTweetScreenState extends State<NewTweetScreen> {
     );
   }
 
-  void _createTweet() {
-    print(_textEditingController.text);
-    _tweetService.createTweet(_textEditingController.text);
-  }
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
+  void _createTweet() async {
+    Tweet newTweet =
+        await _tweetService.createTweet(_textEditingController.text);
+    HomeStore.createTweet(newTweet);
+    Navigator.pop(context);
   }
 }
 
