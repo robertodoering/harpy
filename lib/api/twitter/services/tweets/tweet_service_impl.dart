@@ -92,6 +92,7 @@ class TweetServiceImpl extends TwitterService
   Future<Tweet> createTweet(String text) async {
     final response = await client.post(
       "https://api.twitter.com/1.1/statuses/update.json",
+      params: {"trim_user": "false"},
       body: {"status": text},
     );
 
