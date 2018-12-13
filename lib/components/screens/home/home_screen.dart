@@ -38,9 +38,7 @@ class HomeScreenState extends State<HomeScreen>
           centerTitle: true,
           title: Text(
             "Harpy",
-            style: HarpyTheme.theme.textTheme.title.copyWith(
-              fontSize: 20.0,
-            ),
+            style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
           ),
         ),
         body: _buildBody(),
@@ -53,7 +51,21 @@ class HomeScreenState extends State<HomeScreen>
     if (store.tweets == null) {
       return Center(child: Text("no tweets ;w;"));
     } else {
-      return TweetList(store.tweets);
+      return TweetList(
+        tweets: store.tweets,
+        onRefresh: _onRefresh,
+        onRequestMore: _onRequestMore,
+      );
     }
+  }
+
+  Future<void> _onRefresh() async {
+    await HomeStore.updateTweets();
+  }
+
+  Future<void> _onRequestMore() async {
+    await HomeStore.tweetsAfter("${store.tweets.last.id}").then((_) {
+      setState(() {});
+    });
   }
 }
