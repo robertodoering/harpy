@@ -10,7 +10,8 @@ dependencies:
   flutter_twitter_login:
     git: git://github.com/eudangeld/flutter_twitter_login.git
   flutter_flux: ^4.1.2
-  oauth1: ^1.0.1
+  oauth1:
+    git: https://github.com/robertodoering/dart-oauth1.git
   json_annotation: ^2.0.0
   path_provider: ^0.4.1
   logging: ^0.11.3+2

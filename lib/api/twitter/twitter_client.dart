@@ -18,7 +18,7 @@ class TwitterClient {
         'https://api.twitter.com/oauth/request_token',
         'https://api.twitter.com/oauth/authorize',
         'https://api.twitter.com/oauth/access_token',
-        OAuth1.SignatureMethods.HMAC_SHA1);
+        OAuth1.SignatureMethods.hmacSha1);
     _oauthClientCredentials = OAuth1.ClientCredentials(
         AppConfiguration().applicationConfig.consumerKey,
         AppConfiguration().applicationConfig.consumerSecret);
