@@ -34,7 +34,7 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(createTweet, (Tweet tweet) async {
-//      _tweets.add(tweet);
+      _tweets.insert(0, tweet);
     });
 
     clearCache.listen((_) => TweetCache().clearCache());

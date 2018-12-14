@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter_twitter_login:
     git: git://github.com/eudangeld/flutter_twitter_login.git
+  image_picker: 0.4.10
   flutter_flux: ^4.1.2
   oauth1:
     git: https://github.com/robertodoering/dart-oauth1.git

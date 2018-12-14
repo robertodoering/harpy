@@ -3,9 +3,11 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
+import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/theme.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewTweetScreen extends StatefulWidget {
   @override
@@ -84,6 +86,7 @@ class _NewTweetScreenState extends State<NewTweetScreen>
   void _createTweet() async {
     Tweet newTweet =
         await _tweetService.createTweet(_textEditingController.text);
+    newTweet.full_text = _textEditingController.text;
     HomeStore.createTweet(newTweet);
     Navigator.pop(context);
   }
@@ -92,8 +95,61 @@ class _NewTweetScreenState extends State<NewTweetScreen>
 class NewTweetActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[],
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0),
+      child: Row(
+        children: <Widget>[
+          _buildAction(
+            iconData: Icons.image,
+            activate: () async {
+              var image =
+                  await ImagePicker.pickImage(source: ImageSource.gallery);
+            },
+            deactivate: () {},
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+//          _buildAction(
+//            iconData: Icons.gif,
+//            activate: () {},
+//            deactivate: () {},
+//          ),
+//          SizedBox(
+//            width: 10.0,
+//          ),
+//          _buildAction(
+//            iconData: Icons.table_chart,
+//            activate: () {},
+//            deactivate: () {},
+//          ),
+//          SizedBox(
+//            width: 10.0,
+//          ),
+          _buildAction(
+            iconData: Icons.location_on,
+            activate: () {},
+            deactivate: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAction(
+      {IconData iconData, VoidCallback activate, VoidCallback deactivate}) {
+    return Column(
+      children: <Widget>[
+        TwitterButton(
+          color: HarpyTheme.primaryColor,
+          activate: activate,
+          inactiveIconData: iconData,
+          active: false,
+          activeIconData: iconData,
+          deactivate: deactivate,
+          iconSize: 23.0,
+        ),
+      ],
     );
   }
 }

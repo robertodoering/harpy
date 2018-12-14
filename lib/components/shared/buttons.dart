@@ -28,15 +28,22 @@ class TwitterButton extends StatefulWidget {
   /// The callback when the action has been tapped if it is [active].
   final VoidCallback deactivate;
 
+  final double iconSize;
+
+  bool _hasValue;
+
   TwitterButton({
     @required this.active,
     @required this.inactiveIconData,
     @required this.activeIconData,
-    @required this.value,
     @required this.color,
     @required this.activate,
     @required this.deactivate,
-  });
+    this.value,
+    this.iconSize,
+  }) {
+    _hasValue = value != null;
+  }
 
   @override
   _TwitterButtonState createState() => _TwitterButtonState();
@@ -58,14 +65,14 @@ class _TwitterButtonState extends State<TwitterButton> {
           children: <Widget>[
             Icon(
               widget.active ? widget.activeIconData : widget.inactiveIconData,
-              size: 18.0,
+              size: widget.iconSize == null ? 18.0 : widget.iconSize,
               color: drawColored || widget.active
                   ? widget.color
                   : Theme.of(context).iconTheme.color,
             ),
-            SizedBox(width: 8.0),
+            SizedBox(width: widget._hasValue ? 8.0 : 0.0),
             Text(
-              "${widget.value}",
+              widget._hasValue ? "${widget.value}" : "",
               style: createTextStyle(),
             ),
           ],
