@@ -37,6 +37,8 @@ class Tweet {
   String source;
   @JsonKey(name: "favorite_count")
   int favoriteCount;
+  @JsonKey(name: "retweeted_status")
+  Tweet retweetedStatus;
 
   Tweet(
     this.user,
@@ -53,6 +55,7 @@ class Tweet {
     this.retweeted,
     this.source,
     this.favoriteCount,
+    this.retweetedStatus,
   );
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);

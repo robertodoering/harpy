@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 Logger log = Logger("StringUtils");
@@ -99,4 +100,13 @@ String formatNumber(int number) {
   }
 
   return formatted;
+}
+
+String tweetTimeDifference(DateTime createdAt) {
+  Duration timeDifference = DateTime.now().difference(createdAt);
+  if (timeDifference.inHours <= 24) {
+    return "${timeDifference.inHours}h";
+  } else {
+    return DateFormat("MMMd").format(createdAt);
+  }
 }

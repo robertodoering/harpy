@@ -8,6 +8,7 @@ import 'package:harpy/components/screens/home/home_drawer.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
+import 'package:harpy/components/shared/util.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -188,12 +189,14 @@ class _UserHeaderState extends State<UserHeader> {
     }
 
     if (widget.user.location?.isNotEmpty ?? false) {
-      children.add(_buildIconRow(Icons.place, widget.user.location));
+      children.add(IconRow(icon: Icons.place, child: widget.user.location));
     }
 
     if (widget.user.createdAt != null) {
-      children.add(_buildIconRow(Icons.date_range,
-          "joined ${formatCreatedAt(widget.user.createdAt)}"));
+      children.add(IconRow(
+        icon: Icons.date_range,
+        child: "joined ${formatCreatedAt(widget.user.createdAt)}",
+      ));
     }
 
     return children.isNotEmpty
@@ -222,24 +225,6 @@ class _UserHeaderState extends State<UserHeader> {
       ),
     );
 
-    return _buildIconRow(Icons.link, text);
-  }
-
-  /// A helper method to create an icon row for [_buildAdditionalInfo].
-  ///
-  /// [text] can either be a [Widget] or a [String].
-  Widget _buildIconRow(IconData icon, dynamic text) {
-    return Row(
-      children: <Widget>[
-        Icon(icon, size: 20.0),
-        SizedBox(width: 8.0),
-        text is Widget
-            ? text
-            : Text(
-                text,
-                style: Theme.of(context).textTheme.display1,
-              ),
-      ],
-    );
+    return IconRow(icon: Icons.link, child: text);
   }
 }
