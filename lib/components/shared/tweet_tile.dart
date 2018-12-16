@@ -1,24 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/components/shared/media/twitter_media.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
+import 'package:harpy/components/shared/util.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
-import 'package:intl/intl.dart';
 
 /// A single tile that display information and [TwitterButton]s for a [Tweet].
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
+  final User retweetUser;
 
-  const TweetTile({
+  TweetTile({
     Key key,
-    this.tweet,
-  }) : super(key: key);
+    tweet,
+  })  : tweet = tweet.retweetedStatus != null ? tweet.retweetedStatus : tweet,
+        retweetUser = tweet.retweetedStatus != null ? tweet.user : null,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,7 @@ class TweetTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            _buildRetweetedRow(),
             _buildNameRow(context),
             SizedBox(height: 8.0),
             _buildText(),
@@ -40,22 +46,21 @@ class TweetTile extends StatelessWidget {
     );
   }
 
-  String get displayTime {
-    Duration timeDifference = DateTime.now().difference(tweet.createdAt);
-    if (timeDifference.inHours <= 24) {
-      return "${timeDifference.inHours}h";
-    } else {
-      return DateFormat("MMMd").format(tweet.createdAt);
-    }
-  }
-
-  void _openUserProfile(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UserProfileScreen(tweet.user),
-      ),
-    );
+  Widget _buildRetweetedRow() {
+    return retweetUser == null
+        ? Container()
+        : Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                IconRow(
+                  icon: Icons.repeat,
+                  iconPadding: 40.0, // same as avatar width
+                  child: "${retweetUser.name} retweeted",
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _buildNameRow(BuildContext context) {
@@ -82,7 +87,7 @@ class TweetTile extends StatelessWidget {
 
             // username · time since tweet in hours
             Text(
-              "@${tweet.user.screenName} \u00b7 $displayTime",
+              "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}",
               style: HarpyTheme.theme.textTheme.caption,
             ),
           ],
@@ -140,5 +145,14 @@ class TweetTile extends StatelessWidget {
     } else {
       return Container();
     }
+  }
+
+  void _openUserProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserProfileScreen(tweet.user),
+      ),
+    );
   }
 }

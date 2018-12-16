@@ -27,7 +27,10 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
       json['in_reply_to_status_id_str'] as String,
       json['retweeted'] as bool,
       json['source'] as String,
-      json['favorite_count'] as int)
+      json['favorite_count'] as int,
+      json['retweeted_status'] == null
+          ? null
+          : Tweet.fromJson(json['retweeted_status'] as Map<String, dynamic>))
     ..extended_entities = json['extended_entities'] == null
         ? null
         : Entities.fromJson(json['extended_entities'] as Map<String, dynamic>);
@@ -48,5 +51,6 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'in_reply_to_status_id_str': instance.inReplyToStatusIdStr,
       'retweeted': instance.retweeted,
       'source': instance.source,
-      'favorite_count': instance.favoriteCount
+      'favorite_count': instance.favoriteCount,
+      'retweeted_status': instance.retweetedStatus
     };
