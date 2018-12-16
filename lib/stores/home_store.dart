@@ -10,6 +10,7 @@ class HomeStore extends Store {
   static final Action initTweets = Action();
   static final Action updateTweets = Action();
   static final Action clearCache = Action();
+  static final Action<String> tweetsAfter = Action();
 
   static final Action<Tweet> favoriteTweet = Action();
   static final Action<Tweet> unfavoriteTweet = Action();
@@ -27,6 +28,13 @@ class HomeStore extends Store {
 
     triggerOnAction(updateTweets, (_) async {
       _tweets = await CachedTweetServiceImpl().getHomeTimeline(
+        forceUpdate: true,
+      );
+    });
+
+    triggerOnAction(tweetsAfter, (String id) async {
+      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
+        params: {"max_id": id},
         forceUpdate: true,
       );
     });

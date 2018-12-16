@@ -68,6 +68,12 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
   }
 
   @override
+  void deactivate() {
+    _controller.stop();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

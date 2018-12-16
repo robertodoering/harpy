@@ -2,11 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
-import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/home/home_drawer.dart';
-import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
@@ -55,13 +53,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    List content = [
-      UserHeader(user: widget.user),
-    ];
-
-    // add tweets or loading indicator to the content list
-    _addListBody(content);
-
     return Theme(
       data: HarpyTheme.theme,
       child: FadingNestedScaffold(
@@ -71,42 +62,30 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               widget.user.profileBackgroundImageUrl,
           fit: BoxFit.cover,
         ),
-        body: SlideFadeInAnimation(
-          child: ListView.separated(
-            padding: EdgeInsets.zero,
-            itemCount: content.length,
-            itemBuilder: (context, index) {
-              return content[index] is Tweet
-                  ? TweetTile(
-                      key: Key("${store.userTweets[index - 1].id}"),
-                      tweet: store.userTweets[index - 1],
-                    )
-                  : content[index];
-            },
-            separatorBuilder: (context, index) => Divider(height: 0.0),
-          ),
+        body: TweetList(
+          leading: UserHeader(user: widget.user),
+          tweets: _loadingTweets ? null : store.userTweets,
+          trailing: _buildTrailingWidget(),
         ),
       ),
     );
   }
 
-  /// Adds the tweets of the user timeline to the list body once they have been
-  /// loaded.
-  ///
-  /// A [CircularProgressIndicator] is shown if [_loadingTweets] is true.
-  void _addListBody(List content) {
+  /// Builds a [CircularProgressIndicator] if the tweets are loading or a [Text]
+  /// if no tweets were able to be fetched.
+  Widget _buildTrailingWidget() {
     if (_loadingTweets) {
-      content.add(Padding(
+      return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Center(child: CircularProgressIndicator()),
-      ));
-    } else if (store.userTweets.isEmpty) {
-      content.add(Padding(
+      );
+    } else if (store.userTweets?.isEmpty ?? false) {
+      return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Center(child: Text("No tweets q.q")),
-      ));
+      );
     } else {
-      content.addAll(store.userTweets);
+      return Container();
     }
   }
 }

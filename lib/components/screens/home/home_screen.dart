@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen>
     with StoreWatcherMixin<HomeScreen> {
   HomeStore store;
+  bool _requestingMore = false;
 
   @override
   void initState() {
@@ -38,9 +39,7 @@ class HomeScreenState extends State<HomeScreen>
           centerTitle: true,
           title: Text(
             "Harpy",
-            style: HarpyTheme.theme.textTheme.title.copyWith(
-              fontSize: 20.0,
-            ),
+            style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
           ),
         ),
         body: _buildBody(),
@@ -53,7 +52,43 @@ class HomeScreenState extends State<HomeScreen>
     if (store.tweets == null) {
       return Center(child: Text("no tweets ;w;"));
     } else {
-      return TweetList(store.tweets);
+      return TweetList(
+        tweets: store.tweets,
+        onRefresh: _onRefresh,
+        onRequestMore: _onRequestMore,
+        trailing: _buildTrailing(),
+      );
     }
+  }
+
+  Widget _buildTrailing() {
+    return _requestingMore
+        ? SizedBox(
+            height: 100.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Loading more tweets..."),
+                SizedBox(height: 16.0),
+                CircularProgressIndicator(),
+              ],
+            ),
+          )
+        : Container();
+  }
+
+  Future<void> _onRefresh() async {
+    await HomeStore.updateTweets();
+  }
+
+  Future<void> _onRequestMore() async {
+    setState(() {
+      _requestingMore = true;
+    });
+    await HomeStore.tweetsAfter("${store.tweets.last.id}").then((_) {
+      setState(() {
+        _requestingMore = false;
+      });
+    });
   }
 }
