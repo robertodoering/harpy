@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen>
     with StoreWatcherMixin<HomeScreen> {
   HomeStore store;
+  bool _requestingMore = false;
 
   @override
   void initState() {
@@ -55,8 +56,25 @@ class HomeScreenState extends State<HomeScreen>
         tweets: store.tweets,
         onRefresh: _onRefresh,
         onRequestMore: _onRequestMore,
+        trailing: _buildTrailing(),
       );
     }
+  }
+
+  Widget _buildTrailing() {
+    return _requestingMore
+        ? SizedBox(
+            height: 100.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Loading more tweets..."),
+                SizedBox(height: 16.0),
+                CircularProgressIndicator(),
+              ],
+            ),
+          )
+        : Container();
   }
 
   Future<void> _onRefresh() async {
@@ -64,8 +82,13 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   Future<void> _onRequestMore() async {
+    setState(() {
+      _requestingMore = true;
+    });
     await HomeStore.tweetsAfter("${store.tweets.last.id}").then((_) {
-      setState(() {});
+      setState(() {
+        _requestingMore = false;
+      });
     });
   }
 }
