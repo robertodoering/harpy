@@ -21,8 +21,11 @@ class MediaServiceImpl extends TwitterService
     bool sendAsBase64 = true,
     List<String> owners,
   }) async {
-    var result = await MediaUploadProcess().start(
-        {"media": media, "sendAsBase64": sendAsBase64, "owners": owners});
+    var result = await MediaUploadProcess().start({
+      "media": media,
+      "sendAsBase64": sendAsBase64,
+      "owners": owners,
+    });
 
     return result["completed_media"];
   }
@@ -87,21 +90,22 @@ class MediaServiceImpl extends TwitterService
     }
   }
 
-  Future<TwitterMedia> appendMedia(
-      {@required String twitterMediaId,
-      @required int chunkIndex,
-      @required List<int> chunkData}) async {
+  Future<void> appendMedia({
+    @required String twitterMediaId,
+    @required int chunkIndex,
+    @required List<int> chunkData,
+  }) async {
     log.fine(
         "Prepare request to append media for mediaId $twitterMediaId | chunk $chunkIndex | chunk size ${chunkData.length}");
 
-    String chunkDataString = "";
-    chunkData.forEach((byte) {
-      chunkDataString += byte.toString();
-    });
+//    String chunkDataString = "";
+//    chunkData.forEach((byte) {
+//      chunkDataString += byte.toString();
+//    });
 
-    log.fine("Chunk data: $chunkDataString");
+    print("chunk data length: ${chunkData.length}");
 
-    var response = await client.post(
+    var response = await client.multipartRequest(
       "https://upload.twitter.com/1.1/media/upload.json",
       headers: {
         "content_type": "multipart/form-data",
@@ -111,12 +115,11 @@ class MediaServiceImpl extends TwitterService
         "media_id": twitterMediaId,
         "segment_index": chunkIndex.toString(),
       },
-      body: "media=$chunkDataString",
+      fileBytes: chunkData,
     );
 
-    if (response.statusCode == 200 || response.statusCode == 202) {
+    if (response.statusCode >= 200 && response.statusCode <= 299) {
       log.fine("Append success");
-      return map((map) => TwitterMedia.fromJson(map), response.body);
     } else {
       log.shout("Append failed! Status Code ${response.statusCode}");
       return Future.error(response.body);
@@ -124,6 +127,8 @@ class MediaServiceImpl extends TwitterService
   }
 
   Future<TwitterMedia> finalizeMediaUpload({@required String mediaId}) async {
+    log.fine("prepare finalize media upload request");
+
     var response = await client.post(
       "https://upload.twitter.com/1.1/media/upload.json",
       body: {
@@ -132,7 +137,7 @@ class MediaServiceImpl extends TwitterService
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       log.fine("Finalize success");
       return map((map) => TwitterMedia.fromJson(map), response.body);
     } else {

@@ -82,19 +82,22 @@ class AppendMedia extends ProcessStep {
     for (int i = 0; i < fileChunks.length; i++) {
       Logger("AppendMedia").fine("Append media request $i");
       await MediaServiceImpl().appendMedia(
-          twitterMediaId: twitterMediaId,
-          chunkIndex: i + 1,
-          chunkData: fileChunks[i]);
+        twitterMediaId: twitterMediaId,
+        chunkIndex: i,
+        chunkData: fileChunks[i],
+      );
     }
 
     Logger("AppendMedia").fine("Append media done");
-    return {};
+    return data;
   }
 }
 
 class FinalizeMediaUpload extends ProcessStep {
   @override
   Future performStep(data, prevResult) async {
+    Logger("FinalizeMediaUpload").fine("finalizing media upload");
+
     String twitterMediaId = data["twitter_media_id"];
 
     TwitterMedia twitterMedia =

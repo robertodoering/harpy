@@ -14,8 +14,8 @@ abstract class HarpyProcess {
 
     for (int i = 0; i < steps.length; i++) {
       ProcessStep currentStep = steps[i];
-      prevStepResult = await currentStep.performStep(data, prevStepResult);
       print("$i. step -> data: $data");
+      prevStepResult = await currentStep.performStep(data, prevStepResult);
     }
 
     return data;

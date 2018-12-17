@@ -53,4 +53,23 @@ class TwitterClient {
     Logger("TwitterClient").fine("sending post request: $url");
     return _client.post(url, headers: headers, body: body, encoding: encoding);
   }
+
+  Future<Response> multipartRequest(
+    String url, {
+    List<int> fileBytes,
+    Map<String, String> headers,
+    Map<String, String> params,
+  }) async {
+    url = appendParamsToUrl(url, params);
+    Logger("TwitterClient").fine("sending multipartRequest post request: $url");
+
+    var request = new MultipartRequest("POST", Uri.parse(url));
+
+    if (fileBytes != null) {
+      request.files.add(MultipartFile.fromBytes("media", fileBytes));
+    }
+    if (headers != null) request.headers.addAll(headers);
+
+    return Response.fromStream(await _client.send(request));
+  }
 }
