@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 
 /// An [IconRow] to display an [Icon] next to some text.
 class IconRow extends StatelessWidget {
@@ -38,6 +39,30 @@ class IconRow extends StatelessWidget {
                 child,
                 style: textStyle ?? Theme.of(context).textTheme.display1,
               ),
+      ],
+    );
+  }
+}
+
+/// A Widget to display the [followers] and [following] in a row.
+class FollowersCount extends StatelessWidget {
+  final int following;
+  final int followers;
+
+  const FollowersCount({
+    this.following,
+    this.followers,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Text(formatNumber(following)),
+        Text(" Following", style: Theme.of(context).textTheme.display1),
+        SizedBox(width: 16),
+        Text(formatNumber(followers)),
+        Text(" Followers", style: Theme.of(context).textTheme.display1),
       ],
     );
   }

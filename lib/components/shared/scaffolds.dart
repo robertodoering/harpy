@@ -1,4 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/theme.dart';
+
+/// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
+class HarpyScaffold extends StatelessWidget {
+  final PreferredSizeWidget appBar;
+  final Widget drawer;
+  final Widget body;
+
+  const HarpyScaffold({
+    this.appBar,
+    this.drawer,
+    this.body,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: HarpyTheme.theme,
+      child: Scaffold(
+        appBar: appBar,
+        drawer: drawer,
+        body: body,
+      ),
+    );
+  }
+}
 
 /// A [NestedScrollView] within a [Scaffold] where the [title] fades in when the
 /// [FlexibleSpaceBar] in the [SliverAppBar] starts showing.
