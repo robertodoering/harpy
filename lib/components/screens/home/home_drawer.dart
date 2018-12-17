@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
+import 'package:harpy/components/screens/settings/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
-import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/components/shared/util.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -58,21 +59,28 @@ class HomeDrawerState extends State<HomeDrawer> with StoreWatcherMixin {
   Widget _buildActions(BuildContext context) {
     return Column(
       children: <Widget>[
+        // profile
         ListTile(
           leading: Icon(Icons.face),
           title: Text("Profile"),
           onTap: () => _navigateToProfileScreen(context, store.loggedInUser),
         ),
-        ListTile(
-          leading: Icon(Icons.bookmark_border),
-          title: Text("Bookmarks"),
-          onTap: () {},
-        ),
+
+        // clear cache (debug)
         ListTile(
           leading: Icon(Icons.close),
           title: Text("Clear cache"),
           onTap: HomeStore.clearCache,
         ),
+
+        Divider(),
+
+        // settings
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text("Settings"),
+          onTap: () => _navigateToSettingsScreen(context),
+        )
       ],
     );
   }
@@ -84,13 +92,22 @@ class HomeDrawerState extends State<HomeDrawer> with StoreWatcherMixin {
         child: ListTile(
           leading: Icon(Icons.arrow_back),
           title: Text("Logout"),
-          onTap: () => logoutAndNavigateBack(context),
+          onTap: () => _logoutAndNavigateBack(context),
         ),
       ),
     );
   }
 
-  Future<void> logoutAndNavigateBack(BuildContext context) async {
+  void _navigateToSettingsScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettingsScreen(),
+      ),
+    );
+  }
+
+  Future<void> _logoutAndNavigateBack(BuildContext context) async {
     await LoginStore.twitterLogout();
 
     Navigator.pushReplacement(
@@ -146,29 +163,6 @@ class UserDrawerHeader extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class FollowersCount extends StatelessWidget {
-  final int following;
-  final int followers;
-
-  const FollowersCount({
-    this.following,
-    this.followers,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Text(formatNumber(following)),
-        Text(" Following", style: Theme.of(context).textTheme.display1),
-        SizedBox(width: 16),
-        Text(formatNumber(followers)),
-        Text(" Followers", style: Theme.of(context).textTheme.display1),
-      ],
     );
   }
 }
