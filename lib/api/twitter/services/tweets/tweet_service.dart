@@ -1,4 +1,5 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:meta/meta.dart';
 
 abstract class TweetService {
   Future<List<Tweet>> getHomeTimeline();
@@ -13,5 +14,5 @@ abstract class TweetService {
 
   Future retweet(String tweetId);
 
-  Future createTweet(String text);
+  Future createTweet({@required String text, List<String> mediaIds});
 }

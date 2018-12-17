@@ -40,6 +40,10 @@ String explodeListToSeparatedString(List<String> list,
     {String separator = ","}) {
   String result = "";
 
+  if (list == null) {
+    return result;
+  }
+
   list.forEach((currentString) {
     result += "$currentString$separator";
   });

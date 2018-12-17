@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/api/twitter/services/media/media_service.dart';
+import 'package:harpy/api/twitter/services/media/media_service_impl.dart';
 import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/components/shared/buttons.dart';
@@ -84,13 +89,17 @@ class _NewTweetScreenState extends State<NewTweetScreen>
   }
 
   void _createTweet() async {
-    Tweet newTweet =
-        await _tweetService.createTweet(_textEditingController.text);
+    Tweet newTweet = await _tweetService.createTweet(
+      text: _textEditingController.text,
+      mediaIds: uploadedMedia != null ? [uploadedMedia.idStr] : [],
+    );
     newTweet.full_text = _textEditingController.text;
     HomeStore.createTweet(newTweet);
     Navigator.pop(context);
   }
 }
+
+TwitterMedia uploadedMedia;
 
 class NewTweetActionBar extends StatelessWidget {
   @override
@@ -102,8 +111,11 @@ class NewTweetActionBar extends StatelessWidget {
           _buildAction(
             iconData: Icons.image,
             activate: () async {
-              var image =
+              File image =
                   await ImagePicker.pickImage(source: ImageSource.gallery);
+
+              uploadedMedia =
+                  await MediaServiceImpl().uploadProcess(media: image);
             },
             deactivate: () {},
           ),

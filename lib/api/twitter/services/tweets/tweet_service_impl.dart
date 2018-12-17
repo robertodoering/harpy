@@ -2,6 +2,8 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/core/json/json_mapper.dart';
+import 'package:harpy/core/utils/string_utils.dart';
+import 'package:meta/meta.dart';
 
 class TweetServiceImpl extends TwitterService
     with JsonMapper<Tweet>
@@ -89,11 +91,15 @@ class TweetServiceImpl extends TwitterService
   }
 
   @override
-  Future<Tweet> createTweet(String text) async {
+  Future<Tweet> createTweet(
+      {@required String text, List<String> mediaIds}) async {
     final response = await client.post(
       "https://api.twitter.com/1.1/statuses/update.json",
       params: {"trim_user": "false"},
-      body: {"status": text},
+      body: {
+        "status": text,
+        "media_ids": explodeListToSeparatedString(mediaIds),
+      },
     );
 
     if (response.statusCode == 200) {

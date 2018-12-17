@@ -3,6 +3,7 @@ import 'package:harpy/api/twitter/services/tweets/tweet_service.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 
 class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
   final Logger log = Logger('CachedTweetServiceImpl');
@@ -39,9 +40,10 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
   }
 
   @override
-  Future<Tweet> createTweet(String text) async {
+  Future<Tweet> createTweet(
+      {@required String text, List<String> mediaIds}) async {
     log.fine("Send Tweet to api");
-    Tweet newTweet = await super.createTweet(text);
+    Tweet newTweet = await super.createTweet(text: text);
 
     log.fine("Cache new Tweet");
     _tweetCache.cacheTweet(newTweet);
