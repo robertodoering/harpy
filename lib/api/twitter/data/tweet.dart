@@ -1,4 +1,5 @@
 import 'package:harpy/api/twitter/data/entities.dart';
+import 'package:harpy/api/twitter/data/harpy_data.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -40,6 +41,17 @@ class Tweet {
   @JsonKey(name: "retweeted_status")
   Tweet retweetedStatus;
 
+  // custom data
+  @JsonKey(name: "harpy_data")
+  HarpyData _harpyData;
+
+  HarpyData get harpyData {
+    _harpyData ??= HarpyData.init();
+    return _harpyData;
+  }
+
+  set harpyData(harpyData) => _harpyData = harpyData;
+
   Tweet(
     this.user,
     this.entities,
@@ -56,6 +68,7 @@ class Tweet {
     this.source,
     this.favoriteCount,
     this.retweetedStatus,
+    this._harpyData,
   );
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
