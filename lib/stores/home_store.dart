@@ -17,6 +17,9 @@ class HomeStore extends Store {
   static final Action<Tweet> retweetTweet = Action();
   static final Action<Tweet> unretweetTweet = Action();
 
+  static final Action<Tweet> showTweetMedia = Action();
+  static final Action<Tweet> hideTweetMedia = Action();
+
   List<Tweet> _tweets;
 
   List<Tweet> get tweets => _tweets;
@@ -105,6 +108,18 @@ class HomeStore extends Store {
             tweet.retweetCount++;
           }
         });
+    });
+
+    showTweetMedia.listen((Tweet tweet) {
+      tweet.harpyData.showMedia = true;
+
+      CachedTweetServiceImpl().updateCache(tweet);
+    });
+
+    hideTweetMedia.listen((Tweet tweet) {
+      tweet.harpyData.showMedia = false;
+
+      CachedTweetServiceImpl().updateCache(tweet);
     });
   }
 
