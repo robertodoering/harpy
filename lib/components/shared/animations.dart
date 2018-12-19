@@ -62,7 +62,11 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
     _animation = CurveTween(curve: Curves.fastOutSlowIn).animate(_controller)
       ..addListener(() => setState(() {}));
 
-    Future.delayed(widget.delay).then((_) => _controller.forward());
+    if (widget.delay != Duration.zero) {
+      Future.delayed(widget.delay).then((_) => _controller.forward());
+    } else {
+      _controller.forward();
+    }
 
     super.initState();
   }
