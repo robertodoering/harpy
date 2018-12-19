@@ -16,24 +16,21 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
   }) async {
     log.finest("Trying to get Home Timeline Data");
 
-    List<Tweet> tweets = [];
-    tweets = await _tweetCache.checkCacheForTweets();
+    List<Tweet> tweets = await _tweetCache.checkCacheForTweets();
 
     if (tweets.isNotEmpty && !forceUpdate) {
       log.fine("Using cached data");
       return tweets;
     }
 
-    log.fine("Force update cache: $forceUpdate");
+    log.fine("Force update cache");
 
     tweets = await super.getHomeTimeline(params: params);
-    log.fine("Requested to Twitter API got ${tweets.length} records");
+    // todo: when request fails return cached tweets
+    log.fine("Requested to Twitter API, got ${tweets.length} records");
 
-    _tweetCache.cacheTweets(tweets);
     log.fine("Store them on device");
-
-    tweets = await _tweetCache.getCachedTweets();
-    log.fine("Return everthing stored!");
+    _tweetCache.updateCachedTweets(tweets);
 
     return tweets;
   }
@@ -44,10 +41,10 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     bool exists = await _tweetCache.tweetExists(tweet);
 
     if (exists) {
-      log.fine("tweet updated");
       _tweetCache.cacheTweet(tweet);
+      log.fine("tweet updated");
     } else {
-      log.warning("tweet unable to update");
+      log.warning("tweet not found in cache");
     }
   }
 }

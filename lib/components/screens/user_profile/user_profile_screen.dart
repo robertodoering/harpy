@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/home/home_drawer.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
