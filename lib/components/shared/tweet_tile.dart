@@ -140,7 +140,7 @@ class TweetTile extends StatelessWidget {
     if (tweet.extended_entities?.media != null) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
-        child: CollapsibleMedia(tweet.extended_entities.media),
+        child: CollapsibleMedia(tweet: tweet),
       );
     } else {
       return Container();

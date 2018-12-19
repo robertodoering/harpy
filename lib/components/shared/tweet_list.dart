@@ -79,7 +79,7 @@ class _TweetListState extends State<TweetList> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller?.dispose();
   }
 
   @override

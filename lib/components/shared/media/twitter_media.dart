@@ -1,21 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/shared/media/media_dialog.dart';
 import 'package:harpy/components/shared/media/media_expansion.dart';
 import 'package:harpy/components/shared/media/twitter_video_player.dart';
 import 'package:harpy/components/shared/routes.dart';
+import 'package:harpy/stores/home_store.dart';
 
 // media types
 const String photo = "photo";
 const String video = "video";
 const String animatedGif = "animated_gif";
 
-/// Builds a column of [media] that can be collapsed.
+/// Builds a column of [TwitterMedia] that can be collapsed.
 class CollapsibleMedia extends StatefulWidget {
-  final List<TwitterMedia> media;
+  final Tweet tweet;
 
-  const CollapsibleMedia(this.media);
+  const CollapsibleMedia({
+    @required this.tweet,
+  });
 
   @override
   CollapsibleMediaState createState() => CollapsibleMediaState();
@@ -27,12 +31,19 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     super.initState();
   }
 
+  List<TwitterMedia> get _media => widget.tweet.extended_entities.media;
+
+  bool get _initiallyExpanded =>
+      widget.tweet.harpyData.showMedia ?? true; // todo: get from settings
+
   @override
   Widget build(BuildContext context) {
     return MediaExpansion(
+      initiallyExpanded: _initiallyExpanded,
+      onExpansionChanged: _saveShowMediaState,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: widget.media.any((media) => media.type == photo)
+          maxHeight: _media.any((media) => media.type == photo)
               ? 250.0
               // max video height: screen height - appbar - padding
               : MediaQuery.of(context).size.height - 80 - 24,
@@ -49,48 +60,48 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   Widget _buildMediaLayout(BuildContext context) {
     final double padding = 2.0;
 
-    if (widget.media.length == 1) {
+    if (_media.length == 1) {
       return Row(
         children: <Widget>[
-          _buildMediaWidget(widget.media[0], context),
+          _buildMediaWidget(_media[0], context),
         ],
       );
-    } else if (widget.media.length == 2) {
+    } else if (_media.length == 2) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildMediaWidget(widget.media[0], context),
+          _buildMediaWidget(_media[0], context),
           SizedBox(width: padding),
-          _buildMediaWidget(widget.media[1], context),
+          _buildMediaWidget(_media[1], context),
         ],
       );
-    } else if (widget.media.length == 3) {
+    } else if (_media.length == 3) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildMediaWidget(widget.media[0], context),
+          _buildMediaWidget(_media[0], context),
           SizedBox(width: padding),
           Expanded(
             child: Column(
               children: <Widget>[
-                _buildMediaWidget(widget.media[1], context),
+                _buildMediaWidget(_media[1], context),
                 SizedBox(height: padding),
-                _buildMediaWidget(widget.media[2], context),
+                _buildMediaWidget(_media[2], context),
               ],
             ),
           ),
         ],
       );
-    } else if (widget.media.length == 4) {
+    } else if (_media.length == 4) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: Column(
               children: <Widget>[
-                _buildMediaWidget(widget.media[0], context),
+                _buildMediaWidget(_media[0], context),
                 SizedBox(height: padding),
-                _buildMediaWidget(widget.media[2], context),
+                _buildMediaWidget(_media[2], context),
               ],
             ),
           ),
@@ -98,9 +109,9 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
           Expanded(
             child: Column(
               children: <Widget>[
-                _buildMediaWidget(widget.media[1], context),
+                _buildMediaWidget(_media[1], context),
                 SizedBox(height: padding),
-                _buildMediaWidget(widget.media[3], context),
+                _buildMediaWidget(_media[3], context),
               ],
             ),
           ),
@@ -116,7 +127,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   Widget _buildMediaWidget(TwitterMedia media, BuildContext context) {
     Widget mediaWidget;
 
-    int index = widget.media.indexOf(media);
+    int index = _media.indexOf(media);
     String heroTag = media.mediaUrl + "$index"; // todo: with tweet id
     GestureTapCallback tapCallback;
 
@@ -170,7 +181,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   void _showMediaGallery(int initialIndex) {
     Navigator.of(context).push(HeroDialogRoute(
       builder: (context) {
-        return PhotoMediaDialog(media: widget.media, index: initialIndex);
+        return PhotoMediaDialog(media: _media, index: initialIndex);
       },
     ));
   }
@@ -211,5 +222,12 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         );
       }),
     );
+  }
+
+  void _saveShowMediaState(bool showing) {
+    print("save show media state: $showing");
+    showing
+        ? HomeStore.showTweetMedia(widget.tweet)
+        : HomeStore.hideTweetMedia(widget.tweet);
   }
 }

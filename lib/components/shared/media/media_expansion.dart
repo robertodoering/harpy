@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class MediaExpansion extends StatefulWidget {
   final Widget child;
   final bool initiallyExpanded;
+  final ValueChanged<bool> onExpansionChanged;
 
   const MediaExpansion({
     @required this.child,
     this.initiallyExpanded = true,
+    this.onExpansionChanged,
   });
 
   @override
@@ -39,7 +41,7 @@ class _MediaExpansionState extends State<MediaExpansion>
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _heightFactor = _controller.drive(_easeInTween);
 
-    _isExpanded = widget.initiallyExpanded;
+    _isExpanded = widget.initiallyExpanded ?? true;
 
     if (_isExpanded) _controller.value = 1.0;
   }
@@ -54,14 +56,19 @@ class _MediaExpansionState extends State<MediaExpansion>
     setState(() {
       _isExpanded = !_isExpanded;
 
+      if (widget.onExpansionChanged != null) {
+        widget.onExpansionChanged(_isExpanded);
+      }
+
       if (_isExpanded) {
         _controller.forward();
       } else {
-        _controller.reverse().then<void>((_) {
-          if (!mounted) return;
-          setState(() {
-            // rebuild without child
-          });
+        _controller.reverse().then((_) {
+          if (mounted) {
+            setState(() {
+              // rebuild without child
+            });
+          }
         });
       }
     });

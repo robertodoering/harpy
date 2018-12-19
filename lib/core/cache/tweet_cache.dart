@@ -27,9 +27,7 @@ class TweetCache {
       return tweets;
     }
 
-    tweets = await getCachedTweets();
-
-    return tweets;
+    return await getCachedTweets();
   }
 
   Future<List<Tweet>> getCachedTweets() async {
@@ -72,10 +70,7 @@ class TweetCache {
     log.fine("Clear bucket $currentBucketName");
     List<File> files = await cacheDirService.listFiles(currentBucketName);
 
-    files.forEach((file) {
-      log.fine("Try to delete ${file.path}");
-      file.deleteSync();
-    });
+    files.forEach((file) => file.deleteSync());
   }
 
   void _setLastUpdatedDate() async {
@@ -111,12 +106,27 @@ class TweetCache {
             .tweetCacheTimeInHours;
   }
 
-  void cacheTweets(List<Tweet> tweets) {
+  /// Caches the [tweets] and clears the cache while keeping the
+  /// [Tweet.harpyData] of the cached [Tweet].
+  void updateCachedTweets(List<Tweet> tweets) async {
+    List<Tweet> cachedTweets = await getCachedTweets();
+
+    for (Tweet cachedTweet in cachedTweets) {
+      Tweet tweet = tweets.firstWhere(
+        (tweet) => tweet.id == cachedTweet.id,
+        orElse: () => null,
+      );
+
+      if (tweet != null) tweet.harpyData = cachedTweet.harpyData;
+    }
+
+    clearCache();
+
     tweets.forEach(cacheTweet);
     _setLastUpdatedDate();
   }
 
-  void cacheTweet(Tweet tweet) {
+  void cacheTweet(Tweet tweet) async {
     String fileName = "${tweet.id}";
 
     cacheDirService.createFile(
