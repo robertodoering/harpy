@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
@@ -13,7 +14,7 @@ import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/theme.dart';
 
-/// A single tile that display information and [TwitterButton]s for a [Tweet].
+/// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatelessWidget {
   final Tweet tweet;
   final User retweetUser;
@@ -112,26 +113,38 @@ class TweetTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         // retweet action
-        TwitterButton(
+        TwitterActionButton(
           active: tweet.retweeted,
-          inactiveIconData: Icons.repeat,
-          activeIconData: Icons.repeat,
-          value: tweet.retweetCount,
+          inactiveIcon: Icons.repeat,
+          activeIcon: Icons.repeat,
+          text: "${tweet.retweetCount}",
           color: Colors.green,
           activate: () => HomeStore.retweetTweet(tweet),
           deactivate: () => HomeStore.unretweetTweet(tweet),
         ),
 
         // favorite action
-        TwitterButton(
+        TwitterActionButton(
           active: tweet.favorited,
-          inactiveIconData: Icons.favorite_border,
-          activeIconData: Icons.favorite,
-          value: tweet.favoriteCount,
+          inactiveIcon: Icons.favorite_border,
+          activeIcon: Icons.favorite,
+          text: "${tweet.favoriteCount}",
           color: Colors.red,
           activate: () => HomeStore.favoriteTweet(tweet),
           deactivate: () => HomeStore.unfavoriteTweet(tweet),
         ),
+
+        Expanded(child: Container()),
+
+        HarpyButton(
+          icon: Icons.translate,
+          onPressed: () {
+            translate(text: tweet.full_text).then(print);
+          },
+          iconColor: Colors.blue,
+          splashColor: Colors.blue,
+          drawColorOnHighlight: true,
+        )
       ],
     );
   }
