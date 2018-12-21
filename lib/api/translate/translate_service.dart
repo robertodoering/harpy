@@ -28,33 +28,29 @@ Future<Translation> translate({
 
   url = appendParamsToUrl(url, params);
 
-  print("url: $url");
-
   Response response = await get(url);
-
-  print(response.statusCode);
-  print(response.body);
 
   if (response.statusCode != 200) {
     return Future.error(response.statusCode);
   }
 
-//  List jsonList = jsonDecode(
-//      '[[["One solution is necessary for many languages","多くの言語では1つの解決策が必要",null,null,3]],null,"ja",null,null,null,1,null,[["ja"],null,[1],["ja"]]]');
-
-//  print(jsonList[0][0][0]); // translated text
-//  print(jsonList[0][0][1]); // original text
-//  print(jsonList.last[0][0]); // language
-
   try {
     // parse translation from response
     List jsonList = jsonDecode(response.body);
 
+    String original = "";
+    String translated = "";
+
+    for (List translationText in jsonList[0]) {
+      original += translationText[1];
+      translated += translationText[0];
+    }
+
     return Translation(
-      jsonList[0][0][0],
-      jsonList[0][0][1],
-      jsonList.last[0][0],
-      languages[jsonList.last[0][0]],
+      original, // original
+      translated, // translated text
+      jsonList.last[0][0], // language code
+      languages[jsonList.last[0][0]], // language
     );
   } on Exception {
     return Future.error(response.statusCode);
