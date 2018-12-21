@@ -32,6 +32,9 @@ class CachedTweetServiceImpl extends TweetServiceImpl implements TweetService {
     log.fine("Store them on device");
     _tweetCache.updateCachedTweets(tweets);
 
+    // sort tweets by id
+    tweets.sort((t1, t2) => t2.id - t1.id);
+
     return tweets;
   }
 
