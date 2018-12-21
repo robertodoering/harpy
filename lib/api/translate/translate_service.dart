@@ -1,29 +1,9 @@
 import 'dart:convert';
 
+import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/translate/languages.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
-
-class Translation {
-  final String original;
-  final String text;
-  final String languageCode;
-  final String language;
-
-  bool get unchanged => original == text;
-
-  const Translation({
-    this.original,
-    this.text,
-    this.languageCode,
-    this.language,
-  });
-
-  @override
-  String toString() {
-    return 'Translation{original: $original, text: $text, languageCode: $languageCode, language: $language}';
-  }
-}
 
 /// Translates the [text] and returns a [Translation] object or a [Future.error]
 /// if it failed.
@@ -71,10 +51,10 @@ Future<Translation> translate({
     List jsonList = jsonDecode(response.body);
 
     return Translation(
-      original: jsonList[0][0][0],
-      text: jsonList[0][0][1],
-      languageCode: jsonList.last[0][0],
-      language: languages[jsonList.last[0][0]],
+      jsonList[0][0][0],
+      jsonList[0][0][1],
+      jsonList.last[0][0],
+      languages[jsonList.last[0][0]],
     );
   } on Exception {
     return Future.error(response.statusCode);
