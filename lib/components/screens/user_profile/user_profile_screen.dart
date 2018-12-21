@@ -213,8 +213,8 @@ class _UserHeaderState extends State<UserHeader> {
     _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () => launchUrl(url.url);
 
-    Widget text = RichText(
-      text: TextSpan(
+    Widget text = Text.rich(
+      TextSpan(
         text: "${url.displayUrl} ",
         style: HarpyTheme.theme.textTheme.body1.copyWith(
           color: HarpyTheme.primaryColor, // todo: user color?
