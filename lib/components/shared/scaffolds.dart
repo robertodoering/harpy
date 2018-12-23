@@ -16,7 +16,7 @@ class HarpyScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: HarpyTheme.theme,
+      data: HarpyTheme().theme,
       child: Scaffold(
         appBar: appBar,
         drawer: drawer,

@@ -1,16 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
-  static TextTheme _textTheme =
-      ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
+  static HarpyTheme instance;
 
-  static const Color primaryColor = Colors.indigo;
+  HarpyTheme.light() {
+    _theme = ThemeData.light();
+    _textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
+    primaryColor = Colors.indigo;
+    accentColor = Colors.indigoAccent;
+    buttonColor = Colors.white;
+  }
 
-  static ThemeData get theme {
-    return ThemeData.light().copyWith(
+  HarpyTheme.dark() {
+    _theme = ThemeData.dark();
+    _textTheme = ThemeData.dark().textTheme.apply(fontFamily: "OpenSans");
+//    primaryColor = Colors.indigo;
+    accentColor = Colors.indigoAccent;
+    buttonColor = Colors.white;
+  }
+
+  HarpyTheme.custom(HarpyThemeData harpyThemeData) {
+    // todo
+    primaryColor = Color(harpyThemeData.primaryColor);
+    accentColor = Color(harpyThemeData.accentColor);
+  }
+
+  factory HarpyTheme() => instance;
+
+  /// The color that will be drawn in the splash screen and [LoginScreen].
+  static const Color harpyColor = Colors.indigo;
+
+  ThemeData _theme;
+  TextTheme _textTheme;
+
+  Color primaryColor;
+  Color accentColor;
+  Color buttonColor;
+
+  ThemeData get theme {
+    return _theme.copyWith(
       primaryColor: primaryColor,
-      accentColor: Colors.indigoAccent,
-      buttonColor: Colors.white,
+      accentColor: accentColor,
+      buttonColor: buttonColor,
 
       // text
       textTheme: _textTheme.copyWith(

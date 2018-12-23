@@ -103,18 +103,21 @@ class MainScreenState extends State<MainScreen>
   @override
   Widget build(BuildContext context) {
     // draw splash screen
-    return Material(
-      color: HarpyTheme.primaryColor,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: harpyTitle,
+    return Theme(
+      data: HarpyTheme().theme,
+      child: Material(
+        color: HarpyTheme.harpyColor,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: harpyTitle,
+              ),
             ),
-          ),
-          Expanded(child: Container()),
-        ],
+            Expanded(child: Container()),
+          ],
+        ),
       ),
     );
   }

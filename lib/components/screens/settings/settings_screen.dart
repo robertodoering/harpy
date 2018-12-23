@@ -3,7 +3,6 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/stores/settings_store.dart';
 import 'package:harpy/stores/tokens.dart';
-import 'package:harpy/theme.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -33,7 +32,7 @@ class SettingsScreenState extends State<SettingsScreen>
         centerTitle: true,
         title: Text(
           "Settings",
-          style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
+          style: Theme.of(context).textTheme.title.copyWith(fontSize: 20.0),
         ),
       ),
       body: Container(),

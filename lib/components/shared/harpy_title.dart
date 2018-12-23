@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/shared/animations.dart';
-import 'package:harpy/theme.dart';
 
 final harpyTitleKey = new GlobalKey<_HarpyTitleState>();
 
@@ -68,7 +67,7 @@ class _HarpyTitleState extends State<HarpyTitle> with TickerProviderStateMixin {
             finishCallback: widget.finishCallback,
             child: Text(
               "Harpy",
-              style: HarpyTheme.theme.textTheme.title,
+              style: Theme.of(context).textTheme.title,
             ),
           ),
         ),

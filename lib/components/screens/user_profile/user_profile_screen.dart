@@ -54,7 +54,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: HarpyTheme.theme,
+      data: HarpyTheme().theme,
       child: FadingNestedScaffold(
         title: widget.user.name,
         background: CachedNetworkImage(
@@ -120,7 +120,7 @@ class _UserHeaderState extends State<UserHeader> {
           _buildUserInfo(),
           SizedBox(height: 8.0),
           _buildUserDescription(),
-          _buildAdditionalInfo(),
+          _buildAdditionalInfo(context),
           FollowersCount(
             followers: widget.user.followersCount,
             following: widget.user.friendsCount,
@@ -180,11 +180,11 @@ class _UserHeaderState extends State<UserHeader> {
 
   /// Builds a [Column] of icon rows with additional information such as the
   /// link, date joined or location of the [User].
-  Widget _buildAdditionalInfo() {
+  Widget _buildAdditionalInfo(BuildContext context) {
     List<Widget> children = [];
 
     if (widget.user?.entities?.url?.urls?.isNotEmpty ?? false) {
-      children.add(_buildLink());
+      children.add(_buildLink(context));
     }
 
     if (widget.user.location?.isNotEmpty ?? false) {
@@ -207,7 +207,7 @@ class _UserHeaderState extends State<UserHeader> {
   }
 
   /// A helper method to create a link in [_buildAdditionalInfo].
-  Widget _buildLink() {
+  Widget _buildLink(BuildContext context) {
     Url url = widget.user.entities.url.urls.first;
 
     _linkGestureRecognizer = TapGestureRecognizer()
@@ -216,10 +216,10 @@ class _UserHeaderState extends State<UserHeader> {
     Widget text = Text.rich(
       TextSpan(
         text: "${url.displayUrl} ",
-        style: HarpyTheme.theme.textTheme.body1.copyWith(
-          color: HarpyTheme.primaryColor, // todo: user color?
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(context).textTheme.body1.copyWith(
+              color: HarpyTheme.harpyColor, // todo: user color?
+              fontWeight: FontWeight.bold,
+            ),
         recognizer: _linkGestureRecognizer,
       ),
     );

@@ -18,7 +18,7 @@ class TwitterText extends StatefulWidget {
   const TwitterText({
     @required this.text,
     this.entities,
-    this.entityColor = HarpyTheme.primaryColor,
+    this.entityColor,
     this.onEntityTap,
   });
 
@@ -73,7 +73,7 @@ class TwitterTextState extends State<TwitterText> {
 
       _textSpans.add(TextSpan(
         text: text,
-        style: HarpyTheme.theme.textTheme.body1,
+        style: HarpyTheme().theme.textTheme.body1,
       ));
     }
   }
@@ -91,10 +91,10 @@ class TwitterTextState extends State<TwitterText> {
 
     _textSpans.add(TextSpan(
       text: "${entityModel.displayUrl} ",
-      style: HarpyTheme.theme.textTheme.body1.copyWith(
-        color: widget.entityColor,
-        fontWeight: FontWeight.bold,
-      ),
+      style: HarpyTheme().theme.textTheme.body1.copyWith(
+            color: widget.entityColor ?? HarpyTheme().theme.primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
       recognizer: recognizer,
     ));
   }

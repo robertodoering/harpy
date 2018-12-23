@@ -11,7 +11,6 @@ import 'package:harpy/components/shared/util.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
-import 'package:harpy/theme.dart';
 
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {
@@ -95,7 +94,7 @@ class TweetTileState extends State<TweetTile> {
             // username · time since tweet in hours
             Text(
               "@${widget.tweet.user.screenName} \u00b7 ${tweetTimeDifference(widget.tweet.createdAt)}",
-              style: HarpyTheme.theme.textTheme.caption,
+              style: Theme.of(context).textTheme.caption,
             ),
           ],
         ),

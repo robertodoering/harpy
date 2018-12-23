@@ -38,7 +38,7 @@ class HomeScreenState extends State<HomeScreen>
         centerTitle: true,
         title: Text(
           "Harpy",
-          style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
+          style: HarpyTheme().theme.textTheme.title.copyWith(fontSize: 20.0),
         ),
       ),
       body: _buildBody(),
