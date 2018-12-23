@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/api/translate/data/translation.dart';
+import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
@@ -20,6 +22,8 @@ class HomeStore extends Store {
   static final Action<Tweet> showTweetMedia = Action();
   static final Action<Tweet> hideTweetMedia = Action();
 
+  static final Action<Tweet> translateTweet = Action();
+
   List<Tweet> _tweets;
 
   List<Tweet> get tweets => _tweets;
@@ -36,10 +40,11 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(tweetsAfter, (String id) async {
-      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
-        params: {"max_id": id},
-        forceUpdate: true,
-      );
+//      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
+//        params: {"max_id": id},
+//        forceUpdate: true,
+//      );
+      // todo: fix
     });
 
     clearCache.listen((_) => TweetCache().clearCache());
@@ -118,6 +123,14 @@ class HomeStore extends Store {
 
     hideTweetMedia.listen((Tweet tweet) {
       tweet.harpyData.showMedia = false;
+
+      CachedTweetServiceImpl().updateCache(tweet);
+    });
+
+    triggerOnAction(translateTweet, (Tweet tweet) async {
+      Translation translation = await translate(text: tweet.full_text);
+
+      tweet.harpyData.translation = translation;
 
       CachedTweetServiceImpl().updateCache(tweet);
     });

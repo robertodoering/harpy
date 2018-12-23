@@ -1,25 +1,132 @@
 import 'package:flutter/material.dart';
 
-/// A tappable button that can be [active] and draw a different icon with a
-/// different [VoidCallback].
-class TwitterButton extends StatefulWidget {
-  /// Whether or not the [TwitterButton] is [active].
+/// A rectangular button that can have an an [icon], [text] or both.
+class HarpyButton extends StatefulWidget {
+  final IconData icon;
+  final String text;
+  final VoidCallback onPressed;
+
+  final Color iconColor;
+  final Color textColor;
+  final Color splashColor;
+
+  /// When `true`, the text and icon will only be drawn colored when the button
+  /// is hovered (pressing but not letting go).
+  final bool drawColorOnHighlight;
+
+  const HarpyButton({
+    this.icon,
+    this.text,
+    this.onPressed,
+    this.iconColor,
+    this.textColor,
+    this.splashColor,
+    this.drawColorOnHighlight = false,
+  }) : assert(icon != null || text != null);
+
+  @override
+  HarpyButtonState createState() => HarpyButtonState();
+}
+
+class HarpyButtonState extends State<HarpyButton> {
+  bool _highlighted = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.onPressed,
+      highlightColor: Colors.transparent,
+      splashColor: widget.splashColor?.withOpacity(0.1),
+      onHighlightChanged: _updateHighlighted,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Row(
+          children: <Widget>[
+            _buildIcon(context),
+            _buildSeparator(),
+            _buildText(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon(BuildContext context) {
+    Color iconColor;
+
+    if (widget.iconColor != null && !widget.drawColorOnHighlight) {
+      // always draw colored
+      iconColor = widget.iconColor;
+    } else if (widget.iconColor != null) {
+      // only draw colored when highlighting
+      iconColor =
+          _highlighted ? widget.iconColor : Theme.of(context).iconTheme.color;
+    } else {
+      // use default color
+      iconColor = Theme.of(context).iconTheme.color;
+    }
+
+    return widget.icon != null
+        ? Icon(
+            widget.icon,
+            size: 18,
+            color: iconColor,
+          )
+        : Container();
+  }
+
+  Widget _buildSeparator() {
+    // space between icon and text
+    return widget.icon != null && widget.text != null
+        ? SizedBox(width: 8.0)
+        : Container();
+  }
+
+  Widget _buildText(BuildContext context) {
+    if (widget.text != null) {
+      TextStyle style = Theme.of(context).textTheme.body1;
+
+      if (widget.textColor != null && !widget.drawColorOnHighlight) {
+        // always draw colored
+        style = style.copyWith(color: widget.textColor);
+      } else if (widget.textColor != null && _highlighted) {
+        // only draw colored when highlighting
+        style = style.copyWith(color: widget.textColor);
+      }
+
+      return Text(widget.text, style: style);
+    } else {
+      return Container();
+    }
+  }
+
+  void _updateHighlighted(bool highlighted) {
+    setState(() {
+      _highlighted = highlighted;
+    });
+  }
+}
+
+/// A tappable button that can be [active] to have a different behavior and be
+/// drawn colored compared to when it is inactive.
+class TwitterActionButton extends StatelessWidget {
+  /// Whether or not the [TwitterActionButton] is [active].
   final bool active;
 
-  /// The [IconData] to draw when the [TwitterButton] is not [active].
-  final IconData inactiveIconData;
+  /// The [IconData] to draw when the [TwitterActionButton] is not [active].
+  final IconData inactiveIcon;
 
-  /// The [IconData] to draw when the [TwitterButton] is [active].
-  final IconData activeIconData;
+  /// The [IconData] to draw when the [TwitterActionButton] is [active].
+  final IconData activeIcon;
 
   /// The number next to the action.
-  final int value;
+  final String text;
 
   /// The color of the action.
   ///
   /// If [active] is `true` the icon and value will be colored.
-  /// Otherwise only when tapping the [TwitterButton] the icon, value and splash
-  /// will use this [color].
+  /// Otherwise only when tapping the [TwitterActionButton] the icon, text and
+  /// splash will use this [color].
   final Color color;
 
   /// The callback when the action has been tapped if it is not [active].
@@ -28,66 +135,27 @@ class TwitterButton extends StatefulWidget {
   /// The callback when the action has been tapped if it is [active].
   final VoidCallback deactivate;
 
-  TwitterButton({
+  TwitterActionButton({
     @required this.active,
-    @required this.inactiveIconData,
-    @required this.activeIconData,
-    @required this.value,
-    @required this.color,
-    @required this.activate,
-    @required this.deactivate,
+    this.inactiveIcon,
+    this.activeIcon,
+    this.text,
+    this.color,
+    this.activate,
+    this.deactivate,
   });
 
   @override
-  _TwitterButtonState createState() => _TwitterButtonState();
-}
-
-class _TwitterButtonState extends State<TwitterButton> {
-  bool drawColored = false;
-
-  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.active ? widget.deactivate : widget.activate,
-      highlightColor: Colors.transparent,
-      splashColor: widget.color.withOpacity(0.1),
-      onHighlightChanged: updateDrawColored,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              widget.active ? widget.activeIconData : widget.inactiveIconData,
-              size: 18.0,
-              color: drawColored || widget.active
-                  ? widget.color
-                  : Theme.of(context).iconTheme.color,
-            ),
-            SizedBox(width: 8.0),
-            Text(
-              "${widget.value}",
-              style: createTextStyle(),
-            ),
-          ],
-        ),
-      ),
+    return HarpyButton(
+      icon: active ? activeIcon : inactiveIcon,
+      text: text,
+      onPressed: active ? deactivate : activate,
+      iconColor: color,
+      textColor: color,
+      splashColor: color,
+      drawColorOnHighlight: !active,
     );
-  }
-
-  TextStyle createTextStyle() {
-    TextStyle base = Theme.of(context).textTheme.body1;
-
-    if (widget.active || drawColored) {
-      return base.copyWith(color: widget.color);
-    } else {
-      return base;
-    }
-  }
-
-  void updateDrawColored(bool drawColored) {
-    setState(() {
-      this.drawColored = drawColored;
-    });
   }
 }
 

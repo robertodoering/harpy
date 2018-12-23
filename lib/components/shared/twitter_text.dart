@@ -107,8 +107,8 @@ class TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
+    return Text.rich(
+      TextSpan(
         children: _textSpans,
       ),
     );

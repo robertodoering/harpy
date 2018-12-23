@@ -31,9 +31,11 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
       json['retweeted_status'] == null
           ? null
           : Tweet.fromJson(json['retweeted_status'] as Map<String, dynamic>),
+      json['lang'] as String,
       json['harpy_data'] == null
-          ? null
-          : HarpyData.fromJson(json['harpy_data'] as Map<String, dynamic>))
+          ? HarpyData.init()
+          : HarpyData.fromJson(json['harpy_data'] as Map<String, dynamic>),
+      (json['display_text_range'] as List)?.map((e) => e as int)?.toList())
     ..extended_entities = json['extended_entities'] == null
         ? null
         : Entities.fromJson(json['extended_entities'] as Map<String, dynamic>);
@@ -56,5 +58,7 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'source': instance.source,
       'favorite_count': instance.favoriteCount,
       'retweeted_status': instance.retweetedStatus,
-      'harpy_data': instance._harpyData
+      'lang': instance.lang,
+      'display_text_range': instance.displayTextRange,
+      'harpy_data': instance.harpyData
     };

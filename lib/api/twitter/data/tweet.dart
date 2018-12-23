@@ -40,17 +40,15 @@ class Tweet {
   int favoriteCount;
   @JsonKey(name: "retweeted_status")
   Tweet retweetedStatus;
+  String lang;
+  @JsonKey(name: "display_text_range")
+  List<int> displayTextRange;
 
   // custom data
   @JsonKey(name: "harpy_data")
-  HarpyData _harpyData;
+  HarpyData harpyData;
 
-  HarpyData get harpyData {
-    _harpyData ??= HarpyData.init();
-    return _harpyData;
-  }
-
-  set harpyData(harpyData) => _harpyData = harpyData;
+  bool get emptyText => displayTextRange[1] == 0;
 
   Tweet(
     this.user,
@@ -68,7 +66,9 @@ class Tweet {
     this.source,
     this.favoriteCount,
     this.retweetedStatus,
-    this._harpyData,
+    this.lang,
+    this.harpyData,
+    this.displayTextRange,
   );
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);

@@ -120,6 +120,12 @@ class TweetCache {
       if (tweet != null) tweet.harpyData = cachedTweet.harpyData;
     }
 
+    // todo: improve:
+//    for (Tweet tweet in tweets) {
+//      // get cached file with tweet id if exists
+//      // if exists: tweet.harpyData = cachedTweet.harpyData;
+//    }
+
     clearCache();
 
     tweets.forEach(cacheTweet);
