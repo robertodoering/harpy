@@ -146,7 +146,8 @@ class TweetTileState extends State<TweetTile> {
               "Translated from ",
               style: Theme.of(context).textTheme.display1,
             ),
-            Text(widget.tweet.harpyData.translation.language),
+            Text(widget.tweet.harpyData.translation
+                .language), // todo: check if not null
           ],
         ),
         SizedBox(height: 4.0),
