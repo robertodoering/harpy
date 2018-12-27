@@ -17,9 +17,13 @@ class TweetTile extends StatefulWidget {
   final Tweet tweet;
   final User retweetUser;
 
+  /// Determines whether or not to open the user profile on avatar / name tap.
+  final bool openUserProfile;
+
   TweetTile({
     Key key,
     Tweet tweet,
+    this.openUserProfile = false,
   })  : tweet = tweet.retweetedStatus != null ? tweet.retweetedStatus : tweet,
         retweetUser = tweet.retweetedStatus != null ? tweet.user : null,
         super(key: key);
@@ -74,7 +78,8 @@ class TweetTileState extends State<TweetTile> {
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: () => _openUserProfile(context),
+          onTap:
+              widget.openUserProfile ? () => _openUserProfile(context) : null,
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(

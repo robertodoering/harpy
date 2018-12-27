@@ -106,6 +106,8 @@ String tweetTimeDifference(DateTime createdAt) {
   Duration timeDifference = DateTime.now().difference(createdAt);
   if (timeDifference.inHours <= 24) {
     return "${timeDifference.inHours}h";
+  } else if (timeDifference.inDays > 365) {
+    return DateFormat("MMM d yyyy").format(createdAt);
   } else {
     return DateFormat("MMMd").format(createdAt);
   }
