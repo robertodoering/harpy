@@ -2,23 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:harpy/theme.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
+///
+/// If [appBar] is a String, it will be wrapped in an [AppBar].
+/// Otherwise it needs to be a [PreferredSizeWidget].
 class HarpyScaffold extends StatelessWidget {
-  final PreferredSizeWidget appBar;
+  final appBar;
+  final ThemeData themeData;
   final Widget drawer;
   final Widget body;
 
-  const HarpyScaffold({
-    this.appBar,
+  HarpyScaffold({
+    @required this.appBar,
+    this.themeData,
     this.drawer,
     this.body,
-  });
+  }) : assert(appBar is String || appBar is PreferredSizeWidget);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: HarpyTheme().theme,
+      data: themeData ?? HarpyTheme().theme,
       child: Scaffold(
-        appBar: appBar,
+        appBar: appBar is PreferredSizeWidget
+            ? appBar
+            : AppBar(
+                centerTitle: true,
+                title: Text(
+                  appBar,
+                  style: HarpyTheme()
+                      .theme
+                      .textTheme
+                      .title
+                      .copyWith(fontSize: 20.0),
+                ),
+              ),
         drawer: drawer,
         body: body,
       ),
