@@ -2,47 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
-  static HarpyTheme instance;
+  static HarpyTheme _instance;
+
+  static set instance(HarpyTheme harpyTheme) => _instance = harpyTheme;
 
   HarpyTheme.light() {
-    _theme = ThemeData.light();
+    name = "Default light";
+    _baseTheme = ThemeData.light();
     _textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
-    primaryColor = Colors.indigo;
-    accentColor = Colors.indigoAccent;
-    buttonColor = Colors.white;
+    _primaryColor = Colors.indigo;
+    _accentColor = Colors.indigoAccent;
   }
 
   HarpyTheme.dark() {
-    _theme = ThemeData.dark();
+    name = "Default dark";
+    _baseTheme = ThemeData.dark();
     _textTheme = ThemeData.dark().textTheme.apply(fontFamily: "OpenSans");
-//    primaryColor = Colors.indigo;
-    accentColor = Colors.indigoAccent;
-    buttonColor = Colors.white;
+    _accentColor = Colors.deepPurpleAccent;
   }
 
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
     // todo
-    primaryColor = Color(harpyThemeData.primaryColor);
-    accentColor = Color(harpyThemeData.accentColor);
+    _primaryColor = Color(harpyThemeData.primaryColor);
+    _accentColor = Color(harpyThemeData.accentColor);
   }
 
-  factory HarpyTheme() => instance;
+  factory HarpyTheme() => _instance;
+
+  String name;
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
   static const Color harpyColor = Colors.indigo;
 
-  ThemeData _theme;
+  ThemeData _baseTheme;
   TextTheme _textTheme;
 
-  Color primaryColor;
-  Color accentColor;
-  Color buttonColor;
+  Color _primaryColor;
+  Color _primaryColorLight;
+  Color _accentColor;
 
   ThemeData get theme {
-    return _theme.copyWith(
-      primaryColor: primaryColor,
-      accentColor: accentColor,
-      buttonColor: buttonColor,
+    return _baseTheme.copyWith(
+      primaryColor: _primaryColor,
+      accentColor: _accentColor,
+      buttonColor: Colors.white,
 
       // text
       textTheme: _textTheme.copyWith(
@@ -61,7 +64,7 @@ class HarpyTheme {
             fontWeight: FontWeight.w300,
           ),
           button: _textTheme.button.copyWith(
-            color: primaryColor,
+            color: _primaryColor,
             fontSize: 16.0,
           ),
 
@@ -73,6 +76,11 @@ class HarpyTheme {
           // drawer name
           display2: _textTheme.display2.copyWith(
             fontSize: 24.0,
+          ),
+
+          // settings header
+          display3: _textTheme.display2.copyWith(
+            fontSize: 18.0,
           ),
 
           // default text

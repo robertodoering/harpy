@@ -71,6 +71,29 @@ class Tweet {
     this.displayTextRange,
   );
 
+  factory Tweet.mock() {
+    return Tweet(
+      User.mock(),
+      Entities(null, null, null, null, null, null),
+      false,
+      DateTime.parse("2018-07-29"),
+      true,
+      null,
+      null,
+      "Today is a good day.",
+      null,
+      69,
+      null,
+      false,
+      null,
+      420,
+      null,
+      "en",
+      HarpyData.init(),
+      [0, 1],
+    );
+  }
+
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
   Map<String, dynamic> toJson() => _$TweetToJson(this);
