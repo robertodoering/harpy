@@ -94,12 +94,22 @@ class TweetTileState extends State<TweetTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // name
-            Text(widget.tweet.user.name),
+            GestureDetector(
+              onTap: widget.openUserProfile
+                  ? () => _openUserProfile(context)
+                  : null,
+              child: Text(widget.tweet.user.name),
+            ),
 
             // username · time since tweet in hours
-            Text(
-              "@${widget.tweet.user.screenName} \u00b7 ${tweetTimeDifference(widget.tweet.createdAt)}",
-              style: Theme.of(context).textTheme.caption,
+            GestureDetector(
+              onTap: widget.openUserProfile
+                  ? () => _openUserProfile(context)
+                  : null,
+              child: Text(
+                "@${widget.tweet.user.screenName} \u00b7 ${tweetTimeDifference(widget.tweet.createdAt)}",
+                style: Theme.of(context).textTheme.caption,
+              ),
             ),
           ],
         ),
