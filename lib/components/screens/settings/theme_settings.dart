@@ -20,11 +20,7 @@ class ThemeSettingsState extends State<ThemeSettings> {
 
   @override
   Widget build(BuildContext context) {
-    _harpyThemes = [
-      // todo: remove
-      HarpyTheme.light(),
-      HarpyTheme.dark(),
-    ];
+    // todo: load custom themes
     return HarpyScaffold(
       appBar: HarpyTheme().name,
       themeData: HarpyTheme().theme,
@@ -58,7 +54,13 @@ class ThemeSettingsState extends State<ThemeSettings> {
 
     children.add(_buildAddCustomTheme());
 
-    return Wrap(children: children);
+    return Container(
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.spaceAround,
+        children: children,
+      ),
+    );
   }
 
   Widget _buildPreview() {
