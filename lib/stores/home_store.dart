@@ -40,11 +40,11 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(tweetsAfter, (String id) async {
-//      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
-//        params: {"max_id": id},
-//        forceUpdate: true,
-//      );
-      // todo: fix
+      id = (int.parse(id) - 1).toString();
+
+      _tweets.addAll(await TweetServiceImpl().getHomeTimeline(
+        params: {"max_id": id},
+      ));
     });
 
     clearCache.listen((_) => TweetCache().clearCache());
