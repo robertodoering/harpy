@@ -23,7 +23,7 @@ class TweetTile extends StatefulWidget {
   TweetTile({
     Key key,
     Tweet tweet,
-    this.openUserProfile = false,
+    this.openUserProfile = true,
   })  : tweet = tweet.retweetedStatus != null ? tweet.retweetedStatus : tweet,
         retweetUser = tweet.retweetedStatus != null ? tweet.user : null,
         super(key: key);
@@ -167,8 +167,7 @@ class TweetTileState extends State<TweetTile> {
     return widget.tweet.extended_entities?.media != null
         ? Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: CollapsibleMedia(tweet: widget.tweet),
-          )
+            child: CollapsibleMedia(tweet: widget.tweet))
         : Container();
   }
 
