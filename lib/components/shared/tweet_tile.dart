@@ -165,9 +165,7 @@ class TweetTileState extends State<TweetTile> {
 
   Widget _buildMedia() {
     return widget.tweet.extended_entities?.media != null
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: CollapsibleMedia(tweet: widget.tweet))
+        ? CollapsibleMedia(tweet: widget.tweet)
         : Container();
   }
 
