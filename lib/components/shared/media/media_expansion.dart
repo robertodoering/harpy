@@ -85,7 +85,12 @@ class _MediaExpansionState extends State<MediaExpansion>
             child: Center(
               child: RotationTransition(
                 turns: _iconTurns,
-                child: const Icon(Icons.expand_more, color: Colors.black54),
+                child: Icon(
+                  Icons.expand_more,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white54
+                      : Colors.black54,
+                ),
               ),
             ),
           ),

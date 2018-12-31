@@ -30,7 +30,20 @@ class MainScreenState extends State<MainScreen>
   bool initialized = false;
   bool animationFinished = false;
 
-  HarpyTitle harpyTitle;
+  @override
+  void initState() {
+    super.initState();
+
+    loginStore = listenToStore(Tokens.login);
+
+    _init();
+  }
+
+  @override
+  void dispose() {
+    unlistenFromStore(loginStore);
+    super.dispose();
+  }
 
   Future<void> _init() async {
     // init app config
@@ -81,40 +94,26 @@ class MainScreenState extends State<MainScreen>
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    loginStore = listenToStore(Tokens.login);
-
-    harpyTitle = HarpyTitle(
-      key: harpyTitleKey,
-      finishCallback: () => _checkLoggedIn(animationFinished: true),
-    );
-
-    _init();
-  }
-
-  @override
-  void dispose() {
-    unlistenFromStore(loginStore);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // draw splash screen
-    return Material(
-      color: HarpyTheme.primaryColor,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: harpyTitle,
+    return Theme(
+      data: HarpyTheme.light().theme,
+      child: Material(
+        color: HarpyTheme.harpyColor,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: HarpyTitle(
+                  key: harpyTitleKey,
+                  finishCallback: () => _checkLoggedIn(animationFinished: true),
+                ),
+              ),
             ),
-          ),
-          Expanded(child: Container()),
-        ],
+            Expanded(child: Container()),
+          ],
+        ),
       ),
     );
   }

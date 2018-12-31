@@ -5,7 +5,6 @@ import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/tokens.dart';
-import 'package:harpy/theme.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -34,13 +33,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Harpy",
-          style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
-        ),
-      ),
+      appBar: "Harpy",
       body: _buildBody(),
       drawer: HomeDrawer(),
     );

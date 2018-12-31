@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/core/utils/string_utils.dart';
-import 'package:harpy/theme.dart';
 
 /// Creates a [RichText] from the given [text].
 ///
@@ -18,7 +17,7 @@ class TwitterText extends StatefulWidget {
   const TwitterText({
     @required this.text,
     this.entities,
-    this.entityColor = HarpyTheme.primaryColor,
+    this.entityColor,
     this.onEntityTap,
   });
 
@@ -34,16 +33,18 @@ class TwitterTextState extends State<TwitterText> {
 
   List<TextSpan> _textSpans = [];
 
+  /// The styles used by the text and entities (urls, hashtags) of the tweet.
+  TextStyle _textStyle;
+  TextStyle _entityStyle;
+
   @override
   void initState() {
     super.initState();
 
-//    print("------");
-//    print(widget.text);
-//    print(widget.entities);
-//    print("------");
+    _parseText();
+  }
 
-    // parse text
+  void _parseText() {
     var twitterEntities = TwitterEntities(
       widget.text,
       widget.entities,
@@ -73,7 +74,7 @@ class TwitterTextState extends State<TwitterText> {
 
       _textSpans.add(TextSpan(
         text: text,
-        style: HarpyTheme.theme.textTheme.body1,
+        style: _textStyle,
       ));
     }
   }
@@ -91,10 +92,7 @@ class TwitterTextState extends State<TwitterText> {
 
     _textSpans.add(TextSpan(
       text: "${entityModel.displayUrl} ",
-      style: HarpyTheme.theme.textTheme.body1.copyWith(
-        color: widget.entityColor,
-        fontWeight: FontWeight.bold,
-      ),
+      style: _entityStyle,
       recognizer: recognizer,
     ));
   }
@@ -107,6 +105,13 @@ class TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
+    _textStyle = Theme.of(context).textTheme.body1;
+
+    _entityStyle = Theme.of(context).textTheme.body1.copyWith(
+          color: widget.entityColor ?? Theme.of(context).primaryColor,
+          fontWeight: FontWeight.bold,
+        );
+
     return Text.rich(
       TextSpan(
         children: _textSpans,

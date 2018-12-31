@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/log/harpy_logger.dart';
 import 'package:harpy/components/screens/main/main_screen.dart';
+import 'package:harpy/core/log/harpy_logger.dart';
 
 void main() {
   // Setup Logger

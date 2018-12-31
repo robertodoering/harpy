@@ -105,6 +105,44 @@ class User {
     this.location,
   );
 
+  factory User.mock() {
+    return User(
+      "Harpy",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "harpy",
+      null,
+      null,
+      null,
+    );
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
@@ -115,8 +153,8 @@ class User {
   }
 
   String get userProfileImageOriginal =>
-      profileImageUrlHttps.replaceFirst("_normal", "");
+      profileImageUrlHttps?.replaceFirst("_normal", "");
 
   String get userProfileImageBigger =>
-      profileImageUrlHttps.replaceFirst("normal", "bigger");
+      profileImageUrlHttps?.replaceFirst("normal", "bigger");
 }

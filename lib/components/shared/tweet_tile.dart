@@ -11,16 +11,19 @@ import 'package:harpy/components/shared/util.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
-import 'package:harpy/theme.dart';
 
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {
   final Tweet tweet;
   final User retweetUser;
 
+  /// Determines whether or not to open the user profile on avatar / name tap.
+  final bool openUserProfile;
+
   TweetTile({
     Key key,
     Tweet tweet,
+    this.openUserProfile = true,
   })  : tweet = tweet.retweetedStatus != null ? tweet.retweetedStatus : tweet,
         retweetUser = tweet.retweetedStatus != null ? tweet.user : null,
         super(key: key);
@@ -75,7 +78,8 @@ class TweetTileState extends State<TweetTile> {
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: () => _openUserProfile(context),
+          onTap:
+              widget.openUserProfile ? () => _openUserProfile(context) : null,
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
@@ -95,7 +99,7 @@ class TweetTileState extends State<TweetTile> {
             // username · time since tweet in hours
             Text(
               "@${widget.tweet.user.screenName} \u00b7 ${tweetTimeDifference(widget.tweet.createdAt)}",
-              style: HarpyTheme.theme.textTheme.caption,
+              style: Theme.of(context).textTheme.caption,
             ),
           ],
         ),
@@ -163,8 +167,7 @@ class TweetTileState extends State<TweetTile> {
     return widget.tweet.extended_entities?.media != null
         ? Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: CollapsibleMedia(tweet: widget.tweet),
-          )
+            child: CollapsibleMedia(tweet: widget.tweet))
         : Container();
   }
 

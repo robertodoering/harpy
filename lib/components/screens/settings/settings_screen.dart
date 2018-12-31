@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/components/screens/settings/theme_settings.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/stores/settings_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -23,20 +24,64 @@ class SettingsScreenState extends State<SettingsScreen>
   @override
   void dispose() {
     super.dispose();
-    store.dispose();
+    unlistenFromStore(store);
   }
 
   @override
   Widget build(BuildContext context) {
-    return HarpyScaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Settings",
-          style: HarpyTheme.theme.textTheme.title.copyWith(fontSize: 20.0),
+    return Theme(
+      data: HarpyTheme().theme,
+      child: HarpyScaffold(
+        appBar: "Settings",
+        body: ListView(
+          children: <Widget>[
+            _buildAppearanceColumn(context),
+          ],
         ),
       ),
-      body: Container(),
+    );
+  }
+
+  Widget _buildAppearanceColumn(BuildContext context) {
+    return SettingsColumn(
+      title: "Appearance",
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.color_lens),
+          title: Text("Theme"),
+          subtitle: Text("Select your theme"),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => ThemeSettings()),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SettingsColumn extends StatelessWidget {
+  final String title;
+
+  final List<Widget> children;
+
+  const SettingsColumn({
+    this.title,
+    this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+          child: Text(title, style: HarpyTheme().theme.textTheme.display3),
+        ),
+      ]..addAll(children),
     );
   }
 }

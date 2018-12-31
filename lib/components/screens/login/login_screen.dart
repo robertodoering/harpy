@@ -44,9 +44,9 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: HarpyTheme.theme,
+      data: HarpyTheme.light().theme,
       child: Material(
-        color: HarpyTheme.primaryColor,
+        color: HarpyTheme.harpyColor,
         child: Column(
           children: <Widget>[
             Expanded(
