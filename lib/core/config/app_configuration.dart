@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:logging/logging.dart';
 import 'package:yaml/yaml.dart';
 
@@ -41,8 +40,5 @@ class AppConfiguration {
 
     // init active twitter session
     twitterSession = await twitterLogin.currentSession;
-
-    // init harpy shared preferences // todo: remove from app configuration
-    await HarpyPrefs().init();
   }
 }

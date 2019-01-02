@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/home/home_screen.dart';
 import 'package:harpy/components/screens/login/login_screen.dart';
 import 'package:harpy/components/shared/harpy_title.dart';
-import 'package:harpy/core/config/app_configuration.dart';
+import 'package:harpy/core/initialization/app_initialization.dart';
+import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
-import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
 
@@ -21,26 +21,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    super.initState();
-
+  MainScreenState() {
     _init();
   }
 
   Future<void> _init() async {
-    // init app config
-    await AppConfiguration().init();
-
-    // init tokens
-    Tokens();
-
-    // init tweets if already logged in before showing home screen
-    if (AppConfiguration().twitterSession != null) {
-      await HomeStore.initTweets();
-      // init user
-      await UserStore.initLoggedInUser();
-    }
+    // init app
+    await initializeApp();
 
     _checkLoggedIn();
   }
@@ -48,8 +35,15 @@ class MainScreenState extends State<MainScreen> {
   /// Checks if the user is logged in and navigates to the [HomeScreen] or the
   /// [LoginScreen] depending on the login state.
   void _checkLoggedIn() async {
-    // only navigate when ready
     if (LoginStore.loggedIn) {
+      // init tweets if already logged in before showing home screen
+      await AsyncInitializer([
+        // init tweets
+        HomeStore.initTweets,
+        // init user
+        UserStore.initLoggedInUser
+      ]).run();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
