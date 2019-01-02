@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/home/home_screen.dart';
 import 'package:harpy/components/screens/login/login_screen.dart';
 import 'package:harpy/components/shared/harpy_title.dart';
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -14,17 +13,14 @@ import 'package:harpy/theme.dart';
 ///
 /// A 'splash screen' with the title will be drawn during initialization.
 ///
-/// The [MainScreen] determines whether to display the [LoginScreen] or skip to
-/// the [HomeScreen] if the user is already logged in.
+/// The [MainScreen] initializes the app and determines whether to display the
+/// [LoginScreen] or skip to the [HomeScreen] if the user is already logged in.
 class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen>
-    with StoreWatcherMixin<MainScreen> {
-  LoginStore loginStore;
-
+class MainScreenState extends State<MainScreen> {
   /// Flags to make sure the initialization and the title animation has
   /// completed before navigating to the next screen.
   bool initialized = false;
@@ -34,15 +30,7 @@ class MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
 
-    loginStore = listenToStore(Tokens.login);
-
     _init();
-  }
-
-  @override
-  void dispose() {
-    unlistenFromStore(loginStore);
-    super.dispose();
   }
 
   Future<void> _init() async {
@@ -53,7 +41,7 @@ class MainScreenState extends State<MainScreen>
     Tokens();
 
     // init tweets if already logged in before showing home screen
-    if (loginStore.loggedIn) {
+    if (AppConfiguration().twitterSession != null) {
       await HomeStore.initTweets();
       // init user
       await UserStore.initLoggedInUser();
@@ -73,9 +61,7 @@ class MainScreenState extends State<MainScreen>
 
     // only navigate when ready
     if (this.initialized && this.animationFinished) {
-      if (loginStore.loggedIn) {
-//        await harpyTitle.fadeOut();
-
+      if (LoginStore.loggedIn) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -106,7 +92,6 @@ class MainScreenState extends State<MainScreen>
               flex: 2,
               child: Center(
                 child: HarpyTitle(
-                  key: harpyTitleKey,
                   finishCallback: () => _checkLoggedIn(animationFinished: true),
                 ),
               ),
