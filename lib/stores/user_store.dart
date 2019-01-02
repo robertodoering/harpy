@@ -3,7 +3,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
 import 'package:harpy/api/twitter/services/user/user_service_impl.dart';
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:logging/logging.dart';
 
 class UserStore extends Store {

@@ -1,4 +1,4 @@
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

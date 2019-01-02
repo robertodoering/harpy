@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -20,8 +20,7 @@ class TwitterClient {
         'https://api.twitter.com/oauth/access_token',
         OAuth1.SignatureMethods.HMAC_SHA1);
     _oauthClientCredentials = OAuth1.ClientCredentials(
-        AppConfiguration().applicationConfig.consumerKey,
-        AppConfiguration().applicationConfig.consumerSecret);
+        AppConfiguration().consumerKey, AppConfiguration().consumerSecret);
 
     _auth = OAuth1.Authorization(_oauthClientCredentials, _oauthPlatform);
 
