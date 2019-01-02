@@ -33,12 +33,14 @@ class IconRow extends StatelessWidget {
           child: Icon(icon, size: 18.0),
         ),
         SizedBox(width: 8.0),
-        child is Widget
-            ? child
-            : Text(
-                child,
-                style: textStyle ?? Theme.of(context).textTheme.display1,
-              ),
+        Expanded(
+          child: child is Widget
+              ? child
+              : Text(
+                  child,
+                  style: textStyle ?? Theme.of(context).textTheme.display1,
+                ),
+        ),
       ],
     );
   }
