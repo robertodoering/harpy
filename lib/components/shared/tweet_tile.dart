@@ -63,14 +63,10 @@ class TweetTileState extends State<TweetTile> {
     return retweet
         ? Padding(
             padding: EdgeInsets.only(bottom: 8.0),
-            child: Row(
-              children: <Widget>[
-                IconRow(
-                  icon: Icons.repeat,
-                  iconPadding: 40.0, // same as avatar width
-                  child: "${widget.tweet.user.name} retweeted",
-                ),
-              ],
+            child: IconRow(
+              icon: Icons.repeat,
+              iconPadding: 40.0, // same as avatar width
+              child: "${widget.tweet.user.name} retweeted",
             ),
           )
         : Container();
