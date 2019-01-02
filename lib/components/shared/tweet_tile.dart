@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/harpy_data.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
@@ -15,18 +15,15 @@ import 'package:harpy/stores/home_store.dart';
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {
   final Tweet tweet;
-  final User retweetUser;
 
   /// Determines whether or not to open the user profile on avatar / name tap.
   final bool openUserProfile;
 
   TweetTile({
     Key key,
-    Tweet tweet,
+    this.tweet,
     this.openUserProfile = true,
-  })  : tweet = tweet.retweetedStatus != null ? tweet.retweetedStatus : tweet,
-        retweetUser = tweet.retweetedStatus != null ? tweet.user : null,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   TweetTileState createState() => TweetTileState();
@@ -34,6 +31,12 @@ class TweetTile extends StatefulWidget {
 
 class TweetTileState extends State<TweetTile> {
   bool _translating = false;
+
+  Tweet get tweet => widget.tweet.retweetedStatus ?? widget.tweet;
+
+  bool get retweet => widget.tweet.retweetedStatus != null;
+
+  HarpyData get harpyData => widget.tweet.harpyData;
 
   @override
   Widget build(BuildContext context) {
@@ -57,20 +60,20 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildRetweetedRow() {
-    return widget.retweetUser == null
-        ? Container()
-        : Padding(
+    return retweet
+        ? Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Row(
               children: <Widget>[
                 IconRow(
                   icon: Icons.repeat,
                   iconPadding: 40.0, // same as avatar width
-                  child: "${widget.retweetUser.name} retweeted",
+                  child: "${widget.tweet.user.name} retweeted",
                 ),
               ],
             ),
-          );
+          )
+        : Container();
   }
 
   Widget _buildNameRow(BuildContext context) {
@@ -83,7 +86,7 @@ class TweetTileState extends State<TweetTile> {
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
-              widget.tweet.user.userProfileImageOriginal,
+              tweet.user.userProfileImageOriginal,
             ),
           ),
         ),
@@ -98,7 +101,7 @@ class TweetTileState extends State<TweetTile> {
               onTap: widget.openUserProfile
                   ? () => _openUserProfile(context)
                   : null,
-              child: Text(widget.tweet.user.name),
+              child: Text(tweet.user.name),
             ),
 
             // username · time since tweet in hours
@@ -107,7 +110,7 @@ class TweetTileState extends State<TweetTile> {
                   ? () => _openUserProfile(context)
                   : null,
               child: Text(
-                "@${widget.tweet.user.screenName} \u00b7 ${tweetTimeDifference(widget.tweet.createdAt)}",
+                "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}",
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
@@ -118,12 +121,12 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildText() {
-    return !widget.tweet.emptyText
+    return !tweet.emptyText
         ? Padding(
             padding: EdgeInsets.only(top: 8.0),
             child: TwitterText(
-              text: widget.tweet.full_text,
-              entities: widget.tweet.entities,
+              text: tweet.full_text,
+              entities: tweet.entities,
               onEntityTap: (model) {
                 if (model.type == EntityType.url) {
                   launchUrl(model.url);
@@ -144,8 +147,7 @@ class TweetTileState extends State<TweetTile> {
       );
     }
 
-    if (widget.tweet.harpyData.translation == null ||
-        widget.tweet.harpyData.translation.unchanged) {
+    if (harpyData.translation == null || harpyData.translation.unchanged) {
       return Container();
     }
 
@@ -160,21 +162,20 @@ class TweetTileState extends State<TweetTile> {
               "Translated from ",
               style: Theme.of(context).textTheme.display1,
             ),
-            Text(widget.tweet.harpyData.translation
-                .language), // todo: check if not null
+            Text(harpyData.translation.language), // todo: check if not null
           ],
         ),
         SizedBox(height: 4.0),
         TwitterText(
-          text: widget.tweet.harpyData.translation.text,
-          entities: widget.tweet.entities,
+          text: harpyData.translation.text,
+          entities: tweet.entities,
         ),
       ],
     );
   }
 
   Widget _buildMedia() {
-    return widget.tweet.extended_entities?.media != null
+    return tweet.extended_entities?.media != null
         ? CollapsibleMedia(tweet: widget.tweet)
         : Container();
   }
@@ -184,10 +185,10 @@ class TweetTileState extends State<TweetTile> {
       children: <Widget>[
         // retweet action
         TwitterActionButton(
-          active: widget.tweet.retweeted,
+          active: tweet.retweeted,
           inactiveIcon: Icons.repeat,
           activeIcon: Icons.repeat,
-          text: "${formatNumber(widget.tweet.retweetCount)}",
+          text: "${formatNumber(tweet.retweetCount)}",
           color: Colors.green,
           activate: () => HomeStore.retweetTweet(widget.tweet),
           deactivate: () => HomeStore.unretweetTweet(widget.tweet),
@@ -195,10 +196,10 @@ class TweetTileState extends State<TweetTile> {
 
         // favorite action
         TwitterActionButton(
-          active: widget.tweet.favorited,
+          active: tweet.favorited,
           inactiveIcon: Icons.favorite_border,
           activeIcon: Icons.favorite,
-          text: "${formatNumber(widget.tweet.favoriteCount)}",
+          text: "${formatNumber(tweet.favoriteCount)}",
           color: Colors.red,
           activate: () => HomeStore.favoriteTweet(widget.tweet),
           deactivate: () => HomeStore.unfavoriteTweet(widget.tweet),
@@ -212,7 +213,7 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildTranslationButton(BuildContext context) {
-    if (widget.tweet.emptyText || widget.tweet.lang == "en") {
+    if (tweet.emptyText || tweet.lang == "en") {
       return Container();
     }
 
@@ -220,7 +221,7 @@ class TweetTileState extends State<TweetTile> {
     bool drawColorOnHighlight = false;
     Color color = Colors.blue;
 
-    if (widget.tweet.harpyData.translation == null && !_translating) {
+    if (harpyData.translation == null && !_translating) {
       drawColorOnHighlight = true;
 
       onPressed = () async {
@@ -234,13 +235,13 @@ class TweetTileState extends State<TweetTile> {
           _translating = false;
         });
 
-        if (widget.tweet.harpyData.translation.unchanged) {
+        if (harpyData.translation.unchanged) {
           Scaffold.of(context).showSnackBar(SnackBar(
             content: Text("Tweet not translated"),
           ));
         }
       };
-    } else if (widget.tweet.harpyData?.translation?.unchanged ?? false) {
+    } else if (harpyData?.translation?.unchanged ?? false) {
       color = Theme.of(context).disabledColor;
     }
 
@@ -257,7 +258,7 @@ class TweetTileState extends State<TweetTile> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserProfileScreen(widget.tweet.user),
+        builder: (context) => UserProfileScreen(tweet.user),
       ),
     );
   }

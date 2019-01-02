@@ -26,12 +26,9 @@ class CollapsibleMedia extends StatefulWidget {
 }
 
 class CollapsibleMediaState extends State<CollapsibleMedia> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  Tweet get tweet => widget.tweet.retweetedStatus ?? widget.tweet;
 
-  List<TwitterMedia> get _media => widget.tweet.extended_entities.media;
+  List<TwitterMedia> get _media => tweet.extended_entities.media;
 
   bool get _initiallyExpanded =>
       widget.tweet.harpyData.showMedia ?? true; // todo: get from settings

@@ -51,12 +51,15 @@ class HomeStore extends Store {
 
     // favorite / retweet actions
     triggerOnAction(favoriteTweet, (Tweet tweet) {
+      Tweet originalTweet = tweet;
+      tweet = tweet.retweetedStatus ?? tweet;
+
       tweet.favorited = true;
       tweet.favoriteCount++;
 
       TweetServiceImpl().favorite(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(tweet);
+          CachedTweetServiceImpl().updateCache(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -67,12 +70,15 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(unfavoriteTweet, (Tweet tweet) {
+      Tweet originalTweet = tweet;
+      tweet = tweet.retweetedStatus ?? tweet;
+
       tweet.favorited = false;
       tweet.favoriteCount--;
 
       TweetServiceImpl().unfavorite(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(tweet);
+          CachedTweetServiceImpl().updateCache(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -84,12 +90,15 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(retweetTweet, (Tweet tweet) {
+      Tweet originalTweet = tweet;
+      tweet = tweet.retweetedStatus ?? tweet;
+
       tweet.retweeted = true;
       tweet.retweetCount++;
 
       TweetServiceImpl().retweet(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(tweet);
+          CachedTweetServiceImpl().updateCache(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -100,12 +109,15 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(unretweetTweet, (Tweet tweet) {
+      Tweet originalTweet = tweet;
+      tweet = tweet.retweetedStatus ?? tweet;
+
       tweet.retweeted = false;
       tweet.retweetCount--;
 
       TweetServiceImpl().unretweet(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(tweet);
+          CachedTweetServiceImpl().updateCache(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -128,11 +140,14 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(translateTweet, (Tweet tweet) async {
+      Tweet originalTweet = tweet;
+      tweet = tweet.retweetedStatus ?? tweet;
+
       Translation translation = await translate(text: tweet.full_text);
 
-      tweet.harpyData.translation = translation;
+      originalTweet.harpyData.translation = translation;
 
-      CachedTweetServiceImpl().updateCache(tweet);
+      CachedTweetServiceImpl().updateCache(originalTweet);
     });
   }
 
