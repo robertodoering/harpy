@@ -21,11 +21,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  /// Flags to make sure the initialization and the title animation has
-  /// completed before navigating to the next screen.
-  bool initialized = false;
-  bool animationFinished = false;
-
   @override
   void initState() {
     super.initState();
@@ -47,35 +42,27 @@ class MainScreenState extends State<MainScreen> {
       await UserStore.initLoggedInUser();
     }
 
-    _checkLoggedIn(initialized: true);
+    _checkLoggedIn();
   }
 
   /// Checks if the user is logged in and navigates to the [HomeScreen] or the
   /// [LoginScreen] depending on the login state.
-  void _checkLoggedIn({
-    bool initialized,
-    bool animationFinished,
-  }) async {
-    if (initialized != null) this.initialized = initialized;
-    if (animationFinished != null) this.animationFinished = animationFinished;
-
+  void _checkLoggedIn() async {
     // only navigate when ready
-    if (this.initialized && this.animationFinished) {
-      if (LoginStore.loggedIn) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          // route without a transition animation
-          PageRouteBuilder(
-            pageBuilder: (context, _a, _b) => LoginScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-      }
+    if (LoginStore.loggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        // route without a transition animation
+        PageRouteBuilder(
+          pageBuilder: (context, _a, _b) => LoginScreen(),
+          transitionDuration: Duration.zero,
+        ),
+      );
     }
   }
 
@@ -90,11 +77,7 @@ class MainScreenState extends State<MainScreen> {
           children: <Widget>[
             Expanded(
               flex: 2,
-              child: Center(
-                child: HarpyTitle(
-                  finishCallback: () => _checkLoggedIn(animationFinished: true),
-                ),
-              ),
+              child: Center(child: HarpyTitle()),
             ),
             Expanded(child: Container()),
           ],
