@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 abstract class TwitterService {
-  final Logger log = Logger('TwitterService');
+  final Logger log = Logger("TwitterService");
   TwitterClient _twitterClient = TwitterClient();
 
   TwitterClient get client => _twitterClient;

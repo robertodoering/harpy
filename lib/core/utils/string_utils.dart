@@ -1,7 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
-
-Logger log = Logger("StringUtils");
 
 String fillStringToLength(String data, int length, {String filler = " "}) {
   if (filler.length > 1) {

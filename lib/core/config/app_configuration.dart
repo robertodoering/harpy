@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:yaml/yaml.dart';
 
 class AppConfiguration {
-  final Logger log = Logger('AppConfiguration');
+  final Logger log = Logger("AppConfiguration");
 
   static AppConfiguration _instance = AppConfiguration._();
   factory AppConfiguration() => _instance;

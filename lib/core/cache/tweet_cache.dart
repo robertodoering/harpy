@@ -11,7 +11,7 @@ const String lastUpdated = "last_updated";
 const String homeTimeline = "home_timeline";
 
 class TweetCache {
-  final Logger log = Logger('TweetCache');
+  final Logger log = Logger("TweetCache");
 
   final String type;
 
