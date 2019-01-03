@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/filesystem/cache_dir_service.dart';
 import 'package:logging/logging.dart';
 
@@ -11,7 +11,7 @@ const String lastUpdated = "last_updated";
 const String homeTimeline = "home_timeline";
 
 class TweetCache {
-  final Logger log = Logger('TweetCache');
+  final Logger log = Logger("TweetCache");
 
   final String type;
 
@@ -99,11 +99,7 @@ class TweetCache {
     if (lastUpdate == null) {
       return true;
     }
-    return DateTime.now().difference(lastUpdate).inMinutes >=
-        AppConfiguration()
-            .applicationConfig
-            .cacheConfiguration
-            .tweetCacheTimeInHours;
+    return DateTime.now().difference(lastUpdate).inHours >= 4;
   }
 
   /// Caches the [tweets] and clears the cache while keeping the

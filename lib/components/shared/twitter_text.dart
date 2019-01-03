@@ -105,6 +105,7 @@ class TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
+    // todo: fix
     _textStyle = Theme.of(context).textTheme.body1;
 
     _entityStyle = Theme.of(context).textTheme.body1.copyWith(

@@ -28,10 +28,7 @@ class _LoginScreenState extends State<LoginScreen>
 
     store = listenToStore(Tokens.login);
 
-    loginTitle = HarpyTitle(
-      key: harpyTitleKey,
-      skipIntroAnimation: true,
-    );
+    loginTitle = HarpyTitle(skipIntroAnimation: true);
   }
 
   @override

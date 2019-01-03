@@ -1,9 +1,12 @@
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/theme.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HarpyPrefs {
-  SharedPreferences preferences;
+  final Logger log = Logger("HarpyPrefs");
+
+  SharedPreferences _preferences;
 
   static HarpyPrefs _instance = HarpyPrefs._();
   factory HarpyPrefs() => _instance;
@@ -13,12 +16,13 @@ class HarpyPrefs {
   String get _prefix => AppConfiguration().twitterSession?.userId;
 
   Future<void> init() async {
-    preferences = await SharedPreferences.getInstance();
+    log.fine("initializing harpy prefs");
+    _preferences = await SharedPreferences.getInstance();
   }
 
   String get themeName =>
-      preferences.getString("$_prefix.themeName") ?? HarpyTheme.dark().name;
+      _preferences.getString("$_prefix.themeName") ?? HarpyTheme.dark().name;
 
   set themeName(String themeName) =>
-      preferences.setString("$_prefix.themeName", themeName);
+      _preferences.setString("$_prefix.themeName", themeName);
 }

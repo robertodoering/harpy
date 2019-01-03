@@ -1,8 +1,5 @@
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
-
-Logger log = Logger("DateUtils");
 
 DateTime convertFromTwitterDateString(String twitterDateString) {
   try {

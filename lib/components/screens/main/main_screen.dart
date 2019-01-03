@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/components/screens/home/home_screen.dart';
 import 'package:harpy/components/screens/login/login_screen.dart';
 import 'package:harpy/components/shared/harpy_title.dart';
-import 'package:harpy/core/app_configuration.dart';
+import 'package:harpy/core/initialization/app_initialization.dart';
+import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
-import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
 
@@ -14,82 +13,50 @@ import 'package:harpy/theme.dart';
 ///
 /// A 'splash screen' with the title will be drawn during initialization.
 ///
-/// The [MainScreen] determines whether to display the [LoginScreen] or skip to
-/// the [HomeScreen] if the user is already logged in.
+/// The [MainScreen] initializes the app and determines whether to display the
+/// [LoginScreen] or skip to the [HomeScreen] if the user is already logged in.
 class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen>
-    with StoreWatcherMixin<MainScreen> {
-  LoginStore loginStore;
-
-  /// Flags to make sure the initialization and the title animation has
-  /// completed before navigating to the next screen.
-  bool initialized = false;
-  bool animationFinished = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    loginStore = listenToStore(Tokens.login);
-
+class MainScreenState extends State<MainScreen> {
+  MainScreenState() {
     _init();
   }
 
-  @override
-  void dispose() {
-    unlistenFromStore(loginStore);
-    super.dispose();
-  }
-
   Future<void> _init() async {
-    // init app config
-    await AppConfiguration().init();
+    // init app
+    await initializeApp();
 
-    // init tokens
-    Tokens();
-
-    // init tweets if already logged in before showing home screen
-    if (loginStore.loggedIn) {
-      await HomeStore.initTweets();
-      // init user
-      await UserStore.initLoggedInUser();
-    }
-
-    _checkLoggedIn(initialized: true);
+    _checkLoggedIn();
   }
 
   /// Checks if the user is logged in and navigates to the [HomeScreen] or the
   /// [LoginScreen] depending on the login state.
-  void _checkLoggedIn({
-    bool initialized,
-    bool animationFinished,
-  }) async {
-    if (initialized != null) this.initialized = initialized;
-    if (animationFinished != null) this.animationFinished = animationFinished;
+  void _checkLoggedIn() async {
+    if (LoginStore.loggedIn) {
+      // init tweets if already logged in before showing home screen
+      await AsyncInitializer([
+        // init tweets
+        HomeStore.initTweets,
+        // init user
+        UserStore.initLoggedInUser
+      ]).run();
 
-    // only navigate when ready
-    if (this.initialized && this.animationFinished) {
-      if (loginStore.loggedIn) {
-//        await harpyTitle.fadeOut();
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          // route without a transition animation
-          PageRouteBuilder(
-            pageBuilder: (context, _a, _b) => LoginScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        // route without a transition animation
+        PageRouteBuilder(
+          pageBuilder: (context, _a, _b) => LoginScreen(),
+          transitionDuration: Duration.zero,
+        ),
+      );
     }
   }
 
@@ -104,12 +71,7 @@ class MainScreenState extends State<MainScreen>
           children: <Widget>[
             Expanded(
               flex: 2,
-              child: Center(
-                child: HarpyTitle(
-                  key: harpyTitleKey,
-                  finishCallback: () => _checkLoggedIn(animationFinished: true),
-                ),
-              ),
+              child: Center(child: HarpyTitle()),
             ),
             Expanded(child: Container()),
           ],
