@@ -17,6 +17,8 @@ class LoginStore extends Store {
 
     twitterLogout.listen((_) async {
       await AppConfiguration().twitterLogin.logOut();
+      AppConfiguration().twitterSession =
+          await AppConfiguration().twitterLogin.currentSession;
     });
   }
 }

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/main/main_screen.dart';
+import 'package:harpy/components/screens/login/login_screen.dart';
 import 'package:harpy/components/screens/settings/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/util.dart';
@@ -112,7 +112,7 @@ class HomeDrawerState extends State<HomeDrawer> with StoreWatcherMixin {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => MainScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 }

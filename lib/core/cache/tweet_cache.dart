@@ -109,6 +109,8 @@ class TweetCache {
 
     clearBucket();
 
+    log.fine("cache new tweets");
+
     tweets.forEach(_cacheTweet);
     _setLastUpdatedDate(); // todo: necessary?
   }
