@@ -50,6 +50,8 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
     if (response.statusCode == 200) {
       List<Tweet> tweets = map((json) => Tweet.fromJson(json), response.body);
 
+      // todo: cache user tweets
+
       return tweets;
     } else {
       return Future.error(response.body);

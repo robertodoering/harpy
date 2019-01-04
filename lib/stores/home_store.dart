@@ -6,8 +6,11 @@ import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:logging/logging.dart';
 
 class HomeStore extends Store {
+  final Logger log = Logger("HomeStore");
+
   static final Action initTweets = Action();
   static final Action updateTweets = Action();
   static final Action clearCache = Action();
@@ -29,12 +32,14 @@ class HomeStore extends Store {
 
   HomeStore() {
     initTweets.listen((_) async {
+      log.fine("init tweets");
+
       // initialize with cached tweets
       _tweets = await TweetCache.home().getCachedTweets();
 
       if (_tweets.isEmpty) {
         // if no cached tweet exists wait for the initial api call
-        _tweets = await TweetService().getHomeTimeline();
+        await updateTweets();
       } else {
         // if cached tweets exist update tweets but dont wait for it
         updateTweets();
@@ -42,11 +47,14 @@ class HomeStore extends Store {
     });
 
     triggerOnAction(updateTweets, (_) async {
+      log.fine("updating tweets");
       _tweets = await TweetService().getHomeTimeline();
     });
 
     triggerOnAction(tweetsAfter, (String id) async {
       id = (int.parse(id) - 1).toString();
+
+      log.fine("getting tweets with max id $id");
 
       _tweets.addAll(await TweetService().getHomeTimeline(
         params: {"max_id": id},
