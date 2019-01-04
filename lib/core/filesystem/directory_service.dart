@@ -1,74 +1,81 @@
 import 'dart:io';
 
-abstract class DirectoryService {
+import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
+
+class DirectoryService {
   String _path;
 
-  Future<Directory> requestDirectory();
+  static DirectoryService _instance = DirectoryService._();
+  factory DirectoryService() => _instance;
+  DirectoryService._();
 
-  Future<File> createFile(
-    String bucket,
-    String fileName,
-    String fileExtension,
-    String content, {
-    bool rewrite = true,
-  }) async {
-    await _requestPathIfNeeded();
+  Future<void> init() async {
+    Directory dir = await getTemporaryDirectory();
+    _path = dir.path;
+  }
 
-    File newFile = File(_getFilePath(bucket, fileName, fileExtension));
-    if (newFile.existsSync()) {
-      if (rewrite) {
-        newFile.deleteSync();
-      } else {
-        return Future.error("File already exsist!");
+  String _filePath(String bucket, String fileName) {
+    return "$_path/$bucket/$fileName";
+  }
+
+  /// Creates a [File] inside the [bucket] with the [name].
+  ///
+  /// If [override] is `true` any existing file with the same [name] inside the
+  /// [bucket] will be overridden with the new [content].
+  /// Else the [File] will stay untouched.
+  ///
+  /// todo: error handling if unable to create files
+  File createFile({
+    @required String bucket,
+    @required String name,
+    @required String content,
+    bool override = true,
+  }) {
+    File file = File(_filePath(bucket, name));
+
+    // delete the file if it already exists and should be overridden
+    if (file.existsSync() && override) {
+      file.deleteSync();
+    }
+
+    file.createSync(recursive: true);
+    file.writeAsStringSync(content, flush: true);
+
+    return file;
+  }
+
+  /// Returns the [File] inside the [bucket] with the [name].
+  ///
+  /// If the [File] does not exists it will return `null`.
+  File getFile({
+    @required String bucket,
+    @required String name,
+  }) {
+    File file = File(_filePath(bucket, name));
+
+    return file.existsSync() ? file : null;
+  }
+
+  /// Lists all [File]s inside the [bucket].
+  ///
+  /// If [extension] is not `null` it will only return [File]s with the
+  /// [extension].
+  List<File> listFiles({
+    @required String bucket,
+    String extension,
+  }) {
+    List<File> files = [];
+    Directory directory = Directory("$_path/$bucket");
+
+    if (directory.existsSync()) {
+      for (FileSystemEntity entity in directory.listSync()) {
+        if (extension == null || entity.path.endsWith(extension)) {
+          files.add(entity);
+        }
       }
     }
 
-    newFile.createSync(recursive: true);
-    newFile.writeAsStringSync(content, flush: true);
-
-    return newFile;
+    return files;
   }
-
-  Future<String> readFile(
-    String bucket,
-    String fileName,
-    String fileExtension,
-  ) async {
-    await _requestPathIfNeeded();
-
-    File file = File(_getFilePath(bucket, fileName, fileExtension));
-    return file.readAsStringSync();
-  }
-
-  Future<List<File>> listFiles(String bucket,
-      {String allowedFileExtension = " "}) async {
-    await _requestPathIfNeeded();
-    List<File> files = [];
-    Directory dirToRead = Directory('$path/$bucket');
-
-    if (!dirToRead.existsSync()) {
-      return files;
-    } else {
-      dirToRead.listSync().forEach((fileSystemEntry) {
-        if (allowedFileExtension == " " ||
-            fileSystemEntry.path.endsWith(allowedFileExtension)) {
-          files.add(File(fileSystemEntry.path));
-        }
-      });
-      return files;
-    }
-  }
-
-  String _getFilePath(String bucket, String fileName, String fileExtension) {
-    return '$path/$bucket/$fileName.$fileExtension';
-  }
-
-  void _requestPathIfNeeded() async {
-    if (_path == null) {
-      Directory dir = await requestDirectory();
-      _path = dir.path;
-    }
-  }
-
-  String get path => _path;
 }

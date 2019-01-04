@@ -1,8 +1,8 @@
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
-import 'package:harpy/api/twitter/services/user/user_service_impl.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/config/app_configuration.dart';
 import 'package:logging/logging.dart';
 
@@ -24,13 +24,15 @@ class UserStore extends Store {
     initLoggedInUser.listen((_) async {
       String userId = AppConfiguration().twitterSession.userId;
 
-      _loggedInUser = await UserServiceImpl().getUserDetails(id: userId);
+      // todo: cache user and load from cache
+
+      _loggedInUser = await UserService().getUserDetails(userId);
 
       log.fine("loaded user: $_loggedInUser");
     });
 
     initUserTweets.listen((User user) async {
-      _userTweets = await TweetServiceImpl().getUserTimeline("${user.id}");
+      _userTweets = await TweetService().getUserTimeline("${user.id}");
     });
   }
 }

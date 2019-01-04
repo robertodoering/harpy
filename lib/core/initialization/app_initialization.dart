@@ -1,4 +1,5 @@
 import 'package:harpy/core/config/app_configuration.dart';
+import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/core/log/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -20,6 +21,9 @@ Future<void> initializeApp() async {
   List<AsyncTask> tasks = [
     // harpy shared preferences
     HarpyPrefs().init,
+
+    // directory service
+    DirectoryService().init,
 
     // app config
     AppConfiguration().init,
