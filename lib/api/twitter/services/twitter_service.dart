@@ -1,12 +1,8 @@
-import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-abstract class TwitterService {
+class TwitterService {
   final Logger log = Logger("TwitterService");
-  TwitterClient _twitterClient = TwitterClient();
-
-  TwitterClient get client => _twitterClient;
 
   Future handleResponse(
     Response response, {

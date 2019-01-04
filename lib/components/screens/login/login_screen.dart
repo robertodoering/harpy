@@ -4,6 +4,7 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/screens/home/home_screen.dart';
 import 'package:harpy/components/screens/login/login_button.dart';
 import 'package:harpy/components/shared/harpy_title.dart';
+import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/stores/home_store.dart';
 import 'package:harpy/stores/login_store.dart';
 import 'package:harpy/stores/tokens.dart';
@@ -20,15 +21,12 @@ class _LoginScreenState extends State<LoginScreen>
   LoginStore store;
 
   bool loggingIn = false;
-  HarpyTitle loginTitle;
 
   @override
   void initState() {
     super.initState();
 
     store = listenToStore(Tokens.login);
-
-    loginTitle = HarpyTitle(skipIntroAnimation: true);
   }
 
   @override
@@ -49,11 +47,12 @@ class _LoginScreenState extends State<LoginScreen>
             Expanded(
               flex: 2,
               child: Center(
-                child: loginTitle,
+                child: HarpyTitle(skipIntroAnimation: true),
               ),
             ),
             Expanded(
-                child: loggingIn ? Container() : LoginButton(_onLoginAttempt)),
+              child: loggingIn ? Container() : LoginButton(_onLoginAttempt),
+            ),
           ],
         ),
       ),
@@ -71,13 +70,12 @@ class _LoginScreenState extends State<LoginScreen>
       // successfully logged in; save session and navigate to home screen
       LoginStore.setSession(result.session);
 
-      // init tweets before navigating
-      await HomeStore.initTweets();
-
-      // init logged in user
-      await UserStore.initLoggedInUser();
-
-//      await loginTitle.fadeOut();
+      await AsyncInitializer([
+        // init tweets
+        HomeStore.initTweets,
+        // init user
+        UserStore.initLoggedInUser
+      ]).run();
 
       Navigator.pushReplacement(
         context,

@@ -4,11 +4,13 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/services/tweets/cached_tweet_service_impl.dart';
-import 'package:harpy/api/twitter/services/tweets/tweet_service_impl.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:logging/logging.dart';
 
 class HomeStore extends Store {
+  final Logger log = Logger("HomeStore");
+
   static final Action initTweets = Action();
   static final Action updateTweets = Action();
   static final Action clearCache = Action();
@@ -30,24 +32,36 @@ class HomeStore extends Store {
 
   HomeStore() {
     initTweets.listen((_) async {
-      _tweets = await CachedTweetServiceImpl().getHomeTimeline();
+      log.fine("init tweets");
+
+      // initialize with cached tweets
+      _tweets = await TweetCache.home().getCachedTweets();
+
+      if (_tweets.isEmpty) {
+        // if no cached tweet exists wait for the initial api call
+        await updateTweets();
+      } else {
+        // if cached tweets exist update tweets but dont wait for it
+        updateTweets();
+      }
     });
 
     triggerOnAction(updateTweets, (_) async {
-      _tweets = await CachedTweetServiceImpl().getHomeTimeline(
-        forceUpdate: true,
-      );
+      log.fine("updating tweets");
+      _tweets = await TweetService().getHomeTimeline();
     });
 
     triggerOnAction(tweetsAfter, (String id) async {
       id = (int.parse(id) - 1).toString();
 
-      _tweets.addAll(await TweetServiceImpl().getHomeTimeline(
+      log.fine("getting tweets with max id $id");
+
+      _tweets.addAll(await TweetService().getHomeTimeline(
         params: {"max_id": id},
       ));
     });
 
-    clearCache.listen((_) => TweetCache().clearCache());
+    clearCache.listen((_) => TweetCache.home().clearBucket());
 
     // favorite / retweet actions
     triggerOnAction(favoriteTweet, (Tweet tweet) {
@@ -57,9 +71,9 @@ class HomeStore extends Store {
       tweet.favorited = true;
       tweet.favoriteCount++;
 
-      TweetServiceImpl().favorite(tweet.idStr)
+      TweetService().favorite(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(originalTweet);
+          TweetCache.home().updateTweet(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -76,9 +90,9 @@ class HomeStore extends Store {
       tweet.favorited = false;
       tweet.favoriteCount--;
 
-      TweetServiceImpl().unfavorite(tweet.idStr)
+      TweetService().unfavorite(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(originalTweet);
+          TweetCache.home().updateTweet(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -96,9 +110,9 @@ class HomeStore extends Store {
       tweet.retweeted = true;
       tweet.retweetCount++;
 
-      TweetServiceImpl().retweet(tweet.idStr)
+      TweetService().retweet(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(originalTweet);
+          TweetCache.home().updateTweet(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -115,9 +129,9 @@ class HomeStore extends Store {
       tweet.retweeted = false;
       tweet.retweetCount--;
 
-      TweetServiceImpl().unretweet(tweet.idStr)
+      TweetService().unretweet(tweet.idStr)
         ..then((_) {
-          CachedTweetServiceImpl().updateCache(originalTweet);
+          TweetCache.home().updateTweet(originalTweet);
         })
         ..catchError((error) {
           if (!_actionPerformed(error)) {
@@ -130,13 +144,13 @@ class HomeStore extends Store {
     showTweetMedia.listen((Tweet tweet) {
       tweet.harpyData.showMedia = true;
 
-      CachedTweetServiceImpl().updateCache(tweet);
+      TweetCache.home().updateTweet(tweet);
     });
 
     hideTweetMedia.listen((Tweet tweet) {
       tweet.harpyData.showMedia = false;
 
-      CachedTweetServiceImpl().updateCache(tweet);
+      TweetCache.home().updateTweet(tweet);
     });
 
     triggerOnAction(translateTweet, (Tweet tweet) async {
@@ -147,7 +161,7 @@ class HomeStore extends Store {
 
       originalTweet.harpyData.translation = translation;
 
-      CachedTweetServiceImpl().updateCache(originalTweet);
+      TweetCache.home().updateTweet(originalTweet);
     });
   }
 

@@ -21,7 +21,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  MainScreenState() {
+  @override
+  void initState() {
+    super.initState();
+
     _init();
   }
 

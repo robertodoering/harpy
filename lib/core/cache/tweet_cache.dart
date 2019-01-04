@@ -3,45 +3,80 @@ import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/config/app_configuration.dart';
-import 'package:harpy/core/filesystem/cache_dir_service.dart';
+import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:logging/logging.dart';
-
-const String lastUpdated = "last_updated";
-
-const String homeTimeline = "home_timeline";
 
 class TweetCache {
   final Logger log = Logger("TweetCache");
 
-  final String type;
+  static const String lastUpdated = "last_updated.txt";
 
-  CacheDirectoryService cacheDirService = CacheDirectoryService();
+  static const String homeTimeline = "home_timeline";
+  static const String userTimeline = "user_timeline";
 
-  TweetCache() : type = homeTimeline;
+  /// The [type] affects the location of the [bucket].
+  String type;
 
-  Future<List<Tweet>> checkCacheForTweets() async {
-    List<Tweet> tweets = [];
+  static TweetCache _instance = TweetCache._();
+  factory TweetCache.home() => _instance..type = homeTimeline;
+  factory TweetCache.user() => _instance..type = userTimeline;
+  TweetCache._();
 
-    if (await _cacheNeedsToUpdate()) {
-      log.shout("Cache needs to update!");
-      return tweets;
-    }
-
-    return await getCachedTweets();
+  /// The sub directory where the files are stored.
+  ///
+  /// [Tweet]s should be cached for each logged in user separately.
+  String get bucket {
+    String currentUserId = AppConfiguration().twitterSession.userId;
+    return "tweets/$type/$currentUserId";
   }
 
-  Future<List<Tweet>> getCachedTweets() async {
+  /// Caches the [tweet].
+  ///
+  /// If a [Tweet] with the same [Tweet.id] already exists it will be
+  /// overridden.
+  void _cacheTweet(Tweet tweet) {
+    String fileName = "${tweet.id}.json";
+
+    DirectoryService().createFile(
+      bucket: bucket,
+      name: fileName,
+      content: jsonEncode(tweet.toJson()),
+    );
+  }
+
+  /// Updates a [Tweet] in the cache if it exists.
+  void updateTweet(Tweet tweet) {
+    log.fine("updating cached tweet");
+
+    bool exists = tweetExists(tweet);
+
+    if (exists) {
+      _cacheTweet(tweet);
+      log.fine("tweet updated");
+    } else {
+      log.warning("tweet not found in cache");
+    }
+  }
+
+  /// Gets a list of [Tweet]s that are cached as files inside the temporary
+  /// device directory in the [bucket].
+  ///
+  /// If no cached [Tweet]s are found the returned list will be empty.
+  List<Tweet> getCachedTweets() {
+    log.fine("getting cached tweets");
+
     List<Tweet> tweets = [];
 
-    List<File> files = await cacheDirService.listFiles(
-      currentBucketName,
-      allowedFileExtension: ".json",
+    List<File> files = DirectoryService().listFiles(
+      bucket: bucket,
+      extension: ".json",
     );
-    log.fine("Found ${files.length} cached Tweets!");
 
-    files.forEach((file) {
+    log.fine("found ${files.length} cached tweets");
+
+    for (File file in files) {
       tweets.add(Tweet.fromJson(jsonDecode(file.readAsStringSync())));
-    });
+    }
 
     // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
@@ -49,99 +84,78 @@ class TweetCache {
     return tweets;
   }
 
-  Future<bool> tweetExists(Tweet tweet) async {
-    List<File> files = await cacheDirService.listFiles(
-      currentBucketName,
-      allowedFileExtension: ".json",
-    );
+  /// Clears the cache and caches a new list of [tweets] while retaining the
+  /// [Tweet.harpyData] of the cached [Tweet] if it is the same.
+  void updateCachedTweets(List<Tweet> tweets) {
+    log.fine("updating cached tweets");
 
-    return files.where((file) {
-      // parse the id from the file path
-      String id = file.path.substring(
-        file.path.lastIndexOf("/") + 1,
-        file.path.lastIndexOf("."),
+    for (Tweet tweet in tweets) {
+      String fileName = "${tweet.id}.json";
+
+      File cachedFile = DirectoryService().getFile(
+        bucket: bucket,
+        name: fileName,
       );
 
-      return (tweet.id.toString() == id);
-    }).isNotEmpty;
+      if (cachedFile != null) {
+        // copy harpy data from the cached tweet if the tweet has been cached
+        // before
+        Tweet cachedTweet =
+            Tweet.fromJson(jsonDecode(cachedFile.readAsStringSync()));
+
+        tweet.harpyData = cachedTweet.harpyData;
+      }
+    }
+
+    clearBucket();
+
+    log.fine("cache new tweets");
+
+    tweets.forEach(_cacheTweet);
+    _setLastUpdatedDate(); // todo: necessary?
   }
 
-  void clearCache() async {
-    log.fine("Clear bucket $currentBucketName");
-    List<File> files = await cacheDirService.listFiles(currentBucketName);
+  /// Creates a the lastUpdated file with the [DateTime.now].
+  void _setLastUpdatedDate() async {
+    DirectoryService().createFile(
+      bucket: bucket,
+      name: lastUpdated,
+      content: DateTime.now().toString(),
+    );
+  }
+
+  /// Returns `true` if the [Tweet] exists in the cache.
+  bool tweetExists(Tweet tweet) {
+    File file = DirectoryService().getFile(
+      bucket: bucket,
+      name: "${tweet.id}.json",
+    );
+
+    return file != null;
+  }
+
+  /// Deletes every [File] in the [bucket].
+  void clearBucket() {
+    log.fine("clear bucket $bucket");
+    List<File> files = DirectoryService().listFiles(bucket: bucket);
 
     files.forEach((file) => file.deleteSync());
   }
 
-  void _setLastUpdatedDate() async {
-    cacheDirService.createFile(
-      currentBucketName,
-      lastUpdated,
-      ".txt",
-      DateTime.now().toString(),
+  // todo: necessary?
+  bool cacheShouldUpdate() {
+    File lastUpdatedFile = DirectoryService().getFile(
+      bucket: bucket,
+      name: lastUpdated,
     );
-  }
 
-  Future<DateTime> _getLastUpdatedTime() async {
-    try {
-      return DateTime.parse(await cacheDirService.readFile(
-        currentBucketName,
-        lastUpdated,
-        ".txt",
-      ));
-    } catch (ex) {
-      return null;
-    }
-  }
-
-  Future<bool> _cacheNeedsToUpdate() async {
-    DateTime lastUpdate = await _getLastUpdatedTime();
-    if (lastUpdate == null) {
+    if (lastUpdatedFile == null) {
       return true;
+    } else {
+      DateTime lastUpdatedTime =
+          DateTime.parse(lastUpdatedFile.readAsStringSync());
+
+      return DateTime.now().difference(lastUpdatedTime).inHours >= 4;
     }
-    return DateTime.now().difference(lastUpdate).inHours >= 4;
-  }
-
-  /// Caches the [tweets] and clears the cache while keeping the
-  /// [Tweet.harpyData] of the cached [Tweet].
-  void updateCachedTweets(List<Tweet> tweets) async {
-    List<Tweet> cachedTweets = await getCachedTweets();
-
-    for (Tweet cachedTweet in cachedTweets) {
-      Tweet tweet = tweets.firstWhere(
-        (tweet) => tweet.id == cachedTweet.id,
-        orElse: () => null,
-      );
-
-      if (tweet != null) tweet.harpyData = cachedTweet.harpyData;
-    }
-
-    // todo: improve:
-//    for (Tweet tweet in tweets) {
-//      // get cached file with tweet id if exists
-//      // if exists: tweet.harpyData = cachedTweet.harpyData;
-//    }
-
-    clearCache();
-
-    tweets.forEach(cacheTweet);
-    _setLastUpdatedDate();
-  }
-
-  void cacheTweet(Tweet tweet) async {
-    String fileName = "${tweet.id}";
-
-    cacheDirService.createFile(
-      currentBucketName,
-      fileName,
-      "json",
-      jsonEncode(tweet.toJson()),
-      rewrite: true,
-    );
-  }
-
-  String get currentBucketName {
-    String currentUserId = AppConfiguration().twitterSession.userId;
-    return "tweets/$type/$currentUserId";
   }
 }

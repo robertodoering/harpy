@@ -137,7 +137,8 @@ class TweetTileState extends State<TweetTile> {
     if (_translating) {
       return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(
+              vertical: 8.0), // todo: show "translating..." text
           child: CircularProgressIndicator(),
         ),
       );
