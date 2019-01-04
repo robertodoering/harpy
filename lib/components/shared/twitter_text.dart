@@ -12,7 +12,7 @@ class TwitterText extends StatefulWidget {
   final String text;
   final Entities entities;
   final Color entityColor;
-  final ValueChanged<TwitterEntityModel> onEntityTap;
+  final ValueChanged<_TwitterEntityModel> onEntityTap;
 
   const TwitterText({
     @required this.text,
@@ -31,11 +31,8 @@ class TwitterTextState extends State<TwitterText> {
   /// It's necessary to keep the reference so that we can dispose them.
   List<GestureRecognizer> _gestureRecognizer = [];
 
-  List<TextSpan> _textSpans = [];
-
-  /// The styles used by the text and entities (urls, hashtags) of the tweet.
-  TextStyle _textStyle;
-  TextStyle _entityStyle;
+  /// The list of [_TwitterTextType] contains the parsed texts and its type.
+  List<_TwitterTextType> _texts = [];
 
   @override
   void initState() {
@@ -72,14 +69,11 @@ class TwitterTextState extends State<TwitterText> {
       String text = widget.text.substring(start, end);
       text = parseHtmlEntities(text);
 
-      _textSpans.add(TextSpan(
-        text: text,
-        style: _textStyle,
-      ));
+      _texts.add(_TwitterTextType(text, _TextType.text));
     }
   }
 
-  void _addEntityModel(TwitterEntityModel entityModel) {
+  void _addEntityModel(_TwitterEntityModel entityModel) {
     if (entityModel.type == EntityType.media) return;
 
     GestureRecognizer recognizer;
@@ -90,10 +84,10 @@ class TwitterTextState extends State<TwitterText> {
       _gestureRecognizer.add(recognizer);
     }
 
-    _textSpans.add(TextSpan(
-      text: "${entityModel.displayUrl} ",
-      style: _entityStyle,
-      recognizer: recognizer,
+    _texts.add(_TwitterTextType(
+      "${entityModel.displayUrl} ",
+      _TextType.entity,
+      recognizer,
     ));
   }
 
@@ -105,27 +99,43 @@ class TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
-    // todo: fix
-    _textStyle = Theme.of(context).textTheme.body1;
-
-    _entityStyle = Theme.of(context).textTheme.body1.copyWith(
-          color: widget.entityColor ?? Theme.of(context).primaryColor,
-          fontWeight: FontWeight.bold,
-        );
+    // the styles used by the text and entities (urls, hashtags) of the tweet
+    Map<_TextType, TextStyle> _styles = {
+      _TextType.text: Theme.of(context).textTheme.body1,
+      _TextType.entity: Theme.of(context).textTheme.body1.copyWith(
+            color: widget.entityColor ?? Theme.of(context).accentColor,
+            fontWeight: FontWeight.bold,
+          ),
+    };
 
     return Text.rich(
       TextSpan(
-        children: _textSpans,
+        children: _texts.map((textType) {
+          return TextSpan(
+            text: textType.text,
+            style: _styles[textType.type],
+            recognizer: textType.recognizer,
+          );
+        }).toList(),
       ),
     );
   }
 }
 
-/// Takes a [String] and [Entities] and creates a list of [TwitterEntityModel]
+/// A helper class that contains the type of a text to determine the text style.
+class _TwitterTextType {
+  final String text;
+  final _TextType type;
+  final GestureRecognizer recognizer;
+
+  const _TwitterTextType(this.text, this.type, [this.recognizer]);
+}
+
+/// Takes a [String] and [Entities] and creates a list of [_TwitterEntityModel]
 /// with an entry for each entity.
 class TwitterEntities {
-  /// A list of [TwitterEntityModel].
-  var entityModels = <TwitterEntityModel>[];
+  /// A list of [_TwitterEntityModel].
+  var entityModels = <_TwitterEntityModel>[];
 
   /// A map that contains the end index of each entity to find the next
   /// occurrence of a duplicate entity.
@@ -136,7 +146,7 @@ class TwitterEntities {
       var indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         url: hashtag.text,
@@ -150,7 +160,7 @@ class TwitterEntities {
       var indices = _findIndices(text, url.url);
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         url: url.expandedUrl,
@@ -164,7 +174,7 @@ class TwitterEntities {
       var indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         url: userMention.screenName,
@@ -178,7 +188,7 @@ class TwitterEntities {
       var indices = _findIndices(text, media.url);
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      var entityModel = _TwitterEntityModel(
           startIndex: indices[0],
           endIndex: indices[1],
           url: media.expandedUrl,
@@ -204,9 +214,9 @@ class TwitterEntities {
     return null;
   }
 
-  /// Adds an [TwitterEntityModel] to the [entityModels] list at the position
+  /// Adds an [_TwitterEntityModel] to the [entityModels] list at the position
   /// where the indices are sorted ascending.
-  void _addEntityModel(TwitterEntityModel entityModel) {
+  void _addEntityModel(_TwitterEntityModel entityModel) {
     for (int i = 0; i < entityModels.length; i++) {
       if (entityModel.startIndex < entityModels[i].startIndex) {
         entityModels.insert(i, entityModel);
@@ -217,8 +227,8 @@ class TwitterEntities {
     entityModels.add(entityModel);
   }
 
-  /// Returns the next [TwitterEntityModel] or null if there aren't any more.
-  TwitterEntityModel getNext() {
+  /// Returns the next [_TwitterEntityModel] or null if there aren't any more.
+  _TwitterEntityModel getNext() {
     return entityModels.isNotEmpty ? entityModels.removeAt(0) : null;
   }
 }
@@ -226,14 +236,14 @@ class TwitterEntities {
 /// A simple model for the [Entities].
 ///
 /// The [EntityType] can be used to differentiate between each entity.
-class TwitterEntityModel {
+class _TwitterEntityModel {
   final int startIndex;
   final int endIndex;
   final String url;
   final String displayUrl;
   final EntityType type;
 
-  const TwitterEntityModel({
+  const _TwitterEntityModel({
     this.startIndex,
     this.endIndex,
     this.url,
@@ -247,4 +257,9 @@ enum EntityType {
   mention,
   url,
   media,
+}
+
+enum _TextType {
+  text,
+  entity,
 }
