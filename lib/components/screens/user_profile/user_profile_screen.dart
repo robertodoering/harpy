@@ -4,20 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/shared/scaffolds.dart';
 import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
 import 'package:harpy/components/shared/util.dart';
+import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
+import 'package:logging/logging.dart';
 
+/// The user profile screen to show information and the user timeline of the
+/// [user].
+///
+/// If [user] is `null` [screenName] has to not be `null` and is used to load
+/// the [User].
 class UserProfileScreen extends StatefulWidget {
   final User user;
+  final String screenName;
 
-  UserProfileScreen(this.user);
+  UserProfileScreen({
+    this.user,
+    this.screenName,
+  }) : assert(user != null || screenName != null);
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -25,24 +37,88 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen>
     with StoreWatcherMixin<UserProfileScreen> {
+  static final Logger log = Logger("UserProfileScreen");
+
   UserStore store;
 
+  User _user;
+
+  bool _loadingUser = false;
   bool _loadingTweets = true;
 
   @override
   void initState() {
     super.initState();
-    store = listenToStore(Tokens.user);
 
-    _initUserTweets();
+    store = listenToStore(Tokens.user);
+    _initUser();
   }
 
-  void _initUserTweets() {
-    UserStore.initUserTweets(widget.user).then((_) {
-      setState(() {
-        _loadingTweets = false;
+  void _initUser() {
+    _user = widget.user;
+
+    if (widget.user != null) {
+      print("user not null");
+
+      // load user tweet timeline
+      UserStore.getUserTweetsFromId("${_user.id}").then((_) {
+        setState(() {
+          _loadingTweets = false;
+        });
+      }).catchError((_) {
+        setState(() {
+          _loadingTweets = false;
+        });
       });
+    } else {
+      _loadingUser = true;
+
+      // load user
+      // todo: this logic shouldn't be in the screen
+      log.fine("load user with screenName: ${widget.screenName}");
+      User user = UserCache().getCachedUser(screenName: widget.screenName);
+
+      if (user == null) {
+        log.fine("user not in cache");
+        _updateUser();
+      } else {
+        log.fine("loaded user from cache");
+
+        setState(() {
+          _user = user;
+        });
+
+        // update user
+        _updateUser();
+      }
+
+      // load user tweet timeline
+      UserStore.getUserTweetsFromName(widget.screenName).then((_) {
+        setState(() {
+          _loadingTweets = false;
+        });
+      }).catchError((_) {
+        setState(() {
+          _loadingTweets = false;
+        });
+      });
+    }
+  }
+
+  Future<void> _updateUser() async {
+    log.fine("updating user");
+    User user = await UserService()
+        .getUserDetails(screenName: widget.screenName)
+        .catchError((_) {
+      log.warning("unable to update user");
+      return null;
     });
+
+    if (user != null) {
+      setState(() {
+        _user = user;
+      });
+    }
   }
 
   @override
@@ -55,20 +131,51 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget build(BuildContext context) {
     return Theme(
       data: HarpyTheme().theme,
-      child: FadingNestedScaffold(
-        title: widget.user.name,
+      child: _buildScaffold(context),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context) {
+    if (_user != null) {
+      return FadingNestedScaffold(
+        title: _user.name,
         background: CachedNetworkImage(
-          imageUrl: widget.user.profile_banner_url ??
-              widget.user.profileBackgroundImageUrl,
+          imageUrl: _user.profile_banner_url ?? _user.profileBackgroundImageUrl,
           fit: BoxFit.cover,
         ),
         body: TweetList(
-          leading: UserHeader(user: widget.user),
+          leading: UserHeader(user: _user),
           tweets: _loadingTweets ? null : store.userTweets,
           trailing: _buildTrailingWidget(),
         ),
-      ),
-    );
+      );
+    } else if (_loadingUser) {
+      return FadingNestedScaffold(
+        title: "@${widget.screenName}",
+        background: Container(color: HarpyTheme().theme.primaryColor),
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: 16.0, width: double.infinity),
+            Text(
+              "@${widget.screenName}",
+              style: HarpyTheme().theme.textTheme.display2,
+            ),
+            SizedBox(height: 16.0),
+            CircularProgressIndicator(),
+          ],
+        ),
+      );
+    } else {
+      // error loading user
+      return FadingNestedScaffold(
+        title: "@${widget.screenName}",
+        background: Container(color: HarpyTheme().theme.primaryColor),
+        body: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(child: Text("Error loading user")),
+        ),
+      );
+    }
   }
 
   /// Builds a [CircularProgressIndicator] if the tweets are loading or a [Text]
@@ -76,13 +183,13 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildTrailingWidget() {
     if (_loadingTweets) {
       return Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 16.0),
         child: Center(child: CircularProgressIndicator()),
       );
     } else if (store.userTweets?.isEmpty ?? false) {
       return Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: Center(child: Text("No tweets q.q")),
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Center(child: Text("No tweets q.q")), // todo: i18n
       );
     } else {
       return Container();

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/harpy_data.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
@@ -77,8 +78,12 @@ class TweetTileState extends State<TweetTile> {
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap:
-              widget.openUserProfile ? () => _openUserProfile(context) : null,
+          onTap: widget.openUserProfile
+              ? () => _openUserProfile(
+                    context,
+                    user: tweet.user,
+                  )
+              : null,
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
@@ -95,7 +100,7 @@ class TweetTileState extends State<TweetTile> {
             // name
             GestureDetector(
               onTap: widget.openUserProfile
-                  ? () => _openUserProfile(context)
+                  ? () => _openUserProfile(context, user: tweet.user)
                   : null,
               child: Text(tweet.user.name),
             ),
@@ -103,7 +108,7 @@ class TweetTileState extends State<TweetTile> {
             // username · time since tweet in hours
             GestureDetector(
               onTap: widget.openUserProfile
-                  ? () => _openUserProfile(context)
+                  ? () => _openUserProfile(context, user: tweet.user)
                   : null,
               child: Text(
                 "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}",
@@ -123,9 +128,11 @@ class TweetTileState extends State<TweetTile> {
             child: TwitterText(
               text: tweet.full_text,
               entities: tweet.entities,
-              onEntityTap: (model) {
+              onEntityTap: (model) async {
                 if (model.type == EntityType.url) {
                   launchUrl(model.url);
+                } else if (model.type == EntityType.mention) {
+                  _openUserProfile(context, screenName: model.url);
                 }
               },
             ),
@@ -250,11 +257,21 @@ class TweetTileState extends State<TweetTile> {
     );
   }
 
-  void _openUserProfile(BuildContext context) {
+  /// Navigates to the [UserProfileScreen] for the [user] or [screenName].
+  ///
+  /// If [user] is `null` [screenName] mustn't be `null`.
+  void _openUserProfile(
+    BuildContext context, {
+    User user,
+    String screenName,
+  }) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserProfileScreen(tweet.user),
+        builder: (context) => UserProfileScreen(
+              user: user,
+              screenName: screenName,
+            ),
       ),
     );
   }

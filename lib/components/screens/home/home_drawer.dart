@@ -15,7 +15,7 @@ void _navigateToProfileScreen(BuildContext context, User user) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => UserProfileScreen(user),
+      builder: (context) => UserProfileScreen(user: user),
     ),
   );
 }

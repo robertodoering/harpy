@@ -12,14 +12,15 @@ class UserStore extends Store {
 
   static final Action initLoggedInUser = Action();
   static final Action updateLoggedInUser = Action();
-  static final Action<User> initUserTweets = Action();
+
+  static final Action<String> getUserTweetsFromId = Action();
+  static final Action<String> getUserTweetsFromName = Action();
 
   User _loggedInUser;
-
   User get loggedInUser => _loggedInUser;
 
+  /// The [Tweet]s for the [user].
   List<Tweet> _userTweets;
-
   List<Tweet> get userTweets => _userTweets;
 
   UserStore() {
@@ -27,7 +28,7 @@ class UserStore extends Store {
       String userId = AppConfiguration().twitterSession.userId;
       log.fine("init logged in user for $userId");
 
-      _loggedInUser = UserCache().getCachedUser(userId);
+      _loggedInUser = UserCache().getCachedUser(id: userId);
 
       if (_loggedInUser == null) {
         await updateLoggedInUser();
@@ -40,11 +41,20 @@ class UserStore extends Store {
       log.fine("updating logged in user");
       String userId = AppConfiguration().twitterSession.userId;
 
-      _loggedInUser = await UserService().getUserDetails(userId);
+      _loggedInUser = await UserService().getUserDetails(id: userId);
     });
 
-    initUserTweets.listen((User user) async {
-      _userTweets = await TweetService().getUserTimeline("${user.id}");
+    getUserTweetsFromId.listen((String id) async {
+      // todo: cache user tweets
+
+      _userTweets = await TweetService().getUserTimeline(userId: id);
+    });
+
+    getUserTweetsFromName.listen((String screenName) async {
+      // todo: cache user tweets
+
+      _userTweets =
+          await TweetService().getUserTimeline(screenName: screenName);
     });
   }
 }
