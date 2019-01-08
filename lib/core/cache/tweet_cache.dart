@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:logging/logging.dart';
@@ -14,12 +15,22 @@ class TweetCache {
   static const String homeTimeline = "home_timeline";
   static const String userTimeline = "user_timeline";
 
-  /// The [type] affects the location of the [bucket].
-  String type;
+  /// The [_type] affects the location of the [bucket].
+  String _type;
+
+  /// The [_userId] for the [User] to cache the user timeline.
+  String _userId;
 
   static TweetCache _instance = TweetCache._();
-  factory TweetCache.home() => _instance..type = homeTimeline;
-  factory TweetCache.user() => _instance..type = userTimeline;
+
+  factory TweetCache.home() => _instance
+    .._type = homeTimeline
+    .._userId = null;
+
+  factory TweetCache.user(String userId) => _instance
+    .._type = userTimeline
+    .._userId = userId;
+
   TweetCache._();
 
   /// The sub directory where the files are stored.
@@ -27,7 +38,12 @@ class TweetCache {
   /// [Tweet]s should be cached for each logged in user separately.
   String get bucket {
     String currentUserId = AppConfiguration().twitterSession.userId;
-    return "tweets/$type/$currentUserId";
+
+    String bucket = "tweets/$_type/$currentUserId";
+
+    if (_userId != null) bucket += "/$_userId";
+
+    return bucket;
   }
 
   /// Caches the [tweet].
@@ -132,6 +148,21 @@ class TweetCache {
     );
 
     return file != null;
+  }
+
+  /// Returns the cached [Tweet] for the [id] or `null` if it doesn't exist in
+  /// the cache.
+  Tweet getTweet(String id) {
+    File file = DirectoryService().getFile(
+      bucket: bucket,
+      name: "$id.json",
+    );
+
+    if (file == null) {
+      return null;
+    } else {
+      return Tweet.fromJson(jsonDecode(file.readAsStringSync()));
+    }
   }
 
   /// Deletes every [File] in the [bucket].

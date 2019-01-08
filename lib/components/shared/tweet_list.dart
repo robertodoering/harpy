@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/tweet_tile.dart';
@@ -33,19 +34,23 @@ class TweetList extends StatefulWidget {
   /// A method called when reaching the end of the list.
   final Function onRequestMore;
 
+  /// The [type] of this list.
+  final ListType type;
+
   const TweetList({
     this.tweets,
     this.leading,
     this.trailing,
     this.onRefresh,
     this.onRequestMore,
+    this.type,
   });
 
   @override
   _TweetListState createState() => _TweetListState();
 }
 
-class _TweetListState extends State<TweetList> {
+class _TweetListState extends State<TweetList> with StoreWatcherMixin {
   ScrollController _controller;
 
   bool _requestingMore = false;
@@ -84,12 +89,15 @@ class _TweetListState extends State<TweetList> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.onRefresh != null
-        ? RefreshIndicator(
-            onRefresh: widget.onRefresh,
-            child: _buildList(),
-          )
-        : _buildList();
+    return InheritedTweetList(
+      type: widget.type,
+      child: widget.onRefresh != null
+          ? RefreshIndicator(
+              onRefresh: widget.onRefresh,
+              child: _buildList(),
+            )
+          : _buildList(),
+    );
   }
 
   Widget _buildList() {
@@ -120,4 +128,30 @@ class _TweetListState extends State<TweetList> {
       ),
     );
   }
+}
+
+/// The [ListType] defines types that the list is used for.
+///
+/// (home timeline / user timeline)
+enum ListType {
+  home,
+  user,
+}
+
+/// The [InheritedTweetList] contains data for children to access.
+class InheritedTweetList extends InheritedWidget {
+  final ListType type;
+
+  const InheritedTweetList({
+    this.type,
+    Widget child,
+  }) : super(child: child);
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return false;
+  }
+
+  static InheritedTweetList of(BuildContext context) =>
+      context.inheritFromWidgetOfExactType(InheritedTweetList);
 }

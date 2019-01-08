@@ -89,7 +89,7 @@ class _UserHeaderState extends State<UserHeader> {
           entities: widget.user.entities.asEntities,
           onEntityTap: (entityModel) {
             if (entityModel.type == EntityType.url) {
-              launchUrl(entityModel.url);
+              launchUrl(entityModel.data);
             }
           },
         ),

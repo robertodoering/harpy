@@ -48,6 +48,7 @@ class HomeScreenState extends State<HomeScreen>
         onRefresh: _onRefresh,
         onRequestMore: _onRequestMore,
         trailing: _buildTrailing(),
+        type: ListType.home,
       );
     }
   }
