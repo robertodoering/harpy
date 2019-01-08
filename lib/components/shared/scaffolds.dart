@@ -45,16 +45,21 @@ class HarpyScaffold extends StatelessWidget {
 
 /// A [NestedScrollView] within a [Scaffold] where the [title] fades in when the
 /// [FlexibleSpaceBar] in the [SliverAppBar] starts showing.
+///
+/// If [alwaysShowTitle] is `true` the title will show even when the
+/// [SliverAppBar] is expanded.
 class FadingNestedScaffold extends StatefulWidget {
   final String title;
   final Widget background;
   final double expandedAppBarSpace;
   final Widget body;
+  final bool alwaysShowTitle;
 
   FadingNestedScaffold({
     this.title,
     this.background,
     this.expandedAppBarSpace = 200.0,
+    this.alwaysShowTitle = false,
     @required this.body,
   });
 
@@ -65,6 +70,8 @@ class FadingNestedScaffold extends StatefulWidget {
 class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   ScrollController _controller;
   double _opacity = 0.0;
+
+  double get opacity => widget.alwaysShowTitle ? 1.0 : _opacity;
 
   @override
   void initState() {
@@ -106,7 +113,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 title: Opacity(
-                  opacity: _opacity,
+                  opacity: opacity,
                   child: Text(
                     widget.title,
                     style: Theme.of(context).textTheme.subtitle,

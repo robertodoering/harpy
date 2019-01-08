@@ -15,6 +15,7 @@ class DirectoryService {
     _path = dir.path;
   }
 
+  /// Gets the path for [fileName] inside the [bucket].
   String _filePath(String bucket, String fileName) {
     return "$_path/$bucket/$fileName";
   }

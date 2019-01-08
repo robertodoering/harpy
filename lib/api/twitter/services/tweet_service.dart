@@ -32,15 +32,20 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
     }
   }
 
-  /// Returns the user timeline for the [userId].
-  Future<List<Tweet>> getUserTimeline(
-    String userId, {
+  /// Returns the user timeline for the [userId] or [screenName].
+  Future<List<Tweet>> getUserTimeline({
+    String userId,
+    String screenName,
     Map<String, String> params,
   }) async {
+    assert(userId != null || screenName != null);
+
     params ??= Map();
-    params["user_id"] = userId;
     params["count"] ??= "800";
     params["tweet_mode"] ??= "extended";
+    if (userId != null)
+      params["user_id"] = userId;
+    else if (screenName != null) params["screen_name"] = screenName;
 
     final response = await TwitterClient().get(
       "https://api.twitter.com/1.1/statuses/user_timeline.json",
