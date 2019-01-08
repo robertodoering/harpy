@@ -3,6 +3,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
+import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/config/app_configuration.dart';
 import 'package:logging/logging.dart';
@@ -17,7 +18,8 @@ class UserStore extends Store {
   static final Action<String> initUserFromId = Action();
   static final Action<String> updateUserFromId = Action();
 
-  static final Action<String> initUserTweetsFromId = Action();
+  static final Action<String> initUserTweets = Action();
+  static final Action<String> updateUserTweets = Action();
 
   User _loggedInUser;
   User get loggedInUser => _loggedInUser;
@@ -86,11 +88,23 @@ class UserStore extends Store {
     /*
      * user tweets
      */
-    initUserTweetsFromId.listen((String userId) async {
-//      _userTweets = TweetCache.user(userId).getCachedTweets();
+    initUserTweets.listen((String userId) async {
+      log.fine("init user tweets");
 
-      // todo: cache user tweets
-      _userTweets = await TweetService().getUserTimeline(userId: userId);
+      _userTweets = TweetCache.user(userId).getCachedTweets();
+
+      if (_userTweets.isEmpty) {
+        // wait to update tweets if no cached tweets are found
+        await updateUserTweets(userId);
+      } else {
+        // cached tweets exist, update tweets but dont wait for it
+        updateUserTweets(userId);
+      }
+    });
+
+    triggerOnAction(updateUserTweets, (String userId) async {
+      log.fine("updating user tweets");
+      _userTweets = await TweetService().getUserTimeline(userId);
     });
   }
 }

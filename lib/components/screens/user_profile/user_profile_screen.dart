@@ -60,7 +60,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     // load user tweet timeline
     String userId = widget.user?.id?.toString() ?? widget.userId;
 
-    UserStore.initUserTweetsFromId(userId).then((_) {
+    UserStore.initUserTweets(userId).then((_) {
       setState(() {
         _loadingTweets = false;
       });
@@ -128,7 +128,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     } else if (store.userTweets?.isEmpty ?? false) {
       return Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: Center(child: Text("No tweets q.q")), // todo: i18n
+        child: Center(child: Text("No tweets found")), // todo: i18n
       );
     } else {
       return Container();
