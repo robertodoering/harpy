@@ -8,21 +8,20 @@ import 'package:harpy/components/shared/user_header.dart';
 import 'package:harpy/stores/tokens.dart';
 import 'package:harpy/stores/user_store.dart';
 import 'package:harpy/theme.dart';
-import 'package:logging/logging.dart';
 
 /// The user profile screen to show information and the user timeline of the
 /// [user].
 ///
-/// If [user] is `null` [screenName] has to not be `null` and is used to load
+/// If [user] is `null` [userId] has to not be `null` and is used to load
 /// the [User].
 class UserProfileScreen extends StatefulWidget {
   final User user;
-  final String screenName;
+  final String userId;
 
   UserProfileScreen({
     this.user,
-    this.screenName,
-  }) : assert(user != null || screenName != null);
+    this.userId,
+  }) : assert(user != null || userId != null);
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -30,8 +29,6 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen>
     with StoreWatcherMixin<UserProfileScreen> {
-  static final Logger log = Logger("UserProfileScreen");
-
   UserStore store;
 
   bool _loadingUser = true;
@@ -52,35 +49,26 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       setState(() {
         _loadingUser = false;
       });
-
-      // load user tweet timeline
-      UserStore.getUserTweetsFromId("${widget.user.id}").then((_) {
-        setState(() {
-          _loadingTweets = false;
-        });
-      }).catchError((_) {
-        setState(() {
-          _loadingTweets = false;
-        });
-      });
     } else {
-      UserStore.initUserFromName(widget.screenName).then((_) {
+      UserStore.initUserFromId(widget.userId).then((_) {
         setState(() {
           _loadingUser = false;
         });
       });
-
-      // load user tweet timeline
-      UserStore.getUserTweetsFromName(widget.screenName).then((_) {
-        setState(() {
-          _loadingTweets = false;
-        });
-      }).catchError((_) {
-        setState(() {
-          _loadingTweets = false;
-        });
-      });
     }
+
+    // load user tweet timeline
+    String userId = widget.user?.id?.toString() ?? widget.userId;
+
+    UserStore.initUserTweetsFromId(userId).then((_) {
+      setState(() {
+        _loadingTweets = false;
+      });
+    }).catchError((_) {
+      setState(() {
+        _loadingTweets = false;
+      });
+    });
   }
 
   @override
@@ -100,19 +88,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildScaffold(BuildContext context) {
     if (_loadingUser) {
       return FadingNestedScaffold(
-        title: widget.screenName != null ? "@${widget.screenName}" : "",
         background: Container(color: HarpyTheme().theme.primaryColor),
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: 16.0, width: double.infinity),
-            Text(
-              widget.screenName != null ? "@${widget.screenName}" : "",
-              style: HarpyTheme().theme.textTheme.display2,
-            ),
-            SizedBox(height: 16.0),
-            CircularProgressIndicator(),
-          ],
-        ),
+        body: Center(child: CircularProgressIndicator()),
       );
     } else if (store.user != null) {
       return FadingNestedScaffold(
@@ -131,7 +108,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     } else {
       // user is null and not loading user: error loading user
       return FadingNestedScaffold(
-        title: "@${widget.screenName}",
         background: Container(color: HarpyTheme().theme.primaryColor),
         body: Container(
           padding: const EdgeInsets.all(8.0),

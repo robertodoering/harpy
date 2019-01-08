@@ -3,6 +3,10 @@ import 'dart:core';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/entities.dart';
+import 'package:harpy/api/twitter/data/hashtag.dart';
+import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/api/twitter/data/url.dart';
+import 'package:harpy/api/twitter/data/user_mention.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 
 /// Creates a [RichText] from the given [text].
@@ -85,7 +89,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      "${entityModel.displayUrl} ",
+      "${entityModel.displayText} ",
       _TextType.entity,
       recognizer,
     ));
@@ -142,57 +146,58 @@ class TwitterEntities {
   var _entityMap = <String, int>{};
 
   TwitterEntities(String text, Entities entities) {
-    for (var hashtag in entities.hashtags ?? []) {
+    for (Hashtag hashtag in entities.hashtags ?? []) {
       var indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
       var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: hashtag.text,
-        displayUrl: "#${hashtag.text}",
+        data: hashtag.text,
+        displayText: "#${hashtag.text}",
         type: EntityType.hashtag,
       );
       _addEntityModel(entityModel);
     }
 
-    for (var url in entities.urls ?? []) {
+    for (Url url in entities.urls ?? []) {
       var indices = _findIndices(text, url.url);
       if (indices == null) break;
 
       var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: url.expandedUrl,
-        displayUrl: url.displayUrl,
+        data: url.expandedUrl,
+        displayText: url.displayUrl,
         type: EntityType.url,
       );
       _addEntityModel(entityModel);
     }
 
-    for (var userMention in entities.userMentions ?? []) {
+    for (UserMention userMention in entities.userMentions ?? []) {
       var indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
       var entityModel = _TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
-        url: userMention.screenName,
-        displayUrl: "@${userMention.screenName}",
+        data: userMention.screenName,
+        id: "${userMention.id}",
+        displayText: "@${userMention.screenName}",
         type: EntityType.mention,
       );
       _addEntityModel(entityModel);
     }
 
-    for (var media in entities.media ?? []) {
+    for (TwitterMedia media in entities.media ?? []) {
       var indices = _findIndices(text, media.url);
       if (indices == null) break;
 
       var entityModel = _TwitterEntityModel(
           startIndex: indices[0],
           endIndex: indices[1],
-          url: media.expandedUrl,
-          displayUrl: media.displayUrl,
+          data: media.expandedUrl,
+          displayText: media.displayUrl,
           type: EntityType.media);
       _addEntityModel(entityModel);
     }
@@ -239,15 +244,27 @@ class TwitterEntities {
 class _TwitterEntityModel {
   final int startIndex;
   final int endIndex;
-  final String url;
-  final String displayUrl;
+
+  /// The [data] for the entity.
+  ///
+  /// The url for [EntityType.url] and [EntityType.media].
+  /// The [User.screenName] for [EntityType.mention].
+  final String data;
+
+  /// The [User.id] for [EntityType.mention].
+  final String id;
+
+  /// The text that should be displayed in the [TwitterText].
+  final String displayText;
+
   final EntityType type;
 
   const _TwitterEntityModel({
     this.startIndex,
     this.endIndex,
-    this.url,
-    this.displayUrl,
+    this.data,
+    this.id,
+    this.displayText,
     this.type,
   });
 }

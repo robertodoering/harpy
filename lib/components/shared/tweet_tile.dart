@@ -130,9 +130,9 @@ class TweetTileState extends State<TweetTile> {
               entities: tweet.entities,
               onEntityTap: (model) async {
                 if (model.type == EntityType.url) {
-                  launchUrl(model.url);
+                  launchUrl(model.data);
                 } else if (model.type == EntityType.mention) {
-                  _openUserProfile(context, screenName: model.url);
+                  _openUserProfile(context, userId: model.id);
                 }
               },
             ),
@@ -263,14 +263,14 @@ class TweetTileState extends State<TweetTile> {
   void _openUserProfile(
     BuildContext context, {
     User user,
-    String screenName,
+    String userId,
   }) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => UserProfileScreen(
               user: user,
-              screenName: screenName,
+              userId: userId,
             ),
       ),
     );

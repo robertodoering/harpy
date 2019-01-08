@@ -115,7 +115,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
                 title: Opacity(
                   opacity: opacity,
                   child: Text(
-                    widget.title,
+                    widget.title ?? "",
                     style: Theme.of(context).textTheme.subtitle,
                   ),
                 ),

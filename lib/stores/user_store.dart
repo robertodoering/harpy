@@ -14,11 +14,10 @@ class UserStore extends Store {
   static final Action updateLoggedInUser = Action();
 
   static final Action<User> initUser = Action();
-  static final Action<String> initUserFromName = Action();
-  static final Action<String> updateUserFromName = Action();
+  static final Action<String> initUserFromId = Action();
+  static final Action<String> updateUserFromId = Action();
 
-  static final Action<String> getUserTweetsFromId = Action();
-  static final Action<String> getUserTweetsFromName = Action();
+  static final Action<String> initUserTweetsFromId = Action();
 
   User _loggedInUser;
   User get loggedInUser => _loggedInUser;
@@ -39,7 +38,7 @@ class UserStore extends Store {
       String userId = AppConfiguration().twitterSession.userId;
       log.fine("init logged in user for $userId");
 
-      _loggedInUser = UserCache().getCachedUser(id: userId);
+      _loggedInUser = UserCache().getCachedUser(userId);
 
       if (_loggedInUser == null) {
         await updateLoggedInUser();
@@ -60,25 +59,25 @@ class UserStore extends Store {
      */
     initUser.listen((User user) => _user = user);
 
-    initUserFromName.listen((String screenName) async {
-      User user = UserCache().getCachedUser(screenName: screenName);
+    initUserFromId.listen((String userId) async {
+      User user = UserCache().getCachedUser(userId);
 
       if (user != null) {
         _user = user;
         trigger();
       } else {
-        await updateUserFromName(screenName);
+        await updateUserFromId(userId);
       }
     });
 
-    triggerOnAction(updateUserFromName, (String screenName) async {
+    triggerOnAction(updateUserFromId, (String userId) async {
       log.fine("updating user");
-      User user = await UserService()
-          .getUserDetails(screenName: screenName)
-          .catchError((_) {
+      User user =
+          await UserService().getUserDetails(id: userId).catchError((_) {
         log.warning("unable to update user");
         return null;
       });
+
       if (user != null) {
         _user = user;
       }
@@ -87,18 +86,11 @@ class UserStore extends Store {
     /*
      * user tweets
      */
+    initUserTweetsFromId.listen((String userId) async {
+//      _userTweets = TweetCache.user(userId).getCachedTweets();
 
-    getUserTweetsFromId.listen((String id) async {
       // todo: cache user tweets
-
-      _userTweets = await TweetService().getUserTimeline(userId: id);
-    });
-
-    getUserTweetsFromName.listen((String screenName) async {
-      // todo: cache user tweets
-
-      _userTweets =
-          await TweetService().getUserTimeline(screenName: screenName);
+      _userTweets = await TweetService().getUserTimeline(userId: userId);
     });
   }
 }
