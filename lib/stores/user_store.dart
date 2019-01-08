@@ -13,17 +13,28 @@ class UserStore extends Store {
   static final Action initLoggedInUser = Action();
   static final Action updateLoggedInUser = Action();
 
+  static final Action<User> initUser = Action();
+  static final Action<String> initUserFromName = Action();
+  static final Action<String> updateUserFromName = Action();
+
   static final Action<String> getUserTweetsFromId = Action();
   static final Action<String> getUserTweetsFromName = Action();
 
   User _loggedInUser;
   User get loggedInUser => _loggedInUser;
 
+  /// The [User] to display.
+  User _user;
+  User get user => _user;
+
   /// The [Tweet]s for the [user].
   List<Tweet> _userTweets;
   List<Tweet> get userTweets => _userTweets;
 
   UserStore() {
+    /*
+     * logged in user
+     */
     initLoggedInUser.listen((_) async {
       String userId = AppConfiguration().twitterSession.userId;
       log.fine("init logged in user for $userId");
@@ -43,6 +54,39 @@ class UserStore extends Store {
 
       _loggedInUser = await UserService().getUserDetails(id: userId);
     });
+
+    /*
+     * user
+     */
+    initUser.listen((User user) => _user = user);
+
+    initUserFromName.listen((String screenName) async {
+      User user = UserCache().getCachedUser(screenName: screenName);
+
+      if (user != null) {
+        _user = user;
+        trigger();
+      } else {
+        await updateUserFromName(screenName);
+      }
+    });
+
+    triggerOnAction(updateUserFromName, (String screenName) async {
+      log.fine("updating user");
+      User user = await UserService()
+          .getUserDetails(screenName: screenName)
+          .catchError((_) {
+        log.warning("unable to update user");
+        return null;
+      });
+      if (user != null) {
+        _user = user;
+      }
+    });
+
+    /*
+     * user tweets
+     */
 
     getUserTweetsFromId.listen((String id) async {
       // todo: cache user tweets
