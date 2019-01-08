@@ -50,7 +50,14 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
     if (response.statusCode == 200) {
       List<Tweet> tweets = map((json) => Tweet.fromJson(json), response.body);
 
-      // todo: copy harpy data from home timeline
+      // copy over harpy data from cached home timeline tweets
+      for (Tweet tweet in tweets) {
+        Tweet homeTweet = TweetCache.home().getTweet("${tweet.id}");
+        if (homeTweet != null) {
+          tweet.harpyData = homeTweet.harpyData;
+        }
+      }
+
       TweetCache.user(userId).updateCachedTweets(tweets);
 
       return tweets;

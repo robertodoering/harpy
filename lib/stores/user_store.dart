@@ -6,9 +6,11 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/config/app_configuration.dart';
+import 'package:harpy/stores/home_store.dart';
+import 'package:harpy/stores/tweet_store_mixin.dart';
 import 'package:logging/logging.dart';
 
-class UserStore extends Store {
+class UserStore extends Store with TweetStoreMixin {
   final Logger log = Logger("UserStore");
 
   static final Action initLoggedInUser = Action();
@@ -20,6 +22,16 @@ class UserStore extends Store {
 
   static final Action<String> initUserTweets = Action();
   static final Action<String> updateUserTweets = Action();
+
+  static final Action<Tweet> favoriteTweetAction = Action();
+  static final Action<Tweet> unfavoriteTweetAction = Action();
+  static final Action<Tweet> retweetTweetAction = Action();
+  static final Action<Tweet> unretweetTweetAction = Action();
+
+  static final Action<Tweet> showTweetMediaAction = Action();
+  static final Action<Tweet> hideTweetMediaAction = Action();
+
+  static final Action<Tweet> translateTweetAction = Action();
 
   User _loggedInUser;
   User get loggedInUser => _loggedInUser;
@@ -104,7 +116,52 @@ class UserStore extends Store {
 
     triggerOnAction(updateUserTweets, (String userId) async {
       log.fine("updating user tweets");
+
+      // todo: disable actions while updating user tweets
+
       _userTweets = await TweetService().getUserTimeline(userId);
+    });
+
+    /*
+     * actions
+     */
+    onTweetUpdated = (tweet) {
+      if (user?.id != null) {
+        TweetCache.user("${user.id}").updateTweet(tweet);
+
+        // try to update home timeline tweet if it exists
+        HomeStore.updateTweet(tweet);
+      } else {
+        log.warning("unable to update user timeline tweet");
+      }
+    };
+
+    triggerOnAction(favoriteTweetAction, (Tweet tweet) {
+      favoriteTweet(tweet);
+    });
+
+    triggerOnAction(unfavoriteTweetAction, (Tweet tweet) {
+      unfavoriteTweet(tweet);
+    });
+
+    triggerOnAction(retweetTweetAction, (Tweet tweet) {
+      retweetTweet(tweet);
+    });
+
+    triggerOnAction(unretweetTweetAction, (Tweet tweet) {
+      unretweetTweet(tweet);
+    });
+
+    showTweetMediaAction.listen((Tweet tweet) {
+      showTweetMedia(tweet);
+    });
+
+    hideTweetMediaAction.listen((Tweet tweet) {
+      hideTweetMedia(tweet);
+    });
+
+    triggerOnAction(translateTweetAction, (Tweet tweet) async {
+      await translateTweet(tweet);
     });
   }
 }

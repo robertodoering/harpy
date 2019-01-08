@@ -150,6 +150,21 @@ class TweetCache {
     return file != null;
   }
 
+  /// Returns the cached [Tweet] for the [id] or `null` if it doesn't exist in
+  /// the cache.
+  Tweet getTweet(String id) {
+    File file = DirectoryService().getFile(
+      bucket: bucket,
+      name: "$id.json",
+    );
+
+    if (file == null) {
+      return null;
+    } else {
+      return Tweet.fromJson(jsonDecode(file.readAsStringSync()));
+    }
+  }
+
   /// Deletes every [File] in the [bucket].
   void clearBucket() {
     log.fine("clear bucket $bucket");

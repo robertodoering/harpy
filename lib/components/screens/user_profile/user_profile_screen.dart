@@ -103,6 +103,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
           leading: UserHeader(user: store.user),
           tweets: _loadingTweets ? null : store.userTweets,
           trailing: _buildTrailingWidget(),
+          type: ListType.user,
         ),
       );
     } else {

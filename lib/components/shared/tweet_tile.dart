@@ -7,11 +7,13 @@ import 'package:harpy/components/screens/user_profile/user_profile_screen.dart';
 import 'package:harpy/components/shared/animations.dart';
 import 'package:harpy/components/shared/buttons.dart';
 import 'package:harpy/components/shared/media/twitter_media.dart';
+import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/components/shared/twitter_text.dart';
 import 'package:harpy/components/shared/util.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/stores/home_store.dart';
+import 'package:harpy/stores/user_store.dart';
 
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {
@@ -184,6 +186,8 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildActionRow(BuildContext context) {
+    ListType type = InheritedTweetList.of(context).type;
+
     return Row(
       children: <Widget>[
         // retweet action
@@ -193,8 +197,20 @@ class TweetTileState extends State<TweetTile> {
           activeIcon: Icons.repeat,
           text: "${formatNumber(tweet.retweetCount)}",
           color: Colors.green,
-          activate: () => HomeStore.retweetTweet(widget.tweet),
-          deactivate: () => HomeStore.unretweetTweet(widget.tweet),
+          activate: () {
+            if (type == ListType.home) {
+              return HomeStore.retweetTweetAction(widget.tweet);
+            } else if (type == ListType.user) {
+              return UserStore.retweetTweetAction(widget.tweet);
+            }
+          },
+          deactivate: () {
+            if (type == ListType.home) {
+              return HomeStore.unretweetTweetAction(widget.tweet);
+            } else if (type == ListType.user) {
+              return UserStore.unretweetTweetAction(widget.tweet);
+            }
+          },
         ),
 
         // favorite action
@@ -204,8 +220,20 @@ class TweetTileState extends State<TweetTile> {
           activeIcon: Icons.favorite,
           text: "${formatNumber(tweet.favoriteCount)}",
           color: Colors.red,
-          activate: () => HomeStore.favoriteTweet(widget.tweet),
-          deactivate: () => HomeStore.unfavoriteTweet(widget.tweet),
+          activate: () {
+            if (type == ListType.home) {
+              return HomeStore.favoriteTweetAction(widget.tweet);
+            } else if (type == ListType.user) {
+              return UserStore.favoriteTweetAction(widget.tweet);
+            }
+          },
+          deactivate: () {
+            if (type == ListType.home) {
+              return HomeStore.unfavoriteTweetAction(widget.tweet);
+            } else if (type == ListType.user) {
+              return UserStore.unfavoriteTweetAction(widget.tweet);
+            }
+          },
         ),
 
         Expanded(child: Container()),
@@ -220,6 +248,8 @@ class TweetTileState extends State<TweetTile> {
       return Container();
     }
 
+    ListType type = InheritedTweetList.of(context).type;
+
     VoidCallback onPressed;
     bool drawColorOnHighlight = false;
     Color color = Colors.blue;
@@ -232,7 +262,11 @@ class TweetTileState extends State<TweetTile> {
           _translating = true;
         });
 
-        await HomeStore.translateTweet(widget.tweet);
+        if (type == ListType.home) {
+          await HomeStore.translateTweetAction(widget.tweet);
+        } else if (type == ListType.user) {
+          await UserStore.translateTweetAction(widget.tweet);
+        }
 
         setState(() {
           _translating = false;

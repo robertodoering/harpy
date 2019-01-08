@@ -6,6 +6,7 @@ import 'package:harpy/components/shared/media/media_dialog.dart';
 import 'package:harpy/components/shared/media/media_expansion.dart';
 import 'package:harpy/components/shared/media/twitter_video_player.dart';
 import 'package:harpy/components/shared/routes.dart';
+import 'package:harpy/components/shared/tweet_list.dart';
 import 'package:harpy/stores/home_store.dart';
 
 // media types
@@ -222,9 +223,16 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   }
 
   void _saveShowMediaState(bool showing) {
-    print("save show media state: $showing");
-    showing
-        ? HomeStore.showTweetMedia(widget.tweet)
-        : HomeStore.hideTweetMedia(widget.tweet);
+    ListType type = InheritedTweetList.of(context).type;
+
+    if (type == ListType.home) {
+      showing
+          ? HomeStore.showTweetMediaAction(widget.tweet)
+          : HomeStore.hideTweetMediaAction(widget.tweet);
+    } else if (type == ListType.user) {
+      showing
+          ? HomeStore.showTweetMediaAction(widget.tweet)
+          : HomeStore.hideTweetMediaAction(widget.tweet);
+    }
   }
 }
