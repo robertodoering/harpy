@@ -105,6 +105,8 @@ class TweetCache {
   void updateCachedTweets(List<Tweet> tweets) {
     log.fine("updating cached tweets");
 
+    clearBucket();
+
     for (Tweet tweet in tweets) {
       String fileName = "${tweet.id}.json";
 
@@ -121,14 +123,11 @@ class TweetCache {
 
         tweet.harpyData = cachedTweet.harpyData;
       }
+
+      _cacheTweet(tweet);
     }
 
-    clearBucket();
-
-    log.fine("cache new tweets");
-
-    tweets.forEach(_cacheTweet);
-    _setLastUpdatedDate(); // todo: necessary?
+//    _setLastUpdatedDate(); // todo: necessary?
   }
 
   /// Creates a the lastUpdated file with the [DateTime.now].
