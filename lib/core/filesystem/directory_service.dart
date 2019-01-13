@@ -1,10 +1,17 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// The [DirectoryServiceData] is used to construct a [DirectoryService] for
+/// isolates.
+class DirectoryServiceData {
+  String path;
+}
+
 class DirectoryService {
-  String _path;
+  DirectoryServiceData data = DirectoryServiceData();
 
   static DirectoryService _instance = DirectoryService._();
   factory DirectoryService() => _instance;
@@ -12,12 +19,12 @@ class DirectoryService {
 
   Future<void> init() async {
     Directory dir = await getTemporaryDirectory();
-    _path = dir.path;
+    data.path = dir.path;
   }
 
   /// Gets the path for [fileName] inside the [bucket].
-  String _filePath(String bucket, String fileName) {
-    return "$_path/$bucket/$fileName";
+  String filePath(String bucket, String fileName) {
+    return "${data.path}/$bucket/$fileName";
   }
 
   /// Creates a [File] inside the [bucket] with the [name].
@@ -33,7 +40,7 @@ class DirectoryService {
     @required String content,
     bool override = true,
   }) {
-    File file = File(_filePath(bucket, name));
+    File file = File(filePath(bucket, name));
 
     // delete the file if it already exists and should be overridden
     if (file.existsSync() && override) {
@@ -53,7 +60,7 @@ class DirectoryService {
     @required String bucket,
     @required String name,
   }) {
-    File file = File(_filePath(bucket, name));
+    File file = File(filePath(bucket, name));
 
     return file.existsSync() ? file : null;
   }
@@ -67,7 +74,7 @@ class DirectoryService {
     String extension,
   }) {
     List<File> files = [];
-    Directory directory = Directory("$_path/$bucket");
+    Directory directory = Directory("${data.path}/$bucket");
 
     if (directory.existsSync()) {
       for (FileSystemEntity entity in directory.listSync()) {

@@ -11,7 +11,6 @@ class TwitterClient {
 
   oauth1.Platform _platform;
   oauth1.ClientCredentials _clientCredentials;
-  oauth1.Authorization _authorization;
   oauth1.Client client;
 
   static TwitterClient _instance = TwitterClient._();
@@ -29,8 +28,6 @@ class TwitterClient {
       AppConfiguration().consumerKey,
       AppConfiguration().consumerSecret,
     );
-
-    _authorization = oauth1.Authorization(_clientCredentials, _platform);
 
     client = oauth1.Client(
       _platform.signatureMethod,

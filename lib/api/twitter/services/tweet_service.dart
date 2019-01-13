@@ -2,9 +2,12 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
-import 'package:harpy/core/json/json_mapper.dart';
+import 'package:harpy/core/cache/tweet_cache_isolate.dart';
+import 'package:harpy/core/utils/isolate_work.dart';
+import 'package:harpy/core/utils/json_mapper.dart';
+import 'package:http/http.dart';
 
-class TweetService extends TwitterService with JsonMapper<Tweet> {
+class TweetService extends TwitterService {
   /// Returns a the home timeline for the logged in user.
   ///
   /// If the response status code is not 200 a [Future.error] is returned
@@ -12,6 +15,8 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
   Future<List<Tweet>> getHomeTimeline({
     Map<String, String> params,
   }) async {
+    log.fine("get home timeline");
+
     params ??= Map();
     params["count"] ??= "800"; // max: 800
     params["tweet_mode"] ??= "extended";
@@ -22,9 +27,19 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
     );
 
     if (response.statusCode == 200) {
-      List<Tweet> tweets = map((json) => Tweet.fromJson(json), response.body);
+      log.fine("got response");
+      // parse tweets
+      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
+        callback: parseTweets,
+        message: response.body,
+      );
 
-      TweetCache.home().updateCachedTweets(tweets);
+      // update cached home timeline tweets
+      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
+        callback: updateCachedTweets,
+        message: tweets,
+        tweetCacheData: TweetCache.home().data,
+      );
 
       return tweets;
     } else {
@@ -37,28 +52,39 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
     String userId, {
     Map<String, String> params,
   }) async {
+    log.fine("get user timeline");
+
     params ??= Map();
     params["count"] ??= "800";
     params["tweet_mode"] ??= "extended";
     params["user_id"] = userId;
 
-    final response = await TwitterClient().get(
+    Response response = await TwitterClient().get(
       "https://api.twitter.com/1.1/statuses/user_timeline.json",
       params: params,
     );
 
     if (response.statusCode == 200) {
-      List<Tweet> tweets = map((json) => Tweet.fromJson(json), response.body);
+      log.fine("got response");
+      // parse tweets
+      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
+        callback: parseTweets,
+        message: response.body,
+      );
 
       // copy over harpy data from cached home timeline tweets
-      for (Tweet tweet in tweets) {
-        Tweet homeTweet = TweetCache.home().getTweet("${tweet.id}");
-        if (homeTweet != null) {
-          tweet.harpyData = homeTweet.harpyData;
-        }
-      }
+      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
+        callback: copyHomeHarpyData,
+        message: tweets,
+        tweetCacheData: TweetCache.home().data,
+      );
 
-      TweetCache.user(userId).updateCachedTweets(tweets);
+      // then update cached tweet for user
+      isolateWork<List<Tweet>, void>(
+        callback: updateCachedTweets,
+        message: tweets,
+        tweetCacheData: TweetCache.user(userId).data,
+      );
 
       return tweets;
     } else {
@@ -97,4 +123,19 @@ class TweetService extends TwitterService with JsonMapper<Tweet> {
 
     return handleResponse(response);
   }
+}
+
+List<Tweet> parseTweets(String data) {
+  return mapJson(data, (json) => Tweet.fromJson(json));
+}
+
+List<Tweet> copyHomeHarpyData(List<Tweet> tweets) {
+  for (Tweet tweet in tweets) {
+    Tweet homeTweet = TweetCache.initialized().getTweet("${tweet.id}");
+    if (homeTweet != null) {
+      tweet.harpyData = homeTweet.harpyData;
+    }
+  }
+
+  return tweets;
 }

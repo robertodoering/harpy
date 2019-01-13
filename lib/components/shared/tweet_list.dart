@@ -152,6 +152,7 @@ class InheritedTweetList extends InheritedWidget {
     return false;
   }
 
-  static InheritedTweetList of(BuildContext context) =>
-      context.inheritFromWidgetOfExactType(InheritedTweetList);
+  static InheritedTweetList of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(InheritedTweetList);
+  }
 }
