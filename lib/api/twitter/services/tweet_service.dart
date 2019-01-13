@@ -35,7 +35,7 @@ class TweetService extends TwitterService {
       );
 
       // update cached home timeline tweets
-      isolateWork(
+      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
         callback: updateCachedTweets,
         message: tweets,
         tweetCacheData: TweetCache.home().data,
@@ -73,14 +73,14 @@ class TweetService extends TwitterService {
       );
 
       // copy over harpy data from cached home timeline tweets
-      tweets = await isolateWork(
+      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
         callback: copyHomeHarpyData,
         message: tweets,
         tweetCacheData: TweetCache.home().data,
       );
 
       // then update cached tweet for user
-      isolateWork(
+      isolateWork<List<Tweet>, void>(
         callback: updateCachedTweets,
         message: tweets,
         tweetCacheData: TweetCache.user(userId).data,

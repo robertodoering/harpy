@@ -129,10 +129,8 @@ class TweetCache {
 
   /// Clears the cache and caches a new list of [tweets] while retaining the
   /// [Tweet.harpyData] of the cached [Tweet] if it is the same.
-  void updateCachedTweets(List<Tweet> tweets) {
+  List<Tweet> updateCachedTweets(List<Tweet> tweets) {
     log.fine("updating cached tweets");
-
-    clearBucket();
 
     for (Tweet tweet in tweets) {
       String fileName = "${tweet.id}.json";
@@ -151,9 +149,13 @@ class TweetCache {
 
         tweet.harpyData = cachedTweet.harpyData;
       }
-
-      _cacheTweet(tweet);
     }
+
+    clearBucket();
+
+    tweets.forEach(_cacheTweet);
+
+    return tweets;
   }
 
   /// Returns `true` if the [Tweet] exists in the cache.
