@@ -7,6 +7,18 @@ import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:logging/logging.dart';
 
+/// The [TweetCacheData] is used to construct a [TweetCache] for isolates.
+class TweetCacheData {
+  /// The [loggedInUserId] affects the location of the [TweetCache.bucket].
+  String loggedInUserId;
+
+  /// The [type] affects the location of the [TweetCache.bucket].
+  String type;
+
+  /// The [userId] for the [User] to cache the user timeline.
+  String userId;
+}
+
 class TweetCache {
   final Logger log = Logger("TweetCache");
 
@@ -15,33 +27,45 @@ class TweetCache {
   static const String homeTimeline = "home_timeline";
   static const String userTimeline = "user_timeline";
 
-  /// The [_type] affects the location of the [bucket].
-  String _type;
-
-  /// The [_userId] for the [User] to cache the user timeline.
-  String _userId;
+  /// The [data] used to construct a [TweetCache] for isolates.
+  TweetCacheData data = TweetCacheData();
 
   static TweetCache _instance = TweetCache._();
-
-  factory TweetCache.home() => _instance
-    .._type = homeTimeline
-    .._userId = null;
-
-  factory TweetCache.user(String userId) => _instance
-    .._type = userTimeline
-    .._userId = userId;
-
   TweetCache._();
+
+  factory TweetCache(TweetCacheData data) {
+    _instance.data.loggedInUserId = data.loggedInUserId;
+    _instance.data.type = data.type;
+    _instance.data.userId = data.userId;
+
+    return _instance;
+  }
+
+  factory TweetCache.home() {
+    _instance.data.loggedInUserId = AppConfiguration().twitterSession.userId;
+    _instance.data.type = homeTimeline;
+    _instance.data.userId = null;
+
+    return _instance;
+  }
+
+  factory TweetCache.user(String userId) {
+    _instance.data.loggedInUserId = AppConfiguration().twitterSession.userId;
+    _instance.data.type = userTimeline;
+    _instance.data.userId = userId;
+
+    return _instance;
+  }
 
   /// The sub directory where the files are stored.
   ///
   /// [Tweet]s should be cached for each logged in user separately.
   String get bucket {
-    String currentUserId = AppConfiguration().twitterSession.userId;
+    String bucket = "tweets/${data.type}/${data.loggedInUserId}";
 
-    String bucket = "tweets/$_type/$currentUserId";
-
-    if (_userId != null) bucket += "/$_userId";
+    if (data.userId != null) {
+      bucket += "/${data.userId}";
+    }
 
     return bucket;
   }
@@ -102,7 +126,7 @@ class TweetCache {
 
   /// Clears the cache and caches a new list of [tweets] while retaining the
   /// [Tweet.harpyData] of the cached [Tweet] if it is the same.
-  void updateCachedTweets(List<Tweet> tweets) {
+  Future<void> updateCachedTweets(List<Tweet> tweets) async {
     log.fine("updating cached tweets");
 
     clearBucket();
@@ -118,6 +142,7 @@ class TweetCache {
       if (cachedFile != null) {
         // copy harpy data from the cached tweet if the tweet has been cached
         // before
+
         Tweet cachedTweet =
             Tweet.fromJson(jsonDecode(cachedFile.readAsStringSync()));
 
@@ -188,4 +213,26 @@ class TweetCache {
       return DateTime.now().difference(lastUpdatedTime).inHours >= 4;
     }
   }
+}
+
+// todo
+Future<void> isolateUpdateTweetCache(List args) async {
+  List<Tweet> tweets = args[0];
+//  String type = args[1];
+//  String userId = args[2];
+//  String path = args[3];
+
+  TweetCacheData data = args[1];
+  String path = args[2];
+
+  print("isolate update tweet cache");
+//  print("${tweets.length} tweets exist");
+//  print("type: $type");
+//  print("userid: $userId");
+
+  DirectoryService().data.path = path;
+
+  print("directory service init");
+
+  TweetCache(data).updateCachedTweets(tweets);
 }
