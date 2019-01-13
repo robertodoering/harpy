@@ -22,8 +22,6 @@ class TweetCacheData {
 class TweetCache {
   final Logger log = Logger("TweetCache");
 
-  static const String lastUpdated = "last_updated.txt";
-
   static const String homeTimeline = "home_timeline";
   static const String userTimeline = "user_timeline";
 
@@ -151,17 +149,6 @@ class TweetCache {
 
       _cacheTweet(tweet);
     }
-
-//    _setLastUpdatedDate(); // todo: necessary?
-  }
-
-  /// Creates a the lastUpdated file with the [DateTime.now].
-  void _setLastUpdatedDate() async {
-    DirectoryService().createFile(
-      bucket: bucket,
-      name: lastUpdated,
-      content: DateTime.now().toString(),
-    );
   }
 
   /// Returns `true` if the [Tweet] exists in the cache.
@@ -195,23 +182,6 @@ class TweetCache {
     List<File> files = DirectoryService().listFiles(bucket: bucket);
 
     files.forEach((file) => file.deleteSync());
-  }
-
-  // todo: necessary?
-  bool cacheShouldUpdate() {
-    File lastUpdatedFile = DirectoryService().getFile(
-      bucket: bucket,
-      name: lastUpdated,
-    );
-
-    if (lastUpdatedFile == null) {
-      return true;
-    } else {
-      DateTime lastUpdatedTime =
-          DateTime.parse(lastUpdatedFile.readAsStringSync());
-
-      return DateTime.now().difference(lastUpdatedTime).inHours >= 4;
-    }
   }
 }
 
