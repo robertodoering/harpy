@@ -1,29 +1,25 @@
 import 'dart:convert';
 
-abstract class JsonMapper<T> {
-  dynamic map(T mapSingleType(Map<String, dynamic> data), String data) {
-    var objects = jsonDecode(data);
-//    print(objects);
-    if (objects is List) {
-      List<T> decodedObjects = [];
-      Set<Map<String, dynamic>> set = Set.from(objects);
-      set.forEach((currentObj) {
-        decodedObjects.add(mapSingleType(currentObj));
+/// Used by [mapJson] to map the [json] map to an object.
+typedef T JsonMapper<T>(Map<String, dynamic> json);
 
-//        print(" ----- ");
-//        currentObj.forEach((val1, val2) {
-//          if (val2 is Map) {
-//            print("$val1:");
-//            val2.forEach((val2_1, val2_2) => print("    $val2_1: $val2_2"));
-//          } else {
-//            print("$val1: $val2");
-//          }
-//        });
-//        print(" ----- ");
-      });
-      return decodedObjects;
-    } else {
-      return mapSingleType(objects);
+/// Maps the [data] and returns an either an object list of type [T], the
+/// object of type [T] or null if the data is a json list of json objects,
+/// a json object or neither respectively.
+dynamic mapJson<T>(String data, JsonMapper<T> mapper) {
+  dynamic json = jsonDecode(data);
+
+  if (json is List) {
+    List<T> decodedObjects = [];
+
+    for (Map<String, dynamic> object in json) {
+      decodedObjects.add(mapper(object));
     }
+
+    return decodedObjects;
+  } else if (json is Map) {
+    return mapper(json);
+  } else {
+    return null;
   }
 }
