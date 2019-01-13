@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
+import 'package:harpy/core/log/logger.dart';
 
 /// Wraps [compute] and does work in an isolate to prevent the ui thread from
 /// doing too much work.
@@ -34,6 +35,10 @@ dynamic _isolateInit(List args) {
   if (args[3] is TweetCacheData) {
     TweetCache(args[3]);
   }
+
+  initLogger(prefix: 'Isolate');
+
+  // todo: if callback is future, await?
 
   return callback(message);
 }

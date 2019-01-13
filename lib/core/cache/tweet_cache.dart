@@ -20,7 +20,7 @@ class TweetCacheData {
 }
 
 class TweetCache {
-  final Logger log = Logger("TweetCache");
+  static Logger log = Logger("TweetCache");
 
   static const String homeTimeline = "home_timeline";
   static const String userTimeline = "user_timeline";
@@ -38,6 +38,11 @@ class TweetCache {
 
     return _instance;
   }
+
+  /// Returns the [_instance] and assumes it has been initialized previously.
+  ///
+  /// Should only be used in isolates.
+  factory TweetCache.initialized() => _instance;
 
   factory TweetCache.home() {
     _instance.data.loggedInUserId = AppConfiguration().twitterSession.userId;
@@ -68,7 +73,7 @@ class TweetCache {
     return bucket;
   }
 
-  /// Caches the [tweet].
+  /// Caches the [tweet] in the [bucket].
   ///
   /// If a [Tweet] with the same [Tweet.id] already exists it will be
   /// overridden.
@@ -82,7 +87,7 @@ class TweetCache {
     );
   }
 
-  /// Updates a [Tweet] in the cache if it exists.
+  /// Updates a [Tweet] in the cache if it exists in the [bucket].
   void updateTweet(Tweet tweet) {
     log.fine("updating cached tweet");
 
@@ -124,7 +129,7 @@ class TweetCache {
 
   /// Clears the cache and caches a new list of [tweets] while retaining the
   /// [Tweet.harpyData] of the cached [Tweet] if it is the same.
-  Future<void> updateCachedTweets(List<Tweet> tweets) async {
+  void updateCachedTweets(List<Tweet> tweets) {
     log.fine("updating cached tweets");
 
     clearBucket();

@@ -1,16 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
-import 'package:harpy/core/filesystem/directory_service.dart';
+import 'package:harpy/core/cache/tweet_cache_isolate.dart';
 import 'package:harpy/core/isolate/isolate_work.dart';
 import 'package:harpy/core/json/json_mapper.dart';
 import 'package:http/http.dart';
-
-List<Tweet> parseTweets(String data) {
-  return mapJson(data, (json) => Tweet.fromJson(json));
-}
 
 class TweetService extends TwitterService {
   /// Returns a the home timeline for the logged in user.
@@ -33,12 +28,18 @@ class TweetService extends TwitterService {
 
     if (response.statusCode == 200) {
       log.fine("got response");
+      // parse tweets
       List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
         callback: parseTweets,
         message: response.body,
       );
 
-      TweetCache.home().updateCachedTweets(tweets);
+      // update cached home timeline tweets
+      isolateWork(
+        callback: updateCachedTweets,
+        message: tweets,
+        tweetCacheData: TweetCache.home().data,
+      );
 
       return tweets;
     } else {
@@ -65,28 +66,25 @@ class TweetService extends TwitterService {
 
     if (response.statusCode == 200) {
       log.fine("got response");
+      // parse tweets
       List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
         callback: parseTweets,
         message: response.body,
       );
 
       // copy over harpy data from cached home timeline tweets
-      // todo: isolate
-      for (Tweet tweet in tweets) {
-        Tweet homeTweet = TweetCache.home().getTweet("${tweet.id}");
-        if (homeTweet != null) {
-          tweet.harpyData = homeTweet.harpyData;
-        }
-      }
+      tweets = await isolateWork(
+        callback: copyHomeHarpyData,
+        message: tweets,
+        tweetCacheData: TweetCache.home().data,
+      );
 
-      // todo
-      compute(isolateUpdateTweetCache, [
-        tweets,
-        TweetCache.user(userId).data,
-        DirectoryService().data.path,
-      ]).then((_) {
-        print(" ++ TWEETS CACHED");
-      });
+      // then update cached tweet for user
+      isolateWork(
+        callback: updateCachedTweets,
+        message: tweets,
+        tweetCacheData: TweetCache.user(userId).data,
+      );
 
       return tweets;
     } else {
@@ -125,4 +123,19 @@ class TweetService extends TwitterService {
 
     return handleResponse(response);
   }
+}
+
+List<Tweet> parseTweets(String data) {
+  return mapJson(data, (json) => Tweet.fromJson(json));
+}
+
+List<Tweet> copyHomeHarpyData(List<Tweet> tweets) {
+  for (Tweet tweet in tweets) {
+    Tweet homeTweet = TweetCache.initialized().getTweet("${tweet.id}");
+    if (homeTweet != null) {
+      tweet.harpyData = homeTweet.harpyData;
+    }
+  }
+
+  return tweets;
 }
