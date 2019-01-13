@@ -2,7 +2,7 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/json/json_mapper.dart';
+import 'package:harpy/core/utils/json_mapper.dart';
 
 class UserService extends TwitterService {
   /// Returns the [User] corresponding to the [id] or [screenName].

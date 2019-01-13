@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
-import 'package:harpy/core/log/logger.dart';
+import 'package:harpy/core/utils/logger.dart';
 
 /// Wraps [compute] and does work in an isolate to prevent the ui thread from
 /// doing too much work.

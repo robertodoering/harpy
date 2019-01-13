@@ -3,8 +3,8 @@ import 'package:harpy/api/twitter/services/twitter_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/tweet_cache_isolate.dart';
-import 'package:harpy/core/isolate/isolate_work.dart';
-import 'package:harpy/core/json/json_mapper.dart';
+import 'package:harpy/core/utils/isolate_work.dart';
+import 'package:harpy/core/utils/json_mapper.dart';
 import 'package:http/http.dart';
 
 class TweetService extends TwitterService {
