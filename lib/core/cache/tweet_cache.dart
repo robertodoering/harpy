@@ -191,25 +191,3 @@ class TweetCache {
     files.forEach((file) => file.deleteSync());
   }
 }
-
-// todo
-Future<void> isolateUpdateTweetCache(List args) async {
-  List<Tweet> tweets = args[0];
-//  String type = args[1];
-//  String userId = args[2];
-//  String path = args[3];
-
-  TweetCacheData data = args[1];
-  String path = args[2];
-
-  print("isolate update tweet cache");
-//  print("${tweets.length} tweets exist");
-//  print("type: $type");
-//  print("userid: $userId");
-
-  DirectoryService().data.path = path;
-
-  print("directory service init");
-
-  TweetCache(data).updateCachedTweets(tweets);
-}
