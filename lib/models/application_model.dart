@@ -24,10 +24,10 @@ class ApplicationModel extends Model {
   /// Whether or not the [ApplicationModel] has been initialized.
   bool initialized = false;
 
-  /// The [_twitterSession] contains information about the logged in user.
+  /// The [twitterSession] contains information about the logged in user.
   ///
-  /// If the user is not logged in [_twitterSession] will be null.
-  TwitterSession _twitterSession;
+  /// If the user is not logged in [twitterSession] will be null.
+  TwitterSession twitterSession;
 
   /// The [twitterLogin] is used to log in and out with the native twitter sdk.
   TwitterLogin twitterLogin;
@@ -35,7 +35,7 @@ class ApplicationModel extends Model {
   /// Returns true when the user has logged in with the native twitter sdk.
   ///
   /// Always false if [initialized] is also false.
-  bool get loggedIn => _twitterSession != null;
+  bool get loggedIn => twitterSession != null;
 
   Future<void> _initialize() async {
     // async initializations
@@ -76,6 +76,6 @@ class ApplicationModel extends Model {
     );
 
     // init active twitter session
-    _twitterSession = await twitterLogin.currentSession;
+    twitterSession = await twitterLogin.currentSession;
   }
 }

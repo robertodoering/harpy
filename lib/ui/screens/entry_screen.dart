@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/__old_components/shared/harpy_title.dart';
 import 'package:harpy/models/application_model.dart';
+import 'package:harpy/theme.dart';
+import 'package:harpy/ui/screens/login_screen.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// The screen shown during the start of the app.
@@ -8,16 +11,12 @@ import 'package:scoped_model/scoped_model.dart';
 ///
 /// After initialization the [EntryScreen] will navigate to the [LoginScreen] or
 /// skip to the [HomeScreen] if the user is already logged in
-class EntryScreen extends StatefulWidget {
-  @override
-  _EntryScreenState createState() => _EntryScreenState();
-}
-
-class _EntryScreenState extends State<EntryScreen> {
+class EntryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Material(
+      color: HarpyTheme.harpyColor,
+      child: Center(
         child: ScopedModelDescendant<ApplicationModel>(
           builder: (context, _, model) {
             if (model.initialized) {
@@ -34,7 +33,15 @@ class _EntryScreenState extends State<EntryScreen> {
   }
 
   Widget _buildSplashScreen() {
-    return Text('initializing ...');
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Center(child: HarpyTitle()),
+        ),
+        Expanded(child: Container()),
+      ],
+    );
   }
 
   Widget _buildNavigator(ApplicationModel model) {
@@ -45,8 +52,10 @@ class _EntryScreenState extends State<EntryScreen> {
           return MaterialPageRoute(
               builder: (context) => Center(child: Text('home screen')));
         } else {
-          return MaterialPageRoute(
-              builder: (context) => Center(child: Text('login screen')));
+          return PageRouteBuilder(
+            pageBuilder: (context, _a, _b) => LoginScreen(),
+            transitionDuration: Duration.zero,
+          );
         }
       },
     );
