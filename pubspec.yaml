@@ -20,6 +20,7 @@ dependencies:
   video_player: ^0.7.2
   photo_view:
     git: https://github.com/robertodoering/photo_view.git
+  scoped_model: ^1.0.1
 
   flutter:
     sdk: flutter

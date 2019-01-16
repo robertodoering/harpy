@@ -13,9 +13,9 @@ class DirectoryServiceData {
 class DirectoryService {
   DirectoryServiceData data = DirectoryServiceData();
 
-  static DirectoryService _instance = DirectoryService._();
-  factory DirectoryService() => _instance;
-  DirectoryService._();
+//  static DirectoryService _instance = DirectoryService._();
+//  factory DirectoryService() => _instance;
+//  DirectoryService._();
 
   Future<void> init() async {
     Directory dir = await getTemporaryDirectory();
