@@ -3,11 +3,11 @@ import 'package:harpy/widgets/shared/animations.dart';
 
 /// A login button that slides into position with a delay upon creation.
 class LoginButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
   const LoginButton({
-    this.onPressed,
+    @required this.onPressed,
   });
+
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
