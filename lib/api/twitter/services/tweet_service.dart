@@ -30,7 +30,7 @@ class TweetService extends TwitterService {
       log.fine("got response");
       // parse tweets
       List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
-        callback: parseTweets,
+        callback: _parseTweets,
         message: response.body,
       );
 
@@ -68,13 +68,13 @@ class TweetService extends TwitterService {
       log.fine("got response");
       // parse tweets
       List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
-        callback: parseTweets,
+        callback: _parseTweets,
         message: response.body,
       );
 
       // copy over harpy data from cached home timeline tweets
       tweets = await isolateWork<List<Tweet>, List<Tweet>>(
-        callback: copyHomeHarpyData,
+        callback: _copyHomeHarpyData,
         message: tweets,
         tweetCacheData: TweetCache.home().data,
       );
@@ -125,11 +125,11 @@ class TweetService extends TwitterService {
   }
 }
 
-List<Tweet> parseTweets(String data) {
+List<Tweet> _parseTweets(String data) {
   return mapJson(data, (json) => Tweet.fromJson(json));
 }
 
-List<Tweet> copyHomeHarpyData(List<Tweet> tweets) {
+List<Tweet> _copyHomeHarpyData(List<Tweet> tweets) {
   for (Tweet tweet in tweets) {
     Tweet homeTweet = TweetCache.initialized().getTweet("${tweet.id}");
     if (homeTweet != null) {

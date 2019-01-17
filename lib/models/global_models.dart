@@ -21,21 +21,16 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
   LoginModel loginModel;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
     applicationModel ??= ApplicationModel(
-      directoryService: serviceProvider.directoryService,
+      directoryService: serviceProvider.data.directoryService,
     );
 
     loginModel ??= LoginModel(
       applicationModel: applicationModel,
-      userCache: serviceProvider.userCache,
+      userCache: serviceProvider.data.userCache,
     );
 
     return ScopedModel<ApplicationModel>(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 
@@ -15,23 +16,29 @@ class ServiceContainer extends StatefulWidget {
 }
 
 class ServiceContainerState extends State<ServiceContainer> {
-  DirectoryService directoryService;
-  UserCache userCache;
+  DirectoryService get directoryService => _directoryService;
+  DirectoryService _directoryService;
+
+  TweetService get tweetService => _tweetService;
+  TweetService _tweetService;
+
+  UserCache get userCache => _userCache;
+  UserCache _userCache;
 
   @override
   void initState() {
     super.initState();
 
-    directoryService = DirectoryService();
-    userCache = UserCache(directoryService: directoryService);
+    _directoryService = DirectoryService();
+    _tweetService = TweetService();
+    _userCache = UserCache(directoryService: _directoryService);
   }
 
   @override
   Widget build(BuildContext context) {
     return ServiceProvider(
       child: widget.child,
-      directoryService: directoryService,
-      userCache: userCache,
+      data: this,
     );
   }
 }
@@ -40,12 +47,10 @@ class ServiceContainerState extends State<ServiceContainer> {
 class ServiceProvider extends InheritedWidget {
   const ServiceProvider({
     @required Widget child,
-    this.directoryService,
-    this.userCache,
+    this.data,
   }) : super(child: child);
 
-  final DirectoryService directoryService;
-  final UserCache userCache;
+  final ServiceContainerState data;
 
   static ServiceProvider of(BuildContext context) {
     return context.inheritFromWidgetOfExactType(ServiceProvider)
