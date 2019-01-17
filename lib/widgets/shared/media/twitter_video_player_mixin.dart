@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/buttons.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:video_player/video_player.dart';
 
 typedef HideFullscreenCallback(BuildContext context);

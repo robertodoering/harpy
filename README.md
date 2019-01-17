@@ -1,11 +1,11 @@
 # harpy
 
-A new Flutter project.
+Harpy is a feature rich twitter experience for Android and iOS built in [Flutter](https://flutter.io/).
 
-## Getting Started
+Currently still in development.
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+---
 
-To generate json_serializable models: flutter packages pub run build_runner build
+To generate json_serializable models:
+`flutter packages pub run build_runner build`
 

@@ -4,12 +4,12 @@ import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/__old_components/screens/login/login_screen.dart';
 import 'package:harpy/__old_components/screens/settings/settings_screen.dart';
 import 'package:harpy/__old_components/screens/user_profile/user_profile_screen.dart';
-import 'package:harpy/__old_components/shared/util.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/login_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/widgets/shared/util.dart';
 
 void _navigateToProfileScreen(BuildContext context, User user) {
   Navigator.push(

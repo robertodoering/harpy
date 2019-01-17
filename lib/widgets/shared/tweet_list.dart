@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
-import 'package:harpy/__old_components/shared/animations.dart';
-import 'package:harpy/__old_components/shared/tweet_tile.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/widgets/shared/animations.dart';
+import 'package:harpy/widgets/shared/tweet_tile.dart';
 
 // todo:
 // to animate new tweets in after a refresh:

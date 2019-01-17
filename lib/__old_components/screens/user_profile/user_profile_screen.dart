@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
-import 'package:harpy/__old_components/shared/scaffolds.dart';
-import 'package:harpy/__old_components/shared/tweet_list.dart';
-import 'package:harpy/__old_components/shared/user_header.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/scaffolds.dart';
+import 'package:harpy/widgets/shared/tweet_list.dart';
+import 'package:harpy/widgets/shared/user_header.dart';
 
 /// The user profile screen to show information and the user timeline of the
 /// [user].

@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/twitter_text.dart';
-import 'package:harpy/__old_components/shared/util.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/twitter_text.dart';
+import 'package:harpy/widgets/shared/util.dart';
 
 /// The [UserHeader] containing the information about the [User].
 class UserHeader extends StatefulWidget {

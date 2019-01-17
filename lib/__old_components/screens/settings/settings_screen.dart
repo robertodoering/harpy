@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/__old_components/screens/settings/theme_settings.dart';
-import 'package:harpy/__old_components/shared/scaffolds.dart';
 import 'package:harpy/__old_stores/settings_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/scaffolds.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override

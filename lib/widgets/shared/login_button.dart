@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/animations.dart';
+import 'package:harpy/widgets/shared/animations.dart';
 
 /// A login button that slides into position with a delay upon creation.
 class LoginButton extends StatelessWidget {
-  final VoidCallback onLoginAttempt;
+  final VoidCallback onPressed;
 
-  LoginButton(this.onLoginAttempt);
+  const LoginButton({
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class LoginButton extends StatelessWidget {
             "Login with Twitter",
             style: Theme.of(context).textTheme.button,
           ),
-          onPressed: onLoginAttempt,
+          onPressed: onPressed,
         ),
       ),
     );

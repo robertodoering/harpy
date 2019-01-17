@@ -5,7 +5,7 @@ import 'package:harpy/service_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// Wraps the [ApplicationModel] and [LoginModel] at the top of the widget tree.
-class GlobalScopedModels extends StatelessWidget {
+class GlobalScopedModels extends StatefulWidget {
   const GlobalScopedModels({
     @required this.child,
   });
@@ -13,18 +13,36 @@ class GlobalScopedModels extends StatelessWidget {
   final Widget child;
 
   @override
+  GlobalScopedModelsState createState() => GlobalScopedModelsState();
+}
+
+class GlobalScopedModelsState extends State<GlobalScopedModels> {
+  ApplicationModel applicationModel;
+  LoginModel loginModel;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
-    final applicationModel = ApplicationModel(
+    applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.directoryService,
+    );
+
+    loginModel ??= LoginModel(
+      applicationModel: applicationModel,
+      userCache: serviceProvider.userCache,
     );
 
     return ScopedModel<ApplicationModel>(
       model: applicationModel,
       child: ScopedModel<LoginModel>(
-        model: LoginModel(applicationModel: applicationModel),
-        child: child,
+        model: loginModel,
+        child: widget.child,
       ),
     );
   }

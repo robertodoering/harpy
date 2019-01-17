@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/__old_components/screens/home/home_screen.dart';
-import 'package:harpy/__old_components/screens/login/login_button.dart';
-import 'package:harpy/__old_components/shared/harpy_title.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/login_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/harpy_title.dart';
+import 'package:harpy/widgets/shared/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,7 +51,9 @@ class _LoginScreenState extends State<LoginScreen>
               ),
             ),
             Expanded(
-              child: loggingIn ? Container() : LoginButton(_onLoginAttempt),
+              child: loggingIn
+                  ? Container()
+                  : LoginButton(onPressed: _onLoginAttempt),
             ),
           ],
         ),

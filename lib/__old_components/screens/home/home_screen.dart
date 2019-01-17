@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/__old_components/screens/home/home_drawer.dart';
-import 'package:harpy/__old_components/shared/scaffolds.dart';
-import 'package:harpy/__old_components/shared/tweet_list.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
+import 'package:harpy/widgets/shared/scaffolds.dart';
+import 'package:harpy/widgets/shared/tweet_list.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

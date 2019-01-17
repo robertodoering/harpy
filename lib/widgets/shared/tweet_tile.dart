@@ -1,12 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/__old_components/screens/user_profile/user_profile_screen.dart';
-import 'package:harpy/__old_components/shared/animations.dart';
-import 'package:harpy/__old_components/shared/buttons.dart';
-import 'package:harpy/__old_components/shared/media/twitter_media.dart';
-import 'package:harpy/__old_components/shared/tweet_list.dart';
-import 'package:harpy/__old_components/shared/twitter_text.dart';
-import 'package:harpy/__old_components/shared/util.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/harpy_data.dart';
@@ -14,6 +8,12 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
+import 'package:harpy/widgets/shared/animations.dart';
+import 'package:harpy/widgets/shared/buttons.dart';
+import 'package:harpy/widgets/shared/media/twitter_media.dart';
+import 'package:harpy/widgets/shared/tweet_list.dart';
+import 'package:harpy/widgets/shared/twitter_text.dart';
+import 'package:harpy/widgets/shared/util.dart';
 
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {

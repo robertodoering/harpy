@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/media/media_dialog.dart';
-import 'package:harpy/__old_components/shared/media/media_expansion.dart';
-import 'package:harpy/__old_components/shared/media/twitter_video_player.dart';
-import 'package:harpy/__old_components/shared/routes.dart';
-import 'package:harpy/__old_components/shared/tweet_list.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/widgets/shared/media/media_dialog.dart';
+import 'package:harpy/widgets/shared/media/media_expansion.dart';
+import 'package:harpy/widgets/shared/media/twitter_video_player.dart';
+import 'package:harpy/widgets/shared/routes.dart';
+import 'package:harpy/widgets/shared/tweet_list.dart';
 
 // media types
 const String photo = "photo";

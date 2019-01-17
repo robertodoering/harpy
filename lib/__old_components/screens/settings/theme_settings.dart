@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/scaffolds.dart';
-import 'package:harpy/__old_components/shared/tweet_tile.dart';
 import 'package:harpy/__old_stores/settings_store.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/scaffolds.dart';
+import 'package:harpy/widgets/shared/tweet_tile.dart';
 
 class ThemeSettings extends StatefulWidget {
   @override

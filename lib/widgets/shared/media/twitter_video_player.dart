@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/shared/animations.dart';
-import 'package:harpy/__old_components/shared/buttons.dart';
-import 'package:harpy/__old_components/shared/media/twitter_video_player_mixin.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/widgets/shared/animations.dart';
+import 'package:harpy/widgets/shared/buttons.dart';
+import 'package:harpy/widgets/shared/media/twitter_video_player_mixin.dart';
 import 'package:video_player/video_player.dart';
 
 /// The [TwitterVideoPlayer] for Twitter videos.

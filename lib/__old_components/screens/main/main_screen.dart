@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/__old_components/screens/home/home_screen.dart';
 import 'package:harpy/__old_components/screens/login/login_screen.dart';
-import 'package:harpy/__old_components/shared/harpy_title.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/login_store.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/core/initialization/app_initialization.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/harpy_title.dart';
 
 /// The entry screen of the app.
 ///

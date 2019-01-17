@@ -4,13 +4,16 @@ import 'dart:io';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 
 class UserCache {
-  final Logger log = Logger("UserCache");
+  UserCache({
+    @required this.directoryService,
+  });
 
-  static UserCache _instance = UserCache._();
-  factory UserCache() => _instance;
-  UserCache._();
+  final DirectoryService directoryService;
+
+  static final Logger _log = Logger("UserCache");
 
   /// The sub directory where the files are stored.
   String bucket = "users/";
@@ -22,7 +25,7 @@ class UserCache {
   void cacheUser(User user) {
     String fileName = "${user.id}.json";
 
-    DirectoryService().createFile(
+    directoryService.createFile(
       bucket: bucket,
       name: fileName,
       content: jsonEncode(user.toJson()),
@@ -33,20 +36,20 @@ class UserCache {
   ///
   /// Returns null if no user with that [User.id] is found in the cache.
   User getCachedUser(String id) {
-    log.fine("get cached user for id: $id");
+    _log.fine("get cached user for id: $id");
 
     String fileName = "$id.json";
 
-    File file = DirectoryService().getFile(
+    File file = directoryService.getFile(
       bucket: bucket,
       name: fileName,
     );
 
     if (file != null) {
-      log.fine("found user in cache");
+      _log.fine("found user in cache");
       return User.fromJson(jsonDecode(file.readAsStringSync()));
     } else {
-      log.fine("user not in cache");
+      _log.fine("user not in cache");
       return null;
     }
   }
