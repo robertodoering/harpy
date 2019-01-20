@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
 
     if (applicationModel.loggedIn) {
       _log.fine("navigating to home screen after login");
-      HarpyNavigator.push(context, HomeScreen());
+      HarpyNavigator.pushReplacement(context, HomeScreen());
     }
   }
 }

@@ -1,95 +1,125 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/screens/user_profile/user_profile_screen.dart';
-import 'package:harpy/__old_stores/home_store.dart';
-import 'package:harpy/__old_stores/user_store.dart';
-import 'package:harpy/api/twitter/data/harpy_data.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/utils/string_utils.dart';
-import 'package:harpy/core/utils/url_launcher.dart';
+import 'package:harpy/core/utils/harpy_navigator.dart';
+import 'package:harpy/models/tweet_model.dart';
+import 'package:harpy/service_provider.dart';
+import 'package:harpy/widgets/screens/user_profile_screen.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:harpy/widgets/shared/media/twitter_media.dart';
 import 'package:harpy/widgets/shared/misc.dart';
-import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
+import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-/// A single tile that display information and [TwitterActionButton]s for a [Tweet].
-class TweetTile extends StatefulWidget {
-  final Tweet tweet;
+class TweetTile extends StatelessWidget {
+  const TweetTile(this._tweet);
 
-  /// Determines whether or not to open the user profile on avatar / name tap.
-  final bool openUserProfile;
-
-  TweetTile({
-    Key key,
-    this.tweet,
-    this.openUserProfile = true,
-  }) : super(key: key);
-
-  @override
-  TweetTileState createState() => TweetTileState();
-}
-
-class TweetTileState extends State<TweetTile> {
-  bool _translating = false;
-
-  Tweet get tweet => widget.tweet.retweetedStatus ?? widget.tweet;
-
-  bool get retweet => widget.tweet.retweetedStatus != null;
-
-  HarpyData get harpyData => widget.tweet.harpyData;
+  final Tweet _tweet;
 
   @override
   Widget build(BuildContext context) {
-    return SlideFadeInAnimation(
-      duration: const Duration(milliseconds: 500),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildRetweetedRow(),
-            _buildNameRow(context),
-            _buildText(),
-            _buildTranslation(context),
-            _buildMedia(),
-            _buildActionRow(context),
-          ],
+    final serviceProvider = ServiceProvider.of(context);
+
+    return ScopedModel<TweetModel>(
+      model: TweetModel(
+        originalTweet: _tweet,
+        tweetCache: serviceProvider.data.tweetCache,
+      ),
+      child: SlideFadeInAnimation(
+        duration: const Duration(milliseconds: 500),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+          child: ScopedModelDescendant<TweetModel>(
+            builder: (context, _, model) {
+              // the content of this tweet that rebuilds when the tweet model
+              // notifies its listeners
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildRetweetedRow(model),
+                  _TweetNameRow(),
+                  _buildText(model),
+                  _TweetTranslation(),
+                  _buildMedia(model),
+                  _TweetActionsRow(),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildRetweetedRow() {
-    return retweet
-        ? Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-            child: IconRow(
-              icon: Icons.repeat,
-              iconPadding: 40.0, // same as avatar width
-              child: "${widget.tweet.user.name} retweeted",
-            ),
-          )
-        : Container();
+  /// If the [Tweet] is a retweet this builds information of the person that
+  /// retweeted this [Tweet].
+  Widget _buildRetweetedRow(TweetModel model) {
+    if (model.isRetweet) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 8.0),
+        child: IconRow(
+          icon: Icons.repeat,
+          iconPadding: 40.0, // same as avatar width
+          child: "${model.originalTweet.user.name} retweeted",
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
-  Widget _buildNameRow(BuildContext context) {
+  /// Builds the text of the [Tweet].
+  Widget _buildText(TweetModel model) {
+    if (!model.tweet.emptyText) {
+      return Padding(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TwitterText(
+          text: model.tweet.full_text,
+          entities: model.tweet.entities,
+//        onEntityTap: (model) async { // todo
+//          if (model.type == EntityType.url) {
+//            launchUrl(model.data);
+//          } else if (model.type == EntityType.mention) {
+//            _openUserProfile(context, userId: model.id);
+//          }
+//        },
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  /// If the [Tweet] contains [TweetMedia] this builds the [OldCollapsibleMedia]
+  /// for this [Tweet].
+  Widget _buildMedia(TweetModel model) {
+    if (model.hasMedia) {
+      return CollapsibleMedia();
+    } else {
+      return Container();
+    }
+  }
+}
+
+/// Build the [Tweet] avatar and name + username.
+class _TweetNameRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = TweetModel.of(context);
+
     return Row(
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: widget.openUserProfile
-              ? () => _openUserProfile(
-                    context,
-                    user: tweet.user,
-                  )
-              : null,
+          onTap: () => _goToUserProfile(context, model.tweet.user),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(
-              tweet.user.userProfileImageOriginal,
+              model.tweet.user.userProfileImageOriginal,
             ),
           ),
         ),
@@ -101,19 +131,15 @@ class TweetTileState extends State<TweetTile> {
           children: <Widget>[
             // name
             GestureDetector(
-              onTap: widget.openUserProfile
-                  ? () => _openUserProfile(context, user: tweet.user)
-                  : null,
-              child: Text(tweet.user.name),
+              onTap: () => _goToUserProfile(context, model.tweet.user),
+              child: Text(model.tweet.user.name),
             ),
 
             // username · time since tweet in hours
             GestureDetector(
-              onTap: widget.openUserProfile
-                  ? () => _openUserProfile(context, user: tweet.user)
-                  : null,
+              onTap: () => _goToUserProfile(context, model.tweet.user),
               child: Text(
-                "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}",
+                model.screenNameAndTime,
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
@@ -123,27 +149,24 @@ class TweetTileState extends State<TweetTile> {
     );
   }
 
-  Widget _buildText() {
-    return !tweet.emptyText
-        ? Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: TwitterText(
-              text: tweet.full_text,
-              entities: tweet.entities,
-              onEntityTap: (model) async {
-                if (model.type == EntityType.url) {
-                  launchUrl(model.data);
-                } else if (model.type == EntityType.mention) {
-                  _openUserProfile(context, userId: model.id);
-                }
-              },
-            ),
-          )
-        : Container();
+  void _goToUserProfile(BuildContext context, User user) {
+    HarpyNavigator.push(
+      context,
+      UserProfileScreen(
+        user: user,
+      ),
+    );
   }
+}
 
-  Widget _buildTranslation(BuildContext context) {
-    if (_translating) {
+/// If the [Tweet] has been translated this builds the translation info and
+/// the translated text.
+class _TweetTranslation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = TweetModel.of(context);
+
+    if (model.translating) {
       return Center(
         child: Padding(
           padding: EdgeInsets.all(8.0),
@@ -152,7 +175,7 @@ class TweetTileState extends State<TweetTile> {
       );
     }
 
-    if (harpyData.translation == null || harpyData.translation.unchanged) {
+    if (!model.isTranslated || model.translationUnchanged) {
       return Container();
     }
 
@@ -167,75 +190,47 @@ class TweetTileState extends State<TweetTile> {
               "Translated from ",
               style: Theme.of(context).textTheme.display1,
             ),
-            Text(harpyData.translation.language), // todo: check if not null
+            Text(model.translation.language), // todo: check if not null
           ],
         ),
         SizedBox(height: 4.0),
         TwitterText(
-          text: harpyData.translation.text,
-          entities: tweet.entities,
+          text: model.translation.text,
+          entities: model.tweet.entities,
         ),
       ],
     );
   }
+}
 
-  Widget _buildMedia() {
-    return tweet.extended_entities?.media != null
-        ? CollapsibleMedia(tweet: widget.tweet)
-        : Container();
-  }
-
-  Widget _buildActionRow(BuildContext context) {
-//    ListType type = InheritedTweetList.of(context).type;
-
-    ListType type = ListType.home;
+/// Builds a row with the actions (favorite, retweet, translate).
+class _TweetActionsRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = TweetModel.of(context);
 
     return Row(
       children: <Widget>[
         // retweet action
         TwitterActionButton(
-          active: tweet.retweeted,
+          active: model.tweet.retweeted,
           inactiveIcon: Icons.repeat,
           activeIcon: Icons.repeat,
-          text: "${formatNumber(tweet.retweetCount)}",
+          text: model.retweetCount,
           color: Colors.green,
-          activate: () {
-            if (type == ListType.home) {
-              return HomeStore.retweetTweetAction(widget.tweet);
-            } else if (type == ListType.user) {
-              return UserStore.retweetTweetAction(widget.tweet);
-            }
-          },
-          deactivate: () {
-            if (type == ListType.home) {
-              return HomeStore.unretweetTweetAction(widget.tweet);
-            } else if (type == ListType.user) {
-              return UserStore.unretweetTweetAction(widget.tweet);
-            }
-          },
+          activate: model.retweet,
+          deactivate: model.unretweet,
         ),
 
         // favorite action
         TwitterActionButton(
-          active: tweet.favorited,
+          active: model.tweet.favorited,
           inactiveIcon: Icons.favorite_border,
           activeIcon: Icons.favorite,
-          text: "${formatNumber(tweet.favoriteCount)}",
+          text: model.favoriteCount,
           color: Colors.red,
-          activate: () {
-            if (type == ListType.home) {
-              return HomeStore.favoriteTweetAction(widget.tweet);
-            } else if (type == ListType.user) {
-              return UserStore.favoriteTweetAction(widget.tweet);
-            }
-          },
-          deactivate: () {
-            if (type == ListType.home) {
-              return HomeStore.unfavoriteTweetAction(widget.tweet);
-            } else if (type == ListType.user) {
-              return UserStore.unfavoriteTweetAction(widget.tweet);
-            }
-          },
+          activate: model.favorite,
+          deactivate: model.unfavorite,
         ),
 
         Expanded(child: Container()),
@@ -246,43 +241,29 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildTranslationButton(BuildContext context) {
-    if (tweet.emptyText || tweet.lang == "en") {
+    final model = TweetModel.of(context);
+
+    if (model.tweet.emptyText || model.tweet.lang == "en") {
       return Container();
     }
-
-//    ListType type = InheritedTweetList.of(context).type;
-
-    ListType type = ListType.home;
 
     VoidCallback onPressed;
     bool drawColorOnHighlight = false;
     Color color = Colors.blue;
 
-    if (harpyData.translation == null && !_translating) {
+    if (model.tweet.harpyData.translation == null && !model.translating) {
       drawColorOnHighlight = true;
 
       onPressed = () async {
-        setState(() {
-          _translating = true;
-        });
+        await model.translate();
 
-        if (type == ListType.home) {
-          await HomeStore.translateTweetAction(widget.tweet);
-        } else if (type == ListType.user) {
-          await UserStore.translateTweetAction(widget.tweet);
-        }
-
-        setState(() {
-          _translating = false;
-        });
-
-        if (harpyData.translation.unchanged) {
+        if (model.translationUnchanged) {
           Scaffold.of(context).showSnackBar(SnackBar(
             content: Text("Tweet not translated"),
           ));
         }
       };
-    } else if (harpyData?.translation?.unchanged ?? false) {
+    } else if (model.translationUnchanged) {
       color = Theme.of(context).disabledColor;
     }
 
@@ -292,25 +273,6 @@ class TweetTileState extends State<TweetTile> {
       iconColor: color,
       splashColor: color,
       drawColorOnHighlight: drawColorOnHighlight,
-    );
-  }
-
-  /// Navigates to the [UserProfileScreen] for the [user] or [screenName].
-  ///
-  /// If [user] is `null` [screenName] mustn't be `null`.
-  void _openUserProfile(
-    BuildContext context, {
-    User user,
-    String userId,
-  }) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UserProfileScreen(
-              user: user,
-              userId: userId,
-            ),
-      ),
     );
   }
 }

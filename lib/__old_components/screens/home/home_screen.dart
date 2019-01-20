@@ -4,7 +4,7 @@ import 'package:harpy/__old_components/screens/home/home_drawer.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
-import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
+import 'package:harpy/widgets/shared/tweet/old_tweet_list.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class HomeScreenState extends State<HomeScreen>
     if (store.tweets == null) {
       return Center(child: Text("no tweets ;w;"));
     } else {
-      return TweetList(
+      return OldTweetList(
         tweets: store.tweets,
         onRefresh: _onRefresh,
         onRequestMore: _onRequestMore,

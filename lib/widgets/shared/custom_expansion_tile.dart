@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 
-/// A [OldMediaExpansion] that expands or collapses to reveal or hide the [child].
+/// A [CustomExpansionTile] that expands or collapses to reveal or hide the
+/// [child].
+///
+/// Used by [CollapsibleMedia].
 ///
 /// Similar to [ExpansionTile].
-class OldMediaExpansion extends StatefulWidget {
-  final Widget child;
-  final bool initiallyExpanded;
-  final ValueChanged<bool> onExpansionChanged;
-
-  const OldMediaExpansion({
+class CustomExpansionTile extends StatefulWidget {
+  const CustomExpansionTile({
     @required this.child,
     this.initiallyExpanded = true,
     this.onExpansionChanged,
   });
 
+  final Widget child;
+  final bool initiallyExpanded;
+  final ValueChanged<bool> onExpansionChanged;
+
   @override
-  _OldMediaExpansionState createState() => _OldMediaExpansionState();
+  _CustomExpansionTileState createState() => _CustomExpansionTileState();
 }
 
-class _OldMediaExpansionState extends State<OldMediaExpansion>
+class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
@@ -74,6 +77,17 @@ class _OldMediaExpansionState extends State<OldMediaExpansion>
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final bool closed = !_isExpanded && _controller.isDismissed;
+
+    return AnimatedBuilder(
+      animation: _controller.view,
+      builder: _buildChild,
+      child: closed ? null : widget.child,
+    );
+  }
+
   Widget _buildChild(BuildContext context, Widget child) {
     return Column(
       children: <Widget>[
@@ -102,17 +116,6 @@ class _OldMediaExpansionState extends State<OldMediaExpansion>
           ),
         ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final bool closed = !_isExpanded && _controller.isDismissed;
-
-    return AnimatedBuilder(
-      animation: _controller.view,
-      builder: _buildChild,
-      child: closed ? null : widget.child,
     );
   }
 }

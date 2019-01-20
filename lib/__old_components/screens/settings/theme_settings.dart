@@ -3,7 +3,7 @@ import 'package:harpy/__old_stores/settings_store.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
-import 'package:harpy/widgets/shared/tweet/tweet_tile.dart';
+import 'package:harpy/widgets/shared/tweet/old_tweet_tile.dart';
 
 class ThemeSettings extends StatefulWidget {
   @override
@@ -68,7 +68,7 @@ class ThemeSettingsState extends State<ThemeSettings> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Divider(height: 0.0),
-        TweetTile(
+        OldTweetTile(
           openUserProfile: false,
           tweet: Tweet.mock(),
         ),

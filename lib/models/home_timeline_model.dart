@@ -8,10 +8,7 @@ class HomeTimelineModel extends TimelineModel {
   HomeTimelineModel({
     @required TweetService tweetService,
     @required TweetCache tweetCache,
-  }) : super(
-          tweetService: tweetService,
-          tweetCache: tweetCache,
-        );
+  }) : super(tweetService: tweetService, tweetCache: tweetCache);
 
   static final Logger _log = Logger("HomeTimelineModel");
 

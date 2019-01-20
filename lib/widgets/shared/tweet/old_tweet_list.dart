@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flux/flutter_flux.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/widgets/shared/animations.dart';
-import 'package:harpy/widgets/shared/tweet/tweet_tile.dart';
+import 'package:harpy/widgets/shared/tweet/old_tweet_tile.dart';
 
 // todo:
 // to animate new tweets in after a refresh:
@@ -13,9 +13,9 @@ import 'package:harpy/widgets/shared/tweet/tweet_tile.dart';
 
 // maybe stay on the old index and scroll up when rebuilding
 
-/// A list containing many [TweetTile]s.
-class TweetList extends StatefulWidget {
-  /// The [Tweet]s that build into [TweetTile]s.
+/// A list containing many [OldTweetTile]s.
+class OldTweetList extends StatefulWidget {
+  /// The [Tweet]s that build into [OldTweetTile]s.
   final List<Tweet> tweets;
 
   /// The [leading] widget will be shown at the top of the list before the
@@ -37,7 +37,7 @@ class TweetList extends StatefulWidget {
   /// The [type] of this list.
   final ListType type;
 
-  const TweetList({
+  const OldTweetList({
     this.tweets,
     this.leading,
     this.trailing,
@@ -47,10 +47,10 @@ class TweetList extends StatefulWidget {
   });
 
   @override
-  _TweetListState createState() => _TweetListState();
+  _OldTweetListState createState() => _OldTweetListState();
 }
 
-class _TweetListState extends State<TweetList> with StoreWatcherMixin {
+class _OldTweetListState extends State<OldTweetList> with StoreWatcherMixin {
   ScrollController _controller;
 
   bool _requestingMore = false;
@@ -116,7 +116,7 @@ class _TweetListState extends State<TweetList> with StoreWatcherMixin {
           if (content[index] is Tweet) {
             Tweet tweet = content[index];
 
-            return TweetTile(
+            return OldTweetTile(
               key: Key("${tweet.id}"),
               tweet: tweet,
             );
