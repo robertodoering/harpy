@@ -114,7 +114,7 @@ class TweetService extends TwitterService {
 
   /// Retweets the tweet with the [tweetId].
   Future retweet(String tweetId) async {
-    final response = await TwitterClient().post(
+    final response = await twitterClient.post(
       "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
     );
 
@@ -123,7 +123,7 @@ class TweetService extends TwitterService {
 
   /// Unretweets the tweet with the [tweetId].
   Future unretweet(String tweetId) async {
-    final response = await TwitterClient().post(
+    final response = await twitterClient.post(
       "https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json",
     );
 
@@ -132,7 +132,7 @@ class TweetService extends TwitterService {
 
   /// Favorites the tweet with the [tweetId].
   Future favorite(String tweetId) async {
-    final response = await TwitterClient().post(
+    final response = await twitterClient.post(
       "https://api.twitter.com/1.1/favorites/create.json?id=$tweetId",
     );
 
@@ -141,7 +141,7 @@ class TweetService extends TwitterService {
 
   /// Unfavorites the tweet with the [tweetId].
   Future unfavorite(String tweetId) async {
-    final response = await TwitterClient().post(
+    final response = await twitterClient.post(
       "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
     );
 

@@ -27,6 +27,7 @@ class TweetTile extends StatelessWidget {
       model: TweetModel(
         originalTweet: _tweet,
         tweetCache: serviceProvider.data.tweetCache,
+        tweetService: serviceProvider.data.tweetService,
       ),
       child: SlideFadeInAnimation(
         duration: const Duration(milliseconds: 500),
