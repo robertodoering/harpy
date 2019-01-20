@@ -6,7 +6,7 @@ import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
-import 'package:harpy/widgets/shared/tweet_list.dart';
+import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
 import 'package:harpy/widgets/shared/user_header.dart';
 
 /// The user profile screen to show information and the user timeline of the
@@ -100,7 +100,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
           fit: BoxFit.cover,
         ),
         body: TweetList(
-          leading: UserHeader(user: store.user),
+          leading: UserProfileHeader(user: store.user),
           tweets: _loadingTweets ? null : store.userTweets,
           trailing: _buildTrailingWidget(),
           type: ListType.user,

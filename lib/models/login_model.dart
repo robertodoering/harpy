@@ -5,17 +5,24 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/models/application_model.dart';
+import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class LoginModel extends Model {
   LoginModel({
     @required this.applicationModel,
+    @required this.homeTimelineModel,
+    @required this.userService,
     @required this.userCache,
   })  : assert(applicationModel != null),
+        assert(homeTimelineModel != null),
+        assert(userService != null),
         assert(userCache != null);
 
   final ApplicationModel applicationModel;
+  final HomeTimelineModel homeTimelineModel;
+  final UserService userService;
   final UserCache userCache;
 
   static LoginModel of(BuildContext context) {
@@ -35,6 +42,9 @@ class LoginModel extends Model {
   /// A callback that is called when the authorization completed.
   VoidCallback onAuthorized;
 
+  /// Login using the native twitter sdk.
+  ///
+  /// On successful login the [onAuthorized] callback is called.
   Future<void> login() async {
     _log.fine("logging in");
 
@@ -49,10 +59,7 @@ class LoginModel extends Model {
         applicationModel.twitterSession = result.session;
 
         // initialize before navigating
-        await AsyncInitializer([
-          // todo: init home model tweets
-          _initLoggedInUser,
-        ]).run();
+        await initBeforeHome();
 
         if (onAuthorized != null) {
           onAuthorized();
@@ -70,6 +77,7 @@ class LoginModel extends Model {
     notifyListeners();
   }
 
+  /// Logout using the native twitter sdk.
   Future<void> logout() async {
     _log.fine("logging out");
 
@@ -77,6 +85,14 @@ class LoginModel extends Model {
 
     applicationModel.twitterSession = null;
     loggedInUser = null;
+  }
+
+  /// Initializes the logged in user and the home timeline tweets.
+  Future<void> initBeforeHome() async {
+    await AsyncInitializer(<AsyncTask>[
+      homeTimelineModel.initTweets,
+      _initLoggedInUser,
+    ]).run();
   }
 
   Future<void> _initLoggedInUser() async {
@@ -100,8 +116,7 @@ class LoginModel extends Model {
 
     String userId = applicationModel.twitterSession.userId;
 
-    loggedInUser = await UserService()
-        .getUserDetails(id: userId); // todo user service in constructor
+    loggedInUser = await userService.getUserDetails(id: userId);
     notifyListeners();
   }
 }

@@ -5,21 +5,22 @@ import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
-import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
-import 'package:harpy/widgets/shared/util.dart';
 
-/// The [UserHeader] containing the information about the [User].
-class UserHeader extends StatefulWidget {
+/// The [UserProfileHeader] containing the information about the [User].
+class UserProfileHeader extends StatefulWidget {
+  const UserProfileHeader({
+    @required this.user,
+  });
+
   final User user;
 
-  const UserHeader({@required this.user});
-
   @override
-  _UserHeaderState createState() => _UserHeaderState();
+  _UserProfileHeaderState createState() => _UserProfileHeaderState();
 }
 
-class _UserHeaderState extends State<UserHeader> {
+class _UserProfileHeaderState extends State<UserProfileHeader> {
   GestureRecognizer _linkGestureRecognizer;
 
   @override
@@ -136,7 +137,7 @@ class _UserHeaderState extends State<UserHeader> {
       TextSpan(
         text: "${url.displayUrl} ",
         style: Theme.of(context).textTheme.body1.copyWith(
-              color: HarpyTheme.harpyColor, // todo: user color?
+              color: Theme.of(context).accentColor, // todo: user color?
               fontWeight: FontWeight.bold,
             ),
         recognizer: _linkGestureRecognizer,

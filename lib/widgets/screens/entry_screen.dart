@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/utils/harpy_navigator.dart';
 import 'package:harpy/models/application_model.dart';
+import 'package:harpy/models/login_model.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/screens/home_screen.dart';
 import 'package:harpy/widgets/screens/login_screen.dart';
@@ -27,16 +29,21 @@ class EntryScreen extends StatelessWidget {
     );
   }
 
-  void _onInitialized(BuildContext context, ApplicationModel model) {
+  Future<void> _onInitialized(
+    BuildContext context,
+    ApplicationModel model,
+  ) async {
     _log.fine("on initialized");
 
     if (model.loggedIn) {
+      final loginModel = LoginModel.of(context);
+      await loginModel.initBeforeHome();
+
       _log.fine("navigating to home screen");
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
+      HarpyNavigator.push(context, HomeScreen());
     } else {
       _log.fine("navigating to login screen");
+      // route without a transition
       Navigator.of(context).pushReplacement(PageRouteBuilder(
         pageBuilder: (context, _a, _b) => LoginScreen(),
         transitionDuration: Duration.zero,

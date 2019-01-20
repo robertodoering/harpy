@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/utils/harpy_navigator.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/screens/home_screen.dart';
+import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:harpy/widgets/shared/harpy_title.dart';
-import 'package:harpy/widgets/shared/login_button.dart';
 import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -50,10 +51,8 @@ class LoginScreen extends StatelessWidget {
     final applicationModel = ApplicationModel.of(context);
 
     if (applicationModel.loggedIn) {
-      _log.fine("navigating to home screen");
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
+      _log.fine("navigating to home screen after login");
+      HarpyNavigator.push(context, HomeScreen());
     }
   }
 }

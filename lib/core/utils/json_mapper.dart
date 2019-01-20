@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-/// Used by [mapJson] to map the [json] map to an object.
+/// Used by [mapJson] to map the [json] object to a dart object.
 typedef T JsonMapper<T>(Map<String, dynamic> json);
 
-/// Maps the [data] and returns an either an object list of type [T], the
-/// object of type [T] or null if the data is a json list of json objects,
-/// a json object or neither respectively.
+/// Maps the json string [data] to [T].
+///
+/// Returns a list of type [T] if the [data] is a json list, the object of type
+/// [T] if the [data] is a json object or `null`.
 dynamic mapJson<T>(String data, JsonMapper<T> mapper) {
   dynamic json = jsonDecode(data);
 

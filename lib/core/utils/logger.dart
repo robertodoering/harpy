@@ -6,7 +6,7 @@ void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
     String logString =
-        '${fillStringToLength(rec.level.name, 6)} :: ${DateFormat('d.M.y H:m:s').format(rec.time).toString()} :: ${rec.loggerName} :: ${rec.message}';
+        "${fillStringToLength(rec.level.name, 6)} :: ${DateFormat("H:m:s").format(rec.time).toString()} :: ${rec.loggerName} :: ${rec.message}";
 
     if (prefix != null) {
       logString = '$prefix :: $logString';

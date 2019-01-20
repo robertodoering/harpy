@@ -21,6 +21,7 @@ dependencies:
   photo_view:
     git: https://github.com/robertodoering/photo_view.git
   scoped_model: ^1.0.1
+  async_loader: ^0.1.2
 
   flutter:
     sdk: flutter

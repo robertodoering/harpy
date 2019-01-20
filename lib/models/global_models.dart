@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/models/application_model.dart';
+import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/service_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-/// Wraps the [ApplicationModel] and [LoginModel] at the top of the widget tree.
+/// Wraps the app wide [ScopedModel]s and holds the instances in its state.
 class GlobalScopedModels extends StatefulWidget {
   const GlobalScopedModels({
     @required this.child,
@@ -19,6 +20,7 @@ class GlobalScopedModels extends StatefulWidget {
 class GlobalScopedModelsState extends State<GlobalScopedModels> {
   ApplicationModel applicationModel;
   LoginModel loginModel;
+  HomeTimelineModel homeTimelineModel;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,18 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
+      twitterClient: serviceProvider.data.twitterClient,
+    );
+
+    homeTimelineModel ??= HomeTimelineModel(
+      tweetService: serviceProvider.data.tweetService,
+      tweetCache: serviceProvider.data.tweetCache,
     );
 
     loginModel ??= LoginModel(
       applicationModel: applicationModel,
+      homeTimelineModel: homeTimelineModel,
+      userService: serviceProvider.data.userService,
       userCache: serviceProvider.data.userCache,
     );
 
@@ -37,7 +47,10 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
       model: applicationModel,
       child: ScopedModel<LoginModel>(
         model: loginModel,
-        child: widget.child,
+        child: ScopedModel<HomeTimelineModel>(
+          model: homeTimelineModel,
+          child: widget.child,
+        ),
       ),
     );
   }

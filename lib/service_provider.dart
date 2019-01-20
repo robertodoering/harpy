@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/services/user_service.dart';
+import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 
-/// Builds the [ServiceProvider] at the top of the widget tree.
+/// Builds the [ServiceProvider] and holds services in its state.
 class ServiceContainer extends StatefulWidget {
   final Widget child;
 
@@ -19,19 +22,37 @@ class ServiceContainerState extends State<ServiceContainer> {
   DirectoryService get directoryService => _directoryService;
   DirectoryService _directoryService;
 
+  TwitterClient get twitterClient => _twitterClient;
+  TwitterClient _twitterClient;
+
+  TweetCache get tweetCache => _tweetCache;
+  TweetCache _tweetCache;
+
   TweetService get tweetService => _tweetService;
   TweetService _tweetService;
 
   UserCache get userCache => _userCache;
   UserCache _userCache;
 
+  UserService get userService => _userService;
+  UserService _userService;
+
   @override
   void initState() {
     super.initState();
 
     _directoryService = DirectoryService();
-    _tweetService = TweetService();
+    _twitterClient = TwitterClient();
+    _tweetCache = TweetCache.initialized(); // todo
+    _tweetService = TweetService(
+      twitterClient: _twitterClient,
+      tweetCache: _tweetCache,
+    );
     _userCache = UserCache(directoryService: _directoryService);
+    _userService = UserService(
+      twitterClient: _twitterClient,
+      userCache: _userCache,
+    );
   }
 
   @override
@@ -44,6 +65,16 @@ class ServiceContainerState extends State<ServiceContainer> {
 }
 
 /// Holds the app wide services.
+///
+/// The [ServiceProvider] can be accessed throughout the app with
+/// `ServiceProvider.of(context)`, often inside of build methods in widgets.
+///
+/// Example:
+/// ```
+/// final serviceProvider = ServiceProvider.of(context);
+///
+/// TweetService tweetService = serviceProvider.data.tweetService;
+/// ```
 class ServiceProvider extends InheritedWidget {
   const ServiceProvider({
     @required Widget child,

@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -10,14 +11,19 @@ import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:yaml/yaml.dart';
 
+/// The [ApplicationModel] handles initialization in the [EntryScreen] when
+/// starting the app.
 class ApplicationModel extends Model {
   ApplicationModel({
     @required this.directoryService,
-  }) : assert(directoryService != null) {
+    @required this.twitterClient,
+  })  : assert(directoryService != null),
+        assert(twitterClient != null) {
     _initialize();
   }
 
   final DirectoryService directoryService;
+  final TwitterClient twitterClient;
 
   static ApplicationModel of(BuildContext context) {
     return ScopedModel.of<ApplicationModel>(context);
@@ -47,11 +53,13 @@ class ApplicationModel extends Model {
 
   Future<void> _initialize() async {
     initLogger();
-
     _log.fine("initializing");
 
+    // set application model reference in twitter client
+    twitterClient.applicationModel = this;
+
     // async initializations
-    List<AsyncTask> tasks = [
+    await AsyncInitializer(<AsyncTask>[
       // init config
       _initTwitterSession,
 
@@ -60,9 +68,7 @@ class ApplicationModel extends Model {
 
       // directory service
       directoryService.init,
-    ];
-
-    await AsyncInitializer(tasks).run();
+    ]).run();
 
     initialized = true;
     if (onInitialized != null) {

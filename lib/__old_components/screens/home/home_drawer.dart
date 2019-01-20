@@ -9,7 +9,7 @@ import 'package:harpy/__old_stores/login_store.dart';
 import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/widgets/shared/util.dart';
+import 'package:harpy/widgets/shared/misc.dart';
 
 void _navigateToProfileScreen(BuildContext context, User user) {
   Navigator.push(

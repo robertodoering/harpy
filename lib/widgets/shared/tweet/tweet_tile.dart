@@ -11,9 +11,9 @@ import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:harpy/widgets/shared/media/twitter_media.dart';
-import 'package:harpy/widgets/shared/tweet_list.dart';
+import 'package:harpy/widgets/shared/misc.dart';
+import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
-import 'package:harpy/widgets/shared/util.dart';
 
 /// A single tile that display information and [TwitterActionButton]s for a [Tweet].
 class TweetTile extends StatefulWidget {
@@ -186,7 +186,9 @@ class TweetTileState extends State<TweetTile> {
   }
 
   Widget _buildActionRow(BuildContext context) {
-    ListType type = InheritedTweetList.of(context).type;
+//    ListType type = InheritedTweetList.of(context).type;
+
+    ListType type = ListType.home;
 
     return Row(
       children: <Widget>[
@@ -248,7 +250,9 @@ class TweetTileState extends State<TweetTile> {
       return Container();
     }
 
-    ListType type = InheritedTweetList.of(context).type;
+//    ListType type = InheritedTweetList.of(context).type;
+
+    ListType type = ListType.home;
 
     VoidCallback onPressed;
     bool drawColorOnHighlight = false;

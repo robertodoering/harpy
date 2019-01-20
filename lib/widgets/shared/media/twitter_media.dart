@@ -7,7 +7,7 @@ import 'package:harpy/widgets/shared/media/media_dialog.dart';
 import 'package:harpy/widgets/shared/media/media_expansion.dart';
 import 'package:harpy/widgets/shared/media/twitter_video_player.dart';
 import 'package:harpy/widgets/shared/routes.dart';
-import 'package:harpy/widgets/shared/tweet_list.dart';
+import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
 
 // media types
 const String photo = "photo";

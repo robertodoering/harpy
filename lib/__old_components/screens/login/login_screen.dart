@@ -8,8 +8,8 @@ import 'package:harpy/__old_stores/tokens.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/theme.dart';
+import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:harpy/widgets/shared/harpy_title.dart';
-import 'package:harpy/widgets/shared/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
