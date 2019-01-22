@@ -3,29 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/harpy_navigator.dart';
+import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/service_provider.dart';
 import 'package:harpy/widgets/screens/user_profile_screen.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
-import 'package:harpy/widgets/shared/media/twitter_media.dart';
+import 'package:harpy/widgets/shared/media/old_twitter_media.dart';
 import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TweetTile extends StatelessWidget {
-  const TweetTile(this._tweet);
+  const TweetTile({
+    Key key,
+    this.tweet,
+  }) : super(key: key);
 
-  final Tweet _tweet;
+  final Tweet tweet;
 
   @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
+    // todo: tweet model gets re initialized on every build?
     return ScopedModel<TweetModel>(
       model: TweetModel(
-        originalTweet: _tweet,
+        originalTweet: tweet,
         tweetCache: serviceProvider.data.tweetCache,
         tweetService: serviceProvider.data.tweetService,
       ),
@@ -43,7 +48,7 @@ class TweetTile extends StatelessWidget {
                 children: <Widget>[
                   _buildRetweetedRow(model),
                   _TweetNameRow(),
-                  _buildText(model),
+                  _TweetText(),
                   _TweetTranslation(),
                   _buildMedia(model),
                   _TweetActionsRow(),
@@ -66,28 +71,6 @@ class TweetTile extends StatelessWidget {
           icon: Icons.repeat,
           iconPadding: 40.0, // same as avatar width
           child: "${model.originalTweet.user.name} retweeted",
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  /// Builds the text of the [Tweet].
-  Widget _buildText(TweetModel model) {
-    if (!model.tweet.emptyText) {
-      return Padding(
-        padding: EdgeInsets.only(top: 8.0),
-        child: TwitterText(
-          text: model.tweet.full_text,
-          entities: model.tweet.entities,
-//        onEntityTap: (model) async { // todo
-//          if (model.type == EntityType.url) {
-//            launchUrl(model.data);
-//          } else if (model.type == EntityType.mention) {
-//            _openUserProfile(context, userId: model.id);
-//          }
-//        },
         ),
       );
     } else {
@@ -151,12 +134,36 @@ class _TweetNameRow extends StatelessWidget {
   }
 
   void _goToUserProfile(BuildContext context, User user) {
-    HarpyNavigator.push(
-      context,
-      UserProfileScreen(
-        user: user,
-      ),
-    );
+    HarpyNavigator.push(context, UserProfileScreen(user: user));
+  }
+}
+
+/// Builds the text of the [Tweet].
+class _TweetText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = TweetModel.of(context);
+
+    if (!model.tweet.emptyText) {
+      return Padding(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TwitterText(
+          text: model.tweet.full_text,
+          entities: model.tweet.entities,
+          onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
+    if (entityModel.type == EntityType.url) {
+      launchUrl(entityModel.data);
+    } else if (entityModel.type == EntityType.mention) {
+      HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
+    }
   }
 }
 

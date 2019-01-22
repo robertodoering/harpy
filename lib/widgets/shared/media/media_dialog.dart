@@ -1,28 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/models/media_model.dart';
 import 'package:harpy/widgets/shared/media/media_dismissable.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-/// The [PhotoMediaDialog] that contains a list of [media] to display a
-/// [MediaWidgetGallery].
+/// The [PhotoMediaDialog] that displays a [MediaWidgetGallery].
+///
+/// todo: refactor
 class PhotoMediaDialog extends StatelessWidget {
-  /// The list of [TwitterMedia] for the [MediaWidgetGallery] to display.
-  final List<TwitterMedia> media;
+  const PhotoMediaDialog({
+    @required this.mediaModel,
+    this.index = 0,
+  });
+
+  final MediaModel mediaModel;
 
   /// The initial index of the [MediaWidgetGallery].
   final int index;
 
-  const PhotoMediaDialog({
-    @required this.media,
-    this.index = 0,
-  });
-
   @override
   Widget build(BuildContext context) {
     return MediaWidgetGallery(
-      mediaWidgetOptions: media.map((m) {
+      mediaWidgetOptions: mediaModel.media.map((m) {
         double width = m.largeWidth?.toDouble() ??
             m.mediumWidth?.toDouble() ??
             m.smallWidth?.toDouble() ??
@@ -39,7 +39,7 @@ class PhotoMediaDialog extends StatelessWidget {
           width: double.infinity,
         );
 
-        String heroTag = m.mediaUrl + "${media.indexOf(m)}";
+        String heroTag = mediaModel.mediaHeroTag(mediaModel.media.indexOf(m));
 
         return MediaGalleryEntry(
           widget: mediaWidget,

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/__old_components/screens/user_profile/user_profile_screen.dart';
+import 'package:harpy/__old_components/screens/user_profile/old_user_profile_screen.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/__old_stores/user_store.dart';
 import 'package:harpy/api/twitter/data/harpy_data.dart';
@@ -10,7 +10,7 @@ import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/core/utils/url_launcher.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
-import 'package:harpy/widgets/shared/media/twitter_media.dart';
+import 'package:harpy/widgets/shared/media/old_twitter_media.dart';
 import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/tweet/old_tweet_list.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
@@ -295,7 +295,7 @@ class OldTweetTileState extends State<OldTweetTile> {
     );
   }
 
-  /// Navigates to the [UserProfileScreen] for the [user] or [screenName].
+  /// Navigates to the [OldUserProfileScreen] for the [user] or [screenName].
   ///
   /// If [user] is `null` [screenName] mustn't be `null`.
   void _openUserProfile(
@@ -306,7 +306,7 @@ class OldTweetTileState extends State<OldTweetTile> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserProfileScreen(
+        builder: (context) => OldUserProfileScreen(
               user: user,
               userId: userId,
             ),

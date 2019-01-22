@@ -4,24 +4,30 @@ import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
-class HomeTimelineModel extends TimelineModel {
-  HomeTimelineModel({
+class UserTimelineModel extends TimelineModel {
+  UserTimelineModel({
+    @required this.userId,
     @required TweetService tweetService,
     @required TweetCache tweetCache,
-  }) : super(tweetService: tweetService, tweetCache: tweetCache);
+  })  : assert(userId != null),
+        super(tweetService: tweetService, tweetCache: tweetCache) {
+    initTweets();
+  }
 
-  static final Logger _log = Logger("HomeTimelineModel");
+  final String userId;
+
+  static final Logger _log = Logger("UserTimelineModel");
 
   @override
   Future<void> initTweets() async {
-    tweetCache.home();
+    tweetCache.user(userId);
     return super.initTweets();
   }
 
   @override
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
-    tweets = await tweetService.getHomeTimeline();
+    tweets = await tweetService.getUserTimeline(userId);
     notifyListeners();
   }
 

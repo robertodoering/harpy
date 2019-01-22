@@ -1,8 +1,7 @@
 import 'package:flutter_flux/flutter_flux.dart';
+import 'package:harpy/__old_stores/tweet_store_mixin.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
-import 'package:harpy/__old_stores/tweet_store_mixin.dart';
 import 'package:logging/logging.dart';
 
 class HomeStore extends Store with TweetStoreMixin {
@@ -37,7 +36,7 @@ class HomeStore extends Store with TweetStoreMixin {
       log.fine("init tweets");
 
       // initialize with cached tweets
-      _tweets = await TweetCache.home().getCachedTweets();
+//      _tweets = await TweetCache.home().getCachedTweets();
 
       if (_tweets.isEmpty) {
         // if no cached tweet exists wait for the initial api call
@@ -66,13 +65,13 @@ class HomeStore extends Store with TweetStoreMixin {
       ));
     });
 
-    clearCache.listen((_) => TweetCache.home().clearBucket());
+//    clearCache.listen((_) => TweetCache.home().clearBucket());
 
     /*
      * actions
      */
     onTweetUpdated = (tweet) {
-      TweetCache.home().updateTweet(tweet);
+//      TweetCache.home().updateTweet(tweet);
     };
 
     // used by user store to update a tweet

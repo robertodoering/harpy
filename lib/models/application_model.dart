@@ -2,6 +2,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -16,13 +17,16 @@ import 'package:yaml/yaml.dart';
 class ApplicationModel extends Model {
   ApplicationModel({
     @required this.directoryService,
+    @required this.tweetCache,
     @required this.twitterClient,
   })  : assert(directoryService != null),
+        assert(tweetCache != null),
         assert(twitterClient != null) {
     _initialize();
   }
 
   final DirectoryService directoryService;
+  final TweetCache tweetCache;
   final TwitterClient twitterClient;
 
   static ApplicationModel of(BuildContext context) {
@@ -55,8 +59,9 @@ class ApplicationModel extends Model {
     initLogger();
     _log.fine("initializing");
 
-    // set application model reference in twitter client
+    // set application model references
     twitterClient.applicationModel = this;
+    tweetCache.applicationModel = this;
 
     // async initializations
     await AsyncInitializer(<AsyncTask>[

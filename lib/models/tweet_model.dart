@@ -117,7 +117,7 @@ class TweetModel extends Model {
       });
   }
 
-  /// Unfavorite this [tweet]
+  /// Unfavorite this [tweet].
   void unfavorite() {
     tweet.favorited = false;
     tweet.favoriteCount--;
@@ -137,7 +137,9 @@ class TweetModel extends Model {
   }
 
   /// Translate this [tweet].
-  void translate() {}
+  void translate() {
+    // todo
+  }
 
   /// Returns `true` if the error contains any of the following error codes:
   ///

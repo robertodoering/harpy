@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -11,15 +12,25 @@ class DirectoryServiceData {
 }
 
 class DirectoryService {
+  DirectoryService();
+
+  /// Constructs a [DirectoryService] from the [DirectoryServiceData].
+  ///
+  /// Used by isolates.
+  DirectoryService.data(this.data);
+
+  static Logger _log = Logger("DirectoryService");
+
+  /// Instance that can be used in isolates.
+  static DirectoryService isolateInstance;
+
   DirectoryServiceData data = DirectoryServiceData();
 
-//  static DirectoryService _instance = DirectoryService._();
-//  factory DirectoryService() => _instance;
-//  DirectoryService._();
-
   Future<void> init() async {
+    _log.fine("initializing temporary directory");
     Directory dir = await getTemporaryDirectory();
     data.path = dir.path;
+    _log.fine("got path: ${dir.path}");
   }
 
   /// Gets the path for [fileName] inside the [bucket].
@@ -73,6 +84,7 @@ class DirectoryService {
     @required String bucket,
     String extension,
   }) {
+    _log.fine("listing all files in bucket: $bucket");
     List<File> files = [];
     Directory directory = Directory("${data.path}/$bucket");
 

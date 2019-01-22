@@ -43,8 +43,9 @@ class ServiceContainerState extends State<ServiceContainer> {
 
     _directoryService = DirectoryService();
     _twitterClient = TwitterClient();
-    _tweetCache = TweetCache.initialized(); // todo
+    _tweetCache = TweetCache(directoryService: _directoryService);
     _tweetService = TweetService(
+      directoryService: _directoryService,
       twitterClient: _twitterClient,
       tweetCache: _tweetCache,
     );

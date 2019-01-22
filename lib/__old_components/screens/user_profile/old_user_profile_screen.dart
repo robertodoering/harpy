@@ -7,28 +7,28 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
 import 'package:harpy/widgets/shared/tweet/old_tweet_list.dart';
-import 'package:harpy/widgets/shared/user_header.dart';
+import 'package:harpy/widgets/shared/user_profile_header.dart';
 
 /// The user profile screen to show information and the user timeline of the
 /// [user].
 ///
 /// If [user] is `null` [userId] has to not be `null` and is used to load
 /// the [User].
-class UserProfileScreen extends StatefulWidget {
+class OldUserProfileScreen extends StatefulWidget {
   final User user;
   final String userId;
 
-  UserProfileScreen({
+  OldUserProfileScreen({
     this.user,
     this.userId,
   }) : assert(user != null || userId != null);
 
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  _OldUserProfileScreenState createState() => _OldUserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen>
-    with StoreWatcherMixin<UserProfileScreen> {
+class _OldUserProfileScreenState extends State<OldUserProfileScreen>
+    with StoreWatcherMixin<OldUserProfileScreen> {
   UserStore store;
 
   bool _loadingUser = true;

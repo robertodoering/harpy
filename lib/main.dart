@@ -9,7 +9,7 @@ void main() {
     child: GlobalScopedModels(
       child: MaterialApp(
         title: "Harpy",
-        theme: HarpyTheme.light().theme,
+        theme: HarpyTheme.dark().theme,
         home: EntryScreen(),
         debugShowCheckedModeBanner: false,
       ),

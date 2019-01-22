@@ -6,17 +6,17 @@ import 'package:harpy/theme.dart';
 /// If [appBar] is a String, it will be wrapped in an [AppBar].
 /// Otherwise it needs to be a [PreferredSizeWidget].
 class HarpyScaffold extends StatelessWidget {
-  final appBar;
-  final ThemeData themeData;
-  final Widget drawer;
-  final Widget body;
-
   HarpyScaffold({
     @required this.appBar,
     this.themeData,
     this.drawer,
     this.body,
   }) : assert(appBar is String || appBar is PreferredSizeWidget);
+
+  final appBar;
+  final ThemeData themeData;
+  final Widget drawer;
+  final Widget body;
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +49,19 @@ class HarpyScaffold extends StatelessWidget {
 /// If [alwaysShowTitle] is `true` the title will show even when the
 /// [SliverAppBar] is expanded.
 class FadingNestedScaffold extends StatefulWidget {
-  final String title;
-  final Widget background;
-  final double expandedAppBarSpace;
-  final Widget body;
-  final bool alwaysShowTitle;
-
-  FadingNestedScaffold({
+  const FadingNestedScaffold({
     this.title,
     this.background,
     this.expandedAppBarSpace = 200.0,
     this.alwaysShowTitle = false,
     @required this.body,
   });
+
+  final String title;
+  final Widget background;
+  final double expandedAppBarSpace;
+  final Widget body;
+  final bool alwaysShowTitle;
 
   @override
   _FadingNestedScaffoldState createState() => _FadingNestedScaffoldState();

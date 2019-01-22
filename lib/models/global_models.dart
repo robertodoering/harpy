@@ -28,6 +28,7 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
+      tweetCache: serviceProvider.data.tweetCache,
       twitterClient: serviceProvider.data.twitterClient,
     );
 

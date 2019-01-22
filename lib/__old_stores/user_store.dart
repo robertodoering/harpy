@@ -5,7 +5,6 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/config/app_configuration.dart';
 import 'package:logging/logging.dart';
@@ -103,7 +102,7 @@ class UserStore extends Store with TweetStoreMixin {
     initUserTweets.listen((String userId) async {
       log.fine("init user tweets");
 
-      _userTweets = TweetCache.user(userId).getCachedTweets();
+//      _userTweets = TweetCache.user(userId).getCachedTweets();
 
       if (_userTweets.isEmpty) {
         // wait to update tweets if no cached tweets are found
@@ -127,7 +126,7 @@ class UserStore extends Store with TweetStoreMixin {
      */
     onTweetUpdated = (tweet) {
       if (user?.id != null) {
-        TweetCache.user("${user.id}").updateTweet(tweet);
+//        TweetCache.user("${user.id}").updateTweet(tweet);
 
         // try to update home timeline tweet if it exists
         HomeStore.updateTweet(tweet);

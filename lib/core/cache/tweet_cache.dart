@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
+import 'package:harpy/models/application_model.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 
 /// The [TweetCacheData] is used to construct a [TweetCache] for isolates.
 class TweetCacheData {
@@ -20,50 +21,57 @@ class TweetCacheData {
 }
 
 class TweetCache {
-  static Logger log = Logger("TweetCache");
+  TweetCache({
+    @required this.directoryService,
+  });
+
+  /// Constructs a [TweetCache] from the [TweetCacheData].
+  ///
+  /// Used by isolates.
+  TweetCache.data({@required this.directoryService, @required this.data});
+
+  final DirectoryService directoryService;
+
+  static Logger _log = Logger("TweetCache");
 
   static const String homeTimeline = "home_timeline";
   static const String userTimeline = "user_timeline";
 
+  /// Instance that can be used in isolates.
+  static TweetCache isolateInstance;
+
+  ApplicationModel applicationModel;
+
   /// The [data] used to construct a [TweetCache] for isolates.
   TweetCacheData data = TweetCacheData();
 
-  static TweetCache _instance = TweetCache._();
-  TweetCache._();
+  /// Sets the data for the home timeline cache.
+  TweetCache home() {
+    assert(applicationModel != null);
+    data.loggedInUserId = applicationModel.twitterSession.userId;
+    data.type = homeTimeline;
+    data.userId = null;
 
-  factory TweetCache(TweetCacheData data) {
-    _instance.data.loggedInUserId = data.loggedInUserId;
-    _instance.data.type = data.type;
-    _instance.data.userId = data.userId;
-
-    return _instance;
+    return this;
   }
 
-  /// Returns the [_instance] and assumes it has been initialized previously.
-  ///
-  /// Should only be used in isolates.
-  factory TweetCache.initialized() => _instance;
+  /// Sets the data for the user timeline cache.
+  TweetCache user(String userId) {
+    assert(applicationModel != null);
+    data.loggedInUserId = applicationModel.twitterSession.userId;
+    data.type = userTimeline;
+    data.userId = userId;
 
-  factory TweetCache.home() {
-    _instance.data.loggedInUserId = AppConfiguration().twitterSession.userId;
-    _instance.data.type = homeTimeline;
-    _instance.data.userId = null;
-
-    return _instance;
-  }
-
-  factory TweetCache.user(String userId) {
-    _instance.data.loggedInUserId = AppConfiguration().twitterSession.userId;
-    _instance.data.type = userTimeline;
-    _instance.data.userId = userId;
-
-    return _instance;
+    return this;
   }
 
   /// The sub directory where the files are stored.
   ///
   /// [Tweet]s should be cached for each logged in user separately.
   String get bucket {
+    // make sure the data has been set before accessing the bucket
+    assert(data.type != null);
+
     String bucket = "tweets/${data.type}/${data.loggedInUserId}";
 
     if (data.userId != null) {
@@ -80,7 +88,7 @@ class TweetCache {
   void _cacheTweet(Tweet tweet) {
     String fileName = "${tweet.id}.json";
 
-    DirectoryService().createFile(
+    directoryService.createFile(
       bucket: bucket,
       name: fileName,
       content: jsonEncode(tweet.toJson()),
@@ -89,15 +97,15 @@ class TweetCache {
 
   /// Updates a [Tweet] in the cache if it exists in the [bucket].
   void updateTweet(Tweet tweet) {
-    log.fine("updating cached tweet");
+    _log.fine("updating cached tweet");
 
     bool exists = tweetExists(tweet);
 
     if (exists) {
       _cacheTweet(tweet);
-      log.fine("tweet updated");
+      _log.fine("tweet updated");
     } else {
-      log.warning("tweet not found in cache");
+      _log.warning("tweet not found in cache");
     }
   }
 
@@ -106,16 +114,16 @@ class TweetCache {
   ///
   /// If no cached [Tweet]s are found the returned list will be empty.
   List<Tweet> getCachedTweets() {
-    log.fine("getting cached tweets");
+    _log.fine("getting cached tweets for bucket: $bucket");
 
     List<Tweet> tweets = [];
 
-    List<File> files = DirectoryService().listFiles(
+    List<File> files = directoryService.listFiles(
       bucket: bucket,
       extension: ".json",
     );
 
-    log.fine("found ${files.length} cached tweets");
+    _log.fine("found ${files.length} cached tweets");
 
     for (File file in files) {
       tweets.add(Tweet.fromJson(jsonDecode(file.readAsStringSync())));
@@ -130,12 +138,12 @@ class TweetCache {
   /// Clears the cache and caches a new list of [tweets] while retaining the
   /// [Tweet.harpyData] of the cached [Tweet] if it is the same.
   List<Tweet> updateCachedTweets(List<Tweet> tweets) {
-    log.fine("updating cached tweets");
+    _log.fine("updating cached tweets");
 
     for (Tweet tweet in tweets) {
       String fileName = "${tweet.id}.json";
 
-      File cachedFile = DirectoryService().getFile(
+      File cachedFile = directoryService.getFile(
         bucket: bucket,
         name: fileName,
       );
@@ -160,7 +168,7 @@ class TweetCache {
 
   /// Returns `true` if the [Tweet] exists in the cache.
   bool tweetExists(Tweet tweet) {
-    File file = DirectoryService().getFile(
+    File file = directoryService.getFile(
       bucket: bucket,
       name: "${tweet.id}.json",
     );
@@ -171,7 +179,7 @@ class TweetCache {
   /// Returns the cached [Tweet] for the [id] or `null` if it doesn't exist in
   /// the cache.
   Tweet getTweet(String id) {
-    File file = DirectoryService().getFile(
+    File file = directoryService.getFile(
       bucket: bucket,
       name: "$id.json",
     );
@@ -185,8 +193,8 @@ class TweetCache {
 
   /// Deletes every [File] in the [bucket].
   void clearBucket() {
-    log.fine("clear bucket $bucket");
-    List<File> files = DirectoryService().listFiles(bucket: bucket);
+    _log.fine("clear bucket $bucket");
+    List<File> files = directoryService.listFiles(bucket: bucket);
 
     files.forEach((file) => file.deleteSync());
   }

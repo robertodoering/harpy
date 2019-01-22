@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/__old_stores/home_store.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
-import 'package:harpy/widgets/shared/media/media_dialog.dart';
 import 'package:harpy/widgets/shared/media/media_expansion.dart';
 import 'package:harpy/widgets/shared/media/twitter_video_player.dart';
 import 'package:harpy/widgets/shared/routes.dart';
@@ -177,11 +176,11 @@ class OldCollapsibleMediaState extends State<OldCollapsibleMedia> {
   }
 
   void _showMediaGallery(int initialIndex) {
-    Navigator.of(context).push(HeroDialogRoute(
-      builder: (context) {
-        return PhotoMediaDialog(media: _media, index: initialIndex);
-      },
-    ));
+//    Navigator.of(context).push(HeroDialogRoute(
+//      builder: (context) {
+//        return PhotoMediaDialog(media: _media, index: initialIndex);
+//      },
+//    ));
   }
 
   void _showVideoFullscreen(

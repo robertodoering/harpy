@@ -1,8 +1,9 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/services/twitter_service.dart';
+import 'package:harpy/api/twitter/services/handle_response.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/tweet_cache_isolate.dart';
+import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/utils/isolate_work.dart';
 import 'package:harpy/core/utils/json_mapper.dart';
 import 'package:logging/logging.dart';
@@ -10,13 +11,16 @@ import 'package:meta/meta.dart';
 
 final Logger _log = Logger("TweetService");
 
-class TweetService extends TwitterService {
+class TweetService {
   TweetService({
+    @required this.directoryService,
     @required this.twitterClient,
     @required this.tweetCache,
-  })  : assert(twitterClient != null),
+  })  : assert(directoryService != null),
+        assert(twitterClient != null),
         assert(tweetCache != null);
 
+  final DirectoryService directoryService;
   final TwitterClient twitterClient;
   final TweetCache tweetCache;
 
@@ -49,13 +53,17 @@ class TweetService extends TwitterService {
         message: response.body,
       );
 
-      // update cached home timeline tweets
-//      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
-//        callback: updateCachedTweets,
-//        message: tweets,
-//        tweetCacheData: TweetCache.home().data, // todo: tweetcache
-//      );
+      _log.fine("parsed ${tweets?.length} tweets");
 
+      // update cached home timeline tweets
+      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
+        callback: updateCachedTweets,
+        message: tweets,
+        tweetCacheData: tweetCache.home().data,
+        directoryServiceData: directoryService.data,
+      );
+
+      tweets ??= [];
       _log.fine("got ${tweets.length} home timeline tweets");
 
       return tweets;
@@ -92,19 +100,25 @@ class TweetService extends TwitterService {
         message: response.body,
       );
 
+      _log.fine("parsed ${tweets?.length} tweets");
+
       // copy over harpy data from cached home timeline tweets
       tweets = await isolateWork<List<Tweet>, List<Tweet>>(
-        callback: _copyHomeHarpyData,
-        message: tweets,
-        tweetCacheData: TweetCache.home().data, // todo: tweetcache
-      );
+          callback: _copyHomeHarpyData,
+          message: tweets,
+          tweetCacheData: tweetCache.home().data,
+          directoryServiceData: directoryService.data);
 
       // then update cached tweet for user
       isolateWork<List<Tweet>, void>(
         callback: updateCachedTweets,
         message: tweets,
-        tweetCacheData: TweetCache.user(userId).data, // todo: tweetcache
+        tweetCacheData: tweetCache.user(userId).data,
+        directoryServiceData: directoryService.data,
       );
+
+      tweets ??= [];
+      _log.fine("got ${tweets.length} home timeline tweets");
 
       return tweets;
     } else {
@@ -151,13 +165,18 @@ class TweetService extends TwitterService {
 
 List<Tweet> _parseTweets(String data) {
   _log.fine("parsing tweets");
-  return mapJson(data, (json) => Tweet.fromJson(json));
+
+  List<Tweet> tweets = mapJson(data, (json) => Tweet.fromJson(json));
+
+  _log.fine("parsed ${tweets.length} tweets");
+  return tweets;
 }
 
 List<Tweet> _copyHomeHarpyData(List<Tweet> tweets) {
   _log.fine("copy home harpy data");
+
   for (Tweet tweet in tweets) {
-    Tweet homeTweet = TweetCache.initialized().getTweet("${tweet.id}");
+    Tweet homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
     if (homeTweet != null) {
       tweet.harpyData = homeTweet.harpyData;
     }

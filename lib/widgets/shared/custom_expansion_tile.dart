@@ -39,14 +39,18 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     super.initState();
 
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 200), vsync: this);
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
 
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _heightFactor = _controller.drive(_easeInTween);
 
     _isExpanded = widget.initiallyExpanded ?? true;
 
-    if (_isExpanded) _controller.value = 1.0;
+    if (_isExpanded) {
+      _controller.value = 1.0;
+    }
   }
 
   @override

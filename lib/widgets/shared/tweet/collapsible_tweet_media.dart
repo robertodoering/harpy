@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
-import 'package:harpy/models/collapsible_media_model.dart';
+import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/widgets/shared/custom_expansion_tile.dart';
 import 'package:harpy/widgets/shared/media/media_dialog.dart';
@@ -19,6 +19,7 @@ class CollapsibleMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tweetModel = TweetModel.of(context);
+    // todo: media model gets re-initialized on every build
     final mediaModel = MediaModel(tweetModel: tweetModel);
 
     return ScopedModel<MediaModel>(
@@ -220,9 +221,11 @@ class _TweetMediaWidget extends StatelessWidget {
   }
 
   void _showMediaGallery(BuildContext context, List<TwitterMedia> media) {
+    final model = MediaModel.of(context);
+
     Navigator.of(context).push(HeroDialogRoute(
       builder: (context) {
-        return PhotoMediaDialog(media: media, index: _index);
+        return PhotoMediaDialog(mediaModel: model, index: _index);
       },
     ));
   }

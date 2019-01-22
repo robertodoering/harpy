@@ -12,18 +12,20 @@ import 'package:harpy/core/utils/string_utils.dart';
 /// Creates a [RichText] from the given [text].
 ///
 /// The [Entities] will be parsed and appear in the [entityColor].
+///
+/// todo: refactor (with scoped model)
 class TwitterText extends StatefulWidget {
-  final String text;
-  final Entities entities;
-  final Color entityColor;
-  final ValueChanged<_TwitterEntityModel> onEntityTap;
-
   const TwitterText({
     @required this.text,
     this.entities,
     this.entityColor,
     this.onEntityTap,
   });
+
+  final String text;
+  final Entities entities;
+  final Color entityColor;
+  final ValueChanged<TwitterEntityModel> onEntityTap;
 
   @override
   TwitterTextState createState() => TwitterTextState();
@@ -77,7 +79,7 @@ class TwitterTextState extends State<TwitterText> {
     }
   }
 
-  void _addEntityModel(_TwitterEntityModel entityModel) {
+  void _addEntityModel(TwitterEntityModel entityModel) {
     if (entityModel.type == EntityType.media) return;
 
     GestureRecognizer recognizer;
@@ -135,22 +137,15 @@ class _TwitterTextType {
   const _TwitterTextType(this.text, this.type, [this.recognizer]);
 }
 
-/// Takes a [String] and [Entities] and creates a list of [_TwitterEntityModel]
+/// Takes a [String] and [Entities] and creates a list of [TwitterEntityModel]
 /// with an entry for each entity.
 class TwitterEntities {
-  /// A list of [_TwitterEntityModel].
-  var entityModels = <_TwitterEntityModel>[];
-
-  /// A map that contains the end index of each entity to find the next
-  /// occurrence of a duplicate entity.
-  var _entityMap = <String, int>{};
-
   TwitterEntities(String text, Entities entities) {
     for (Hashtag hashtag in entities.hashtags ?? []) {
       var indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
-      var entityModel = _TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: hashtag.text,
@@ -164,7 +159,7 @@ class TwitterEntities {
       var indices = _findIndices(text, url.url);
       if (indices == null) break;
 
-      var entityModel = _TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: url.expandedUrl,
@@ -178,7 +173,7 @@ class TwitterEntities {
       var indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
-      var entityModel = _TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: userMention.screenName,
@@ -193,7 +188,7 @@ class TwitterEntities {
       var indices = _findIndices(text, media.url);
       if (indices == null) break;
 
-      var entityModel = _TwitterEntityModel(
+      var entityModel = TwitterEntityModel(
           startIndex: indices[0],
           endIndex: indices[1],
           data: media.expandedUrl,
@@ -202,6 +197,13 @@ class TwitterEntities {
       _addEntityModel(entityModel);
     }
   }
+
+  /// A list of [TwitterEntityModel].
+  final entityModels = <TwitterEntityModel>[];
+
+  /// A map that contains the end index of each entity to find the next
+  /// occurrence of a duplicate entity.
+  final _entityMap = <String, int>{};
 
   /// Finds and returns the start and end index for the [entity] in the [text].
   ///
@@ -219,9 +221,9 @@ class TwitterEntities {
     return null;
   }
 
-  /// Adds an [_TwitterEntityModel] to the [entityModels] list at the position
+  /// Adds an [TwitterEntityModel] to the [entityModels] list at the position
   /// where the indices are sorted ascending.
-  void _addEntityModel(_TwitterEntityModel entityModel) {
+  void _addEntityModel(TwitterEntityModel entityModel) {
     for (int i = 0; i < entityModels.length; i++) {
       if (entityModel.startIndex < entityModels[i].startIndex) {
         entityModels.insert(i, entityModel);
@@ -232,8 +234,8 @@ class TwitterEntities {
     entityModels.add(entityModel);
   }
 
-  /// Returns the next [_TwitterEntityModel] or null if there aren't any more.
-  _TwitterEntityModel getNext() {
+  /// Returns the next [TwitterEntityModel] or null if there aren't any more.
+  TwitterEntityModel getNext() {
     return entityModels.isNotEmpty ? entityModels.removeAt(0) : null;
   }
 }
@@ -241,7 +243,16 @@ class TwitterEntities {
 /// A simple model for the [Entities].
 ///
 /// The [EntityType] can be used to differentiate between each entity.
-class _TwitterEntityModel {
+class TwitterEntityModel {
+  const TwitterEntityModel({
+    this.startIndex,
+    this.endIndex,
+    this.data,
+    this.id,
+    this.displayText,
+    this.type,
+  });
+
   final int startIndex;
   final int endIndex;
 
@@ -258,15 +269,6 @@ class _TwitterEntityModel {
   final String displayText;
 
   final EntityType type;
-
-  const _TwitterEntityModel({
-    this.startIndex,
-    this.endIndex,
-    this.data,
-    this.id,
-    this.displayText,
-    this.type,
-  });
 }
 
 enum EntityType {

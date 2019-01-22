@@ -3,6 +3,13 @@ import 'package:harpy/core/utils/string_utils.dart';
 
 /// An [IconRow] to display an [Icon] next to some text.
 class IconRow extends StatelessWidget {
+  const IconRow({
+    @required this.icon,
+    @required this.child,
+    this.iconPadding,
+    this.textStyle,
+  });
+
   /// The [IconData] of the icon.
   final IconData icon;
 
@@ -16,13 +23,6 @@ class IconRow extends StatelessWidget {
 
   /// The [TextStyle] of the [child] if it is a String.
   final TextStyle textStyle;
-
-  const IconRow({
-    @required this.icon,
-    @required this.child,
-    this.iconPadding,
-    this.textStyle,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +48,13 @@ class IconRow extends StatelessWidget {
 
 /// A Widget to display the [followers] and [following] in a row.
 class FollowersCount extends StatelessWidget {
-  final int following;
-  final int followers;
-
   const FollowersCount({
     this.following,
     this.followers,
   });
+
+  final int following;
+  final int followers;
 
   @override
   Widget build(BuildContext context) {

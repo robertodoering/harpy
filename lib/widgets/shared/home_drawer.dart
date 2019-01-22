@@ -5,12 +5,13 @@ import 'package:harpy/core/utils/harpy_navigator.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/widgets/screens/login_screen.dart';
 import 'package:harpy/widgets/screens/settings_screen.dart';
+import 'package:harpy/widgets/screens/user_profile_screen.dart';
 import 'package:harpy/widgets/shared/misc.dart';
 
 /// The [Drawer] shown in the [HomeScreen].
 ///
 /// It displays the logged in [User] on the top and allows to navigate to
-/// different parts of the app and to logout.
+/// different parts of the app and logout.
 class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,12 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.face),
           title: Text("Profile"),
-          onTap: () => HarpyNavigator.push(
-              context, Text("user screen ${loginModel.loggedInUser}")), // todo
+          onTap: () {
+            HarpyNavigator.push(
+              context,
+              UserProfileScreen(user: loginModel.loggedInUser),
+            );
+          },
         ),
 
         // clear cache (debug)
@@ -111,13 +116,19 @@ class UserDrawerHeader extends StatelessWidget {
   }
 
   Widget _buildAvatarRow(BuildContext context) {
+    final loginModel = LoginModel.of(context);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // tappable circle avatar
         GestureDetector(
-          onTap: () =>
-              HarpyNavigator.push(context, Text("user screen")), // todo
+          onTap: () {
+            HarpyNavigator.push(
+              context,
+              UserProfileScreen(user: loginModel.loggedInUser),
+            );
+          },
           child: CircleAvatar(
             radius: 32.0,
             backgroundColor: Colors.transparent,
@@ -133,13 +144,29 @@ class UserDrawerHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                user.name,
-                style: Theme.of(context).textTheme.display2,
+              GestureDetector(
+                onTap: () {
+                  HarpyNavigator.push(
+                    context,
+                    UserProfileScreen(user: loginModel.loggedInUser),
+                  );
+                },
+                child: Text(
+                  user.name,
+                  style: Theme.of(context).textTheme.display2,
+                ),
               ),
-              Text(
-                "@${user.screenName}",
-                style: Theme.of(context).textTheme.display1,
+              GestureDetector(
+                onTap: () {
+                  HarpyNavigator.push(
+                    context,
+                    UserProfileScreen(user: loginModel.loggedInUser),
+                  );
+                },
+                child: Text(
+                  "@${user.screenName}",
+                  style: Theme.of(context).textTheme.display1,
+                ),
               ),
             ],
           ),
