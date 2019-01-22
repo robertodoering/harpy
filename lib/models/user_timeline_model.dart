@@ -27,7 +27,10 @@ class UserTimelineModel extends TimelineModel {
   @override
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
+    loadingInitialTweets = tweets.isEmpty;
+    notifyListeners();
     tweets = await tweetService.getUserTimeline(userId);
+    loadingInitialTweets = false;
     notifyListeners();
   }
 

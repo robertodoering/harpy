@@ -6,6 +6,7 @@ import 'package:harpy/models/user_timeline_model.dart';
 import 'package:harpy/service_provider.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
 import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
+import 'package:harpy/widgets/shared/user_profile_header.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// The user profile screen to show information and the user timeline of the
@@ -94,7 +95,9 @@ class _UserProfileTweetList extends StatelessWidget {
         tweetService: serviceProvider.data.tweetService,
         tweetCache: serviceProvider.data.tweetCache,
       ),
-      child: TweetList<UserTimelineModel>(),
+      child: TweetList<UserTimelineModel>(
+        leading: UserProfileHeader(user: userProfileModel.user),
+      ),
     );
   }
 }

@@ -28,23 +28,28 @@ abstract class TimelineModel extends Model {
   /// The [tweets] for this timeline.
   List<Tweet> tweets = [];
 
+  /// `true` while loading [tweets].
+  bool loadingInitialTweets = false;
+
   /// `true` while requesting more tweets from the timeline (when scrolling to
   /// the bottom of the tweet list).
   bool requestingMore = false;
 
   Future<void> initTweets() async {
     _log.fine("initializing tweets");
+    loadingInitialTweets = true;
 
     // initialize with cached tweets
     tweets = tweetCache.getCachedTweets();
 
-    if (tweets.isEmpty) {
+    if (tweets?.isEmpty ?? true) {
       _log.fine("no cached tweets exist");
       // if no cached tweet exists wait for the initial api call
       await updateTweets();
     } else {
       _log.fine("got cached tweets");
       // if cached tweets exist update tweets but dont wait for it
+      loadingInitialTweets = false;
       updateTweets();
     }
   }

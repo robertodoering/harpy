@@ -9,6 +9,8 @@ import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
 
 /// The [UserProfileHeader] containing the information about the [User].
+///
+/// todo: refactor with UserProfileModel
 class UserProfileHeader extends StatefulWidget {
   const UserProfileHeader({
     @required this.user,
