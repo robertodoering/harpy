@@ -18,7 +18,7 @@ class MediaModel extends Model {
 
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
   String mediaHeroTag(int index) {
-    return "$index${media[index].mediaUrl}${tweetModel.tweet.idStr}";
+    return "$index-${media[index].idStr}-${tweetModel.originalTweet.idStr}";
   }
 
   void saveShowMediaState(bool showing) {

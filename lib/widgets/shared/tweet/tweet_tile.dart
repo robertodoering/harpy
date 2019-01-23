@@ -15,7 +15,7 @@ import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class TweetTile extends StatelessWidget {
+class TweetTile extends StatefulWidget {
   const TweetTile({
     Key key,
     this.tweet,
@@ -24,16 +24,25 @@ class TweetTile extends StatelessWidget {
   final Tweet tweet;
 
   @override
+  TweetTileState createState() => TweetTileState();
+}
+
+class TweetTileState extends State<TweetTile> {
+  TweetModel tweetModel;
+
+  @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
-    // todo: tweet model gets re initialized on every build?
+    // create the tweet model once
+    tweetModel ??= TweetModel(
+      originalTweet: widget.tweet,
+      tweetCache: serviceProvider.data.tweetCache,
+      tweetService: serviceProvider.data.tweetService,
+    );
+
     return ScopedModel<TweetModel>(
-      model: TweetModel(
-        originalTweet: tweet,
-        tweetCache: serviceProvider.data.tweetCache,
-        tweetService: serviceProvider.data.tweetService,
-      ),
+      model: tweetModel,
       child: SlideFadeInAnimation(
         duration: const Duration(milliseconds: 500),
         child: Padding(

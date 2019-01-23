@@ -35,6 +35,18 @@ abstract class TimelineModel extends Model {
   /// the bottom of the tweet list).
   bool requestingMore = false;
 
+  /// Returns `true` if [lastRequestedMore] has been set to less than 90
+  /// seconds from [DateTime.now].
+  bool get blockRequestingMore {
+    if (lastRequestedMore == null) {
+      return false;
+    }
+    return DateTime.now().difference(lastRequestedMore).inSeconds < 90;
+  }
+
+  /// The last time [requestingMore] was called.
+  DateTime lastRequestedMore;
+
   Future<void> initTweets() async {
     _log.fine("initializing tweets");
     loadingInitialTweets = true;
@@ -56,5 +68,24 @@ abstract class TimelineModel extends Model {
 
   Future<void> updateTweets();
 
-  Future<void> requestMore();
+  Future<void> requestMore() async {
+    _log.fine("requesting more");
+
+    if (tweets.isEmpty) {
+      _log.warning("tweets empty, not requesting more");
+      return;
+    } else if (requestingMore) {
+      _log.warning("tried to request more while already requesting");
+      return;
+    } else if (blockRequestingMore) {
+      _log.warning("tried to request more while its still blocked");
+      notifyListeners();
+      return;
+    }
+
+    requestingMore = true;
+    notifyListeners();
+
+    lastRequestedMore = DateTime.now();
+  }
 }

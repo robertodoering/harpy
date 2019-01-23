@@ -101,6 +101,12 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(

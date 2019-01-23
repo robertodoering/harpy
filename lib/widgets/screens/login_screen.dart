@@ -52,6 +52,7 @@ class LoginScreen extends StatelessWidget {
 
     if (applicationModel.loggedIn) {
       _log.fine("navigating to home screen after login");
+      // todo: dont use material page route
       HarpyNavigator.pushReplacement(context, HomeScreen());
     }
   }

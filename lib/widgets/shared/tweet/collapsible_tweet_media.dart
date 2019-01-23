@@ -15,12 +15,18 @@ const String video = "video";
 const String animatedGif = "animated_gif";
 
 /// Builds a column of [TwitterMedia] that can be collapsed.
-class CollapsibleMedia extends StatelessWidget {
+class CollapsibleMedia extends StatefulWidget {
+  @override
+  CollapsibleMediaState createState() => CollapsibleMediaState();
+}
+
+class CollapsibleMediaState extends State<CollapsibleMedia> {
+  MediaModel mediaModel;
+
   @override
   Widget build(BuildContext context) {
     final tweetModel = TweetModel.of(context);
-    // todo: media model gets re-initialized on every build
-    final mediaModel = MediaModel(tweetModel: tweetModel);
+    mediaModel ??= MediaModel(tweetModel: tweetModel);
 
     return ScopedModel<MediaModel>(
       model: mediaModel,
@@ -79,7 +85,7 @@ class _TweetMediaLayout extends StatelessWidget {
               children: <Widget>[
                 _TweetMediaWidget(1),
                 SizedBox(height: padding),
-                _TweetMediaWidget(1),
+                _TweetMediaWidget(2),
               ],
             ),
           ),

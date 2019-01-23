@@ -40,6 +40,7 @@ class EntryScreen extends StatelessWidget {
       await loginModel.initBeforeHome();
 
       _log.fine("navigating to home screen");
+      // todo: dont use material page route
       HarpyNavigator.pushReplacement(context, HomeScreen());
     } else {
       _log.fine("navigating to login screen");

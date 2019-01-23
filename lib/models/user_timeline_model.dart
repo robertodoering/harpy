@@ -36,6 +36,15 @@ class UserTimelineModel extends TimelineModel {
 
   @override
   Future<void> requestMore() async {
-    // todo
+    await super.requestMore();
+
+    String id = "${tweets.last.id - 1}";
+    tweets.addAll(await tweetService.getUserTimeline(
+      userId,
+      params: {"max_id": id},
+    ));
+
+    requestingMore = false;
+    notifyListeners();
   }
 }

@@ -27,6 +27,14 @@ class HomeTimelineModel extends TimelineModel {
 
   @override
   Future<void> requestMore() async {
-    // todo
+    await super.requestMore();
+
+    String id = "${tweets.last.id - 1}";
+    tweets.addAll(await tweetService.getHomeTimeline(
+      params: {"max_id": id},
+    ));
+
+    requestingMore = false;
+    notifyListeners();
   }
 }

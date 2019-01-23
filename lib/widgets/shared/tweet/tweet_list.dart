@@ -10,23 +10,60 @@ import 'package:scoped_model/scoped_model.dart';
 /// If [leading] is not `null` it will be placed at the start of the list.
 ///
 /// todo: implement request more
-class TweetList<T extends TimelineModel> extends StatelessWidget {
+class TweetList<T extends TimelineModel> extends StatefulWidget {
   const TweetList({
+//    this.controller,
     this.leading,
   });
 
+//  final ScrollController controller;
+
+  /// The first [Widget] in the [ListView] if not `null`.
   final Widget leading;
 
   @override
-  Widget build(BuildContext context) {
-    return ScopedModelDescendant<T>(
-      builder: (context, oldChild, TimelineModel timelineModel) {
-        return RefreshIndicator(
-          onRefresh: timelineModel.updateTweets,
-          child: _buildList(context, timelineModel, timelineModel.tweets),
-        );
-      },
-    );
+  TweetListState createState() => TweetListState<T>();
+}
+
+class TweetListState<T extends TimelineModel> extends State<TweetList> {
+  ScrollController _controller;
+  bool _disposeController = false;
+
+  TimelineModel _timelineModel;
+
+  /// Initializes the [_controller] if it hasn't been initialized yet.
+  ///
+  /// Can't be in [initState] because we get an inherited
+  /// [PrimaryScrollController] if it exists.
+  void _initScrollController() {
+    // todo
+    if (_controller == null) {
+      ScrollController inherited = PrimaryScrollController.of(context);
+      _controller = inherited ?? ScrollController();
+      _controller.addListener(_scrollListener);
+
+      // dispose the controller if it hasn't been inherited
+      _disposeController = inherited == null;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_disposeController) {
+      _controller.dispose();
+    }
+  }
+
+  void _scrollListener() {
+    if (_timelineModel != null) {
+      // if the list is scrolled to the bottom request more
+      if (!_timelineModel.requestingMore &&
+          !_timelineModel.blockRequestingMore &&
+          _controller.position.extentAfter < 150.0) {
+        _timelineModel.requestMore();
+      }
+    }
   }
 
   /// Adds the content for the [ListView].
@@ -37,27 +74,26 @@ class TweetList<T extends TimelineModel> extends StatelessWidget {
   ///
   /// If no [tweets] exist and the [TimelineModel] is not loading a message is
   /// built.
-  Widget _buildList(
-    BuildContext context,
-    TimelineModel model,
-    List<Tweet> tweets,
-  ) {
+  Widget _buildList() {
     List content = [];
-    if (leading != null) {
-      content.add(leading);
+    if (widget.leading != null) {
+      content.add(widget.leading);
     }
-    if (tweets?.isNotEmpty ?? false) {
-      content.addAll(tweets);
+    if (_timelineModel.tweets.isNotEmpty) {
+      content.addAll(_timelineModel.tweets);
     } else {
-      content.add(_addListPlaceholder(context, model));
+      content.add(_addListPlaceholder());
     }
-    if (model.requestingMore) {
-      content.add(_buildTrailing());
+    if (_timelineModel.requestingMore) {
+      content.add(_buildRequestingMore());
+    } else if (_timelineModel.blockRequestingMore) {
+      content.add(_buildRequestingMoreBlocked());
     }
 
     return SlideFadeInAnimation(
       offset: const Offset(0.0, 100.0),
       child: ListView.separated(
+        controller: _controller,
         padding: EdgeInsets.zero,
         itemCount: content.length,
         itemBuilder: (context, index) {
@@ -77,8 +113,8 @@ class TweetList<T extends TimelineModel> extends StatelessWidget {
     );
   }
 
-  Widget _addListPlaceholder(BuildContext context, TimelineModel model) {
-    if (model.loadingInitialTweets) {
+  Widget _addListPlaceholder() {
+    if (_timelineModel.loadingInitialTweets) {
       return Padding(
         padding: const EdgeInsets.all(32.0),
         child: Center(child: CircularProgressIndicator()),
@@ -91,7 +127,7 @@ class TweetList<T extends TimelineModel> extends StatelessWidget {
     }
   }
 
-  Widget _buildTrailing() {
+  Widget _buildRequestingMore() {
     return SizedBox(
       height: 100.0,
       child: Column(
@@ -102,6 +138,34 @@ class TweetList<T extends TimelineModel> extends StatelessWidget {
           CircularProgressIndicator(),
         ],
       ),
+    );
+  }
+
+  Widget _buildRequestingMoreBlocked() {
+    return SizedBox(
+      height: 100.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("Please wait a bit before loading more tweets"),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _initScrollController();
+
+    return ScopedModelDescendant<T>(
+      builder: (context, oldChild, TimelineModel timelineModel) {
+        _timelineModel = timelineModel;
+
+        return RefreshIndicator(
+          onRefresh: timelineModel.updateTweets,
+          child: _buildList(),
+        );
+      },
     );
   }
 }

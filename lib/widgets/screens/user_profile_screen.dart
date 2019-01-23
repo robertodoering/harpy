@@ -14,7 +14,7 @@ import 'package:scoped_model/scoped_model.dart';
 ///
 /// If [user] is `null` [userId] mustn't be `null` and is used to load the
 /// [User].
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({
     this.user,
     this.userId,
@@ -24,17 +24,25 @@ class UserProfileScreen extends StatelessWidget {
   final String userId;
 
   @override
+  UserProfileScreenState createState() => UserProfileScreenState();
+}
+
+class UserProfileScreenState extends State<UserProfileScreen> {
+  UserProfileModel userProfileModel;
+
+  @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
-    // todo: model gets re-initialized on every build?
+    userProfileModel ??= UserProfileModel(
+      user: widget.user,
+      userId: widget.userId,
+      userService: serviceProvider.data.userService,
+      userCache: serviceProvider.data.userCache,
+    );
+
     return ScopedModel<UserProfileModel>(
-      model: UserProfileModel(
-        user: user,
-        userId: userId,
-        userService: serviceProvider.data.userService,
-        userCache: serviceProvider.data.userCache,
-      ),
+      model: userProfileModel,
       child: ScopedModelDescendant<UserProfileModel>(
         builder: (context, _, model) {
           return _buildScreen(context, model);
