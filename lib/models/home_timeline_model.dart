@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
@@ -43,5 +44,13 @@ class HomeTimelineModel extends TimelineModel {
 
     requestingMore = false;
     notifyListeners();
+  }
+
+  void updateTweet(Tweet tweet) {
+    int index = tweets.indexOf(tweet);
+    if (index != -1) {
+      _log.fine("updating home timeline tweet");
+      tweets[index] = tweet;
+    }
   }
 }
