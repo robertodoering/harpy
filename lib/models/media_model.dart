@@ -28,7 +28,8 @@ class MediaModel extends Model {
   /// Returns `null` if the [TweetModel.tweet] has no media attached.
   List<TwitterMedia> get media => tweetModel.tweet?.extended_entities?.media;
 
-  bool get initiallyExpanded =>
+  /// Whether or not the media should show or not when building.
+  bool get initiallyShown =>
       tweetModel.tweet.harpyData.showMedia ?? true; // todo: get from settings
 
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].

@@ -20,6 +20,7 @@ class TweetCacheData {
   String userId;
 }
 
+// todo: refactor tweet cache for separate user and home timeline caches
 class TweetCache {
   TweetCache({
     @required this.directoryService,
@@ -151,7 +152,6 @@ class TweetCache {
       if (cachedFile != null) {
         // copy harpy data from the cached tweet if the tweet has been cached
         // before
-
         Tweet cachedTweet =
             Tweet.fromJson(jsonDecode(cachedFile.readAsStringSync()));
 

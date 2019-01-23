@@ -36,7 +36,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
     return ScopedModel<MediaModel>(
       model: mediaModel,
       child: CustomExpansionTile(
-        initiallyExpanded: mediaModel.initiallyExpanded,
+        initiallyExpanded: mediaModel.initiallyShown,
         onExpansionChanged: mediaModel.saveShowMediaState,
         child: ConstrainedBox(
           constraints: BoxConstraints(
