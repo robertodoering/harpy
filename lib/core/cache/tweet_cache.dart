@@ -97,7 +97,7 @@ class TweetCache {
 
   /// Updates a [Tweet] in the cache if it exists in the [bucket].
   void updateTweet(Tweet tweet) {
-    _log.fine("updating cached tweet");
+    _log.fine("updating cached tweet for $bucket");
 
     bool exists = tweetExists(tweet);
 

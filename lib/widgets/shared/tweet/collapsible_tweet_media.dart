@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/widgets/shared/custom_expansion_tile.dart';
@@ -26,12 +27,16 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   @override
   Widget build(BuildContext context) {
     final tweetModel = TweetModel.of(context);
-    mediaModel ??= MediaModel(tweetModel: tweetModel);
+    final homeTimelineModel = HomeTimelineModel.of(context);
+    mediaModel ??= MediaModel(
+      tweetModel: tweetModel,
+      homeTimelineModel: homeTimelineModel,
+    );
 
     return ScopedModel<MediaModel>(
       model: mediaModel,
       child: CustomExpansionTile(
-        initiallyExpanded: true,
+        initiallyExpanded: mediaModel.initiallyExpanded,
         onExpansionChanged: mediaModel.saveShowMediaState,
         child: ConstrainedBox(
           constraints: BoxConstraints(
