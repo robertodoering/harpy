@@ -10,7 +10,6 @@ import 'package:harpy/widgets/screens/user_profile_screen.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
 import 'package:harpy/widgets/shared/cache_provider.dart';
-import 'package:harpy/widgets/shared/media/old_twitter_media.dart';
 import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/widgets/shared/twitter_text.dart';
