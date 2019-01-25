@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/models/theme_model.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
 
@@ -14,12 +15,12 @@ class ThemeSettings extends StatelessWidget {
     // todo: load custom themes
     return HarpyScaffold(
       appBar: "Theme",
-      themeData: HarpyTheme().theme, // todo: remove this when rebuilding
+//      themeData: HarpyTheme().theme, // todo: remove this when rebuilding
       body: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: _buildThemeSelection(),
+            child: _buildThemeSelection(context),
           ),
           Expanded(child: _buildPreview()),
         ],
@@ -27,7 +28,9 @@ class ThemeSettings extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeSelection() {
+  Widget _buildThemeSelection(BuildContext context) {
+    final themeModel = ThemeModel.of(context);
+
     List<Widget> children = [];
 
     children
@@ -35,11 +38,11 @@ class ThemeSettings extends StatelessWidget {
         return ThemeCard(
           harpyTheme: harpyTheme,
           selected: false, // todo
-          onTap: () {}, // todo
+          onTap: () => themeModel.updateTheme(harpyTheme), // todo
         );
       }).toList());
 
-    children.add(_buildAddCustomTheme());
+    children.add(_buildAddCustomTheme(context));
 
     return Container(
       width: double.infinity,
@@ -65,7 +68,7 @@ class ThemeSettings extends StatelessWidget {
 //    );
   }
 
-  Widget _buildAddCustomTheme() {
+  Widget _buildAddCustomTheme(BuildContext context) {
     return SizedBox(
       width: 120,
       height: 120,
@@ -75,7 +78,7 @@ class ThemeSettings extends StatelessWidget {
             borderRadius: BorderRadius.circular(4.0),
             border: Border.all(
               width: 1.0,
-              color: HarpyTheme().theme.dividerColor,
+              color: Theme.of(context).dividerColor,
             )),
         child: InkWell(
           onTap: () {},

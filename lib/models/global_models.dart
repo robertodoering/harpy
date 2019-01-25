@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/theme_model.dart';
 import 'package:harpy/service_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -21,16 +22,20 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
   ApplicationModel applicationModel;
   LoginModel loginModel;
   HomeTimelineModel homeTimelineModel;
+  ThemeModel themeModel;
 
   @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
+
+    themeModel ??= ThemeModel();
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
       userTimelineCache: serviceProvider.data.userTimelineCache,
       homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
+      themeModel: themeModel,
     );
 
     homeTimelineModel ??= HomeTimelineModel(
@@ -51,7 +56,10 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
         model: loginModel,
         child: ScopedModel<HomeTimelineModel>(
           model: homeTimelineModel,
-          child: widget.child,
+          child: ScopedModel<ThemeModel>(
+            model: themeModel,
+            child: widget.child,
+          ),
         ),
       ),
     );

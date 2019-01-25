@@ -8,37 +8,30 @@ import 'package:harpy/theme.dart';
 class HarpyScaffold extends StatelessWidget {
   HarpyScaffold({
     @required this.appBar,
-    this.themeData,
     this.drawer,
     this.body,
   }) : assert(appBar is String || appBar is PreferredSizeWidget);
 
   final appBar;
-  final ThemeData themeData;
   final Widget drawer;
   final Widget body;
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: themeData ?? HarpyTheme().theme,
-      child: Scaffold(
-        appBar: appBar is PreferredSizeWidget
-            ? appBar
-            : AppBar(
-                centerTitle: true,
-                title: Text(
-                  appBar,
-                  style: HarpyTheme()
-                      .theme
-                      .textTheme
-                      .title
-                      .copyWith(fontSize: 20.0),
-                ),
+    return Scaffold(
+      appBar: appBar is PreferredSizeWidget
+          ? appBar
+          : AppBar(
+              centerTitle: true,
+              title: Text(
+                appBar,
+                style: Theme.of(context).textTheme.title.copyWith(
+                      fontSize: 20.0,
+                    ),
               ),
-        drawer: drawer,
-        body: body,
-      ),
+            ),
+      drawer: drawer,
+      body: body,
     );
   }
 }

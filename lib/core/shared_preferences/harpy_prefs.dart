@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HarpyPrefs {
-  final Logger log = Logger("HarpyPrefs");
+  final Logger _log = Logger("HarpyPrefs");
 
   SharedPreferences _preferences;
 
@@ -16,7 +16,7 @@ class HarpyPrefs {
   String get _prefix => AppConfiguration().twitterSession?.userId;
 
   Future<void> init() async {
-    log.fine("initializing harpy prefs");
+    _log.fine("initializing harpy prefs");
     _preferences = await SharedPreferences.getInstance();
   }
 

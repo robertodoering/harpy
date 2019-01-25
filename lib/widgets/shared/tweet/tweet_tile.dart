@@ -54,8 +54,8 @@ class TweetTileState extends State<TweetTile>
           padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
           child: ScopedModelDescendant<TweetModel>(
             builder: (context, _, model) {
-              // the content of this tweet that rebuilds when the tweet model
-              // notifies its listeners
+              // the content of the tweet tile that rebuilds when the tweet
+              // model notifies its listeners
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

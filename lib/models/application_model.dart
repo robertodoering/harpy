@@ -8,6 +8,7 @@ import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/core/utils/logger.dart';
+import 'package:harpy/models/theme_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -21,10 +22,12 @@ class ApplicationModel extends Model {
     @required this.homeTimelineCache,
     @required this.userTimelineCache,
     @required this.twitterClient,
+    @required this.themeModel,
   })  : assert(directoryService != null),
         assert(homeTimelineCache != null),
         assert(userTimelineCache != null),
-        assert(twitterClient != null) {
+        assert(twitterClient != null),
+        assert(themeModel != null) {
     _initialize();
   }
 
@@ -32,6 +35,7 @@ class ApplicationModel extends Model {
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
+  final ThemeModel themeModel;
 
   static ApplicationModel of(BuildContext context) {
     return ScopedModel.of<ApplicationModel>(context);
@@ -77,6 +81,9 @@ class ApplicationModel extends Model {
       // directory service
       directoryService.init,
     ]).run();
+
+    // init theme from shared prefs
+    themeModel.initTheme();
 
     initialized = true;
     if (onInitialized != null) {
