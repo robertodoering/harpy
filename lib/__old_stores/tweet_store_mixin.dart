@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_flux/flutter_flux.dart';
-import 'package:harpy/api/translate/data/translation.dart';
-import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 
@@ -103,11 +101,11 @@ mixin TweetStoreMixin on Store {
     Tweet originalTweet = tweet;
     tweet = tweet.retweetedStatus ?? tweet;
 
-    Translation translation = await translate(text: tweet.full_text);
+//    Translation translation = await translate(text: tweet.full_text);
 
-    originalTweet.harpyData.translation = translation;
+//    originalTweet.harpyData.translation = translation;
 
-    if (onTweetUpdated != null) onTweetUpdated(tweet);
+    if (onTweetUpdated != null) onTweetUpdated(originalTweet);
   }
 
   /// Returns `true` if the error contains any of the following error codes:

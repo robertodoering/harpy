@@ -28,7 +28,8 @@ class TweetTile extends StatefulWidget {
   TweetTileState createState() => TweetTileState();
 }
 
-class TweetTileState extends State<TweetTile> {
+class TweetTileState extends State<TweetTile>
+    with TickerProviderStateMixin<TweetTile> {
   TweetModel tweetModel;
 
   @override
@@ -42,6 +43,7 @@ class TweetTileState extends State<TweetTile> {
       homeTimelineCache: cacheProvider.homeTimelineCache,
       userTimelineCache: cacheProvider.userTimelineCache,
       tweetService: serviceProvider.data.tweetService,
+      translationService: serviceProvider.data.translationService,
     );
 
     return ScopedModel<TweetModel>(
@@ -61,7 +63,12 @@ class TweetTileState extends State<TweetTile> {
                   _buildRetweetedRow(model),
                   _TweetNameRow(),
                   _TweetText(),
-                  _TweetTranslation(),
+                  AnimatedSize(
+                    vsync: this,
+                    curve: Curves.easeIn,
+                    duration: const Duration(milliseconds: 300),
+                    child: _TweetTranslation(),
+                  ),
                   _buildMedia(model),
                   _TweetActionsRow(),
                 ],

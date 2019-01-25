@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
@@ -20,46 +21,35 @@ class ServiceContainer extends StatefulWidget {
 }
 
 class ServiceContainerState extends State<ServiceContainer> {
-  DirectoryService get directoryService => _directoryService;
-  DirectoryService _directoryService;
-
-  TwitterClient get twitterClient => _twitterClient;
-  TwitterClient _twitterClient;
-
-  HomeTimelineCache get homeTimelineCache => _homeTimelineCache;
-  HomeTimelineCache _homeTimelineCache;
-
-  UserTimelineCache get userTimelineCache => _userTimelineCache;
-  UserTimelineCache _userTimelineCache;
-
-  TweetService get tweetService => _tweetService;
-  TweetService _tweetService;
-
-  UserCache get userCache => _userCache;
-  UserCache _userCache;
-
-  UserService get userService => _userService;
-  UserService _userService;
+  DirectoryService directoryService;
+  TwitterClient twitterClient;
+  HomeTimelineCache homeTimelineCache;
+  UserTimelineCache userTimelineCache;
+  TweetService tweetService;
+  UserCache userCache;
+  UserService userService;
+  TranslationService translationService;
 
   @override
   void initState() {
     super.initState();
 
-    _directoryService = DirectoryService();
-    _twitterClient = TwitterClient();
-    _homeTimelineCache = HomeTimelineCache(directoryService: _directoryService);
-    _userTimelineCache = UserTimelineCache(directoryService: _directoryService);
-    _tweetService = TweetService(
-      directoryService: _directoryService,
-      twitterClient: _twitterClient,
-      homeTimelineCache: _homeTimelineCache,
-      userTimelineCache: _userTimelineCache,
+    directoryService = DirectoryService();
+    twitterClient = TwitterClient();
+    homeTimelineCache = HomeTimelineCache(directoryService: directoryService);
+    userTimelineCache = UserTimelineCache(directoryService: directoryService);
+    tweetService = TweetService(
+      directoryService: directoryService,
+      twitterClient: twitterClient,
+      homeTimelineCache: homeTimelineCache,
+      userTimelineCache: userTimelineCache,
     );
-    _userCache = UserCache(directoryService: _directoryService);
-    _userService = UserService(
-      twitterClient: _twitterClient,
-      userCache: _userCache,
+    userCache = UserCache(directoryService: directoryService);
+    userService = UserService(
+      twitterClient: twitterClient,
+      userCache: userCache,
     );
+    translationService = TranslationService();
   }
 
   @override

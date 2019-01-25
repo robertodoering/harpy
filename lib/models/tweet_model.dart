@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/api/translate/data/translation.dart';
+import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
@@ -26,15 +27,18 @@ class TweetModel extends Model {
     @required this.homeTimelineCache,
     @required this.userTimelineCache,
     @required this.tweetService,
+    @required this.translationService,
   })  : assert(originalTweet != null),
         assert(homeTimelineCache != null),
-        assert(tweetService != null);
+        assert(tweetService != null),
+        assert(translationService != null);
 
   final Tweet originalTweet;
 
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
   final TweetService tweetService;
+  final TranslationService translationService;
 
   static TweetModel of(BuildContext context) {
     return ScopedModel.of<TweetModel>(context);
@@ -62,7 +66,7 @@ class TweetModel extends Model {
   }
 
   /// Returns the [Translation] to the [tweet].
-  Translation get translation => tweet.harpyData.translation;
+  Translation get translation => originalTweet.harpyData.translation;
 
   /// True while the [tweet] is being translated.
   bool translating = false;
@@ -154,8 +158,27 @@ class TweetModel extends Model {
   }
 
   /// Translate this [tweet].
-  void translate() {
-    // todo
+  ///
+  /// The [Translation] is always saved in the [originalTweet], even if the
+  /// [Tweet] is a retweet.
+  Future<void> translate() async {
+    translating = true;
+    notifyListeners();
+
+    Translation translation = await translationService
+        .translate(text: tweet.full_text)
+        .catchError((_) {
+      translating = false;
+      notifyListeners();
+    });
+
+    originalTweet.harpyData.translation = translation;
+
+    translating = false;
+    notifyListeners();
+
+    homeTimelineCache.updateTweet(originalTweet);
+    userTimelineCache?.updateTweet(originalTweet);
   }
 
   /// Returns `true` if the error contains any of the following error codes:
