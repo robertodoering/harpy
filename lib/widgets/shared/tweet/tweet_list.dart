@@ -8,15 +8,10 @@ import 'package:scoped_model/scoped_model.dart';
 /// The list of [TweetTile] for a [TimelineModel].
 ///
 /// If [leading] is not `null` it will be placed at the start of the list.
-///
-/// todo: implement request more
 class TweetList<T extends TimelineModel> extends StatefulWidget {
   const TweetList({
-//    this.controller,
     this.leading,
   });
-
-//  final ScrollController controller;
 
   /// The first [Widget] in the [ListView] if not `null`.
   final Widget leading;
@@ -36,13 +31,14 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   /// Can't be in [initState] because we get an inherited
   /// [PrimaryScrollController] if it exists.
   void _initScrollController() {
-    // todo
     if (_controller == null) {
       ScrollController inherited = PrimaryScrollController.of(context);
       _controller = inherited ?? ScrollController();
       _controller.addListener(_scrollListener);
 
       // dispose the controller if it hasn't been inherited
+      // it gets inherited by the FadingNestedScaffold in the user profile
+      // screen
       _disposeController = inherited == null;
     }
   }

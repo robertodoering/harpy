@@ -15,7 +15,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LoginModel loginModel = LoginModel.of(context);
+    final loginModel = LoginModel.of(context);
+    final applicationModel = ApplicationModel.of(context);
 
     loginModel.onAuthorized = () => onAuthorized(context);
 
@@ -32,7 +33,7 @@ class LoginScreen extends StatelessWidget {
           Expanded(
             child: ScopedModelDescendant<LoginModel>(
               builder: (context, _, model) {
-                if (model.authorizing) {
+                if (model.authorizing || applicationModel.loggedIn) {
                   return Container();
                 } else {
                   return LoginButton(onPressed: model.login);

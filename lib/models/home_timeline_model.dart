@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -10,19 +10,13 @@ import 'package:scoped_model/scoped_model.dart';
 class HomeTimelineModel extends TimelineModel {
   HomeTimelineModel({
     @required TweetService tweetService,
-    @required TweetCache tweetCache,
-  }) : super(tweetService: tweetService, tweetCache: tweetCache);
+    @required HomeTimelineCache homeTimelineCache,
+  }) : super(tweetService: tweetService, tweetCache: homeTimelineCache);
 
   static final Logger _log = Logger("HomeTimelineModel");
 
   static HomeTimelineModel of(BuildContext context) {
     return ScopedModel.of<HomeTimelineModel>(context);
-  }
-
-  @override
-  Future<void> initTweets() async {
-    tweetCache.home();
-    return super.initTweets();
   }
 
   @override

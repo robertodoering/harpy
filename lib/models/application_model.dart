@@ -2,7 +2,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/home_timeline_cache.dart';
+import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/initialization/async_initializer.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -17,16 +18,19 @@ import 'package:yaml/yaml.dart';
 class ApplicationModel extends Model {
   ApplicationModel({
     @required this.directoryService,
-    @required this.tweetCache,
+    @required this.homeTimelineCache,
+    @required this.userTimelineCache,
     @required this.twitterClient,
   })  : assert(directoryService != null),
-        assert(tweetCache != null),
+        assert(homeTimelineCache != null),
+        assert(userTimelineCache != null),
         assert(twitterClient != null) {
     _initialize();
   }
 
   final DirectoryService directoryService;
-  final TweetCache tweetCache;
+  final HomeTimelineCache homeTimelineCache;
+  final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
 
   static ApplicationModel of(BuildContext context) {
@@ -61,7 +65,6 @@ class ApplicationModel extends Model {
 
     // set application model references
     twitterClient.applicationModel = this;
-    tweetCache.applicationModel = this;
 
     // async initializations
     await AsyncInitializer(<AsyncTask>[
@@ -101,5 +104,9 @@ class ApplicationModel extends Model {
 
     // init active twitter session
     twitterSession = await twitterLogin.currentSession;
+
+    // init tweet cache logged in user
+    userTimelineCache.initLoggedInUser(twitterSession.userId);
+    homeTimelineCache.initLoggedInUser(twitterSession.userId);
   }
 }

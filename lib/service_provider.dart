@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
+import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 
 /// Builds the [ServiceProvider] and holds services in its state.
@@ -25,8 +26,11 @@ class ServiceContainerState extends State<ServiceContainer> {
   TwitterClient get twitterClient => _twitterClient;
   TwitterClient _twitterClient;
 
-  TweetCache get tweetCache => _tweetCache;
-  TweetCache _tweetCache;
+  HomeTimelineCache get homeTimelineCache => _homeTimelineCache;
+  HomeTimelineCache _homeTimelineCache;
+
+  UserTimelineCache get userTimelineCache => _userTimelineCache;
+  UserTimelineCache _userTimelineCache;
 
   TweetService get tweetService => _tweetService;
   TweetService _tweetService;
@@ -43,11 +47,13 @@ class ServiceContainerState extends State<ServiceContainer> {
 
     _directoryService = DirectoryService();
     _twitterClient = TwitterClient();
-    _tweetCache = TweetCache(directoryService: _directoryService);
+    _homeTimelineCache = HomeTimelineCache(directoryService: _directoryService);
+    _userTimelineCache = UserTimelineCache(directoryService: _directoryService);
     _tweetService = TweetService(
       directoryService: _directoryService,
       twitterClient: _twitterClient,
-      tweetCache: _tweetCache,
+      homeTimelineCache: _homeTimelineCache,
+      userTimelineCache: _userTimelineCache,
     );
     _userCache = UserCache(directoryService: _directoryService);
     _userService = UserService(

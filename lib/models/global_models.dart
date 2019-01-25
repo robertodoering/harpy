@@ -28,13 +28,14 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
-      tweetCache: serviceProvider.data.tweetCache,
+      userTimelineCache: serviceProvider.data.userTimelineCache,
+      homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
     );
 
     homeTimelineModel ??= HomeTimelineModel(
       tweetService: serviceProvider.data.tweetService,
-      tweetCache: serviceProvider.data.tweetCache,
+      homeTimelineCache: serviceProvider.data.homeTimelineCache,
     );
 
     loginModel ??= LoginModel(

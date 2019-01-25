@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
-import 'package:harpy/models/application_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -20,11 +19,10 @@ class TweetCacheData {
   String userId;
 }
 
-// todo: refactor tweet cache for separate user and home timeline caches
 class TweetCache {
   TweetCache({
     @required this.directoryService,
-  });
+  }) : assert(directoryService != null);
 
   /// Constructs a [TweetCache] from the [TweetCacheData].
   ///
@@ -33,37 +31,17 @@ class TweetCache {
 
   final DirectoryService directoryService;
 
-  static Logger _log = Logger("TweetCache");
-
-  static const String homeTimeline = "home_timeline";
-  static const String userTimeline = "user_timeline";
+  static final Logger _log = Logger("TweetCache");
 
   /// Instance that can be used in isolates.
   static TweetCache isolateInstance;
 
-  ApplicationModel applicationModel;
-
   /// The [data] used to construct a [TweetCache] for isolates.
   TweetCacheData data = TweetCacheData();
 
-  /// Sets the data for the home timeline cache.
-  TweetCache home() {
-    assert(applicationModel != null);
-    data.loggedInUserId = applicationModel.twitterSession.userId;
-    data.type = homeTimeline;
-    data.userId = null;
-
-    return this;
-  }
-
-  /// Sets the data for the user timeline cache.
-  TweetCache user(String userId) {
-    assert(applicationModel != null);
-    data.loggedInUserId = applicationModel.twitterSession.userId;
-    data.type = userTimeline;
-    data.userId = userId;
-
-    return this;
+  /// Sets the [TweetCacheData.loggedInUserId] for the bucket.
+  void initLoggedInUser(String loggedInUserId) {
+    data.loggedInUserId = loggedInUserId;
   }
 
   /// The sub directory where the files are stored.
@@ -72,6 +50,7 @@ class TweetCache {
   String get bucket {
     // make sure the data has been set before accessing the bucket
     assert(data.type != null);
+    assert(data.loggedInUserId != null);
 
     String bucket = "tweets/${data.type}/${data.loggedInUserId}";
 

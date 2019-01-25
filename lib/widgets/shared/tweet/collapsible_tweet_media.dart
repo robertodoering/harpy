@@ -28,6 +28,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   Widget build(BuildContext context) {
     final tweetModel = TweetModel.of(context);
     final homeTimelineModel = HomeTimelineModel.of(context);
+
     mediaModel ??= MediaModel(
       tweetModel: tweetModel,
       homeTimelineModel: homeTimelineModel,

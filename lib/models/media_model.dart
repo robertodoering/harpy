@@ -42,8 +42,11 @@ class MediaModel extends Model {
     Tweet tweet = tweetModel.tweet;
     tweet.harpyData.showMedia = showing;
 
+    // update in home timeline
     homeTimelineModel.updateTweet(tweet);
 
-    tweetModel.tweetCache.updateTweet(tweet);
+    // update in cache
+    tweetModel.homeTimelineCache.updateTweet(tweet);
+    tweetModel.userTimelineCache?.updateTweet(tweet);
   }
 }

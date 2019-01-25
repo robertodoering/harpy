@@ -4,6 +4,7 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/models/user_profile_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
 import 'package:harpy/service_provider.dart';
+import 'package:harpy/widgets/shared/cache_provider.dart';
 import 'package:harpy/widgets/shared/scaffolds.dart';
 import 'package:harpy/widgets/shared/tweet/tweet_list.dart';
 import 'package:harpy/widgets/shared/user_profile_header.dart';
@@ -101,10 +102,14 @@ class _UserProfileTweetList extends StatelessWidget {
       model: UserTimelineModel(
         userId: "${userProfileModel.user.id}",
         tweetService: serviceProvider.data.tweetService,
-        tweetCache: serviceProvider.data.tweetCache,
+        userTimelineCache: serviceProvider.data.userTimelineCache,
       ),
-      child: TweetList<UserTimelineModel>(
-        leading: UserProfileHeader(user: userProfileModel.user),
+      child: CacheProvider(
+        homeTimelineCache: serviceProvider.data.homeTimelineCache,
+        userTimelineCache: serviceProvider.data.userTimelineCache,
+        child: TweetList<UserTimelineModel>(
+          leading: UserProfileHeader(user: userProfileModel.user),
+        ),
       ),
     );
   }

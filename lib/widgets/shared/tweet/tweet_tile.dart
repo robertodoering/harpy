@@ -9,6 +9,7 @@ import 'package:harpy/service_provider.dart';
 import 'package:harpy/widgets/screens/user_profile_screen.dart';
 import 'package:harpy/widgets/shared/animations.dart';
 import 'package:harpy/widgets/shared/buttons.dart';
+import 'package:harpy/widgets/shared/cache_provider.dart';
 import 'package:harpy/widgets/shared/media/old_twitter_media.dart';
 import 'package:harpy/widgets/shared/misc.dart';
 import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
@@ -33,11 +34,13 @@ class TweetTileState extends State<TweetTile> {
   @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
+    final cacheProvider = CacheProvider.of(context);
 
     // create the tweet model once
     tweetModel ??= TweetModel(
       originalTweet: widget.tweet,
-      tweetCache: serviceProvider.data.tweetCache,
+      homeTimelineCache: cacheProvider.homeTimelineCache,
+      userTimelineCache: cacheProvider.userTimelineCache,
       tweetService: serviceProvider.data.tweetService,
     );
 
@@ -196,7 +199,7 @@ class _TweetTranslation extends StatelessWidget {
       return Container();
     }
 
-    // todo: expand into existence
+    // todo: expand into existence with animated container
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

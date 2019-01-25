@@ -1,8 +1,10 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/handle_response.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/tweet_cache_isolate.dart';
+import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/filesystem/directory_service.dart';
 import 'package:harpy/core/utils/isolate_work.dart';
 import 'package:harpy/core/utils/json_mapper.dart';
@@ -15,14 +17,17 @@ class TweetService {
   TweetService({
     @required this.directoryService,
     @required this.twitterClient,
-    @required this.tweetCache,
+    @required this.homeTimelineCache,
+    @required this.userTimelineCache,
   })  : assert(directoryService != null),
         assert(twitterClient != null),
-        assert(tweetCache != null);
+        assert(homeTimelineCache != null),
+        assert(userTimelineCache != null);
 
   final DirectoryService directoryService;
   final TwitterClient twitterClient;
-  final TweetCache tweetCache;
+  final HomeTimelineCache homeTimelineCache;
+  final UserTimelineCache userTimelineCache;
 
   /// Returns a the home timeline for the logged in user.
   ///
@@ -59,7 +64,7 @@ class TweetService {
       tweets = await isolateWork<List<Tweet>, List<Tweet>>(
         callback: updateCachedTweets,
         message: tweets,
-        tweetCacheData: tweetCache.home().data,
+        tweetCacheData: homeTimelineCache.data,
         directoryServiceData: directoryService.data,
       );
 
@@ -106,14 +111,14 @@ class TweetService {
       tweets = await isolateWork<List<Tweet>, List<Tweet>>(
           callback: _copyHomeHarpyData,
           message: tweets,
-          tweetCacheData: tweetCache.home().data,
+          tweetCacheData: homeTimelineCache.data,
           directoryServiceData: directoryService.data);
 
       // then update cached tweet for user
       isolateWork<List<Tweet>, void>(
         callback: updateCachedTweets,
         message: tweets,
-        tweetCacheData: tweetCache.user(userId).data,
+        tweetCacheData: userTimelineCache.user(userId).data,
         directoryServiceData: directoryService.data,
       );
 

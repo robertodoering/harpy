@@ -4,23 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/home_timeline_cache.dart';
+import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+/// The [Model] for a single [Tweet].
+///
+/// Handles changes on the [Tweet] including actions (favorite, retweet,
+/// translate, ...) and updates the [ScopedModelDescendant] when the state
+/// changes.
+///
+/// Changes to the [Tweet] always changes the [homeTimelineCache] if the [Tweet]
+/// exists in it.
+/// It will also update the [Tweet] in the [userTimelineCache] if it is not
+/// `null`.
 class TweetModel extends Model {
   TweetModel({
     @required this.originalTweet,
-    @required this.tweetCache,
+    @required this.homeTimelineCache,
+    @required this.userTimelineCache,
     @required this.tweetService,
   })  : assert(originalTweet != null),
-        assert(tweetCache != null),
+        assert(homeTimelineCache != null),
         assert(tweetService != null);
 
   final Tweet originalTweet;
 
-  final TweetCache tweetCache;
+  final HomeTimelineCache homeTimelineCache;
+  final UserTimelineCache userTimelineCache;
   final TweetService tweetService;
 
   static TweetModel of(BuildContext context) {
@@ -68,7 +81,8 @@ class TweetModel extends Model {
 
     tweetService.retweet(tweet.idStr)
       ..then((_) {
-        tweetCache.updateTweet(originalTweet);
+        homeTimelineCache.updateTweet(originalTweet);
+        userTimelineCache?.updateTweet(originalTweet);
       })
       ..catchError((error) {
         if (!_actionPerformed(error)) {
@@ -87,7 +101,8 @@ class TweetModel extends Model {
 
     tweetService.unretweet(tweet.idStr)
       ..then((_) {
-        tweetCache.updateTweet(originalTweet);
+        homeTimelineCache.updateTweet(originalTweet);
+        userTimelineCache?.updateTweet(originalTweet);
       })
       ..catchError((error) {
         if (!_actionPerformed(error)) {
@@ -106,7 +121,8 @@ class TweetModel extends Model {
 
     tweetService.favorite(tweet.idStr)
       ..then((_) {
-        tweetCache.updateTweet(originalTweet);
+        homeTimelineCache.updateTweet(originalTweet);
+        userTimelineCache?.updateTweet(originalTweet);
       })
       ..catchError((error) {
         if (!_actionPerformed(error)) {
@@ -125,7 +141,8 @@ class TweetModel extends Model {
 
     tweetService.unfavorite(tweet.idStr)
       ..then((_) {
-        tweetCache.updateTweet(originalTweet);
+        homeTimelineCache.updateTweet(originalTweet);
+        userTimelineCache?.updateTweet(originalTweet);
       })
       ..catchError((error) {
         if (!_actionPerformed(error)) {
