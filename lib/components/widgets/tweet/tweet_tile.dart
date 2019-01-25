@@ -2,17 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/utils/harpy_navigator.dart';
-import 'package:harpy/core/utils/url_launcher.dart';
+import 'package:harpy/components/screens/user_profile_screen.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/cache_provider.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
+import 'package:harpy/components/widgets/shared/twitter_text.dart';
+import 'package:harpy/components/widgets/tweet/collapsible_tweet_media.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/tweet_model.dart';
-import 'package:harpy/service_provider.dart';
-import 'package:harpy/widgets/screens/user_profile_screen.dart';
-import 'package:harpy/widgets/shared/animations.dart';
-import 'package:harpy/widgets/shared/buttons.dart';
-import 'package:harpy/widgets/shared/cache_provider.dart';
-import 'package:harpy/widgets/shared/misc.dart';
-import 'package:harpy/widgets/shared/tweet/collapsible_tweet_media.dart';
-import 'package:harpy/widgets/shared/twitter_text.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TweetTile extends StatefulWidget {

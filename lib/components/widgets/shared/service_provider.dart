@@ -6,7 +6,7 @@ import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
-import 'package:harpy/core/filesystem/directory_service.dart';
+import 'package:harpy/core/misc/directory_service.dart';
 
 /// Builds the [ServiceProvider] and holds services in its state.
 class ServiceContainer extends StatefulWidget {

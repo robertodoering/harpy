@@ -3,10 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/twitter_text.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/core/utils/date_utils.dart';
-import 'package:harpy/core/utils/url_launcher.dart';
-import 'package:harpy/widgets/shared/misc.dart';
-import 'package:harpy/widgets/shared/twitter_text.dart';
 
 /// The [UserProfileHeader] containing the information about the [User].
 ///

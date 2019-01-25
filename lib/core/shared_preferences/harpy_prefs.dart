@@ -1,5 +1,4 @@
-import 'package:harpy/core/config/app_configuration.dart';
-import 'package:harpy/theme.dart';
+import 'package:harpy/core/misc/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +12,7 @@ class HarpyPrefs {
   HarpyPrefs._();
 
   /// The [_prefix] is used in keys for user specific preferences.
-  String get _prefix => AppConfiguration().twitterSession?.userId;
+  String get _prefix => ""; // todo
 
   Future<void> init() async {
     _log.fine("initializing harpy prefs");

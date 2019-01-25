@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
-import 'package:harpy/core/filesystem/directory_service.dart';
-import 'package:harpy/core/utils/logger.dart';
+import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/core/misc/logger.dart';
 import 'package:logging/logging.dart';
 
 final Logger _log = Logger("IsolateWork");

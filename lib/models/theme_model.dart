@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/misc/theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
-import 'package:harpy/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
 

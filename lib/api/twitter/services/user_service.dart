@@ -1,7 +1,7 @@
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/utils/json_mapper.dart';
+import 'package:harpy/core/misc/json_mapper.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 

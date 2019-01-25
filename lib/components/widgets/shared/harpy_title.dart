@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 
 /// An animated title that will fade in and fade out.
 class HarpyTitle extends StatelessWidget {

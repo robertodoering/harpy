@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 
 /// A rectangular button that can have an an [icon], [text] or both.
 class HarpyButton extends StatefulWidget {

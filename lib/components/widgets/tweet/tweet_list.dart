@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/models/timeline_model.dart';
-import 'package:harpy/widgets/shared/animations.dart';
-import 'package:harpy/widgets/shared/tweet/tweet_tile.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// The list of [TweetTile] for a [TimelineModel].

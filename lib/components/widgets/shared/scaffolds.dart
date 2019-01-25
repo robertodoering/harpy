@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/theme.dart';
+import 'package:harpy/core/misc/theme.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
 ///

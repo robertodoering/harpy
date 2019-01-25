@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/utils/harpy_navigator.dart';
-import 'package:harpy/widgets/screens/theme_settings.dart';
-import 'package:harpy/widgets/shared/scaffolds.dart';
+import 'package:harpy/components/screens/theme_settings.dart';
+import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override

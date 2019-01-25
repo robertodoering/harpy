@@ -5,9 +5,9 @@ import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:harpy/core/cache/tweet_cache_isolate.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
-import 'package:harpy/core/filesystem/directory_service.dart';
-import 'package:harpy/core/utils/isolate_work.dart';
-import 'package:harpy/core/utils/json_mapper.dart';
+import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/core/misc/isolate_work.dart';
+import 'package:harpy/core/misc/json_mapper.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 

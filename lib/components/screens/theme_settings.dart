@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/theme.dart';
 import 'package:harpy/models/theme_model.dart';
-import 'package:harpy/theme.dart';
-import 'package:harpy/widgets/shared/scaffolds.dart';
 
 class ThemeSettings extends StatelessWidget {
   // todo

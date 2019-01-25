@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/utils/harpy_navigator.dart';
+import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/screens/settings_screen.dart';
+import 'package:harpy/components/screens/user_profile_screen.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/login_model.dart';
-import 'package:harpy/widgets/screens/login_screen.dart';
-import 'package:harpy/widgets/screens/settings_screen.dart';
-import 'package:harpy/widgets/screens/user_profile_screen.dart';
-import 'package:harpy/widgets/shared/misc.dart';
 
 /// The [Drawer] shown in the [HomeScreen].
 ///

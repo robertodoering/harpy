@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/components/widgets/media/media_dialog.dart';
+import 'package:harpy/components/widgets/media/twitter_video_player.dart';
+import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
+import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/tweet_model.dart';
-import 'package:harpy/widgets/shared/custom_expansion_tile.dart';
-import 'package:harpy/widgets/shared/media/media_dialog.dart';
-import 'package:harpy/widgets/shared/media/twitter_video_player.dart';
-import 'package:harpy/widgets/shared/routes.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 // media types

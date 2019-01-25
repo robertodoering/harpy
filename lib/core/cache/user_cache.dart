@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/filesystem/directory_service.dart';
+import 'package:harpy/core/misc/directory_service.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/theme_model.dart';
-import 'package:harpy/service_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// Wraps the app wide [ScopedModel]s and holds the instances in its state.
