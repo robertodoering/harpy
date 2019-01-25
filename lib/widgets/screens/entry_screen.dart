@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/utils/harpy_navigator.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/theme.dart';
 import 'package:harpy/widgets/screens/home_screen.dart';
 import 'package:harpy/widgets/screens/login_screen.dart';
+import 'package:harpy/widgets/shared/routes.dart';
 import 'package:logging/logging.dart';
 
 /// The screen shown during the start of the app.
@@ -40,8 +40,9 @@ class EntryScreen extends StatelessWidget {
       await loginModel.initBeforeHome();
 
       _log.fine("navigating to home screen");
-      // todo: dont use material page route
-      HarpyNavigator.pushReplacement(context, HomeScreen());
+      Navigator.of(context).pushReplacement(FadeRoute(
+        builder: (context) => HomeScreen(),
+      ));
     } else {
       _log.fine("navigating to login screen");
       // route without a transition
