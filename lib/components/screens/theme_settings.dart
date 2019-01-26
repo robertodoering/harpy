@@ -4,7 +4,6 @@ import 'package:harpy/core/misc/theme.dart';
 import 'package:harpy/models/theme_model.dart';
 
 class ThemeSettings extends StatelessWidget {
-  // todo
   final List<HarpyTheme> _harpyThemes = [
     HarpyTheme.light(),
     HarpyTheme.dark(),
@@ -15,7 +14,6 @@ class ThemeSettings extends StatelessWidget {
     // todo: load custom themes
     return HarpyScaffold(
       appBar: "Theme",
-//      themeData: HarpyTheme().theme, // todo: remove this when rebuilding
       body: Column(
         children: <Widget>[
           Padding(
@@ -33,14 +31,13 @@ class ThemeSettings extends StatelessWidget {
 
     List<Widget> children = [];
 
-    children
-      ..addAll(_harpyThemes.map((harpyTheme) {
-        return ThemeCard(
-          harpyTheme: harpyTheme,
-          selected: false, // todo
-          onTap: () => themeModel.updateTheme(harpyTheme), // todo
-        );
-      }).toList());
+    children.addAll(_harpyThemes.map((harpyTheme) {
+      return ThemeCard(
+        harpyTheme: harpyTheme,
+        selected: themeModel.harpyTheme.name == harpyTheme.name,
+        onTap: () => themeModel.updateTheme(harpyTheme),
+      );
+    }).toList());
 
     children.add(_buildAddCustomTheme(context));
 

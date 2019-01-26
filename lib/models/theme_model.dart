@@ -5,6 +5,12 @@ import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ThemeModel extends Model {
+  ThemeModel({
+    @required this.harpyPrefs,
+  });
+
+  final HarpyPrefs harpyPrefs;
+
   static ThemeModel of(BuildContext context) {
     return ScopedModel.of<ThemeModel>(context);
   }
@@ -15,6 +21,7 @@ class ThemeModel extends Model {
 
   void updateTheme(HarpyTheme theme) {
     harpyTheme = theme;
+    harpyPrefs.themeName = theme.name;
     notifyListeners();
   }
 
@@ -22,11 +29,11 @@ class ThemeModel extends Model {
   ///
   /// Defaults to [HarpyTheme.dark].
   void initTheme() {
-    _log.fine("initializing harpy theme with ${HarpyPrefs().themeName}");
+    _log.fine("initializing harpy theme with ${harpyPrefs.themeName}");
 
-    if (HarpyPrefs().themeName == HarpyTheme.dark().name) {
+    if (harpyPrefs.themeName == HarpyTheme.dark().name) {
       harpyTheme = HarpyTheme.dark();
-    } else if (HarpyPrefs().themeName == HarpyTheme.light().name) {
+    } else if (harpyPrefs.themeName == HarpyTheme.light().name) {
       harpyTheme = HarpyTheme.light();
     } else {
       _log.severe("custom theme not yet supported, panic");

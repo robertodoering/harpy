@@ -22,11 +22,13 @@ class ApplicationModel extends Model {
     @required this.homeTimelineCache,
     @required this.userTimelineCache,
     @required this.twitterClient,
+    @required this.harpyPrefs,
     @required this.themeModel,
   })  : assert(directoryService != null),
         assert(homeTimelineCache != null),
         assert(userTimelineCache != null),
         assert(twitterClient != null),
+        assert(harpyPrefs != null),
         assert(themeModel != null) {
     _initialize();
   }
@@ -35,6 +37,7 @@ class ApplicationModel extends Model {
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
+  final HarpyPrefs harpyPrefs;
   final ThemeModel themeModel;
 
   static ApplicationModel of(BuildContext context) {
@@ -69,6 +72,7 @@ class ApplicationModel extends Model {
 
     // set application model references
     twitterClient.applicationModel = this;
+    harpyPrefs.applicationModel = this;
 
     // async initializations
     await AsyncInitializer(<AsyncTask>[
@@ -76,7 +80,7 @@ class ApplicationModel extends Model {
       _initTwitterSession,
 
       // harpy shared preferences
-      HarpyPrefs().init,
+      harpyPrefs.init,
 
       // directory service
       directoryService.init,

@@ -7,6 +7,7 @@ import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 
 /// Builds the [ServiceProvider] and holds services in its state.
 class ServiceContainer extends StatefulWidget {
@@ -29,6 +30,7 @@ class ServiceContainerState extends State<ServiceContainer> {
   UserCache userCache;
   UserService userService;
   TranslationService translationService;
+  HarpyPrefs harpyPrefs;
 
   @override
   void initState() {
@@ -50,6 +52,7 @@ class ServiceContainerState extends State<ServiceContainer> {
       userCache: userCache,
     );
     translationService = TranslationService();
+    harpyPrefs = HarpyPrefs();
   }
 
   @override

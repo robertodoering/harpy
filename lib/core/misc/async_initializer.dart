@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 typedef Future<void> AsyncTask();
 
 class AsyncInitializer {
-  final Logger log = Logger("AsyncInitializer");
+  final Logger _log = Logger("AsyncInitializer");
 
   final List<AsyncTask> tasks;
   final Completer<void> completer = Completer();
@@ -15,10 +15,10 @@ class AsyncInitializer {
   /// Calls all tasks at the same time and returns once every task has
   /// completed.
   Future<void> run() async {
-    log.fine("async initialization started with ${tasks.length} tasks");
+    _log.fine("async initialization started with ${tasks.length} tasks");
 
     for (AsyncTask task in tasks) {
-      log.fine("task ${tasks.indexOf(task)} started");
+      _log.fine("task ${tasks.indexOf(task)} started");
       task()
           .then((_) => _onTaskFinished(task))
           .catchError((_) => _onTaskFinished(task));
@@ -31,7 +31,7 @@ class AsyncInitializer {
     tasks.remove(task);
 
     if (tasks.isEmpty) {
-      log.fine("all tasks finished");
+      _log.fine("all tasks finished");
       completer.complete();
     }
   }

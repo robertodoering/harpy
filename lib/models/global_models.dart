@@ -28,13 +28,16 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
-    themeModel ??= ThemeModel();
+    themeModel ??= ThemeModel(
+      harpyPrefs: serviceProvider.data.harpyPrefs,
+    );
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
       userTimelineCache: serviceProvider.data.userTimelineCache,
       homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
+      harpyPrefs: serviceProvider.data.harpyPrefs,
       themeModel: themeModel,
     );
 
