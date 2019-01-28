@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
   flutter_twitter_login:
@@ -20,6 +20,8 @@ dependencies:
   video_player: ^0.7.2
   photo_view:
     git: https://github.com/robertodoering/photo_view.git
+  scoped_model: ^1.0.1
+  async_loader: ^0.1.2
 
   flutter:
     sdk: flutter

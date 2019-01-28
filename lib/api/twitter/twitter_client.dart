@@ -1,40 +1,45 @@
 import 'dart:convert';
 
-import 'package:harpy/core/config/app_configuration.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/models/application_model.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 
 class TwitterClient {
-  final Logger log = Logger("TwitterClient");
+  static final Logger _log = Logger("TwitterClient");
 
-  oauth1.Platform _platform;
-  oauth1.ClientCredentials _clientCredentials;
-  oauth1.Client client;
+  ApplicationModel applicationModel;
 
-  static TwitterClient _instance = TwitterClient._();
-  factory TwitterClient() => _instance;
-
-  TwitterClient._() {
-    _platform = oauth1.Platform(
+  oauth1.Platform get _platform {
+    return oauth1.Platform(
       'https://api.twitter.com/oauth/request_token',
       'https://api.twitter.com/oauth/authorize',
       'https://api.twitter.com/oauth/access_token',
       oauth1.SignatureMethods.HMAC_SHA1,
     );
+  }
 
-    _clientCredentials = oauth1.ClientCredentials(
-      AppConfiguration().consumerKey,
-      AppConfiguration().consumerSecret,
+  oauth1.ClientCredentials get _clientCredentials {
+    assert(applicationModel != null);
+    assert(applicationModel.twitterLogin != null);
+
+    return oauth1.ClientCredentials(
+      applicationModel.twitterLogin.consumerKey,
+      applicationModel.twitterLogin.consumerSecret,
     );
+  }
 
-    client = oauth1.Client(
+  oauth1.Client get _client {
+    assert(applicationModel != null);
+    assert(applicationModel.twitterSession != null);
+
+    return oauth1.Client(
       _platform.signatureMethod,
       _clientCredentials,
       oauth1.Credentials(
-        AppConfiguration().twitterSession.token,
-        AppConfiguration().twitterSession.secret,
+        applicationModel.twitterSession.token,
+        applicationModel.twitterSession.secret,
       ),
     );
   }
@@ -44,9 +49,9 @@ class TwitterClient {
     Map<String, String> headers,
     Map<String, String> params,
   }) {
+    _log.fine("sending get request: $url");
     url = appendParamsToUrl(url, params);
-    log.fine("sending get request: $url");
-    return client.get(url, headers: headers);
+    return _client.get(url, headers: headers);
   }
 
   Future<Response> post(
@@ -55,7 +60,7 @@ class TwitterClient {
     dynamic body,
     Encoding encoding,
   }) {
-    log.fine("sending post request: $url");
-    return client.post(url, headers: headers, body: body, encoding: encoding);
+    _log.fine("sending post request: $url");
+    return _client.post(url, headers: headers, body: body, encoding: encoding);
   }
 }
