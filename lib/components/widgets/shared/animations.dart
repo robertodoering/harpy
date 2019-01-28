@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 
 /// Slides and fades its child into position upon creation.
 class SlideFadeInAnimation extends StatefulWidget {
+  const SlideFadeInAnimation({
+    Key key,
+    this.duration = const Duration(seconds: 1),
+    this.delay = Duration.zero,
+    this.offset = Offset.zero,
+    this.skipIntroAnimation = false,
+    this.finishCallback = null,
+    @required this.child,
+  }) : super(key: key);
+
   /// The duration of the animation.
   final Duration duration;
 
@@ -19,16 +29,6 @@ class SlideFadeInAnimation extends StatefulWidget {
 
   /// The child to animate.
   final Widget child;
-
-  SlideFadeInAnimation({
-    Key key,
-    this.duration = const Duration(seconds: 1),
-    this.delay = Duration.zero,
-    this.offset = Offset.zero,
-    this.skipIntroAnimation = false,
-    this.finishCallback = null,
-    @required this.child,
-  }) : super(key: key);
 
   @override
   _SlideFadeInAnimationState createState() => _SlideFadeInAnimationState();
@@ -72,12 +72,6 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
   }
 
   @override
-  void deactivate() {
-    _controller.stop();
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -100,14 +94,14 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
 
 /// Fades out upon creation.
 class FadeOutAnimation extends StatefulWidget {
-  final Widget child;
-  final Duration duration;
-
   const FadeOutAnimation({
     Key key,
     this.child,
     this.duration = const Duration(milliseconds: 500),
   }) : super(key: key);
+
+  final Widget child;
+  final Duration duration;
 
   @override
   _FadeOutAnimationState createState() => _FadeOutAnimationState();

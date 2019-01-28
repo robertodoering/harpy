@@ -3,6 +3,16 @@ import 'package:harpy/components/widgets/shared/animations.dart';
 
 /// A rectangular button that can have an an [icon], [text] or both.
 class HarpyButton extends StatefulWidget {
+  const HarpyButton({
+    this.icon,
+    this.text,
+    this.onPressed,
+    this.iconColor,
+    this.textColor,
+    this.splashColor,
+    this.drawColorOnHighlight = false,
+  }) : assert(icon != null || text != null);
+
   final IconData icon;
   final String text;
   final VoidCallback onPressed;
@@ -15,42 +25,12 @@ class HarpyButton extends StatefulWidget {
   /// is hovered (pressing but not letting go).
   final bool drawColorOnHighlight;
 
-  const HarpyButton({
-    this.icon,
-    this.text,
-    this.onPressed,
-    this.iconColor,
-    this.textColor,
-    this.splashColor,
-    this.drawColorOnHighlight = false,
-  }) : assert(icon != null || text != null);
-
   @override
   HarpyButtonState createState() => HarpyButtonState();
 }
 
 class HarpyButtonState extends State<HarpyButton> {
   bool _highlighted = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onPressed,
-      highlightColor: Colors.transparent,
-      splashColor: widget.splashColor?.withOpacity(0.1),
-      onHighlightChanged: _updateHighlighted,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Row(
-          children: <Widget>[
-            _buildIcon(context),
-            _buildSeparator(),
-            _buildText(context),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildIcon(BuildContext context) {
     Color iconColor;
@@ -106,11 +86,41 @@ class HarpyButtonState extends State<HarpyButton> {
       _highlighted = highlighted;
     });
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.onPressed,
+      highlightColor: Colors.transparent,
+      splashColor: widget.splashColor?.withOpacity(0.1),
+      onHighlightChanged: _updateHighlighted,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Row(
+          children: <Widget>[
+            _buildIcon(context),
+            _buildSeparator(),
+            _buildText(context),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 /// A tappable button that can be [active] to have a different behavior and be
 /// drawn colored compared to when it is inactive.
 class TwitterActionButton extends StatelessWidget {
+  const TwitterActionButton({
+    @required this.active,
+    this.inactiveIcon,
+    this.activeIcon,
+    this.text,
+    this.color,
+    this.activate,
+    this.deactivate,
+  });
+
   /// Whether or not the [TwitterActionButton] is [active].
   final bool active;
 
@@ -136,16 +146,6 @@ class TwitterActionButton extends StatelessWidget {
   /// The callback when the action has been tapped if it is [active].
   final VoidCallback deactivate;
 
-  TwitterActionButton({
-    @required this.active,
-    this.inactiveIcon,
-    this.activeIcon,
-    this.text,
-    this.color,
-    this.activate,
-    this.deactivate,
-  });
-
   @override
   Widget build(BuildContext context) {
     return HarpyButton(
@@ -161,13 +161,6 @@ class TwitterActionButton extends StatelessWidget {
 }
 
 class CircleButton extends StatelessWidget {
-  final Widget child;
-  final Color backgroundColor;
-  final Color highlightColor;
-  final Color splashColor;
-  final EdgeInsets padding;
-  final VoidCallback onPressed;
-
   const CircleButton({
     @required this.child,
     this.backgroundColor = Colors.black26,
@@ -176,6 +169,13 @@ class CircleButton extends StatelessWidget {
     this.padding = const EdgeInsets.all(8.0),
     this.onPressed,
   });
+
+  final Widget child;
+  final Color backgroundColor;
+  final Color highlightColor;
+  final Color splashColor;
+  final EdgeInsets padding;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -81,17 +81,6 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final bool closed = !_isExpanded && _controller.isDismissed;
-
-    return AnimatedBuilder(
-      animation: _controller.view,
-      builder: _buildChild,
-      child: closed ? null : widget.child,
-    );
-  }
-
   Widget _buildChild(BuildContext context, Widget child) {
     return Column(
       children: <Widget>[
@@ -120,6 +109,17 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool closed = !_isExpanded && _controller.isDismissed;
+
+    return AnimatedBuilder(
+      animation: _controller.view,
+      builder: _buildChild,
+      child: closed ? null : widget.child,
     );
   }
 }

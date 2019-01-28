@@ -28,8 +28,35 @@ class TweetTile extends StatefulWidget {
 }
 
 class TweetTileState extends State<TweetTile>
-    with TickerProviderStateMixin<TweetTile> {
+    with SingleTickerProviderStateMixin<TweetTile> {
   TweetModel tweetModel;
+
+  /// If the [Tweet] is a retweet this builds information of the person that
+  /// retweeted this [Tweet].
+  Widget _buildRetweetedRow(TweetModel model) {
+    if (model.isRetweet) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 8.0),
+        child: IconRow(
+          icon: Icons.repeat,
+          iconPadding: 40.0, // same as avatar width
+          child: "${model.originalTweet.user.name} retweeted",
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  /// If the [Tweet] contains [TweetMedia] this builds the [OldCollapsibleMedia]
+  /// for this [Tweet].
+  Widget _buildMedia(TweetModel model) {
+    if (model.hasMedia) {
+      return CollapsibleMedia();
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,37 +105,14 @@ class TweetTileState extends State<TweetTile>
       ),
     );
   }
-
-  /// If the [Tweet] is a retweet this builds information of the person that
-  /// retweeted this [Tweet].
-  Widget _buildRetweetedRow(TweetModel model) {
-    if (model.isRetweet) {
-      return Padding(
-        padding: EdgeInsets.only(bottom: 8.0),
-        child: IconRow(
-          icon: Icons.repeat,
-          iconPadding: 40.0, // same as avatar width
-          child: "${model.originalTweet.user.name} retweeted",
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  /// If the [Tweet] contains [TweetMedia] this builds the [OldCollapsibleMedia]
-  /// for this [Tweet].
-  Widget _buildMedia(TweetModel model) {
-    if (model.hasMedia) {
-      return CollapsibleMedia();
-    } else {
-      return Container();
-    }
-  }
 }
 
 /// Build the [Tweet] avatar and name + username.
 class _TweetNameRow extends StatelessWidget {
+  void _goToUserProfile(BuildContext context, User user) {
+    HarpyNavigator.push(context, UserProfileScreen(user: user));
+  }
+
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
@@ -150,14 +154,18 @@ class _TweetNameRow extends StatelessWidget {
       ],
     );
   }
-
-  void _goToUserProfile(BuildContext context, User user) {
-    HarpyNavigator.push(context, UserProfileScreen(user: user));
-  }
 }
 
 /// Builds the text of the [Tweet].
 class _TweetText extends StatelessWidget {
+  void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
+    if (entityModel.type == EntityType.url) {
+      launchUrl(entityModel.data);
+    } else if (entityModel.type == EntityType.mention) {
+      HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
@@ -175,14 +183,6 @@ class _TweetText extends StatelessWidget {
       return Container();
     }
   }
-
-  void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
-    if (entityModel.type == EntityType.url) {
-      launchUrl(entityModel.data);
-    } else if (entityModel.type == EntityType.mention) {
-      HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
-    }
-  }
 }
 
 /// If the [Tweet] has been translated this builds the translation info and
@@ -192,6 +192,12 @@ class _TweetTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
 
+    // build nothing
+    if (!model.isTranslated || model.translationUnchanged) {
+      return Container();
+    }
+
+    // progress indicator
     if (model.translating) {
       return Center(
         child: Padding(
@@ -201,25 +207,27 @@ class _TweetTranslation extends StatelessWidget {
       );
     }
 
-    if (!model.isTranslated || model.translationUnchanged) {
-      return Container();
-    }
-
-    // todo: expand into existence with animated container
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 8.0),
-        Row(
-          children: <Widget>[
-            Text(
-              "Translated from ",
-              style: Theme.of(context).textTheme.display1,
-            ),
-            Text(model.translation.language), // todo: check if not null
-          ],
-        ),
+
+        // original language text
+        model.translation.language != null
+            ? Row(
+                children: <Widget>[
+                  Text(
+                    "Translated from ",
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  Text(model.translation.language),
+                ],
+              )
+            : Container(),
+
         SizedBox(height: 4.0),
+
+        // text
         TwitterText(
           text: model.translation.text,
           entities: model.tweet.entities,
@@ -231,41 +239,6 @@ class _TweetTranslation extends StatelessWidget {
 
 /// Builds a row with the actions (favorite, retweet, translate).
 class _TweetActionsRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final model = TweetModel.of(context);
-
-    return Row(
-      children: <Widget>[
-        // retweet action
-        TwitterActionButton(
-          active: model.tweet.retweeted,
-          inactiveIcon: Icons.repeat,
-          activeIcon: Icons.repeat,
-          text: model.retweetCount,
-          color: Colors.green,
-          activate: model.retweet,
-          deactivate: model.unretweet,
-        ),
-
-        // favorite action
-        TwitterActionButton(
-          active: model.tweet.favorited,
-          inactiveIcon: Icons.favorite_border,
-          activeIcon: Icons.favorite,
-          text: model.favoriteCount,
-          color: Colors.red,
-          activate: model.favorite,
-          deactivate: model.unfavorite,
-        ),
-
-        Expanded(child: Container()),
-
-        _buildTranslationButton(context),
-      ],
-    );
-  }
-
   Widget _buildTranslationButton(BuildContext context) {
     final model = TweetModel.of(context);
 
@@ -299,6 +272,41 @@ class _TweetActionsRow extends StatelessWidget {
       iconColor: color,
       splashColor: color,
       drawColorOnHighlight: drawColorOnHighlight,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final model = TweetModel.of(context);
+
+    return Row(
+      children: <Widget>[
+        // retweet action
+        TwitterActionButton(
+          active: model.tweet.retweeted,
+          inactiveIcon: Icons.repeat,
+          activeIcon: Icons.repeat,
+          text: model.retweetCount,
+          color: Colors.green,
+          activate: model.retweet,
+          deactivate: model.unretweet,
+        ),
+
+        // favorite action
+        TwitterActionButton(
+          active: model.tweet.favorited,
+          inactiveIcon: Icons.favorite_border,
+          activeIcon: Icons.favorite,
+          text: model.favoriteCount,
+          color: Colors.red,
+          activate: model.favorite,
+          deactivate: model.unfavorite,
+        ),
+
+        Expanded(child: Container()),
+
+        _buildTranslationButton(context),
+      ],
     );
   }
 }

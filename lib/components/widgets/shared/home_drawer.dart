@@ -13,19 +13,11 @@ import 'package:harpy/models/login_model.dart';
 /// It displays the logged in [User] on the top and allows to navigate to
 /// different parts of the app and logout.
 class HomeDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Future<void> _logoutAndNavigateBack(BuildContext context) async {
     final loginModel = LoginModel.of(context);
+    await loginModel.logout();
 
-    return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          UserDrawerHeader(loginModel.loggedInUser),
-          Expanded(child: _buildActions(context)),
-        ],
-      ),
-    );
+    HarpyNavigator.pushReplacement(context, LoginScreen());
   }
 
   Widget _buildActions(BuildContext context) {
@@ -72,11 +64,19 @@ class HomeDrawer extends StatelessWidget {
     );
   }
 
-  Future<void> _logoutAndNavigateBack(BuildContext context) async {
+  @override
+  Widget build(BuildContext context) {
     final loginModel = LoginModel.of(context);
-    await loginModel.logout();
 
-    HarpyNavigator.push(context, LoginScreen());
+    return Drawer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          UserDrawerHeader(loginModel.loggedInUser),
+          Expanded(child: _buildActions(context)),
+        ],
+      ),
+    );
   }
 }
 
@@ -85,35 +85,6 @@ class UserDrawerHeader extends StatelessWidget {
   const UserDrawerHeader(this.user);
 
   final User user;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
-      padding: EdgeInsets.fromLTRB(
-        16.0,
-        16.0 + MediaQuery.of(context).padding.top, // + statusbar height
-        16.0,
-        8.0,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: Divider.createBorderSide(context),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildAvatarRow(context),
-          SizedBox(height: 16.0),
-          FollowersCount(
-            followers: user.followersCount, // todo: limit number
-            following: user.friendsCount, // todo: limit number
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildAvatarRow(BuildContext context) {
     final loginModel = LoginModel.of(context);
@@ -172,6 +143,35 @@ class UserDrawerHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.fromLTRB(
+        16.0,
+        16.0 + MediaQuery.of(context).padding.top, // + statusbar height
+        16.0,
+        8.0,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: Divider.createBorderSide(context),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildAvatarRow(context),
+          SizedBox(height: 16.0),
+          FollowersCount(
+            followers: user.followersCount, // todo: limit number
+            following: user.friendsCount, // todo: limit number
+          ),
+        ],
+      ),
     );
   }
 }

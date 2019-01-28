@@ -47,6 +47,12 @@ class TwitterTextState extends State<TwitterText> {
     _parseText();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _gestureRecognizer.forEach((recognizer) => recognizer.dispose());
+  }
+
   void _parseText() {
     var twitterEntities = TwitterEntities(
       widget.text,
@@ -95,12 +101,6 @@ class TwitterTextState extends State<TwitterText> {
       _TextType.entity,
       recognizer,
     ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _gestureRecognizer.forEach((recognizer) => recognizer.dispose());
   }
 
   @override
