@@ -14,6 +14,8 @@ dynamic mapJson<T>(String data, JsonMapper<T> mapper) {
     List<T> decodedObjects = [];
 
     for (Map<String, dynamic> object in json) {
+//      _printObject(object, 0);
+
       decodedObjects.add(mapper(object));
     }
 
@@ -23,4 +25,16 @@ dynamic mapJson<T>(String data, JsonMapper<T> mapper) {
   } else {
     return null;
   }
+}
+
+void _printObject(Map<String, dynamic> object, int level) {
+  print("${"  " * level * 2}----------");
+  object.forEach((key, value) {
+    if (value is Map) {
+      print("${"  " * level * 2}$key:");
+      _printObject(value, level + 1);
+    }
+    print("${"  " * level * 2}$key: ${value.toString()}");
+  });
+  print("${"  " * level * 2}----------");
 }

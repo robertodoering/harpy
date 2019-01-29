@@ -48,8 +48,17 @@ class TweetModel extends Model {
   /// else the [originalTweet].
   Tweet get tweet => originalTweet.retweetedStatus ?? originalTweet;
 
+  /// Returns the [Tweet.quotedStatus] of the [originalTweet].
+  Tweet get quote => originalTweet.quotedStatus;
+
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
+
+  /// Whether or not the [originalTweet] is a quote.
+  bool get isQuote => originalTweet.quotedStatus != null;
+
+  /// Set to true when the [original] comes from a quoted [Tweet].
+  bool quoted = false;
 
   /// Whether or not the [tweet] contains [TweetMedia].
   bool get hasMedia => tweet.extended_entities?.media != null;
@@ -76,6 +85,16 @@ class TweetModel extends Model {
 
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
+
+  void limitText({limit = 80}) {
+    tweet.full_text.trim();
+    if (tweet.full_text.length <= limit) {
+      tweet.full_text = tweet.full_text.substring(0, tweet.full_text.length);
+    } else {
+      tweet.full_text = tweet.full_text.substring(0, limit) + "...";
+    }
+    tweet.full_text = tweet.full_text.replaceAll("\n", " ");
+  }
 
   /// Retweet this [tweet].
   void retweet() {

@@ -43,6 +43,8 @@ class Tweet {
   String lang;
   @JsonKey(name: "display_text_range")
   List<int> displayTextRange;
+  @JsonKey(name: "quoted_status")
+  Tweet quotedStatus;
 
   // custom data
   @JsonKey(name: "harpy_data")
