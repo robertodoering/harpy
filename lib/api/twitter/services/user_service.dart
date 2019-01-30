@@ -45,4 +45,44 @@ class UserService {
       return Future.error(response.statusCode);
     }
   }
+
+  /// Follows (friends) the [User] with the [id].
+  Future<bool> createFriendship(String id) async {
+    _log.fine("create friendship");
+
+    final params = {"user_id": id};
+
+    final response = await twitterClient.post(
+      "https://api.twitter.com/1.1/friendships/create.json",
+      params: params,
+    );
+
+    if (response.statusCode == 200) {
+      _log.fine("got 200 response: created friendship");
+      return true;
+    } else {
+      _log.warning("response not 200");
+      return Future.error(response.statusCode);
+    }
+  }
+
+  /// Unfollows the [User] with the [id].
+  Future<void> destroyFriendship(String id) async {
+    _log.fine("destrpy friendship");
+
+    final params = {"user_id": id};
+
+    final response = await twitterClient.post(
+      "https://api.twitter.com/1.1/friendships/create.json",
+      params: params,
+    );
+
+    if (response.statusCode == 200) {
+      _log.fine("got 200 response: destroyed friendship");
+      return true;
+    } else {
+      _log.warning("response not 200");
+      return Future.error(response.statusCode);
+    }
+  }
 }

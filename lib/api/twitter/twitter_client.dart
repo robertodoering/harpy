@@ -57,10 +57,12 @@ class TwitterClient {
   Future<Response> post(
     String url, {
     Map<String, String> headers,
+    Map<String, String> params,
     dynamic body,
     Encoding encoding,
   }) {
     _log.fine("sending post request: $url");
+    url = appendParamsToUrl(url, params);
     return _client.post(url, headers: headers, body: body, encoding: encoding);
   }
 }

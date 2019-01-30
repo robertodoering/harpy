@@ -10,6 +10,8 @@ class HarpyButton extends StatefulWidget {
     this.iconColor,
     this.textColor,
     this.splashColor,
+    this.borderColor,
+    this.backgroundColor,
     this.drawColorOnHighlight = false,
   }) : assert(icon != null || text != null);
 
@@ -20,6 +22,8 @@ class HarpyButton extends StatefulWidget {
   final Color iconColor;
   final Color textColor;
   final Color splashColor;
+  final Color borderColor;
+  final Color backgroundColor;
 
   /// When `true`, the text and icon will only be drawn colored when the button
   /// is hovered (pressing but not letting go).
@@ -32,7 +36,7 @@ class HarpyButton extends StatefulWidget {
 class HarpyButtonState extends State<HarpyButton> {
   bool _highlighted = false;
 
-  Widget _buildIcon(BuildContext context) {
+  Widget _buildIcon() {
     Color iconColor;
 
     if (widget.iconColor != null && !widget.drawColorOnHighlight) {
@@ -63,7 +67,7 @@ class HarpyButtonState extends State<HarpyButton> {
         : Container();
   }
 
-  Widget _buildText(BuildContext context) {
+  Widget _buildText() {
     if (widget.text != null) {
       TextStyle style = Theme.of(context).textTheme.body1;
 
@@ -87,21 +91,36 @@ class HarpyButtonState extends State<HarpyButton> {
     });
   }
 
+  Decoration _buildBoxDecoration() {
+    if (widget.borderColor == null && widget.backgroundColor == null) {
+      return null;
+    }
+
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(16.0),
+      color: widget.backgroundColor,
+      border: Border.all(color: widget.borderColor),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onPressed,
-      highlightColor: Colors.transparent,
-      splashColor: widget.splashColor?.withOpacity(0.1),
-      onHighlightChanged: _updateHighlighted,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Row(
-          children: <Widget>[
-            _buildIcon(context),
-            _buildSeparator(),
-            _buildText(context),
-          ],
+    return Container(
+      decoration: _buildBoxDecoration(),
+      child: InkWell(
+        onTap: widget.onPressed,
+        highlightColor: Colors.transparent,
+        splashColor: widget.splashColor.withOpacity(0.1),
+        onHighlightChanged: _updateHighlighted,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Row(
+            children: <Widget>[
+              _buildIcon(),
+              _buildSeparator(),
+              _buildText(),
+            ],
+          ),
         ),
       ),
     );
