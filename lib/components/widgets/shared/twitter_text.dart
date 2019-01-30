@@ -81,7 +81,7 @@ class TwitterTextState extends State<TwitterText> {
   void _addText(int start, int end) {
     if (start < end && end <= widget.text.length) {
       String text = widget.text.substring(start, end).trim();
-      text = parseHtmlEntities(text);
+      text = parseHtmlEntities(text) + " ";
 
       _texts.add(_TwitterTextType(text, _TextType.text));
     }
@@ -105,7 +105,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      " ${entityModel.displayText} ",
+      "${entityModel.displayText}",
       _TextType.entity,
       recognizer,
     ));
