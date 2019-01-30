@@ -100,6 +100,9 @@ class LoginModel extends Model {
 
     String userId = applicationModel.twitterSession.userId;
 
+    // init theme from shared prefs
+    applicationModel.themeModel.initTheme();
+
     loggedInUser = userCache.getCachedUser(userId);
 
     if (loggedInUser == null) {

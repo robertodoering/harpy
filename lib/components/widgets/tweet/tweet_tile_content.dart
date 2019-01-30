@@ -162,6 +162,7 @@ class TweetText extends StatelessWidget {
           text: model.tweet.full_text,
           entities: model.tweet.entities,
           onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
+          expandedUrlToIgnore: model.tweet.quotedStatusPermalink?.expanded,
         ),
       );
     } else {
@@ -179,11 +180,6 @@ class _TweetTranslation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // build nothing
-    if (!model.isTranslated || model.translationUnchanged) {
-      return Container();
-    }
-
     // progress indicator
     if (model.translating) {
       return Center(
@@ -192,6 +188,11 @@ class _TweetTranslation extends StatelessWidget {
           child: CircularProgressIndicator(),
         ),
       );
+    }
+
+    // build nothing
+    if (!model.isTranslated || model.translationUnchanged) {
+      return Container();
     }
 
     return Column(
@@ -258,7 +259,8 @@ class _TweetActionsRow extends StatelessWidget {
     bool drawColorOnHighlight = false;
     Color color = Colors.blue;
 
-    if (model.tweet.harpyData.translation == null && !model.translating) {
+    if (model.originalTweet.harpyData.translation == null &&
+        !model.translating) {
       drawColorOnHighlight = true;
 
       onPressed = () async {

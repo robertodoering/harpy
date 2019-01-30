@@ -87,6 +87,7 @@ class TweetModel extends Model {
   bool get translationUnchanged => translation?.unchanged ?? false;
 
   void limitText({limit = 80}) {
+    // todo: limit text in TwitterText and parse entities before
     tweet.full_text.trim();
     if (tweet.full_text.length <= limit) {
       tweet.full_text = tweet.full_text.substring(0, tweet.full_text.length);

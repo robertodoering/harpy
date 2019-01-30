@@ -41,7 +41,11 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
         : Entities.fromJson(json['extended_entities'] as Map<String, dynamic>)
     ..quotedStatus = json['quoted_status'] == null
         ? null
-        : Tweet.fromJson(json['quoted_status'] as Map<String, dynamic>);
+        : Tweet.fromJson(json['quoted_status'] as Map<String, dynamic>)
+    ..quotedStatusPermalink = json['quoted_status_permalink'] == null
+        ? null
+        : QuotedStatusPermalink.fromJson(
+            json['quoted_status_permalink'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
@@ -64,5 +68,6 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'lang': instance.lang,
       'display_text_range': instance.displayTextRange,
       'quoted_status': instance.quotedStatus,
+      'quoted_status_permalink': instance.quotedStatusPermalink,
       'harpy_data': instance.harpyData
     };
