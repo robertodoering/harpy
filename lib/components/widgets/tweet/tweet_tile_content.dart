@@ -93,7 +93,7 @@ class _TweetAvatarNameRow extends StatelessWidget {
 
         SizedBox(width: 8.0),
 
-        TweetNameColumn(model),
+        Expanded(child: TweetNameColumn(model)),
       ],
     );
   }
@@ -118,7 +118,10 @@ class TweetNameColumn extends StatelessWidget {
               UserProfileScreen(user: model.tweet.user),
             );
           },
-          child: Text(model.tweet.user.name),
+          child: Text(
+            model.tweet.user.name,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
 
         // username · time since tweet in hours

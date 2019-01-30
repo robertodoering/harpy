@@ -111,11 +111,16 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Opacity(
-                  opacity: opacity,
-                  child: Text(
-                    widget.title ?? "",
-                    style: Theme.of(context).textTheme.subtitle,
+                // padding to prevent the text to get below the back arrow
+                title: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 52.0),
+                  child: Opacity(
+                    opacity: opacity,
+                    child: Text(
+                      widget.title ?? "",
+                      style: Theme.of(context).textTheme.subtitle,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 background: widget.background,
