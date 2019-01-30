@@ -68,12 +68,12 @@ class UserService {
 
   /// Unfollows the [User] with the [id].
   Future<void> destroyFriendship(String id) async {
-    _log.fine("destrpy friendship");
+    _log.fine("destroy friendship");
 
     final params = {"user_id": id};
 
     final response = await twitterClient.post(
-      "https://api.twitter.com/1.1/friendships/create.json",
+      "https://api.twitter.com/1.1/friendships/destroy.json",
       params: params,
     );
 
