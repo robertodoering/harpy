@@ -13,6 +13,7 @@ class HarpyButton extends StatefulWidget {
     this.borderColor,
     this.backgroundColor,
     this.drawColorOnHighlight = false,
+    this.borderRadius,
   }) : assert(icon != null || text != null);
 
   final IconData icon;
@@ -24,6 +25,7 @@ class HarpyButton extends StatefulWidget {
   final Color splashColor;
   final Color borderColor;
   final Color backgroundColor;
+  final BorderRadius borderRadius;
 
   /// When `true`, the text and icon will only be drawn colored when the button
   /// is hovered (pressing but not letting go).
@@ -97,7 +99,7 @@ class HarpyButtonState extends State<HarpyButton> {
     }
 
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(16.0),
+      borderRadius: widget.borderRadius,
       color: widget.backgroundColor,
       border: Border.all(color: widget.borderColor),
     );
@@ -108,6 +110,7 @@ class HarpyButtonState extends State<HarpyButton> {
     return Container(
       decoration: _buildBoxDecoration(),
       child: InkWell(
+        borderRadius: widget.borderRadius,
         onTap: widget.onPressed,
         highlightColor: Colors.transparent,
         splashColor: widget.splashColor.withOpacity(0.1),

@@ -76,12 +76,16 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     return HarpyButton(
       text: model.user.following ? "Following" : "Follow",
+      textColor: model.user.following
+          ? Colors.white
+          : Theme.of(context).textTheme.body1.color,
       splashColor:
           model.user.following ? Colors.white : Theme.of(context).accentColor,
       borderColor: Theme.of(context).accentColor,
       backgroundColor: model.user.following
-          ? Theme.of(context).accentColor.withOpacity(0.3)
+          ? Theme.of(context).accentColor.withOpacity(0.6)
           : null,
+      borderRadius: BorderRadius.circular(16.0),
       onPressed: model.changeFollowState,
     );
   }
