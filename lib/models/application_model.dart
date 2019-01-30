@@ -86,8 +86,10 @@ class ApplicationModel extends Model {
       directoryService.init,
     ]).run();
 
-    // init theme from shared prefs
-    themeModel.initTheme();
+    if (loggedIn) {
+      // init theme from shared prefs
+      themeModel.initTheme();
+    }
 
     initialized = true;
     if (onInitialized != null) {

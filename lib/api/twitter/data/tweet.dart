@@ -1,5 +1,6 @@
 import 'package:harpy/api/twitter/data/entities.dart';
 import 'package:harpy/api/twitter/data/harpy_data.dart';
+import 'package:harpy/api/twitter/data/quoted_status_permalink.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -45,6 +46,8 @@ class Tweet {
   List<int> displayTextRange;
   @JsonKey(name: "quoted_status")
   Tweet quotedStatus;
+  @JsonKey(name: "quoted_status_permalink")
+  QuotedStatusPermalink quotedStatusPermalink;
 
   // custom data
   @JsonKey(name: "harpy_data")

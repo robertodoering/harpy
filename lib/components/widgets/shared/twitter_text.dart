@@ -20,12 +20,14 @@ class TwitterText extends StatefulWidget {
     this.entities,
     this.entityColor,
     this.onEntityTap,
+    this.expandedUrlToIgnore,
   });
 
   final String text;
   final Entities entities;
   final Color entityColor;
   final ValueChanged<TwitterEntityModel> onEntityTap;
+  final String expandedUrlToIgnore;
 
   @override
   TwitterTextState createState() => TwitterTextState();
@@ -86,7 +88,13 @@ class TwitterTextState extends State<TwitterText> {
   }
 
   void _addEntityModel(TwitterEntityModel entityModel) {
-    if (entityModel.type == EntityType.media) return;
+    if (entityModel.type == EntityType.media) {
+      return;
+    }
+    if (entityModel.type == EntityType.url &&
+        entityModel.data == widget.expandedUrlToIgnore) {
+      return;
+    }
 
     GestureRecognizer recognizer;
 
@@ -97,7 +105,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      "${entityModel.displayText} ",
+      " ${entityModel.displayText} ",
       _TextType.entity,
       recognizer,
     ));
