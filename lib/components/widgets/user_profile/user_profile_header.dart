@@ -3,10 +3,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
-import 'package:harpy/core/misc/url_launcher.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/models/user_profile_model.dart';
 
@@ -103,7 +104,13 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         entities: model.user.entities.asEntities,
         onEntityTap: (entityModel) {
           if (entityModel.type == EntityType.url) {
-            launchUrl(entityModel.data);
+            HarpyNavigator.push(
+              context,
+              WebviewScreen(
+                url: entityModel.data,
+                displayUrl: entityModel.displayText,
+              ),
+            );
           }
         },
       ),
@@ -145,7 +152,15 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     Url url = model.user.entities.url.urls.first;
 
     _linkGestureRecognizer = TapGestureRecognizer()
-      ..onTap = () => launchUrl(url.url);
+      ..onTap = () {
+        HarpyNavigator.push(
+          context,
+          WebviewScreen(
+            url: url.url,
+            displayUrl: url.displayUrl,
+          ),
+        );
+      };
 
     Widget text = Text.rich(
       TextSpan(

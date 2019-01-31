@@ -8,11 +8,13 @@ import 'package:harpy/core/misc/theme.dart';
 class HarpyScaffold extends StatelessWidget {
   HarpyScaffold({
     @required this.appBar,
+    this.actions,
     this.drawer,
     this.body,
   }) : assert(appBar is String || appBar is PreferredSizeWidget);
 
   final appBar;
+  final List<Widget> actions;
   final Widget drawer;
   final Widget body;
 
@@ -29,6 +31,7 @@ class HarpyScaffold extends StatelessWidget {
                       fontSize: 20.0,
                     ),
               ),
+              actions: actions,
             ),
       drawer: drawer,
       body: body,
