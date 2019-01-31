@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
+import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/tweet_model.dart';
 
 class TweetTileContent extends StatefulWidget {
@@ -150,7 +150,13 @@ class TweetText extends StatelessWidget {
 
   void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
     if (entityModel.type == EntityType.url) {
-      launchUrl(entityModel.data);
+      HarpyNavigator.push(
+        context,
+        WebviewScreen(
+          url: entityModel.data,
+          displayUrl: entityModel.displayText,
+        ),
+      );
     } else if (entityModel.type == EntityType.mention) {
       HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
     }

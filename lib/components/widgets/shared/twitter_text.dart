@@ -13,7 +13,7 @@ import 'package:harpy/core/utils/string_utils.dart';
 ///
 /// The [Entities] will be parsed and appear in the [entityColor].
 ///
-/// todo: refactor (with scoped model)
+/// todo: refactor
 class TwitterText extends StatefulWidget {
   const TwitterText({
     @required this.text,
@@ -105,7 +105,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      "${entityModel.displayText}",
+      "${entityModel.displayText} ",
       _TextType.entity,
       recognizer,
     ));
