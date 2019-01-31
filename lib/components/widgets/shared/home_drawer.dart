@@ -5,6 +5,7 @@ import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/login_model.dart';
 
@@ -22,6 +23,7 @@ class HomeDrawer extends StatelessWidget {
 
   Widget _buildActions(BuildContext context) {
     final loginModel = LoginModel.of(context);
+    final directoryService = ServiceProvider.of(context).data.directoryService;
 
     return Column(
       children: <Widget>[
@@ -30,6 +32,7 @@ class HomeDrawer extends StatelessWidget {
           leading: Icon(Icons.face),
           title: Text("Profile"),
           onTap: () {
+            Navigator.of(context).maybePop();
             HarpyNavigator.push(
               context,
               UserProfileScreen(user: loginModel.loggedInUser),
@@ -37,11 +40,17 @@ class HomeDrawer extends StatelessWidget {
           },
         ),
 
-        // clear cache (debug)
+        // clear cache // todo: shouldn't be in home drawer, instead in settings
         ListTile(
           leading: Icon(Icons.close),
           title: Text("Clear cache"),
-          onTap: null, // todo
+          onTap: () {
+            int deletedFiles = directoryService.clearCache();
+            Navigator.of(context).maybePop();
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text("Deleted $deletedFiles cached files"),
+            ));
+          },
         ),
 
         Divider(),
@@ -50,7 +59,10 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.settings),
           title: Text("Settings"),
-          onTap: () => HarpyNavigator.push(context, SettingsScreen()),
+          onTap: () {
+            Navigator.of(context).maybePop();
+            HarpyNavigator.push(context, SettingsScreen());
+          },
         ),
 
         Expanded(child: Container()),

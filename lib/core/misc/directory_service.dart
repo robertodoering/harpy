@@ -98,4 +98,16 @@ class DirectoryService {
 
     return files;
   }
+
+  /// Clears all cached files in the temporary directory.
+  int clearCache() {
+    Directory directory = Directory("${data.path}/");
+    try {
+      int files = directory.listSync(recursive: true).length;
+      directory.deleteSync(recursive: true);
+      return files;
+    } on FileSystemException {
+      return 0;
+    }
+  }
 }
