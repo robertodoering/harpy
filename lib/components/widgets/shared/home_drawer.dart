@@ -31,8 +31,8 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.face),
           title: Text("Profile"),
-          onTap: () {
-            Navigator.of(context).maybePop();
+          onTap: () async {
+            await Navigator.of(context).maybePop();
             HarpyNavigator.push(
               context,
               UserProfileScreen(user: loginModel.loggedInUser),
@@ -59,8 +59,8 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.settings),
           title: Text("Settings"),
-          onTap: () {
-            Navigator.of(context).maybePop();
+          onTap: () async {
+            await Navigator.of(context).maybePop();
             HarpyNavigator.push(context, SettingsScreen());
           },
         ),
