@@ -1,30 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ThemeSettings extends StatelessWidget {
   final List<HarpyTheme> _harpyThemes = [
     HarpyTheme.light(),
     HarpyTheme.dark(),
   ];
-
-  @override
-  Widget build(BuildContext context) {
-    // todo: load custom themes
-    return HarpyScaffold(
-      appBar: "Theme",
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildThemeSelection(context),
-          ),
-          Expanded(child: _buildPreview()),
-        ],
-      ),
-    );
-  }
 
   Widget _buildThemeSelection(BuildContext context) {
     final themeModel = ThemeModel.of(context);
@@ -52,17 +38,6 @@ class ThemeSettings extends StatelessWidget {
 
   Widget _buildPreview() {
     return Container(); // todo
-//    return Column(
-//      mainAxisAlignment: MainAxisAlignment.center,
-//      children: <Widget>[
-//        Divider(height: 0.0),
-//        TweetTile(
-//          openUserProfile: false,
-//          tweet: Tweet.mock(),
-//        ),
-//        Divider(height: 0.0),
-//      ],
-//    );
   }
 
   Widget _buildAddCustomTheme(BuildContext context) {
@@ -90,78 +65,36 @@ class ThemeSettings extends StatelessWidget {
       ),
     );
   }
-}
 
-class ThemeCard extends StatelessWidget {
-  const ThemeCard({
-    @required this.harpyTheme,
-    @required this.selected,
-    @required this.onTap,
-  });
-
-  final HarpyTheme harpyTheme;
-  final bool selected;
-  final VoidCallback onTap;
+  List<Widget> _buildActions(SettingsModel settingsModel) {
+    return <Widget>[
+      IconButton(
+        icon: Icon(Icons.refresh),
+        onPressed: settingsModel.loadCustomThemes,
+      )
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 120,
-      height: 120,
-      child: Theme(
-        data: harpyTheme.theme,
-        child: Card(
-          child: InkWell(
-            onTap: onTap,
-            child: Column(
-              children: <Widget>[
-                Expanded(child: _buildSelectedIcon()),
-                _buildThemeName(context),
-                Expanded(child: _buildThemeColors()),
-              ],
-            ),
-          ),
-        ),
+    final settingsModel = SettingsModel.of(context);
+
+    return HarpyScaffold(
+      appBar: "Theme",
+      actions: _buildActions(settingsModel),
+      body: ScopedModelDescendant<SettingsModel>(
+        builder: (context, _, model) {
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildThemeSelection(context),
+              ),
+              Expanded(child: _buildPreview()),
+            ],
+          );
+        },
       ),
     );
-  }
-
-  Widget _buildThemeName(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0),
-      width: double.infinity,
-      color: harpyTheme.theme.primaryColor,
-      child: Text(
-        harpyTheme.name,
-        style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  Widget _buildThemeColors() {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: 5,
-          color: harpyTheme.theme.accentColor,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSelectedIcon() {
-    if (selected) {
-      return Align(
-        alignment: Alignment.topRight,
-        child: Padding(
-          padding: EdgeInsets.all(4.0),
-          child: Icon(Icons.check),
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 }

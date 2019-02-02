@@ -17,8 +17,11 @@ class ThemeModel extends Model {
 
   static final Logger _log = Logger("ThemeModel");
 
+  /// The selected theme used by the app.
   HarpyTheme harpyTheme = HarpyTheme.light();
 
+  /// Changes the selected theme and rebuilds the app which listens to this
+  /// [ThemeModel].
   void updateTheme(HarpyTheme theme) {
     harpyTheme = theme;
     harpyPrefs.themeName = theme.name;

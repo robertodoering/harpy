@@ -3,6 +3,7 @@ import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -23,6 +24,7 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
   LoginModel loginModel;
   HomeTimelineModel homeTimelineModel;
   ThemeModel themeModel;
+  SettingsModel settingsModel;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,10 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
       userCache: serviceProvider.data.userCache,
     );
 
+    settingsModel ??= SettingsModel(
+      harpyPrefs: serviceProvider.data.harpyPrefs,
+    );
+
     return ScopedModel<ApplicationModel>(
       model: applicationModel,
       child: ScopedModel<LoginModel>(
@@ -61,7 +67,10 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
           model: homeTimelineModel,
           child: ScopedModel<ThemeModel>(
             model: themeModel,
-            child: widget.child,
+            child: ScopedModel<SettingsModel>(
+              model: settingsModel,
+              child: widget.child,
+            ),
           ),
         ),
       ),
