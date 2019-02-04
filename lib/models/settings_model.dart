@@ -28,7 +28,26 @@ class SettingsModel extends Model {
 
   /// Saves a custom theme into the shared preferences.
   ///
-  /// If a custom theme with the same [HarpyThemeData.name] already exists it
-  /// will be overridden.
-  void saveCustomTheme(HarpyThemeData harpyThemeData) {}
+  /// If a custom theme with the same [HarpyThemeData.name] already exists and
+  /// [override] is true it will be overridden.
+  ///
+  /// Returns `true` when successfully saved, `false` if a custom theme with the
+  /// same name already exists and [override] is false.
+  bool saveCustomTheme(HarpyThemeData harpyThemeData, bool override) {
+    _log.fine("saving custom theme");
+
+    bool alreadyExists = customThemes.any((themeData) {
+      return themeData.name == harpyThemeData.name;
+    });
+
+    // save the new custom theme if override is true or it doesn't exist already
+    if (override || !alreadyExists) {
+      customThemes.add(harpyThemeData);
+      harpyPrefs.saveCustomTheme(harpyThemeData);
+      return true;
+    }
+
+    _log.warning("custom theme not saved");
+    return false;
+  }
 }

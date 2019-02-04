@@ -12,29 +12,6 @@ class ThemeCard extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 120,
-      height: 120,
-      child: Theme(
-        data: harpyTheme.theme,
-        child: Card(
-          child: InkWell(
-            onTap: onTap,
-            child: Column(
-              children: <Widget>[
-                Expanded(child: _buildSelectedIcon()),
-                _buildThemeName(context),
-                Expanded(child: _buildThemeColors()),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildThemeName(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0),
@@ -72,5 +49,28 @@ class ThemeCard extends StatelessWidget {
     } else {
       return Container();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 120,
+      height: 120,
+      child: Theme(
+        data: harpyTheme.theme,
+        child: Card(
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              children: <Widget>[
+                Expanded(child: _buildSelectedIcon()),
+                _buildThemeName(context),
+                Expanded(child: _buildThemeColors()),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

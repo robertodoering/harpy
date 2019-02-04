@@ -22,6 +22,7 @@ dependencies:
   scoped_model: ^1.0.1
   async_loader: ^0.1.2
   webview_flutter: ^0.3.0
+  flutter_colorpicker: ^0.2.1
 
   flutter:
     sdk: flutter

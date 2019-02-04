@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/screens/custom_theme_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/theme/theme_card.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/theme.dart';
 import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
@@ -53,7 +55,7 @@ class ThemeSettings extends StatelessWidget {
               color: Theme.of(context).dividerColor,
             )),
         child: InkWell(
-          onTap: () {},
+          onTap: () => HarpyNavigator.push(context, CustomThemeScreen()),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

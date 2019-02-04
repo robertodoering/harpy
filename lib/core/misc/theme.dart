@@ -4,41 +4,47 @@ import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 class HarpyTheme {
   HarpyTheme.light() {
     name = "Default light";
-    _baseTheme = ThemeData.light();
-    _textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
-    _primaryColor = Colors.indigo;
-    _accentColor = Colors.indigoAccent;
+    _initBaseTheme("light");
+
+    primaryColor = Colors.indigo;
+    accentColor = Colors.indigoAccent;
   }
 
   HarpyTheme.dark() {
     name = "Default dark";
-    _baseTheme = ThemeData.dark();
-    _textTheme = ThemeData.dark().textTheme.apply(fontFamily: "OpenSans");
-    _accentColor = Colors.deepPurpleAccent;
+    _initBaseTheme("dark");
+
+    accentColor = Colors.deepPurpleAccent;
   }
 
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
-    // todo
-    _primaryColor = Color(harpyThemeData.primaryColor);
-    _accentColor = Color(harpyThemeData.accentColor);
+    _initBaseTheme(harpyThemeData.base);
+
+    if (harpyThemeData.primaryColor != null) {
+      primaryColor = Color(harpyThemeData.primaryColor);
+    }
+    if (harpyThemeData.accentColor != null) {
+      accentColor = Color(harpyThemeData.accentColor);
+    }
   }
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
   static const Color harpyColor = Colors.indigo;
 
   String name;
+  String base;
 
   ThemeData _baseTheme;
   TextTheme _textTheme;
 
-  Color _primaryColor;
-  Color _primaryColorLight;
-  Color _accentColor;
+  Color primaryColor;
+  Color primaryColorLight;
+  Color accentColor;
 
   ThemeData get theme {
     return _baseTheme.copyWith(
-      primaryColor: _primaryColor,
-      accentColor: _accentColor,
+      primaryColor: primaryColor,
+      accentColor: accentColor,
       buttonColor: Colors.white,
 
       // text
@@ -58,7 +64,7 @@ class HarpyTheme {
             fontWeight: FontWeight.w300,
           ),
           button: _textTheme.button.copyWith(
-            color: _primaryColor,
+            color: primaryColor,
             fontSize: 16.0,
           ),
 
@@ -87,5 +93,17 @@ class HarpyTheme {
             fontSize: 12.0,
           )),
     );
+  }
+
+  void _initBaseTheme(String base) {
+    this.base = base;
+
+    if (base == "light") {
+      _baseTheme = ThemeData.light();
+      _textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
+    } else {
+      _baseTheme = ThemeData.dark();
+      _textTheme = ThemeData.dark().textTheme.apply(fontFamily: "OpenSans");
+    }
   }
 }

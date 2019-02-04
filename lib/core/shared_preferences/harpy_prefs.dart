@@ -50,6 +50,6 @@ class HarpyPrefs {
   }
 
   /// Saves a custom [HarpyThemeData] into the shared preferences.
-  set customTheme(HarpyThemeData harpyThemeData) => _preferences.setString(
+  void saveCustomTheme(HarpyThemeData harpyThemeData) => _preferences.setString(
       "theme.${harpyThemeData.name}", harpyThemeData.toJson().toString());
 }
