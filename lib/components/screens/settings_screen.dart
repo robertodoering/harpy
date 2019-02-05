@@ -31,26 +31,41 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-/// Builds a [Column] with the [title] above its [children].
+/// Builds a [Column] with the [title] above its [child] or [children].
+///
+/// Can either have a list of [children] or a single [child] but not both.
 class SettingsColumn extends StatelessWidget {
   const SettingsColumn({
     @required this.title,
-    @required this.children,
-  });
+    this.children,
+    this.child,
+  }) : assert(children != null && child == null ||
+            children == null && child != null);
 
   final String title;
   final List<Widget> children;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> content = [];
+
+    content.add(Padding(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      child: Text(title, style: Theme.of(context).textTheme.display3),
+    ));
+
+    if (child != null) {
+      content.add(child);
+    }
+
+    if (children != null) {
+      content.addAll(children);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-          child: Text(title, style: Theme.of(context).textTheme.display3),
-        ),
-      ]..addAll(children),
+      children: content,
     );
   }
 }

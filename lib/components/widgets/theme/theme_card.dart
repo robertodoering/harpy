@@ -43,7 +43,7 @@ class ThemeCard extends StatelessWidget {
         alignment: Alignment.topRight,
         child: Padding(
           padding: EdgeInsets.all(4.0),
-          child: Icon(Icons.check),
+          child: const Icon(Icons.check),
         ),
       );
     } else {

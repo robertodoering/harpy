@@ -8,24 +8,24 @@ class HarpyTheme {
 
     primaryColor = Colors.indigo;
     accentColor = Colors.indigoAccent;
+    scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
   }
 
   HarpyTheme.dark() {
     name = "Default dark";
     _initBaseTheme("dark");
 
+    primaryColor = _baseTheme.primaryColor;
     accentColor = Colors.deepPurpleAccent;
+    scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
   }
 
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
     _initBaseTheme(harpyThemeData.base);
 
-    if (harpyThemeData.primaryColor != null) {
-      primaryColor = Color(harpyThemeData.primaryColor);
-    }
-    if (harpyThemeData.accentColor != null) {
-      accentColor = Color(harpyThemeData.accentColor);
-    }
+    primaryColor = Color(harpyThemeData.primaryColor);
+    accentColor = Color(harpyThemeData.accentColor);
+    scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundValue);
   }
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
@@ -38,14 +38,51 @@ class HarpyTheme {
   TextTheme _textTheme;
 
   Color primaryColor;
-  Color primaryColorLight;
   Color accentColor;
+  Color scaffoldBackgroundColor;
+
+  Brightness get primaryColorBrightness {
+    if (_primaryColorBrightness == null) {
+      _primaryColorBrightness = primaryColor.computeLuminance() > 0.5
+          ? Brightness.light
+          : Brightness.dark;
+    }
+
+    return _primaryColorBrightness;
+  }
+
+  Brightness _primaryColorBrightness;
+
+  Color get _primaryComplimentaryColor {
+    return primaryColorBrightness != null
+        ? primaryColorBrightness == Brightness.light
+            ? Colors.black
+            : Colors.white
+        : null;
+  }
 
   ThemeData get theme {
     return _baseTheme.copyWith(
       primaryColor: primaryColor,
       accentColor: accentColor,
+      scaffoldBackgroundColor: scaffoldBackgroundColor,
+      backgroundColor: scaffoldBackgroundColor,
+      dialogBackgroundColor: scaffoldBackgroundColor,
+
       buttonColor: Colors.white,
+
+      indicatorColor: accentColor,
+      toggleableActiveColor: accentColor,
+      textSelectionHandleColor: accentColor,
+      textSelectionColor: accentColor,
+
+      // determines the status bar icon color
+      primaryColorBrightness: primaryColorBrightness,
+
+      // used for the icon and text color in the appbar
+      primaryIconTheme: _baseTheme.primaryIconTheme.copyWith(
+        color: _primaryComplimentaryColor,
+      ),
 
       // text
       textTheme: _textTheme.copyWith(

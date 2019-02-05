@@ -9,13 +9,15 @@ class HarpyThemeData {
   String name;
   int primaryColor;
   int accentColor;
+  int scaffoldBackgroundValue;
 
   HarpyThemeData();
 
   HarpyThemeData.fromTheme(HarpyTheme harpyTheme) {
     base = harpyTheme.base;
-    primaryColor = harpyTheme.primaryColor?.value;
-    accentColor = harpyTheme.accentColor?.value;
+    primaryColor = harpyTheme.theme.primaryColor.value;
+    accentColor = harpyTheme.theme.accentColor.value;
+    scaffoldBackgroundValue = harpyTheme.theme.scaffoldBackgroundColor.value;
   }
 
   factory HarpyThemeData.fromJson(Map<String, dynamic> json) =>

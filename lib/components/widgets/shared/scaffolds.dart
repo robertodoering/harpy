@@ -29,6 +29,7 @@ class HarpyScaffold extends StatelessWidget {
                 appBar,
                 style: Theme.of(context).textTheme.title.copyWith(
                       fontSize: 20.0,
+                      color: Theme.of(context).primaryIconTheme.color,
                     ),
               ),
               actions: actions,
