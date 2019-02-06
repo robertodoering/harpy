@@ -5,6 +5,7 @@ import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/theme.dart';
 import 'package:harpy/models/custom_theme_model.dart';
+import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -16,10 +17,31 @@ class CustomThemeScreen extends StatefulWidget {
 class _CustomThemeScreenState extends State<CustomThemeScreen> {
   CustomThemeModel customThemeModel;
 
-  Widget _buildNameField() {
-    return SettingsColumn(
-      title: "Theme name",
-      child: TextField(),
+  Future<bool> _showBackDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Discard changes?",
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Theme.of(context).errorColor,
+              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text("Discard"),
+            ),
+            FlatButton(
+              textColor: Theme.of(context).accentColor,
+              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text("Back"),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -27,6 +49,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
       themeModel: ThemeModel.of(context),
+      settingsModel: SettingsModel.of(context),
     );
 
     return ScopedModel<CustomThemeModel>(
@@ -35,21 +58,106 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
         builder: (context, _, customThemeModel) {
           return Theme(
             data: customThemeModel.customTheme,
-            child: HarpyScaffold(
-              appBar: "Custom theme",
-              body: Column(
-                children: <Widget>[
-                  _buildNameField(),
-                  SizedBox(height: 8.0),
-                  CustomThemeBaseSelection(),
-                  SizedBox(height: 8.0),
-                  Expanded(child: CustomThemeColorSelections()),
-                  Spacer(),
+            child: WillPopScope(
+              onWillPop: _showBackDialog,
+              child: HarpyScaffold(
+                appBar: "Custom theme",
+                actions: <Widget>[
+                  SaveCustomThemeButton(),
                 ],
+                body: ListView(
+                  children: <Widget>[
+                    CustomThemeNameField(customThemeModel),
+                    SizedBox(height: 8.0),
+                    CustomThemeBaseSelection(),
+                    SizedBox(height: 8.0),
+                    CustomThemeColorSelections(),
+                  ],
+                ),
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class SaveCustomThemeButton extends StatelessWidget {
+  void _saveTheme(BuildContext context) {
+    final model = CustomThemeModel.of(context);
+
+    if (model.customThemeData?.name?.isEmpty ?? true) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text("Enter a name")),
+      );
+      return;
+    }
+
+    if (model.errorText() != null) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(model.errorText())),
+      );
+      return;
+    }
+
+    final settingsModel = SettingsModel.of(context);
+
+    settingsModel.saveCustomTheme(model.customThemeData, false);
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.check),
+      onPressed: () => _saveTheme(context),
+    );
+  }
+}
+
+/// Builds the [TextField] to change the custom theme name.
+class CustomThemeNameField extends StatefulWidget {
+  const CustomThemeNameField(this.model);
+
+  final CustomThemeModel model;
+
+  @override
+  _CustomThemeNameFieldState createState() => _CustomThemeNameFieldState();
+}
+
+class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = TextEditingController(text: widget.model.customThemeData.name)
+      ..addListener(_onNameChange)
+      ..addListener(() => setState(() {}));
+  }
+
+  void _onNameChange() {
+    final model = CustomThemeModel.of(context);
+    model.changeName(_controller.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final model = CustomThemeModel.of(context);
+
+    return SettingsColumn(
+      title: "Theme name",
+      child: TextField(
+        controller: _controller,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 12.0,
+          ),
+          errorText: model.errorText(),
+        ),
       ),
     );
   }
@@ -146,6 +254,7 @@ class CustomThemeColorSelections extends StatelessWidget {
   }
 }
 
+/// The dialog that shows the [MaterialColorPicker] in an [AlertDialog].
 class CustomThemeColorDialog extends StatefulWidget {
   const CustomThemeColorDialog(this.themeColorModel);
 
@@ -169,9 +278,12 @@ class _CustomThemeColorDialogState extends State<CustomThemeColorDialog> {
   void _showColorPicker() {
     setState(() {
       showingColorPicker = true;
-      content = ColorPicker(
-        pickerColor: widget.themeColorModel.color,
-        onColorChanged: widget.themeColorModel.onColorChanged,
+      content = Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ColorPicker(
+          pickerColor: widget.themeColorModel.color,
+          onColorChanged: widget.themeColorModel.onColorChanged,
+        ),
       );
     });
   }

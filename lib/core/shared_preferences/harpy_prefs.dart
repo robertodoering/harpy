@@ -30,7 +30,9 @@ class HarpyPrefs {
       _preferences.setString("$_prefix.themeName", themeName);
 
   /// Returns the set of all saved custom [HarpyThemeData].
-  Set<HarpyThemeData> get customThemes {
+  Set<HarpyThemeData> getCustomThemes() {
+    _log.fine("getting custom themes");
+
     return _preferences
         .getKeys()
         .where((key) => key.startsWith("theme."))
@@ -40,6 +42,8 @@ class HarpyPrefs {
             return HarpyThemeData.fromJson(
                 jsonDecode(_preferences.getString(key)));
           } catch (e) {
+            _log.warning("unable to parse theme: $key, deleting it");
+
             // invalid custom theme, remove it
             _preferences.remove(key);
             return null;
@@ -50,6 +54,8 @@ class HarpyPrefs {
   }
 
   /// Saves a custom [HarpyThemeData] into the shared preferences.
-  void saveCustomTheme(HarpyThemeData harpyThemeData) => _preferences.setString(
-      "theme.${harpyThemeData.name}", harpyThemeData.toJson().toString());
+  void saveCustomTheme(HarpyThemeData harpyThemeData) {
+    _preferences.setString(
+        "theme.${harpyThemeData.name}", jsonEncode(harpyThemeData.toJson()));
+  }
 }

@@ -22,7 +22,7 @@ class SettingsModel extends Model {
 
   void loadCustomThemes() {
     _log.fine("loading custom themes");
-    customThemes = harpyPrefs.customThemes;
+    customThemes = harpyPrefs.getCustomThemes();
     _log.fine("found ${customThemes?.length} themes");
   }
 
@@ -44,6 +44,7 @@ class SettingsModel extends Model {
     if (override || !alreadyExists) {
       customThemes.add(harpyThemeData);
       harpyPrefs.saveCustomTheme(harpyThemeData);
+      _log.fine("custom theme saved");
       return true;
     }
 
