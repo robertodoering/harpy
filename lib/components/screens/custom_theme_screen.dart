@@ -83,6 +83,8 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
+/// Builds the button to save the custom theme and shows a [SnackBar] with an
+/// error message if it was unable to save it.
 class SaveCustomThemeButton extends StatelessWidget {
   void _saveTheme(BuildContext context) {
     final model = CustomThemeModel.of(context);
