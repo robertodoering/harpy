@@ -136,13 +136,13 @@ class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
     super.initState();
 
     _controller = TextEditingController(text: widget.model.customThemeData.name)
-      ..addListener(_onNameChange)
-      ..addListener(() => setState(() {}));
+      ..addListener(_onNameChange);
   }
 
   void _onNameChange() {
     final model = CustomThemeModel.of(context);
     model.changeName(_controller.text);
+    setState(() {});
   }
 
   @override
