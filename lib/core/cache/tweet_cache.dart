@@ -65,7 +65,7 @@ class TweetCache {
   ///
   /// If a [Tweet] with the same [Tweet.id] already exists it will be
   /// overridden.
-  void _cacheTweet(Tweet tweet) {
+  void cacheTweet(Tweet tweet) {
     String fileName = "${tweet.id}.json";
 
     directoryService.createFile(
@@ -82,7 +82,7 @@ class TweetCache {
     bool exists = tweetExists(tweet);
 
     if (exists) {
-      _cacheTweet(tweet);
+      cacheTweet(tweet);
       _log.fine("tweet updated");
     } else {
       _log.warning("tweet not found in cache");
@@ -140,7 +140,7 @@ class TweetCache {
 
     clearBucket();
 
-    tweets.forEach(_cacheTweet);
+    tweets.forEach(cacheTweet);
 
     return tweets;
   }
