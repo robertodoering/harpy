@@ -82,22 +82,22 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
               child: HarpyScaffold(
                 appBar: "Custom theme",
                 actions: <Widget>[
-                  CustomThemeSaveButton(),
+                  _CustomThemeSaveButton(),
                 ],
                 body: Column(
                   children: <Widget>[
                     Expanded(
                       child: ListView(
                         children: <Widget>[
-                          CustomThemeNameField(customThemeModel),
+                          _CustomThemeNameField(customThemeModel),
                           SizedBox(height: 8.0),
-                          CustomThemeBaseSelection(),
+                          _CustomThemeBaseSelection(),
                           SizedBox(height: 8.0),
-                          CustomThemeColorSelections(),
+                          _CustomThemeColorSelections(),
                         ],
                       ),
                     ),
-                    CustomThemeDeleteButton(),
+                    _CustomThemeDeleteButton(),
                   ],
                 ),
               ),
@@ -112,7 +112,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
 /// Builds a button that will delete the custom theme.
 ///
 /// Only appears when editing an existing custom theme.
-class CustomThemeDeleteButton extends StatelessWidget {
+class _CustomThemeDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = CustomThemeModel.of(context);
@@ -142,7 +142,7 @@ class CustomThemeDeleteButton extends StatelessWidget {
 
 /// Builds the button to save the custom theme and shows a [SnackBar] with an
 /// error message if it was unable to save it.
-class CustomThemeSaveButton extends StatelessWidget {
+class _CustomThemeSaveButton extends StatelessWidget {
   void _saveTheme(BuildContext context) {
     final model = CustomThemeModel.of(context);
 
@@ -191,8 +191,8 @@ class CustomThemeSaveButton extends StatelessWidget {
 }
 
 /// Builds the [TextField] to change the custom theme name.
-class CustomThemeNameField extends StatefulWidget {
-  const CustomThemeNameField(this.model);
+class _CustomThemeNameField extends StatefulWidget {
+  const _CustomThemeNameField(this.model);
 
   final CustomThemeModel model;
 
@@ -200,7 +200,7 @@ class CustomThemeNameField extends StatefulWidget {
   _CustomThemeNameFieldState createState() => _CustomThemeNameFieldState();
 }
 
-class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
+class _CustomThemeNameFieldState extends State<_CustomThemeNameField> {
   TextEditingController _controller;
 
   @override
@@ -235,10 +235,17 @@ class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
 
 /// Builds a [TabBar] to select the light or dark default [ThemeData] as the
 /// base for the custom theme.
-class CustomThemeBaseSelection extends StatelessWidget {
+class _CustomThemeBaseSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = CustomThemeModel.of(context);
+
+    final theme = HarpyTheme.custom(model.customThemeData).theme;
+    final textStyle = theme.textTheme.body1.copyWith(
+      color: theme.scaffoldBackgroundColor.computeLuminance() > 0.5
+          ? Colors.black
+          : Colors.white,
+    );
 
     return SettingsColumn(
       title: "Base theme",
@@ -251,19 +258,13 @@ class CustomThemeBaseSelection extends StatelessWidget {
             Tab(
               child: Text(
                 "Light",
-                style: HarpyTheme.custom(model.customThemeData)
-                    .theme
-                    .textTheme
-                    .body1,
+                style: textStyle,
               ),
             ),
             Tab(
               child: Text(
                 "Dark",
-                style: HarpyTheme.custom(model.customThemeData)
-                    .theme
-                    .textTheme
-                    .body1,
+                style: textStyle,
               ),
             ),
           ],
@@ -275,7 +276,7 @@ class CustomThemeBaseSelection extends StatelessWidget {
 
 /// Builds a [ListView] with [ListTile]s to change the colors in a custom
 /// [HarpyTheme].
-class CustomThemeColorSelections extends StatelessWidget {
+class _CustomThemeColorSelections extends StatelessWidget {
   List<_CustomThemeColor> _getThemeColors(CustomThemeModel model) {
     return <_CustomThemeColor>[
       _CustomThemeColor(
@@ -321,7 +322,7 @@ class CustomThemeColorSelections extends StatelessWidget {
         onTap: () {
           showDialog(
             context: context,
-            builder: (context) => CustomThemeColorDialog(themeColorModel),
+            builder: (context) => _CustomThemeColorDialog(themeColorModel),
           );
         },
       );
@@ -340,8 +341,8 @@ class CustomThemeColorSelections extends StatelessWidget {
 }
 
 /// The dialog that shows the [MaterialColorPicker] in an [AlertDialog].
-class CustomThemeColorDialog extends StatefulWidget {
-  const CustomThemeColorDialog(this.themeColorModel);
+class _CustomThemeColorDialog extends StatefulWidget {
+  const _CustomThemeColorDialog(this.themeColorModel);
 
   final _CustomThemeColor themeColorModel;
 
@@ -349,7 +350,7 @@ class CustomThemeColorDialog extends StatefulWidget {
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
 }
 
-class _CustomThemeColorDialogState extends State<CustomThemeColorDialog> {
+class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
   Widget content;
   bool showingColorPicker = false;
 
@@ -416,7 +417,7 @@ class _CustomThemeColorDialogState extends State<CustomThemeColorDialog> {
   }
 }
 
-/// A simple model for building the [CustomThemeColorSelections].
+/// A simple model for building the [_CustomThemeColorSelections].
 class _CustomThemeColor {
   const _CustomThemeColor({
     @required this.name,
