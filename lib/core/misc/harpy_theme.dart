@@ -62,9 +62,8 @@ class HarpyTheme {
 
   Brightness get primaryColorBrightness {
     if (_primaryColorBrightness == null) {
-      _primaryColorBrightness = primaryColor.computeLuminance() > 0.5
-          ? Brightness.light
-          : Brightness.dark;
+      _primaryColorBrightness =
+          ThemeData.estimateBrightnessForColor(primaryColor);
     }
 
     return _primaryColorBrightness;
@@ -78,6 +77,18 @@ class HarpyTheme {
             ? Colors.black
             : Colors.white
         : null;
+  }
+
+  /// Returns [Colors.black] if the [color] is a bright color or [Colors.white]
+  /// if it is a dark color.
+  static Color complimentaryColor(Color color) {
+    switch (ThemeData.estimateBrightnessForColor(color)) {
+      case Brightness.dark:
+        return Colors.white;
+      case Brightness.light:
+      default:
+        return Colors.black;
+    }
   }
 
   ThemeData get theme {
