@@ -26,6 +26,8 @@ class ThemeModel extends Model {
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeModel].
   void changeSelectedTheme(HarpyTheme theme, int id) async {
+    _log.fine("changing selected theme to id: $id");
+
     harpyTheme = theme;
     harpyPrefs.setSelectedThemeId(id);
     notifyListeners();

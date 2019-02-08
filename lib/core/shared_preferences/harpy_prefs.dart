@@ -42,6 +42,8 @@ class HarpyPrefs {
 
   /// Saves the list of [customThemes] into the shared preferences.
   void saveCustomThemes(List<HarpyThemeData> customThemes) {
+    _log.fine("saving custom themes: $customThemes");
+
     _preferences.setStringList(
       "customThemes",
       customThemes.map((data) {

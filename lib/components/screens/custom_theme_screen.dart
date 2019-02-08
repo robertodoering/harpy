@@ -291,22 +291,22 @@ class CustomThemeColorSelections extends StatelessWidget {
       _CustomThemeColor(
         name: "Background color",
         color: Color(model.customThemeData.scaffoldBackgroundColor),
-        onColorChanged: model.changeBackgroundColor,
+        onColorChanged: model.changeScaffoldBackgroundColor,
       ),
       _CustomThemeColor(
         name: "Secondary background color",
-        color: Colors.black45,
-        onColorChanged: (color) {}, // todo
+        color: Color(model.customThemeData.secondaryBackgroundColor),
+        onColorChanged: model.changeSecondaryBackgroundColor,
       ),
       _CustomThemeColor(
         name: "Like color",
-        color: Colors.red,
-        onColorChanged: (color) {}, // todo
+        color: Color(model.customThemeData.likeColor),
+        onColorChanged: model.changeLikeColor,
       ),
       _CustomThemeColor(
         name: "Retweet color",
-        color: Colors.green,
-        onColorChanged: (color) {}, // todo
+        color: Color(model.customThemeData.retweetColor),
+        onColorChanged: model.changeRetweetColor,
       ),
     ];
   }

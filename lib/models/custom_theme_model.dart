@@ -16,9 +16,9 @@ class CustomThemeModel extends Model {
     // initialize the custom theme data with the edited theme or the current
     // theme when creating a new theme
     if (editingThemeId != null) {
-      customThemeData = editingThemeData;
+      customThemeData = editingThemeData..fromTheme(themeModel.harpyTheme);
     } else {
-      customThemeData = HarpyThemeData.fromTheme(themeModel.harpyTheme);
+      customThemeData = HarpyThemeData()..fromTheme(themeModel.harpyTheme);
       customThemeData.name =
           "New theme ${settingsModel.customThemes.length + 1}";
     }
@@ -90,8 +90,23 @@ class CustomThemeModel extends Model {
     notifyListeners();
   }
 
-  void changeBackgroundColor(Color color) {
+  void changeScaffoldBackgroundColor(Color color) {
     customThemeData.scaffoldBackgroundColor = color.value;
+    notifyListeners();
+  }
+
+  void changeSecondaryBackgroundColor(Color color) {
+    customThemeData.secondaryBackgroundColor = color.value;
+    notifyListeners();
+  }
+
+  void changeLikeColor(Color color) {
+    customThemeData.likeColor = color.value;
+    notifyListeners();
+  }
+
+  void changeRetweetColor(Color color) {
+    customThemeData.retweetColor = color.value;
     notifyListeners();
   }
 

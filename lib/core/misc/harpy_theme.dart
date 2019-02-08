@@ -10,6 +10,7 @@ class HarpyTheme {
     primaryColor = Colors.indigo;
     accentColor = Colors.indigoAccent;
     scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
+    secondaryBackgroundColor = _baseTheme.backgroundColor;
   }
 
   HarpyTheme.dark() {
@@ -20,6 +21,7 @@ class HarpyTheme {
     primaryColor = _baseTheme.primaryColor;
     accentColor = Colors.deepPurpleAccent;
     scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
+    secondaryBackgroundColor = _baseTheme.backgroundColor;
   }
 
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
@@ -27,15 +29,16 @@ class HarpyTheme {
 
     name = harpyThemeData.name;
 
-    if (harpyThemeData.primaryColor != null) {
-      primaryColor = Color(harpyThemeData.primaryColor);
-    }
-    if (harpyThemeData.accentColor != null) {
-      accentColor = Color(harpyThemeData.accentColor);
-    }
-    if (harpyThemeData.scaffoldBackgroundColor != null) {
-      scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundColor);
-    }
+    primaryColor =
+        Color(harpyThemeData.primaryColor ?? _baseTheme.primaryColor.value);
+    accentColor =
+        Color(harpyThemeData.accentColor ?? _baseTheme.accentColor.value);
+    scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundColor ??
+        _baseTheme.scaffoldBackgroundColor.value);
+    secondaryBackgroundColor = Color(harpyThemeData.secondaryBackgroundColor ??
+        _baseTheme.backgroundColor.value);
+    likeColor = Color(harpyThemeData.likeColor ?? likeColor.value);
+    retweetColor = Color(harpyThemeData.retweetColor ?? retweetColor.value);
   }
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
@@ -53,6 +56,9 @@ class HarpyTheme {
   Color primaryColor;
   Color accentColor;
   Color scaffoldBackgroundColor;
+  Color secondaryBackgroundColor;
+  Color likeColor = Colors.red;
+  Color retweetColor = Colors.green;
 
   Brightness get primaryColorBrightness {
     if (_primaryColorBrightness == null) {
@@ -79,8 +85,10 @@ class HarpyTheme {
       primaryColor: primaryColor,
       accentColor: accentColor,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
-      backgroundColor: scaffoldBackgroundColor,
-      dialogBackgroundColor: scaffoldBackgroundColor,
+
+      backgroundColor: secondaryBackgroundColor,
+      dialogBackgroundColor: secondaryBackgroundColor,
+      canvasColor: secondaryBackgroundColor, // drawer background
 
       buttonColor: Colors.white,
 

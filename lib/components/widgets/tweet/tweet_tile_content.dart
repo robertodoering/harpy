@@ -8,6 +8,7 @@ import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/models/theme_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 
 class TweetTileContent extends StatefulWidget {
@@ -300,6 +301,8 @@ class _TweetActionsRow extends StatelessWidget {
       return Container();
     }
 
+    final themeModel = ThemeModel.of(context);
+
     return Row(
       children: <Widget>[
         // retweet action
@@ -308,7 +311,7 @@ class _TweetActionsRow extends StatelessWidget {
           inactiveIcon: Icons.repeat,
           activeIcon: Icons.repeat,
           text: model.retweetCount,
-          color: Colors.green,
+          color: themeModel.harpyTheme.retweetColor,
           activate: model.retweet,
           deactivate: model.unretweet,
         ),
@@ -319,7 +322,7 @@ class _TweetActionsRow extends StatelessWidget {
           inactiveIcon: Icons.favorite_border,
           activeIcon: Icons.favorite,
           text: model.favoriteCount,
-          color: Colors.red,
+          color: themeModel.harpyTheme.likeColor,
           activate: model.favorite,
           deactivate: model.unfavorite,
         ),

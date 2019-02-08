@@ -10,14 +10,21 @@ class HarpyThemeData {
   int primaryColor;
   int accentColor;
   int scaffoldBackgroundColor;
+  int secondaryBackgroundColor;
+  int likeColor;
+  int retweetColor;
 
   HarpyThemeData();
 
-  HarpyThemeData.fromTheme(HarpyTheme harpyTheme) {
-    base = harpyTheme.base;
-    primaryColor = harpyTheme.theme.primaryColor.value;
-    accentColor = harpyTheme.theme.accentColor.value;
-    scaffoldBackgroundColor = harpyTheme.theme.scaffoldBackgroundColor.value;
+  /// Sets all attributes to the [HarpyTheme] values if they are `null`.
+  void fromTheme(HarpyTheme harpyTheme) {
+    base ??= harpyTheme.base;
+    primaryColor ??= harpyTheme.theme.primaryColor.value;
+    accentColor ??= harpyTheme.theme.accentColor.value;
+    scaffoldBackgroundColor ??= harpyTheme.theme.scaffoldBackgroundColor.value;
+    secondaryBackgroundColor ??= harpyTheme.secondaryBackgroundColor.value;
+    likeColor ??= harpyTheme.likeColor.value;
+    retweetColor ??= harpyTheme.retweetColor.value;
   }
 
   @override
@@ -27,7 +34,9 @@ class HarpyThemeData {
           other.name == name &&
           other.primaryColor == primaryColor &&
           other.accentColor == accentColor &&
-          other.scaffoldBackgroundColor == scaffoldBackgroundColor;
+          other.scaffoldBackgroundColor == scaffoldBackgroundColor &&
+          other.likeColor == likeColor &&
+          other.retweetColor == retweetColor;
     }
     return false;
   }
@@ -36,4 +45,9 @@ class HarpyThemeData {
       _$HarpyThemeDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$HarpyThemeDataToJson(this);
+
+  @override
+  String toString() {
+    return 'HarpyThemeData{base: $base, name: $name, primaryColor: $primaryColor, accentColor: $accentColor, scaffoldBackgroundColor: $scaffoldBackgroundColor, secondaryBackgroundColor: $secondaryBackgroundColor, likeColor: $likeColor, retweetColor: $retweetColor}';
+  }
 }
