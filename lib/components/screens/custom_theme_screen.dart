@@ -242,11 +242,7 @@ class _CustomThemeBaseSelection extends StatelessWidget {
 
     final theme = HarpyTheme.custom(model.customThemeData).theme;
     final textStyle = theme.textTheme.body1.copyWith(
-      color:
-          ThemeData.estimateBrightnessForColor(theme.scaffoldBackgroundColor) ==
-                  Brightness.light
-              ? Colors.black
-              : Colors.white,
+      color: HarpyTheme.complimentaryColor(theme.scaffoldBackgroundColor),
     );
 
     return SettingsColumn(
