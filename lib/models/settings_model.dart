@@ -18,7 +18,7 @@ class SettingsModel extends Model {
 
   static final Logger _log = Logger("SettingsModel");
 
-  Set<HarpyThemeData> customThemes;
+  List<HarpyThemeData> customThemes = [];
 
   void loadCustomThemes() {
     _log.fine("loading custom themes");
@@ -26,29 +26,41 @@ class SettingsModel extends Model {
     _log.fine("found ${customThemes?.length} themes");
   }
 
-  /// Saves a custom theme into the shared preferences.
-  ///
-  /// If a custom theme with the same [HarpyThemeData.name] already exists and
-  /// [override] is true it will be overridden.
-  ///
-  /// Returns `true` when successfully saved, `false` if a custom theme with the
-  /// same name already exists and [override] is false.
-  bool saveCustomTheme(HarpyThemeData harpyThemeData, bool override) {
+  bool selectedTheme(int id) {
+    return harpyPrefs.getSelectedThemeId() == id;
+  }
+
+  /// Saves a new custom theme into the shared preferences.
+  void saveNewCustomTheme(HarpyThemeData harpyThemeData) {
     _log.fine("saving custom theme");
 
-    bool alreadyExists = customThemes.any((themeData) {
-      return themeData.name == harpyThemeData.name;
-    });
+    customThemes.add(harpyThemeData);
+    harpyPrefs.saveCustomThemes(customThemes);
+    notifyListeners();
+    _log.fine("custom theme saved");
+  }
 
-    // save the new custom theme if override is true or it doesn't exist already
-    if (override || !alreadyExists) {
-      customThemes.add(harpyThemeData);
-      harpyPrefs.saveCustomTheme(harpyThemeData);
-      _log.fine("custom theme saved");
-      return true;
+  void updateCustomTheme(HarpyThemeData harpyThemeData, int id) {
+    _log.fine("updating custom theme");
+
+    customThemes[id - 2] = harpyThemeData;
+    harpyPrefs.saveCustomThemes(customThemes);
+    notifyListeners();
+    _log.fine("custom theme updated");
+  }
+
+  /// Deletes a theme associated to its [id] (index of the list saved in shared
+  /// preferences).
+  void deleteCustomTheme(int id) {
+    _log.fine("deleting custom theme with id: $id");
+
+    try {
+      customThemes.removeAt(id);
+      harpyPrefs.saveCustomThemes(customThemes);
+      notifyListeners();
+    } catch (e) {
+      _log.severe("unable to delete theme at id: $id");
+      _log.severe(e.toString());
     }
-
-    _log.warning("custom theme not saved");
-    return false;
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:logging/logging.dart';
@@ -21,41 +21,57 @@ class HarpyPrefs {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  /// Returns the name of the selected [HarpyTheme].
-  String get themeName =>
-      _preferences.getString("$_prefix.themeName") ?? HarpyTheme.dark().name;
+  /// Returns the id of the selected [HarpyTheme].
+  int getSelectedThemeId() => _preferences.getInt("$_prefix.selectedThemeId");
 
-  /// Sets the name of the selected [HarpyTheme].
-  set themeName(String themeName) =>
-      _preferences.setString("$_prefix.themeName", themeName);
+  /// Sets the id of the selected [HarpyTheme].
+  void setSelectedThemeId(int id) =>
+      _preferences.setInt("$_prefix.selectedThemeId", id);
 
-  /// Returns the set of all saved custom [HarpyThemeData].
-  Set<HarpyThemeData> getCustomThemes() {
+  /// Returns the list of all saved custom [HarpyThemeData].
+  List<HarpyThemeData> getCustomThemes() {
     _log.fine("getting custom themes");
 
     return _preferences
-        .getKeys()
-        .where((key) => key.startsWith("theme."))
-        .map((key) {
-          try {
-            // try to parse the custom theme
-            return HarpyThemeData.fromJson(
-                jsonDecode(_preferences.getString(key)));
-          } catch (e) {
-            _log.warning("unable to parse theme: $key, deleting it");
-
-            // invalid custom theme, remove it
-            _preferences.remove(key);
-            return null;
-          }
-        })
-        .where((data) => data != null)
-        .toSet();
+            .getStringList("customThemes")
+            ?.map(_decodeCustomTheme)
+            ?.where((data) => data != null)
+            ?.toList() ??
+        [];
   }
 
-  /// Saves a custom [HarpyThemeData] into the shared preferences.
-  void saveCustomTheme(HarpyThemeData harpyThemeData) {
-    _preferences.setString(
-        "theme.${harpyThemeData.name}", jsonEncode(harpyThemeData.toJson()));
+  /// Saves the list of [customThemes] into the shared preferences.
+  void saveCustomThemes(List<HarpyThemeData> customThemes) {
+    _preferences.setStringList(
+      "customThemes",
+      customThemes.map((data) {
+        return jsonEncode(data.toJson());
+      }).toList(),
+    );
+  }
+
+  /// Returns the [HarpyThemeData] for the [id] of the custom themes list.
+  ///
+  /// Returns `null` if the id is not in the list.
+  HarpyThemeData getCustomTheme(int id) {
+    _log.fine("getting custom harpy theme for id: $id");
+
+    try {
+      return getCustomThemes()[id - 2];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the [HarpyThemeData] from the [json] string or `null` if it can't
+  /// be parsed.
+  HarpyThemeData _decodeCustomTheme(String json) {
+    try {
+      // try to parse the custom theme
+      return HarpyThemeData.fromJson(jsonDecode(json));
+    } catch (e) {
+      _log.warning("unable to parse theme: $json");
+      return null;
+    }
   }
 }

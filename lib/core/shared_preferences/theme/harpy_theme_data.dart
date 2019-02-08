@@ -1,4 +1,4 @@
-import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'harpy_theme_data.g.dart';
@@ -9,7 +9,7 @@ class HarpyThemeData {
   String name;
   int primaryColor;
   int accentColor;
-  int scaffoldBackgroundValue;
+  int scaffoldBackgroundColor;
 
   HarpyThemeData();
 
@@ -17,7 +17,19 @@ class HarpyThemeData {
     base = harpyTheme.base;
     primaryColor = harpyTheme.theme.primaryColor.value;
     accentColor = harpyTheme.theme.accentColor.value;
-    scaffoldBackgroundValue = harpyTheme.theme.scaffoldBackgroundColor.value;
+    scaffoldBackgroundColor = harpyTheme.theme.scaffoldBackgroundColor.value;
+  }
+
+  @override
+  bool operator ==(other) {
+    if (other is HarpyThemeData) {
+      return other.base == base &&
+          other.name == name &&
+          other.primaryColor == primaryColor &&
+          other.accentColor == accentColor &&
+          other.scaffoldBackgroundColor == scaffoldBackgroundColor;
+    }
+    return false;
   }
 
   factory HarpyThemeData.fromJson(Map<String, dynamic> json) =>

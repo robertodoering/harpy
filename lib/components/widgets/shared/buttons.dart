@@ -113,7 +113,7 @@ class HarpyButtonState extends State<HarpyButton> {
         borderRadius: widget.borderRadius,
         onTap: widget.onPressed,
         highlightColor: Colors.transparent,
-        splashColor: widget.splashColor.withOpacity(0.1),
+        splashColor: widget.splashColor?.withOpacity(0.1),
         onHighlightChanged: _updateHighlighted,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

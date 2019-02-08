@@ -270,7 +270,7 @@ class TwitterEntityModel {
   /// The [User.screenName] for [EntityType.mention].
   final String data;
 
-  /// The [User.id] for [EntityType.mention].
+  /// The [User.editingThemeId] for [EntityType.mention].
   final String id;
 
   /// The text that should be displayed in the [TwitterText].

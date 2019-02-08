@@ -4,6 +4,7 @@ import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 class HarpyTheme {
   HarpyTheme.light() {
     name = "Default light";
+    defaultTheme = true;
     _initBaseTheme("light");
 
     primaryColor = Colors.indigo;
@@ -13,6 +14,7 @@ class HarpyTheme {
 
   HarpyTheme.dark() {
     name = "Default dark";
+    defaultTheme = true;
     _initBaseTheme("dark");
 
     primaryColor = _baseTheme.primaryColor;
@@ -23,13 +25,24 @@ class HarpyTheme {
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
     _initBaseTheme(harpyThemeData.base);
 
-    primaryColor = Color(harpyThemeData.primaryColor);
-    accentColor = Color(harpyThemeData.accentColor);
-    scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundValue);
+    name = harpyThemeData.name;
+
+    if (harpyThemeData.primaryColor != null) {
+      primaryColor = Color(harpyThemeData.primaryColor);
+    }
+    if (harpyThemeData.accentColor != null) {
+      accentColor = Color(harpyThemeData.accentColor);
+    }
+    if (harpyThemeData.scaffoldBackgroundColor != null) {
+      scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundColor);
+    }
   }
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
   static const Color harpyColor = Colors.indigo;
+
+  /// `true` if the theme is the default light or dark theme.
+  bool defaultTheme = false;
 
   String name;
   String base;

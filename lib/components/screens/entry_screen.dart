@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
-import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:logging/logging.dart';

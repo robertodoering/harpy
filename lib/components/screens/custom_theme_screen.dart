@@ -3,13 +3,23 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
-import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+/// Creates a screen to create and edit a custom harpy theme.
 class CustomThemeScreen extends StatefulWidget {
+  const CustomThemeScreen({
+    this.editingThemeData,
+    this.editingThemeId,
+  });
+
+  final HarpyThemeData editingThemeData;
+  final int editingThemeId;
+
   @override
   _CustomThemeScreenState createState() => _CustomThemeScreenState();
 }
@@ -17,14 +27,22 @@ class CustomThemeScreen extends StatefulWidget {
 class _CustomThemeScreenState extends State<CustomThemeScreen> {
   CustomThemeModel customThemeModel;
 
-  Future<bool> _showBackDialog() {
+  Future<bool> _showBackDialog() async {
+    // don't show dialog when nothing changed after editing theme
+    if (customThemeModel.customThemeData == customThemeModel.editingThemeData) {
+      return true;
+    }
+
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(
             "Discard changes?",
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle
+                .copyWith(color: Theme.of(context).textTheme.body1.color),
           ),
           actions: <Widget>[
             FlatButton(
@@ -50,6 +68,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
     customThemeModel ??= CustomThemeModel(
       themeModel: ThemeModel.of(context),
       settingsModel: SettingsModel.of(context),
+      editingThemeId: widget.editingThemeId,
     );
 
     return ScopedModel<CustomThemeModel>(
@@ -57,21 +76,28 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
       child: ScopedModelDescendant<CustomThemeModel>(
         builder: (context, _, customThemeModel) {
           return Theme(
-            data: customThemeModel.customTheme,
+            data: customThemeModel.harpyTheme.theme,
             child: WillPopScope(
               onWillPop: _showBackDialog,
               child: HarpyScaffold(
                 appBar: "Custom theme",
                 actions: <Widget>[
-                  SaveCustomThemeButton(),
+                  CustomThemeSaveButton(),
                 ],
-                body: ListView(
+                body: Column(
                   children: <Widget>[
-                    CustomThemeNameField(customThemeModel),
-                    SizedBox(height: 8.0),
-                    CustomThemeBaseSelection(),
-                    SizedBox(height: 8.0),
-                    CustomThemeColorSelections(),
+                    Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          CustomThemeNameField(customThemeModel),
+                          SizedBox(height: 8.0),
+                          CustomThemeBaseSelection(),
+                          SizedBox(height: 8.0),
+                          CustomThemeColorSelections(),
+                        ],
+                      ),
+                    ),
+                    CustomThemeDeleteButton(),
                   ],
                 ),
               ),
@@ -83,9 +109,40 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
+/// Builds a button that will delete the custom theme.
+///
+/// Only appears when editing an existing custom theme.
+class CustomThemeDeleteButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = CustomThemeModel.of(context);
+
+    if (model.editingThemeId == null) {
+      return Container();
+    }
+
+    final settingsModel = SettingsModel.of(context);
+    final themeModel = ThemeModel.of(context);
+
+    return RaisedButton(
+      child: Text("Delete theme"),
+      color: Theme.of(context).errorColor,
+      onPressed: () {
+        if (settingsModel.selectedTheme(model.editingThemeId)) {
+          themeModel.harpyPrefs.setSelectedThemeId(model.editingThemeId - 1);
+          themeModel.initTheme();
+        }
+
+        settingsModel.deleteCustomTheme(model.editingThemeId - 2);
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
 /// Builds the button to save the custom theme and shows a [SnackBar] with an
 /// error message if it was unable to save it.
-class SaveCustomThemeButton extends StatelessWidget {
+class CustomThemeSaveButton extends StatelessWidget {
   void _saveTheme(BuildContext context) {
     final model = CustomThemeModel.of(context);
 
@@ -105,7 +162,22 @@ class SaveCustomThemeButton extends StatelessWidget {
 
     final settingsModel = SettingsModel.of(context);
 
-    settingsModel.saveCustomTheme(model.customThemeData, false);
+    if (model.editingThemeId != null) {
+      // edited theme
+      settingsModel.updateCustomTheme(
+        model.customThemeData,
+        model.editingThemeId,
+      );
+    } else {
+      // new theme
+      model.themeModel.changeSelectedTheme(
+        model.harpyTheme,
+        settingsModel.customThemes.length + 2,
+      );
+
+      settingsModel.saveNewCustomTheme(model.customThemeData);
+    }
+
     Navigator.of(context).pop();
   }
 
@@ -136,19 +208,15 @@ class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
     super.initState();
 
     _controller = TextEditingController(text: widget.model.customThemeData.name)
-      ..addListener(_onNameChange);
-  }
-
-  void _onNameChange() {
-    final model = CustomThemeModel.of(context);
-    model.changeName(_controller.text);
-    setState(() {});
+      ..addListener(() {
+        setState(() {
+          widget.model.changeName(_controller.text);
+        });
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    final model = CustomThemeModel.of(context);
-
     return SettingsColumn(
       title: "Theme name",
       child: TextField(
@@ -158,7 +226,7 @@ class _CustomThemeNameFieldState extends State<CustomThemeNameField> {
             horizontal: 8.0,
             vertical: 12.0,
           ),
-          errorText: model.errorText(),
+          errorText: widget.model.errorText(),
         ),
       ),
     );
@@ -208,22 +276,37 @@ class CustomThemeBaseSelection extends StatelessWidget {
 /// Builds a [ListView] with [ListTile]s to change the colors in a custom
 /// [HarpyTheme].
 class CustomThemeColorSelections extends StatelessWidget {
-  List<ThemeColorModel> _getThemeColors(CustomThemeModel model) {
-    return <ThemeColorModel>[
-      ThemeColorModel(
+  List<_CustomThemeColor> _getThemeColors(CustomThemeModel model) {
+    return <_CustomThemeColor>[
+      _CustomThemeColor(
         name: "Primary color",
         color: Color(model.customThemeData.primaryColor),
         onColorChanged: model.changePrimaryColor,
       ),
-      ThemeColorModel(
+      _CustomThemeColor(
         name: "Accent color",
         color: Color(model.customThemeData.accentColor),
         onColorChanged: model.changeAccentColor,
       ),
-      ThemeColorModel(
+      _CustomThemeColor(
         name: "Background color",
-        color: Color(model.customThemeData.scaffoldBackgroundValue),
+        color: Color(model.customThemeData.scaffoldBackgroundColor),
         onColorChanged: model.changeBackgroundColor,
+      ),
+      _CustomThemeColor(
+        name: "Secondary background color",
+        color: Colors.black45,
+        onColorChanged: (color) {}, // todo
+      ),
+      _CustomThemeColor(
+        name: "Like color",
+        color: Colors.red,
+        onColorChanged: (color) {}, // todo
+      ),
+      _CustomThemeColor(
+        name: "Retweet color",
+        color: Colors.green,
+        onColorChanged: (color) {}, // todo
       ),
     ];
   }
@@ -260,7 +343,7 @@ class CustomThemeColorSelections extends StatelessWidget {
 class CustomThemeColorDialog extends StatefulWidget {
   const CustomThemeColorDialog(this.themeColorModel);
 
-  final ThemeColorModel themeColorModel;
+  final _CustomThemeColor themeColorModel;
 
   @override
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
@@ -334,8 +417,8 @@ class _CustomThemeColorDialogState extends State<CustomThemeColorDialog> {
 }
 
 /// A simple model for building the [CustomThemeColorSelections].
-class ThemeColorModel {
-  const ThemeColorModel({
+class _CustomThemeColor {
+  const _CustomThemeColor({
     @required this.name,
     @required this.color,
     @required this.onColorChanged,

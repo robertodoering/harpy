@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/misc/theme.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+/// The [ThemeModel] sits above the [MaterialApp] and rebuilds the app whenever
+/// the [Theme] changes.
 class ThemeModel extends Model {
   ThemeModel({
     @required this.harpyPrefs,
@@ -22,9 +25,9 @@ class ThemeModel extends Model {
 
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeModel].
-  void updateTheme(HarpyTheme theme) {
+  void changeSelectedTheme(HarpyTheme theme, int id) async {
     harpyTheme = theme;
-    harpyPrefs.themeName = theme.name;
+    harpyPrefs.setSelectedThemeId(id);
     notifyListeners();
   }
 
@@ -32,15 +35,25 @@ class ThemeModel extends Model {
   ///
   /// Defaults to [HarpyTheme.dark].
   void initTheme() {
-    _log.fine("initializing harpy theme with ${harpyPrefs.themeName}");
+    int id = harpyPrefs.getSelectedThemeId();
 
-    if (harpyPrefs.themeName == HarpyTheme.dark().name) {
-      harpyTheme = HarpyTheme.dark();
-    } else if (harpyPrefs.themeName == HarpyTheme.light().name) {
+    _log.fine("initializing harpy theme with id ${id}");
+
+    if (id == 0) {
       harpyTheme = HarpyTheme.light();
+    } else if (id == 1 || id == null) {
+      harpyTheme = HarpyTheme.dark();
     } else {
-      _log.severe("custom theme not yet supported, panic");
       // load harpyThemeData for custom theme
+      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
+
+      if (customThemeData != null) {
+        harpyTheme = HarpyTheme.custom(customThemeData);
+      } else {
+        _log.warning(
+            "unable to load custom theme for id: $id, defaulting to dark theme");
+        harpyTheme = HarpyTheme.dark();
+      }
     }
 
     notifyListeners();

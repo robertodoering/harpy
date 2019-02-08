@@ -12,7 +12,7 @@ HarpyThemeData _$HarpyThemeDataFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..primaryColor = json['primaryColor'] as int
     ..accentColor = json['accentColor'] as int
-    ..scaffoldBackgroundValue = json['scaffoldBackgroundValue'] as int;
+    ..scaffoldBackgroundColor = json['scaffoldBackgroundColor'] as int;
 }
 
 Map<String, dynamic> _$HarpyThemeDataToJson(HarpyThemeData instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$HarpyThemeDataToJson(HarpyThemeData instance) =>
       'name': instance.name,
       'primaryColor': instance.primaryColor,
       'accentColor': instance.accentColor,
-      'scaffoldBackgroundValue': instance.scaffoldBackgroundValue
+      'scaffoldBackgroundColor': instance.scaffoldBackgroundColor
     };
