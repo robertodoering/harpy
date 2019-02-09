@@ -90,7 +90,7 @@ class HarpyTheme {
   }
 
   ThemeData get theme {
-    final textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
+    final textTheme = _baseTheme.textTheme.apply(fontFamily: "OpenSans");
 
     return _baseTheme.copyWith(
       primaryColor: primaryColor,
