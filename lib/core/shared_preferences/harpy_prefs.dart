@@ -22,7 +22,10 @@ class HarpyPrefs {
   }
 
   /// Returns the id of the selected [HarpyTheme].
-  int getSelectedThemeId() => _preferences.getInt("$_prefix.selectedThemeId");
+  ///
+  /// Returns `1` if no theme has been selected before.
+  int getSelectedThemeId() =>
+      _preferences.getInt("$_prefix.selectedThemeId") ?? 1;
 
   /// Sets the id of the selected [HarpyTheme].
   void setSelectedThemeId(int id) =>

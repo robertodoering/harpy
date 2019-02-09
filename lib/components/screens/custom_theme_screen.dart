@@ -253,18 +253,8 @@ class _CustomThemeBaseSelection extends StatelessWidget {
         child: TabBar(
           onTap: model.changeBase,
           tabs: <Widget>[
-            Tab(
-              child: Text(
-                "Light",
-                style: textStyle,
-              ),
-            ),
-            Tab(
-              child: Text(
-                "Dark",
-                style: textStyle,
-              ),
-            ),
+            Tab(child: Text("Light", style: textStyle)),
+            Tab(child: Text("Dark", style: textStyle)),
           ],
         ),
       ),
@@ -276,35 +266,37 @@ class _CustomThemeBaseSelection extends StatelessWidget {
 /// [HarpyTheme].
 class _CustomThemeColorSelections extends StatelessWidget {
   List<_CustomThemeColor> _getThemeColors(CustomThemeModel model) {
+    final harpyTheme = HarpyTheme.custom(model.customThemeData);
+
     return <_CustomThemeColor>[
       _CustomThemeColor(
         name: "Primary color",
-        color: Color(model.customThemeData.primaryColor),
+        color: harpyTheme.theme.primaryColor,
         onColorChanged: model.changePrimaryColor,
       ),
       _CustomThemeColor(
         name: "Accent color",
-        color: Color(model.customThemeData.accentColor),
+        color: harpyTheme.theme.accentColor,
         onColorChanged: model.changeAccentColor,
       ),
       _CustomThemeColor(
         name: "Background color",
-        color: Color(model.customThemeData.scaffoldBackgroundColor),
+        color: harpyTheme.theme.scaffoldBackgroundColor,
         onColorChanged: model.changeScaffoldBackgroundColor,
       ),
       _CustomThemeColor(
         name: "Secondary background color",
-        color: Color(model.customThemeData.secondaryBackgroundColor),
+        color: harpyTheme.theme.backgroundColor,
         onColorChanged: model.changeSecondaryBackgroundColor,
       ),
       _CustomThemeColor(
         name: "Like color",
-        color: Color(model.customThemeData.likeColor),
+        color: harpyTheme.likeColor,
         onColorChanged: model.changeLikeColor,
       ),
       _CustomThemeColor(
         name: "Retweet color",
-        color: Color(model.customThemeData.retweetColor),
+        color: harpyTheme.retweetColor,
         onColorChanged: model.changeRetweetColor,
       ),
     ];

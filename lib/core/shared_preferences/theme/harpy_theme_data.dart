@@ -21,8 +21,8 @@ class HarpyThemeData {
     base ??= harpyTheme.base;
     primaryColor ??= harpyTheme.theme.primaryColor.value;
     accentColor ??= harpyTheme.theme.accentColor.value;
-    scaffoldBackgroundColor ??= harpyTheme.theme.scaffoldBackgroundColor.value;
-    secondaryBackgroundColor ??= harpyTheme.secondaryBackgroundColor.value;
+    scaffoldBackgroundColor ??= harpyTheme.theme.scaffoldBackgroundColor?.value;
+    secondaryBackgroundColor ??= harpyTheme.secondaryBackgroundColor?.value;
     likeColor ??= harpyTheme.likeColor.value;
     retweetColor ??= harpyTheme.retweetColor.value;
   }

@@ -43,7 +43,7 @@ class ThemeModel extends Model {
 
     if (id == 0) {
       harpyTheme = HarpyTheme.light();
-    } else if (id == 1 || id == null) {
+    } else if (id == 1) {
       harpyTheme = HarpyTheme.dark();
     } else {
       // load harpyThemeData for custom theme

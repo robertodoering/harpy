@@ -9,8 +9,6 @@ class HarpyTheme {
 
     primaryColor = Colors.indigo;
     accentColor = Colors.indigoAccent;
-    scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
-    secondaryBackgroundColor = _baseTheme.backgroundColor;
   }
 
   HarpyTheme.dark() {
@@ -18,10 +16,7 @@ class HarpyTheme {
     defaultTheme = true;
     _initBaseTheme("dark");
 
-    primaryColor = _baseTheme.primaryColor;
     accentColor = Colors.deepPurpleAccent;
-    scaffoldBackgroundColor = _baseTheme.scaffoldBackgroundColor;
-    secondaryBackgroundColor = _baseTheme.backgroundColor;
   }
 
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
@@ -36,7 +31,7 @@ class HarpyTheme {
     scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundColor ??
         _baseTheme.scaffoldBackgroundColor.value);
     secondaryBackgroundColor = Color(harpyThemeData.secondaryBackgroundColor ??
-        _baseTheme.backgroundColor.value);
+        _baseTheme.scaffoldBackgroundColor.value);
     likeColor = Color(harpyThemeData.likeColor ?? likeColor.value);
     retweetColor = Color(harpyThemeData.retweetColor ?? retweetColor.value);
   }
@@ -63,7 +58,7 @@ class HarpyTheme {
   Brightness get primaryColorBrightness {
     if (_primaryColorBrightness == null) {
       _primaryColorBrightness =
-          ThemeData.estimateBrightnessForColor(primaryColor);
+          ThemeData.estimateBrightnessForColor(_baseTheme.primaryColor);
     }
 
     return _primaryColorBrightness;
