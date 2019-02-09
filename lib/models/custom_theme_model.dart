@@ -6,6 +6,7 @@ import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+/// The model for creating or editing a custom theme.
 class CustomThemeModel extends Model {
   CustomThemeModel({
     @required this.themeModel,

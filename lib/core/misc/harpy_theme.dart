@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
+  /// The default light theme.
   HarpyTheme.light() {
     name = "Default light";
     defaultTheme = true;
@@ -11,6 +12,7 @@ class HarpyTheme {
     accentColor = Colors.indigoAccent;
   }
 
+  /// The default dark theme.
   HarpyTheme.dark() {
     name = "Default dark";
     defaultTheme = true;
@@ -19,6 +21,7 @@ class HarpyTheme {
     accentColor = Colors.deepPurpleAccent;
   }
 
+  /// Creates a [HarpyTheme] from [HarpyThemeData].
   HarpyTheme.custom(HarpyThemeData harpyThemeData) {
     _initBaseTheme(harpyThemeData.base);
 
@@ -46,12 +49,12 @@ class HarpyTheme {
   String base;
 
   ThemeData _baseTheme;
-  TextTheme _textTheme;
 
   Color primaryColor;
   Color accentColor;
   Color scaffoldBackgroundColor;
   Color secondaryBackgroundColor;
+
   Color likeColor = Colors.red;
   Color retweetColor = Colors.green;
 
@@ -87,6 +90,8 @@ class HarpyTheme {
   }
 
   ThemeData get theme {
+    final textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
+
     return _baseTheme.copyWith(
       primaryColor: primaryColor,
       accentColor: accentColor,
@@ -112,48 +117,48 @@ class HarpyTheme {
       ),
 
       // text
-      textTheme: _textTheme.copyWith(
-          title: _textTheme.title.copyWith(
+      textTheme: textTheme.copyWith(
+          title: textTheme.title.copyWith(
             fontSize: 48.0,
             letterSpacing: 6.0,
             color: Colors.white,
             fontFamily: "Comfortaa",
             fontWeight: FontWeight.w300,
           ),
-          subtitle: _textTheme.subtitle.copyWith(
+          subtitle: textTheme.subtitle.copyWith(
             fontSize: 18.0,
             letterSpacing: 2.0,
             color: Colors.white,
             fontFamily: "Comfortaa",
             fontWeight: FontWeight.w300,
           ),
-          button: _textTheme.button.copyWith(
+          button: textTheme.button.copyWith(
             color: primaryColor,
             fontSize: 16.0,
           ),
 
           // drawer username
-          display1: _textTheme.display1.copyWith(
+          display1: textTheme.display1.copyWith(
             fontSize: 14.0,
           ),
 
           // drawer name
-          display2: _textTheme.display2.copyWith(
+          display2: textTheme.display2.copyWith(
             fontSize: 24.0,
           ),
 
           // settings header
-          display3: _textTheme.display2.copyWith(
+          display3: textTheme.display2.copyWith(
             fontSize: 18.0,
           ),
 
           // default text
-          body1: _textTheme.body1.copyWith(
+          body1: textTheme.body1.copyWith(
             fontSize: 14.0,
           ),
 
           // username
-          caption: _textTheme.caption.copyWith(
+          caption: textTheme.caption.copyWith(
             fontSize: 12.0,
           )),
     );
@@ -161,13 +166,6 @@ class HarpyTheme {
 
   void _initBaseTheme(String base) {
     this.base = base;
-
-    if (base == "light") {
-      _baseTheme = ThemeData.light();
-      _textTheme = ThemeData.light().textTheme.apply(fontFamily: "OpenSans");
-    } else {
-      _baseTheme = ThemeData.dark();
-      _textTheme = ThemeData.dark().textTheme.apply(fontFamily: "OpenSans");
-    }
+    _baseTheme = base == "light" ? ThemeData.light() : ThemeData.dark();
   }
 }
