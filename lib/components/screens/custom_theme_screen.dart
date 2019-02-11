@@ -4,7 +4,6 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
-import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings_model.dart';
 import 'package:harpy/models/theme_model.dart';
@@ -12,14 +11,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
 class CustomThemeScreen extends StatefulWidget {
-  const CustomThemeScreen({
-    this.editingThemeData,
-    this.editingThemeId,
-  });
-
-  final HarpyThemeData editingThemeData;
-  final int editingThemeId;
-
   @override
   _CustomThemeScreenState createState() => _CustomThemeScreenState();
 }
@@ -27,48 +18,11 @@ class CustomThemeScreen extends StatefulWidget {
 class _CustomThemeScreenState extends State<CustomThemeScreen> {
   CustomThemeModel customThemeModel;
 
-  Future<bool> _showBackDialog() async {
-    // don't show dialog when nothing changed after editing theme
-    if (customThemeModel.customThemeData == customThemeModel.editingThemeData) {
-      return true;
-    }
-
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            "Discard changes?",
-            style: Theme.of(context)
-                .textTheme
-                .subtitle
-                .copyWith(color: Theme.of(context).textTheme.body1.color),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              textColor: Theme.of(context).errorColor,
-              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text("Discard"),
-            ),
-            FlatButton(
-              textColor: Theme.of(context).accentColor,
-              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text("Back"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
       themeModel: ThemeModel.of(context),
       settingsModel: SettingsModel.of(context),
-      editingThemeId: widget.editingThemeId,
     );
 
     return ScopedModel<CustomThemeModel>(
@@ -77,29 +31,19 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
         builder: (context, _, customThemeModel) {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
-            child: WillPopScope(
-              onWillPop: _showBackDialog,
-              child: HarpyScaffold(
-                appBar: "Custom theme",
-                actions: <Widget>[
-                  _CustomThemeSaveButton(),
+            child: HarpyScaffold(
+              appBar: "Custom theme",
+              actions: <Widget>[
+                _CustomThemeSaveButton(),
+              ],
+              body: ListView(
+                children: <Widget>[
+                  _CustomThemeNameField(customThemeModel),
+                  SizedBox(height: 8.0),
+                  _CustomThemeBaseSelection(),
+                  SizedBox(height: 8.0),
+                  _CustomThemeColorSelections(),
                 ],
-                body: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        children: <Widget>[
-                          _CustomThemeNameField(customThemeModel),
-                          SizedBox(height: 8.0),
-                          _CustomThemeBaseSelection(),
-                          SizedBox(height: 8.0),
-                          _CustomThemeColorSelections(),
-                        ],
-                      ),
-                    ),
-                    _CustomThemeDeleteButton(),
-                  ],
-                ),
               ),
             ),
           );
@@ -109,83 +53,16 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
-/// Builds a button that will delete the custom theme.
-///
-/// Only appears when editing an existing custom theme.
-class _CustomThemeDeleteButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final model = CustomThemeModel.of(context);
-
-    if (model.editingThemeId == null) {
-      return Container();
-    }
-
-    final settingsModel = SettingsModel.of(context);
-    final themeModel = ThemeModel.of(context);
-
-    return RaisedButton(
-      child: Text("Delete theme"),
-      color: Theme.of(context).errorColor,
-      onPressed: () {
-        if (settingsModel.selectedTheme(model.editingThemeId)) {
-          themeModel.harpyPrefs.setSelectedThemeId(model.editingThemeId - 1);
-          themeModel.initTheme();
-        }
-
-        settingsModel.deleteCustomTheme(model.editingThemeId - 2);
-        Navigator.of(context).pop();
-      },
-    );
-  }
-}
-
 /// Builds the button to save the custom theme and shows a [SnackBar] with an
 /// error message if it was unable to save it.
+///
+/// Only implemented in the pro version.
 class _CustomThemeSaveButton extends StatelessWidget {
-  void _saveTheme(BuildContext context) {
-    final model = CustomThemeModel.of(context);
-
-    if (model.customThemeData?.name?.isEmpty ?? true) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text("Enter a name")),
-      );
-      return;
-    }
-
-    if (model.errorText() != null) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text(model.errorText())),
-      );
-      return;
-    }
-
-    final settingsModel = SettingsModel.of(context);
-
-    if (model.editingThemeId != null) {
-      // edited theme
-      settingsModel.updateCustomTheme(
-        model.customThemeData,
-        model.editingThemeId,
-      );
-    } else {
-      // new theme
-      model.themeModel.changeSelectedTheme(
-        model.harpyTheme,
-        settingsModel.customThemes.length + 2,
-      );
-
-      settingsModel.saveNewCustomTheme(model.customThemeData);
-    }
-
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.check),
-      onPressed: () => _saveTheme(context),
+      onPressed: null,
     );
   }
 }

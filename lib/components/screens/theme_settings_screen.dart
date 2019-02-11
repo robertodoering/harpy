@@ -40,14 +40,6 @@ class ThemeSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsModel = SettingsModel.of(context);
-
-    settingsModel.loadCustomThemes();
-
-    _harpyThemes.addAll(settingsModel.customThemes.map((harpyThemeData) {
-      return HarpyTheme.custom(harpyThemeData);
-    }));
-
     List<Widget> children = [];
 
     children.addAll(_harpyThemes.map((harpyTheme) {

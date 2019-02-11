@@ -11,24 +11,16 @@ class CustomThemeModel extends Model {
   CustomThemeModel({
     @required this.themeModel,
     @required this.settingsModel,
-    this.editingThemeId,
   })  : assert(themeModel != null),
         assert(settingsModel != null) {
     // initialize the custom theme data with the edited theme or the current
     // theme when creating a new theme
-    if (editingThemeId != null) {
-      customThemeData = editingThemeData..fromTheme(themeModel.harpyTheme);
-    } else {
-      customThemeData = HarpyThemeData()..fromTheme(themeModel.harpyTheme);
-      customThemeData.name =
-          "New theme ${settingsModel.customThemes.length + 1}";
-    }
+    customThemeData = HarpyThemeData()..fromTheme(themeModel.harpyTheme);
+    customThemeData.name = "New theme 1";
   }
 
   final ThemeModel themeModel;
   final SettingsModel settingsModel;
-
-  final int editingThemeId;
 
   static CustomThemeModel of(BuildContext context) {
     return ScopedModel.of<CustomThemeModel>(context);
@@ -36,18 +28,8 @@ class CustomThemeModel extends Model {
 
   HarpyThemeData customThemeData;
 
-  HarpyThemeData get editingThemeData {
-    if (editingThemeId == null) {
-      return null;
-    }
-    return settingsModel.customThemes[editingThemeId - 2];
-  }
-
   /// `true` if the name only contains valid characters.
   bool validName = true;
-
-  /// `true` if a custom theme with the name already exists.
-  bool existingName = false;
 
   /// Returns the error text if an error exists, otherwise `null`.
   String errorText() {
@@ -58,9 +40,7 @@ class CustomThemeModel extends Model {
     if (!validName) {
       return "Name contains invalid characters";
     }
-    if (existingName) {
-      return "Theme with name ${customThemeData.name} already exists";
-    }
+
     return null;
   }
 
@@ -73,7 +53,6 @@ class CustomThemeModel extends Model {
 
     // validate name
     validName = _validateName();
-    existingName = _existingName();
   }
 
   void changeBase(int index) {
@@ -115,20 +94,5 @@ class CustomThemeModel extends Model {
   /// and spaces.
   bool _validateName() {
     return customThemeData.name.contains(RegExp(r"^[-_ a-zA-Z0-9]+$"));
-  }
-
-  /// Returns `true` if the name already exists in the saved custom themes.
-  bool _existingName() {
-    // return false if it is the edited theme
-    if (editingThemeId != null) {
-      HarpyThemeData data = editingThemeData;
-      if (customThemeData.name == data.name) {
-        return false;
-      }
-    }
-
-    return settingsModel.customThemes.any((data) {
-      return data.name == customThemeData.name;
-    });
   }
 }

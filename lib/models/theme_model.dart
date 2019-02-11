@@ -33,6 +33,11 @@ class ThemeModel extends Model {
     notifyListeners();
   }
 
+  /// Whether or not the theme with the [id] is the currently selected Theme.
+  bool selectedTheme(int id) {
+    return harpyPrefs.getSelectedThemeId() == id;
+  }
+
   /// Initializes the [HarpyTheme] with the theme set in [HarpyPrefs].
   ///
   /// Defaults to [HarpyTheme.dark].
