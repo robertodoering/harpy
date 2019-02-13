@@ -19,9 +19,10 @@ class AsyncInitializer {
 
     for (AsyncTask task in tasks) {
       _log.fine("task ${tasks.indexOf(task)} started");
-      task()
-          .then((_) => _onTaskFinished(task))
-          .catchError((_) => _onTaskFinished(task));
+      task().then((_) => _onTaskFinished(task)).catchError((e) {
+        _log.severe("task error: $e");
+        _onTaskFinished(task);
+      });
     }
 
     return completer.future;

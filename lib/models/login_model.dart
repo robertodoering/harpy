@@ -58,6 +58,9 @@ class LoginModel extends Model {
         _log.fine("successfully logged in");
         applicationModel.twitterSession = result.session;
 
+        // init tweet cache logged in user
+        applicationModel.initLoggedIn();
+
         // initialize before navigating
         await initBeforeHome();
 

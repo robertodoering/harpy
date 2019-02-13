@@ -87,8 +87,7 @@ class ApplicationModel extends Model {
     ]).run();
 
     if (loggedIn) {
-      // init theme from shared prefs
-      themeModel.initTheme();
+      initLoggedIn();
     }
 
     initialized = true;
@@ -117,6 +116,13 @@ class ApplicationModel extends Model {
 
     // init active twitter session
     twitterSession = await twitterLogin.currentSession;
+  }
+
+  /// Called when initializing and already logged in or in the [LoginModel]
+  /// after logging in for the first time.
+  void initLoggedIn() {
+    // init theme from shared prefs
+    themeModel.initTheme();
 
     // init tweet cache logged in user
     userTimelineCache.initLoggedInUser(twitterSession.userId);
