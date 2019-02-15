@@ -79,7 +79,7 @@ class WebviewScreenState extends State<WebviewScreen> {
     };
 
     return HarpyScaffold(
-      appBar: widget.displayUrl ?? widget.url,
+      title: widget.displayUrl ?? widget.url,
       actions: _buildActions(),
       body: WebView(
         initialUrl: widget.url,

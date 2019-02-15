@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/custom_theme_screen.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/pro_feature_dialog.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
@@ -17,14 +18,12 @@ class ThemeCard extends StatelessWidget {
   final int id;
 
   Widget _buildThemeName(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4.0),
-      width: double.infinity,
-      color: harpyTheme.theme.primaryColor,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Text(
         "${harpyTheme.name}",
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+        style: harpyTheme.theme.textTheme.body1,
         textAlign: TextAlign.center,
       ),
     );
@@ -35,7 +34,7 @@ class ThemeCard extends StatelessWidget {
       children: <Widget>[
         Container(
           width: double.infinity,
-          height: 5,
+          height: 4,
           color: harpyTheme.theme.accentColor,
         ),
       ],
@@ -66,21 +65,21 @@ class ThemeCard extends StatelessWidget {
       child: Theme(
         data: harpyTheme.theme,
         child: Card(
-          color: harpyTheme.theme.scaffoldBackgroundColor,
-          child: Stack(
-            children: <Widget>[
-              InkWell(
-                borderRadius: BorderRadius.circular(4.0),
-                onTap: () => themeModel.changeSelectedTheme(harpyTheme, id),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(child: _buildSelectedIcon(themeModel)),
-                    _buildThemeName(context),
-                    Expanded(child: _buildThemeColors()),
-                  ],
-                ),
+          child: HarpyBackground(
+            borderRadius: BorderRadius.circular(4.0),
+            startColor: harpyTheme.primaryBackgroundColor,
+            endColor: harpyTheme.secondaryBackgroundColor,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(4.0),
+              onTap: () => themeModel.changeSelectedTheme(harpyTheme, id),
+              child: Column(
+                children: <Widget>[
+                  Expanded(child: _buildSelectedIcon(themeModel)),
+                  _buildThemeName(context),
+                  Expanded(child: _buildThemeColors()),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

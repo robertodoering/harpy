@@ -4,6 +4,7 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -81,12 +82,14 @@ class HomeDrawer extends StatelessWidget {
     final loginModel = LoginModel.of(context);
 
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          UserDrawerHeader(loginModel.loggedInUser),
-          Expanded(child: _buildActions(context)),
-        ],
+      child: HarpyBackground(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            UserDrawerHeader(loginModel.loggedInUser),
+            Expanded(child: _buildActions(context)),
+          ],
+        ),
       ),
     );
   }

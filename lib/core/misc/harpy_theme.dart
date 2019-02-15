@@ -8,8 +8,10 @@ class HarpyTheme {
     defaultTheme = true;
     _initBaseTheme("light");
 
-    primaryColor = Colors.indigo;
     accentColor = Colors.indigoAccent;
+
+    primaryBackgroundColor = Colors.indigo[50];
+    secondaryBackgroundColor = Colors.white;
   }
 
   /// The default dark theme.
@@ -19,6 +21,9 @@ class HarpyTheme {
     _initBaseTheme("dark");
 
     accentColor = Colors.deepPurpleAccent;
+
+    primaryBackgroundColor = Colors.grey[850];
+    secondaryBackgroundColor = Colors.black;
   }
 
   /// Creates a [HarpyTheme] from [HarpyThemeData].
@@ -27,16 +32,14 @@ class HarpyTheme {
 
     name = harpyThemeData.name;
 
-    primaryColor =
-        Color(harpyThemeData.primaryColor ?? _baseTheme.primaryColor.value);
-    accentColor =
-        Color(harpyThemeData.accentColor ?? _baseTheme.accentColor.value);
-    scaffoldBackgroundColor = Color(harpyThemeData.scaffoldBackgroundColor ??
-        _baseTheme.scaffoldBackgroundColor.value);
-    secondaryBackgroundColor = Color(harpyThemeData.secondaryBackgroundColor ??
-        _baseTheme.scaffoldBackgroundColor.value);
-    likeColor = Color(harpyThemeData.likeColor ?? likeColor.value);
-    retweetColor = Color(harpyThemeData.retweetColor ?? retweetColor.value);
+    // todo: ensure colors are not null
+    accentColor = _colorFromValue(harpyThemeData.accentColor);
+    primaryBackgroundColor =
+        _colorFromValue(harpyThemeData.primaryBackgroundColor);
+    secondaryBackgroundColor =
+        _colorFromValue(harpyThemeData.secondaryBackgroundColor);
+    likeColor = _colorFromValue(harpyThemeData.likeColor);
+    retweetColor = _colorFromValue(harpyThemeData.retweetColor);
   }
 
   /// The color that will be drawn in the splash screen and [LoginScreen].
@@ -50,56 +53,42 @@ class HarpyTheme {
 
   ThemeData _baseTheme;
 
-  Color primaryColor;
+  // custom colors, must not be null
   Color accentColor;
-  Color scaffoldBackgroundColor;
+
+  Color primaryBackgroundColor;
   Color secondaryBackgroundColor;
 
   Color likeColor = Colors.red;
   Color retweetColor = Colors.green;
 
-  Brightness get primaryColorBrightness {
-    if (_primaryColorBrightness == null) {
-      _primaryColorBrightness =
-          ThemeData.estimateBrightnessForColor(_baseTheme.primaryColor);
-    }
+  Brightness get backgroundColor1Brightness => _backgroundColor1Brightness ??=
+      ThemeData.estimateBrightnessForColor(primaryBackgroundColor);
+  Brightness _backgroundColor1Brightness;
 
-    return _primaryColorBrightness;
-  }
-
-  Brightness _primaryColorBrightness;
-
-  Color get _primaryComplimentaryColor {
-    return primaryColorBrightness != null
-        ? primaryColorBrightness == Brightness.light
-            ? Colors.black
-            : Colors.white
-        : null;
-  }
+  Color get backgroundComplimentaryColor =>
+      backgroundColor1Brightness == Brightness.light
+          ? Colors.black
+          : Colors.white;
 
   /// Returns [Colors.black] if the [color] is a bright color or [Colors.white]
   /// if it is a dark color.
-  static Color complimentaryColor(Color color) {
-    switch (ThemeData.estimateBrightnessForColor(color)) {
-      case Brightness.dark:
-        return Colors.white;
-      case Brightness.light:
-      default:
-        return Colors.black;
-    }
-  }
+  static Color complimentaryColor(Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.light
+          ? Colors.black
+          : Colors.white;
 
   ThemeData get theme {
     final textTheme = _baseTheme.textTheme.apply(fontFamily: "OpenSans");
 
     return _baseTheme.copyWith(
-      primaryColor: primaryColor,
+      primaryColor: accentColor,
       accentColor: accentColor,
-      scaffoldBackgroundColor: scaffoldBackgroundColor,
 
-      backgroundColor: secondaryBackgroundColor,
-      dialogBackgroundColor: secondaryBackgroundColor,
-      canvasColor: secondaryBackgroundColor, // drawer background
+      scaffoldBackgroundColor: primaryBackgroundColor,
+      backgroundColor: primaryBackgroundColor,
+      dialogBackgroundColor: primaryBackgroundColor,
+      canvasColor: primaryBackgroundColor, // drawer background (base == dark)
 
       buttonColor: Colors.white,
 
@@ -109,11 +98,11 @@ class HarpyTheme {
       textSelectionColor: accentColor,
 
       // determines the status bar icon color
-      primaryColorBrightness: primaryColorBrightness,
+      primaryColorBrightness: backgroundColor1Brightness,
 
       // used for the icon and text color in the appbar
       primaryIconTheme: _baseTheme.primaryIconTheme.copyWith(
-        color: _primaryComplimentaryColor,
+        color: backgroundComplimentaryColor,
       ),
 
       // text
@@ -133,7 +122,7 @@ class HarpyTheme {
             fontWeight: FontWeight.w300,
           ),
           button: textTheme.button.copyWith(
-            color: primaryColor,
+            color: harpyColor,
             fontSize: 16.0,
           ),
 
@@ -162,6 +151,13 @@ class HarpyTheme {
             fontSize: 12.0,
           )),
     );
+  }
+
+  Color _colorFromValue(int value) {
+    if (value == null) {
+      return null;
+    }
+    return Color(value);
   }
 
   void _initBaseTheme(String base) {

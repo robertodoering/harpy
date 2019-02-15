@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     final serviceProvider = ServiceProvider.of(context);
 
     return HarpyScaffold(
-      appBar: "Harpy",
+      title: "Harpy",
       body: CacheProvider(
         homeTimelineCache: serviceProvider.data.homeTimelineCache,
         child: TweetList<HomeTimelineModel>(),

@@ -60,18 +60,13 @@ class CustomThemeModel extends Model {
     notifyListeners();
   }
 
-  void changePrimaryColor(Color color) {
-    customThemeData.primaryColor = color.value;
-    notifyListeners();
-  }
-
   void changeAccentColor(Color color) {
     customThemeData.accentColor = color.value;
     notifyListeners();
   }
 
-  void changeScaffoldBackgroundColor(Color color) {
-    customThemeData.scaffoldBackgroundColor = color.value;
+  void changePrimaryBackgroundColor(Color color) {
+    customThemeData.primaryBackgroundColor = color.value;
     notifyListeners();
   }
 

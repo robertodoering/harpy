@@ -3,6 +3,7 @@ import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/settings_model.dart';
+import 'package:harpy/models/theme_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
@@ -13,17 +14,13 @@ class ThemeSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      appBar: "Theme",
+      title: "Theme",
       body: ScopedModelDescendant<SettingsModel>(
         builder: (context, _, model) {
-          return Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ThemeSelection(),
-              ),
-              Expanded(child: _buildPreview()),
-            ],
+          return ScopedModelDescendant<ThemeModel>(
+            builder: (context, _, model) {
+              return ThemeSelection();
+            },
           );
         },
       ),
@@ -51,11 +48,14 @@ class ThemeSelection extends StatelessWidget {
 
     children.add(AddCustomThemeCard());
 
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.all(8.0),
       width: double.infinity,
-      child: Wrap(
-        alignment: WrapAlignment.spaceEvenly,
-        children: children,
+      child: SingleChildScrollView(
+        child: Wrap(
+          alignment: WrapAlignment.spaceEvenly,
+          children: children,
+        ),
       ),
     );
   }

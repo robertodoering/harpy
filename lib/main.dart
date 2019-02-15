@@ -17,10 +17,10 @@ class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ThemeModel>(
-      builder: (context, _, model) {
+      builder: (context, _, themeModel) {
         return MaterialApp(
           title: "Harpy",
-          theme: model.harpyTheme.theme,
+          theme: themeModel.harpyTheme.theme,
           home: EntryScreen(),
           debugShowCheckedModeBanner: false,
         );
