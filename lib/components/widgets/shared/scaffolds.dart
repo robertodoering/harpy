@@ -1,41 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
 ///
-/// If [appBar] is a String, it will be wrapped in an [AppBar].
+/// If [title] is a String, it will be wrapped in an [AppBar].
 /// Otherwise it needs to be a [PreferredSizeWidget].
 class HarpyScaffold extends StatelessWidget {
   HarpyScaffold({
-    @required this.appBar,
+    @required this.title,
     this.actions,
     this.drawer,
     this.body,
-  }) : assert(appBar is String || appBar is PreferredSizeWidget);
+    this.primaryBackgroundColor,
+    this.secondaryBackgroundColor,
+  });
 
-  final appBar;
+  final String title;
   final List<Widget> actions;
   final Widget drawer;
   final Widget body;
 
+  /// When set the [HarpyBackground] will override the active theme background
+  /// [Color]s.
+  final Color primaryBackgroundColor;
+  final Color secondaryBackgroundColor;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar is PreferredSizeWidget
-          ? appBar
-          : AppBar(
-              centerTitle: true,
-              title: Text(
-                appBar,
-                style: Theme.of(context).textTheme.title.copyWith(
-                      fontSize: 20.0,
-                      color: Theme.of(context).primaryIconTheme.color,
-                    ),
-              ),
-              actions: actions,
+    final AppBar appBar = AppBar(
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.title.copyWith(
+              fontSize: 20.0,
+              color: Theme.of(context).primaryIconTheme.color,
             ),
+      ),
+    );
+
+    final double topPadding = MediaQuery.of(context).padding.top;
+    final double extent = appBar.preferredSize.height + topPadding;
+
+    return Scaffold(
       drawer: drawer,
-      body: body,
+      body: Stack(
+        children: <Widget>[
+          HarpyBackground(
+            startColor: primaryBackgroundColor,
+            endColor: secondaryBackgroundColor,
+          ),
+          Column(
+            children: <Widget>[
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: extent),
+                child: appBar,
+              ),
+              Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: body,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -105,31 +138,37 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
+    SliverAppBar sliverAppBar = SliverAppBar(
+      expandedHeight: widget.expandedAppBarSpace,
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      pinned: true,
+      flexibleSpace: HarpyBackground(
+        child: FlexibleSpaceBar(
+          centerTitle: true,
+          // padding to prevent the text to get below the back arrow
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 52.0),
+            child: Opacity(
+              opacity: opacity,
+              child: Text(
+                widget.title ?? "",
+                style: Theme.of(context).textTheme.subtitle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          background: widget.background,
+        ),
+      ),
+    );
+
+    return HarpyBackground(
+      child: NestedScrollView(
         controller: _controller,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-              expandedHeight: widget.expandedAppBarSpace,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                // padding to prevent the text to get below the back arrow
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 52.0),
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Text(
-                      widget.title ?? "",
-                      style: Theme.of(context).textTheme.subtitle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                background: widget.background,
-              ),
-            ),
+            sliverAppBar,
           ];
         },
         body: widget.body,

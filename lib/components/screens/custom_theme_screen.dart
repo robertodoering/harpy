@@ -32,7 +32,11 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
             child: HarpyScaffold(
-              appBar: "Custom theme",
+              primaryBackgroundColor:
+                  customThemeModel.harpyTheme.primaryBackgroundColor,
+              secondaryBackgroundColor:
+                  customThemeModel.harpyTheme.secondaryBackgroundColor,
+              title: "Custom theme",
               actions: <Widget>[
                 _CustomThemeSaveButton(),
               ],
@@ -116,10 +120,10 @@ class _CustomThemeBaseSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = CustomThemeModel.of(context);
+    final harpyTheme = HarpyTheme.custom(model.customThemeData);
 
-    final theme = HarpyTheme.custom(model.customThemeData).theme;
-    final textStyle = theme.textTheme.body1.copyWith(
-      color: HarpyTheme.complimentaryColor(theme.scaffoldBackgroundColor),
+    final textStyle = harpyTheme.theme.textTheme.body1.copyWith(
+      color: harpyTheme.backgroundComplimentaryColor,
     );
 
     return SettingsColumn(
@@ -147,23 +151,18 @@ class _CustomThemeColorSelections extends StatelessWidget {
 
     return <_CustomThemeColor>[
       _CustomThemeColor(
-        name: "Primary color",
-        color: harpyTheme.theme.primaryColor,
-        onColorChanged: model.changePrimaryColor,
-      ),
-      _CustomThemeColor(
         name: "Accent color",
         color: harpyTheme.theme.accentColor,
         onColorChanged: model.changeAccentColor,
       ),
       _CustomThemeColor(
-        name: "Background color",
-        color: harpyTheme.theme.scaffoldBackgroundColor,
-        onColorChanged: model.changeScaffoldBackgroundColor,
+        name: "Primary background color",
+        color: harpyTheme.primaryBackgroundColor,
+        onColorChanged: model.changePrimaryBackgroundColor,
       ),
       _CustomThemeColor(
         name: "Secondary background color",
-        color: harpyTheme.theme.backgroundColor,
+        color: harpyTheme.secondaryBackgroundColor,
         onColorChanged: model.changeSecondaryBackgroundColor,
       ),
       _CustomThemeColor(

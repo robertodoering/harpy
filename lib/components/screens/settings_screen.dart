@@ -7,8 +7,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      appBar: "Settings",
+      title: "Settings",
       body: ListView(
+        padding: EdgeInsets.zero,
         children: <Widget>[
           _buildAppearanceColumn(context),
         ],

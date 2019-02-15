@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/user_profile/user_profile_tweet_list.dart';
 import 'package:harpy/models/user_profile_model.dart';
@@ -20,14 +21,14 @@ class UserProfileContent extends StatelessWidget {
 
   Widget _buildLoading(BuildContext context) {
     return FadingNestedScaffold(
-      background: Container(color: Theme.of(context).primaryColor),
+      background: HarpyBackground(),
       body: Center(child: CircularProgressIndicator()),
     );
   }
 
   Widget _buildError(BuildContext context) {
     return FadingNestedScaffold(
-      background: Container(color: Theme.of(context).primaryColor),
+      background: HarpyBackground(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(child: Text("Error loading user")),
