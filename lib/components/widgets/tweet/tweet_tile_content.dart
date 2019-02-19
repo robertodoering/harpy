@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/favorite_button.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/collapsible_tweet_media.dart';
@@ -265,15 +266,13 @@ class _TweetActionsRow extends StatelessWidget {
       return Container();
     }
 
-    VoidCallback onPressed;
-    bool drawColorOnHighlight = false;
+    VoidCallback onTap;
+    bool alwaysColored = false;
     Color color = Colors.blue;
 
     if (model.originalTweet.harpyData.translation == null &&
         !model.translating) {
-      drawColorOnHighlight = true;
-
-      onPressed = () async {
+      onTap = () async {
         await model.translate();
 
         if (model.translationUnchanged) {
@@ -284,14 +283,16 @@ class _TweetActionsRow extends StatelessWidget {
       };
     } else if (model.translationUnchanged) {
       color = Theme.of(context).disabledColor;
+      alwaysColored = true;
+    } else {
+      alwaysColored = true;
     }
 
-    return HarpyButton(
+    return FlatHarpyButton(
       icon: Icons.translate,
-      onPressed: onPressed,
-      iconColor: color,
-      splashColor: color,
-      drawColorOnHighlight: drawColorOnHighlight,
+      onTap: onTap,
+      color: color,
+      alwaysColored: alwaysColored,
     );
   }
 
@@ -306,7 +307,7 @@ class _TweetActionsRow extends StatelessWidget {
     return Row(
       children: <Widget>[
         // retweet action
-        TwitterActionButton(
+        FlatHarpyActionButton(
           active: model.tweet.retweeted,
           inactiveIcon: Icons.repeat,
           activeIcon: Icons.repeat,
@@ -317,14 +318,11 @@ class _TweetActionsRow extends StatelessWidget {
         ),
 
         // favorite action
-        TwitterActionButton(
-          active: model.tweet.favorited,
-          inactiveIcon: Icons.favorite_border,
-          activeIcon: Icons.favorite,
+        FavoriteButton(
+          favorited: model.tweet.favorited,
           text: model.favoriteCount,
-          color: themeModel.harpyTheme.likeColor,
-          activate: model.favorite,
-          deactivate: model.unfavorite,
+          favorite: model.favorite,
+          unfavorite: model.unfavorite,
         ),
 
         Spacer(),

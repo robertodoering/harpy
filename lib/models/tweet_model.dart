@@ -86,8 +86,10 @@ class TweetModel extends Model {
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
 
-  void limitText({limit = 80}) {
+  void limitText({limit = 100}) {
     // todo: limit text in TwitterText and parse entities before
+    // todo: bug: when limit stops in the middle of a utf16 2+ byte long emjoi
+    // the app breaks because the text is not "well formatted utf16"
     tweet.full_text.trim();
     if (tweet.full_text.length <= limit) {
       tweet.full_text = tweet.full_text.substring(0, tweet.full_text.length);
