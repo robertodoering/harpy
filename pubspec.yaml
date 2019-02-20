@@ -7,29 +7,27 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  flutter_twitter_login:
-    git: git://github.com/eudangeld/flutter_twitter_login.git
-  oauth1: ^1.0.1
+  oauth1: ^1.0.3
   json_annotation: ^2.0.0
-  path_provider: ^0.4.1
   logging: ^0.11.3+2
   intl: ^0.15.7
   cached_network_image: ^0.5.0+1
-  url_launcher: ^4.0.1
-  video_player: ^0.7.2
   photo_view:
     git: https://github.com/robertodoering/photo_view.git
   scoped_model: ^1.0.1
-  async_loader: ^0.1.2
-  webview_flutter: ^0.3.0
   flutter_material_color_picker: ^0.0.5
   flutter_colorpicker: ^0.2.1
   flare_flutter: ^1.2.3
 
+  flutter_twitter_login:
+    git: git://github.com/robertodoering/flutter_twitter_login.git
+  url_launcher: ^5.0.1
+  video_player: ^0.10.0+2
+  webview_flutter: ^0.3.3+1
+  path_provider: ^0.4.1
+
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^0.1.2
 
 dev_dependencies:
   flutter_test:
