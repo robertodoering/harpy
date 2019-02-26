@@ -7,35 +7,35 @@ import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HarpyPrefs {
-  ApplicationModel applicationModel;
-
   static final Logger _log = Logger("HarpyPrefs");
 
-  SharedPreferences _preferences;
+  ApplicationModel applicationModel;
+
+  SharedPreferences preferences;
 
   /// The [_prefix] is used in keys for user specific preferences.
   String get _prefix => applicationModel.twitterSession.userId;
 
   Future<void> init() async {
     _log.fine("initializing harpy prefs");
-    _preferences = await SharedPreferences.getInstance();
+    preferences = await SharedPreferences.getInstance();
   }
 
   /// Returns the id of the selected [HarpyTheme].
   ///
   /// Returns `1` if no theme has been selected before.
   int getSelectedThemeId() =>
-      _preferences.getInt("$_prefix.selectedThemeId") ?? 1;
+      preferences.getInt("$_prefix.selectedThemeId") ?? 1;
 
   /// Sets the id of the selected [HarpyTheme].
   void setSelectedThemeId(int id) =>
-      _preferences.setInt("$_prefix.selectedThemeId", id);
+      preferences.setInt("$_prefix.selectedThemeId", id);
 
   /// Returns the list of all saved custom [HarpyThemeData].
   List<HarpyThemeData> getCustomThemes() {
     _log.fine("getting custom themes");
 
-    return _preferences
+    return preferences
             .getStringList("customThemes")
             ?.map(_decodeCustomTheme)
             ?.where((data) => data != null)
@@ -47,7 +47,7 @@ class HarpyPrefs {
   void saveCustomThemes(List<HarpyThemeData> customThemes) {
     _log.fine("saving custom themes: $customThemes");
 
-    _preferences.setStringList(
+    preferences.setStringList(
       "customThemes",
       customThemes.map((data) {
         return jsonEncode(data.toJson());

@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+// todo: remove in free version, rename to ThemeSettingsModel in pro version
 class SettingsModel extends Model {
   SettingsModel({
     @required this.harpyPrefs,

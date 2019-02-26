@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import 'package:harpy/components/screens/settings_screen.dart';
+import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/custom_theme_model.dart';
