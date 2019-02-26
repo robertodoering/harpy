@@ -4,7 +4,7 @@ import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/pro_feature_dialog.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A [Card] showing a selectable [HarpyTheme] that changes the apps theme when
 /// selected.
@@ -41,8 +41,8 @@ class ThemeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectedIcon(ThemeModel themeModel) {
-    if (themeModel.selectedTheme(id)) {
+  Widget _buildSelectedIcon(ThemeSettingsModel themeModel) {
+    if (themeModel.selectedThemeId == id) {
       return Align(
         alignment: Alignment.topLeft,
         child: Padding(
@@ -57,7 +57,7 @@ class ThemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeModel = ThemeModel.of(context);
+    final themeModel = ThemeSettingsModel.of(context);
 
     return SizedBox(
       width: 120,

@@ -9,7 +9,7 @@ import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/collapsible_tweet_media.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 
 class TweetTileContent extends StatefulWidget {
@@ -302,7 +302,7 @@ class _TweetActionsRow extends StatelessWidget {
       return Container();
     }
 
-    final themeModel = ThemeModel.of(context);
+    final themeModel = ThemeSettingsModel.of(context);
 
     return Row(
       children: <Widget>[

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
-import 'package:harpy/models/global_models.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/global_models_wrapper.dart';
+import 'package:harpy/models/settings/setting_models_wrapper.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() {
   runApp(ServiceContainer(
-    child: GlobalScopedModels(
-      child: Harpy(),
+    child: GlobalModelsWrapper(
+      child: SettingModelsWrapper(
+        child: Harpy(),
+      ),
     ),
   ));
 }
@@ -16,7 +19,7 @@ void main() {
 class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ThemeModel>(
+    return ScopedModelDescendant<ThemeSettingsModel>(
       builder: (context, _, themeModel) {
         return MaterialApp(
           title: "Harpy",

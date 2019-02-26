@@ -5,8 +5,7 @@ import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/custom_theme_model.dart';
-import 'package:harpy/models/settings_model.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
@@ -21,8 +20,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   @override
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
-      themeModel: ThemeModel.of(context),
-      settingsModel: SettingsModel.of(context),
+      themeModel: ThemeSettingsModel.of(context),
     );
 
     return ScopedModel<CustomThemeModel>(

@@ -8,7 +8,7 @@ import 'package:harpy/core/misc/async_initializer.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -38,7 +38,7 @@ class ApplicationModel extends Model {
   final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
   final HarpyPrefs harpyPrefs;
-  final ThemeModel themeModel;
+  final ThemeSettingsModel themeModel;
 
   static ApplicationModel of(BuildContext context) {
     return ScopedModel.of<ApplicationModel>(context);

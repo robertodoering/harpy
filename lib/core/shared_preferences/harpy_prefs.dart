@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:logging/logging.dart';
@@ -13,24 +12,32 @@ class HarpyPrefs {
 
   SharedPreferences preferences;
 
-  /// The [_prefix] is used in keys for user specific preferences.
-  String get _prefix => applicationModel.twitterSession.userId;
+  /// The [prefix] is used in keys for user specific preferences.
+  String get prefix => applicationModel.twitterSession.userId;
 
   Future<void> init() async {
     _log.fine("initializing harpy prefs");
     preferences = await SharedPreferences.getInstance();
   }
 
-  /// Returns the id of the selected [HarpyTheme].
+  /// Gets the int value for the [key] if it exists.
   ///
-  /// Returns `1` if no theme has been selected before.
-  int getSelectedThemeId() =>
-      preferences.getInt("$_prefix.selectedThemeId") ?? 1;
+  /// Limits the value if [lowerLimit] and [upperLimit] are not `null`.
+  int getInt(String key, int defaultValue, [int lowerLimit, int upperLimit]) {
+    try {
+      int value = preferences.getInt(key) ?? defaultValue;
 
-  /// Sets the id of the selected [HarpyTheme].
-  void setSelectedThemeId(int id) =>
-      preferences.setInt("$_prefix.selectedThemeId", id);
+      if (lowerLimit != null && upperLimit != null) {
+        return value.clamp(lowerLimit, upperLimit);
+      }
 
+      return value;
+    } catch (e) {
+      return defaultValue;
+    }
+  }
+
+  // todo: refactor in custom themes model
   /// Returns the list of all saved custom [HarpyThemeData].
   List<HarpyThemeData> getCustomThemes() {
     _log.fine("getting custom themes");
