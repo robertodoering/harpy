@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
-import 'package:harpy/components/widgets/media/twitter_video_player_mixin.dart';
+import 'package:harpy/components/widgets/media/old_twitter_video_player_mixin.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:video_player/video_player.dart';
 
-/// The [TwitterVideoPlayer] for Twitter videos.
-class TwitterVideoPlayer extends StatefulWidget {
+/// The [OldTwitterVideoPlayer] for Twitter videos.
+class OldTwitterVideoPlayer extends StatefulWidget {
   final TwitterMedia media;
   final bool fullscreen;
   final VoidCallback onShowFullscreen;
@@ -14,7 +14,7 @@ class TwitterVideoPlayer extends StatefulWidget {
   final VideoPlayerController controller;
   final bool initializing;
 
-  const TwitterVideoPlayer({
+  const OldTwitterVideoPlayer({
     Key key,
     @required this.media,
     this.fullscreen = false,
@@ -25,11 +25,11 @@ class TwitterVideoPlayer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  TwitterVideoPlayerState createState() => TwitterVideoPlayerState();
+  OldTwitterVideoPlayerState createState() => OldTwitterVideoPlayerState();
 }
 
-class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
-    with TwitterVideoPlayerMixin<TwitterVideoPlayer> {
+class OldTwitterVideoPlayerState extends State<OldTwitterVideoPlayer>
+    with OldTwitterVideoPlayerMixin<OldTwitterVideoPlayer> {
   /// The pause / play [FadeOutAnimation].
   FadeOutAnimation _fadeAnimation;
 
@@ -222,11 +222,11 @@ class TwitterVideoPlayerState extends State<TwitterVideoPlayer>
   }
 }
 
-/// The [TwitterGifPlayer] for Twitter gifs.
+/// The [OldTwitterGifPlayer] for Twitter gifs.
 ///
 /// Twitter gifs are just videos. Instead of showing the same video player for
-/// videos and gifs, this [TwitterGifPlayer] is suited for gifs.
-class TwitterGifPlayer extends StatefulWidget {
+/// videos and gifs, this [OldTwitterGifPlayer] is suited for gifs.
+class OldTwitterGifPlayer extends StatefulWidget {
   final TwitterMedia media;
   final bool fullscreen;
   final VoidCallback onShowFullscreen;
@@ -234,7 +234,7 @@ class TwitterGifPlayer extends StatefulWidget {
   final VideoPlayerController controller;
   final bool initializing;
 
-  const TwitterGifPlayer({
+  const OldTwitterGifPlayer({
     Key key,
     @required this.media,
     this.fullscreen = false,
@@ -245,11 +245,11 @@ class TwitterGifPlayer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  TwitterGifPlayerState createState() => TwitterGifPlayerState();
+  OldTwitterGifPlayerState createState() => OldTwitterGifPlayerState();
 }
 
-class TwitterGifPlayerState extends State<TwitterGifPlayer>
-    with TwitterVideoPlayerMixin<TwitterGifPlayer> {
+class OldTwitterGifPlayerState extends State<OldTwitterGifPlayer>
+    with OldTwitterVideoPlayerMixin<OldTwitterGifPlayer> {
   @override
   void initState() {
     super.initState();

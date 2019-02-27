@@ -236,8 +236,8 @@ class _TweetTranslation extends StatelessWidget {
   }
 }
 
-/// If the [Tweet] contains [TweetMedia] this builds the [OldCollapsibleMedia]
-/// for this [Tweet].
+/// If the [Tweet] contains [TweetMedia] this builds the [CollapsibleMedia] for
+/// this [Tweet].
 class _TweetMedia extends StatelessWidget {
   const _TweetMedia(this.model);
 

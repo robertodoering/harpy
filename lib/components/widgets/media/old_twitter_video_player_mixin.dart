@@ -26,7 +26,7 @@ const bufferIndicator = CircularProgressIndicator(
 /// [VideoPlayer] wrappers.
 ///
 /// Used by [TwitterVideoPlayer] and [TwitterGifPlayer].
-mixin TwitterVideoPlayerMixin<T extends StatefulWidget> on State<T> {
+mixin OldTwitterVideoPlayerMixin<T extends StatefulWidget> on State<T> {
   /// The [TwitterMedia] that contains the information for the video.
   TwitterMedia media;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -11,11 +12,14 @@ class MediaModel extends Model {
   MediaModel({
     @required this.tweetModel,
     @required this.homeTimelineModel,
+    @required this.mediaSettingsModel,
   })  : assert(tweetModel != null),
-        assert(homeTimelineModel != null);
+        assert(homeTimelineModel != null),
+        assert(mediaSettingsModel != null);
 
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
+  final MediaSettingsModel mediaSettingsModel;
 
   static final Logger _log = Logger("MediaModel");
 
@@ -23,14 +27,13 @@ class MediaModel extends Model {
     return ScopedModel.of<MediaModel>(context);
   }
 
-  /// Returns the list of [TwitterMedia] for this tweet.
-  ///
-  /// Returns `null` if the [TweetModel.tweet] has no media attached.
-  List<TwitterMedia> get media => tweetModel.tweet?.extended_entities?.media;
+  /// Returns the list of [TwitterMedia] for the tweet.
+  List<TwitterMedia> get media => tweetModel.tweet.extended_entities.media;
 
-  /// Whether or not the media should show or not when building.
+  /// Whether or not the media should show when building.
   bool get initiallyShown =>
-      tweetModel.tweet.harpyData.showMedia ?? true; // todo: get from settings
+      tweetModel.tweet.harpyData.showMedia ??
+      mediaSettingsModel.defaultHideMedia != 2;
 
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
   String mediaHeroTag(int index) {

@@ -23,13 +23,13 @@ class ApplicationModel extends Model {
     @required this.userTimelineCache,
     @required this.twitterClient,
     @required this.harpyPrefs,
-    @required this.themeModel,
+    @required this.themeSettingsModel,
   })  : assert(directoryService != null),
         assert(homeTimelineCache != null),
         assert(userTimelineCache != null),
         assert(twitterClient != null),
         assert(harpyPrefs != null),
-        assert(themeModel != null) {
+        assert(themeSettingsModel != null) {
     _initialize();
   }
 
@@ -38,7 +38,7 @@ class ApplicationModel extends Model {
   final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
   final HarpyPrefs harpyPrefs;
-  final ThemeSettingsModel themeModel;
+  final ThemeSettingsModel themeSettingsModel;
 
   static ApplicationModel of(BuildContext context) {
     return ScopedModel.of<ApplicationModel>(context);
@@ -122,7 +122,7 @@ class ApplicationModel extends Model {
   /// after logging in for the first time.
   void initLoggedIn() {
     // init theme from shared prefs
-    themeModel.initTheme();
+    themeSettingsModel.initTheme();
 
     // init tweet cache logged in user
     userTimelineCache.initLoggedInUser(twitterSession.userId);

@@ -8,8 +8,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 void main() {
   runApp(ServiceContainer(
-    child: GlobalModelsWrapper(
-      child: SettingModelsWrapper(
+    child: SettingModelsWrapper(
+      child: GlobalModelsWrapper(
         child: Harpy(),
       ),
     ),

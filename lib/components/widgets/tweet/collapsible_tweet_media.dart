@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_dialog.dart';
-import 'package:harpy/components/widgets/media/twitter_video_player.dart';
+import 'package:harpy/components/widgets/media/old_twitter_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -26,12 +27,10 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 
   @override
   Widget build(BuildContext context) {
-    final tweetModel = TweetModel.of(context);
-    final homeTimelineModel = HomeTimelineModel.of(context);
-
     mediaModel ??= MediaModel(
-      tweetModel: tweetModel,
-      homeTimelineModel: homeTimelineModel,
+      tweetModel: TweetModel.of(context),
+      homeTimelineModel: HomeTimelineModel.of(context),
+      mediaSettingsModel: MediaSettingsModel.of(context),
     );
 
     return ScopedModel<MediaModel>(
@@ -128,7 +127,7 @@ class _TweetMediaLayout extends StatelessWidget {
   }
 }
 
-/// Builds a [CachedNetworkImage], [TwitterGifPlayer] or [TwitterVideoPlayer]
+/// Builds a [CachedNetworkImage], [OldTwitterGifPlayer] or [OldTwitterVideoPlayer]
 /// for images, gifs and videos.
 class _TweetMediaWidget extends StatelessWidget {
   const _TweetMediaWidget(this._index);
@@ -156,20 +155,20 @@ class _TweetMediaWidget extends StatelessWidget {
 
       tapCallback = () => _showMediaGallery(context, model.media);
     } else if (media.type == animatedGif) {
-      var key = GlobalKey<TwitterGifPlayerState>();
+      var key = GlobalKey<OldTwitterGifPlayerState>();
 
       // twitter gif player
-      mediaWidget = TwitterGifPlayer(
+      mediaWidget = OldTwitterGifPlayer(
         key: key,
         media: media,
         onShowFullscreen: () => _showGifFullscreen(context, key, media),
         onHideFullscreen: (context) => Navigator.maybePop(context),
       );
     } else if (media.type == video) {
-      var key = GlobalKey<TwitterVideoPlayerState>();
+      var key = GlobalKey<OldTwitterVideoPlayerState>();
 
       // twitter video player
-      mediaWidget = TwitterVideoPlayer(
+      mediaWidget = OldTwitterVideoPlayer(
         key: key,
         media: media,
         onShowFullscreen: () => _showVideoFullscreen(context, key, media),
@@ -194,13 +193,13 @@ class _TweetMediaWidget extends StatelessWidget {
 
   void _showVideoFullscreen(
     BuildContext context,
-    GlobalKey<TwitterVideoPlayerState> key,
+    GlobalKey<OldTwitterVideoPlayerState> key,
     TwitterMedia media,
   ) {
     Navigator.of(context).push(
       HeroDialogRoute(builder: (context) {
         return Center(
-          child: TwitterVideoPlayer(
+          child: OldTwitterVideoPlayer(
             media: media,
             fullscreen: true,
             onHideFullscreen: (context) => Navigator.maybePop(context),
@@ -214,13 +213,13 @@ class _TweetMediaWidget extends StatelessWidget {
 
   void _showGifFullscreen(
     BuildContext context,
-    GlobalKey<TwitterGifPlayerState> key,
+    GlobalKey<OldTwitterGifPlayerState> key,
     TwitterMedia media,
   ) {
     Navigator.of(context).push(
       HeroDialogRoute(builder: (context) {
         return Center(
-          child: TwitterGifPlayer(
+          child: OldTwitterGifPlayer(
             media: media,
             fullscreen: true,
             onHideFullscreen: (context) => Navigator.maybePop(context),

@@ -22,15 +22,10 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
   ApplicationModel applicationModel;
   LoginModel loginModel;
   HomeTimelineModel homeTimelineModel;
-  ThemeSettingsModel themeModel;
 
   @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
-
-    themeModel ??= ThemeSettingsModel(
-      harpyPrefs: serviceProvider.data.harpyPrefs,
-    );
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
@@ -38,7 +33,7 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
       homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
       harpyPrefs: serviceProvider.data.harpyPrefs,
-      themeModel: themeModel,
+      themeSettingsModel: ThemeSettingsModel.of(context),
     );
 
     homeTimelineModel ??= HomeTimelineModel(

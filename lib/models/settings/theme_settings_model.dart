@@ -18,7 +18,7 @@ class ThemeSettingsModel extends Model {
     return ScopedModel.of<ThemeSettingsModel>(context);
   }
 
-  static final Logger _log = Logger("ThemeModel");
+  static final Logger _log = Logger("ThemeSettingsModel");
 
   /// The selected theme used by the app.
   HarpyTheme harpyTheme = HarpyTheme.light();
