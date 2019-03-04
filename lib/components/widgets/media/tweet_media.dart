@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_dialog.dart';
+import 'package:harpy/components/widgets/media/media_video_player.dart';
 import 'package:harpy/components/widgets/media/old_twitter_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
@@ -42,8 +43,9 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
           constraints: BoxConstraints(
             maxHeight: mediaModel.media.any((media) => media.type == photo)
                 ? 250.0
-                // max video height: screen height - appbar - padding
-                : MediaQuery.of(context).size.height - 80 - 24,
+                // max video height: screen height - appbar - padding // todo
+//                : MediaQuery.of(context).size.height - 80 - 24,
+                : double.infinity,
           ),
           child: _TweetMediaLayout(),
         ),
@@ -165,14 +167,17 @@ class _TweetMediaWidget extends StatelessWidget {
         onHideFullscreen: (context) => Navigator.maybePop(context),
       );
     } else if (media.type == video) {
-      var key = GlobalKey<OldTwitterVideoPlayerState>();
-
-      // twitter video player
-      mediaWidget = OldTwitterVideoPlayer(
-        key: key,
-        media: media,
-        onShowFullscreen: () => _showVideoFullscreen(context, key, media),
-        onHideFullscreen: (context) => Navigator.maybePop(context),
+//      var key = GlobalKey<OldTwitterVideoPlayerState>();
+//
+//      // twitter video player
+//      mediaWidget = OldTwitterVideoPlayer(
+//        key: key,
+//        media: media,
+//        onShowFullscreen: () => _showVideoFullscreen(context, key, media),
+//        onHideFullscreen: (context) => Navigator.maybePop(context),
+//      );
+      mediaWidget = MediaVideoPlayer(
+        mediaModel: model,
       );
     }
 

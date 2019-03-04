@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/api/twitter/data/video_info.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -29,6 +30,42 @@ class MediaModel extends Model {
 
   /// Returns the list of [TwitterMedia] for the tweet.
   List<TwitterMedia> get media => tweetModel.tweet.extended_entities.media;
+
+  /// Returns the video url of the video or `null` if no videoInfo exists for
+  /// the [media].
+  ///
+  /// Takes the selected media quality into account.
+  String getVideoUrl() {
+    List<Variants> variants = media.first?.videoInfo?.variants;
+
+    if (variants?.isEmpty ?? true) {
+      return null;
+    }
+
+    // remove the x-mpeg video without a bitrate
+    variants.removeWhere((variants) => variants.bitrate == null);
+
+    // sort by bitrate (large, medium, small)
+    variants.sort((v1, v2) {
+      return v2.bitrate - v1.bitrate;
+    });
+
+    // todo: check if wifi connection exists
+    int index = mediaSettingsModel.wifiMediaQuality;
+
+    if (variants.length > index) {
+      return variants[index].url;
+    } else {
+      return variants.first.url;
+    }
+  }
+
+  /// Returns the aspect ratio of the video or `1` if no videoInfo exists for
+  /// the [media].
+  double getVideoAspectRatio() {
+    return (media.first?.videoInfo?.aspectRatio[0] ?? 1) /
+        (media.first?.videoInfo?.aspectRatio[1] ?? 1);
+  }
 
   /// Whether or not the media should show when building.
   bool get initiallyShown =>

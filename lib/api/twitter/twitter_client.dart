@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
+import 'package:path_provider/path_provider.dart';
 
 class TwitterClient {
   static final Logger _log = Logger("TwitterClient");
@@ -44,6 +46,21 @@ class TwitterClient {
     );
   }
 
+  Future<void> _saveResponse(Response response) async {
+    print("saving response");
+    final dir = await getApplicationDocumentsDirectory();
+
+    String url =
+        response.request.url.toString().split("/").last.split("?").first;
+    String time = DateTime.now().toIso8601String();
+
+    String path = "${dir.path}/responses/${time}_$url";
+    File file = File(path);
+    file.createSync(recursive: true);
+    file.writeAsStringSync(response.body);
+    print("response saved in $path");
+  }
+
   Future<Response> get(
     String url, {
     Map<String, String> headers,
@@ -51,7 +68,10 @@ class TwitterClient {
   }) {
     _log.fine("sending get request: $url");
     url = appendParamsToUrl(url, params);
-    return _client.get(url, headers: headers);
+    return _client.get(url, headers: headers).then((response) {
+//      _saveResponse(response);
+      return response;
+    });
   }
 
   Future<Response> post(

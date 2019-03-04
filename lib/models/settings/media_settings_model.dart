@@ -18,21 +18,18 @@ class MediaSettingsModel extends Model {
 
   /// The default wifi media quality when using wifi.
   ///
-  /// // todo: check quality options in media
-  /// 0: highest
-  /// 1: high
-  /// 2: low
-  /// 3: lowest
-  int get wifiMediaQuality => harpyPrefs.getInt("wifiMediaQuality", 0, 0, 3);
+  /// 0: large
+  /// 1: medium
+  /// 2: small
+  int get wifiMediaQuality => harpyPrefs.getInt("wifiMediaQuality", 0, 0, 2);
 
   /// The default media quality when not using wifi.
   ///
-  /// 0: highest
-  /// 1: high
-  /// 2: low
-  /// 3: lowest
+  /// 0: large
+  /// 1: medium
+  /// 2: small
   int get nonWifiMediaQuality =>
-      harpyPrefs.getInt("nonWifiMediaQuality", 0, 0, 3);
+      harpyPrefs.getInt("nonWifiMediaQuality", 0, 0, 2);
 
   /// Whether or not to hide the media by default.
   ///
