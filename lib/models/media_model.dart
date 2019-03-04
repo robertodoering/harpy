@@ -60,6 +60,13 @@ class MediaModel extends Model {
     }
   }
 
+  /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.
+  ///
+  /// For videos and gifs this is the url for the thumbnail.
+  String getThumbnailUrl() {
+    return media.first?.mediaUrl;
+  }
+
   /// Returns the aspect ratio of the video or `1` if no videoInfo exists for
   /// the [media].
   double getVideoAspectRatio() {
