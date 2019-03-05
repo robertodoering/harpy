@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
@@ -78,6 +79,12 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
   }
 }
 
+/// The overlay for a [MediaVideoPlayer].
+///
+/// Shows the actions for the video (play, pause, fullscreen, etc.) and the
+/// progress indicator.
+///
+/// Automatically hides after a set amount of time when the video is playing.
 class MediaVideoOverlay extends StatefulWidget {
   const MediaVideoOverlay({
     @required this.controller,
@@ -92,40 +99,127 @@ class MediaVideoOverlay extends StatefulWidget {
 }
 
 class _MediaVideoOverlayState extends State<MediaVideoOverlay>
-    with MediaOverlayMixin<MediaVideoOverlay> {
+    with
+        MediaOverlayMixin<MediaVideoOverlay>,
+        SingleTickerProviderStateMixin<MediaVideoOverlay> {
+  /// Handles the visibility of the overlay.
+  AnimationController _visibilityController;
+
+  /// Whether or not the overlay for the video player should be drawn.
+  bool get _overlayShowing => !_visibilityController.isCompleted || finished;
+
   @override
   void initState() {
     super.initState();
 
     controller = widget.controller;
+    controller.addListener(listener);
+
+    _visibilityController = new AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          // rebuild when controller completed to hide overlay
+          setState(() {});
+        }
+      });
   }
 
-  void _togglePlay() {
-    if (playing) {
-      setState(() {
-        playing = false;
-        controller.pause();
-      });
+  @override
+  void dispose() {
+    super.dispose();
+
+    _visibilityController.dispose();
+  }
+
+  void _onVideoTap() {
+    if (_overlayShowing) {
+      if (finished) {
+        // replay
+        setState(() {
+          controller.seekTo(Duration.zero);
+        });
+      } else if (playing) {
+        // pause
+        setState(() {
+          playing = false;
+          controller.pause();
+          _visibilityController.reset();
+        });
+      } else {
+        // play
+        setState(() {
+          playing = true;
+          controller.play();
+          _visibilityController.forward();
+        });
+      }
     } else {
+      // show overlay
       setState(() {
-        playing = true;
-        controller.play();
+        _visibilityController.reset();
+        _visibilityController.forward();
       });
     }
   }
 
-  Widget _buildButtonRow() {}
+  Widget _buildCenterIcon() {
+    if (buffering) {
+      return Center(child: CircularProgressIndicator());
+    }
 
-  Widget _buildProgressIndicator() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: VideoProgressIndicator(
-        controller,
-        allowScrubbing: true,
-        colors: VideoProgressColors(
-          playedColor: Theme.of(context).accentColor,
+    if (!_overlayShowing) {
+      return Container();
+    }
+
+    IconData iconData;
+
+    if (finished) {
+      iconData = Icons.replay;
+    } else if (playing) {
+      iconData = Icons.pause;
+    } else {
+      iconData = Icons.play_arrow;
+    }
+
+    return Center(
+      child: Icon(iconData, size: 72),
+    );
+  }
+
+  Widget _buildBottomRow() {
+    if (!_overlayShowing) {
+      return Container();
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        // button row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            CircleButton(
+              child: Icon(Icons.settings),
+              onPressed: () {}, // todo: show quality setting
+            ),
+            CircleButton(
+              child: Icon(Icons.fullscreen),
+              onPressed: () {}, // todo: fullscreen
+            ),
+          ],
         ),
-      ),
+
+        // progress indicator
+        VideoProgressIndicator(
+          controller,
+          allowScrubbing: true,
+          colors: VideoProgressColors(
+            playedColor: Theme.of(context).accentColor,
+          ),
+        ),
+      ],
     );
   }
 
@@ -133,10 +227,11 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: _togglePlay,
+      onTap: _onVideoTap,
       child: Stack(children: <Widget>[
         widget.child,
-        _buildProgressIndicator(),
+        _buildBottomRow(),
+        _buildCenterIcon(),
       ]),
     );
   }
