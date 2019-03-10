@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
@@ -118,12 +119,14 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     _visibilityController = new AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
-    )..addStatusListener((status) {
+    )
+      ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           // rebuild when controller completed to hide overlay
           setState(() {});
         }
-      });
+      })
+      ..forward();
   }
 
   @override
@@ -178,14 +181,12 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     if (finished) {
       iconData = Icons.replay;
     } else if (playing) {
-      iconData = Icons.pause;
-    } else {
       iconData = Icons.play_arrow;
+    } else {
+      iconData = Icons.pause;
     }
 
-    return Center(
-      child: Icon(iconData, size: 72),
-    );
+    return Center(child: FadeOutWidget(child: Icon(iconData, size: 72)));
   }
 
   Widget _buildBottomRow() {

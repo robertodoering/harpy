@@ -30,14 +30,14 @@ class OldTwitterVideoPlayer extends StatefulWidget {
 
 class OldTwitterVideoPlayerState extends State<OldTwitterVideoPlayer>
     with OldTwitterVideoPlayerMixin<OldTwitterVideoPlayer> {
-  /// The pause / play [FadeOutAnimation].
-  FadeOutAnimation _fadeAnimation;
+  /// The pause / play [FadeOutWidget].
+  FadeOutWidget _fadeAnimation;
 
-  /// The rewind [FadeOutAnimation].
-  FadeOutAnimation _rewindFadeAnimation;
+  /// The rewind [FadeOutWidget].
+  FadeOutWidget _rewindFadeAnimation;
 
-  /// The forward [FadeOutAnimation].
-  FadeOutAnimation _forwardFadeAnimation;
+  /// The forward [FadeOutWidget].
+  FadeOutWidget _forwardFadeAnimation;
 
   @override
   void initState() {
@@ -71,10 +71,10 @@ class OldTwitterVideoPlayerState extends State<OldTwitterVideoPlayer>
     if (controller.value.initialized) {
       if (controller.value.isPlaying) {
         controller.pause();
-        _fadeAnimation = FadeOutAnimation(child: pause);
+        _fadeAnimation = FadeOutWidget(child: pause);
       } else {
         controller.play();
-        _fadeAnimation = FadeOutAnimation(child: play);
+        _fadeAnimation = FadeOutWidget(child: play);
       }
     }
   }
@@ -160,7 +160,7 @@ class OldTwitterVideoPlayerState extends State<OldTwitterVideoPlayer>
       controller.seekTo(position - skip);
 
       setState(() {
-        _rewindFadeAnimation = FadeOutAnimation(
+        _rewindFadeAnimation = FadeOutWidget(
           key: UniqueKey(),
           child:
               const Icon(Icons.fast_rewind, size: 100.0, color: Colors.white70),
@@ -173,7 +173,7 @@ class OldTwitterVideoPlayerState extends State<OldTwitterVideoPlayer>
       controller.seekTo(position + skip);
 
       setState(() {
-        _forwardFadeAnimation = FadeOutAnimation(
+        _forwardFadeAnimation = FadeOutWidget(
           key: UniqueKey(),
           child: const Icon(Icons.fast_forward,
               size: 100.0, color: Colors.white70),
