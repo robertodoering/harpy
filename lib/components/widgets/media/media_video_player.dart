@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:video_player/video_player.dart';
 
 class MediaVideoPlayer extends StatefulWidget {
@@ -29,6 +30,15 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
     controller = VideoPlayerController.network(widget.mediaModel.getVideoUrl());
 
     // todo: if autoplay -> initialize
+
+    // todo: palette generator
+    paletteGenerator();
+  }
+
+  Future<void> paletteGenerator() async {
+    // todo: get colors from image
+    final paletteGenerator = await PaletteGenerator.fromImageProvider(
+        NetworkImage(widget.mediaModel.getThumbnailUrl()));
   }
 
   void _initialize() {
@@ -109,6 +119,10 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Whether or not the overlay for the video player should be drawn.
   bool get _overlayShowing => !_visibilityController.isCompleted || finished;
 
+  /// `true` when showing the overlay after it was hidden to determine whether
+  /// or not to show the play icon widget.
+  bool _reshowingOverlay = false;
+
   @override
   void initState() {
     super.initState();
@@ -138,6 +152,8 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
 
   void _onVideoTap() {
     if (_overlayShowing) {
+      _reshowingOverlay = false;
+
       if (finished) {
         // replay
         setState(() {
@@ -163,6 +179,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
       setState(() {
         _visibilityController.reset();
         _visibilityController.forward();
+        _reshowingOverlay = true;
       });
     }
   }
@@ -176,17 +193,19 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
       return Container();
     }
 
-    IconData iconData;
+    Widget centerWidget;
 
     if (finished) {
-      iconData = Icons.replay;
+      centerWidget = Icon(Icons.replay, size: 72);
     } else if (playing) {
-      iconData = Icons.play_arrow;
+      centerWidget = _reshowingOverlay
+          ? Container()
+          : FadeOutWidget(child: Icon(Icons.play_arrow, size: 72));
     } else {
-      iconData = Icons.pause;
+      centerWidget = FadeOutWidget(child: Icon(Icons.pause, size: 72));
     }
 
-    return Center(child: FadeOutWidget(child: Icon(iconData, size: 72)));
+    return Center(child: centerWidget);
   }
 
   Widget _buildBottomRow() {
