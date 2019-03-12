@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:video_player/video_player.dart';
 
 class MediaVideoPlayer extends StatefulWidget {
@@ -29,16 +28,7 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
 
     controller = VideoPlayerController.network(widget.mediaModel.getVideoUrl());
 
-    // todo: if autoplay -> initialize
-
-    // todo: palette generator
-    paletteGenerator();
-  }
-
-  Future<void> paletteGenerator() async {
-    // todo: get colors from image
-    final paletteGenerator = await PaletteGenerator.fromImageProvider(
-        NetworkImage(widget.mediaModel.getThumbnailUrl()));
+    // todo: if autoplay && video in scroll view -> initialize
   }
 
   void _initialize() {
@@ -66,7 +56,9 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
           Center(
             child: _initializing
                 ? CircularProgressIndicator()
-                : Icon(Icons.play_arrow),
+                : CircleButton(
+                    child: Icon(Icons.play_arrow, size: 72),
+                  ),
           ),
         ],
       ),
@@ -200,9 +192,17 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     } else if (playing) {
       centerWidget = _reshowingOverlay
           ? Container()
-          : FadeOutWidget(child: Icon(Icons.play_arrow, size: 72));
+          : FadeOutWidget(
+              child: CircleButton(
+                child: Icon(Icons.play_arrow, size: 72),
+              ),
+            );
     } else {
-      centerWidget = FadeOutWidget(child: Icon(Icons.pause, size: 72));
+      centerWidget = FadeOutWidget(
+        child: CircleButton(
+          child: Icon(Icons.pause, size: 72),
+        ),
+      );
     }
 
     return Center(child: centerWidget);
