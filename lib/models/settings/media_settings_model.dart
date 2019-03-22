@@ -16,7 +16,7 @@ class MediaSettingsModel extends Model {
 
   static final Logger _log = Logger("MediaSettingsModel");
 
-  /// The default wifi media quality when using wifi.
+  /// The default media quality when using wifi.
   ///
   /// 0: large
   /// 1: medium

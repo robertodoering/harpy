@@ -16,7 +16,10 @@ class MediaModel extends Model {
     @required this.mediaSettingsModel,
   })  : assert(tweetModel != null),
         assert(homeTimelineModel != null),
-        assert(mediaSettingsModel != null);
+        assert(mediaSettingsModel != null) {
+    // todo: check if wifi connection exists, if not use nonWifiMediaQuality
+    mediaQuality = mediaSettingsModel.wifiMediaQuality;
+  }
 
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
@@ -27,6 +30,16 @@ class MediaModel extends Model {
   static MediaModel of(BuildContext context) {
     return ScopedModel.of<MediaModel>(context);
   }
+
+  /// The selected quality for the media.
+  ///
+  /// Initially loaded from settings; can be changed through the media player
+  /// for videos and gifs.
+  ///
+  /// 0: large
+  /// 1: medium
+  /// 2: small
+  int mediaQuality;
 
   /// Returns the list of [TwitterMedia] for the tweet.
   List<TwitterMedia> get media => tweetModel.tweet.extended_entities.media;
@@ -50,14 +63,18 @@ class MediaModel extends Model {
       return v2.bitrate - v1.bitrate;
     });
 
-    // todo: check if wifi connection exists
-    int index = mediaSettingsModel.wifiMediaQuality;
+    int index = mediaQuality;
 
     if (variants.length > index) {
       return variants[index].url;
     } else {
       return variants.first.url;
     }
+  }
+
+  /// Overrides the media quality for the current media.
+  void setMediaQuality(int quality) {
+    mediaQuality = quality;
   }
 
   /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.

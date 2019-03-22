@@ -43,9 +43,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
           constraints: BoxConstraints(
             maxHeight: mediaModel.media.any((media) => media.type == photo)
                 ? 250.0
-                // max video height: screen height - appbar - padding // todo
-//                : MediaQuery.of(context).size.height - 80 - 24,
-                : double.infinity,
+                : 200.0,
           ),
           child: _TweetMediaLayout(),
         ),
@@ -167,15 +165,6 @@ class _TweetMediaWidget extends StatelessWidget {
         onHideFullscreen: (context) => Navigator.maybePop(context),
       );
     } else if (media.type == video) {
-//      var key = GlobalKey<OldTwitterVideoPlayerState>();
-//
-//      // twitter video player
-//      mediaWidget = OldTwitterVideoPlayer(
-//        key: key,
-//        media: media,
-//        onShowFullscreen: () => _showVideoFullscreen(context, key, media),
-//        onHideFullscreen: (context) => Navigator.maybePop(context),
-//      );
       mediaWidget = MediaVideoPlayer(
         mediaModel: model,
       );
@@ -193,26 +182,6 @@ class _TweetMediaWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showVideoFullscreen(
-    BuildContext context,
-    GlobalKey<OldTwitterVideoPlayerState> key,
-    TwitterMedia media,
-  ) {
-    Navigator.of(context).push(
-      HeroDialogRoute(builder: (context) {
-        return Center(
-          child: OldTwitterVideoPlayer(
-            media: media,
-            fullscreen: true,
-            onHideFullscreen: (context) => Navigator.maybePop(context),
-            controller: key.currentState.controller,
-            initializing: key.currentState.initializing,
-          ),
-        );
-      }),
     );
   }
 
