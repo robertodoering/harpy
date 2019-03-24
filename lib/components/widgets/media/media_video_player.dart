@@ -6,6 +6,9 @@ import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
+/// The display icon size for the media video player and overlay.
+const double kMediaIconSize = 64.0;
+
 class MediaVideoPlayer extends StatefulWidget {
   const MediaVideoPlayer({
     @required this.mediaModel,
@@ -14,45 +17,18 @@ class MediaVideoPlayer extends StatefulWidget {
   final MediaModel mediaModel;
 
   @override
-  _MediaVideoPlayerState createState() => _MediaVideoPlayerState();
+  MediaVideoPlayerState createState() => MediaVideoPlayerState();
 }
 
-class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
-  VideoPlayerController controller;
-
-  bool _initialized = false;
-  bool _initializing = false;
-
+class MediaVideoPlayerState extends State<MediaVideoPlayer>
+    with MediaPlayerMixin<MediaVideoPlayer> {
   bool fullscreen = false;
 
   @override
-  void initState() {
-    super.initState();
-
-    controller = VideoPlayerController.network(widget.mediaModel.getVideoUrl());
-
-    // todo: if autoplay && video in scroll view -> initialize
-  }
+  String get thumbnailUrl => widget.mediaModel.getThumbnailUrl();
 
   @override
-  void dispose() {
-    super.dispose();
-
-    controller.dispose();
-  }
-
-  void _initialize() {
-    setState(() {
-      _initializing = true;
-    });
-    controller.initialize().then((_) {
-      setState(() {
-        _initialized = true;
-        _initializing = false;
-        controller.play();
-      });
-    });
-  }
+  String get videoUrl => widget.mediaModel.getVideoUrl();
 
   Future<void> pushFullscreen() async {
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -87,32 +63,30 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
     ]);
   }
 
-  /// Builds the thumbnail for the video when it hasn't been loaded yet.
-  Widget _buildThumbnail() {
-    return GestureDetector(
-      onTap: _initialize,
-      child: Stack(
-        children: <Widget>[
-          CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: widget.mediaModel.getThumbnailUrl(),
-            height: double.infinity,
-            width: double.infinity,
-          ),
-          Center(
-            child: _initializing
-                ? CircularProgressIndicator()
-                : CircleButton(
-                    child: Icon(Icons.play_arrow, size: 64),
-                  ),
-          ),
-        ],
-      ),
+  @override
+  Widget buildThumbnail() {
+    return Stack(
+      children: <Widget>[
+        CachedNetworkImage(
+          fit: BoxFit.cover,
+          imageUrl: thumbnailUrl,
+          height: double.infinity,
+          width: double.infinity,
+        ),
+        Center(
+          child: initializing
+              ? CircularProgressIndicator()
+              : CircleButton(
+                  child: Icon(Icons.play_arrow, size: kMediaIconSize),
+                ),
+        ),
+      ],
     );
   }
 
   /// Builds the video player with a [MediaVideoOverlay].
-  Widget _buildVideoPlayer() {
+  @override
+  Widget buildVideoPlayer() {
     return MediaVideoOverlay(
       videoPlayer: this,
       child: Container(
@@ -147,10 +121,60 @@ class _MediaVideoPlayerState extends State<MediaVideoPlayer> {
       },
     );
   }
+}
+
+mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
+  VideoPlayerController controller;
+
+  bool initialized = false;
+  bool initializing = false;
+
+  String get thumbnailUrl;
+
+  String get videoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = VideoPlayerController.network(videoUrl);
+
+    // todo: if autoplay && video in scroll view -> initialize
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    controller.dispose();
+  }
+
+  void initialize() {
+    setState(() {
+      initializing = true;
+    });
+    controller.initialize().then((_) {
+      setState(() {
+        initialized = true;
+        initializing = false;
+        controller.play();
+      });
+    });
+  }
+
+  /// Builds the thumbnail for the video when it hasn't been loaded yet.
+  Widget buildThumbnail();
+
+  Widget buildVideoPlayer();
 
   @override
   Widget build(BuildContext context) {
-    return _initialized ? _buildVideoPlayer() : _buildThumbnail();
+    return initialized
+        ? buildVideoPlayer()
+        : GestureDetector(
+            onTap: initialize,
+            child: buildThumbnail(),
+          );
   }
 }
 
@@ -166,7 +190,7 @@ class MediaVideoOverlay extends StatefulWidget {
     @required this.child,
   });
 
-  final _MediaVideoPlayerState videoPlayer;
+  final MediaVideoPlayerState videoPlayer;
   final Widget child;
 
   @override
@@ -263,6 +287,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     }
   }
 
+  /// Builds the widget in the center of the overlay.
   Widget _buildCenterIcon() {
     if (buffering) {
       return Center(child: CircularProgressIndicator());
@@ -275,19 +300,19 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     Widget centerWidget;
 
     if (finished) {
-      centerWidget = Icon(Icons.replay, size: 64);
+      centerWidget = Icon(Icons.replay, size: kMediaIconSize);
     } else if (playing) {
       centerWidget = _reshowingOverlay
           ? Container()
           : FadeOutWidget(
               child: CircleButton(
-                child: Icon(Icons.play_arrow, size: 64),
+                child: Icon(Icons.play_arrow, size: kMediaIconSize),
               ),
             );
     } else {
       centerWidget = FadeOutWidget(
         child: CircleButton(
-          child: Icon(Icons.pause, size: 64),
+          child: Icon(Icons.pause, size: kMediaIconSize),
         ),
       );
     }
@@ -295,6 +320,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     return Center(child: centerWidget);
   }
 
+  /// Builds the bottom controls of the overlay.
   Widget _buildBottomRow() {
     return AnimatedOpacity(
       key: Key(widget.videoPlayer.controller.dataSource),

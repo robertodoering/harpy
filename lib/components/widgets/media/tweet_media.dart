@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_dialog.dart';
+import 'package:harpy/components/widgets/media/media_gif_player.dart';
 import 'package:harpy/components/widgets/media/media_video_player.dart';
 import 'package:harpy/components/widgets/media/old_twitter_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
@@ -43,7 +44,9 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
           constraints: BoxConstraints(
             maxHeight: mediaModel.media.any((media) => media.type == photo)
                 ? 250.0
-                : 200.0,
+                : mediaModel.media.any((media) => media.type == video)
+                    ? 200.0
+                    : double.infinity,
           ),
           child: _TweetMediaLayout(),
         ),
@@ -155,14 +158,17 @@ class _TweetMediaWidget extends StatelessWidget {
 
       tapCallback = () => _showMediaGallery(context, model.media);
     } else if (media.type == animatedGif) {
-      var key = GlobalKey<OldTwitterGifPlayerState>();
+//      var key = GlobalKey<OldTwitterGifPlayerState>();
 
       // twitter gif player
-      mediaWidget = OldTwitterGifPlayer(
-        key: key,
-        media: media,
-        onShowFullscreen: () => _showGifFullscreen(context, key, media),
-        onHideFullscreen: (context) => Navigator.maybePop(context),
+//      mediaWidget = OldTwitterGifPlayer(
+//        key: key,
+//        media: media,
+//        onShowFullscreen: () => _showGifFullscreen(context, key, media),
+//        onHideFullscreen: (context) => Navigator.maybePop(context),
+//      );
+      mediaWidget = MediaGifPlayer(
+        mediaModel: model,
       );
     } else if (media.type == video) {
       mediaWidget = MediaVideoPlayer(
@@ -182,26 +188,6 @@ class _TweetMediaWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showGifFullscreen(
-    BuildContext context,
-    GlobalKey<OldTwitterGifPlayerState> key,
-    TwitterMedia media,
-  ) {
-    Navigator.of(context).push(
-      HeroDialogRoute(builder: (context) {
-        return Center(
-          child: OldTwitterGifPlayer(
-            media: media,
-            fullscreen: true,
-            onHideFullscreen: (context) => Navigator.maybePop(context),
-            controller: key.currentState.controller,
-            initializing: key.currentState.initializing,
-          ),
-        );
-      }),
     );
   }
 
