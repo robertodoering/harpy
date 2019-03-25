@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:harpy/components/widgets/media/media_player_mixin.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
@@ -9,6 +10,13 @@ import 'package:video_player/video_player.dart';
 /// The display icon size for the media video player and overlay.
 const double kMediaIconSize = 64.0;
 
+/// The [VideoPlayer] for twitter videos.
+///
+/// A [MediaVideoOverlay] is built on the [VideoPlayer] to allow for controlling
+/// the [VideoPlayer].
+///
+/// Depending on the media settings it will autoplay or display the thumbnail
+/// and initialize the video on tap.
 class MediaVideoPlayer extends StatefulWidget {
   const MediaVideoPlayer({
     @required this.mediaModel,
@@ -123,61 +131,6 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
   }
 }
 
-mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
-  VideoPlayerController controller;
-
-  bool initialized = false;
-  bool initializing = false;
-
-  String get thumbnailUrl;
-
-  String get videoUrl;
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller = VideoPlayerController.network(videoUrl);
-
-    // todo: if autoplay && video in scroll view -> initialize
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    controller.dispose();
-  }
-
-  void initialize() {
-    setState(() {
-      initializing = true;
-    });
-    controller.initialize().then((_) {
-      setState(() {
-        initialized = true;
-        initializing = false;
-        controller.play();
-      });
-    });
-  }
-
-  /// Builds the thumbnail for the video when it hasn't been loaded yet.
-  Widget buildThumbnail();
-
-  Widget buildVideoPlayer();
-
-  @override
-  Widget build(BuildContext context) {
-    return initialized
-        ? buildVideoPlayer()
-        : GestureDetector(
-            onTap: initialize,
-            child: buildThumbnail(),
-          );
-  }
-}
-
 /// The overlay for a [MediaVideoPlayer].
 ///
 /// Shows the actions for the video (play, pause, fullscreen, etc.) and the
@@ -238,6 +191,8 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     super.dispose();
   }
 
+  /// Shows the overlay if it is currently hidden or plays / pauses the video
+  /// if the overlay is already showing.
   void _onVideoTap() {
     if (_overlayShowing) {
       _reshowingOverlay = false;
@@ -378,6 +333,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   }
 }
 
+/// A mixin for overlays of [VideoPlayer] implementations.
 mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
   /// `true` while the video is playing.
   bool playing = true;

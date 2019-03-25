@@ -1,10 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/media/media_player_mixin.dart';
 import 'package:harpy/components/widgets/media/media_video_player.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
+/// The [VideoPlayer] for twitter gifs.
+///
+/// Depending on the media settings it will autoplay or display the thumbnail
+/// and initialize the gif on tap.
 class MediaGifPlayer extends StatefulWidget {
   const MediaGifPlayer({
     @required this.mediaModel,
@@ -36,8 +41,10 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
     return AspectRatio(
       aspectRatio: widget.mediaModel.getVideoAspectRatio(),
       child: Stack(
+        fit: StackFit.passthrough,
         children: <Widget>[
           CachedNetworkImage(
+            fit: BoxFit.cover,
             imageUrl: thumbnailUrl,
           ),
           Center(

@@ -4,9 +4,9 @@ import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_dialog.dart';
 import 'package:harpy/components/widgets/media/media_gif_player.dart';
 import 'package:harpy/components/widgets/media/media_video_player.dart';
-import 'package:harpy/components/widgets/media/old_twitter_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
@@ -29,10 +29,13 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 
   @override
   Widget build(BuildContext context) {
+    final serviceProvider = ServiceProvider.of(context);
+
     mediaModel ??= MediaModel(
       tweetModel: TweetModel.of(context),
       homeTimelineModel: HomeTimelineModel.of(context),
       mediaSettingsModel: MediaSettingsModel.of(context),
+      connectivityService: serviceProvider.data.connectivityService,
     );
 
     return ScopedModel<MediaModel>(
@@ -45,7 +48,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
             maxHeight: mediaModel.media.any((media) => media.type == photo)
                 ? 250.0
                 : mediaModel.media.any((media) => media.type == video)
-                    ? 200.0
+                    ? 250.0 // todo: maybe default to a 16:9 size for videos
                     : double.infinity,
           ),
           child: _TweetMediaLayout(),
@@ -55,7 +58,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
   }
 }
 
-/// Builds the [TwitterMedia] in a layout for max. 4 [TwitterMedia].
+/// Builds the [_TweetMediaWidget] in a layout for max. 4 [TwitterMedia].
 ///
 /// There can be a max of 4 [TwitterMedia] for type [photo] or 1 for type
 /// [animatedGif] and [video].
@@ -130,8 +133,8 @@ class _TweetMediaLayout extends StatelessWidget {
   }
 }
 
-/// Builds a [CachedNetworkImage], [OldTwitterGifPlayer] or [OldTwitterVideoPlayer]
-/// for images, gifs and videos.
+/// Builds a [CachedNetworkImage], [MediaGifPlayer] or [MediaVideoPlayer] for
+/// images, gifs and videos.
 class _TweetMediaWidget extends StatelessWidget {
   const _TweetMediaWidget(this._index);
 
@@ -158,15 +161,6 @@ class _TweetMediaWidget extends StatelessWidget {
 
       tapCallback = () => _showMediaGallery(context, model.media);
     } else if (media.type == animatedGif) {
-//      var key = GlobalKey<OldTwitterGifPlayerState>();
-
-      // twitter gif player
-//      mediaWidget = OldTwitterGifPlayer(
-//        key: key,
-//        media: media,
-//        onShowFullscreen: () => _showGifFullscreen(context, key, media),
-//        onHideFullscreen: (context) => Navigator.maybePop(context),
-//      );
       mediaWidget = MediaGifPlayer(
         mediaModel: model,
       );
