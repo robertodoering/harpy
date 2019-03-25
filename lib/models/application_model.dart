@@ -5,6 +5,7 @@ import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/misc/async_initializer.dart';
+import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -23,12 +24,14 @@ class ApplicationModel extends Model {
     @required this.userTimelineCache,
     @required this.twitterClient,
     @required this.harpyPrefs,
+    @required this.connectivityService,
     @required this.themeSettingsModel,
   })  : assert(directoryService != null),
         assert(homeTimelineCache != null),
         assert(userTimelineCache != null),
         assert(twitterClient != null),
         assert(harpyPrefs != null),
+        assert(connectivityService != null),
         assert(themeSettingsModel != null) {
     _initialize();
   }
@@ -38,6 +41,7 @@ class ApplicationModel extends Model {
   final UserTimelineCache userTimelineCache;
   final TwitterClient twitterClient;
   final HarpyPrefs harpyPrefs;
+  final ConnectivityService connectivityService;
   final ThemeSettingsModel themeSettingsModel;
 
   static ApplicationModel of(BuildContext context) {
@@ -84,6 +88,9 @@ class ApplicationModel extends Model {
 
       // directory service
       directoryService.init,
+
+      // init connectivity status
+      connectivityService.init
     ]).run();
 
     if (loggedIn) {

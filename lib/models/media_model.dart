@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/api/twitter/data/video_info.dart';
+import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -14,16 +15,22 @@ class MediaModel extends Model {
     @required this.tweetModel,
     @required this.homeTimelineModel,
     @required this.mediaSettingsModel,
+    @required this.connectivityService,
   })  : assert(tweetModel != null),
         assert(homeTimelineModel != null),
-        assert(mediaSettingsModel != null) {
-    // todo: check if wifi connection exists, if not use nonWifiMediaQuality
-    mediaQuality = mediaSettingsModel.wifiMediaQuality;
+        assert(mediaSettingsModel != null),
+        assert(connectivityService != null) {
+    // use wifi media quality when connected to a wifi, else the non wifi media
+    // quality
+    mediaQuality = connectivityService.wifi
+        ? mediaSettingsModel.wifiMediaQuality
+        : mediaSettingsModel.nonWifiMediaQuality;
   }
 
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
   final MediaSettingsModel mediaSettingsModel;
+  final ConnectivityService connectivityService;
 
   static final Logger _log = Logger("MediaModel");
 
@@ -33,8 +40,7 @@ class MediaModel extends Model {
 
   /// The selected quality for the media.
   ///
-  /// Initially loaded from settings; can be changed through the media player
-  /// for videos and gifs.
+  /// Initially loaded from settings.
   ///
   /// 0: large
   /// 1: medium
@@ -72,11 +78,6 @@ class MediaModel extends Model {
     }
   }
 
-  /// Overrides the media quality for the current media.
-  void setMediaQuality(int quality) {
-    mediaQuality = quality;
-  }
-
   /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.
   ///
   /// For videos and gifs this is the url for the thumbnail.
@@ -92,9 +93,19 @@ class MediaModel extends Model {
   }
 
   /// Whether or not the media should show when building.
-  bool get initiallyShown =>
-      tweetModel.tweet.harpyData.showMedia ??
-      mediaSettingsModel.defaultHideMedia != 2;
+  bool get initiallyShown {
+    // when the media has manually been hidden or shown
+    if (tweetModel.tweet.harpyData.showMedia != null) {
+      return tweetModel.tweet.harpyData.showMedia;
+    }
+
+    // from settings
+    int defaultHideMedia = mediaSettingsModel.defaultHideMedia;
+
+    if (defaultHideMedia == 0) return true; // show
+    if (defaultHideMedia == 1) return connectivityService.wifi; // only if wifi
+    return false; // don't initially show
+  }
 
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
   String mediaHeroTag(int index) {

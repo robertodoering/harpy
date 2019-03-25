@@ -33,6 +33,7 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
       homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
       harpyPrefs: serviceProvider.data.harpyPrefs,
+      connectivityService: serviceProvider.data.connectivityService,
       themeSettingsModel: ThemeSettingsModel.of(context),
     );
 
