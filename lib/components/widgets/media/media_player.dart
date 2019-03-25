@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
 /// A mixin implemented by [MediaVideoPlayer] and [MediaGifPlayer].
 mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
   VideoPlayerController controller;
+
+  MediaModel mediaModel;
 
   bool initialized = false;
   bool initializing = false;
@@ -18,7 +21,9 @@ mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
 
     controller = VideoPlayerController.network(videoUrl);
 
-    // todo: if autoplay && video in scroll view -> initialize
+    if (mediaModel.autoplayMedia) {
+      initialize();
+    }
   }
 
   @override

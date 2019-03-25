@@ -107,6 +107,18 @@ class MediaModel extends Model {
     return false; // don't initially show
   }
 
+  /// Whether or not the video or gif should start playing automatically.
+  ///
+  /// todo: if video, only one should be playing simultaneously, the one that is
+  ///  the closest to the center of list
+  bool get autoplayMedia {
+    int autoplayMedia = mediaSettingsModel.autoplayMedia;
+
+    if (autoplayMedia == 0) return true; // autoplay
+    if (autoplayMedia == 1) return connectivityService.wifi; // only if wifi
+    return false; // don't autoplay
+  }
+
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
   String mediaHeroTag(int index) {
     return "$index-${media[index].idStr}-${tweetModel.originalTweet.idStr}";

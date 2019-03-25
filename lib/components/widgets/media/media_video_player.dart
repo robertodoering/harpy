@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:harpy/components/widgets/media/media_player_mixin.dart';
+import 'package:harpy/components/widgets/media/media_player.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/models/media_model.dart';
