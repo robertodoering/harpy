@@ -24,10 +24,7 @@ class MediaGifPlayer extends StatefulWidget {
 class _MediaGifPlayerState extends State<MediaGifPlayer>
     with MediaPlayerMixin<MediaGifPlayer> {
   @override
-  String get thumbnailUrl => widget.mediaModel.getThumbnailUrl();
-
-  @override
-  String get videoUrl => widget.mediaModel.getVideoUrl();
+  MediaModel get mediaModel => widget.mediaModel;
 
   @override
   void initState() {
@@ -39,13 +36,13 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
   @override
   Widget buildThumbnail() {
     return AspectRatio(
-      aspectRatio: widget.mediaModel.getVideoAspectRatio(),
+      aspectRatio: mediaModel.getVideoAspectRatio(),
       child: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
           CachedNetworkImage(
             fit: BoxFit.cover,
-            imageUrl: thumbnailUrl,
+            imageUrl: mediaModel.getThumbnailUrl(),
           ),
           Center(
             child: initializing
@@ -62,7 +59,7 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
   @override
   Widget buildVideoPlayer() {
     return AspectRatio(
-      aspectRatio: widget.mediaModel.getVideoAspectRatio(),
+      aspectRatio: mediaModel.getVideoAspectRatio(),
       child: VideoPlayer(controller),
     );
   }

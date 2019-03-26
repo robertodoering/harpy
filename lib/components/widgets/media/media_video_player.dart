@@ -33,15 +33,12 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
   bool fullscreen = false;
 
   @override
-  String get thumbnailUrl => widget.mediaModel.getThumbnailUrl();
-
-  @override
-  String get videoUrl => widget.mediaModel.getVideoUrl();
+  MediaModel get mediaModel => widget.mediaModel;
 
   Future<void> pushFullscreen() async {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
-    if (widget.mediaModel.getVideoAspectRatio() > 1) {
+    if (mediaModel.getVideoAspectRatio() > 1) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
@@ -77,7 +74,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
       children: <Widget>[
         CachedNetworkImage(
           fit: BoxFit.cover,
-          imageUrl: thumbnailUrl,
+          imageUrl: mediaModel.getThumbnailUrl(),
           height: double.infinity,
           width: double.infinity,
         ),
@@ -102,7 +99,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
         child: OverflowBox(
           maxHeight: double.infinity,
           child: AspectRatio(
-            aspectRatio: widget.mediaModel.getVideoAspectRatio(),
+            aspectRatio: mediaModel.getVideoAspectRatio(),
             child: VideoPlayer(controller),
           ),
         ),
@@ -330,64 +327,5 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
         _buildCenterIcon(),
       ]),
     );
-  }
-}
-
-/// A mixin for overlays of [VideoPlayer] implementations.
-mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
-  /// `true` while the video is playing.
-  bool playing = true;
-
-  /// `true` while the video is buffering.
-  bool buffering = false;
-
-  /// `true` when the [controller] position reached the end of the video.
-  bool finished = false;
-
-  /// The [VideoPlayerController] for the video.
-  ///
-  /// Equal to the [widget.controller] if it's not null.
-  VideoPlayerController controller;
-
-  /// The [VideoPlayerValue] of the last [listener] call.
-  ///
-  /// Used to determine whether or not the video is [buffering].
-  VideoPlayerValue lastValue;
-
-  /// The listener for the [VideoPlayerController].
-  void listener() {
-    if (!mounted) {
-      return;
-    }
-
-    final isPlaying = controller.value.isPlaying;
-    if (playing != isPlaying) {
-      setState(() {
-        playing = isPlaying;
-      });
-    }
-
-    final isFinished = controller.value.position >= controller.value.duration;
-    if (finished != isFinished) {
-      setState(() {
-        finished = isFinished;
-      });
-    }
-
-    // buffering workaround:
-    // the video player buffering start / end event is never fired on android,
-    // so instead assume buffering when the video is playing but the position
-    // is not changing.
-    final isBuffering = (lastValue?.isPlaying ?? false) &&
-        !finished &&
-        controller.value.isPlaying &&
-        controller.value.position == lastValue.position;
-    if (buffering != isBuffering) {
-      setState(() {
-        buffering = isBuffering;
-      });
-    }
-
-    lastValue = controller.value;
   }
 }

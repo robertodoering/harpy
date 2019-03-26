@@ -6,20 +6,16 @@ import 'package:video_player/video_player.dart';
 mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
   VideoPlayerController controller;
 
-  MediaModel mediaModel;
-
   bool initialized = false;
   bool initializing = false;
 
-  String get thumbnailUrl;
-
-  String get videoUrl;
+  MediaModel get mediaModel;
 
   @override
   void initState() {
     super.initState();
 
-    controller = VideoPlayerController.network(videoUrl);
+    controller = VideoPlayerController.network(mediaModel.getVideoUrl());
 
     if (mediaModel.autoplayMedia) {
       initialize();
@@ -65,5 +61,64 @@ mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
             onTap: initialize,
             child: buildThumbnail(),
           );
+  }
+}
+
+/// A mixin for overlays of [VideoPlayer] implementations.
+mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
+  /// `true` while the video is playing.
+  bool playing = true;
+
+  /// `true` while the video is buffering.
+  bool buffering = false;
+
+  /// `true` when the [controller] position reached the end of the video.
+  bool finished = false;
+
+  /// The [VideoPlayerController] for the video.
+  ///
+  /// Equal to the [widget.controller] if it's not null.
+  VideoPlayerController controller;
+
+  /// The [VideoPlayerValue] of the last [listener] call.
+  ///
+  /// Used to determine whether or not the video is [buffering].
+  VideoPlayerValue lastValue;
+
+  /// The listener for the [VideoPlayerController].
+  void listener() {
+    if (!mounted) {
+      return;
+    }
+
+    final isPlaying = controller.value.isPlaying;
+    if (playing != isPlaying) {
+      setState(() {
+        playing = isPlaying;
+      });
+    }
+
+    final isFinished = controller.value.position >= controller.value.duration;
+    if (finished != isFinished) {
+      setState(() {
+        finished = isFinished;
+      });
+    }
+
+    // buffering workaround:
+    // the video player buffering start / end event is never fired on android,
+    // so instead assume buffering when the video is playing but the position
+    // is not changing.
+    final isBuffering = (lastValue?.isPlaying ?? false) &&
+        !finished &&
+        controller.value.isPlaying &&
+        controller.value.position == lastValue.position;
+    if (buffering != isBuffering) {
+      setState(() {
+        buffering = isBuffering;
+      });
+    }
+
+    lastValue = controller.value;
   }
 }

@@ -45,11 +45,10 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
         onExpansionChanged: mediaModel.saveShowMediaState,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: mediaModel.media.any((media) => media.type == photo)
-                ? 250.0
-                : mediaModel.media.any((media) => media.type == video)
-                    ? 250.0 // todo: maybe default to a 16:9 size for videos
-                    : double.infinity,
+            maxHeight: mediaModel.media
+                    .any((media) => media.type == photo || media.type == video)
+                ? 250.0 // todo: maybe default to a 16:9 size for videos
+                : double.infinity,
           ),
           child: _TweetMediaLayout(),
         ),
@@ -63,7 +62,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 /// There can be a max of 4 [TwitterMedia] for type [photo] or 1 for type
 /// [animatedGif] and [video].
 class _TweetMediaLayout extends StatelessWidget {
-  /// The [padding] between the [_TweetMediaWidget]s.
+  /// The padding between the [_TweetMediaWidget]s.
   static const double padding = 2.0;
 
   @override
