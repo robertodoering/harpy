@@ -30,7 +30,7 @@ class MediaSettingsScreen extends StatelessWidget {
       ),
       DropdownSettingsTile(
         leading: Icons.play_circle_outline,
-        title: "Autoplay videos and gifs",
+        title: "Autoplay gifs",
         value: model.autoplayMedia,
         items: ["Always autoplay", "Only on WiFi", "Never autoplay"],
         onChanged: model.changeAutoplayMedia,

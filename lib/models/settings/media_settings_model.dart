@@ -38,7 +38,7 @@ class MediaSettingsModel extends Model {
   /// 2: always hide
   int get defaultHideMedia => harpyPrefs.getInt("defaultHideMedia", 0, 0, 2);
 
-  /// Whether or not to autoplay videos and gifs.
+  /// Whether or not to autoplay gifs.
   ///
   /// 0: always autoplay
   /// 1: only autoplay when using wifi
@@ -75,7 +75,7 @@ class MediaSettingsModel extends Model {
     notifyListeners();
   }
 
-  /// Changes whether or not to autoplay videos and gifs.
+  /// Changes whether or not to autoplay gifs.
   void changeAutoplayMedia(int value) {
     harpyPrefs.preferences.setInt("autoplayMedia", value);
     notifyListeners();

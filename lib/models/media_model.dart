@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/api/twitter/data/video_info.dart';
+import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
@@ -107,11 +108,13 @@ class MediaModel extends Model {
     return false; // don't initially show
   }
 
-  /// Whether or not the video or gif should start playing automatically.
-  ///
-  /// todo: if video, only one should be playing simultaneously, the one that is
-  ///  the closest to the center of list
-  bool get autoplayMedia {
+  /// Whether or not the gif should start playing automatically.
+  bool get autoplay {
+    if (!media.any((media) => media.type == animatedGif)) {
+      // only autoplay gifs
+      return false;
+    }
+
     int autoplayMedia = mediaSettingsModel.autoplayMedia;
 
     if (autoplayMedia == 0) return true; // autoplay
