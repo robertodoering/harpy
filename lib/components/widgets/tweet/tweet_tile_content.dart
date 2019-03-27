@@ -6,9 +6,11 @@ import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/favorite_button.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 
@@ -75,6 +77,16 @@ class _TweetAvatarNameRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final connectivityService =
+        ServiceProvider.of(context).data.connectivityService;
+    final mediaSettingsModel = MediaSettingsModel.of(context);
+
+    int quality = connectivityService.wifi
+        ? mediaSettingsModel.wifiMediaQuality
+        : mediaSettingsModel.nonWifiMediaQuality;
+
+    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(quality);
+
     return Row(
       children: <Widget>[
         // avatar
@@ -87,9 +99,7 @@ class _TweetAvatarNameRow extends StatelessWidget {
           },
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(
-              model.tweet.user.userProfileImageOriginal,
-            ),
+            backgroundImage: CachedNetworkImageProvider(imageUrl),
           ),
         ),
 

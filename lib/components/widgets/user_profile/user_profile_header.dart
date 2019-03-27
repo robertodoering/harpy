@@ -6,9 +6,11 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/utils/date_utils.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/user_profile_model.dart';
 
 /// The [UserProfileHeader] containing the information about the [User].
@@ -28,6 +30,16 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   }
 
   Widget _buildUserInfo(UserProfileModel model) {
+    final connectivityService =
+        ServiceProvider.of(context).data.connectivityService;
+    final mediaSettingsModel = MediaSettingsModel.of(context);
+
+    int quality = connectivityService.wifi
+        ? mediaSettingsModel.wifiMediaQuality
+        : mediaSettingsModel.nonWifiMediaQuality;
+
+    String imageUrl = model.user.getProfileImageUrlFromQuality(quality);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -35,9 +47,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         CircleAvatar(
           radius: 36.0,
           backgroundColor: Colors.transparent,
-          backgroundImage: CachedNetworkImageProvider(
-            model.user.userProfileImageOriginal,
-          ),
+          backgroundImage: CachedNetworkImageProvider(imageUrl),
         ),
 
         SizedBox(width: 8.0),

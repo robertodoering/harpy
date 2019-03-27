@@ -11,14 +11,14 @@ class MediaSettingsScreen extends StatelessWidget {
         leading: Icons.signal_wifi_4_bar,
         title: "Default quality on WiFi",
         value: model.wifiMediaQuality,
-        items: ["Highest", "High", "Low", "Lowest"],
+        items: ["High", "Medium", "Small"],
         onChanged: model.changeWifiMediaQuality,
       ),
       DropdownSettingsTile(
         leading: Icons.signal_wifi_off,
         title: "Default quality on mobile data",
         value: model.nonWifiMediaQuality,
-        items: ["Highest", "High", "Low", "Lowest"],
+        items: ["High", "Medium", "Small"],
         onChanged: model.changeNonWifiMediaQuality,
       ),
       DropdownSettingsTile(
