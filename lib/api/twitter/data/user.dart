@@ -155,12 +155,15 @@ class User {
   String getProfileImageUrlFromQuality(int quality) {
     switch (quality) {
       case 0:
-        return profileImageUrlHttps.replaceFirst("_normal", "_bigger");
+        // original quality
+        return profileImageUrlHttps.replaceFirst("_normal", "");
       case 1:
-        return profileImageUrlHttps;
+        // bigger
+        return profileImageUrlHttps.replaceFirst("_normal", "_bigger");
       case 2:
       default:
-        return profileImageUrlHttps.replaceFirst("_normal", "_mini");
+        // normal
+        return profileImageUrlHttps;
     }
   }
 }
