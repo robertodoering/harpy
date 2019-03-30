@@ -15,8 +15,7 @@ const double kMediaIconSize = 64.0;
 /// A [MediaVideoOverlay] is built on the [VideoPlayer] to allow for controlling
 /// the [VideoPlayer].
 ///
-/// Depending on the media settings it will autoplay or display the thumbnail
-/// and initialize the video on tap.
+/// The size of the [MediaVideoPlayer] should be constrained.
 class MediaVideoPlayer extends StatefulWidget {
   const MediaVideoPlayer({
     @required this.mediaModel,

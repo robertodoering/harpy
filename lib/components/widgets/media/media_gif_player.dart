@@ -10,6 +10,9 @@ import 'package:video_player/video_player.dart';
 ///
 /// Depending on the media settings it will autoplay or display the thumbnail
 /// and initialize the gif on tap.
+///
+/// The [MediaGifPlayer] will take up the maximal available space while keeping
+/// its aspect ratio.
 class MediaGifPlayer extends StatefulWidget {
   const MediaGifPlayer({
     @required this.mediaModel,
