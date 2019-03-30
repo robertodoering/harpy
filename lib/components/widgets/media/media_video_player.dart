@@ -161,6 +161,12 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// or not to show the play icon widget.
   bool _reshowingOverlay = false;
 
+  /// Whether or not the video volume is 0.
+  bool _muted = false;
+
+  /// The widget in the center when the play state changes.
+  Widget _playPauseWidget = Container();
+
   @override
   void initState() {
     super.initState();
@@ -213,6 +219,15 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   }
 
   void _togglePlay() {
+    _playPauseWidget = FadeOutWidget(
+      child: CircleButton(
+        child: Icon(
+          playing ? Icons.pause : Icons.play_arrow,
+          size: kMediaIconSize,
+        ),
+      ),
+    );
+
     if (playing) {
       // pause
       setState(() {
@@ -226,6 +241,24 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
         playing = true;
         controller.play();
         _visibilityController.forward();
+      });
+    }
+  }
+
+  void _toggleMute() {
+    _reshowingOverlay = true;
+    _visibilityController.reset();
+    _visibilityController.forward();
+
+    if (_muted) {
+      setState(() {
+        _muted = false;
+        controller.setVolume(1.0);
+      });
+    } else {
+      setState(() {
+        _muted = true;
+        controller.setVolume(0.0);
       });
     }
   }
@@ -253,20 +286,10 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
 
     if (finished) {
       centerWidget = Icon(Icons.replay, size: kMediaIconSize);
-    } else if (playing) {
-      centerWidget = _reshowingOverlay
-          ? Container()
-          : FadeOutWidget(
-              child: CircleButton(
-                child: Icon(Icons.play_arrow, size: kMediaIconSize),
-              ),
-            );
+    } else if (_reshowingOverlay) {
+      centerWidget = Container();
     } else {
-      centerWidget = FadeOutWidget(
-        child: CircleButton(
-          child: Icon(Icons.pause, size: kMediaIconSize),
-        ),
-      );
+      centerWidget = _playPauseWidget;
     }
 
     return Center(child: centerWidget);
@@ -292,6 +315,11 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
               ),
 
               Spacer(),
+
+              CircleButton(
+                child: Icon(_muted ? Icons.volume_up : Icons.volume_off),
+                onPressed: _toggleMute,
+              ),
 
               // fullscreen button
               CircleButton(

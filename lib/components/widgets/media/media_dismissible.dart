@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 ///
 /// Similar to [Dismissible] with some tweaks.
 class MediaDismissible extends StatefulWidget {
-  final Widget child;
-  final double dismissThreshold;
-  final VoidCallback onDismissed;
-  final bool disableDismiss;
-
   const MediaDismissible({
     @required this.child,
     this.onDismissed,
     this.dismissThreshold = 0.2,
     this.disableDismiss = false,
   });
+
+  final Widget child;
+  final double dismissThreshold;
+  final VoidCallback onDismissed;
+  final bool disableDismiss;
 
   @override
   _MediaDismissibleState createState() => _MediaDismissibleState();

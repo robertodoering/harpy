@@ -80,10 +80,11 @@ mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
   /// Equal to the [widget.controller] if it's not null.
   VideoPlayerController controller;
 
-  /// The [VideoPlayerValue] of the last [listener] call.
+  /// The [VideoPlayerValue]s of the last [listener] calls.
   ///
   /// Used to determine whether or not the video is [buffering].
   VideoPlayerValue lastValue;
+  VideoPlayerValue secondLastValue;
 
   /// The listener for the [VideoPlayerController].
   void listener() {
@@ -109,16 +110,17 @@ mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
     // the video player buffering start / end event is never fired on android,
     // so instead assume buffering when the video is playing but the position
     // is not changing.
-    final isBuffering = (lastValue?.isPlaying ?? false) &&
+    final isBuffering = (secondLastValue?.isPlaying ?? false) &&
         !finished &&
         controller.value.isPlaying &&
-        controller.value.position == lastValue.position;
+        controller.value.position == secondLastValue.position;
     if (buffering != isBuffering) {
       setState(() {
         buffering = isBuffering;
       });
     }
 
+    secondLastValue = lastValue;
     lastValue = controller.value;
   }
 }

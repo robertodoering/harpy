@@ -1,27 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/media/media_dismissable.dart';
+import 'package:harpy/components/widgets/media/media_dismissible.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-/// The [PhotoMediaDialog] that displays a [MediaWidgetGallery].
+/// The [OldPhotoMediaDialog] that displays a [OldMediaWidgetGallery].
 ///
 /// todo: refactor
-class PhotoMediaDialog extends StatelessWidget {
-  const PhotoMediaDialog({
+class OldPhotoMediaDialog extends StatelessWidget {
+  const OldPhotoMediaDialog({
     @required this.mediaModel,
     this.index = 0,
   });
 
   final MediaModel mediaModel;
 
-  /// The initial index of the [MediaWidgetGallery].
+  /// The initial index of the [OldMediaWidgetGallery].
   final int index;
 
   @override
   Widget build(BuildContext context) {
-    return MediaWidgetGallery(
+    return OldMediaWidgetGallery(
       mediaWidgetOptions: mediaModel.media.map((m) {
         double width = m.largeWidth?.toDouble() ??
             m.mediumWidth?.toDouble() ??
@@ -41,7 +41,7 @@ class PhotoMediaDialog extends StatelessWidget {
 
         String heroTag = mediaModel.mediaHeroTag(mediaModel.media.indexOf(m));
 
-        return MediaGalleryEntry(
+        return OldMediaGalleryEntry(
           widget: mediaWidget,
           minScale: PhotoViewComputedScale.contained,
           size: Size(width, height),
@@ -54,15 +54,15 @@ class PhotoMediaDialog extends StatelessWidget {
 }
 
 /// A helper class that contains information to build a [PhotoView.customChild]
-/// in a [MediaWidgetGallery].
-class MediaGalleryEntry {
+/// in a [OldMediaWidgetGallery].
+class OldMediaGalleryEntry {
   final Widget widget;
   final Object heroTag;
   final dynamic minScale;
   final dynamic maxScale;
   final Size size;
 
-  const MediaGalleryEntry({
+  const OldMediaGalleryEntry({
     @required this.widget,
     this.heroTag,
     this.minScale,
@@ -71,24 +71,24 @@ class MediaGalleryEntry {
   });
 }
 
-/// A [MediaWidgetGallery] that builds [PhotoView.customChild]s from a list of
-/// [MediaGalleryEntry].
-class MediaWidgetGallery extends StatefulWidget {
-  final List<MediaGalleryEntry> mediaWidgetOptions;
+/// A [OldMediaWidgetGallery] that builds [PhotoView.customChild]s from a list of
+/// [OldMediaGalleryEntry].
+class OldMediaWidgetGallery extends StatefulWidget {
+  final List<OldMediaGalleryEntry> mediaWidgetOptions;
   final int initialPage;
   final PhotoViewGalleryPageChangedCallback onPageChanged;
 
-  const MediaWidgetGallery({
+  const OldMediaWidgetGallery({
     @required this.mediaWidgetOptions,
     this.initialPage,
     this.onPageChanged,
   });
 
   @override
-  _MediaWidgetGalleryState createState() => _MediaWidgetGalleryState();
+  _OldMediaWidgetGalleryState createState() => _OldMediaWidgetGalleryState();
 }
 
-class _MediaWidgetGalleryState extends State<MediaWidgetGallery> {
+class _OldMediaWidgetGalleryState extends State<OldMediaWidgetGallery> {
   PageController _controller;
   bool _locked;
 
@@ -104,8 +104,6 @@ class _MediaWidgetGalleryState extends State<MediaWidgetGallery> {
       _locked = scaleState != PhotoViewScaleState.initial;
     });
   }
-
-  int get actualPage => _controller.hasClients ? _controller.page.floor() : 0;
 
   @override
   Widget build(BuildContext context) {
