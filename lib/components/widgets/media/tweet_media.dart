@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
-import 'package:harpy/components/widgets/media/media_dialog.dart';
 import 'package:harpy/components/widgets/media/media_gif_player.dart';
+import 'package:harpy/components/widgets/media/media_image.dart';
 import 'package:harpy/components/widgets/media/media_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
-import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
@@ -132,8 +130,8 @@ class _TweetMediaLayout extends StatelessWidget {
   }
 }
 
-/// Builds a [CachedNetworkImage], [MediaGifPlayer] or [MediaVideoPlayer] for
-/// images, gifs and videos.
+/// Builds a [MediaImage], [MediaGifPlayer] or [MediaVideoPlayer] for images,
+/// gifs and videos.
 class _TweetMediaWidget extends StatelessWidget {
   const _TweetMediaWidget(this._index);
 
@@ -141,56 +139,36 @@ class _TweetMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = MediaModel.of(context);
+    final mediaModel = MediaModel.of(context);
 
-    final TwitterMedia media = model.media[_index];
+    final TwitterMedia media = mediaModel.media[_index];
 
     Widget mediaWidget;
 
-    GestureTapCallback tapCallback;
-
     if (media.type == photo) {
-      // cached network image
-      mediaWidget = CachedNetworkImage(
-        imageUrl: media.mediaUrl,
-        fit: BoxFit.cover,
-        height: double.infinity,
-        width: double.infinity,
+      mediaWidget = MediaImage(
+        index: _index,
+        mediaModel: mediaModel,
       );
-
-      tapCallback = () => _showMediaGallery(context, model.media);
     } else if (media.type == animatedGif) {
       mediaWidget = MediaGifPlayer(
-        mediaModel: model,
+        mediaModel: mediaModel,
       );
     } else if (media.type == video) {
       mediaWidget = MediaVideoPlayer(
-        mediaModel: model,
+        mediaModel: mediaModel,
       );
     }
 
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        child: GestureDetector(
-          onTap: tapCallback,
-          child: Hero(
-            tag: model.mediaHeroTag(_index),
-            placeholderBuilder: (context, widget) => widget,
-            child: mediaWidget ?? Container(),
-          ),
+        child: Hero(
+          tag: mediaModel.mediaHeroTag(_index),
+          placeholderBuilder: (context, widget) => widget,
+          child: mediaWidget ?? Container(),
         ),
       ),
     );
-  }
-
-  void _showMediaGallery(BuildContext context, List<TwitterMedia> media) {
-    final model = MediaModel.of(context);
-
-    Navigator.of(context).push(HeroDialogRoute(
-      builder: (context) {
-        return PhotoMediaDialog(mediaModel: model, index: _index);
-      },
-    ));
   }
 }
