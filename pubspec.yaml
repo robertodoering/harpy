@@ -18,7 +18,6 @@ dependencies:
   flutter_material_color_picker: ^0.0.5
   flutter_colorpicker: ^0.2.1
   flare_flutter: ^1.2.3
-  palette_generator: ^0.1.1
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
