@@ -46,6 +46,7 @@ class TwitterClient {
     );
   }
 
+  /// Saves the response on the device as a file for debugging.
   Future<void> _saveResponse(Response response) async {
     print("saving response");
     final dir = await getApplicationDocumentsDirectory();
@@ -83,6 +84,11 @@ class TwitterClient {
   }) {
     _log.fine("sending post request: $url");
     url = appendParamsToUrl(url, params);
-    return _client.post(url, headers: headers, body: body, encoding: encoding);
+    return _client
+        .post(url, headers: headers, body: body, encoding: encoding)
+        .then((response) {
+//          _saveResponse(response);
+      return response;
+    });
   }
 }
