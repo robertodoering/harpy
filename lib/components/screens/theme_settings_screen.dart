@@ -2,26 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
-import 'package:harpy/models/settings_model.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
-  Widget _buildPreview() {
-    return Container(); // todo
-  }
-
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: "Theme",
-      body: ScopedModelDescendant<SettingsModel>(
+      body: ScopedModelDescendant<ThemeSettingsModel>(
         builder: (context, _, model) {
-          return ScopedModelDescendant<ThemeModel>(
-            builder: (context, _, model) {
-              return ThemeSelection();
-            },
-          );
+          return ThemeSelection();
         },
       ),
     );

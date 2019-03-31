@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// The [FavoriteIcon] for the [FavoriteButton] that uses a [FlareActor] to
 /// build an animated icon for favoring a tweet.
@@ -93,7 +93,7 @@ class FavoriteButton extends StatelessWidget {
   /// Otherwise it will be drawn in the default icon color.
   Widget _iconBuilder(BuildContext context, bool highlighted) {
     final Color iconColor = favorited || highlighted
-        ? ThemeModel.of(context).harpyTheme.likeColor
+        ? ThemeSettingsModel.of(context).harpyTheme.likeColor
         : Theme.of(context).iconTheme.color;
 
     return FavoriteIcon(favorited: favorited, color: iconColor);
@@ -101,7 +101,7 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color likeColor = ThemeModel.of(context).harpyTheme.likeColor;
+    final Color likeColor = ThemeSettingsModel.of(context).harpyTheme.likeColor;
 
     return FlatHarpyButton(
       iconBuilder: _iconBuilder,

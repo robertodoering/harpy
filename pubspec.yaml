@@ -25,6 +25,7 @@ dependencies:
   video_player: ^0.10.0+2
   webview_flutter: ^0.3.3+1
   path_provider: ^0.4.1
+  connectivity: ^0.4.2
 
   flutter:
     sdk: flutter

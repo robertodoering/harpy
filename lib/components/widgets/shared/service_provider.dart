@@ -6,6 +6,7 @@ import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 
@@ -31,6 +32,7 @@ class ServiceContainerState extends State<ServiceContainer> {
   UserService userService;
   TranslationService translationService;
   HarpyPrefs harpyPrefs;
+  ConnectivityService connectivityService;
 
   @override
   void initState() {
@@ -53,6 +55,7 @@ class ServiceContainerState extends State<ServiceContainer> {
     );
     translationService = TranslationService();
     harpyPrefs = HarpyPrefs();
+    connectivityService = ConnectivityService();
   }
 
   @override

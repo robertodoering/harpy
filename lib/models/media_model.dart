@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
+import 'package:harpy/api/twitter/data/video_info.dart';
+import 'package:harpy/components/widgets/media/tweet_media.dart';
+import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -11,11 +15,23 @@ class MediaModel extends Model {
   MediaModel({
     @required this.tweetModel,
     @required this.homeTimelineModel,
+    @required this.mediaSettingsModel,
+    @required this.connectivityService,
   })  : assert(tweetModel != null),
-        assert(homeTimelineModel != null);
+        assert(homeTimelineModel != null),
+        assert(mediaSettingsModel != null),
+        assert(connectivityService != null) {
+    // use wifi media quality when connected to a wifi, else the non wifi media
+    // quality
+    mediaQuality = connectivityService.wifi
+        ? mediaSettingsModel.wifiMediaQuality
+        : mediaSettingsModel.nonWifiMediaQuality;
+  }
 
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
+  final MediaSettingsModel mediaSettingsModel;
+  final ConnectivityService connectivityService;
 
   static final Logger _log = Logger("MediaModel");
 
@@ -23,14 +39,88 @@ class MediaModel extends Model {
     return ScopedModel.of<MediaModel>(context);
   }
 
-  /// Returns the list of [TwitterMedia] for this tweet.
+  /// The selected quality for the media.
   ///
-  /// Returns `null` if the [TweetModel.tweet] has no media attached.
-  List<TwitterMedia> get media => tweetModel.tweet?.extended_entities?.media;
+  /// Initially loaded from settings.
+  ///
+  /// 0: large
+  /// 1: medium
+  /// 2: small
+  int mediaQuality;
 
-  /// Whether or not the media should show or not when building.
-  bool get initiallyShown =>
-      tweetModel.tweet.harpyData.showMedia ?? true; // todo: get from settings
+  /// Returns the list of [TwitterMedia] for the tweet.
+  List<TwitterMedia> get media => tweetModel.tweet.extended_entities.media;
+
+  /// Returns the video url of the video or `null` if no videoInfo exists for
+  /// the [media].
+  ///
+  /// Takes the selected media quality into account.
+  String getVideoUrl() {
+    List<Variants> variants = media.first?.videoInfo?.variants;
+
+    if (variants?.isEmpty ?? true) {
+      return null;
+    }
+
+    // remove the x-mpeg video without a bitrate
+    variants.removeWhere((variants) => variants.bitrate == null);
+
+    // sort by bitrate (large, medium, small)
+    variants.sort((v1, v2) {
+      return v2.bitrate - v1.bitrate;
+    });
+
+    int index = mediaQuality;
+
+    if (variants.length > index) {
+      return variants[index].url;
+    } else {
+      return variants.first.url;
+    }
+  }
+
+  /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.
+  ///
+  /// For videos and gifs this is the url for the thumbnail.
+  String getThumbnailUrl() {
+    return media.first?.mediaUrl;
+  }
+
+  /// Returns the aspect ratio of the video or `1` if no videoInfo exists for
+  /// the [media].
+  double getVideoAspectRatio() {
+    return (media.first?.videoInfo?.aspectRatio[0] ?? 1) /
+        (media.first?.videoInfo?.aspectRatio[1] ?? 1);
+  }
+
+  /// Whether or not the media should show when building.
+  bool get initiallyShown {
+    // when the media has manually been hidden or shown
+    if (tweetModel.tweet.harpyData.showMedia != null) {
+      return tweetModel.tweet.harpyData.showMedia;
+    }
+
+    // from settings
+    int defaultHideMedia = mediaSettingsModel.defaultHideMedia;
+
+    if (defaultHideMedia == 0) return true; // show
+    if (defaultHideMedia == 1) return connectivityService.wifi; // only if wifi
+    return false; // don't initially show
+  }
+
+  /// Whether or not the gif should start playing automatically.
+  bool get autoplay {
+    if (!media.any((media) => media.type == animatedGif)) {
+      // only autoplay gifs
+      return false;
+    }
+
+    int autoplayMedia = mediaSettingsModel.autoplayMedia;
+
+    if (autoplayMedia == 0) return true; // autoplay
+    if (autoplayMedia == 1) return connectivityService.wifi; // only if wifi
+    return false; // don't autoplay
+  }
 
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
   String mediaHeroTag(int index) {

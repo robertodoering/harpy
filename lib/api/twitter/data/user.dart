@@ -152,9 +152,18 @@ class User {
     return 'User{name: $name, profileSidebarFillColor: $profileSidebarFillColor, profileBackgroundTitle: $profileBackgroundTitle, profileImageUrl: $profileImageUrl, createdAt: $createdAt, defaultProfile: $defaultProfile, url: $url, contributorsEnabled: $contributorsEnabled, favouritesCount: $favouritesCount, profileImageUrlHttps: $profileImageUrlHttps, id: $id, listedCount: $listedCount, profileUseBackgroundImage: $profileUseBackgroundImage, profileTextColor: $profileTextColor, followersCount: $followersCount, lang: $lang, protected: $protected, geoEnabled: $geoEnabled, notifications: $notifications, description: $description, profileBackground_Color: $profileBackground_Color, verified: $verified, profileBackgroundImageUrlHttps: $profileBackgroundImageUrlHttps, statusesCount: $statusesCount, profileBackgroundImageUrl: $profileBackgroundImageUrl, defaultProfileImage: $defaultProfileImage, friendsCount: $friendsCount, following: $following, showAllInlineMedia: $showAllInlineMedia, screenName: $screenName}';
   }
 
-  String get userProfileImageOriginal =>
-      profileImageUrlHttps?.replaceFirst("_normal", "");
-
-  String get userProfileImageBigger =>
-      profileImageUrlHttps?.replaceFirst("normal", "bigger");
+  String getProfileImageUrlFromQuality(int quality) {
+    switch (quality) {
+      case 0:
+        // original quality
+        return profileImageUrlHttps.replaceFirst("_normal", "");
+      case 1:
+        // bigger
+        return profileImageUrlHttps.replaceFirst("_normal", "_bigger");
+      case 2:
+      default:
+        // normal
+        return profileImageUrlHttps;
+    }
+  }
 }

@@ -3,36 +3,29 @@ import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
-import 'package:harpy/models/settings_model.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// Wraps the app wide [ScopedModel]s and holds the instances in its state.
-class GlobalScopedModels extends StatefulWidget {
-  const GlobalScopedModels({
+class GlobalModelsWrapper extends StatefulWidget {
+  const GlobalModelsWrapper({
     @required this.child,
   });
 
   final Widget child;
 
   @override
-  GlobalScopedModelsState createState() => GlobalScopedModelsState();
+  GlobalModelsWrapperState createState() => GlobalModelsWrapperState();
 }
 
-class GlobalScopedModelsState extends State<GlobalScopedModels> {
+class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
   ApplicationModel applicationModel;
   LoginModel loginModel;
   HomeTimelineModel homeTimelineModel;
-  ThemeModel themeModel;
-  SettingsModel settingsModel;
 
   @override
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
-
-    themeModel ??= ThemeModel(
-      harpyPrefs: serviceProvider.data.harpyPrefs,
-    );
 
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
@@ -40,7 +33,8 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
       homeTimelineCache: serviceProvider.data.homeTimelineCache,
       twitterClient: serviceProvider.data.twitterClient,
       harpyPrefs: serviceProvider.data.harpyPrefs,
-      themeModel: themeModel,
+      connectivityService: serviceProvider.data.connectivityService,
+      themeSettingsModel: ThemeSettingsModel.of(context),
     );
 
     homeTimelineModel ??= HomeTimelineModel(
@@ -55,23 +49,13 @@ class GlobalScopedModelsState extends State<GlobalScopedModels> {
       userCache: serviceProvider.data.userCache,
     );
 
-    settingsModel ??= SettingsModel(
-      harpyPrefs: serviceProvider.data.harpyPrefs,
-    );
-
     return ScopedModel<ApplicationModel>(
       model: applicationModel,
       child: ScopedModel<LoginModel>(
         model: loginModel,
         child: ScopedModel<HomeTimelineModel>(
           model: homeTimelineModel,
-          child: ScopedModel<ThemeModel>(
-            model: themeModel,
-            child: ScopedModel<SettingsModel>(
-              model: settingsModel,
-              child: widget.child,
-            ),
-          ),
+          child: widget.child,
         ),
       ),
     );

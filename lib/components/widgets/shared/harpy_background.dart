@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// Builds a background with a gradient from [begin] to [end] in the
 /// [startColor] and [endColor].
@@ -23,7 +23,7 @@ class HarpyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = ThemeModel.of(context).harpyTheme;
+    final harpyTheme = ThemeSettingsModel.of(context).harpyTheme;
 
     return Container(
       decoration: BoxDecoration(

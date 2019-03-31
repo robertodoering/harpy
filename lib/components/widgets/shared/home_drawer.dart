@@ -9,6 +9,7 @@ import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/settings/media_settings_model.dart';
 
 /// The [Drawer] shown in the [HomeScreen].
 ///
@@ -103,6 +104,15 @@ class UserDrawerHeader extends StatelessWidget {
 
   Widget _buildAvatarRow(BuildContext context) {
     final loginModel = LoginModel.of(context);
+    final connectivityService =
+        ServiceProvider.of(context).data.connectivityService;
+    final mediaSettingsModel = MediaSettingsModel.of(context);
+
+    int quality = connectivityService.wifi
+        ? mediaSettingsModel.wifiMediaQuality
+        : mediaSettingsModel.nonWifiMediaQuality;
+
+    String imageUrl = user.getProfileImageUrlFromQuality(quality);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,9 +128,7 @@ class UserDrawerHeader extends StatelessWidget {
           child: CircleAvatar(
             radius: 32.0,
             backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(
-              user.userProfileImageOriginal,
-            ),
+            backgroundImage: CachedNetworkImageProvider(imageUrl),
           ),
         ),
 

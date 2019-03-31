@@ -2,25 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
-import 'package:harpy/models/settings_model.dart';
-import 'package:harpy/models/theme_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 /// The model for creating or editing a custom theme.
 class CustomThemeModel extends Model {
   CustomThemeModel({
     @required this.themeModel,
-    @required this.settingsModel,
-  })  : assert(themeModel != null),
-        assert(settingsModel != null) {
+  }) : assert(themeModel != null) {
     // initialize the custom theme data with the edited theme or the current
     // theme when creating a new theme
     customThemeData = HarpyThemeData()..fromTheme(themeModel.harpyTheme);
     customThemeData.name = "New theme 1";
   }
 
-  final ThemeModel themeModel;
-  final SettingsModel settingsModel;
+  final ThemeSettingsModel themeModel;
 
   static CustomThemeModel of(BuildContext context) {
     return ScopedModel.of<CustomThemeModel>(context);

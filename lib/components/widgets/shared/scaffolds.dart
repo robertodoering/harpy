@@ -4,9 +4,6 @@ import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
-///
-/// If [title] is a String, it will be wrapped in an [AppBar].
-/// Otherwise it needs to be a [PreferredSizeWidget].
 class HarpyScaffold extends StatelessWidget {
   HarpyScaffold({
     @required this.title,
@@ -33,6 +30,7 @@ class HarpyScaffold extends StatelessWidget {
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
+      actions: actions,
       title: Text(
         title,
         style: Theme.of(context).textTheme.title.copyWith(
