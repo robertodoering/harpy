@@ -6,10 +6,6 @@ import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
-  Widget _buildPreview() {
-    return Container(); // todo
-  }
-
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
