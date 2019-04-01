@@ -174,7 +174,40 @@ List<Tweet> _parseTweets(String data) {
   List<Tweet> tweets = mapJson(data, (json) => Tweet.fromJson(json));
 
   _log.fine("parsed ${tweets.length} tweets");
-  return tweets;
+
+  List<Tweet> sorted = [];
+  List<Tweet> skipped = [];
+
+  // sort the tweets; insert replies after their parents
+  for (Tweet tweet in tweets) {
+    // skip the tweet if it had been added already
+    if (skipped.contains(tweet)) {
+      continue;
+    }
+
+    final bool isReply = tweet.inReplyToStatusIdStr != null;
+
+    if (isReply) {
+      // check if the tweet is a reply to one of the tweets in the unsorted list
+      Tweet parentTweet = tweets.firstWhere(
+        (compare) => compare.idStr == tweet.inReplyToStatusIdStr,
+        orElse: () => null,
+      );
+
+      if (parentTweet != null) {
+        // add the parent tweet to the sorted list
+        sorted.add(parentTweet);
+        // add it to the list of tweets to skip
+        skipped.add(parentTweet);
+      }
+    }
+
+    sorted.add(tweet);
+  }
+
+  _log.fine("sorted ${tweets.length} tweets");
+
+  return sorted;
 }
 
 List<Tweet> _copyHomeHarpyData(List<Tweet> tweets) {
