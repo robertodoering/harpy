@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -112,7 +113,7 @@ class TweetCache {
     // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
 
-    return tweets;
+    return sortTweetReplies(tweets);
   }
 
   /// Clears the cache and caches a new list of [tweets] while retaining the

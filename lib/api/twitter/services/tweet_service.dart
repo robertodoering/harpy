@@ -175,6 +175,12 @@ List<Tweet> _parseTweets(String data) {
 
   _log.fine("parsed ${tweets.length} tweets");
 
+  return sortTweetReplies(tweets);
+}
+
+List<Tweet> sortTweetReplies(List<Tweet> tweets) {
+  _log.fine("sorting tweet replies");
+
   List<Tweet> sorted = [];
   List<Tweet> skipped = [];
 
