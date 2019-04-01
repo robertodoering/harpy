@@ -40,7 +40,7 @@ Future<R> isolateWork<Q, R>({
 dynamic _isolateInit(List args) {
   try {
     initLogger(prefix: 'Isolate');
-    Logger("IsolateInit").fine("initializing isolate");
+    _log.fine("initializing isolate");
 
     Function callback = args[0];
     dynamic message = args[1];
@@ -56,11 +56,11 @@ dynamic _isolateInit(List args) {
       );
     }
 
-    Logger("IsolateInit").fine("initialization done");
+    _log.fine("initialization done");
     // todo: if callback is future, await?
     return callback(message);
   } catch (e) {
-    Logger("isolateWork").severe("error in isolate: $e");
+    _log.severe("error in isolate: $e");
     return e;
   }
 }

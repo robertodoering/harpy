@@ -54,10 +54,13 @@ class TweetModel extends Model {
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
 
+  /// Whether or not the  [originalTweet] is a reply.
+  bool get isReply => originalTweet.inReplyToStatusIdStr != null;
+
   /// Whether or not the [originalTweet] is a quote.
   bool get isQuote => originalTweet.quotedStatus != null;
 
-  /// Set to true when the [original] comes from a quoted [Tweet].
+  /// Set to true when the [originalTweet] comes from a quoted [Tweet].
   bool quoted = false;
 
   /// Whether or not the [tweet] contains [TweetMedia].
