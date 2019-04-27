@@ -28,6 +28,7 @@ class _SettingModelsWrapperState extends State<SettingModelsWrapper> {
 
     mediaSettingsModel ??= MediaSettingsModel(
       harpyPrefs: serviceProvider.data.harpyPrefs,
+      connectivityService: serviceProvider.data.connectivityService,
     );
 
     themeSettingsModel ??= ThemeSettingsModel(

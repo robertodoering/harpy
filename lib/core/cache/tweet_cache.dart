@@ -113,7 +113,9 @@ class TweetCache {
     // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
 
-    return sortTweetReplies(tweets);
+    tweets = sortTweetReplies(tweets);
+
+    return tweets;
   }
 
   /// Clears the cache and caches a new list of [tweets] while retaining the
@@ -132,8 +134,9 @@ class TweetCache {
       if (cachedFile != null) {
         // copy harpy data from the cached tweet if the tweet has been cached
         // before
-        Tweet cachedTweet =
-            Tweet.fromJson(jsonDecode(cachedFile.readAsStringSync()));
+        Tweet cachedTweet = Tweet.fromJson(
+          jsonDecode(cachedFile.readAsStringSync()),
+        );
 
         tweet.harpyData = cachedTweet.harpyData;
       }

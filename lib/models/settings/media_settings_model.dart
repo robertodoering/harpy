@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:logging/logging.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -6,15 +7,22 @@ import 'package:scoped_model/scoped_model.dart';
 class MediaSettingsModel extends Model {
   MediaSettingsModel({
     @required this.harpyPrefs,
-  }) : assert(harpyPrefs != null);
+    @required this.connectivityService,
+  })  : assert(harpyPrefs != null),
+        assert(connectivityService != null);
 
   final HarpyPrefs harpyPrefs;
+  final ConnectivityService connectivityService;
 
   static MediaSettingsModel of(BuildContext context) {
     return ScopedModel.of<MediaSettingsModel>(context);
   }
 
   static final Logger _log = Logger("MediaSettingsModel");
+
+  /// Returns the quality, taking the connectivity into consideration.
+  int get quality =>
+      connectivityService.wifi ? wifiMediaQuality : nonWifiMediaQuality;
 
   /// The default media quality when using wifi.
   ///
