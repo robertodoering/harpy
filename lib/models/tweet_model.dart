@@ -54,8 +54,8 @@ class TweetModel extends Model {
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
 
-  /// Whether or not the  [originalTweet] is a reply.
-  bool get isReply => originalTweet.inReplyToStatusIdStr != null;
+  /// Whether or not the [originalTweet] is a reply.
+  bool get isReply => originalTweet.harpyData.childOfReply == true;
 
   /// Whether or not the [originalTweet] is a quote.
   bool get isQuote => originalTweet.quotedStatus != null;

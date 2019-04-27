@@ -5,19 +5,27 @@ part 'harpy_data.g.dart';
 
 @JsonSerializable()
 class HarpyData {
-  @JsonKey(name: "show_media")
   bool showMedia;
   Translation translation;
+  bool parentOfReply;
+  bool childOfReply;
 
   HarpyData.init();
 
   HarpyData(
     this.showMedia,
     this.translation,
+    this.parentOfReply,
+    this.childOfReply,
   );
 
   factory HarpyData.fromJson(Map<String, dynamic> json) =>
       _$HarpyDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$HarpyDataToJson(this);
+
+  @override
+  String toString() {
+    return 'HarpyData{showMedia: $showMedia, translation: $translation, parentOfReply: $parentOfReply, childOfReply: $childOfReply}';
+  }
 }
