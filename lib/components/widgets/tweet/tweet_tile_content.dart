@@ -77,26 +77,16 @@ class _TweetAvatarNameRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final connectivityService =
-        ServiceProvider.of(context).data.connectivityService;
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    int quality = connectivityService.wifi
-        ? mediaSettingsModel.wifiMediaQuality
-        : mediaSettingsModel.nonWifiMediaQuality;
-
-    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(quality);
+    String imageUrl = model.tweet.user
+        .getProfileImageUrlFromQuality(mediaSettingsModel.quality);
 
     return Row(
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(imageUrl),
@@ -124,12 +114,7 @@ class TweetNameColumn extends StatelessWidget {
       children: <Widget>[
         // name
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: Text(
             model.tweet.user.name,
             overflow: TextOverflow.ellipsis,
@@ -138,12 +123,7 @@ class TweetNameColumn extends StatelessWidget {
 
         // username · time since tweet in hours
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: Text(
             model.screenNameAndTime,
             style: Theme.of(context).textTheme.caption,
@@ -152,6 +132,14 @@ class TweetNameColumn extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Navigates to the [UserProfileScreen] for the [user].
+void _openUserProfile(BuildContext context, User user) {
+  HarpyNavigator.push(
+    context,
+    UserProfileScreen(user: user),
+  );
 }
 
 /// Builds the text of the [Tweet].
@@ -195,53 +183,64 @@ class TweetText extends StatelessWidget {
 /// If the [Tweet] has been translated this builds the translation info and
 /// the translated text.
 class _TweetTranslation extends StatelessWidget {
-  const _TweetTranslation(this.model);
+  const _TweetTranslation(
+    this.model, {
+    @required this.vsync,
+  });
 
   final TweetModel model;
+  final TickerProvider vsync;
 
   @override
   Widget build(BuildContext context) {
-    // progress indicator
+    Widget child;
+
     if (model.translating) {
-      return Center(
+      // progress indicator
+      child = Center(
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: CircularProgressIndicator(),
         ),
       );
+    } else if (!model.isTranslated || model.translationUnchanged) {
+      // build nothing
+      child = Container();
+    } else {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 8.0),
+
+          // original language text
+          model.translation.language != null
+              ? Row(
+                  children: <Widget>[
+                    Text(
+                      "Translated from ",
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                    Text(model.translation.language),
+                  ],
+                )
+              : Container(),
+
+          SizedBox(height: 4.0),
+
+          // text
+          TwitterText(
+            text: model.translation.text,
+            entities: model.tweet.entities,
+          ),
+        ],
+      );
     }
 
-    // build nothing
-    if (!model.isTranslated || model.translationUnchanged) {
-      return Container();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 8.0),
-
-        // original language text
-        model.translation.language != null
-            ? Row(
-                children: <Widget>[
-                  Text(
-                    "Translated from ",
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                  Text(model.translation.language),
-                ],
-              )
-            : Container(),
-
-        SizedBox(height: 4.0),
-
-        // text
-        TwitterText(
-          text: model.translation.text,
-          entities: model.tweet.entities,
-        ),
-      ],
+    return AnimatedSize(
+      vsync: vsync,
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 300),
+      child: child,
     );
   }
 }
