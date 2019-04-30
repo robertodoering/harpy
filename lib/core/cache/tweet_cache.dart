@@ -35,6 +35,9 @@ class TweetCache {
   static final Logger _log = Logger("TweetCache");
 
   /// Instance that can be used in isolates.
+  ///
+  /// todo: really necessary?
+  ///  can't the service provider be used in the isolate?
   static TweetCache isolateInstance;
 
   /// The [data] used to construct a [TweetCache] for isolates.

@@ -31,8 +31,9 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   Widget _buildUserInfo(UserProfileModel model) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl =
-        model.user.getProfileImageUrlFromQuality(mediaSettingsModel.quality);
+    String imageUrl = model.user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

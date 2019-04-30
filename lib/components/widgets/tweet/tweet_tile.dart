@@ -19,8 +19,7 @@ class TweetTile extends StatefulWidget {
   TweetTileState createState() => TweetTileState();
 }
 
-class TweetTileState extends State<TweetTile>
-    with SingleTickerProviderStateMixin<TweetTile> {
+class TweetTileState extends State<TweetTile> {
   TweetModel tweetModel;
 
   @override

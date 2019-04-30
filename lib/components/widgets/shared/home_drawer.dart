@@ -106,8 +106,9 @@ class UserDrawerHeader extends StatelessWidget {
     final loginModel = LoginModel.of(context);
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl =
-        user.getProfileImageUrlFromQuality(mediaSettingsModel.quality);
+    String imageUrl = user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

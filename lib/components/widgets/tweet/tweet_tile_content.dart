@@ -56,7 +56,7 @@ class _TweetRetweetedRow extends StatelessWidget {
   Widget build(BuildContext context) {
     if (model.isRetweet) {
       return Padding(
-        padding: EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 8.0),
         child: IconRow(
           icon: Icons.repeat,
           iconPadding: 40.0, // same as avatar width
@@ -79,8 +79,9 @@ class _TweetAvatarNameRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl = model.tweet.user
-        .getProfileImageUrlFromQuality(mediaSettingsModel.quality);
+    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       children: <Widget>[
