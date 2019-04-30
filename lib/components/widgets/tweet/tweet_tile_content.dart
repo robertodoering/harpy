@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/favorite_button.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -25,22 +26,80 @@ class _TweetTileContentState extends State<TweetTileContent>
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return _TweetContentPadding(
+      model,
       children: <Widget>[
         _TweetRetweetedRow(model),
         _TweetAvatarNameRow(model),
         TweetText(model),
         TweetQuote(model),
-        AnimatedSize(
-          vsync: this,
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-          child: _TweetTranslation(model),
-        ),
+        _TweetTranslation(model, vsync: this),
         _TweetMedia(model),
         _TweetActionsRow(model),
+        _TweetReplyParent(model),
       ],
+    );
+  }
+}
+
+/// Displays the names of the users that replied to this tweet if they are
+/// following.
+class _TweetReplyParent extends StatelessWidget {
+  const _TweetReplyParent(
+    this.model,
+  );
+
+  final TweetModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    if (model.tweet.harpyData.parentOfReply == false) {
+      return Container();
+    }
+
+    final timelineModel = HomeTimelineModel.of(context);
+
+    String replyAuthors = model.getReplyAuthors(timelineModel.tweets);
+
+    if (replyAuthors.isEmpty) {
+      return Container();
+    }
+
+    return Column(
+      children: <Widget>[
+        Divider(height: 8.0),
+        SizedBox(height: 8.0),
+        IconRow(
+          icon: Icons.reply,
+          iconPadding: 40.0, // same as avatar width
+          child: replyAuthors,
+        ),
+        SizedBox(height: 8.0),
+      ],
+    );
+  }
+}
+
+/// The padding for the tweet content.
+///
+/// If the tweet is a reply it has a larger padding on the left.
+class _TweetContentPadding extends StatelessWidget {
+  const _TweetContentPadding(
+    this.model, {
+    this.children,
+  });
+
+  final TweetModel model;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 }
