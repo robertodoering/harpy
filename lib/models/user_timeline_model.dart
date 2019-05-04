@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class UserTimelineModel extends TimelineModel {
   UserTimelineModel({
@@ -19,6 +21,10 @@ class UserTimelineModel extends TimelineModel {
   final String userId;
 
   static final Logger _log = Logger("UserTimelineModel");
+
+  static UserTimelineModel of(BuildContext context) {
+    return ScopedModel.of<UserTimelineModel>(context);
+  }
 
   @override
   Future<void> updateTweets() async {

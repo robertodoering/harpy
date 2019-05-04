@@ -8,6 +8,8 @@ import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/user_timeline_model.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -26,10 +28,13 @@ class TweetModel extends Model {
     @required this.originalTweet,
     @required this.homeTimelineCache,
     @required this.userTimelineCache,
+    @required this.homeTimelineModel,
+    @required this.userTimelineModel,
     @required this.tweetService,
     @required this.translationService,
   })  : assert(originalTweet != null),
         assert(homeTimelineCache != null),
+        assert(homeTimelineModel != null),
         assert(tweetService != null),
         assert(translationService != null);
 
@@ -37,6 +42,8 @@ class TweetModel extends Model {
 
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
+  final HomeTimelineModel homeTimelineModel;
+  final UserTimelineModel userTimelineModel;
   final TweetService tweetService;
   final TranslationService translationService;
 
@@ -93,7 +100,9 @@ class TweetModel extends Model {
   /// string.
   ///
   /// Returns an empty string if this tweet has no replies.
-  String getReplyAuthors(List<Tweet> tweets) {
+  String getReplyAuthors() {
+    List<Tweet> tweets = (userTimelineModel ?? homeTimelineModel).tweets;
+
     List<Tweet> replies = tweets
         .where((child) => child.inReplyToStatusIdStr == tweet.idStr)
         .toList();

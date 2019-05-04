@@ -21,10 +21,6 @@ abstract class TimelineModel extends Model {
 
   static final Logger _log = Logger("TimelineModel");
 
-  static TimelineModel of(BuildContext context) {
-    return ScopedModel.of<TimelineModel>(context);
-  }
-
   /// The [tweets] for this timeline.
   List<Tweet> tweets = [];
 

@@ -10,7 +10,6 @@ import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -62,9 +61,7 @@ class _TweetReplyParent extends StatelessWidget {
       return Container();
     }
 
-    final timelineModel = HomeTimelineModel.of(context);
-
-    String replyAuthors = model.getReplyAuthors(timelineModel.tweets);
+    String replyAuthors = model.getReplyAuthors();
 
     if (replyAuthors.isEmpty) {
       return Container();
