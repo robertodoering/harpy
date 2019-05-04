@@ -187,7 +187,7 @@ class CustomTweetListView extends StatelessWidget {
 
   static final Logger _log = Logger("CustomTweetListView");
 
-  Widget _itemBuilder(BuildContext context, int index) {
+  Widget _itemBuilder(int index) {
     if (content[index] is Tweet) {
       Tweet tweet = content[index];
 
@@ -200,7 +200,7 @@ class CustomTweetListView extends StatelessWidget {
     }
   }
 
-  Widget _separatorBuilder(BuildContext context, int index) {
+  Widget _separatorBuilder() {
     return Divider(height: 0.0);
   }
 
@@ -209,13 +209,11 @@ class CustomTweetListView extends StatelessWidget {
   Widget _childrenBuilder(BuildContext context, int index) {
     final int itemIndex = index ~/ 2;
 
-    return index.isEven
-        ? _itemBuilder(context, itemIndex)
-        : _separatorBuilder(context, itemIndex);
+    return index.isEven ? _itemBuilder(itemIndex) : _separatorBuilder();
   }
 
   /// Called whenever the list rebuilds with the first and last index being the
-  /// visible items.
+  /// indices of the visible items.
   void _onLayoutFinish(int firstIndex, int lastIndex) {
     final int first = firstIndex ~/ 2;
     final int last = lastIndex ~/ 2;

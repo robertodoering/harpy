@@ -31,10 +31,13 @@ class HomeTimelineModel extends TimelineModel {
     await super.requestMore();
 
     String id = "${tweets.last.id - 1}";
+
     // todo: bug: clears cached tweets where id > than id
-    tweets.addAll(await tweetService.getHomeTimeline(
+    List<Tweet> newTweets = await tweetService.getHomeTimeline(
       params: {"max_id": id},
-    ));
+    );
+
+    addNewTweets(newTweets);
 
     requestingMore = false;
     notifyListeners();

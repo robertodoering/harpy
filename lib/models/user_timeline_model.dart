@@ -1,3 +1,4 @@
+import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
@@ -35,11 +36,14 @@ class UserTimelineModel extends TimelineModel {
     await super.requestMore();
 
     String id = "${tweets.last.id - 1}";
+
     // todo: bug: clears cached tweets where id > than id
-    tweets.addAll(await tweetService.getUserTimeline(
+    List<Tweet> newTweets = await tweetService.getUserTimeline(
       userId,
       params: {"max_id": id},
-    ));
+    );
+
+    addNewTweets(newTweets);
 
     requestingMore = false;
     notifyListeners();

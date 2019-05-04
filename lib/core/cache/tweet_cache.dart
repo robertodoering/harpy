@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -34,6 +35,9 @@ class TweetCache {
   static final Logger _log = Logger("TweetCache");
 
   /// Instance that can be used in isolates.
+  ///
+  /// todo: really necessary?
+  ///  can't the service provider be used in the isolate?
   static TweetCache isolateInstance;
 
   /// The [data] used to construct a [TweetCache] for isolates.
@@ -112,6 +116,8 @@ class TweetCache {
     // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
 
+    tweets = sortTweetReplies(tweets);
+
     return tweets;
   }
 
@@ -131,8 +137,9 @@ class TweetCache {
       if (cachedFile != null) {
         // copy harpy data from the cached tweet if the tweet has been cached
         // before
-        Tweet cachedTweet =
-            Tweet.fromJson(jsonDecode(cachedFile.readAsStringSync()));
+        Tweet cachedTweet = Tweet.fromJson(
+          jsonDecode(cachedFile.readAsStringSync()),
+        );
 
         tweet.harpyData = cachedTweet.harpyData;
       }

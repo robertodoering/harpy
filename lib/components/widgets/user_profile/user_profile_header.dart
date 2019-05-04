@@ -6,7 +6,6 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/utils/date_utils.dart';
@@ -30,15 +29,11 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   }
 
   Widget _buildUserInfo(UserProfileModel model) {
-    final connectivityService =
-        ServiceProvider.of(context).data.connectivityService;
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    int quality = connectivityService.wifi
-        ? mediaSettingsModel.wifiMediaQuality
-        : mediaSettingsModel.nonWifiMediaQuality;
-
-    String imageUrl = model.user.getProfileImageUrlFromQuality(quality);
+    String imageUrl = model.user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

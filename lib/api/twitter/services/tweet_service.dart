@@ -174,7 +174,100 @@ List<Tweet> _parseTweets(String data) {
   List<Tweet> tweets = mapJson(data, (json) => Tweet.fromJson(json));
 
   _log.fine("parsed ${tweets.length} tweets");
-  return tweets;
+
+  return sortTweetReplies(tweets);
+}
+
+/// Sorts the [tweets] to group a reply chain of tweets together.
+///
+/// The parent of the reply/replies will be pushed up to where the last reply
+/// is.
+List<Tweet> sortTweetReplies(List<Tweet> tweets) {
+  _log.fine("sorting tweet replies");
+
+  List<Tweet> sorted = [];
+
+  // todo: the newest replies should be at the end of a reply chain, they are
+  //  at the top right now
+
+  for (Tweet tweet in tweets) {
+    // skip the tweet if it has been added already in a reply chain
+    if (sorted.contains(tweet)) continue;
+
+    // if the tweet is a reply, add the reply chain for that tweet
+    if (tweet.inReplyToStatusIdStr != null) {
+      sorted.addAll(
+        _addTweetReply(
+          tweet,
+          tweets.sublist(tweets.indexOf(tweet)),
+        ),
+      );
+    } else {
+      sorted.add(tweet);
+    }
+  }
+
+  _log.fine("sorted ${tweets.length} tweets");
+
+  return sorted;
+}
+
+/// Returns the tweet reply chain as a list for the [tweet] that is a reply to
+/// another tweet in [tweets] list.
+List<Tweet> _addTweetReply(Tweet tweet, List<Tweet> tweets) {
+  List<Tweet> thread = [];
+
+  Tweet parent = tweets.firstWhere(
+    (compare) => compare.idStr == tweet.inReplyToStatusIdStr,
+    orElse: () => null,
+  );
+
+  if (parent != null) {
+    Tweet threadParent = _getReplyThreadParent(parent, tweets);
+    thread.add(threadParent);
+    thread.addAll(_getReplyThreadChildren(threadParent, tweets));
+  } else {
+    // this tweet is not a reply to a tweet in the list, just add it normally
+    thread.add(tweet);
+  }
+
+  return thread;
+}
+
+/// Gets the parent of a reply chain.
+Tweet _getReplyThreadParent(Tweet tweet, List<Tweet> tweets) {
+  Tweet parent = tweets.firstWhere(
+    (compare) => compare.idStr == tweet.inReplyToStatusIdStr,
+    orElse: () => null,
+  );
+
+  if (parent == null) {
+    tweet.harpyData.parentOfReply = true;
+    return tweet;
+  } else {
+    return _getReplyThreadParent(parent, tweets);
+  }
+}
+
+/// Gets all replies to a parent tweet.
+List<Tweet> _getReplyThreadChildren(Tweet tweet, List<Tweet> tweets) {
+  List<Tweet> threadChildren = [];
+
+  List<Tweet> children = _getTweetReplies(tweet, tweets);
+
+  for (Tweet child in children) {
+    child.harpyData.childOfReply = true;
+    threadChildren.add(child);
+    threadChildren.addAll(_getReplyThreadChildren(child, tweets));
+  }
+
+  return threadChildren;
+}
+
+List<Tweet> _getTweetReplies(Tweet tweet, List<Tweet> tweets) {
+  return tweets.reversed
+      .where((compare) => compare.inReplyToStatusIdStr == tweet.idStr)
+      .toList();
 }
 
 List<Tweet> _copyHomeHarpyData(List<Tweet> tweets) {

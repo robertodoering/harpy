@@ -104,15 +104,11 @@ class UserDrawerHeader extends StatelessWidget {
 
   Widget _buildAvatarRow(BuildContext context) {
     final loginModel = LoginModel.of(context);
-    final connectivityService =
-        ServiceProvider.of(context).data.connectivityService;
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    int quality = connectivityService.wifi
-        ? mediaSettingsModel.wifiMediaQuality
-        : mediaSettingsModel.nonWifiMediaQuality;
-
-    String imageUrl = user.getProfileImageUrlFromQuality(quality);
+    String imageUrl = user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,13 +8,17 @@ part of 'harpy_data.dart';
 
 HarpyData _$HarpyDataFromJson(Map<String, dynamic> json) {
   return HarpyData(
-      json['show_media'] as bool,
+      json['showMedia'] as bool,
       json['translation'] == null
           ? null
-          : Translation.fromJson(json['translation'] as Map<String, dynamic>));
+          : Translation.fromJson(json['translation'] as Map<String, dynamic>),
+      json['parentOfReply'] as bool,
+      json['childOfReply'] as bool);
 }
 
 Map<String, dynamic> _$HarpyDataToJson(HarpyData instance) => <String, dynamic>{
-      'show_media': instance.showMedia,
-      'translation': instance.translation
+      'showMedia': instance.showMedia,
+      'translation': instance.translation,
+      'parentOfReply': instance.parentOfReply,
+      'childOfReply': instance.childOfReply,
     };

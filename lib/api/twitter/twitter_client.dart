@@ -18,7 +18,7 @@ class TwitterClient {
       'https://api.twitter.com/oauth/request_token',
       'https://api.twitter.com/oauth/authorize',
       'https://api.twitter.com/oauth/access_token',
-      oauth1.SignatureMethods.HMAC_SHA1,
+      oauth1.SignatureMethods.hmacSha1,
     );
   }
 

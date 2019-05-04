@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/favorite_button.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -29,18 +30,82 @@ class _TweetTileContentState extends State<TweetTileContent>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _TweetRetweetedRow(model),
-        _TweetAvatarNameRow(model),
-        TweetText(model),
-        TweetQuote(model),
-        AnimatedSize(
-          vsync: this,
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-          child: _TweetTranslation(model),
+        _TweetContentPadding(
+          model,
+          children: <Widget>[
+            _TweetAvatarNameRow(model),
+            TweetText(model),
+            TweetQuote(model),
+            _TweetTranslation(model, vsync: this),
+            _TweetMedia(model),
+            _TweetActionsRow(model),
+          ],
         ),
-        _TweetMedia(model),
-        _TweetActionsRow(model),
+        _TweetReplyParent(model),
       ],
+    );
+  }
+}
+
+/// Displays the names of the users that replied to this tweet if they are
+/// following.
+class _TweetReplyParent extends StatelessWidget {
+  const _TweetReplyParent(
+    this.model,
+  );
+
+  final TweetModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    if (model.tweet.harpyData.parentOfReply == false) {
+      return Container();
+    }
+
+    final timelineModel = HomeTimelineModel.of(context);
+
+    String replyAuthors = model.getReplyAuthors(timelineModel.tweets);
+
+    if (replyAuthors.isEmpty) {
+      return Container();
+    }
+
+    return Column(
+      children: <Widget>[
+        Divider(height: 8.0),
+        Padding(
+          padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 4, 0, 8),
+          child: IconRow(
+            icon: Icons.reply,
+            iconPadding: 40.0, // same as avatar width
+            child: replyAuthors,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The padding for the tweet content.
+///
+/// If the tweet is a reply it has a larger padding on the left.
+class _TweetContentPadding extends StatelessWidget {
+  const _TweetContentPadding(
+    this.model, {
+    this.children,
+  });
+
+  final TweetModel model;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 }
@@ -55,13 +120,19 @@ class _TweetRetweetedRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (model.isRetweet) {
-      return Padding(
-        padding: EdgeInsets.only(bottom: 8.0),
-        child: IconRow(
-          icon: Icons.repeat,
-          iconPadding: 40.0, // same as avatar width
-          child: "${model.originalTweet.user.name} retweeted",
-        ),
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+            child: IconRow(
+              icon: Icons.repeat,
+              iconPadding: 40.0, // same as avatar width
+              child: "${model.originalTweet.user.name} retweeted",
+            ),
+          ),
+          SizedBox(height: 4.0),
+          Divider(height: 8.0),
+        ],
       );
     } else {
       return Container();
@@ -77,26 +148,17 @@ class _TweetAvatarNameRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final connectivityService =
-        ServiceProvider.of(context).data.connectivityService;
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    int quality = connectivityService.wifi
-        ? mediaSettingsModel.wifiMediaQuality
-        : mediaSettingsModel.nonWifiMediaQuality;
-
-    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(quality);
+    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(
+      mediaSettingsModel.quality,
+    );
 
     return Row(
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(imageUrl),
@@ -124,12 +186,7 @@ class TweetNameColumn extends StatelessWidget {
       children: <Widget>[
         // name
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: Text(
             model.tweet.user.name,
             overflow: TextOverflow.ellipsis,
@@ -138,12 +195,7 @@ class TweetNameColumn extends StatelessWidget {
 
         // username · time since tweet in hours
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              context,
-              UserProfileScreen(user: model.tweet.user),
-            );
-          },
+          onTap: () => _openUserProfile(context, model.tweet.user),
           child: Text(
             model.screenNameAndTime,
             style: Theme.of(context).textTheme.caption,
@@ -152,6 +204,14 @@ class TweetNameColumn extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Navigates to the [UserProfileScreen] for the [user].
+void _openUserProfile(BuildContext context, User user) {
+  HarpyNavigator.push(
+    context,
+    UserProfileScreen(user: user),
+  );
 }
 
 /// Builds the text of the [Tweet].
@@ -195,53 +255,64 @@ class TweetText extends StatelessWidget {
 /// If the [Tweet] has been translated this builds the translation info and
 /// the translated text.
 class _TweetTranslation extends StatelessWidget {
-  const _TweetTranslation(this.model);
+  const _TweetTranslation(
+    this.model, {
+    @required this.vsync,
+  });
 
   final TweetModel model;
+  final TickerProvider vsync;
 
   @override
   Widget build(BuildContext context) {
-    // progress indicator
+    Widget child;
+
     if (model.translating) {
-      return Center(
+      // progress indicator
+      child = Center(
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: CircularProgressIndicator(),
         ),
       );
+    } else if (!model.isTranslated || model.translationUnchanged) {
+      // build nothing
+      child = Container();
+    } else {
+      child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 8.0),
+
+          // original language text
+          model.translation.language != null
+              ? Row(
+                  children: <Widget>[
+                    Text(
+                      "Translated from ",
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                    Text(model.translation.language),
+                  ],
+                )
+              : Container(),
+
+          SizedBox(height: 4.0),
+
+          // text
+          TwitterText(
+            text: model.translation.text,
+            entities: model.tweet.entities,
+          ),
+        ],
+      );
     }
 
-    // build nothing
-    if (!model.isTranslated || model.translationUnchanged) {
-      return Container();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 8.0),
-
-        // original language text
-        model.translation.language != null
-            ? Row(
-                children: <Widget>[
-                  Text(
-                    "Translated from ",
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                  Text(model.translation.language),
-                ],
-              )
-            : Container(),
-
-        SizedBox(height: 4.0),
-
-        // text
-        TwitterText(
-          text: model.translation.text,
-          entities: model.tweet.entities,
-        ),
-      ],
+    return AnimatedSize(
+      vsync: vsync,
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 300),
+      child: child,
     );
   }
 }

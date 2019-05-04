@@ -4,7 +4,6 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
-import 'package:harpy/core/misc/async_initializer.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/logger.dart';
@@ -78,20 +77,19 @@ class ApplicationModel extends Model {
     twitterClient.applicationModel = this;
     harpyPrefs.applicationModel = this;
 
-    // async initializations
-    await AsyncInitializer(<AsyncTask>[
+    await Future.wait([
       // init config
-      _initTwitterSession,
+      _initTwitterSession(),
 
       // harpy shared preferences
-      harpyPrefs.init,
+      harpyPrefs.init(),
 
       // directory service
-      directoryService.init,
+      directoryService.init(),
 
       // init connectivity status
-      connectivityService.init
-    ]).run();
+      connectivityService.init(),
+    ]);
 
     if (loggedIn) {
       initLoggedIn();
@@ -123,6 +121,8 @@ class ApplicationModel extends Model {
 
     // init active twitter session
     twitterSession = await twitterLogin.currentSession;
+
+    _log.fine("init twitter session done");
   }
 
   /// Called when initializing and already logged in or in the [LoginModel]

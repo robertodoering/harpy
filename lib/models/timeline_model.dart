@@ -91,4 +91,13 @@ abstract class TimelineModel extends Model {
 
     lastRequestedMore = DateTime.now();
   }
+
+  void addNewTweets(List<Tweet> newTweets) {
+    // filter tweets that are already in the tweets list
+    final List<Tweet> filteredTweets =
+        newTweets.where((tweet) => !tweets.contains(tweet)).toList();
+
+    tweets.addAll(sortTweetReplies(filteredTweets));
+    // todo: maybe have to cache the tweets after sorting?
+  }
 }

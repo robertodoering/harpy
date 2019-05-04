@@ -54,10 +54,13 @@ class TweetModel extends Model {
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
 
+  /// Whether or not the [originalTweet] is a reply.
+  bool get isReply => originalTweet.harpyData.childOfReply == true;
+
   /// Whether or not the [originalTweet] is a quote.
   bool get isQuote => originalTweet.quotedStatus != null;
 
-  /// Set to true when the [original] comes from a quoted [Tweet].
+  /// Set to true when the [originalTweet] comes from a quoted [Tweet].
   bool quoted = false;
 
   /// Whether or not the [tweet] contains [TweetMedia].
@@ -85,6 +88,30 @@ class TweetModel extends Model {
 
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
+
+  /// Returns the names of the user that replied to this [tweet] in a formatted
+  /// string.
+  ///
+  /// Returns an empty string if this tweet has no replies.
+  String getReplyAuthors(List<Tweet> tweets) {
+    List<Tweet> replies = tweets
+        .where((child) => child.inReplyToStatusIdStr == tweet.idStr)
+        .toList();
+
+    if (replies.isEmpty) {
+      return "";
+    }
+
+    if (replies.where((reply) => reply.user.id != tweet.user.id).isEmpty) {
+      // if the author of the parent is the only one that replied to their tweet
+      // don't show the reply authors
+      return "";
+    }
+
+    String authors = replies.map((reply) => reply.user.name).join(", ");
+
+    return "$authors replied";
+  }
 
   void limitText({limit = 100}) {
     // todo: limit text in TwitterText and parse entities before
