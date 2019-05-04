@@ -26,16 +26,21 @@ class _TweetTileContentState extends State<TweetTileContent>
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
 
-    return _TweetContentPadding(
-      model,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _TweetRetweetedRow(model),
-        _TweetAvatarNameRow(model),
-        TweetText(model),
-        TweetQuote(model),
-        _TweetTranslation(model, vsync: this),
-        _TweetMedia(model),
-        _TweetActionsRow(model),
+        _TweetContentPadding(
+          model,
+          children: <Widget>[
+            _TweetAvatarNameRow(model),
+            TweetText(model),
+            TweetQuote(model),
+            _TweetTranslation(model, vsync: this),
+            _TweetMedia(model),
+            _TweetActionsRow(model),
+          ],
+        ),
         _TweetReplyParent(model),
       ],
     );
@@ -68,13 +73,14 @@ class _TweetReplyParent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Divider(height: 8.0),
-        SizedBox(height: 8.0),
-        IconRow(
-          icon: Icons.reply,
-          iconPadding: 40.0, // same as avatar width
-          child: replyAuthors,
+        Padding(
+          padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 4, 0, 8),
+          child: IconRow(
+            icon: Icons.reply,
+            iconPadding: 40.0, // same as avatar width
+            child: replyAuthors,
+          ),
         ),
-        SizedBox(height: 8.0),
       ],
     );
   }
@@ -114,13 +120,19 @@ class _TweetRetweetedRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (model.isRetweet) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: IconRow(
-          icon: Icons.repeat,
-          iconPadding: 40.0, // same as avatar width
-          child: "${model.originalTweet.user.name} retweeted",
-        ),
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+            child: IconRow(
+              icon: Icons.repeat,
+              iconPadding: 40.0, // same as avatar width
+              child: "${model.originalTweet.user.name} retweeted",
+            ),
+          ),
+          SizedBox(height: 4.0),
+          Divider(height: 8.0),
+        ],
       );
     } else {
       return Container();
