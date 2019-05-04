@@ -187,9 +187,6 @@ List<Tweet> sortTweetReplies(List<Tweet> tweets) {
 
   List<Tweet> sorted = [];
 
-  // todo: the newest replies should be at the end of a reply chain, they are
-  //  at the top right now
-
   for (Tweet tweet in tweets) {
     // skip the tweet if it has been added already in a reply chain
     if (sorted.contains(tweet)) continue;
