@@ -19,6 +19,8 @@ class TweetQuote extends StatelessWidget {
       originalTweet: model.quote,
       homeTimelineCache: model.homeTimelineCache,
       userTimelineCache: model.userTimelineCache,
+      homeTimelineModel: model.homeTimelineModel,
+      userTimelineModel: model.userTimelineModel,
       tweetService: model.tweetService,
       translationService: model.translationService,
     )

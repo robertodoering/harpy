@@ -211,25 +211,25 @@ void _openUserProfile(BuildContext context, User user) {
   );
 }
 
+void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
+  if (entityModel.type == EntityType.url) {
+    HarpyNavigator.push(
+      context,
+      WebviewScreen(
+        url: entityModel.data,
+        displayUrl: entityModel.displayText,
+      ),
+    );
+  } else if (entityModel.type == EntityType.mention) {
+    HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
+  }
+}
+
 /// Builds the text of the [Tweet].
 class TweetText extends StatelessWidget {
   const TweetText(this.model);
 
   final TweetModel model;
-
-  void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
-    if (entityModel.type == EntityType.url) {
-      HarpyNavigator.push(
-        context,
-        WebviewScreen(
-          url: entityModel.data,
-          displayUrl: entityModel.displayText,
-        ),
-      );
-    } else if (entityModel.type == EntityType.mention) {
-      HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -260,54 +260,62 @@ class _TweetTranslation extends StatelessWidget {
   final TweetModel model;
   final TickerProvider vsync;
 
+  Widget _buildTranslatingIndicator() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildTranslatedText(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 8.0),
+
+        // original language text
+        Row(
+          children: <Widget>[
+            Text(
+              "Translated from ",
+              style: Theme.of(context).textTheme.display1,
+            ),
+            Text(model.translation.language),
+          ],
+        ),
+
+        SizedBox(height: 4.0),
+
+        // text
+        TwitterText(
+          text: model.translation.text,
+          entities: model.tweet.entities,
+          onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
+          expandedUrlToIgnore: model.tweet.quotedStatusPermalink?.expanded,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget child;
 
     if (model.translating) {
       // progress indicator
-      child = Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: CircularProgressIndicator(),
-        ),
-      );
+      child = _buildTranslatingIndicator();
     } else if (!model.isTranslated || model.translationUnchanged) {
       // build nothing
       child = Container();
     } else {
-      child = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 8.0),
-
-          // original language text
-          model.translation.language != null
-              ? Row(
-                  children: <Widget>[
-                    Text(
-                      "Translated from ",
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                    Text(model.translation.language),
-                  ],
-                )
-              : Container(),
-
-          SizedBox(height: 4.0),
-
-          // text
-          TwitterText(
-            text: model.translation.text,
-            entities: model.tweet.entities,
-          ),
-        ],
-      );
+      child = _buildTranslatedText(context);
     }
 
     return AnimatedSize(
       vsync: vsync,
-      curve: Curves.easeIn,
+      curve: Curves.easeInOut,
       duration: const Duration(milliseconds: 300),
       child: child,
     );
@@ -337,9 +345,17 @@ class _TweetActionsRow extends StatelessWidget {
 
   final TweetModel model;
 
-  Widget _buildTranslationButton(BuildContext context) {
-    final model = TweetModel.of(context);
+  Future<void> _translate(BuildContext context) async {
+    await model.translate();
 
+    if (model.translationUnchanged) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Tweet not translated"),
+      ));
+    }
+  }
+
+  Widget _buildTranslationButton(BuildContext context) {
     if (model.tweet.emptyText || model.tweet.lang == "en") {
       return Container();
     }
@@ -350,15 +366,7 @@ class _TweetActionsRow extends StatelessWidget {
 
     if (model.originalTweet.harpyData.translation == null &&
         !model.translating) {
-      onTap = () async {
-        await model.translate();
-
-        if (model.translationUnchanged) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("Tweet not translated"),
-          ));
-        }
-      };
+      onTap = () => _translate(context);
     } else if (model.translationUnchanged) {
       color = Theme.of(context).disabledColor;
       alwaysColored = true;

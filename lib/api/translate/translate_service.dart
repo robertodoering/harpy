@@ -10,8 +10,8 @@ class TranslationService {
   static final String _url = "https://translate.google.com/translate_a/single";
   static final Logger _log = Logger("TranslationService");
 
-  /// Translates the [text] and returns a [Translation] object or a [Future.error]
-  /// if it failed.
+  /// Translates the [text] and returns a [Translation] object or a
+  /// [Future.error] if it failed.
   Future<Translation> translate({
     String text,
     String from = "auto",
