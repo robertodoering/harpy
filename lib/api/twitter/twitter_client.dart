@@ -11,6 +11,8 @@ import 'package:path_provider/path_provider.dart';
 class TwitterClient {
   static final Logger _log = Logger("TwitterClient");
 
+  static final Duration timeout = const Duration(seconds: 20);
+
   ApplicationModel applicationModel;
 
   oauth1.Platform get _platform {
@@ -69,7 +71,8 @@ class TwitterClient {
   }) {
     _log.fine("sending get request: $url");
     url = appendParamsToUrl(url, params);
-    return _client.get(url, headers: headers).then((response) {
+
+    return _client.get(url, headers: headers).timeout(timeout).then((response) {
 //      _saveResponse(response);
       return response;
     });
@@ -84,8 +87,10 @@ class TwitterClient {
   }) {
     _log.fine("sending post request: $url");
     url = appendParamsToUrl(url, params);
+
     return _client
         .post(url, headers: headers, body: body, encoding: encoding)
+        .timeout(timeout)
         .then((response) {
 //          _saveResponse(response);
       return response;

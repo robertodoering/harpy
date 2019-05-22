@@ -66,4 +66,34 @@ void main() {
 
     expect(formatNumber(77000001), "77.0M");
   });
+
+  test("prettyPrintDurationDifference", () {
+    int timestamp = 1557836948;
+
+    DateTime now = DateTime.fromMillisecondsSinceEpoch(
+      timestamp * 1000,
+    );
+
+    DateTime rateLimitReset1 = DateTime.fromMillisecondsSinceEpoch(
+      (timestamp + 330) * 1000,
+    );
+
+    DateTime rateLimitReset2 = DateTime.fromMillisecondsSinceEpoch(
+      (timestamp + 25) * 1000,
+    );
+
+    DateTime rateLimitReset3 = DateTime.fromMillisecondsSinceEpoch(
+      (timestamp + 304) * 1000,
+    );
+
+    Duration difference1 = rateLimitReset1.difference(now);
+    Duration difference2 = rateLimitReset2.difference(now);
+    Duration difference3 = rateLimitReset3.difference(now);
+
+    expect(prettyPrintDurationDifference(difference1), "5:30 minutes");
+
+    expect(prettyPrintDurationDifference(difference2), "25 seconds");
+
+    expect(prettyPrintDurationDifference(difference3), "5:04 minutes");
+  });
 }

@@ -109,3 +109,18 @@ String tweetTimeDifference(DateTime createdAt) {
     return DateFormat("MMMd").format(createdAt);
   }
 }
+
+String prettyPrintDurationDifference(Duration difference) {
+  int minutes = difference.inMinutes;
+  int seconds = difference.inSeconds;
+
+  if (minutes > 0) {
+    int remainingSeconds = seconds - minutes * 60;
+    String secondsString =
+        remainingSeconds > 9 ? "$remainingSeconds" : "0$remainingSeconds";
+
+    return "$minutes:$secondsString minutes";
+  } else {
+    return "$seconds seconds";
+  }
+}

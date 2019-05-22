@@ -1,5 +1,5 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/services/handle_response.dart';
+import 'package:harpy/api/twitter/services/handle_request.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
@@ -13,6 +13,10 @@ import 'package:meta/meta.dart';
 
 final Logger _log = Logger("TweetService");
 
+/// Provides methods for making tweet and timeline related requests.
+///
+/// If a request times out or the response status code is not 200 a
+/// [Future.error] is returned instead.
 class TweetService {
   TweetService({
     @required this.directoryService,
@@ -30,54 +34,32 @@ class TweetService {
   final UserTimelineCache userTimelineCache;
 
   /// Returns a the home timeline for the logged in user.
-  ///
-  /// If the response status code is not 200 a [Future.error] is returned
-  /// instead.
   Future<List<Tweet>> getHomeTimeline({
     Map<String, String> params,
   }) async {
     _log.fine("get home timeline");
 
     params ??= Map();
-    params["count"] ??= "800"; // max: 800
+    params["count"] ??= "200"; // max: 200
     params["tweet_mode"] ??= "extended";
 
-    final response = await twitterClient.get(
-      "https://api.twitter.com/1.1/statuses/home_timeline.json",
-      params: params,
+    return await handleRequest<Future<List<Tweet>>>(
+      twitterClient.get(
+        "https://api.twitter.com/1.1/statuses/home_timeline.json",
+        params: params,
+      ),
+      onSuccess: (response) async {
+        return await isolateWork<String, List<Tweet>>(
+          callback: _handleHomeTimelineResponse,
+          message: response.body,
+          tweetCacheData: homeTimelineCache.data,
+          directoryServiceData: directoryService.data,
+        );
+      },
     );
-
-    if (response.statusCode == 200) {
-      _log.fine("got response");
-
-      // todo: handle all response in just one isolate
-
-      // parse tweets
-      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
-        callback: _parseTweets,
-        message: response.body,
-      );
-
-      _log.fine("parsed ${tweets?.length} tweets");
-
-      // update cached home timeline tweets
-      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
-        callback: updateCachedTweets,
-        message: tweets,
-        tweetCacheData: homeTimelineCache.data,
-        directoryServiceData: directoryService.data,
-      );
-
-      tweets ??= [];
-      _log.fine("got ${tweets.length} home timeline tweets");
-
-      return tweets;
-    } else {
-      return Future.error(response.body);
-    }
   }
 
-  /// Returns the user timeline for the [userId] or [screenName].
+  /// Returns the user timeline for the [userId].
   Future<List<Tweet>> getUserTimeline(
     String userId, {
     Map<String, String> params,
@@ -85,97 +67,128 @@ class TweetService {
     _log.fine("get user timeline");
 
     params ??= Map();
-    params["count"] ??= "800";
+    params["count"] ??= "200";
     params["tweet_mode"] ??= "extended";
     params["user_id"] = userId;
 
-    final response = await twitterClient.get(
-      "https://api.twitter.com/1.1/statuses/user_timeline.json",
-      params: params,
-    );
-
-    if (response.statusCode == 200) {
-      _log.fine("got response");
-
-      // todo: handle all response in just one isolate
-
-      // parse tweets
-      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
-        callback: _parseTweets,
-        message: response.body,
-      );
-
-      _log.fine("parsed ${tweets?.length} tweets");
-
-      // copy over harpy data from cached home timeline tweets
-      tweets = await isolateWork<List<Tweet>, List<Tweet>>(
-          callback: _copyHomeHarpyData,
-          message: tweets,
+    return await handleRequest<Future<List<Tweet>>>(
+      twitterClient.get(
+        "https://api.twitter.com/1.1/statuses/user_timeline.json",
+        params: params,
+      ),
+      onSuccess: (response) async {
+        List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
+          callback: _handleUserTimelineResponse,
+          message: response.body,
           tweetCacheData: homeTimelineCache.data,
-          directoryServiceData: directoryService.data);
+          directoryServiceData: directoryService.data,
+        );
 
-      // then update cached tweet for user
-      isolateWork<List<Tweet>, void>(
-        callback: updateCachedTweets,
-        message: tweets,
-        tweetCacheData: userTimelineCache.user(userId).data,
-        directoryServiceData: directoryService.data,
-      );
-
-      tweets ??= [];
-      _log.fine("got ${tweets.length} home timeline tweets");
-
-      return tweets;
-    } else {
-      return Future.error(response.body);
-    }
+        return await isolateWork<List<Tweet>, List<Tweet>>(
+          callback: _handleUserTimelineTweetsCache,
+          message: tweets,
+          tweetCacheData: userTimelineCache.user(userId).data,
+          directoryServiceData: directoryService.data,
+        );
+      },
+    );
   }
 
   /// Retweets the tweet with the [tweetId].
-  Future retweet(String tweetId) async {
-    final response = await twitterClient.post(
-      "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
-    );
+  Future<void> retweet(String tweetId) async {
+    _log.fine("retweeting $tweetId");
 
-    return handleResponse(response);
+    return handleRequest(twitterClient.post(
+      "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
+    ));
   }
 
   /// Unretweets the tweet with the [tweetId].
-  Future unretweet(String tweetId) async {
-    final response = await twitterClient.post(
-      "https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json",
-    );
+  Future<void> unretweet(String tweetId) async {
+    _log.fine("unretweet $tweetId");
 
-    return handleResponse(response);
+    return handleRequest(twitterClient.post(
+      "https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json",
+    ));
   }
 
   /// Favorites the tweet with the [tweetId].
-  Future favorite(String tweetId) async {
-    final response = await twitterClient.post(
-      "https://api.twitter.com/1.1/favorites/create.json?id=$tweetId",
-    );
+  Future<void> favorite(String tweetId) async {
+    _log.fine("favorite $tweetId");
 
-    return handleResponse(response);
+    return handleRequest(twitterClient.post(
+      "https://api.twitter.com/1.1/favorites/create.json?id=$tweetId",
+    ));
   }
 
   /// Unfavorites the tweet with the [tweetId].
-  Future unfavorite(String tweetId) async {
-    final response = await twitterClient.post(
-      "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
-    );
+  Future<void> unfavorite(String tweetId) async {
+    _log.fine("unfavorite $tweetId");
 
-    return handleResponse(response);
+    return handleRequest(twitterClient.post(
+      "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
+    ));
   }
 }
 
-List<Tweet> _parseTweets(String data) {
+/// Handles the home timeline response.
+///
+/// Used in an isolate.
+Future<List<Tweet>> _handleHomeTimelineResponse(String body) async {
+  // parse tweets
   _log.fine("parsing tweets");
-
-  List<Tweet> tweets = mapJson(data, (json) => Tweet.fromJson(json));
-
+  List<Tweet> tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
   _log.fine("parsed ${tweets.length} tweets");
 
-  return sortTweetReplies(tweets);
+  // sort tweets
+  tweets = sortTweetReplies(tweets);
+
+  // update cached home timeline tweets
+  tweets = await updateCachedTweets(tweets);
+
+  tweets ??= [];
+  _log.fine("got ${tweets.length} home timeline tweets");
+
+  return tweets;
+}
+
+/// Handles the user timeline response.
+///
+/// Used in an isolate with the home timeline cache as cache data.
+Future<List<Tweet>> _handleUserTimelineResponse(String body) async {
+  // parse tweets
+  _log.fine("parsing tweets");
+  List<Tweet> tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
+  _log.fine("parsed ${tweets.length} tweets");
+
+  // sort tweets
+  tweets = sortTweetReplies(tweets);
+
+  // copy over harpy data from cached home timeline tweets
+  _log.fine("copy home harpy data");
+
+  for (Tweet tweet in tweets) {
+    Tweet homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
+    if (homeTweet != null) {
+      tweet.harpyData = homeTweet.harpyData;
+    }
+  }
+
+  return tweets;
+}
+
+/// Handles the cache of the user timeline.
+///
+/// Used in an isolate with the user timeline cache of the user as the cache
+/// data.
+Future<List<Tweet>> _handleUserTimelineTweetsCache(List<Tweet> tweets) async {
+  // update cached tweets for user
+  tweets = await updateCachedTweets(tweets);
+
+  tweets ??= [];
+  _log.fine("got ${tweets.length} home timeline tweets");
+
+  return tweets;
 }
 
 /// Sorts the [tweets] to group a reply chain of tweets together.
@@ -246,7 +259,7 @@ Tweet _getReplyThreadParent(Tweet tweet, List<Tweet> tweets) {
   }
 }
 
-/// Gets all replies to a parent tweet.
+/// Gets all replies with their replies to a parent tweet.
 List<Tweet> _getReplyThreadChildren(Tweet tweet, List<Tweet> tweets) {
   List<Tweet> threadChildren = [];
 
@@ -261,21 +274,9 @@ List<Tweet> _getReplyThreadChildren(Tweet tweet, List<Tweet> tweets) {
   return threadChildren;
 }
 
+/// Gets all replies of one tweet.
 List<Tweet> _getTweetReplies(Tweet tweet, List<Tweet> tweets) {
   return tweets.reversed
       .where((compare) => compare.inReplyToStatusIdStr == tweet.idStr)
       .toList();
-}
-
-List<Tweet> _copyHomeHarpyData(List<Tweet> tweets) {
-  _log.fine("copy home harpy data");
-
-  for (Tweet tweet in tweets) {
-    Tweet homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
-    if (homeTweet != null) {
-      tweet.harpyData = homeTweet.harpyData;
-    }
-  }
-
-  return tweets;
 }

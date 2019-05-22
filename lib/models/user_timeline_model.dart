@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
@@ -31,7 +32,15 @@ class UserTimelineModel extends TimelineModel {
     _log.fine("updating tweets");
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
-    tweets = await tweetService.getUserTimeline(userId);
+
+    List<Tweet> updatedTweets = await tweetService
+        .getUserTimeline(userId)
+        .catchError(twitterClientErrorHandler);
+
+    if (updatedTweets != null) {
+      tweets = updatedTweets;
+    }
+
     loadingInitialTweets = false;
     notifyListeners();
   }
@@ -47,9 +56,11 @@ class UserTimelineModel extends TimelineModel {
     List<Tweet> newTweets = await tweetService.getUserTimeline(
       userId,
       params: {"max_id": id},
-    );
+    ).catchError(twitterClientErrorHandler);
 
-    addNewTweets(newTweets);
+    if (newTweets != null) {
+      addNewTweets(newTweets);
+    }
 
     requestingMore = false;
     notifyListeners();
