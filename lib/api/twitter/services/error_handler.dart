@@ -4,7 +4,7 @@ import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-Logger _log = Logger("TwitterClientErrorHandler");
+Logger _log = Logger("Error handler");
 
 /// Handles the [error] from a request.
 ///
