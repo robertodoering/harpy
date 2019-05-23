@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
+import 'package:harpy/core/misc/harpy_catcher.dart';
 import 'package:harpy/models/global_models_wrapper.dart';
 import 'package:harpy/models/settings/setting_models_wrapper.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import 'core/misc/harpy_catcher.dart';
 
 void main() {
   HarpyCatcher(
