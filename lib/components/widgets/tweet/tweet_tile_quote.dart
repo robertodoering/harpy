@@ -25,7 +25,7 @@ class TweetQuote extends StatelessWidget {
       translationService: model.translationService,
     )
       ..quoted = true
-      ..limitText();
+      ..reduceText();
 
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
