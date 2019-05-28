@@ -123,18 +123,6 @@ class TweetModel extends Model {
     return "$authors replied";
   }
 
-<<<<<<< HEAD
-  void limitText({limit = 100}) {
-    // todo: limit text in TwitterText and parse entities before
-    // todo: bug: when limit stops in the middle of a utf16 2+ byte long emoji
-    //  the app breaks because the text is not "well formatted utf16"
-    //  to fix: maybe only cut off the tweet at a space
-    tweet.full_text.trim();
-    if (tweet.full_text.length <= limit) {
-      tweet.full_text = tweet.full_text.substring(0, tweet.full_text.length);
-    } else {
-      tweet.full_text = tweet.full_text.substring(0, limit) + "...";
-=======
   /// Reduces the [tweet.full_text] by replacing every new line with a space
   /// and cuts the text at the nearest space after the given [limit] with an
   /// ellipsis.
@@ -149,7 +137,6 @@ class TweetModel extends Model {
         // cut off the text before the nearest space
         text = text.substring(0, limit + index) + "...";
       }
->>>>>>> master
     }
 
     tweet.full_text = text;
