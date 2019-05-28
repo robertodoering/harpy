@@ -78,13 +78,22 @@ class WebviewScreenState extends State<WebviewScreen> {
       "Open externally": _openExternally,
     };
 
-    return HarpyScaffold(
-      title: widget.displayUrl ?? widget.url,
-      actions: _buildActions(),
-      body: WebView(
-        initialUrl: widget.url,
-        onWebViewCreated: (controller) => _controller = controller,
-        javascriptMode: JavascriptMode.unrestricted,
+    return Theme(
+      data: Theme.of(context).copyWith(
+        textTheme: Theme.of(context).textTheme.copyWith(
+              title: Theme.of(context).textTheme.title.copyWith(
+                    letterSpacing: 1.0,
+                  ),
+            ),
+      ),
+      child: HarpyScaffold(
+        title: widget.displayUrl ?? widget.url,
+        actions: _buildActions(),
+        body: WebView(
+          initialUrl: widget.url,
+          onWebViewCreated: (controller) => _controller = controller,
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
       ),
     );
   }

@@ -70,7 +70,7 @@ class TwitterTextState extends State<TwitterText> {
       _addText(textStart, textEnd);
       _addEntityModel(entityModel);
 
-      textStart = entityModel.endIndex + 1;
+      textStart = entityModel.endIndex;
     }
 
     int textEnd = widget.text.length;
@@ -105,7 +105,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      "${entityModel.displayText} ",
+      "${entityModel.displayText}",
       _TextType.entity,
       recognizer,
     ));

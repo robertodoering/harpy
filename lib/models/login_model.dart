@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
+import 'package:harpy/core/misc/global_snackbar_message.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
@@ -63,16 +65,18 @@ class LoginModel extends Model {
         // initialize before navigating
         await initBeforeHome();
 
-        if (onAuthorized != null) {
+        // makes sure we were able to get the logged in user before navigating
+        if (onAuthorized != null && loggedInUser != null) {
           onAuthorized();
         }
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info("login cancelled by user");
+        showSnackbarMessage("Login cancelled.");
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
-        // todo: show result.error
+        showSnackbarMessage("An error occurred during login.");
         break;
     }
 
@@ -121,7 +125,21 @@ class LoginModel extends Model {
 
     String userId = applicationModel.twitterSession.userId;
 
-    loggedInUser = await userService.getUserDetails(id: userId);
+    User user = await userService.getUserDetails(id: userId).catchError(
+      (error) {
+        _log.warning("unable to update logged in user");
+
+        twitterClientErrorHandler(
+          error,
+          "An unexpected error occurred while trying to update logged in user",
+        );
+      },
+    );
+
+    if (user != null) {
+      loggedInUser = user;
+    }
+
     notifyListeners();
   }
 }

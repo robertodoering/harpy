@@ -84,14 +84,12 @@ class HarpyTheme {
     return _baseTheme.copyWith(
       primaryColor: accentColor,
       accentColor: accentColor,
-
       scaffoldBackgroundColor: primaryBackgroundColor,
       backgroundColor: primaryBackgroundColor,
       dialogBackgroundColor: primaryBackgroundColor,
       canvasColor: primaryBackgroundColor, // drawer background (base == dark)
 
       buttonColor: Colors.white,
-
       indicatorColor: accentColor,
       toggleableActiveColor: accentColor,
       textSelectionHandleColor: accentColor,
@@ -150,6 +148,15 @@ class HarpyTheme {
           caption: textTheme.caption.copyWith(
             fontSize: 12.0,
           )),
+
+      dialogTheme: _baseTheme.dialogTheme.copyWith(
+        titleTextStyle: textTheme.title.copyWith(
+          fontSize: 24.0,
+          color: Colors.white,
+          fontFamily: "Comfortaa",
+          fontWeight: FontWeight.w300,
+        ),
+      ),
     );
   }
 

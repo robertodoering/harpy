@@ -231,8 +231,8 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
       content = Padding(
         padding: const EdgeInsets.all(16.0),
         child: ColorPicker(
-          pickerColor: widget.themeColorModel.color,
-          onColorChanged: widget.themeColorModel.onColorChanged,
+          widget.themeColorModel.color,
+          widget.themeColorModel.onColorChanged,
         ),
       );
     });

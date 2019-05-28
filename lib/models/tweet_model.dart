@@ -10,6 +10,7 @@ import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
+import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -250,9 +251,9 @@ class TweetModel extends Model {
   /// 139: already favorited (trying to favorite a tweet twice)
   /// 327: already retweeted
   /// 144: tweet with id not found (trying to unfavorite a tweet twice)
-  bool _actionPerformed(error) {
+  bool _actionPerformed(dynamic error) {
     try {
-      List errors = jsonDecode(error)["errors"];
+      List errors = jsonDecode((error as Response).body)["errors"];
       return errors.any((error) =>
           error["code"] == 139 || // already favorited
           error["code"] == 327 || // already retweeted

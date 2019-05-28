@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/models/login_model.dart';
@@ -76,14 +77,18 @@ class UserProfileModel extends Model {
   Future<bool> _updateUser(String id) async {
     _log.fine("updating user");
 
-    User loadedUser = await userService.getUserDetails(id: id).catchError((_) {
-      _log.warning("unable to update user");
-      return null;
-    });
+    User loadedUser = await userService.getUserDetails(id: id).catchError(
+      (error) {
+        _log.warning("unable to update user with id $id");
+
+        twitterClientErrorHandler(
+          error,
+          "An unexpected error occurred while trying to update logged in user",
+        );
+      },
+    );
 
     if (loadedUser != null) {
-      _log.fine("updated user");
-
       user = loadedUser;
       loadingUser = false;
       notifyListeners();
@@ -102,9 +107,14 @@ class UserProfileModel extends Model {
 
       user.following = false;
       notifyListeners();
-      userService.destroyFriendship("${user.id}").catchError((_) {
-        _log.warning("unable to follow user");
-        // todo: show error
+      userService.destroyFriendship("${user.id}").catchError((error) {
+        _log.warning("unable to unfollow user");
+
+        twitterClientErrorHandler(
+          error,
+          "An unexpected error occurred while trying to unfollow the user",
+        );
+
         user.following = true;
         notifyListeners();
       });
@@ -113,9 +123,14 @@ class UserProfileModel extends Model {
 
       user.following = true;
       notifyListeners();
-      userService.createFriendship("${user.id}").catchError((_) {
-        _log.warning("unable to unfollow user");
-        // todo: show error
+      userService.createFriendship("${user.id}").catchError((error) {
+        _log.warning("unable to follow user");
+
+        twitterClientErrorHandler(
+          error,
+          "An unexpected error occurred while trying to follow the user",
+        );
+
         user.following = false;
         notifyListeners();
       });

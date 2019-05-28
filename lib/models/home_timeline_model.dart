@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
@@ -22,7 +23,15 @@ class HomeTimelineModel extends TimelineModel {
   @override
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
-    tweets = await tweetService.getHomeTimeline();
+
+    List<Tweet> updatedTweets = await tweetService
+        .getHomeTimeline()
+        .catchError(twitterClientErrorHandler);
+
+    if (updatedTweets != null) {
+      tweets = updatedTweets;
+    }
+
     notifyListeners();
   }
 
@@ -33,11 +42,13 @@ class HomeTimelineModel extends TimelineModel {
     String id = "${tweets.last.id - 1}";
 
     // todo: bug: clears cached tweets where id > than id
-    List<Tweet> newTweets = await tweetService.getHomeTimeline(
-      params: {"max_id": id},
-    );
+    List<Tweet> newTweets = await tweetService.getHomeTimeline(params: {
+      "max_id": id,
+    }).catchError(twitterClientErrorHandler);
 
-    addNewTweets(newTweets);
+    if (newTweets != null) {
+      addNewTweets(newTweets);
+    }
 
     requestingMore = false;
     notifyListeners();
