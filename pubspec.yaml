@@ -16,7 +16,7 @@ dependencies:
     git: https://github.com/robertodoering/photo_view.git
   scoped_model: ^1.0.1
   flutter_material_color_picker: ^0.0.5
-  flutter_colorpicker: ^0.2.4
+  flutter_colorpicker: ^0.2.5
   flare_flutter: 1.3.13 # todo: update when it works with flutter stable
 
   flutter_twitter_login:
