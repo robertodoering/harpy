@@ -22,6 +22,8 @@ class HarpyCatcher {
 
   CatcherOptions get releaseOptions => CatcherOptions(DialogReportMode(), [
 //        EmailAutoHandler(), // todo: setup report email
+      ], localizationOptions: [
+        localizationOptions,
       ]);
 
   LocalizationOptions get localizationOptions {
