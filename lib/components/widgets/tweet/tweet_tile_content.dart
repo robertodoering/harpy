@@ -176,6 +176,22 @@ class TweetNameColumn extends StatelessWidget {
 
   final TweetModel model;
 
+  Widget _buildNameRow() {
+    return Row(
+      children: <Widget>[
+        Text(
+          model.tweet.user.name,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (model.tweet.user.verified)
+          Padding(
+            padding: EdgeInsets.only(left: 4),
+            child: Icon(Icons.verified_user, size: 18),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -184,10 +200,7 @@ class TweetNameColumn extends StatelessWidget {
         // name
         GestureDetector(
           onTap: () => _openUserProfile(context, model.tweet.user),
-          child: Text(
-            model.tweet.user.name,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: _buildNameRow(),
         ),
 
         // username · time since tweet in hours
