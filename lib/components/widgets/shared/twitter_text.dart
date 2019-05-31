@@ -105,7 +105,7 @@ class TwitterTextState extends State<TwitterText> {
     }
 
     _texts.add(_TwitterTextType(
-      "${entityModel.displayText}",
+      "${entityModel.displayText} ",
       _TextType.entity,
       recognizer,
     ));
