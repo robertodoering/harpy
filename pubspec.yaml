@@ -11,22 +11,23 @@ dependencies:
   json_annotation: ^2.0.0
   logging: ^0.11.3+2
   intl: ^0.15.7
-  cached_network_image: ^0.5.0+1
+  cached_network_image: ^0.8.0
   photo_view: ^0.3.3
   scoped_model: ^1.0.1
   flutter_material_color_picker: ^0.0.5
   flutter_colorpicker: ^0.2.5
-  flare_flutter: 1.3.13 # todo: update when it works with flutter stable
+  flare_flutter: ^1.5.1
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   url_launcher: ^5.0.1
   video_player: ^0.10.0+2
   webview_flutter: ^0.3.6
-  path_provider: ^0.4.1
+  path_provider: ^0.5.0+1
   connectivity: ^0.4.2
   catcher: # todo: update to pub release on next catcher release (0.1.5+)
     git: https://github.com/robertodoering/catcher.git
+  shared_preferences: ^0.5.2+1
 
   flutter:
     sdk: flutter
