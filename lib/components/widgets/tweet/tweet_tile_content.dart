@@ -179,9 +179,11 @@ class TweetNameColumn extends StatelessWidget {
   Widget _buildNameRow() {
     return Row(
       children: <Widget>[
-        Text(
-          model.tweet.user.name,
-          overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: Text(
+            model.tweet.user.name,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         if (model.tweet.user.verified)
           Padding(
