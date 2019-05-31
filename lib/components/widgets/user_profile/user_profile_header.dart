@@ -41,7 +41,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         if (model.user.verified)
           Padding(
             padding: EdgeInsets.only(left: 8),
-            child: Icon(Icons.verified_user, size: 24),
+            child: Icon(Icons.verified_user, size: 22),
           ),
       ],
     );
