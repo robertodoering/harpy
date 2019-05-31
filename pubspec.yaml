@@ -12,8 +12,7 @@ dependencies:
   logging: ^0.11.3+2
   intl: ^0.15.7
   cached_network_image: ^0.5.0+1
-  photo_view:
-    git: https://github.com/robertodoering/photo_view.git
+  photo_view: ^0.3.3
   scoped_model: ^1.0.1
   flutter_material_color_picker: ^0.0.5
   flutter_colorpicker: ^0.2.5

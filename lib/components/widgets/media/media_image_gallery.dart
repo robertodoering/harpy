@@ -71,11 +71,11 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
         disableDismiss: _locked,
         onDismissed: _dismiss,
         child: PhotoView.customChild(
+          backgroundDecoration: BoxDecoration(),
           heroTag: heroTag,
           child: child,
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,
-          onBackgroundTap: _dismiss,
           scaleStateChangedCallback: _scaleStateChangedCallback,
         ),
       );

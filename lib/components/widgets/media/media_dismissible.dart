@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// A [MediaDismissible] used for the [MediaImageGallery] to dismiss the gallery
-/// when swiping up.
+/// when swiping up or down.
 ///
-/// Similar to [Dismissible] with some tweaks.
+/// Similar to [Dismissible] with some adjustments.
 class MediaDismissible extends StatefulWidget {
   const MediaDismissible({
     @required this.child,
@@ -79,7 +79,11 @@ class _MediaDismissibleState extends State<MediaDismissible>
     final double delta = details.primaryDelta;
     final double oldDragExtent = _dragExtent;
 
-    if (_dragExtent + delta < 0) _dragExtent += delta;
+    if (_dragExtent + delta < 0) {
+      _dragExtent += delta;
+    } else if (_dragExtent + delta > 0) {
+      _dragExtent += delta;
+    }
 
     if (oldDragExtent.sign != _dragExtent.sign) {
       setState(() {
@@ -117,6 +121,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
     );
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onVerticalDragStart: widget.disableDismiss ? null : _handleDragStart,
       onVerticalDragUpdate: widget.disableDismiss ? null : _handleDragUpdate,
       onVerticalDragEnd: widget.disableDismiss ? null : _handleDragEnd,
