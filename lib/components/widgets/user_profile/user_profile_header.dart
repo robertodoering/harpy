@@ -28,6 +28,25 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     _linkGestureRecognizer?.dispose();
   }
 
+  Widget _buildNameRow(UserProfileModel model) {
+    return Row(
+      children: <Widget>[
+        Flexible(
+          child: Text(
+            model.user.name,
+            style: Theme.of(context).textTheme.display2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        if (model.user.verified)
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Icon(Icons.verified_user, size: 24),
+          ),
+      ],
+    );
+  }
+
   Widget _buildUserInfo(UserProfileModel model) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
@@ -36,7 +55,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     );
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         // avatar
         CircleAvatar(
@@ -53,10 +72,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                model.user.name,
-                style: Theme.of(context).textTheme.display2,
-              ),
+              _buildNameRow(model),
               Text(
                 "@" + model.user.screenName,
                 style: Theme.of(context).textTheme.display1,
