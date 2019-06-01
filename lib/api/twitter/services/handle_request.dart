@@ -44,8 +44,6 @@ Future<T> handleRequest<T>(
       } else {
         onError(null);
       }
-    } else {
-      return Future.error(null);
     }
   });
 
@@ -73,8 +71,6 @@ Future<T> handleRequest<T>(
         } else {
           onError(response);
         }
-      } else {
-        return Future.error(response);
       }
     }
   }
