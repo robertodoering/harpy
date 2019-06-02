@@ -4,7 +4,7 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/misc/global_snackbar_message.dart';
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
@@ -72,11 +72,14 @@ class LoginModel extends Model {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info("login cancelled by user");
-        showSnackbarMessage("Login cancelled.");
+        showFlushbar("Login cancelled.", type: FlushbarType.info);
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
-        showSnackbarMessage("An error occurred during login.");
+        showFlushbar(
+          "An error occurred during login.",
+          type: FlushbarType.error,
+        );
         break;
     }
 
@@ -131,7 +134,8 @@ class LoginModel extends Model {
 
         twitterClientErrorHandler(
           error,
-          "An unexpected error occurred while trying to update logged in user",
+          "An unexpected error occurred while trying to update the logged in "
+          "user",
         );
       },
     );

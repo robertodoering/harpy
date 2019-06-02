@@ -1,5 +1,8 @@
+import 'dart:async';
+
+import 'package:catcher/catcher_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/core/misc/global_snackbar_message.dart';
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -13,32 +16,41 @@ Logger _log = Logger("Error handler");
 /// If the error hasn't been handled and [backupErrorMessage] is set, the
 /// [backupErrorMessage] is shown in a [SnackBar].
 void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
-  _log.fine("handling error");
+  _log.fine("handling error: $error");
 
   if (error is String) {
-    showSnackbarMessage(error);
+    showFlushbar(error, type: FlushbarType.error);
     return;
   }
 
   if (error is Response) {
     if (_reachedRateLimit(error)) {
-      String limitReset = _limitResetString(error);
+      final limitReset = _limitResetString(error);
 
       _log.fine("rate limit reached, reset in $limitReset");
 
-      if (limitReset != null) {
-        showSnackbarMessage("Rate limit reached.\nTry again in $limitReset.");
-        return;
-      } else {
-        showSnackbarMessage("Rate limit reached.\nPlease try again later.");
-        return;
-      }
+      final message = limitReset != null
+          ? "Rate limit reached.\nPlease try again in $limitReset."
+          : "Rate limit reached.\nPlease try again later.";
+
+      showFlushbar(message, type: FlushbarType.error);
+      return;
     }
   }
 
-  if (backupErrorMessage != null) {
-    showSnackbarMessage(backupErrorMessage);
+  if (error is TimeoutException) {
+    showFlushbar("Request timed out", type: FlushbarType.error);
+    return;
   }
+
+  if (backupErrorMessage != null) {
+    showFlushbar(backupErrorMessage, type: FlushbarType.error);
+    return;
+  }
+
+  _log.warning("error not handled");
+
+  Catcher.reportCheckedError(error, null);
 }
 
 bool _reachedRateLimit(Response response) => response.statusCode == 429;

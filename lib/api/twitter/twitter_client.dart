@@ -77,6 +77,7 @@ class TwitterClient {
         .timeout(_timeout)
         .then((response) {
 //      _saveResponse(response);
+      if (response.statusCode != 200) return Future.error(response);
       return response;
     });
   }
