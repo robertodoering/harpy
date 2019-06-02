@@ -1,7 +1,6 @@
 import 'package:catcher/catcher_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
-import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/core/misc/harpy_catcher.dart';
 import 'package:harpy/models/global_models_wrapper.dart';
@@ -30,7 +29,6 @@ class Harpy extends StatelessWidget {
           title: "Harpy",
           theme: themeModel.harpyTheme.theme,
           navigatorKey: Catcher.navigatorKey,
-          builder: (context, child) => GlobalScaffold(child: child),
           home: EntryScreen(),
           debugShowCheckedModeBanner: false,
         );

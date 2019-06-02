@@ -174,22 +174,3 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     );
   }
 }
-
-GlobalKey<ScaffoldState> globalScaffold = GlobalKey();
-
-/// The [GlobalScaffold] sits on the top of the widget tree below the root
-/// [MaterialApp] and can be used with the [globalScaffold] to show a [SnackBar]
-/// from anywhere in the app.
-class GlobalScaffold extends StatelessWidget {
-  const GlobalScaffold({this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: globalScaffold,
-      body: child,
-    );
-  }
-}
