@@ -1,5 +1,4 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/services/handle_request.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
@@ -43,20 +42,19 @@ class TweetService {
     params["count"] ??= "200"; // max: 200
     params["tweet_mode"] ??= "extended";
 
-    return await handleRequest<Future<List<Tweet>>>(
-      twitterClient.get(
-        "https://api.twitter.com/1.1/statuses/home_timeline.json",
-        params: params,
-      ),
-      onSuccess: (response) async {
-        return await isolateWork<String, List<Tweet>>(
-          callback: _handleHomeTimelineResponse,
-          message: response.body,
-          tweetCacheData: homeTimelineCache.data,
-          directoryServiceData: directoryService.data,
-        );
-      },
-    );
+    return await twitterClient
+        .get(
+      "https://api.twitter.com/1.1/statuses/home_timeline.json",
+      params: params,
+    )
+        .then((response) {
+      return isolateWork<String, List<Tweet>>(
+        callback: _handleHomeTimelineResponse,
+        message: response.body,
+        tweetCacheData: homeTimelineCache.data,
+        directoryServiceData: directoryService.data,
+      );
+    });
   }
 
   /// Returns the user timeline for the [userId].
@@ -71,63 +69,62 @@ class TweetService {
     params["tweet_mode"] ??= "extended";
     params["user_id"] = userId;
 
-    return await handleRequest<Future<List<Tweet>>>(
-      twitterClient.get(
-        "https://api.twitter.com/1.1/statuses/user_timeline.json",
-        params: params,
-      ),
-      onSuccess: (response) async {
-        List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
-          callback: _handleUserTimelineResponse,
-          message: response.body,
-          tweetCacheData: homeTimelineCache.data,
-          directoryServiceData: directoryService.data,
-        );
+    return await twitterClient
+        .get(
+      "https://api.twitter.com/1.1/statuses/user_timeline.json",
+      params: params,
+    )
+        .then((response) async {
+      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
+        callback: _handleUserTimelineResponse,
+        message: response.body,
+        tweetCacheData: homeTimelineCache.data,
+        directoryServiceData: directoryService.data,
+      );
 
-        return await isolateWork<List<Tweet>, List<Tweet>>(
-          callback: _handleUserTimelineTweetsCache,
-          message: tweets,
-          tweetCacheData: userTimelineCache.user(userId).data,
-          directoryServiceData: directoryService.data,
-        );
-      },
-    );
+      return isolateWork<List<Tweet>, List<Tweet>>(
+        callback: _handleUserTimelineTweetsCache,
+        message: tweets,
+        tweetCacheData: userTimelineCache.user(userId).data,
+        directoryServiceData: directoryService.data,
+      );
+    });
   }
 
   /// Retweets the tweet with the [tweetId].
   Future<void> retweet(String tweetId) async {
     _log.fine("retweeting $tweetId");
 
-    return handleRequest(twitterClient.post(
+    return await twitterClient.post(
       "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
-    ));
+    );
   }
 
   /// Unretweets the tweet with the [tweetId].
   Future<void> unretweet(String tweetId) async {
     _log.fine("unretweet $tweetId");
 
-    return handleRequest(twitterClient.post(
+    return await twitterClient.post(
       "https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json",
-    ));
+    );
   }
 
   /// Favorites the tweet with the [tweetId].
   Future<void> favorite(String tweetId) async {
     _log.fine("favorite $tweetId");
 
-    return handleRequest(twitterClient.post(
+    return await twitterClient.post(
       "https://api.twitter.com/1.1/favorites/create.json?id=$tweetId",
-    ));
+    );
   }
 
   /// Unfavorites the tweet with the [tweetId].
   Future<void> unfavorite(String tweetId) async {
     _log.fine("unfavorite $tweetId");
 
-    return handleRequest(twitterClient.post(
+    return await twitterClient.post(
       "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
-    ));
+    );
   }
 }
 
