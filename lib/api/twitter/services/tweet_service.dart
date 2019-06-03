@@ -131,7 +131,7 @@ class TweetService {
 /// Handles the home timeline response.
 ///
 /// Used in an isolate.
-Future<List<Tweet>> _handleHomeTimelineResponse(String body) async {
+List<Tweet> _handleHomeTimelineResponse(String body) {
   // parse tweets
   _log.fine("parsing tweets");
   List<Tweet> tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
@@ -141,7 +141,7 @@ Future<List<Tweet>> _handleHomeTimelineResponse(String body) async {
   tweets = sortTweetReplies(tweets);
 
   // update cached home timeline tweets
-  tweets = await updateCachedTweets(tweets);
+  tweets = updateCachedTweets(tweets);
 
   tweets ??= [];
   _log.fine("got ${tweets.length} home timeline tweets");
@@ -178,9 +178,9 @@ Future<List<Tweet>> _handleUserTimelineResponse(String body) async {
 ///
 /// Used in an isolate with the user timeline cache of the user as the cache
 /// data.
-Future<List<Tweet>> _handleUserTimelineTweetsCache(List<Tweet> tweets) async {
+List<Tweet> _handleUserTimelineTweetsCache(List<Tweet> tweets) {
   // update cached tweets for user
-  tweets = await updateCachedTweets(tweets);
+  tweets = updateCachedTweets(tweets);
 
   tweets ??= [];
   _log.fine("got ${tweets.length} home timeline tweets");

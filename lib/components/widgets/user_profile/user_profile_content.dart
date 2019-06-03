@@ -11,8 +11,8 @@ class UserProfileContent extends StatelessWidget {
     return FadingNestedScaffold(
       title: model.user.name,
       background: CachedNetworkImage(
-        imageUrl: model.user.profile_banner_url ??
-            model.user.profileBackgroundImageUrl,
+        imageUrl:
+            model.user.profileBannerUrl ?? model.user.profileBackgroundImageUrl,
         fit: BoxFit.cover,
       ),
       body: UserProfileTweetList(),

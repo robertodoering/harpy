@@ -68,7 +68,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'geo_enabled': instance.geoEnabled,
       'notifications': instance.notifications,
       'description': instance.description,
-      'profile_background_color': instance.profileBackground_Color,
+      'profile_background_color': instance.profileBackgroundColor,
       'verified': instance.verified,
       'profile_background_image_url_https':
           instance.profileBackgroundImageUrlHttps,
@@ -80,6 +80,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'show_all_inline_media': instance.showAllInlineMedia,
       'screen_name': instance.screenName,
       'entities': instance.entities,
-      'profile_banner_url': instance.profile_banner_url,
+      'profile_banner_url': instance.profileBannerUrl,
       'location': instance.location
     };

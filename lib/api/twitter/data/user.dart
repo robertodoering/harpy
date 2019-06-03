@@ -46,7 +46,7 @@ class User {
   @JsonKey(name: 'description')
   String description;
   @JsonKey(name: 'profile_background_color')
-  String profileBackground_Color;
+  String profileBackgroundColor;
   @JsonKey(name: 'verified')
   bool verified;
   @JsonKey(name: 'profile_background_image_url_https')
@@ -66,7 +66,7 @@ class User {
   @JsonKey(name: 'screen_name')
   String screenName;
   UserEntities entities;
-  String profile_banner_url;
+  String profileBannerUrl;
   String location;
 
   User(
@@ -90,7 +90,7 @@ class User {
     this.geoEnabled,
     this.notifications,
     this.description,
-    this.profileBackground_Color,
+    this.profileBackgroundColor,
     this.verified,
     this.profileBackgroundImageUrlHttps,
     this.statusesCount,
@@ -101,7 +101,7 @@ class User {
     this.showAllInlineMedia,
     this.screenName,
     this.entities,
-    this.profile_banner_url,
+    this.profileBannerUrl,
     this.location,
   );
 
@@ -149,7 +149,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{name: $name, profileSidebarFillColor: $profileSidebarFillColor, profileBackgroundTitle: $profileBackgroundTitle, profileImageUrl: $profileImageUrl, createdAt: $createdAt, defaultProfile: $defaultProfile, url: $url, contributorsEnabled: $contributorsEnabled, favouritesCount: $favouritesCount, profileImageUrlHttps: $profileImageUrlHttps, id: $id, listedCount: $listedCount, profileUseBackgroundImage: $profileUseBackgroundImage, profileTextColor: $profileTextColor, followersCount: $followersCount, lang: $lang, protected: $protected, geoEnabled: $geoEnabled, notifications: $notifications, description: $description, profileBackground_Color: $profileBackground_Color, verified: $verified, profileBackgroundImageUrlHttps: $profileBackgroundImageUrlHttps, statusesCount: $statusesCount, profileBackgroundImageUrl: $profileBackgroundImageUrl, defaultProfileImage: $defaultProfileImage, friendsCount: $friendsCount, following: $following, showAllInlineMedia: $showAllInlineMedia, screenName: $screenName}';
+    return 'User{name: $name, profileSidebarFillColor: $profileSidebarFillColor, profileBackgroundTitle: $profileBackgroundTitle, profileImageUrl: $profileImageUrl, createdAt: $createdAt, defaultProfile: $defaultProfile, url: $url, contributorsEnabled: $contributorsEnabled, favouritesCount: $favouritesCount, profileImageUrlHttps: $profileImageUrlHttps, id: $id, listedCount: $listedCount, profileUseBackgroundImage: $profileUseBackgroundImage, profileTextColor: $profileTextColor, followersCount: $followersCount, lang: $lang, protected: $protected, geoEnabled: $geoEnabled, notifications: $notifications, description: $description, profileBackground_Color: $profileBackgroundColor, verified: $verified, profileBackgroundImageUrlHttps: $profileBackgroundImageUrlHttps, statusesCount: $statusesCount, profileBackgroundImageUrl: $profileBackgroundImageUrl, defaultProfileImage: $defaultProfileImage, friendsCount: $friendsCount, following: $following, showAllInlineMedia: $showAllInlineMedia, screenName: $screenName}';
   }
 
   String getProfileImageUrlFromQuality(int quality) {

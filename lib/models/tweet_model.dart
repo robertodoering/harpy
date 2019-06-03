@@ -72,7 +72,7 @@ class TweetModel extends Model {
   bool quoted = false;
 
   /// Whether or not the [tweet] contains [TweetMedia].
-  bool get hasMedia => tweet.extended_entities?.media != null;
+  bool get hasMedia => tweet.extendedEntities?.media != null;
 
   /// A formatted number of the retweet count.
   String get retweetCount => "${formatNumber(tweet.retweetCount)}";
@@ -123,11 +123,11 @@ class TweetModel extends Model {
     return "$authors replied";
   }
 
-  /// Reduces the [tweet.full_text] by replacing every new line with a space
+  /// Reduces the [tweet.fullText] by replacing every new line with a space
   /// and cuts the text at the nearest space after the given [limit] with an
   /// ellipsis.
   void reduceText({limit = 100}) {
-    String text = tweet.full_text.trim();
+    String text = tweet.fullText.trim();
     text = text.replaceAll("\n", " ");
 
     if (text.length > limit) {
@@ -139,7 +139,7 @@ class TweetModel extends Model {
       }
     }
 
-    tweet.full_text = text;
+    tweet.fullText = text;
   }
 
   /// Retweet this [tweet].
@@ -231,7 +231,7 @@ class TweetModel extends Model {
     notifyListeners();
 
     Translation translation = await translationService
-        .translate(text: tweet.full_text)
+        .translate(text: tweet.fullText)
         .catchError((_) {
       translating = false;
       notifyListeners();

@@ -46,7 +46,7 @@ class ThemeSettingsModel extends Model {
   void initTheme() {
     int id = selectedThemeId;
 
-    _log.fine("initializing harpy theme with id ${id}");
+    _log.fine("initializing harpy theme with id $id");
 
     if (id == 0) {
       harpyTheme = HarpyTheme.light();

@@ -14,7 +14,7 @@ class Tweet {
   @JsonKey(name: 'entities')
   Entities entities;
   @JsonKey(name: 'extended_entities')
-  Entities extended_entities;
+  Entities extendedEntities;
   @JsonKey(name: 'truncated')
   bool truncated;
   @JsonKey(name: 'created_at')
@@ -26,7 +26,7 @@ class Tweet {
   @JsonKey(name: 'in_reply_to_user_id_str')
   String inReplyToUserIdStr;
   @JsonKey(name: 'full_text')
-  String full_text;
+  String fullText;
   @JsonKey(name: 'id')
   int id;
   @JsonKey(name: 'retweet_count')
@@ -63,7 +63,7 @@ class Tweet {
     this.favorited,
     this.idStr,
     this.inReplyToUserIdStr,
-    this.full_text,
+    this.fullText,
     this.id,
     this.retweetCount,
     this.inReplyToStatusIdStr,
@@ -105,7 +105,7 @@ class Tweet {
 
   @override
   String toString() {
-    return 'Tweet{user: $user, entities: $entities, truncated: $truncated, createdAt: $createdAt, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, full_text: $full_text, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source, favoriteCount: $favoriteCount}';
+    return 'Tweet{user: $user, entities: $entities, truncated: $truncated, createdAt: $createdAt, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, full_text: $fullText, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source, favoriteCount: $favoriteCount}';
   }
 
   @override

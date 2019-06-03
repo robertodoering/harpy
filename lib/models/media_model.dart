@@ -49,7 +49,7 @@ class MediaModel extends Model {
   int mediaQuality;
 
   /// Returns the list of [TwitterMedia] for the tweet.
-  List<TwitterMedia> get media => tweetModel.tweet.extended_entities.media;
+  List<TwitterMedia> get media => tweetModel.tweet.extendedEntities.media;
 
   /// Returns the video url of the video or `null` if no videoInfo exists for
   /// the [media].

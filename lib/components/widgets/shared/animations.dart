@@ -8,7 +8,7 @@ class SlideFadeInAnimation extends StatefulWidget {
     this.delay = Duration.zero,
     this.offset = Offset.zero,
     this.skipIntroAnimation = false,
-    this.finishCallback = null,
+    this.finishCallback,
     @required this.child,
   }) : super(key: key);
 
