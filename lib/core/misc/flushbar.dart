@@ -2,7 +2,6 @@ import 'package:catcher/catcher_plugin.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart' as route;
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:logging/logging.dart';
 
 Logger _log = Logger("Flushbar");
@@ -13,7 +12,9 @@ enum FlushbarType {
   error,
 }
 
-/// Shows [message] in a [SnackBar] from the [globalScaffold].
+/// Shows the [message] in a [Flushbar].
+///
+/// The [type] determines the icon and color.
 void showFlushbar(
   String message, {
   FlushbarType type = FlushbarType.info,
