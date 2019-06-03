@@ -1,3 +1,5 @@
+# copied from flutter
+
 analyzer:
   errors:
     # treat missing required parameters as a warning (not a hint)
