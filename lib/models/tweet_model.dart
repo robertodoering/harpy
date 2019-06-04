@@ -12,19 +12,18 @@ import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-/// The [Model] for a single [Tweet].
+/// The model for a single [Tweet].
 ///
 /// Handles changes on the [Tweet] including actions (favorite, retweet,
-/// translate, ...) and updates the [ScopedModelDescendant] when the state
-/// changes.
+/// translate, ...) and rebuilds the [Consumer] when the state changes.
 ///
 /// Changes to the [Tweet] always changes the [homeTimelineCache] if the [Tweet]
 /// exists in it.
 /// It will also update the [Tweet] in the [userTimelineCache] if it is not
 /// `null`.
-class TweetModel extends Model {
+class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
     @required this.homeTimelineCache,
@@ -49,7 +48,7 @@ class TweetModel extends Model {
   final TranslationService translationService;
 
   static TweetModel of(BuildContext context) {
-    return ScopedModel.of<TweetModel>(context);
+    return Provider.of<TweetModel>(context);
   }
 
   /// Returns the [Tweet.retweetedStatus] if the [originalTweet] is a retweet

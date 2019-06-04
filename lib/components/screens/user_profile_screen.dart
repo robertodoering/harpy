@@ -4,7 +4,7 @@ import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/user_profile/user_profile_content.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/user_profile_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// The user profile screen to show information and the user timeline of the
 /// [user].
@@ -40,10 +40,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       loginModel: loginModel,
     );
 
-    return ScopedModel<UserProfileModel>(
-      model: userProfileModel,
-      child: ScopedModelDescendant<UserProfileModel>(
-        builder: (context, _, model) => UserProfileContent(),
+    return ChangeNotifierProvider<UserProfileModel>(
+      builder: (_) => userProfileModel,
+      child: Consumer<UserProfileModel>(
+        builder: (context, model, _) => UserProfileContent(),
       ),
     );
   }

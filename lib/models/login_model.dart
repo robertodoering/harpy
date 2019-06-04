@@ -11,9 +11,9 @@ import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-class LoginModel extends Model {
+class LoginModel extends ChangeNotifier {
   LoginModel({
     @required this.homeTimelineModel,
     @required this.userService,
@@ -29,7 +29,7 @@ class LoginModel extends Model {
   ApplicationModel applicationModel;
 
   static LoginModel of(BuildContext context) {
-    return ScopedModel.of<LoginModel>(context);
+    return Provider.of<LoginModel>(context);
   }
 
   static final Logger _log = Logger("LoginModel");

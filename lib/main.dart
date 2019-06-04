@@ -6,7 +6,7 @@ import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/global_models_wrapper.dart';
 import 'package:harpy/models/settings/setting_models_wrapper.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   HarpyCatcher(
@@ -23,8 +23,8 @@ void main() {
 class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ThemeSettingsModel>(
-      builder: (context, _, themeModel) {
+    return Consumer<ThemeSettingsModel>(
+      builder: (context, themeModel, _) {
         return MaterialApp(
           title: "Harpy",
           theme: themeModel.harpyTheme.theme,

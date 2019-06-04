@@ -6,7 +6,7 @@ import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class UserTimelineModel extends TimelineModel {
   UserTimelineModel({
@@ -24,7 +24,7 @@ class UserTimelineModel extends TimelineModel {
   static final Logger _log = Logger("UserTimelineModel");
 
   static UserTimelineModel of(BuildContext context) {
-    return ScopedModel.of<UserTimelineModel>(context);
+    return Provider.of<UserTimelineModel>(context);
   }
 
   @override

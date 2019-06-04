@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/settings/settings_tile.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class MediaSettingsScreen extends StatelessWidget {
   List<Widget> _getSettings(MediaSettingsModel model) {
@@ -59,8 +59,8 @@ class MediaSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MediaSettingsModel>(
-      builder: (context, _, model) {
+    return Consumer<MediaSettingsModel>(
+      builder: (context, model, _) {
         return HarpyScaffold(
           title: "Media settings",
           actions: _buildActions(model),

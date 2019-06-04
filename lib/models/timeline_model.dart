@@ -4,13 +4,12 @@ import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 /// Abstraction for the [HomeTimelineModel] and the [UserTimelineModel].
 ///
 /// Holds the [tweets] of the timeline and common actions for the
 /// [tweetService].
-abstract class TimelineModel extends Model {
+abstract class TimelineModel extends ChangeNotifier {
   TimelineModel({
     @required this.tweetService,
     @required this.tweetCache,

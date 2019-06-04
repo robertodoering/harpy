@@ -5,9 +5,9 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-class UserProfileModel extends Model {
+class UserProfileModel extends ChangeNotifier {
   UserProfileModel({
     this.user,
     String userId,
@@ -32,7 +32,7 @@ class UserProfileModel extends Model {
   static final Logger _log = Logger("UserProfileModel");
 
   static UserProfileModel of(BuildContext context) {
-    return ScopedModel.of<UserProfileModel>(context);
+    return Provider.of<UserProfileModel>(context);
   }
 
   /// The [user] for this [UserProfileModel].

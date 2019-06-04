@@ -16,12 +16,12 @@ import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:yaml/yaml.dart';
 
 /// The [ApplicationModel] handles initialization in the [EntryScreen] when
 /// starting the app.
-class ApplicationModel extends Model {
+class ApplicationModel extends ChangeNotifier {
   ApplicationModel({
     @required this.directoryService,
     @required this.homeTimelineCache,
@@ -52,7 +52,7 @@ class ApplicationModel extends Model {
   final LoginModel loginModel;
 
   static ApplicationModel of(BuildContext context) {
-    return ScopedModel.of<ApplicationModel>(context);
+    return Provider.of<ApplicationModel>(context);
   }
 
   static final Logger _log = Logger("ApplicationModel");

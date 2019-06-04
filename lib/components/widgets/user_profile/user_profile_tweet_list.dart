@@ -5,7 +5,7 @@ import 'package:harpy/components/widgets/tweet/tweet_list.dart';
 import 'package:harpy/components/widgets/user_profile/user_profile_header.dart';
 import 'package:harpy/models/user_profile_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// Wraps the [TweetList] for the [UserTimelineModel].
 class UserProfileTweetList extends StatefulWidget {
@@ -27,8 +27,8 @@ class _UserProfileTweetListState extends State<UserProfileTweetList> {
       userTimelineCache: serviceProvider.data.userTimelineCache,
     );
 
-    return ScopedModel<UserTimelineModel>(
-      model: model,
+    return ChangeNotifierProvider<UserTimelineModel>(
+      builder: (_) => model,
       child: CacheProvider(
         homeTimelineCache: serviceProvider.data.homeTimelineCache,
         userTimelineCache: serviceProvider.data.userTimelineCache,

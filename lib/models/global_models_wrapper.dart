@@ -4,9 +4,9 @@ import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-/// Wraps the app wide [ScopedModel]s and holds the instances in its state.
+/// Wraps the app wide [Provider]s and holds the instances in its state.
 class GlobalModelsWrapper extends StatefulWidget {
   const GlobalModelsWrapper({
     @required this.child,
@@ -49,15 +49,19 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
       loginModel: loginModel,
     );
 
-    return ScopedModel<ApplicationModel>(
-      model: applicationModel,
-      child: ScopedModel<LoginModel>(
-        model: loginModel,
-        child: ScopedModel<HomeTimelineModel>(
-          model: homeTimelineModel,
-          child: widget.child,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ApplicationModel>(
+          builder: (_) => applicationModel,
         ),
-      ),
+        ChangeNotifierProvider<LoginModel>(
+          builder: (_) => loginModel,
+        ),
+        ChangeNotifierProvider<HomeTimelineModel>(
+          builder: (_) => homeTimelineModel,
+        ),
+      ],
+      child: widget.child,
     );
   }
 }

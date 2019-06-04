@@ -9,9 +9,9 @@ import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-class MediaModel extends Model {
+class MediaModel extends ChangeNotifier {
   MediaModel({
     @required this.tweetModel,
     @required this.homeTimelineModel,
@@ -36,7 +36,7 @@ class MediaModel extends Model {
   static final Logger _log = Logger("MediaModel");
 
   static MediaModel of(BuildContext context) {
-    return ScopedModel.of<MediaModel>(context);
+    return Provider.of<MediaModel>(context);
   }
 
   /// The selected quality for the media.

@@ -3,11 +3,11 @@ import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// The [ThemeSettingsModel] descendant sits above the [MaterialApp] and
 /// rebuilds the app whenever the [Theme] changes.
-class ThemeSettingsModel extends Model {
+class ThemeSettingsModel extends ChangeNotifier {
   ThemeSettingsModel({
     @required this.harpyPrefs,
   });
@@ -15,7 +15,7 @@ class ThemeSettingsModel extends Model {
   final HarpyPrefs harpyPrefs;
 
   static ThemeSettingsModel of(BuildContext context) {
-    return ScopedModel.of<ThemeSettingsModel>(context);
+    return Provider.of<ThemeSettingsModel>(context);
   }
 
   static final Logger _log = Logger("ThemeSettingsModel");

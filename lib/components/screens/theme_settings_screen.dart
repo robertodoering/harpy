@@ -3,15 +3,15 @@ import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: "Theme",
-      body: ScopedModelDescendant<ThemeSettingsModel>(
-        builder: (context, _, model) {
+      body: Consumer<ThemeSettingsModel>(
+        builder: (context, model, _) {
           return ThemeSelection();
         },
       ),
