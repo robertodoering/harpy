@@ -27,6 +27,17 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
   Widget build(BuildContext context) {
     final serviceProvider = ServiceProvider.of(context);
 
+    homeTimelineModel ??= HomeTimelineModel(
+      tweetService: serviceProvider.data.tweetService,
+      homeTimelineCache: serviceProvider.data.homeTimelineCache,
+    );
+
+    loginModel ??= LoginModel(
+      homeTimelineModel: homeTimelineModel,
+      userService: serviceProvider.data.userService,
+      userCache: serviceProvider.data.userCache,
+    );
+
     applicationModel ??= ApplicationModel(
       directoryService: serviceProvider.data.directoryService,
       userTimelineCache: serviceProvider.data.userTimelineCache,
@@ -35,18 +46,7 @@ class GlobalModelsWrapperState extends State<GlobalModelsWrapper> {
       harpyPrefs: serviceProvider.data.harpyPrefs,
       connectivityService: serviceProvider.data.connectivityService,
       themeSettingsModel: ThemeSettingsModel.of(context),
-    );
-
-    homeTimelineModel ??= HomeTimelineModel(
-      tweetService: serviceProvider.data.tweetService,
-      homeTimelineCache: serviceProvider.data.homeTimelineCache,
-    );
-
-    loginModel ??= LoginModel(
-      applicationModel: applicationModel,
-      homeTimelineModel: homeTimelineModel,
-      userService: serviceProvider.data.userService,
-      userCache: serviceProvider.data.userCache,
+      loginModel: loginModel,
     );
 
     return ScopedModel<ApplicationModel>(

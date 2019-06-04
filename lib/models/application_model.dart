@@ -2,12 +2,17 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/components/screens/home_screen.dart';
+import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
+import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -25,13 +30,15 @@ class ApplicationModel extends Model {
     @required this.harpyPrefs,
     @required this.connectivityService,
     @required this.themeSettingsModel,
+    @required this.loginModel,
   })  : assert(directoryService != null),
         assert(homeTimelineCache != null),
         assert(userTimelineCache != null),
         assert(twitterClient != null),
         assert(harpyPrefs != null),
         assert(connectivityService != null),
-        assert(themeSettingsModel != null) {
+        assert(themeSettingsModel != null),
+        assert(loginModel != null) {
     _initialize();
   }
 
@@ -42,6 +49,7 @@ class ApplicationModel extends Model {
   final HarpyPrefs harpyPrefs;
   final ConnectivityService connectivityService;
   final ThemeSettingsModel themeSettingsModel;
+  final LoginModel loginModel;
 
   static ApplicationModel of(BuildContext context) {
     return ScopedModel.of<ApplicationModel>(context);
@@ -65,10 +73,6 @@ class ApplicationModel extends Model {
   /// Always false if [initialized] is also false.
   bool get loggedIn => twitterSession != null;
 
-  /// A callback that is called when the [ApplicationModel] finished
-  /// initializing.
-  VoidCallback onInitialized;
-
   Future<void> _initialize() async {
     initLogger();
     _log.fine("initializing");
@@ -76,6 +80,7 @@ class ApplicationModel extends Model {
     // set application model references
     twitterClient.applicationModel = this;
     harpyPrefs.applicationModel = this;
+    loginModel.applicationModel = this;
 
     await Future.wait([
       // init config
@@ -96,8 +101,28 @@ class ApplicationModel extends Model {
     }
 
     initialized = true;
-    if (onInitialized != null) {
-      onInitialized();
+    _onInitialized();
+  }
+
+  /// Called when the [ApplicationModel] finished initializing and navigates
+  /// to the next screen.
+  Future<void> _onInitialized() async {
+    _log.fine("on initialized");
+
+    if (loggedIn) {
+      await loginModel.initBeforeHome();
+
+      _log.fine("navigating to home screen");
+      HarpyNavigator.pushReplacementRoute(FadeRoute(
+        builder: (context) => HomeScreen(),
+      ));
+    } else {
+      _log.fine("navigating to login screen");
+      // route without a transition
+      HarpyNavigator.pushReplacementRoute(PageRouteBuilder(
+        pageBuilder: (context, _a, _b) => LoginScreen(),
+        transitionDuration: Duration.zero,
+      ));
     }
   }
 
