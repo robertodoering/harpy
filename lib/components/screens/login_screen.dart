@@ -3,6 +3,7 @@ import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/harpy_title.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
@@ -53,7 +54,7 @@ class LoginScreen extends StatelessWidget {
 
     if (applicationModel.loggedIn) {
       _log.fine("navigating to home screen after login");
-      Navigator.of(context).pushReplacement(FadeRoute(
+      HarpyNavigator.pushReplacementRoute(FadeRoute(
         builder: (context) => HomeScreen(),
       ));
     }

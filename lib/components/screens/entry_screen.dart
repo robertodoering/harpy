@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
@@ -40,13 +41,13 @@ class EntryScreen extends StatelessWidget {
       await loginModel.initBeforeHome();
 
       _log.fine("navigating to home screen");
-      Navigator.of(context).pushReplacement(FadeRoute(
+      HarpyNavigator.pushReplacementRoute(FadeRoute(
         builder: (context) => HomeScreen(),
       ));
     } else {
       _log.fine("navigating to login screen");
       // route without a transition
-      Navigator.of(context).pushReplacement(PageRouteBuilder(
+      HarpyNavigator.pushReplacementRoute(PageRouteBuilder(
         pageBuilder: (context, _a, _b) => LoginScreen(),
         transitionDuration: Duration.zero,
       ));

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_image_gallery.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/media_model.dart';
 
 /// Displays the twitter media image as a [CachedNetworkImage] and pushes a
@@ -18,7 +19,7 @@ class MediaImage extends StatelessWidget {
   final MediaModel mediaModel;
 
   void _openGallery(BuildContext context) {
-    Navigator.of(context).push(HeroDialogRoute(
+    HarpyNavigator.pushRoute(HeroDialogRoute(
       builder: (context) {
         return MediaImageGallery(
           index: index,

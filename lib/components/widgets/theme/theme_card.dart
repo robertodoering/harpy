@@ -92,7 +92,7 @@ class AddCustomThemeCard extends StatelessWidget {
   void _showProDialog(BuildContext context) {
     // todo
     showDialog(context: context, builder: (_) => ProFeatureDialog());
-    HarpyNavigator.push(context, CustomThemeScreen());
+    HarpyNavigator.push(CustomThemeScreen());
   }
 
   @override

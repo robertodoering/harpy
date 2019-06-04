@@ -220,23 +220,19 @@ class TweetNameColumn extends StatelessWidget {
 
 /// Navigates to the [UserProfileScreen] for the [user].
 void _openUserProfile(BuildContext context, User user) {
-  HarpyNavigator.push(
-    context,
-    UserProfileScreen(user: user),
-  );
+  HarpyNavigator.push(UserProfileScreen(user: user));
 }
 
 void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
   if (entityModel.type == EntityType.url) {
     HarpyNavigator.push(
-      context,
       WebviewScreen(
         url: entityModel.data,
         displayUrl: entityModel.displayText,
       ),
     );
   } else if (entityModel.type == EntityType.mention) {
-    HarpyNavigator.push(context, UserProfileScreen(userId: entityModel.id));
+    HarpyNavigator.push(UserProfileScreen(userId: entityModel.id));
   }
 }
 
