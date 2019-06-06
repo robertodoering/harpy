@@ -46,6 +46,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
             maxHeight: mediaModel.media
                     .any((media) => media.type == photo || media.type == video)
                 ? 250.0 // todo: maybe default to a 16:9 size for videos
+                // (9 / 16) * MediaQuery.of(context).size.width;
                 : double.infinity,
           ),
           child: _TweetMediaLayout(),

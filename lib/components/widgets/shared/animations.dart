@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// Slides and fades its child into position upon creation.
@@ -7,8 +9,7 @@ class SlideFadeInAnimation extends StatefulWidget {
     this.duration = const Duration(seconds: 1),
     this.delay = Duration.zero,
     this.offset = Offset.zero,
-    this.skipIntroAnimation = false,
-    this.finishCallback,
+    this.curve = Curves.fastOutSlowIn,
     @required this.child,
   }) : super(key: key);
 
@@ -21,14 +22,10 @@ class SlideFadeInAnimation extends StatefulWidget {
   /// The offset that the child will have before it slides into position.
   final Offset offset;
 
-  /// Skips the intro animation if set to `true`.
-  final bool skipIntroAnimation;
-
-  /// An optional callback when the animation has completed.
-  final VoidCallback finishCallback;
-
   /// The child to animate.
   final Widget child;
+
+  final Curve curve;
 
   @override
   _SlideFadeInAnimationState createState() => _SlideFadeInAnimationState();
@@ -41,32 +38,16 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
 
   @override
   void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
-
-    if (widget.skipIntroAnimation) {
-      _controller.value = 1.0;
-    }
-
-    // callback when animation has completed
-    if (widget.finishCallback != null) {
-      _controller.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          widget.finishCallback();
-        }
+    _controller = AnimationController(vsync: this, duration: widget.duration)
+      ..addListener(() {
+        if (mounted) setState(() {});
       });
-    }
 
-    _animation = CurveTween(curve: Curves.fastOutSlowIn).animate(_controller)
-      ..addListener(() => setState(() {}));
+    _animation = CurveTween(curve: widget.curve).animate(_controller);
 
-    if (widget.delay != Duration.zero) {
-      Future.delayed(widget.delay).then((_) => _controller.forward());
-    } else {
-      _controller.forward();
-    }
+    Future.delayed(widget.delay).then((_) {
+      if (mounted) _controller.forward();
+    });
 
     super.initState();
   }
@@ -92,7 +73,7 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
   }
 }
 
-/// Fades out upon creation.
+/// Fades out its [child] upon creation.
 class FadeOutWidget extends StatefulWidget {
   const FadeOutWidget({
     Key key,
@@ -151,5 +132,94 @@ class _FadeOutWidgetState extends State<FadeOutWidget>
             child: widget.child,
           )
         : Container();
+  }
+}
+
+/// A simple animation that "bounces in" its child.
+class BounceInAnimation extends StatefulWidget {
+  const BounceInAnimation({
+    this.duration = const Duration(milliseconds: 1000),
+    this.delay = Duration.zero,
+    @required this.child,
+  });
+
+  final Duration duration;
+  final Duration delay;
+  final Widget child;
+
+  @override
+  _BounceInAnimationState createState() => _BounceInAnimationState();
+}
+
+class _BounceInAnimationState extends State<BounceInAnimation>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(vsync: this, duration: widget.duration)
+      ..addListener(() {
+        if (mounted) setState(() {});
+      });
+
+    _animation = CurveTween(curve: Curves.elasticOut).animate(_controller);
+
+    Future.delayed(widget.delay).then((_) {
+      if (mounted) _controller.forward();
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      scale: _animation.value,
+      child: widget.child,
+    );
+  }
+}
+
+/// An implicitly animated widget that will animate a change to [scale].
+class AnimatedScale extends ImplicitlyAnimatedWidget {
+  const AnimatedScale({
+    @required this.scale,
+    @required this.child,
+    Curve curve = Curves.easeInCubic,
+    Duration duration = const Duration(milliseconds: 100),
+  }) : super(curve: curve, duration: duration);
+
+  final double scale;
+  final Widget child;
+
+  @override
+  _AnimatedScaleState createState() => _AnimatedScaleState();
+}
+
+class _AnimatedScaleState extends AnimatedWidgetBaseState<AnimatedScale> {
+  Tween<double> _scaleTween;
+
+  @override
+  void forEachTween(visitor) {
+    _scaleTween = visitor(
+      _scaleTween,
+      widget.scale,
+      (value) => Tween<double>(begin: value),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      scale: _scaleTween.evaluate(animation),
+      child: widget.child,
+    );
   }
 }

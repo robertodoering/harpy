@@ -210,26 +210,61 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-/// A login button that slides into position with a delay upon creation.
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    @required this.onPressed,
+class HarpyButton extends StatefulWidget {
+  const HarpyButton.raised({
+    @required this.text,
+    this.backgroundColor = Colors.white,
   });
 
-  final VoidCallback onPressed;
+  const HarpyButton.flat({
+    @required this.text,
+  }) : backgroundColor = null;
+
+  final Text text;
+  final Color backgroundColor;
+
+  @override
+  _HarpyButtonState createState() => _HarpyButtonState();
+}
+
+class _HarpyButtonState extends State<HarpyButton> {
+  bool _tapDown = false;
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+
+    Widget container;
+
+    if (widget.backgroundColor != null) {
+      container = Material(
+        color: widget.backgroundColor,
+        elevation: 8,
+        borderRadius: borderRadius,
+        child: Padding(
+          padding: padding,
+          child: widget.text,
+        ),
+      );
+    } else {
+      container = Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+        ),
+        child: widget.text,
+      );
+    }
+
     return Center(
-      child: SlideFadeInAnimation(
-        duration: Duration(seconds: 1),
-        offset: Offset(0.0, 50.0),
-        child: RaisedButton(
-          child: Text(
-            "Login with Twitter",
-            style: Theme.of(context).textTheme.button,
-          ),
-          onPressed: onPressed,
+      child: AnimatedScale(
+        scale: _tapDown ? .9 : 1,
+        child: GestureDetector(
+          onTapDown: (_) => setState(() => _tapDown = true),
+          onTapUp: (_) => setState(() => _tapDown = false),
+          onTapCancel: () => setState(() => _tapDown = false),
+          child: container,
         ),
       ),
     );
