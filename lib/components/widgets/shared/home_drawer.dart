@@ -20,7 +20,7 @@ class HomeDrawer extends StatelessWidget {
     final loginModel = LoginModel.of(context);
     await loginModel.logout();
 
-    HarpyNavigator.pushReplacement(context, LoginScreen());
+    HarpyNavigator.pushReplacement(LoginScreen());
   }
 
   Widget _buildActions(BuildContext context) {
@@ -36,7 +36,6 @@ class HomeDrawer extends StatelessWidget {
           onTap: () async {
             await Navigator.of(context).maybePop();
             HarpyNavigator.push(
-              context,
               UserProfileScreen(user: loginModel.loggedInUser),
             );
           },
@@ -63,7 +62,7 @@ class HomeDrawer extends StatelessWidget {
           title: Text("Settings"),
           onTap: () async {
             await Navigator.of(context).maybePop();
-            HarpyNavigator.push(context, SettingsScreen());
+            HarpyNavigator.push(SettingsScreen());
           },
         ),
 
@@ -117,7 +116,6 @@ class UserDrawerHeader extends StatelessWidget {
         GestureDetector(
           onTap: () {
             HarpyNavigator.push(
-              context,
               UserProfileScreen(user: loginModel.loggedInUser),
             );
           },
@@ -137,7 +135,6 @@ class UserDrawerHeader extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   HarpyNavigator.push(
-                    context,
                     UserProfileScreen(user: loginModel.loggedInUser),
                   );
                 },
@@ -149,7 +146,6 @@ class UserDrawerHeader extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   HarpyNavigator.push(
-                    context,
                     UserProfileScreen(user: loginModel.loggedInUser),
                   );
                 },

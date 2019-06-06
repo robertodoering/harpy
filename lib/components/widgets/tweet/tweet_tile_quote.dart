@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/models/tweet_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the quoted [Tweet] inside the [TweetTile] if it exists.
 class TweetQuote extends StatelessWidget {
@@ -34,8 +34,8 @@ class TweetQuote extends StatelessWidget {
         border: Border.all(color: Theme.of(context).dividerColor),
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: ScopedModel<TweetModel>(
-        model: quoteTweetModel,
+      child: ChangeNotifierProvider<TweetModel>(
+        builder: (_) => quoteTweetModel,
         child: _QuoteContent(),
       ),
     );

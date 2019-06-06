@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-class MediaSettingsModel extends Model {
+class MediaSettingsModel extends ChangeNotifier {
   MediaSettingsModel({
     @required this.harpyPrefs,
     @required this.connectivityService,
@@ -15,7 +15,7 @@ class MediaSettingsModel extends Model {
   final ConnectivityService connectivityService;
 
   static MediaSettingsModel of(BuildContext context) {
-    return ScopedModel.of<MediaSettingsModel>(context);
+    return Provider.of<MediaSettingsModel>(context);
   }
 
   static final Logger _log = Logger("MediaSettingsModel");

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// The model for creating or editing a custom theme.
-class CustomThemeModel extends Model {
+class CustomThemeModel extends ChangeNotifier {
   CustomThemeModel({
     @required this.themeModel,
   }) : assert(themeModel != null) {
@@ -19,7 +19,7 @@ class CustomThemeModel extends Model {
   final ThemeSettingsModel themeModel;
 
   static CustomThemeModel of(BuildContext context) {
-    return ScopedModel.of<CustomThemeModel>(context);
+    return Provider.of<CustomThemeModel>(context);
   }
 
   HarpyThemeData customThemeData;

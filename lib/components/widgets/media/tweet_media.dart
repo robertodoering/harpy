@@ -9,7 +9,7 @@ import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 // media types
 const String photo = "photo";
@@ -36,8 +36,8 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
       connectivityService: serviceProvider.data.connectivityService,
     );
 
-    return ScopedModel<MediaModel>(
-      model: mediaModel,
+    return ChangeNotifierProvider<MediaModel>(
+      builder: (_) => mediaModel,
       child: CustomExpansionTile(
         initiallyExpanded: mediaModel.initiallyShown,
         onExpansionChanged: mediaModel.saveShowMediaState,

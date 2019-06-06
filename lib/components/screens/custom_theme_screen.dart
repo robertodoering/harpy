@@ -6,7 +6,7 @@ import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
 class CustomThemeScreen extends StatefulWidget {
@@ -23,10 +23,10 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
       themeModel: ThemeSettingsModel.of(context),
     );
 
-    return ScopedModel<CustomThemeModel>(
-      model: customThemeModel,
-      child: ScopedModelDescendant<CustomThemeModel>(
-        builder: (context, _, customThemeModel) {
+    return ChangeNotifierProvider<CustomThemeModel>(
+      builder: (_) => customThemeModel,
+      child: Consumer<CustomThemeModel>(
+        builder: (context, customThemeModel, _) {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
             child: HarpyScaffold(

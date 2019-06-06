@@ -6,7 +6,7 @@ import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class HomeTimelineModel extends TimelineModel {
   HomeTimelineModel({
@@ -17,7 +17,7 @@ class HomeTimelineModel extends TimelineModel {
   static final Logger _log = Logger("HomeTimelineModel");
 
   static HomeTimelineModel of(BuildContext context) {
-    return ScopedModel.of<HomeTimelineModel>(context);
+    return Provider.of<HomeTimelineModel>(context);
   }
 
   @override

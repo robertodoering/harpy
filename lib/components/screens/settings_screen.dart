@@ -13,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
           leading: Icon(Icons.image),
           title: Text("Media"),
           subtitle: Text("Settings for videos, images and gifs"),
-          onTap: () => HarpyNavigator.push(context, MediaSettingsScreen()),
+          onTap: () => HarpyNavigator.push(MediaSettingsScreen()),
         ),
       ],
       "Appearance": [
@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
           leading: Icon(Icons.color_lens),
           title: Text("Theme"),
           subtitle: Text("Select your theme"),
-          onTap: () => HarpyNavigator.push(context, ThemeSettingsScreen()),
+          onTap: () => HarpyNavigator.push(ThemeSettingsScreen()),
         ),
       ],
     };

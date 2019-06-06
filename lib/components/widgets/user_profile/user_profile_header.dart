@@ -119,7 +119,6 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         onEntityTap: (entityModel) {
           if (entityModel.type == EntityType.url) {
             HarpyNavigator.push(
-              context,
               WebviewScreen(
                 url: entityModel.data,
                 displayUrl: entityModel.displayText,
@@ -168,7 +167,6 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
         HarpyNavigator.push(
-          context,
           WebviewScreen(
             url: url.url,
             displayUrl: url.displayUrl,

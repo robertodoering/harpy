@@ -7,7 +7,7 @@ import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class TweetTile extends StatefulWidget {
   const TweetTile({
@@ -33,7 +33,7 @@ class TweetTileState extends State<TweetTile> {
     var userTimelineModel;
     try {
       userTimelineModel = UserTimelineModel.of(context);
-    } on ScopedModelError {
+    } on ProviderNotFoundError {
       // ignore
     }
 
@@ -48,12 +48,12 @@ class TweetTileState extends State<TweetTile> {
       translationService: serviceProvider.data.translationService,
     );
 
-    return ScopedModel<TweetModel>(
-      model: tweetModel,
+    return ChangeNotifierProvider<TweetModel>(
+      builder: (_) => tweetModel,
       child: SlideFadeInAnimation(
         duration: const Duration(milliseconds: 500),
-        child: ScopedModelDescendant<TweetModel>(
-          builder: (context, _, model) {
+        child: Consumer<TweetModel>(
+          builder: (context, model, _) {
             // the content of the tweet tile that rebuilds when the tweet
             // model notifies its listeners
             return TweetTileContent();

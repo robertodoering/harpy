@@ -4,7 +4,7 @@ import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 /// The list of [TweetTile] for a [TimelineModel].
 ///
@@ -151,8 +151,8 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   Widget build(BuildContext context) {
     _initScrollController();
 
-    return ScopedModelDescendant<T>(
-      builder: (context, oldChild, T timelineModel) {
+    return Consumer<T>(
+      builder: (context, T timelineModel, _) {
         _timelineModel = timelineModel;
 
         return RefreshIndicator(

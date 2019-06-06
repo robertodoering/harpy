@@ -3,31 +3,33 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
+import 'package:harpy/components/screens/home_screen.dart';
+import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/flushbar.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
-class LoginModel extends Model {
+class LoginModel extends ChangeNotifier {
   LoginModel({
-    @required this.applicationModel,
     @required this.homeTimelineModel,
     @required this.userService,
     @required this.userCache,
-  })  : assert(applicationModel != null),
-        assert(homeTimelineModel != null),
+  })  : assert(homeTimelineModel != null),
         assert(userService != null),
         assert(userCache != null);
 
-  final ApplicationModel applicationModel;
   final HomeTimelineModel homeTimelineModel;
   final UserService userService;
   final UserCache userCache;
 
+  ApplicationModel applicationModel;
+
   static LoginModel of(BuildContext context) {
-    return ScopedModel.of<LoginModel>(context);
+    return Provider.of<LoginModel>(context);
   }
 
   static final Logger _log = Logger("LoginModel");
@@ -39,9 +41,6 @@ class LoginModel extends Model {
 
   /// `true` while logging in and initializing on successful login.
   bool authorizing = false;
-
-  /// A callback that is called when the authorization completes.
-  VoidCallback onAuthorized;
 
   /// Login using the native twitter sdk.
   ///
@@ -66,8 +65,8 @@ class LoginModel extends Model {
         await initBeforeHome();
 
         // makes sure we were able to get the logged in user before navigating
-        if (onAuthorized != null && loggedInUser != null) {
-          onAuthorized();
+        if (applicationModel.loggedIn && loggedInUser != null) {
+          _navigateToHome();
         }
         break;
       case TwitterLoginStatus.cancelledByUser:
@@ -84,6 +83,14 @@ class LoginModel extends Model {
     }
 
     notifyListeners();
+  }
+
+  /// Navigates to the [HomeScreen] after successful authorization.
+  void _navigateToHome() {
+    _log.fine("navigating to home screen after login");
+    HarpyNavigator.pushReplacementRoute(FadeRoute(
+      builder: (context) => HomeScreen(),
+    ));
   }
 
   /// Logout using the native twitter sdk.
