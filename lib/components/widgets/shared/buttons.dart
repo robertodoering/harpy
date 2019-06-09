@@ -213,15 +213,18 @@ class CircleButton extends StatelessWidget {
 class HarpyButton extends StatefulWidget {
   const HarpyButton.raised({
     @required this.text,
+    @required this.onTap,
     this.backgroundColor = Colors.white,
   });
 
   const HarpyButton.flat({
     @required this.text,
+    @required this.onTap,
   }) : backgroundColor = null;
 
   final Text text;
   final Color backgroundColor;
+  final VoidCallback onTap;
 
   @override
   _HarpyButtonState createState() => _HarpyButtonState();
@@ -264,6 +267,7 @@ class _HarpyButtonState extends State<HarpyButton> {
           onTapDown: (_) => setState(() => _tapDown = true),
           onTapUp: (_) => setState(() => _tapDown = false),
           onTapCancel: () => setState(() => _tapDown = false),
+          onTap: widget.onTap,
           child: container,
         ),
       ),

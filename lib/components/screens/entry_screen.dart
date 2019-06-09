@@ -11,10 +11,6 @@ import 'package:harpy/models/application_model.dart';
 class EntryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? Colors.black
-          : Colors.white,
-    );
+    return Container(color: Colors.black);
   }
 }
