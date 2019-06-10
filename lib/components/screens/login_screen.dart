@@ -10,42 +10,45 @@ class LoginScreen extends StatelessWidget {
   final GlobalKey<SlideAnimationState> _slideKey =
       GlobalKey<SlideAnimationState>();
 
-  Widget _buildButtons(BuildContext context) {
-    final applicationModel = ApplicationModel.of(context);
+  Widget _buildLoginScreen(BuildContext context, LoginModel model) {
+    return SlideAnimation(
+      key: _slideKey,
+      duration: const Duration(milliseconds: 600),
+      endPosition: Offset(0, -MediaQuery.of(context).size.height),
+      child: Column(
+        children: <Widget>[
+          _buildText(),
+          _buildButtons(model),
+        ],
+      ),
+    );
+  }
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              WelcomeTo(),
-              SizedBox(height: 16),
-              HarpyTitle(),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Consumer<LoginModel>(
-            builder: (context, model, _) {
-              if (model.authorizing || applicationModel.loggedIn) {
-                return Container();
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    LoginButton(onTap: () => _startLogin(model)),
-                    SizedBox(height: 8),
-                    CreateAccountButton(),
-                    SizedBox(height: 16),
-                  ],
-                );
-              }
-            },
-          ),
-        ),
-      ],
+  Widget _buildText() {
+    return Expanded(
+      flex: 2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          WelcomeTo(),
+          SizedBox(height: 16),
+          HarpyTitle(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtons(LoginModel model) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          LoginButton(onTap: () => _startLogin(model)),
+          SizedBox(height: 8),
+          CreateAccountButton(),
+          SizedBox(height: 16),
+        ],
+      ),
     );
   }
 
@@ -56,6 +59,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final applicationModel = ApplicationModel.of(context);
+
     return Material(
       color: Colors.transparent,
       child: Container(
@@ -66,11 +71,14 @@ class LoginScreen extends StatelessWidget {
             colors: <Color>[Colors.black, Color(0xff17233d)],
           ),
         ),
-        child: SlideAnimation(
-          key: _slideKey,
-          duration: const Duration(milliseconds: 600),
-          endPosition: Offset(0, -MediaQuery.of(context).size.height),
-          child: _buildButtons(context),
+        child: Consumer<LoginModel>(
+          builder: (context, model, _) {
+            if (!applicationModel.loggedIn) {
+              return _buildLoginScreen(context, model);
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );

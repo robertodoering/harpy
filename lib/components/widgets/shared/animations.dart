@@ -250,7 +250,6 @@ class SlideAnimationState extends State<SlideAnimation>
   void initState() {
     _controller = AnimationController(vsync: this, duration: widget.duration)
       ..addListener(() {
-        print(_animation.value);
         if (mounted) setState(() {});
       });
 
