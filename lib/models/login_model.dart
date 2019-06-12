@@ -5,8 +5,8 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/screens/home_screen.dart';
-import 'package:harpy/components/screens/initialization_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/screens/setup_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/flushbar.dart';
@@ -90,10 +90,10 @@ class LoginModel extends ChangeNotifier {
           builder: (context) => HomeScreen(),
         ));
       } else {
-        _log.fine("navigating to initialization screen after login");
+        _log.fine("navigating to setup screen after login");
         // user logged in for the first time
         HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => InitializationScreen(),
+          builder: (context) => SetupScreen(),
         ));
       }
     } else {

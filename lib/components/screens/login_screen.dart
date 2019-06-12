@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/screens/initialization_screen.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/texts.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
@@ -52,7 +52,6 @@ class LoginScreen extends StatelessWidget {
           LoginButton(onTap: () => _startLogin(model)),
           SizedBox(height: 8),
           CreateAccountButton(),
-          SizedBox(height: 16),
         ],
       ),
     );
@@ -70,6 +69,7 @@ class LoginScreen extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Container(
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
@@ -103,13 +103,8 @@ class LoginButton extends StatelessWidget {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 2800),
       child: HarpyButton.raised(
-        text: Text(
-          "Login with Twitter",
-          style: Theme.of(context)
-              .textTheme
-              .button
-              .copyWith(color: Color(0xff17233d), fontSize: 16),
-        ),
+        text: "Login with Twitter",
+        textColor: Color(0xff17233d),
         onTap: onTap,
       ),
     );
@@ -122,13 +117,8 @@ class CreateAccountButton extends StatelessWidget {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 3000),
       child: HarpyButton.flat(
-        text: Text(
-          "Create an account",
-          style: Theme.of(context)
-              .textTheme
-              .button
-              .copyWith(color: Colors.white, fontSize: 16),
-        ),
+        text: "Create an account",
+        textColor: Colors.white,
         onTap: () => launchUrl("https://twitter.com/signup"),
       ),
     );

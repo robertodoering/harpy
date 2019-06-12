@@ -213,16 +213,19 @@ class CircleButton extends StatelessWidget {
 class HarpyButton extends StatefulWidget {
   const HarpyButton.raised({
     @required this.text,
+    this.textColor,
     @required this.onTap,
     this.backgroundColor = Colors.white,
   });
 
   const HarpyButton.flat({
     @required this.text,
+    this.textColor,
     @required this.onTap,
   }) : backgroundColor = null;
 
-  final Text text;
+  final String text;
+  final Color textColor;
   final Color backgroundColor;
   final VoidCallback onTap;
 
@@ -238,6 +241,11 @@ class _HarpyButtonState extends State<HarpyButton> {
     final borderRadius = BorderRadius.circular(64);
     final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
 
+    final style = Theme.of(context)
+        .textTheme
+        .button
+        .copyWith(fontSize: 16, color: widget.textColor);
+
     Widget container;
 
     if (widget.backgroundColor != null) {
@@ -247,7 +255,7 @@ class _HarpyButtonState extends State<HarpyButton> {
         borderRadius: borderRadius,
         child: Padding(
           padding: padding,
-          child: widget.text,
+          child: Text(widget.text, style: style),
         ),
       );
     } else {
@@ -256,7 +264,7 @@ class _HarpyButtonState extends State<HarpyButton> {
         decoration: BoxDecoration(
           borderRadius: borderRadius,
         ),
-        child: widget.text,
+        child: Text(widget.text, style: style),
       );
     }
 
