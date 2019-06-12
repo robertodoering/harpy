@@ -256,7 +256,7 @@ class SlideAnimationState extends State<SlideAnimation>
     _animation = Tween<Offset>(
       begin: Offset.zero,
       end: widget.endPosition,
-    ).animate(CurveTween(curve: Curves.easeInOut).animate(_controller));
+    ).animate(CurveTween(curve: Curves.easeInCubic).animate(_controller));
 
     super.initState();
   }

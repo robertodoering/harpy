@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/screens/initialization_screen.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:provider/provider.dart';
 
 /// Shows a [HarpyTitle] and a [LoginButton] to allow a user to login.
 class LoginScreen extends StatelessWidget {
-  final GlobalKey<SlideAnimationState> _slideKey =
+  final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
   Widget _buildLoginScreen(BuildContext context, LoginModel model) {
     return SlideAnimation(
-      key: _slideKey,
+      key: _slideLoginKey,
       duration: const Duration(milliseconds: 600),
       endPosition: Offset(0, -MediaQuery.of(context).size.height),
       child: Column(
@@ -30,9 +32,13 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          WelcomeTo(),
+          SubtitleText("welcome to"),
           SizedBox(height: 16),
-          HarpyTitle(),
+          TitleText(
+            "Harpy",
+            fontSize: 64,
+            delay: const Duration(milliseconds: 800),
+          ),
         ],
       ),
     );
@@ -53,7 +59,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<void> _startLogin(LoginModel model) async {
-    await _slideKey.currentState.forward();
+    await _slideLoginKey.currentState.forward();
     model.login();
   }
 
@@ -123,33 +129,8 @@ class CreateAccountButton extends StatelessWidget {
               .button
               .copyWith(color: Colors.white, fontSize: 16),
         ),
+        onTap: () => launchUrl("https://twitter.com/signup"),
       ),
-    );
-  }
-}
-
-class WelcomeTo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SlideFadeInAnimation(
-      duration: Duration(seconds: 1),
-      offset: Offset(0.0, 50.0),
-      child: Text("welcome to", style: Theme.of(context).textTheme.subtitle),
-      curve: Curves.easeInOut,
-    );
-  }
-}
-
-class HarpyTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SlideFadeInAnimation(
-      duration: Duration(seconds: 2),
-      delay: Duration(milliseconds: 800),
-      offset: Offset(0.0, 75.0),
-      child: Text("Harpy",
-          style: Theme.of(context).textTheme.title.copyWith(fontSize: 64)),
-      curve: Curves.easeOutCubic,
     );
   }
 }
