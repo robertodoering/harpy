@@ -28,7 +28,6 @@ class LoginScreen extends StatelessWidget {
 
   Widget _buildText() {
     return Expanded(
-      flex: 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
