@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter/widgets.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
@@ -60,7 +60,13 @@ class SetupScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Expanded(
-            child: ThemeSelection(),
+            child: SlideFadeInAnimation(
+              delay: const Duration(milliseconds: 3000),
+              duration: const Duration(seconds: 1),
+              offset: const Offset(0.0, 50.0),
+              curve: Curves.easeInOut,
+              child: ThemeSelection(),
+            ),
           ),
           Spacer(),
           BounceInAnimation(
@@ -101,7 +107,40 @@ class SetupScreen extends StatelessWidget {
 }
 
 // todo
-class ThemeSelection extends StatelessWidget {
+// todo: prevent gestures before the theme selection shows on screen
+class ThemeSelection extends StatefulWidget {
+  @override
+  _ThemeSelectionState createState() => _ThemeSelectionState();
+}
+
+class _ThemeSelectionState extends State<ThemeSelection> {
+  final _duration = const Duration(milliseconds: 300);
+  final _curve = Curves.easeOutCubic;
+
+  PageController _controller;
+
+  int _currentPage = 0;
+
+  bool get _canPrevious => _currentPage > 0;
+  bool get _canNext => _currentPage < _themes.length - 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(viewportFraction: .3)
+      ..addListener(() {
+        setState(() {
+          _currentPage = _controller.page.round();
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   final List<Color> _themes = <Color>[
     Colors.blue,
     Colors.red,
@@ -109,15 +148,107 @@ class ThemeSelection extends StatelessWidget {
     Colors.black,
   ];
 
-  Widget _itemBuilder(BuildContext context, int index) {
-    return CircleAvatar(backgroundColor: _themes[index]);
+  List<Widget> _buildItems() {
+    return _themes.map((color) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 60,
+            height: 60,
+            decoration: ShapeDecoration(
+              shape: CircleBorder(),
+              color: color,
+            ),
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  void _previous() {
+    if (_canPrevious) {
+      _controller.previousPage(duration: _duration, curve: _curve);
+    }
+  }
+
+  void _next() {
+    if (_canNext) {
+      _controller.nextPage(duration: _duration, curve: _curve);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Swiper(
-      itemCount: _themes.length,
-      itemBuilder: _itemBuilder,
+    final iconColor = IconTheme.of(context).color;
+    final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
+    final rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
+
+    String text = "crow";
+    if (_currentPage == 1) text = "pheonix";
+    if (_currentPage == 2) text = "swan";
+
+    return Stack(
+      children: <Widget>[
+        // theme carousel
+        PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _controller,
+          children: _buildItems(),
+        ),
+
+        // theme title
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                letterSpacing: 2.0,
+              ),
+            ),
+          ),
+        ),
+
+        // left button
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Icon(Icons.chevron_left, size: 32, color: leftIconColor),
+          ),
+        ),
+
+        // right button
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(Icons.chevron_right, size: 32, color: rightIconColor),
+          ),
+        ),
+
+        // previous / next gesture detection
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: GestureDetector(
+                onTap: _previous,
+                behavior: HitTestBehavior.translucent,
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: _next,
+                behavior: HitTestBehavior.translucent,
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

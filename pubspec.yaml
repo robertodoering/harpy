@@ -18,7 +18,6 @@ dependencies:
   flutter_colorpicker: ^0.2.5
   flare_flutter: ^1.5.1
   flushbar: 1.5.3
-  flutter_swiper: ^1.1.6
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
