@@ -188,66 +188,69 @@ class _ThemeSelectionState extends State<ThemeSelection> {
     if (_currentPage == 1) text = "pheonix";
     if (_currentPage == 2) text = "swan";
 
-    return Stack(
+    return Column(
       children: <Widget>[
-        // theme carousel
-        PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _controller,
-          children: _buildItems(),
-        ),
-
-        // theme title
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                letterSpacing: 2.0,
-              ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              letterSpacing: 2.0,
             ),
           ),
         ),
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              // theme carousel
+              PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _controller,
+                children: _buildItems(),
+              ),
 
-        // left button
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Icon(Icons.chevron_left, size: 32, color: leftIconColor),
+              // left button
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child:
+                      Icon(Icons.chevron_left, size: 32, color: leftIconColor),
+                ),
+              ),
+
+              // right button
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Icon(Icons.chevron_right,
+                      size: 32, color: rightIconColor),
+                ),
+              ),
+
+              // previous / next gesture detection
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: _previous,
+                      behavior: HitTestBehavior.translucent,
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: _next,
+                      behavior: HitTestBehavior.translucent,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
-
-        // right button
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Icon(Icons.chevron_right, size: 32, color: rightIconColor),
-          ),
-        ),
-
-        // previous / next gesture detection
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: GestureDetector(
-                onTap: _previous,
-                behavior: HitTestBehavior.translucent,
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: _next,
-                behavior: HitTestBehavior.translucent,
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
