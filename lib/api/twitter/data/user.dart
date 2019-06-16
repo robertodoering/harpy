@@ -17,7 +17,6 @@ class User {
   DateTime createdAt;
   @JsonKey(name: 'default_profile')
   bool defaultProfile;
-  @JsonKey(name: 'url')
   String url;
   @JsonKey(name: 'contributors_enabled')
   bool contributorsEnabled;
@@ -25,7 +24,6 @@ class User {
   int favouritesCount;
   @JsonKey(name: 'profile_image_url_https')
   String profileImageUrlHttps;
-  @JsonKey(name: 'id')
   int id;
   @JsonKey(name: 'listed_count')
   int listedCount;
@@ -35,19 +33,14 @@ class User {
   String profileTextColor;
   @JsonKey(name: 'followers_count')
   int followersCount;
-  @JsonKey(name: 'lang')
   String lang;
-  @JsonKey(name: 'protected')
   bool protected;
   @JsonKey(name: 'geo_enabled')
   bool geoEnabled;
-  @JsonKey(name: 'notifications')
   bool notifications;
-  @JsonKey(name: 'description')
   String description;
   @JsonKey(name: 'profile_background_color')
   String profileBackgroundColor;
-  @JsonKey(name: 'verified')
   bool verified;
   @JsonKey(name: 'profile_background_image_url_https')
   String profileBackgroundImageUrlHttps;
@@ -59,13 +52,13 @@ class User {
   bool defaultProfileImage;
   @JsonKey(name: 'friends_count')
   int friendsCount;
-  @JsonKey(name: 'following')
   bool following;
   @JsonKey(name: 'show_all_inline_media')
   bool showAllInlineMedia;
   @JsonKey(name: 'screen_name')
   String screenName;
   UserEntities entities;
+  @JsonKey(name: 'profile_banner_url')
   String profileBannerUrl;
   String location;
 
@@ -104,44 +97,6 @@ class User {
     this.profileBannerUrl,
     this.location,
   );
-
-  factory User.mock() {
-    return User(
-      "Harpy",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "harpy",
-      null,
-      null,
-      null,
-    );
-  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
