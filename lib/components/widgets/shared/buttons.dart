@@ -210,64 +210,25 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-class HarpyButton extends StatefulWidget {
-  const HarpyButton.raised({
-    @required this.text,
-    this.textColor,
-    @required this.onTap,
-    this.backgroundColor = Colors.white,
+/// The base of the harpy button used by the raised and flat harpy button.
+class _HarpyButtonBase extends StatefulWidget {
+  const _HarpyButtonBase({
+    this.onTap,
+    @required this.child,
   });
 
-  const HarpyButton.flat({
-    @required this.text,
-    this.textColor,
-    @required this.onTap,
-  }) : backgroundColor = null;
-
-  final String text;
-  final Color textColor;
-  final Color backgroundColor;
   final VoidCallback onTap;
+  final Widget child;
 
   @override
-  _HarpyButtonState createState() => _HarpyButtonState();
+  _HarpyButtonBaseState createState() => _HarpyButtonBaseState();
 }
 
-class _HarpyButtonState extends State<HarpyButton> {
+class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   bool _tapDown = false;
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(64);
-    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
-
-    final style = Theme.of(context)
-        .textTheme
-        .button
-        .copyWith(fontSize: 16, color: widget.textColor);
-
-    Widget container;
-
-    if (widget.backgroundColor != null) {
-      container = Material(
-        color: widget.backgroundColor,
-        elevation: 8,
-        borderRadius: borderRadius,
-        child: Padding(
-          padding: padding,
-          child: Text(widget.text, style: style),
-        ),
-      );
-    } else {
-      container = Container(
-        padding: padding,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-        ),
-        child: Text(widget.text, style: style),
-      );
-    }
-
     return Center(
       child: AnimatedScale(
         scale: _tapDown ? .9 : 1,
@@ -276,7 +237,76 @@ class _HarpyButtonState extends State<HarpyButton> {
           onTapUp: (_) => setState(() => _tapDown = false),
           onTapCancel: () => setState(() => _tapDown = false),
           onTap: widget.onTap,
-          child: container,
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+}
+
+/// A raised button with a background.
+class RaisedHarpyButton extends StatelessWidget {
+  const RaisedHarpyButton({
+    @required this.text,
+    @required this.onTap,
+  });
+
+  final String text;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+
+    final theme = Theme.of(context);
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Material(
+        color: theme.buttonColor,
+        elevation: 8,
+        borderRadius: borderRadius,
+        child: Padding(
+          padding: padding,
+          child: Text(text, style: theme.textTheme.button),
+        ),
+      ),
+    );
+  }
+}
+
+/// A flat button without a background that appears as text.
+///
+/// Should only be used when the context makes it clear it can be tapped.
+class NewFlatHarpyButton extends StatelessWidget {
+  const NewFlatHarpyButton({
+    @required this.text,
+    @required this.onTap,
+  });
+
+  final String text;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+
+    final theme = Theme.of(context);
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+        ),
+        child: Text(
+          text,
+          style: theme.textTheme.button.copyWith(
+            color: theme.textTheme.body1.color,
+          ),
         ),
       ),
     );

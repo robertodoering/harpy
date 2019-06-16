@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 
-/// Builds a title text that takes 2 seconds to slide into position.
+/// Builds a text that takes 2 seconds to slide into position.
 ///
 /// An optional [delay] can be set to hide the widget for that amount.
-/// Uses the [TextTheme.title] with an optional modified [fontSize].
-class TitleText extends StatelessWidget {
-  const TitleText(
+/// Uses the [TextTheme.display4] text style by default if [style] is omitted.
+class PrimaryDisplayText extends StatelessWidget {
+  const PrimaryDisplayText(
     this.text, {
-    this.fontSize,
+    this.style,
     this.overflow,
     this.delay = Duration.zero,
   });
 
   final String text;
-  final double fontSize;
+  final TextStyle style;
   final TextOverflow overflow;
 
   final Duration delay;
 
   @override
   Widget build(BuildContext context) {
+    final display4 = Theme.of(context).textTheme.display4;
+
     return SlideFadeInAnimation(
       duration: const Duration(seconds: 2),
       delay: delay,
@@ -28,19 +30,19 @@ class TitleText extends StatelessWidget {
       child: Text(
         text,
         overflow: overflow,
-        style: Theme.of(context).textTheme.title.copyWith(fontSize: fontSize),
+        style: style ?? display4,
       ),
       curve: Curves.easeOutCubic,
     );
   }
 }
 
-/// Builds a subtitle text that takes 1 second to slide into position.
+/// Builds a text that takes 1 second to slide into position.
 ///
 /// An optional [delay] can be set to hide the widget for that amount.
-/// Uses the [TextTheme.subtitle].
-class SubtitleText extends StatelessWidget {
-  const SubtitleText(
+/// Uses the [TextTheme.display1] text style.
+class SecondaryDisplayText extends StatelessWidget {
+  const SecondaryDisplayText(
     this.text, {
     this.textAlign,
     this.delay = Duration.zero,
@@ -53,6 +55,8 @@ class SubtitleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final display1 = Theme.of(context).textTheme.display1;
+
     return SlideFadeInAnimation(
       delay: delay,
       duration: const Duration(seconds: 1),
@@ -60,7 +64,7 @@ class SubtitleText extends StatelessWidget {
       child: Text(
         text,
         textAlign: textAlign,
-        style: Theme.of(context).textTheme.subtitle,
+        style: display1,
       ),
       curve: Curves.easeInOut,
     );

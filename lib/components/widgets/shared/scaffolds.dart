@@ -10,8 +10,7 @@ class HarpyScaffold extends StatelessWidget {
     this.actions,
     this.drawer,
     this.body,
-    this.primaryBackgroundColor,
-    this.secondaryBackgroundColor,
+    this.backgroundColors,
   });
 
   final String title;
@@ -20,9 +19,8 @@ class HarpyScaffold extends StatelessWidget {
   final Widget body;
 
   /// When set the [HarpyBackground] will override the active theme background
-  /// [Color]s.
-  final Color primaryBackgroundColor;
-  final Color secondaryBackgroundColor;
+  /// colors.
+  final List<Color> backgroundColors;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +31,7 @@ class HarpyScaffold extends StatelessWidget {
       actions: actions,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.title.copyWith(
-              fontSize: 20.0,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
+        style: Theme.of(context).textTheme.title,
       ),
     );
 
@@ -48,8 +43,7 @@ class HarpyScaffold extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           HarpyBackground(
-            startColor: primaryBackgroundColor,
-            endColor: secondaryBackgroundColor,
+            colors: backgroundColors,
           ),
           Column(
             children: <Widget>[
@@ -57,12 +51,7 @@ class HarpyScaffold extends StatelessWidget {
                 constraints: BoxConstraints(maxHeight: extent),
                 child: appBar,
               ),
-              Expanded(
-                child: Material(
-                  color: Colors.transparent,
-                  child: body,
-                ),
-              ),
+              Expanded(child: body),
             ],
           )
         ],

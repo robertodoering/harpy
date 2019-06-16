@@ -31,11 +31,10 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SubtitleText("welcome to"),
+          SecondaryDisplayText("welcome to"),
           SizedBox(height: 16),
-          TitleText(
+          PrimaryDisplayText(
             "Harpy",
-            fontSize: 64,
             delay: const Duration(milliseconds: 800),
           ),
         ],
@@ -101,9 +100,8 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 2800),
-      child: HarpyButton.raised(
+      child: RaisedHarpyButton(
         text: "Login with Twitter",
-        textColor: Color(0xff17233d),
         onTap: onTap,
       ),
     );
@@ -115,9 +113,8 @@ class CreateAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 3000),
-      child: HarpyButton.flat(
+      child: NewFlatHarpyButton(
         text: "Create an account",
-        textColor: Colors.white,
         onTap: () => launchUrl("https://twitter.com/signup"),
       ),
     );

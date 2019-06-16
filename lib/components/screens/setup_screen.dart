@@ -34,11 +34,11 @@ class SetupScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SubtitleText("welcome"),
+          SecondaryDisplayText("welcome"),
           SizedBox(height: 16),
-          TitleText(
+          PrimaryDisplayText(
             loginModel.loggedInUser.name,
-            fontSize: 48,
+            style: Theme.of(context).textTheme.display3,
             overflow: TextOverflow.ellipsis,
             delay: const Duration(milliseconds: 800),
           ),
@@ -53,7 +53,7 @@ class SetupScreen extends StatelessWidget {
       child: Column(
         children: <Widget>[
           SizedBox(height: 8),
-          SubtitleText(
+          SecondaryDisplayText(
             "select your theme",
             textAlign: TextAlign.center,
             delay: const Duration(milliseconds: 3000),
@@ -71,9 +71,8 @@ class SetupScreen extends StatelessWidget {
           Spacer(),
           BounceInAnimation(
             delay: const Duration(milliseconds: 4000),
-            child: HarpyButton.flat(
+            child: NewFlatHarpyButton(
               text: "continue",
-              textColor: Colors.white,
               onTap: _navigateToHome,
             ),
           ),
@@ -185,7 +184,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
     final rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
 
     String text = "crow";
-    if (_currentPage == 1) text = "pheonix";
+    if (_currentPage == 1) text = "phoenix";
     if (_currentPage == 2) text = "swan";
 
     return Column(

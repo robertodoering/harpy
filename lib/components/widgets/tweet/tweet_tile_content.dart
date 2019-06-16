@@ -11,7 +11,6 @@ import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 
 class TweetTileContent extends StatefulWidget {
@@ -210,7 +209,7 @@ class TweetNameColumn extends StatelessWidget {
           onTap: () => _openUserProfile(context, model.tweet.user),
           child: Text(
             model.screenNameAndTime,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.body2,
           ),
         ),
       ],
@@ -281,21 +280,25 @@ class _TweetTranslation extends StatelessWidget {
   }
 
   Widget _buildTranslatedText(BuildContext context) {
+    final language = model.translation?.language ?? "Unknown";
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 8.0),
 
         // original language text
-        Row(
-          children: <Widget>[
-            Text(
-              "Translated from ",
-              style: Theme.of(context).textTheme.display1,
+        Text.rich(TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: "Translated from",
+              style: Theme.of(context).textTheme.body2,
             ),
-            Text(model.translation.language),
+            TextSpan(
+              text: " $language",
+            ),
           ],
-        ),
+        )),
 
         SizedBox(height: 4.0),
 
@@ -399,8 +402,6 @@ class _TweetActionsRow extends StatelessWidget {
       return Container();
     }
 
-    final themeModel = ThemeSettingsModel.of(context);
-
     return Row(
       children: <Widget>[
         // retweet action
@@ -409,7 +410,7 @@ class _TweetActionsRow extends StatelessWidget {
           inactiveIcon: Icons.repeat,
           activeIcon: Icons.repeat,
           text: model.retweetCount,
-          color: themeModel.harpyTheme.retweetColor,
+          color: Colors.green,
           activate: model.retweet,
           deactivate: model.unretweet,
         ),

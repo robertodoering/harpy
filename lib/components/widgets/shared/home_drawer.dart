@@ -23,8 +23,7 @@ class HomeDrawer extends StatelessWidget {
     HarpyNavigator.pushReplacement(LoginScreen());
   }
 
-  Widget _buildActions(BuildContext context) {
-    final loginModel = LoginModel.of(context);
+  Widget _buildActions(BuildContext context, LoginModel loginModel) {
     final directoryService = ServiceProvider.of(context).data.directoryService;
 
     return Column(
@@ -87,7 +86,7 @@ class HomeDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UserDrawerHeader(loginModel.loggedInUser),
-            Expanded(child: _buildActions(context)),
+            Expanded(child: _buildActions(context, loginModel)),
           ],
         ),
       ),
@@ -101,8 +100,11 @@ class UserDrawerHeader extends StatelessWidget {
 
   final User user;
 
+  void _navigateToUserScreen() {
+    HarpyNavigator.push(UserProfileScreen(user: user));
+  }
+
   Widget _buildAvatarRow(BuildContext context) {
-    final loginModel = LoginModel.of(context);
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
     String imageUrl = user.getProfileImageUrlFromQuality(
@@ -110,15 +112,11 @@ class UserDrawerHeader extends StatelessWidget {
     );
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        // tappable circle avatar
+        // circle avatar
         GestureDetector(
-          onTap: () {
-            HarpyNavigator.push(
-              UserProfileScreen(user: loginModel.loggedInUser),
-            );
-          },
+          onTap: _navigateToUserScreen,
           child: CircleAvatar(
             radius: 32.0,
             backgroundColor: Colors.transparent,
@@ -128,30 +126,24 @@ class UserDrawerHeader extends StatelessWidget {
 
         SizedBox(width: 16.0),
 
+        // name + username
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  HarpyNavigator.push(
-                    UserProfileScreen(user: loginModel.loggedInUser),
-                  );
-                },
+                onTap: _navigateToUserScreen,
                 child: Text(
                   user.name,
-                  style: Theme.of(context).textTheme.display2,
+                  style: Theme.of(context).textTheme.title,
                 ),
               ),
+              SizedBox(height: 4.0),
               GestureDetector(
-                onTap: () {
-                  HarpyNavigator.push(
-                    UserProfileScreen(user: loginModel.loggedInUser),
-                  );
-                },
+                onTap: _navigateToUserScreen,
                 child: Text(
                   "@${user.screenName}",
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.subhead,
                 ),
               ),
             ],
@@ -181,9 +173,12 @@ class UserDrawerHeader extends StatelessWidget {
         children: <Widget>[
           _buildAvatarRow(context),
           SizedBox(height: 16.0),
-          FollowersCount(
-            followers: user.followersCount, // todo: limit number
-            following: user.friendsCount, // todo: limit number
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: FollowersCount(
+              followers: user.followersCount,
+              following: user.friendsCount,
+            ),
           ),
         ],
       ),

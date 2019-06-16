@@ -34,7 +34,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         Flexible(
           child: Text(
             model.user.name,
-            style: Theme.of(context).textTheme.display2,
+            style: Theme.of(context).textTheme.title,
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -55,7 +55,6 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     );
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         // avatar
         CircleAvatar(
@@ -70,12 +69,12 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _buildNameRow(model),
+              SizedBox(height: 4.0),
               Text(
-                "@" + model.user.screenName,
-                style: Theme.of(context).textTheme.display1,
+                "@${model.user.screenName}",
+                style: Theme.of(context).textTheme.subhead,
               ),
             ],
           ),
@@ -176,7 +175,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     Widget text = Text.rich(
       TextSpan(
-        text: "${url.displayUrl} ",
+        text: url.displayUrl,
         style: Theme.of(context).textTheme.body1.copyWith(
               color: Theme.of(context).accentColor, // todo: user color?
               fontWeight: FontWeight.bold,
@@ -203,7 +202,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
           FollowersCount(
             followers: model.user.followersCount,
             following: model.user.friendsCount,
-          )
+          ),
         ],
       ),
     );
