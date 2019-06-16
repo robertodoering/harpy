@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
-import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +20,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   static final Logger _log = Logger("ThemeSettingsModel");
 
   /// The selected theme used by the app.
-  HarpyTheme harpyTheme = HarpyTheme.light();
+  HarpyTheme harpyTheme = HarpyTheme.fromData(PredefinedThemes.crow);
 
   /// The id of the selected theme.
   ///
@@ -48,22 +47,22 @@ class ThemeSettingsModel extends ChangeNotifier {
 
     _log.fine("initializing harpy theme with id $id");
 
-    if (id == 0) {
-      harpyTheme = HarpyTheme.light();
-    } else if (id == 1) {
-      harpyTheme = HarpyTheme.dark();
-    } else {
-      // load harpyThemeData for custom theme
-      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
-
-      if (customThemeData != null) {
-        harpyTheme = HarpyTheme.custom(customThemeData);
-      } else {
-        _log.warning(
-            "unable to load custom theme for id: $id, defaulting to dark theme");
-        harpyTheme = HarpyTheme.dark();
-      }
-    }
+//    if (id == 0) { // todo
+//      harpyTheme = HarpyTheme.light();
+//    } else if (id == 1) {
+//      harpyTheme = HarpyTheme.dark();
+//    } else {
+//      // load harpyThemeData for custom theme
+//      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
+//
+//      if (customThemeData != null) {
+//        harpyTheme = HarpyTheme.custom(customThemeData);
+//      } else {
+//        _log.warning(
+//            "unable to load custom theme for id: $id, defaulting to dark theme");
+//        harpyTheme = HarpyTheme.dark();
+//      }
+//    }
 
     notifyListeners();
   }
