@@ -214,7 +214,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 8),
                   child:
                       Icon(Icons.chevron_left, size: 32, color: leftIconColor),
                 ),
@@ -224,7 +224,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
+                  padding: const EdgeInsets.only(right: 8),
                   child: Icon(Icons.chevron_right,
                       size: 32, color: rightIconColor),
                 ),
@@ -234,12 +234,15 @@ class _ThemeSelectionState extends State<ThemeSelection> {
               Row(
                 children: <Widget>[
                   Expanded(
+                    flex: 2,
                     child: GestureDetector(
                       onTap: _previous,
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),
+                  Expanded(child: Container()),
                   Expanded(
+                    flex: 2,
                     child: GestureDetector(
                       onTap: _next,
                       behavior: HitTestBehavior.translucent,
