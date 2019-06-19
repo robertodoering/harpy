@@ -95,12 +95,12 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
       return Container();
     }
 
-    // todo: style button with background and border?
-    return FlatHarpyButton(
+    return RaisedHarpyButton(
       text: model.user.following ? "Following" : "Follow",
-      color:
-          model.user.following ? Theme.of(context).accentColor : Colors.white,
       onTap: model.changeFollowState,
+      dense: true,
+      backgroundColor:
+          model.user.following ? Theme.of(context).primaryColor : null,
     );
   }
 
