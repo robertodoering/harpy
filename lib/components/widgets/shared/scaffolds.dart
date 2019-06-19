@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
 class HarpyScaffold extends StatelessWidget {
@@ -125,12 +126,15 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
     SliverAppBar sliverAppBar = SliverAppBar(
       expandedHeight: widget.expandedAppBarSpace,
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       pinned: true,
-      flexibleSpace: HarpyBackground(
+      flexibleSpace: Container(
+        color: themeSettingsModel.harpyTheme.backgroundColors.first,
         child: FlexibleSpaceBar(
           centerTitle: true,
           // padding to prevent the text to get below the back arrow
@@ -140,7 +144,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
               opacity: opacity,
               child: Text(
                 widget.title ?? "",
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.title,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

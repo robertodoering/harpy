@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/user_profile/user_profile_tweet_list.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:harpy/models/user_profile_model.dart';
 
 /// Builds the content for the [UserProfileScreen].
@@ -19,16 +19,26 @@ class UserProfileContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLoading(BuildContext context) {
+  Widget _buildLoading(
+    BuildContext context,
+    ThemeSettingsModel themeSettingsModel,
+  ) {
     return FadingNestedScaffold(
-      background: HarpyBackground(),
+      background: Container(
+        color: themeSettingsModel.harpyTheme.backgroundColors.first,
+      ),
       body: Center(child: CircularProgressIndicator()),
     );
   }
 
-  Widget _buildError(BuildContext context) {
+  Widget _buildError(
+    BuildContext context,
+    ThemeSettingsModel themeSettingsModel,
+  ) {
     return FadingNestedScaffold(
-      background: HarpyBackground(),
+      background: Container(
+        color: themeSettingsModel.harpyTheme.backgroundColors.first,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(child: Text("Error loading user")),
@@ -39,15 +49,16 @@ class UserProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = UserProfileModel.of(context);
+    final themeSettingsModel = ThemeSettingsModel.of(context);
 
     if (model.loadingUser) {
-      return _buildLoading(context);
+      return _buildLoading(context, themeSettingsModel);
     } else if (model.user != null) {
       return _buildTweetList(context, model);
     } else {
       // if we are not loading the user and user is null assume there was an
       // error while loading the user
-      return _buildError(context);
+      return _buildError(context, themeSettingsModel);
     }
   }
 }
