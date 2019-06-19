@@ -140,6 +140,10 @@ class HarpyTheme {
       primaryColor: primaryColor,
       accentColor: accentColor,
       buttonColor: complimentaryColor,
+
+      // used for the background color of Material widgets
+      cardColor: primaryColor,
+      canvasColor: primaryColor,
     );
 
 //    final textTheme = _baseTheme.textTheme.apply(fontFamily: "OpenSans");
