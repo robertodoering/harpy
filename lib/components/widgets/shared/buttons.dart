@@ -249,27 +249,39 @@ class RaisedHarpyButton extends StatelessWidget {
   const RaisedHarpyButton({
     @required this.text,
     @required this.onTap,
+    this.dense = false,
+    this.backgroundColor,
   });
 
   final String text;
   final VoidCallback onTap;
+  final bool dense;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(64);
-    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 24 : 32,
+    );
 
     final theme = Theme.of(context);
+
+    final color = backgroundColor ?? theme.buttonColor;
+    final style = backgroundColor != null
+        ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
+        : theme.textTheme.button;
 
     return _HarpyButtonBase(
       onTap: onTap,
       child: Material(
-        color: theme.buttonColor,
+        color: color,
         elevation: 8,
         borderRadius: borderRadius,
         child: Padding(
           padding: padding,
-          child: Text(text, style: theme.textTheme.button),
+          child: Text(text, style: style),
         ),
       ),
     );
