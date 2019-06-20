@@ -130,7 +130,6 @@ class HarpyTheme {
         );
   }
 
-  // todo: change color of dialogs & popup menus
   ThemeData get theme {
     final complimentaryColor = backgroundComplimentaryColor;
 
@@ -145,86 +144,6 @@ class HarpyTheme {
       cardColor: primaryColor,
       canvasColor: primaryColor,
     );
-
-//    final textTheme = _baseTheme.textTheme.apply(fontFamily: "OpenSans");
-//
-//    return _baseTheme.copyWith(
-//      primaryColor: accentColor,
-//      accentColor: accentColor,
-//      scaffoldBackgroundColor: primaryBackgroundColor,
-//      backgroundColor: primaryBackgroundColor,
-//      dialogBackgroundColor: primaryBackgroundColor,
-//      canvasColor: primaryBackgroundColor, // drawer background (base == dark)
-//
-//      buttonColor: Colors.white,
-//      indicatorColor: accentColor,
-//      toggleableActiveColor: accentColor,
-//      textSelectionHandleColor: accentColor,
-//      textSelectionColor: accentColor,
-//
-//      // determines the status bar icon color
-//      primaryColorBrightness: backgroundColor1Brightness,
-//
-//      // used for the icon and text color in the appbar
-//      primaryIconTheme: _baseTheme.primaryIconTheme.copyWith(
-//        color: backgroundComplimentaryColor,
-//      ),
-//
-//      // text
-//      textTheme: textTheme.copyWith(
-//          title: textTheme.title.copyWith(
-//            fontSize: 48.0,
-//            letterSpacing: 6.0,
-//            color: Colors.white,
-//            fontFamily: "Comfortaa",
-//            fontWeight: FontWeight.w300,
-//          ),
-//          subtitle: textTheme.subtitle.copyWith(
-//            fontSize: 18.0,
-//            letterSpacing: 2.0,
-//            color: Colors.white,
-//            fontFamily: "Comfortaa",
-//            fontWeight: FontWeight.w300,
-//          ),
-//          button: textTheme.button.copyWith(
-//            color: harpyColor,
-//            fontSize: 16.0,
-//          ),
-//
-//          // drawer username
-//          display1: textTheme.display1.copyWith(
-//            fontSize: 14.0,
-//          ),
-//
-//          // drawer name
-//          display2: textTheme.display2.copyWith(
-//            fontSize: 24.0,
-//          ),
-//
-//          // settings header
-//          display3: textTheme.display2.copyWith(
-//            fontSize: 18.0,
-//          ),
-//
-//          // default text
-//          body1: textTheme.body1.copyWith(
-//            fontSize: 14.0,
-//          ),
-//
-//          // username
-//          caption: textTheme.caption.copyWith(
-//            fontSize: 12.0,
-//          )),
-//
-//      dialogTheme: _baseTheme.dialogTheme.copyWith(
-//        titleTextStyle: textTheme.title.copyWith(
-//          fontSize: 24.0,
-//          color: Colors.white,
-//          fontFamily: "Comfortaa",
-//          fontWeight: FontWeight.w300,
-//        ),
-//      ),
-//    );
   }
 }
 
