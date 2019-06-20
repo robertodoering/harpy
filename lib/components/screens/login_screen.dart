@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/texts.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
@@ -66,15 +67,7 @@ class LoginScreen extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: <Color>[Colors.black, Color(0xff17233d)],
-          ),
-        ),
+      child: HarpyBackground(
         child: Consumer<LoginModel>(
           builder: (context, model, _) {
             if (!applicationModel.loggedIn) {

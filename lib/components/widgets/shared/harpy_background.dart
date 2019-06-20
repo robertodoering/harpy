@@ -18,6 +18,12 @@ class HarpyBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final harpyTheme = ThemeSettingsModel.of(context).harpyTheme;
 
+    final backgroundColors = colors ?? harpyTheme.backgroundColors;
+
+    if (backgroundColors.length == 1) {
+      backgroundColors.add(backgroundColors.first);
+    }
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
