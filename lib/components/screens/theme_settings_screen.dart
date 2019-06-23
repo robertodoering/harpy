@@ -21,19 +21,16 @@ class ThemeSettingsScreen extends StatelessWidget {
 
 /// Builds the [ThemeCard]s for selecting a different [HarpyTheme].
 class ThemeSelection extends StatelessWidget {
-  final List<HarpyTheme> _harpyThemes = [
-//    HarpyTheme.light(), // todo
-//    HarpyTheme.dark(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final harpyThemes = PredefinedThemes.themes;
+
     List<Widget> children = [];
 
-    children.addAll(_harpyThemes.map((harpyTheme) {
+    children.addAll(harpyThemes.map((harpyTheme) {
       return ThemeCard(
         harpyTheme: harpyTheme,
-        id: _harpyThemes.indexOf(harpyTheme),
+        id: harpyThemes.indexOf(harpyTheme),
       );
     }).toList());
 

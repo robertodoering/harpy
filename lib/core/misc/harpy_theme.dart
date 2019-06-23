@@ -3,6 +3,7 @@ import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
+    name = data.name;
     backgroundColors =
         data.backgroundColors.map((value) => Color(value)).toList();
     primaryColor = Color(data.primaryColor);
@@ -140,6 +141,9 @@ class HarpyTheme {
       accentColor: accentColor,
       buttonColor: complimentaryColor,
 
+      // determines the status bar icon color
+      primaryColorBrightness: brightness,
+
       // used for the background color of Material widgets
       cardColor: primaryColor,
       canvasColor: primaryColor,
@@ -149,14 +153,35 @@ class HarpyTheme {
 
 // todo: define theme data for predefined themes ("crow", "phoenix", "swan")
 class PredefinedThemes {
+  static List<HarpyTheme> get themes {
+    return <HarpyTheme>[
+      HarpyTheme.fromData(crow),
+      HarpyTheme.fromData(swan),
+      HarpyTheme.fromData(phoenix),
+    ];
+  }
+
   static HarpyThemeData get crow {
-    HarpyThemeData data = HarpyThemeData();
+    return HarpyThemeData()
+      ..name = "crow"
+      ..backgroundColors = [Colors.black.value, 0xff17233d]
+      ..primaryColor = 0xff17233d
+      ..accentColor = 0xff6b99ff;
+  }
 
-    data.name = "crow";
-    data.backgroundColors = [Colors.black.value, 0xff17233d];
-    data.primaryColor = 0xff17233d;
-    data.accentColor = 0xff6b99ff;
+  static HarpyThemeData get phoenix {
+    return HarpyThemeData()
+      ..name = "phoenix"
+      ..backgroundColors = [0xffdd2222, Colors.deepOrange.value]
+      ..primaryColor = Colors.orange.value
+      ..accentColor = Colors.orangeAccent.value;
+  }
 
-    return data;
+  static HarpyThemeData get swan {
+    return HarpyThemeData()
+      ..name = "phoenix"
+      ..backgroundColors = [Colors.white.value]
+      ..primaryColor = Colors.deepOrangeAccent.value
+      ..accentColor = 0xff444444;
   }
 }

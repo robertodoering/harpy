@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/screens/custom_theme_screen.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
-import 'package:harpy/components/widgets/shared/pro_feature_dialog.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 
@@ -63,22 +64,23 @@ class ThemeCard extends StatelessWidget {
       child: Theme(
         data: harpyTheme.theme,
         child: Card(
-          child: HarpyBackground(// todo
-//            borderRadius: BorderRadius.circular(4.0),
-//            startColor: harpyTheme.primaryBackgroundColor,
-//            endColor: harpyTheme.secondaryBackgroundColor,
-//            child: InkWell(
-//              borderRadius: BorderRadius.circular(4.0),
-//              onTap: () => themeModel.changeSelectedTheme(harpyTheme, id),
-//              child: Column(
-//                children: <Widget>[
-//                  Expanded(child: _buildSelectedIcon(themeModel)),
-//                  _buildThemeName(context),
-//                  Expanded(child: _buildThemeColors()),
-//                ],
-//              ),
-//            ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4.0),
+            child: HarpyBackground(
+              colors: harpyTheme.backgroundColors,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(4.0),
+                onTap: () => themeModel.changeSelectedTheme(harpyTheme, id),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(child: _buildSelectedIcon(themeModel)),
+                    _buildThemeName(context),
+                    Expanded(child: _buildThemeColors()),
+                  ],
+                ),
               ),
+            ),
+          ),
         ),
       ),
     );
@@ -89,8 +91,8 @@ class ThemeCard extends StatelessWidget {
 class AddCustomThemeCard extends StatelessWidget {
   void _showProDialog(BuildContext context) {
     // todo
-    showDialog(context: context, builder: (_) => ProFeatureDialog());
-//    HarpyNavigator.push(CustomThemeScreen());
+//    showDialog(context: context, builder: (_) => ProFeatureDialog());
+    HarpyNavigator.push(CustomThemeScreen());
   }
 
   @override

@@ -20,7 +20,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   static final Logger _log = Logger("ThemeSettingsModel");
 
   /// The selected theme used by the app.
-  HarpyTheme harpyTheme = HarpyTheme.fromData(PredefinedThemes.crow);
+  HarpyTheme harpyTheme = PredefinedThemes.themes.first;
 
   /// The id of the selected theme.
   ///
@@ -47,12 +47,12 @@ class ThemeSettingsModel extends ChangeNotifier {
 
     _log.fine("initializing harpy theme with id $id");
 
-//    if (id == 0) { // todo
-//      harpyTheme = HarpyTheme.light();
-//    } else if (id == 1) {
-//      harpyTheme = HarpyTheme.dark();
-//    } else {
-//      // load harpyThemeData for custom theme
+    final predefinedThemes = PredefinedThemes.themes;
+
+    if (id < predefinedThemes.length) {
+      harpyTheme = predefinedThemes[id];
+    } else {
+      // load data from custom theme
 //      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
 //
 //      if (customThemeData != null) {
@@ -62,7 +62,7 @@ class ThemeSettingsModel extends ChangeNotifier {
 //            "unable to load custom theme for id: $id, defaulting to dark theme");
 //        harpyTheme = HarpyTheme.dark();
 //      }
-//    }
+    }
 
     notifyListeners();
   }
