@@ -27,7 +27,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   /// `0` and `1` corresponds to the default light and default dark theme while
   /// higher ids correspond to the index of the custom themes.
   int get selectedThemeId =>
-      harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 1);
+      harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 0);
 
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeSettingsModel].

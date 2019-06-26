@@ -179,8 +179,8 @@ class PredefinedThemes {
 
   static HarpyThemeData get swan {
     return HarpyThemeData()
-      ..name = "phoenix"
-      ..backgroundColors = [Colors.white.value]
+      ..name = "swan"
+      ..backgroundColors = [Colors.white.value, Colors.white.value]
       ..primaryColor = Colors.deepOrangeAccent.value
       ..accentColor = 0xff444444;
   }

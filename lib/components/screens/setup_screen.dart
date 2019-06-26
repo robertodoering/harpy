@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harpy/components/screens/home_screen.dart';
@@ -6,11 +8,18 @@ import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/texts.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
-class SetupScreen extends StatelessWidget {
+class SetupScreen extends StatefulWidget {
+  @override
+  _SetupScreenState createState() => _SetupScreenState();
+}
+
+class _SetupScreenState extends State<SetupScreen> {
   final GlobalKey<SlideAnimationState> _slideInitializationKey =
       GlobalKey<SlideAnimationState>();
 
@@ -109,6 +118,8 @@ class _ThemeSelectionState extends State<ThemeSelection> {
   final _duration = const Duration(milliseconds: 300);
   final _curve = Curves.easeOutCubic;
 
+  final List<HarpyTheme> _themes = PredefinedThemes.themes;
+
   PageController _controller;
 
   int _currentPage = 0;
@@ -133,27 +144,16 @@ class _ThemeSelectionState extends State<ThemeSelection> {
     _controller.dispose();
   }
 
-  final List<Color> _themes = <Color>[
-    Colors.blue,
-    Colors.red,
-    Colors.white,
-    Colors.black,
-  ];
-
   List<Widget> _buildItems() {
-    return _themes.map((color) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: 60,
-            height: 60,
-            decoration: ShapeDecoration(
-              shape: CircleBorder(),
-              color: color,
-            ),
+    return _themes.map((theme) {
+      return Center(
+        child: CustomPaint(
+          size: const Size(60, 60),
+          painter: ThemeCirclePainter(
+            theme,
+            _currentPage == _themes.indexOf(theme),
           ),
-        ],
+        ),
       );
     }).toList();
   }
@@ -161,13 +161,22 @@ class _ThemeSelectionState extends State<ThemeSelection> {
   void _previous() {
     if (_canPrevious) {
       _controller.previousPage(duration: _duration, curve: _curve);
+      _onSelectionChange(_currentPage - 1);
     }
   }
 
   void _next() {
     if (_canNext) {
       _controller.nextPage(duration: _duration, curve: _curve);
+
+      _onSelectionChange(_currentPage + 1);
     }
+  }
+
+  void _onSelectionChange(int index) {
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    themeSettingsModel.changeSelectedTheme(_themes[index], index);
   }
 
   @override
@@ -176,20 +185,18 @@ class _ThemeSelectionState extends State<ThemeSelection> {
     final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
     final rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
 
-    String text = "crow";
-    if (_currentPage == 1) text = "phoenix";
-    if (_currentPage == 2) text = "swan";
-
     return Column(
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(top: 16),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              letterSpacing: 2.0,
+          child: SlideFadeInAnimation(
+            child: Text(
+              _themes[_currentPage].name,
+              style: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+                letterSpacing: 2.0,
+              ),
             ),
           ),
         ),
@@ -248,5 +255,50 @@ class _ThemeSelectionState extends State<ThemeSelection> {
         ),
       ],
     );
+  }
+}
+
+class ThemeCirclePainter extends CustomPainter {
+  const ThemeCirclePainter(this.theme, this.selected);
+
+  final HarpyTheme theme;
+  final bool selected;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final radius = size.width / 2;
+
+    canvas.drawCircle(
+      size.center(Offset.zero),
+      radius,
+      Paint()
+        ..shader = ui.Gradient.linear(
+          size.topLeft(Offset.zero),
+          size.bottomRight(Offset.zero),
+          theme.backgroundColors,
+        ),
+    );
+
+    if (selected) {
+      canvas.drawCircle(
+        size.center(Offset.zero),
+        size.width / 2,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..color = theme.backgroundComplimentaryColor
+          ..strokeWidth = 2
+          ..isAntiAlias = true
+          ..maskFilter = MaskFilter.blur(BlurStyle.inner, .5),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    if (old is ThemeCirclePainter) {
+      return old.selected != selected;
+    }
+
+    return false;
   }
 }

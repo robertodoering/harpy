@@ -128,10 +128,7 @@ class LoginModel extends ChangeNotifier {
       _initLoggedInUser(),
     ]);
 
-    print("got results: $results");
-
     if (results.last is bool) {
-      print("last is bool, returning ${results.last}");
       return results.last;
     }
 
