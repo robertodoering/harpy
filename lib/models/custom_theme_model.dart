@@ -23,6 +23,9 @@ class CustomThemeModel extends ChangeNotifier {
     return Provider.of<CustomThemeModel>(context);
   }
 
+  /// The custom theme data that is being customized.
+  ///
+  /// Initialized with the data from the active theme.
   HarpyThemeData customThemeData;
 
   /// `true` if the name only contains valid characters.
@@ -50,8 +53,8 @@ class CustomThemeModel extends ChangeNotifier {
     validName = _validateName();
   }
 
-  void changeBase(int index) {
-//    customThemeData.base = index == 0 ? "light" : "dark";
+  void changePrimaryColor(Color color) {
+    customThemeData.primaryColor = color.value;
     notifyListeners();
   }
 
@@ -60,23 +63,8 @@ class CustomThemeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changePrimaryBackgroundColor(Color color) {
-//    customThemeData.primaryBackgroundColor = color.value;
-    notifyListeners();
-  }
-
-  void changeSecondaryBackgroundColor(Color color) {
-//    customThemeData.secondaryBackgroundColor = color.value;
-    notifyListeners();
-  }
-
-  void changeLikeColor(Color color) {
-//    customThemeData.likeColor = color.value;
-    notifyListeners();
-  }
-
-  void changeRetweetColor(Color color) {
-//    customThemeData.retweetColor = color.value;
+  void changeBackgroundColors(List<Color> colors) {
+    customThemeData.backgroundColors = colors.map((color) => color.value);
     notifyListeners();
   }
 

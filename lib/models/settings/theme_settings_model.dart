@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -23,9 +26,6 @@ class ThemeSettingsModel extends ChangeNotifier {
   HarpyTheme harpyTheme = PredefinedThemes.themes.first;
 
   /// The id of the selected theme.
-  ///
-  /// `0` and `1` corresponds to the default light and default dark theme while
-  /// higher ids correspond to the index of the custom themes.
   int get selectedThemeId =>
       harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 0);
 
@@ -38,6 +38,30 @@ class ThemeSettingsModel extends ChangeNotifier {
     harpyPrefs.preferences.setInt("${harpyPrefs.prefix}.selectedThemeId", id);
     notifyListeners();
   }
+
+  /// Returns the list of all saved custom [HarpyThemeData].
+  List<HarpyThemeData> getCustomThemes() {
+    _log.fine("getting custom themes");
+
+    return harpyPrefs.preferences
+            .getStringList("customThemes")
+            ?.map(_decodeCustomTheme)
+            ?.where((data) => data != null)
+            ?.toList() ??
+        [];
+  }
+
+  /// Saves the list of [customThemes] into the shared preferences.
+//  void saveCustomThemes(List<HarpyThemeData> customThemes) {
+//    _log.fine("saving custom themes: $customThemes");
+//
+//    preferences.setStringList(
+//      "customThemes",
+//      customThemes.map((data) {
+//        return jsonEncode(data.toJson());
+//      }).toList(),
+//    );
+//  }
 
   /// Initializes the [HarpyTheme] with the theme set in [HarpyPrefs].
   ///
@@ -53,17 +77,45 @@ class ThemeSettingsModel extends ChangeNotifier {
       harpyTheme = predefinedThemes[id];
     } else {
       // load data from custom theme
-//      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
-//
-//      if (customThemeData != null) {
-//        harpyTheme = HarpyTheme.custom(customThemeData);
-//      } else {
-//        _log.warning(
-//            "unable to load custom theme for id: $id, defaulting to dark theme");
-//        harpyTheme = HarpyTheme.dark();
-//      }
+      HarpyThemeData customThemeData = _getCustomTheme(id);
+
+      if (customThemeData != null) {
+        harpyTheme = HarpyTheme.fromData(customThemeData);
+      } else {
+        _log.warning("unable to load custom theme for id: $id, defaulting to"
+            " dark theme");
+        harpyTheme = PredefinedThemes.themes.first;
+      }
     }
 
     notifyListeners();
+  }
+
+  /// Returns the [HarpyThemeData] for the [id] of the custom themes list.
+  ///
+  /// Returns `null` if the id is not in the list.
+  HarpyThemeData _getCustomTheme(int id) {
+    _log.fine("getting custom harpy theme for id: $id");
+
+    try {
+      // subtract the length of predefined themes
+      id -= PredefinedThemes.themes.length;
+
+      return getCustomThemes()[id];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the [HarpyThemeData] from the [json] string or `null` if it can't
+  /// be parsed.
+  HarpyThemeData _decodeCustomTheme(String json) {
+    try {
+      // try to parse the custom theme
+      return HarpyThemeData.fromJson(jsonDecode(json));
+    } catch (e) {
+      _log.warning("unable to parse theme: $json");
+      return null;
+    }
   }
 }

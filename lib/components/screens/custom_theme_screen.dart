@@ -116,31 +116,16 @@ class _CustomThemeColorSelections extends StatelessWidget {
     final harpyTheme = HarpyTheme.fromData(model.customThemeData);
 
     return <_CustomThemeColor>[
-//      _CustomThemeColor(
-//        name: "Accent color",
-//        color: harpyTheme.theme.accentColor,
-//        onColorChanged: model.changeAccentColor,
-//      ),
-//      _CustomThemeColor(
-//        name: "Primary background color",
-//        color: harpyTheme.primaryBackgroundColor,
-//        onColorChanged: model.changePrimaryBackgroundColor,
-//      ),
-//      _CustomThemeColor(
-//        name: "Secondary background color",
-//        color: harpyTheme.secondaryBackgroundColor,
-//        onColorChanged: model.changeSecondaryBackgroundColor,
-//      ),
-//      _CustomThemeColor(
-//        name: "Like color",
-//        color: harpyTheme.likeColor,
-//        onColorChanged: model.changeLikeColor,
-//      ),
-//      _CustomThemeColor(
-//        name: "Retweet color",
-//        color: harpyTheme.retweetColor,
-//        onColorChanged: model.changeRetweetColor,
-//      ),
+      _CustomThemeColor(
+        name: "Primary color",
+        color: harpyTheme.primaryColor,
+        onColorChanged: model.changePrimaryColor,
+      ),
+      _CustomThemeColor(
+        name: "Accent color",
+        color: harpyTheme.theme.accentColor,
+        onColorChanged: model.changeAccentColor,
+      ),
     ];
   }
 
