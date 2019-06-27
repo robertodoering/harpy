@@ -4,12 +4,21 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
 class CustomThemeScreen extends StatefulWidget {
+  const CustomThemeScreen({
+    this.editingThemeData,
+    this.editingThemeId,
+  });
+
+  final HarpyThemeData editingThemeData;
+  final int editingThemeId;
+
   @override
   _CustomThemeScreenState createState() => _CustomThemeScreenState();
 }
@@ -21,6 +30,8 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
       themeSettingsModel: ThemeSettingsModel.of(context),
+      editingThemeData: widget.editingThemeData,
+      editingThemeId: widget.editingThemeId,
     );
 
     return ChangeNotifierProvider<CustomThemeModel>(
@@ -50,8 +61,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
-/// Builds the button to save the custom theme and shows a [SnackBar] with an
-/// error message if it was unable to save it.
+/// Builds the button to save the custom theme.
 ///
 /// Only implemented in the pro version.
 class _CustomThemeSaveButton extends StatelessWidget {
@@ -116,6 +126,16 @@ class _CustomThemeColorSelections extends StatelessWidget {
     final harpyTheme = HarpyTheme.fromData(model.customThemeData);
 
     return <_CustomThemeColor>[
+      _CustomThemeColor(
+        name: "First background color",
+        color: harpyTheme.backgroundColors.first,
+        onColorChanged: model.changeFirstBackgroundColor,
+      ),
+      _CustomThemeColor(
+        name: "Second background color",
+        color: harpyTheme.backgroundColors.last,
+        onColorChanged: model.changeSecondBackgroundColor,
+      ),
       _CustomThemeColor(
         name: "Primary color",
         color: harpyTheme.primaryColor,

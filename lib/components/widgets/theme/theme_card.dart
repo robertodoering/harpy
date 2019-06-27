@@ -16,6 +16,8 @@ class ThemeCard extends StatelessWidget {
   final HarpyTheme harpyTheme;
   final int id;
 
+  bool get isCustomTheme => id >= PredefinedThemes.themes.length;
+
   Widget _buildThemeName(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -40,8 +42,8 @@ class ThemeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectedIcon(ThemeSettingsModel themeModel) {
-    if (themeModel.selectedThemeId == id) {
+  Widget _buildSelectedIcon(ThemeSettingsModel themeSettingsModel) {
+    if (themeSettingsModel.selectedThemeId == id) {
       return Align(
         alignment: Alignment.topLeft,
         child: Padding(
@@ -54,9 +56,35 @@ class ThemeCard extends StatelessWidget {
     return Container();
   }
 
+  void _onTap(ThemeSettingsModel themeSettingsModel) {
+    // if already selected, edit custom theme
+    if (isCustomTheme && themeSettingsModel.selectedThemeId == id) {
+      HarpyNavigator.push(
+        CustomThemeScreen(
+          editingThemeData: themeSettingsModel.customThemes[id],
+          editingThemeId: id,
+        ),
+      );
+    } else {
+      themeSettingsModel.changeSelectedTheme(harpyTheme, id);
+    }
+  }
+
+  void _onLongPress(ThemeSettingsModel themeSettingsModel) {
+    // edit theme on long press if it is not the default theme
+    if (isCustomTheme) {
+      HarpyNavigator.push(
+        CustomThemeScreen(
+          editingThemeData: themeSettingsModel.customThemes[id],
+          editingThemeId: id,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeModel = ThemeSettingsModel.of(context);
+    final themeSettingsModel = ThemeSettingsModel.of(context);
 
     return SizedBox(
       width: 120,
@@ -70,10 +98,11 @@ class ThemeCard extends StatelessWidget {
               colors: harpyTheme.backgroundColors,
               child: InkWell(
                 borderRadius: BorderRadius.circular(4.0),
-                onTap: () => themeModel.changeSelectedTheme(harpyTheme, id),
+                onTap: () => _onTap(themeSettingsModel),
+                onLongPress: () => _onLongPress(themeSettingsModel),
                 child: Column(
                   children: <Widget>[
-                    Expanded(child: _buildSelectedIcon(themeModel)),
+                    Expanded(child: _buildSelectedIcon(themeSettingsModel)),
                     _buildThemeName(context),
                     Expanded(child: _buildThemeColors()),
                   ],
@@ -89,7 +118,7 @@ class ThemeCard extends StatelessWidget {
 
 /// Similar to [ThemeCard] that can be selected to add a new custom theme.
 class AddCustomThemeCard extends StatelessWidget {
-  void _showProDialog(BuildContext context) {
+  void _onTap() {
     // todo
 //    showDialog(context: context, builder: (_) => ProFeatureDialog());
     HarpyNavigator.push(CustomThemeScreen());
@@ -109,14 +138,18 @@ class AddCustomThemeCard extends StatelessWidget {
             color: Theme.of(context).dividerColor,
           ),
         ),
-        child: InkWell(
-          onTap: () => _showProDialog(context),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Custom"),
-              Icon(Icons.add),
-            ],
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(4.0),
+          child: InkWell(
+            onTap: _onTap,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Custom"),
+                Icon(Icons.add),
+              ],
+            ),
           ),
         ),
       ),

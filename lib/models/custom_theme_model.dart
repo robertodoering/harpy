@@ -9,12 +9,19 @@ import 'package:provider/provider.dart';
 class CustomThemeModel extends ChangeNotifier {
   CustomThemeModel({
     @required this.themeSettingsModel,
+    this.editingThemeData,
+    this.editingThemeId,
   }) : assert(themeSettingsModel != null) {
-    // initialize the custom theme data with the edited theme or the current
-    // theme when creating a new theme
-    customThemeData =
-        HarpyThemeData.fromHarpyTheme(themeSettingsModel.harpyTheme);
-    customThemeData.name = "New theme 1";
+    if (editingThemeId != null && editingThemeData != null) {
+      // initialize the custom theme with the edited theme.
+      customThemeData = editingThemeData;
+    } else {
+      // initialize the custom theme with the current theme and a template name.
+      customThemeData =
+          HarpyThemeData.fromHarpyTheme(themeSettingsModel.harpyTheme);
+      customThemeData.name =
+          "New theme ${themeSettingsModel.customThemes.length + 1}";
+    }
   }
 
   final ThemeSettingsModel themeSettingsModel;
@@ -28,8 +35,17 @@ class CustomThemeModel extends ChangeNotifier {
   /// Initialized with the data from the active theme.
   HarpyThemeData customThemeData;
 
+  /// The theme to edit.
+  final HarpyThemeData editingThemeData;
+
+  /// The id of the custom theme if one is being edited.
+  final int editingThemeId;
+
   /// `true` if the name only contains valid characters.
   bool validName = true;
+
+  /// `true` of a different custom theme already exists with the same name.
+  bool existingName = false;
 
   /// Returns the error text if an error exists, otherwise `null`.
   String errorText() {
@@ -39,6 +55,10 @@ class CustomThemeModel extends ChangeNotifier {
 
     if (!validName) {
       return "Name contains invalid characters";
+    }
+
+    if (existingName) {
+      return "Theme with name ${customThemeData.name} already exists";
     }
 
     return null;
@@ -51,6 +71,7 @@ class CustomThemeModel extends ChangeNotifier {
 
     // validate name
     validName = _validateName();
+    existingName = _existingName();
   }
 
   void changePrimaryColor(Color color) {
@@ -63,8 +84,13 @@ class CustomThemeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeBackgroundColors(List<Color> colors) {
-    customThemeData.backgroundColors = colors.map((color) => color.value);
+  void changeFirstBackgroundColor(Color color) {
+    customThemeData.backgroundColors.first = color.value;
+    notifyListeners();
+  }
+
+  void changeSecondBackgroundColor(Color color) {
+    customThemeData.backgroundColors.last = color.value;
     notifyListeners();
   }
 
@@ -72,5 +98,19 @@ class CustomThemeModel extends ChangeNotifier {
   /// and spaces.
   bool _validateName() {
     return customThemeData.name.contains(RegExp(r"^[-_ a-zA-Z0-9]+$"));
+  }
+
+  /// Returns `true` if the name already exists in the saved custom themes.
+  bool _existingName() {
+    // return false if it is the edited theme
+    if (editingThemeId != null && editingThemeData != null) {
+      if (customThemeData.name == editingThemeData.name) {
+        return false;
+      }
+    }
+
+    return themeSettingsModel.customThemes.any((data) {
+      return data.name == customThemeData.name;
+    });
   }
 }
