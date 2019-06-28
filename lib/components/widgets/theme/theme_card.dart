@@ -24,7 +24,7 @@ class ThemeCard extends StatelessWidget {
       child: Text(
         "${harpyTheme.name}",
         overflow: TextOverflow.ellipsis,
-        style: harpyTheme.theme.textTheme.body1,
+        style: harpyTheme.theme.textTheme.subtitle,
         textAlign: TextAlign.center,
       ),
     );
@@ -61,7 +61,7 @@ class ThemeCard extends StatelessWidget {
     if (isCustomTheme && themeSettingsModel.selectedThemeId == id) {
       HarpyNavigator.push(
         CustomThemeScreen(
-          editingThemeData: themeSettingsModel.customThemes[id],
+          editingThemeData: themeSettingsModel.getDataFromId(id),
           editingThemeId: id,
         ),
       );
@@ -75,7 +75,7 @@ class ThemeCard extends StatelessWidget {
     if (isCustomTheme) {
       HarpyNavigator.push(
         CustomThemeScreen(
-          editingThemeData: themeSettingsModel.customThemes[id],
+          editingThemeData: themeSettingsModel.getDataFromId(id),
           editingThemeId: id,
         ),
       );

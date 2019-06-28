@@ -3,12 +3,21 @@ import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
-    name = data.name;
+    name = data.name ?? "";
+
     backgroundColors =
-        data.backgroundColors.map((value) => Color(value)).toList();
-    primaryColor = Color(data.primaryColor);
-    accentColor = Color(data.accentColor);
+        data.backgroundColors?.map((value) => _colorFromValue(value))?.toList();
+
+    if (backgroundColors == null || backgroundColors?.length != 2) {
+      backgroundColors = _fallback.backgroundColors;
+    }
+
+    primaryColor = _colorFromValue(data.primaryColor) ?? _fallback.primaryColor;
+    accentColor = _colorFromValue(data.accentColor) ?? _fallback.accentColor;
   }
+
+  /// The fallback is used if the [HarpyThemeData] has insufficient data.
+  static final HarpyTheme _fallback = PredefinedThemes.themes.first;
 
   String name;
 
@@ -110,6 +119,12 @@ class HarpyTheme {
             color: complimentaryColor.withOpacity(0.9),
           ),
 
+          subtitle: TextStyle(
+            fontFamily: displayFont,
+            fontWeight: FontWeight.w300,
+            color: complimentaryColor,
+          ),
+
           // body
           body1: TextStyle(
             fontSize: 16.0,
@@ -149,17 +164,23 @@ class HarpyTheme {
       canvasColor: primaryColor,
     );
   }
+
+  Color _colorFromValue(int value) {
+    return value != null ? Color(value) : null;
+  }
 }
 
 // todo: define theme data for predefined themes ("crow", "phoenix", "swan")
 class PredefinedThemes {
   static List<HarpyTheme> get themes {
-    return <HarpyTheme>[
-      HarpyTheme.fromData(crow),
-      HarpyTheme.fromData(swan),
-      HarpyTheme.fromData(phoenix),
-    ];
+    return data.map((themeData) => HarpyTheme.fromData(themeData)).toList();
   }
+
+  static List<HarpyThemeData> get data => [
+        crow,
+        swan,
+        phoenix,
+      ];
 
   static HarpyThemeData get crow {
     return HarpyThemeData()

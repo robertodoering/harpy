@@ -31,6 +31,10 @@ class ThemeSettingsModel extends ChangeNotifier {
   int get selectedThemeId =>
       harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 0);
 
+  HarpyThemeData getDataFromId(int id) {
+    return PredefinedThemes.data.followedBy(customThemes).elementAt(id);
+  }
+
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeSettingsModel].
   void changeSelectedTheme(HarpyTheme theme, int id) async {
@@ -49,35 +53,40 @@ class ThemeSettingsModel extends ChangeNotifier {
     _log.fine("found ${customThemes.length} themes");
   }
 
-  /// Adds a new custom theme into the [customThemes] and saves it.
+  /// Adds a new custom theme into the [customThemes] and changes the selected
+  /// theme to it.
   void saveNewCustomTheme(HarpyThemeData themeData) {
     _log.fine("saving new custom theme");
     customThemes.add(themeData);
     _saveCustomThemes();
+
+    int id = customThemes.indexOf(themeData);
+    id += PredefinedThemes.themes.length;
+
+    changeSelectedTheme(HarpyTheme.fromData(themeData), id);
+
     notifyListeners();
   }
 
   /// Updates an existing custom theme with the [id].
   void updateCustomTheme(HarpyThemeData themeData, int id) {
-    _log.fine("updating custom theme ${themeData.name}");
+    _log.fine("updating custom theme ${themeData.name} with id: $id");
 
     // subtract the length of predefined themes
     id -= PredefinedThemes.themes.length;
 
-    if (id > 0 && id < customThemes.length) {
+    if (id >= 0 && id < customThemes.length) {
       customThemes[id] = themeData;
       _saveCustomThemes();
+      initTheme();
       notifyListeners();
     } else {
       _log.severe("unable to update custom theme, not in list");
     }
   }
 
-  void deleteCustomTHeme(int id) {
+  void deleteCustomTheme(int id) {
     _log.fine("deleting custom theme with id: $id");
-
-    // subtract the length of predefined themes
-    id -= PredefinedThemes.themes.length;
 
     try {
       customThemes.removeAt(id);

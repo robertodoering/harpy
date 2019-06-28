@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/custom_theme_model.dart';
@@ -26,6 +27,42 @@ class CustomThemeScreen extends StatefulWidget {
 class _CustomThemeScreenState extends State<CustomThemeScreen> {
   CustomThemeModel customThemeModel;
 
+  Future<bool> _showBackDialog() async {
+    // don't show dialog when nothing changed after editing theme
+    if (customThemeModel.customThemeData == customThemeModel.editingThemeData) {
+      return true;
+    }
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Discard changes?",
+            style: Theme.of(context)
+                .textTheme
+                .subtitle
+                .copyWith(color: Theme.of(context).textTheme.body1.color),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Theme.of(context).errorColor,
+              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text("Discard"),
+            ),
+            FlatButton(
+              textColor: Theme.of(context).accentColor,
+              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text("Back"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
@@ -40,18 +77,28 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
         builder: (context, customThemeModel, _) {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
-            child: HarpyScaffold(
-              backgroundColors: customThemeModel.harpyTheme.backgroundColors,
-              title: "Custom theme",
-              actions: <Widget>[
-                _CustomThemeSaveButton(),
-              ],
-              body: ListView(
-                children: <Widget>[
-                  _CustomThemeNameField(customThemeModel),
-                  SizedBox(height: 8.0),
-                  _CustomThemeColorSelections(),
+            child: WillPopScope(
+              onWillPop: _showBackDialog,
+              child: HarpyScaffold(
+                backgroundColors: customThemeModel.harpyTheme.backgroundColors,
+                title: "Custom theme",
+                actions: <Widget>[
+                  _CustomThemeSaveButton(),
                 ],
+                body: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          _CustomThemeNameField(customThemeModel),
+                          SizedBox(height: 8.0),
+                          _CustomThemeColorSelections(),
+                        ],
+                      ),
+                    ),
+                    _CustomThemeDeleteButton(),
+                  ],
+                ),
               ),
             ),
           );
@@ -61,15 +108,85 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
-/// Builds the button to save the custom theme.
+/// Builds a button that will delete the custom theme.
 ///
-/// Only implemented in the pro version.
+/// Only appears when editing an existing custom theme.
+class _CustomThemeDeleteButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final customThemeModel = CustomThemeModel.of(context);
+
+    if (customThemeModel.editingThemeId == null) {
+      return Container();
+    }
+
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    return RaisedButton(
+      child: Text("Delete theme"),
+      color: Theme.of(context).errorColor,
+      onPressed: () {
+        if (themeSettingsModel.selectedThemeId ==
+            customThemeModel.editingThemeId) {
+          // when deleting the active custom theme, reset to the default theme
+          themeSettingsModel.changeSelectedTheme(
+            PredefinedThemes.themes.first,
+            0,
+          );
+        }
+
+        themeSettingsModel.deleteCustomTheme(
+          themeSettingsModel.selectedThemeId,
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+/// Builds the button to save the custom theme.
 class _CustomThemeSaveButton extends StatelessWidget {
+  void _saveTheme(BuildContext context) {
+    final model = CustomThemeModel.of(context);
+
+    if (model.customThemeData?.name?.isEmpty ?? true) {
+      showFlushbar(
+        "Enter a name",
+        type: FlushbarType.error,
+      );
+      return;
+    }
+
+    if (model.errorText() != null) {
+      showFlushbar(
+        model.errorText(),
+        type: FlushbarType.error,
+      );
+      return;
+    }
+
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    if (model.editingThemeId != null) {
+      // edited theme
+      themeSettingsModel.updateCustomTheme(
+        model.customThemeData,
+        model.editingThemeId,
+      );
+    } else {
+      // new theme
+      themeSettingsModel.saveNewCustomTheme(model.customThemeData);
+    }
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.check),
-      onPressed: null,
+      onPressed: () => _saveTheme(context),
     );
   }
 }
