@@ -42,20 +42,6 @@ class ThemeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectedIcon(ThemeSettingsModel themeSettingsModel) {
-    if (themeSettingsModel.selectedThemeId == id) {
-      return Align(
-        alignment: Alignment.topLeft,
-        child: Padding(
-          padding: EdgeInsets.all(4.0),
-          child: const Icon(Icons.check),
-        ),
-      );
-    }
-
-    return Container();
-  }
-
   void _onTap(ThemeSettingsModel themeSettingsModel) {
     // if already selected, edit custom theme
     if (isCustomTheme && themeSettingsModel.selectedThemeId == id) {
@@ -86,15 +72,26 @@ class ThemeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
+    final decoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(4.0),
+      border: themeSettingsModel.selectedThemeId == id
+          ? Border.all(
+              color: themeSettingsModel.harpyTheme.backgroundComplimentaryColor,
+            )
+          : null,
+    );
+
     return SizedBox(
       width: 120,
       height: 120,
       child: Theme(
         data: harpyTheme.theme,
         child: Card(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4.0),
+          color: Colors.transparent,
+          child: Container(
+            decoration: decoration,
             child: HarpyBackground(
+              borderRadius: BorderRadius.circular(4.0),
               colors: harpyTheme.backgroundColors,
               child: InkWell(
                 borderRadius: BorderRadius.circular(4.0),
@@ -102,7 +99,7 @@ class ThemeCard extends StatelessWidget {
                 onLongPress: () => _onLongPress(themeSettingsModel),
                 child: Column(
                   children: <Widget>[
-                    Expanded(child: _buildSelectedIcon(themeSettingsModel)),
+                    Spacer(),
                     _buildThemeName(context),
                     Expanded(child: _buildThemeColors()),
                   ],

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:harpy/components/widgets/settings/settings_list.dart';
+import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
@@ -27,42 +29,6 @@ class CustomThemeScreen extends StatefulWidget {
 class _CustomThemeScreenState extends State<CustomThemeScreen> {
   CustomThemeModel customThemeModel;
 
-  Future<bool> _showBackDialog() async {
-    // don't show dialog when nothing changed after editing theme
-    if (customThemeModel.customThemeData == customThemeModel.editingThemeData) {
-      return true;
-    }
-
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            "Discard changes?",
-            style: Theme.of(context)
-                .textTheme
-                .subtitle
-                .copyWith(color: Theme.of(context).textTheme.body1.color),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              textColor: Theme.of(context).errorColor,
-              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text("Discard"),
-            ),
-            FlatButton(
-              textColor: Theme.of(context).accentColor,
-              splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text("Back"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
@@ -77,28 +43,25 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
         builder: (context, customThemeModel, _) {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
-            child: WillPopScope(
-              onWillPop: _showBackDialog,
-              child: HarpyScaffold(
-                backgroundColors: customThemeModel.harpyTheme.backgroundColors,
-                title: "Custom theme",
-                actions: <Widget>[
-                  _CustomThemeSaveButton(),
-                ],
-                body: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        children: <Widget>[
-                          _CustomThemeNameField(customThemeModel),
-                          SizedBox(height: 8.0),
-                          _CustomThemeColorSelections(),
-                        ],
-                      ),
+            child: HarpyScaffold(
+              backgroundColors: customThemeModel.harpyTheme.backgroundColors,
+              title: "Custom theme",
+              actions: <Widget>[
+                _CustomThemeSaveButton(),
+              ],
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        _CustomThemeNameField(customThemeModel),
+                        SizedBox(height: 8.0),
+                        _CustomThemeColorSelections(),
+                      ],
                     ),
-                    _CustomThemeDeleteButton(),
-                  ],
-                ),
+                  ),
+                  if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
+                ],
               ),
             ),
           );
@@ -115,32 +78,43 @@ class _CustomThemeDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final customThemeModel = CustomThemeModel.of(context);
-
-    if (customThemeModel.editingThemeId == null) {
-      return Container();
-    }
-
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
-    return RaisedButton(
-      child: Text("Delete theme"),
-      color: Theme.of(context).errorColor,
-      onPressed: () {
-        if (themeSettingsModel.selectedThemeId ==
-            customThemeModel.editingThemeId) {
-          // when deleting the active custom theme, reset to the default theme
-          themeSettingsModel.changeSelectedTheme(
-            PredefinedThemes.themes.first,
-            0,
-          );
-        }
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: RaisedHarpyButton(
+        text: "Delete theme",
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return HarpyDialog(
+                  title: "Really delete?",
+                  actions: [
+                    DialogAction.discard,
+                    DialogAction.confirm,
+                  ],
+                );
+              }).then((result) {
+            if (result == true) {
+              if (themeSettingsModel.selectedThemeId ==
+                  customThemeModel.editingThemeId) {
+                // when deleting the active custom theme, reset to the default theme
+                themeSettingsModel.changeSelectedTheme(
+                  PredefinedThemes.themes.first,
+                  0,
+                );
+              }
 
-        themeSettingsModel.deleteCustomTheme(
-          themeSettingsModel.selectedThemeId,
-        );
+              themeSettingsModel.deleteCustomTheme(
+                themeSettingsModel.selectedThemeId,
+              );
 
-        Navigator.of(context).pop();
-      },
+              Navigator.of(context).pop();
+            }
+          });
+        },
+      ),
     );
   }
 }
@@ -168,7 +142,7 @@ class _CustomThemeSaveButton extends StatelessWidget {
 
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
-    if (model.editingThemeId != null) {
+    if (model.editingTheme) {
       // edited theme
       themeSettingsModel.updateCustomTheme(
         model.customThemeData,
@@ -267,16 +241,19 @@ class _CustomThemeColorSelections extends StatelessWidget {
   }
 
   List<Widget> _buildThemeColorSelections(BuildContext context) {
-    final model = CustomThemeModel.of(context);
+    final customThemeModel = CustomThemeModel.of(context);
 
-    return _getThemeColors(model).map((themeColorModel) {
+    return _getThemeColors(customThemeModel).map((themeColorModel) {
       return ListTile(
         leading: CircleColor(color: themeColorModel.color, circleSize: 40.0),
         title: Text(themeColorModel.name),
         onTap: () {
           showDialog(
             context: context,
-            builder: (context) => _CustomThemeColorDialog(themeColorModel),
+            builder: (context) => _CustomThemeColorDialog(
+                  themeColorModel,
+                  customThemeModel,
+                ),
           );
         },
       );
@@ -294,9 +271,10 @@ class _CustomThemeColorSelections extends StatelessWidget {
 
 /// The dialog that shows the [MaterialColorPicker] in an [AlertDialog].
 class _CustomThemeColorDialog extends StatefulWidget {
-  const _CustomThemeColorDialog(this.themeColorModel);
+  const _CustomThemeColorDialog(this.themeColorModel, this.customThemeModel);
 
   final _CustomThemeColor themeColorModel;
+  final CustomThemeModel customThemeModel;
 
   @override
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
@@ -338,7 +316,11 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor =
+        widget.customThemeModel.harpyTheme.backgroundColors.first;
+
     return AlertDialog(
+      backgroundColor: backgroundColor,
       contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
         padding: EdgeInsets.zero,
@@ -346,23 +328,17 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
       ),
       actions: <Widget>[
         showingColorPicker
-            ? FlatButton(
-                textColor: Theme.of(context).accentColor,
-                splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-                onPressed: _hideColorPicker,
-                child: Text("Back"),
+            ? NewFlatHarpyButton(
+                text: "Back",
+                onTap: _hideColorPicker,
               )
-            : FlatButton(
-                textColor: Theme.of(context).accentColor,
-                splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-                onPressed: _showColorPicker,
-                child: Text("Custom color"),
+            : NewFlatHarpyButton(
+                text: "Custom color",
+                onTap: _showColorPicker,
               ),
-        FlatButton(
-          textColor: Theme.of(context).accentColor,
-          splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-          onPressed: Navigator.of(context).pop,
-          child: Text("Done"),
+        NewFlatHarpyButton(
+          text: "Done",
+          onTap: Navigator.of(context).pop,
         ),
       ],
     );
