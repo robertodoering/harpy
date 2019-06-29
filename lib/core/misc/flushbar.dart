@@ -1,8 +1,9 @@
-import 'package:catcher/catcher_plugin.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart' as route;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+
+import 'harpy_navigator.dart';
 
 Logger _log = Logger("Flushbar");
 
@@ -21,7 +22,7 @@ void showFlushbar(
 }) {
   _log.fine("showing error message: $message");
 
-  final navigator = Catcher.navigatorKey.currentState;
+  final navigator = HarpyNavigator.key.currentState;
 
   Color color;
   IconData icon;

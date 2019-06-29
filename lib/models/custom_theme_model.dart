@@ -12,7 +12,7 @@ class CustomThemeModel extends ChangeNotifier {
     this.editingThemeData,
     this.editingThemeId,
   }) : assert(themeSettingsModel != null) {
-    if (editingThemeId != null && editingThemeData != null) {
+    if (editingTheme) {
       // initialize the custom theme with the edited theme.
       customThemeData = editingThemeData;
     } else {
@@ -40,6 +40,9 @@ class CustomThemeModel extends ChangeNotifier {
 
   /// The id of the custom theme if one is being edited.
   final int editingThemeId;
+
+  /// Returns true if a theme is being edited.
+  bool get editingTheme => editingThemeId != null && editingThemeData != null;
 
   /// `true` if the name only contains valid characters.
   bool validName = true;
@@ -103,7 +106,7 @@ class CustomThemeModel extends ChangeNotifier {
   /// Returns `true` if the name already exists in the saved custom themes.
   bool _existingName() {
     // return false if it is the edited theme
-    if (editingThemeId != null && editingThemeData != null) {
+    if (editingTheme) {
       if (customThemeData.name == editingThemeData.name) {
         return false;
       }
