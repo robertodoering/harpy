@@ -228,11 +228,6 @@ class _CustomThemeColorSelections extends StatelessWidget {
         onColorChanged: model.changeSecondBackgroundColor,
       ),
       _CustomThemeColor(
-        name: "Primary color",
-        color: harpyTheme.primaryColor,
-        onColorChanged: model.changePrimaryColor,
-      ),
-      _CustomThemeColor(
         name: "Accent color",
         color: harpyTheme.theme.accentColor,
         onColorChanged: model.changeAccentColor,
@@ -316,8 +311,7 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        widget.customThemeModel.harpyTheme.backgroundColors.first;
+    final backgroundColor = Theme.of(context).primaryColor;
 
     return AlertDialog(
       backgroundColor: backgroundColor,

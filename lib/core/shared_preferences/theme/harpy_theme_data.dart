@@ -9,7 +9,6 @@ class HarpyThemeData {
 
   List<int> backgroundColors;
 
-  int primaryColor;
   int accentColor;
 
   HarpyThemeData();
@@ -18,7 +17,6 @@ class HarpyThemeData {
     name = harpyTheme.name;
     backgroundColors =
         harpyTheme.backgroundColors.map((color) => color.value).toList();
-    primaryColor = harpyTheme.primaryColor.value;
     accentColor = harpyTheme.accentColor.value;
   }
 

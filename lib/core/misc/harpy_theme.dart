@@ -12,7 +12,6 @@ class HarpyTheme {
       backgroundColors = _fallback.backgroundColors;
     }
 
-    primaryColor = _colorFromValue(data.primaryColor) ?? _fallback.primaryColor;
     accentColor = _colorFromValue(data.accentColor) ?? _fallback.accentColor;
   }
 
@@ -24,8 +23,7 @@ class HarpyTheme {
   /// A list of 2 colors that define the background gradient.
   List<Color> backgroundColors;
 
-  /// The primary color should be the same brightness of the background.
-  Color primaryColor;
+  Color get primaryColor => backgroundColors.last;
 
   /// The accent color should compliment the background color.
   Color accentColor;
@@ -51,17 +49,17 @@ class HarpyTheme {
   /// Returns the [primaryColor] if it is not the same brightness as the button
   /// color, otherwise a complimentary color (white / black).
   Color get buttonTextColor {
-    final accentColorBrightness =
+    final primaryColorBrightness =
         ThemeData.estimateBrightnessForColor(primaryColor);
 
     if (brightness == Brightness.dark) {
       // button color is light
-      return accentColorBrightness == Brightness.light
+      return primaryColorBrightness == Brightness.light
           ? Colors.black
           : primaryColor;
     } else {
       // button color is dark
-      return accentColorBrightness == Brightness.dark
+      return primaryColorBrightness == Brightness.dark
           ? Colors.white
           : primaryColor;
     }
@@ -186,7 +184,6 @@ class PredefinedThemes {
     return HarpyThemeData()
       ..name = "crow"
       ..backgroundColors = [Colors.black.value, 0xff17233d]
-      ..primaryColor = 0xff17233d
       ..accentColor = 0xff6b99ff;
   }
 
@@ -194,7 +191,6 @@ class PredefinedThemes {
     return HarpyThemeData()
       ..name = "phoenix"
       ..backgroundColors = [0xffdd2222, Colors.deepOrange.value]
-      ..primaryColor = Colors.orange.value
       ..accentColor = Colors.orangeAccent.value;
   }
 
@@ -202,7 +198,6 @@ class PredefinedThemes {
     return HarpyThemeData()
       ..name = "swan"
       ..backgroundColors = [Colors.white.value, Colors.white.value]
-      ..primaryColor = Colors.deepOrangeAccent.value
       ..accentColor = 0xff444444;
   }
 }

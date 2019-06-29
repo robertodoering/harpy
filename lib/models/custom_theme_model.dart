@@ -77,11 +77,6 @@ class CustomThemeModel extends ChangeNotifier {
     existingName = _existingName();
   }
 
-  void changePrimaryColor(Color color) {
-    customThemeData.primaryColor = color.value;
-    notifyListeners();
-  }
-
   void changeAccentColor(Color color) {
     customThemeData.accentColor = color.value;
     notifyListeners();
