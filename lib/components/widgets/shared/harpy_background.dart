@@ -9,10 +9,12 @@ class HarpyBackground extends StatelessWidget {
   const HarpyBackground({
     this.child,
     this.colors,
+    this.borderRadius,
   });
 
   final Widget child;
   final List<Color> colors;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,10 @@ class HarpyBackground extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
+        borderRadius: borderRadius,
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: colors ?? harpyTheme.backgroundColors,
         ),
       ),

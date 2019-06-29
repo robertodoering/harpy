@@ -229,16 +229,14 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AnimatedScale(
-        scale: _tapDown ? .9 : 1,
-        child: GestureDetector(
-          onTapDown: (_) => setState(() => _tapDown = true),
-          onTapUp: (_) => setState(() => _tapDown = false),
-          onTapCancel: () => setState(() => _tapDown = false),
-          onTap: widget.onTap,
-          child: widget.child,
-        ),
+    return AnimatedScale(
+      scale: _tapDown ? .9 : 1,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _tapDown = true),
+        onTapUp: (_) => setState(() => _tapDown = false),
+        onTapCancel: () => setState(() => _tapDown = false),
+        onTap: widget.onTap,
+        child: widget.child,
       ),
     );
   }
@@ -319,6 +317,43 @@ class NewFlatHarpyButton extends StatelessWidget {
           style: theme.textTheme.button.copyWith(
             color: theme.textTheme.body1.color,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A flat button with an icon in its center.
+class IconHarpyButton extends StatelessWidget {
+  const IconHarpyButton({
+    @required this.iconData,
+    @required this.onTap,
+  });
+
+  final IconData iconData;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(
+      vertical: 12,
+      horizontal: 32,
+    );
+
+    final theme = Theme.of(context);
+
+    final color = theme.textTheme.body1.color;
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+        ),
+        child: Padding(
+          padding: padding,
+          child: Icon(iconData, color: color),
         ),
       ),
     );
