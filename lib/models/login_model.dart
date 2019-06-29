@@ -11,6 +11,7 @@ import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
@@ -80,7 +81,6 @@ class LoginModel extends ChangeNotifier {
 
     // initialize before navigating
     bool knownUser = await initBeforeHome();
-    knownUser = false; // todo: remove
 
     // makes sure we were able to get the logged in user before navigating
     if (applicationModel.loggedIn && loggedInUser != null) {
@@ -113,6 +113,10 @@ class LoginModel extends ChangeNotifier {
     _log.fine("logging out");
 
     await applicationModel.twitterLogin.logOut();
+
+    // reset to default theme
+    applicationModel.themeSettingsModel.harpyTheme =
+        PredefinedThemes.themes.first;
 
     applicationModel.twitterSession = null;
     loggedInUser = null;

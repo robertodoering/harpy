@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// Used by [FlatHarpyButton] to build a different icon when the button is
 /// highlighted.
@@ -264,7 +265,7 @@ class RaisedHarpyButton extends StatelessWidget {
       horizontal: dense ? 24 : 32,
     );
 
-    final theme = Theme.of(context);
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
     final color = backgroundColor ?? theme.buttonColor;
     final style = backgroundColor != null
@@ -303,7 +304,7 @@ class NewFlatHarpyButton extends StatelessWidget {
     final borderRadius = BorderRadius.circular(64);
     final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
 
-    final theme = Theme.of(context);
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
     return _HarpyButtonBase(
       onTap: onTap,
@@ -341,7 +342,7 @@ class IconHarpyButton extends StatelessWidget {
       horizontal: 32,
     );
 
-    final theme = Theme.of(context);
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
     final color = theme.textTheme.body1.color;
 
