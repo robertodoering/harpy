@@ -9,13 +9,13 @@ class ThemeSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: "Theme",
-      body: ThemeSelection(),
+      body: _ThemeSettingsScreenContent(),
     );
   }
 }
 
 /// Builds the [ThemeCard]s for selecting a different [HarpyTheme].
-class ThemeSelection extends StatelessWidget {
+class _ThemeSettingsScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeSettingsModel = ThemeSettingsModel.of(context);
