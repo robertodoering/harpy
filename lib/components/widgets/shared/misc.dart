@@ -7,25 +7,23 @@ class IconRow extends StatelessWidget {
     @required this.icon,
     @required this.child,
     this.iconPadding,
-    this.textStyle,
   });
 
   /// The [IconData] of the icon.
   final IconData icon;
 
-  /// The [child] an either be a Widget or a String that will turn into a Widget
-  /// and is displayed to the right of the [icon].
+  /// The [child] an either be a Widget or a String that will turn into a text
+  /// widget and is displayed to the right of the [icon].
   final child;
 
   /// If [iconPadding] is not null the [icon] will be in the center of a
   /// [SizedBox] with a width of [iconPadding].
   final double iconPadding;
 
-  /// The [TextStyle] of the [child] if it is a String.
-  final TextStyle textStyle;
-
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.body1;
+
     return Row(
       children: <Widget>[
         SizedBox(
@@ -38,7 +36,9 @@ class IconRow extends StatelessWidget {
               ? child
               : Text(
                   child,
-                  style: textStyle ?? Theme.of(context).textTheme.display1,
+                  style: textStyle.copyWith(
+                    color: textStyle.color.withOpacity(0.8),
+                  ),
                 ),
         ),
       ],
@@ -59,12 +59,25 @@ class FollowersCount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(formatNumber(following)),
-        Text(" Following", style: Theme.of(context).textTheme.display1),
-        SizedBox(width: 16),
-        Text(formatNumber(followers)),
-        Text(" Followers", style: Theme.of(context).textTheme.display1),
+        Expanded(
+          child: Text.rich(
+            TextSpan(children: [
+              TextSpan(text: formatNumber(following)),
+              TextSpan(text: " Following"),
+            ]),
+          ),
+        ),
+        Expanded(
+          child: Text.rich(
+            TextSpan(children: [
+              TextSpan(text: formatNumber(followers)),
+              TextSpan(text: " Followers"),
+            ]),
+            textAlign: TextAlign.end,
+          ),
+        ),
       ],
     );
   }

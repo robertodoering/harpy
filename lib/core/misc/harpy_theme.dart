@@ -2,173 +2,202 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
-  /// The default light theme.
-  HarpyTheme.light() {
-    name = "Default light";
-    defaultTheme = true;
-    _initBaseTheme("light");
+  HarpyTheme.fromData(HarpyThemeData data) {
+    name = data.name ?? "";
 
-    accentColor = Colors.indigoAccent;
+    backgroundColors =
+        data.backgroundColors?.map((value) => _colorFromValue(value))?.toList();
 
-    primaryBackgroundColor = Colors.indigo[50];
-    secondaryBackgroundColor = Colors.white;
+    if (backgroundColors == null || backgroundColors?.length != 2) {
+      backgroundColors = _fallback.backgroundColors;
+    }
+
+    accentColor = _colorFromValue(data.accentColor) ?? _fallback.accentColor;
   }
 
-  /// The default dark theme.
-  HarpyTheme.dark() {
-    name = "Default dark";
-    defaultTheme = true;
-    _initBaseTheme("dark");
-
-    accentColor = Colors.deepPurpleAccent;
-
-    primaryBackgroundColor = Colors.grey[850];
-    secondaryBackgroundColor = Colors.black;
-  }
-
-  /// Creates a [HarpyTheme] from [HarpyThemeData].
-  HarpyTheme.custom(HarpyThemeData harpyThemeData) {
-    _initBaseTheme(harpyThemeData.base);
-
-    name = harpyThemeData.name;
-
-    // todo: ensure colors are not null
-    accentColor = _colorFromValue(harpyThemeData.accentColor);
-    primaryBackgroundColor =
-        _colorFromValue(harpyThemeData.primaryBackgroundColor);
-    secondaryBackgroundColor =
-        _colorFromValue(harpyThemeData.secondaryBackgroundColor);
-    likeColor = _colorFromValue(harpyThemeData.likeColor);
-    retweetColor = _colorFromValue(harpyThemeData.retweetColor);
-  }
-
-  /// The color that will be drawn in the splash screen and [LoginScreen].
-  static const Color harpyColor = Colors.indigo;
-
-  /// `true` if the theme is the default light or dark theme.
-  bool defaultTheme = false;
+  /// The fallback is used if the [HarpyThemeData] has insufficient data.
+  static final HarpyTheme _fallback = PredefinedThemes.themes.first;
 
   String name;
-  String base;
 
-  ThemeData _baseTheme;
+  /// A list of 2 colors that define the background gradient.
+  List<Color> backgroundColors;
 
-  // custom colors, must not be null
+  Color get primaryColor => backgroundColors.last;
+
+  /// The accent color should compliment the background color.
   Color accentColor;
 
-  Color primaryBackgroundColor;
-  Color secondaryBackgroundColor;
+  /// Gets the brightness by averaging the relative luminance of each
+  /// background color.
+  ///
+  /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
+  Brightness get brightness {
+    double relativeLuminance = backgroundColors
+            .map((color) => color.computeLuminance())
+            .reduce((a, b) => a + b) /
+        backgroundColors.length;
 
-  Color likeColor = Colors.red;
-  Color retweetColor = Colors.green;
+    const double kThreshold = 0.15;
 
-  Brightness get backgroundColor1Brightness => _backgroundColor1Brightness ??=
-      ThemeData.estimateBrightnessForColor(primaryBackgroundColor);
-  Brightness _backgroundColor1Brightness;
+    return ((relativeLuminance + 0.05) * (relativeLuminance + 0.05) >
+            kThreshold)
+        ? Brightness.light
+        : Brightness.dark;
+  }
+
+  /// Returns the [primaryColor] if it is not the same brightness as the button
+  /// color, otherwise a complimentary color (white / black).
+  Color get buttonTextColor {
+    final primaryColorBrightness =
+        ThemeData.estimateBrightnessForColor(primaryColor);
+
+    if (brightness == Brightness.dark) {
+      // button color is light
+      return primaryColorBrightness == Brightness.light
+          ? Colors.black
+          : primaryColor;
+    } else {
+      // button color is dark
+      return primaryColorBrightness == Brightness.dark
+          ? Colors.white
+          : primaryColor;
+    }
+  }
 
   Color get backgroundComplimentaryColor =>
-      backgroundColor1Brightness == Brightness.light
-          ? Colors.black
-          : Colors.white;
+      brightness == Brightness.light ? Colors.black : Colors.white;
 
-  /// Returns [Colors.black] if the [color] is a bright color or [Colors.white]
-  /// if it is a dark color.
-  static Color complimentaryColor(Color color) =>
-      ThemeData.estimateBrightnessForColor(color) == Brightness.light
-          ? Colors.black
-          : Colors.white;
+  TextTheme get _textTheme {
+    final displayFont = "Comfortaa";
+    final bodyFont = "OpenSans";
 
-  ThemeData get theme {
-    final textTheme = _baseTheme.textTheme.apply(fontFamily: "OpenSans");
+    final complimentaryColor = backgroundComplimentaryColor;
 
-    return _baseTheme.copyWith(
-      primaryColor: accentColor,
-      accentColor: accentColor,
-      scaffoldBackgroundColor: primaryBackgroundColor,
-      backgroundColor: primaryBackgroundColor,
-      dialogBackgroundColor: primaryBackgroundColor,
-      canvasColor: primaryBackgroundColor, // drawer background (base == dark)
-
-      buttonColor: Colors.white,
-      indicatorColor: accentColor,
-      toggleableActiveColor: accentColor,
-      textSelectionHandleColor: accentColor,
-      textSelectionColor: accentColor,
-
-      // determines the status bar icon color
-      primaryColorBrightness: backgroundColor1Brightness,
-
-      // used for the icon and text color in the appbar
-      primaryIconTheme: _baseTheme.primaryIconTheme.copyWith(
-        color: backgroundComplimentaryColor,
-      ),
-
-      // text
-      textTheme: textTheme.copyWith(
-          title: textTheme.title.copyWith(
-            fontSize: 48.0,
+    return Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
+          // display
+          display4: TextStyle(
+            fontSize: 64.0,
             letterSpacing: 6.0,
-            color: Colors.white,
-            fontFamily: "Comfortaa",
+            fontFamily: displayFont,
             fontWeight: FontWeight.w300,
+            color: complimentaryColor,
           ),
-          subtitle: textTheme.subtitle.copyWith(
+          display3: TextStyle(
+            fontSize: 48.0,
+            letterSpacing: 2.0,
+            fontFamily: displayFont,
+            fontWeight: FontWeight.w300,
+            color: complimentaryColor,
+          ),
+          display2: TextStyle(
+            fontFamily: displayFont,
+            color: complimentaryColor,
+          ),
+          display1: TextStyle(
             fontSize: 18.0,
             letterSpacing: 2.0,
-            color: Colors.white,
-            fontFamily: "Comfortaa",
+            fontFamily: displayFont,
             fontWeight: FontWeight.w300,
+            color: complimentaryColor.withOpacity(0.8),
           ),
-          button: textTheme.button.copyWith(
-            color: harpyColor,
+
+          // title
+          title: TextStyle(
+            fontFamily: displayFont,
+            letterSpacing: 2.0,
+            fontWeight: FontWeight.w300,
+            color: complimentaryColor,
+          ),
+
+          subhead: TextStyle(
+            letterSpacing: 1.0,
+            fontFamily: displayFont,
+            fontWeight: FontWeight.w300,
+            color: complimentaryColor.withOpacity(0.9),
+          ),
+
+          subtitle: TextStyle(
+            fontFamily: displayFont,
+            fontWeight: FontWeight.w300,
+            color: complimentaryColor,
+          ),
+
+          // body
+          body1: TextStyle(
             fontSize: 16.0,
+            fontFamily: bodyFont,
           ),
 
-          // drawer username
-          display1: textTheme.display1.copyWith(
+          body2: TextStyle(
             fontSize: 14.0,
+            fontFamily: bodyFont,
+            color: complimentaryColor.withOpacity(0.7),
           ),
 
-          // drawer name
-          display2: textTheme.display2.copyWith(
-            fontSize: 24.0,
+          button: TextStyle(
+            fontSize: 16.0,
+            letterSpacing: 1.2,
+            fontFamily: bodyFont,
+            color: buttonTextColor,
           ),
+        );
+  }
 
-          // settings header
-          display3: textTheme.display2.copyWith(
-            fontSize: 18.0,
-          ),
+  ThemeData get theme {
+    final complimentaryColor = backgroundComplimentaryColor;
 
-          // default text
-          body1: textTheme.body1.copyWith(
-            fontSize: 14.0,
-          ),
+    return ThemeData(
+      brightness: brightness,
+      textTheme: _textTheme,
+      primaryColor: primaryColor,
+      accentColor: accentColor,
+      buttonColor: complimentaryColor,
 
-          // username
-          caption: textTheme.caption.copyWith(
-            fontSize: 12.0,
-          )),
+      // determines the status bar icon color
+      primaryColorBrightness: brightness,
 
-      dialogTheme: _baseTheme.dialogTheme.copyWith(
-        titleTextStyle: textTheme.title.copyWith(
-          fontSize: 24.0,
-          color: Colors.white,
-          fontFamily: "Comfortaa",
-          fontWeight: FontWeight.w300,
-        ),
-      ),
+      // used for the background color of Material widgets
+      cardColor: primaryColor,
+      canvasColor: primaryColor,
     );
   }
 
   Color _colorFromValue(int value) {
-    if (value == null) {
-      return null;
-    }
-    return Color(value);
+    return value != null ? Color(value) : null;
+  }
+}
+
+// todo: define theme data for predefined themes ("crow", "phoenix", "swan")
+class PredefinedThemes {
+  static List<HarpyTheme> get themes {
+    return data.map((themeData) => HarpyTheme.fromData(themeData)).toList();
   }
 
-  void _initBaseTheme(String base) {
-    this.base = base;
-    _baseTheme = base == "light" ? ThemeData.light() : ThemeData.dark();
+  static List<HarpyThemeData> get data => [
+        crow,
+        swan,
+        phoenix,
+      ];
+
+  static HarpyThemeData get crow {
+    return HarpyThemeData()
+      ..name = "crow"
+      ..backgroundColors = [Colors.black.value, 0xff17233d]
+      ..accentColor = 0xff6b99ff;
+  }
+
+  static HarpyThemeData get phoenix {
+    return HarpyThemeData()
+      ..name = "phoenix"
+      ..backgroundColors = [0xffdd2222, Colors.deepOrange.value]
+      ..accentColor = Colors.orangeAccent.value;
+  }
+
+  static HarpyThemeData get swan {
+    return HarpyThemeData()
+      ..name = "swan"
+      ..backgroundColors = [Colors.white.value, Colors.white.value]
+      ..accentColor = 0xff444444;
   }
 }

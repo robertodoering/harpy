@@ -9,17 +9,13 @@ part 'tweet.g.dart';
 
 @JsonSerializable()
 class Tweet {
-  @JsonKey(name: 'user')
   User user;
-  @JsonKey(name: 'entities')
   Entities entities;
   @JsonKey(name: 'extended_entities')
   Entities extendedEntities;
-  @JsonKey(name: 'truncated')
   bool truncated;
   @JsonKey(name: 'created_at')
   DateTime createdAt;
-  @JsonKey(name: 'favorited')
   bool favorited;
   @JsonKey(name: 'id_str')
   String idStr;
@@ -33,9 +29,7 @@ class Tweet {
   int retweetCount;
   @JsonKey(name: 'in_reply_to_status_id_str')
   String inReplyToStatusIdStr;
-  @JsonKey(name: 'retweeted')
   bool retweeted;
-  @JsonKey(name: 'source')
   String source;
   @JsonKey(name: "favorite_count")
   int favoriteCount;
@@ -75,29 +69,6 @@ class Tweet {
     this.harpyData,
     this.displayTextRange,
   );
-
-  factory Tweet.mock() {
-    return Tweet(
-      User.mock(),
-      Entities(null, null, null, null, null, null),
-      false,
-      DateTime.parse("2018-07-29"),
-      true,
-      null,
-      null,
-      "Today is a good day.",
-      null,
-      69,
-      null,
-      false,
-      null,
-      420,
-      null,
-      "en",
-      HarpyData.init(),
-      [0, 1],
-    );
-  }
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 

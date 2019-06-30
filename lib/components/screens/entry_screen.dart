@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
-import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 
 /// The 'splash screen' shown during the start of the app while the
@@ -12,8 +11,6 @@ import 'package:harpy/models/application_model.dart';
 class EntryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: HarpyTheme.harpyColor,
-    );
+    return Container(color: Colors.black);
   }
 }

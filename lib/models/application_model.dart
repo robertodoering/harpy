@@ -115,13 +115,13 @@ class ApplicationModel extends ChangeNotifier {
       _log.fine("navigating to home screen");
       HarpyNavigator.pushReplacementRoute(FadeRoute(
         builder: (context) => HomeScreen(),
+        duration: const Duration(milliseconds: 600),
       ));
     } else {
       _log.fine("navigating to login screen");
-      // route without a transition
-      HarpyNavigator.pushReplacementRoute(PageRouteBuilder(
-        pageBuilder: (context, _a, _b) => LoginScreen(),
-        transitionDuration: Duration.zero,
+      HarpyNavigator.pushReplacementRoute(FadeRoute(
+        builder: (context) => LoginScreen(),
+        duration: const Duration(milliseconds: 600),
       ));
     }
   }

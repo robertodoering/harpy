@@ -2,14 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:harpy/components/widgets/settings/settings_list.dart';
+import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
 class CustomThemeScreen extends StatefulWidget {
+  const CustomThemeScreen({
+    this.editingThemeData,
+    this.editingThemeId,
+  });
+
+  final HarpyThemeData editingThemeData;
+  final int editingThemeId;
+
   @override
   _CustomThemeScreenState createState() => _CustomThemeScreenState();
 }
@@ -20,7 +32,9 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   @override
   Widget build(BuildContext context) {
     customThemeModel ??= CustomThemeModel(
-      themeModel: ThemeSettingsModel.of(context),
+      themeSettingsModel: ThemeSettingsModel.of(context),
+      editingThemeData: widget.editingThemeData,
+      editingThemeId: widget.editingThemeId,
     );
 
     return ChangeNotifierProvider<CustomThemeModel>(
@@ -30,21 +44,23 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
           return Theme(
             data: customThemeModel.harpyTheme.theme,
             child: HarpyScaffold(
-              primaryBackgroundColor:
-                  customThemeModel.harpyTheme.primaryBackgroundColor,
-              secondaryBackgroundColor:
-                  customThemeModel.harpyTheme.secondaryBackgroundColor,
+              backgroundColors: customThemeModel.harpyTheme.backgroundColors,
               title: "Custom theme",
               actions: <Widget>[
                 _CustomThemeSaveButton(),
               ],
-              body: ListView(
+              body: Column(
                 children: <Widget>[
-                  _CustomThemeNameField(customThemeModel),
-                  SizedBox(height: 8.0),
-                  _CustomThemeBaseSelection(),
-                  SizedBox(height: 8.0),
-                  _CustomThemeColorSelections(),
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        _CustomThemeNameField(customThemeModel),
+                        SizedBox(height: 8.0),
+                        _CustomThemeColorSelections(),
+                      ],
+                    ),
+                  ),
+                  if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
                 ],
               ),
             ),
@@ -55,16 +71,96 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
   }
 }
 
-/// Builds the button to save the custom theme and shows a [SnackBar] with an
-/// error message if it was unable to save it.
+/// Builds a button that will delete the custom theme.
 ///
-/// Only implemented in the pro version.
+/// Only appears when editing an existing custom theme.
+class _CustomThemeDeleteButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final customThemeModel = CustomThemeModel.of(context);
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: RaisedHarpyButton(
+        text: "Delete theme",
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return HarpyDialog(
+                  title: "Really delete?",
+                  actions: [
+                    DialogAction.discard,
+                    DialogAction.confirm,
+                  ],
+                );
+              }).then((result) {
+            if (result == true) {
+              if (themeSettingsModel.selectedThemeId ==
+                  customThemeModel.editingThemeId) {
+                // when deleting the active custom theme, reset to the default theme
+                themeSettingsModel.changeSelectedTheme(
+                  PredefinedThemes.themes.first,
+                  0,
+                );
+              }
+
+              themeSettingsModel.deleteCustomTheme(
+                themeSettingsModel.selectedThemeId,
+              );
+
+              Navigator.of(context).pop();
+            }
+          });
+        },
+      ),
+    );
+  }
+}
+
+/// Builds the button to save the custom theme.
 class _CustomThemeSaveButton extends StatelessWidget {
+  void _saveTheme(BuildContext context) {
+    final model = CustomThemeModel.of(context);
+
+    if (model.customThemeData?.name?.isEmpty ?? true) {
+      showFlushbar(
+        "Enter a name",
+        type: FlushbarType.error,
+      );
+      return;
+    }
+
+    if (model.errorText() != null) {
+      showFlushbar(
+        model.errorText(),
+        type: FlushbarType.error,
+      );
+      return;
+    }
+
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    if (model.editingTheme) {
+      // edited theme
+      themeSettingsModel.updateCustomTheme(
+        model.customThemeData,
+        model.editingThemeId,
+      );
+    } else {
+      // new theme
+      themeSettingsModel.saveNewCustomTheme(model.customThemeData);
+    }
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.check),
-      onPressed: null,
+      onPressed: () => _saveTheme(context),
     );
   }
 }
@@ -98,45 +194,18 @@ class _CustomThemeNameFieldState extends State<_CustomThemeNameField> {
   Widget build(BuildContext context) {
     return SettingsColumn(
       title: "Theme name",
-      child: TextField(
-        controller: _controller,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 8.0,
-            vertical: 12.0,
+      children: <Widget>[
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 12.0,
+            ),
+            errorText: widget.model.errorText(),
           ),
-          errorText: widget.model.errorText(),
         ),
-      ),
-    );
-  }
-}
-
-/// Builds a [TabBar] to select the light or dark default [ThemeData] as the
-/// base for the custom theme.
-class _CustomThemeBaseSelection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final model = CustomThemeModel.of(context);
-    final harpyTheme = HarpyTheme.custom(model.customThemeData);
-
-    final textStyle = harpyTheme.theme.textTheme.body1.copyWith(
-      color: harpyTheme.backgroundComplimentaryColor,
-    );
-
-    return SettingsColumn(
-      title: "Base theme",
-      child: DefaultTabController(
-        initialIndex: model.initialTabControllerIndex,
-        length: 2,
-        child: TabBar(
-          onTap: model.changeBase,
-          tabs: <Widget>[
-            Tab(child: Text("Light", style: textStyle)),
-            Tab(child: Text("Dark", style: textStyle)),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }
@@ -145,48 +214,41 @@ class _CustomThemeBaseSelection extends StatelessWidget {
 /// [HarpyTheme].
 class _CustomThemeColorSelections extends StatelessWidget {
   List<_CustomThemeColor> _getThemeColors(CustomThemeModel model) {
-    final harpyTheme = HarpyTheme.custom(model.customThemeData);
+    final harpyTheme = HarpyTheme.fromData(model.customThemeData);
 
     return <_CustomThemeColor>[
+      _CustomThemeColor(
+        name: "First background color",
+        color: harpyTheme.backgroundColors.first,
+        onColorChanged: model.changeFirstBackgroundColor,
+      ),
+      _CustomThemeColor(
+        name: "Second background color",
+        color: harpyTheme.backgroundColors.last,
+        onColorChanged: model.changeSecondBackgroundColor,
+      ),
       _CustomThemeColor(
         name: "Accent color",
         color: harpyTheme.theme.accentColor,
         onColorChanged: model.changeAccentColor,
       ),
-      _CustomThemeColor(
-        name: "Primary background color",
-        color: harpyTheme.primaryBackgroundColor,
-        onColorChanged: model.changePrimaryBackgroundColor,
-      ),
-      _CustomThemeColor(
-        name: "Secondary background color",
-        color: harpyTheme.secondaryBackgroundColor,
-        onColorChanged: model.changeSecondaryBackgroundColor,
-      ),
-      _CustomThemeColor(
-        name: "Like color",
-        color: harpyTheme.likeColor,
-        onColorChanged: model.changeLikeColor,
-      ),
-      _CustomThemeColor(
-        name: "Retweet color",
-        color: harpyTheme.retweetColor,
-        onColorChanged: model.changeRetweetColor,
-      ),
     ];
   }
 
   List<Widget> _buildThemeColorSelections(BuildContext context) {
-    final model = CustomThemeModel.of(context);
+    final customThemeModel = CustomThemeModel.of(context);
 
-    return _getThemeColors(model).map((themeColorModel) {
+    return _getThemeColors(customThemeModel).map((themeColorModel) {
       return ListTile(
         leading: CircleColor(color: themeColorModel.color, circleSize: 40.0),
         title: Text(themeColorModel.name),
         onTap: () {
           showDialog(
             context: context,
-            builder: (context) => _CustomThemeColorDialog(themeColorModel),
+            builder: (context) => _CustomThemeColorDialog(
+                  themeColorModel,
+                  customThemeModel,
+                ),
           );
         },
       );
@@ -197,18 +259,17 @@ class _CustomThemeColorSelections extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsColumn(
       title: "Colors",
-      child: Column(
-        children: _buildThemeColorSelections(context),
-      ),
+      children: _buildThemeColorSelections(context),
     );
   }
 }
 
 /// The dialog that shows the [MaterialColorPicker] in an [AlertDialog].
 class _CustomThemeColorDialog extends StatefulWidget {
-  const _CustomThemeColorDialog(this.themeColorModel);
+  const _CustomThemeColorDialog(this.themeColorModel, this.customThemeModel);
 
   final _CustomThemeColor themeColorModel;
+  final CustomThemeModel customThemeModel;
 
   @override
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
@@ -250,7 +311,10 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = Theme.of(context).primaryColor;
+
     return AlertDialog(
+      backgroundColor: backgroundColor,
       contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
         padding: EdgeInsets.zero,
@@ -258,23 +322,17 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
       ),
       actions: <Widget>[
         showingColorPicker
-            ? FlatButton(
-                textColor: Theme.of(context).accentColor,
-                splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-                onPressed: _hideColorPicker,
-                child: Text("Back"),
+            ? NewFlatHarpyButton(
+                text: "Back",
+                onTap: _hideColorPicker,
               )
-            : FlatButton(
-                textColor: Theme.of(context).accentColor,
-                splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-                onPressed: _showColorPicker,
-                child: Text("Custom color"),
+            : NewFlatHarpyButton(
+                text: "Custom color",
+                onTap: _showColorPicker,
               ),
-        FlatButton(
-          textColor: Theme.of(context).accentColor,
-          splashColor: Theme.of(context).accentColor.withOpacity(0.1),
-          onPressed: Navigator.of(context).pop,
-          child: Text("Done"),
+        NewFlatHarpyButton(
+          text: "Done",
+          onTap: Navigator.of(context).pop,
         ),
       ],
     );

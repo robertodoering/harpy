@@ -8,52 +8,73 @@ import 'package:provider/provider.dart';
 /// The model for creating or editing a custom theme.
 class CustomThemeModel extends ChangeNotifier {
   CustomThemeModel({
-    @required this.themeModel,
-  }) : assert(themeModel != null) {
-    // initialize the custom theme data with the edited theme or the current
-    // theme when creating a new theme
-    customThemeData = HarpyThemeData()..fromTheme(themeModel.harpyTheme);
-    customThemeData.name = "New theme 1";
+    @required this.themeSettingsModel,
+    this.editingThemeData,
+    this.editingThemeId,
+  }) : assert(themeSettingsModel != null) {
+    if (editingTheme) {
+      // initialize the custom theme with the edited theme.
+      customThemeData = editingThemeData;
+    } else {
+      // initialize the custom theme with the current theme and a template name.
+      customThemeData =
+          HarpyThemeData.fromHarpyTheme(themeSettingsModel.harpyTheme);
+      customThemeData.name =
+          "New theme ${themeSettingsModel.customThemes.length + 1}";
+    }
   }
 
-  final ThemeSettingsModel themeModel;
+  final ThemeSettingsModel themeSettingsModel;
 
   static CustomThemeModel of(BuildContext context) {
     return Provider.of<CustomThemeModel>(context);
   }
 
+  /// The custom theme data that is being customized.
+  ///
+  /// Initialized with the data from the active theme.
   HarpyThemeData customThemeData;
+
+  /// The theme to edit.
+  final HarpyThemeData editingThemeData;
+
+  /// The id of the custom theme if one is being edited.
+  final int editingThemeId;
+
+  /// Returns true if a theme is being edited.
+  bool get editingTheme => editingThemeId != null && editingThemeData != null;
 
   /// `true` if the name only contains valid characters.
   bool validName = true;
 
+  /// `true` of a different custom theme already exists with the same name.
+  bool existingName = false;
+
   /// Returns the error text if an error exists, otherwise `null`.
   String errorText() {
     if (customThemeData.name?.isEmpty ?? true) {
-      return null;
+      return "Name can't be empty";
     }
 
     if (!validName) {
       return "Name contains invalid characters";
     }
 
+    if (existingName) {
+      return "Theme with name ${customThemeData.name} already exists";
+    }
+
     return null;
   }
 
-  HarpyTheme get harpyTheme => HarpyTheme.custom(customThemeData);
-
-  int get initialTabControllerIndex => customThemeData.base == "light" ? 0 : 1;
+  HarpyTheme get harpyTheme => HarpyTheme.fromData(customThemeData);
 
   void changeName(String name) {
     customThemeData.name = name;
 
     // validate name
     validName = _validateName();
-  }
-
-  void changeBase(int index) {
-    customThemeData.base = index == 0 ? "light" : "dark";
-    notifyListeners();
+    existingName = _existingName();
   }
 
   void changeAccentColor(Color color) {
@@ -61,23 +82,13 @@ class CustomThemeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changePrimaryBackgroundColor(Color color) {
-    customThemeData.primaryBackgroundColor = color.value;
+  void changeFirstBackgroundColor(Color color) {
+    customThemeData.backgroundColors.first = color.value;
     notifyListeners();
   }
 
-  void changeSecondaryBackgroundColor(Color color) {
-    customThemeData.secondaryBackgroundColor = color.value;
-    notifyListeners();
-  }
-
-  void changeLikeColor(Color color) {
-    customThemeData.likeColor = color.value;
-    notifyListeners();
-  }
-
-  void changeRetweetColor(Color color) {
-    customThemeData.retweetColor = color.value;
+  void changeSecondBackgroundColor(Color color) {
+    customThemeData.backgroundColors.last = color.value;
     notifyListeners();
   }
 
@@ -85,5 +96,21 @@ class CustomThemeModel extends ChangeNotifier {
   /// and spaces.
   bool _validateName() {
     return customThemeData.name.contains(RegExp(r"^[-_ a-zA-Z0-9]+$"));
+  }
+
+  /// Returns `true` if the name already exists in the saved custom themes.
+  bool _existingName() {
+    // return false if it is the edited theme
+    if (editingTheme) {
+      if (customThemeData.name == editingThemeData.name) {
+        return false;
+      }
+    }
+
+    return PredefinedThemes.data
+        .followedBy(themeSettingsModel.customThemes)
+        .any((data) {
+      return data.name == customThemeData.name;
+    });
   }
 }

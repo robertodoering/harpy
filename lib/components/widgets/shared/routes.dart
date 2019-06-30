@@ -52,9 +52,13 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
 /// A [PageRoute] that fades into the new widget.
 class FadeRoute<T> extends PageRoute<T> {
-  FadeRoute({@required this.builder}) : super();
+  FadeRoute({
+    @required this.builder,
+    this.duration = const Duration(milliseconds: 300),
+  }) : super();
 
   final WidgetBuilder builder;
+  final Duration duration;
 
   @override
   Color get barrierColor => null;
@@ -66,7 +70,7 @@ class FadeRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 300);
+  Duration get transitionDuration => duration;
 
   @override
   Widget buildPage(
@@ -78,10 +82,14 @@ class FadeRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return FadeTransition(
-      opacity: new CurvedAnimation(parent: animation, curve: Curves.easeOut),
+      opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
       child: child,
     );
   }

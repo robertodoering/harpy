@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// Used by [FlatHarpyButton] to build a different icon when the button is
 /// highlighted.
@@ -210,26 +211,150 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-/// A login button that slides into position with a delay upon creation.
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    @required this.onPressed,
+/// The base of the harpy button used by the raised and flat harpy button.
+class _HarpyButtonBase extends StatefulWidget {
+  const _HarpyButtonBase({
+    this.onTap,
+    @required this.child,
   });
 
-  final VoidCallback onPressed;
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  _HarpyButtonBaseState createState() => _HarpyButtonBaseState();
+}
+
+class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
+  bool _tapDown = false;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SlideFadeInAnimation(
-        duration: Duration(seconds: 1),
-        offset: Offset(0.0, 50.0),
-        child: RaisedButton(
-          child: Text(
-            "Login with Twitter",
-            style: Theme.of(context).textTheme.button,
+    return AnimatedScale(
+      scale: _tapDown ? .9 : 1,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _tapDown = true),
+        onTapUp: (_) => setState(() => _tapDown = false),
+        onTapCancel: () => setState(() => _tapDown = false),
+        onTap: widget.onTap,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// A raised button with a background.
+class RaisedHarpyButton extends StatelessWidget {
+  const RaisedHarpyButton({
+    @required this.text,
+    @required this.onTap,
+    this.dense = false,
+    this.backgroundColor,
+  });
+
+  final String text;
+  final VoidCallback onTap;
+  final bool dense;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 24 : 32,
+    );
+
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
+
+    final color = backgroundColor ?? theme.buttonColor;
+    final style = backgroundColor != null
+        ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
+        : theme.textTheme.button;
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Material(
+        color: color,
+        elevation: 8,
+        borderRadius: borderRadius,
+        child: Padding(
+          padding: padding,
+          child: Text(text, style: style),
+        ),
+      ),
+    );
+  }
+}
+
+/// A flat button without a background that appears as text.
+///
+/// Should only be used when the context makes it clear it can be tapped.
+class NewFlatHarpyButton extends StatelessWidget {
+  const NewFlatHarpyButton({
+    @required this.text,
+    @required this.onTap,
+  });
+
+  final String text;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+        ),
+        child: Text(
+          text,
+          style: theme.textTheme.button.copyWith(
+            color: theme.textTheme.body1.color,
           ),
-          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+}
+
+/// A flat button with an icon in its center.
+class IconHarpyButton extends StatelessWidget {
+  const IconHarpyButton({
+    @required this.iconData,
+    @required this.onTap,
+  });
+
+  final IconData iconData;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(64);
+    final padding = const EdgeInsets.symmetric(
+      vertical: 12,
+      horizontal: 32,
+    );
+
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
+
+    final color = theme.textTheme.body1.color;
+
+    return _HarpyButtonBase(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+        ),
+        child: Padding(
+          padding: padding,
+          child: Icon(iconData, color: color),
         ),
       ),
     );

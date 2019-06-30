@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -21,14 +23,17 @@ class ThemeSettingsModel extends ChangeNotifier {
   static final Logger _log = Logger("ThemeSettingsModel");
 
   /// The selected theme used by the app.
-  HarpyTheme harpyTheme = HarpyTheme.light();
+  HarpyTheme harpyTheme = PredefinedThemes.themes.first;
+
+  List<HarpyThemeData> customThemes = [];
 
   /// The id of the selected theme.
-  ///
-  /// `0` and `1` corresponds to the default light and default dark theme while
-  /// higher ids correspond to the index of the custom themes.
   int get selectedThemeId =>
-      harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 1);
+      harpyPrefs.getInt("${harpyPrefs.prefix}.selectedThemeId", 0);
+
+  HarpyThemeData getDataFromId(int id) {
+    return PredefinedThemes.data.followedBy(customThemes).elementAt(id);
+  }
 
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeSettingsModel].
@@ -40,6 +45,59 @@ class ThemeSettingsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Loads all custom themes from the shared preferences and saves them in
+  /// [customThemes].
+  void loadCustomThemes() {
+    _log.fine("loading custom themes");
+    customThemes = _getCustomThemes();
+    _log.fine("found ${customThemes.length} themes");
+  }
+
+  /// Adds a new custom theme into the [customThemes] and changes the selected
+  /// theme to it.
+  void saveNewCustomTheme(HarpyThemeData themeData) {
+    _log.fine("saving new custom theme");
+    customThemes.add(themeData);
+    _saveCustomThemes();
+
+    int id = customThemes.indexOf(themeData);
+    id += PredefinedThemes.themes.length;
+
+    changeSelectedTheme(HarpyTheme.fromData(themeData), id);
+
+    notifyListeners();
+  }
+
+  /// Updates an existing custom theme with the [id].
+  void updateCustomTheme(HarpyThemeData themeData, int id) {
+    _log.fine("updating custom theme ${themeData.name} with id: $id");
+
+    // subtract the length of predefined themes
+    id -= PredefinedThemes.themes.length;
+
+    if (id >= 0 && id < customThemes.length) {
+      customThemes[id] = themeData;
+      _saveCustomThemes();
+      initTheme();
+      notifyListeners();
+    } else {
+      _log.severe("unable to update custom theme, not in list");
+    }
+  }
+
+  void deleteCustomTheme(int id) {
+    _log.fine("deleting custom theme with id: $id");
+
+    try {
+      customThemes.removeAt(id);
+      _saveCustomThemes();
+      notifyListeners();
+    } catch (e) {
+      _log.severe("unable to delete theme at id: $id");
+      _log.severe(e.toString());
+    }
+  }
+
   /// Initializes the [HarpyTheme] with the theme set in [HarpyPrefs].
   ///
   /// Defaults to [HarpyTheme.dark].
@@ -48,23 +106,75 @@ class ThemeSettingsModel extends ChangeNotifier {
 
     _log.fine("initializing harpy theme with id $id");
 
-    if (id == 0) {
-      harpyTheme = HarpyTheme.light();
-    } else if (id == 1) {
-      harpyTheme = HarpyTheme.dark();
+    final predefinedThemes = PredefinedThemes.themes;
+
+    if (id < predefinedThemes.length) {
+      harpyTheme = predefinedThemes[id];
     } else {
-      // load harpyThemeData for custom theme
-      HarpyThemeData customThemeData = harpyPrefs.getCustomTheme(id);
+      // load data from custom theme
+      HarpyThemeData customThemeData = _getCustomTheme(id);
 
       if (customThemeData != null) {
-        harpyTheme = HarpyTheme.custom(customThemeData);
+        harpyTheme = HarpyTheme.fromData(customThemeData);
       } else {
-        _log.warning(
-            "unable to load custom theme for id: $id, defaulting to dark theme");
-        harpyTheme = HarpyTheme.dark();
+        _log.warning("unable to load custom theme for id: $id, defaulting to"
+            " dark theme");
+        harpyTheme = PredefinedThemes.themes.first;
       }
     }
 
     notifyListeners();
+  }
+
+  /// Returns the [HarpyThemeData] for the [id] of the custom themes list.
+  ///
+  /// Returns `null` if the id is not in the list.
+  HarpyThemeData _getCustomTheme(int id) {
+    _log.fine("getting custom harpy theme for id: $id");
+
+    try {
+      // subtract the length of predefined themes
+      id -= PredefinedThemes.themes.length;
+
+      return _getCustomThemes()[id];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Returns the list of all saved custom [HarpyThemeData].
+  List<HarpyThemeData> _getCustomThemes() {
+    _log.fine("getting custom themes");
+
+    return harpyPrefs.preferences
+            .getStringList("customThemes")
+            ?.map(_decodeCustomTheme)
+            ?.where((data) => data != null)
+            ?.toList() ??
+        [];
+  }
+
+  /// Saves the list of [customThemes] into the shared preferences.
+  void _saveCustomThemes() {
+    _log.fine("saving custom themes: $customThemes");
+
+    harpyPrefs.preferences.setStringList(
+      "customThemes",
+      customThemes.map((data) {
+        return jsonEncode(data.toJson());
+      }).toList(),
+    );
+  }
+
+  /// Returns the [HarpyThemeData] from the [json] string or `null` if it can't
+  /// be parsed.
+  HarpyThemeData _decodeCustomTheme(String json) {
+    try {
+      // try to parse the custom theme
+      return HarpyThemeData.fromJson(jsonDecode(json));
+    } catch (e) {
+      _log.warning("unable to parse theme: $json");
+      return null;
+    }
   }
 }

@@ -1,13 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/services/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/screens/home_screen.dart';
+import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/screens/setup_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
@@ -36,15 +40,13 @@ class LoginModel extends ChangeNotifier {
 
   /// Holds a the information for the currently logged in [User].
   ///
-  /// If [loggedIn] is `false` this is `null`.
+  /// If [applicationModel.loggedIn] is `false` this is `null`.
   User loggedInUser;
 
   /// `true` while logging in and initializing on successful login.
   bool authorizing = false;
 
   /// Login using the native twitter sdk.
-  ///
-  /// On successful login the [onAuthorized] callback is called.
   Future<void> login() async {
     _log.fine("logging in");
 
@@ -56,41 +58,54 @@ class LoginModel extends ChangeNotifier {
     switch (result.status) {
       case TwitterLoginStatus.loggedIn:
         _log.fine("successfully logged in");
-        applicationModel.twitterSession = result.session;
-
-        // init tweet cache logged in user
-        applicationModel.initLoggedIn();
-
-        // initialize before navigating
-        await initBeforeHome();
-
-        // makes sure we were able to get the logged in user before navigating
-        if (applicationModel.loggedIn && loggedInUser != null) {
-          _navigateToHome();
-        }
+        _onSuccessfulLogin(result);
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info("login cancelled by user");
-        showFlushbar("Login cancelled.", type: FlushbarType.info);
+        HarpyNavigator.pushReplacement(LoginScreen());
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
-        showFlushbar(
-          "An error occurred during login.",
-          type: FlushbarType.error,
-        );
+        _onLoginError();
         break;
     }
 
     notifyListeners();
   }
 
-  /// Navigates to the [HomeScreen] after successful authorization.
-  void _navigateToHome() {
-    _log.fine("navigating to home screen after login");
-    HarpyNavigator.pushReplacementRoute(FadeRoute(
-      builder: (context) => HomeScreen(),
-    ));
+  Future<void> _onSuccessfulLogin(TwitterLoginResult result) async {
+    applicationModel.twitterSession = result.session;
+
+    // init tweet cache logged in user
+    applicationModel.initLoggedIn();
+
+    // initialize before navigating
+    bool knownUser = await initBeforeHome();
+
+    // makes sure we were able to get the logged in user before navigating
+    if (applicationModel.loggedIn && loggedInUser != null) {
+      if (knownUser) {
+        _log.fine("navigating to home screen after login");
+        HarpyNavigator.pushReplacementRoute(FadeRoute(
+          builder: (context) => HomeScreen(),
+        ));
+      } else {
+        _log.fine("navigating to setup screen after login");
+        // user logged in for the first time
+        HarpyNavigator.pushReplacementRoute(FadeRoute(
+          builder: (context) => SetupScreen(),
+        ));
+      }
+    } else {
+      _log.severe("unable to retreive logged in user after successful "
+          "authorization");
+      _onLoginError();
+    }
+  }
+
+  void _onLoginError() {
+    HarpyNavigator.pushReplacement(LoginScreen());
+    showFlushbar("An error occurred during login.", type: FlushbarType.error);
   }
 
   /// Logout using the native twitter sdk.
@@ -99,19 +114,38 @@ class LoginModel extends ChangeNotifier {
 
     await applicationModel.twitterLogin.logOut();
 
+    // reset to default theme
+    applicationModel.themeSettingsModel.harpyTheme =
+        PredefinedThemes.themes.first;
+
     applicationModel.twitterSession = null;
     loggedInUser = null;
   }
 
   /// Initializes the logged in user and the home timeline tweets.
-  Future<void> initBeforeHome() async {
-    await Future.wait([
+  ///
+  /// Returns `true` if the logged in user has been logged in before, `false`
+  /// otherwise.
+  Future<bool> initBeforeHome() async {
+    List<dynamic> results = await Future.wait<dynamic>([
       homeTimelineModel.initTweets(),
       _initLoggedInUser(),
     ]);
+
+    if (results.last is bool) {
+      return results.last;
+    }
+
+    return true;
   }
 
-  Future<void> _initLoggedInUser() async {
+  /// Gets the logged in user from cache and then updates it without waiting
+  /// or waits to retrieve the user details when they are not cached.
+  ///
+  /// Returns `true` if the user has been cached (and therefore logged in
+  /// before).
+  /// Returns `false` if the user logged in for the first time.
+  Future<bool> _initLoggedInUser() async {
     _log.fine("initializing logged in user");
 
     String userId = applicationModel.twitterSession.userId;
@@ -124,12 +158,15 @@ class LoginModel extends ChangeNotifier {
     if (loggedInUser == null) {
       _log.fine("user not in cache, waiting to update logged in user");
       await _updateLoggedInUser();
+      return false;
     } else {
       _log.fine("user in cache, immediately returning and updating user");
       _updateLoggedInUser();
+      return true;
     }
   }
 
+  /// Retrieves user details for the logged in user.
   Future<void> _updateLoggedInUser() async {
     _log.fine("updating logged in user");
 

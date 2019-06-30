@@ -3,37 +3,37 @@ import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:provider/provider.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: "Theme",
-      body: Consumer<ThemeSettingsModel>(
-        builder: (context, model, _) {
-          return ThemeSelection();
-        },
-      ),
+      body: _ThemeSettingsScreenContent(),
     );
   }
 }
 
 /// Builds the [ThemeCard]s for selecting a different [HarpyTheme].
-class ThemeSelection extends StatelessWidget {
-  final List<HarpyTheme> _harpyThemes = [
-    HarpyTheme.light(),
-    HarpyTheme.dark(),
-  ];
-
+class _ThemeSettingsScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
+    final themes = PredefinedThemes.themes;
+
+    // load and add all custom themes
+    themeSettingsModel.loadCustomThemes();
+    themes.addAll(themeSettingsModel.customThemes.map((themeData) {
+      return HarpyTheme.fromData(themeData);
+    }));
+
     List<Widget> children = [];
 
-    children.addAll(_harpyThemes.map((harpyTheme) {
+    children.addAll(themes.map((harpyTheme) {
       return ThemeCard(
         harpyTheme: harpyTheme,
-        id: _harpyThemes.indexOf(harpyTheme),
+        id: themes.indexOf(harpyTheme),
       );
     }).toList());
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
 class HarpyScaffold extends StatelessWidget {
@@ -10,8 +11,7 @@ class HarpyScaffold extends StatelessWidget {
     this.actions,
     this.drawer,
     this.body,
-    this.primaryBackgroundColor,
-    this.secondaryBackgroundColor,
+    this.backgroundColors,
   });
 
   final String title;
@@ -20,9 +20,8 @@ class HarpyScaffold extends StatelessWidget {
   final Widget body;
 
   /// When set the [HarpyBackground] will override the active theme background
-  /// [Color]s.
-  final Color primaryBackgroundColor;
-  final Color secondaryBackgroundColor;
+  /// colors.
+  final List<Color> backgroundColors;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +32,7 @@ class HarpyScaffold extends StatelessWidget {
       actions: actions,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.title.copyWith(
-              fontSize: 20.0,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
+        style: Theme.of(context).textTheme.title,
       ),
     );
 
@@ -48,8 +44,7 @@ class HarpyScaffold extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           HarpyBackground(
-            startColor: primaryBackgroundColor,
-            endColor: secondaryBackgroundColor,
+            colors: backgroundColors,
           ),
           Column(
             children: <Widget>[
@@ -57,12 +52,7 @@ class HarpyScaffold extends StatelessWidget {
                 constraints: BoxConstraints(maxHeight: extent),
                 child: appBar,
               ),
-              Expanded(
-                child: Material(
-                  color: Colors.transparent,
-                  child: body,
-                ),
-              ),
+              Expanded(child: body),
             ],
           )
         ],
@@ -136,12 +126,15 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final themeSettingsModel = ThemeSettingsModel.of(context);
+
     SliverAppBar sliverAppBar = SliverAppBar(
       expandedHeight: widget.expandedAppBarSpace,
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       pinned: true,
-      flexibleSpace: HarpyBackground(
+      flexibleSpace: Container(
+        color: themeSettingsModel.harpyTheme.backgroundColors.first,
         child: FlexibleSpaceBar(
           centerTitle: true,
           // padding to prevent the text to get below the back arrow
@@ -151,7 +144,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
               opacity: opacity,
               child: Text(
                 widget.title ?? "",
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.title,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
