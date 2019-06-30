@@ -53,7 +53,7 @@ class CustomThemeModel extends ChangeNotifier {
   /// Returns the error text if an error exists, otherwise `null`.
   String errorText() {
     if (customThemeData.name?.isEmpty ?? true) {
-      return null;
+      return "Name can't be empty";
     }
 
     if (!validName) {
@@ -107,7 +107,9 @@ class CustomThemeModel extends ChangeNotifier {
       }
     }
 
-    return themeSettingsModel.customThemes.any((data) {
+    return PredefinedThemes.data
+        .followedBy(themeSettingsModel.customThemes)
+        .any((data) {
       return data.name == customThemeData.name;
     });
   }
