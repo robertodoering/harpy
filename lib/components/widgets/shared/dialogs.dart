@@ -15,14 +15,15 @@ class HarpyDialog extends StatelessWidget {
   final String text;
   final List<DialogAction> actions;
 
-  final double padding = 24;
+  final double paddingVertical = 24;
+  final double paddingHorizontal = 12;
 
   List<Widget> _buildText(TextTheme textTheme) {
     return [
       Text(title, style: textTheme.title),
-      SizedBox(height: padding),
+      SizedBox(height: paddingHorizontal),
       if (text != null) Text(text, style: textTheme.subtitle),
-      if (text != null) SizedBox(height: padding),
+      if (text != null) SizedBox(height: paddingVertical),
     ];
   }
 
@@ -41,10 +42,11 @@ class HarpyDialog extends StatelessWidget {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.fromLTRB(
-              padding,
-              padding,
-              padding,
-              padding - 12, // less on the bottom to compensate for the button
+              paddingHorizontal,
+              paddingVertical,
+              paddingHorizontal,
+              paddingVertical -
+                  12, // less on the bottom to compensate for the button
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
