@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// Builds a text that takes 2 seconds to slide into position.
 ///
@@ -21,7 +22,8 @@ class PrimaryDisplayText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final display4 = Theme.of(context).textTheme.display4;
+    final display4 =
+        ThemeSettingsModel.of(context).harpyTheme.theme.textTheme.display4;
 
     return SlideFadeInAnimation(
       duration: const Duration(seconds: 2),
@@ -55,7 +57,8 @@ class SecondaryDisplayText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final display1 = Theme.of(context).textTheme.display1;
+    final display1 =
+        ThemeSettingsModel.of(context).harpyTheme.theme.textTheme.display1;
 
     return SlideFadeInAnimation(
       delay: delay,
