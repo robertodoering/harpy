@@ -18,14 +18,11 @@ String fillStringToLength(String data, int length, {String filler = " "}) {
 }
 
 String formatTwitterDateString(String twitterDateString) {
-  String dateString = "";
-
-  twitterDateString.split(" ")
+  final List sanitized = twitterDateString.split(" ")
     ..removeAt(0)
-    ..where((string) => (!string.startsWith("+")))
-    ..forEach((currentString) => dateString += " $currentString");
+    ..removeWhere((part) => part.startsWith("+"));
 
-  return dateString.trim();
+  return sanitized.join(" ");
 }
 
 String explodeListToSeparatedString(List<String> list,
