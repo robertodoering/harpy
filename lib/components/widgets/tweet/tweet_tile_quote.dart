@@ -15,7 +15,7 @@ class TweetQuote extends StatelessWidget {
       return Container();
     }
 
-    TweetModel quoteTweetModel = TweetModel(
+    final quoteTweetModel = TweetModel(
       originalTweet: model.quote,
       homeTimelineCache: model.homeTimelineCache,
       userTimelineCache: model.userTimelineCache,
@@ -28,11 +28,11 @@ class TweetQuote extends StatelessWidget {
       ..reduceText();
 
     return Container(
-      margin: const EdgeInsets.only(top: 8.0),
-      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.only(top: 80),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).dividerColor),
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: ChangeNotifierProvider<TweetModel>(
         builder: (_) => quoteTweetModel,

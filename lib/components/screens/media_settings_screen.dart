@@ -45,7 +45,7 @@ class MediaSettingsScreen extends StatelessWidget {
     return <Widget>[
       PopupMenuButton<int>(
         onSelected: (value) => model.defaultSettings(),
-        itemBuilder: (BuildContext context) {
+        itemBuilder: (context) {
           return <PopupMenuEntry<int>>[
             const PopupMenuItem<int>(
               value: 0,

@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
       title: "Harpy",
       body: CacheProvider(
         homeTimelineCache: serviceProvider.data.homeTimelineCache,
-        child: TweetList<HomeTimelineModel>(),
+        child: const TweetList<HomeTimelineModel>(),
       ),
       drawer: HomeDrawer(),
     );

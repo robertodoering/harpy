@@ -28,13 +28,14 @@ class UserService {
       "user_id": id,
     };
 
-    return await twitterClient
+    return twitterClient
         .get(
       "https://api.twitter.com/1.1/users/show.json",
       params: params,
     )
         .then((response) {
-      User user = mapJson<User>(response.body, (json) => User.fromJson(json));
+      final User user =
+          mapJson<User>(response.body, (json) => User.fromJson(json));
 
       userCache.cacheUser(user);
 

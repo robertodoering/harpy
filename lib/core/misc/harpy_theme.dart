@@ -5,8 +5,7 @@ class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
     name = data.name ?? "";
 
-    backgroundColors =
-        data.backgroundColors?.map((value) => _colorFromValue(value))?.toList();
+    backgroundColors = data.backgroundColors?.map(_colorFromValue)?.toList();
 
     if (backgroundColors == null || backgroundColors?.length != 2) {
       backgroundColors = _fallback.backgroundColors;
@@ -33,7 +32,7 @@ class HarpyTheme {
   ///
   /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
   Brightness get brightness {
-    double relativeLuminance = backgroundColors
+    final double relativeLuminance = backgroundColors
             .map((color) => color.computeLuminance())
             .reduce((a, b) => a + b) /
         backgroundColors.length;
@@ -69,23 +68,23 @@ class HarpyTheme {
       brightness == Brightness.light ? Colors.black : Colors.white;
 
   TextTheme get _textTheme {
-    final displayFont = "Comfortaa";
-    final bodyFont = "OpenSans";
+    const displayFont = "Comfortaa";
+    const bodyFont = "OpenSans";
 
     final complimentaryColor = backgroundComplimentaryColor;
 
     return Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // display
           display4: TextStyle(
-            fontSize: 64.0,
-            letterSpacing: 6.0,
+            fontSize: 64,
+            letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),
           display3: TextStyle(
-            fontSize: 48.0,
-            letterSpacing: 2.0,
+            fontSize: 48,
+            letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
@@ -95,8 +94,8 @@ class HarpyTheme {
             color: complimentaryColor,
           ),
           display1: TextStyle(
-            fontSize: 18.0,
-            letterSpacing: 2.0,
+            fontSize: 18,
+            letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor.withOpacity(0.8),
@@ -105,13 +104,13 @@ class HarpyTheme {
           // title
           title: TextStyle(
             fontFamily: displayFont,
-            letterSpacing: 2.0,
+            letterSpacing: 2,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),
 
           subhead: TextStyle(
-            letterSpacing: 1.0,
+            letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor.withOpacity(0.9),
@@ -125,18 +124,18 @@ class HarpyTheme {
 
           // body
           body1: TextStyle(
-            fontSize: 16.0,
+            fontSize: 16,
             fontFamily: bodyFont,
           ),
 
           body2: TextStyle(
-            fontSize: 14.0,
+            fontSize: 14,
             fontFamily: bodyFont,
             color: complimentaryColor.withOpacity(0.7),
           ),
 
           button: TextStyle(
-            fontSize: 16.0,
+            fontSize: 16,
             letterSpacing: 1.2,
             fontFamily: bodyFont,
             color: buttonTextColor,

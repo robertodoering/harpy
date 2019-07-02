@@ -10,17 +10,17 @@ class SettingsScreen extends StatelessWidget {
     return {
       "Tweet": [
         ListTile(
-          leading: Icon(Icons.image),
-          title: Text("Media"),
-          subtitle: Text("Settings for videos, images and gifs"),
+          leading: const Icon(Icons.image),
+          title: const Text("Media"),
+          subtitle: const Text("Settings for videos, images and gifs"),
           onTap: () => HarpyNavigator.push(MediaSettingsScreen()),
         ),
       ],
       "Appearance": [
         ListTile(
-          leading: Icon(Icons.color_lens),
-          title: Text("Theme"),
-          subtitle: Text("Select your theme"),
+          leading: const Icon(Icons.color_lens),
+          title: const Text("Theme"),
+          subtitle: const Text("Select your theme"),
           onTap: () => HarpyNavigator.push(ThemeSettingsScreen()),
         ),
       ],

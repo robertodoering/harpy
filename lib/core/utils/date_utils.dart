@@ -5,7 +5,7 @@ DateTime convertFromTwitterDateString(String twitterDateString) {
   try {
     return DateTime.parse(twitterDateString);
   } catch (ex) {
-    String dateString = formatTwitterDateString(twitterDateString);
+    final String dateString = formatTwitterDateString(twitterDateString);
     return DateFormat("MMM dd HH:mm:ss yyyy").parse(dateString);
   }
 }

@@ -30,7 +30,7 @@ class TweetTileState extends State<TweetTile> {
     final cacheProvider = CacheProvider.of(context);
 
     final homeTimelineModel = HomeTimelineModel.of(context);
-    var userTimelineModel;
+    UserTimelineModel userTimelineModel;
     try {
       userTimelineModel = UserTimelineModel.of(context);
     } on ProviderNotFoundError {

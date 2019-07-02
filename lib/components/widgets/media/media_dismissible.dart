@@ -26,7 +26,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
   AnimationController _moveController;
   Animation<Offset> _moveAnimation;
 
-  double _dragExtent = 0.0;
+  double _dragExtent = 0;
   bool _dragUnderway = false;
 
   bool get _isActive => _dragUnderway || _moveController.isAnimating;
@@ -35,7 +35,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
   void initState() {
     super.initState();
     _moveController = AnimationController(
-      duration: Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 600),
       vsync: this,
     );
     _updateMoveAnimation();
@@ -52,7 +52,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
     _moveAnimation = _moveController.drive(
       Tween<Offset>(
         begin: Offset.zero,
-        end: Offset(0.0, end),
+        end: Offset(0, end),
       ),
     );
   }
@@ -68,9 +68,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
       _dragExtent = 0.0;
       _moveController.value = 0.0;
     }
-    setState(() {
-      _updateMoveAnimation();
-    });
+    setState(_updateMoveAnimation);
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
@@ -86,9 +84,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
     }
 
     if (oldDragExtent.sign != _dragExtent.sign) {
-      setState(() {
-        _updateMoveAnimation();
-      });
+      setState(_updateMoveAnimation);
     }
     if (!_moveController.isAnimating) {
       _moveController.value = _dragExtent.abs() / context.size.height;
@@ -115,7 +111,7 @@ class _MediaDismissibleState extends State<MediaDismissible>
 
   @override
   Widget build(BuildContext context) {
-    Widget content = SlideTransition(
+    final Widget content = SlideTransition(
       position: _moveAnimation,
       child: widget.child,
     );

@@ -14,7 +14,7 @@ class IconRow extends StatelessWidget {
 
   /// The [child] an either be a Widget or a String that will turn into a text
   /// widget and is displayed to the right of the [icon].
-  final child;
+  final dynamic child;
 
   /// If [iconPadding] is not null the [icon] will be in the center of a
   /// [SizedBox] with a width of [iconPadding].
@@ -28,9 +28,9 @@ class IconRow extends StatelessWidget {
       children: <Widget>[
         SizedBox(
           width: iconPadding,
-          child: Icon(icon, size: 18.0),
+          child: Icon(icon, size: 18),
         ),
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8),
         Expanded(
           child: child is Widget
               ? child
@@ -65,7 +65,7 @@ class FollowersCount extends StatelessWidget {
           child: Text.rich(
             TextSpan(children: [
               TextSpan(text: formatNumber(following)),
-              TextSpan(text: " Following"),
+              const TextSpan(text: " Following"),
             ]),
           ),
         ),
@@ -73,7 +73,7 @@ class FollowersCount extends StatelessWidget {
           child: Text.rich(
             TextSpan(children: [
               TextSpan(text: formatNumber(followers)),
-              TextSpan(text: " Followers"),
+              const TextSpan(text: " Followers"),
             ]),
             textAlign: TextAlign.end,
           ),

@@ -39,7 +39,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
           ),
         ),
         if (model.user.verified)
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 8),
             child: Icon(Icons.verified_user, size: 22),
           ),
@@ -50,7 +50,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   Widget _buildUserInfo(UserProfileModel model) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl = model.user.getProfileImageUrlFromQuality(
+    final String imageUrl = model.user.getProfileImageUrlFromQuality(
       mediaSettingsModel.quality,
     );
 
@@ -58,12 +58,12 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
       children: <Widget>[
         // avatar
         CircleAvatar(
-          radius: 36.0,
+          radius: 36,
           backgroundColor: Colors.transparent,
           backgroundImage: CachedNetworkImageProvider(imageUrl),
         ),
 
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8),
 
         // user name
         Expanded(
@@ -71,7 +71,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               _buildNameRow(model),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4),
               Text(
                 "@${model.user.screenName}",
                 style: Theme.of(context).textTheme.subhead,
@@ -80,7 +80,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
           ),
         ),
 
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8),
 
         // follow button
         _buildFollowButton(model),
@@ -111,7 +111,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     // todo (low priority): parse hashtags in description
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.only(top: 8),
       child: TwitterText(
         text: model.user.description,
         entities: model.user.entities.asEntities,
@@ -132,7 +132,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   /// Builds a [Column] of icon rows with additional information such as the
   /// link, date joined or location of the [User].
   Widget _buildAdditionalInfo(UserProfileModel model) {
-    List<Widget> children = [];
+    final children = <Widget>[];
 
     if (model.user.entities?.url?.urls?.isNotEmpty ?? false) {
       children.add(_buildLink(model));
@@ -154,14 +154,14 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(children: children),
     );
   }
 
   /// A helper method to create a link in [_buildAdditionalInfo].
   Widget _buildLink(UserProfileModel model) {
-    Url url = model.user.entities.url.urls.first;
+    final Url url = model.user.entities.url.urls.first;
 
     _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
@@ -173,7 +173,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         );
       };
 
-    Widget text = Text.rich(
+    final text = Text.rich(
       TextSpan(
         text: url.displayUrl,
         style: Theme.of(context).textTheme.body1.copyWith(
@@ -192,7 +192,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     final model = UserProfileModel.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -22,7 +22,7 @@ class HarpyPrefs {
   /// Limits the value if [lowerLimit] and [upperLimit] are not `null`.
   int getInt(String key, int defaultValue, [int lowerLimit, int upperLimit]) {
     try {
-      int value = preferences.getInt(key) ?? defaultValue;
+      final int value = preferences.getInt(key) ?? defaultValue;
 
       if (lowerLimit != null && upperLimit != null) {
         return value.clamp(lowerLimit, upperLimit);

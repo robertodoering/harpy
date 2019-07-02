@@ -5,12 +5,6 @@ part 'harpy_theme_data.g.dart';
 
 @JsonSerializable()
 class HarpyThemeData {
-  String name;
-
-  List<int> backgroundColors;
-
-  int accentColor;
-
   HarpyThemeData();
 
   HarpyThemeData.fromHarpyTheme(HarpyTheme harpyTheme) {
@@ -22,6 +16,12 @@ class HarpyThemeData {
 
   factory HarpyThemeData.fromJson(Map<String, dynamic> json) =>
       _$HarpyThemeDataFromJson(json);
+
+  String name;
+
+  List<int> backgroundColors;
+
+  int accentColor;
 
   Map<String, dynamic> toJson() => _$HarpyThemeDataToJson(this);
 }

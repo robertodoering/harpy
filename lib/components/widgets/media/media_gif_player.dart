@@ -49,8 +49,8 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
           ),
           Center(
             child: initializing
-                ? CircularProgressIndicator()
-                : CircleButton(
+                ? const CircularProgressIndicator()
+                : const CircleButton(
                     child: Icon(Icons.gif, size: kMediaIconSize),
                   ),
           ),

@@ -32,11 +32,11 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SecondaryDisplayText("welcome to"),
-          SizedBox(height: 16),
-          PrimaryDisplayText(
+          const SecondaryDisplayText("welcome to"),
+          const SizedBox(height: 16),
+          const PrimaryDisplayText(
             "Harpy",
-            delay: const Duration(milliseconds: 800),
+            delay: Duration(milliseconds: 800),
           ),
         ],
       ),
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           LoginButton(onTap: () => _startLogin(model)),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           CreateAccountButton(),
         ],
       ),
@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
             if (!applicationModel.loggedIn) {
               return _buildLoginScreen(context, model);
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: const CircularProgressIndicator());
             }
           },
         ),

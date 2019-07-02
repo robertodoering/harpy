@@ -37,7 +37,7 @@ class ThemeSettingsModel extends ChangeNotifier {
 
   /// Changes the selected theme and rebuilds the app which listens to this
   /// [ThemeSettingsModel].
-  void changeSelectedTheme(HarpyTheme theme, int id) async {
+  Future<void> changeSelectedTheme(HarpyTheme theme, int id) async {
     _log.fine("changing selected theme to id: $id");
 
     harpyTheme = theme;
@@ -93,8 +93,7 @@ class ThemeSettingsModel extends ChangeNotifier {
       _saveCustomThemes();
       notifyListeners();
     } catch (e) {
-      _log.severe("unable to delete theme at id: $id");
-      _log.severe(e.toString());
+      _log..severe("unable to delete theme at id: $id")..severe(e.toString());
     }
   }
 
@@ -102,7 +101,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   ///
   /// Defaults to [HarpyTheme.dark].
   void initTheme() {
-    int id = selectedThemeId;
+    final int id = selectedThemeId;
 
     _log.fine("initializing harpy theme with id $id");
 
@@ -112,7 +111,7 @@ class ThemeSettingsModel extends ChangeNotifier {
       harpyTheme = predefinedThemes[id];
     } else {
       // load data from custom theme
-      HarpyThemeData customThemeData = _getCustomTheme(id);
+      final HarpyThemeData customThemeData = _getCustomTheme(id);
 
       if (customThemeData != null) {
         harpyTheme = HarpyTheme.fromData(customThemeData);

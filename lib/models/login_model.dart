@@ -52,7 +52,8 @@ class LoginModel extends ChangeNotifier {
 
     authorizing = true;
     notifyListeners();
-    TwitterLoginResult result = await applicationModel.twitterLogin.authorize();
+    final TwitterLoginResult result =
+        await applicationModel.twitterLogin.authorize();
     authorizing = false;
 
     switch (result.status) {
@@ -74,13 +75,13 @@ class LoginModel extends ChangeNotifier {
   }
 
   Future<void> _onSuccessfulLogin(TwitterLoginResult result) async {
-    applicationModel.twitterSession = result.session;
-
     // init tweet cache logged in user
-    applicationModel.initLoggedIn();
+    applicationModel
+      ..twitterSession = result.session
+      ..initLoggedIn();
 
     // initialize before navigating
-    bool knownUser = await initBeforeHome();
+    final bool knownUser = await initBeforeHome();
 
     // makes sure we were able to get the logged in user before navigating
     if (applicationModel.loggedIn && loggedInUser != null) {
@@ -127,7 +128,7 @@ class LoginModel extends ChangeNotifier {
   /// Returns `true` if the logged in user has been logged in before, `false`
   /// otherwise.
   Future<bool> initBeforeHome() async {
-    List<dynamic> results = await Future.wait<dynamic>([
+    final List results = await Future.wait([
       homeTimelineModel.initTweets(),
       _initLoggedInUser(),
     ]);
@@ -148,7 +149,7 @@ class LoginModel extends ChangeNotifier {
   Future<bool> _initLoggedInUser() async {
     _log.fine("initializing logged in user");
 
-    String userId = applicationModel.twitterSession.userId;
+    final String userId = applicationModel.twitterSession.userId;
 
     // init theme from shared prefs
     applicationModel.themeSettingsModel.initTheme();
@@ -170,9 +171,9 @@ class LoginModel extends ChangeNotifier {
   Future<void> _updateLoggedInUser() async {
     _log.fine("updating logged in user");
 
-    String userId = applicationModel.twitterSession.userId;
+    final String userId = applicationModel.twitterSession.userId;
 
-    User user = await userService.getUserDetails(id: userId).catchError(
+    final User user = await userService.getUserDetails(id: userId).catchError(
       (error) {
         _log.warning("unable to update logged in user");
 

@@ -56,21 +56,21 @@ class MediaModel extends ChangeNotifier {
   ///
   /// Takes the selected media quality into account.
   String getVideoUrl() {
-    List<Variants> variants = media.first?.videoInfo?.variants;
+    final List<Variants> variants = media.first?.videoInfo?.variants;
 
     if (variants?.isEmpty ?? true) {
       return null;
     }
 
     // remove the x-mpeg video without a bitrate
-    variants.removeWhere((variants) => variants.bitrate == null);
+    variants
+      ..removeWhere((variants) => variants.bitrate == null)
+      // sort by bitrate (large, medium, small)
+      ..sort((v1, v2) {
+        return v2.bitrate - v1.bitrate;
+      });
 
-    // sort by bitrate (large, medium, small)
-    variants.sort((v1, v2) {
-      return v2.bitrate - v1.bitrate;
-    });
-
-    int index = mediaQuality;
+    final int index = mediaQuality;
 
     if (variants.length > index) {
       return variants[index].url;
@@ -101,7 +101,7 @@ class MediaModel extends ChangeNotifier {
     }
 
     // from settings
-    int defaultHideMedia = mediaSettingsModel.defaultHideMedia;
+    final int defaultHideMedia = mediaSettingsModel.defaultHideMedia;
 
     if (defaultHideMedia == 0) return true; // show
     if (defaultHideMedia == 1) return connectivityService.wifi; // only if wifi
@@ -115,7 +115,7 @@ class MediaModel extends ChangeNotifier {
       return false;
     }
 
-    int autoplayMedia = mediaSettingsModel.autoplayMedia;
+    final int autoplayMedia = mediaSettingsModel.autoplayMedia;
 
     if (autoplayMedia == 0) return true; // autoplay
     if (autoplayMedia == 1) return connectivityService.wifi; // only if wifi
@@ -129,7 +129,7 @@ class MediaModel extends ChangeNotifier {
 
   void saveShowMediaState(bool showing) {
     _log.fine("saving show media state: $showing");
-    Tweet tweet = tweetModel.tweet;
+    final Tweet tweet = tweetModel.tweet;
     tweet.harpyData.showMedia = showing;
 
     // update in home timeline

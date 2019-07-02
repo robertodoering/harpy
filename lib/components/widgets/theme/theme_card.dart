@@ -22,7 +22,7 @@ class ThemeCard extends StatelessWidget {
 
   Widget _buildThemeName(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Text(
         "${harpyTheme.name}",
         overflow: TextOverflow.ellipsis,
@@ -75,7 +75,7 @@ class ThemeCard extends StatelessWidget {
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
     final decoration = BoxDecoration(
-      borderRadius: BorderRadius.circular(4.0),
+      borderRadius: BorderRadius.circular(4),
       border: themeSettingsModel.selectedThemeId == id
           ? Border.all(
               color: themeSettingsModel.harpyTheme.backgroundComplimentaryColor,
@@ -93,10 +93,10 @@ class ThemeCard extends StatelessWidget {
           child: Container(
             decoration: decoration,
             child: HarpyBackground(
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(4),
               colors: harpyTheme.backgroundColors,
               child: InkWell(
-                borderRadius: BorderRadius.circular(4.0),
+                borderRadius: BorderRadius.circular(4),
                 onTap: () => _onTap(themeSettingsModel),
                 onLongPress: () => _onLongPress(themeSettingsModel),
                 child: Column(
@@ -123,14 +123,14 @@ class ThemeCard extends StatelessWidget {
 class AddCustomThemeCard extends StatelessWidget {
   void _onTap(BuildContext context) {
     if (Harpy.isPro) {
-      HarpyNavigator.push(CustomThemeScreen());
+      HarpyNavigator.push(const CustomThemeScreen());
     } else {
       // show pro feature dialog
       showDialog<bool>(
         context: context,
         builder: (context) => ProFeatureDialog(),
       ).then(
-        (_) => HarpyNavigator.push(CustomThemeScreen()),
+        (_) => HarpyNavigator.push(const CustomThemeScreen()),
       );
     }
   }
@@ -141,23 +141,23 @@ class AddCustomThemeCard extends StatelessWidget {
       width: 120,
       height: 120,
       child: Container(
-        margin: const EdgeInsets.all(4.0),
+        margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(
-            width: 1.0,
+            width: 1,
             color: Theme.of(context).dividerColor,
           ),
         ),
         child: Material(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(4),
           child: InkWell(
             onTap: () => _onTap(context),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("Custom"),
+                const Text("Custom"),
                 Icon(Icons.add),
               ],
             ),

@@ -4,6 +4,10 @@ part 'url.g.dart';
 
 @JsonSerializable()
 class Url {
+  Url(this.url, this.expandedUrl, this.displayUrl, this.indices);
+
+  factory Url.fromJson(Map<String, dynamic> json) => _$UrlFromJson(json);
+
   @JsonKey(name: "url")
   String url;
   @JsonKey(name: "expanded_url")
@@ -12,10 +16,6 @@ class Url {
   String displayUrl;
   @JsonKey(name: "indices")
   List<int> indices;
-
-  Url(this.url, this.expandedUrl, this.displayUrl, this.indices);
-
-  factory Url.fromJson(Map<String, dynamic> json) => _$UrlFromJson(json);
 
   Map<String, dynamic> toJson() => _$UrlToJson(this);
 

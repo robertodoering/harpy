@@ -62,7 +62,7 @@ class CollapsibleMediaState extends State<CollapsibleMedia> {
 /// [animatedGif] and [video].
 class _TweetMediaLayout extends StatelessWidget {
   /// The padding between the [_TweetMediaWidget]s.
-  static const double padding = 2.0;
+  static const double padding = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -71,30 +71,30 @@ class _TweetMediaLayout extends StatelessWidget {
     if (model.media.length == 1) {
       return Row(
         children: <Widget>[
-          _TweetMediaWidget(0),
+          const _TweetMediaWidget(0),
         ],
       );
     } else if (model.media.length == 2) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _TweetMediaWidget(0),
-          SizedBox(width: padding),
-          _TweetMediaWidget(1),
+          const _TweetMediaWidget(0),
+          const SizedBox(width: padding),
+          const _TweetMediaWidget(1),
         ],
       );
     } else if (model.media.length == 3) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _TweetMediaWidget(0),
-          SizedBox(width: padding),
+          const _TweetMediaWidget(0),
+          const SizedBox(width: padding),
           Expanded(
             child: Column(
               children: <Widget>[
-                _TweetMediaWidget(1),
-                SizedBox(height: padding),
-                _TweetMediaWidget(2),
+                const _TweetMediaWidget(1),
+                const SizedBox(height: padding),
+                const _TweetMediaWidget(2),
               ],
             ),
           ),
@@ -107,19 +107,19 @@ class _TweetMediaLayout extends StatelessWidget {
           Expanded(
             child: Column(
               children: <Widget>[
-                _TweetMediaWidget(0),
-                SizedBox(height: padding),
-                _TweetMediaWidget(2),
+                const _TweetMediaWidget(0),
+                const SizedBox(height: padding),
+                const _TweetMediaWidget(2),
               ],
             ),
           ),
-          SizedBox(width: padding),
+          const SizedBox(width: padding),
           Expanded(
             child: Column(
               children: <Widget>[
-                _TweetMediaWidget(1),
-                SizedBox(height: padding),
-                _TweetMediaWidget(3),
+                const _TweetMediaWidget(1),
+                const SizedBox(height: padding),
+                const _TweetMediaWidget(3),
               ],
             ),
           ),
@@ -163,7 +163,7 @@ class _TweetMediaWidget extends StatelessWidget {
 
     return Expanded(
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Hero(
           tag: mediaModel.mediaHeroTag(_index),
           placeholderBuilder: (context, widget) => widget,

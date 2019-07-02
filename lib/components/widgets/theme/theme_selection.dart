@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+import 'dart:ui' as ui show Gradient;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -94,9 +94,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
   }
 
   void _onSelectionChange(int index) {
-    final themeSettingsModel = ThemeSettingsModel.of(context);
-
-    themeSettingsModel.changeSelectedTheme(_themes[index], index);
+    ThemeSettingsModel.of(context).changeSelectedTheme(_themes[index], index);
   }
 
   @override
@@ -115,7 +113,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
               style: TextStyle(
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
-                letterSpacing: 2.0,
+                letterSpacing: 2,
               ),
             ),
           ),
@@ -125,7 +123,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
             children: <Widget>[
               // theme carousel
               PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _controller,
                 children: _buildItems(),
               ),
@@ -209,7 +207,7 @@ class ThemeCirclePainter extends CustomPainter {
           ..color = theme.backgroundComplimentaryColor
           ..strokeWidth = 2
           ..isAntiAlias = true
-          ..maskFilter = MaskFilter.blur(BlurStyle.inner, .5),
+          ..maskFilter = const MaskFilter.blur(BlurStyle.inner, .5),
       );
     }
   }

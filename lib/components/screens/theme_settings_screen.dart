@@ -28,19 +28,18 @@ class _ThemeSettingsScreenContent extends StatelessWidget {
       return HarpyTheme.fromData(themeData);
     }));
 
-    List<Widget> children = [];
-
-    children.addAll(themes.map((harpyTheme) {
-      return ThemeCard(
-        harpyTheme: harpyTheme,
-        id: themes.indexOf(harpyTheme),
-      );
-    }).toList());
-
-    children.add(AddCustomThemeCard());
+    final List<Widget> children = [
+      ...themes.map((harpyTheme) {
+        return ThemeCard(
+          harpyTheme: harpyTheme,
+          id: themes.indexOf(harpyTheme),
+        );
+      }).toList(),
+      AddCustomThemeCard(),
+    ];
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       width: double.infinity,
       child: SingleChildScrollView(
         child: Wrap(

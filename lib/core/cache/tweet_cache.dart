@@ -43,11 +43,6 @@ class TweetCache {
   /// The [data] used to construct a [TweetCache] for isolates.
   TweetCacheData data = TweetCacheData();
 
-  /// Sets the [TweetCacheData.loggedInUserId] for the bucket.
-  void initLoggedInUser(String loggedInUserId) {
-    data.loggedInUserId = loggedInUserId;
-  }
-
   /// The sub directory where the files are stored.
   ///
   /// [Tweet]s should be cached for each logged in user separately.
@@ -70,7 +65,7 @@ class TweetCache {
   /// If a [Tweet] with the same [Tweet.id] already exists it will be
   /// overridden.
   void _cacheTweet(Tweet tweet) {
-    String fileName = "${tweet.id}.json";
+    final fileName = "${tweet.id}.json";
 
     directoryService.createFile(
       bucket: bucket,
@@ -83,7 +78,7 @@ class TweetCache {
   void updateTweet(Tweet tweet) {
     _log.fine("updating cached tweet for $bucket");
 
-    bool exists = tweetExists(tweet);
+    final bool exists = tweetExists(tweet);
 
     if (exists) {
       _cacheTweet(tweet);
@@ -100,9 +95,9 @@ class TweetCache {
   List<Tweet> getCachedTweets() {
     _log.fine("getting cached tweets for bucket: $bucket");
 
-    List<Tweet> tweets = [];
+    final List<Tweet> tweets = [];
 
-    List<File> files = directoryService.listFiles(
+    final List<File> files = directoryService.listFiles(
       bucket: bucket,
       extension: ".json",
     );
@@ -116,9 +111,7 @@ class TweetCache {
     // sort tweets by id
     tweets.sort((t1, t2) => t2.id - t1.id);
 
-    tweets = sortTweetReplies(tweets);
-
-    return tweets;
+    return sortTweetReplies(tweets);
   }
 
   /// Clears the cache and caches a new list of [tweets] while retaining the
@@ -127,9 +120,9 @@ class TweetCache {
     _log.fine("updating cached tweets");
 
     for (Tweet tweet in tweets) {
-      String fileName = "${tweet.id}.json";
+      final fileName = "${tweet.id}.json";
 
-      File cachedFile = directoryService.getFile(
+      final File cachedFile = directoryService.getFile(
         bucket: bucket,
         name: fileName,
       );
@@ -137,7 +130,7 @@ class TweetCache {
       if (cachedFile != null) {
         // copy harpy data from the cached tweet if the tweet has been cached
         // before
-        Tweet cachedTweet = Tweet.fromJson(
+        final Tweet cachedTweet = Tweet.fromJson(
           jsonDecode(cachedFile.readAsStringSync()),
         );
 
@@ -154,7 +147,7 @@ class TweetCache {
 
   /// Returns `true` if the [Tweet] exists in the cache.
   bool tweetExists(Tweet tweet) {
-    File file = directoryService.getFile(
+    final File file = directoryService.getFile(
       bucket: bucket,
       name: "${tweet.id}.json",
     );
@@ -165,7 +158,7 @@ class TweetCache {
   /// Returns the cached [Tweet] for the [id] or `null` if it doesn't exist in
   /// the cache.
   Tweet getTweet(String id) {
-    File file = directoryService.getFile(
+    final File file = directoryService.getFile(
       bucket: bucket,
       name: "$id.json",
     );
@@ -180,8 +173,7 @@ class TweetCache {
   /// Deletes every [File] in the [bucket].
   void clearBucket() {
     _log.fine("clear bucket $bucket");
-    List<File> files = directoryService.listFiles(bucket: bucket);
-
-    files.forEach((file) => file.deleteSync());
+    directoryService.listFiles(bucket: bucket)
+      ..forEach((file) => file.deleteSync());
   }
 }

@@ -6,6 +6,23 @@ part 'twitter_media.g.dart';
 
 @JsonSerializable()
 class TwitterMedia {
+  TwitterMedia(
+    this.id,
+    this.idStr,
+    this.indices,
+    this.mediaUrl,
+    this.mediaUrlHttps,
+    this.url,
+    this.displayUrl,
+    this.expandedUrl,
+    this.type,
+    this.sizes,
+    this.videoInfo,
+  );
+
+  factory TwitterMedia.fromJson(Map<String, dynamic> json) =>
+      _$TwitterMediaFromJson(json);
+
   @JsonKey(name: "id")
   int id;
   @JsonKey(name: "id_str")
@@ -44,23 +61,6 @@ class TwitterMedia {
   int get largeWidth => sizes["large"]?.w;
   int get largeHeight => sizes["large"]?.h;
   String get largeResize => sizes["large"]?.resize;
-
-  TwitterMedia(
-    this.id,
-    this.idStr,
-    this.indices,
-    this.mediaUrl,
-    this.mediaUrlHttps,
-    this.url,
-    this.displayUrl,
-    this.expandedUrl,
-    this.type,
-    this.sizes,
-    this.videoInfo,
-  );
-
-  factory TwitterMedia.fromJson(Map<String, dynamic> json) =>
-      _$TwitterMediaFromJson(json);
 
   Map<String, dynamic> toJson() => _$TwitterMediaToJson(this);
 

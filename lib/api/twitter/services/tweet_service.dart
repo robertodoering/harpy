@@ -38,11 +38,11 @@ class TweetService {
   }) async {
     _log.fine("get home timeline");
 
-    params ??= Map();
+    params ??= <String, String>{};
     params["count"] ??= "200"; // max: 200
     params["tweet_mode"] ??= "extended";
 
-    return await twitterClient
+    return twitterClient
         .get(
       "https://api.twitter.com/1.1/statuses/home_timeline.json",
       params: params,
@@ -64,18 +64,18 @@ class TweetService {
   }) async {
     _log.fine("get user timeline");
 
-    params ??= Map();
+    params ??= <String, String>{};
     params["count"] ??= "200";
     params["tweet_mode"] ??= "extended";
     params["user_id"] = userId;
 
-    return await twitterClient
+    return twitterClient
         .get(
       "https://api.twitter.com/1.1/statuses/user_timeline.json",
       params: params,
     )
         .then((response) async {
-      List<Tweet> tweets = await isolateWork<String, List<Tweet>>(
+      final tweets = await isolateWork<String, List<Tweet>>(
         callback: _handleUserTimelineResponse,
         message: response.body,
         tweetCacheData: homeTimelineCache.data,
@@ -164,8 +164,8 @@ Future<List<Tweet>> _handleUserTimelineResponse(String body) async {
   // copy over harpy data from cached home timeline tweets
   _log.fine("copy home harpy data");
 
-  for (Tweet tweet in tweets) {
-    Tweet homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
+  for (final tweet in tweets) {
+    final homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
     if (homeTweet != null) {
       tweet.harpyData = homeTweet.harpyData;
     }
@@ -195,9 +195,9 @@ List<Tweet> _handleUserTimelineTweetsCache(List<Tweet> tweets) {
 List<Tweet> sortTweetReplies(List<Tweet> tweets) {
   _log.fine("sorting tweet replies");
 
-  List<Tweet> sorted = [];
+  final sorted = <Tweet>[];
 
-  for (Tweet tweet in tweets) {
+  for (final tweet in tweets) {
     // skip the tweet if it has been added already in a reply chain
     if (sorted.contains(tweet)) continue;
 
@@ -222,17 +222,18 @@ List<Tweet> sortTweetReplies(List<Tweet> tweets) {
 /// Returns the tweet reply chain as a list for the [tweet] that is a reply to
 /// another tweet in [tweets] list.
 List<Tweet> _addTweetReply(Tweet tweet, List<Tweet> tweets) {
-  List<Tweet> thread = [];
+  final thread = <Tweet>[];
 
-  Tweet parent = tweets.firstWhere(
+  final parent = tweets.firstWhere(
     (compare) => compare.idStr == tweet.inReplyToStatusIdStr,
     orElse: () => null,
   );
 
   if (parent != null) {
-    Tweet threadParent = _getReplyThreadParent(parent, tweets);
-    thread.add(threadParent);
-    thread.addAll(_getReplyThreadChildren(threadParent, tweets));
+    final threadParent = _getReplyThreadParent(parent, tweets);
+    thread
+      ..add(threadParent)
+      ..addAll(_getReplyThreadChildren(threadParent, tweets));
   } else {
     // this tweet is not a reply to a tweet in the list, just add it normally
     thread.add(tweet);
@@ -243,7 +244,7 @@ List<Tweet> _addTweetReply(Tweet tweet, List<Tweet> tweets) {
 
 /// Gets the parent of a reply chain.
 Tweet _getReplyThreadParent(Tweet tweet, List<Tweet> tweets) {
-  Tweet parent = tweets.firstWhere(
+  final Tweet parent = tweets.firstWhere(
     (compare) => compare.idStr == tweet.inReplyToStatusIdStr,
     orElse: () => null,
   );
@@ -258,14 +259,15 @@ Tweet _getReplyThreadParent(Tweet tweet, List<Tweet> tweets) {
 
 /// Gets all replies with their replies to a parent tweet.
 List<Tweet> _getReplyThreadChildren(Tweet tweet, List<Tweet> tweets) {
-  List<Tweet> threadChildren = [];
+  final List<Tweet> threadChildren = [];
 
-  List<Tweet> children = _getTweetReplies(tweet, tweets);
+  final List<Tweet> children = _getTweetReplies(tweet, tweets);
 
   for (Tweet child in children) {
     child.harpyData.childOfReply = true;
-    threadChildren.add(child);
-    threadChildren.addAll(_getReplyThreadChildren(child, tweets));
+    threadChildren
+      ..add(child)
+      ..addAll(_getReplyThreadChildren(child, tweets));
   }
 
   return threadChildren;

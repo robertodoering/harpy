@@ -25,14 +25,14 @@ Future<R> isolateWork<Q, R>({
   assert(tweetCacheData == null ||
       (tweetCacheData != null && directoryServiceData != null));
 
-  List args = [
+  final args = [
     callback,
     message,
     directoryServiceData,
     tweetCacheData,
   ];
 
-  return await compute<List, dynamic>(_isolateInit, args);
+  return compute<List, dynamic>(_isolateInit, args);
 }
 
 /// Called by [isolateWork] to initialize the [DirectoryService] and optionally
@@ -42,8 +42,8 @@ dynamic _isolateInit(List args) {
     initLogger(prefix: 'Isolate');
     _log.fine("initializing isolate");
 
-    Function callback = args[0];
-    dynamic message = args[1];
+    final Function callback = args[0];
+    final message = args[1];
 
     if (args[2] is DirectoryServiceData) {
       DirectoryService.isolateInstance = DirectoryService.data(args[2]);

@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 class TranslationService {
-  static final String _url = "https://translate.google.com/translate_a/single";
+  static const String _url = "https://translate.google.com/translate_a/single";
   static final Logger _log = Logger("TranslationService");
 
   /// Translates the [text] and returns a [Translation] object or a
@@ -22,7 +22,7 @@ class TranslationService {
     // encode text
     text = Uri.encodeComponent(text);
 
-    Map<String, String> params = {
+    final params = <String, String>{
       "client": 'gtx',
       "sl": from,
       "tl": to,
@@ -32,9 +32,9 @@ class TranslationService {
       "oe": "UTF-8",
     };
 
-    String requestUrl = appendParamsToUrl(_url, params);
+    final String requestUrl = appendParamsToUrl(_url, params);
 
-    Response response = await get(requestUrl).catchError((error) {
+    final Response response = await get(requestUrl).catchError((error) {
       return Future.error(error);
     });
 
@@ -44,7 +44,7 @@ class TranslationService {
 
     try {
       // try to parse translation from response
-      List jsonList = jsonDecode(response.body);
+      final List jsonList = jsonDecode(response.body);
 
       String original = "";
       String translated = "";

@@ -33,9 +33,9 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   /// [PrimaryScrollController] if it exists.
   void _initScrollController() {
     if (_controller == null) {
-      ScrollController inherited = PrimaryScrollController.of(context);
-      _controller = inherited ?? ScrollController();
-      _controller.addListener(_scrollListener);
+      final ScrollController inherited = PrimaryScrollController.of(context);
+      _controller = inherited ?? ScrollController()
+        ..addListener(_scrollListener);
 
       // dispose the controller if it hasn't been inherited
       // it gets inherited by the FadingNestedScaffold in the user profile
@@ -67,9 +67,10 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
 
   /// Called whenever the list rebuilds with a list of the currently visible
   /// [Tweet]s in the list.
-  void _onVisibleTweetsChange(List<Tweet> visibleTweets) {
-    _timelineModel.visibleTweets = visibleTweets;
-  }
+  /// todo: delete or implement
+//  void _onVisibleTweetsChange(List<Tweet> visibleTweets) {
+//    _timelineModel.visibleTweets = visibleTweets;
+//  }
 
   /// Adds the content for the [ListView].
   ///
@@ -80,7 +81,7 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   /// If no [tweets] exist and the [TimelineModel] is not loading a message is
   /// built.
   Widget _buildList() {
-    List content = [];
+    final content = [];
     if (widget.leading != null) {
       content.add(widget.leading);
     }
@@ -96,7 +97,7 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
     }
 
     return SlideFadeInAnimation(
-      offset: const Offset(0.0, 100.0),
+      offset: const Offset(0, 100),
       child: CustomTweetListView(
         controller: _controller,
         content: content,
@@ -111,13 +112,13 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
     Widget child;
 
     if (_timelineModel.loadingInitialTweets) {
-      child = CircularProgressIndicator();
+      child = const CircularProgressIndicator();
     } else {
-      child = Text("No tweets exist");
+      child = const Text("No tweets exist");
     }
 
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.all(32),
       child: Center(child: child),
     );
   }
@@ -126,13 +127,13 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   /// tweets are currently requested.
   Widget _buildRequestingMore() {
     return SizedBox(
-      height: 100.0,
+      height: 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Loading more tweets..."),
-          SizedBox(height: 16.0),
-          CircularProgressIndicator(),
+          const Text("Loading more tweets..."),
+          const SizedBox(height: 16),
+          const CircularProgressIndicator(),
         ],
       ),
     );
@@ -140,9 +141,9 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
 
   Widget _buildRequestingMoreBlocked() {
     return SizedBox(
-      height: 100.0,
+      height: 100,
       child: Center(
-        child: Text("Please wait a bit before loading more tweets"),
+        child: const Text("Please wait a bit before loading more tweets"),
       ),
     );
   }
@@ -152,7 +153,7 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
     _initScrollController();
 
     return Consumer<T>(
-      builder: (context, T timelineModel, _) {
+      builder: (context, timelineModel, _) {
         _timelineModel = timelineModel;
 
         return RefreshIndicator(
@@ -165,22 +166,22 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
 }
 
 /// The callback when the currently displayed tweets in the list change.
-typedef void OnVisibleTweetsChange(List<Tweet> tweets);
+typedef OnVisibleTweetsChange = void Function(List<Tweet> tweets);
 
 /// Wraps a [ListView.custom] to build a custom [ListView] for the [TweetList].
 class CustomTweetListView extends StatelessWidget {
   const CustomTweetListView({
-    this.controller,
     @required this.content,
+    this.controller,
     this.onVisibleTweetsChange,
   });
-
-  /// The [ScrollController] that might be inherited.
-  final ScrollController controller;
 
   /// The tweet list content containing [Widget]s and [Tweet]s which are used to
   /// build [TweetTile]s.
   final List content;
+
+  /// The [ScrollController] that might be inherited.
+  final ScrollController controller;
 
   /// Called whenever the currently displayed tweets in the list change.
   final OnVisibleTweetsChange onVisibleTweetsChange;
@@ -189,7 +190,7 @@ class CustomTweetListView extends StatelessWidget {
 
   Widget _itemBuilder(int index) {
     if (content[index] is Tweet) {
-      Tweet tweet = content[index];
+      final Tweet tweet = content[index];
 
       return TweetTile(
         key: Key(tweet.idStr),
@@ -201,7 +202,7 @@ class CustomTweetListView extends StatelessWidget {
   }
 
   Widget _separatorBuilder() {
-    return Divider(height: 0.0);
+    return const Divider(height: 0);
   }
 
   /// Calls [_itemBuilder] or [_separatorBuilder] depending on the current
@@ -220,7 +221,7 @@ class CustomTweetListView extends StatelessWidget {
 
     try {
       if (onVisibleTweetsChange != null) {
-        List<Tweet> tweets =
+        final List<Tweet> tweets =
             content.sublist(first, last).whereType<Tweet>().toList();
 
         onVisibleTweetsChange(tweets);
@@ -234,7 +235,7 @@ class CustomTweetListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final childCount = content.length * 2 - 1;
 
-    SliverChildDelegate childrenDelegate = CustomSliverChildBuilderDelegate(
+    final childrenDelegate = CustomSliverChildBuilderDelegate(
       _childrenBuilder,
       itemCount: childCount,
       onLayoutFinish: _onLayoutFinish,
@@ -250,7 +251,7 @@ class CustomTweetListView extends StatelessWidget {
 }
 
 /// Called at the end of layout to indicate that layout is now complete.
-typedef void OnLayoutFinish(int firstIndex, int lastIndex);
+typedef OnLayoutFinish = void Function(int firstIndex, int lastIndex);
 
 class CustomSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
   const CustomSliverChildBuilderDelegate(

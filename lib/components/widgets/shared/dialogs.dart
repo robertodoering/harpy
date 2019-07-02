@@ -12,13 +12,13 @@ import 'package:harpy/models/settings/theme_settings_model.dart';
 class HarpyDialog extends StatelessWidget {
   const HarpyDialog({
     @required this.title,
-    this.text,
     @required this.actions,
+    this.text,
   });
 
   final String title;
-  final String text;
   final List<DialogAction> actions;
+  final String text;
 
   final double paddingVertical = 24;
   final double paddingHorizontal = 12;
@@ -139,7 +139,7 @@ class DialogAction<T> extends StatelessWidget {
 class ProFeatureDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return HarpyDialog(
+    return const HarpyDialog(
       title: "Pro feature",
       text: "This is a pro only feature. giv me ur money pls",
       actions: [

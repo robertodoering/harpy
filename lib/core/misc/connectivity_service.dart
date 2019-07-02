@@ -10,7 +10,7 @@ class ConnectivityService {
     });
   }
 
-  static Logger _log = Logger("ConnectivityService");
+  static final Logger _log = Logger("ConnectivityService");
 
   ConnectivityResult _lastResult;
 

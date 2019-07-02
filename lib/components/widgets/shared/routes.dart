@@ -34,8 +34,8 @@ class HeroDialogRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return new FadeTransition(
-      opacity: new CurvedAnimation(parent: animation, curve: Curves.easeOut),
+    return FadeTransition(
+      opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
       child: child,
     );
   }

@@ -1,4 +1,4 @@
-Map<String, String> languages = {
+Map<String, String> languages = <String, String>{
   "auto": "Automatic",
   "af": "Afrikaans",
   "sq": "Albanian",

@@ -28,13 +28,13 @@ class PrimaryDisplayText extends StatelessWidget {
     return SlideFadeInAnimation(
       duration: const Duration(seconds: 2),
       delay: delay,
-      offset: const Offset(0.0, 75.0),
+      offset: const Offset(0, 75),
+      curve: Curves.easeOutCubic,
       child: Text(
         text,
         overflow: overflow,
         style: style ?? display4,
       ),
-      curve: Curves.easeOutCubic,
     );
   }
 }
@@ -63,13 +63,13 @@ class SecondaryDisplayText extends StatelessWidget {
     return SlideFadeInAnimation(
       delay: delay,
       duration: const Duration(seconds: 1),
-      offset: const Offset(0.0, 50.0),
+      offset: const Offset(0, 50),
+      curve: Curves.easeInOut,
       child: Text(
         text,
         textAlign: textAlign,
         style: display1,
       ),
-      curve: Curves.easeInOut,
     );
   }
 }

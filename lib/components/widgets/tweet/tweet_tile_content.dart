@@ -60,7 +60,7 @@ class _TweetReplyParent extends StatelessWidget {
       return Container();
     }
 
-    String replyAuthors = model.getReplyAuthors();
+    final String replyAuthors = model.getReplyAuthors();
 
     if (replyAuthors.isEmpty) {
       return Container();
@@ -68,12 +68,12 @@ class _TweetReplyParent extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Divider(height: 8.0),
+        const Divider(height: 8),
         Padding(
           padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 4, 0, 8),
           child: IconRow(
             icon: Icons.reply,
-            iconPadding: 40.0, // same as avatar width
+            iconPadding: 40, // same as avatar width
             child: replyAuthors,
           ),
         ),
@@ -119,15 +119,15 @@ class _TweetRetweetedRow extends StatelessWidget {
       return Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+            padding: const EdgeInsets.only(left: 8, top: 8),
             child: IconRow(
               icon: Icons.repeat,
-              iconPadding: 40.0, // same as avatar width
+              iconPadding: 40, // same as avatar width
               child: "${model.originalTweet.user.name} retweeted",
             ),
           ),
-          SizedBox(height: 4.0),
-          Divider(height: 8.0),
+          const SizedBox(height: 4),
+          const Divider(height: 8),
         ],
       );
     } else {
@@ -146,7 +146,7 @@ class _TweetAvatarNameRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(
+    final String imageUrl = model.tweet.user.getProfileImageUrlFromQuality(
       mediaSettingsModel.quality,
     );
 
@@ -161,7 +161,7 @@ class _TweetAvatarNameRow extends StatelessWidget {
           ),
         ),
 
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8),
 
         Expanded(child: TweetNameColumn(model)),
       ],
@@ -186,7 +186,7 @@ class TweetNameColumn extends StatelessWidget {
         ),
         if (model.tweet.user.verified)
           Padding(
-            padding: EdgeInsets.only(left: 4),
+            padding: const EdgeInsets.only(left: 4),
             child: Icon(Icons.verified_user, size: 16),
           ),
       ],
@@ -245,7 +245,7 @@ class TweetText extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!model.tweet.emptyText) {
       return Padding(
-        padding: EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 8),
         child: TwitterText(
           text: model.tweet.fullText,
           entities: model.tweet.entities,
@@ -272,8 +272,8 @@ class _TweetTranslation extends StatelessWidget {
 
   Widget _buildTranslatingIndicator() {
     return Center(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
+      child: const Padding(
+        padding: EdgeInsets.all(8),
         child: CircularProgressIndicator(),
       ),
     );
@@ -285,7 +285,7 @@ class _TweetTranslation extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8),
 
         // original language text
         Text.rich(TextSpan(
@@ -300,7 +300,7 @@ class _TweetTranslation extends StatelessWidget {
           ],
         )),
 
-        SizedBox(height: 4.0),
+        const SizedBox(height: 4),
 
         // text
         TwitterText(
@@ -364,7 +364,7 @@ class _TweetActionsRow extends StatelessWidget {
 
     if (model.translationUnchanged) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Tweet not translated"),
+        content: const Text("Tweet not translated"),
       ));
     }
   }

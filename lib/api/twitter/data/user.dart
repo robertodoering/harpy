@@ -6,6 +6,44 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
+  User(
+    this.name,
+    this.profileSidebarFillColor,
+    this.profileBackgroundTitle,
+    this.profileImageUrl,
+    this.createdAt,
+    this.defaultProfile,
+    this.url,
+    this.contributorsEnabled,
+    this.favouritesCount,
+    this.profileImageUrlHttps,
+    this.id,
+    this.listedCount,
+    this.profileUseBackgroundImage,
+    this.profileTextColor,
+    this.followersCount,
+    this.lang,
+    this.protected,
+    this.geoEnabled,
+    this.notifications,
+    this.description,
+    this.profileBackgroundColor,
+    this.verified,
+    this.profileBackgroundImageUrlHttps,
+    this.statusesCount,
+    this.profileBackgroundImageUrl,
+    this.defaultProfileImage,
+    this.friendsCount,
+    this.following,
+    this.showAllInlineMedia,
+    this.screenName,
+    this.entities,
+    this.profileBannerUrl,
+    this.location,
+  );
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
   String name;
   @JsonKey(name: 'profile_sidebar_fill_color')
   String profileSidebarFillColor;
@@ -61,44 +99,6 @@ class User {
   @JsonKey(name: 'profile_banner_url')
   String profileBannerUrl;
   String location;
-
-  User(
-    this.name,
-    this.profileSidebarFillColor,
-    this.profileBackgroundTitle,
-    this.profileImageUrl,
-    this.createdAt,
-    this.defaultProfile,
-    this.url,
-    this.contributorsEnabled,
-    this.favouritesCount,
-    this.profileImageUrlHttps,
-    this.id,
-    this.listedCount,
-    this.profileUseBackgroundImage,
-    this.profileTextColor,
-    this.followersCount,
-    this.lang,
-    this.protected,
-    this.geoEnabled,
-    this.notifications,
-    this.description,
-    this.profileBackgroundColor,
-    this.verified,
-    this.profileBackgroundImageUrlHttps,
-    this.statusesCount,
-    this.profileBackgroundImageUrl,
-    this.defaultProfileImage,
-    this.friendsCount,
-    this.following,
-    this.showAllInlineMedia,
-    this.screenName,
-    this.entities,
-    this.profileBannerUrl,
-    this.location,
-  );
-
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 

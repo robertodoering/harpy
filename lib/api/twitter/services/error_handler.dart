@@ -57,7 +57,7 @@ bool _reachedRateLimit(Response response) => response.statusCode == 429;
 
 String _limitResetString(Response response) {
   try {
-    int limitReset = int.parse(response.headers["x-rate-limit-reset"]);
+    final limitReset = int.parse(response.headers["x-rate-limit-reset"]);
 
     return prettyPrintDurationDifference(
         DateTime.fromMillisecondsSinceEpoch(limitReset * 1000)

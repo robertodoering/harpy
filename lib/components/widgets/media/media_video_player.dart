@@ -8,7 +8,7 @@ import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
 /// The display icon size for the media video player and overlay.
-const double kMediaIconSize = 64.0;
+const double kMediaIconSize = 64;
 
 /// The [VideoPlayer] for twitter videos.
 ///
@@ -52,7 +52,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
     fullscreen = true;
 
     await Navigator.of(context).push(PageRouteBuilder(
-      settings: RouteSettings(isInitialRoute: false),
+      settings: const RouteSettings(isInitialRoute: false),
       pageBuilder: _buildFullscreen,
     ));
 
@@ -79,8 +79,8 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
         ),
         Center(
           child: initializing
-              ? CircularProgressIndicator()
-              : CircleButton(
+              ? const CircularProgressIndicator()
+              : const CircleButton(
                   child: Icon(Icons.play_arrow, size: kMediaIconSize),
                 ),
         ),
@@ -170,10 +170,9 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   void initState() {
     super.initState();
 
-    controller = widget.videoPlayer.controller;
-    controller.addListener(listener);
+    controller = widget.videoPlayer.controller..addListener(listener);
 
-    _visibilityController = new AnimationController(
+    _visibilityController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     )
@@ -210,8 +209,9 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     } else {
       // show overlay
       setState(() {
-        _visibilityController.reset();
-        _visibilityController.forward();
+        _visibilityController
+          ..reset()
+          ..forward();
         _reshowingOverlay = true;
       });
     }
@@ -246,18 +246,19 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
 
   void _toggleMute() {
     _reshowingOverlay = true;
-    _visibilityController.reset();
-    _visibilityController.forward();
+    _visibilityController
+      ..reset()
+      ..forward();
 
     if (_muted) {
       setState(() {
         _muted = false;
-        controller.setVolume(1.0);
+        controller.setVolume(1);
       });
     } else {
       setState(() {
         _muted = true;
-        controller.setVolume(0.0);
+        controller.setVolume(0);
       });
     }
   }
@@ -274,7 +275,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Builds the widget in the center of the overlay.
   Widget _buildCenterIcon() {
     if (buffering) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: const CircularProgressIndicator());
     }
 
     if (!_overlayShowing) {
@@ -284,7 +285,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     Widget centerWidget;
 
     if (finished) {
-      centerWidget = Icon(Icons.replay, size: kMediaIconSize);
+      centerWidget = const Icon(Icons.replay, size: kMediaIconSize);
     } else if (_reshowingOverlay) {
       centerWidget = Container();
     } else {
@@ -309,23 +310,23 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
             children: <Widget>[
               // play / pause button
               CircleButton(
-                child: Icon(playing ? Icons.pause : Icons.play_arrow),
                 onPressed: _togglePlay,
+                child: Icon(playing ? Icons.pause : Icons.play_arrow),
               ),
 
               Spacer(),
 
               CircleButton(
-                child: Icon(_muted ? Icons.volume_up : Icons.volume_off),
                 onPressed: _toggleMute,
+                child: Icon(_muted ? Icons.volume_up : Icons.volume_off),
               ),
 
               // fullscreen button
               CircleButton(
+                onPressed: _onFullscreenTap,
                 child: Icon(widget.videoPlayer.fullscreen
                     ? Icons.fullscreen_exit
                     : Icons.fullscreen),
-                onPressed: _onFullscreenTap,
               ),
             ],
           ),

@@ -24,10 +24,11 @@ class WebviewScreenState extends State<WebviewScreen> {
   /// The actions that will appear in the menu of a [PopupMenuItem].
   Map<String, VoidCallback> _actions;
 
-  void _goBack() async => _controller?.goBack();
-  void _goForward() async => _controller?.goForward();
-  void _reload() async => _controller?.reload();
-  void _openExternally() async => launchUrl(await _controller.currentUrl());
+  Future<void> _goBack() async => _controller?.goBack();
+  Future<void> _goForward() async => _controller?.goForward();
+  Future<void> _reload() async => _controller?.reload();
+  Future<void> _openExternally() async =>
+      launchUrl(await _controller.currentUrl());
 
   /// Builds the actions for the appbar in the [HarpyScaffold].
   List<Widget> _buildActions() {
@@ -44,16 +45,16 @@ class WebviewScreenState extends State<WebviewScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: _goBack,
                     ),
                     IconButton(
-                      icon: Icon(Icons.arrow_forward),
+                      icon: const Icon(Icons.arrow_forward),
                       onPressed: _goForward,
                     ),
                     Spacer(),
                     IconButton(
-                      icon: Icon(Icons.refresh),
+                      icon: const Icon(Icons.refresh),
                       onPressed: _reload,
                     ),
                   ],
@@ -82,7 +83,7 @@ class WebviewScreenState extends State<WebviewScreen> {
       data: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.copyWith(
               title: Theme.of(context).textTheme.title.copyWith(
-                    letterSpacing: 1.0,
+                    letterSpacing: 1,
                   ),
             ),
       ),
