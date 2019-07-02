@@ -4,6 +4,11 @@ import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 
+/// A styled dialog used with [showDialog].
+///
+/// If the [actions] contain discard and confirm actions, the discard action
+/// should always be on the left while the confirm action should be on the
+/// right.
 class HarpyDialog extends StatelessWidget {
   const HarpyDialog({
     @required this.title,
@@ -22,9 +27,27 @@ class HarpyDialog extends StatelessWidget {
     return [
       Text(title, style: textTheme.title),
       SizedBox(height: paddingHorizontal),
-      if (text != null) Text(text, style: textTheme.subtitle),
-      if (text != null) SizedBox(height: paddingVertical),
+      if (text != null) ...[
+        Text(text, style: textTheme.subtitle),
+        SizedBox(height: paddingVertical)
+      ],
     ];
+  }
+
+  Widget _buildActions() {
+    if (actions.length > 1) {
+      return SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          children: actions,
+        ),
+      );
+    } else if (actions.length == 1) {
+      return actions.first;
+    } else {
+      return Container();
+    }
   }
 
   @override
@@ -45,20 +68,14 @@ class HarpyDialog extends StatelessWidget {
               paddingHorizontal,
               paddingVertical,
               paddingHorizontal,
-              paddingVertical -
-                  12, // less on the bottom to compensate for the button
+              // less on the bottom to compensate for the button
+              paddingVertical - 12,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ..._buildText(textTheme),
-                SizedBox(
-                  width: double.infinity,
-                  child: Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    children: actions,
-                  ),
-                )
+                _buildActions(),
               ],
             ),
           ),
@@ -68,12 +85,18 @@ class HarpyDialog extends StatelessWidget {
   }
 }
 
+/// An action for a [HarpyDialog] that will pop the dialog with the [result].
+///
+/// The action will build a text button with [text] or an icon button with
+/// [icon].
+///
+/// Either [text] or [icon] mustn't be `null`.
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
     this.result,
     this.text,
     this.icon,
-  });
+  }) : assert(text != null || icon != null);
 
   final T result;
   final String text;
@@ -83,6 +106,7 @@ class DialogAction<T> extends StatelessWidget {
     result: false,
     icon: Icons.close,
   );
+
   static DialogAction<bool> confirm = const DialogAction(
     result: true,
     icon: Icons.check,
@@ -90,7 +114,7 @@ class DialogAction<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    VoidCallback onTap = () => Navigator.of(context).pop(result);
+    void onTap() => Navigator.of(context).pop(result);
 
     if (text != null) {
       return NewFlatHarpyButton(
@@ -107,5 +131,20 @@ class DialogAction<T> extends StatelessWidget {
     }
 
     return Container();
+  }
+}
+
+/// Builds a [HarpyDialog] to inform about a feature being only available for
+/// the pro version of harpy.
+class ProFeatureDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return HarpyDialog(
+      title: "Pro feature",
+      text: "This is a pro only feature. giv me ur money pls",
+      actions: [
+        DialogAction(text: "Try it out"),
+      ],
+    );
   }
 }
