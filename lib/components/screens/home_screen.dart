@@ -14,11 +14,11 @@ class HomeScreen extends StatelessWidget {
 
     return HarpyScaffold(
       title: "Harpy",
+      drawer: HomeDrawer(),
       body: CacheProvider(
         homeTimelineCache: serviceProvider.data.homeTimelineCache,
         child: const TweetList<HomeTimelineModel>(),
       ),
-      drawer: HomeDrawer(),
     );
   }
 }
