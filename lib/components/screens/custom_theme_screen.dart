@@ -159,8 +159,8 @@ class _CustomThemeSaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.check),
-      onPressed: () => _saveTheme(context),
+      icon: const Icon(Icons.check),
+      onPressed: Harpy.isPro ? () => _saveTheme(context) : null,
     );
   }
 }

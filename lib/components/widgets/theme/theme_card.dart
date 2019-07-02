@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/custom_theme_screen.dart';
+import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A [Card] showing a selectable [HarpyTheme] that changes the apps theme when
@@ -114,11 +116,23 @@ class ThemeCard extends StatelessWidget {
 }
 
 /// Similar to [ThemeCard] that can be selected to add a new custom theme.
+///
+/// If the app is running with in the [Flavor.free] flavor, a
+/// [ProFeatureDialog] will be shown before navigating to the
+/// [CustomThemeScreen].
 class AddCustomThemeCard extends StatelessWidget {
-  void _onTap() {
-    // todo
-//    showDialog(context: context, builder: (_) => ProFeatureDialog());
-    HarpyNavigator.push(CustomThemeScreen());
+  void _onTap(BuildContext context) {
+    if (Harpy.isPro) {
+      HarpyNavigator.push(CustomThemeScreen());
+    } else {
+      // show pro feature dialog
+      showDialog<bool>(
+        context: context,
+        builder: (context) => ProFeatureDialog(),
+      ).then(
+        (_) => HarpyNavigator.push(CustomThemeScreen()),
+      );
+    }
   }
 
   @override
@@ -139,7 +153,7 @@ class AddCustomThemeCard extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(4.0),
           child: InkWell(
-            onTap: _onTap,
+            onTap: () => _onTap(context),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
