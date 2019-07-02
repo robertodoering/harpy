@@ -8,7 +8,9 @@ import 'package:harpy/models/settings/setting_models_wrapper.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void runHarpy(Flavor flavor) {
+  Harpy.flavor = flavor;
+
   HarpyCatcher(
     ServiceContainer(
       child: SettingModelsWrapper(
@@ -21,6 +23,11 @@ void main() {
 }
 
 class Harpy extends StatelessWidget {
+  static Flavor flavor;
+
+  static bool get isFree => flavor == Flavor.free;
+  static bool get isPro => flavor == Flavor.pro;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeSettingsModel>(
@@ -35,4 +42,9 @@ class Harpy extends StatelessWidget {
       },
     );
   }
+}
+
+enum Flavor {
+  free,
+  pro,
 }
