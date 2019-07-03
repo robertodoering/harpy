@@ -1,3 +1,4 @@
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,6 +10,6 @@ Future<void> launchUrl(String url) async {
     await launch(url);
   } else {
     _log.warning("cant launch url $url");
-    return Future.error(null);
+    return showFlushbar("Unable to launch $url", type: FlushbarType.error);
   }
 }
