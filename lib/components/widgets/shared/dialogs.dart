@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A styled dialog used with [showDialog].
@@ -14,23 +16,33 @@ class HarpyDialog extends StatelessWidget {
     @required this.title,
     @required this.actions,
     this.text,
+    this.body,
   });
 
   final String title;
   final List<DialogAction> actions;
+
+  /// The text is build below the [title] if not `null`.
   final String text;
+
+  /// The body is build below the [text] if not `null`.
+  final Widget body;
 
   final double paddingVertical = 24;
   final double paddingHorizontal = 12;
 
-  List<Widget> _buildText(TextTheme textTheme) {
-    return [
+  List<Widget> _buildContent(TextTheme textTheme) {
+    return <Widget>[
       Text(title, style: textTheme.title),
-      SizedBox(height: paddingHorizontal),
       if (text != null) ...[
+        SizedBox(height: paddingHorizontal),
         Text(text, style: textTheme.subtitle),
-        SizedBox(height: paddingVertical)
       ],
+      if (body != null) ...[
+        SizedBox(height: paddingHorizontal),
+        body,
+      ],
+      SizedBox(height: paddingVertical),
     ];
   }
 
@@ -39,7 +51,7 @@ class HarpyDialog extends StatelessWidget {
       return SizedBox(
         width: double.infinity,
         child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
+          alignment: WrapAlignment.spaceAround,
           children: actions,
         ),
       );
@@ -68,13 +80,13 @@ class HarpyDialog extends StatelessWidget {
               paddingHorizontal,
               paddingVertical,
               paddingHorizontal,
-              // less on the bottom to compensate for the button
+              // less on the bottom to compensate for the button padding
               paddingVertical - 12,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                ..._buildText(textTheme),
+                ..._buildContent(textTheme),
                 _buildActions(),
               ],
             ),
@@ -90,7 +102,7 @@ class HarpyDialog extends StatelessWidget {
 /// The action will build a text button with [text] or an icon button with
 /// [icon].
 ///
-/// Either [text] or [icon] mustn't be `null`.
+/// Either [text] or [icon] must not be `null`.
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
     this.result,
@@ -120,6 +132,7 @@ class DialogAction<T> extends StatelessWidget {
       return NewFlatHarpyButton(
         text: text,
         onTap: onTap,
+        dense: true,
       );
     }
 
@@ -127,6 +140,7 @@ class DialogAction<T> extends StatelessWidget {
       return IconHarpyButton(
         iconData: icon,
         onTap: onTap,
+        dense: true,
       );
     }
 
@@ -136,14 +150,71 @@ class DialogAction<T> extends StatelessWidget {
 
 /// Builds a [HarpyDialog] to inform about a feature being only available for
 /// the pro version of harpy.
-class ProFeatureDialog extends StatelessWidget {
+class ProFeatureDialog extends StatefulWidget {
+  const ProFeatureDialog({
+    @required this.name,
+  });
+
+  /// The name of the feature.
+  final String name;
+
+  @override
+  _ProFeatureDialogState createState() => _ProFeatureDialogState();
+}
+
+class _ProFeatureDialogState extends State<ProFeatureDialog> {
+  GestureRecognizer _recognizer;
+
+  @override
+  void initState() {
+    _recognizer = TapGestureRecognizer()
+      ..onTap = () => launchUrl(
+          "https://play.google.com/store/search?q=harpy%20pro"); // todo: harpy pro playstore url
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _recognizer.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const HarpyDialog(
+    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
+
+    final style = theme.textTheme.subtitle;
+
+    final linkStyle = style.copyWith(
+      color: theme.accentColor,
+      fontWeight: FontWeight.bold,
+    );
+
+    return HarpyDialog(
       title: "Pro feature",
-      text: "This is a pro only feature. giv me ur money pls",
+      text: "${widget.name} is only available in the pro version for Harpy.",
+      body: Text.rich(
+        TextSpan(
+          children: <TextSpan>[
+            const TextSpan(
+              text: "Buy Harpy Pro in the ",
+            ),
+            TextSpan(
+              text: "Play Store",
+              style: linkStyle,
+              recognizer: _recognizer,
+            ),
+          ],
+        ),
+        style: style,
+      ),
       actions: [
-        DialogAction(text: "Try it out"),
+        const DialogAction<bool>(
+          result: true,
+          text: "Try it out",
+        ),
       ],
     );
   }

@@ -117,7 +117,8 @@ class HarpyTheme {
           ),
 
           subtitle: TextStyle(
-            fontFamily: displayFont,
+            height: 0.9,
+            fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),

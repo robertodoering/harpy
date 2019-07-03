@@ -264,7 +264,7 @@ class RaisedHarpyButton extends StatelessWidget {
     final borderRadius = BorderRadius.circular(64);
     final padding = EdgeInsets.symmetric(
       vertical: dense ? 8 : 12,
-      horizontal: dense ? 24 : 32,
+      horizontal: dense ? 16 : 32,
     );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
@@ -296,15 +296,21 @@ class NewFlatHarpyButton extends StatelessWidget {
   const NewFlatHarpyButton({
     @required this.text,
     @required this.onTap,
+    this.dense = false,
   });
 
   final String text;
   final VoidCallback onTap;
 
+  final bool dense;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(64);
-    const padding = EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 16 : 32,
+    );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
@@ -331,17 +337,20 @@ class IconHarpyButton extends StatelessWidget {
   const IconHarpyButton({
     @required this.iconData,
     @required this.onTap,
+    this.dense = false,
   });
 
   final IconData iconData;
   final VoidCallback onTap;
 
+  final bool dense;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(64);
-    const padding = EdgeInsets.symmetric(
-      vertical: 12,
-      horizontal: 32,
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 16 : 32,
     );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;

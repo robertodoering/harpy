@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/cache_provider.dart';
+import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/home_drawer.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
@@ -15,10 +16,34 @@ class HomeScreen extends StatelessWidget {
     return HarpyScaffold(
       title: "Harpy",
       drawer: HomeDrawer(),
-      body: CacheProvider(
-        homeTimelineCache: serviceProvider.data.homeTimelineCache,
-        child: const TweetList<HomeTimelineModel>(),
+      body: WillPopScope(
+        onWillPop: () => _onWillPop(context),
+        child: CacheProvider(
+          homeTimelineCache: serviceProvider.data.homeTimelineCache,
+          child: const TweetList<HomeTimelineModel>(),
+        ),
       ),
     );
+  }
+
+  /// Show a dialog if an attempt is made to exit the app by pressing the
+  /// back button.
+  Future<bool> _onWillPop(BuildContext context) {
+    if (!Navigator.of(context).canPop()) {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return HarpyDialog(
+            title: "Really exit?",
+            actions: [
+              DialogAction.discard,
+              DialogAction.confirm,
+            ],
+          );
+        },
+      ).then((result) => result == true);
+    } else {
+      return Future.value(true);
+    }
   }
 }

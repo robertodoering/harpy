@@ -128,9 +128,15 @@ class AddCustomThemeCard extends StatelessWidget {
       // show pro feature dialog
       showDialog<bool>(
         context: context,
-        builder: (context) => ProFeatureDialog(),
+        builder: (context) => const ProFeatureDialog(
+              name: "Theme customization",
+            ),
       ).then(
-        (_) => HarpyNavigator.push(const CustomThemeScreen()),
+        (result) {
+          if (result == true) {
+            HarpyNavigator.push(const CustomThemeScreen());
+          }
+        },
       );
     }
   }
