@@ -30,7 +30,7 @@ class HomeDrawer extends StatelessWidget {
       children: <Widget>[
         // profile
         ListTile(
-          leading: Icon(Icons.face),
+          leading: const Icon(Icons.face),
           title: const Text("Profile"),
           onTap: () async {
             await Navigator.of(context).maybePop();
@@ -42,7 +42,7 @@ class HomeDrawer extends StatelessWidget {
 
         // clear cache // todo: shouldn't be in home drawer, instead in settings
         ListTile(
-          leading: Icon(Icons.close),
+          leading: const Icon(Icons.close),
           title: const Text("Clear cache"),
           onTap: () {
             final int deletedFiles = directoryService.clearCache();
@@ -57,7 +57,7 @@ class HomeDrawer extends StatelessWidget {
 
         // settings
         ListTile(
-          leading: Icon(Icons.settings),
+          leading: const Icon(Icons.settings),
           title: const Text("Settings"),
           onTap: () async {
             await Navigator.of(context).maybePop();
@@ -68,7 +68,7 @@ class HomeDrawer extends StatelessWidget {
         Expanded(child: Container()),
 
         ListTile(
-          leading: Icon(Icons.arrow_back),
+          leading: const Icon(Icons.arrow_back),
           title: const Text("Logout"),
           onTap: () => _logoutAndNavigateBack(context),
         ),

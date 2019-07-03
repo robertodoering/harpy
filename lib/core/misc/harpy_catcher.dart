@@ -114,7 +114,9 @@ class HarpyDialogReportMode extends DialogReportMode {
   void onActionConfirmed(Report report) {
     // call onActionConfirmed for each previously ignored reports and the
     // current one
-    _ignoredReports.forEach(super.onActionConfirmed);
+    _ignoredReports
+      ..forEach(super.onActionConfirmed)
+      ..clear();
     super.onActionConfirmed(report);
   }
 }

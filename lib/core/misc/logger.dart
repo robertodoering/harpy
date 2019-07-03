@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
+
   Logger.root.onRecord.listen((rec) {
     final color = _AnsiColor.fromLogLevel(rec.level);
 
@@ -39,8 +40,9 @@ class _AnsiColor {
       return yellow;
     } else if (level <= Level.SHOUT) {
       return red;
+    } else {
+      return reset;
     }
-    return reset;
   }
 
   static const ansiEsc = '\x1B[';
