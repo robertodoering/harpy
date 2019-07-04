@@ -5,7 +5,7 @@ import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
-import 'package:harpy/components/widgets/shared/favorite_button.dart';
+import 'package:harpy/components/widgets/shared/flare_buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';

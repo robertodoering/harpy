@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
@@ -194,21 +195,31 @@ class _ProFeatureDialogState extends State<ProFeatureDialog> {
 
     return HarpyDialog(
       title: "Pro feature",
-      text: "${widget.name} is only available in the pro version for Harpy.",
-      body: Text.rich(
-        TextSpan(
-          children: <TextSpan>[
-            const TextSpan(
-              text: "Buy Harpy Pro in the ",
-            ),
+      body: Column(
+        children: <Widget>[
+          const FlareIcon.shiningStar(size: 64),
+          const SizedBox(height: 12),
+          Text(
+            "${widget.name} is only available in the pro version for Harpy.",
+            style: style,
+          ),
+          const SizedBox(height: 12),
+          Text.rich(
             TextSpan(
-              text: "Play Store",
-              style: linkStyle,
-              recognizer: _recognizer,
+              children: <TextSpan>[
+                const TextSpan(
+                  text: "Buy Harpy Pro in the ",
+                ),
+                TextSpan(
+                  text: "Play Store",
+                  style: linkStyle,
+                  recognizer: _recognizer,
+                ),
+              ],
             ),
-          ],
-        ),
-        style: style,
+            style: style,
+          ),
+        ],
       ),
       actions: [
         const DialogAction<bool>(
