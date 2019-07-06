@@ -164,7 +164,7 @@ class AddCustomThemeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text("Custom"),
-                Icon(Icons.add),
+                const Icon(Icons.add),
               ],
             ),
           ),

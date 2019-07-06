@@ -7,6 +7,6 @@ void main() {
     final DateTime result = convertFromTwitterDateString(testDate);
     final DateTime expected = DateTime(2017, 4, 6, 15, 24, 15);
 
-    expect(result.difference(expected), Duration());
+    expect(result.difference(expected), const Duration());
   });
 }

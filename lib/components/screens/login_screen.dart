@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
@@ -6,6 +7,7 @@ import 'package:harpy/components/widgets/shared/texts.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
 /// Shows a [HarpyTitle] and a [LoginButton] to allow a user to login.
@@ -21,6 +23,8 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _buildText(),
+          const SizedBox(height: 16),
+          _buildTitle(context),
           _buildButtons(model),
         ],
       ),
@@ -28,17 +32,33 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildText() {
+    return const Expanded(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: SecondaryDisplayText("welcome to"),
+      ),
+    );
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    final color =
+        ThemeSettingsModel.of(context).harpyTheme.theme.textTheme.body1.color;
+
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SecondaryDisplayText("welcome to"),
-          const SizedBox(height: 16),
-          const PrimaryDisplayText(
-            "Harpy",
-            delay: Duration(milliseconds: 800),
+      flex: 2,
+      child: FractionallySizedBox(
+        widthFactor: 2 / 3,
+        child: SlideInAnimation(
+          duration: const Duration(seconds: 3),
+          offset: const Offset(0, 20),
+          delay: const Duration(milliseconds: 800),
+          child: FlareActor(
+            "assets/flare/harpy_title.flr",
+            alignment: Alignment.topCenter,
+            animation: "show",
+            color: color,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -73,7 +93,7 @@ class LoginScreen extends StatelessWidget {
             if (!applicationModel.loggedIn) {
               return _buildLoginScreen(context, model);
             } else {
-              return Center(child: const CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),

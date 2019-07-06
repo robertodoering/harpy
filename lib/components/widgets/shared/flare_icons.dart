@@ -47,7 +47,10 @@ class FlareIcon extends StatelessWidget {
   /// appear the same as material icons with the same size.
   final double sizeDifference;
 
+  /// The name of the animation that should play.
   final String animation;
+
+  /// If set the color will overwrite the icon color.
   final Color color;
 
   double get _calculatedSize => size + sizeDifference;

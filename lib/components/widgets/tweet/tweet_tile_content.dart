@@ -185,8 +185,8 @@ class TweetNameColumn extends StatelessWidget {
           ),
         ),
         if (model.tweet.user.verified)
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
+          const Padding(
+            padding: EdgeInsets.only(left: 4),
             child: Icon(Icons.verified_user, size: 16),
           ),
       ],
