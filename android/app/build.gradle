@@ -32,13 +32,28 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "robertodoering.harpy.harpy"
+
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    flavorDimensions "app"
+    productFlavors {
+        free {
+            dimension "app"
+            // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+            applicationId "robertodoering.harpy.free"
+            // todo: different version codes
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
+        }
+
+        pro {
+            applicationId "robertodoering.harpy.pro"
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
+        }
     }
 
     buildTypes {

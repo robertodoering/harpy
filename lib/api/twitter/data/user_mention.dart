@@ -4,6 +4,11 @@ part 'user_mention.g.dart';
 
 @JsonSerializable()
 class UserMention {
+  UserMention(this.screenName, this.name, this.id, this.idStr, this.indices);
+
+  factory UserMention.fromJson(Map<String, dynamic> json) =>
+      _$UserMentionFromJson(json);
+
   @JsonKey(name: "screen_name")
   String screenName;
   @JsonKey(name: "name")
@@ -14,11 +19,6 @@ class UserMention {
   String idStr;
   @JsonKey(name: "indices")
   List<int> indices;
-
-  UserMention(this.screenName, this.name, this.id, this.idStr, this.indices);
-
-  factory UserMention.fromJson(Map<String, dynamic> json) =>
-      _$UserMentionFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserMentionToJson(this);
 

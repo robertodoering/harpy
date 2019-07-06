@@ -128,15 +128,15 @@ class ApplicationModel extends ChangeNotifier {
 
   Future<void> _initTwitterSession() async {
     _log.fine("parsing app config");
-    String appConfig = await rootBundle.loadString(
+    final String appConfig = await rootBundle.loadString(
       "app_config.yaml",
       cache: false,
     );
 
     // parse app config
-    YamlMap yamlMap = loadYaml(appConfig);
-    String consumerKey = yamlMap["twitter"]["consumerKey"];
-    String consumerSecret = yamlMap["twitter"]["consumerSecret"];
+    final YamlMap yamlMap = loadYaml(appConfig);
+    final String consumerKey = yamlMap["twitter"]["consumerKey"];
+    final String consumerSecret = yamlMap["twitter"]["consumerSecret"];
 
     // init twitter login
     twitterLogin = TwitterLogin(
@@ -157,7 +157,7 @@ class ApplicationModel extends ChangeNotifier {
     themeSettingsModel.initTheme();
 
     // init tweet cache logged in user
-    userTimelineCache.initLoggedInUser(twitterSession.userId);
-    homeTimelineCache.initLoggedInUser(twitterSession.userId);
+    userTimelineCache.data.loggedInUserId = twitterSession.userId;
+    homeTimelineCache.data.loggedInUserId = twitterSession.userId;
   }
 }

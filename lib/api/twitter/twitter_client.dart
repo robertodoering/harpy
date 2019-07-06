@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 class TwitterClient {
   static final Logger _log = Logger("TwitterClient");
 
-  static final Duration _timeout = const Duration(seconds: 20);
+  static const Duration _timeout = Duration(seconds: 20);
 
   ApplicationModel applicationModel;
 
@@ -53,14 +53,14 @@ class TwitterClient {
     print("saving response");
     final dir = await getApplicationDocumentsDirectory();
 
-    String url =
+    final String url =
         response.request.url.toString().split("/").last.split("?").first;
-    String time = DateTime.now().toIso8601String();
+    final String time = DateTime.now().toIso8601String();
 
-    String path = "${dir.path}/responses/${time}_$url";
-    File file = File(path);
-    file.createSync(recursive: true);
-    file.writeAsStringSync(response.body);
+    final String path = "${dir.path}/responses/${time}_$url";
+    File(path)
+      ..createSync(recursive: true)
+      ..writeAsStringSync(response.body);
     print("response saved in $path");
   }
 

@@ -41,15 +41,15 @@ class _SetupScreenState extends State<SetupScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SecondaryDisplayText("welcome"),
-          SizedBox(height: 16),
+          const SecondaryDisplayText("welcome"),
+          const SizedBox(height: 16),
           PrimaryDisplayText(
             loginModel.loggedInUser.name,
             style: Theme.of(context).textTheme.display3,
             overflow: TextOverflow.ellipsis,
             delay: const Duration(milliseconds: 800),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -59,21 +59,21 @@ class _SetupScreenState extends State<SetupScreen> {
     return Expanded(
       child: Column(
         children: <Widget>[
-          SizedBox(height: 8),
-          SecondaryDisplayText(
+          const SizedBox(height: 8),
+          const SecondaryDisplayText(
             "select your theme",
             textAlign: TextAlign.center,
-            delay: const Duration(milliseconds: 3000),
+            delay: Duration(milliseconds: 3000),
           ),
-          SizedBox(height: 16),
-          Expanded(
+          const SizedBox(height: 16),
+          const Expanded(
             child: SlideFadeInAnimation(
-              delay: const Duration(milliseconds: 3000),
-              duration: const Duration(seconds: 1),
-              offset: const Offset(0.0, 50.0),
+              delay: Duration(milliseconds: 3000),
+              duration: Duration(seconds: 1),
+              offset: Offset(0, 50),
               curve: Curves.easeInOut,
               child: ThemeSelection(
-                delay: const Duration(milliseconds: 3000),
+                delay: Duration(milliseconds: 3000),
               ),
             ),
           ),

@@ -30,8 +30,8 @@ class HomeDrawer extends StatelessWidget {
       children: <Widget>[
         // profile
         ListTile(
-          leading: Icon(Icons.face),
-          title: Text("Profile"),
+          leading: const Icon(Icons.face),
+          title: const Text("Profile"),
           onTap: () async {
             await Navigator.of(context).maybePop();
             HarpyNavigator.push(
@@ -42,10 +42,10 @@ class HomeDrawer extends StatelessWidget {
 
         // clear cache // todo: shouldn't be in home drawer, instead in settings
         ListTile(
-          leading: Icon(Icons.close),
-          title: Text("Clear cache"),
+          leading: const Icon(Icons.close),
+          title: const Text("Clear cache"),
           onTap: () {
-            int deletedFiles = directoryService.clearCache();
+            final int deletedFiles = directoryService.clearCache();
             Navigator.of(context).maybePop();
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("Deleted $deletedFiles cached files"),
@@ -57,8 +57,8 @@ class HomeDrawer extends StatelessWidget {
 
         // settings
         ListTile(
-          leading: Icon(Icons.settings),
-          title: Text("Settings"),
+          leading: const Icon(Icons.settings),
+          title: const Text("Settings"),
           onTap: () async {
             await Navigator.of(context).maybePop();
             HarpyNavigator.push(SettingsScreen());
@@ -68,8 +68,8 @@ class HomeDrawer extends StatelessWidget {
         Expanded(child: Container()),
 
         ListTile(
-          leading: Icon(Icons.arrow_back),
-          title: Text("Logout"),
+          leading: const Icon(Icons.arrow_back),
+          title: const Text("Logout"),
           onTap: () => _logoutAndNavigateBack(context),
         ),
       ],
@@ -107,7 +107,7 @@ class UserDrawerHeader extends StatelessWidget {
   Widget _buildAvatarRow(BuildContext context) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
 
-    String imageUrl = user.getProfileImageUrlFromQuality(
+    final String imageUrl = user.getProfileImageUrlFromQuality(
       mediaSettingsModel.quality,
     );
 
@@ -118,13 +118,13 @@ class UserDrawerHeader extends StatelessWidget {
         GestureDetector(
           onTap: _navigateToUserScreen,
           child: CircleAvatar(
-            radius: 32.0,
+            radius: 32,
             backgroundColor: Colors.transparent,
             backgroundImage: CachedNetworkImageProvider(imageUrl),
           ),
         ),
 
-        SizedBox(width: 16.0),
+        const SizedBox(width: 16),
 
         // name + username
         Expanded(
@@ -138,7 +138,7 @@ class UserDrawerHeader extends StatelessWidget {
                   style: Theme.of(context).textTheme.title,
                 ),
               ),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4),
               GestureDetector(
                 onTap: _navigateToUserScreen,
                 child: Text(
@@ -156,12 +156,12 @@ class UserDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
+      margin: const EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.fromLTRB(
-        16.0,
-        16.0 + MediaQuery.of(context).padding.top, // + statusbar height
-        16.0,
-        8.0,
+        16,
+        16 + MediaQuery.of(context).padding.top, // + statusbar height
+        16,
+        8,
       ),
       decoration: BoxDecoration(
         border: Border(
@@ -172,9 +172,9 @@ class UserDrawerHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildAvatarRow(context),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: FollowersCount(
               followers: user.followersCount,
               following: user.friendsCount,

@@ -17,10 +17,9 @@ class CustomThemeModel extends ChangeNotifier {
       customThemeData = editingThemeData;
     } else {
       // initialize the custom theme with the current theme and a template name.
-      customThemeData =
-          HarpyThemeData.fromHarpyTheme(themeSettingsModel.harpyTheme);
-      customThemeData.name =
-          "New theme ${themeSettingsModel.customThemes.length + 1}";
+      customThemeData = HarpyThemeData.fromHarpyTheme(
+        themeSettingsModel.harpyTheme,
+      )..name = "New theme ${themeSettingsModel.customThemes.length + 1}";
     }
   }
 

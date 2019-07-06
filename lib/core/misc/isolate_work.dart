@@ -16,6 +16,11 @@ final Logger _log = Logger("IsolateWork");
 /// [directoryServiceData] is used to initialize the [DirectoryService].
 ///
 /// If [tweetCacheData] is not `null` [directoryServiceData] mustn't be `null`.
+///
+/// The generic type [R] is the type of the [Future] that the [callback] will
+/// return.
+/// The generic type [Q] is the type of the message that is used as the
+/// parameter for the [callback] method.
 Future<R> isolateWork<Q, R>({
   @required ComputeCallback<Q, R> callback,
   @required Q message,
@@ -25,25 +30,25 @@ Future<R> isolateWork<Q, R>({
   assert(tweetCacheData == null ||
       (tweetCacheData != null && directoryServiceData != null));
 
-  List args = [
+  final args = [
     callback,
     message,
     directoryServiceData,
     tweetCacheData,
   ];
 
-  return await compute<List, dynamic>(_isolateInit, args);
+  return compute<List, R>(_isolateInit, args);
 }
 
 /// Called by [isolateWork] to initialize the [DirectoryService] and optionally
 /// the [TweetCache] before calling the [callback].
-dynamic _isolateInit(List args) {
+R _isolateInit<R>(List args) {
   try {
-    initLogger(prefix: 'Isolate');
+    initLogger(prefix: "Isolate");
     _log.fine("initializing isolate");
 
-    Function callback = args[0];
-    dynamic message = args[1];
+    final Function callback = args[0];
+    final message = args[1];
 
     if (args[2] is DirectoryServiceData) {
       DirectoryService.isolateInstance = DirectoryService.data(args[2]);

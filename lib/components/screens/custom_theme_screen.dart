@@ -8,6 +8,7 @@ import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
                     child: ListView(
                       children: <Widget>[
                         _CustomThemeNameField(customThemeModel),
-                        SizedBox(height: 8.0),
+                        const SizedBox(height: 8),
                         _CustomThemeColorSelections(),
                       ],
                     ),
@@ -99,7 +100,8 @@ class _CustomThemeDeleteButton extends StatelessWidget {
             if (result == true) {
               if (themeSettingsModel.selectedThemeId ==
                   customThemeModel.editingThemeId) {
-                // when deleting the active custom theme, reset to the default theme
+                // when deleting the active custom theme, reset to the
+                // default theme
                 themeSettingsModel.changeSelectedTheme(
                   PredefinedThemes.themes.first,
                   0,
@@ -159,8 +161,8 @@ class _CustomThemeSaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.check),
-      onPressed: () => _saveTheme(context),
+      icon: const Icon(Icons.check),
+      onPressed: Harpy.isPro ? () => _saveTheme(context) : null,
     );
   }
 }
@@ -199,8 +201,8 @@ class _CustomThemeNameFieldState extends State<_CustomThemeNameField> {
           controller: _controller,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 12.0,
+              horizontal: 8,
+              vertical: 12,
             ),
             errorText: widget.model.errorText(),
           ),
@@ -240,7 +242,7 @@ class _CustomThemeColorSelections extends StatelessWidget {
 
     return _getThemeColors(customThemeModel).map((themeColorModel) {
       return ListTile(
-        leading: CircleColor(color: themeColorModel.color, circleSize: 40.0),
+        leading: CircleColor(color: themeColorModel.color, circleSize: 40),
         title: Text(themeColorModel.name),
         onTap: () {
           showDialog(
@@ -290,7 +292,7 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
     setState(() {
       showingColorPicker = true;
       content = Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: ColorPicker(
           pickerColor: widget.themeColorModel.color,
           onColorChanged: widget.themeColorModel.onColorChanged,
@@ -321,15 +323,16 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
         child: content,
       ),
       actions: <Widget>[
-        showingColorPicker
-            ? NewFlatHarpyButton(
-                text: "Back",
-                onTap: _hideColorPicker,
-              )
-            : NewFlatHarpyButton(
-                text: "Custom color",
-                onTap: _showColorPicker,
-              ),
+        if (showingColorPicker)
+          NewFlatHarpyButton(
+            text: "Back",
+            onTap: _hideColorPicker,
+          )
+        else
+          NewFlatHarpyButton(
+            text: "Custom color",
+            onTap: _showColorPicker,
+          ),
         NewFlatHarpyButton(
           text: "Done",
           onTap: Navigator.of(context).pop,

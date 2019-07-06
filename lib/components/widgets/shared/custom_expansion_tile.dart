@@ -26,7 +26,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
+      Tween<double>(begin: 0, end: 0.5);
 
   AnimationController _controller;
   Animation<double> _iconTurns;
@@ -86,7 +86,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
       children: <Widget>[
         Container(
           width: double.infinity,
-          height: 32.0,
+          height: 32,
           child: InkWell(
             onTap: _handleTap,
             child: Center(

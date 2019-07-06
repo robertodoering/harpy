@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:catcher/catcher_plugin.dart';
-import 'package:flutter/material.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:http/http.dart';
@@ -11,10 +11,10 @@ Logger _log = Logger("Error handler");
 
 /// Handles the [error] from a request.
 ///
-/// An error message is shown in a [SnackBar] when the [error] has been handled.
+/// An error message is shown in a [Flushbar] when the [error] has been handled.
 ///
 /// If the error hasn't been handled and [backupErrorMessage] is set, the
-/// [backupErrorMessage] is shown in a [SnackBar].
+/// [backupErrorMessage] is shown in a [Flushbar].
 void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
   _log.fine("handling error: $error");
 
@@ -57,7 +57,7 @@ bool _reachedRateLimit(Response response) => response.statusCode == 429;
 
 String _limitResetString(Response response) {
   try {
-    int limitReset = int.parse(response.headers["x-rate-limit-reset"]);
+    final limitReset = int.parse(response.headers["x-rate-limit-reset"]);
 
     return prettyPrintDurationDifference(
         DateTime.fromMillisecondsSinceEpoch(limitReset * 1000)

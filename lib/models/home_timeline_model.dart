@@ -24,7 +24,7 @@ class HomeTimelineModel extends TimelineModel {
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
 
-    List<Tweet> updatedTweets = await tweetService
+    final List<Tweet> updatedTweets = await tweetService
         .getHomeTimeline()
         .catchError(twitterClientErrorHandler);
 
@@ -39,10 +39,10 @@ class HomeTimelineModel extends TimelineModel {
   Future<void> requestMore() async {
     await super.requestMore();
 
-    String id = "${tweets.last.id - 1}";
+    final id = "${tweets.last.id - 1}";
 
     // todo: bug: clears cached tweets where id > than id
-    List<Tweet> newTweets = await tweetService.getHomeTimeline(params: {
+    final List<Tweet> newTweets = await tweetService.getHomeTimeline(params: {
       "max_id": id,
     }).catchError(twitterClientErrorHandler);
 
@@ -55,7 +55,7 @@ class HomeTimelineModel extends TimelineModel {
   }
 
   void updateTweet(Tweet tweet) {
-    int index = tweets.indexOf(tweet);
+    final int index = tweets.indexOf(tweet);
     if (index != -1) {
       _log.fine("updating home timeline tweet");
       tweets[index] = tweet;

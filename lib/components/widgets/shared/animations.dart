@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 /// Slides and fades its child into position upon creation.
 class SlideFadeInAnimation extends StatefulWidget {
   const SlideFadeInAnimation({
+    @required this.child,
     Key key,
     this.duration = const Duration(seconds: 1),
     this.delay = Duration.zero,
     this.offset = Offset.zero,
     this.curve = Curves.fastOutSlowIn,
-    @required this.child,
   }) : super(key: key);
+
+  /// The child to animate.
+  final Widget child;
 
   /// The duration of the animation.
   final Duration duration;
@@ -21,9 +24,6 @@ class SlideFadeInAnimation extends StatefulWidget {
 
   /// The offset that the child will have before it slides into position.
   final Offset offset;
-
-  /// The child to animate.
-  final Widget child;
 
   final Curve curve;
 
@@ -114,7 +114,7 @@ class _FadeOutWidgetState extends State<FadeOutWidget>
   void didUpdateWidget(FadeOutWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.child != widget.child) {
-      _controller.forward(from: 0.0);
+      _controller.forward(from: 0);
     }
   }
 
@@ -138,14 +138,14 @@ class _FadeOutWidgetState extends State<FadeOutWidget>
 /// A simple animation that "bounces in" its child.
 class BounceInAnimation extends StatefulWidget {
   const BounceInAnimation({
+    @required this.child,
     this.duration = const Duration(milliseconds: 1000),
     this.delay = Duration.zero,
-    @required this.child,
   });
 
+  final Widget child;
   final Duration duration;
   final Duration delay;
-  final Widget child;
 
   @override
   _BounceInAnimationState createState() => _BounceInAnimationState();
@@ -227,9 +227,9 @@ class _AnimatedScaleState extends AnimatedWidgetBaseState<AnimatedScale> {
 /// A widget that can be used to "slide away" its child by calling a method.
 class SlideAnimation extends StatefulWidget {
   const SlideAnimation({
-    Key key,
     @required this.child,
     @required this.endPosition,
+    Key key,
     this.duration = const Duration(milliseconds: 600),
   }) : super(key: key);
 

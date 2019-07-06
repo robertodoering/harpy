@@ -33,7 +33,7 @@ class UserTimelineModel extends TimelineModel {
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
 
-    List<Tweet> updatedTweets = await tweetService
+    final List<Tweet> updatedTweets = await tweetService
         .getUserTimeline(userId)
         .catchError(twitterClientErrorHandler);
 
@@ -50,10 +50,10 @@ class UserTimelineModel extends TimelineModel {
     (tweetCache as UserTimelineCache).user(userId);
     await super.requestMore();
 
-    String id = "${tweets.last.id - 1}";
+    final id = "${tweets.last.id - 1}";
 
     // todo: bug: clears cached tweets where id > than id
-    List<Tweet> newTweets = await tweetService.getUserTimeline(
+    final List<Tweet> newTweets = await tweetService.getUserTimeline(
       userId,
       params: {"max_id": id},
     ).catchError(twitterClientErrorHandler);

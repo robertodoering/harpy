@@ -37,10 +37,10 @@ class TwitterTextState extends State<TwitterText> {
   /// A list of [GestureRecognizer] for each entity.
   ///
   /// It's necessary to keep the reference so that we can dispose them.
-  List<GestureRecognizer> _gestureRecognizer = [];
+  final List<GestureRecognizer> _gestureRecognizer = [];
 
   /// The list of [_TwitterTextType] contains the parsed texts and its type.
-  List<_TwitterTextType> _texts = [];
+  final List<_TwitterTextType> _texts = [];
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class TwitterTextState extends State<TwitterText> {
   }
 
   void _parseText() {
-    var twitterEntities = TwitterEntities(
+    final twitterEntities = TwitterEntities(
       widget.text,
       widget.entities,
     );
@@ -64,8 +64,8 @@ class TwitterTextState extends State<TwitterText> {
     int textStart = 0;
 
     // add the text spans
-    for (var entityModel in twitterEntities.entityModels) {
-      int textEnd = entityModel.startIndex;
+    for (final entityModel in twitterEntities.entityModels) {
+      final int textEnd = entityModel.startIndex;
 
       _addText(textStart, textEnd);
       _addEntityModel(entityModel);
@@ -73,7 +73,7 @@ class TwitterTextState extends State<TwitterText> {
       textStart = entityModel.endIndex;
     }
 
-    int textEnd = widget.text.length;
+    final int textEnd = widget.text.length;
 
     _addText(textStart, textEnd);
   }
@@ -81,7 +81,7 @@ class TwitterTextState extends State<TwitterText> {
   void _addText(int start, int end) {
     if (start < end && end <= widget.text.length) {
       String text = widget.text.substring(start, end).trim();
-      text = parseHtmlEntities(text) + " ";
+      text = "${parseHtmlEntities(text)} ";
 
       _texts.add(_TwitterTextType(text, _TextType.text));
     }
@@ -113,13 +113,15 @@ class TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     // the styles used by the text and entities (urls, hashtags) of the tweet
-    Map<_TextType, TextStyle> _styles = {
-      _TextType.text: Theme.of(context).textTheme.body1,
-      _TextType.entity: Theme.of(context).textTheme.body1.copyWith(
-            color: widget.entityColor ?? Theme.of(context).accentColor,
-            fontWeight: FontWeight.bold,
-          ),
+    final _styles = <_TextType, TextStyle>{
+      _TextType.text: theme.textTheme.body1,
+      _TextType.entity: theme.textTheme.body1.copyWith(
+        color: widget.entityColor ?? theme.accentColor,
+        fontWeight: FontWeight.bold,
+      ),
     };
 
     return Text.rich(
@@ -138,11 +140,11 @@ class TwitterTextState extends State<TwitterText> {
 
 /// A helper class that contains the type of a text to determine the text style.
 class _TwitterTextType {
+  const _TwitterTextType(this.text, this.type, [this.recognizer]);
+
   final String text;
   final _TextType type;
   final GestureRecognizer recognizer;
-
-  const _TwitterTextType(this.text, this.type, [this.recognizer]);
 }
 
 /// Takes a [String] and [Entities] and creates a list of [TwitterEntityModel]
@@ -150,10 +152,10 @@ class _TwitterTextType {
 class TwitterEntities {
   TwitterEntities(String text, Entities entities) {
     for (Hashtag hashtag in entities.hashtags ?? []) {
-      var indices = _findIndices(text, "#${hashtag.text}");
+      final indices = _findIndices(text, "#${hashtag.text}");
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      final entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: hashtag.text,
@@ -164,10 +166,10 @@ class TwitterEntities {
     }
 
     for (Url url in entities.urls ?? []) {
-      var indices = _findIndices(text, url.url);
+      final indices = _findIndices(text, url.url);
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      final entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: url.expandedUrl,
@@ -178,10 +180,10 @@ class TwitterEntities {
     }
 
     for (UserMention userMention in entities.userMentions ?? []) {
-      var indices = _findIndices(text, "@${userMention.screenName}");
+      final indices = _findIndices(text, "@${userMention.screenName}");
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
+      final entityModel = TwitterEntityModel(
         startIndex: indices[0],
         endIndex: indices[1],
         data: userMention.screenName,
@@ -193,15 +195,16 @@ class TwitterEntities {
     }
 
     for (TwitterMedia media in entities.media ?? []) {
-      var indices = _findIndices(text, media.url);
+      final indices = _findIndices(text, media.url);
       if (indices == null) break;
 
-      var entityModel = TwitterEntityModel(
-          startIndex: indices[0],
-          endIndex: indices[1],
-          data: media.expandedUrl,
-          displayText: media.displayUrl,
-          type: EntityType.media);
+      final entityModel = TwitterEntityModel(
+        startIndex: indices[0],
+        endIndex: indices[1],
+        data: media.expandedUrl,
+        displayText: media.displayUrl,
+        type: EntityType.media,
+      );
       _addEntityModel(entityModel);
     }
   }
@@ -217,10 +220,10 @@ class TwitterEntities {
   ///
   /// Returns `null` if the entity has not been found in the text.
   List<int> _findIndices(String text, String entity) {
-    int start = text.indexOf(entity, _entityMap[entity] ?? 0);
+    final int start = text.indexOf(entity, _entityMap[entity] ?? 0);
 
     if (start != -1) {
-      int end = start + entity.length;
+      final int end = start + entity.length;
       _entityMap[entity] = end + 1;
 
       return [start, end];

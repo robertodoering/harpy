@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 
 class UserProfileModel extends ChangeNotifier {
   UserProfileModel({
-    this.user,
-    String userId,
     @required this.userService,
     @required this.userCache,
     @required this.loginModel,
+    this.user,
+    String userId,
   })  : assert(userService != null),
         assert(userCache != null),
         assert(loginModel != null),
@@ -53,7 +53,7 @@ class UserProfileModel extends ChangeNotifier {
   Future<void> _loadUser(String id) async {
     _log.fine("loading user");
 
-    User cachedUser = userCache.getCachedUser(id);
+    final User cachedUser = userCache.getCachedUser(id);
 
     if (cachedUser != null) {
       _log.fine("found cached user");
@@ -77,7 +77,7 @@ class UserProfileModel extends ChangeNotifier {
   Future<bool> _updateUser(String id) async {
     _log.fine("updating user");
 
-    User loadedUser = await userService.getUserDetails(id: id).catchError(
+    final User loadedUser = await userService.getUserDetails(id: id).catchError(
       (error) {
         _log.warning("unable to update user with id $id");
 

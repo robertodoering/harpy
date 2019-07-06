@@ -2,10 +2,10 @@ import 'package:intl/intl.dart';
 
 String fillStringToLength(String data, int length, {String filler = " "}) {
   if (filler.length > 1) {
-    throw new Exception("Filler can't be more then one character");
+    throw Exception("Filler can't be more then one character");
   }
 
-  int diff = length - data.length;
+  final int diff = length - data.length;
 
   if (diff < 0 || diff == 0) {
     return data;
@@ -18,20 +18,11 @@ String fillStringToLength(String data, int length, {String filler = " "}) {
 }
 
 String formatTwitterDateString(String twitterDateString) {
-  String dateString = "";
+  final List sanitized = twitterDateString.split(" ")
+    ..removeAt(0)
+    ..removeWhere((part) => part.startsWith("+"));
 
-  List<String> splitDate = twitterDateString.split(" ");
-  splitDate.removeAt(0);
-
-  splitDate.forEach((currentString) {
-    if (!currentString.startsWith("+")) {
-      dateString += " " + currentString;
-    }
-  });
-
-  dateString = dateString.trim();
-
-  return dateString;
+  return sanitized.join(" ");
 }
 
 String explodeListToSeparatedString(List<String> list,
@@ -42,9 +33,7 @@ String explodeListToSeparatedString(List<String> list,
     result += "$currentString$separator";
   });
 
-  result = result.replaceRange(result.length - 1, result.length, "");
-
-  return result;
+  return result.replaceRange(result.length - 1, result.length, "");
 }
 
 String appendParamsToUrl(String url, Map<String, String> params) {
@@ -100,7 +89,7 @@ String formatNumber(int number) {
 }
 
 String tweetTimeDifference(DateTime createdAt) {
-  Duration timeDifference = DateTime.now().difference(createdAt);
+  final Duration timeDifference = DateTime.now().difference(createdAt);
   if (timeDifference.inHours <= 24) {
     return "${timeDifference.inHours}h";
   } else if (timeDifference.inDays > 365) {
@@ -111,12 +100,12 @@ String tweetTimeDifference(DateTime createdAt) {
 }
 
 String prettyPrintDurationDifference(Duration difference) {
-  int minutes = difference.inMinutes;
-  int seconds = difference.inSeconds;
+  final int minutes = difference.inMinutes;
+  final int seconds = difference.inSeconds;
 
   if (minutes > 0) {
-    int remainingSeconds = seconds - minutes * 60;
-    String secondsString =
+    final int remainingSeconds = seconds - minutes * 60;
+    final String secondsString =
         remainingSeconds > 9 ? "$remainingSeconds" : "0$remainingSeconds";
 
     return "$minutes:$secondsString minutes";

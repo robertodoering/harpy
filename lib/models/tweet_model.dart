@@ -101,9 +101,9 @@ class TweetModel extends ChangeNotifier {
   ///
   /// Returns an empty string if this tweet has no replies.
   String getReplyAuthors() {
-    List<Tweet> tweets = (userTimelineModel ?? homeTimelineModel).tweets;
+    final List<Tweet> tweets = (userTimelineModel ?? homeTimelineModel).tweets;
 
-    List<Tweet> replies = tweets
+    final List<Tweet> replies = tweets
         .where((child) => child.inReplyToStatusIdStr == tweet.idStr)
         .toList();
 
@@ -117,7 +117,7 @@ class TweetModel extends ChangeNotifier {
       return "";
     }
 
-    String authors = replies.map((reply) => reply.user.name).join(", ");
+    final String authors = replies.map((reply) => reply.user.name).join(", ");
 
     return "$authors replied";
   }
@@ -130,11 +130,11 @@ class TweetModel extends ChangeNotifier {
     text = text.replaceAll("\n", " ");
 
     if (text.length > limit) {
-      int index = text.substring(limit).indexOf(" ");
+      final int index = text.substring(limit).indexOf(" ");
 
       if (index != -1) {
         // cut off the text before the nearest space
-        text = text.substring(0, limit + index) + "...";
+        text = "${text.substring(0, limit + index)}...";
       }
     }
 
@@ -229,7 +229,7 @@ class TweetModel extends ChangeNotifier {
     translating = true;
     notifyListeners();
 
-    Translation translation = await translationService
+    final Translation translation = await translationService
         .translate(text: tweet.fullText)
         .catchError((_) {
       translating = false;
@@ -252,7 +252,7 @@ class TweetModel extends ChangeNotifier {
   /// 144: tweet with id not found (trying to unfavorite a tweet twice)
   bool _actionPerformed(dynamic error) {
     try {
-      List errors = jsonDecode((error as Response).body)["errors"];
+      final List errors = jsonDecode((error as Response).body)["errors"];
       return errors.any((error) =>
           error["code"] == 139 || // already favorited
           error["code"] == 327 || // already retweeted

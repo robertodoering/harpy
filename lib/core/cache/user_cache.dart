@@ -23,7 +23,7 @@ class UserCache {
   /// If a [User] with the same [User.id] and [User.screenName] already exists
   /// it will be overridden.
   void cacheUser(User user) {
-    String fileName = "${user.id}.json";
+    final fileName = "${user.id}.json";
 
     directoryService.createFile(
       bucket: bucket,
@@ -38,9 +38,9 @@ class UserCache {
   User getCachedUser(String id) {
     _log.fine("get cached user for id: $id");
 
-    String fileName = "$id.json";
+    final fileName = "$id.json";
 
-    File file = directoryService.getFile(
+    final File file = directoryService.getFile(
       bucket: bucket,
       name: fileName,
     );

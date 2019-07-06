@@ -7,7 +7,7 @@ import 'package:harpy/models/settings/theme_settings_model.dart';
 ///
 /// Implemented in [FavoriteButton] to build a [FlareActor] icon with an
 /// animation.
-typedef Widget IconBuilder(BuildContext context, bool highlighted);
+typedef IconBuilder = Widget Function(BuildContext context, bool highlighted);
 
 /// A flat button with a transparent background that can consist of either an
 /// [icon], a [text] or both.
@@ -89,7 +89,9 @@ class FlatHarpyButtonState extends State<FlatHarpyButton> {
 
   /// Builds the space between the icon and text if both are not `null`.
   Widget _buildSeparator() {
-    return _hasIcon && widget.text != null ? SizedBox(width: 8.0) : Container();
+    return _hasIcon && widget.text != null
+        ? const SizedBox(width: 8)
+        : Container();
   }
 
   /// Builds the text from the [widget.text].
@@ -112,7 +114,7 @@ class FlatHarpyButtonState extends State<FlatHarpyButton> {
       splashColor: widget.color?.withOpacity(0.3),
       onHighlightChanged: _onHighlightChanged,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Row(
           children: <Widget>[
             _buildIcon(context),
@@ -181,7 +183,7 @@ class CircleButton extends StatelessWidget {
     this.backgroundColor = Colors.black26,
     this.highlightColor = Colors.white10,
     this.splashColor = Colors.white24,
-    this.padding = const EdgeInsets.all(8.0),
+    this.padding = const EdgeInsets.all(8),
     this.onPressed,
   });
 
@@ -200,11 +202,11 @@ class CircleButton extends StatelessWidget {
         child: InkWell(
           highlightColor: highlightColor,
           splashColor: splashColor,
+          onTap: onPressed,
           child: Padding(
             padding: padding,
             child: child,
           ),
-          onTap: onPressed,
         ),
       ),
     );
@@ -214,12 +216,12 @@ class CircleButton extends StatelessWidget {
 /// The base of the harpy button used by the raised and flat harpy button.
 class _HarpyButtonBase extends StatefulWidget {
   const _HarpyButtonBase({
-    this.onTap,
     @required this.child,
+    this.onTap,
   });
 
-  final VoidCallback onTap;
   final Widget child;
+  final VoidCallback onTap;
 
   @override
   _HarpyButtonBaseState createState() => _HarpyButtonBaseState();
@@ -262,7 +264,7 @@ class RaisedHarpyButton extends StatelessWidget {
     final borderRadius = BorderRadius.circular(64);
     final padding = EdgeInsets.symmetric(
       vertical: dense ? 8 : 12,
-      horizontal: dense ? 24 : 32,
+      horizontal: dense ? 16 : 32,
     );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
@@ -294,15 +296,21 @@ class NewFlatHarpyButton extends StatelessWidget {
   const NewFlatHarpyButton({
     @required this.text,
     @required this.onTap,
+    this.dense = false,
   });
 
   final String text;
   final VoidCallback onTap;
 
+  final bool dense;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(64);
-    final padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 32);
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 16 : 32,
+    );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
@@ -329,17 +337,20 @@ class IconHarpyButton extends StatelessWidget {
   const IconHarpyButton({
     @required this.iconData,
     @required this.onTap,
+    this.dense = false,
   });
 
   final IconData iconData;
   final VoidCallback onTap;
 
+  final bool dense;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(64);
-    final padding = const EdgeInsets.symmetric(
-      vertical: 12,
-      horizontal: 32,
+    final padding = EdgeInsets.symmetric(
+      vertical: dense ? 8 : 12,
+      horizontal: dense ? 16 : 32,
     );
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;

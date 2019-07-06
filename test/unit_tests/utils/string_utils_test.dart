@@ -3,12 +3,12 @@ import 'package:test_api/test_api.dart';
 
 void main() {
   test("fillStringToLength with default filler", () {
-    String result = fillStringToLength("123", 5);
+    final String result = fillStringToLength("123", 5);
     expect(result, matches("123  "));
   });
 
   test("fillStringToLength with custom filler", () {
-    String result = fillStringToLength("123", 5, filler: "-");
+    final String result = fillStringToLength("123", 5, filler: "-");
     expect(result, matches("123--"));
   });
 
@@ -17,38 +17,38 @@ void main() {
   });
 
   test("formatTwitterDateString", () {
-    String testData = "Thu Apr 06 15:24:15 +0000 2017";
+    const testData = "Thu Apr 06 15:24:15 +0000 2017";
 
-    String expectedResult = "Apr 06 15:24:15 2017";
-    String actualResult = formatTwitterDateString(testData);
+    const expectedResult = "Apr 06 15:24:15 2017";
+    final String actualResult = formatTwitterDateString(testData);
     expect(actualResult, expectedResult);
   });
 
   test("explodeListToSeparatedString multiple strings", () {
-    List<String> testData = ["1", "3", "5"];
+    final testData = <String>["1", "3", "5"];
 
-    String expectedResult = "1,3,5";
-    String actualResult = explodeListToSeparatedString(testData);
+    const String expectedResult = "1,3,5";
+    final String actualResult = explodeListToSeparatedString(testData);
     expect(actualResult, expectedResult);
   });
 
   test("explodeListToSeparatedString single strings", () {
-    List<String> testData = ["1"];
+    final List<String> testData = ["1"];
 
-    String expectedResult = "1";
-    String actualResult = explodeListToSeparatedString(testData);
+    const expectedResult = "1";
+    final String actualResult = explodeListToSeparatedString(testData);
     expect(actualResult, expectedResult);
   });
 
   test("appendParamsToUrl", () {
-    String url = "https://google.com";
-    var params = <String, String>{
+    const url = "https://google.com";
+    final params = <String, String>{
       "count": "69",
       "max_id": "1337",
     };
 
-    String actual = appendParamsToUrl(url, params);
-    String expected = "https://google.com?count=69&max_id=1337";
+    final String actual = appendParamsToUrl(url, params);
+    const expected = "https://google.com?count=69&max_id=1337";
 
     expect(actual, expected);
   });
@@ -68,27 +68,27 @@ void main() {
   });
 
   test("prettyPrintDurationDifference", () {
-    int timestamp = 1557836948;
+    const timestamp = 1557836948;
 
-    DateTime now = DateTime.fromMillisecondsSinceEpoch(
+    final DateTime now = DateTime.fromMillisecondsSinceEpoch(
       timestamp * 1000,
     );
 
-    DateTime rateLimitReset1 = DateTime.fromMillisecondsSinceEpoch(
+    final DateTime rateLimitReset1 = DateTime.fromMillisecondsSinceEpoch(
       (timestamp + 330) * 1000,
     );
 
-    DateTime rateLimitReset2 = DateTime.fromMillisecondsSinceEpoch(
+    final DateTime rateLimitReset2 = DateTime.fromMillisecondsSinceEpoch(
       (timestamp + 25) * 1000,
     );
 
-    DateTime rateLimitReset3 = DateTime.fromMillisecondsSinceEpoch(
+    final DateTime rateLimitReset3 = DateTime.fromMillisecondsSinceEpoch(
       (timestamp + 304) * 1000,
     );
 
-    Duration difference1 = rateLimitReset1.difference(now);
-    Duration difference2 = rateLimitReset2.difference(now);
-    Duration difference3 = rateLimitReset3.difference(now);
+    final Duration difference1 = rateLimitReset1.difference(now);
+    final Duration difference2 = rateLimitReset2.difference(now);
+    final Duration difference3 = rateLimitReset3.difference(now);
 
     expect(prettyPrintDurationDifference(difference1), "5:30 minutes");
 

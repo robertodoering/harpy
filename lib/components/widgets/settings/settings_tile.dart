@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 /// of the item in the list.
 class DropdownSettingsTile extends StatelessWidget {
   const DropdownSettingsTile({
-    this.leading,
     @required this.title,
     @required this.value,
     @required this.items,
     @required this.onChanged,
+    this.leading,
     this.enabled = true,
   });
 
-  final IconData leading;
   final String title;
   final int value;
   final List<String> items;
   final ValueChanged<int> onChanged;
+  final IconData leading;
   final bool enabled;
 
   @override

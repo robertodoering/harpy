@@ -49,11 +49,11 @@ class HarpyDialogReportMode extends DialogReportMode {
   static DateTime _lastReportTime;
 
   /// The duration that reports are locked after one error has been caught.
-  static const Duration _lockDuration = const Duration(minutes: 5);
+  static const Duration _lockDuration = Duration(minutes: 5);
 
   /// The list of [Report]s that either have not been sent by the user's action
   /// or have been ignored because the reports were locked.
-  static List<Report> _ignoredReports = [];
+  static final List<Report> _ignoredReports = [];
 
   static final Logger _log = Logger("HarpyDialogReportMode");
 
@@ -114,7 +114,9 @@ class HarpyDialogReportMode extends DialogReportMode {
   void onActionConfirmed(Report report) {
     // call onActionConfirmed for each previously ignored reports and the
     // current one
-    _ignoredReports.forEach(super.onActionConfirmed);
+    _ignoredReports
+      ..forEach(super.onActionConfirmed)
+      ..clear();
     super.onActionConfirmed(report);
   }
 }

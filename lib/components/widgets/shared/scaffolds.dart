@@ -28,7 +28,7 @@ class HarpyScaffold extends StatelessWidget {
     final AppBar appBar = AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
-      elevation: 0.0,
+      elevation: 0,
       actions: actions,
       title: Text(
         title,
@@ -68,17 +68,17 @@ class HarpyScaffold extends StatelessWidget {
 /// [SliverAppBar] is expanded.
 class FadingNestedScaffold extends StatefulWidget {
   const FadingNestedScaffold({
+    @required this.body,
     this.title,
     this.background,
     this.expandedAppBarSpace = 200.0,
     this.alwaysShowTitle = false,
-    @required this.body,
   });
 
+  final Widget body;
   final String title;
   final Widget background;
   final double expandedAppBarSpace;
-  final Widget body;
   final bool alwaysShowTitle;
 
   @override
@@ -87,7 +87,7 @@ class FadingNestedScaffold extends StatefulWidget {
 
 class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   ScrollController _controller;
-  double _opacity = 0.0;
+  double _opacity = 0;
 
   double get opacity => widget.alwaysShowTitle ? 1.0 : _opacity;
 
@@ -95,20 +95,20 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   void initState() {
     super.initState();
 
-    double fadeStart = widget.expandedAppBarSpace - 125;
-    double fadeEnd = widget.expandedAppBarSpace - 40;
-    double difference = fadeEnd - fadeStart;
+    final double fadeStart = widget.expandedAppBarSpace - 125;
+    final double fadeEnd = widget.expandedAppBarSpace - 40;
+    final double difference = fadeEnd - fadeStart;
 
     _controller = ScrollController()
       ..addListener(() {
         if (_controller.offset >= fadeStart && _controller.offset <= fadeEnd) {
-          double val = _controller.offset - fadeStart;
+          final double val = _controller.offset - fadeStart;
           setState(() {
             _opacity = val / difference;
           });
-        } else if (_controller.offset < fadeStart && _opacity != 0.0) {
+        } else if (_controller.offset < fadeStart && _opacity != 0) {
           setState(() {
-            _opacity = 0.0;
+            _opacity = 0;
           });
         } else if (_controller.offset > fadeEnd && _opacity != 1.0) {
           setState(() {
@@ -128,9 +128,9 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   Widget build(BuildContext context) {
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
-    SliverAppBar sliverAppBar = SliverAppBar(
+    final SliverAppBar sliverAppBar = SliverAppBar(
       expandedHeight: widget.expandedAppBarSpace,
-      elevation: 0.0,
+      elevation: 0,
       backgroundColor: Colors.transparent,
       pinned: true,
       flexibleSpace: Container(
@@ -139,7 +139,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
           centerTitle: true,
           // padding to prevent the text to get below the back arrow
           title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 52.0),
+            padding: const EdgeInsets.symmetric(horizontal: 52),
             child: Opacity(
               opacity: opacity,
               child: Text(
@@ -157,7 +157,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     return HarpyBackground(
       child: NestedScrollView(
         controller: _controller,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
             sliverAppBar,
           ];

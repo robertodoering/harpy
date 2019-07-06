@@ -4,6 +4,11 @@ part 'video_info.g.dart';
 
 @JsonSerializable()
 class VideoInfo {
+  VideoInfo(this.aspectRatio, this.durationMillis, this.variants);
+
+  factory VideoInfo.fromJson(Map<String, dynamic> json) =>
+      _$VideoInfoFromJson(json);
+
   @JsonKey(name: "aspect_ratio")
   List<int> aspectRatio;
 
@@ -13,16 +18,16 @@ class VideoInfo {
   @JsonKey(name: "variants")
   List<Variants> variants;
 
-  VideoInfo(this.aspectRatio, this.durationMillis, this.variants);
-
-  factory VideoInfo.fromJson(Map<String, dynamic> json) =>
-      _$VideoInfoFromJson(json);
-
   Map<String, dynamic> toJson() => _$VideoInfoToJson(this);
 }
 
 @JsonSerializable()
 class Variants {
+  Variants(this.bitrate, this.contentType, this.url);
+
+  factory Variants.fromJson(Map<String, dynamic> json) =>
+      _$VariantsFromJson(json);
+
   @JsonKey(name: "bitrate")
   int bitrate;
 
@@ -31,11 +36,6 @@ class Variants {
 
   @JsonKey(name: "url")
   String url;
-
-  Variants(this.bitrate, this.contentType, this.url);
-
-  factory Variants.fromJson(Map<String, dynamic> json) =>
-      _$VariantsFromJson(json);
 
   Map<String, dynamic> toJson() => _$VariantsToJson(this);
 

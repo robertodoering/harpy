@@ -9,6 +9,29 @@ part 'tweet.g.dart';
 
 @JsonSerializable()
 class Tweet {
+  Tweet(
+    this.user,
+    this.entities,
+    this.truncated,
+    this.createdAt,
+    this.favorited,
+    this.idStr,
+    this.inReplyToUserIdStr,
+    this.fullText,
+    this.id,
+    this.retweetCount,
+    this.inReplyToStatusIdStr,
+    this.retweeted,
+    this.source,
+    this.favoriteCount,
+    this.retweetedStatus,
+    this.lang,
+    this.harpyData,
+    this.displayTextRange,
+  );
+
+  factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
+
   User user;
   Entities entities;
   @JsonKey(name: 'extended_entities')
@@ -48,29 +71,6 @@ class Tweet {
   HarpyData harpyData;
 
   bool get emptyText => displayTextRange[1] == 0;
-
-  Tweet(
-    this.user,
-    this.entities,
-    this.truncated,
-    this.createdAt,
-    this.favorited,
-    this.idStr,
-    this.inReplyToUserIdStr,
-    this.fullText,
-    this.id,
-    this.retweetCount,
-    this.inReplyToStatusIdStr,
-    this.retweeted,
-    this.source,
-    this.favoriteCount,
-    this.retweetedStatus,
-    this.lang,
-    this.harpyData,
-    this.displayTextRange,
-  );
-
-  factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
   Map<String, dynamic> toJson() => _$TweetToJson(this);
 

@@ -10,6 +10,18 @@ part 'entities.g.dart';
 
 @JsonSerializable()
 class Entities {
+  Entities(
+    this.hashtags,
+    this.symbols,
+    this.urls,
+    this.media,
+    this.userMentions,
+    this.polls,
+  );
+
+  factory Entities.fromJson(Map<String, dynamic> json) =>
+      _$EntitiesFromJson(json);
+
   @JsonKey(name: "hashtags")
   List<Hashtag> hashtags;
   @JsonKey(name: "symbols")
@@ -22,18 +34,6 @@ class Entities {
   List<UserMention> userMentions;
   @JsonKey(name: "polls")
   List<Poll> polls;
-
-  Entities(
-    this.hashtags,
-    this.symbols,
-    this.urls,
-    this.media,
-    this.userMentions,
-    this.polls,
-  );
-
-  factory Entities.fromJson(Map<String, dynamic> json) =>
-      _$EntitiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$EntitiesToJson(this);
 

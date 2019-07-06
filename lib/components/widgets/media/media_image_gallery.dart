@@ -73,10 +73,10 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
         child: PhotoView.customChild(
           backgroundDecoration: BoxDecoration(),
           heroTag: heroTag,
-          child: child,
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,
           scaleStateChangedCallback: _scaleStateChangedCallback,
+          child: child,
         ),
       );
     }).toList();
@@ -91,8 +91,8 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
   Widget build(BuildContext context) {
     return PageView(
       controller: _pageController,
-      children: _buildPhotoViews(),
       physics: _locked ? const NeverScrollableScrollPhysics() : null,
+      children: _buildPhotoViews(),
     );
   }
 }

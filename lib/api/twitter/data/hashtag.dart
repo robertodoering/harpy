@@ -4,15 +4,15 @@ part 'hashtag.g.dart';
 
 @JsonSerializable()
 class Hashtag {
-  @JsonKey(name: "text")
-  String text;
-  @JsonKey(name: "indices")
-  List<int> indices;
-
   Hashtag(this.text, this.indices);
 
   factory Hashtag.fromJson(Map<String, dynamic> json) =>
       _$HashtagFromJson(json);
+
+  @JsonKey(name: "text")
+  String text;
+  @JsonKey(name: "indices")
+  List<int> indices;
 
   Map<String, dynamic> toJson() => _$HashtagToJson(this);
 

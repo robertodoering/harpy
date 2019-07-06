@@ -19,7 +19,7 @@ class DirectoryService {
   /// Used by isolates.
   DirectoryService.data(this.data);
 
-  static Logger _log = Logger("DirectoryService");
+  static final Logger _log = Logger("DirectoryService");
 
   /// Instance that can be used in isolates.
   static DirectoryService isolateInstance;
@@ -28,7 +28,7 @@ class DirectoryService {
 
   Future<void> init() async {
     _log.fine("initializing temporary directory");
-    Directory dir = await getTemporaryDirectory();
+    final Directory dir = await getTemporaryDirectory();
     data.path = dir.path;
     _log.fine("got path: ${dir.path}");
   }
@@ -51,15 +51,16 @@ class DirectoryService {
     @required String content,
     bool override = true,
   }) {
-    File file = File(filePath(bucket, name));
+    final file = File(filePath(bucket, name));
 
     // delete the file if it already exists and should be overridden
     if (file.existsSync() && override) {
       file.deleteSync();
     }
 
-    file.createSync(recursive: true);
-    file.writeAsStringSync(content, flush: true);
+    file
+      ..createSync(recursive: true)
+      ..writeAsStringSync(content, flush: true);
 
     return file;
   }
@@ -71,7 +72,7 @@ class DirectoryService {
     @required String bucket,
     @required String name,
   }) {
-    File file = File(filePath(bucket, name));
+    final file = File(filePath(bucket, name));
 
     return file.existsSync() ? file : null;
   }
@@ -85,8 +86,8 @@ class DirectoryService {
     String extension,
   }) {
     _log.fine("listing all files in bucket: $bucket");
-    List<File> files = [];
-    Directory directory = Directory("${data.path}/$bucket");
+    final files = <File>[];
+    final directory = Directory("${data.path}/$bucket");
 
     if (directory.existsSync()) {
       for (FileSystemEntity entity in directory.listSync()) {
@@ -101,9 +102,9 @@ class DirectoryService {
 
   /// Clears all cached files in the temporary directory.
   int clearCache() {
-    Directory directory = Directory("${data.path}/");
+    final directory = Directory("${data.path}/");
     try {
-      int files = directory.listSync(recursive: true).length;
+      final int files = directory.listSync(recursive: true).length;
       directory.deleteSync(recursive: true);
       return files;
     } on FileSystemException {

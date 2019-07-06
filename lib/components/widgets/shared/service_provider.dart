@@ -12,11 +12,11 @@ import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 
 /// Builds the [ServiceProvider] and holds services in its state.
 class ServiceContainer extends StatefulWidget {
-  final Widget child;
-
   const ServiceContainer({
     @required this.child,
   });
+
+  final Widget child;
 
   @override
   ServiceContainerState createState() => ServiceContainerState();
@@ -61,8 +61,8 @@ class ServiceContainerState extends State<ServiceContainer> {
   @override
   Widget build(BuildContext context) {
     return ServiceProvider(
-      child: widget.child,
       data: this,
+      child: widget.child,
     );
   }
 }
