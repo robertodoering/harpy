@@ -6,6 +6,7 @@ Currently still in development.
 
 Showcase
 ---
+#####(Subject to change)
 
 | Login | Setup |
 | :---: | :---: |
@@ -16,12 +17,12 @@ Development / Setup
 ---
 
 - Twitter API Key
-	- Create an `app_config.yaml` file in the root folder with the key and secret.
-	```yaml
-	twitter:
-	  consumerKey: <key>
-	  consumerSecret: <secret>
-	```
+	- Create a yaml `app_config.yaml` file in the root folder with the key and secret.
+		```yaml
+		twitter:
+		  consumerKey: <key>
+		  consumerSecret: <secret>
+		```
 
 - To generate json_serializable models:
 `flutter packages pub run build_runner build`
