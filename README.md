@@ -6,7 +6,7 @@ Currently still in development.
 
 Showcase
 ---
-#####(Subject to change)
+###### (Subject to change)
 
 | Login | Setup |
 | :---: | :---: |
