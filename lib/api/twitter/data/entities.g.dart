@@ -7,34 +7,31 @@ part of 'entities.dart';
 // **************************************************************************
 
 Entities _$EntitiesFromJson(Map<String, dynamic> json) {
-  return Entities(
-      (json['hashtags'] as List)
-          ?.map((e) =>
-              e == null ? null : Hashtag.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['symbols'] as List)
-          ?.map((e) => e == null
-              ? null
-              : TwitterSymbol.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['urls'] as List)
-          ?.map(
-              (e) => e == null ? null : Url.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['media'] as List)
-          ?.map((e) => e == null
-              ? null
-              : TwitterMedia.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['user_mentions'] as List)
-          ?.map((e) => e == null
-              ? null
-              : UserMention.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      (json['polls'] as List)
-          ?.map((e) =>
-              e == null ? null : Poll.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+  return Entities()
+    ..hashtags = (json['hashtags'] as List)
+        ?.map((e) =>
+            e == null ? null : Hashtag.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..symbols = (json['symbols'] as List)
+        ?.map((e) => e == null
+            ? null
+            : TwitterSymbol.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..urls = (json['urls'] as List)
+        ?.map((e) => e == null ? null : Url.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..media = (json['media'] as List)
+        ?.map((e) =>
+            e == null ? null : TwitterMedia.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..userMentions = (json['user_mentions'] as List)
+        ?.map((e) =>
+            e == null ? null : UserMention.fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..polls = (json['polls'] as List)
+        ?.map(
+            (e) => e == null ? null : Poll.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$EntitiesToJson(Entities instance) => <String, dynamic>{

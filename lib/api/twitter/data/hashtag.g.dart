@@ -7,8 +7,9 @@ part of 'hashtag.dart';
 // **************************************************************************
 
 Hashtag _$HashtagFromJson(Map<String, dynamic> json) {
-  return Hashtag(json['text'] as String,
-      (json['indices'] as List)?.map((e) => e as int)?.toList());
+  return Hashtag()
+    ..text = json['text'] as String
+    ..indices = (json['indices'] as List)?.map((e) => e as int)?.toList();
 }
 
 Map<String, dynamic> _$HashtagToJson(Hashtag instance) =>

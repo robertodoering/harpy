@@ -7,8 +7,9 @@ part of 'twitter_symbol.dart';
 // **************************************************************************
 
 TwitterSymbol _$TwitterSymbolFromJson(Map<String, dynamic> json) {
-  return TwitterSymbol(json['text'] as String,
-      (json['indices'] as List)?.map((e) => e as int)?.toList());
+  return TwitterSymbol()
+    ..text = json['text'] as String
+    ..indices = (json['indices'] as List)?.map((e) => e as int)?.toList();
 }
 
 Map<String, dynamic> _$TwitterSymbolToJson(TwitterSymbol instance) =>

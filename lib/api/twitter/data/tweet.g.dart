@@ -7,45 +7,42 @@ part of 'tweet.dart';
 // **************************************************************************
 
 Tweet _$TweetFromJson(Map<String, dynamic> json) {
-  return Tweet(
-      json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      json['entities'] == null
-          ? null
-          : Entities.fromJson(json['entities'] as Map<String, dynamic>),
-      json['truncated'] as bool,
-      json['created_at'] == null
-          ? null
-          : convertFromTwitterDateString(json['created_at'] as String),
-      json['favorited'] as bool,
-      json['id_str'] as String,
-      json['in_reply_to_user_id_str'] as String,
-      json['full_text'] as String,
-      json['id'] as int,
-      json['retweet_count'] as int,
-      json['in_reply_to_status_id_str'] as String,
-      json['retweeted'] as bool,
-      json['source'] as String,
-      json['favorite_count'] as int,
-      json['retweeted_status'] == null
-          ? null
-          : Tweet.fromJson(json['retweeted_status'] as Map<String, dynamic>),
-      json['lang'] as String,
-      json['harpy_data'] == null
-          ? HarpyData.init()
-          : HarpyData.fromJson(json['harpy_data'] as Map<String, dynamic>),
-      (json['display_text_range'] as List)?.map((e) => e as int)?.toList())
+  return Tweet()
+    ..user = json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>)
+    ..entities = json['entities'] == null
+        ? null
+        : Entities.fromJson(json['entities'] as Map<String, dynamic>)
     ..extendedEntities = json['extended_entities'] == null
         ? null
         : Entities.fromJson(json['extended_entities'] as Map<String, dynamic>)
+    ..truncated = json['truncated'] as bool
+    ..createdAt = convertFromTwitterDateString(json['created_at'] as String)
+    ..favorited = json['favorited'] as bool
+    ..idStr = json['id_str'] as String
+    ..inReplyToUserIdStr = json['in_reply_to_user_id_str'] as String
+    ..fullText = json['full_text'] as String
+    ..id = json['id'] as int
+    ..retweetCount = json['retweet_count'] as int
+    ..inReplyToStatusIdStr = json['in_reply_to_status_id_str'] as String
+    ..retweeted = json['retweeted'] as bool
+    ..source = json['source'] as String
+    ..favoriteCount = json['favorite_count'] as int
+    ..retweetedStatus = json['retweeted_status'] == null
+        ? null
+        : Tweet.fromJson(json['retweeted_status'] as Map<String, dynamic>)
+    ..lang = json['lang'] as String
+    ..displayTextRange =
+        (json['display_text_range'] as List)?.map((e) => e as int)?.toList()
     ..quotedStatus = json['quoted_status'] == null
         ? null
         : Tweet.fromJson(json['quoted_status'] as Map<String, dynamic>)
     ..quotedStatusPermalink = json['quoted_status_permalink'] == null
         ? null
         : QuotedStatusPermalink.fromJson(
-            json['quoted_status_permalink'] as Map<String, dynamic>);
+            json['quoted_status_permalink'] as Map<String, dynamic>)
+    ..harpyData = harpyDataFromJson(json['harpyData'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
@@ -69,5 +66,5 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'display_text_range': instance.displayTextRange,
       'quoted_status': instance.quotedStatus,
       'quoted_status_permalink': instance.quotedStatusPermalink,
-      'harpy_data': instance.harpyData
+      'harpyData': instance.harpyData
     };

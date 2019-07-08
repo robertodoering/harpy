@@ -7,21 +7,23 @@ part of 'twitter_media.dart';
 // **************************************************************************
 
 TwitterMedia _$TwitterMediaFromJson(Map<String, dynamic> json) {
-  return TwitterMedia(
-      json['id'] as int,
-      json['id_str'] as String,
-      (json['indices'] as List)?.map((e) => e as int)?.toList(),
-      json['media_url'] as String,
-      json['media_url_https'] as String,
-      json['url'] as String,
-      json['display_url'] as String,
-      json['expanded_url'] as String,
-      json['type'] as String,
-      (json['sizes'] as Map<String, dynamic>)?.map((k, e) => MapEntry(
-          k, e == null ? null : MediaSize.fromJson(e as Map<String, dynamic>))),
-      json['video_info'] == null
-          ? null
-          : VideoInfo.fromJson(json['video_info'] as Map<String, dynamic>));
+  return TwitterMedia()
+    ..id = json['id'] as int
+    ..idStr = json['id_str'] as String
+    ..indices = (json['indices'] as List)?.map((e) => e as int)?.toList()
+    ..mediaUrl = json['media_url'] as String
+    ..mediaUrlHttps = json['media_url_https'] as String
+    ..url = json['url'] as String
+    ..displayUrl = json['display_url'] as String
+    ..expandedUrl = json['expanded_url'] as String
+    ..type = json['type'] as String
+    ..sizes = (json['sizes'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(
+          k, e == null ? null : MediaSize.fromJson(e as Map<String, dynamic>)),
+    )
+    ..videoInfo = json['video_info'] == null
+        ? null
+        : VideoInfo.fromJson(json['video_info'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$TwitterMediaToJson(TwitterMedia instance) =>

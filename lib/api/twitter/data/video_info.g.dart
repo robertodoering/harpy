@@ -7,13 +7,14 @@ part of 'video_info.dart';
 // **************************************************************************
 
 VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
-  return VideoInfo(
-      (json['aspect_ratio'] as List)?.map((e) => e as int)?.toList(),
-      json['duration_millis'] as int,
-      (json['variants'] as List)
-          ?.map((e) =>
-              e == null ? null : Variants.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+  return VideoInfo()
+    ..aspectRatio =
+        (json['aspect_ratio'] as List)?.map((e) => e as int)?.toList()
+    ..durationMillis = json['duration_millis'] as int
+    ..variants = (json['variants'] as List)
+        ?.map((e) =>
+            e == null ? null : Variants.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
@@ -23,8 +24,10 @@ Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
     };
 
 Variants _$VariantsFromJson(Map<String, dynamic> json) {
-  return Variants(json['bitrate'] as int, json['content_type'] as String,
-      json['url'] as String);
+  return Variants()
+    ..bitrate = json['bitrate'] as int
+    ..contentType = json['content_type'] as String
+    ..url = json['url'] as String;
 }
 
 Map<String, dynamic> _$VariantsToJson(Variants instance) => <String, dynamic>{

@@ -7,8 +7,10 @@ part of 'media_size.dart';
 // **************************************************************************
 
 MediaSize _$MediaSizeFromJson(Map<String, dynamic> json) {
-  return MediaSize(
-      json['w'] as int, json['h'] as int, json['resize'] as String);
+  return MediaSize()
+    ..w = json['w'] as int
+    ..h = json['h'] as int
+    ..resize = json['resize'] as String;
 }
 
 Map<String, dynamic> _$MediaSizeToJson(MediaSize instance) => <String, dynamic>{
