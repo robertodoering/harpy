@@ -4,22 +4,14 @@ part 'media_size.g.dart';
 
 @JsonSerializable()
 class MediaSize {
-  MediaSize(this.w, this.h, this.resize);
+  MediaSize();
 
   factory MediaSize.fromJson(Map<String, dynamic> json) =>
       _$MediaSizeFromJson(json);
 
   Map<String, dynamic> toJson() => _$MediaSizeToJson(this);
 
-  @JsonKey(name: "w")
   int w;
-  @JsonKey(name: "h")
   int h;
-  @JsonKey(name: "resize")
   String resize;
-
-  @override
-  String toString() {
-    return 'MediaSize{w: $w, h: $h, resize: $resize}';
-  }
 }

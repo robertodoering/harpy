@@ -6,7 +6,7 @@ part 'user_entities.g.dart';
 
 @JsonSerializable()
 class UserEntities {
-  UserEntities(this.url, this.description);
+  UserEntities();
 
   factory UserEntities.fromJson(Map<String, dynamic> json) =>
       _$UserEntitiesFromJson(json);
@@ -17,8 +17,7 @@ class UserEntities {
   Map<String, dynamic> toJson() => _$UserEntitiesToJson(this);
 
   /// Returns the [description] as the [urls] of an [Entities] object.
-  Entities get asEntities =>
-      Entities(null, null, description.urls, null, null, null);
+  Entities get asEntities => Entities()..urls = description.urls;
 }
 
 @JsonSerializable()

@@ -7,44 +7,43 @@ part of 'user.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-      json['name'] as String,
-      json['profile_sidebar_fill_color'] as String,
-      json['profile_background_title'] as bool,
-      json['profile_image_url'] as String,
-      json['created_at'] == null
-          ? null
-          : convertFromTwitterDateString(json['created_at'] as String),
-      json['default_profile'] as bool,
-      json['url'] as String,
-      json['contributors_enabled'] as bool,
-      json['favourites_count'] as int,
-      json['profile_image_url_https'] as String,
-      json['id'] as int,
-      json['listed_count'] as int,
-      json['profile_use_background_image'] as bool,
-      json['profile_text_color'] as String,
-      json['followers_count'] as int,
-      json['lang'] as String,
-      json['protected'] as bool,
-      json['geo_enabled'] as bool,
-      json['notifications'] as bool,
-      json['description'] as String,
-      json['profile_background_color'] as String,
-      json['verified'] as bool,
-      json['profile_background_image_url_https'] as String,
-      json['statuses_count'] as int,
-      json['profile_background_image_url'] as String,
-      json['default_profile_image'] as bool,
-      json['friends_count'] as int,
-      json['following'] as bool,
-      json['show_all_inline_media'] as bool,
-      json['screen_name'] as String,
-      json['entities'] == null
-          ? null
-          : UserEntities.fromJson(json['entities'] as Map<String, dynamic>),
-      json['profile_banner_url'] as String,
-      json['location'] as String);
+  return User()
+    ..name = json['name'] as String
+    ..profileSidebarFillColor = json['profile_sidebar_fill_color'] as String
+    ..profileBackgroundTitle = json['profile_background_title'] as bool
+    ..profileImageUrl = json['profile_image_url'] as String
+    ..createdAt = convertFromTwitterDateString(json['created_at'] as String)
+    ..defaultProfile = json['default_profile'] as bool
+    ..url = json['url'] as String
+    ..contributorsEnabled = json['contributors_enabled'] as bool
+    ..favouritesCount = json['favourites_count'] as int
+    ..profileImageUrlHttps = json['profile_image_url_https'] as String
+    ..id = json['id'] as int
+    ..listedCount = json['listed_count'] as int
+    ..profileUseBackgroundImage = json['profile_use_background_image'] as bool
+    ..profileTextColor = json['profile_text_color'] as String
+    ..followersCount = json['followers_count'] as int
+    ..lang = json['lang'] as String
+    ..protected = json['protected'] as bool
+    ..geoEnabled = json['geo_enabled'] as bool
+    ..notifications = json['notifications'] as bool
+    ..description = json['description'] as String
+    ..profileBackgroundColor = json['profile_background_color'] as String
+    ..verified = json['verified'] as bool
+    ..profileBackgroundImageUrlHttps =
+        json['profile_background_image_url_https'] as String
+    ..statusesCount = json['statuses_count'] as int
+    ..profileBackgroundImageUrl = json['profile_background_image_url'] as String
+    ..defaultProfileImage = json['default_profile_image'] as bool
+    ..friendsCount = json['friends_count'] as int
+    ..following = json['following'] as bool
+    ..showAllInlineMedia = json['show_all_inline_media'] as bool
+    ..screenName = json['screen_name'] as String
+    ..entities = json['entities'] == null
+        ? null
+        : UserEntities.fromJson(json['entities'] as Map<String, dynamic>)
+    ..profileBannerUrl = json['profile_banner_url'] as String
+    ..location = json['location'] as String;
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{

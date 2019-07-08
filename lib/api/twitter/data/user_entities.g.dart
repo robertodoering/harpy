@@ -7,14 +7,13 @@ part of 'user_entities.dart';
 // **************************************************************************
 
 UserEntities _$UserEntitiesFromJson(Map<String, dynamic> json) {
-  return UserEntities(
-      json['url'] == null
-          ? null
-          : UserEntityUrl.fromJson(json['url'] as Map<String, dynamic>),
-      json['description'] == null
-          ? null
-          : UserEntityUrl.fromJson(
-              json['description'] as Map<String, dynamic>));
+  return UserEntities()
+    ..url = json['url'] == null
+        ? null
+        : UserEntityUrl.fromJson(json['url'] as Map<String, dynamic>)
+    ..description = json['description'] == null
+        ? null
+        : UserEntityUrl.fromJson(json['description'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$UserEntitiesToJson(UserEntities instance) =>

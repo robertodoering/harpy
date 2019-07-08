@@ -9,48 +9,28 @@ part 'tweet.g.dart';
 
 @JsonSerializable()
 class Tweet {
-  Tweet(
-    this.user,
-    this.entities,
-    this.truncated,
-    this.createdAt,
-    this.favorited,
-    this.idStr,
-    this.inReplyToUserIdStr,
-    this.fullText,
-    this.id,
-    this.retweetCount,
-    this.inReplyToStatusIdStr,
-    this.retweeted,
-    this.source,
-    this.favoriteCount,
-    this.retweetedStatus,
-    this.lang,
-    this.harpyData,
-    this.displayTextRange,
-  );
+  Tweet();
 
   factory Tweet.fromJson(Map<String, dynamic> json) => _$TweetFromJson(json);
 
   User user;
   Entities entities;
-  @JsonKey(name: 'extended_entities')
+  @JsonKey(name: "extended_entities")
   Entities extendedEntities;
   bool truncated;
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: "created_at", fromJson: convertFromTwitterDateString)
   DateTime createdAt;
   bool favorited;
-  @JsonKey(name: 'id_str')
+  @JsonKey(name: "id_str")
   String idStr;
-  @JsonKey(name: 'in_reply_to_user_id_str')
+  @JsonKey(name: "in_reply_to_user_id_str")
   String inReplyToUserIdStr;
-  @JsonKey(name: 'full_text')
+  @JsonKey(name: "full_text")
   String fullText;
-  @JsonKey(name: 'id')
   int id;
-  @JsonKey(name: 'retweet_count')
+  @JsonKey(name: "retweet_count")
   int retweetCount;
-  @JsonKey(name: 'in_reply_to_status_id_str')
+  @JsonKey(name: "in_reply_to_status_id_str")
   String inReplyToStatusIdStr;
   bool retweeted;
   String source;
@@ -67,17 +47,12 @@ class Tweet {
   QuotedStatusPermalink quotedStatusPermalink;
 
   // custom data
-  @JsonKey(name: "harpy_data")
+  @JsonKey(fromJson: harpyDataFromJson)
   HarpyData harpyData;
 
   bool get emptyText => displayTextRange[1] == 0;
 
   Map<String, dynamic> toJson() => _$TweetToJson(this);
-
-  @override
-  String toString() {
-    return 'Tweet{user: $user, entities: $entities, truncated: $truncated, createdAt: $createdAt, favorited: $favorited, idStr: $idStr, inReplyToUserIdStr: $inReplyToUserIdStr, full_text: $fullText, id: $id, retweetCount: $retweetCount, inReplyToStatusIdStr: $inReplyToStatusIdStr, retweeted: $retweeted, source: $source, favoriteCount: $favoriteCount}';
-  }
 
   @override
   bool operator ==(Object other) =>
@@ -86,4 +61,8 @@ class Tweet {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+HarpyData harpyDataFromJson(Map<String, dynamic> json) {
+  return json == null ? HarpyData() : HarpyData.fromJson(json);
 }

@@ -7,12 +7,12 @@ part of 'user_mention.dart';
 // **************************************************************************
 
 UserMention _$UserMentionFromJson(Map<String, dynamic> json) {
-  return UserMention(
-      json['screen_name'] as String,
-      json['name'] as String,
-      json['id'] as int,
-      json['id_str'] as String,
-      (json['indices'] as List)?.map((e) => e as int)?.toList());
+  return UserMention()
+    ..screenName = json['screen_name'] as String
+    ..name = json['name'] as String
+    ..id = json['id'] as int
+    ..idStr = json['id_str'] as String
+    ..indices = (json['indices'] as List)?.map((e) => e as int)?.toList();
 }
 
 Map<String, dynamic> _$UserMentionToJson(UserMention instance) =>

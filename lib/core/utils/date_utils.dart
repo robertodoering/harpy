@@ -2,6 +2,10 @@ import 'package:harpy/core/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 
 DateTime convertFromTwitterDateString(String twitterDateString) {
+  if (twitterDateString == null) {
+    return null;
+  }
+
   try {
     return DateTime.parse(twitterDateString);
   } catch (ex) {
