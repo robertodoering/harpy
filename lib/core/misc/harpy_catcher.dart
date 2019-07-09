@@ -1,32 +1,73 @@
 import 'package:catcher/catcher_plugin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:logging/logging.dart';
+import 'package:yaml/yaml.dart';
 
 /// Wraps the [Catcher] with custom debug and release options.
 ///
 /// [Catcher] calls [runApp] with [child] as the root app.
 class HarpyCatcher {
   HarpyCatcher(Widget child) {
+    _setup(child);
+  }
+
+  Future<void> _setup(Widget child) async {
     Catcher(
       child,
       debugConfig: debugOptions,
-      releaseConfig: releaseOptions,
+      releaseConfig: await releaseOptions,
       enableLogger: false,
     );
   }
 
-  CatcherOptions get debugOptions => CatcherOptions(HarpyDialogReportMode(), [
-        ConsoleHandler(),
-      ], localizationOptions: [
-        localizationOptions,
-      ]);
+  CatcherOptions get debugOptions {
+    return CatcherOptions(HarpyDialogReportMode(), [
+      ConsoleHandler(),
+    ], localizationOptions: [
+      localizationOptions,
+    ]);
+  }
 
-  CatcherOptions get releaseOptions => CatcherOptions(HarpyDialogReportMode(), [
-//        EmailAutoHandler(), // todo: setup report email
-      ], localizationOptions: [
+  Future<CatcherOptions> get releaseOptions async {
+    return CatcherOptions(
+      HarpyDialogReportMode(),
+      await releaseHandlers,
+      localizationOptions: [
         localizationOptions,
-      ]);
+      ],
+    );
+  }
+
+  Future<List<ReportHandler>> get releaseHandlers async {
+    String sender;
+    String pass;
+
+    // load credentials from app config
+    try {
+      final String appConfig = await rootBundle.loadString("app_config.yaml");
+
+      final YamlMap yamlMap = loadYaml(appConfig);
+      sender = yamlMap["email"]["sender"];
+      pass = yamlMap["email"]["pass"];
+    } catch (e) {
+      // app config not found, email auto handler will be omitted
+    }
+
+    return <ReportHandler>[
+      if (sender != null && pass != null)
+        EmailAutoHandler(
+          "smtp.gmail.com",
+          587,
+          sender,
+          "Harpy",
+          pass,
+          ["rbydoering+harpy@gmail.com"],
+          enableCustomParameters: false,
+        )
+    ];
+  }
 
   LocalizationOptions get localizationOptions {
     return LocalizationOptions(

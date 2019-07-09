@@ -25,7 +25,8 @@ dependencies:
   webview_flutter: ^0.3.6
   path_provider: ^0.5.0+1
   connectivity: ^0.4.2
-  catcher: ^0.1.5
+  catcher: # todo: change to pub version when fix gets released: https://github.com/jhomlala/catcher/pull/31
+    git: https://github.com/robertodoering/catcher.git
   shared_preferences: ^0.5.2+1
 
   flutter:
