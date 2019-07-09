@@ -57,6 +57,7 @@ class TweetSearchService {
         "q": Uri.encodeQueryComponent("to:$user"),
         "since_id": tweetId,
         "count": "100",
+        "tweet_mode": "extended",
       };
 
       if (maxId != null) {
@@ -85,9 +86,10 @@ class TweetSearchService {
 
           yield reply;
 
-          await for (final replyToReply in _getRepliesRecursively(reply)) {
-            yield replyToReply;
-          }
+          // todo: can cause an infinite loop
+//          await for (final replyToReply in _getRepliesRecursively(reply)) {
+//            yield replyToReply;
+//          }
         }
       }
 
