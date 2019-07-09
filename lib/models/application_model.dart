@@ -128,15 +128,32 @@ class ApplicationModel extends ChangeNotifier {
 
   Future<void> _initTwitterSession() async {
     _log.fine("parsing app config");
-    final String appConfig = await rootBundle.loadString(
-      "app_config.yaml",
-      cache: false,
-    );
 
-    // parse app config
-    final YamlMap yamlMap = loadYaml(appConfig);
-    final String consumerKey = yamlMap["twitter"]["consumerKey"];
-    final String consumerSecret = yamlMap["twitter"]["consumerSecret"];
+    String consumerKey;
+    String consumerSecret;
+
+    try {
+      final String appConfig = await rootBundle.loadString("app_config.yaml");
+
+      // parse app config
+      final YamlMap yamlMap = loadYaml(appConfig);
+      consumerKey = yamlMap["twitter"]["consumerKey"];
+      consumerSecret = yamlMap["twitter"]["consumerSecret"];
+    } catch (e, stacktrace) {
+      _log.severe(
+        "error while loading app_config.yaml\n"
+        "make sure a app_config.yaml file exists in the root directory with the"
+        "twitter api key and secret.\n"
+        "app_config.yaml:\n"
+        "twitter:\n"
+        "    consumerKey: <key>\n"
+        "    consumerSecret: <secret>",
+        e,
+        stacktrace,
+      );
+
+      return;
+    }
 
     // init twitter login
     twitterLogin = TwitterLogin(
