@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/services/error_handler.dart';
+import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';

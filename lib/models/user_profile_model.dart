@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/services/error_handler.dart';
+import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/models/login_model.dart';

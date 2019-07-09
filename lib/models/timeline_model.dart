@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
 import 'package:logging/logging.dart';
@@ -13,7 +14,8 @@ abstract class TimelineModel extends ChangeNotifier {
   TimelineModel({
     @required this.tweetService,
     @required this.tweetCache,
-  }) : assert(tweetCache != null);
+  })  : assert(tweetService != null),
+        assert(tweetCache != null);
 
   final TweetService tweetService;
   final TweetCache tweetCache;
