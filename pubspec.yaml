@@ -43,7 +43,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - app_config.yaml
+    - assets/config/
     - assets/flare/
 
   fonts:

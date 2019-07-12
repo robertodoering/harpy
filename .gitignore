@@ -86,5 +86,4 @@ unlinked_spec.ds
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-/app_config.yaml
-/test/target/
+/assets/config/app_config.yaml
