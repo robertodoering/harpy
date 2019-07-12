@@ -50,7 +50,7 @@ class TwitterClient {
 
   /// Saves the response on the device as a file for debugging.
   Future<void> _saveResponse(Response response) async {
-    print("saving response");
+    _log.info("saving response");
     final dir = await getApplicationDocumentsDirectory();
 
     final String url =
@@ -61,7 +61,7 @@ class TwitterClient {
     File(path)
       ..createSync(recursive: true)
       ..writeAsStringSync(response.body);
-    print("response saved in $path");
+    _log.info("response saved in $path");
   }
 
   Future<Response> get(
@@ -69,8 +69,8 @@ class TwitterClient {
     Map<String, String> headers,
     Map<String, String> params,
   }) {
-    _log.fine("sending get request: $url");
     url = appendParamsToUrl(url, params);
+    _log.fine("sending get request: $url");
 
     return _client
         .get(url, headers: headers)

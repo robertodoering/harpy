@@ -46,7 +46,9 @@ class HarpyCatcher {
 
     // load credentials from app config
     try {
-      final String appConfig = await rootBundle.loadString("app_config.yaml");
+      final String appConfig = await rootBundle.loadString(
+        "assets/config/app_config.yaml",
+      );
 
       final YamlMap yamlMap = loadYaml(appConfig);
       sender = yamlMap["email"]["sender"];
@@ -56,7 +58,7 @@ class HarpyCatcher {
     }
 
     return <ReportHandler>[
-      if (sender != null && pass != null)
+      if (sender?.isNotEmpty == true && pass?.isNotEmpty == true)
         EmailAutoHandler(
           "smtp.gmail.com",
           587,
@@ -73,8 +75,8 @@ class HarpyCatcher {
     return LocalizationOptions(
       "en",
       dialogReportModeTitle: "Crash report",
-      dialogReportModeDescription: "An unexpected error occurred.\nSend a "
-          "crash report?",
+      dialogReportModeDescription: "An unexpected error occurred.\n"
+          "Send a crash report?",
       dialogReportModeAccept: "Send report",
       dialogReportModeCancel: "No, thanks",
     );

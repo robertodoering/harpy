@@ -35,7 +35,7 @@ class TweetSearchService {
   /// Returns a stream of replies for the [tweet] that finishes once every
   /// reply has been found.
   ///
-  /// Since twitter's api doesn't provide a way to get replies to a particular
+  /// Since Twitter's api doesn't provide a way to get replies to a particular
   /// tweet we use a search query for replies to the [tweet]'s user and filter
   /// out once that aren't replies to the [tweet].
   ///
