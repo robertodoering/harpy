@@ -20,23 +20,45 @@ class TweetRepliesScreen extends StatelessWidget {
 
   final Tweet tweet;
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Consumer<TweetRepliesModel>(
       builder: (context, model, _) {
-        if (model.loading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         return SlideFadeInAnimation(
           offset: const Offset(0, 100),
           child: CustomTweetListView(
             content: [
               BigTweetTile(tweet: tweet),
               ...model.replies,
+              if (model.loading) _buildLoading(),
+              if (model.noRepliesFound) _buildNoRepliesFound(context),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildLoading() {
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildNoRepliesFound(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: <Widget>[
+          const Text("No replies found"),
+          Text(
+            "Only replies of the last 7 days can be retrieved.",
+            style: Theme.of(context).textTheme.body2,
+          )
+        ],
+      ),
     );
   }
 
@@ -53,7 +75,7 @@ class TweetRepliesScreen extends StatelessWidget {
         ),
         child: HarpyScaffold(
           title: "Replies",
-          body: _buildBody(),
+          body: _buildBody(context),
         ),
       ),
     );
