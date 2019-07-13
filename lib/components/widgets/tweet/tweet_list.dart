@@ -141,10 +141,10 @@ class TweetListState<T extends TimelineModel> extends State<TweetList> {
   }
 
   Widget _buildRequestingMoreBlocked() {
-    return SizedBox(
+    return const SizedBox(
       height: 100,
       child: Center(
-        child: const Text("Please wait a bit before loading more tweets"),
+        child: Text("Please wait a bit before loading more tweets"),
       ),
     );
   }
@@ -179,7 +179,7 @@ class CustomTweetListView extends StatelessWidget {
 
   /// The tweet list content containing [Widget]s and [Tweet]s which are used to
   /// build [TweetTile]s.
-  final List content;
+  final List<dynamic> content;
 
   /// The [ScrollController] that might be inherited.
   final ScrollController controller;

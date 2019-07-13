@@ -53,7 +53,7 @@ class HomeDrawer extends StatelessWidget {
           },
         ),
 
-        Divider(),
+        const Divider(),
 
         // settings
         ListTile(
