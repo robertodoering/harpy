@@ -50,6 +50,8 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
 
   _log.warning("error not handled");
 
+  // todo: maybe show "unexpected error occurred flushbar instead of showing
+  //  the error dialog
   Catcher.reportCheckedError(error, null);
 }
 

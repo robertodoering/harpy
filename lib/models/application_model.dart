@@ -133,21 +133,27 @@ class ApplicationModel extends ChangeNotifier {
     String consumerSecret;
 
     try {
-      final String appConfig = await rootBundle.loadString("app_config.yaml");
+      final String appConfig = await rootBundle.loadString(
+        "assets/config/app_config.yaml",
+      );
 
       // parse app config
       final YamlMap yamlMap = loadYaml(appConfig);
-      consumerKey = yamlMap["twitter"]["consumerKey"];
-      consumerSecret = yamlMap["twitter"]["consumerSecret"];
+      consumerKey = yamlMap["twitter"]["consumer_key"];
+      consumerSecret = yamlMap["twitter"]["consumer_secret"];
+
+      if (consumerKey.isEmpty || consumerSecret.isEmpty) {
+        throw Exception("Twitter api key or secret is empty.");
+      }
     } catch (e, stacktrace) {
       _log.severe(
         "error while loading app_config.yaml\n"
-        "make sure a app_config.yaml file exists in the root directory with the"
-        "twitter api key and secret.\n"
+        "make sure a app_config.yaml file exists in the assets/config/ "
+        "directory with the twitter api key and secret.\n"
         "app_config.yaml:\n"
         "twitter:\n"
-        "    consumerKey: <key>\n"
-        "    consumerSecret: <secret>",
+        "    consumer_key: <key>\n"
+        "    consumer_secret: <secret>",
         e,
         stacktrace,
       );

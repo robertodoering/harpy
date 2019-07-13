@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/tweet_replies_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
@@ -9,6 +11,7 @@ import 'package:harpy/components/widgets/shared/flare_buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
+import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -24,29 +27,35 @@ class _TweetTileContentState extends State<TweetTileContent>
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _TweetRetweetedRow(model),
-        _TweetContentPadding(
-          model,
-          children: <Widget>[
-            _TweetAvatarNameRow(model),
-            TweetText(model),
-            TweetQuote(model),
-            _TweetTranslation(model, vsync: this),
-            _TweetMedia(model),
-            _TweetActionsRow(model),
-          ],
-        ),
-        _TweetReplyParent(model),
-      ],
+    return GestureDetector(
+      onTap: () {
+        HarpyNavigator.push(TweetRepliesScreen(
+          tweet: model.tweet,
+        ));
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TweetRetweetedRow(model),
+          _TweetContentPadding(
+            model,
+            children: <Widget>[
+              TweetAvatarNameRow(model),
+              TweetText(model),
+              TweetQuote(model),
+              TweetTranslation(model, vsync: this),
+              TweetMedia(model),
+              TweetActionsRow(model),
+            ],
+          ),
+          _TweetReplyParent(model),
+        ],
+      ),
     );
   }
 }
 
-/// Displays the names of the users that replied to this tweet if they are
-/// following.
+/// Displays the names of the users that replied to this tweet.
 class _TweetReplyParent extends StatelessWidget {
   const _TweetReplyParent(
     this.model,
@@ -108,8 +117,8 @@ class _TweetContentPadding extends StatelessWidget {
 
 /// If the [Tweet] is a retweet this builds information of the person that
 /// retweeted this [Tweet].
-class _TweetRetweetedRow extends StatelessWidget {
-  const _TweetRetweetedRow(this.model);
+class TweetRetweetedRow extends StatelessWidget {
+  const TweetRetweetedRow(this.model);
 
   final TweetModel model;
 
@@ -137,8 +146,8 @@ class _TweetRetweetedRow extends StatelessWidget {
 }
 
 /// Builds the [Tweet] avatar next to the [TweetNameColumn].
-class _TweetAvatarNameRow extends StatelessWidget {
-  const _TweetAvatarNameRow(this.model);
+class TweetAvatarNameRow extends StatelessWidget {
+  const TweetAvatarNameRow(this.model);
 
   final TweetModel model;
 
@@ -261,8 +270,8 @@ class TweetText extends StatelessWidget {
 
 /// If the [Tweet] has been translated this builds the translation info and
 /// the translated text.
-class _TweetTranslation extends StatelessWidget {
-  const _TweetTranslation(
+class TweetTranslation extends StatelessWidget {
+  const TweetTranslation(
     this.model, {
     @required this.vsync,
   });
@@ -271,8 +280,8 @@ class _TweetTranslation extends StatelessWidget {
   final TickerProvider vsync;
 
   Widget _buildTranslatingIndicator() {
-    return Center(
-      child: const Padding(
+    return const Center(
+      child: Padding(
         padding: EdgeInsets.all(8),
         child: CircularProgressIndicator(),
       ),
@@ -338,8 +347,8 @@ class _TweetTranslation extends StatelessWidget {
 
 /// If the [Tweet] contains [TweetMedia] this builds the [CollapsibleMedia] for
 /// this [Tweet].
-class _TweetMedia extends StatelessWidget {
-  const _TweetMedia(this.model);
+class TweetMedia extends StatelessWidget {
+  const TweetMedia(this.model);
 
   final TweetModel model;
 
@@ -354,47 +363,10 @@ class _TweetMedia extends StatelessWidget {
 }
 
 /// Builds a row with the actions (favorite, retweet, translate).
-class _TweetActionsRow extends StatelessWidget {
-  const _TweetActionsRow(this.model);
+class TweetActionsRow extends StatelessWidget {
+  const TweetActionsRow(this.model);
 
   final TweetModel model;
-
-  Future<void> _translate(BuildContext context) async {
-    await model.translate();
-
-    if (model.translationUnchanged) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: const Text("Tweet not translated"),
-      ));
-    }
-  }
-
-  Widget _buildTranslationButton(BuildContext context) {
-    if (model.tweet.emptyText || model.tweet.lang == "en") {
-      return Container();
-    }
-
-    VoidCallback onTap;
-    bool alwaysColored = false;
-    Color color = Colors.blue;
-
-    if (model.originalTweet.harpyData.translation == null &&
-        !model.translating) {
-      onTap = () => _translate(context);
-    } else if (model.translationUnchanged) {
-      color = Theme.of(context).disabledColor;
-      alwaysColored = true;
-    } else {
-      alwaysColored = true;
-    }
-
-    return FlatHarpyButton(
-      icon: Icons.translate,
-      onTap: onTap,
-      color: color,
-      alwaysColored: alwaysColored,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -425,8 +397,50 @@ class _TweetActionsRow extends StatelessWidget {
 
         Spacer(),
 
-        _buildTranslationButton(context),
+        TweetTranslationButton(model),
       ],
+    );
+  }
+}
+
+class TweetTranslationButton extends StatelessWidget {
+  const TweetTranslationButton(this.model);
+
+  final TweetModel model;
+
+  Future<void> _translate() async {
+    await model.translate();
+
+    if (model.translationUnchanged) {
+      showFlushbar("Tweet not translated");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (model.tweet.emptyText || model.tweet.lang == "en") {
+      return Container();
+    }
+
+    VoidCallback onTap;
+    bool alwaysColored = false;
+    Color color = Colors.blue;
+
+    if (model.originalTweet.harpyData.translation == null &&
+        !model.translating) {
+      onTap = _translate;
+    } else if (model.translationUnchanged) {
+      color = Theme.of(context).disabledColor;
+      alwaysColored = true;
+    } else {
+      alwaysColored = true;
+    }
+
+    return FlatHarpyButton(
+      icon: Icons.translate,
+      onTap: onTap,
+      color: color,
+      alwaysColored: alwaysColored,
     );
   }
 }

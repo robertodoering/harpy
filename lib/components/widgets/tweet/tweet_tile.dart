@@ -3,7 +3,6 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/cache_provider.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
-import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
@@ -11,11 +10,13 @@ import 'package:provider/provider.dart';
 
 class TweetTile extends StatefulWidget {
   const TweetTile({
+    @required this.tweet,
+    @required this.content,
     Key key,
-    this.tweet,
   }) : super(key: key);
 
   final Tweet tweet;
+  final Widget content;
 
   @override
   TweetTileState createState() => TweetTileState();
@@ -56,7 +57,7 @@ class TweetTileState extends State<TweetTile> {
           builder: (context, model, _) {
             // the content of the tweet tile that rebuilds when the tweet
             // model notifies its listeners
-            return TweetTileContent();
+            return widget.content;
           },
         ),
       ),

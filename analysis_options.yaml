@@ -56,7 +56,6 @@ linter:
     - library_names
     - library_prefixes
     - non_constant_identifier_names
-#    - omit_local_variable_types
     - one_member_abstracts
     - only_throw_errors
     - overridden_fields
@@ -73,7 +72,7 @@ linter:
     - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_final_locals
-    - prefer_foreach
+#    - prefer_foreach # also detects await for
     - prefer_function_declarations_over_variables
     - prefer_generic_function_type_aliases
     - prefer_if_elements_to_conditional_expressions

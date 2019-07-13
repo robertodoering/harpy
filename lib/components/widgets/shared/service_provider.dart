@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/translate/translate_service.dart';
+import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
@@ -28,6 +29,7 @@ class ServiceContainerState extends State<ServiceContainer> {
   HomeTimelineCache homeTimelineCache;
   UserTimelineCache userTimelineCache;
   TweetService tweetService;
+  TweetSearchService tweetSearchService;
   UserCache userCache;
   UserService userService;
   TranslationService translationService;
@@ -47,6 +49,9 @@ class ServiceContainerState extends State<ServiceContainer> {
       twitterClient: twitterClient,
       homeTimelineCache: homeTimelineCache,
       userTimelineCache: userTimelineCache,
+    );
+    tweetSearchService = TweetSearchService(
+      twitterClient: twitterClient,
     );
     userCache = UserCache(directoryService: directoryService);
     userService = UserService(

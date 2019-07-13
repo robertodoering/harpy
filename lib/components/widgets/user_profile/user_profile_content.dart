@@ -27,7 +27,7 @@ class UserProfileContent extends StatelessWidget {
       background: Container(
         color: themeSettingsModel.harpyTheme.backgroundColors.first,
       ),
-      body: Center(child: const CircularProgressIndicator()),
+      body: const Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -39,9 +39,9 @@ class UserProfileContent extends StatelessWidget {
       background: Container(
         color: themeSettingsModel.harpyTheme.backgroundColors.first,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Center(child: const Text("Error loading user")),
+      body: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Center(child: Text("Error loading user")),
       ),
     );
   }

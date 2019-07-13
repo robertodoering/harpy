@@ -166,7 +166,7 @@ class _TweetMediaWidget extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Hero(
           tag: mediaModel.mediaHeroTag(_index),
-          placeholderBuilder: (context, widget) => widget,
+          placeholderBuilder: (context, size, widget) => widget,
           child: mediaWidget ?? Container(),
         ),
       ),

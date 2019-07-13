@@ -275,7 +275,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Builds the widget in the center of the overlay.
   Widget _buildCenterIcon() {
     if (buffering) {
-      return Center(child: const CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (!_overlayShowing) {

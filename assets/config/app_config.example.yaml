@@ -1,0 +1,13 @@
+# copy this config into an app_config.yaml file in the same directory
+# and enter the twitter api key and secret here.
+
+# email sender and pass is used by the error catcher to send crash reports
+# in release mode and can be omitted.
+
+twitter:
+  consumer_key: ""
+  consumer_secret: ""
+
+email:
+  sender: ""
+  pass: ""
