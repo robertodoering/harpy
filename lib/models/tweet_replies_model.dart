@@ -39,7 +39,8 @@ class TweetRepliesModel extends ChangeNotifier {
         .catchError(twitterClientErrorHandler);
 
     if (loadedReplies != null) {
-      _replies = loadedReplies;
+      _replies = loadedReplies
+        ..forEach((reply) => reply.harpyData.childOfReply = true);
     }
 
     _loading = false;

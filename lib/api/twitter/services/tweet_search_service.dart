@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/tweet_search.dart';
+import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/misc/isolate_work.dart';
@@ -68,15 +69,14 @@ class TweetSearchService {
 
       final TweetSearch result = await twitterClient
           .get(
-        "https://api.twitter.com/1.1/search/tweets.json",
-        params: params,
-      )
-          .then((response) {
-        return isolateWork<String, TweetSearch>(
-          callback: _handleTweetSearchResponse,
-          message: response.body,
-        );
-      });
+            "https://api.twitter.com/1.1/search/tweets.json",
+            params: params,
+          )
+          .then((response) => isolateWork<String, TweetSearch>(
+                callback: _handleTweetSearchResponse,
+                message: response.body,
+              ))
+          .catchError(twitterClientErrorHandler);
 
       _log.finer("found ${result.statuses.length} search results");
 
@@ -86,14 +86,15 @@ class TweetSearchService {
 
           yield reply;
 
-          // todo: can cause an infinite loop
+          // todo: can cause an infinite loop, also probably makes too many
+          //  requests
 //          await for (final replyToReply in _getRepliesRecursively(reply)) {
 //            yield replyToReply;
 //          }
         }
-      }
 
-      maxId = result.searchMetadata.maxIdStr;
+        maxId = reply.idStr;
+      }
 
       statuses = result.statuses.length ?? 0;
     } while (statuses >= 100);

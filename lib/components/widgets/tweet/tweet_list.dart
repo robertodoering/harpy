@@ -196,6 +196,7 @@ class CustomTweetListView extends StatelessWidget {
       return TweetTile(
         key: Key(tweet.idStr),
         tweet: tweet,
+        content: TweetTileContent(),
       );
     } else {
       return content[index];
