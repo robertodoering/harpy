@@ -11,7 +11,7 @@ Showcase
 | Login | Setup |
 | :---: | :---: |
 | `login_screen.dart` | `setup_screen.dart` |
-| ![Harpy Login](media/harpy_login.gif)  | ![Harpy Login](media/harpy_setup.gif)  |
+| ![Harpy Login](media/harpy_login.gif)  | ![Harpy Setup](media/harpy_setup.gif)  |
 
 Development / Setup
 ---
