@@ -17,7 +17,7 @@ Development / Setup
 ---
 
 - Twitter API Key
-	- Create a yaml `app_config.yaml` file in the root folder with the key and secret.
+	- Create a yaml file `app_config.yaml` in `assets/config/` with the key and secret.
 		```yaml
 		twitter:
 		  consumerKey: <key>

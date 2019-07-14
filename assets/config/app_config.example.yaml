@@ -1,4 +1,4 @@
-# copy this config into an app_config.yaml file in the same directory
+# copy this config into a yaml file 'app_config.yaml' in the same directory
 # and enter the twitter api key and secret here.
 
 # email sender and pass is used by the error catcher to send crash reports
