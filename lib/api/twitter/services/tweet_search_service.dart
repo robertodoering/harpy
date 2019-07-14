@@ -78,6 +78,10 @@ class TweetSearchService {
               ))
           .catchError(twitterClientErrorHandler);
 
+      if (result == null) {
+        break;
+      }
+
       _log.finer("found ${result.statuses.length} search results");
 
       for (final reply in result.statuses) {
