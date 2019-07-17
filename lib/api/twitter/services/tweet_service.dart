@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
@@ -32,6 +34,28 @@ class TweetService {
   final TwitterClient twitterClient;
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
+
+  /// Returns a single [Tweet] for the [idStr].
+  Future<Tweet> getTweet(String idStr) {
+    final params = <String, String>{
+      "id": idStr,
+      "include_entities": "true",
+      "tweet_mode": "extended",
+    };
+
+    return twitterClient
+        .get(
+          "https://api.twitter.com/1.1/statuses/show"
+          ".json",
+          params: params,
+        )
+        .then(
+          (response) => isolateWork<String, Tweet>(
+            callback: _handleSingleTweetResponse,
+            message: response.body,
+          ),
+        );
+  }
 
   /// Returns a the home timeline for the logged in user.
   Future<List<Tweet>> getHomeTimeline({
@@ -127,6 +151,11 @@ class TweetService {
       "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
     );
   }
+}
+
+Tweet _handleSingleTweetResponse(String body) {
+  _log.fine("parsing tweet");
+  return Tweet.fromJson(jsonDecode(body));
 }
 
 /// Handles the home timeline response.

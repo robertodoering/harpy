@@ -23,13 +23,17 @@ class TweetRepliesScreen extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Consumer<TweetRepliesModel>(
       builder: (context, model, _) {
+        if (model.loading) {
+          return _buildLoading();
+        }
+
         return SlideFadeInAnimation(
           offset: const Offset(0, 100),
           child: CustomTweetListView(
             content: [
+              if (model.parentTweet != null) model.parentTweet,
               BigTweetTile(tweet: tweet),
               ...model.replies,
-              if (model.loading) _buildLoading(),
               if (model.noRepliesFound) _buildNoRepliesFound(context),
             ],
           ),
@@ -56,7 +60,7 @@ class TweetRepliesScreen extends StatelessWidget {
           Text(
             "Only replies of the last 7 days can be retrieved.",
             style: Theme.of(context).textTheme.body2,
-          )
+          ),
         ],
       ),
     );
@@ -71,6 +75,7 @@ class TweetRepliesScreen extends StatelessWidget {
       child: ChangeNotifierProvider<TweetRepliesModel>(
         builder: (_) => TweetRepliesModel(
           tweet: tweet,
+          tweetService: serviceProvider.data.tweetService,
           tweetSearchService: serviceProvider.data.tweetSearchService,
         ),
         child: HarpyScaffold(

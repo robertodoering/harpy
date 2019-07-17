@@ -77,6 +77,7 @@ class TweetSearchService {
                 message: response.body,
               ))
           .catchError(twitterClientErrorHandler);
+      // todo: really error handling in service?
 
       if (result == null) {
         break;
@@ -92,9 +93,7 @@ class TweetSearchService {
 
           // todo: can cause an infinite loop, also probably makes too many
           //  requests
-//          await for (final replyToReply in _getRepliesRecursively(reply)) {
-//            yield replyToReply;
-//          }
+//          yield* _getRepliesRecursively(reply);
         }
 
         maxId = reply.idStr;
