@@ -28,7 +28,7 @@ class TweetQuote extends StatelessWidget {
       ..reduceText();
 
     return Container(
-      margin: const EdgeInsets.only(top: 80),
+      margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).dividerColor),
