@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/translate/translate_service.dart';
+import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
@@ -35,6 +36,7 @@ class ServiceContainerState extends State<ServiceContainer> {
   TranslationService translationService;
   HarpyPrefs harpyPrefs;
   ConnectivityService connectivityService;
+  MediaService mediaService;
 
   @override
   void initState() {
@@ -61,6 +63,7 @@ class ServiceContainerState extends State<ServiceContainer> {
     translationService = TranslationService();
     harpyPrefs = HarpyPrefs();
     connectivityService = ConnectivityService();
+    mediaService = MediaService(twitterClient: twitterClient);
   }
 
   @override

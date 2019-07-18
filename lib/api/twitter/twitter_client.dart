@@ -89,14 +89,39 @@ class TwitterClient {
     dynamic body,
     Encoding encoding,
   }) {
-    _log.fine("sending post request: $url");
     url = appendParamsToUrl(url, params);
+    _log.fine("sending post request: $url");
 
     return _client
         .post(url, headers: headers, body: body, encoding: encoding)
         .timeout(_timeout)
         .then((response) {
 //      _saveResponse(response);
+      if (response.statusCode != 200) return Future.error(response);
+      return response;
+    });
+  }
+
+  Future<Response> multipartRequest(
+    String url, {
+    List<int> fileBytes,
+    Map<String, String> headers,
+    Map<String, String> params,
+  }) async {
+    url = appendParamsToUrl(url, params);
+    _log.fine("sending multipartRequest post request: $url");
+
+    final request = MultipartRequest("POST", Uri.parse(url));
+
+    if (fileBytes != null) {
+      request.files.add(MultipartFile.fromBytes("media", fileBytes));
+    }
+    if (headers != null) request.headers.addAll(headers);
+
+    return Response.fromStream(
+      await _client.send(request),
+    ).then((response) {
+      if (response.statusCode != 200) return Future.error(response);
       return response;
     });
   }
