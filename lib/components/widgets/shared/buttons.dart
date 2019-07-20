@@ -230,14 +230,22 @@ class _HarpyButtonBase extends StatefulWidget {
 class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   bool _tapDown = false;
 
+  void _updateTapDown(bool value) {
+    if (widget.onTap != null && _tapDown != value) {
+      setState(() {
+        _tapDown = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedScale(
       scale: _tapDown ? .9 : 1,
       child: GestureDetector(
-        onTapDown: (_) => setState(() => _tapDown = true),
-        onTapUp: (_) => setState(() => _tapDown = false),
-        onTapCancel: () => setState(() => _tapDown = false),
+        onTapDown: (_) => _updateTapDown(true),
+        onTapUp: (_) => _updateTapDown(false),
+        onTapCancel: () => _updateTapDown(false),
         onTap: widget.onTap,
         child: widget.child,
       ),
@@ -269,7 +277,11 @@ class RaisedHarpyButton extends StatelessWidget {
 
     final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
 
-    final color = backgroundColor ?? theme.buttonColor;
+    Color color = backgroundColor ?? theme.buttonColor;
+    if (onTap == null) {
+      color = color.withOpacity(0.7);
+    }
+
     final style = backgroundColor != null
         ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
         : theme.textTheme.button;

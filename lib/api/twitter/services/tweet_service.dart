@@ -48,8 +48,12 @@ class TweetService {
     };
 
     final Map<String, String> body = {};
-    body["status"] ??= text;
-    body["media_ids"] ??= mediaIds?.join(",");
+    if (text != null) {
+      body["status"] = text;
+    }
+    if (mediaIds != null) {
+      body["media_ids"] = mediaIds?.join(",");
+    }
 
     return twitterClient
         .post(

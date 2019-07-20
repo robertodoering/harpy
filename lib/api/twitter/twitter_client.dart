@@ -77,8 +77,11 @@ class TwitterClient {
         .timeout(_timeout)
         .then((response) {
 //      _saveResponse(response);
-      if (response.statusCode != 200) return Future.error(response);
-      return response;
+      if (!response.statusCode.toString().startsWith("2")) {
+        return Future.error(response);
+      } else {
+        return response;
+      }
     });
   }
 
@@ -97,8 +100,11 @@ class TwitterClient {
         .timeout(_timeout)
         .then((response) {
 //      _saveResponse(response);
-      if (response.statusCode != 200) return Future.error(response);
-      return response;
+      if (!response.statusCode.toString().startsWith("2")) {
+        return Future.error(response);
+      } else {
+        return response;
+      }
     });
   }
 
@@ -121,8 +127,11 @@ class TwitterClient {
     return Response.fromStream(
       await _client.send(request),
     ).then((response) {
-      if (response.statusCode != 200) return Future.error(response);
-      return response;
+      if (!response.statusCode.toString().startsWith("2")) {
+        return Future.error(response);
+      } else {
+        return response;
+      }
     });
   }
 }

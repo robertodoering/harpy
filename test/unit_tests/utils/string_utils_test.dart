@@ -96,4 +96,20 @@ void main() {
 
     expect(prettyPrintDurationDifference(difference3), "5:04 minutes");
   });
+
+  test("get valid file extension", () {
+    const path = "/storage/emulated/0/Images/IMG-1337.jpg";
+
+    final extension = getFileExtension(path);
+
+    expect(extension, "jpg");
+  });
+
+  test("invalid file extension returns null", () {
+    const path = "/storage/emulated/0/Images/IMG-1337";
+
+    final extension = getFileExtension(path);
+
+    expect(extension, null);
+  });
 }

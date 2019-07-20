@@ -113,3 +113,13 @@ String prettyPrintDurationDifference(Duration difference) {
     return "$seconds seconds";
   }
 }
+
+String getFileExtension(String path) {
+  final index = path.lastIndexOf(".");
+
+  if (index != -1) {
+    return path.substring(index + 1);
+  } else {
+    return null;
+  }
+}

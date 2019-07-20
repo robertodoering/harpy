@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/compose_tweet_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
@@ -37,6 +38,16 @@ class HomeDrawer extends StatelessWidget {
             HarpyNavigator.push(
               UserProfileScreen(user: loginModel.loggedInUser),
             );
+          },
+        ),
+
+        // compose tweet
+        ListTile(
+          leading: const Icon(Icons.edit),
+          title: const Text("Compose a new Tweet"),
+          onTap: () async {
+            await Navigator.of(context).maybePop();
+            HarpyNavigator.push(ComposeTweetScreen());
           },
         ),
 

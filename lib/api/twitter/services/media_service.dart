@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/utils/list_utils.dart';
 import 'package:logging/logging.dart';
@@ -24,14 +23,17 @@ class MediaService {
   ///
   /// Supported image media types: JPG, PNG, GIF, WEBP.
   /// Image size <= 5 MB, animated GIF size <= 15 MB.
-  Future<TwitterMedia> upload({
-    @required File media,
-  }) async {
+  Future<String> upload(File media) async {
     _log.fine("uploading media");
 
     final List<int> mediaBytes = media.readAsBytesSync();
     final int totalBytes = mediaBytes.length;
     final String mediaType = mime(media.path);
+
+    if (totalBytes == 0 || mediaType == null) {
+      _log.warning("unknown type or empty file");
+      return null;
+    }
 
     final String mediaId = await _initUpload(
       totalBytes: totalBytes,
@@ -53,7 +55,11 @@ class MediaService {
       await _appendUpload(mediaId: mediaId, mediaData: chunk, segmentIndex: i);
     }
 
-    return _finalizeUpload(mediaId: mediaId);
+    final twitterMedia = await _finalizeUpload(mediaId: mediaId);
+
+    _log.fine("media uploaded");
+
+    return twitterMedia;
   }
 
   /// Requests to initiate a file upload session and returns a media id on
@@ -89,7 +95,7 @@ class MediaService {
       ..fine("appending media data to upload")
       ..finer("segment $segmentIndex with ${mediaData.length} bytes");
 
-    final params = <String, dynamic>{
+    final params = <String, String>{
       "command": "APPEND",
       "media_id": mediaId,
       "segment_index": "$segmentIndex",
@@ -104,7 +110,7 @@ class MediaService {
 
   /// Finalizes the upload session after a media file has been uploaded
   /// successfully.
-  Future<TwitterMedia> _finalizeUpload({
+  Future<String> _finalizeUpload({
     @required String mediaId,
   }) async {
     _log.fine("finalizing upload for $mediaId");
@@ -119,7 +125,7 @@ class MediaService {
           "https://upload.twitter.com/1.1/media/upload.json",
           body: body,
         )
-        .then((response) => TwitterMedia.fromJson(jsonDecode(response.body)));
+        .then((response) => jsonDecode(response.body)["media_id_string"]);
   }
 
   /// Returns whether or not the file is too big to be uploaded.
