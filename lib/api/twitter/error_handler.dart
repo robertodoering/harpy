@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:catcher/catcher_plugin.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/utils/string_utils.dart';
@@ -56,7 +55,7 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
 
   // todo: maybe show "unexpected error occurred" flushbar instead of showing
   //  the error dialog
-  Catcher.reportCheckedError(error, null);
+//  Catcher.reportCheckedError(error, null);
 }
 
 bool _reachedRateLimit(Response response) => response.statusCode == 429;
