@@ -39,7 +39,7 @@ class ComposeTweetModel extends ChangeNotifier {
   VoidCallback onTweeted;
 
   /// Whether or not the [file] was unable to be uploaded.
-  bool isBadFile(File file) => _media.contains(file.path);
+  bool isBadFile(File file) => _badMedia.contains(file.path);
 
   /// Uploads all selected media files and creates a new tweet with the [text].
   Future<void> tweet(String text) async {
@@ -98,15 +98,7 @@ class ComposeTweetModel extends ChangeNotifier {
     final File media = await FilePicker.getFile();
 
     if (media != null) {
-      final validImage = _media.length < 4 &&
-          _media
-              .followedBy([media])
-              .map((media) => getFileExtension(media.path))
-              .every((extension) => ["jpg", "jpeg", "png", "webp"]
-                  .contains(extension?.toLowerCase()));
-
-      if (_media.isEmpty || validImage) {
-        _media.add(media);
+      if (addMediaFileToList(media)) {
         notifyListeners();
       } else {
         showFlushbar(
@@ -115,6 +107,23 @@ class ComposeTweetModel extends ChangeNotifier {
           type: FlushbarType.warning,
         );
       }
+    }
+  }
+
+  @visibleForTesting
+  bool addMediaFileToList(File media) {
+    final validImage = _media.length < 4 &&
+        _media
+            .followedBy([media])
+            .map((media) => getFileExtension(media.path))
+            .every((extension) => ["jpg", "jpeg", "png", "webp"]
+                .contains(extension?.toLowerCase()));
+
+    if (_media.isEmpty || validImage) {
+      _media.add(media);
+      return true;
+    } else {
+      return false;
     }
   }
 
