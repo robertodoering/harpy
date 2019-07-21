@@ -51,7 +51,6 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
     return Expanded(
       child: ListView(
         scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
         padding: const EdgeInsets.only(top: 8),
         children: model.media
             .map((file) => _ComposeTweetMedia(model: model, media: file))
