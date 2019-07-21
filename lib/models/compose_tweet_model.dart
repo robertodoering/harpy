@@ -9,6 +9,7 @@ import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:logging/logging.dart';
+import 'package:mime_type/mime_type.dart';
 
 /// The model for composing a new tweet.
 class ComposeTweetModel extends ChangeNotifier {
@@ -112,14 +113,7 @@ class ComposeTweetModel extends ChangeNotifier {
 
   @visibleForTesting
   bool addMediaFileToList(File media) {
-    final validImage = _media.length < 4 &&
-        _media
-            .followedBy([media])
-            .map((media) => getFileExtension(media.path))
-            .every((extension) => ["jpg", "jpeg", "png", "webp"]
-                .contains(extension?.toLowerCase()));
-
-    if (_media.isEmpty || validImage) {
+    if (_validateMediaFile(media)) {
       _media.add(media);
       return true;
     } else {
@@ -135,5 +129,35 @@ class ComposeTweetModel extends ChangeNotifier {
     } catch (e) {
       _log.warning("Tried to remove media that is not in the list");
     }
+  }
+
+  /// Validates whether or not a file can be added to the list of media.
+  bool _validateMediaFile(File media) {
+    if (_media.length >= 4) {
+      return false;
+    }
+
+    final String mimeType = mime(media.path);
+
+    // unknown type
+    if (mimeType == null) {
+      return false;
+    }
+
+    // valid if type is video or gif and no other media already added
+    if (mimeType.startsWith("video") || mimeType == "image/gif") {
+      return _media.isEmpty;
+    }
+
+    // validate image type
+    if (mimeType.startsWith("image")) {
+      final mediaFileExtensions = _media
+          .followedBy([media]).map((media) => getFileExtension(media.path));
+
+      return mediaFileExtensions.every((extension) =>
+          ["jpg", "jpeg", "png", "webp"].contains(extension?.toLowerCase()));
+    }
+
+    return false;
   }
 }

@@ -39,7 +39,7 @@ void main() {
     expect(model.addMediaFileToList(imageFive), false);
   });
 
-  test("Can add one video", () {
+  test("Can add only one video", () {
     final model = ComposeTweetModel(
       tweetService: MockTweetService(),
       mediaService: MockMediaService(),
@@ -58,7 +58,7 @@ void main() {
     expect(model.addMediaFileToList(image), false);
   });
 
-  test("Can add one gif", () {
+  test("Can add only one gif", () {
     final model = ComposeTweetModel(
       tweetService: MockTweetService(),
       mediaService: MockMediaService(),
@@ -75,6 +75,25 @@ void main() {
     expect(model.addMediaFileToList(gifOne), true);
     expect(model.addMediaFileToList(gifTwo), false);
     expect(model.addMediaFileToList(image), false);
+  });
+
+  test("File extension gets validated", () {
+    final model = ComposeTweetModel(
+      tweetService: MockTweetService(),
+      mediaService: MockMediaService(),
+    );
+
+    final File unsupportedType = MockFile();
+    final File noExtension = MockFile();
+    final File validImage = MockFile();
+
+    when(unsupportedType.path).thenReturn("/path/to/my/no_u.pdf");
+    when(noExtension.path).thenReturn("/path/to/my/whatami");
+    when(validImage.path).thenReturn("/path/to/my/sendnudes.jpeg");
+
+    expect(model.addMediaFileToList(unsupportedType), false);
+    expect(model.addMediaFileToList(noExtension), false);
+    expect(model.addMediaFileToList(validImage), true);
   });
 
   test("Media file gets removed", () {
