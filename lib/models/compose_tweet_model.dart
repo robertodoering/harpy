@@ -101,10 +101,11 @@ class ComposeTweetModel extends ChangeNotifier {
         }
       }
 
-      showFlushbar(
-        "Unable to upload media",
-        type: FlushbarType.error,
-      );
+      // todo: show error message
+//      showFlushbar(
+//        "Unable to upload media",
+//        type: FlushbarType.error,
+//      );
 
       _log.warning("unable to upload at least one media file");
     }
