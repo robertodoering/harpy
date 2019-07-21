@@ -16,9 +16,6 @@ import 'package:meta/meta.dart';
 final Logger _log = Logger("TweetService");
 
 /// Provides methods for making tweet and timeline related requests.
-///
-/// If a request times out or the response status code is not 200 a
-/// [Future.error] is returned instead.
 class TweetService {
   TweetService({
     @required this.directoryService,
@@ -47,7 +44,7 @@ class TweetService {
       "tweet_mode": "extended",
     };
 
-    final Map<String, String> body = {};
+    final body = <String, String>{};
     if (text != null) {
       body["status"] = text;
     }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,6 +9,13 @@ import 'package:logging/logging.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:path_provider/path_provider.dart';
 
+/// Provides methods for network calls.
+///
+/// Every call times out after 20 seconds and throws a [TimeoutException] on
+/// timeout.
+///
+/// If a response does not have a status code of 2xx the response is thrown
+/// as an exception instead of being returned.
 class TwitterClient {
   static final Logger _log = Logger("TwitterClient");
 
