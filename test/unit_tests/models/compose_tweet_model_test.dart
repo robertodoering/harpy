@@ -32,10 +32,15 @@ void main() {
     when(imageFour.path).thenReturn("/path/to/my/imageFour.webp");
     when(imageFive.path).thenReturn("/path/to/my/imageFive.png");
 
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(imageOne), true);
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(imageTwo), true);
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(imageThree), true);
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(imageFour), true);
+    expect(model.canAddMedia, false);
     expect(model.addMediaFileToList(imageFive), false);
   });
 
@@ -53,7 +58,9 @@ void main() {
     when(videoTwo.path).thenReturn("/path/to/my/videoTwo.mp4");
     when(image.path).thenReturn("/path/to/my/image.jpeg");
 
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(videoOne), true);
+    expect(model.canAddMedia, false);
     expect(model.addMediaFileToList(videoTwo), false);
     expect(model.addMediaFileToList(image), false);
   });
@@ -72,7 +79,9 @@ void main() {
     when(gifTwo.path).thenReturn("/path/to/my/gifTwo.gif");
     when(image.path).thenReturn("/path/to/my/image.jpeg");
 
+    expect(model.canAddMedia, true);
     expect(model.addMediaFileToList(gifOne), true);
+    expect(model.canAddMedia, false);
     expect(model.addMediaFileToList(gifTwo), false);
     expect(model.addMediaFileToList(image), false);
   });

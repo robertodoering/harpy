@@ -1,15 +1,14 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/misc/flushbar.dart';
-import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/core/utils/file_utils.dart';
 import 'package:logging/logging.dart';
-import 'package:mime_type/mime_type.dart';
 
 /// The model for composing a new tweet.
 class ComposeTweetModel extends ChangeNotifier {
@@ -41,6 +40,23 @@ class ComposeTweetModel extends ChangeNotifier {
 
   /// Whether or not the [file] was unable to be uploaded.
   bool isBadFile(File file) => _badMedia.contains(file.path);
+
+  /// Whether or not more media can be added.
+  bool get canAddMedia {
+    if (_tweeting || _media.length == 4) {
+      return false;
+    }
+
+    if (_media.isEmpty) {
+      return true;
+    }
+
+    final mediaFileExtensions =
+        _media.map((media) => getFileExtension(media.path));
+
+    return mediaFileExtensions.every((extension) =>
+        ["jpg", "jpeg", "png", "webp"].contains(extension?.toLowerCase()));
+  }
 
   /// Uploads all selected media files and creates a new tweet with the [text].
   Future<void> tweet(String text) async {
@@ -96,7 +112,7 @@ class ComposeTweetModel extends ChangeNotifier {
   ///
   /// Only up to 4 images (jpg, png, webp) or 1 video / gif can be uploaded.
   Future<void> addMedia() async {
-    final File media = await FilePicker.getFile();
+    final File media = await file_picker.FilePicker.getFile();
 
     if (media != null) {
       if (addMediaFileToList(media)) {
@@ -137,20 +153,20 @@ class ComposeTweetModel extends ChangeNotifier {
       return false;
     }
 
-    final String mimeType = mime(media.path);
+    final FileType type = getFileType(media);
 
     // unknown type
-    if (mimeType == null) {
+    if (type == null) {
       return false;
     }
 
     // valid if type is video or gif and no other media already added
-    if (mimeType.startsWith("video") || mimeType == "image/gif") {
+    if (type == FileType.video || type == FileType.gif) {
       return _media.isEmpty;
     }
 
     // validate image type
-    if (mimeType.startsWith("image")) {
+    if (type == FileType.image) {
       final mediaFileExtensions = _media
           .followedBy([media]).map((media) => getFileExtension(media.path));
 

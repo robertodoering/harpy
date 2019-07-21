@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/shared/service_provider.dart';
+import 'package:harpy/core/utils/file_utils.dart';
 import 'package:harpy/models/compose_tweet_model.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class ComposeTweetScreen extends StatefulWidget {
   @override
@@ -49,58 +53,9 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         padding: const EdgeInsets.only(top: 8),
-        children: model.media.map((file) {
-          final index = model.media.indexOf(file);
-          final length = model.media.length;
-
-          final badFile = model.isBadFile(file);
-          final decoration = badFile
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(11),
-                  border: Border.all(
-                    width: 3,
-                    color: Colors.red,
-                  ),
-                )
-              : null;
-
-          return Padding(
-            padding: EdgeInsets.only(right: index < length - 1 ? 8 : 0),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  decoration: decoration,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(file),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: ClipOval(
-                      child: Material(
-                        color: Colors.black.withOpacity(0.5),
-                        child: InkWell(
-                          onTap: () => model.removeMedia(index),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(
-                              Icons.clear,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
+        children: model.media
+            .map((file) => _ComposeTweetMedia(model: model, media: file))
+            .toList(),
       ),
     );
   }
@@ -116,7 +71,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.image),
-              onPressed: model.tweeting ? null : model.addMedia,
+              onPressed: model.canAddMedia ? model.addMedia : null,
             ),
             Spacer(),
             RaisedHarpyButton(
@@ -166,6 +121,121 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
         child: Consumer<ComposeTweetModel>(
           builder: (context, model, _) => _buildBody(model),
         ),
+      ),
+    );
+  }
+}
+
+/// Builds the image or a video player for the media.
+class _ComposeTweetMedia extends StatefulWidget {
+  const _ComposeTweetMedia({
+    @required this.model,
+    @required this.media,
+  });
+
+  final ComposeTweetModel model;
+  final File media;
+
+  @override
+  __ComposeTweetMediaState createState() => __ComposeTweetMediaState();
+}
+
+class __ComposeTweetMediaState extends State<_ComposeTweetMedia>
+    with SingleTickerProviderStateMixin<_ComposeTweetMedia> {
+  VideoPlayerController _controller;
+
+  FileType _type;
+  int _index;
+  bool _badFile;
+
+  Widget _buildImage() {
+    return Image.file(widget.media);
+  }
+
+  Widget _buildVideo() {
+    return AnimatedSize(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      child: AspectRatio(
+        aspectRatio: _controller.value?.aspectRatio ?? 1,
+        child: _controller.value.initialized
+            ? VideoPlayer(_controller)
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Theme.of(context).disabledColor),
+                ),
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    _type = getFileType(widget.media);
+    _index = widget.model.media.indexOf(widget.media);
+    _badFile = widget.model.isBadFile(widget.media);
+
+    if (_type == FileType.video) {
+      _controller = VideoPlayerController.file(widget.media)
+        ..initialize().then((_) => setState(() {}));
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final length = widget.model.media.length;
+
+    final decoration = _badFile
+        ? BoxDecoration(
+            borderRadius: BorderRadius.circular(11),
+            border: Border.all(
+              width: 3,
+              color: Colors.red,
+            ),
+          )
+        : null;
+
+    final child = _type == FileType.video ? _buildVideo() : _buildImage();
+
+    return Padding(
+      padding: EdgeInsets.only(right: _index < length - 1 ? 8 : 0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            decoration: decoration,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: child,
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.black.withOpacity(0.5),
+                  child: InkWell(
+                    onTap: () => widget.model.removeMedia(_index),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.clear,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
