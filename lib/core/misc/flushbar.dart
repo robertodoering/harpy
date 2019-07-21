@@ -27,19 +27,23 @@ void showFlushbar(
 
   Color color;
   IconData icon;
+  Duration duration;
 
   switch (type) {
     case FlushbarType.info:
       color = Colors.blue;
       icon = Icons.info_outline;
+      duration = const Duration(seconds: 3);
       break;
     case FlushbarType.warning:
       color = Colors.yellow;
       icon = Icons.error_outline;
+      duration = const Duration(seconds: 6);
       break;
     case FlushbarType.error:
       color = Colors.red;
       icon = Icons.error_outline;
+      duration = const Duration(seconds: 6);
       break;
   }
 
@@ -54,7 +58,7 @@ void showFlushbar(
     ),
     icon: Icon(icon, color: color),
     messageText: Text(message, style: harpyTheme.theme.textTheme.subhead),
-    duration: const Duration(seconds: 3),
+    duration: duration,
     leftBarIndicatorColor: color,
   );
 

@@ -41,21 +41,17 @@ class HarpyScaffold extends StatelessWidget {
 
     return Scaffold(
       drawer: drawer,
-      body: Stack(
-        children: <Widget>[
-          HarpyBackground(
-            colors: backgroundColors,
-          ),
-          Column(
-            children: <Widget>[
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: extent),
-                child: appBar,
-              ),
-              Expanded(child: body),
-            ],
-          )
-        ],
+      body: HarpyBackground(
+        colors: backgroundColors,
+        child: Column(
+          children: <Widget>[
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: extent),
+              child: appBar,
+            ),
+            Expanded(child: body),
+          ],
+        ),
       ),
     );
   }

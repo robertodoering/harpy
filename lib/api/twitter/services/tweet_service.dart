@@ -16,9 +16,6 @@ import 'package:meta/meta.dart';
 final Logger _log = Logger("TweetService");
 
 /// Provides methods for making tweet and timeline related requests.
-///
-/// If a request times out or the response status code is not 200 a
-/// [Future.error] is returned instead.
 class TweetService {
   TweetService({
     @required this.directoryService,
@@ -35,8 +32,44 @@ class TweetService {
   final HomeTimelineCache homeTimelineCache;
   final UserTimelineCache userTimelineCache;
 
+  /// Updates the current status of the authenticated user, also known as
+  /// tweeting.
+  Future<Tweet> updateStatus({
+    String text,
+    List<String> mediaIds,
+  }) async {
+    _log.fine("posting a new tweet");
+
+    final params = <String, String>{
+      "tweet_mode": "extended",
+    };
+
+    final body = <String, String>{};
+    if (text != null) {
+      body["status"] = text;
+    }
+    if (mediaIds != null) {
+      body["media_ids"] = mediaIds?.join(",");
+    }
+
+    return twitterClient
+        .post(
+          "https://api.twitter.com/1.1/statuses/update.json",
+          params: params,
+          body: body,
+        )
+        .then(
+          (response) => isolateWork<String, Tweet>(
+            callback: _handleSingleTweetResponse,
+            message: response.body,
+          ),
+        );
+  }
+
   /// Returns a single [Tweet] for the [idStr].
   Future<Tweet> getTweet(String idStr) {
+    _log.fine("get tweet with id $idStr");
+
     final params = <String, String>{
       "id": idStr,
       "include_entities": "true",
@@ -45,8 +78,7 @@ class TweetService {
 
     return twitterClient
         .get(
-          "https://api.twitter.com/1.1/statuses/show"
-          ".json",
+          "https://api.twitter.com/1.1/statuses/show.json",
           params: params,
         )
         .then(
@@ -69,17 +101,17 @@ class TweetService {
 
     return twitterClient
         .get(
-      "https://api.twitter.com/1.1/statuses/home_timeline.json",
-      params: params,
-    )
-        .then((response) {
-      return isolateWork<String, List<Tweet>>(
-        callback: _handleHomeTimelineResponse,
-        message: response.body,
-        tweetCacheData: homeTimelineCache.data,
-        directoryServiceData: directoryService.data,
-      );
-    });
+          "https://api.twitter.com/1.1/statuses/home_timeline.json",
+          params: params,
+        )
+        .then(
+          (response) => isolateWork<String, List<Tweet>>(
+            callback: _handleHomeTimelineResponse,
+            message: response.body,
+            tweetCacheData: homeTimelineCache.data,
+            directoryServiceData: directoryService.data,
+          ),
+        );
   }
 
   /// Returns the user timeline for the [userId].
