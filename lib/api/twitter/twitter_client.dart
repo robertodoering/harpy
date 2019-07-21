@@ -77,8 +77,12 @@ class TwitterClient {
     Map<String, String> headers,
     Map<String, String> params,
   }) {
+    _log
+      ..fine("sending get request: $url")
+      ..fine("headers: $headers")
+      ..fine("params: $params");
+
     url = appendParamsToUrl(url, params);
-    _log.fine("sending get request: $url");
 
     return _client
         .get(url, headers: headers)
@@ -100,8 +104,13 @@ class TwitterClient {
     dynamic body,
     Encoding encoding,
   }) {
+    _log
+      ..fine("sending post request: $url")
+      ..fine("headers: $headers")
+      ..fine("params: $params")
+      ..fine("body: $body");
+
     url = appendParamsToUrl(url, params);
-    _log.fine("sending post request: $url");
 
     return _client
         .post(url, headers: headers, body: body, encoding: encoding)
@@ -122,8 +131,13 @@ class TwitterClient {
     Map<String, String> headers,
     Map<String, String> params,
   }) async {
+    _log
+      ..fine("sending multipartRequest post request: $url")
+      ..fine("headers: $headers")
+      ..fine("params: $params")
+      ..fine("fileBytes: ${fileBytes?.length}");
+
     url = appendParamsToUrl(url, params);
-    _log.fine("sending multipartRequest post request: $url");
 
     final request = MultipartRequest("POST", Uri.parse(url));
 
