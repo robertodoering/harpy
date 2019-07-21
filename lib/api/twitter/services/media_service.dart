@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:harpy/api/twitter/data/media_upload.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/utils/list_utils.dart';
 import 'package:logging/logging.dart';
@@ -55,11 +56,21 @@ class MediaService {
       await _appendUpload(mediaId: mediaId, mediaData: chunk, segmentIndex: i);
     }
 
-    final twitterMedia = await _finalizeUpload(mediaId: mediaId);
+    final finalizeUpload = await _finalizeUpload(mediaId: mediaId);
+
+    if (finalizeUpload.processingInfo?.pending ?? false) {
+      // asynchronous upload of media
+      final UploadStatus finishedStatus = await _waitForUploadCompletion(
+        mediaId: mediaId,
+        sleep: finalizeUpload.processingInfo.checkAfterSecs,
+      );
+
+      return finishedStatus?.mediaIdString;
+    }
 
     _log.fine("media uploaded");
 
-    return twitterMedia;
+    return finalizeUpload.mediaIdString;
   }
 
   /// Requests to initiate a file upload session and returns a media id on
@@ -110,7 +121,7 @@ class MediaService {
 
   /// Finalizes the upload session after a media file has been uploaded
   /// successfully.
-  Future<String> _finalizeUpload({
+  Future<FinalizeUpload> _finalizeUpload({
     @required String mediaId,
   }) async {
     _log.fine("finalizing upload for $mediaId");
@@ -125,15 +136,52 @@ class MediaService {
           "https://upload.twitter.com/1.1/media/upload.json",
           body: body,
         )
-        .then((response) => jsonDecode(response.body)["media_id_string"]);
+        .then((response) => FinalizeUpload.fromJson(jsonDecode(response.body)));
   }
 
-  /// Returns whether or not the file is too big to be uploaded.
-//  bool _validateSize(int bytes, String mediaType) {
-//    if (mediaType == "image/gif" || mediaType.contains("video/")) {
-//      return bytes <= 1.5e+7;
-//    } else {
-//      return bytes <= 5e+6;
-//    }
-//  }
+  /// Requests the status for the upload if it is being created asynchronously.
+  Future<UploadStatus> _uploadStatus({
+    @required String mediaId,
+  }) {
+    _log.fine("requesting status for $mediaId");
+
+    final params = <String, String>{
+      "command": "STATUS",
+      "media_id": mediaId,
+    };
+
+    return twitterClient
+        .get(
+          "https://upload.twitter.com/1.1/media/upload.json",
+          params: params,
+        )
+        .then((response) => UploadStatus.fromJson(jsonDecode(response.body)));
+  }
+
+  Future<UploadStatus> _waitForUploadCompletion({
+    @required String mediaId,
+    @required int sleep,
+  }) async {
+    _log.fine("waiting for upload completion, sleeping $sleep seconds");
+
+    await Future.delayed(Duration(seconds: sleep));
+
+    final uploadStatus = await _uploadStatus(mediaId: mediaId);
+
+    if (uploadStatus.processingInfo.succeeded) {
+      _log.fine("upload finished");
+
+      return uploadStatus;
+    } else if (uploadStatus.processingInfo.inProgress) {
+      _log.fine("upload still in progress");
+
+      return _waitForUploadCompletion(
+        mediaId: mediaId,
+        sleep: uploadStatus.processingInfo.checkAfterSecs,
+      );
+    } else {
+      _log.warning("upload failed");
+      return null;
+    }
+  }
 }
