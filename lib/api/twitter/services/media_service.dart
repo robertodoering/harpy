@@ -158,6 +158,10 @@ class MediaService {
         .then((response) => UploadStatus.fromJson(jsonDecode(response.body)));
   }
 
+  /// Concurrently requests the status of an upload until the uploaded
+  /// succeeded and waits the suggested time between each call.
+  ///
+  /// Returns `null` when the upload failed.
   Future<UploadStatus> _waitForUploadCompletion({
     @required String mediaId,
     @required int sleep,
