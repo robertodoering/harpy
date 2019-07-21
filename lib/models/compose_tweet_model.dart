@@ -71,7 +71,7 @@ class ComposeTweetModel extends ChangeNotifier {
     final List<String> mediaIds =
         await Future.wait(_media.map(mediaService.upload))
                 .catchError(twitterClientErrorHandler) ??
-            [];
+            [null];
 
     if (mediaIds.every((mediaId) => mediaId != null)) {
       final tweet = await tweetService
@@ -100,6 +100,11 @@ class ComposeTweetModel extends ChangeNotifier {
           _badMedia.add(_media[i].path);
         }
       }
+
+      showFlushbar(
+        "Unable to upload media",
+        type: FlushbarType.error,
+      );
 
       _log.warning("unable to upload at least one media file");
     }
