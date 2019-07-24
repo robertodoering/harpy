@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
+import 'package:harpy/core/misc/harpy_catcher.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/misc/service_setup.dart';
@@ -21,8 +22,8 @@ void runHarpy(Flavor flavor) {
 
   setupServices();
 
-  // harpy catcher will run the app and handle any uncaught exceptions
-  runApp(
+  // HarpyCatcher will run the app and handle any uncaught exceptions
+  HarpyCatcher(
     SettingsModelsProvider(
       child: GlobalModelsProvider(
         child: Harpy(),
