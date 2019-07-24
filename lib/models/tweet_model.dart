@@ -8,6 +8,7 @@ import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
 import 'package:http/http.dart';
@@ -26,26 +27,20 @@ import 'package:provider/provider.dart';
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
-    @required this.homeTimelineCache,
-    @required this.userTimelineCache,
     @required this.homeTimelineModel,
     @required this.userTimelineModel,
-    @required this.tweetService,
-    @required this.translationService,
-  })  : assert(originalTweet != null),
-        assert(homeTimelineCache != null),
-        assert(homeTimelineModel != null),
-        assert(tweetService != null),
-        assert(translationService != null);
+  });
 
   final Tweet originalTweet;
 
-  final HomeTimelineCache homeTimelineCache;
-  final UserTimelineCache userTimelineCache;
+  final TweetService tweetService = app<TweetService>();
+  final TranslationService translationService = app<TranslationService>();
+  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
+  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
+
+  // todo: remove timeline model dependencies
   final HomeTimelineModel homeTimelineModel;
   final UserTimelineModel userTimelineModel;
-  final TweetService tweetService;
-  final TranslationService translationService;
 
   static TweetModel of(BuildContext context) {
     return Provider.of<TweetModel>(context);

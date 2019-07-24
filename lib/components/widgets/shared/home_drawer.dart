@@ -7,8 +7,9 @@ import 'package:harpy/components/screens/settings_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
+import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 
@@ -25,8 +26,6 @@ class HomeDrawer extends StatelessWidget {
   }
 
   Widget _buildActions(BuildContext context, LoginModel loginModel) {
-    final directoryService = ServiceProvider.of(context).data.directoryService;
-
     return Column(
       children: <Widget>[
         // profile
@@ -56,7 +55,7 @@ class HomeDrawer extends StatelessWidget {
           leading: const Icon(Icons.close),
           title: const Text("Clear cache"),
           onTap: () {
-            final int deletedFiles = directoryService.clearCache();
+            final int deletedFiles = app<DirectoryService>().clearCache();
             Navigator.of(context).maybePop();
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("Deleted $deletedFiles cached files"),

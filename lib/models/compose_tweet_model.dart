@@ -8,19 +8,17 @@ import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/utils/file_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 /// The model for composing a new tweet.
 class ComposeTweetModel extends ChangeNotifier {
   ComposeTweetModel({
-    @required this.tweetService,
-    @required this.mediaService,
     this.onTweeted,
-  })  : assert(tweetService != null),
-        assert(mediaService != null);
+  });
 
-  final TweetService tweetService;
-  final MediaService mediaService;
+  final TweetService tweetService = app<TweetService>();
+  final MediaService mediaService = app<MediaService>();
 
   static final Logger _log = Logger("ComposeTweetModel");
 

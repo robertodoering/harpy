@@ -129,8 +129,8 @@ class AddCustomThemeCard extends StatelessWidget {
       showDialog<bool>(
         context: context,
         builder: (context) => const ProFeatureDialog(
-              name: "Theme customization",
-            ),
+          name: "Theme customization",
+        ),
       ).then(
         (result) {
           if (result == true) {

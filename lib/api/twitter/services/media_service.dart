@@ -5,15 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:harpy/api/twitter/data/media_upload.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/utils/list_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:mime_type/mime_type.dart';
 
 class MediaService {
-  MediaService({
-    @required this.twitterClient,
-  }) : assert(twitterClient != null);
-
-  final TwitterClient twitterClient;
+  final TwitterClient twitterClient = app<TwitterClient>();
 
   static final Logger _log = Logger("MediaService");
 

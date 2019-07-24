@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
+import 'package:harpy/models/settings/theme_settings_model.dart';
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
@@ -12,6 +13,11 @@ class HarpyTheme {
     }
 
     accentColor = _colorFromValue(data.accentColor) ?? _fallback.accentColor;
+  }
+
+  /// Returns the currently selected [HarpyTheme].
+  static HarpyTheme of(BuildContext context) {
+    return ThemeSettingsModel.of(context).harpyTheme;
   }
 
   /// The fallback is used if the [HarpyThemeData] has insufficient data.

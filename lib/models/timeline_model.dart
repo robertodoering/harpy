@@ -3,6 +3,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -12,12 +13,10 @@ import 'package:meta/meta.dart';
 /// [tweetService].
 abstract class TimelineModel extends ChangeNotifier {
   TimelineModel({
-    @required this.tweetService,
     @required this.tweetCache,
-  })  : assert(tweetService != null),
-        assert(tweetCache != null);
+  }) : assert(tweetCache != null);
 
-  final TweetService tweetService;
+  final TweetService tweetService = app<TweetService>();
   final TweetCache tweetCache;
 
   static final Logger _log = Logger("TimelineModel");

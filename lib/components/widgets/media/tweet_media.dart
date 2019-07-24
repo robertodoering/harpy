@@ -4,7 +4,6 @@ import 'package:harpy/components/widgets/media/media_gif_player.dart';
 import 'package:harpy/components/widgets/media/media_image.dart';
 import 'package:harpy/components/widgets/media/media_video_player.dart';
 import 'package:harpy/components/widgets/shared/custom_expansion_tile.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
@@ -17,40 +16,34 @@ const String video = "video";
 const String animatedGif = "animated_gif";
 
 /// Builds a column of [TwitterMedia] that can be collapsed.
-class CollapsibleMedia extends StatefulWidget {
-  @override
-  CollapsibleMediaState createState() => CollapsibleMediaState();
-}
-
-class CollapsibleMediaState extends State<CollapsibleMedia> {
-  MediaModel mediaModel;
-
+class CollapsibleMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final serviceProvider = ServiceProvider.of(context);
-
-    mediaModel ??= MediaModel(
-      tweetModel: TweetModel.of(context),
-      homeTimelineModel: HomeTimelineModel.of(context),
-      mediaSettingsModel: MediaSettingsModel.of(context),
-      connectivityService: serviceProvider.data.connectivityService,
-    );
-
     return ChangeNotifierProvider<MediaModel>(
-      builder: (_) => mediaModel,
-      child: CustomExpansionTile(
-        initiallyExpanded: mediaModel.initiallyShown,
-        onExpansionChanged: mediaModel.saveShowMediaState,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: mediaModel.media
-                    .any((media) => media.type == photo || media.type == video)
-                ? 250.0 // todo: maybe default to a 16:9 size for videos
-                // (9 / 16) * MediaQuery.of(context).size.width;
-                : double.infinity,
-          ),
-          child: _TweetMediaLayout(),
-        ),
+      builder: (_) => MediaModel(
+        tweetModel: TweetModel.of(context),
+        homeTimelineModel: HomeTimelineModel.of(context),
+        mediaSettingsModel: MediaSettingsModel.of(context),
+      ),
+      child: Builder(
+        builder: (context) {
+          final mediaModel = MediaModel.of(context);
+
+          return CustomExpansionTile(
+            initiallyExpanded: mediaModel.initiallyShown,
+            onExpansionChanged: mediaModel.saveShowMediaState,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: mediaModel.media.any(
+                        (media) => media.type == photo || media.type == video)
+                    ? 250.0 // todo: maybe default to a 16:9 size for videos
+                    // (9 / 16) * MediaQuery.of(context).size.width;
+                    : double.infinity,
+              ),
+              child: _TweetMediaLayout(),
+            ),
+          );
+        },
       ),
     );
   }

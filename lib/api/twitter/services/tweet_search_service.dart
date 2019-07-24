@@ -1,22 +1,18 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/tweet_search.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/misc/isolate_work.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 final Logger _log = Logger("TweetSearchService");
 
 class TweetSearchService {
-  TweetSearchService({
-    @required this.twitterClient,
-  }) : assert(twitterClient != null);
-
-  final TwitterClient twitterClient;
+  final TwitterClient twitterClient = app<TwitterClient>();
 
   /// Gets the replies to a [Tweet].
   Future<List<Tweet>> getReplies(Tweet tweet) async {

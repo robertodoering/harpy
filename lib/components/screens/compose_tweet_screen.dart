@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/core/utils/file_utils.dart';
 import 'package:harpy/models/compose_tweet_model.dart';
 import 'package:provider/provider.dart';
@@ -65,11 +64,11 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
 
     return Column(
       children: <Widget>[
-        Divider(),
+        const Divider(),
         Row(
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.image),
+              icon: const Icon(Icons.image),
               onPressed: model.canAddMedia ? model.addMedia : null,
             ),
             Spacer(),
@@ -80,7 +79,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
             ),
           ],
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }
@@ -107,14 +106,10 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final serviceProvider = ServiceProvider.of(context);
-
     return HarpyScaffold(
       title: "New Tweet",
       body: ChangeNotifierProvider<ComposeTweetModel>(
         builder: (_) => ComposeTweetModel(
-          tweetService: serviceProvider.data.tweetService,
-          mediaService: serviceProvider.data.mediaService,
           onTweeted: _controller.clear,
         ),
         child: Consumer<ComposeTweetModel>(

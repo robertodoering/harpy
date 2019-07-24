@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
-import 'package:harpy/components/widgets/shared/cache_provider.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/components/widgets/tweet/tweet_list.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
@@ -68,20 +66,13 @@ class TweetRepliesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serviceProvider = ServiceProvider.of(context);
-
-    return CacheProvider(
-      homeTimelineCache: serviceProvider.data.homeTimelineCache,
-      child: ChangeNotifierProvider<TweetRepliesModel>(
-        builder: (_) => TweetRepliesModel(
-          tweet: tweet,
-          tweetService: serviceProvider.data.tweetService,
-          tweetSearchService: serviceProvider.data.tweetSearchService,
-        ),
-        child: HarpyScaffold(
-          title: "Replies",
-          body: _buildBody(context),
-        ),
+    return ChangeNotifierProvider<TweetRepliesModel>(
+      builder: (_) => TweetRepliesModel(
+        tweet: tweet,
+      ),
+      child: HarpyScaffold(
+        title: "Replies",
+        body: _buildBody(context),
       ),
     );
   }

@@ -18,6 +18,7 @@ dependencies:
   flare_flutter: ^1.5.1
   flushbar: 1.7.1+1
   mime_type: ^0.2.4
+  get_it: ^1.0.3+2
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git

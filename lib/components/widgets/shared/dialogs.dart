@@ -5,7 +5,6 @@ import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// A styled dialog used with [showDialog].
 ///
@@ -65,8 +64,7 @@ class HarpyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = ThemeSettingsModel.of(context).harpyTheme;
-    final textTheme = harpyTheme.theme.textTheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return BounceInAnimation(
       child: Dialog(
@@ -184,7 +182,7 @@ class _ProFeatureDialogState extends State<ProFeatureDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ThemeSettingsModel.of(context).harpyTheme.theme;
+    final theme = Theme.of(context);
 
     final style = theme.textTheme.subtitle;
 

@@ -1,22 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
-import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 
 class HomeTimelineModel extends TimelineModel {
-  HomeTimelineModel({
-    @required TweetService tweetService,
-    @required HomeTimelineCache homeTimelineCache,
-  }) : super(tweetService: tweetService, tweetCache: homeTimelineCache);
+  HomeTimelineModel() : super(tweetCache: app<HomeTimelineCache>());
 
   static final Logger _log = Logger("HomeTimelineModel");
 
-  static HomeTimelineModel of(BuildContext context) {
+  static HomeTimelineModel of(context) {
     return Provider.of<HomeTimelineModel>(context);
   }
 

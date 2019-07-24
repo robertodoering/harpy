@@ -2,18 +2,12 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/json_mapper.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 class UserService {
-  UserService({
-    @required this.twitterClient,
-    @required this.userCache,
-  })  : assert(twitterClient != null),
-        assert(userCache != null);
-
-  final TwitterClient twitterClient;
-  final UserCache userCache;
+  final TwitterClient twitterClient = app<TwitterClient>();
+  final UserCache userCache = app<UserCache>();
 
   static final Logger _log = Logger("UserService");
 

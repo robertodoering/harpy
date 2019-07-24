@@ -1,7 +1,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart' as route;
 import 'package:flutter/material.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:logging/logging.dart';
 
 import 'harpy_navigator.dart';
@@ -47,7 +47,7 @@ void showFlushbar(
       break;
   }
 
-  final harpyTheme = ThemeSettingsModel.of(navigator.context).harpyTheme;
+  final harpyTheme = HarpyTheme.of(navigator.context);
 
   final flushbar = Flushbar(
     backgroundColor: harpyTheme.primaryColor,

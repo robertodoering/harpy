@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/compose_tweet_model.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,11 +15,16 @@ class MockTweetService extends Mock implements TweetService {}
 class MockMediaService extends Mock implements MediaService {}
 
 void main() {
+  setUp(() {
+    app
+      ..registerLazySingleton<TweetService>(() => MockTweetService())
+      ..registerLazySingleton<MediaService>(() => MockMediaService());
+  });
+
+  tearDown(app.reset);
+
   test("Can add up to four images", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
     final File imageTwo = MockFile();
@@ -45,10 +51,7 @@ void main() {
   });
 
   test("Can add only one video", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File videoOne = MockFile();
     final File videoTwo = MockFile();
@@ -66,10 +69,7 @@ void main() {
   });
 
   test("Can add only one gif", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File gifOne = MockFile();
     final File gifTwo = MockFile();
@@ -87,10 +87,7 @@ void main() {
   });
 
   test("File extension gets validated", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File unsupportedType = MockFile();
     final File noExtension = MockFile();
@@ -106,10 +103,7 @@ void main() {
   });
 
   test("Media file gets removed", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
     final File imageTwo = MockFile();
@@ -132,10 +126,7 @@ void main() {
   });
 
   test("Remove media with invalid index fails gracefully", () {
-    final model = ComposeTweetModel(
-      tweetService: MockTweetService(),
-      mediaService: MockMediaService(),
-    );
+    final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
     final File imageTwo = MockFile();
@@ -154,26 +145,20 @@ void main() {
   });
 
   test("Tweeting with media clears media list when successful", () async {
-    final tweetService = MockTweetService();
-    final mediaService = MockMediaService();
-
-    final model = ComposeTweetModel(
-      tweetService: tweetService,
-      mediaService: mediaService,
-    );
+    final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
 
     when(imageOne.path).thenReturn("/path/to/my/imageOne.png");
 
-    when(mediaService.upload(imageOne))
+    when(app<MediaService>().upload(imageOne))
         .thenAnswer((_) => Future<String>.value("1337"));
 
     expect(model.addMediaFileToList(imageOne), true);
 
     expect(model.media.isEmpty, false);
 
-    when(tweetService.updateStatus(text: "text", mediaIds: ["1337"]))
+    when(app<TweetService>().updateStatus(text: "text", mediaIds: ["1337"]))
         .thenAnswer((_) => Future<Tweet>.value(Tweet()));
 
     await model.tweet("text");
@@ -183,13 +168,7 @@ void main() {
 
   test("Tweeting with invalid media adds the media to a _badMedia list",
       () async {
-    final tweetService = MockTweetService();
-    final mediaService = MockMediaService();
-
-    final model = ComposeTweetModel(
-      tweetService: tweetService,
-      mediaService: mediaService,
-    );
+    final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
     final File invalidImage = MockFile();
@@ -197,10 +176,10 @@ void main() {
     when(imageOne.path).thenReturn("/path/to/my/imageOne.png");
     when(invalidImage.path).thenReturn("/path/to/my/no_u.png");
 
-    when(mediaService.upload(imageOne))
+    when(app<MediaService>().upload(imageOne))
         .thenAnswer((_) => Future<String>.value("1337"));
 
-    when(mediaService.upload(invalidImage))
+    when(app<MediaService>().upload(invalidImage))
         .thenAnswer((_) => Future<String>.value(null));
 
     expect(model.addMediaFileToList(imageOne), true);
@@ -208,8 +187,8 @@ void main() {
 
     await model.tweet("text");
 
-    verifyNever(tweetService.updateStatus(
-        text: anyNamed("text"), mediaIds: anyNamed("mediaIds")));
+    verifyNever(app<TweetService>()
+        .updateStatus(text: anyNamed("text"), mediaIds: anyNamed("mediaIds")));
 
     expect(model.isBadFile(invalidImage), true);
     expect(model.isBadFile(imageOne), false);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/media/tweet_media.dart';
 
 /// A [CustomExpansionTile] that expands or collapses to reveal or hide the
 /// [child].

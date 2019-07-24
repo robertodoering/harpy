@@ -7,25 +7,25 @@ import 'package:harpy/components/widgets/shared/texts.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:provider/provider.dart';
 
-/// Shows a [HarpyTitle] and a [LoginButton] to allow a user to login.
+/// Shows a the app title and a [LoginButton] to allow a user to login.
 class LoginScreen extends StatelessWidget {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
-  Widget _buildLoginScreen(BuildContext context, LoginModel model) {
+  Widget _buildLoginScreen(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     return SlideAnimation(
       key: _slideLoginKey,
       duration: const Duration(milliseconds: 600),
-      endPosition: Offset(0, -MediaQuery.of(context).size.height),
+      endPosition: Offset(0, -mediaQuery.size.height),
       child: Column(
         children: <Widget>[
           _buildText(),
           const SizedBox(height: 16),
           _buildTitle(context),
-          _buildButtons(model),
+          _buildButtons(context),
         ],
       ),
     );
@@ -41,8 +41,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) {
-    final color =
-        ThemeSettingsModel.of(context).harpyTheme.theme.textTheme.body1.color;
+    final color = Theme.of(context).textTheme.body1.color;
 
     return Expanded(
       flex: 2,
@@ -63,12 +62,14 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButtons(LoginModel model) {
+  Widget _buildButtons(BuildContext context) {
+    final loginModel = LoginModel.of(context);
+
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          LoginButton(onTap: () => _startLogin(model)),
+          LoginButton(onTap: () => _startLogin(loginModel)),
           const SizedBox(height: 8),
           CreateAccountButton(),
         ],
@@ -76,9 +77,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _startLogin(LoginModel model) async {
+  Future<void> _startLogin(LoginModel loginModel) async {
     await _slideLoginKey.currentState.forward();
-    model.login();
+    loginModel.login();
   }
 
   @override
@@ -88,15 +89,9 @@ class LoginScreen extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: HarpyBackground(
-        child: Consumer<LoginModel>(
-          builder: (context, model, _) {
-            if (!applicationModel.loggedIn) {
-              return _buildLoginScreen(context, model);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+        child: applicationModel.loggedIn
+            ? const Center(child: CircularProgressIndicator())
+            : _buildLoginScreen(context),
       ),
     );
   }

@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
-import 'package:harpy/core/misc/harpy_catcher.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/models/global_models_wrapper.dart';
-import 'package:harpy/models/settings/setting_models_wrapper.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
-import 'package:provider/provider.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/core/misc/service_setup.dart';
+import 'package:harpy/models/global_models_provider.dart';
+import 'package:harpy/models/settings/settings_models_provider.dart';
 
+/// [GetIt] is a simple service locator for accessing services from anywhere
+/// in the app.
+final GetIt app = GetIt();
+
+/// Runs the app with the given [flavor].
+///
+/// To app can be build with the 'free' or 'pro' flavor by running
+/// `flutter build --flavor free -t lib/main_free.dart` or
+/// `flutter build --flavor pro -t lib/main_pro.dart`.
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 
-  HarpyCatcher(
-    ServiceContainer(
-      child: SettingModelsWrapper(
-        child: GlobalModelsWrapper(
-          child: Harpy(),
-        ),
+  setupServices();
+
+  // harpy catcher will run the app and handle any uncaught exceptions
+  runApp(
+    SettingsModelsProvider(
+      child: GlobalModelsProvider(
+        child: Harpy(),
       ),
     ),
   );
@@ -30,16 +39,12 @@ class Harpy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeSettingsModel>(
-      builder: (context, themeModel, _) {
-        return MaterialApp(
-          title: "Harpy",
-          theme: themeModel.harpyTheme.theme,
-          navigatorKey: HarpyNavigator.key,
-          home: EntryScreen(),
-          debugShowCheckedModeBanner: false,
-        );
-      },
+    return MaterialApp(
+      title: "Harpy",
+      theme: HarpyTheme.of(context).theme,
+      navigatorKey: HarpyNavigator.key,
+      home: EntryScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -14,7 +14,7 @@ import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
 /// Creates a screen to create and edit a custom harpy theme.
-class CustomThemeScreen extends StatefulWidget {
+class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({
     this.editingThemeData,
     this.editingThemeId,
@@ -24,22 +24,13 @@ class CustomThemeScreen extends StatefulWidget {
   final int editingThemeId;
 
   @override
-  _CustomThemeScreenState createState() => _CustomThemeScreenState();
-}
-
-class _CustomThemeScreenState extends State<CustomThemeScreen> {
-  CustomThemeModel customThemeModel;
-
-  @override
   Widget build(BuildContext context) {
-    customThemeModel ??= CustomThemeModel(
-      themeSettingsModel: ThemeSettingsModel.of(context),
-      editingThemeData: widget.editingThemeData,
-      editingThemeId: widget.editingThemeId,
-    );
-
     return ChangeNotifierProvider<CustomThemeModel>(
-      builder: (_) => customThemeModel,
+      builder: (_) => CustomThemeModel(
+        themeSettingsModel: ThemeSettingsModel.of(context),
+        editingThemeData: editingThemeData,
+        editingThemeId: editingThemeId,
+      ),
       child: Consumer<CustomThemeModel>(
         builder: (context, customThemeModel, _) {
           return Theme(
@@ -248,9 +239,9 @@ class _CustomThemeColorSelections extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) => _CustomThemeColorDialog(
-                  themeColorModel,
-                  customThemeModel,
-                ),
+              themeColorModel,
+              customThemeModel,
+            ),
           );
         },
       );

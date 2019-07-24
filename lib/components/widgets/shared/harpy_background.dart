@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
-import 'package:harpy/models/settings/theme_settings_model.dart';
 
 /// Builds a background with a gradient from top to bottom.
 ///
@@ -18,7 +17,7 @@ class HarpyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = ThemeSettingsModel.of(context).harpyTheme;
+    final harpyTheme = HarpyTheme.of(context);
 
     final backgroundColors = colors ?? harpyTheme.backgroundColors;
 

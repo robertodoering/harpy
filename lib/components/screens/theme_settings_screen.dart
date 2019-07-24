@@ -23,18 +23,18 @@ class _ThemeSettingsScreenContent extends StatelessWidget {
     final themes = PredefinedThemes.themes;
 
     // load and add all custom themes
+    // todo: don't always reload themes, instead load once and update when
+    //  changed
     themeSettingsModel.loadCustomThemes();
-    themes.addAll(themeSettingsModel.customThemes.map((themeData) {
-      return HarpyTheme.fromData(themeData);
-    }));
+    themes.addAll(themeSettingsModel.customThemes.map(
+      (themeData) => HarpyTheme.fromData(themeData),
+    ));
 
     final List<Widget> children = [
-      ...themes.map((harpyTheme) {
-        return ThemeCard(
-          harpyTheme: harpyTheme,
-          id: themes.indexOf(harpyTheme),
-        );
-      }).toList(),
+      ...themes.map((harpyTheme) => ThemeCard(
+            harpyTheme: harpyTheme,
+            id: themes.indexOf(harpyTheme),
+          )),
       AddCustomThemeCard(),
     ];
 
