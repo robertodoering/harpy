@@ -9,6 +9,7 @@ import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/harpy.dart';
 
@@ -30,5 +31,6 @@ void setupServices() {
     ..registerLazySingleton<DirectoryService>(() => DirectoryService())
     ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
-    ..registerLazySingleton<HarpyPrefs>(() => HarpyPrefs());
+    ..registerLazySingleton<HarpyPrefs>(() => HarpyPrefs())
+    ..registerLazySingleton<FlushbarService>(() => FlushbarService());
 }
