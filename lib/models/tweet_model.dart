@@ -7,6 +7,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/core/cache/home_timeline_cache.dart';
 import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/home_timeline_model.dart';
@@ -37,6 +38,7 @@ class TweetModel extends ChangeNotifier {
   final TranslationService translationService = app<TranslationService>();
   final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
   final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   // todo: remove timeline model dependencies
   final HomeTimelineModel homeTimelineModel;
@@ -232,6 +234,10 @@ class TweetModel extends ChangeNotifier {
     });
 
     originalTweet.harpyData.translation = translation;
+
+    if (translationUnchanged) {
+      flushbarService.info("Tweet not translated");
+    }
 
     translating = false;
     notifyListeners();

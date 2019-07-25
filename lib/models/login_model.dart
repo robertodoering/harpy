@@ -9,7 +9,7 @@ import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/misc/flushbar.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/application_model.dart';
@@ -24,6 +24,8 @@ class LoginModel extends ChangeNotifier {
 
   final UserService userService = app<UserService>();
   final UserCache userCache = app<UserCache>();
+  final FlushbarService flushbarService = app<FlushbarService>();
+
   final HomeTimelineModel homeTimelineModel;
 
   ApplicationModel applicationModel;
@@ -102,7 +104,7 @@ class LoginModel extends ChangeNotifier {
 
   void _onLoginError() {
     HarpyNavigator.pushReplacement(LoginScreen());
-    showFlushbar("An error occurred during login.", type: FlushbarType.error);
+    flushbarService.error("An error occurred during login.");
   }
 
   /// Logout using the native twitter sdk.
