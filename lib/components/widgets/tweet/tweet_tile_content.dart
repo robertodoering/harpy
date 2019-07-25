@@ -11,7 +11,6 @@ import 'package:harpy/components/widgets/shared/flare_buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
-import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -408,14 +407,6 @@ class TweetTranslationButton extends StatelessWidget {
 
   final TweetModel model;
 
-  Future<void> _translate() async {
-    await model.translate();
-
-    if (model.translationUnchanged) {
-      showFlushbar("Tweet not translated");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (model.tweet.emptyText || model.tweet.lang == "en") {
@@ -428,7 +419,7 @@ class TweetTranslationButton extends StatelessWidget {
 
     if (model.originalTweet.harpyData.translation == null &&
         !model.translating) {
-      onTap = _translate;
+      onTap = model.translate;
     } else if (model.translationUnchanged) {
       color = Theme.of(context).disabledColor;
       alwaysColored = true;

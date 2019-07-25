@@ -5,7 +5,6 @@ import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
-import 'package:harpy/core/misc/flushbar.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/harpy.dart';
@@ -32,32 +31,30 @@ class CustomThemeScreen extends StatelessWidget {
         editingThemeId: editingThemeId,
       ),
       child: Consumer<CustomThemeModel>(
-        builder: (context, customThemeModel, _) {
-          return Theme(
-            data: customThemeModel.harpyTheme.theme,
-            child: HarpyScaffold(
-              backgroundColors: customThemeModel.harpyTheme.backgroundColors,
-              title: "Custom theme",
-              actions: <Widget>[
-                _CustomThemeSaveButton(),
-              ],
-              body: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        _CustomThemeNameField(customThemeModel),
-                        const SizedBox(height: 8),
-                        _CustomThemeColorSelections(),
-                      ],
-                    ),
+        builder: (context, customThemeModel, _) => Theme(
+          data: customThemeModel.harpyTheme.theme,
+          child: HarpyScaffold(
+            backgroundColors: customThemeModel.harpyTheme.backgroundColors,
+            title: "Custom theme",
+            actions: <Widget>[
+              _CustomThemeSaveButton(),
+            ],
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      _CustomThemeNameField(customThemeModel),
+                      const SizedBox(height: 8),
+                      _CustomThemeColorSelections(),
+                    ],
                   ),
-                  if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
-                ],
-              ),
+                ),
+                if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -117,36 +114,9 @@ class _CustomThemeSaveButton extends StatelessWidget {
   void _saveTheme(BuildContext context) {
     final model = CustomThemeModel.of(context);
 
-    if (model.customThemeData?.name?.isEmpty ?? true) {
-      showFlushbar(
-        "Enter a name",
-        type: FlushbarType.error,
-      );
-      return;
+    if (model.saveTheme()) {
+      Navigator.of(context).pop();
     }
-
-    if (model.errorText() != null) {
-      showFlushbar(
-        model.errorText(),
-        type: FlushbarType.error,
-      );
-      return;
-    }
-
-    final themeSettingsModel = ThemeSettingsModel.of(context);
-
-    if (model.editingTheme) {
-      // edited theme
-      themeSettingsModel.updateCustomTheme(
-        model.customThemeData,
-        model.editingThemeId,
-      );
-    } else {
-      // new theme
-      themeSettingsModel.saveNewCustomTheme(model.customThemeData);
-    }
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -178,7 +148,7 @@ class _CustomThemeNameFieldState extends State<_CustomThemeNameField> {
     _controller = TextEditingController(text: widget.model.customThemeData.name)
       ..addListener(() {
         setState(() {
-          widget.model.changeName(_controller.text);
+          widget.model.customThemeData.name = _controller.text;
         });
       });
   }
