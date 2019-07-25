@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/compose_tweet_model.dart';
 import 'package:mockito/mockito.dart';
@@ -14,11 +15,14 @@ class MockTweetService extends Mock implements TweetService {}
 
 class MockMediaService extends Mock implements MediaService {}
 
+class MockFlushbarService extends Mock implements FlushbarService {}
+
 void main() {
   setUp(() {
     app
       ..registerLazySingleton<TweetService>(() => MockTweetService())
-      ..registerLazySingleton<MediaService>(() => MockMediaService());
+      ..registerLazySingleton<MediaService>(() => MockMediaService())
+      ..registerLazySingleton<FlushbarService>(() => MockFlushbarService());
   });
 
   tearDown(app.reset);
@@ -166,8 +170,9 @@ void main() {
     expect(model.media.isEmpty, true);
   });
 
-  test("Tweeting with invalid media adds the media to a _badMedia list",
-      () async {
+  test(
+      "Tweeting with invalid media adds the media to a _badMedia list and "
+      "shows an error", () async {
     final model = ComposeTweetModel();
 
     final File imageOne = MockFile();
@@ -187,8 +192,14 @@ void main() {
 
     await model.tweet("text");
 
-    verifyNever(app<TweetService>()
-        .updateStatus(text: anyNamed("text"), mediaIds: anyNamed("mediaIds")));
+    // verify that the status hasn't been updated
+    verifyNever(app<TweetService>().updateStatus(
+      text: anyNamed("text"),
+      mediaIds: anyNamed("mediaIds"),
+    ));
+
+    // verify that the error has been shown
+    verify(app<FlushbarService>().error(any)).called(1);
 
     expect(model.isBadFile(invalidImage), true);
     expect(model.isBadFile(imageOne), false);
