@@ -5,10 +5,9 @@ import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
-import 'package:harpy/core/cache/home_timeline_cache.dart';
-import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/cache/timeline_database.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
-import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -31,12 +30,12 @@ class ApplicationModel extends ChangeNotifier {
     _initialize();
   }
 
-  final DirectoryService directoryService = app<DirectoryService>();
-  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
-  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
   final TwitterClient twitterClient = app<TwitterClient>();
   final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
   final ConnectivityService connectivityService = app<ConnectivityService>();
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
+  final TimelineDatabase timelineDatabase = app<TimelineDatabase>();
+
   final ThemeSettingsModel themeSettingsModel;
   final LoginModel loginModel;
 
@@ -77,9 +76,6 @@ class ApplicationModel extends ChangeNotifier {
 
       // harpy shared preferences
       harpyPrefs.init(),
-
-      // directory service
-      directoryService.init(),
 
       // init connectivity status
       connectivityService.init(),
@@ -164,12 +160,18 @@ class ApplicationModel extends ChangeNotifier {
 
   /// Called when initializing and already logged in or in the [LoginModel]
   /// after logging in for the first time.
-  void initLoggedIn() {
+  Future<void> initLoggedIn() async {
+    _log.fine("init logged in");
+
     // init theme from shared prefs
     themeSettingsModel.initTheme();
 
-    // init tweet cache logged in user
-    userTimelineCache.data.loggedInUserId = twitterSession.userId;
-    homeTimelineCache.data.loggedInUserId = twitterSession.userId;
+    // init databases
+    tweetDatabase.subDirectory = twitterSession.userId;
+    timelineDatabase.subDirectory = twitterSession.userId;
+    await Future.wait([
+      tweetDatabase.initialize(),
+      timelineDatabase.initialize(),
+    ]);
   }
 }

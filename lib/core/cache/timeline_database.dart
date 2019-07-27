@@ -1,7 +1,7 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/cache/new/database.dart';
-import 'package:harpy/core/cache/new/tweet_database.dart';
+import 'package:harpy/core/cache/database.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:sembast/sembast.dart';
@@ -22,7 +22,7 @@ class TimelineDatabase extends HarpyDatabase {
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   @override
-  String get name => "timeline_db";
+  String get name => "timeline_db/$subDirectory";
 
   final Logger _log = Logger("TimelineDatabase");
 

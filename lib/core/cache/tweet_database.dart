@@ -1,5 +1,5 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/core/cache/new/database.dart';
+import 'package:harpy/core/cache/database.dart';
 import 'package:logging/logging.dart';
 import 'package:sembast/sembast.dart';
 
@@ -12,7 +12,7 @@ class TweetDatabase extends HarpyDatabase {
   final StoreRef<int, Map<String, dynamic>> store;
 
   @override
-  String get name => "tweet_db";
+  String get name => "tweet_db/$subDirectory";
 
   final Logger _log = Logger("TweetDatabase");
 

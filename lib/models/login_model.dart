@@ -8,7 +8,6 @@ import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
-import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/harpy.dart';
@@ -23,7 +22,6 @@ class LoginModel extends ChangeNotifier {
   });
 
   final UserService userService = app<UserService>();
-  final UserCache userCache = app<UserCache>();
   final FlushbarService flushbarService = app<FlushbarService>();
 
   final HomeTimelineModel homeTimelineModel;
@@ -74,9 +72,7 @@ class LoginModel extends ChangeNotifier {
 
   Future<void> _onSuccessfulLogin(TwitterLoginResult result) async {
     // init tweet cache logged in user
-    applicationModel
-      ..twitterSession = result.session
-      ..initLoggedIn();
+    await (applicationModel..twitterSession = result.session).initLoggedIn();
 
     // initialize before navigating
     final bool knownUser = await initBeforeHome();
@@ -154,7 +150,7 @@ class LoginModel extends ChangeNotifier {
     // init theme from shared prefs
     applicationModel.themeSettingsModel.initTheme();
 
-    loggedInUser = userCache.getCachedUser(userId);
+    // todo: get logged in user from cache
 
     if (loggedInUser == null) {
       _log.fine("user not in cache, waiting to update logged in user");

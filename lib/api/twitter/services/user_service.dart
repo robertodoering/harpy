@@ -1,13 +1,11 @@
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/core/misc/json_mapper.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 class UserService {
   final TwitterClient twitterClient = app<TwitterClient>();
-  final UserCache userCache = app<UserCache>();
 
   static final Logger _log = Logger("UserService");
 
@@ -31,7 +29,8 @@ class UserService {
       final User user =
           mapJson<User>(response.body, (json) => User.fromJson(json));
 
-      userCache.cacheUser(user);
+      // todo: cache user
+//      userCache.cacheUser(user);
 
       return user;
     });

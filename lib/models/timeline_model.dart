@@ -2,22 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 /// Abstraction for the [HomeTimelineModel] and the [UserTimelineModel].
 ///
 /// Holds the [tweets] of the timeline and common actions for the
 /// [tweetService].
 abstract class TimelineModel extends ChangeNotifier {
-  TimelineModel({
-    @required this.tweetCache,
-  }) : assert(tweetCache != null);
-
   final TweetService tweetService = app<TweetService>();
-  final TweetCache tweetCache;
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   static final Logger _log = Logger("TimelineModel");
 
@@ -51,7 +46,8 @@ abstract class TimelineModel extends ChangeNotifier {
     loadingInitialTweets = true;
 
     // initialize with cached tweets
-    tweets = tweetCache.getCachedTweets();
+    // todo: get timeline tweets / called by user and home timeline model
+//    tweets = tweetCache.getCachedTweets();
 
     if (tweets?.isEmpty ?? true) {
       _log.fine("no cached tweets exist");

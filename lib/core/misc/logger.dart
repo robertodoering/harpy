@@ -17,6 +17,23 @@ void initLogger({String prefix}) {
         "${_colored(rec.message, color)}";
 
     print(logString);
+
+    if (rec.error != null) {
+      print(_colored("----------------", color));
+      print(_colored("error", color));
+      print(rec.error);
+      rec.error.toString().split("\n").forEach((line) => _colored(line, color));
+      print(_colored("----------------", color));
+      if (rec.stackTrace != null) {
+        print(_colored("stack trace", color));
+        print(rec.stackTrace);
+        rec.stackTrace
+            .toString()
+            .split("\n")
+            .forEach((line) => _colored(line, color));
+        print(_colored("----------------", color));
+      }
+    }
   });
 }
 

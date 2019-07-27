@@ -3,6 +3,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/api/twitter/data/video_info.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/home_timeline_model.dart';
@@ -28,6 +29,7 @@ class MediaModel extends ChangeNotifier {
   }
 
   final ConnectivityService connectivityService = app<ConnectivityService>();
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
@@ -136,7 +138,6 @@ class MediaModel extends ChangeNotifier {
     homeTimelineModel.updateTweet(tweet);
 
     // update in cache
-    tweetModel.homeTimelineCache.updateTweet(tweet);
-    tweetModel.userTimelineCache?.updateTweet(tweet);
+    tweetDatabase.recordTweet(tweet);
   }
 }

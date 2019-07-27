@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
-import 'package:harpy/core/cache/user_cache.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +22,6 @@ class UserProfileModel extends ChangeNotifier {
   }
 
   final UserService userService = app<UserService>();
-  final UserCache userCache = app<UserCache>();
 
   final LoginModel loginModel;
 
@@ -51,7 +49,7 @@ class UserProfileModel extends ChangeNotifier {
   Future<void> _loadUser(String id) async {
     _log.fine("loading user");
 
-    final User cachedUser = userCache.getCachedUser(id);
+    final User cachedUser = null; // todo: get from cache
 
     if (cachedUser != null) {
       _log.fine("found cached user");

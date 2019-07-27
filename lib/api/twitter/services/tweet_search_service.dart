@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/tweet_search.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/misc/isolate_work.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
@@ -68,12 +68,11 @@ class TweetSearchService {
             "https://api.twitter.com/1.1/search/tweets.json",
             params: params,
           )
-          .then((response) => isolateWork<String, TweetSearch>(
-                callback: _handleTweetSearchResponse,
-                message: response.body,
+          .then((response) => compute<String, TweetSearch>(
+                _handleTweetSearchResponse,
+                response.body,
               ))
           .catchError(twitterClientErrorHandler);
-      // todo: really error handling in service?
 
       if (result == null) {
         break;

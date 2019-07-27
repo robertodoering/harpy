@@ -5,8 +5,7 @@ import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/home_timeline_cache.dart';
-import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
@@ -36,9 +35,8 @@ class TweetModel extends ChangeNotifier {
 
   final TweetService tweetService = app<TweetService>();
   final TranslationService translationService = app<TranslationService>();
-  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
-  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
   final FlushbarService flushbarService = app<FlushbarService>();
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   // todo: remove timeline model dependencies
   final HomeTimelineModel homeTimelineModel;
@@ -145,10 +143,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.retweet(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.retweeted = false;
@@ -165,10 +160,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.unretweet(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.retweeted = true;
@@ -185,10 +177,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.favorite(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.favorited = false;
@@ -205,10 +194,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.unfavorite(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.favorited = true;
@@ -242,8 +228,7 @@ class TweetModel extends ChangeNotifier {
     translating = false;
     notifyListeners();
 
-    homeTimelineCache.updateTweet(originalTweet);
-    userTimelineCache?.updateTweet(originalTweet);
+    tweetDatabase.recordTweet(originalTweet);
   }
 
   /// Returns `true` if the error contains any of the following error codes:
