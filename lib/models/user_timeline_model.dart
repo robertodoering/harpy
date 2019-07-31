@@ -13,7 +13,7 @@ class UserTimelineModel extends TimelineModel {
     initTweets();
   }
 
-  final String userId;
+  final int userId;
 
   static UserTimelineModel of(BuildContext context) {
     return Provider.of<UserTimelineModel>(context);
@@ -22,17 +22,24 @@ class UserTimelineModel extends TimelineModel {
   static final Logger _log = Logger("UserTimelineModel");
 
   @override
+  Future<List<Tweet>> getCachedTweets() {
+    return timelineDatabase.findUserTimelineTweets(userId);
+  }
+
+  @override
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
 
     final List<Tweet> updatedTweets = await tweetService
-        .getUserTimeline(userId)
+        .getUserTimeline("$userId")
         .catchError(twitterClientErrorHandler);
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
+      timelineDatabase.recordUserTimelineIds(userId, updatedTweets);
+      tweetDatabase.recordTweetList(updatedTweets);
     }
 
     loadingInitialTweets = false;
@@ -45,13 +52,12 @@ class UserTimelineModel extends TimelineModel {
 
     final id = "${tweets.last.id - 1}";
 
-    // todo: bug: clears cached tweets where id > than id
-    final List<Tweet> newTweets = await tweetService.getUserTimeline(
-      userId,
-      params: {"max_id": id},
-    ).catchError(twitterClientErrorHandler);
+    final List<Tweet> newTweets = await tweetService
+        .getUserTimeline("$userId", maxId: id)
+        .catchError(twitterClientErrorHandler);
 
     if (newTweets != null) {
+      // todo: maybe add new tweets to cached user timeline ids
       addNewTweets(newTweets);
     }
 

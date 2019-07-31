@@ -12,6 +12,11 @@ class HomeTimelineModel extends TimelineModel {
   static final Logger _log = Logger("HomeTimelineModel");
 
   @override
+  Future<List<Tweet>> getCachedTweets() {
+    return timelineDatabase.findHomeTimelineTweets();
+  }
+
+  @override
   Future<void> updateTweets() async {
     _log.fine("updating tweets");
 
@@ -21,6 +26,8 @@ class HomeTimelineModel extends TimelineModel {
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
+      timelineDatabase.recordHomeTimelineIds(updatedTweets);
+      tweetDatabase.recordTweetList(updatedTweets);
     }
 
     notifyListeners();
@@ -32,12 +39,12 @@ class HomeTimelineModel extends TimelineModel {
 
     final id = "${tweets.last.id - 1}";
 
-    // todo: bug: clears cached tweets where id > than id
-    final List<Tweet> newTweets = await tweetService.getHomeTimeline(params: {
-      "max_id": id,
-    }).catchError(twitterClientErrorHandler);
+    final List<Tweet> newTweets = await tweetService
+        .getHomeTimeline(maxId: id)
+        .catchError(twitterClientErrorHandler);
 
     if (newTweets != null) {
+      // todo: maybe add new tweets to cached home timeline ids
       addNewTweets(newTweets);
     }
 
@@ -51,5 +58,6 @@ class HomeTimelineModel extends TimelineModel {
       _log.fine("updating home timeline tweet");
       tweets[index] = tweet;
     }
+    notifyListeners();
   }
 }
