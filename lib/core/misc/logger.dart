@@ -1,10 +1,12 @@
-import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
 
   Logger.root.onRecord.listen((rec) {
+    // ignore sembast logger
+    if (rec.loggerName == "Sembast") return;
+
     final color = _AnsiColor.fromLogLevel(rec.level);
 
     final separator = _colored("  ::  ", color);
@@ -12,7 +14,6 @@ void initLogger({String prefix}) {
     final logString =
         "${prefix != null ? '${_colored(prefix, _AnsiColor.cyan)}$separator' : ''}"
         "${_colored(rec.level.name, color)}$separator"
-        "${DateFormat("HH:mm:ss").format(rec.time)}$separator"
         "${rec.loggerName}$separator"
         "${_colored(rec.message, color)}";
 
@@ -22,15 +23,10 @@ void initLogger({String prefix}) {
       print(_colored("----------------", color));
       print(_colored("error", color));
       print(rec.error);
-      rec.error.toString().split("\n").forEach((line) => _colored(line, color));
       print(_colored("----------------", color));
       if (rec.stackTrace != null) {
         print(_colored("stack trace", color));
         print(rec.stackTrace);
-        rec.stackTrace
-            .toString()
-            .split("\n")
-            .forEach((line) => _colored(line, color));
         print(_colored("----------------", color));
       }
     }

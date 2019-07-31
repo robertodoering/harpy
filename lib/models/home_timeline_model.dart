@@ -5,11 +5,11 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 class HomeTimelineModel extends TimelineModel {
-  static final Logger _log = Logger("HomeTimelineModel");
-
   static HomeTimelineModel of(context) {
     return Provider.of<HomeTimelineModel>(context);
   }
+
+  static final Logger _log = Logger("HomeTimelineModel");
 
   @override
   Future<void> updateTweets() async {

@@ -13,7 +13,7 @@ enum FlushbarType {
 }
 
 class FlushbarService {
-  final Logger _log = Logger("Flushbar");
+  static final Logger _log = Logger("Flushbar");
 
   void info(String message) => show(message, type: FlushbarType.info);
 

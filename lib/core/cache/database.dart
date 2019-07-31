@@ -12,7 +12,7 @@ abstract class HarpyDatabase {
   /// The [subDirectory] determines where the database is located.
   String subDirectory;
 
-  final Logger _log = Logger("Database");
+  static final Logger _log = Logger("Database");
 
   Future<void> initialize() async {
     _log.fine("initializing database with subDirectory: $subDirectory");
