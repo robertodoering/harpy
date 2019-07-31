@@ -7,6 +7,7 @@ import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
+import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
@@ -35,6 +36,7 @@ class ApplicationModel extends ChangeNotifier {
   final ConnectivityService connectivityService = app<ConnectivityService>();
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
   final TimelineDatabase timelineDatabase = app<TimelineDatabase>();
+  final UserDatabase userDatabase = app<UserDatabase>();
 
   final ThemeSettingsModel themeSettingsModel;
   final LoginModel loginModel;
@@ -82,7 +84,7 @@ class ApplicationModel extends ChangeNotifier {
     ]);
 
     if (loggedIn) {
-      initLoggedIn();
+      await initLoggedIn();
     }
 
     initialized = true;
@@ -169,6 +171,7 @@ class ApplicationModel extends ChangeNotifier {
     // init databases
     tweetDatabase.subDirectory = twitterSession.userId;
     timelineDatabase.subDirectory = twitterSession.userId;
+    userDatabase.subDirectory = twitterSession.userId;
     await Future.wait([
       tweetDatabase.initialize(),
       timelineDatabase.initialize(),

@@ -6,6 +6,7 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
+import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -23,6 +24,7 @@ void setupServices() {
     // cache
     ..registerLazySingleton<TweetDatabase>(() => TweetDatabase())
     ..registerLazySingleton<TimelineDatabase>(() => TimelineDatabase())
+    ..registerLazySingleton<UserDatabase>(() => UserDatabase())
 
     // custom / util
     ..registerLazySingleton<TranslationService>(() => TranslationService())
