@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/misc/json_mapper.dart';
+import 'package:harpy/core/utils/json_utils.dart';
 import 'package:harpy/harpy.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -21,19 +21,16 @@ class TweetService {
     String text,
     List<String> mediaIds,
   }) async {
-    _log.fine("posting a new tweet");
+    _log.fine("post a new tweet");
 
     final params = <String, String>{
       "tweet_mode": "extended",
     };
 
-    final body = <String, String>{};
-    if (text != null) {
-      body["status"] = text;
-    }
-    if (mediaIds != null) {
-      body["media_ids"] = mediaIds?.join(",");
-    }
+    final body = <String, String>{
+      if (text != null) "status": text,
+      if (mediaIds != null) "media_ids": mediaIds.join(","),
+    };
 
     return twitterClient
         .post(
@@ -74,13 +71,15 @@ class TweetService {
 
   /// Returns a the home timeline for the logged in user.
   Future<List<Tweet>> getHomeTimeline({
-    Map<String, String> params,
+    String maxId,
   }) async {
     _log.fine("get home timeline");
 
-    params ??= <String, String>{};
-    params["count"] ??= "200"; // max: 200
-    params["tweet_mode"] ??= "extended";
+    final params = <String, String>{
+      "count": "200",
+      "tweet_mode": "extended",
+      if (maxId != null) "max_id": maxId,
+    };
 
     return twitterClient
         .get(
@@ -92,21 +91,22 @@ class TweetService {
             _handleHomeTimelineResponse,
             response.body,
           ),
-          // todo: cache
         );
   }
 
   /// Returns the user timeline for the [userId].
   Future<List<Tweet>> getUserTimeline(
     String userId, {
-    Map<String, String> params,
+    String maxId,
   }) async {
     _log.fine("get user timeline");
 
-    params ??= <String, String>{};
-    params["count"] ??= "200";
-    params["tweet_mode"] ??= "extended";
-    params["user_id"] = userId;
+    final params = <String, String>{
+      "user_id": userId,
+      "count": "200",
+      "tweet_mode": "extended",
+      if (maxId != null) "max_id": maxId,
+    };
 
     return twitterClient
         .get(
@@ -114,17 +114,16 @@ class TweetService {
           params: params,
         )
         .then(
-          (response) async => await compute<String, List<Tweet>>(
+          (response) => compute<String, List<Tweet>>(
             _handleUserTimelineResponse,
             response.body,
           ),
-          // todo: cache
         );
   }
 
   /// Retweets the tweet with the [tweetId].
   Future<Response> retweet(String tweetId) async {
-    _log.fine("retweeting $tweetId");
+    _log.fine("retweet $tweetId");
 
     return twitterClient.post(
       "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
@@ -170,19 +169,10 @@ Tweet _handleSingleTweetResponse(String body) {
 List<Tweet> _handleHomeTimelineResponse(String body) {
   // parse tweets
   _log.fine("parsing tweets");
-  List<Tweet> tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
-  _log.fine("parsed ${tweets.length} tweets");
+  final tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
 
   // sort tweets
-  tweets = sortTweetReplies(tweets);
-
-  // todo: update cached home timeline tweets
-//  tweets = updateCachedTweets(tweets);
-
-  tweets ??= [];
-  _log.fine("got ${tweets.length} home timeline tweets");
-
-  return tweets;
+  return sortTweetReplies(tweets);
 }
 
 /// Handles the user timeline response.
@@ -191,37 +181,8 @@ List<Tweet> _handleHomeTimelineResponse(String body) {
 Future<List<Tweet>> _handleUserTimelineResponse(String body) async {
   // parse tweets
   _log.fine("parsing tweets");
-  List<Tweet> tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
-  _log.fine("parsed ${tweets.length} tweets");
+  final tweets = mapJson(body, (json) => Tweet.fromJson(json)) ?? [];
 
   // sort tweets
-  tweets = sortTweetReplies(tweets);
-
-  // copy over harpy data from cached home timeline tweets
-  _log.fine(" +++ todo: copy home harpy data");
-  // todo
-
-//  for (final tweet in tweets) {
-//    final homeTweet = TweetCache.isolateInstance.getTweet("${tweet.id}");
-//    if (homeTweet != null) {
-//      tweet.harpyData = homeTweet.harpyData;
-//    }
-//  }
-
-  return tweets;
-}
-
-/// Handles the cache of the user timeline.
-///
-/// Used in an isolate with the user timeline cache of the user as the cache
-/// data.
-List<Tweet> _handleUserTimelineTweetsCache(List<Tweet> tweets) {
-  // todo
-//  // update cached tweets for user
-//  tweets = updateCachedTweets(tweets);
-//
-//  tweets ??= [];
-//  _log.fine("got ${tweets.length} home timeline tweets");
-//
-//  return tweets;
+  return sortTweetReplies(tweets);
 }
