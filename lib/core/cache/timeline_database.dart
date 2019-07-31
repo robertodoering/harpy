@@ -9,22 +9,22 @@ import 'package:sembast/sembast.dart';
 /// Stores the ids for home and user timeline tweets in a database.
 class TimelineDatabase extends HarpyDatabase {
   TimelineDatabase({
-    StoreRef<String, List<int>> homeTimelineStore,
-    StoreRef<int, List<int>> userTimelineStore,
+    StoreRef<String, List> homeTimelineStore,
+    StoreRef<int, List> userTimelineStore,
   })  : homeTimelineStore =
-            homeTimelineStore ?? StoreRef<String, List<int>>("home_timeline"),
+            homeTimelineStore ?? StoreRef<String, List>("home_timeline"),
         userTimelineStore =
-            userTimelineStore ?? StoreRef<int, List<int>>("user_timeline");
+            userTimelineStore ?? StoreRef<int, List>("user_timeline");
 
-  final StoreRef<String, List<int>> homeTimelineStore;
-  final StoreRef<int, List<int>> userTimelineStore;
+  final StoreRef<String, List> homeTimelineStore;
+  final StoreRef<int, List> userTimelineStore;
 
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   @override
   String get name => "timeline_db/$subDirectory";
 
-  final Logger _log = Logger("TimelineDatabase");
+  static final Logger _log = Logger("TimelineDatabase");
 
   /// Records the ids of the [tweets].
   ///
@@ -48,13 +48,13 @@ class TimelineDatabase extends HarpyDatabase {
   /// Records the ids of the [tweets] for the [user].
   ///
   /// Every unique [User.id] will have a list with the tweet ids.
-  Future<bool> recordUserTimelineIds(User user, List<Tweet> tweets) async {
-    _log.fine("recording user timeline ids for ${user.screenName}");
+  Future<bool> recordUserTimelineIds(int userId, List<Tweet> tweets) async {
+    _log.fine("recording user timeline ids for $userId");
 
     try {
       final ids = tweets.map((tweet) => tweet.id).toList();
 
-      await userTimelineStore.record(user.id).put(db, ids);
+      await userTimelineStore.record(userId).put(db, ids);
 
       _log.fine("recorded ${ids.length} user timeline ids");
       return true;
@@ -69,36 +69,51 @@ class TimelineDatabase extends HarpyDatabase {
   Future<List<Tweet>> findHomeTimelineTweets() async {
     _log.fine("finding home timeline tweets");
 
-    final record = await homeTimelineStore.findFirst(
-      db,
-      finder: Finder(filter: Filter.byKey("ids")),
-    );
+    List<int> ids;
 
-    final ids = record?.value ?? <int>[];
+    try {
+      final RecordSnapshot<String, List> record =
+          await homeTimelineStore.findFirst(
+        db,
+        finder: Finder(filter: Filter.byKey("ids")),
+      );
 
-    _log.fine("found ${ids.length} home timeline ids");
+      ids = record?.value?.cast<int>() ?? <int>[];
+
+      _log.fine("found ${ids.length} home timeline ids");
+    } catch (e, st) {
+      _log.severe("exception while finding home timeline ids", e, st);
+      return <Tweet>[];
+    }
 
     if (ids.isNotEmpty) {
       return tweetDatabase.findTweets(ids);
     } else {
-      return [];
+      return <Tweet>[];
     }
   }
 
-  /// Returns the timeline tweets for the [user] by retrieving the cached
+  /// Returns the timeline tweets for the [userId] by retrieving the cached
   /// user timeline ids and finding the corresponding tweets in the
   /// [TweetDatabase].
-  Future<List<Tweet>> findUserTimelineTweets(User user) async {
+  Future<List<Tweet>> findUserTimelineTweets(int userId) async {
     _log.fine("finding user timeline tweets");
 
-    final record = await userTimelineStore.findFirst(
-      db,
-      finder: Finder(filter: Filter.byKey(user.id)),
-    );
+    List<int> ids;
 
-    final ids = record?.value ?? <int>[];
+    try {
+      final record = await userTimelineStore.findFirst(
+        db,
+        finder: Finder(filter: Filter.byKey(userId)),
+      );
 
-    _log.fine("found ${ids.length} user timeline ids");
+      ids = record?.value?.cast<int>() ?? <int>[];
+
+      _log.fine("found ${ids.length} user timeline ids");
+    } catch (e, st) {
+      _log.severe("exception while finding user timeline ids", e, st);
+      return <Tweet>[];
+    }
 
     if (ids.isNotEmpty) {
       return tweetDatabase.findTweets(ids);
