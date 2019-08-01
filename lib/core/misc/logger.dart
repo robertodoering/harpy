@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:logs/logs.dart';
 
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
+
+  // show network traffic logs in the dev tools' logging view
+  Log('http').enabled = true;
 
   Logger.root.onRecord.listen((rec) {
     // ignore sembast logger
@@ -17,17 +22,17 @@ void initLogger({String prefix}) {
         "${rec.loggerName}$separator"
         "${_colored(rec.message, color)}";
 
-    print(logString);
+    debugPrint(logString);
 
     if (rec.error != null) {
-      print(_colored("----------------", color));
-      print(_colored("error", color));
-      print(rec.error);
-      print(_colored("----------------", color));
+      debugPrint(_colored("----------------", color));
+      debugPrint(_colored("error", color));
+      debugPrint(rec.error);
+      debugPrint(_colored("----------------", color));
       if (rec.stackTrace != null) {
-        print(_colored("stack trace", color));
-        print(rec.stackTrace);
-        print(_colored("----------------", color));
+        debugPrint(_colored("stack trace", color));
+        debugPrint(rec.stackTrace.toString());
+        debugPrint(_colored("----------------", color));
       }
     }
   });
