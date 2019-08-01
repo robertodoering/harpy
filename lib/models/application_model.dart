@@ -175,6 +175,7 @@ class ApplicationModel extends ChangeNotifier {
     await Future.wait([
       tweetDatabase.initialize(),
       timelineDatabase.initialize(),
+      userDatabase.initialize(),
     ]);
   }
 }
