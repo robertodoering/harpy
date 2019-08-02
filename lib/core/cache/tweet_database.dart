@@ -88,10 +88,11 @@ class TweetDatabase extends HarpyDatabase {
         ),
       );
 
-      final List<Tweet> tweets = await compute<
-          List<RecordSnapshot<int, Map<String, dynamic>>>, List<Tweet>>(
+      final values = records.map((record) => record.value).toList();
+
+      final tweets = await compute<List<Map<String, dynamic>>, List<Tweet>>(
         _handleTweetListDeserialization,
-        records,
+        values,
       );
 
       _log.fine("found ${tweets.length} tweets");
@@ -130,7 +131,7 @@ Map<String, dynamic> _handleTweetSerialization(Tweet tweet) {
 }
 
 List<Tweet> _handleTweetListDeserialization(
-  List<RecordSnapshot<int, Map<String, dynamic>>> records,
+  List<Map<String, dynamic>> tweetsJson,
 ) {
-  return records.map((record) => Tweet.fromJson(record.value)).toList();
+  return tweetsJson.map((tweetJson) => Tweet.fromJson(tweetJson)).toList();
 }

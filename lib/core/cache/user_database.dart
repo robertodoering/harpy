@@ -55,10 +55,11 @@ class UserDatabase extends HarpyDatabase {
       );
 
       if (record != null) {
-        final User user =
-            await compute<RecordSnapshot<int, Map<String, dynamic>>, User>(
+        final userJson = record.value;
+
+        final User user = await compute<Map<String, dynamic>, User>(
           _handleUserDeserialization,
-          record,
+          userJson,
         );
 
         _log.fine("found user ${user.name}");
@@ -77,8 +78,6 @@ Map<String, dynamic> _handleUserSerialization(User user) {
   return toPrimitiveJson(user.toJson());
 }
 
-User _handleUserDeserialization(
-  RecordSnapshot<int, Map<String, dynamic>> record,
-) {
-  return User.fromJson(record.value);
+User _handleUserDeserialization(Map<String, dynamic> userJson) {
+  return User.fromJson(userJson);
 }
