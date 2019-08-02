@@ -2,21 +2,7 @@ import 'package:harpy/core/utils/string_utils.dart';
 import 'package:test_api/test_api.dart';
 
 void main() {
-  test("fillStringToLength with default filler", () {
-    final String result = fillStringToLength("123", 5);
-    expect(result, matches("123  "));
-  });
-
-  test("fillStringToLength with custom filler", () {
-    final String result = fillStringToLength("123", 5, filler: "-");
-    expect(result, matches("123--"));
-  });
-
-  test("fillStringToLength with invalid custom filler", () {
-    expect(() => fillStringToLength("123", 5, filler: "--"), throwsException);
-  });
-
-  test("formatTwitterDateString", () {
+  test("Format twitter date string removes the timezone", () {
     const testData = "Thu Apr 06 15:24:15 +0000 2017";
 
     const expectedResult = "Apr 06 15:24:15 2017";
@@ -24,23 +10,7 @@ void main() {
     expect(actualResult, expectedResult);
   });
 
-  test("explodeListToSeparatedString multiple strings", () {
-    final testData = <String>["1", "3", "5"];
-
-    const String expectedResult = "1,3,5";
-    final String actualResult = explodeListToSeparatedString(testData);
-    expect(actualResult, expectedResult);
-  });
-
-  test("explodeListToSeparatedString single strings", () {
-    final List<String> testData = ["1"];
-
-    const expectedResult = "1";
-    final String actualResult = explodeListToSeparatedString(testData);
-    expect(actualResult, expectedResult);
-  });
-
-  test("appendParamsToUrl", () {
+  test("Append query params to url", () {
     const url = "https://google.com";
     final params = <String, String>{
       "count": "69",
@@ -53,21 +23,21 @@ void main() {
     expect(actual, expected);
   });
 
-  test("formatNumber", () {
-    expect(formatNumber(431), "431");
+  test("Pretty print large numbers", () {
+    expect(prettyPrintNumber(431), "431");
 
-    expect(formatNumber(1234), "1.2K");
+    expect(prettyPrintNumber(1234), "1.2K");
 
-    expect(formatNumber(43219), "43.2K");
+    expect(prettyPrintNumber(43219), "43.2K");
 
-    expect(formatNumber(999999), "999.9K");
+    expect(prettyPrintNumber(999999), "999.9K");
 
-    expect(formatNumber(5500000), "5.5M");
+    expect(prettyPrintNumber(5500000), "5.5M");
 
-    expect(formatNumber(77000001), "77.0M");
+    expect(prettyPrintNumber(77000001), "77.0M");
   });
 
-  test("prettyPrintDurationDifference", () {
+  test("Pretty print a duration difference", () {
     const timestamp = 1557836948;
 
     final DateTime now = DateTime.fromMillisecondsSinceEpoch(

@@ -1,22 +1,6 @@
 import 'package:intl/intl.dart';
 
-String fillStringToLength(String data, int length, {String filler = " "}) {
-  if (filler.length > 1) {
-    throw Exception("Filler can't be more then one character");
-  }
-
-  final int diff = length - data.length;
-
-  if (diff < 0 || diff == 0) {
-    return data;
-  }
-
-  for (int i = 0; i < diff * 2; i++) {
-    data += filler;
-  }
-  return data;
-}
-
+/// Removes the timezone to allow [DateTime] to parse the string.
 String formatTwitterDateString(String twitterDateString) {
   final List sanitized = twitterDateString.split(" ")
     ..removeAt(0)
@@ -25,17 +9,7 @@ String formatTwitterDateString(String twitterDateString) {
   return sanitized.join(" ");
 }
 
-String explodeListToSeparatedString(List<String> list,
-    {String separator = ","}) {
-  String result = "";
-
-  list.forEach((currentString) {
-    result += "$currentString$separator";
-  });
-
-  return result.replaceRange(result.length - 1, result.length, "");
-}
-
+// todo: use Uri class instead
 String appendParamsToUrl(String url, Map<String, String> params) {
   if (params == null || params.isEmpty) {
     return url;
@@ -68,7 +42,8 @@ String parseHtmlEntities(String source) {
   return source;
 }
 
-String formatNumber(int number) {
+/// Pretty prints a large number to make it easier to read.
+String prettyPrintNumber(int number) {
   String formatted = number.toString();
 
   if (number >= 100000000) {
@@ -88,6 +63,7 @@ String formatNumber(int number) {
   return formatted;
 }
 
+/// Gets the time difference of the [createdAt] time to [DateTime.now].
 String tweetTimeDifference(DateTime createdAt) {
   final Duration timeDifference = DateTime.now().difference(createdAt);
   if (timeDifference.inHours <= 24) {
@@ -99,6 +75,8 @@ String tweetTimeDifference(DateTime createdAt) {
   }
 }
 
+/// Pretty prints a duration difference as long as the difference is smaller
+/// than an hour.
 String prettyPrintDurationDifference(Duration difference) {
   final int minutes = difference.inMinutes;
   final int seconds = difference.inSeconds;

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/core/utils/file_utils.dart';
 
 void main() {
-  test("get valid file extension", () {
+  test("Get valid file extension", () {
     const path = "/storage/emulated/0/Images/IMG-1337.jpg";
 
     final extension = getFileExtension(path);
@@ -10,7 +10,7 @@ void main() {
     expect(extension, "jpg");
   });
 
-  test("invalid file extension returns null", () {
+  test("Invalid file extension returns null", () {
     const path = "/storage/emulated/0/Images/IMG-1337";
 
     final extension = getFileExtension(path);

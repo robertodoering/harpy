@@ -18,12 +18,7 @@ import 'package:provider/provider.dart';
 /// The model for a single [Tweet].
 ///
 /// Handles changes on the [Tweet] including actions (favorite, retweet,
-/// translate, ...) and rebuilds the [Consumer] when the state changes.
-///
-/// Changes to the [Tweet] always changes the [homeTimelineCache] if the [Tweet]
-/// exists in it.
-/// It will also update the [Tweet] in the [userTimelineCache] if it is not
-/// `null`.
+/// translate, ...) and rebuilds the listeners when the state changes.
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
@@ -69,10 +64,10 @@ class TweetModel extends ChangeNotifier {
   bool get hasMedia => tweet.extendedEntities?.media != null;
 
   /// A formatted number of the retweet count.
-  String get retweetCount => "${formatNumber(tweet.retweetCount)}";
+  String get retweetCount => "${prettyPrintNumber(tweet.retweetCount)}";
 
   /// A formatted number of the favorite count.
-  String get favoriteCount => "${formatNumber(tweet.favoriteCount)}";
+  String get favoriteCount => "${prettyPrintNumber(tweet.favoriteCount)}";
 
   /// @username · time since tweet in hours
   String get screenNameAndTime {

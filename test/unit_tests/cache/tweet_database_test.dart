@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
+import 'package:harpy/core/utils/json_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sembast/sembast.dart';
 
@@ -48,8 +49,12 @@ void main() {
       finder: anyNamed("finder"),
     )).thenAnswer((_) => Future.value(mockRecordSnapshots));
 
-    when(mockRecordSnapshots[0].value).thenReturn(tweets[0].toJson());
-    when(mockRecordSnapshots[1].value).thenReturn(tweets[1].toJson());
+    when(mockRecordSnapshots[0].value).thenReturn(
+      toPrimitiveJson(tweets[0].toJson()),
+    );
+    when(mockRecordSnapshots[1].value).thenReturn(
+      toPrimitiveJson(tweets[1].toJson()),
+    );
 
     final List<Tweet> foundTweets = await database.findTweets([69, 1337]);
 
