@@ -15,14 +15,6 @@ class TweetQuote extends StatelessWidget {
       return Container();
     }
 
-    final quoteTweetModel = TweetModel(
-      originalTweet: model.quote,
-      homeTimelineModel: model.homeTimelineModel,
-      userTimelineModel: model.userTimelineModel,
-    )
-      ..quoted = true
-      ..reduceText();
-
     return Container(
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(8),
@@ -31,25 +23,31 @@ class TweetQuote extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: ChangeNotifierProvider<TweetModel>(
-        builder: (_) => quoteTweetModel,
-        child: _QuoteContent(model),
+        builder: (_) => TweetModel(
+          originalTweet: model.quote,
+          homeTimelineModel: model.homeTimelineModel,
+          userTimelineModel: model.userTimelineModel,
+        )
+          ..quoted = true
+          ..reduceText(),
+        child: const _QuoteContent(),
       ),
     );
   }
 }
 
 class _QuoteContent extends StatelessWidget {
-  const _QuoteContent(this.model);
-
-  final TweetModel model;
+  const _QuoteContent();
 
   @override
   Widget build(BuildContext context) {
+    final quoteTweetModel = TweetModel.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        TweetNameColumn(model),
-        TweetText(model),
+        TweetNameColumn(quoteTweetModel),
+        TweetText(quoteTweetModel),
       ],
     );
   }
