@@ -5,6 +5,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/harpy.dart';
 
 /// The model for replies to a specific [tweet].
 ///
@@ -12,15 +13,14 @@ import 'package:harpy/api/twitter/services/tweet_service.dart';
 class TweetRepliesModel extends ChangeNotifier {
   TweetRepliesModel({
     @required this.tweet,
-    @required this.tweetService,
-    @required this.tweetSearchService,
   }) {
     _loadReplies();
   }
 
   final Tweet tweet;
-  final TweetService tweetService;
-  final TweetSearchService tweetSearchService;
+
+  final TweetService tweetService = app<TweetService>();
+  final TweetSearchService tweetSearchService = app<TweetSearchService>();
 
   /// The parent tweet if the [tweet] itself is a reply.
   ///

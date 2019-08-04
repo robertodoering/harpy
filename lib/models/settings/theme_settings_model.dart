@@ -4,17 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 /// The [ThemeSettingsModel] descendant sits above the [MaterialApp] and
 /// rebuilds the app whenever the [Theme] changes.
 class ThemeSettingsModel extends ChangeNotifier {
-  ThemeSettingsModel({
-    @required this.harpyPrefs,
-  });
-
-  final HarpyPrefs harpyPrefs;
+  final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
 
   static ThemeSettingsModel of(BuildContext context) {
     return Provider.of<ThemeSettingsModel>(context);
@@ -122,6 +119,12 @@ class ThemeSettingsModel extends ChangeNotifier {
       }
     }
 
+    notifyListeners();
+  }
+
+  /// Resets the [harpyTheme] to the default theme.
+  void resetHarpyTheme() {
+    harpyTheme = PredefinedThemes.themes.first;
     notifyListeners();
   }
 

@@ -3,20 +3,17 @@ import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/core/cache/user_cache.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 class UserProfileModel extends ChangeNotifier {
   UserProfileModel({
-    @required this.userService,
-    @required this.userCache,
     @required this.loginModel,
     this.user,
     String userId,
-  })  : assert(userService != null),
-        assert(userCache != null),
-        assert(loginModel != null),
+  })  : assert(loginModel != null),
         assert(user != null || userId != null) {
     if (user != null) {
       loadingUser = false;
@@ -25,15 +22,16 @@ class UserProfileModel extends ChangeNotifier {
     }
   }
 
-  final UserService userService;
-  final UserCache userCache;
-  final LoginModel loginModel;
+  final UserService userService = app<UserService>();
+  final UserCache userCache = app<UserCache>();
 
-  static final Logger _log = Logger("UserProfileModel");
+  final LoginModel loginModel;
 
   static UserProfileModel of(BuildContext context) {
     return Provider.of<UserProfileModel>(context);
   }
+
+  static final Logger _log = Logger("UserProfileModel");
 
   /// The [user] for this [UserProfileModel].
   User user;

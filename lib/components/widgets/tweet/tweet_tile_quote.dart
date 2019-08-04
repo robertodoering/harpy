@@ -17,12 +17,8 @@ class TweetQuote extends StatelessWidget {
 
     final quoteTweetModel = TweetModel(
       originalTweet: model.quote,
-      homeTimelineCache: model.homeTimelineCache,
-      userTimelineCache: model.userTimelineCache,
       homeTimelineModel: model.homeTimelineModel,
       userTimelineModel: model.userTimelineModel,
-      tweetService: model.tweetService,
-      translationService: model.translationService,
     )
       ..quoted = true
       ..reduceText();
@@ -36,17 +32,19 @@ class TweetQuote extends StatelessWidget {
       ),
       child: ChangeNotifierProvider<TweetModel>(
         builder: (_) => quoteTweetModel,
-        child: _QuoteContent(),
+        child: _QuoteContent(model),
       ),
     );
   }
 }
 
 class _QuoteContent extends StatelessWidget {
+  const _QuoteContent(this.model);
+
+  final TweetModel model;
+
   @override
   Widget build(BuildContext context) {
-    final model = TweetModel.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

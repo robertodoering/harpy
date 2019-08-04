@@ -5,6 +5,7 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -21,9 +22,7 @@ class TweetCacheData {
 }
 
 class TweetCache {
-  TweetCache({
-    @required this.directoryService,
-  }) : assert(directoryService != null);
+  TweetCache() : directoryService = app<DirectoryService>();
 
   /// Constructs a [TweetCache] from the [TweetCacheData].
   ///

@@ -3,15 +3,11 @@ import 'dart:io';
 
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/misc/directory_service.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 class UserCache {
-  UserCache({
-    @required this.directoryService,
-  });
-
-  final DirectoryService directoryService;
+  final DirectoryService directoryService = app<DirectoryService>();
 
   static final Logger _log = Logger("UserCache");
 

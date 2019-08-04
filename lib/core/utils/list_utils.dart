@@ -4,15 +4,15 @@ List<List<T>> splitList<T>(List<T> list, int length) {
   Iterable<T> chunk;
 
   do {
-    final List<T> remainingBytes = list.sublist(
+    final List<T> remainingEntries = list.sublist(
       chunks.length * length,
     );
 
-    if (remainingBytes.isEmpty) {
+    if (remainingEntries.isEmpty) {
       break;
     }
 
-    chunk = remainingBytes.take(length);
+    chunk = remainingEntries.take(length);
     chunks.add(List<T>.from(chunk));
   } while (chunk.length == length);
 

@@ -12,42 +12,31 @@ import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 import 'package:yaml/yaml.dart';
 
 /// The [ApplicationModel] handles initialization in the [EntryScreen] when
 /// starting the app.
+///
+/// todo: doesnt need to be a change notifier
 class ApplicationModel extends ChangeNotifier {
   ApplicationModel({
-    @required this.directoryService,
-    @required this.homeTimelineCache,
-    @required this.userTimelineCache,
-    @required this.twitterClient,
-    @required this.harpyPrefs,
-    @required this.connectivityService,
     @required this.themeSettingsModel,
     @required this.loginModel,
-  })  : assert(directoryService != null),
-        assert(homeTimelineCache != null),
-        assert(userTimelineCache != null),
-        assert(twitterClient != null),
-        assert(harpyPrefs != null),
-        assert(connectivityService != null),
-        assert(themeSettingsModel != null),
-        assert(loginModel != null) {
+  }) {
     _initialize();
   }
 
-  final DirectoryService directoryService;
-  final HomeTimelineCache homeTimelineCache;
-  final UserTimelineCache userTimelineCache;
-  final TwitterClient twitterClient;
-  final HarpyPrefs harpyPrefs;
-  final ConnectivityService connectivityService;
+  final DirectoryService directoryService = app<DirectoryService>();
+  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
+  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
+  final TwitterClient twitterClient = app<TwitterClient>();
+  final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
+  final ConnectivityService connectivityService = app<ConnectivityService>();
   final ThemeSettingsModel themeSettingsModel;
   final LoginModel loginModel;
 

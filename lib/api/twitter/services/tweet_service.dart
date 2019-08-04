@@ -10,27 +10,18 @@ import 'package:harpy/core/cache/user_timeline_cache.dart';
 import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/isolate_work.dart';
 import 'package:harpy/core/misc/json_mapper.dart';
+import 'package:harpy/harpy.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 final Logger _log = Logger("TweetService");
 
 /// Provides methods for making tweet and timeline related requests.
 class TweetService {
-  TweetService({
-    @required this.directoryService,
-    @required this.twitterClient,
-    @required this.homeTimelineCache,
-    @required this.userTimelineCache,
-  })  : assert(directoryService != null),
-        assert(twitterClient != null),
-        assert(homeTimelineCache != null),
-        assert(userTimelineCache != null);
-
-  final DirectoryService directoryService;
-  final TwitterClient twitterClient;
-  final HomeTimelineCache homeTimelineCache;
-  final UserTimelineCache userTimelineCache;
+  final DirectoryService directoryService = app<DirectoryService>();
+  final TwitterClient twitterClient = app<TwitterClient>();
+  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
+  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
 
   /// Updates the current status of the authenticated user, also known as
   /// tweeting.
@@ -149,37 +140,37 @@ class TweetService {
   }
 
   /// Retweets the tweet with the [tweetId].
-  Future<void> retweet(String tweetId) async {
+  Future<Response> retweet(String tweetId) async {
     _log.fine("retweeting $tweetId");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/statuses/retweet/$tweetId.json",
     );
   }
 
   /// Unretweets the tweet with the [tweetId].
-  Future<void> unretweet(String tweetId) async {
+  Future<Response> unretweet(String tweetId) async {
     _log.fine("unretweet $tweetId");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/statuses/unretweet/$tweetId.json",
     );
   }
 
   /// Favorites the tweet with the [tweetId].
-  Future<void> favorite(String tweetId) async {
+  Future<Response> favorite(String tweetId) async {
     _log.fine("favorite $tweetId");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/favorites/create.json?id=$tweetId",
     );
   }
 
   /// Unfavorites the tweet with the [tweetId].
-  Future<void> unfavorite(String tweetId) async {
+  Future<Response> unfavorite(String tweetId) async {
     _log.fine("unfavorite $tweetId");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/favorites/destroy.json?id=$tweetId",
     );
   }

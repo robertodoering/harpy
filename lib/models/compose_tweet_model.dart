@@ -6,21 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/misc/flushbar.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/file_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 /// The model for composing a new tweet.
 class ComposeTweetModel extends ChangeNotifier {
   ComposeTweetModel({
-    @required this.tweetService,
-    @required this.mediaService,
     this.onTweeted,
-  })  : assert(tweetService != null),
-        assert(mediaService != null);
+  });
 
-  final TweetService tweetService;
-  final MediaService mediaService;
+  final TweetService tweetService = app<TweetService>();
+  final MediaService mediaService = app<MediaService>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   static final Logger _log = Logger("ComposeTweetModel");
 
@@ -101,11 +100,7 @@ class ComposeTweetModel extends ChangeNotifier {
         }
       }
 
-      // todo: show error message
-//      showFlushbar(
-//        "Unable to upload media",
-//        type: FlushbarType.error,
-//      );
+      flushbarService.error("Unable to upload media");
 
       _log.warning("unable to upload at least one media file");
     }
@@ -124,10 +119,9 @@ class ComposeTweetModel extends ChangeNotifier {
       if (addMediaFileToList(media)) {
         notifyListeners();
       } else {
-        showFlushbar(
+        flushbarService.warning(
           "Unable to add media\n"
           "Only 4 images or 1 gif / video allowed",
-          type: FlushbarType.warning,
         );
       }
     }

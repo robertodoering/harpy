@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flushbar/flushbar.dart';
-import 'package:harpy/core/misc/flushbar.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -15,10 +16,12 @@ Logger _log = Logger("Error handler");
 /// If the error hasn't been handled and [backupErrorMessage] is set, the
 /// [backupErrorMessage] is shown in a [Flushbar].
 void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
+  final flushbarService = app<FlushbarService>();
+
   _log.fine("handling error: $error");
 
   if (error is String) {
-    showFlushbar(error, type: FlushbarType.error);
+    flushbarService.error(error);
     return;
   }
 
@@ -32,7 +35,7 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
           ? "Rate limit reached.\nPlease try again in $limitReset."
           : "Rate limit reached.\nPlease try again later.";
 
-      showFlushbar(message, type: FlushbarType.error);
+      flushbarService.error(message);
       return;
     }
 
@@ -42,20 +45,19 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
   }
 
   if (error is TimeoutException) {
-    showFlushbar("Request timed out", type: FlushbarType.error);
+    flushbarService.error("Request timed out");
     return;
   }
 
   if (backupErrorMessage != null) {
-    showFlushbar(backupErrorMessage, type: FlushbarType.error);
+    flushbarService.error(backupErrorMessage);
     return;
   }
 
   _log.warning("error not handled");
 
-  // todo: maybe show "unexpected error occurred" flushbar instead of showing
-  //  the error dialog
-//  Catcher.reportCheckedError(error, null);
+  // todo: maybe allow to report the error through a flushbar action
+  flushbarService.error("An unexpected error occurred");
 }
 
 bool _reachedRateLimit(Response response) => response.statusCode == 429;

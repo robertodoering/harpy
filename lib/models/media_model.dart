@@ -4,6 +4,7 @@ import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/api/twitter/data/video_info.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -16,11 +17,9 @@ class MediaModel extends ChangeNotifier {
     @required this.tweetModel,
     @required this.homeTimelineModel,
     @required this.mediaSettingsModel,
-    @required this.connectivityService,
   })  : assert(tweetModel != null),
         assert(homeTimelineModel != null),
-        assert(mediaSettingsModel != null),
-        assert(connectivityService != null) {
+        assert(mediaSettingsModel != null) {
     // use wifi media quality when connected to a wifi, else the non wifi media
     // quality
     mediaQuality = connectivityService.wifi
@@ -28,16 +27,17 @@ class MediaModel extends ChangeNotifier {
         : mediaSettingsModel.nonWifiMediaQuality;
   }
 
+  final ConnectivityService connectivityService = app<ConnectivityService>();
+
   final TweetModel tweetModel;
   final HomeTimelineModel homeTimelineModel;
   final MediaSettingsModel mediaSettingsModel;
-  final ConnectivityService connectivityService;
-
-  static final Logger _log = Logger("MediaModel");
 
   static MediaModel of(BuildContext context) {
     return Provider.of<MediaModel>(context);
   }
+
+  static final Logger _log = Logger("MediaModel");
 
   /// The selected quality for the media.
   ///

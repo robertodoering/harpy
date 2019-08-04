@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
-import 'package:harpy/components/widgets/shared/cache_provider.dart';
-import 'package:harpy/components/widgets/shared/service_provider.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
 import 'package:provider/provider.dart';
 
-class TweetTile extends StatefulWidget {
+class TweetTile extends StatelessWidget {
   const TweetTile({
     @required this.tweet,
     @required this.content,
@@ -19,17 +17,8 @@ class TweetTile extends StatefulWidget {
   final Widget content;
 
   @override
-  TweetTileState createState() => TweetTileState();
-}
-
-class TweetTileState extends State<TweetTile> {
-  TweetModel tweetModel;
-
-  @override
   Widget build(BuildContext context) {
-    final serviceProvider = ServiceProvider.of(context);
-    final cacheProvider = CacheProvider.of(context);
-
+    // todo: remove timeline dependencies in tweet model
     final homeTimelineModel = HomeTimelineModel.of(context);
     UserTimelineModel userTimelineModel;
     try {
@@ -38,28 +27,15 @@ class TweetTileState extends State<TweetTile> {
       // ignore
     }
 
-    // create the tweet model once
-    tweetModel ??= TweetModel(
-      originalTweet: widget.tweet,
-      homeTimelineCache: cacheProvider.homeTimelineCache,
-      userTimelineCache: cacheProvider.userTimelineCache,
-      homeTimelineModel: homeTimelineModel,
-      userTimelineModel: userTimelineModel,
-      tweetService: serviceProvider.data.tweetService,
-      translationService: serviceProvider.data.translationService,
-    );
-
     return ChangeNotifierProvider<TweetModel>(
-      builder: (_) => tweetModel,
+      builder: (_) => TweetModel(
+        originalTweet: tweet,
+        homeTimelineModel: homeTimelineModel,
+        userTimelineModel: userTimelineModel,
+      ),
       child: SlideFadeInAnimation(
         duration: const Duration(milliseconds: 500),
-        child: Consumer<TweetModel>(
-          builder: (context, model, _) {
-            // the content of the tweet tile that rebuilds when the tweet
-            // model notifies its listeners
-            return widget.content;
-          },
-        ),
+        child: content,
       ),
     );
   }

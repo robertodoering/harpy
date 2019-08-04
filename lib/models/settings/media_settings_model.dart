@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 class MediaSettingsModel extends ChangeNotifier {
-  MediaSettingsModel({
-    @required this.harpyPrefs,
-    @required this.connectivityService,
-  })  : assert(harpyPrefs != null),
-        assert(connectivityService != null);
-
-  final HarpyPrefs harpyPrefs;
-  final ConnectivityService connectivityService;
+  final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
+  final ConnectivityService connectivityService = app<ConnectivityService>();
 
   static MediaSettingsModel of(BuildContext context) {
     return Provider.of<MediaSettingsModel>(context);

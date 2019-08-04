@@ -7,7 +7,7 @@ import 'package:yaml/yaml.dart';
 
 /// Wraps the [Catcher] with custom debug and release options.
 ///
-/// [Catcher] calls [runApp] with [child] as the root app.
+/// [Catcher] calls [runApp] with the [child] as the root app.
 class HarpyCatcher {
   HarpyCatcher(Widget child) {
     _setup(child);

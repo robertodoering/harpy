@@ -9,9 +9,9 @@ import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/misc/flushbar.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:logging/logging.dart';
@@ -20,19 +20,17 @@ import 'package:provider/provider.dart';
 class LoginModel extends ChangeNotifier {
   LoginModel({
     @required this.homeTimelineModel,
-    @required this.userService,
-    @required this.userCache,
-  })  : assert(homeTimelineModel != null),
-        assert(userService != null),
-        assert(userCache != null);
+  });
+
+  final UserService userService = app<UserService>();
+  final UserCache userCache = app<UserCache>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   final HomeTimelineModel homeTimelineModel;
-  final UserService userService;
-  final UserCache userCache;
 
   ApplicationModel applicationModel;
 
-  static LoginModel of(BuildContext context) {
+  static LoginModel of(context) {
     return Provider.of<LoginModel>(context);
   }
 
@@ -106,7 +104,7 @@ class LoginModel extends ChangeNotifier {
 
   void _onLoginError() {
     HarpyNavigator.pushReplacement(LoginScreen());
-    showFlushbar("An error occurred during login.", type: FlushbarType.error);
+    flushbarService.error("An error occurred during login.");
   }
 
   /// Logout using the native twitter sdk.
@@ -115,12 +113,14 @@ class LoginModel extends ChangeNotifier {
 
     await applicationModel.twitterLogin.logOut();
 
-    // reset to default theme
-    applicationModel.themeSettingsModel.harpyTheme =
-        PredefinedThemes.themes.first;
-
     applicationModel.twitterSession = null;
     loggedInUser = null;
+
+    // wait for the transition before resetting the theme
+    Future.delayed(const Duration(milliseconds: 300)).then((_) {
+      print("resetting now!");
+      applicationModel.themeSettingsModel.resetHarpyTheme();
+    });
   }
 
   /// Initializes the logged in user and the home timeline tweets.

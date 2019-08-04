@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,15 @@ class CustomThemeModel extends ChangeNotifier {
     }
   }
 
+  final FlushbarService flushbarService = app<FlushbarService>();
+
   final ThemeSettingsModel themeSettingsModel;
+
+  /// The theme to edit.
+  final HarpyThemeData editingThemeData;
+
+  /// The id of the custom theme if one is being edited.
+  final int editingThemeId;
 
   static CustomThemeModel of(BuildContext context) {
     return Provider.of<CustomThemeModel>(context);
@@ -34,20 +44,11 @@ class CustomThemeModel extends ChangeNotifier {
   /// Initialized with the data from the active theme.
   HarpyThemeData customThemeData;
 
-  /// The theme to edit.
-  final HarpyThemeData editingThemeData;
-
-  /// The id of the custom theme if one is being edited.
-  final int editingThemeId;
-
   /// Returns true if a theme is being edited.
   bool get editingTheme => editingThemeId != null && editingThemeData != null;
 
-  /// `true` if the name only contains valid characters.
-  bool validName = true;
-
-  /// `true` of a different custom theme already exists with the same name.
-  bool existingName = false;
+  /// Gets the custom theme as a [HarpyTheme].
+  HarpyTheme get harpyTheme => HarpyTheme.fromData(customThemeData);
 
   /// Returns the error text if an error exists, otherwise `null`.
   String errorText() {
@@ -55,25 +56,39 @@ class CustomThemeModel extends ChangeNotifier {
       return "Name can't be empty";
     }
 
-    if (!validName) {
+    if (!_validateName()) {
       return "Name contains invalid characters";
     }
 
-    if (existingName) {
+    if (_existingName()) {
       return "Theme with name ${customThemeData.name} already exists";
     }
 
     return null;
   }
 
-  HarpyTheme get harpyTheme => HarpyTheme.fromData(customThemeData);
+  /// Returns `true` and saves the new custom theme or returns `false` and shows
+  /// an error if the custom theme has an invalid name.
+  bool saveTheme() {
+    final text = errorText();
 
-  void changeName(String name) {
-    customThemeData.name = name;
+    if (errorText != null) {
+      flushbarService.error(text);
+      return false;
+    }
 
-    // validate name
-    validName = _validateName();
-    existingName = _existingName();
+    if (editingTheme) {
+      // edited theme
+      themeSettingsModel.updateCustomTheme(
+        customThemeData,
+        editingThemeId,
+      );
+    } else {
+      // new theme
+      themeSettingsModel.saveNewCustomTheme(customThemeData);
+    }
+
+    return true;
   }
 
   void changeAccentColor(Color color) {
