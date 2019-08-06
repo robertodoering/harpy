@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:logs/logs.dart';
 
@@ -22,17 +21,17 @@ void initLogger({String prefix}) {
         "${rec.loggerName}$separator"
         "${_colored(rec.message, color)}";
 
-    debugPrint(logString);
+    print(logString);
 
     if (rec.error != null) {
-      debugPrint(_colored("----------------", color));
-      debugPrint(_colored("error", color));
-      debugPrint(rec.error);
-      debugPrint(_colored("----------------", color));
+      print(_colored("----------------", color));
+      print(_colored("error", color));
+      print(rec.error);
+      print(_colored("----------------", color));
       if (rec.stackTrace != null) {
-        debugPrint(_colored("stack trace", color));
-        debugPrint(rec.stackTrace.toString());
-        debugPrint(_colored("----------------", color));
+        print(_colored("stack trace", color));
+        print(rec.stackTrace.toString());
+        print(_colored("----------------", color));
       }
     }
   });
