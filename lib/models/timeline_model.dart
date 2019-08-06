@@ -59,7 +59,7 @@ abstract class TimelineModel extends ChangeNotifier {
     } else {
       // if cached tweets exist update tweets but dont wait for it
       _log.fine("got cached tweets");
-      tweets = cachedTweets;
+      tweets = sortTweetReplies(cachedTweets);
       loadingInitialTweets = false;
       updateTweets();
     }
