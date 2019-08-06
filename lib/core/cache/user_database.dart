@@ -14,7 +14,7 @@ class UserDatabase extends HarpyDatabase {
   final StoreRef<int, Map<String, dynamic>> store;
 
   @override
-  String get name => "user_db/$subDirectory";
+  String get name => "user_db";
 
   static final Logger _log = Logger("UserDatabase");
 
@@ -31,7 +31,11 @@ class UserDatabase extends HarpyDatabase {
         user,
       );
 
-      await store.record(user.id).put(db, userJson);
+      await record(
+        store: store,
+        key: user.id,
+        data: userJson,
+      );
 
       _log.fine("user recorded");
 
@@ -49,15 +53,13 @@ class UserDatabase extends HarpyDatabase {
     _log.fine("finding user with id $userId");
 
     try {
-      final record = await store.findFirst(
-        db,
+      final userJson = await findFirst(
+        store: store,
         finder: Finder(filter: Filter.byKey(userId)),
       );
 
-      if (record != null) {
-        final userJson = record.value;
-
-        final User user = await compute<Map<String, dynamic>, User>(
+      if (userJson != null) {
+        final User user = await compute<Map, User>(
           _handleUserDeserialization,
           userJson,
         );
@@ -78,6 +80,6 @@ Map<String, dynamic> _handleUserSerialization(User user) {
   return toPrimitiveJson(user.toJson());
 }
 
-User _handleUserDeserialization(Map<String, dynamic> userJson) {
+User _handleUserDeserialization(dynamic userJson) {
   return User.fromJson(userJson);
 }

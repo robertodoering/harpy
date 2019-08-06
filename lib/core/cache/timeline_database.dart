@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/core/cache/database.dart';
@@ -22,7 +23,7 @@ class TimelineDatabase extends HarpyDatabase {
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   @override
-  String get name => "timeline_db/$subDirectory";
+  String get name => "timeline_db";
 
   static final Logger _log = Logger("TimelineDatabase");
 
@@ -32,17 +33,11 @@ class TimelineDatabase extends HarpyDatabase {
   Future<bool> recordHomeTimelineIds(List<Tweet> tweets) async {
     _log.fine("recording home timeline ids");
 
-    try {
-      final ids = tweets.map((tweet) => tweet.id).toList();
-
-      await homeTimelineStore.record("ids").put(db, ids);
-
-      _log.fine("recorded ${ids.length} home timeline ids");
-      return true;
-    } catch (e, st) {
-      _log.severe("exception while recording home timeline ids", e, st);
-      return false;
-    }
+    return _recordsTimelineIds(
+      store: homeTimelineStore,
+      key: "ids",
+      tweets: tweets,
+    );
   }
 
   /// Records the ids of the [tweets] for the [user].
@@ -51,15 +46,31 @@ class TimelineDatabase extends HarpyDatabase {
   Future<bool> recordUserTimelineIds(int userId, List<Tweet> tweets) async {
     _log.fine("recording user timeline ids for $userId");
 
+    return _recordsTimelineIds(
+      store: userTimelineStore,
+      key: userId,
+      tweets: tweets,
+    );
+  }
+
+  Future<bool> _recordsTimelineIds({
+    @required StoreRef store,
+    @required dynamic key,
+    @required List<Tweet> tweets,
+  }) async {
     try {
       final ids = tweets.map((tweet) => tweet.id).toList();
 
-      await userTimelineStore.record(userId).put(db, ids);
+      await record(
+        store: store,
+        key: key,
+        data: ids,
+      );
 
-      _log.fine("recorded ${ids.length} user timeline ids");
+      _log.fine("recorded ${ids.length} timeline ids");
       return true;
     } catch (e, st) {
-      _log.severe("exception while recording user timeline ids", e, st);
+      _log.severe("exception while recording timeline ids", e, st);
       return false;
     }
   }
@@ -69,28 +80,7 @@ class TimelineDatabase extends HarpyDatabase {
   Future<List<Tweet>> findHomeTimelineTweets() async {
     _log.fine("finding home timeline tweets");
 
-    List<int> ids;
-
-    try {
-      final RecordSnapshot<String, List> record =
-          await homeTimelineStore.findFirst(
-        db,
-        finder: Finder(filter: Filter.byKey("ids")),
-      );
-
-      ids = record?.value?.cast<int>() ?? <int>[];
-
-      _log.fine("found ${ids.length} home timeline ids");
-    } catch (e, st) {
-      _log.severe("exception while finding home timeline ids", e, st);
-      return <Tweet>[];
-    }
-
-    if (ids.isNotEmpty) {
-      return tweetDatabase.findTweets(ids);
-    } else {
-      return <Tweet>[];
-    }
+    return _findTimelineTweets(store: homeTimelineStore, key: "ids");
   }
 
   /// Returns the timeline tweets for the [userId] by retrieving the cached
@@ -99,26 +89,33 @@ class TimelineDatabase extends HarpyDatabase {
   Future<List<Tweet>> findUserTimelineTweets(int userId) async {
     _log.fine("finding user timeline tweets");
 
+    return _findTimelineTweets(store: userTimelineStore, key: userId);
+  }
+
+  Future<List<Tweet>> _findTimelineTweets({
+    @required StoreRef store,
+    @required dynamic key,
+  }) async {
     List<int> ids;
 
     try {
-      final record = await userTimelineStore.findFirst(
-        db,
-        finder: Finder(filter: Filter.byKey(userId)),
+      final value = await findFirst(
+        store: store,
+        finder: Finder(filter: Filter.byKey(key)),
       );
 
-      ids = record?.value?.cast<int>() ?? <int>[];
+      ids = value?.cast<int>() ?? <int>[];
 
-      _log.fine("found ${ids.length} user timeline ids");
+      _log.fine("found ${ids.length} timeline ids");
     } catch (e, st) {
-      _log.severe("exception while finding user timeline ids", e, st);
+      _log.severe("exception while finding timeline ids", e, st);
       return <Tweet>[];
     }
 
     if (ids.isNotEmpty) {
       return tweetDatabase.findTweets(ids);
     } else {
-      return [];
+      return <Tweet>[];
     }
   }
 }

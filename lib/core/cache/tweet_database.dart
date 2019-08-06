@@ -14,7 +14,7 @@ class TweetDatabase extends HarpyDatabase {
   final StoreRef<int, Map<String, dynamic>> store;
 
   @override
-  String get name => "tweet_db/$subDirectory";
+  String get name => "tweet_db";
 
   static final Logger _log = Logger("TweetDatabase");
 
@@ -31,7 +31,11 @@ class TweetDatabase extends HarpyDatabase {
         tweet,
       );
 
-      await store.record(tweet.id).put(db, tweetJson);
+      await record(
+        store: store,
+        key: tweet.id,
+        data: tweetJson,
+      );
 
       _log.fine("tweet recorded");
       return true;
@@ -54,14 +58,11 @@ class TweetDatabase extends HarpyDatabase {
         tweets,
       );
 
-      await db.transaction((transaction) async {
-        for (int i = 0; i < tweetJsonList.length; i++) {
-          final Tweet tweet = tweets[i];
-          final Map<String, dynamic> json = tweetJsonList[i];
-
-          await store.record(tweet.id).put(transaction, json);
-        }
-      });
+      await transaction(
+        store: store,
+        keys: tweets.map((tweet) => tweet.id).toList(),
+        dataList: tweetJsonList,
+      );
 
       _log.fine("tweets recorded");
       return true;
@@ -80,17 +81,17 @@ class TweetDatabase extends HarpyDatabase {
     _log.fine("finding ${ids.length} tweets");
 
     try {
-      final records = await store.find(
-        db,
-        finder: Finder(
-          filter: Filter.inList("id", ids),
-          sortOrders: [SortOrder("id", false, true)],
-        ),
+      final finder = Finder(
+        filter: Filter.inList("id", ids),
+        sortOrders: [SortOrder("id", false, true)],
       );
 
-      final values = records.map((record) => record.value).toList();
+      final List values = await find(
+        store: store,
+        finder: finder,
+      );
 
-      final tweets = await compute<List<Map<String, dynamic>>, List<Tweet>>(
+      final tweets = await compute<List, List<Tweet>>(
         _handleTweetListDeserialization,
         values,
       );
@@ -108,17 +109,7 @@ class TweetDatabase extends HarpyDatabase {
   Future<bool> tweetExists(int id) async {
     _log.fine("checking if tweet with id $id exists");
 
-    try {
-      final record = await store.findFirst(
-        db,
-        finder: Finder(filter: Filter.byKey(id)),
-      );
-
-      return record != null;
-    } catch (e, st) {
-      _log.severe("exception while checking if tweet exists", e, st);
-      return false;
-    }
+    return findTweets([id]).then((tweets) => tweets.isNotEmpty);
   }
 }
 
@@ -131,7 +122,7 @@ Map<String, dynamic> _handleTweetSerialization(Tweet tweet) {
 }
 
 List<Tweet> _handleTweetListDeserialization(
-  List<Map<String, dynamic>> tweetsJson,
+  List tweetsJson,
 ) {
   return tweetsJson.map((tweetJson) => Tweet.fromJson(tweetJson)).toList();
 }
