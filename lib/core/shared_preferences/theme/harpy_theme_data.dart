@@ -24,4 +24,11 @@ class HarpyThemeData {
   int accentColor;
 
   Map<String, dynamic> toJson() => _$HarpyThemeDataToJson(this);
+
+  @override
+  String toString() {
+    return 'HarpyThemeData{name: $name,'
+        'backgroundColors: $backgroundColors,'
+        'accentColor: $accentColor}';
+  }
 }

@@ -6,6 +6,7 @@ import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/harpy.dart';
 
 class SettingsScreen extends StatelessWidget {
   Map<String, List<Widget>> _settings(BuildContext context) {
@@ -27,19 +28,20 @@ class SettingsScreen extends StatelessWidget {
         ),
       ],
       "Other": [
-        ListTile(
-          leading: const FlareIcon.shiningStar(
-            size: 30,
-            offset: Offset(-2.5, 0),
+        if (Harpy.isFree)
+          ListTile(
+            leading: const FlareIcon.shiningStar(
+              size: 30,
+              offset: Offset(-2.5, 0),
+            ),
+            title: const Text("Harpy Pro"),
+            onTap: () {}, // todo
           ),
-          title: const Text("Harpy Pro"),
-          onTap: null, // todo
-        ),
         ClearCacheListTile(),
         ListTile(
           leading: const Icon(Icons.info_outline),
           title: const Text("About"),
-          onTap: null, // todo: about screen
+          onTap: () {}, // todo: about screen
         ),
       ]
     };

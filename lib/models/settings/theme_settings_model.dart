@@ -90,7 +90,7 @@ class ThemeSettingsModel extends ChangeNotifier {
       _saveCustomThemes();
       notifyListeners();
     } catch (e) {
-      _log..severe("unable to delete theme at id: $id")..severe(e.toString());
+      _log.severe("unable to delete theme at id: $id", e);
     }
   }
 
