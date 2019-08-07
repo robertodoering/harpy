@@ -28,6 +28,8 @@ class _ClearCacheListTileState extends State<ClearCacheListTile> {
 
     if (results.any((result) => result)) {
       app<FlushbarService>().info("Cache cleared");
+    } else {
+      app<FlushbarService>().info("Nothing to clear");
     }
 
     setState(() {
@@ -39,6 +41,7 @@ class _ClearCacheListTileState extends State<ClearCacheListTile> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.cloud_off),
+      trailing: _clearing ? const CircularProgressIndicator() : null,
       title: const Text("Clear cache"),
       subtitle: const Text("Delete all cached data"),
       onTap: _clearing ? null : _clear,
