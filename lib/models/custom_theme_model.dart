@@ -72,7 +72,7 @@ class CustomThemeModel extends ChangeNotifier {
   bool saveTheme() {
     final text = errorText();
 
-    if (errorText != null) {
+    if (text != null) {
       flushbarService.error(text);
       return false;
     }
