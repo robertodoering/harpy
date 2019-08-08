@@ -21,7 +21,7 @@ class DatabaseService {
   }) async {
     final directory = await getTemporaryDirectory();
 
-    final path = "${directory.path}/database/name/";
+    final path = "${directory.path}/database/$name/";
 
     return compute<String, bool>(_isolateDrop, path);
   }
