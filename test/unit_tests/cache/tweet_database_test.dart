@@ -1,63 +1,162 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/core/cache/database_service.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/utils/json_utils.dart';
+import 'package:harpy/harpy.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sembast/sembast.dart';
 
-class MockStore extends Mock implements StoreRef<int, Map<String, dynamic>> {}
-
-class MockRecord extends Mock implements RecordRef<int, Map<String, dynamic>> {}
-
-class MockRecordSnapshot extends Mock
-    implements RecordSnapshot<int, Map<String, dynamic>> {}
+class MockDatabaseService extends Mock implements DatabaseService {}
 
 void main() {
-  test("Tweet json gets recorded", () async {
-    final store = MockStore();
-    final mockRecord = MockRecord();
-
-    final database = TweetDatabase(store: store);
-
-    final tweet = Tweet()..id = 1337;
-
-    final tweetJson = tweet.toJson();
-
-    when(store.record(any)).thenReturn(mockRecord);
-
-    final bool recorded = await database.recordTweet(tweet);
-
-    expect(recorded, true);
-
-    verify(store.record(1337));
-    verify(mockRecord.put(any, tweetJson));
+  setUp(() {
+    app..registerLazySingleton<DatabaseService>(() => MockDatabaseService());
   });
 
-  test("Finds and decodes tweet", () async {
-    final store = MockStore();
-    final mockRecordSnapshots = [MockRecordSnapshot(), MockRecordSnapshot()];
+  tearDown(app.reset);
 
-    final database = TweetDatabase(store: store);
+  test("Tweet json gets recorded", () async {
+    final database = TweetDatabase();
 
-    final tweets = <Tweet>[
-      Tweet()..id = 69,
+    final tweet = Tweet()..id = 1337;
+    final tweetJson = toPrimitiveJson(tweet.toJson());
+
+    final bool result = await database.recordTweet(tweet);
+
+    expect(result, true);
+
+    verify(app<DatabaseService>().record(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      key: tweet.id,
+      data: tweetJson,
+    ));
+  });
+
+  test("Exception during tweet record fails gracefully", () async {
+    final database = TweetDatabase();
+
+    final tweet = Tweet()..id = 1337;
+    final tweetJson = toPrimitiveJson(tweet.toJson());
+
+    when(app<DatabaseService>().record(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      key: tweet.id,
+      data: tweetJson,
+    )).thenThrow(Exception("Test exception"));
+
+    final bool result = await database.recordTweet(tweet);
+
+    expect(result, false);
+  });
+
+  test("Tweet list json gets recorded", () async {
+    final database = TweetDatabase();
+
+    final tweets = [
       Tweet()..id = 1337,
+      Tweet()..id = 69,
+      Tweet()..id = 42,
     ];
 
-    when(store.find(
-      any,
+    final keys = [1337, 69, 42];
+
+    final tweetJsonList =
+        tweets.map((tweet) => toPrimitiveJson(tweet.toJson())).toList();
+
+    final bool result = await database.recordTweetList(tweets);
+
+    expect(result, true);
+
+    verify(app<DatabaseService>().transaction(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      keys: keys,
+      dataList: tweetJsonList,
+    ));
+  });
+
+  test(
+      "Exception during Tweet list record fails gracefully and "
+      "returns false", () async {
+    final database = TweetDatabase();
+
+    final tweets = [
+      Tweet()..id = 1337,
+      Tweet()..id = 69,
+      Tweet()..id = 42,
+    ];
+
+    final keys = [1337, 69, 42];
+
+    final tweetJsonList =
+        tweets.map((tweet) => toPrimitiveJson(tweet.toJson())).toList();
+
+    when(app<DatabaseService>().transaction(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      keys: keys,
+      dataList: tweetJsonList,
+    )).thenThrow(Exception("Test exception"));
+
+    final bool result = await database.recordTweetList(tweets);
+
+    expect(result, false);
+  });
+
+  test("Finds and decodes list of tweets from id", () async {
+    final database = TweetDatabase();
+
+    final tweets = [
+      Tweet()..id = 1337,
+      Tweet()..id = 69,
+      Tweet()..id = 42,
+    ];
+
+    final tweetIds = [1337, 69, 42];
+
+    final tweetJsonList =
+        tweets.map((tweet) => toPrimitiveJson(tweet.toJson())).toList();
+
+    when(app<DatabaseService>().find(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
       finder: anyNamed("finder"),
-    )).thenAnswer((_) => Future.value(mockRecordSnapshots));
+    )).thenAnswer((_) => Future.value(tweetJsonList));
 
-    when(mockRecordSnapshots[0].value).thenReturn(
-      toPrimitiveJson(tweets[0].toJson()),
-    );
-    when(mockRecordSnapshots[1].value).thenReturn(
-      toPrimitiveJson(tweets[1].toJson()),
-    );
-
-    final List<Tweet> foundTweets = await database.findTweets([69, 1337]);
+    final foundTweets = await database.findTweets(tweetIds);
 
     expect(foundTweets, tweets);
+  });
+
+  test("Returns empty list if tweets can't be found", () async {
+    final database = TweetDatabase();
+
+    when(app<DatabaseService>().find(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      finder: anyNamed("finder"),
+    )).thenAnswer((_) => Future.value([]));
+
+    final foundTweets = await database.findTweets([1337, 69, 42]);
+
+    expect(foundTweets, <Tweet>[]);
+  });
+
+  test("Returns empty list if finding tweet lists throws exception", () async {
+    final database = TweetDatabase();
+
+    final tweetIds = [1337, 69, 42];
+
+    when(app<DatabaseService>().find(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      finder: anyNamed("finder"),
+    )).thenThrow(Exception("Test exception"));
+
+    final foundTweets = await database.findTweets(tweetIds);
+
+    expect(foundTweets, <Tweet>[]);
   });
 }
