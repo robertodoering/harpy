@@ -4,11 +4,11 @@ import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/cache/home_timeline_cache.dart';
-import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/cache/database_service.dart';
+import 'package:harpy/core/cache/timeline_database.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
+import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
-import 'package:harpy/core/misc/directory_service.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/harpy.dart';
@@ -23,12 +23,12 @@ void setupServices() {
     ..registerLazySingleton<UserService>(() => UserService())
 
     // cache
-    ..registerLazySingleton<HomeTimelineCache>(() => HomeTimelineCache())
-    ..registerLazySingleton<UserTimelineCache>(() => UserTimelineCache())
-    ..registerLazySingleton<UserCache>(() => UserCache())
+    ..registerLazySingleton<DatabaseService>(() => DatabaseService())
+    ..registerLazySingleton<TweetDatabase>(() => TweetDatabase())
+    ..registerLazySingleton<TimelineDatabase>(() => TimelineDatabase())
+    ..registerLazySingleton<UserDatabase>(() => UserDatabase())
 
     // custom / util
-    ..registerLazySingleton<DirectoryService>(() => DirectoryService())
     ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
     ..registerLazySingleton<HarpyPrefs>(() => HarpyPrefs())

@@ -8,6 +8,7 @@ class FlareIcon extends StatelessWidget {
     @required this.fileName,
     this.size = 18,
     this.sizeDifference = 0,
+    this.offset = Offset.zero,
     this.animation,
     this.color,
   });
@@ -28,9 +29,11 @@ class FlareIcon extends StatelessWidget {
   /// An animated shining star icon used by [ProFeatureDialog].
   const FlareIcon.shiningStar({
     double size = 18,
+    Offset offset = Offset.zero,
   }) : this(
           fileName: "$_path/shining_star.flr",
           size: size,
+          offset: offset,
           animation: "shining",
         );
 
@@ -47,6 +50,9 @@ class FlareIcon extends StatelessWidget {
   /// appear the same as material icons with the same size.
   final double sizeDifference;
 
+  /// Used to transform the icon using a translation.
+  final Offset offset;
+
   /// The name of the animation that should play.
   final String animation;
 
@@ -57,13 +63,16 @@ class FlareIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: _calculatedSize,
-      height: _calculatedSize,
-      child: FlareActor(
-        fileName,
-        animation: animation,
-        color: color,
+    return Transform.translate(
+      offset: offset,
+      child: SizedBox(
+        width: _calculatedSize,
+        height: _calculatedSize,
+        child: FlareActor(
+          fileName,
+          animation: animation,
+          color: color,
+        ),
       ),
     );
   }

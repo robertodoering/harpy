@@ -1,6 +1,9 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:logging/logging.dart';
 
+/// Uses the [Connectivity] plugin to listen to connectivity changes.
+///
+/// Should be initialized to set the initial connectivity state.
 class ConnectivityService {
   ConnectivityService() {
     _log.fine("listening to connectivity status changes");

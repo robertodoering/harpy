@@ -64,7 +64,7 @@ class FollowersCount extends StatelessWidget {
         Expanded(
           child: Text.rich(
             TextSpan(children: [
-              TextSpan(text: formatNumber(following)),
+              TextSpan(text: prettyPrintNumber(following)),
               const TextSpan(text: " Following"),
             ]),
           ),
@@ -72,7 +72,7 @@ class FollowersCount extends StatelessWidget {
         Expanded(
           child: Text.rich(
             TextSpan(children: [
-              TextSpan(text: formatNumber(followers)),
+              TextSpan(text: prettyPrintNumber(followers)),
               const TextSpan(text: " Followers"),
             ]),
             textAlign: TextAlign.end,

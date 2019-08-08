@@ -9,16 +9,19 @@ environment:
 dependencies:
   oauth1: ^1.0.4
   logging: ^0.11.3+2
+  logs:
+    git: https://github.com/pq/logs
   intl: ^0.15.7
   cached_network_image: ^1.0.0
   photo_view: ^0.4.0
   provider: ^2.0.1+1
   flutter_material_color_picker: ^0.0.5
-  flutter_colorpicker: ^0.2.5
+  flutter_hsvcolor_picker: ^0.0.1
   flare_flutter: ^1.5.1
   flushbar: 1.7.1+1
   mime_type: ^0.2.4
   get_it: ^1.0.3+2
+  sembast: ^2.0.1
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git

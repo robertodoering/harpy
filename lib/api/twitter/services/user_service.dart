@@ -1,13 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
-import 'package:harpy/core/cache/user_cache.dart';
-import 'package:harpy/core/misc/json_mapper.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 class UserService {
   final TwitterClient twitterClient = app<TwitterClient>();
-  final UserCache userCache = app<UserCache>();
 
   static final Logger _log = Logger("UserService");
 
@@ -24,17 +24,15 @@ class UserService {
 
     return twitterClient
         .get(
-      "https://api.twitter.com/1.1/users/show.json",
-      params: params,
-    )
-        .then((response) {
-      final User user =
-          mapJson<User>(response.body, (json) => User.fromJson(json));
-
-      userCache.cacheUser(user);
-
-      return user;
-    });
+          "https://api.twitter.com/1.1/users/show.json",
+          params: params,
+        )
+        .then(
+          (response) => compute<String, User>(
+            _handleUserDetailsResponse,
+            response.body,
+          ),
+        );
   }
 
   /// Follows (friends) the [User] with the [id].
@@ -56,4 +54,8 @@ class UserService {
       params: {"user_id": id},
     );
   }
+}
+
+User _handleUserDetailsResponse(String body) {
+  return User.fromJson(jsonDecode(body));
 }

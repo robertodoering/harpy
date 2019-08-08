@@ -95,12 +95,22 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
       return Container();
     }
 
-    return RaisedHarpyButton(
-      text: model.user.following ? "Following" : "Follow",
-      onTap: model.changeFollowState,
-      dense: true,
-      backgroundColor:
-          model.user.following ? Theme.of(context).primaryColor : null,
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 300),
+      firstChild: RaisedHarpyButton(
+        text: "Following",
+        onTap: model.changeFollowState,
+        dense: true,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      secondChild: RaisedHarpyButton(
+        text: "Follow",
+        onTap: model.changeFollowState,
+        dense: true,
+      ),
+      crossFadeState: model.user.following
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
     );
   }
 

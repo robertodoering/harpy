@@ -38,7 +38,10 @@ class SettingsColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 8,
+          ),
           child: Text(title, style: Theme.of(context).textTheme.display1),
         ),
         ...children,

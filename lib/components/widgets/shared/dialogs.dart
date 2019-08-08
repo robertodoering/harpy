@@ -13,10 +13,12 @@ import 'package:harpy/core/misc/url_launcher.dart';
 /// right.
 class HarpyDialog extends StatelessWidget {
   const HarpyDialog({
-    @required this.title,
     @required this.actions,
+    this.title,
     this.text,
     this.body,
+    this.backgroundColors,
+    this.scrollPhysics,
   });
 
   final String title;
@@ -28,21 +30,29 @@ class HarpyDialog extends StatelessWidget {
   /// The body is build below the [text] if not `null`.
   final Widget body;
 
-  final double paddingVertical = 24;
-  final double paddingHorizontal = 12;
+  /// The colors used by the [HarpyBackground].
+  ///
+  /// Uses the theme colors when `null`.
+  final List<Color> backgroundColors;
+
+  /// The scroll physics of the dialog (title, text + body).
+  final ScrollPhysics scrollPhysics;
 
   List<Widget> _buildContent(TextTheme textTheme) {
     return <Widget>[
-      Text(title, style: textTheme.title),
+      if (title != null) ...[
+        Text(title, style: textTheme.title, textAlign: TextAlign.center),
+        const SizedBox(height: 12),
+      ],
       if (text != null) ...[
-        SizedBox(height: paddingHorizontal),
-        Text(text, style: textTheme.subtitle),
+        Text(text, style: textTheme.subtitle, textAlign: TextAlign.center),
+        const SizedBox(height: 12),
       ],
       if (body != null) ...[
-        SizedBox(height: paddingHorizontal),
         body,
+        const SizedBox(height: 12),
       ],
-      SizedBox(height: paddingVertical),
+      const SizedBox(height: 12),
     ];
   }
 
@@ -72,20 +82,22 @@ class HarpyDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: HarpyBackground(
+          colors: backgroundColors,
           borderRadius: BorderRadius.circular(16),
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(
-              paddingHorizontal,
-              paddingVertical,
-              paddingHorizontal,
-              // less on the bottom to compensate for the button padding
-              paddingVertical - 12,
-            ),
+            // less on the bottom to compensate for the button padding
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                ..._buildContent(textTheme),
+                Flexible(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: scrollPhysics,
+                    children: _buildContent(textTheme),
+                  ),
+                ),
                 _buildActions(),
               ],
             ),
@@ -96,7 +108,10 @@ class HarpyDialog extends StatelessWidget {
   }
 }
 
-/// An action for a [HarpyDialog] that will pop the dialog with the [result].
+/// An action for a [HarpyDialog].
+///
+/// If [result] is not `null` the action will pop the dialog with the [result].
+/// If [onTap] is not `null` the action will execute the callback.
 ///
 /// The action will build a text button with [text] or an icon button with
 /// [icon].
@@ -105,11 +120,14 @@ class HarpyDialog extends StatelessWidget {
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
     this.result,
+    this.onTap,
     this.text,
     this.icon,
-  }) : assert(text != null || icon != null);
+  })  : assert(result != null || onTap != null),
+        assert(text != null || icon != null);
 
   final T result;
+  final VoidCallback onTap;
   final String text;
   final IconData icon;
 
@@ -125,25 +143,23 @@ class DialogAction<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onTap() => Navigator.of(context).pop(result);
+    final Function callback = onTap ?? () => Navigator.of(context).pop(result);
 
     if (text != null) {
       return NewFlatHarpyButton(
         text: text,
-        onTap: onTap,
+        onTap: callback,
         dense: true,
       );
-    }
-
-    if (icon != null) {
+    } else if (icon != null) {
       return IconHarpyButton(
         iconData: icon,
-        onTap: onTap,
+        onTap: callback,
         dense: true,
       );
+    } else {
+      return Container();
     }
-
-    return Container();
   }
 }
 

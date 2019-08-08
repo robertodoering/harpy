@@ -1,10 +1,9 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart' as route;
 import 'package:flutter/material.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:logging/logging.dart';
-
-import 'harpy_navigator.dart';
 
 enum FlushbarType {
   info,
@@ -12,8 +11,10 @@ enum FlushbarType {
   error,
 }
 
+/// Uses the [Flushbar] package to display messages on the bottom of the
+/// screen similar to a [SnackBar].
 class FlushbarService {
-  final Logger _log = Logger("Flushbar");
+  static final Logger _log = Logger("Flushbar");
 
   void info(String message) => show(message, type: FlushbarType.info);
 
@@ -28,7 +29,7 @@ class FlushbarService {
     String message, {
     FlushbarType type = FlushbarType.info,
   }) {
-    _log.fine("showing error message: $message");
+    _log.fine("showing flushbar message: $message");
 
     final navigator = HarpyNavigator.key.currentState;
 

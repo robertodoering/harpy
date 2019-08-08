@@ -13,7 +13,7 @@ class UserProfileTweetList extends StatelessWidget {
 
     return ChangeNotifierProvider<UserTimelineModel>(
       builder: (_) => UserTimelineModel(
-        userId: "${userProfileModel.user.id}",
+        userId: userProfileModel.user.id,
       ),
       child: TweetList<UserTimelineModel>(
         leading: UserProfileHeader(),

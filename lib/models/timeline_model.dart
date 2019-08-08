@@ -2,22 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/tweet_cache.dart';
+import 'package:harpy/core/cache/timeline_database.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/harpy.dart';
+import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/user_timeline_model.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 /// Abstraction for the [HomeTimelineModel] and the [UserTimelineModel].
 ///
 /// Holds the [tweets] of the timeline and common actions for the
 /// [tweetService].
 abstract class TimelineModel extends ChangeNotifier {
-  TimelineModel({
-    @required this.tweetCache,
-  }) : assert(tweetCache != null);
-
   final TweetService tweetService = app<TweetService>();
-  final TweetCache tweetCache;
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
+  final TimelineDatabase timelineDatabase = app<TimelineDatabase>();
 
   static final Logger _log = Logger("TimelineModel");
 
@@ -51,20 +50,25 @@ abstract class TimelineModel extends ChangeNotifier {
     loadingInitialTweets = true;
 
     // initialize with cached tweets
-    tweets = tweetCache.getCachedTweets();
+    final List<Tweet> cachedTweets = await getCachedTweets() ?? [];
 
-    if (tweets?.isEmpty ?? true) {
-      _log.fine("no cached tweets exist");
+    if (cachedTweets.isEmpty) {
       // if no cached tweet exists wait for the initial api call
+      _log.fine("no cached tweets exist");
       await updateTweets();
     } else {
-      _log.fine("got cached tweets");
       // if cached tweets exist update tweets but dont wait for it
+      _log.fine("got cached tweets");
+      tweets = sortTweetReplies(cachedTweets);
       loadingInitialTweets = false;
       updateTweets();
     }
   }
 
+  /// Overridden by implementations to get the cached tweets for the timeline.
+  Future<List<Tweet>> getCachedTweets();
+
+  /// Overridden by implementations to update the list of [tweets].
   Future<void> updateTweets();
 
   Future<void> requestMore() async {
@@ -88,12 +92,13 @@ abstract class TimelineModel extends ChangeNotifier {
     lastRequestedMore = DateTime.now();
   }
 
+  /// Adds all [newTweets] to the list of [tweets] if they aren't already in
+  /// the list.
   void addNewTweets(List<Tweet> newTweets) {
     // filter tweets that are already in the tweets list
     final List<Tweet> filteredTweets =
         newTweets.where((tweet) => !tweets.contains(tweet)).toList();
 
     tweets.addAll(sortTweetReplies(filteredTweets));
-    // todo: maybe have to cache the tweets after sorting?
   }
 }

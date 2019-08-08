@@ -5,8 +5,7 @@ import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
-import 'package:harpy/core/cache/home_timeline_cache.dart';
-import 'package:harpy/core/cache/user_timeline_cache.dart';
+import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
@@ -19,12 +18,7 @@ import 'package:provider/provider.dart';
 /// The model for a single [Tweet].
 ///
 /// Handles changes on the [Tweet] including actions (favorite, retweet,
-/// translate, ...) and rebuilds the [Consumer] when the state changes.
-///
-/// Changes to the [Tweet] always changes the [homeTimelineCache] if the [Tweet]
-/// exists in it.
-/// It will also update the [Tweet] in the [userTimelineCache] if it is not
-/// `null`.
+/// translate, ...) and rebuilds the listeners when the state changes.
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
@@ -36,9 +30,8 @@ class TweetModel extends ChangeNotifier {
 
   final TweetService tweetService = app<TweetService>();
   final TranslationService translationService = app<TranslationService>();
-  final HomeTimelineCache homeTimelineCache = app<HomeTimelineCache>();
-  final UserTimelineCache userTimelineCache = app<UserTimelineCache>();
   final FlushbarService flushbarService = app<FlushbarService>();
+  final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
   // todo: remove timeline model dependencies
   final HomeTimelineModel homeTimelineModel;
@@ -71,10 +64,10 @@ class TweetModel extends ChangeNotifier {
   bool get hasMedia => tweet.extendedEntities?.media != null;
 
   /// A formatted number of the retweet count.
-  String get retweetCount => "${formatNumber(tweet.retweetCount)}";
+  String get retweetCount => "${prettyPrintNumber(tweet.retweetCount)}";
 
   /// A formatted number of the favorite count.
-  String get favoriteCount => "${formatNumber(tweet.favoriteCount)}";
+  String get favoriteCount => "${prettyPrintNumber(tweet.favoriteCount)}";
 
   /// @username · time since tweet in hours
   String get screenNameAndTime {
@@ -145,10 +138,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.retweet(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.retweeted = false;
@@ -165,10 +155,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.unretweet(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.retweeted = true;
@@ -185,10 +172,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.favorite(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.favorited = false;
@@ -205,10 +189,7 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
 
     tweetService.unfavorite(tweet.idStr)
-      ..then((_) {
-        homeTimelineCache.updateTweet(originalTweet);
-        userTimelineCache?.updateTweet(originalTweet);
-      })
+      ..then((_) => tweetDatabase.recordTweet(originalTweet))
       ..catchError((error) {
         if (!_actionPerformed(error)) {
           tweet.favorited = true;
@@ -242,8 +223,7 @@ class TweetModel extends ChangeNotifier {
     translating = false;
     notifyListeners();
 
-    homeTimelineCache.updateTweet(originalTweet);
-    userTimelineCache?.updateTweet(originalTweet);
+    tweetDatabase.recordTweet(originalTweet);
   }
 
   /// Returns `true` if the error contains any of the following error codes:

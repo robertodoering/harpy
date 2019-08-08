@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
@@ -227,7 +227,7 @@ class _CustomThemeColorSelections extends StatelessWidget {
   }
 }
 
-/// The dialog that shows the [MaterialColorPicker] in an [AlertDialog].
+/// The dialog that shows the color picker in a dialog.
 class _CustomThemeColorDialog extends StatefulWidget {
   const _CustomThemeColorDialog(this.themeColorModel, this.customThemeModel);
 
@@ -238,63 +238,78 @@ class _CustomThemeColorDialog extends StatefulWidget {
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
 }
 
-class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
-  Widget content;
-  bool showingColorPicker = false;
+class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog>
+    with SingleTickerProviderStateMixin {
+  Widget _content;
+  bool _showingColorPicker = false;
+  Color _color;
 
   @override
   void initState() {
     super.initState();
 
-    _hideColorPicker();
+    _color = widget.themeColorModel.color;
+
+    _showMaterialColorPicker();
   }
 
+  void _onColorChanged(Color color) {
+    setState(() {
+      _color = color;
+    });
+
+    widget.themeColorModel.onColorChanged(color);
+  }
+
+  /// Sets the [_content] to be a [ColorPicker] that shows a customizable
+  /// color picker.
   void _showColorPicker() {
     setState(() {
-      showingColorPicker = true;
-      content = Padding(
-        padding: const EdgeInsets.all(16),
+      _showingColorPicker = true;
+      _content = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: ColorPicker(
-          pickerColor: widget.themeColorModel.color,
-          onColorChanged: widget.themeColorModel.onColorChanged,
+          color: _color,
+          onChanged: _onColorChanged,
         ),
       );
     });
   }
 
-  void _hideColorPicker() {
+  /// Sets the [_content] to be a [MaterialColorPicker] that shows a selection
+  /// of predefined colors.
+  void _showMaterialColorPicker() {
     setState(() {
-      showingColorPicker = false;
-      content = MaterialColorPicker(
-        selectedColor: widget.themeColorModel.color,
-        onColorChange: widget.themeColorModel.onColorChanged,
+      _showingColorPicker = false;
+      _content = MaterialColorPicker(
+        selectedColor: _color,
+        onColorChange: _onColorChanged,
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = Theme.of(context).primaryColor;
-
-    return AlertDialog(
-      backgroundColor: backgroundColor,
-      contentPadding: EdgeInsets.zero,
-      content: SingleChildScrollView(
-        padding: EdgeInsets.zero,
-        child: content,
+    return HarpyDialog(
+      backgroundColors: widget.customThemeModel.harpyTheme.backgroundColors,
+      scrollPhysics: const NeverScrollableScrollPhysics(),
+      body: AnimatedSize(
+        vsync: this,
+        duration: const Duration(milliseconds: 150),
+        child: _content,
       ),
-      actions: <Widget>[
-        if (showingColorPicker)
-          NewFlatHarpyButton(
+      actions: [
+        if (_showingColorPicker)
+          DialogAction(
             text: "Back",
-            onTap: _hideColorPicker,
+            onTap: _showMaterialColorPicker,
           )
         else
-          NewFlatHarpyButton(
+          DialogAction(
             text: "Custom color",
             onTap: _showColorPicker,
           ),
-        NewFlatHarpyButton(
+        DialogAction(
           text: "Done",
           onTap: Navigator.of(context).pop,
         ),
@@ -303,7 +318,8 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog> {
   }
 }
 
-/// A simple model for building the [_CustomThemeColorSelections].
+/// Contains information used for customizing colors in the
+/// [_CustomThemeColorSelections].
 class _CustomThemeColor {
   const _CustomThemeColor({
     @required this.name,

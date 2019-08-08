@@ -9,9 +9,9 @@ class MediaSize {
   factory MediaSize.fromJson(Map<String, dynamic> json) =>
       _$MediaSizeFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MediaSizeToJson(this);
-
   int w;
   int h;
   String resize;
+
+  Map<String, dynamic> toJson() => _$MediaSizeToJson(this);
 }

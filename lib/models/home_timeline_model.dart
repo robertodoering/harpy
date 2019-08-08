@@ -1,18 +1,19 @@
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/error_handler.dart';
-import 'package:harpy/core/cache/home_timeline_cache.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 class HomeTimelineModel extends TimelineModel {
-  HomeTimelineModel() : super(tweetCache: app<HomeTimelineCache>());
+  static HomeTimelineModel of(context) {
+    return Provider.of<HomeTimelineModel>(context);
+  }
 
   static final Logger _log = Logger("HomeTimelineModel");
 
-  static HomeTimelineModel of(context) {
-    return Provider.of<HomeTimelineModel>(context);
+  @override
+  Future<List<Tweet>> getCachedTweets() {
+    return timelineDatabase.findHomeTimelineTweets();
   }
 
   @override
@@ -25,6 +26,8 @@ class HomeTimelineModel extends TimelineModel {
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
+      timelineDatabase.recordHomeTimelineIds(updatedTweets);
+      tweetDatabase.recordTweetList(updatedTweets);
     }
 
     notifyListeners();
@@ -36,12 +39,12 @@ class HomeTimelineModel extends TimelineModel {
 
     final id = "${tweets.last.id - 1}";
 
-    // todo: bug: clears cached tweets where id > than id
-    final List<Tweet> newTweets = await tweetService.getHomeTimeline(params: {
-      "max_id": id,
-    }).catchError(twitterClientErrorHandler);
+    final List<Tweet> newTweets = await tweetService
+        .getHomeTimeline(maxId: id)
+        .catchError(twitterClientErrorHandler);
 
     if (newTweets != null) {
+      // todo: maybe add new tweets to cached home timeline ids
       addNewTweets(newTweets);
     }
 
@@ -55,5 +58,6 @@ class HomeTimelineModel extends TimelineModel {
       _log.fine("updating home timeline tweet");
       tweets[index] = tweet;
     }
+    notifyListeners();
   }
 }
