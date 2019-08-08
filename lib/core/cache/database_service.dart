@@ -12,53 +12,32 @@ import 'package:sembast/sembast_io.dart';
 /// Database operations are run in an isolate using [compute] to avoid the
 /// risk of skipping frames since they can take multiple milliseconds to
 /// complete.
-///
-/// The [HarpyDatabase] needs to be initialized to set the [_path] that is
-/// used for the [Database] object.
-abstract class HarpyDatabase {
-  /// The name of the database.
-  String get name;
+class DatabaseService {
+  static final Logger _log = Logger("DatabaseService");
 
-  /// The [subDirectory] determines where the database is located.
-  String subDirectory;
-
-  /// The path where the [Database] is located.
-  String _path;
-
-  static final Logger _log = Logger("Database");
-
-  /// Initializes the [_path] with the temporary directory.
-  Future<void> initialize() async {
-    _log.fine("initializing database $name with subDirectory: $subDirectory");
-
+  /// Deletes the database directory for [name] in an isolate.
+  Future<bool> drop({
+    @required String name,
+  }) async {
     final directory = await getTemporaryDirectory();
 
-    _path = "${directory.path}/database/$name/";
-
-    if (subDirectory != null) {
-      _path = "$_path$subDirectory/";
-    }
-    _path = "${_path}database";
-  }
-
-  /// Deletes the database directory in an isolate.
-  Future<bool> drop() async {
-    final directory = await getTemporaryDirectory();
-
-    final path = "${directory.path}/database/$name/";
+    final path = "${directory.path}/database/name/";
 
     return compute<String, bool>(_isolateDrop, path);
   }
 
   /// Records the [data] associated to the [key] in the [store] for this
   /// database in an isolate.
+  ///
+  /// When recording a list of data, [transaction] should be used instead.
   Future<dynamic> record({
+    @required String path,
     @required StoreRef store,
     @required dynamic key,
     @required dynamic data,
   }) async {
     final Map<String, dynamic> message = {
-      "path": _path,
+      "path": path,
       "store": store,
       "key": key,
       "data": data,
@@ -69,7 +48,7 @@ abstract class HarpyDatabase {
     assert(message["key"] != null);
     assert(message["data"] != null);
 
-    _log.fine("recording data in isolate");
+    _log.fine("recording data");
 
     return compute<Map<String, dynamic>, dynamic>(_isolateRecord, message);
   }
@@ -77,15 +56,16 @@ abstract class HarpyDatabase {
   /// Creates a transaction to record the [dataList] associated to their [keys]
   /// in the [store] for this database in an isolate.
   ///
-  /// [keys] must be equal in length to the [dataList] and the `keys[i]`
-  /// represent the key for `dataList[i]`.
+  /// [keys] must be equal in length to the [dataList].
+  /// The `keys[i]` represent the key for `dataList[i]`.
   Future<dynamic> transaction({
+    @required String path,
     @required StoreRef store,
     @required List keys,
     @required List dataList,
   }) {
     final Map<String, dynamic> message = {
-      "path": _path,
+      "path": path,
       "store": store,
       "keys": keys,
       "dataList": dataList,
@@ -98,19 +78,22 @@ abstract class HarpyDatabase {
     assert((message["keys"] as List).length ==
         (message["dataList"] as List).length);
 
-    _log.fine("recording list of data in isolate");
+    _log.fine("recording list of data");
 
     return compute<Map<String, dynamic>, dynamic>(_isolateTransaction, message);
   }
 
   /// Finds the records that match the [finder] in the [store] for the
   /// database in an isolate.
+  ///
+  /// Returns an empty list if no data can be found.
   Future<List> find({
+    @required String path,
     @required StoreRef store,
     @required Finder finder,
   }) {
     final Map<String, dynamic> message = {
-      "path": _path,
+      "path": path,
       "store": store,
       "finder": finder,
     };
@@ -126,12 +109,15 @@ abstract class HarpyDatabase {
 
   /// Finds the first record that matches the [finder] in the [store] for the
   /// database in an isolate.
+  ///
+  /// Returns `null` if no data can be found.
   Future<dynamic> findFirst({
+    @required String path,
     @required StoreRef store,
     @required Finder finder,
   }) {
     final Map<String, dynamic> message = {
-      "path": _path,
+      "path": path,
       "store": store,
       "finder": finder,
     };

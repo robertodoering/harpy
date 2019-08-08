@@ -4,6 +4,7 @@ import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/core/cache/database_service.dart';
 import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/cache/user_database.dart';
@@ -22,6 +23,7 @@ void setupServices() {
     ..registerLazySingleton<UserService>(() => UserService())
 
     // cache
+    ..registerLazySingleton<DatabaseService>(() => DatabaseService())
     ..registerLazySingleton<TweetDatabase>(() => TweetDatabase())
     ..registerLazySingleton<TimelineDatabase>(() => TimelineDatabase())
     ..registerLazySingleton<UserDatabase>(() => UserDatabase())

@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/cache/database.dart';
+import 'package:harpy/core/cache/database_base.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:sembast/sembast.dart';
 
 /// Stores the ids for home and user timeline tweets in a database.
+///
+/// Both timelines share one database object but store the list of ids in
+/// separate stores.
+/// The home timeline always has only one list of ids.
+/// The user timeline has a list of ids for every user.
 class TimelineDatabase extends HarpyDatabase {
-  TimelineDatabase({
-    StoreRef<String, List> homeTimelineStore,
-    StoreRef<int, List> userTimelineStore,
-  })  : homeTimelineStore =
-            homeTimelineStore ?? StoreRef<String, List>("home_timeline"),
-        userTimelineStore =
-            userTimelineStore ?? StoreRef<int, List>("user_timeline");
-
-  final StoreRef<String, List> homeTimelineStore;
-  final StoreRef<int, List> userTimelineStore;
+  final StoreRef<String, List> homeTimelineStore =
+      StoreRef<String, List>("home_timeline");
+  final StoreRef<int, List> userTimelineStore =
+      StoreRef<int, List>("user_timeline");
 
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
@@ -42,7 +41,7 @@ class TimelineDatabase extends HarpyDatabase {
 
   /// Records the ids of the [tweets] for the [user].
   ///
-  /// Every unique [User.id] will have a list with the tweet ids.
+  /// Every unique [User.id] will have a list with tweet ids.
   Future<bool> recordUserTimelineIds(int userId, List<Tweet> tweets) async {
     _log.fine("recording user timeline ids for $userId");
 
@@ -61,7 +60,8 @@ class TimelineDatabase extends HarpyDatabase {
     try {
       final ids = tweets.map((tweet) => tweet.id).toList();
 
-      await record(
+      await databaseService.record(
+        path: path,
         store: store,
         key: key,
         data: ids,
@@ -99,7 +99,8 @@ class TimelineDatabase extends HarpyDatabase {
     List<int> ids;
 
     try {
-      final value = await findFirst(
+      final value = await databaseService.findFirst(
+        path: path,
         store: store,
         finder: Finder(filter: Filter.byKey(key)),
       );

@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/core/cache/database.dart';
+import 'package:harpy/core/cache/database_base.dart';
 import 'package:harpy/core/utils/json_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:sembast/sembast.dart';
 
 /// Stores [User] objects in a database.
+///
+/// Users are stored uniquely for each authorized user because they can
+/// contain user specific data ([User.following], ...).
 class UserDatabase extends HarpyDatabase {
-  UserDatabase({
-    StoreRef<int, Map<String, dynamic>> store,
-  }) : store = store ?? intMapStoreFactory.store();
-
-  final StoreRef<int, Map<String, dynamic>> store;
+  final StoreRef<int, Map<String, dynamic>> store = intMapStoreFactory.store();
 
   @override
   String get name => "user_db";
@@ -31,7 +30,8 @@ class UserDatabase extends HarpyDatabase {
         user,
       );
 
-      await record(
+      await databaseService.record(
+        path: path,
         store: store,
         key: user.id,
         data: userJson,
@@ -53,7 +53,8 @@ class UserDatabase extends HarpyDatabase {
     _log.fine("finding user with id $userId");
 
     try {
-      final userJson = await findFirst(
+      final userJson = await databaseService.findFirst(
+        path: path,
         store: store,
         finder: Finder(filter: Filter.byKey(userId)),
       );

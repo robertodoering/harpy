@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/core/cache/database.dart';
+import 'package:harpy/core/cache/database_base.dart';
 import 'package:harpy/core/utils/json_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:sembast/sembast.dart';
 
 /// Stores [Tweet] objects in a database.
+///
+/// Tweets are stored uniquely for each authorized user because they can
+/// contain user specific data ([Tweet.favorited], [Tweet.retweeted],
+/// [Tweet.harpyData], ...).
 class TweetDatabase extends HarpyDatabase {
-  TweetDatabase({
-    StoreRef<int, Map<String, dynamic>> store,
-  }) : store = store ?? intMapStoreFactory.store();
-
-  final StoreRef<int, Map<String, dynamic>> store;
+  final StoreRef<int, Map<String, dynamic>> store = intMapStoreFactory.store();
 
   @override
   String get name => "tweet_db";
@@ -31,7 +31,8 @@ class TweetDatabase extends HarpyDatabase {
         tweet,
       );
 
-      await record(
+      await databaseService.record(
+        path: path,
         store: store,
         key: tweet.id,
         data: tweetJson,
@@ -58,7 +59,8 @@ class TweetDatabase extends HarpyDatabase {
         tweets,
       );
 
-      await transaction(
+      await databaseService.transaction(
+        path: path,
         store: store,
         keys: tweets.map((tweet) => tweet.id).toList(),
         dataList: tweetJsonList,
@@ -86,7 +88,8 @@ class TweetDatabase extends HarpyDatabase {
         sortOrders: [SortOrder("id", false, true)],
       );
 
-      final List values = await find(
+      final List values = await databaseService.find(
+        path: path,
         store: store,
         finder: finder,
       );
