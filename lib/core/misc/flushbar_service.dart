@@ -11,6 +11,8 @@ enum FlushbarType {
   error,
 }
 
+/// Uses the [Flushbar] package to display messages on the bottom of the
+/// screen similar to a [SnackBar].
 class FlushbarService {
   static final Logger _log = Logger("Flushbar");
 
