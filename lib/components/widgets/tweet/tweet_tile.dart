@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
@@ -33,10 +32,7 @@ class TweetTile extends StatelessWidget {
         homeTimelineModel: homeTimelineModel,
         userTimelineModel: userTimelineModel,
       ),
-      child: SlideFadeInAnimation(
-        duration: const Duration(milliseconds: 500),
-        child: content,
-      ),
+      child: content,
     );
   }
 }

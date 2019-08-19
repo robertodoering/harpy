@@ -18,30 +18,22 @@ class TweetRepliesScreen extends StatelessWidget {
 
   final Tweet tweet;
 
-  Widget _buildBody(BuildContext context) {
-    return Consumer<TweetRepliesModel>(
-      builder: (context, model, _) {
-        if (model.loading) {
-          return _buildLoading();
-        }
-
-        return SlideFadeInAnimation(
-          offset: const Offset(0, 100),
-          child: CustomTweetListView(
-            content: [
-              if (model.parentTweet != null) model.parentTweet,
-              BigTweetTile(tweet: tweet),
-              ...model.replies,
-              if (model.noRepliesFound) _buildNoRepliesFound(context),
-            ],
+  Widget _buildLeading(TweetRepliesModel model) {
+    return Column(
+      children: <Widget>[
+        if (model.parentTweet != null)
+          TweetTile(
+            tweet: model.parentTweet,
+            content: TweetTileContent(),
           ),
-        );
-      },
+        BigTweetTile(tweet: tweet),
+      ],
     );
   }
 
   Widget _buildLoading() {
     return const Padding(
+      key: ValueKey<String>("loading"),
       padding: EdgeInsets.all(16),
       child: Center(
         child: CircularProgressIndicator(),
@@ -51,7 +43,8 @@ class TweetRepliesScreen extends StatelessWidget {
 
   Widget _buildNoRepliesFound(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      key: const ValueKey<String>("replies"),
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: <Widget>[
           const Text("No replies found"),
@@ -61,6 +54,25 @@ class TweetRepliesScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Consumer<TweetRepliesModel>(
+      builder: (context, model, _) {
+        if (model.loading) {
+          return _buildLoading();
+        }
+
+        return SlideFadeInAnimation(
+          offset: const Offset(0, 100),
+          child: TweetList(
+            leading: _buildLeading(model),
+            placeHolder: _buildNoRepliesFound(context),
+            tweets: model.replies,
+          ),
+        );
+      },
     );
   }
 

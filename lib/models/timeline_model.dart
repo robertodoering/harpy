@@ -23,9 +23,6 @@ abstract class TimelineModel extends ChangeNotifier {
   /// The [tweets] for this timeline.
   List<Tweet> tweets = [];
 
-  /// A sublist of [tweets] with the currently visible [Tweet]s.
-  List<Tweet> visibleTweets = [];
-
   /// `true` while loading [tweets].
   bool loadingInitialTweets = false;
 
