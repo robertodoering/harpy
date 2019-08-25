@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
-import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 
 /// Builds a [ListView] for a list of tweets.
 ///
@@ -51,7 +50,6 @@ class TweetList extends StatelessWidget {
         ? TweetTile(
             key: ValueKey<int>(item.id),
             tweet: item,
-            content: TweetTileContent(),
           )
         : item;
   }

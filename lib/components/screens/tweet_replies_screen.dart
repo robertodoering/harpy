@@ -24,7 +24,6 @@ class TweetRepliesScreen extends StatelessWidget {
         if (model.parentTweet != null)
           TweetTile(
             tweet: model.parentTweet,
-            content: TweetTileContent(),
           ),
         BigTweetTile(tweet: tweet),
       ],
@@ -131,7 +130,7 @@ class _BigTweetTileState extends State<BigTweetTile>
 
   @override
   Widget build(BuildContext context) {
-    return TweetTile(
+    return TweetTile.custom(
       tweet: widget.tweet,
       content: Builder(
         builder: _buildContent,
