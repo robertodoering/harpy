@@ -98,4 +98,28 @@ abstract class TimelineModel extends ChangeNotifier {
 
     tweets.addAll(sortTweetReplies(filteredTweets));
   }
+
+  /// Finds the authors for the [tweet] replies by looking through the
+  /// replies in [tweets] and returning their names in a formatted string.
+  ///
+  /// If no replies are found or if the only replies are from the parent
+  /// author, `null` is returned instead.
+  String findTweetReplyAuthors(Tweet tweet) {
+    if (tweet.harpyData.parentOfReply != true) {
+      return null;
+    }
+
+    final List<Tweet> replies = tweets
+        .where((child) => child.inReplyToStatusIdStr == tweet.idStr)
+        .toList();
+
+    if (replies.isEmpty ||
+        replies.where((reply) => reply.user.id != tweet.user.id).isEmpty) {
+      return null;
+    }
+
+    final String authors = replies.map((reply) => reply.user.name).join(", ");
+
+    return "$authors replied";
+  }
 }

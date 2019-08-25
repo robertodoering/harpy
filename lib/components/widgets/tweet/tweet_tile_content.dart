@@ -47,6 +47,7 @@ class _TweetTileContentState extends State<TweetTileContent>
               TweetActionsRow(model),
             ],
           ),
+          const Divider(height: 0),
           _TweetReplyParent(model),
         ],
       ),
@@ -64,28 +65,19 @@ class _TweetReplyParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (model.tweet.harpyData.parentOfReply == false) {
+    final String replyAuthors = model.replyAuthors;
+
+    if (replyAuthors == null) {
       return Container();
     }
 
-    final String replyAuthors = model.getReplyAuthors();
-
-    if (replyAuthors.isEmpty) {
-      return Container();
-    }
-
-    return Column(
-      children: <Widget>[
-        const Divider(height: 8),
-        Padding(
-          padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 4, 0, 8),
-          child: IconRow(
-            icon: Icons.reply,
-            iconPadding: 40, // same as avatar width
-            child: replyAuthors,
-          ),
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 0),
+      child: IconRow(
+        icon: Icons.reply,
+        iconPadding: 40, // same as avatar width
+        child: replyAuthors,
+      ),
     );
   }
 }
@@ -124,19 +116,13 @@ class TweetRetweetedRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (model.isRetweet) {
-      return Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 8, top: 8),
-            child: IconRow(
-              icon: Icons.repeat,
-              iconPadding: 40, // same as avatar width
-              child: "${model.originalTweet.user.name} retweeted",
-            ),
-          ),
-          const SizedBox(height: 4),
-          const Divider(height: 8),
-        ],
+      return Padding(
+        padding: const EdgeInsets.only(left: 8, top: 8),
+        child: IconRow(
+          icon: Icons.repeat,
+          iconPadding: 40, // same as avatar width
+          child: "${model.originalTweet.user.name} retweeted",
+        ),
       );
     } else {
       return Container();
@@ -293,7 +279,7 @@ class TweetTranslation extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(height: 8),
+        const SizedBox(height: 8, width: double.infinity),
 
         // original language text
         Text.rich(TextSpan(

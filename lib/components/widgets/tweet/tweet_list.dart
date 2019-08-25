@@ -3,9 +3,9 @@ import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 
-/// Builds a [ListView] for the [tweets].
+/// Builds a [ListView] for a list of tweets.
 ///
-/// The [tweets] are built as [TweetTile]s.
+/// The tweets are built as [TweetTile]s.
 ///
 /// [leading] will be built at the start of the list.
 /// [placeHolder] will be built instead of [tweets] if [tweets] is empty.
@@ -41,36 +41,30 @@ class TweetList extends StatelessWidget {
   /// The full content of the list.
   final List<dynamic> _content = [];
 
-  /// Calls [_itemBuilder] or [_separatorBuilder] depending on the current
-  /// index.
-  Widget _childrenBuilder(BuildContext context, int index) {
-    final int itemIndex = index ~/ 2;
-
-    return index.isEven ? _itemBuilder(itemIndex) : _separatorBuilder();
-  }
-
-  /// Builds the item in the list.
+  /// Builds an item in the list.
   ///
   /// If the item is a [Tweet] it will be built as a [TweetTile].
-  Widget _itemBuilder(int index) {
+  Widget _itemBuilder(BuildContext context, int index) {
     final item = _content[index];
 
     return item is Tweet
         ? TweetTile(
+            key: ValueKey<int>(item.id),
             tweet: item,
             content: TweetTileContent(),
           )
         : item;
   }
 
-  Widget _separatorBuilder() => const Divider(height: 0);
+  // todo: maybe make tweetlist stateful and override didUpdateWidget to animate
+  //  the new list content and scroll to the top
 
   @override
   Widget build(BuildContext context) {
-    final childCount = _content.length * 2 - 1;
+    final childCount = _content.length;
 
     final childrenDelegate = CustomSliverChildBuilderDelegate(
-      _childrenBuilder,
+      _itemBuilder,
       itemCount: childCount,
     );
 
