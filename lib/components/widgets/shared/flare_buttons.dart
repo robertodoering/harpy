@@ -49,6 +49,8 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
     if (widget.favorited && _animation == unfavorite) {
       _animation = favorite;
+    } else if (widget.favorited) {
+      _animation = favoriteStatic;
     } else if (!widget.favorited) {
       _animation = unfavorite;
     }
