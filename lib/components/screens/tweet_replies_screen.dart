@@ -32,7 +32,6 @@ class TweetRepliesScreen extends StatelessWidget {
 
   Widget _buildLoading() {
     return const Padding(
-      key: ValueKey<String>("loading"),
       padding: EdgeInsets.all(16),
       child: Center(
         child: CircularProgressIndicator(),
@@ -42,7 +41,6 @@ class TweetRepliesScreen extends StatelessWidget {
 
   Widget _buildNoRepliesFound(BuildContext context) {
     return Padding(
-      key: const ValueKey<String>("replies"),
       padding: const EdgeInsets.all(16),
       child: Column(
         children: <Widget>[
