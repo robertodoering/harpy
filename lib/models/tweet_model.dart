@@ -9,8 +9,6 @@ import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
-import 'package:harpy/models/home_timeline_model.dart';
-import 'package:harpy/models/user_timeline_model.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +20,6 @@ import 'package:provider/provider.dart';
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
-    @required this.homeTimelineModel,
-    @required this.userTimelineModel,
   });
 
   final Tweet originalTweet;
@@ -33,13 +29,20 @@ class TweetModel extends ChangeNotifier {
   final FlushbarService flushbarService = app<FlushbarService>();
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
 
-  // todo: remove timeline model dependencies
-  final HomeTimelineModel homeTimelineModel;
-  final UserTimelineModel userTimelineModel;
-
   static TweetModel of(BuildContext context) {
     return Provider.of<TweetModel>(context);
   }
+
+  /// Set to true when the [originalTweet] comes from a quoted [Tweet].
+  bool quoted = false;
+
+  /// True while the [tweet] is being translated.
+  bool translating = false;
+
+  /// The names of the user that replied to this [tweet] in a formatted string.
+  ///
+  /// `null` if the [tweet] does not have any replies.
+  String replyAuthors;
 
   /// Returns the [Tweet.retweetedStatus] if the [originalTweet] is a retweet
   /// else the [originalTweet].
@@ -57,9 +60,6 @@ class TweetModel extends ChangeNotifier {
   /// Whether or not the [originalTweet] is a quote.
   bool get isQuote => originalTweet.quotedStatus != null;
 
-  /// Set to true when the [originalTweet] comes from a quoted [Tweet].
-  bool quoted = false;
-
   /// Whether or not the [tweet] contains [TweetMedia].
   bool get hasMedia => tweet.extendedEntities?.media != null;
 
@@ -70,47 +70,17 @@ class TweetModel extends ChangeNotifier {
   String get favoriteCount => "${prettyPrintNumber(tweet.favoriteCount)}";
 
   /// @username · time since tweet in hours
-  String get screenNameAndTime {
-    return "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}";
-  }
+  String get screenNameAndTime =>
+      "@${tweet.user.screenName} \u00b7 ${tweetTimeDifference(tweet.createdAt)}";
 
   /// Returns the [Translation] to the [tweet].
   Translation get translation => originalTweet.harpyData.translation;
-
-  /// True while the [tweet] is being translated.
-  bool translating = false;
 
   /// Whether or not the [tweet] has been translated.
   bool get isTranslated => translation != null;
 
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
-
-  /// Returns the names of the user that replied to this [tweet] in a formatted
-  /// string.
-  ///
-  /// Returns an empty string if this tweet has no replies.
-  String getReplyAuthors() {
-    final List<Tweet> tweets = (userTimelineModel ?? homeTimelineModel).tweets;
-
-    final List<Tweet> replies = tweets
-        .where((child) => child.inReplyToStatusIdStr == tweet.idStr)
-        .toList();
-
-    if (replies.isEmpty) {
-      return "";
-    }
-
-    if (replies.where((reply) => reply.user.id != tweet.user.id).isEmpty) {
-      // if the author of the parent is the only one that replied to their tweet
-      // don't show the reply authors
-      return "";
-    }
-
-    final String authors = replies.map((reply) => reply.user.name).join(", ");
-
-    return "$authors replied";
-  }
 
   /// Reduces the [tweet.fullText] by replacing every new line with a space
   /// and cuts the text at the nearest space after the given [limit] with an

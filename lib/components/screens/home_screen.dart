@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/home_drawer.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
-import 'package:harpy/components/widgets/tweet/tweet_list.dart';
+import 'package:harpy/components/widgets/tweet/tweet_timeline.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 
 /// The [HomeScreen] showing the [TweetList] after a user has logged in.
@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
       drawer: HomeDrawer(),
       body: WillPopScope(
         onWillPop: () => _onWillPop(context),
-        child: const TweetList<HomeTimelineModel>(),
+        child: const TweetTimeline<HomeTimelineModel>(),
       ),
     );
   }

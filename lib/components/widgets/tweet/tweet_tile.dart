@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
 import 'package:provider/provider.dart';
 
 class TweetTile extends StatelessWidget {
-  const TweetTile({
+  TweetTile({
+    @required this.tweet,
+    Key key,
+  })  : content = TweetTileContent(),
+        super(key: key);
+
+  const TweetTile.custom({
     @required this.tweet,
     @required this.content,
     Key key,
@@ -18,25 +25,20 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo: remove timeline dependencies in tweet model
-    final homeTimelineModel = HomeTimelineModel.of(context);
-    UserTimelineModel userTimelineModel;
+    TimelineModel timelineModel;
+
     try {
-      userTimelineModel = UserTimelineModel.of(context);
+      // use the user timeline model if it exists above the home timeline model
+      timelineModel = UserTimelineModel.of(context);
     } on ProviderNotFoundError {
-      // ignore
+      timelineModel = HomeTimelineModel.of(context);
     }
 
     return ChangeNotifierProvider<TweetModel>(
       builder: (_) => TweetModel(
         originalTweet: tweet,
-        homeTimelineModel: homeTimelineModel,
-        userTimelineModel: userTimelineModel,
-      ),
-      child: SlideFadeInAnimation(
-        duration: const Duration(milliseconds: 500),
-        child: content,
-      ),
+      )..replyAuthors = timelineModel.findTweetReplyAuthors(tweet),
+      child: content,
     );
   }
 }

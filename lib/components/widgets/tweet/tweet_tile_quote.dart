@@ -25,8 +25,6 @@ class TweetQuote extends StatelessWidget {
       child: ChangeNotifierProvider<TweetModel>(
         builder: (_) => TweetModel(
           originalTweet: model.quote,
-          homeTimelineModel: model.homeTimelineModel,
-          userTimelineModel: model.userTimelineModel,
         )
           ..quoted = true
           ..reduceText(),

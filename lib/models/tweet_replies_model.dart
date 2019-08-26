@@ -36,9 +36,6 @@ class TweetRepliesModel extends ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
-  /// Returns `true` if no replies for the [tweet] could be found.
-  bool get noRepliesFound => _replies.isEmpty && !loading;
-
   Future<void> _loadReplies() async {
     _loading = true;
     notifyListeners();

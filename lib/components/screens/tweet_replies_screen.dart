@@ -18,25 +18,15 @@ class TweetRepliesScreen extends StatelessWidget {
 
   final Tweet tweet;
 
-  Widget _buildBody(BuildContext context) {
-    return Consumer<TweetRepliesModel>(
-      builder: (context, model, _) {
-        if (model.loading) {
-          return _buildLoading();
-        }
-
-        return SlideFadeInAnimation(
-          offset: const Offset(0, 100),
-          child: CustomTweetListView(
-            content: [
-              if (model.parentTweet != null) model.parentTweet,
-              BigTweetTile(tweet: tweet),
-              ...model.replies,
-              if (model.noRepliesFound) _buildNoRepliesFound(context),
-            ],
+  Widget _buildLeading(TweetRepliesModel model) {
+    return Column(
+      children: <Widget>[
+        if (model.parentTweet != null)
+          TweetTile(
+            tweet: model.parentTweet,
           ),
-        );
-      },
+        BigTweetTile(tweet: tweet),
+      ],
     );
   }
 
@@ -51,7 +41,7 @@ class TweetRepliesScreen extends StatelessWidget {
 
   Widget _buildNoRepliesFound(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: <Widget>[
           const Text("No replies found"),
@@ -61,6 +51,25 @@ class TweetRepliesScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Consumer<TweetRepliesModel>(
+      builder: (context, model, _) {
+        if (model.loading) {
+          return _buildLoading();
+        }
+
+        return SlideFadeInAnimation(
+          offset: const Offset(0, 100),
+          child: TweetList(
+            leading: _buildLeading(model),
+            placeHolder: _buildNoRepliesFound(context),
+            tweets: model.replies,
+          ),
+        );
+      },
     );
   }
 
@@ -119,7 +128,7 @@ class _BigTweetTileState extends State<BigTweetTile>
 
   @override
   Widget build(BuildContext context) {
-    return TweetTile(
+    return TweetTile.custom(
       tweet: widget.tweet,
       content: Builder(
         builder: _buildContent,
