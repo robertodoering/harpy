@@ -13,4 +13,7 @@ TwitterSymbol _$TwitterSymbolFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TwitterSymbolToJson(TwitterSymbol instance) =>
-    <String, dynamic>{'text': instance.text, 'indices': instance.indices};
+    <String, dynamic>{
+      'text': instance.text,
+      'indices': instance.indices,
+    };

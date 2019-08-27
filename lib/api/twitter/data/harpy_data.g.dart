@@ -20,5 +20,5 @@ Map<String, dynamic> _$HarpyDataToJson(HarpyData instance) => <String, dynamic>{
       'showMedia': instance.showMedia,
       'translation': instance.translation,
       'parentOfReply': instance.parentOfReply,
-      'childOfReply': instance.childOfReply
+      'childOfReply': instance.childOfReply,
     };

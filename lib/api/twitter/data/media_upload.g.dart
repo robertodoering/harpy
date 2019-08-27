@@ -24,7 +24,7 @@ Map<String, dynamic> _$FinalizeUploadToJson(FinalizeUpload instance) =>
       'media_id_string': instance.mediaIdString,
       'expires_after_secs': instance.expiresAfterSecs,
       'size': instance.size,
-      'processing_info': instance.processingInfo
+      'processing_info': instance.processingInfo,
     };
 
 UploadStatus _$UploadStatusFromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ Map<String, dynamic> _$UploadStatusToJson(UploadStatus instance) =>
       'media_id': instance.mediaId,
       'media_id_string': instance.mediaIdString,
       'expires_after_secs': instance.expiresAfterSecs,
-      'processing_info': instance.processingInfo
+      'processing_info': instance.processingInfo,
     };
 
 ProcessingInfo _$ProcessingInfoFromJson(Map<String, dynamic> json) {
@@ -57,5 +57,5 @@ Map<String, dynamic> _$ProcessingInfoToJson(ProcessingInfo instance) =>
     <String, dynamic>{
       'state': instance.state,
       'progress_percent': instance.progressPercent,
-      'check_after_secs': instance.checkAfterSecs
+      'check_after_secs': instance.checkAfterSecs,
     };

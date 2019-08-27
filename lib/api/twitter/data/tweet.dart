@@ -45,6 +45,8 @@ class Tweet {
   Tweet quotedStatus;
   @JsonKey(name: "quoted_status_permalink")
   QuotedStatusPermalink quotedStatusPermalink;
+  @JsonKey(name: "is_quote_status")
+  bool isQuoteStatus;
 
   // custom data
   @JsonKey(fromJson: harpyDataFromJson)

@@ -16,5 +16,5 @@ MediaSize _$MediaSizeFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$MediaSizeToJson(MediaSize instance) => <String, dynamic>{
       'w': instance.w,
       'h': instance.h,
-      'resize': instance.resize
+      'resize': instance.resize,
     };

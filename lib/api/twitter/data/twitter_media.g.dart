@@ -38,5 +38,5 @@ Map<String, dynamic> _$TwitterMediaToJson(TwitterMedia instance) =>
       'expanded_url': instance.expandedUrl,
       'type': instance.type,
       'sizes': instance.sizes,
-      'video_info': instance.videoInfo
+      'video_info': instance.videoInfo,
     };

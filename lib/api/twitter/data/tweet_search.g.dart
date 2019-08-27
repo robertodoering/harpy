@@ -21,7 +21,7 @@ TweetSearch _$TweetSearchFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$TweetSearchToJson(TweetSearch instance) =>
     <String, dynamic>{
       'statuses': instance.statuses,
-      'search_metadata': instance.searchMetadata
+      'search_metadata': instance.searchMetadata,
     };
 
 SearchMetadata _$SearchMetadataFromJson(Map<String, dynamic> json) {
@@ -47,5 +47,5 @@ Map<String, dynamic> _$SearchMetadataToJson(SearchMetadata instance) =>
       'refresh_url': instance.refreshUrl,
       'count': instance.count,
       'since_id': instance.sinceId,
-      'since_id_str': instance.sinceIdStr
+      'since_id_str': instance.sinceIdStr,
     };
