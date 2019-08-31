@@ -108,6 +108,63 @@ class TweetDatabase extends HarpyDatabase {
     }
   }
 
+  /// Limits the amount of recorded tweets to [targetAmount] if the [limit]
+  /// has been reached.
+  ///
+  /// The [targetAmount] must be less than [limit] and ensures that a buffer
+  /// exists before recorded tweets gets limited again.
+  ///
+  /// Only the newest tweets will remain.
+  /// Has no effect if [limit] is greater than the amount of recorded tweets.
+  Future<bool> limitRecordedTweets({
+    @required int limit,
+    @required int targetAmount,
+  }) async {
+    _log.fine("limiting recorded tweets to $targetAmount on limit $limit");
+
+    assert(targetAmount < limit);
+
+    try {
+      final finder = Finder(
+        sortOrders: [SortOrder("id", false, true)],
+      );
+
+      List values = await databaseService.find(
+        path: path,
+        store: store,
+        finder: finder,
+      );
+
+      _log.info("found ${values.length} stored tweets");
+
+      if (values.length < limit) {
+        _log.fine("stored tweets <= limit");
+        return false;
+      }
+
+      values = values.sublist(0, targetAmount);
+
+      _log.fine("deleting database content");
+
+      await databaseService.drop(name: name);
+
+      _log.fine("recording ${values.length} limited tweets");
+
+      await databaseService.transaction(
+        path: path,
+        store: store,
+        keys: values.map((value) => value["id"]).toList(),
+        dataList: values,
+      );
+
+      _log.fine("recorded tweets limited");
+      return true;
+    } catch (e, st) {
+      _log.severe("exception while limiting tweets", e, st);
+      return false;
+    }
+  }
+
   /// Returns whether or not a tweet with the [id] exists in the tweet database.
   Future<bool> tweetExists(int id) async {
     _log.fine("checking if tweet with id $id exists");

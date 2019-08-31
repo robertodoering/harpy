@@ -20,7 +20,7 @@ void main() {
 
   tearDown(app.reset);
 
-  test("Home timeline ids get recorded with key 'ids' in homeTimelineStore",
+  test("New home timeline ids get recorded with key 'ids' in homeTimelineStore",
       () async {
     final database = TimelineDatabase();
 
@@ -32,7 +32,7 @@ void main() {
 
     final tweetIds = [1337, 69, 42];
 
-    final bool result = await database.recordHomeTimelineIds(tweets);
+    final bool result = await database.addHomeTimelineIds(tweets, limit: 3);
 
     expect(result, true);
 
@@ -41,6 +41,65 @@ void main() {
       store: database.homeTimelineStore,
       key: "ids",
       data: tweetIds,
+    ));
+  });
+
+  test("Old home timeline ids get merged with existing ids", () async {
+    final database = TimelineDatabase();
+
+    final newTweets = [
+      Tweet()..id = 1337,
+      Tweet()..id = 29,
+    ];
+
+    final newTweetsIds = [1337, 29];
+    final oldTweetsIds = [42, 69];
+
+    when(app<DatabaseService>().findFirst(
+      path: anyNamed("path"),
+      store: database.homeTimelineStore,
+      finder: anyNamed("finder"),
+    )).thenAnswer((_) => Future.value(oldTweetsIds));
+
+    final bool result = await database.addHomeTimelineIds(newTweets, limit: 4);
+
+    expect(result, true);
+
+    verify(app<DatabaseService>().record(
+      path: anyNamed("path"),
+      store: database.homeTimelineStore,
+      key: "ids",
+      data: oldTweetsIds..addAll(newTweetsIds),
+    ));
+  });
+
+  test("The newest home timeline ids get limited before being recorded",
+      () async {
+    final database = TimelineDatabase();
+
+    final newTweets = [
+      Tweet()..id = 1337,
+      Tweet()..id = 29,
+    ];
+
+    final oldTweetsIds = [42, 69];
+    final addedTweetIds = [1337, 69, 42];
+
+    when(app<DatabaseService>().findFirst(
+      path: anyNamed("path"),
+      store: database.homeTimelineStore,
+      finder: anyNamed("finder"),
+    )).thenAnswer((_) => Future.value(oldTweetsIds));
+
+    final bool result = await database.addHomeTimelineIds(newTweets, limit: 3);
+
+    expect(result, true);
+
+    verify(app<DatabaseService>().record(
+      path: anyNamed("path"),
+      store: database.homeTimelineStore,
+      key: "ids",
+      data: addedTweetIds,
     ));
   });
 
@@ -64,7 +123,7 @@ void main() {
       data: tweetIds,
     )).thenThrow(Exception("Test exception"));
 
-    final bool result = await database.recordHomeTimelineIds(tweets);
+    final bool result = await database.addHomeTimelineIds(tweets, limit: 3);
 
     expect(result, false);
   });

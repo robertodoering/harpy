@@ -159,4 +159,74 @@ void main() {
 
     expect(foundTweets, <Tweet>[]);
   });
+
+  test("Recorded tweets get limited to targetAmount when the limit is reached",
+      () async {
+    final database = TweetDatabase();
+
+    final storedTweetValues = [
+      {"id": 1337},
+      {"id": 69},
+      {"id": 42},
+      {"id": 29},
+    ];
+
+    when(app<DatabaseService>().find(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      finder: anyNamed("finder"),
+    )).thenAnswer((_) => Future.value(storedTweetValues));
+
+    final bool result = await database.limitRecordedTweets(
+      limit: 4,
+      targetAmount: 2,
+    );
+
+    expect(result, true);
+
+    verify(app<DatabaseService>().drop(name: anyNamed("name")));
+
+    verify(app<DatabaseService>().transaction(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      keys: anyNamed("keys"),
+      dataList: [
+        {"id": 1337},
+        {"id": 69}
+      ],
+    ));
+  });
+
+  test(
+      "Recorded tweets don't get limited if target amount has not been "
+      "reached", () async {
+    final database = TweetDatabase();
+
+    final storedTweetValues = [
+      {"id": 1337},
+      {"id": 69},
+    ];
+
+    when(app<DatabaseService>().find(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      finder: anyNamed("finder"),
+    )).thenAnswer((_) => Future.value(storedTweetValues));
+
+    final bool result = await database.limitRecordedTweets(
+      limit: 4,
+      targetAmount: 2,
+    );
+
+    expect(result, false);
+
+    verifyNever(app<DatabaseService>().drop(name: anyNamed("name")));
+
+    verifyNever(app<DatabaseService>().transaction(
+      path: anyNamed("path"),
+      store: anyNamed("store"),
+      keys: anyNamed("keys"),
+      dataList: anyNamed("dataList"),
+    ));
+  });
 }
