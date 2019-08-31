@@ -26,16 +26,37 @@ class TimelineDatabase extends HarpyDatabase {
 
   static final Logger _log = Logger("TimelineDatabase");
 
-  /// Records the ids of the [tweets].
+  /// Records the ids of the [tweets] and adds them to previously recorded ids.
+  ///
+  /// Makes sure that the list ist not longer than [limit].
   ///
   /// Exactly one list of ids exists for the home timeline.
-  Future<bool> recordHomeTimelineIds(List<Tweet> tweets) async {
-    _log.fine("recording home timeline ids");
+  Future<bool> addHomeTimelineIds(
+    List<Tweet> tweets, {
+    int limit,
+  }) async {
+    _log.fine("adding home timeline ids");
+
+    List<int> ids;
+
+    final List<int> recordedIds = await _findTimelineIds(
+      store: homeTimelineStore,
+      key: "ids",
+    );
+
+    ids = List.of(recordedIds)..addAll(tweets.map((tweet) => tweet.id));
+
+    if (ids.length > limit) {
+      _log.fine("limiting home timeline ids to $limit");
+      ids.sort((a, b) => b.compareTo(a));
+
+      ids = ids.sublist(0, limit);
+    }
 
     return _recordsTimelineIds(
       store: homeTimelineStore,
       key: "ids",
-      tweets: tweets,
+      ids: ids,
     );
   }
 
@@ -48,18 +69,16 @@ class TimelineDatabase extends HarpyDatabase {
     return _recordsTimelineIds(
       store: userTimelineStore,
       key: userId,
-      tweets: tweets,
+      ids: tweets.map((tweet) => tweet.id).toList(),
     );
   }
 
   Future<bool> _recordsTimelineIds({
     @required StoreRef store,
     @required dynamic key,
-    @required List<Tweet> tweets,
+    @required List<int> ids,
   }) async {
     try {
-      final ids = tweets.map((tweet) => tweet.id).toList();
-
       await databaseService.record(
         path: path,
         store: store,
@@ -96,8 +115,19 @@ class TimelineDatabase extends HarpyDatabase {
     @required StoreRef store,
     @required dynamic key,
   }) async {
-    List<int> ids;
+    final List<int> ids = await _findTimelineIds(store: store, key: key);
 
+    if (ids.isNotEmpty) {
+      return tweetDatabase.findTweets(ids);
+    } else {
+      return <Tweet>[];
+    }
+  }
+
+  Future<List<int>> _findTimelineIds({
+    @required StoreRef store,
+    @required dynamic key,
+  }) async {
     try {
       final value = await databaseService.findFirst(
         path: path,
@@ -105,18 +135,13 @@ class TimelineDatabase extends HarpyDatabase {
         finder: Finder(filter: Filter.byKey(key)),
       );
 
-      ids = value?.cast<int>() ?? <int>[];
+      final List<int> ids = value?.cast<int>() ?? <int>[];
 
       _log.fine("found ${ids.length} timeline ids");
+      return ids;
     } catch (e, st) {
       _log.severe("exception while finding timeline ids", e, st);
-      return <Tweet>[];
-    }
-
-    if (ids.isNotEmpty) {
-      return tweetDatabase.findTweets(ids);
-    } else {
-      return <Tweet>[];
+      return <int>[];
     }
   }
 }
