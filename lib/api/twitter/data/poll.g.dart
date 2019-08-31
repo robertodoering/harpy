@@ -21,5 +21,5 @@ Poll _$PollFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PollToJson(Poll instance) => <String, dynamic>{
       'end_datetime': instance.endDatetime?.toIso8601String(),
       'duration_minutes': instance.durationMinutes,
-      'options': instance.options
+      'options': instance.options,
     };

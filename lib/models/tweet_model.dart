@@ -33,9 +33,6 @@ class TweetModel extends ChangeNotifier {
     return Provider.of<TweetModel>(context);
   }
 
-  /// Set to true when the [originalTweet] comes from a quoted [Tweet].
-  bool quoted = false;
-
   /// True while the [tweet] is being translated.
   bool translating = false;
 
@@ -48,17 +45,17 @@ class TweetModel extends ChangeNotifier {
   /// else the [originalTweet].
   Tweet get tweet => originalTweet.retweetedStatus ?? originalTweet;
 
-  /// Returns the [Tweet.quotedStatus] of the [originalTweet].
-  Tweet get quote => originalTweet.quotedStatus;
-
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
 
   /// Whether or not the [originalTweet] is a reply.
   bool get isReply => originalTweet.harpyData.childOfReply == true;
 
-  /// Whether or not the [originalTweet] is a quote.
-  bool get isQuote => originalTweet.quotedStatus != null;
+  /// Whether or not the [tweet] has quoted another tweet.
+  bool get hasQuote => tweet.quotedStatus != null;
+
+  /// Returns the [Tweet.quotedStatus] of the [originalTweet].
+  Tweet get quote => tweet.quotedStatus;
 
   /// Whether or not the [tweet] contains [TweetMedia].
   bool get hasMedia => tweet.extendedEntities?.media != null;

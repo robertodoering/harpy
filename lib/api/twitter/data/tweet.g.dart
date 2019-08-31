@@ -42,6 +42,7 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
         ? null
         : QuotedStatusPermalink.fromJson(
             json['quoted_status_permalink'] as Map<String, dynamic>)
+    ..isQuoteStatus = json['is_quote_status'] as bool
     ..harpyData = harpyDataFromJson(json['harpyData'] as Map<String, dynamic>);
 }
 
@@ -66,5 +67,6 @@ Map<String, dynamic> _$TweetToJson(Tweet instance) => <String, dynamic>{
       'display_text_range': instance.displayTextRange,
       'quoted_status': instance.quotedStatus,
       'quoted_status_permalink': instance.quotedStatusPermalink,
-      'harpyData': instance.harpyData
+      'is_quote_status': instance.isQuoteStatus,
+      'harpyData': instance.harpyData,
     };

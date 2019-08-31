@@ -40,5 +40,5 @@ Map<String, dynamic> _$EntitiesToJson(Entities instance) => <String, dynamic>{
       'urls': instance.urls,
       'media': instance.media,
       'user_mentions': instance.userMentions,
-      'polls': instance.polls
+      'polls': instance.polls,
     };

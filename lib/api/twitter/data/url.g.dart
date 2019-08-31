@@ -18,5 +18,5 @@ Map<String, dynamic> _$UrlToJson(Url instance) => <String, dynamic>{
       'url': instance.url,
       'expanded_url': instance.expandedUrl,
       'display_url': instance.displayUrl,
-      'indices': instance.indices
+      'indices': instance.indices,
     };

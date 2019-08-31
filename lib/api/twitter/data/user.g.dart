@@ -80,5 +80,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'screen_name': instance.screenName,
       'entities': instance.entities,
       'profile_banner_url': instance.profileBannerUrl,
-      'location': instance.location
+      'location': instance.location,
     };

@@ -21,5 +21,5 @@ Map<String, dynamic> _$UserMentionToJson(UserMention instance) =>
       'name': instance.name,
       'id': instance.id,
       'id_str': instance.idStr,
-      'indices': instance.indices
+      'indices': instance.indices,
     };

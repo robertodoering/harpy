@@ -20,7 +20,7 @@ VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
       'aspect_ratio': instance.aspectRatio,
       'duration_millis': instance.durationMillis,
-      'variants': instance.variants
+      'variants': instance.variants,
     };
 
 Variants _$VariantsFromJson(Map<String, dynamic> json) {
@@ -33,5 +33,5 @@ Variants _$VariantsFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$VariantsToJson(Variants instance) => <String, dynamic>{
       'bitrate': instance.bitrate,
       'content_type': instance.contentType,
-      'url': instance.url
+      'url': instance.url,
     };

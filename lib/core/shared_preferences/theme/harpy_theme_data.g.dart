@@ -18,5 +18,5 @@ Map<String, dynamic> _$HarpyThemeDataToJson(HarpyThemeData instance) =>
     <String, dynamic>{
       'name': instance.name,
       'backgroundColors': instance.backgroundColors,
-      'accentColor': instance.accentColor
+      'accentColor': instance.accentColor,
     };

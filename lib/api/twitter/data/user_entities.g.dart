@@ -17,13 +17,20 @@ UserEntities _$UserEntitiesFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$UserEntitiesToJson(UserEntities instance) =>
-    <String, dynamic>{'url': instance.url, 'description': instance.description};
+    <String, dynamic>{
+      'url': instance.url,
+      'description': instance.description,
+    };
 
 UserEntityUrl _$UserEntityUrlFromJson(Map<String, dynamic> json) {
-  return UserEntityUrl((json['urls'] as List)
-      ?.map((e) => e == null ? null : Url.fromJson(e as Map<String, dynamic>))
-      ?.toList());
+  return UserEntityUrl(
+    (json['urls'] as List)
+        ?.map((e) => e == null ? null : Url.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
 }
 
 Map<String, dynamic> _$UserEntityUrlToJson(UserEntityUrl instance) =>
-    <String, dynamic>{'urls': instance.urls};
+    <String, dynamic>{
+      'urls': instance.urls,
+    };

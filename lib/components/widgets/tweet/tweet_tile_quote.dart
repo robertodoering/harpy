@@ -11,7 +11,7 @@ class TweetQuote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!model.isQuote) {
+    if (!model.hasQuote) {
       return Container();
     }
 
@@ -25,9 +25,7 @@ class TweetQuote extends StatelessWidget {
       child: ChangeNotifierProvider<TweetModel>(
         builder: (_) => TweetModel(
           originalTweet: model.quote,
-        )
-          ..quoted = true
-          ..reduceText(),
+        )..reduceText(),
         child: const _QuoteContent(),
       ),
     );

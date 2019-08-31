@@ -13,4 +13,7 @@ PollOption _$PollOptionFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PollOptionToJson(PollOption instance) =>
-    <String, dynamic>{'position': instance.position, 'text': instance.text};
+    <String, dynamic>{
+      'position': instance.position,
+      'text': instance.text,
+    };

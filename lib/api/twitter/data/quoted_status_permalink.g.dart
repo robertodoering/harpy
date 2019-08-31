@@ -19,5 +19,5 @@ Map<String, dynamic> _$QuotedStatusPermalinkToJson(
     <String, dynamic>{
       'url': instance.url,
       'expanded': instance.expanded,
-      'display': instance.display
+      'display': instance.display,
     };
