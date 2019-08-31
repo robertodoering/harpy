@@ -33,7 +33,7 @@ class TimelineDatabase extends HarpyDatabase {
   /// Exactly one list of ids exists for the home timeline.
   Future<bool> addHomeTimelineIds(
     List<Tweet> tweets, {
-    int limit,
+    @required int limit,
   }) async {
     _log.fine("adding home timeline ids");
 

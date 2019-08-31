@@ -117,8 +117,8 @@ class TweetDatabase extends HarpyDatabase {
   /// Only the newest tweets will remain.
   /// Has no effect if [limit] is greater than the amount of recorded tweets.
   Future<bool> limitRecordedTweets({
-    int limit,
-    int targetAmount,
+    @required int limit,
+    @required int targetAmount,
   }) async {
     _log.fine("limiting recorded tweets to $targetAmount on limit $limit");
 
@@ -137,9 +137,9 @@ class TweetDatabase extends HarpyDatabase {
 
       _log.info("found ${values.length} stored tweets");
 
-      if (values.length <= limit) {
+      if (values.length < limit) {
         _log.fine("stored tweets <= limit");
-        return true;
+        return false;
       }
 
       values = values.sublist(0, targetAmount);
