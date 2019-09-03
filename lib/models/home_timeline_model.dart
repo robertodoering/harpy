@@ -33,6 +33,10 @@ class HomeTimelineModel extends TimelineModel {
                 limit: 1000,
                 targetAmount: 500,
               ));
+
+      if (onTweetsUpdated != null) {
+        onTweetsUpdated();
+      }
     }
 
     notifyListeners();

@@ -30,6 +30,9 @@ abstract class TimelineModel extends ChangeNotifier {
   /// the bottom of the tweet list).
   bool requestingMore = false;
 
+  /// Called when tweets are updated in the [HomeTimelineModel].
+  VoidCallback onTweetsUpdated;
+
   /// Returns `true` if [lastRequestedMore] has been set to less than 90
   /// seconds from [DateTime.now].
   bool get blockRequestingMore {

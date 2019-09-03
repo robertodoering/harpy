@@ -70,6 +70,16 @@ class _TweetTimelineState<T extends TimelineModel>
     }
   }
 
+  void _onTweetsUpdated() {
+    if (_scrollController != null && _scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -97,7 +107,7 @@ class _TweetTimelineState<T extends TimelineModel>
   Widget build(BuildContext context) {
     return Consumer<T>(
       builder: (context, model, _) {
-        _timelineModel = model;
+        _timelineModel = model..onTweetsUpdated = _onTweetsUpdated;
 
         return RefreshIndicator(
           onRefresh: model.updateTweets,
