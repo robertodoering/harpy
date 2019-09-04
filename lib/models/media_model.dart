@@ -57,7 +57,7 @@ class MediaModel extends ChangeNotifier {
   /// the [media].
   ///
   /// Takes the selected media quality into account.
-  String getVideoUrl() {
+  String get videoUrl {
     final List<Variants> variants = media.first?.videoInfo?.variants;
 
     if (variants?.isEmpty ?? true) {
@@ -84,13 +84,13 @@ class MediaModel extends ChangeNotifier {
   /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.
   ///
   /// For videos and gifs this is the url for the thumbnail.
-  String getThumbnailUrl() {
+  String get thumbnailUrl {
     return media.first?.mediaUrl;
   }
 
   /// Returns the aspect ratio of the video or `1` if no videoInfo exists for
   /// the [media].
-  double getVideoAspectRatio() {
+  double get videoAspectRatio {
     return (media.first?.videoInfo?.aspectRatio[0] ?? 1) /
         (media.first?.videoInfo?.aspectRatio[1] ?? 1);
   }

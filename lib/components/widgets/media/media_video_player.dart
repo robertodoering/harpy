@@ -37,7 +37,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
   Future<void> pushFullscreen() async {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
-    if (mediaModel.getVideoAspectRatio() > 1) {
+    if (mediaModel.videoAspectRatio > 1) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
@@ -73,7 +73,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
       children: <Widget>[
         CachedNetworkImage(
           fit: BoxFit.cover,
-          imageUrl: mediaModel.getThumbnailUrl(),
+          imageUrl: mediaModel.thumbnailUrl,
           height: double.infinity,
           width: double.infinity,
         ),
@@ -98,7 +98,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
         child: OverflowBox(
           maxHeight: double.infinity,
           child: AspectRatio(
-            aspectRatio: mediaModel.getVideoAspectRatio(),
+            aspectRatio: mediaModel.videoAspectRatio,
             child: VideoPlayer(controller),
           ),
         ),

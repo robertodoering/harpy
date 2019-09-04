@@ -39,13 +39,13 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
   @override
   Widget buildThumbnail() {
     return AspectRatio(
-      aspectRatio: mediaModel.getVideoAspectRatio(),
+      aspectRatio: mediaModel.videoAspectRatio,
       child: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
           CachedNetworkImage(
             fit: BoxFit.cover,
-            imageUrl: mediaModel.getThumbnailUrl(),
+            imageUrl: mediaModel.thumbnailUrl,
           ),
           Center(
             child: initializing
@@ -62,7 +62,7 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
   @override
   Widget buildVideoPlayer() {
     return AspectRatio(
-      aspectRatio: mediaModel.getVideoAspectRatio(),
+      aspectRatio: mediaModel.videoAspectRatio,
       child: VideoPlayer(controller),
     );
   }
