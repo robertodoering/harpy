@@ -70,6 +70,7 @@ class FollowersCount extends StatelessWidget {
           ),
         ),
         Expanded(
+          // todo: just make this one Text widget
           child: Text.rich(
             TextSpan(children: [
               TextSpan(text: prettyPrintNumber(followers)),
