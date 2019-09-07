@@ -40,8 +40,8 @@ class UserService {
   ///
   /// The results are paginated with one page containing 20 [User] objects.
   ///
-  /// If the [page] is higher than the max possible page is entered, the last
-  /// 20 [User] objects are returned.
+  /// If the [page] is higher than the max possible page, the last 20 [User]
+  /// objects are returned.
   /// Therefore, to know if the last page has been reached, it should be
   /// verified that a response only contains new [User] objects.
   Future<List<User>> searchUsers({

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// An asynchronous callback used to load more data to be added to the list.
+/// An asynchronous callback that is used to load more data.
 typedef OnLoadMore = Future<void> Function();
 
-/// A builder for the widget built at the bottom of the list while loading more.
+/// A builder for the widget that is built at the bottom of the list while
+/// loading more data.
 typedef LoadingBuilder = Widget Function();
 
 /// Wraps a list and listens to its [ScrollNotification] to call the

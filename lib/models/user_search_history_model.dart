@@ -5,7 +5,7 @@ import 'package:harpy/harpy.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:provider/provider.dart';
 
-/// Provides methods for adding and retrieving user search queries to the
+/// Provides methods for adding and retrieving user search queries from the
 /// [HarpyPrefs].
 ///
 /// Previously searched queries are displayed in the [UserSearchDelegate].

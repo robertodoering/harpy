@@ -70,8 +70,8 @@ class UserSearchModel extends ChangeNotifier {
       _users.addAll(users);
     }
 
-    // expect to have reached the last page if the length of the result ist
-    // not 20
+    // expect to have reached the last page if the length of the result list
+    // is not 20
     _lastPage = users?.length != 20;
   }
 
