@@ -33,4 +33,12 @@ class HarpyPrefs {
       return defaultValue;
     }
   }
+
+  List<String> getStringList(String key) {
+    try {
+      return preferences.getStringList(key) ?? <String>[];
+    } catch (e) {
+      return <String>[];
+    }
+  }
 }
