@@ -15,7 +15,7 @@ mixin MediaPlayerMixin<T extends StatefulWidget> on State<T> {
   void initState() {
     super.initState();
 
-    controller = VideoPlayerController.network(mediaModel.getVideoUrl());
+    controller = VideoPlayerController.network(mediaModel.videoUrl);
 
     if (mediaModel.autoplay) {
       initialize();

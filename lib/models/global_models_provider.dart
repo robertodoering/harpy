@@ -3,6 +3,7 @@ import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
+import 'package:harpy/models/user_search_history_model.dart';
 import 'package:provider/provider.dart';
 
 /// Creates a [MultiProvider] with each global model.
@@ -42,6 +43,9 @@ class GlobalModelsProvider extends StatelessWidget {
             ),
           ),
         ),
+        Provider<UserSearchHistoryModel>(
+          builder: (_) => UserSearchHistoryModel(),
+        )
       ],
       child: child,
     );
