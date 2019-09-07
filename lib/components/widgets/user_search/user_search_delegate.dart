@@ -52,10 +52,25 @@ class UserSearchDelegate extends SearchDelegate<User> {
   ThemeData appBarTheme(BuildContext context) => Theme.of(context);
 
   @override
-  List<Widget> buildActions(BuildContext context) => null;
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () => query = "",
+      ),
+    ];
+  }
 
   @override
-  Widget buildLeading(BuildContext context) => null;
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: Navigator.of(context).pop,
+    );
+  }
 
   @override
   Widget buildResults(BuildContext context) {
