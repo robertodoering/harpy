@@ -8,13 +8,19 @@ import 'package:harpy/models/user_profile_model.dart';
 /// Builds the content for the [UserProfileScreen].
 class UserProfileContent extends StatelessWidget {
   Widget _buildTweetList(BuildContext context, UserProfileModel model) {
+    final banner =
+        model.user.profileBannerUrl ?? model.user.profileBackgroundImageUrl;
+
+    final harpyTheme = HarpyTheme.of(context);
+
     return FadingNestedScaffold(
       title: model.user.name,
-      background: CachedNetworkImage(
-        imageUrl:
-            model.user.profileBannerUrl ?? model.user.profileBackgroundImageUrl,
-        fit: BoxFit.cover,
-      ),
+      background: banner == null
+          ? Container(color: harpyTheme.backgroundColors.first)
+          : CachedNetworkImage(
+              imageUrl: banner,
+              fit: BoxFit.cover,
+            ),
       body: UserProfileTweetList(),
     );
   }
