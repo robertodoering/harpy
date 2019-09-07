@@ -11,12 +11,10 @@ class UserProfileContent extends StatelessWidget {
     final banner =
         model.user.profileBannerUrl ?? model.user.profileBackgroundImageUrl;
 
-    final harpyTheme = HarpyTheme.of(context);
-
     return FadingNestedScaffold(
       title: model.user.name,
       background: banner == null
-          ? Container(color: harpyTheme.backgroundColors.first)
+          ? Container(color: HarpyTheme.of(context).backgroundColors.first)
           : CachedNetworkImage(
               imageUrl: banner,
               fit: BoxFit.cover,
