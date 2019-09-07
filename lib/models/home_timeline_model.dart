@@ -26,7 +26,7 @@ class HomeTimelineModel extends TimelineModel {
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
-      timelineDatabase.addHomeTimelineIds(updatedTweets, limit: 100);
+      timelineDatabase.addHomeTimelineIds(updatedTweets, limit: 500);
       tweetDatabase
           .recordTweetList(updatedTweets)
           .then((_) => tweetDatabase.limitRecordedTweets(
