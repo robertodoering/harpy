@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/core/utils/json_utils.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
@@ -13,7 +14,7 @@ class UserService {
 
   /// Returns the [User] corresponding to the [id].
   Future<User> getUserDetails({
-    String id,
+    @required String id,
   }) async {
     _log.fine("getting user details");
 
@@ -30,6 +31,40 @@ class UserService {
         .then(
           (response) => compute<String, User>(
             _handleUserDetailsResponse,
+            response.body,
+          ),
+        );
+  }
+
+  /// Returns a list of [User]s that match the [query].
+  ///
+  /// The results are paginated with one page containing 20 [User] objects.
+  ///
+  /// If the [page] is higher than the max possible page is entered, the last
+  /// 20 [User] objects are returned.
+  /// Therefore, to know if the last page has been reached, it should be
+  /// verified that a response only contains new [User] objects.
+  Future<List<User>> searchUsers({
+    @required String query,
+    int page = 1,
+  }) {
+    _log.fine("searching users for query $query");
+
+    final params = <String, String>{
+      "q": query,
+      "page": "$page",
+      "count": "20",
+      "include_entities": "true",
+    };
+
+    return twitterClient
+        .get(
+          "https://api.twitter.com/1.1/users/search.json",
+          params: params,
+        )
+        .then(
+          (response) => compute<String, List<User>>(
+            _handleSearchUsersResponse,
             response.body,
           ),
         );
@@ -58,4 +93,8 @@ class UserService {
 
 User _handleUserDetailsResponse(String body) {
   return User.fromJson(jsonDecode(body));
+}
+
+List<User> _handleSearchUsersResponse(String body) {
+  return mapJson<User>(body, (json) => User.fromJson(json)) ?? [];
 }
