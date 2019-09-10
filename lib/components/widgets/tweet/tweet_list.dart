@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 
 /// Builds a [ListView] for a list of tweets.
@@ -13,6 +14,8 @@ class TweetList extends StatelessWidget {
   TweetList({
     @required List<Tweet> tweets,
     this.scrollController,
+    this.onLoadMore,
+    this.enableLoadMore = false,
     Widget leading,
     Widget placeHolder,
     Widget trailing,
@@ -40,6 +43,10 @@ class TweetList extends StatelessWidget {
   /// The full content of the list.
   final List<dynamic> _content = [];
 
+  final OnLoadMore onLoadMore;
+
+  final bool enableLoadMore;
+
   /// Builds an item in the list.
   ///
   /// If the item is a [Tweet] it will be built as a [TweetTile].
@@ -55,7 +62,7 @@ class TweetList extends StatelessWidget {
   }
 
   // todo: maybe make tweetlist stateful and override didUpdateWidget to animate
-  //  the new list content and scroll to the top
+  //  the new list content
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +73,14 @@ class TweetList extends StatelessWidget {
       itemCount: childCount,
     );
 
-    return ListView.custom(
-      controller: scrollController,
-      padding: EdgeInsets.zero,
-      childrenDelegate: childrenDelegate,
+    return LoadMoreList(
+      onLoadMore: onLoadMore,
+      enable: enableLoadMore,
+      child: ListView.custom(
+        controller: scrollController,
+        padding: EdgeInsets.zero,
+        childrenDelegate: childrenDelegate,
+      ),
     );
   }
 }
