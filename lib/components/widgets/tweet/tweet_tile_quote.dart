@@ -19,7 +19,7 @@ class TweetQuote extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => HarpyNavigator.push(TweetRepliesScreen(
-        tweet: model.originalTweet.quotedStatus,
+        tweet: model.tweet.quotedStatus,
       )),
       child: Container(
         margin: const EdgeInsets.only(top: 8),
