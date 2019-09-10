@@ -67,6 +67,8 @@ class TweetRepliesScreen extends StatelessWidget {
             leading: _buildLeading(model),
             placeHolder: _buildNoRepliesFound(context),
             tweets: model.replies,
+            onLoadMore: model.loadMore,
+            enableLoadMore: !model.lastPage,
           ),
         );
       },
