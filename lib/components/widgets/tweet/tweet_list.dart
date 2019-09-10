@@ -76,6 +76,7 @@ class TweetList extends StatelessWidget {
     return LoadMoreList(
       onLoadMore: onLoadMore,
       enable: enableLoadMore,
+      loadingText: "Loading more Tweets...",
       child: ListView.custom(
         controller: scrollController,
         padding: EdgeInsets.zero,
