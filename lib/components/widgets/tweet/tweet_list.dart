@@ -9,7 +9,6 @@ import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 ///
 /// [leading] will be built at the start of the list.
 /// [placeHolder] will be built instead of [tweets] if [tweets] is empty.
-/// [trailing] will be built at the end of the list.
 class TweetList extends StatelessWidget {
   TweetList({
     @required List<Tweet> tweets,
@@ -18,7 +17,6 @@ class TweetList extends StatelessWidget {
     this.enableLoadMore = false,
     Widget leading,
     Widget placeHolder,
-    Widget trailing,
   }) {
     if (leading != null) {
       _content.add(leading);
@@ -31,20 +29,22 @@ class TweetList extends StatelessWidget {
     } else {
       _content.addAll(tweets);
     }
-
-    if (trailing != null) {
-      _content.add(trailing);
-    }
   }
 
   /// The [ScrollController] for the [TweetList].
   final ScrollController scrollController;
 
   /// The full content of the list.
+  ///
+  /// Can be of type [Widget] or [Tweet].
   final List<dynamic> _content = [];
 
+  /// Used by the [LoadMoreList] to load more tweets when reaching the end of
+  /// the list.
   final OnLoadMore onLoadMore;
 
+  /// Whether or not more tweets should be requested when reaching the end of
+  /// the list.
   final bool enableLoadMore;
 
   /// Builds an item in the list.
