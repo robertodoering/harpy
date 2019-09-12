@@ -21,10 +21,7 @@ class TweetRepliesScreen extends StatelessWidget {
   Widget _buildLeading(TweetRepliesModel model) {
     return Column(
       children: <Widget>[
-        if (model.parentTweet != null)
-          TweetTile(
-            tweet: model.parentTweet,
-          ),
+        if (model.parentTweet != null) TweetTile(tweet: model.parentTweet),
         BigTweetTile(tweet: tweet),
       ],
     );
@@ -90,6 +87,9 @@ class TweetRepliesScreen extends StatelessWidget {
 }
 
 /// A [Tweet] displayed in a tile for the [TweetRepliesScreen].
+///
+/// Very similar to [TweetTile] at the moment but can be used for a different
+/// look of the 'parent' tweet.
 class BigTweetTile extends StatefulWidget {
   const BigTweetTile({
     @required this.tweet,
@@ -124,6 +124,7 @@ class _BigTweetTileState extends State<BigTweetTile>
             ],
           ),
         ),
+        const Divider(height: 0),
       ],
     );
   }
