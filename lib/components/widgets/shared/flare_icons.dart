@@ -1,4 +1,5 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/flare_buttons.dart';
@@ -60,6 +61,12 @@ class FlareIcon extends StatelessWidget {
   final Color color;
 
   double get _calculatedSize => size + sizeDifference;
+
+  /// Loads the icons and adds them into the cache.
+  static void cacheIcons(BuildContext context) {
+    cachedActor(DefaultAssetBundle.of(context), "$_path/favorite.flr");
+    cachedActor(DefaultAssetBundle.of(context), "$_path/shining_star.flr");
+  }
 
   @override
   Widget build(BuildContext context) {
