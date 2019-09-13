@@ -72,7 +72,7 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
         onDismissed: _dismiss,
         child: PhotoView.customChild(
           backgroundDecoration: BoxDecoration(),
-          heroTag: heroTag,
+          heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,
           scaleStateChangedCallback: _scaleStateChangedCallback,
