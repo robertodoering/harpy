@@ -32,7 +32,7 @@ class TweetRepliesModel extends ChangeNotifier {
   Tweet get parentTweet => _parentTweet;
 
   /// The replies for the [tweet].
-  List<Tweet> _replies = [];
+  final List<Tweet> _replies = [];
   List<Tweet> get replies => UnmodifiableListView(_replies);
 
   /// True while loading the replies.

@@ -79,7 +79,7 @@ class UserService {
   Future<void> createFriendship(String id) async {
     _log.fine("create friendship");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/friendships/create.json",
       params: {"user_id": id},
     );
@@ -89,7 +89,7 @@ class UserService {
   Future<void> destroyFriendship(String id) async {
     _log.fine("destroy friendship");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/friendships/destroy.json",
       params: {"user_id": id},
     );
