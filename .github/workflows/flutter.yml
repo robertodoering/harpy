@@ -9,18 +9,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-
-    - name: install dependencies
-      uses: steebchen/flutter@v1.0.0
+#    - uses: actions/setup-java@v1
+#      with:
+#        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
       with:
-        args: pub get
-
-    - name: run tests
-      uses: steebchen/flutter@v1.0.0
-      with:
-        args: test
-
-    - name: build apk
-      uses: steebchen/flutter@v1.0.0
-      with:
-        args: build apk --release
+        channel: 'stable'
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter build apk
