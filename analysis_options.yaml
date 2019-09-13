@@ -12,7 +12,6 @@ linter:
     # error rules
     - avoid_empty_else
     - avoid_relative_lib_imports
-    - avoid_returning_null_for_future
     - avoid_slow_async_io
     - avoid_types_as_parameter_names
     - cancel_subscriptions

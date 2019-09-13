@@ -50,6 +50,11 @@ class UserService {
   }) {
     _log.fine("searching users for query $query");
 
+    if (query?.isNotEmpty != true) {
+      // the query can not be null or empty
+      return null;
+    }
+
     final params = <String, String>{
       "q": query,
       "page": "$page",
