@@ -52,7 +52,7 @@ class UserService {
 
     if (query?.isNotEmpty != true) {
       // the query can not be null or empty
-      return null;
+      return Future.value(null);
     }
 
     final params = <String, String>{
