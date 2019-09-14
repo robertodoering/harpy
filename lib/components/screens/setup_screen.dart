@@ -17,46 +17,62 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
-  final GlobalKey<SlideAnimationState> _slideInitializationKey =
+  final GlobalKey<SlideAnimationState> _slideSetupKey =
       GlobalKey<SlideAnimationState>();
 
-  Widget _buildInitializationScreen(BuildContext context) {
+  Widget _buildSetupScreen() {
+    final mediaQuery = MediaQuery.of(context);
+
     return SlideAnimation(
-      key: _slideInitializationKey,
+      key: _slideSetupKey,
       duration: const Duration(milliseconds: 600),
-      endPosition: Offset(0, -MediaQuery.of(context).size.height),
+      endPosition: Offset(0, -mediaQuery.size.height),
       child: Column(
         children: <Widget>[
-          _buildTop(context),
+          _buildText(),
+          const SizedBox(height: 16),
+          _buildUserName(),
+          const SizedBox(height: 16),
           _buildBottom(),
         ],
       ),
     );
   }
 
-  Widget _buildTop(BuildContext context) {
+  Widget _buildText() {
+    return const Expanded(
+      flex: 2,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: SecondaryDisplayText("welcome"),
+      ),
+    );
+  }
+
+  Widget _buildUserName() {
     final loginModel = LoginModel.of(context);
 
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SecondaryDisplayText("welcome"),
-          const SizedBox(height: 16),
-          PrimaryDisplayText(
-            loginModel.loggedInUser.name,
-            style: Theme.of(context).textTheme.display3,
-            overflow: TextOverflow.ellipsis,
-            delay: const Duration(milliseconds: 800),
+      flex: 2,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: FractionallySizedBox(
+          widthFactor: 2 / 3,
+          child: FittedBox(
+            child: PrimaryDisplayText(
+              loginModel.loggedInUser.name,
+              style: Theme.of(context).textTheme.display3,
+              delay: const Duration(milliseconds: 800),
+            ),
           ),
-          const SizedBox(height: 8),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildBottom() {
     return Expanded(
+      flex: 4,
       child: Column(
         children: <Widget>[
           const SizedBox(height: 8),
@@ -91,7 +107,7 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Future<void> _navigateToHome() async {
-    await _slideInitializationKey.currentState.forward();
+    await _slideSetupKey.currentState.forward();
     HarpyNavigator.pushReplacement(HomeScreen());
   }
 
@@ -100,7 +116,7 @@ class _SetupScreenState extends State<SetupScreen> {
     return Material(
       color: Colors.transparent,
       child: HarpyBackground(
-        child: _buildInitializationScreen(context),
+        child: _buildSetupScreen(),
       ),
     );
   }
