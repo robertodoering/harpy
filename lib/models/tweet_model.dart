@@ -20,9 +20,13 @@ import 'package:provider/provider.dart';
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
+    this.isQuote = false,
   });
 
   final Tweet originalTweet;
+
+  /// Whether or not the [TweetModel] is showing a quoted [Tweet].
+  final bool isQuote;
 
   final TweetService tweetService = app<TweetService>();
   final TranslationService translationService = app<TranslationService>();
@@ -44,6 +48,11 @@ class TweetModel extends ChangeNotifier {
   /// Returns the [Tweet.retweetedStatus] if the [originalTweet] is a retweet
   /// else the [originalTweet].
   Tweet get tweet => originalTweet.retweetedStatus ?? originalTweet;
+
+  /// Returns the text of the tweet.
+  ///
+  /// The text is reduced when the [tweet] is a quote.
+  String get text => isQuote ? reduceText(tweet.fullText) : tweet.fullText;
 
   /// Whether or not the [originalTweet] is a retweet.
   bool get isRetweet => originalTweet.retweetedStatus != null;
@@ -78,25 +87,6 @@ class TweetModel extends ChangeNotifier {
 
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
-
-  /// Reduces the [tweet.fullText] by replacing every new line with a space
-  /// and cuts the text at the nearest space after the given [limit] with an
-  /// ellipsis.
-  void reduceText({limit = 100}) {
-    String text = tweet.fullText.trim();
-    text = text.replaceAll("\n", " ");
-
-    if (text.length > limit) {
-      final int index = text.substring(limit).indexOf(" ");
-
-      if (index != -1) {
-        // cut off the text before the nearest space
-        text = "${text.substring(0, limit + index)}...";
-      }
-    }
-
-    tweet.fullText = text;
-  }
 
   /// Retweet this [tweet].
   void retweet() {
