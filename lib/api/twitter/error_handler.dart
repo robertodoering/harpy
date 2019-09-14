@@ -18,7 +18,7 @@ Logger _log = Logger("Error handler");
 void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
   final flushbarService = app<FlushbarService>();
 
-  _log.fine("handling error: $error");
+  _log.warning("handling error: $error");
 
   if (error is String) {
     flushbarService.error(error);
@@ -54,7 +54,11 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
     return;
   }
 
-  _log.warning("error not handled");
+  if (error is Error) {
+    _log.warning("error not handled", error, error.stackTrace);
+  } else if (error is Exception) {
+    _log.warning("exception not handled", error);
+  }
 
   // todo: maybe allow to report the error through a flushbar action
   flushbarService.error("An unexpected error occurred");

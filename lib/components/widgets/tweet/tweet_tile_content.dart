@@ -241,7 +241,7 @@ class TweetText extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 8),
         child: TwitterText(
-          text: model.tweet.fullText,
+          text: model.text,
           entities: model.tweet.entities,
           onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
           expandedUrlToIgnore: model.tweet.quotedStatusPermalink?.expanded,

@@ -22,9 +22,8 @@ class UserTimelineModel extends TimelineModel {
   static final Logger _log = Logger("UserTimelineModel");
 
   @override
-  Future<List<Tweet>> getCachedTweets() {
-    return timelineDatabase.findUserTimelineTweets(userId);
-  }
+  Future<List<Tweet>> getCachedTweets() =>
+      timelineDatabase.findUserTimelineTweets(userId);
 
   @override
   Future<void> updateTweets() async {
@@ -47,21 +46,7 @@ class UserTimelineModel extends TimelineModel {
   }
 
   @override
-  Future<void> requestMore() async {
-    await super.requestMore();
-
-    final id = "${tweets.last.id - 1}";
-
-    final List<Tweet> newTweets = await tweetService
-        .getUserTimeline("$userId", maxId: id)
-        .catchError(twitterClientErrorHandler);
-
-    if (newTweets != null) {
-      // todo: maybe add new tweets to cached user timeline ids
-      addNewTweets(newTweets);
-    }
-
-    requestingMore = false;
-    notifyListeners();
-  }
+  Future<List<Tweet>> requestMoreTweets() => tweetService
+      .getUserTimeline("$userId", maxId: "${tweets.last.id - 1}")
+      .catchError(twitterClientErrorHandler);
 }

@@ -91,3 +91,21 @@ String prettyPrintDurationDifference(Duration difference) {
     return "$seconds seconds";
   }
 }
+
+/// Reduces the [text] by replacing newlines with spaces and if the length of
+/// the text exceeds the [limit], the text will be cut at the closest space
+/// after [limit] with an ellipsis.
+String reduceText(String text, {int limit = 100}) {
+  text = text.replaceAll("\n", " ").trim();
+
+  if (text.length > limit) {
+    final int index = text.substring(limit).indexOf(" ");
+
+    if (index != -1) {
+      // cut off the text before the nearest space
+      text = "${text.substring(0, limit + index)}...";
+    }
+  }
+
+  return text;
+}

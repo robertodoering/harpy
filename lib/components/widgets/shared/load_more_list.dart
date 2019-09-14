@@ -20,8 +20,8 @@ typedef LoadingBuilder = Widget Function();
 class LoadMoreList extends StatefulWidget {
   LoadMoreList({
     @required this.child,
-    @required this.onLoadMore,
-    @required this.enable,
+    this.onLoadMore,
+    this.enable = false,
     this.loadingBuilder,
     this.loadingText = "Loading...",
     this.triggerExtend = 200,
@@ -64,6 +64,9 @@ class LoadMoreList extends StatefulWidget {
 
 class _LoadMoreListState extends State<LoadMoreList> {
   bool _loading = false;
+
+  /// `true` if the [widget.onLoadMore] callback should get evoked.
+  bool get listen => widget.enable && !_loading && widget.onLoadMore != null;
 
   Future<void> _loadMore() async {
     if (_loading) {
@@ -156,7 +159,7 @@ class _LoadMoreListState extends State<LoadMoreList> {
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
-      onNotification: _loading ? null : _onScrollNotification,
+      onNotification: listen ? _onScrollNotification : null,
       child: _buildListView(),
     );
   }

@@ -50,6 +50,11 @@ class UserService {
   }) {
     _log.fine("searching users for query $query");
 
+    if (query?.isNotEmpty != true) {
+      // the query can not be null or empty
+      return Future.value(null);
+    }
+
     final params = <String, String>{
       "q": query,
       "page": "$page",
@@ -74,7 +79,7 @@ class UserService {
   Future<void> createFriendship(String id) async {
     _log.fine("create friendship");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/friendships/create.json",
       params: {"user_id": id},
     );
@@ -84,7 +89,7 @@ class UserService {
   Future<void> destroyFriendship(String id) async {
     _log.fine("destroy friendship");
 
-    return await twitterClient.post(
+    return twitterClient.post(
       "https://api.twitter.com/1.1/friendships/destroy.json",
       params: {"user_id": id},
     );
