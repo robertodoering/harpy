@@ -47,7 +47,7 @@ abstract class TimelineModel extends ChangeNotifier {
   /// The last time [requestMore] was called.
   DateTime lastRequestedMore;
 
-  /// Initialize the [tweets] with cached tweets and update the [tweets]
+  /// Initializes the [tweets] with cached tweets and updates the [tweets]
   /// afterwards.
   // todo: instead of immediately using the cached tweets and then updating
   //  the tweets without waiting for the request, maybe we should always wait

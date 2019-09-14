@@ -121,9 +121,9 @@ class TweetSearchService {
   /// the replies we get the last 100 user replies, filter those for the [tweet]
   /// and if the request didn't yield replies twice in a row we assume that
   /// we won't get any more.
-  /// We could request until less than 100 statuses have been received to
-  /// make sure every reply to the [tweet] has been found but that could mean
-  /// many requests without any replies.
+  /// We could request until we received all of the user replies of the last
+  /// 7 days to make sure every reply to the [tweet] has been found but that
+  /// could mean many requests without any replies.
   Future<TweetRepliesResult> getReplies(
     Tweet tweet, {
     TweetRepliesResult lastResult,
@@ -204,9 +204,7 @@ class TweetRepliesResult {
   /// The id of the last retrieved [Tweet].
   final int maxId;
 
-  /// A flag that is `true` when no more replies to a user can be retrieved.
-  ///
-  /// Only the statuses that are less than 7 days old can be retrieved.
+  /// A flag that is `true` when we assume we can't receive more replies.
   final bool lastPage;
 }
 
