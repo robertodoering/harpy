@@ -59,7 +59,7 @@ class TweetList extends StatelessWidget {
     if (item is Tweet) {
       return SlideFadeInAnimation(
         duration: const Duration(milliseconds: 300),
-        offset: Offset(mediaQuery.size.width, 0),
+        offset: Offset(mediaQuery.size.width / 2, 0),
         child: TweetTile(
           key: ValueKey<int>(item.id),
           tweet: item,
