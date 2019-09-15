@@ -23,6 +23,8 @@ class DatabaseService {
 
     final path = "${directory.path}/database/$name/";
 
+    _log.fine("deleting $path");
+
     return compute<String, bool>(_isolateDrop, path);
   }
 

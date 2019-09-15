@@ -65,7 +65,7 @@ class LoginModel extends ChangeNotifier {
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
-        _onLoginError();
+        onLoginError();
         break;
     }
 
@@ -94,14 +94,22 @@ class LoginModel extends ChangeNotifier {
         ));
       }
     } else {
-      _log.severe("unable to retreive logged in user after successful "
-          "authorization");
-      _onLoginError();
+      onLoginError();
     }
   }
 
-  void _onLoginError() {
-    HarpyNavigator.pushReplacement(LoginScreen());
+  Future<void> onLoginError() async {
+    _log.severe("unable to retreive logged in user after successful "
+        "authorization");
+
+    applicationModel.twitterSession = null;
+    loggedInUser = null;
+
+    HarpyNavigator.pushReplacementRoute(FadeRoute(
+      builder: (context) => LoginScreen(),
+      duration: const Duration(milliseconds: 600),
+    ));
+
     flushbarService.error("An error occurred during login.");
   }
 
@@ -116,7 +124,6 @@ class LoginModel extends ChangeNotifier {
 
     // wait for the transition before resetting the theme
     Future.delayed(const Duration(milliseconds: 300)).then((_) {
-      print("resetting now!");
       applicationModel.themeSettingsModel.resetHarpyTheme();
     });
   }

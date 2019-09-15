@@ -99,11 +99,16 @@ class ApplicationModel extends ChangeNotifier {
     if (loggedIn) {
       await loginModel.initBeforeHome();
 
-      _log.fine("navigating to home screen");
-      HarpyNavigator.pushReplacementRoute(FadeRoute(
-        builder: (context) => HomeScreen(),
-        duration: const Duration(milliseconds: 600),
-      ));
+      if (loginModel.loggedInUser != null) {
+        _log.fine("navigating to home screen");
+        HarpyNavigator.pushReplacementRoute(FadeRoute(
+          builder: (context) => HomeScreen(),
+          duration: const Duration(milliseconds: 600),
+        ));
+      } else {
+        // unable to get the logged in user, go back to the login screen
+        loginModel.onLoginError();
+      }
     } else {
       _log.fine("navigating to login screen");
       HarpyNavigator.pushReplacementRoute(FadeRoute(
