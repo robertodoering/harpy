@@ -19,7 +19,7 @@ class TweetList extends StatelessWidget {
     Widget placeHolder,
   }) {
     if (leading != null) {
-      _content.add(leading);
+      _content..add(leading)..add(const Divider(height: 0));
     }
 
     if (tweets.isEmpty) {

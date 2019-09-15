@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/tweet/tweet_list.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +26,15 @@ class _TweetTimelineState<T extends TimelineModel>
   /// Builds a placeholder widget when no tweets exist or when currently loading
   /// tweets.
   Widget _buildPlaceholder() {
-    if (_timelineModel.tweets.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(32),
+    if (_timelineModel.loadingInitialTweets) {
+      return const LoadingTile();
+    } else {
+      return const Padding(
+        padding: EdgeInsets.all(32),
         child: Center(
-          child: _timelineModel.loadingInitialTweets
-              ? const CircularProgressIndicator()
-              : const Text("No tweets exist"),
+          child: Text("No tweets exist"),
         ),
       );
-    } else {
-      return null;
     }
   }
 
