@@ -32,7 +32,7 @@ class _TweetTimelineState<T extends TimelineModel>
       return const Padding(
         padding: EdgeInsets.all(32),
         child: Center(
-          child: Text("No tweets exist"),
+          child: Text("No tweets found"),
         ),
       );
     }
