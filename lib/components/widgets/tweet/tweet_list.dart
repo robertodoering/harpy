@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 
@@ -51,14 +52,22 @@ class TweetList extends StatelessWidget {
   ///
   /// If the item is a [Tweet] it will be built as a [TweetTile].
   Widget _itemBuilder(BuildContext context, int index) {
+    final mediaQuery = MediaQuery.of(context);
+
     final item = _content[index];
 
-    return item is Tweet
-        ? TweetTile(
-            key: ValueKey<int>(item.id),
-            tweet: item,
-          )
-        : item;
+    if (item is Tweet) {
+      return SlideFadeInAnimation(
+        duration: const Duration(milliseconds: 300),
+        offset: Offset(mediaQuery.size.width, 0),
+        child: TweetTile(
+          key: ValueKey<int>(item.id),
+          tweet: item,
+        ),
+      );
+    } else {
+      return item;
+    }
   }
 
   // todo: maybe make tweetlist stateful and override didUpdateWidget to animate
