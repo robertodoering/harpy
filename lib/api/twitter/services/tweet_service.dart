@@ -72,6 +72,7 @@ class TweetService {
   /// Returns a the home timeline for the logged in user.
   Future<List<Tweet>> getHomeTimeline({
     String maxId,
+    Duration timeout,
   }) async {
     _log.fine("get home timeline");
 
@@ -85,6 +86,7 @@ class TweetService {
         .get(
           "https://api.twitter.com/1.1/statuses/home_timeline.json",
           params: params,
+          timeout: timeout,
         )
         .then(
           (response) => compute<String, List<Tweet>>(
@@ -98,6 +100,7 @@ class TweetService {
   Future<List<Tweet>> getUserTimeline(
     String userId, {
     String maxId,
+    Duration timeout,
   }) async {
     _log.fine("get user timeline");
 
@@ -112,6 +115,7 @@ class TweetService {
         .get(
           "https://api.twitter.com/1.1/statuses/user_timeline.json",
           params: params,
+          timeout: timeout,
         )
         .then(
           (response) => compute<String, List<Tweet>>(

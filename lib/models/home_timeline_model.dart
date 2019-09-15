@@ -16,12 +16,15 @@ class HomeTimelineModel extends TimelineModel {
       timelineDatabase.findHomeTimelineTweets();
 
   @override
-  Future<void> updateTweets() async {
+  Future<void> updateTweets({
+    Duration timeout,
+    bool silentError = true,
+  }) async {
     _log.fine("updating tweets");
 
     final List<Tweet> updatedTweets = await tweetService
-        .getHomeTimeline()
-        .catchError(twitterClientErrorHandler);
+        .getHomeTimeline(timeout: timeout)
+        .catchError(silentError ? (_) {} : twitterClientErrorHandler);
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
