@@ -22,6 +22,8 @@ dependencies:
   mime_type: ^0.2.4
   get_it: ^1.0.3+2
   sembast: ^2.0.1
+  shimmer: # todo: use pub version if pr gets merged and released
+    git: git://github.com/robertodoering/flutter_shimmer.git
 
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
