@@ -74,6 +74,10 @@ abstract class TimelineModel extends ChangeNotifier {
   Future<List<Tweet>> getCachedTweets();
 
   /// Updates the [tweets] to the newest tweets for the timeline.
+  ///
+  /// If [silentError] is `true`, any exception during the request (for
+  /// example a timeout) won't be shown.
+  /// This is used when initially loading the [_tweets] with a low [timeout].
   Future<void> updateTweets({Duration timeout, bool silentError});
 
   /// Returns new tweets for the timeline.
