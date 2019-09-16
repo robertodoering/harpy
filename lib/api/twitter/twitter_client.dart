@@ -76,6 +76,7 @@ class TwitterClient {
     String url, {
     Map<String, String> headers,
     Map<String, String> params,
+    Duration timeout,
   }) {
     _log
       ..fine("sending get request: $url")
@@ -86,7 +87,7 @@ class TwitterClient {
 
     return _client
         .get(url, headers: headers)
-        .timeout(_timeout)
+        .timeout(timeout ?? _timeout)
         .then((response) {
 //      _saveResponse(response);
       if (!response.statusCode.toString().startsWith("2")) {
@@ -103,6 +104,7 @@ class TwitterClient {
     Map<String, String> params,
     dynamic body,
     Encoding encoding,
+    Duration timeout = _timeout,
   }) {
     _log
       ..fine("sending post request: $url")

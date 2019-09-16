@@ -100,6 +100,7 @@ class SlideFadeInAnimation extends StatefulWidget {
   /// The offset that the child will have before it slides into position.
   final Offset offset;
 
+  /// The curve used by the animation.
   final Curve curve;
 
   @override
@@ -113,10 +114,7 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..addListener(() {
-        if (mounted) setState(() {});
-      });
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = CurveTween(curve: widget.curve).animate(_controller);
 
@@ -135,15 +133,21 @@ class _SlideFadeInAnimationState extends State<SlideFadeInAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: _animation.value,
-      child: Transform.translate(
-        offset: Offset(
-          (1 - _animation.value) * widget.offset.dx,
-          (1 - _animation.value) * widget.offset.dy,
-        ),
-        child: widget.child,
-      ),
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _animation.value,
+          child: Transform.translate(
+            offset: Offset(
+              (1 - _animation.value) * widget.offset.dx,
+              (1 - _animation.value) * widget.offset.dy,
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: widget.child,
     );
   }
 }

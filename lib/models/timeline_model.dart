@@ -49,31 +49,24 @@ abstract class TimelineModel extends ChangeNotifier {
 
   /// Initializes the [tweets] with cached tweets and updates the [tweets]
   /// afterwards.
-  // todo: instead of immediately using the cached tweets and then updating
-  //  the tweets without waiting for the request, maybe we should always wait
-  //  for request (with a small timeout) and only use the cached data in case
-  //  the request failed for a better user experience.
-  //  maybe only use the cached tweets and not update it if the last time the
-  //  tweets got cached is not long ago (maybe an hour or two).
-  //  onTweetsUpdated can be removed afterwards.
   Future<void> initTweets() async {
     _log.fine("initializing tweets");
     loadingInitialTweets = true;
+    notifyListeners();
 
-    // initialize with cached tweets
-    final List<Tweet> cachedTweets = await getCachedTweets() ?? [];
+    await updateTweets(timeout: const Duration(seconds: 5), silentError: true);
 
-    if (cachedTweets.isEmpty) {
-      // if no cached tweet exists wait for the initial api call
-      _log.fine("no cached tweets exist");
-      await updateTweets();
-    } else {
-      // if cached tweets exist update tweets but dont wait for it
-      _log.fine("got cached tweets");
-      _tweets = sortTweetReplies(cachedTweets);
-      loadingInitialTweets = false;
-      updateTweets();
+    if (_tweets.isEmpty) {
+      _log.fine("unable to initialize tweets, getting cached tweets");
+      final List<Tweet> cachedTweets = await getCachedTweets() ?? [];
+
+      if (cachedTweets.isNotEmpty) {
+        _tweets = sortTweetReplies(cachedTweets);
+      }
     }
+
+    loadingInitialTweets = false;
+    notifyListeners();
   }
 
   /// Gets a list of cached [Tweet]s for the timeline or an empty list if no
@@ -81,7 +74,11 @@ abstract class TimelineModel extends ChangeNotifier {
   Future<List<Tweet>> getCachedTweets();
 
   /// Updates the [tweets] to the newest tweets for the timeline.
-  Future<void> updateTweets();
+  ///
+  /// If [silentError] is `true`, any exception during the request (for
+  /// example a timeout) won't be shown.
+  /// This is used when initially loading the [_tweets] with a low [timeout].
+  Future<void> updateTweets({Duration timeout, bool silentError});
 
   /// Returns new tweets for the timeline.
   ///

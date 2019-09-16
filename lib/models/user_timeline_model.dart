@@ -26,14 +26,17 @@ class UserTimelineModel extends TimelineModel {
       timelineDatabase.findUserTimelineTweets(userId);
 
   @override
-  Future<void> updateTweets() async {
+  Future<void> updateTweets({
+    Duration timeout,
+    bool silentError = true,
+  }) async {
     _log.fine("updating tweets");
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
 
     final List<Tweet> updatedTweets = await tweetService
-        .getUserTimeline("$userId")
-        .catchError(twitterClientErrorHandler);
+        .getUserTimeline("$userId", timeout: timeout)
+        .catchError(silentError ? (_) {} : twitterClientErrorHandler);
 
     if (updatedTweets != null) {
       tweets = updatedTweets;
