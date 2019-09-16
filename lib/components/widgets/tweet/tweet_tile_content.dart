@@ -6,9 +6,11 @@ import 'package:harpy/components/screens/tweet_replies_screen.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/flare_buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/scroll_direction_listener.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -25,31 +27,42 @@ class _TweetTileContentState extends State<TweetTileContent>
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final scrollDirection = ScrollDirection.of(context);
 
-    return GestureDetector(
-      onTap: () {
-        HarpyNavigator.push(TweetRepliesScreen(
-          tweet: model.tweet,
-        ));
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TweetRetweetedRow(model),
-          _TweetContentPadding(
-            model,
-            children: <Widget>[
-              TweetAvatarNameRow(model),
-              TweetText(model),
-              TweetQuote(model),
-              TweetTranslation(model, vsync: this),
-              TweetMedia(model),
-              TweetActionsRow(model),
-            ],
-          ),
-          const Divider(height: 0),
-          _TweetReplyParent(model),
-        ],
+    // only slides in the tweet tile from the right when scrolling down
+    final offset = scrollDirection.direction == VerticalDirection.up
+        ? const Offset(0, 0)
+        : Offset(mediaQuery.size.width / 2, 0);
+
+    return SlideFadeInAnimation(
+      duration: const Duration(milliseconds: 300),
+      offset: offset,
+      child: GestureDetector(
+        onTap: () {
+          HarpyNavigator.push(TweetRepliesScreen(
+            tweet: model.tweet,
+          ));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TweetRetweetedRow(model),
+            _TweetContentPadding(
+              model,
+              children: <Widget>[
+                TweetAvatarNameRow(model),
+                TweetText(model),
+                TweetQuote(model),
+                TweetTranslation(model, vsync: this),
+                TweetMedia(model),
+                TweetActionsRow(model),
+              ],
+            ),
+            const Divider(height: 0),
+            _TweetReplyParent(model),
+          ],
+        ),
       ),
     );
   }
