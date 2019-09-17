@@ -164,6 +164,8 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Whether or not the video volume is 0.
   bool _muted = false;
 
+  Widget _playPauseIcon;
+
   @override
   void initState() {
     super.initState();
@@ -216,6 +218,15 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   }
 
   void _togglePlay() {
+    _playPauseIcon = FadeOutWidget(
+      child: CircleButton(
+        child: Icon(
+          playing ? Icons.play_arrow : Icons.pause,
+          size: kMediaIconSize,
+        ),
+      ),
+    );
+
     if (playing) {
       // pause
       setState(() {
@@ -272,16 +283,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     } else if (_reshowingOverlay) {
       return Container();
     } else {
-      return Center(
-        child: FadeOutWidget(
-          child: CircleButton(
-            child: Icon(
-              playing ? Icons.play_arrow : Icons.pause,
-              size: kMediaIconSize,
-            ),
-          ),
-        ),
-      );
+      return Center(child: _playPauseIcon);
     }
   }
 
