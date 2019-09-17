@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/implicit_animations.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// Used by [FlatHarpyButton] to build a different icon when the button is
