@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/widgets/media/media_player.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/implicit_animations.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:video_player/video_player.dart';
 
@@ -12,8 +13,8 @@ const double kMediaIconSize = 64;
 
 /// The [VideoPlayer] for twitter videos.
 ///
-/// A [MediaVideoOverlay] is built on the [VideoPlayer] to allow for controlling
-/// the [VideoPlayer].
+/// A [MediaVideoOverlay] is built on the [VideoPlayer] that controls the
+/// [VideoPlayer].
 ///
 /// The size of the [MediaVideoPlayer] should be constrained.
 class MediaVideoPlayer extends StatefulWidget {
@@ -163,9 +164,6 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Whether or not the video volume is 0.
   bool _muted = false;
 
-  /// The widget in the center when the play state changes.
-  Widget _playPauseWidget = Container();
-
   @override
   void initState() {
     super.initState();
@@ -218,15 +216,6 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   }
 
   void _togglePlay() {
-    _playPauseWidget = FadeOutWidget(
-      child: CircleButton(
-        child: Icon(
-          playing ? Icons.pause : Icons.play_arrow,
-          size: kMediaIconSize,
-        ),
-      ),
-    );
-
     if (playing) {
       // pause
       setState(() {
@@ -274,25 +263,26 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
 
   /// Builds the widget in the center of the overlay.
   Widget _buildCenterIcon() {
-    if (buffering) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (!_overlayShowing) {
-      return Container();
-    }
-
-    Widget centerWidget;
-
     if (finished) {
-      centerWidget = const Icon(Icons.replay, size: kMediaIconSize);
+      return const Center(child: Icon(Icons.replay, size: kMediaIconSize));
+    } else if (!_overlayShowing) {
+      return Container();
+    } else if (buffering) {
+      return const Center(child: CircularProgressIndicator());
     } else if (_reshowingOverlay) {
-      centerWidget = Container();
+      return Container();
     } else {
-      centerWidget = _playPauseWidget;
+      return Center(
+        child: FadeOutWidget(
+          child: CircleButton(
+            child: Icon(
+              playing ? Icons.play_arrow : Icons.pause,
+              size: kMediaIconSize,
+            ),
+          ),
+        ),
+      );
     }
-
-    return Center(child: centerWidget);
   }
 
   /// Builds the bottom controls of the overlay.
@@ -311,14 +301,19 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
               // play / pause button
               CircleButton(
                 onPressed: _togglePlay,
-                child: Icon(playing ? Icons.pause : Icons.play_arrow),
+                child: ImplicitlyAnimatedIcon(
+                  icon: AnimatedIcons.play_pause,
+                  animatedIconState: playing
+                      ? AnimatedIconState.showSecond
+                      : AnimatedIconState.showFirst,
+                ),
               ),
 
               Spacer(),
 
               CircleButton(
                 onPressed: _toggleMute,
-                child: Icon(_muted ? Icons.volume_up : Icons.volume_off),
+                child: Icon(_muted ? Icons.volume_off : Icons.volume_up),
               ),
 
               // fullscreen button
@@ -349,11 +344,13 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _onVideoTap,
-      child: Stack(children: <Widget>[
-        widget.child,
-        _buildBottomRow(),
-        _buildCenterIcon(),
-      ]),
+      child: Stack(
+        children: <Widget>[
+          widget.child,
+          _buildBottomRow(),
+          _buildCenterIcon(),
+        ],
+      ),
     );
   }
 }

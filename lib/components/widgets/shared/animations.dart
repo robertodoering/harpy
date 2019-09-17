@@ -175,11 +175,6 @@ class _FadeOutWidgetState extends State<FadeOutWidget>
   void initState() {
     super.initState();
     _controller = AnimationController(duration: widget.duration, vsync: this)
-      ..addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      })
       ..forward();
   }
 
@@ -205,12 +200,16 @@ class _FadeOutWidgetState extends State<FadeOutWidget>
 
   @override
   Widget build(BuildContext context) {
-    return _controller.isAnimating
-        ? Opacity(
-            opacity: 1.0 - _controller.value,
-            child: widget.child,
-          )
-        : Container();
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Opacity(
+          opacity: 1 - _controller.value,
+          child: child,
+        );
+      },
+      child: widget.child,
+    );
   }
 }
 
@@ -261,43 +260,6 @@ class _BounceInAnimationState extends State<BounceInAnimation>
   Widget build(BuildContext context) {
     return Transform.scale(
       scale: _animation.value,
-      child: widget.child,
-    );
-  }
-}
-
-/// An implicitly animated widget that will animate a change to [scale].
-class AnimatedScale extends ImplicitlyAnimatedWidget {
-  const AnimatedScale({
-    @required this.scale,
-    @required this.child,
-    Curve curve = Curves.easeInCubic,
-    Duration duration = const Duration(milliseconds: 100),
-  }) : super(curve: curve, duration: duration);
-
-  final double scale;
-  final Widget child;
-
-  @override
-  _AnimatedScaleState createState() => _AnimatedScaleState();
-}
-
-class _AnimatedScaleState extends AnimatedWidgetBaseState<AnimatedScale> {
-  Tween<double> _scaleTween;
-
-  @override
-  void forEachTween(visitor) {
-    _scaleTween = visitor(
-      _scaleTween,
-      widget.scale,
-      (value) => Tween<double>(begin: value),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      scale: _scaleTween.evaluate(animation),
       child: widget.child,
     );
   }

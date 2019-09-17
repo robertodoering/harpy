@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/implicit_animations.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// Used by [FlatHarpyButton] to build a different icon when the button is
@@ -196,17 +196,17 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Material(
-        color: backgroundColor,
-        child: InkWell(
-          highlightColor: highlightColor,
-          splashColor: splashColor,
-          onTap: onPressed,
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
+    return Material(
+      type: MaterialType.circle,
+      color: backgroundColor,
+      child: InkWell(
+        highlightColor: highlightColor,
+        splashColor: splashColor,
+        onTap: onPressed,
+        customBorder: CircleBorder(),
+        child: Padding(
+          padding: padding,
+          child: child,
         ),
       ),
     );
