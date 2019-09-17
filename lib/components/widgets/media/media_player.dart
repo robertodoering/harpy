@@ -108,12 +108,11 @@ mixin MediaOverlayMixin<T extends StatefulWidget> on State<T> {
 
     // buffering workaround:
     // the video player buffering start / end event is never fired on android,
-    // so instead assume buffering when the video is playing but the position
-    // is not changing.
-    final isBuffering = (secondLastValue?.isPlaying ?? false) &&
-        !finished &&
-        controller.value.isPlaying &&
-        controller.value.position == secondLastValue.position;
+    // so instead assume buffering when the current position is outside of
+    // the buffered duration range
+    final isBuffering = controller.value.buffered.isNotEmpty &&
+        controller.value.position > controller.value.buffered.last.end;
+
     if (buffering != isBuffering) {
       setState(() {
         buffering = isBuffering;
