@@ -254,18 +254,36 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 }
 
 /// A raised button with a background.
+///
+/// If [text] is not `null`, [icon] is ignored.
 class RaisedHarpyButton extends StatelessWidget {
   const RaisedHarpyButton({
-    @required this.text,
     @required this.onTap,
+    this.text,
+    this.icon,
     this.dense = false,
     this.backgroundColor,
   });
 
   final String text;
+  final IconData icon;
   final VoidCallback onTap;
   final bool dense;
   final Color backgroundColor;
+
+  Widget _buildContent(ThemeData theme) {
+    if (text != null) {
+      final style = backgroundColor != null
+          ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
+          : theme.textTheme.button;
+
+      return Text(text, style: style);
+    } else if (icon != null) {
+      return Icon(icon);
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,10 +300,6 @@ class RaisedHarpyButton extends StatelessWidget {
       color = color.withOpacity(0.7);
     }
 
-    final style = backgroundColor != null
-        ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
-        : theme.textTheme.button;
-
     return _HarpyButtonBase(
       onTap: onTap,
       child: Material(
@@ -294,7 +308,7 @@ class RaisedHarpyButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: Padding(
           padding: padding,
-          child: Text(text, style: style),
+          child: _buildContent(theme),
         ),
       ),
     );

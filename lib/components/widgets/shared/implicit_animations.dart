@@ -13,6 +13,7 @@ class ImplicitlyAnimatedIcon extends StatefulWidget {
   const ImplicitlyAnimatedIcon({
     @required this.icon,
     @required this.animatedIconState,
+    this.color,
     this.curve = Curves.easeInOut,
     this.duration = const Duration(milliseconds: 300),
   });
@@ -23,6 +24,9 @@ class ImplicitlyAnimatedIcon extends StatefulWidget {
   /// Determines if the first or second icon of the [AnimatedIconData] should
   /// be shown.
   final AnimatedIconState animatedIconState;
+
+  /// The [Color] of the [icon].
+  final Color color;
 
   final Curve curve;
   final Duration duration;
@@ -71,6 +75,7 @@ class _ImplicitlyAnimatedIconState extends State<ImplicitlyAnimatedIcon>
   Widget build(BuildContext context) {
     return AnimatedIcon(
       icon: widget.icon,
+      color: widget.color,
       progress: _controller,
     );
   }

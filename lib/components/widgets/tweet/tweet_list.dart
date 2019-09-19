@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/scroll_direction_listener.dart';
+import 'package:harpy/components/widgets/shared/scroll_to_start.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
 
 /// Builds a [ListView] for a list of tweets.
@@ -74,14 +75,17 @@ class TweetList extends StatelessWidget {
     );
 
     return ScrollDirectionListener(
-      child: LoadMoreList(
-        onLoadMore: onLoadMore,
-        enable: enableLoadMore,
-        loadingText: "Loading more Tweets...",
-        child: ListView.custom(
-          controller: scrollController,
-          padding: EdgeInsets.zero,
-          childrenDelegate: childrenDelegate,
+      child: ScrollToStart(
+        scrollController: scrollController,
+        child: LoadMoreList(
+          onLoadMore: onLoadMore,
+          enable: enableLoadMore,
+          loadingText: "Loading more Tweets...",
+          child: ListView.custom(
+            controller: scrollController,
+            padding: EdgeInsets.zero,
+            childrenDelegate: childrenDelegate,
+          ),
         ),
       ),
     );
