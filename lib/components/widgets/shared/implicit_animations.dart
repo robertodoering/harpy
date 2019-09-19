@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:harpy/components/widgets/shared/shifted_position.dart';
 
 /// Specifies what icon of the [AnimatedIconData] to show.
 enum AnimatedIconState {
@@ -106,6 +108,48 @@ class _AnimatedScaleState extends AnimatedWidgetBaseState<AnimatedScale> {
   Widget build(BuildContext context) {
     return Transform.scale(
       scale: _scaleTween.evaluate(animation),
+      child: widget.child,
+    );
+  }
+}
+
+/// Implicitly animates the position of the [child] relative to the size of the
+/// child.
+class AnimatedShiftedPosition extends ImplicitlyAnimatedWidget {
+  const AnimatedShiftedPosition({
+    @required this.child,
+    @required this.shift,
+    Curve curve = Curves.easeInOut,
+    Duration duration = const Duration(milliseconds: 300),
+  }) : super(curve: curve, duration: duration);
+
+  final Widget child;
+  final Offset shift;
+
+  @override
+  _AnimatedRelativePositionState createState() =>
+      _AnimatedRelativePositionState();
+}
+
+class _AnimatedRelativePositionState
+    extends AnimatedWidgetBaseState<AnimatedShiftedPosition> {
+  Tween<Offset> _offsetTween;
+
+  @override
+  void forEachTween(visitor) {
+    _offsetTween = visitor(
+      _offsetTween,
+      widget.shift,
+      (value) => Tween<Offset>(begin: value),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final offset = _offsetTween.evaluate(animation);
+
+    return ShiftedPosition(
+      shift: offset,
       child: widget.child,
     );
   }
