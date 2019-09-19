@@ -189,8 +189,8 @@ Future<bool> _isolateDrop(String path) async {
   try {
     Directory(path).deleteSync(recursive: true);
     return true;
-  } catch (e) {
-    print(e);
+  } catch (e, st) {
+    Logger("IsolateDrop").warning("error while dropping database", e, st);
     return false;
   }
 }

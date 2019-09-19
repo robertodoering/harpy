@@ -4,7 +4,7 @@ import 'package:logs/logs.dart';
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
 
-  // show network traffic logs in the dev tools' logging view
+  // show network traffic logs in the dev tools logging view
   Log('http').enabled = true;
 
   Logger.root.onRecord.listen((rec) {

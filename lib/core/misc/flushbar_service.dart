@@ -5,6 +5,9 @@ import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:logging/logging.dart';
 
+/// The type of the message shown in the [Flushbar].
+///
+/// Determines the icon, color and duration of the [Flushbar].
 enum FlushbarType {
   info,
   warning,
@@ -13,6 +16,10 @@ enum FlushbarType {
 
 /// Uses the [Flushbar] package to display messages on the bottom of the
 /// screen similar to a [SnackBar].
+///
+/// todo: when a flushbar is showing and navigator.pop() is called (i.e.
+///   pressing the back button) it should pop the flushbar route first and
+///   then call navigator.pop() again
 class FlushbarService {
   static final Logger _log = Logger("Flushbar");
 
@@ -32,6 +39,8 @@ class FlushbarService {
     _log.fine("showing flushbar message: $message");
 
     final navigator = HarpyNavigator.key.currentState;
+
+    final harpyTheme = HarpyTheme.of(navigator.context);
 
     Color color;
     IconData icon;
@@ -55,19 +64,14 @@ class FlushbarService {
         break;
     }
 
-    final harpyTheme = HarpyTheme.of(navigator.context);
-
     final flushbar = Flushbar(
-      backgroundColor: harpyTheme.primaryColor,
-      backgroundGradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: harpyTheme.backgroundColors,
-      ),
+      backgroundColor: harpyTheme.backgroundColors.first,
       icon: Icon(icon, color: color),
       messageText: Text(message, style: harpyTheme.theme.textTheme.subhead),
       duration: duration,
       leftBarIndicatorColor: color,
+      animationDuration: const Duration(milliseconds: 600),
+      forwardAnimationCurve: Curves.easeOutCirc,
     );
 
     navigator.push(route.showFlushbar(

@@ -31,7 +31,7 @@ class GlobalModelsProvider extends StatelessWidget {
             ),
           ),
         ),
-        ChangeNotifierProvider<ApplicationModel>(
+        Provider<ApplicationModel>(
           builder: (context) => ApplicationModel(
             loginModel: Provider.of<LoginModel>(
               context,

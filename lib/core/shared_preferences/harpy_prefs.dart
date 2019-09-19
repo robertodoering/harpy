@@ -2,6 +2,10 @@ import 'package:harpy/models/application_model.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Wraps the [SharedPreferences].
+///
+/// A [prefix] is used to differentiate between different users for user
+/// specific settings.
 class HarpyPrefs {
   static final Logger _log = Logger("HarpyPrefs");
 
@@ -34,6 +38,7 @@ class HarpyPrefs {
     }
   }
 
+  /// Gets the string list for the [key] or an empty list if it doesn't exist.
   List<String> getStringList(String key) {
     try {
       return preferences.getStringList(key) ?? <String>[];

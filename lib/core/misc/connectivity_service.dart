@@ -15,10 +15,16 @@ class ConnectivityService {
 
   static final Logger _log = Logger("ConnectivityService");
 
+  /// The last [ConnectivityResult] that is updated automatically whenever the
+  /// state changes.
   ConnectivityResult _lastResult;
 
+  /// `true` if the device is currently connected to a cellular network.
   bool get mobile => _lastResult == ConnectivityResult.mobile;
 
+  /// `true` if the device is currently connected to a wifi.
+  ///
+  /// This doesn't necessarily mean it also has an internet connection.
   bool get wifi => _lastResult == ConnectivityResult.wifi;
 
   Future<void> init() async {

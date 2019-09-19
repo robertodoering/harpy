@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/media/media_image_gallery.dart';
 
 /// A [MediaDismissible] used for the [MediaImageGallery] to dismiss the gallery
 /// when swiping up or down.

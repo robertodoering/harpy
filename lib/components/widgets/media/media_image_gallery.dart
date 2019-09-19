@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/twitter_media.dart';
 import 'package:harpy/components/widgets/media/media_dismissible.dart';
 import 'package:harpy/models/media_model.dart';
 import 'package:photo_view/photo_view.dart';

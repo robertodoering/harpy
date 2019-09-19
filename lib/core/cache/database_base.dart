@@ -12,26 +12,27 @@ abstract class HarpyDatabase {
   /// The name of the database.
   String get name;
 
-  /// The [subDirectory] determines where the database is located.
-  String subDirectory;
-
   /// The path where the [Database] is located.
   String path;
 
   static final Logger _log = Logger("HarpyDatabase");
 
-  /// Initializes the [path] with the temporary directory.
-  Future<void> initialize() async {
+  /// Initializes the [path] with the temporary directory and an optional
+  /// [subDirectory].
+  Future<void> initialize({
+    String subDirectory,
+  }) async {
     _log.fine("initializing database $name with subDirectory: $subDirectory");
 
     final directory = await getTemporaryDirectory();
 
-    path = "${directory.path}/database/$name/";
+    path = "${directory.path}/database/$name";
 
     if (subDirectory != null) {
-      path = "$path$subDirectory/";
+      path = "$path/$subDirectory/";
     }
-    path = "${path}database";
+
+    path = "$path/database";
   }
 
   /// Deletes this database directory.
