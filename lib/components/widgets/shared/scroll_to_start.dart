@@ -14,30 +14,35 @@ import 'package:harpy/core/misc/harpy_theme.dart';
 class ScrollToStart extends StatefulWidget {
   const ScrollToStart({
     @required this.child,
-    @required this.scrollController,
   });
 
   final Widget child;
-
-  final ScrollController scrollController;
 
   @override
   _ScrollToStartState createState() => _ScrollToStartState();
 }
 
 class _ScrollToStartState extends State<ScrollToStart> {
+  ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
+  }
 
-    widget.scrollController.addListener(_scrollListener);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _scrollController ??= PrimaryScrollController.of(context)
+      ..addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    widget.scrollController.removeListener(_scrollListener);
+    _scrollController.removeListener(_scrollListener);
   }
 
   void _scrollListener() {
@@ -45,22 +50,30 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
-    if (widget.scrollController.position.pixels < mediaQuery.size.height &&
-        mounted) {
+    if (_scrollController.position.pixels < mediaQuery.size.height && mounted) {
       setState(() {});
     }
   }
 
+  /// Determines if the button should show.
   bool get _show {
     final scrollDirection = ScrollDirection.of(context);
     final mediaQuery = MediaQuery.of(context);
 
-    if (!widget.scrollController.hasClients) {
+    if (!_scrollController.hasClients) {
       return false;
     }
 
-    return widget.scrollController.position.pixels > mediaQuery.size.height &&
+    return _scrollController.position.pixels > mediaQuery.size.height &&
         scrollDirection.up;
+  }
+
+  void _scrollToStart() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -72,18 +85,22 @@ class _ScrollToStartState extends State<ScrollToStart> {
         widget.child,
         Align(
           alignment: Alignment.bottomCenter,
-          child: AnimatedShiftedPosition(
-            shift: _show ? Offset.zero : const Offset(0, 1),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: RaisedHarpyButton(
-                icon: Icons.arrow_upward,
-                dense: true,
-                backgroundColor: harpyTheme.backgroundColors.last,
-                onTap: () => widget.scrollController.animateTo(
-                  0,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeOut,
+          child: AnimatedOpacity(
+            opacity: _show ? 1 : 0,
+            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 300),
+            child: AnimatedShiftedPosition(
+              shift: _show ? Offset.zero : const Offset(0, 1),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: RaisedHarpyButton(
+                  icon: Icons.arrow_upward,
+                  backgroundColor: harpyTheme.backgroundColors.first,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 20,
+                  ),
+                  onTap: _scrollToStart,
                 ),
               ),
             ),

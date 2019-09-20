@@ -255,7 +255,11 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 
 /// A raised button with a background.
 ///
-/// If [text] is not `null`, [icon] is ignored.
+/// If both [icon] and [text] are not `null`, the [icon] is built to the left
+/// of the [text].
+///
+/// [dense] changes the padding of the button.
+/// If [padding] is set, [dense] has no effect.
 class RaisedHarpyButton extends StatelessWidget {
   const RaisedHarpyButton({
     @required this.onTap,
@@ -263,6 +267,7 @@ class RaisedHarpyButton extends StatelessWidget {
     this.icon,
     this.dense = false,
     this.backgroundColor,
+    this.padding,
   });
 
   final String text;
@@ -270,30 +275,47 @@ class RaisedHarpyButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool dense;
   final Color backgroundColor;
+  final EdgeInsets padding;
 
+  EdgeInsets get _padding =>
+      padding ??
+      EdgeInsets.symmetric(
+        vertical: dense ? 8 : 12,
+        horizontal: dense ? 16 : 32,
+      );
+
+  /// Builds the row with the [Icon] and [Text] widget.
   Widget _buildContent(ThemeData theme) {
+    Widget iconWidget;
+    Widget textWidget;
+
     if (text != null) {
       final style = backgroundColor != null
           ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
           : theme.textTheme.button;
 
-      return Text(text, style: style);
-    } else if (icon != null) {
-      return Icon(icon);
-    } else {
-      return Container();
+      textWidget = Text(text, style: style);
     }
+
+    if (icon != null) {
+      iconWidget = Icon(icon);
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        if (iconWidget != null) iconWidget,
+        if (iconWidget != null && textWidget != null)
+          SizedBox(width: _padding.left / 2),
+        if (textWidget != null) textWidget,
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(64);
-    final padding = EdgeInsets.symmetric(
-      vertical: dense ? 8 : 12,
-      horizontal: dense ? 16 : 32,
-    );
-
     final theme = Theme.of(context);
+    final borderRadius = BorderRadius.circular(64);
 
     Color color = backgroundColor ?? theme.buttonColor;
     if (onTap == null) {
@@ -307,7 +329,7 @@ class RaisedHarpyButton extends StatelessWidget {
         elevation: 8,
         borderRadius: borderRadius,
         child: Padding(
-          padding: padding,
+          padding: _padding,
           child: _buildContent(theme),
         ),
       ),
@@ -318,6 +340,8 @@ class RaisedHarpyButton extends StatelessWidget {
 /// A flat button without a background that appears as text.
 ///
 /// Should only be used when the context makes it clear it can be tapped.
+///
+/// todo: refactor buttons and rename the old 'FlatHarpyButton'
 class NewFlatHarpyButton extends StatelessWidget {
   const NewFlatHarpyButton({
     @required this.text,

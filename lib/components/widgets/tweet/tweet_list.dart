@@ -76,7 +76,6 @@ class TweetList extends StatelessWidget {
 
     return ScrollDirectionListener(
       child: ScrollToStart(
-        scrollController: scrollController,
         child: LoadMoreList(
           onLoadMore: onLoadMore,
           enable: enableLoadMore,
