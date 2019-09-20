@@ -94,12 +94,10 @@ class _ScrollToStartState extends State<ScrollToStart> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: RaisedHarpyButton(
+                  text: "Jump to top",
                   icon: Icons.arrow_upward,
-                  backgroundColor: harpyTheme.backgroundColors.first,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 20,
-                  ),
+                  backgroundColor: harpyTheme.backgroundColors.last,
+                  dense: true,
                   onTap: _scrollToStart,
                 ),
               ),
