@@ -145,6 +145,7 @@ class DialogAction<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final Function callback = onTap ?? () => Navigator.of(context).pop(result);
 
+    // todo: refactor buttons to use a text and icon
     if (text != null) {
       return NewFlatHarpyButton(
         text: text,
