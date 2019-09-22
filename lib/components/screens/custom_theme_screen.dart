@@ -64,46 +64,48 @@ class CustomThemeScreen extends StatelessWidget {
 ///
 /// Only appears when editing an existing custom theme.
 class _CustomThemeDeleteButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  void _showDialog(BuildContext context) {
     final customThemeModel = CustomThemeModel.of(context);
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
+    showDialog(
+        context: context,
+        builder: (context) {
+          return HarpyDialog(
+            title: "Really delete?",
+            actions: [
+              DialogAction.discard,
+              DialogAction.confirm,
+            ],
+          );
+        }).then((result) {
+      if (result == true) {
+        if (themeSettingsModel.selectedThemeId ==
+            customThemeModel.editingThemeId) {
+          // when deleting the active custom theme, reset to the
+          // default theme
+          themeSettingsModel.changeSelectedTheme(
+            PredefinedThemes.themes.first,
+            0,
+          );
+        }
+
+        themeSettingsModel.deleteCustomTheme(
+          themeSettingsModel.selectedThemeId,
+        );
+
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: RaisedHarpyButton(
+      child: HarpyButton.raised(
         text: "Delete theme",
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return HarpyDialog(
-                  title: "Really delete?",
-                  actions: [
-                    DialogAction.discard,
-                    DialogAction.confirm,
-                  ],
-                );
-              }).then((result) {
-            if (result == true) {
-              if (themeSettingsModel.selectedThemeId ==
-                  customThemeModel.editingThemeId) {
-                // when deleting the active custom theme, reset to the
-                // default theme
-                themeSettingsModel.changeSelectedTheme(
-                  PredefinedThemes.themes.first,
-                  0,
-                );
-              }
-
-              themeSettingsModel.deleteCustomTheme(
-                themeSettingsModel.selectedThemeId,
-              );
-
-              Navigator.of(context).pop();
-            }
-          });
-        },
+        onTap: () => _showDialog(context),
       ),
     );
   }

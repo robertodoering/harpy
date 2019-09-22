@@ -96,7 +96,7 @@ class _SetupScreenState extends State<SetupScreen> {
           Spacer(),
           BounceInAnimation(
             delay: const Duration(milliseconds: 4000),
-            child: NewFlatHarpyButton(
+            child: HarpyButton.flat(
               text: "continue",
               onTap: _navigateToHome,
             ),

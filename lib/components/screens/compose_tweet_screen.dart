@@ -72,7 +72,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
               onPressed: model.canAddMedia ? model.addMedia : null,
             ),
             Spacer(),
-            RaisedHarpyButton(
+            HarpyButton.raised(
               text: "Tweet",
               dense: true,
               onTap: enableTweet ? () => model.tweet(_controller.text) : null,

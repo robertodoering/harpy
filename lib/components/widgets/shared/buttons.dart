@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/implicit_animations.dart';
-import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// Used by [FlatHarpyButton] to build a different icon when the button is
 /// highlighted.
@@ -213,7 +212,10 @@ class CircleButton extends StatelessWidget {
   }
 }
 
-/// The base of the harpy button used by the raised and flat harpy button.
+/// The base for the [HarpyButton].
+///
+/// Uses [AnimatedScale] to have the button appear pressed down while it is
+/// tapped.
 class _HarpyButtonBase extends StatefulWidget {
   const _HarpyButtonBase({
     @required this.child,
@@ -253,29 +255,81 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   }
 }
 
-/// A raised button with a background.
+/// A custom button with a rounded border that uses an [AnimatedScale] to
+/// appear pressed down on tap.
 ///
-/// If both [icon] and [text] are not `null`, the [icon] is built to the left
-/// of the [text].
+/// The [HarpyButton.raised] builds a button with elevation and a
+/// [backgroundColor].
 ///
-/// [dense] changes the padding of the button.
-/// If [padding] is set, [dense] has no effect.
-class RaisedHarpyButton extends StatelessWidget {
-  const RaisedHarpyButton({
+/// The [HarpyButton.flat] builds a flat button and a transparent
+/// [backgroundColor].
+///
+/// The button can have an [icon] and [text]. When both are not `null`, the
+/// icon is built to the left of the text with a padding in between that is
+/// half of its vertical padding.
+///
+/// Either [icon] or [text] must not be `null`.
+class HarpyButton extends StatelessWidget {
+  /// A button that appears raised with a shadow.
+  ///
+  /// Uses the [ThemeData.buttonColor] as the [backgroundColor] by default.
+  const HarpyButton.raised({
+    @required this.onTap,
+    this.text,
+    this.icon,
+    this.backgroundColor,
+    this.dense = false,
+    this.padding,
+  })  : elevation = 8,
+        assert(text != null || icon != null);
+
+  /// A flat button that has a transparent background and no shadow.
+  ///
+  /// Should only be used when the context makes it clear it can be tapped.
+  const HarpyButton.flat({
     @required this.onTap,
     this.text,
     this.icon,
     this.dense = false,
-    this.backgroundColor,
     this.padding,
-  });
+  })  : backgroundColor = Colors.transparent,
+        elevation = 0,
+        assert(text != null || icon != null);
 
+  /// The [text] of the button.
+  ///
+  /// Can be `null` if the button has no text.
   final String text;
+
+  /// The [icon] of the button.
+  ///
+  /// Can be `null` if the button has no icon.
   final IconData icon;
+
+  /// The callback when the button is tapped.
+  ///
+  /// If `null`, the button is slightly transparent to appear disabled.
   final VoidCallback onTap;
-  final bool dense;
+
+  /// The color of the button.
+  ///
+  /// Uses the [ThemeData.buttonColor] if `null`.
   final Color backgroundColor;
+
+  /// Whether or not the button should have less padding.
+  ///
+  /// Has no effect if [padding] is not `null`.
+  final bool dense;
+
+  /// The padding for the button.
+  ///
+  /// Should usually be `null` to use the default padding that is controlled
+  /// with [dense] if a smaller padding is required.
   final EdgeInsets padding;
+
+  /// The [elevation] that changes when using a [HarpyButton.flat] or
+  /// [HarpyButton.raised].
+  final double elevation;
 
   EdgeInsets get _padding =>
       padding ??
@@ -306,7 +360,7 @@ class RaisedHarpyButton extends StatelessWidget {
       children: <Widget>[
         if (iconWidget != null) iconWidget,
         if (iconWidget != null && textWidget != null)
-          SizedBox(width: _padding.left / 2),
+          SizedBox(width: _padding.vertical / 4),
         if (textWidget != null) textWidget,
       ],
     );
@@ -326,95 +380,11 @@ class RaisedHarpyButton extends StatelessWidget {
       onTap: onTap,
       child: Material(
         color: color,
-        elevation: 8,
+        elevation: elevation,
         borderRadius: borderRadius,
         child: Padding(
           padding: _padding,
           child: _buildContent(theme),
-        ),
-      ),
-    );
-  }
-}
-
-/// A flat button without a background that appears as text.
-///
-/// Should only be used when the context makes it clear it can be tapped.
-///
-/// todo: refactor buttons and rename the old 'FlatHarpyButton'
-class NewFlatHarpyButton extends StatelessWidget {
-  const NewFlatHarpyButton({
-    @required this.text,
-    @required this.onTap,
-    this.dense = false,
-  });
-
-  final String text;
-  final VoidCallback onTap;
-
-  final bool dense;
-
-  @override
-  Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(64);
-    final padding = EdgeInsets.symmetric(
-      vertical: dense ? 8 : 12,
-      horizontal: dense ? 16 : 32,
-    );
-
-    final theme = Theme.of(context);
-
-    return _HarpyButtonBase(
-      onTap: onTap,
-      child: Container(
-        padding: padding,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-        ),
-        child: Text(
-          text,
-          style: theme.textTheme.button.copyWith(
-            color: theme.textTheme.body1.color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// A flat button with an icon in its center.
-class IconHarpyButton extends StatelessWidget {
-  const IconHarpyButton({
-    @required this.iconData,
-    @required this.onTap,
-    this.dense = false,
-  });
-
-  final IconData iconData;
-  final VoidCallback onTap;
-
-  final bool dense;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = HarpyTheme.of(context).theme;
-
-    final color = theme.textTheme.body1.color;
-    final borderRadius = BorderRadius.circular(64);
-    final padding = EdgeInsets.symmetric(
-      vertical: dense ? 8 : 12,
-      horizontal: dense ? 16 : 32,
-    );
-
-    return _HarpyButtonBase(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-        ),
-        child: Padding(
-          padding: padding,
-          child: Icon(iconData, color: color),
         ),
       ),
     );

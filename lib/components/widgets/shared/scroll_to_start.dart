@@ -93,7 +93,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
               shift: _show ? Offset.zero : const Offset(0, 1),
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: RaisedHarpyButton(
+                child: HarpyButton.raised(
                   text: "Jump to top",
                   icon: Icons.arrow_upward,
                   backgroundColor: harpyTheme.backgroundColors.last,
