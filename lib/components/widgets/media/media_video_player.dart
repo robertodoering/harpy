@@ -11,6 +11,9 @@ import 'package:video_player/video_player.dart';
 /// The display icon size for the media video player and overlay.
 const double kMediaIconSize = 64;
 
+/// The [Color] of the icons used by the media overlay.
+const Color kMediaIconColor = Colors.white;
+
 /// The [VideoPlayer] for twitter videos.
 ///
 /// A [MediaVideoOverlay] is built on the [VideoPlayer] that controls the
@@ -151,6 +154,8 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     with
         MediaOverlayMixin<MediaVideoOverlay>,
         TickerProviderStateMixin<MediaVideoOverlay> {
+  final Color _iconColor = Colors.white;
+
   /// Handles the visibility of the overlay.
   AnimationController _visibilityController;
 
@@ -223,8 +228,9 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
     _playPauseIcon = FadeOutWidget(
       child: CircleButton(
         child: Icon(
-          playing ? Icons.play_arrow : Icons.pause,
+          playing ? Icons.pause : Icons.play_arrow,
           size: kMediaIconSize,
+          color: _iconColor,
         ),
       ),
     );
@@ -277,7 +283,13 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Builds the widget in the center of the overlay.
   Widget _buildCenterIcon() {
     if (finished) {
-      return const Center(child: Icon(Icons.replay, size: kMediaIconSize));
+      return const Center(
+        child: Icon(
+          Icons.replay,
+          size: kMediaIconSize,
+          color: kMediaIconColor,
+        ),
+      );
     } else if (!_overlayShowing) {
       return Container();
     } else if (buffering) {
@@ -307,6 +319,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
                 onPressed: _togglePlay,
                 child: ImplicitlyAnimatedIcon(
                   icon: AnimatedIcons.play_pause,
+                  color: kMediaIconColor,
                   animatedIconState: playing
                       ? AnimatedIconState.showSecond
                       : AnimatedIconState.showFirst,
@@ -317,15 +330,21 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
 
               CircleButton(
                 onPressed: _toggleMute,
-                child: Icon(_muted ? Icons.volume_off : Icons.volume_up),
+                child: Icon(
+                  _muted ? Icons.volume_off : Icons.volume_up,
+                  color: kMediaIconColor,
+                ),
               ),
 
               // fullscreen button
               CircleButton(
                 onPressed: _onFullscreenTap,
-                child: Icon(widget.videoPlayer.fullscreen
-                    ? Icons.fullscreen_exit
-                    : Icons.fullscreen),
+                child: Icon(
+                  widget.videoPlayer.fullscreen
+                      ? Icons.fullscreen_exit
+                      : Icons.fullscreen,
+                  color: kMediaIconColor,
+                ),
               ),
             ],
           ),

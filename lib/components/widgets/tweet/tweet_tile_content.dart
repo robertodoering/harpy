@@ -30,13 +30,17 @@ class _TweetTileContentState extends State<TweetTileContent>
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = ScrollDirection.of(context);
 
-    // only slides in the tweet tile from the right when scrolling down
+    // only slide and fade in the tweet tile from the right when scrolling down
     final offset = scrollDirection.direction == VerticalDirection.up
         ? const Offset(0, 0)
         : Offset(mediaQuery.size.width / 2, 0);
 
+    final duration = scrollDirection.direction == VerticalDirection.up
+        ? Duration.zero
+        : const Duration(milliseconds: 300);
+
     return SlideFadeInAnimation(
-      duration: const Duration(milliseconds: 300),
+      duration: duration,
       offset: offset,
       child: GestureDetector(
         onTap: () {
