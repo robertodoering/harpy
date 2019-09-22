@@ -40,7 +40,7 @@ class _ClearCacheListTileState extends State<ClearCacheListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.cloud_off),
+      leading: const Icon(Icons.delete),
       trailing: _clearing ? const CircularProgressIndicator() : null,
       title: const Text("Clear cache"),
       subtitle: const Text("Delete all cached data"),
