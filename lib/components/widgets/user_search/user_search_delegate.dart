@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
+import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
 import 'package:harpy/components/widgets/user_search/user_search_action.dart';
 import 'package:harpy/models/user_search_history_model.dart';
@@ -25,18 +26,20 @@ class UserSearchDelegate extends SearchDelegate<User> {
     return Consumer<UserSearchModel>(
       builder: (context, model, _) {
         if (model.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingUserTile();
         }
 
         if (model.noUsersFound) {
           return const Center(child: Text("No users found"));
         }
 
+        // todo: animate in the user list tiles
         return LoadMoreList(
           onLoadMore: model.loadMore,
           enable: !model.lastPage,
           loadingText: "Loading users...",
           child: ListView.builder(
+            padding: EdgeInsets.zero,
             itemCount: model.users.length,
             itemBuilder: (context, index) => UserListTile(
               user: model.users[index],

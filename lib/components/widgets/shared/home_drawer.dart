@@ -171,10 +171,7 @@ class UserDrawerHeader extends StatelessWidget {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: FollowersCount(
-              followers: user.followersCount,
-              following: user.friendsCount,
-            ),
+            child: FollowersCount(user: user),
           ),
         ],
       ),

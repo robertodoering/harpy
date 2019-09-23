@@ -27,7 +27,7 @@ class _TweetTimelineState<T extends TimelineModel>
   /// tweets.
   Widget _buildPlaceholder() {
     if (_timelineModel.loadingInitialTweets) {
-      return const LoadingTile();
+      return const LoadingTweetTile();
     } else {
       return const Padding(
         padding: EdgeInsets.all(32),

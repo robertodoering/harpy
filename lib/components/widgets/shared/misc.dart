@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/following_followers_screen.dart';
+import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 
 /// An [IconRow] to display an [Icon] next to some text.
@@ -46,38 +50,35 @@ class IconRow extends StatelessWidget {
   }
 }
 
-/// A Widget to display the [followers] and [following] in a row.
+/// A Widget to display the number of following users and followers for the
+/// [User].
 class FollowersCount extends StatelessWidget {
   const FollowersCount({
-    this.following,
-    this.followers,
+    @required this.user,
   });
 
-  final int following;
-  final int followers;
+  final User user;
+
+  void _showInScreen(FollowingFollowerType type) {
+    HarpyNavigator.push(FollowingFollowerScreen(
+      user: user,
+      type: type,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
       children: <Widget>[
-        Expanded(
-          child: Text.rich(
-            TextSpan(children: [
-              TextSpan(text: prettyPrintNumber(following)),
-              const TextSpan(text: " Following"),
-            ]),
-          ),
+        HarpyButton.flat(
+          text: "${prettyPrintNumber(user.friendsCount)} Following",
+          dense: true,
+          onTap: () => _showInScreen(FollowingFollowerType.following),
         ),
-        Expanded(
-          // todo: just make this one Text widget
-          child: Text.rich(
-            TextSpan(children: [
-              TextSpan(text: prettyPrintNumber(followers)),
-              const TextSpan(text: " Followers"),
-            ]),
-            textAlign: TextAlign.end,
-          ),
+        HarpyButton.flat(
+          text: "${prettyPrintNumber(user.followersCount)} Followers",
+          dense: true,
+          onTap: () => _showInScreen(FollowingFollowerType.followers),
         ),
       ],
     );
