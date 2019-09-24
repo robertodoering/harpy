@@ -209,7 +209,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
           _buildUserInfo(model),
           _buildUserDescription(model),
           _buildAdditionalInfo(model),
-          FollowersCount(user: model.user),
+          FollowersCount(model.user),
         ],
       ),
     );

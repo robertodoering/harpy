@@ -53,9 +53,7 @@ class IconRow extends StatelessWidget {
 /// A Widget to display the number of following users and followers for the
 /// [User].
 class FollowersCount extends StatelessWidget {
-  const FollowersCount({
-    @required this.user,
-  });
+  const FollowersCount(this.user);
 
   final User user;
 
@@ -69,15 +67,18 @@ class FollowersCount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      spacing: 16,
+      runSpacing: 8,
+      alignment: WrapAlignment.spaceBetween,
       children: <Widget>[
         HarpyButton.flat(
           text: "${prettyPrintNumber(user.friendsCount)} Following",
-          dense: true,
+          padding: EdgeInsets.zero,
           onTap: () => _showInScreen(FollowingFollowerType.following),
         ),
         HarpyButton.flat(
           text: "${prettyPrintNumber(user.followersCount)} Followers",
-          dense: true,
+          padding: EdgeInsets.zero,
           onTap: () => _showInScreen(FollowingFollowerType.followers),
         ),
       ],
