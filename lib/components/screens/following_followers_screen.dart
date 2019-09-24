@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/user_profile_screen.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
@@ -20,7 +21,7 @@ enum FollowingFollowerType {
 /// A screen that shows the following users and followers for the [user].
 ///
 /// The list of users for both [type] are built in a [TabBarView] with
-/// separate lists.
+/// separate [_UserList]s.
 class FollowingFollowerScreen extends StatelessWidget {
   const FollowingFollowerScreen({
     @required this.user,
@@ -58,10 +59,10 @@ class FollowingFollowerScreen extends StatelessWidget {
               builder: (_) => UserFollowingModel(userId: "${user.id}"),
             ),
           ],
-          child: TabBarView(
+          child: const TabBarView(
             children: <Widget>[
-              const _UserList<UserFollowingModel>(),
-              const _UserList<UserFollowersModel>(),
+              _UserList<UserFollowingModel>(),
+              _UserList<UserFollowersModel>(),
             ],
           ),
         ),
@@ -91,17 +92,20 @@ class _UserList<T extends UserFollowingFollowersModel> extends StatelessWidget {
           return const Center(child: Text("No users found"));
         }
 
-        // todo: animate in the user list tiles like the tweet tiles
-        return LoadMoreList(
-          onLoadMore: model.loadMore,
-          enable: !model.lastPage,
-          loadingText: "Loading users...",
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: model.users.length,
-            itemBuilder: (context, index) => UserListTile(
-              user: model.users[index],
-              onUserSelected: _navigate,
+        return SlideFadeInAnimation(
+          duration: const Duration(milliseconds: 300),
+          offset: const Offset(0, 100),
+          child: LoadMoreList(
+            onLoadMore: model.loadMore,
+            enable: !model.lastPage,
+            loadingText: "Loading users...",
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: model.users.length,
+              itemBuilder: (_, index) => UserListTile(
+                user: model.users[index],
+                onUserSelected: _navigate,
+              ),
             ),
           ),
         );

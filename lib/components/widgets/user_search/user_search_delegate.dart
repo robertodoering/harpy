@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/home_screen.dart';
+import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
@@ -33,17 +34,20 @@ class UserSearchDelegate extends SearchDelegate<User> {
           return const Center(child: Text("No users found"));
         }
 
-        // todo: animate in the user list tiles
-        return LoadMoreList(
-          onLoadMore: model.loadMore,
-          enable: !model.lastPage,
-          loadingText: "Loading users...",
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: model.users.length,
-            itemBuilder: (context, index) => UserListTile(
-              user: model.users[index],
-              onUserSelected: (user) => close(context, user),
+        return SlideFadeInAnimation(
+          duration: const Duration(milliseconds: 300),
+          offset: const Offset(0, 100),
+          child: LoadMoreList(
+            onLoadMore: model.loadMore,
+            enable: !model.lastPage,
+            loadingText: "Loading users...",
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: model.users.length,
+              itemBuilder: (context, index) => UserListTile(
+                user: model.users[index],
+                onUserSelected: (user) => close(context, user),
+              ),
             ),
           ),
         );
