@@ -348,21 +348,30 @@ class HarpyButton extends StatelessWidget {
           ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
           : theme.textTheme.button;
 
-      textWidget = Text(text, style: style);
+      // make sure the text overflow is handled when the button size is
+      // constrained, for example during an AnimatedCrossFade transition
+      textWidget = Text(
+        text,
+        style: style,
+        overflow: TextOverflow.fade,
+        softWrap: false,
+      );
     }
 
     if (icon != null) {
       iconWidget = Icon(icon);
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        if (iconWidget != null) iconWidget,
-        if (iconWidget != null && textWidget != null)
-          SizedBox(width: _padding.vertical / 4),
-        if (textWidget != null) textWidget,
-      ],
+    return IntrinsicWidth(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (iconWidget != null) iconWidget,
+          if (iconWidget != null && textWidget != null)
+            SizedBox(width: _padding.vertical / 4),
+          if (textWidget != null) Expanded(child: textWidget),
+        ],
+      ),
     );
   }
 
