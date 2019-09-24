@@ -13,6 +13,7 @@ import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/harpy.dart';
 
+/// Adds all services used with the [app] service locator.
 void setupServices() {
   app
     // twitter services
@@ -28,7 +29,7 @@ void setupServices() {
     ..registerLazySingleton<TimelineDatabase>(() => TimelineDatabase())
     ..registerLazySingleton<UserDatabase>(() => UserDatabase())
 
-    // custom / util
+    // misc / util
     ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
     ..registerLazySingleton<HarpyPrefs>(() => HarpyPrefs())

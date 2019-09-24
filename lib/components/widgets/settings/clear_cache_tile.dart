@@ -13,6 +13,12 @@ class ClearCacheListTile extends StatefulWidget {
 }
 
 class _ClearCacheListTileState extends State<ClearCacheListTile> {
+  final _tweetDatabase = app<TweetDatabase>();
+  final _userDatabase = app<UserDatabase>();
+  final _timelineDatabase = app<TimelineDatabase>();
+
+  final _flushbarService = app<FlushbarService>();
+
   bool _clearing = false;
 
   Future<void> _clear() async {
@@ -21,15 +27,15 @@ class _ClearCacheListTileState extends State<ClearCacheListTile> {
     });
 
     final List<bool> results = await Future.wait<bool>([
-      app<TweetDatabase>().drop(),
-      app<UserDatabase>().drop(),
-      app<TimelineDatabase>().drop(),
+      _tweetDatabase.drop(),
+      _userDatabase.drop(),
+      _timelineDatabase.drop(),
     ]);
 
     if (results.any((result) => result)) {
-      app<FlushbarService>().info("Cache cleared");
+      _flushbarService.info("Cache cleared");
     } else {
-      app<FlushbarService>().info("Nothing to clear");
+      _flushbarService.info("Nothing to clear");
     }
 
     setState(() {
@@ -40,7 +46,7 @@ class _ClearCacheListTileState extends State<ClearCacheListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.cloud_off),
+      leading: const Icon(Icons.delete),
       trailing: _clearing ? const CircularProgressIndicator() : null,
       title: const Text("Clear cache"),
       subtitle: const Text("Delete all cached data"),

@@ -169,6 +169,8 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
   /// Whether or not the video volume is 0.
   bool _muted = false;
 
+  /// The play / pause icon in the center of the overlay that fades out when
+  /// the play state changes.
   Widget _playPauseIcon;
 
   @override

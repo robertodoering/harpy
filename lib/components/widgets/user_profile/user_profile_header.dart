@@ -97,13 +97,13 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     return AnimatedCrossFade(
       duration: const Duration(milliseconds: 300),
-      firstChild: RaisedHarpyButton(
+      firstChild: HarpyButton.raised(
         text: "Following",
         onTap: model.changeFollowState,
         dense: true,
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      secondChild: RaisedHarpyButton(
+      secondChild: HarpyButton.raised(
         text: "Follow",
         onTap: model.changeFollowState,
         dense: true,

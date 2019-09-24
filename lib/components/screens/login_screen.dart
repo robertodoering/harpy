@@ -108,7 +108,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 2800),
-      child: RaisedHarpyButton(
+      child: HarpyButton.raised(
         text: "Login with Twitter",
         onTap: onTap,
       ),
@@ -121,7 +121,7 @@ class CreateAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 3000),
-      child: NewFlatHarpyButton(
+      child: HarpyButton.flat(
         text: "Create an account",
         onTap: () => launchUrl("https://twitter.com/signup"),
       ),

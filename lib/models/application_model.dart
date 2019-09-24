@@ -2,6 +2,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/components/screens/entry_screen.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/routes.dart';
@@ -19,11 +20,13 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:yaml/yaml.dart';
 
-/// The [ApplicationModel] handles initialization in the [EntryScreen] when
-/// starting the app.
+/// The [ApplicationModel] handles initialization when starting the app.
 ///
-/// todo: doesnt need to be a change notifier
-class ApplicationModel extends ChangeNotifier {
+/// During initialization, the [EntryScreen] is showing.
+///
+/// If a user was previously logged in, the app will automatically navigate
+/// to the [HomeScreen], otherwise it will navigate to the [LoginScreen].
+class ApplicationModel {
   ApplicationModel({
     @required this.themeSettingsModel,
     @required this.loginModel,
@@ -52,15 +55,15 @@ class ApplicationModel extends ChangeNotifier {
 
   /// The [twitterSession] contains information about the logged in user.
   ///
-  /// If the user is not logged in [twitterSession] will be null.
+  /// If the user is not logged in [twitterSession] will be `null`.
   TwitterSession twitterSession;
 
   /// The [twitterLogin] is used to log in and out with the native twitter sdk.
   TwitterLogin twitterLogin;
 
-  /// Returns true when the user has logged in with the native twitter sdk.
+  /// Returns `true` when the user has logged in with the native twitter sdk.
   ///
-  /// Always false if [initialized] is also false.
+  /// Always `false` if [initialized] is also `false`.
   bool get loggedIn => twitterSession != null;
 
   Future<void> _initialize() async {
@@ -73,10 +76,10 @@ class ApplicationModel extends ChangeNotifier {
     loginModel.applicationModel = this;
 
     await Future.wait([
-      // init config
+      // parse the app config and init the twitter session
       _initTwitterSession(),
 
-      // harpy shared preferences
+      // init harpy shared preferences
       harpyPrefs.init(),
 
       // init connectivity status
@@ -139,9 +142,10 @@ class ApplicationModel extends ChangeNotifier {
       }
     } catch (e, stacktrace) {
       _log.severe(
-        "error while loading app_config.yaml\n"
-        "make sure a app_config.yaml file exists in the assets/config/ "
+        "Error while loading app_config.yaml\n"
+        "Make sure an 'app_config.yaml' file exists in the 'assets/config/' "
         "directory with the twitter api key and secret.\n"
+        "example:\n"
         "app_config.yaml:\n"
         "twitter:\n"
         "    consumer_key: <key>\n"
@@ -165,8 +169,8 @@ class ApplicationModel extends ChangeNotifier {
     _log.fine("init twitter session done");
   }
 
-  /// Called when initializing and already logged in or in the [LoginModel]
-  /// after logging in for the first time.
+  /// Called when starting the app and the user was previously logged in or
+  /// in the [LoginModel] after logging in for the first time.
   Future<void> initLoggedIn() async {
     _log.fine("init logged in");
 
@@ -174,13 +178,10 @@ class ApplicationModel extends ChangeNotifier {
     themeSettingsModel.initTheme();
 
     // init databases
-    tweetDatabase.subDirectory = twitterSession.userId;
-    timelineDatabase.subDirectory = twitterSession.userId;
-    userDatabase.subDirectory = twitterSession.userId;
     await Future.wait([
-      tweetDatabase.initialize(),
-      timelineDatabase.initialize(),
-      userDatabase.initialize(),
+      tweetDatabase.initialize(subDirectory: twitterSession.userId),
+      timelineDatabase.initialize(subDirectory: twitterSession.userId),
+      userDatabase.initialize(subDirectory: twitterSession.userId),
     ]);
   }
 }

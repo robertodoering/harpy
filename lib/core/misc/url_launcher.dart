@@ -12,6 +12,6 @@ Future<void> launchUrl(String url) async {
   } else {
     _log.warning("cant launch url $url");
 
-    return app<FlushbarService>().error("Unable to launch $url");
+    app<FlushbarService>().error("Unable to launch $url");
   }
 }

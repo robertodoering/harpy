@@ -62,7 +62,9 @@ class FlareIcon extends StatelessWidget {
 
   double get _calculatedSize => size + sizeDifference;
 
-  /// Loads the icons and adds them into the cache.
+  /// Loads the icons and adds them into the cache to make sure a widget
+  /// using a [FlareIcon] doesn't appear blank for a few frames when it
+  /// builds for the first time.
   static void cacheIcons(BuildContext context) {
     cachedActor(DefaultAssetBundle.of(context), "$_path/favorite.flr");
     cachedActor(DefaultAssetBundle.of(context), "$_path/shining_star.flr");

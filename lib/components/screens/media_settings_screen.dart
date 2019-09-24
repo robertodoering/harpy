@@ -25,7 +25,7 @@ class MediaSettingsScreen extends StatelessWidget {
         leading: Icons.visibility,
         title: "Show media initially",
         value: model.defaultHideMedia,
-        items: ["Always show", "Only on WiFi", "Always hide"],
+        items: ["Always show", "Only on WiFi", "Never show"],
         onChanged: model.changeDefaultHideMedia,
       ),
       DropdownSettingsTile(

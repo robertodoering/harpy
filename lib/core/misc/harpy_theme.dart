@@ -174,7 +174,7 @@ class HarpyTheme {
   }
 }
 
-// todo: define theme data for predefined themes ("crow", "phoenix", "swan")
+// todo: improve default themes
 class PredefinedThemes {
   static List<HarpyTheme> get themes {
     return data.map((themeData) => HarpyTheme.fromData(themeData)).toList();
