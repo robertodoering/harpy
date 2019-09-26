@@ -27,18 +27,39 @@ class UserListTile extends StatelessWidget {
         backgroundColor: Colors.transparent,
         backgroundImage: NetworkImage(imageUrl),
       ),
-      title: Wrap(
-        children: <Widget>[
-          Text("${user.name}"),
-          if (user.verified) ...[
-            const Text(" "),
-            const Icon(Icons.verified_user, size: 16),
-          ],
-        ],
-      ),
+      title: UserNameRow(user: user),
       subtitle: Text("@${user.screenName}"),
       trailing: Text("${prettyPrintNumber(user.followersCount)} Followers"),
       onTap: () => onUserSelected(user),
+    );
+  }
+}
+
+class UserNameRow extends StatelessWidget {
+  const UserNameRow({
+    @required this.user,
+    this.style,
+    this.iconSize = 16,
+  });
+
+  final User user;
+
+  /// The [TextStyle] for the name.
+  final TextStyle style;
+
+  /// The size for the verified icon.
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: <Widget>[
+        Text("${user.name}", style: style),
+        if (user.verified) ...[
+          const Text(" "),
+          Icon(Icons.verified_user, size: iconSize),
+        ],
+      ],
     );
   }
 }

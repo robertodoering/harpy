@@ -7,6 +7,7 @@ import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
+import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
@@ -28,27 +29,9 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     _linkGestureRecognizer?.dispose();
   }
 
-  Widget _buildNameRow(UserProfileModel model) {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          child: Text(
-            model.user.name,
-            style: Theme.of(context).textTheme.title,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        if (model.user.verified)
-          const Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Icon(Icons.verified_user, size: 22),
-          ),
-      ],
-    );
-  }
-
   Widget _buildUserInfo(UserProfileModel model) {
     final mediaSettingsModel = MediaSettingsModel.of(context);
+    final textTheme = Theme.of(context).textTheme;
 
     final String imageUrl = model.user.getProfileImageUrlFromQuality(
       mediaSettingsModel.quality,
@@ -70,12 +53,15 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildNameRow(model),
-              const SizedBox(height: 4),
-              Text(
-                "@${model.user.screenName}",
-                style: Theme.of(context).textTheme.subhead,
+              FittedBox(
+                child: UserNameRow(
+                  user: model.user,
+                  style: textTheme.title,
+                  iconSize: 22,
+                ),
               ),
+              const SizedBox(height: 4),
+              Text("@${model.user.screenName}", style: textTheme.subhead),
             ],
           ),
         ),
