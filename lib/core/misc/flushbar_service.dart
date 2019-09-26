@@ -20,20 +20,34 @@ enum FlushbarType {
 /// todo: when a flushbar is showing and navigator.pop() is called (i.e.
 ///   pressing the back button) it should pop the flushbar route first and
 ///   then call navigator.pop() again
+/// todo: make sure 2 flushbars don't show at the sme time
 class FlushbarService {
   static final Logger _log = Logger("Flushbar");
 
-  void info(String message) => show(message, type: FlushbarType.info);
+  void info(String message) => show(
+        message: message,
+        type: FlushbarType.info,
+      );
 
-  void warning(String message) => show(message, type: FlushbarType.warning);
+  void warning(String message) => show(
+        message: message,
+        type: FlushbarType.warning,
+      );
 
-  void error(String message) => show(message, type: FlushbarType.error);
+  void error(String message) => show(
+        message: message,
+        type: FlushbarType.error,
+      );
 
   /// Shows the [message] in a [Flushbar].
   ///
+  /// If [child] is not `null`, it is used to build the message in the
+  /// [Flushbar] instead and the [message] will be ignored.
+  ///
   /// The [type] determines the icon and color.
-  void show(
-    String message, {
+  void show({
+    String message,
+    Widget child,
     FlushbarType type = FlushbarType.info,
   }) {
     _log.fine("showing flushbar message: $message");
@@ -67,7 +81,8 @@ class FlushbarService {
     final flushbar = Flushbar(
       backgroundColor: harpyTheme.backgroundColors.first,
       icon: Icon(icon, color: color),
-      messageText: Text(message, style: harpyTheme.theme.textTheme.subhead),
+      messageText:
+          child ?? Text(message, style: harpyTheme.theme.textTheme.subhead),
       duration: duration,
       leftBarIndicatorColor: color,
       animationDuration: const Duration(milliseconds: 600),
