@@ -372,7 +372,7 @@ class TweetActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (model.tweet.isQuoteStatus == true) {
+    if (model.isQuote == true) {
       return Container();
     }
 
