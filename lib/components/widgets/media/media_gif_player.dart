@@ -61,30 +61,14 @@ class _MediaGifPlayerState extends State<MediaGifPlayer>
 
   @override
   Widget buildVideoPlayer() {
-    return AspectRatio(
-      aspectRatio: mediaModel.videoAspectRatio,
-      child: VideoPlayer(controller),
+    // empty gesture detector to prevent underlying gesture detector to
+    // receive the on tap when the gif is played (to push the replies screen)
+    return GestureDetector(
+      onTap: () {},
+      child: AspectRatio(
+        aspectRatio: mediaModel.videoAspectRatio,
+        child: VideoPlayer(controller),
+      ),
     );
-  }
-}
-
-class MediaGifOverlay extends StatefulWidget {
-  const MediaGifOverlay({
-    @required this.videoPlayer,
-    @required this.child,
-  });
-
-  final MediaVideoPlayerState videoPlayer;
-  final Widget child;
-
-  @override
-  _MediaGifOverlayState createState() => _MediaGifOverlayState();
-}
-
-class _MediaGifOverlayState extends State<MediaGifOverlay>
-    with MediaOverlayMixin<MediaGifOverlay> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

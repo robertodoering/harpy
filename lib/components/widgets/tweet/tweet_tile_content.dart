@@ -43,11 +43,10 @@ class _TweetTileContentState extends State<TweetTileContent>
       duration: duration,
       offset: offset,
       child: GestureDetector(
-        onTap: () {
-          HarpyNavigator.push(TweetRepliesScreen(
-            tweet: model.tweet,
-          ));
-        },
+        behavior: HitTestBehavior.translucent,
+        onTap: () => HarpyNavigator.push(TweetRepliesScreen(
+          tweet: model.tweet,
+        )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
