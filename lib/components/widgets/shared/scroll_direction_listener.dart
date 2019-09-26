@@ -8,6 +8,9 @@ typedef OnScrollDirectionChanged = void Function(VerticalDirection direction);
 /// invokes the [onScrollDirectionChanged] callback whenever the scroll
 /// direction changes.
 ///
+/// The [ScrollDirectionListener] needs to be above the scrollable element in
+/// the widget tree.
+///
 /// A [ScrollDirection] is built above the [child] that inherits the scroll
 /// direction to its children.
 class ScrollDirectionListener extends StatefulWidget {

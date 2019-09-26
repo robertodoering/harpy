@@ -32,7 +32,7 @@ class TweetRepliesScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     if (model.loading) {
-      return const LoadingTile(
+      return const LoadingTweetTile(
         padding: EdgeInsets.fromLTRB(56, 8, 8, 8),
       );
     } else {

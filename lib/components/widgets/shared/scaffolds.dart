@@ -11,12 +11,14 @@ class HarpyScaffold extends StatelessWidget {
     this.drawer,
     this.body,
     this.backgroundColors,
+    this.appBarBottom,
   });
 
   final String title;
   final List<Widget> actions;
   final Widget drawer;
   final Widget body;
+  final PreferredSizeWidget appBarBottom;
 
   /// When set the [HarpyBackground] will override the active theme background
   /// colors.
@@ -33,6 +35,7 @@ class HarpyScaffold extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.title,
       ),
+      bottom: appBarBottom,
     );
 
     final double topPadding = MediaQuery.of(context).padding.top;
