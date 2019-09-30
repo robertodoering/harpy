@@ -8,7 +8,7 @@ import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 
-/// Shows the app title and a [LoginButton] to allow a user to login.
+/// Shows the app title and a [_LoginButton] to allow a user to login.
 class LoginScreen extends StatelessWidget {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
@@ -24,7 +24,15 @@ class LoginScreen extends StatelessWidget {
         children: <Widget>[
           _buildText(),
           const SizedBox(height: 16),
-          _buildTitle(context),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: <Widget>[
+                _buildTitle(context),
+                _buildLogo(),
+              ],
+            ),
+          ),
           _buildButtons(context),
         ],
       ),
@@ -44,7 +52,6 @@ class LoginScreen extends StatelessWidget {
     final color = Theme.of(context).textTheme.body1.color;
 
     return Expanded(
-      flex: 2,
       child: FractionallySizedBox(
         widthFactor: 2 / 3,
         child: SlideInAnimation(
@@ -53,10 +60,24 @@ class LoginScreen extends StatelessWidget {
           delay: const Duration(milliseconds: 800),
           child: FlareActor(
             "assets/flare/harpy_title.flr",
-            alignment: Alignment.topCenter,
+            alignment: Alignment.bottomCenter,
             animation: "show",
             color: color,
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return const Expanded(
+      child: SlideInAnimation(
+        duration: Duration(seconds: 3),
+        offset: Offset(0, 20),
+        delay: Duration(milliseconds: 800),
+        child: FlareActor(
+          "assets/flare/harpy_logo.flr",
+          animation: "show",
         ),
       ),
     );
@@ -69,9 +90,9 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          LoginButton(onTap: () => _startLogin(loginModel)),
+          _LoginButton(onTap: () => _startLogin(loginModel)),
           const SizedBox(height: 8),
-          CreateAccountButton(),
+          _CreateAccountButton(),
         ],
       ),
     );
@@ -97,8 +118,8 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
     @required this.onTap,
   });
 
@@ -116,7 +137,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-class CreateAccountButton extends StatelessWidget {
+class _CreateAccountButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BounceInAnimation(

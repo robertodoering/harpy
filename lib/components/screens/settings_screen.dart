@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         ClearCacheListTile(),
         ListTile(
-          leading: const Icon(Icons.info_outline),
+          leading: const FlareIcon.harpyLogo(animate: true),
           title: const Text("About"),
           onTap: () {}, // todo: about screen
         ),

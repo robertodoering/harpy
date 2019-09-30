@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: "Harpy",
+      showIcon: true,
       drawer: HomeDrawer(),
       actions: <Widget>[
         UserSearchAction(),
