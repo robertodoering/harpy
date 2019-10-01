@@ -47,6 +47,12 @@ dev_dependencies:
   build_runner: ^1.0.0
   json_serializable: ^3.0.0
   mockito: ^4.0.0
+  flutter_launcher_icons: ^0.7.3
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/icon/icon.png"
 
 flutter:
   uses-material-design: true
