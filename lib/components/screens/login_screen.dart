@@ -9,7 +9,12 @@ import 'package:harpy/models/application_model.dart';
 import 'package:harpy/models/login_model.dart';
 
 /// Shows the app title and a [_LoginButton] to allow a user to login.
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
