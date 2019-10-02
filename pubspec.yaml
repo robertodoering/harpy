@@ -49,11 +49,6 @@ dev_dependencies:
   mockito: ^4.0.0
   flutter_launcher_icons: ^0.7.3
 
-flutter_icons:
-  android: "launcher_icon"
-  ios: false
-  image_path: "assets/icon/icon.png"
-
 flutter:
   uses-material-design: true
   assets:
