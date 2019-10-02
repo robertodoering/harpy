@@ -3,4 +3,4 @@ flutter_icons:
   ios: false
   image_path: "assets/icon/icon.png"
   adaptive_icon_foreground: "assets/icon/icon_foreground.png"
-  adaptive_icon_background: "#0B0A0F"
+  adaptive_icon_background: "#FFFFFF"
