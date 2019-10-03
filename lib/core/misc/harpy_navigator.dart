@@ -1,4 +1,3 @@
-import 'package:catcher/catcher_plugin.dart';
 import 'package:flutter/material.dart';
 
 /// A convenience class to wrap [Navigator] functionality.
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Since a [GlobalKey] is used for the [Navigator], the [BuildContext] is not
 /// necessary when changing the current route.
 class HarpyNavigator {
-  static final GlobalKey<NavigatorState> key = Catcher.navigatorKey;
+  static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
   /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
   static void push(Widget widget) {

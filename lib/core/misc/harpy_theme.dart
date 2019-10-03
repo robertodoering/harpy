@@ -123,7 +123,8 @@ class HarpyTheme {
           ),
 
           subtitle: TextStyle(
-            height: 0.9,
+            height: 1.1,
+            fontSize: 16,
             fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
