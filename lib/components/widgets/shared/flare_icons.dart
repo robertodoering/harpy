@@ -38,6 +38,18 @@ class FlareIcon extends StatelessWidget {
           animation: "shining",
         );
 
+  const FlareIcon.harpyLogo({
+    double size = 18,
+    bool animate = false,
+    Offset offset = Offset.zero,
+  }) : this(
+          fileName: "$_path/harpy_logo.flr",
+          size: size,
+          sizeDifference: 14,
+          offset: offset,
+          animation: animate ? "show" : null,
+        );
+
   static const String _path = "assets/flare";
 
   /// The path of the flare asset file.

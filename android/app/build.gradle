@@ -41,7 +41,6 @@ android {
     flavorDimensions "app"
     productFlavors {
         free {
-            dimension "app"
             // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
             applicationId "robertodoering.harpy.free"
             // todo: different version codes
