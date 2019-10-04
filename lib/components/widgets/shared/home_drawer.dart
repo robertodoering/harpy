@@ -61,7 +61,7 @@ class HomeDrawer extends StatelessWidget {
           },
         ),
 
-        Expanded(child: Container()),
+        Spacer(),
 
         ListTile(
           leading: const Icon(Icons.arrow_back),
