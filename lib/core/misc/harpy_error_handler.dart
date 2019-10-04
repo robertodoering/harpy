@@ -208,6 +208,13 @@ class __ErrorDialogState extends State<_ErrorDialog> {
   bool _sendDeviceDiagnostics = true;
 
   @override
+  void initState() {
+    super.initState();
+
+    widget.onValueChanged(_sendDeviceDiagnostics);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
