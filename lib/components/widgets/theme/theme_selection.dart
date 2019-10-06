@@ -194,7 +194,7 @@ class ThemeCirclePainter extends CustomPainter {
         ..shader = ui.Gradient.linear(
           size.topLeft(Offset.zero),
           size.bottomRight(Offset.zero),
-          theme.backgroundColors,
+          [theme.backgroundColors.first, theme.backgroundColors.last],
         ),
     );
 

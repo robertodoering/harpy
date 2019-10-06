@@ -25,7 +25,8 @@ class HarpyBackground extends StatelessWidget {
       backgroundColors.add(backgroundColors.first);
     }
 
-    return Container(
+    return AnimatedContainer(
+      duration: kThemeAnimationDuration,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         gradient: LinearGradient(

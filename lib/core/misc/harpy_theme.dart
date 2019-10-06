@@ -8,20 +8,17 @@ class HarpyTheme {
 
     backgroundColors = data.backgroundColors?.map(_colorFromValue)?.toList();
 
-    if (backgroundColors == null || backgroundColors?.length != 2) {
-      backgroundColors = _fallback.backgroundColors;
+    if (backgroundColors == null || backgroundColors.length < 2) {
+      backgroundColors = [Colors.black, const Color(0xff17233d)];
     }
 
-    accentColor = _colorFromValue(data.accentColor) ?? _fallback.accentColor;
+    accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
   }
 
   /// Returns the currently selected [HarpyTheme].
   static HarpyTheme of(BuildContext context) {
     return ThemeSettingsModel.of(context).harpyTheme;
   }
-
-  /// The fallback is used if the [HarpyThemeData] has insufficient data.
-  static final HarpyTheme _fallback = PredefinedThemes.themes.first;
 
   String name;
 
@@ -167,6 +164,8 @@ class HarpyTheme {
       // used for the background color of Material widgets
       cardColor: primaryColor,
       canvasColor: primaryColor,
+
+      textSelectionHandleColor: accentColor,
     );
   }
 
@@ -185,19 +184,20 @@ class PredefinedThemes {
         crow,
         swan,
         phoenix,
+        harpy,
       ];
 
   static HarpyThemeData get crow {
     return HarpyThemeData()
       ..name = "crow"
       ..backgroundColors = [Colors.black.value, 0xff17233d]
-      ..accentColor = 0xff6b99ff;
+      ..accentColor = 0xff4178f0;
   }
 
   static HarpyThemeData get phoenix {
     return HarpyThemeData()
       ..name = "phoenix"
-      ..backgroundColors = [0xffdd2222, Colors.deepOrange.value]
+      ..backgroundColors = [0xff9e0000, 0xffd1670a]
       ..accentColor = Colors.orangeAccent.value;
   }
 
@@ -206,5 +206,12 @@ class PredefinedThemes {
       ..name = "swan"
       ..backgroundColors = [Colors.white.value, Colors.white.value]
       ..accentColor = 0xff444444;
+  }
+
+  static HarpyThemeData get harpy {
+    return HarpyThemeData()
+      ..name = "harpy"
+      ..backgroundColors = [0xff40148b, 0xff5b1051, 0xff850a2f]
+      ..accentColor = 0xffd4d4d4;
   }
 }
