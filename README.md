@@ -1,6 +1,6 @@
 # Harpy
 
-Harpy is a feature rich twitter experience for Android and iOS built in [Flutter](https://flutter.dev/).
+Harpy is a feature rich twitter experience built in [Flutter](https://flutter.dev/).
 
 Currently still in development.
 
@@ -11,7 +11,11 @@ Showcase
 | Login | Setup |
 | :---: | :---: |
 | `login_screen.dart` | `setup_screen.dart` |
-| ![Harpy Login](media/harpy_login.gif)  | ![Harpy Setup](media/harpy_setup.gif)  |
+| ![Login screen](media/login_screen.gif)  | ![Setup screen](media/setup_screen.gif)  |
+
+| Home | User | Following | Custom theme|
+| :---: | :---: |  :---: | :---: |
+|![Home screen](media/home_screen.png) | ![User screen](media/user_screen.png) | ![Following screen](media/following_screen.png) |  ![Custom theme screen](media/custom_theme_screen.png) ![Custom theme color selection](media/custom_theme_color_palette.png) ![Custom theme color selection](media/custom_theme_color_picker.png) |
 
 Development / Setup
 ---
