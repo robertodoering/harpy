@@ -40,7 +40,7 @@ The [Sentry](https://sentry.io) error tracking service is used to report errors 
 
 When omitted or left empty, errors are not sent to an error tracking service in release mode.
 
-####Misc
+#### Misc
 
 - To generate json_serializable models:
 `flutter packages pub run build_runner build`
