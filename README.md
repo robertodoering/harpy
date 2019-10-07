@@ -13,8 +13,9 @@ Currently still in development. See the [project](https://github.com/robertodoer
 | ![Login screen](media/login_screen.gif) | ![Setup screen](media/setup_screen.gif) |
 
 | Home | User profile | Following | Custom theme |
-| :---: | :---: |  :---: | :---: |
-| ![Home screen](media/home_screen.png) | ![User screen](media/user_screen.png) | ![Following screen](media/following_screen.png) | ![Custom theme screen](media/custom_theme_screen.png) ![Custom theme color selection](media/custom_theme_color_palette.png) ![Custom theme color selection](media/custom_theme_color_picker.png) |
+| :---: | :---: | :---: | :---: |
+
+| <img src="media/home_screen.gif" alt="Home screen" width="180" height="360" /> | <img src="media/user_screen.gif" alt="User screen" width="180" height="360" /> | <img src="media/following_screen.gif" alt="Following screen" width="180" height="360" /> | <img src="media/custom_theme_screen.gif" alt="Custom theme screen" width="180" height="360" /> <img src="media/custom_theme_color_palette.gif" alt="Custom theme color selection" width="180" height="360" /> <img src="media/custom_theme_color_picker.gif" alt="Custom theme color selection" width="180" height="360" /> |
 
 ## Development / Setup
 Harpy is expected to be released in the PlayStore for Android, therefore only Android devices are used for testing the builds.
