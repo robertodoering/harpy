@@ -12,9 +12,22 @@ Currently still in development. See the [project](https://github.com/robertodoer
 | `login_screen.dart` | `setup_screen.dart` |
 | ![Login screen](media/login_screen.gif) | ![Setup screen](media/setup_screen.gif) |
 
-| Home | User profile | Following | Custom theme |
-| :---: | :---: | :---: | :---: |
-| ![Home screen](media/home_screen.png) | ![User screen](media/user_screen.png) | ![Following screen](media/following_screen.png) | ![Custom theme screen](media/custom_theme_screen.png) ![Custom theme color selection](media/custom_theme_color_palette.png) ![Custom theme color selection](media/custom_theme_color_picker.png) |
+
+<details>
+  <summary>More images</summary>
+  
+  | Home | User profile | Following |
+  | :---: | :---: | :---: |
+  | ![Home screen](media/home_screen.png) | ![User screen](media/user_screen.png) | ![Following screen](media/following_screen.png) |
+  
+  | | Custom theme | |
+  | :---: | :---: | :---: |
+  | ![Custom theme screen](media/custom_theme_screen.png) | ![Custom theme color selection](media/custom_theme_color_palette.png) | ![Custom theme color selection](media/custom_theme_color_picker.png) | 
+  
+</details>
+
+
+
 
 ## Development / Setup
 Harpy is expected to be released in the PlayStore for Android, therefore only Android devices are used for testing the builds.
