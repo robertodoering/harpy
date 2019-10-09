@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
@@ -8,8 +9,8 @@ import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-/// The [ThemeSettingsModel] descendant sits above the [MaterialApp] and
-/// rebuilds the app whenever the [Theme] changes.
+/// The [ThemeSettingsModel] sits above the [MaterialApp] and rebuilds the
+/// app whenever the [Theme] changes.
 class ThemeSettingsModel extends ChangeNotifier {
   final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
 
@@ -38,8 +39,18 @@ class ThemeSettingsModel extends ChangeNotifier {
     _log.fine("changing selected theme to id: $id");
 
     harpyTheme = theme;
+    updateSystemUi();
+
     harpyPrefs.preferences.setInt("${harpyPrefs.prefix}.selectedThemeId", id);
     notifyListeners();
+  }
+
+  /// Updates the color of the navigation bar.
+  void updateSystemUi() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: harpyTheme.backgroundColors.last,
+      systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
+    ));
   }
 
   /// Loads all custom themes from the shared preferences and saves them in
@@ -96,7 +107,7 @@ class ThemeSettingsModel extends ChangeNotifier {
 
   /// Initializes the [HarpyTheme] with the theme set in [HarpyPrefs].
   ///
-  /// Defaults to [HarpyTheme.dark].
+  /// Defaults to the first theme set in [PredefinedThemes].
   void initTheme() {
     final int id = selectedThemeId;
 
@@ -113,11 +124,12 @@ class ThemeSettingsModel extends ChangeNotifier {
       if (customThemeData != null) {
         harpyTheme = HarpyTheme.fromData(customThemeData);
       } else {
-        _log.warning("unable to load custom theme for id: $id, defaulting to"
-            " dark theme");
-        harpyTheme = PredefinedThemes.themes.first;
+        _log.warning("unable to load custom theme for id: $id");
+        harpyTheme = predefinedThemes.first;
       }
     }
+
+    updateSystemUi();
 
     notifyListeners();
   }
@@ -125,6 +137,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   /// Resets the [harpyTheme] to the default theme.
   void resetHarpyTheme() {
     harpyTheme = PredefinedThemes.themes.first;
+    updateSystemUi();
     notifyListeners();
   }
 

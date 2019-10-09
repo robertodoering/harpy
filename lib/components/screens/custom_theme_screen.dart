@@ -22,36 +22,46 @@ class CustomThemeScreen extends StatelessWidget {
   final HarpyThemeData editingThemeData;
   final int editingThemeId;
 
+  /// Resets the system ui color when returning from the custom theme.
+  Future<bool> _onWillPop(BuildContext context) async {
+    ThemeSettingsModel.of(context).updateSystemUi();
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CustomThemeModel>(
-      builder: (_) => CustomThemeModel(
-        themeSettingsModel: ThemeSettingsModel.of(context),
-        editingThemeData: editingThemeData,
-        editingThemeId: editingThemeId,
-      ),
-      child: Consumer<CustomThemeModel>(
-        builder: (context, customThemeModel, _) => Theme(
-          data: customThemeModel.harpyTheme.theme,
-          child: HarpyScaffold(
-            backgroundColors: customThemeModel.harpyTheme.backgroundColors,
-            title: "Custom theme",
-            actions: <Widget>[
-              _CustomThemeSaveButton(),
-            ],
-            body: Column(
-              children: <Widget>[
-                Expanded(
-                  child: ListView(
-                    children: <Widget>[
-                      _CustomThemeNameField(customThemeModel),
-                      const SizedBox(height: 8),
-                      _CustomThemeColorSelections(),
-                    ],
-                  ),
-                ),
-                if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: ChangeNotifierProvider<CustomThemeModel>(
+        builder: (_) => CustomThemeModel(
+          themeSettingsModel: ThemeSettingsModel.of(context),
+          editingThemeData: editingThemeData,
+          editingThemeId: editingThemeId,
+        ),
+        child: Consumer<CustomThemeModel>(
+          builder: (context, customThemeModel, _) => Theme(
+            data: customThemeModel.harpyTheme.theme,
+            child: HarpyScaffold(
+              backgroundColors: customThemeModel.harpyTheme.backgroundColors,
+              title: "Custom theme",
+              actions: <Widget>[
+                _CustomThemeSaveButton(),
               ],
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        _CustomThemeNameField(customThemeModel),
+                        const SizedBox(height: 8),
+                        _CustomThemeColorSelections(),
+                      ],
+                    ),
+                  ),
+                  if (customThemeModel.editingTheme) _CustomThemeDeleteButton(),
+                ],
+              ),
             ),
           ),
         ),
