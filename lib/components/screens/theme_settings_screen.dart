@@ -20,7 +20,7 @@ class _ThemeSettingsScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
-    final themes = PredefinedThemes.themes;
+    final themes = List.of(PredefinedThemes.themes);
 
     // load and add all custom themes
     // todo: don't always reload themes, instead load once and update when

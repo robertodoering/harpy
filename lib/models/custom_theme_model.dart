@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
@@ -104,6 +105,17 @@ class CustomThemeModel extends ChangeNotifier {
   void changeSecondBackgroundColor(Color color) {
     customThemeData.backgroundColors.last = color.value;
     notifyListeners();
+
+    final brightness = ThemeData.estimateBrightnessForColor(color);
+
+    // change the color of the navigation bar to be the same as the second
+    // background color and use an icon brightness that is the opposite of
+    // the color's brightness
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: color,
+      systemNavigationBarIconBrightness:
+          brightness == Brightness.light ? Brightness.dark : Brightness.light,
+    ));
   }
 
   /// Returns `true` if the name only contains alphanumeric characters, '-', '_'

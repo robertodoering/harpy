@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/screens/setup_screen.dart';
+import 'package:harpy/components/screens/theme_settings_screen.dart';
+import 'package:harpy/components/widgets/shared/harpy_background.dart';
+import 'package:harpy/components/widgets/theme/theme_card.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 
+/// The [HarpyTheme] creates the [ThemeData] from a serializable
+/// [HarpyThemeData] that is used by the [MaterialApp].
+///
+/// The [ThemeSettingsModel] has a reference to the currently selected
+/// [HarpyTheme] that can be accessed by calling [HarpyTheme.of].
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
     name = data.name ?? "";
@@ -20,9 +29,12 @@ class HarpyTheme {
     return ThemeSettingsModel.of(context).harpyTheme;
   }
 
+  /// The name of the theme that is used in the [ThemeCard].
   String name;
 
-  /// A list of 2 colors that define the background gradient.
+  /// A list of colors that define the background gradient.
+  ///
+  /// The [HarpyBackground] uses these colors to build the background gradient.
   List<Color> backgroundColors;
 
   Color get primaryColor => backgroundColors.last;
@@ -48,6 +60,10 @@ class HarpyTheme {
         : Brightness.dark;
   }
 
+  /// The opposite of [brightness].
+  Brightness get complimentaryBrightness =>
+      brightness == Brightness.light ? Brightness.dark : Brightness.light;
+
   /// Returns the [primaryColor] if it is not the same brightness as the button
   /// color, otherwise a complimentary color (white / black).
   Color get buttonTextColor {
@@ -67,6 +83,11 @@ class HarpyTheme {
     }
   }
 
+  /// Either [Colors.black] or [Colors.white] depending on the background
+  /// brightness.
+  ///
+  /// This is the color that the text that is written on the background should
+  /// have.
   Color get backgroundComplimentaryColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
@@ -161,10 +182,14 @@ class HarpyTheme {
       // determines the status bar icon color
       primaryColorBrightness: brightness,
 
-      // used for the background color of Material widgets
+      // used for the background color of material widgets
       cardColor: primaryColor,
       canvasColor: primaryColor,
 
+      // used by toggleable widgets
+      toggleableActiveColor: accentColor,
+
+      // used by a textfield when it has focus
       textSelectionHandleColor: accentColor,
     );
   }
@@ -174,11 +199,23 @@ class HarpyTheme {
   }
 }
 
-// todo: improve default themes
+/// The [PredefinedThemes] define [HarpyTheme]s that can be used as the theme
+/// for the app.
+///
+/// These themes are able to be selected in the [SetupScreen] when a user logs
+/// in for the first time and in the [ThemeSettingsScreen].
+///
+/// Unlike custom themes, the [PredefinedThemes] cannot be deleted.
 class PredefinedThemes {
   static List<HarpyTheme> get themes {
-    return data.map((themeData) => HarpyTheme.fromData(themeData)).toList();
+    if (_themes.isEmpty) {
+      _themes.addAll(data.map((themeData) => HarpyTheme.fromData(themeData)));
+    }
+
+    return _themes;
   }
+
+  static final List<HarpyTheme> _themes = [];
 
   static List<HarpyThemeData> get data => [
         crow,
