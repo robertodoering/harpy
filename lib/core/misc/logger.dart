@@ -8,9 +8,6 @@ void initLogger({String prefix}) {
   Log('http').enabled = true;
 
   Logger.root.onRecord.listen((rec) {
-    // ignore sembast logger
-    if (rec.loggerName == "Sembast") return;
-
     final color = _AnsiColor.fromLogLevel(rec.level);
 
     final separator = _colored("  ::  ", color);
