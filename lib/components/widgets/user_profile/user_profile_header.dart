@@ -81,6 +81,8 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
       return Container();
     }
 
+    // todo: AnimatedCrossFade clips the shadow of the buttons
+    //   can be fixed by removing the ClipRect in the build method
     return AnimatedCrossFade(
       duration: const Duration(milliseconds: 300),
       firstChild: HarpyButton.raised(
@@ -187,16 +189,19 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
   Widget build(BuildContext context) {
     final model = UserProfileModel.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildUserInfo(model),
-          _buildUserDescription(model),
-          _buildAdditionalInfo(model),
-          FollowersCount(model.user),
-        ],
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildUserInfo(model),
+            _buildUserDescription(model),
+            _buildAdditionalInfo(model),
+            FollowersCount(model.user),
+          ],
+        ),
       ),
     );
   }

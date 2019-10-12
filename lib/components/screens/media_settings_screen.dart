@@ -5,6 +5,8 @@ import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:provider/provider.dart';
 
 class MediaSettingsScreen extends StatelessWidget {
+  const MediaSettingsScreen();
+
   List<Widget> _getSettings(MediaSettingsModel model) {
     return [
       DropdownSettingsTile(
