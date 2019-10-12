@@ -160,7 +160,7 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 }
 
-/// Gets the current version via [PackageInfo] and builds it as a [Text]
+/// Gets the current version via [PackageInfo] and builds it as a [Text].
 class _VersionCode extends StatefulWidget {
   const _VersionCode({
     this.style,
