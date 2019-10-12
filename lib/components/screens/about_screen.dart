@@ -29,7 +29,8 @@ class _AboutScreenState extends State<AboutScreen> {
       ..onTap = () => launchUrl("https://github.com/robertodoering/harpy");
 
     _recognizer["email"] = TapGestureRecognizer()
-      ..onTap = () => launchUrl("mailto:rbydoering+harpy@gmail.com");
+      ..onTap = () =>
+          launchUrl("mailto:rbydoering+harpy@gmail.com?subject=Harpy feedback");
   }
 
   @override
