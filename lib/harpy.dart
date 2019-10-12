@@ -10,7 +10,7 @@ import 'package:harpy/models/settings/settings_models_provider.dart';
 
 /// [GetIt] is a simple service locator for accessing services from anywhere
 /// in the app.
-final GetIt app = GetIt();
+final GetIt app = GetIt.instance;
 
 /// Runs the app with the given [flavor].
 ///
