@@ -99,7 +99,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
             ),
           ),
         ),
-        model.tweeting ? const LinearProgressIndicator() : Container(),
+        if (model.tweeting) const LinearProgressIndicator()
       ],
     );
   }
