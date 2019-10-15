@@ -5,6 +5,7 @@ import 'package:harpy/api/twitter/data/url.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
+import 'package:harpy/components/widgets/shared/custom_animated_crossfade.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
@@ -81,9 +82,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
       return Container();
     }
 
-    // todo: AnimatedCrossFade clips the shadow of the buttons
-    //   can be fixed by removing the ClipRect in the build method
-    return AnimatedCrossFade(
+    return CustomAnimatedCrossFade(
       duration: const Duration(milliseconds: 300),
       firstChild: HarpyButton.raised(
         text: "Following",
