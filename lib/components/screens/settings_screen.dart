@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/screens/about_screen.dart';
 import 'package:harpy/components/screens/media_settings_screen.dart';
 import 'package:harpy/components/screens/theme_settings_screen.dart';
 import 'package:harpy/components/widgets/settings/clear_cache_tile.dart';
@@ -16,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
           leading: const Icon(Icons.image),
           title: const Text("Media"),
           subtitle: const Text("Settings for videos, images and gifs"),
-          onTap: () => HarpyNavigator.push(MediaSettingsScreen()),
+          onTap: () => HarpyNavigator.push(const MediaSettingsScreen()),
         ),
       ],
       "Appearance": [
@@ -24,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
           leading: const Icon(Icons.color_lens),
           title: const Text("Theme"),
           subtitle: const Text("Select your theme"),
-          onTap: () => HarpyNavigator.push(ThemeSettingsScreen()),
+          onTap: () => HarpyNavigator.push(const ThemeSettingsScreen()),
         ),
       ],
       "Other": [
@@ -39,9 +40,9 @@ class SettingsScreen extends StatelessWidget {
           ),
         ClearCacheListTile(),
         ListTile(
-          leading: const FlareIcon.harpyLogo(animate: true),
+          leading: const FlareIcon.harpyLogo(),
           title: const Text("About"),
-          onTap: () {}, // todo: about screen
+          onTap: () => HarpyNavigator.push(const AboutScreen()),
         ),
       ]
     };
