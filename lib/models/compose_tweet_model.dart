@@ -115,6 +115,12 @@ class ComposeTweetModel extends ChangeNotifier {
   Future<void> addMedia() async {
     final File media = await file_picker.FilePicker.getFile();
 
+    // todo: allow videos when able to encode them
+    if (getFileType(media) == FileType.video) {
+      flushbarService.error("Videos are currently not supported");
+      return;
+    }
+
     if (media != null) {
       if (addMediaFileToList(media)) {
         notifyListeners();
