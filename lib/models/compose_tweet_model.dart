@@ -117,9 +117,10 @@ class ComposeTweetModel extends ChangeNotifier {
 
     // todo: allow videos when able to encode them
     if (getFileType(media) == FileType.video) {
-      flushbarService.warning(
+      flushbarService.error(
         "Videos are currently not supported",
       );
+      return;
     }
 
     if (media != null) {
