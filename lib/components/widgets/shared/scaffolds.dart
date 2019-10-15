@@ -4,7 +4,14 @@ import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
-/// A convenience Widget that wraps a [Scaffold] with the [HarpyTheme].
+/// A convenience Widget that wraps a [Scaffold].
+///
+/// If [showIcon] is `true`, the [FlareIcon.harpyLogo] is built next to the
+/// [title] in the [AppBar].
+///
+/// The [HarpyBackground] is used with the [backgroundColors] to build the
+/// background of the [Scaffold.body]. By default the [HarpyTheme] is used to
+/// determine the [backgroundColors].
 class HarpyScaffold extends StatelessWidget {
   HarpyScaffold({
     @required this.title,

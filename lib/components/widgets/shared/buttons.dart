@@ -344,9 +344,21 @@ class HarpyButton extends StatelessWidget {
     Widget textWidget;
 
     if (text != null) {
-      final style = backgroundColor != null
-          ? theme.textTheme.button.copyWith(color: theme.textTheme.body1.color)
-          : theme.textTheme.button;
+      TextStyle style;
+
+      if (backgroundColor != null) {
+        // set the text color to be white or black depending on the background
+        // color brightness, or the same as body1 when the color is transparent
+        style = theme.textTheme.button.copyWith(
+            color: backgroundColor == Colors.transparent
+                ? theme.textTheme.body1.color
+                : ThemeData.estimateBrightnessForColor(backgroundColor) ==
+                        Brightness.light
+                    ? Colors.black
+                    : Colors.white);
+      } else {
+        style = theme.textTheme.button;
+      }
 
       // make sure the text overflow is handled when the button size is
       // constrained, for example during an AnimatedCrossFade transition
