@@ -94,10 +94,23 @@ class _AboutScreenState extends State<AboutScreen> {
       ),
       const SizedBox(height: 8),
       HarpyButton.raised(
-        text: "Play Store",
+        text: "Harpy Pro",
         backgroundColor: accentColor,
         dense: true,
         onTap: () => launchUrl(""), // todo
+      ),
+    ];
+  }
+
+  List<Widget> _buildRateAppText(Color accentColor) {
+    return [
+      const Text("Please rate Harpy in the Play Store!"),
+      const SizedBox(height: 8),
+      HarpyButton.raised(
+        text: "Rate Harpy",
+        backgroundColor: accentColor,
+        dense: true,
+        onTap: () => launchUrl(""), // todo harpy free or pro playstore link
       ),
     ];
   }
@@ -150,6 +163,8 @@ class _AboutScreenState extends State<AboutScreen> {
                 const Divider(height: 32),
                 ..._buildProText(theme.accentColor, linkStyle)
               ],
+              const Divider(height: 32),
+              ..._buildRateAppText(theme.accentColor),
               const Divider(height: 32),
               ..._buildDeveloperText(theme.accentColor, linkStyle),
             ],
