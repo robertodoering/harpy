@@ -75,6 +75,8 @@ class ApplicationModel {
     harpyPrefs.applicationModel = this;
     loginModel.applicationModel = this;
 
+    themeSettingsModel.updateSystemUi();
+
     await Future.wait([
       // parse the app config and init the twitter session
       _initTwitterSession(),
