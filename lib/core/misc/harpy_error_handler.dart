@@ -27,7 +27,12 @@ class HarpyErrorHandler {
   HarpyErrorHandler({
     @required Widget child,
   }) {
-    _initSentry();
+    if (kReleaseMode) {
+      // override the error widget in release mode
+      ErrorWidget.builder = (details) => Container();
+
+      _initSentry();
+    }
 
     FlutterError.onError = _handleFlutterError;
 
@@ -63,25 +68,23 @@ class HarpyErrorHandler {
 
   /// Loads the DSN for sentry that is used to report the error in release mode.
   Future<void> _initSentry() async {
-    if (kReleaseMode) {
-      try {
-        final String appConfig = await rootBundle.loadString(
-          "assets/config/app_config.yaml",
-        );
+    try {
+      final String appConfig = await rootBundle.loadString(
+        "assets/config/app_config.yaml",
+      );
 
-        // parse app config
-        final YamlMap yamlMap = loadYaml(appConfig);
-        final String dsn = yamlMap["sentry"]["dsn"];
+      // parse app config
+      final YamlMap yamlMap = loadYaml(appConfig);
+      final String dsn = yamlMap["sentry"]["dsn"];
 
-        if (dsn.isEmpty) {
-          _log.warning("No dsn set for sentry. \n"
-              "Errors that are thrown will not be reported to sentry.");
-        } else {
-          _sentry = SentryClient(dsn: dsn);
-        }
-      } catch (e) {
-        // unable to load dsn for sentry; error reporting will be omitted.
+      if (dsn.isEmpty) {
+        _log.warning("No dsn set for sentry. \n"
+            "Errors that are thrown will not be reported to sentry.");
+      } else {
+        _sentry = SentryClient(dsn: dsn);
       }
+    } catch (e) {
+      // unable to load dsn for sentry; error reporting will be omitted.
     }
   }
 

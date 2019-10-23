@@ -44,7 +44,9 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         CircleAvatar(
           radius: 36,
           backgroundColor: Colors.transparent,
-          backgroundImage: CachedNetworkImageProvider(imageUrl),
+          child: ClipOval(
+            child: CachedNetworkImage(imageUrl: imageUrl),
+          ),
         ),
 
         const SizedBox(width: 8),
@@ -62,7 +64,12 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
                 ),
               ),
               const SizedBox(height: 4),
-              Text("@${model.user.screenName}", style: textTheme.subhead),
+              FittedBox(
+                child: Text(
+                  "@${model.user.screenName}",
+                  style: textTheme.subhead,
+                ),
+              ),
             ],
           ),
         ),

@@ -116,7 +116,9 @@ class UserDrawerHeader extends StatelessWidget {
           child: CircleAvatar(
             radius: 32,
             backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(imageUrl),
+            child: ClipOval(
+              child: CachedNetworkImage(imageUrl: imageUrl),
+            ),
           ),
         ),
 
