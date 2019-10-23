@@ -44,7 +44,9 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         CircleAvatar(
           radius: 36,
           backgroundColor: Colors.transparent,
-          backgroundImage: CachedNetworkImageProvider(imageUrl),
+          child: ClipOval(
+            child: CachedNetworkImage(imageUrl: imageUrl),
+          ),
         ),
 
         const SizedBox(width: 8),

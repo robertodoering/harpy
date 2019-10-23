@@ -167,7 +167,9 @@ class TweetAvatarNameRow extends StatelessWidget {
           onTap: () => _openUserProfile(context, model.tweet.user),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
-            backgroundImage: CachedNetworkImageProvider(imageUrl),
+            child: ClipOval(
+              child: CachedNetworkImage(imageUrl: imageUrl),
+            ),
           ),
         ),
 
