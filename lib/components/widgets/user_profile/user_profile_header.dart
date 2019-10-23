@@ -64,7 +64,12 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
                 ),
               ),
               const SizedBox(height: 4),
-              Text("@${model.user.screenName}", style: textTheme.subhead),
+              FittedBox(
+                child: Text(
+                  "@${model.user.screenName}",
+                  style: textTheme.subhead,
+                ),
+              ),
             ],
           ),
         ),
