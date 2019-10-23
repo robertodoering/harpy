@@ -43,25 +43,7 @@ String parseHtmlEntities(String source) {
 }
 
 /// Pretty prints a large number to make it easier to read.
-String prettyPrintNumber(int number) {
-  String formatted = number.toString();
-
-  if (number >= 100000000) {
-    formatted = "${formatted.substring(0, 3)}.${formatted[3]}M";
-  } else if (number >= 10000000) {
-    formatted = "${formatted.substring(0, 2)}.${formatted[2]}M";
-  } else if (number >= 1000000) {
-    formatted = "${formatted[0]}.${formatted[1]}M";
-  } else if (number >= 100000) {
-    formatted = "${formatted.substring(0, 3)}.${formatted[3]}K";
-  } else if (number >= 10000) {
-    formatted = "${formatted.substring(0, 2)}.${formatted[2]}K";
-  } else if (number >= 1000) {
-    formatted = "${formatted[0]}.${formatted[1]}K";
-  }
-
-  return formatted;
-}
+String prettyPrintNumber(int number) => NumberFormat.compact().format(number);
 
 /// Gets the time difference of the [createdAt] time to [DateTime.now].
 String tweetTimeDifference(DateTime createdAt) {

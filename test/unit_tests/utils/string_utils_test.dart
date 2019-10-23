@@ -23,20 +23,6 @@ void main() {
     expect(actual, expected);
   });
 
-  test("Pretty print large numbers", () {
-    expect(prettyPrintNumber(431), "431");
-
-    expect(prettyPrintNumber(1234), "1.2K");
-
-    expect(prettyPrintNumber(43219), "43.2K");
-
-    expect(prettyPrintNumber(999999), "999.9K");
-
-    expect(prettyPrintNumber(5500000), "5.5M");
-
-    expect(prettyPrintNumber(77000001), "77.0M");
-  });
-
   test("Pretty print a duration difference", () {
     const timestamp = 1557836948;
 
