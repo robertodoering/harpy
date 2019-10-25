@@ -29,6 +29,7 @@ class SettingsScreen extends StatelessWidget {
         ),
       ],
       "Other": [
+        ClearCacheListTile(),
         if (Harpy.isFree)
           ListTile(
             leading: const FlareIcon.shiningStar(
@@ -38,7 +39,6 @@ class SettingsScreen extends StatelessWidget {
             title: const Text("Harpy Pro"),
             onTap: () {}, // todo
           ),
-        ClearCacheListTile(),
         ListTile(
           leading: const FlareIcon.harpyLogo(),
           title: const Text("About"),
