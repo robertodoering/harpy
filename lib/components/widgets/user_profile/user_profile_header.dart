@@ -10,6 +10,7 @@ import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/core/utils/date_utils.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/user_profile_model.dart';
@@ -121,12 +122,16 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
         entities: model.user.entities.asEntities,
         onEntityTap: (entityModel) {
           if (entityModel.type == EntityType.url) {
-            HarpyNavigator.push(
-              WebviewScreen(
-                url: entityModel.data,
-                displayUrl: entityModel.displayText,
-              ),
-            );
+            if (MediaSettingsModel.of(context).openLinksExternally) {
+              launchUrl(entityModel.data);
+            } else {
+              HarpyNavigator.push(
+                WebviewScreen(
+                  url: entityModel.data,
+                  displayUrl: entityModel.displayText,
+                ),
+              );
+            }
           }
         },
       ),

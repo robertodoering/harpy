@@ -48,6 +48,11 @@ class MediaSettingsModel extends ChangeNotifier {
   /// 2: never autoplay
   int get autoplayMedia => harpyPrefs.getInt("autoplayMedia", 0, 0, 2);
 
+  /// Whether or not to always open links externally instead of an internal
+  /// web view.
+  bool get openLinksExternally =>
+      harpyPrefs.getBool("openLinksExternally", false);
+
   /// Returns `false` when always hiding media initially.
   bool get enableAutoplayMedia => defaultHideMedia != 2;
 
@@ -58,6 +63,7 @@ class MediaSettingsModel extends ChangeNotifier {
     changeNonWifiMediaQuality(0);
     changeDefaultHideMedia(0);
     changeAutoplayMedia(1);
+    changeOpenLinksExternally(false);
   }
 
   /// Changes the default media quality when using wifi.
@@ -81,6 +87,12 @@ class MediaSettingsModel extends ChangeNotifier {
   /// Changes whether or not to autoplay gifs.
   void changeAutoplayMedia(int value) {
     harpyPrefs.preferences.setInt("autoplayMedia", value);
+    notifyListeners();
+  }
+
+  /// Changes whether or not to always open links externally.
+  void changeOpenLinksExternally(bool value) {
+    harpyPrefs.preferences.setBool("openLinksExternally", value);
     notifyListeners();
   }
 }

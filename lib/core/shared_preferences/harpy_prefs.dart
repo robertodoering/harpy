@@ -38,6 +38,15 @@ class HarpyPrefs {
     }
   }
 
+  /// Gets the bool value for the [key] if it exists.
+  bool getBool(String key, bool defaultValue) {
+    try {
+      return preferences.getBool(key) ?? defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
+  }
+
   /// Gets the string list for the [key] or an empty list if it doesn't exist.
   List<String> getStringList(String key) {
     try {

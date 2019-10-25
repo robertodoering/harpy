@@ -14,6 +14,7 @@ import 'package:harpy/components/widgets/shared/scroll_direction_listener.dart';
 import 'package:harpy/components/widgets/shared/twitter_text.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_quote.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 
@@ -236,12 +237,16 @@ void _openUserProfile(BuildContext context, User user) {
 
 void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
   if (entityModel.type == EntityType.url) {
-    HarpyNavigator.push(
-      WebviewScreen(
-        url: entityModel.data,
-        displayUrl: entityModel.displayText,
-      ),
-    );
+    if (MediaSettingsModel.of(context).openLinksExternally) {
+      launchUrl(entityModel.data);
+    } else {
+      HarpyNavigator.push(
+        WebviewScreen(
+          url: entityModel.data,
+          displayUrl: entityModel.displayText,
+        ),
+      );
+    }
   } else if (entityModel.type == EntityType.mention) {
     HarpyNavigator.push(UserProfileScreen(userId: entityModel.id));
   }

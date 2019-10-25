@@ -38,6 +38,12 @@ class MediaSettingsScreen extends StatelessWidget {
         onChanged: model.changeAutoplayMedia,
         enabled: model.enableAutoplayMedia,
       ),
+      SwitchListTile(
+        secondary: Icon(Icons.link),
+        value: model.openLinksExternally,
+        onChanged: model.changeOpenLinksExternally,
+        title: const Text("Always open links externally"),
+      ),
     ];
   }
 
