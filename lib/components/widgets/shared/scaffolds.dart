@@ -36,18 +36,20 @@ class HarpyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleWidget = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Text(
-          title,
-          style: Theme.of(context).textTheme.title,
-        ),
-        if (showIcon) ...[
-          const SizedBox(width: 4),
-          const FlareIcon.harpyLogo(size: 24),
+    final titleWidget = FittedBox(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            title,
+            style: Theme.of(context).textTheme.title,
+          ),
+          if (showIcon) ...[
+            const SizedBox(width: 4),
+            const FlareIcon.harpyLogo(size: 24),
+          ],
         ],
-      ],
+      ),
     );
 
     final AppBar appBar = AppBar(
