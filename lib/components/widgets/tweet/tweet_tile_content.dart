@@ -63,7 +63,7 @@ class _TweetTileContentState extends State<TweetTileContent>
                 TweetActionsRow(model),
               ],
             ),
-            const Divider(height: 0),
+            const TweetDivider(),
             _TweetReplyParent(model),
           ],
         ),
@@ -114,7 +114,7 @@ class _TweetContentPadding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 4),
+      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
@@ -381,6 +381,8 @@ class TweetActionsRow extends StatelessWidget {
     if (model.isQuote == true) {
       return Container();
     }
+
+    // todo: fix button padding
 
     return Row(
       children: <Widget>[

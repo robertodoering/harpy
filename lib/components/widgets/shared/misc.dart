@@ -85,3 +85,19 @@ class FollowersCount extends StatelessWidget {
     );
   }
 }
+
+class TweetDivider extends StatelessWidget {
+  const TweetDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+
+    return Divider(
+      height: 0,
+      color: brightness == Brightness.dark
+          ? const Color(0x55FFFFFF)
+          : const Color(0x35000000),
+    );
+  }
+}

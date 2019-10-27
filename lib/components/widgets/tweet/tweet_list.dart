@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/shared/scroll_direction_listener.dart';
 import 'package:harpy/components/widgets/shared/scroll_to_start.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile.dart';
@@ -21,7 +22,7 @@ class TweetList extends StatelessWidget {
     Widget placeHolder,
   }) {
     if (leading != null) {
-      _content..add(leading)..add(const Divider(height: 0));
+      _content..add(leading)..add(const TweetDivider());
     }
 
     if (tweets.isEmpty) {
