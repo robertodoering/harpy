@@ -4,7 +4,7 @@ import 'package:harpy/components/widgets/shared/flare_icons.dart';
 
 /// Builds the [FavoriteButton] to favorite / unfavorite a tweet.
 ///
-/// Uses an animated [FlareIcon.favorite].
+/// Uses the animated [FlareIcon.favorite] icon.
 class FavoriteButton extends StatefulWidget {
   const FavoriteButton({
     @required this.favorited,
@@ -16,7 +16,7 @@ class FavoriteButton extends StatefulWidget {
   /// Whether or not the button appears in its favorite state.
   final bool favorited;
 
-  /// The text next to the [FavoriteIcon].
+  /// The text next to the [FlareIcon.favorite].
   final String text;
 
   /// Called when the button is pressed and [favorited] is `false`.
@@ -30,56 +30,48 @@ class FavoriteButton extends StatefulWidget {
 }
 
 class _FavoriteButtonState extends State<FavoriteButton> {
-  static const String favorite = "favorite";
-  static const String favoriteStatic = "favoriteStatic";
-  static const String unfavorite = "unfavorite";
+  static const String _favorite = "favorite";
+  static const String _favoriteStatic = "favoriteStatic";
+  static const String _unfavorite = "unfavorite";
 
   String _animation;
+
+  Color get _color => widget.favorited ? Colors.red : null;
 
   @override
   void initState() {
     super.initState();
 
-    _animation = widget.favorited ? favoriteStatic : unfavorite;
+    _animation = widget.favorited ? _favoriteStatic : _unfavorite;
   }
 
   @override
   void didUpdateWidget(FavoriteButton oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.favorited && _animation == unfavorite) {
-      _animation = favorite;
+    if (widget.favorited && _animation == _unfavorite) {
+      _animation = _favorite;
     } else if (widget.favorited) {
-      _animation = favoriteStatic;
+      _animation = _favoriteStatic;
     } else if (!widget.favorited) {
-      _animation = unfavorite;
+      _animation = _unfavorite;
     }
   }
 
-  /// Builds the [FlareIcon.favorite].
-  ///
-  /// If [widget.favorite] is `true` or the button is being [highlighted] the
-  /// icon will appear in the like color of the theme.
-  /// Otherwise it will be drawn in the default icon color.
-  Widget _iconBuilder(BuildContext context, bool highlighted) {
-    final Color iconColor = widget.favorited || highlighted
-        ? Colors.red
-        : Theme.of(context).iconTheme.color;
+  Widget _iconBuilder(BuildContext context) {
+    final color = _color ?? Theme.of(context).iconTheme.color;
 
-    return FlareIcon.favorite(
-      animation: _animation,
-      color: iconColor,
-    );
+    return FlareIcon.favorite(animation: _animation, color: color);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FlatHarpyButton(
-      iconBuilder: _iconBuilder,
+    return HarpyButton.flat(
       text: widget.text,
-      color: Colors.red,
-      alwaysColored: widget.favorited,
+      iconBuilder: _iconBuilder,
+      foregroundColor: _color,
       onTap: widget.favorited ? widget.unfavorite : widget.favorite,
+      dense: true,
     );
   }
 }

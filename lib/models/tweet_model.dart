@@ -88,6 +88,9 @@ class TweetModel extends ChangeNotifier {
   /// True if the [tweet] is translated and unchanged.
   bool get translationUnchanged => translation?.unchanged ?? false;
 
+  /// Whether or not this tweet can be translated.
+  bool get allowTranslation => !tweet.emptyText && tweet.lang != "en";
+
   /// Retweet this [tweet].
   void retweet() {
     tweet.retweeted = true;

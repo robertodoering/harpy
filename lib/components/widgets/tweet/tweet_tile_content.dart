@@ -382,67 +382,53 @@ class TweetActionsRow extends StatelessWidget {
       return Container();
     }
 
-    // todo: fix button padding
+    final retweeted = model.tweet.retweeted;
 
     return Row(
       children: <Widget>[
-        // retweet action
-        FlatHarpyActionButton(
-          active: model.tweet.retweeted,
-          inactiveIcon: Icons.repeat,
-          activeIcon: Icons.repeat,
+        HarpyButton.flat(
+          onTap: retweeted ? model.unretweet : model.retweet,
+          icon: Icons.repeat,
           text: model.retweetCount,
-          color: Colors.green,
-          activate: model.retweet,
-          deactivate: model.unretweet,
+          foregroundColor: retweeted ? Colors.green : null,
+          iconSize: 20,
+          dense: true,
         ),
-
-        // favorite action
         FavoriteButton(
           favorited: model.tweet.favorited,
           text: model.favoriteCount,
           favorite: model.favorite,
           unfavorite: model.unfavorite,
         ),
-
-        Spacer(),
-
-        TweetTranslationButton(model),
+        if (model.allowTranslation) ...[
+          Spacer(),
+          _TweetTranslationButton(model),
+        ],
       ],
     );
   }
 }
 
-class TweetTranslationButton extends StatelessWidget {
-  const TweetTranslationButton(this.model);
+class _TweetTranslationButton extends StatelessWidget {
+  const _TweetTranslationButton(this.model);
 
   final TweetModel model;
 
   @override
   Widget build(BuildContext context) {
-    if (model.tweet.emptyText || model.tweet.lang == "en") {
-      return Container();
-    }
+    final enable =
+        model.originalTweet.harpyData.translation == null && !model.translating;
 
-    VoidCallback onTap;
-    bool alwaysColored = false;
-    Color color = Colors.blue;
+    final color =
+        model.translationUnchanged ? Theme.of(context).disabledColor : null;
 
-    if (model.originalTweet.harpyData.translation == null &&
-        !model.translating) {
-      onTap = model.translate;
-    } else if (model.translationUnchanged) {
-      color = Theme.of(context).disabledColor;
-      alwaysColored = true;
-    } else {
-      alwaysColored = true;
-    }
-
-    return FlatHarpyButton(
+    return HarpyButton.flat(
+      onTap: enable ? model.translate : null,
+      foregroundColor:
+          model.isTranslated || model.translating ? Colors.blue : color,
       icon: Icons.translate,
-      onTap: onTap,
-      color: color,
-      alwaysColored: alwaysColored,
+      iconSize: 20,
+      dense: true,
     );
   }
 }
