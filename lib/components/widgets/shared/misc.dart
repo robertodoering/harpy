@@ -1,9 +1,12 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/following_followers_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/utils/string_utils.dart';
+import 'package:harpy/main_free.dart';
 
 /// An [IconRow] to display an [Icon] next to some text.
 class IconRow extends StatelessWidget {
@@ -98,6 +101,50 @@ class TweetDivider extends StatelessWidget {
       color: brightness == Brightness.dark
           ? const Color(0x55FFFFFF)
           : const Color(0x35000000),
+    );
+  }
+}
+
+/// Builds space that is occupied by a banner ad in the free version of Harpy.
+///
+/// The banner ad act as an overlay that is anchored to the bottom of the
+/// screen. The [BannerAdSpace] prevents the app from occupying the space
+/// below the banner.
+class BannerAdSpace extends StatefulWidget {
+  @override
+  _BannerAdSpaceState createState() => _BannerAdSpaceState();
+}
+
+class _BannerAdSpaceState extends State<BannerAdSpace> {
+  double _height = 0;
+
+  void _listener(MobileAdEvent event) {
+    if (event == MobileAdEvent.loaded) {
+      setState(() {
+        _height = bannerAd.size.height.toDouble();
+      });
+    }
+
+    // other events such as failedToLoad or closed dont imply that no banner
+    // is showing anymore, therefore we can't set the height to 0 again after
+    // the banner loaded once
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    bannerAd.listener = _listener;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final harpyTheme = HarpyTheme.of(context);
+
+    return AnimatedContainer(
+      height: _height,
+      color: harpyTheme.backgroundColors.last,
+      duration: const Duration(milliseconds: 300),
     );
   }
 }

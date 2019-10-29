@@ -22,7 +22,7 @@ dependencies:
   mime_type: ^0.2.4
   get_it: ^3.0.1
   sembast: ^2.1.0
-  shimmer: # todo: use pub version if pr gets merged and released
+  shimmer:
     git: git://github.com/robertodoering/flutter_shimmer.git
   sentry: ^2.2.0
 
@@ -37,6 +37,7 @@ dependencies:
   file_picker: ^1.4.2
   device_info: ^0.4.0+3
   package_info: ^0.4.0+6
+  firebase_admob: ^0.9.0+7
 
   flutter:
     sdk: flutter

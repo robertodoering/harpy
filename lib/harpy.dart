@@ -8,6 +8,8 @@ import 'package:harpy/core/misc/service_setup.dart';
 import 'package:harpy/models/global_models_provider.dart';
 import 'package:harpy/models/settings/settings_models_provider.dart';
 
+import 'components/widgets/shared/misc.dart';
+
 /// [GetIt] is a simple service locator for accessing services from anywhere
 /// in the app.
 final GetIt app = GetIt.instance;
@@ -41,11 +43,24 @@ class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Harpy",
       theme: HarpyTheme.of(context).theme,
       navigatorKey: HarpyNavigator.key,
       home: EntryScreen(),
-      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        if (isFree) {
+          // add space at the bottom occupied by a banner ad in Harpy free
+          return Column(
+            children: <Widget>[
+              Expanded(child: child),
+              BannerAdSpace(),
+            ],
+          );
+        } else {
+          return child;
+        }
+      },
     );
   }
 }
