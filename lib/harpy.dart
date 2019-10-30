@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
@@ -23,6 +24,8 @@ void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 
   setupServices();
+
+  FirebaseAnalytics().logAppOpen();
 
   // HarpyErrorHandler will run the app and handle uncaught errors
   HarpyErrorHandler(
