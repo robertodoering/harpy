@@ -98,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _LoginButton(onTap: () => _startLogin(loginModel)),
           const SizedBox(height: 8),
           _CreateAccountButton(),
+          const SizedBox(height: 8),
         ],
       ),
     );
