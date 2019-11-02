@@ -175,13 +175,17 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        HarpyNavigator.push(
-          WebviewScreen(
-            url: url.url,
-            displayUrl: url.displayUrl,
-          ),
-          name: "webview",
-        );
+        if (MediaSettingsModel.of(context).openLinksExternally) {
+          launchUrl(url.url);
+        } else {
+          HarpyNavigator.push(
+            WebviewScreen(
+              url: url.url,
+              displayUrl: url.displayUrl,
+            ),
+            name: "webview",
+          );
+        }
       };
 
     final text = Text.rich(
