@@ -16,6 +16,8 @@ class UserProfileScreen extends StatelessWidget {
     this.userId,
   }) : assert(user != null || userId != null);
 
+  static const route = "user";
+
   final User user;
   final String userId;
 

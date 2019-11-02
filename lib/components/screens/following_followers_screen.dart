@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
@@ -77,7 +76,7 @@ class _UserList<T extends UserFollowingFollowersModel> extends StatelessWidget {
   const _UserList();
 
   void _navigate(User user) {
-    HarpyNavigator.push(UserProfileScreen(user: user));
+    HarpyNavigator.pushUserProfileScreen(user: user);
   }
 
   @override

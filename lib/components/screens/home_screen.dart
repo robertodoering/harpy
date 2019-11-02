@@ -8,6 +8,8 @@ import 'package:harpy/models/home_timeline_model.dart';
 
 /// The [HomeScreen] showing the [TweetTimeline] after a user has logged in.
 class HomeScreen extends StatelessWidget {
+  static const route = "home";
+
   /// Show a dialog if an attempt is made to exit the app by pressing the
   /// back button.
   Future<bool> _onWillPop(BuildContext context) {

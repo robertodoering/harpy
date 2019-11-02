@@ -5,6 +5,7 @@ import 'package:harpy/components/screens/entry_screen.dart';
 import 'package:harpy/core/misc/harpy_error_handler.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
+import 'package:harpy/core/misc/route_observer.dart';
 import 'package:harpy/core/misc/service_setup.dart';
 import 'package:harpy/models/global_models_provider.dart';
 import 'package:harpy/models/settings/settings_models_provider.dart';
@@ -50,21 +51,28 @@ class Harpy extends StatelessWidget {
       title: "Harpy",
       theme: HarpyTheme.of(context).theme,
       navigatorKey: HarpyNavigator.key,
+      onGenerateRoute: onGenerateRoute,
+      navigatorObservers: [HarpyRouteObserver()],
       home: EntryScreen(),
-      builder: (context, child) {
-        if (isFree) {
-          // add space at the bottom occupied by a banner ad in Harpy free
-          return Column(
-            children: <Widget>[
-              Expanded(child: child),
-              BannerAdSpace(),
-            ],
-          );
-        } else {
-          return child;
-        }
-      },
+      builder: _builder,
     );
+  }
+
+  /// Builds the content for the app.
+  ///
+  /// The [child] is the screen pushed by the navigator.
+  Widget _builder(BuildContext context, Widget child) {
+    if (isFree) {
+      // add space at the bottom occupied by a banner ad in Harpy free
+      return Column(
+        children: <Widget>[
+          Expanded(child: child),
+          HarpyBannerAd(),
+        ],
+      );
+    } else {
+      return child;
+    }
   }
 }
 

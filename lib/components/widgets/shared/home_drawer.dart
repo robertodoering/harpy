@@ -5,7 +5,6 @@ import 'package:harpy/components/screens/compose_tweet_screen.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
-import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -21,7 +20,7 @@ class HomeDrawer extends StatelessWidget {
     final loginModel = LoginModel.of(context);
     await loginModel.logout();
 
-    HarpyNavigator.pushReplacement(LoginScreen());
+    HarpyNavigator.pushReplacementNamed(LoginScreen.route);
   }
 
   Widget _buildActions(BuildContext context, LoginModel loginModel) {
@@ -33,8 +32,8 @@ class HomeDrawer extends StatelessWidget {
           title: const Text("Profile"),
           onTap: () async {
             await Navigator.of(context).maybePop();
-            HarpyNavigator.push(
-              UserProfileScreen(user: loginModel.loggedInUser),
+            HarpyNavigator.pushUserProfileScreen(
+              user: loginModel.loggedInUser,
             );
           },
         ),
@@ -45,7 +44,7 @@ class HomeDrawer extends StatelessWidget {
           title: const Text("Compose a new Tweet"),
           onTap: () async {
             await Navigator.of(context).maybePop();
-            HarpyNavigator.push(ComposeTweetScreen());
+            HarpyNavigator.pushNamed(ComposeTweetScreen.route);
           },
         ),
 
@@ -57,7 +56,7 @@ class HomeDrawer extends StatelessWidget {
           title: const Text("Settings"),
           onTap: () async {
             await Navigator.of(context).maybePop();
-            HarpyNavigator.push(SettingsScreen());
+            HarpyNavigator.push(const SettingsScreen(), name: "settings");
           },
         ),
 
@@ -96,8 +95,9 @@ class UserDrawerHeader extends StatelessWidget {
 
   final User user;
 
-  void _navigateToUserScreen() {
-    HarpyNavigator.push(UserProfileScreen(user: user));
+  Future<void> _navigateToUserScreen(BuildContext context) async {
+    await Navigator.of(context).maybePop();
+    HarpyNavigator.pushUserProfileScreen(user: user);
   }
 
   Widget _buildAvatarRow(BuildContext context) {
@@ -112,7 +112,7 @@ class UserDrawerHeader extends StatelessWidget {
       children: <Widget>[
         // circle avatar
         GestureDetector(
-          onTap: _navigateToUserScreen,
+          onTap: () => _navigateToUserScreen(context),
           child: CircleAvatar(
             radius: 32,
             backgroundColor: Colors.transparent,
@@ -130,7 +130,7 @@ class UserDrawerHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: _navigateToUserScreen,
+                onTap: () => _navigateToUserScreen(context),
                 child: Text(
                   user.name,
                   style: Theme.of(context).textTheme.title,
@@ -138,7 +138,7 @@ class UserDrawerHeader extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               GestureDetector(
-                onTap: _navigateToUserScreen,
+                onTap: () => _navigateToUserScreen(context),
                 child: Text(
                   "@${user.screenName}",
                   style: Theme.of(context).textTheme.subhead,

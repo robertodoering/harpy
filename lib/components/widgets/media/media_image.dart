@@ -20,12 +20,10 @@ class MediaImage extends StatelessWidget {
 
   void _openGallery(BuildContext context) {
     HarpyNavigator.pushRoute(HeroDialogRoute(
-      builder: (context) {
-        return MediaImageGallery(
-          index: index,
-          mediaModel: mediaModel,
-        );
-      },
+      builder: (context) => MediaImageGallery(
+        index: index,
+        mediaModel: mediaModel,
+      ),
     ));
   }
 

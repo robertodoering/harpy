@@ -7,7 +7,6 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
-import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -61,7 +60,7 @@ class LoginModel extends ChangeNotifier {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info("login cancelled by user");
-        HarpyNavigator.pushReplacement(LoginScreen());
+        HarpyNavigator.pushReplacementNamed(LoginScreen.route);
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
@@ -83,15 +82,17 @@ class LoginModel extends ChangeNotifier {
     if (applicationModel.loggedIn && loggedInUser != null) {
       if (knownUser) {
         _log.fine("navigating to home screen after login");
-        HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => HomeScreen(),
-        ));
+        HarpyNavigator.pushReplacementNamed(
+          HomeScreen.route,
+          type: RouteType.fade,
+        );
       } else {
         _log.fine("navigating to setup screen after login");
         // user logged in for the first time
-        HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => SetupScreen(),
-        ));
+        HarpyNavigator.pushReplacementNamed(
+          SetupScreen.route,
+          type: RouteType.fade,
+        );
       }
     } else {
       onLoginError();
@@ -105,10 +106,10 @@ class LoginModel extends ChangeNotifier {
     applicationModel.twitterSession = null;
     loggedInUser = null;
 
-    HarpyNavigator.pushReplacementRoute(FadeRoute(
-      builder: (context) => LoginScreen(),
-      duration: const Duration(milliseconds: 600),
-    ));
+    HarpyNavigator.pushReplacementNamed(
+      LoginScreen.route,
+      type: RouteType.fade,
+    );
 
     flushbarService.error("An error occurred during login.");
   }

@@ -47,11 +47,9 @@ class ThemeCard extends StatelessWidget {
   void _onTap(ThemeSettingsModel themeSettingsModel) {
     // if already selected, edit custom theme
     if (isCustomTheme && themeSettingsModel.selectedThemeId == id) {
-      HarpyNavigator.push(
-        CustomThemeScreen(
-          editingThemeData: themeSettingsModel.getDataFromId(id),
-          editingThemeId: id,
-        ),
+      HarpyNavigator.pushCustomThemeScreen(
+        editingThemeData: themeSettingsModel.getDataFromId(id),
+        editingThemeId: id,
       );
     } else {
       themeSettingsModel.changeSelectedTheme(harpyTheme, id);
@@ -61,11 +59,9 @@ class ThemeCard extends StatelessWidget {
   void _onLongPress(ThemeSettingsModel themeSettingsModel) {
     // edit theme on long press if it is not the default theme
     if (isCustomTheme) {
-      HarpyNavigator.push(
-        CustomThemeScreen(
-          editingThemeData: themeSettingsModel.getDataFromId(id),
-          editingThemeId: id,
-        ),
+      HarpyNavigator.pushCustomThemeScreen(
+        editingThemeData: themeSettingsModel.getDataFromId(id),
+        editingThemeId: id,
       );
     }
   }
@@ -123,7 +119,7 @@ class ThemeCard extends StatelessWidget {
 class AddCustomThemeCard extends StatelessWidget {
   void _onTap(BuildContext context) {
     if (Harpy.isPro) {
-      HarpyNavigator.push(const CustomThemeScreen());
+      HarpyNavigator.pushCustomThemeScreen();
     } else {
       // show pro feature dialog
       showDialog<bool>(
@@ -134,7 +130,7 @@ class AddCustomThemeCard extends StatelessWidget {
       ).then(
         (result) {
           if (result == true) {
-            HarpyNavigator.push(const CustomThemeScreen());
+            HarpyNavigator.pushCustomThemeScreen();
           }
         },
       );

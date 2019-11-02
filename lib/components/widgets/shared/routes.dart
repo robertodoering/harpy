@@ -54,8 +54,9 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 class FadeRoute<T> extends PageRoute<T> {
   FadeRoute({
     @required this.builder,
+    RouteSettings settings,
     this.duration = const Duration(milliseconds: 300),
-  }) : super();
+  }) : super(settings: settings);
 
   final WidgetBuilder builder;
   final Duration duration;

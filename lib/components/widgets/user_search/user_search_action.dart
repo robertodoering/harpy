@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/home_screen.dart';
-import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/user_search/user_search_delegate.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -18,7 +17,7 @@ class UserSearchAction extends StatelessWidget {
     );
 
     if (user != null) {
-      HarpyNavigator.push(UserProfileScreen(user: user));
+      HarpyNavigator.pushUserProfileScreen(user: user);
     }
   }
 

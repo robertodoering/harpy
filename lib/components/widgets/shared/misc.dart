@@ -109,16 +109,18 @@ class TweetDivider extends StatelessWidget {
 /// in the free version of Harpy.
 ///
 /// The banner ad act as an overlay that is anchored to the bottom of the
-/// screen. The [BannerAdSpace] prevents the app from occupying the space
+/// screen. The [HarpyBannerAd] prevents the app from occupying the space
 /// below the banner.
-class BannerAdSpace extends StatefulWidget {
-  BannerAdSpace() : assert(Harpy.isFree);
+///
+/// todo: only start showing in home screen
+class HarpyBannerAd extends StatefulWidget {
+  HarpyBannerAd() : assert(Harpy.isFree);
 
   @override
-  _BannerAdSpaceState createState() => _BannerAdSpaceState();
+  _HarpyBannerAdState createState() => _HarpyBannerAdState();
 }
 
-class _BannerAdSpaceState extends State<BannerAdSpace> {
+class _HarpyBannerAdState extends State<HarpyBannerAd> {
   BannerAd bannerAd;
 
   double _height = 0;
