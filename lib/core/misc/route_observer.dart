@@ -1,13 +1,27 @@
 import 'package:flutter/cupertino.dart';
+import 'package:harpy/components/screens/home_screen.dart';
+import 'package:harpy/components/screens/login_screen.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:logging/logging.dart';
 
-class HarpyRouteObserver extends RouteObserver<PageRoute<dynamic>> {
+final routeObserver = _HarpyRouteObserver();
+
+class _HarpyRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   static final Logger log = Logger("RouteObserver");
 
   void _onRouteChanged(PageRoute<dynamic> route) {
     final routeName = route.settings.name;
 
+    if (routeName == HomeScreen.route) {
+      // show the banner ad when navigating to the home screen
+      HarpyBannerAd.bannerKey.currentState?.showBanner();
+    } else if (routeName == LoginScreen.route) {
+      HarpyBannerAd.bannerKey.currentState?.hideBanner();
+    }
+
     log.info("on route changed: $routeName");
+
+    // todo: report to analytics
   }
 
   @override

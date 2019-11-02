@@ -114,10 +114,12 @@ class TweetDivider extends StatelessWidget {
 /// The banner ad act as an overlay that is anchored to the bottom of the
 /// screen. The [HarpyBannerAd] prevents the app from occupying the space
 /// below the banner.
-///
-/// todo: only start showing in home screen
 class HarpyBannerAd extends StatefulWidget {
-  HarpyBannerAd() : assert(Harpy.isFree);
+  HarpyBannerAd()
+      : assert(Harpy.isFree),
+        super(key: bannerKey);
+
+  static GlobalKey<_HarpyBannerAdState> bannerKey = GlobalKey();
 
   @override
   _HarpyBannerAdState createState() => _HarpyBannerAdState();
@@ -128,23 +130,30 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
 
   double _height = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
+  void showBanner() {
     if (Harpy.isFree) {
-      _showBanner();
+      bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: BannerAd.testAdUnitId,
+      )
+        ..load()
+        ..show()
+        ..listener = _listener;
     }
   }
 
-  void _showBanner() {
-    bannerAd = BannerAd(
-      size: AdSize.fullBanner,
-      adUnitId: BannerAd.testAdUnitId,
-    )
-      ..load()
-      ..show()
-      ..listener = _listener;
+  Future<void> hideBanner() async {
+    if (Harpy.isFree) {
+      final isLoaded = await bannerAd?.isLoaded() ?? false;
+
+      if (isLoaded) {
+        bannerAd.dispose();
+
+        setState(() {
+          _height = 0;
+        });
+      }
+    }
   }
 
   void _listener(MobileAdEvent event) {
@@ -157,7 +166,7 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
       // a new banner needs to be instantiated, otherwise we can't reload the
       // banner ad
 
-      Future.delayed(const Duration(seconds: 30)).then((_) => _showBanner());
+      Future.delayed(const Duration(seconds: 30)).then((_) => showBanner());
     }
 
     // other events such as failedToLoad or closed dont imply that no banner

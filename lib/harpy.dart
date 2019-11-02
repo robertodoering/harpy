@@ -52,7 +52,7 @@ class Harpy extends StatelessWidget {
       theme: HarpyTheme.of(context).theme,
       navigatorKey: HarpyNavigator.key,
       onGenerateRoute: onGenerateRoute,
-      navigatorObservers: [HarpyRouteObserver()],
+      navigatorObservers: [routeObserver],
       home: EntryScreen(),
       builder: _builder,
     );
