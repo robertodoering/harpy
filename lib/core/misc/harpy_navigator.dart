@@ -38,11 +38,6 @@ class HarpyNavigator {
     key.currentState.push(route);
   }
 
-  /// A convenience method to push a new named [route] to the [Navigator].
-  static void pushNamed(String route) {
-    key.currentState.pushNamed(route);
-  }
-
   /// A convenience method to push a named replacement route.
   static void pushReplacementNamed(
     String route, {
@@ -107,7 +102,7 @@ class HarpyNavigator {
   /// compares a list of route names.
   ///
   /// Can be used in combination with [Navigator.pushNamedAndRemoveUntil] to
-  /// pop until one of the routes in [names].
+  /// pop until a route has one of the name in [names].
   static RoutePredicate namePredicate(List<String> names) {
     return (route) =>
         !route.willHandlePopInternally &&

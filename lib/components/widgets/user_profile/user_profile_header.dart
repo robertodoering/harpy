@@ -130,6 +130,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
                   url: entityModel.data,
                   displayUrl: entityModel.displayText,
                 ),
+                name: "webview",
               );
             }
           }
@@ -179,6 +180,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
             url: url.url,
             displayUrl: url.displayUrl,
           ),
+          name: "webview",
         );
       };
 

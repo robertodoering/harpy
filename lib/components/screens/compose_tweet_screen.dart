@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class ComposeTweetScreen extends StatefulWidget {
+  const ComposeTweetScreen();
+
   @override
   _ComposeTweetScreenState createState() => _ComposeTweetScreenState();
 }

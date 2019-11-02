@@ -44,7 +44,10 @@ class HomeDrawer extends StatelessWidget {
           title: const Text("Compose a new Tweet"),
           onTap: () async {
             await Navigator.of(context).maybePop();
-            HarpyNavigator.pushNamed(ComposeTweetScreen.route);
+            HarpyNavigator.push(
+              const ComposeTweetScreen(),
+              name: "compose_tweet",
+            );
           },
         ),
 
