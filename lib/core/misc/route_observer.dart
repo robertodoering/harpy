@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
-import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/components/widgets/shared/harpy_banner_ad.dart';
 import 'package:logging/logging.dart';
 
 final routeObserver = _HarpyRouteObserver();

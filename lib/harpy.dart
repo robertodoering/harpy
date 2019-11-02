@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
+import 'package:harpy/components/widgets/shared/harpy_banner_ad.dart';
 import 'package:harpy/core/misc/harpy_error_handler.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
@@ -9,8 +10,6 @@ import 'package:harpy/core/misc/route_observer.dart';
 import 'package:harpy/core/misc/service_setup.dart';
 import 'package:harpy/models/global_models_provider.dart';
 import 'package:harpy/models/settings/settings_models_provider.dart';
-
-import 'components/widgets/shared/misc.dart';
 
 /// [GetIt] is a simple service locator for accessing services from anywhere
 /// in the app.
