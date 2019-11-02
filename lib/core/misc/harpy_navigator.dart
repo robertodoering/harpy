@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/custom_theme_screen.dart';
+import 'package:harpy/components/screens/following_followers_screen.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
@@ -52,7 +53,7 @@ class HarpyNavigator {
   }
 
   /// Pushes the [UserProfileScreen] and makes sure the previous screen is
-  /// the [HomeScreen], a [TweetRepliesScreen] or a [UserProfileScreen].
+  /// the [HomeScreen], a [TweetRepliesScreen], or a [FollowingFollowerScreen].
   static void pushUserProfileScreen({
     String userId,
     User user,
@@ -64,7 +65,7 @@ class HarpyNavigator {
       namePredicate([
         HomeScreen.route,
         TweetRepliesScreen.route,
-        UserProfileScreen.route,
+        FollowingFollowerScreen.route,
       ]),
       arguments: <String, dynamic>{
         "userId": userId,

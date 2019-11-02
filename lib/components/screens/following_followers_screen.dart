@@ -27,6 +27,8 @@ class FollowingFollowerScreen extends StatelessWidget {
     @required this.type,
   });
 
+  static const String route = "follwing_follower";
+
   /// The [User] for whom to show the followers and following users for.
   final User user;
 

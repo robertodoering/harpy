@@ -63,7 +63,7 @@ class FollowersCount extends StatelessWidget {
         user: user,
         type: type,
       ),
-      name: "following_follower",
+      name: FollowingFollowerScreen.route,
     );
   }
 
