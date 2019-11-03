@@ -15,6 +15,9 @@ import 'package:harpy/models/settings/settings_models_provider.dart';
 /// in the app.
 final GetIt app = GetIt.instance;
 
+/// Used for firebase analytics.
+final FirebaseAnalytics analytics = FirebaseAnalytics();
+
 /// Runs the app with the given [flavor].
 ///
 /// To app can be build with the 'free' or 'pro' flavor by running
@@ -25,7 +28,7 @@ void runHarpy(Flavor flavor) {
 
   setupServices();
 
-  FirebaseAnalytics().logAppOpen();
+  analytics.logAppOpen();
 
   // HarpyErrorHandler will run the app and handle uncaught errors
   HarpyErrorHandler(

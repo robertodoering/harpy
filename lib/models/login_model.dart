@@ -80,6 +80,8 @@ class LoginModel extends ChangeNotifier {
 
     // makes sure we were able to get the logged in user before navigating
     if (applicationModel.loggedIn && loggedInUser != null) {
+      analytics.logLogin();
+
       if (knownUser) {
         _log.fine("navigating to home screen after login");
         HarpyNavigator.pushReplacementNamed(
@@ -95,13 +97,15 @@ class LoginModel extends ChangeNotifier {
         );
       }
     } else {
+      _log.severe("unable to retrieve logged in user after successfull "
+          "authorization");
+      flushbarService.error("An error occurred during login.");
       onLoginError();
     }
   }
 
   Future<void> onLoginError() async {
-    _log.severe("unable to retreive logged in user after successful "
-        "authorization");
+    _log.warning("not logged in");
 
     applicationModel.twitterSession = null;
     loggedInUser = null;
@@ -110,8 +114,6 @@ class LoginModel extends ChangeNotifier {
       LoginScreen.route,
       type: RouteType.fade,
     );
-
-    flushbarService.error("An error occurred during login.");
   }
 
   /// Logout using the native twitter sdk.

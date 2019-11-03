@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/harpy_banner_ad.dart';
+import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
 final routeObserver = _HarpyRouteObserver();
@@ -21,7 +22,9 @@ class _HarpyRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
     log.info("on route changed: $routeName");
 
-    // todo: report to analytics
+    if (routeName != null) {
+      analytics.setCurrentScreen(screenName: routeName);
+    }
   }
 
   @override

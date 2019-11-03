@@ -129,6 +129,14 @@ class AddCustomThemeCard extends StatelessWidget {
         ),
       ).then(
         (result) {
+          analytics.logEvent(
+            name: "pro_feature_dialog",
+            parameters: {
+              "type": "custom_theme",
+              "demo": result == true,
+            },
+          );
+
           if (result == true) {
             HarpyNavigator.pushCustomThemeScreen();
           }
