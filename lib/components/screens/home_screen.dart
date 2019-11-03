@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/home_drawer.dart';
+import 'package:harpy/components/widgets/shared/home_screen_actions.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/components/widgets/tweet/tweet_timeline.dart';
-import 'package:harpy/components/widgets/user_search/user_search_action.dart';
 import 'package:harpy/models/home_timeline_model.dart';
 
 /// The [HomeScreen] showing the [TweetTimeline] after a user has logged in.
 class HomeScreen extends StatelessWidget {
+  static const route = "home";
+
   /// Show a dialog if an attempt is made to exit the app by pressing the
   /// back button.
   Future<bool> _onWillPop(BuildContext context) {
@@ -34,7 +36,7 @@ class HomeScreen extends StatelessWidget {
       showIcon: true,
       drawer: HomeDrawer(),
       actions: <Widget>[
-        UserSearchAction(),
+        const HomeScreenActions(),
       ],
       body: WillPopScope(
         onWillPop: () => _onWillPop(context),

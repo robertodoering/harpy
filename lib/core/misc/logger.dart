@@ -6,7 +6,7 @@ import 'ansi_color.dart';
 /// Controls whether or not the log messages sent to the terminal are colored.
 ///
 /// Set this to `false` if your terminal doesn't support [AnsiColor]s.
-const _enableColoredLogs = true;
+const _enableColoredLogs = false;
 
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;

@@ -1,12 +1,9 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/following_followers_screen.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/utils/string_utils.dart';
-import 'package:harpy/harpy.dart';
 
 /// An [IconRow] to display an [Icon] next to some text.
 class IconRow extends StatelessWidget {
@@ -61,10 +58,13 @@ class FollowersCount extends StatelessWidget {
   final User user;
 
   void _showInScreen(FollowingFollowerType type) {
-    HarpyNavigator.push(FollowingFollowerScreen(
-      user: user,
-      type: type,
-    ));
+    HarpyNavigator.push(
+      FollowingFollowerScreen(
+        user: user,
+        type: type,
+      ),
+      name: FollowingFollowerScreen.route,
+    );
   }
 
   @override
@@ -101,73 +101,6 @@ class TweetDivider extends StatelessWidget {
       color: brightness == Brightness.dark
           ? const Color(0x55FFFFFF)
           : const Color(0x35000000),
-    );
-  }
-}
-
-/// Shows a banner ad and builds the space that is occupied by the banner ad
-/// in the free version of Harpy.
-///
-/// The banner ad act as an overlay that is anchored to the bottom of the
-/// screen. The [BannerAdSpace] prevents the app from occupying the space
-/// below the banner.
-class BannerAdSpace extends StatefulWidget {
-  BannerAdSpace() : assert(Harpy.isFree);
-
-  @override
-  _BannerAdSpaceState createState() => _BannerAdSpaceState();
-}
-
-class _BannerAdSpaceState extends State<BannerAdSpace> {
-  BannerAd bannerAd;
-
-  double _height = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (Harpy.isFree) {
-      _showBanner();
-    }
-  }
-
-  void _showBanner() {
-    bannerAd = BannerAd(
-      size: AdSize.fullBanner,
-      adUnitId: BannerAd.testAdUnitId,
-    )
-      ..load()
-      ..show()
-      ..listener = _listener;
-  }
-
-  void _listener(MobileAdEvent event) {
-    if (event == MobileAdEvent.loaded) {
-      setState(() {
-        _height = bannerAd.size.height.toDouble();
-      });
-    } else if (event == MobileAdEvent.failedToLoad) {
-      // reload ad in 30 seconds
-      // a new banner needs to be instantiated, otherwise we can't reload the
-      // banner ad
-
-      Future.delayed(const Duration(seconds: 30)).then((_) => _showBanner());
-    }
-
-    // other events such as failedToLoad or closed dont imply that no banner
-    // is showing anymore, therefore we can't set the height to 0 again after
-    // the banner loaded once
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
-
-    return AnimatedContainer(
-      height: _height,
-      color: harpyTheme.backgroundColors.last,
-      duration: const Duration(milliseconds: 300),
     );
   }
 }

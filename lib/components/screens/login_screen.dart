@@ -10,6 +10,8 @@ import 'package:harpy/models/login_model.dart';
 
 /// Shows the app title and a [_LoginButton] to allow a user to login.
 class LoginScreen extends StatefulWidget {
+  static const route = "login";
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }

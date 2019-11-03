@@ -130,6 +130,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
                   url: entityModel.data,
                   displayUrl: entityModel.displayText,
                 ),
+                name: "webview",
               );
             }
           }
@@ -174,12 +175,17 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
 
     _linkGestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        HarpyNavigator.push(
-          WebviewScreen(
-            url: url.url,
-            displayUrl: url.displayUrl,
-          ),
-        );
+        if (MediaSettingsModel.of(context).openLinksExternally) {
+          launchUrl(url.url);
+        } else {
+          HarpyNavigator.push(
+            WebviewScreen(
+              url: url.url,
+              displayUrl: url.displayUrl,
+            ),
+            name: "webview",
+          );
+        }
       };
 
     final text = Text.rich(

@@ -19,6 +19,8 @@ class CustomThemeScreen extends StatelessWidget {
     this.editingThemeId,
   });
 
+  static const route = "custom_theme_screen";
+
   final HarpyThemeData editingThemeData;
   final int editingThemeId;
 

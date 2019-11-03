@@ -5,7 +5,6 @@ import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
-import 'package:harpy/components/widgets/user_search/user_search_action.dart';
 import 'package:harpy/models/user_search_history_model.dart';
 import 'package:harpy/models/user_search_model.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// The [SearchDelegate] for the user search.
 ///
-/// Used by the [UserSearchAction] in the [HomeScreen] to open a search with
-/// [showSearch].
+/// Used by the [HomeScreenActions]  to open a search with [showSearch].
 ///
 /// The suggestions are previously entered queries that are saved in the
 /// [SharedPreferences] with the [UserSearchHistoryModel].

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/harpy.dart';
 import 'package:package_info/package_info.dart';
@@ -97,7 +98,8 @@ class _AboutScreenState extends State<AboutScreen> {
         text: "Harpy Pro",
         backgroundColor: accentColor,
         dense: true,
-        onTap: () => launchUrl(""), // todo
+        // todo: link to harpy pro
+        onTap: () => app<FlushbarService>().info("Not yet available"),
       ),
     ];
   }
@@ -110,7 +112,8 @@ class _AboutScreenState extends State<AboutScreen> {
         text: "Rate Harpy",
         backgroundColor: accentColor,
         dense: true,
-        onTap: () => launchUrl(""), // todo harpy free or pro playstore link
+        // todo harpy free or pro playstore link
+        onTap: () => app<FlushbarService>().info("Not yet available"),
       ),
     ];
   }

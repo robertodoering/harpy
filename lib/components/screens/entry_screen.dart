@@ -15,6 +15,7 @@ class EntryScreen extends StatelessWidget {
     // pre-cache flare icons
     FlareIcon.cacheIcons(context);
 
+    // todo: create a proper entry screen + a native splash screen
     return Container(color: Colors.black);
   }
 }

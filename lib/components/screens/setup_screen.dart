@@ -12,6 +12,8 @@ import 'package:harpy/models/login_model.dart';
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
 class SetupScreen extends StatefulWidget {
+  static const route = "setup";
+
   @override
   _SetupScreenState createState() => _SetupScreenState();
 }
@@ -101,6 +103,7 @@ class _SetupScreenState extends State<SetupScreen> {
               onTap: _navigateToHome,
             ),
           ),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -108,7 +111,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
   Future<void> _navigateToHome() async {
     await _slideSetupKey.currentState.forward();
-    HarpyNavigator.pushReplacement(HomeScreen());
+    HarpyNavigator.pushReplacementNamed(HomeScreen.route);
   }
 
   @override

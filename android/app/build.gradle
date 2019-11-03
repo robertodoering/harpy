@@ -1,3 +1,4 @@
+// local.properties
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -11,15 +12,27 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+// key.properties
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+// version.properties
+def versionProperties = new Properties()
+def versionPropertiesFile = rootProject.file('version.properties')
+if (versionPropertiesFile.exists()) {
+    versionPropertiesFile.withReader('UTF-8') { reader ->
+        versionProperties.load(reader)
+    }
 }
+
+def freeVersionCode = versionProperties.getProperty('freeVersionCode')
+def freeVersionName = versionProperties.getProperty('freeVersionName')
+
+def proVersionCode = versionProperties.getProperty('proVersionCode')
+def proVersionName = versionProperties.getProperty('proVersionName')
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -41,23 +54,28 @@ android {
     productFlavors {
         free {
             applicationId "com.robertodoering.harpy.free"
-            // todo: different version codes
-            versionCode flutterVersionCode.toInteger()
-            versionName flutterVersionName
+            versionCode freeVersionCode.toInteger()
+            versionName freeVersionName
         }
-
         pro {
             applicationId "com.robertodoering.harpy.pro"
-            versionCode flutterVersionCode.toInteger()
-            versionName flutterVersionName
+            versionCode proVersionCode.toInteger()
+            versionName proVersionName
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

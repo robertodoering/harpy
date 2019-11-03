@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/tweet_replies_screen.dart';
-import 'package:harpy/components/screens/user_profile_screen.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
 import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
@@ -45,9 +42,7 @@ class _TweetTileContentState extends State<TweetTileContent>
       offset: offset,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => HarpyNavigator.push(TweetRepliesScreen(
-          tweet: model.tweet,
-        )),
+        onTap: () => HarpyNavigator.pushTweetRepliesScreen(model.tweet),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -165,7 +160,9 @@ class TweetAvatarNameRow extends StatelessWidget {
       children: <Widget>[
         // avatar
         GestureDetector(
-          onTap: () => _openUserProfile(context, model.tweet.user),
+          onTap: () => HarpyNavigator.pushUserProfileScreen(
+            user: model.tweet.user,
+          ),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             child: ClipOval(
@@ -213,13 +210,17 @@ class TweetNameColumn extends StatelessWidget {
       children: <Widget>[
         // name
         GestureDetector(
-          onTap: () => _openUserProfile(context, model.tweet.user),
+          onTap: () => HarpyNavigator.pushUserProfileScreen(
+            user: model.tweet.user,
+          ),
           child: _buildNameRow(),
         ),
 
         // username · time since tweet in hours
         GestureDetector(
-          onTap: () => _openUserProfile(context, model.tweet.user),
+          onTap: () => HarpyNavigator.pushUserProfileScreen(
+            user: model.tweet.user,
+          ),
           child: Text(
             model.screenNameAndTime,
             style: Theme.of(context).textTheme.body2,
@@ -228,11 +229,6 @@ class TweetNameColumn extends StatelessWidget {
       ],
     );
   }
-}
-
-/// Navigates to the [UserProfileScreen] for the [user].
-void _openUserProfile(BuildContext context, User user) {
-  HarpyNavigator.push(UserProfileScreen(user: user));
 }
 
 void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
@@ -245,10 +241,11 @@ void _onEntityTap(BuildContext context, TwitterEntityModel entityModel) {
           url: entityModel.data,
           displayUrl: entityModel.displayText,
         ),
+        name: "webview",
       );
     }
   } else if (entityModel.type == EntityType.mention) {
-    HarpyNavigator.push(UserProfileScreen(userId: entityModel.id));
+    HarpyNavigator.pushUserProfileScreen(userId: entityModel.id);
   }
 }
 

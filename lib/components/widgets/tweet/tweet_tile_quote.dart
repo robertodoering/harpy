@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/screens/tweet_replies_screen.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/models/tweet_model.dart';
@@ -18,9 +17,9 @@ class TweetQuote extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () => HarpyNavigator.push(TweetRepliesScreen(
-        tweet: model.tweet.quotedStatus,
-      )),
+      onTap: () => HarpyNavigator.pushTweetRepliesScreen(
+        model.tweet.quotedStatus,
+      ),
       child: Container(
         margin: const EdgeInsets.only(top: 8),
         padding: const EdgeInsets.all(8),

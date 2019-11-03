@@ -4,7 +4,8 @@ import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/buttons.dart';
 import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
-import 'package:harpy/core/misc/url_launcher.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
+import 'package:harpy/harpy.dart';
 
 /// A styled dialog used with [showDialog].
 ///
@@ -182,9 +183,9 @@ class _ProFeatureDialogState extends State<ProFeatureDialog> {
 
   @override
   void initState() {
+    // todo: link to harpy pro
     _recognizer = TapGestureRecognizer()
-      ..onTap = () => launchUrl(
-          "https://play.google.com/store/search?q=harpy%20pro"); // todo: harpy pro playstore url
+      ..onTap = () => app<FlushbarService>().info("Not yet available");
 
     super.initState();
   }
