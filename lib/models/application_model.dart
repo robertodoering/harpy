@@ -5,7 +5,6 @@ import 'package:harpy/api/twitter/twitter_client.dart';
 import 'package:harpy/components/screens/entry_screen.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
-import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/cache/user_database.dart';
@@ -106,20 +105,22 @@ class ApplicationModel {
 
       if (loginModel.loggedInUser != null) {
         _log.fine("navigating to home screen");
-        HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => HomeScreen(),
-          duration: const Duration(milliseconds: 600),
-        ));
+
+        HarpyNavigator.pushReplacementNamed(
+          HomeScreen.route,
+          type: RouteType.fade,
+        );
       } else {
         // unable to get the logged in user, go back to the login screen
         loginModel.onLoginError();
       }
     } else {
       _log.fine("navigating to login screen");
-      HarpyNavigator.pushReplacementRoute(FadeRoute(
-        builder: (context) => LoginScreen(),
-        duration: const Duration(milliseconds: 600),
-      ));
+
+      HarpyNavigator.pushReplacementNamed(
+        LoginScreen.route,
+        type: RouteType.fade,
+      );
     }
   }
 

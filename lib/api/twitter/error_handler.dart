@@ -78,6 +78,7 @@ class _RateLimitReachedText extends StatefulWidget {
 
 class __RateLimitReachedTextState extends State<_RateLimitReachedText> {
   Duration _resetDuration;
+  Timer _timer;
 
   String get _durationString => _resetDuration != null
       ? prettyPrintDurationDifference(_resetDuration)
@@ -90,12 +91,19 @@ class __RateLimitReachedTextState extends State<_RateLimitReachedText> {
     _resetDuration = widget.resetDuration;
 
     if (_resetDuration != null) {
-      Timer.periodic(const Duration(seconds: 1), _update);
+      _timer = Timer.periodic(const Duration(seconds: 1), _update);
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    _timer.cancel();
+  }
+
   void _update(Timer timer) {
-    if (_resetDuration.inSeconds > 0) {
+    if (mounted && _resetDuration.inSeconds > 0) {
       setState(() {
         _resetDuration = _resetDuration - const Duration(seconds: 1);
       });
@@ -118,8 +126,9 @@ Duration _limitResetDuration(Response response) {
   try {
     final limitReset = int.parse(response.headers["x-rate-limit-reset"]);
 
-    return DateTime.fromMillisecondsSinceEpoch(limitReset * 1000)
-        .difference(DateTime.now());
+    return DateTime.fromMillisecondsSinceEpoch(
+      limitReset * 1000,
+    ).difference(DateTime.now());
   } catch (e) {
     return null;
   }

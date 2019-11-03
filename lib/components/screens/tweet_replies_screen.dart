@@ -17,6 +17,8 @@ class TweetRepliesScreen extends StatelessWidget {
     @required this.tweet,
   });
 
+  static const String route = "replies";
+
   final Tweet tweet;
 
   Widget _buildLeading(TweetRepliesModel model) {

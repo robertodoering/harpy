@@ -7,7 +7,6 @@ import 'package:harpy/api/twitter/services/user_service.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
-import 'package:harpy/components/widgets/shared/routes.dart';
 import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
@@ -61,7 +60,7 @@ class LoginModel extends ChangeNotifier {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info("login cancelled by user");
-        HarpyNavigator.pushReplacement(LoginScreen());
+        HarpyNavigator.pushReplacementNamed(LoginScreen.route);
         break;
       case TwitterLoginStatus.error:
         _log.warning("error during login");
@@ -81,41 +80,47 @@ class LoginModel extends ChangeNotifier {
 
     // makes sure we were able to get the logged in user before navigating
     if (applicationModel.loggedIn && loggedInUser != null) {
+      analytics.logLogin();
+
       if (knownUser) {
         _log.fine("navigating to home screen after login");
-        HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => HomeScreen(),
-        ));
+        HarpyNavigator.pushReplacementNamed(
+          HomeScreen.route,
+          type: RouteType.fade,
+        );
       } else {
         _log.fine("navigating to setup screen after login");
         // user logged in for the first time
-        HarpyNavigator.pushReplacementRoute(FadeRoute(
-          builder: (context) => SetupScreen(),
-        ));
+        HarpyNavigator.pushReplacementNamed(
+          SetupScreen.route,
+          type: RouteType.fade,
+        );
       }
     } else {
+      _log.severe("unable to retrieve logged in user after successfull "
+          "authorization");
+      flushbarService.error("An error occurred during login.");
       onLoginError();
     }
   }
 
   Future<void> onLoginError() async {
-    _log.severe("unable to retreive logged in user after successful "
-        "authorization");
+    _log.warning("not logged in");
 
     applicationModel.twitterSession = null;
     loggedInUser = null;
 
-    HarpyNavigator.pushReplacementRoute(FadeRoute(
-      builder: (context) => LoginScreen(),
-      duration: const Duration(milliseconds: 600),
-    ));
-
-    flushbarService.error("An error occurred during login.");
+    HarpyNavigator.pushReplacementNamed(
+      LoginScreen.route,
+      type: RouteType.fade,
+    );
   }
 
   /// Logout using the native twitter sdk.
   Future<void> logout() async {
     _log.fine("logging out");
+
+    analytics.logEvent(name: "logout");
 
     await applicationModel.twitterLogin.logOut();
 

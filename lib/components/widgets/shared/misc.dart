@@ -58,10 +58,13 @@ class FollowersCount extends StatelessWidget {
   final User user;
 
   void _showInScreen(FollowingFollowerType type) {
-    HarpyNavigator.push(FollowingFollowerScreen(
-      user: user,
-      type: type,
-    ));
+    HarpyNavigator.push(
+      FollowingFollowerScreen(
+        user: user,
+        type: type,
+      ),
+      name: FollowingFollowerScreen.route,
+    );
   }
 
   @override
