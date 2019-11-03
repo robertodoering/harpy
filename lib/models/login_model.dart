@@ -120,6 +120,8 @@ class LoginModel extends ChangeNotifier {
   Future<void> logout() async {
     _log.fine("logging out");
 
+    analytics.logEvent(name: "logout");
+
     await applicationModel.twitterLogin.logOut();
 
     applicationModel.twitterSession = null;
