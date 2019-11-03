@@ -37,20 +37,6 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
     }
   }
 
-  Future<void> hideBanner() async {
-    if (Harpy.isFree) {
-      final isLoaded = await bannerAd?.isLoaded() ?? false;
-
-      if (isLoaded) {
-        bannerAd.dispose();
-
-        setState(() {
-          _height = 0;
-        });
-      }
-    }
-  }
-
   void _listener(MobileAdEvent event) {
     if (event == MobileAdEvent.loaded) {
       setState(() {

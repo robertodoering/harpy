@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/components/screens/home_screen.dart';
-import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/widgets/shared/harpy_banner_ad.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
@@ -16,8 +15,6 @@ class _HarpyRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     if (routeName == HomeScreen.route) {
       // show the banner ad when navigating to the home screen
       HarpyBannerAd.bannerKey.currentState?.showBanner();
-    } else if (routeName == LoginScreen.route) {
-      HarpyBannerAd.bannerKey.currentState?.hideBanner();
     }
 
     log.info("on route changed: $routeName");
