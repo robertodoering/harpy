@@ -6,6 +6,7 @@ import 'package:harpy/components/widgets/settings/clear_cache_tile.dart';
 import 'package:harpy/components/widgets/settings/settings_list.dart';
 import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/harpy.dart';
 
@@ -45,7 +46,10 @@ class SettingsScreen extends StatelessWidget {
               offset: Offset(-2.5, 0),
             ),
             title: const Text("Harpy Pro"),
-            onTap: () {}, // todo
+            onTap: () {
+              // todo: link to harpy pro
+              app<FlushbarService>().info("Not yet available");
+            },
           ),
         ListTile(
           leading: const FlareIcon.harpyLogo(),
