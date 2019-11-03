@@ -29,7 +29,7 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
     if (Harpy.isFree) {
       bannerAd = BannerAd(
         size: AdSize.fullBanner,
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: "ca-app-pub-8177884628224651/1410925457",
       )
         ..load()
         ..show()

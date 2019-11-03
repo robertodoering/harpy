@@ -58,3 +58,7 @@ When omitted or left empty, errors are not sent to an error tracking service in 
 - To generate json_serializable models:
 `flutter packages pub run build_runner build`
 
+- Building an appbundle for release:
+	 - `flutter build appbundle --flavor free --target lib/main_free.dart`
+	 - `flutter build appbundle --flavor pro --target lib/main_pro.dart`
+

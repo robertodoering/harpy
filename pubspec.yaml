@@ -1,12 +1,14 @@
 name: harpy
-description: A new Flutter project.
+description: A Twitter app built with Flutter.
 
-version: 1.0.0+1
+# android/version.properties is used to manage the versions
+version: 0.0.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  # packages
   oauth1: ^1.0.4
   logging: ^0.11.3+2
   logs:
@@ -26,6 +28,7 @@ dependencies:
     git: git://github.com/robertodoering/flutter_shimmer.git
   sentry: ^2.2.0
 
+  # plugins
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   url_launcher: ^5.1.4
