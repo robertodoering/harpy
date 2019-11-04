@@ -121,7 +121,8 @@ class HarpyNavigator {
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final routeName = settings.name;
   final arguments = settings.arguments as Map<String, dynamic> ?? {};
-  final routeType = arguments["routeType"] as RouteType;
+  final routeType =
+      arguments["routeType"] as RouteType ?? RouteType.defaultRoute;
 
   Widget screen;
 

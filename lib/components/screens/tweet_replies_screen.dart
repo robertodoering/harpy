@@ -24,8 +24,10 @@ class TweetRepliesScreen extends StatelessWidget {
   Widget _buildLeading(TweetRepliesModel model) {
     return Column(
       children: <Widget>[
-        if (model.parentTweet != null) TweetTile(tweet: model.parentTweet),
-        BigTweetTile(tweet: tweet),
+        _TweetReplyParents(model.parentTweets),
+        if (model.parentTweets.isNotEmpty)
+          TweetReplyParent(authors: model.tweet.user.name),
+        _BigTweetTile(tweet: tweet),
       ],
     );
   }
@@ -87,9 +89,9 @@ class TweetRepliesScreen extends StatelessWidget {
 /// A [Tweet] displayed in a tile for the [TweetRepliesScreen].
 ///
 /// Very similar to [TweetTile] at the moment but can be used for a different
-/// look of the 'parent' tweet.
-class BigTweetTile extends StatefulWidget {
-  const BigTweetTile({
+/// look of the selected tweet.
+class _BigTweetTile extends StatefulWidget {
+  const _BigTweetTile({
     @required this.tweet,
   });
 
@@ -99,8 +101,8 @@ class BigTweetTile extends StatefulWidget {
   _BigTweetTileState createState() => _BigTweetTileState();
 }
 
-class _BigTweetTileState extends State<BigTweetTile>
-    with SingleTickerProviderStateMixin<BigTweetTile> {
+class _BigTweetTileState extends State<_BigTweetTile>
+    with SingleTickerProviderStateMixin<_BigTweetTile> {
   Widget _buildContent(BuildContext context) {
     final model = TweetModel.of(context);
 
@@ -133,6 +135,36 @@ class _BigTweetTileState extends State<BigTweetTile>
       tweet: widget.tweet,
       content: Builder(
         builder: _buildContent,
+      ),
+    );
+  }
+}
+
+/// Displays the parent [Tweet]s.
+///
+/// When the parents are loaded, they will animate into the view using an
+/// [AnimatedSize]. It is important to build an empty list of parents first,
+/// so the difference in size of the column gets animated.
+class _TweetReplyParents extends StatefulWidget {
+  const _TweetReplyParents(this.parents);
+
+  final List<Tweet> parents;
+
+  @override
+  _TweetReplyParentsState createState() => _TweetReplyParentsState();
+}
+
+class _TweetReplyParentsState extends State<_TweetReplyParents>
+    with SingleTickerProviderStateMixin<_TweetReplyParents> {
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSize(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      child: Column(
+        children: widget.parents.map((tweet) {
+          return TweetTile(tweet: tweet);
+        }).toList(),
       ),
     );
   }
