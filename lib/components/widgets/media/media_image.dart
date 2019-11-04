@@ -19,9 +19,12 @@ class MediaImage extends StatelessWidget {
   final MediaModel mediaModel;
 
   void _openGallery(BuildContext context) {
+    final routeName = ModalRoute.of(context).settings.name;
+
     HarpyNavigator.pushRoute(HeroDialogRoute(
       builder: (context) => MediaImageGallery(
         index: index,
+        routeName: routeName,
         mediaModel: mediaModel,
       ),
     ));

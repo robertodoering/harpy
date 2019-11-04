@@ -12,10 +12,12 @@ import 'package:photo_view/photo_view.dart';
 class MediaImageGallery extends StatefulWidget {
   const MediaImageGallery({
     @required this.index,
+    @required this.routeName,
     @required this.mediaModel,
   });
 
   final int index;
+  final String routeName;
   final MediaModel mediaModel;
 
   @override
@@ -53,7 +55,8 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
   List<Widget> _buildPhotoViews() {
     return widget.mediaModel.media.map((media) {
       final String heroTag = widget.mediaModel.mediaHeroTag(
-        widget.mediaModel.media.indexOf(media),
+        index: widget.mediaModel.media.indexOf(media),
+        prefix: widget.routeName,
       );
 
       final Widget child = CachedNetworkImage(
