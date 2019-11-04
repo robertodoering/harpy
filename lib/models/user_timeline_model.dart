@@ -34,11 +34,17 @@ class UserTimelineModel extends TimelineModel {
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
 
-    final List<Tweet> updatedTweets = await tweetService
+    List<Tweet> updatedTweets = await tweetService
         .getUserTimeline("$userId", timeout: timeout)
         .catchError(silentError ? (_) {} : twitterClientErrorHandler);
 
     if (updatedTweets != null) {
+      final List<Tweet> cachedTweets = await getCachedTweets();
+      updatedTweets = await copyHarpyData(
+        origin: cachedTweets,
+        target: updatedTweets,
+      );
+
       tweets = updatedTweets;
       timelineDatabase.recordUserTimelineIds(userId, updatedTweets);
       tweetDatabase.recordTweetList(updatedTweets);
