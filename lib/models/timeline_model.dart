@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
@@ -47,8 +48,8 @@ abstract class TimelineModel extends ChangeNotifier {
   /// The last time [requestMore] was called.
   DateTime lastRequestedMore;
 
-  /// Initializes the [tweets] with cached tweets and updates the [tweets]
-  /// afterwards.
+  /// Initializes the [tweets]. If no tweets were able to be requested, use
+  /// the cached tweets instead.
   Future<void> initTweets() async {
     _log.fine("initializing tweets");
     loadingInitialTweets = true;
@@ -136,4 +137,33 @@ abstract class TimelineModel extends ChangeNotifier {
 
     return "$authors replied";
   }
+
+  /// Copies the [Tweet.harpyData] from [origin] to [target] in an isolate
+  /// and returns the updated [origin] list.
+  Future<List<Tweet>> copyHarpyData({
+    List<Tweet> origin,
+    List<Tweet> target,
+  }) async {
+    _log.fine("copying harpy data");
+
+    return compute<Map<String, List<Tweet>>, List<Tweet>>(
+        _isolateCopyHarpyData, {
+      "target": target,
+      "origin": origin,
+    });
+  }
+}
+
+List<Tweet> _isolateCopyHarpyData(Map<String, List<Tweet>> tweetLists) {
+  final List<Tweet> origin = tweetLists["origin"];
+  final List<Tweet> target = tweetLists["target"];
+
+  origin.forEach((tweet) {
+    final int index = target.indexOf(tweet);
+    if (index != -1) {
+      target[index].harpyData = tweet.harpyData;
+    }
+  });
+
+  return origin;
 }
