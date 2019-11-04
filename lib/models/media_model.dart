@@ -53,47 +53,16 @@ class MediaModel extends ChangeNotifier {
   /// Returns the list of [TwitterMedia] for the tweet.
   List<TwitterMedia> get media => tweetModel.tweet.extendedEntities.media;
 
-  /// Returns the video url of the video or `null` if no videoInfo exists for
-  /// the [media].
-  ///
-  /// Takes the selected media quality into account.
-  String get videoUrl {
-    final List<Variants> variants = media.first?.videoInfo?.variants;
-
-    if (variants?.isEmpty ?? true) {
-      return null;
-    }
-
-    // remove the x-mpeg video without a bitrate
-    variants
-      ..removeWhere((variants) => variants.bitrate == null)
-      // sort by bitrate (large, medium, small)
-      ..sort((v1, v2) {
-        return v2.bitrate - v1.bitrate;
-      });
-
-    final int index = mediaQuality;
-
-    if (variants.length > index) {
-      return variants[index].url;
-    } else {
-      return variants.first.url;
-    }
-  }
-
   /// Returns the [TwitterMedia.mediaUrl] for the first media in the list.
   ///
   /// For videos and gifs this is the url for the thumbnail.
-  String get thumbnailUrl {
-    return media.first?.mediaUrl;
-  }
+  String get thumbnailUrl => media.first?.mediaUrl;
 
   /// Returns the aspect ratio of the video or `1` if no videoInfo exists for
   /// the [media].
-  double get videoAspectRatio {
-    return (media.first?.videoInfo?.aspectRatio[0] ?? 1) /
-        (media.first?.videoInfo?.aspectRatio[1] ?? 1);
-  }
+  double get videoAspectRatio =>
+      (media.first?.videoInfo?.aspectRatio[0] ?? 1) /
+      (media.first?.videoInfo?.aspectRatio[1] ?? 1);
 
   /// Whether or not the media should show when building.
   bool get initiallyShown {
@@ -124,9 +93,37 @@ class MediaModel extends ChangeNotifier {
     return false; // don't autoplay
   }
 
+  /// Returns the video url of the video or `null` if no videoInfo exists for
+  /// the [media].
+  ///
+  /// Takes the selected media quality into account.
+  String get videoUrl {
+    final List<Variants> variants = media.first?.videoInfo?.variants;
+
+    if (variants?.isEmpty ?? true) {
+      return null;
+    }
+
+    // remove the x-mpeg video without a bitrate
+    variants
+      ..removeWhere((variants) => variants.bitrate == null)
+      // sort by bitrate (large, medium, small)
+      ..sort((v1, v2) {
+        return v2.bitrate - v1.bitrate;
+      });
+
+    final int index = mediaQuality;
+
+    if (variants.length > index) {
+      return variants[index].url;
+    } else {
+      return variants.first.url;
+    }
+  }
+
   /// Returns a unique [String] for the [TwitterMedia] in that [Tweet].
-  String mediaHeroTag(int index) {
-    return "$index-${media[index].idStr}-${tweetModel.originalTweet.idStr}";
+  String mediaHeroTag({String prefix, int index}) {
+    return "$prefix$index${media[index].idStr}-${tweetModel.originalTweet.idStr}";
   }
 
   void saveShowMediaState(bool showing) {

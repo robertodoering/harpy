@@ -54,7 +54,7 @@ class _TweetTileContentState extends State<TweetTileContent>
                 TweetText(model),
                 TweetQuote(model),
                 TweetTranslation(model, vsync: this),
-                TweetMedia(model),
+                if (model.hasMedia) CollapsibleMedia(),
                 TweetActionsRow(model),
               ],
             ),
@@ -347,23 +347,6 @@ class TweetTranslation extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       child: child,
     );
-  }
-}
-
-/// If the [Tweet] contains [TweetMedia] this builds the [CollapsibleMedia] for
-/// this [Tweet].
-class TweetMedia extends StatelessWidget {
-  const TweetMedia(this.model);
-
-  final TweetModel model;
-
-  @override
-  Widget build(BuildContext context) {
-    if (model.hasMedia) {
-      return CollapsibleMedia();
-    } else {
-      return Container();
-    }
   }
 }
 

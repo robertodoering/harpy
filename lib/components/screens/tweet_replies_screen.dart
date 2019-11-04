@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
+import 'package:harpy/components/widgets/media/tweet_media.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
@@ -119,7 +120,7 @@ class _BigTweetTileState extends State<_BigTweetTile>
               TweetText(model),
               TweetQuote(model),
               TweetTranslation(model, vsync: this),
-              TweetMedia(model),
+              if (model.hasMedia) CollapsibleMedia(),
               TweetActionsRow(model),
             ],
           ),

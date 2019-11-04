@@ -134,6 +134,7 @@ class _TweetMediaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaModel = MediaModel.of(context);
+    final routeName = ModalRoute.of(context).settings.name;
 
     final TwitterMedia media = mediaModel.media[_index];
 
@@ -158,7 +159,7 @@ class _TweetMediaWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Hero(
-          tag: mediaModel.mediaHeroTag(_index),
+          tag: mediaModel.mediaHeroTag(index: _index, prefix: routeName),
           placeholderBuilder: (context, size, widget) => widget,
           child: mediaWidget ?? Container(),
         ),
