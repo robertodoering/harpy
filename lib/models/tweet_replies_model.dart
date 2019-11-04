@@ -11,6 +11,8 @@ import 'package:logging/logging.dart';
 /// The model for replies to a specific [tweet].
 ///
 /// Replies for the [tweet] are loaded upon creation and stored in [replies].
+/// If the [tweet] is a reply itself, all parent tweets are loaded upon
+/// creation.
 class TweetRepliesModel extends ChangeNotifier {
   TweetRepliesModel({
     @required this.tweet,
@@ -25,11 +27,11 @@ class TweetRepliesModel extends ChangeNotifier {
 
   static final Logger _log = Logger("TweetRepliesModel");
 
-  /// The parent tweet if the [tweet] itself is a reply.
+  /// The parent tweets if the [tweet] itself is a reply.
   ///
-  /// `null` if [tweet] is not a reply.
-  Tweet _parentTweet;
-  Tweet get parentTweet => _parentTweet;
+  /// Empty if [tweet] is not a reply.
+  final List<Tweet> _parentTweets = [];
+  List<Tweet> get parentTweets => UnmodifiableListView(_parentTweets.reversed);
 
   /// The replies for the [tweet].
   final List<Tweet> _replies = [];
@@ -46,10 +48,10 @@ class TweetRepliesModel extends ChangeNotifier {
   bool _lastPage = false;
   bool get lastPage => _lastPage;
 
-  /// Loads the parent tweet and the initial list of replies.
+  /// Loads the parent tweets and the initial list of replies.
   Future<void> _initReplies() async {
     await Future.wait([
-      _loadParentTweet(),
+      _loadParentTweets(tweet),
       _loadReplies(),
     ]);
 
@@ -57,25 +59,28 @@ class TweetRepliesModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Loads the parent tweet if the [tweet] itself is a reply.
-  Future<void> _loadParentTweet() async {
-    if (tweet.inReplyToStatusIdStr?.isNotEmpty == true) {
+  /// Loads the parent tweets if the [tweet] itself is a reply.
+  Future<void> _loadParentTweets(Tweet tweet) async {
+    final hasParent = tweet.inReplyToStatusIdStr?.isNotEmpty == true;
+
+    // todo: catch error silently
+    if (hasParent) {
       final Tweet parent = await tweetService
           .getTweet(tweet.inReplyToStatusIdStr)
           .catchError(twitterClientErrorHandler);
 
       if (parent != null) {
-        _parentTweet = parent;
+        _parentTweets.add(parent);
+        return _loadParentTweets(parent);
       }
     }
+
+    _log.fine("loaded all parent tweets");
   }
 
   Future<void> _loadReplies() async {
     final TweetRepliesResult result = await tweetSearchService
-        .getReplies(
-          tweet,
-          lastResult: _lastResult,
-        )
+        .getReplies(tweet, lastResult: _lastResult)
         .catchError(twitterClientErrorHandler);
 
     if (result != null) {
@@ -92,8 +97,6 @@ class TweetRepliesModel extends ChangeNotifier {
     }
 
     _lastPage = result?.lastPage ?? true;
-
-    notifyListeners();
   }
 
   Future<void> loadMore() async {
@@ -104,5 +107,6 @@ class TweetRepliesModel extends ChangeNotifier {
     }
 
     await _loadReplies();
+    notifyListeners();
   }
 }

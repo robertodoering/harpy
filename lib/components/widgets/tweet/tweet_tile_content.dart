@@ -59,7 +59,11 @@ class _TweetTileContentState extends State<TweetTileContent>
               ],
             ),
             const TweetDivider(),
-            _TweetReplyParent(model),
+            if (model.replyAuthors != null)
+              TweetReplyParent(
+                authors: model.replyAuthors,
+                isReply: model.isReply,
+              ),
           ],
         ),
       ),
@@ -68,27 +72,23 @@ class _TweetTileContentState extends State<TweetTileContent>
 }
 
 /// Displays the names of the users that replied to this tweet.
-class _TweetReplyParent extends StatelessWidget {
-  const _TweetReplyParent(
-    this.model,
-  );
+class TweetReplyParent extends StatelessWidget {
+  const TweetReplyParent({
+    @required this.authors,
+    this.isReply = false,
+  });
 
-  final TweetModel model;
+  final String authors;
+  final bool isReply;
 
   @override
   Widget build(BuildContext context) {
-    final String replyAuthors = model.replyAuthors;
-
-    if (replyAuthors == null) {
-      return Container();
-    }
-
     return Padding(
-      padding: EdgeInsets.fromLTRB(model.isReply ? 56 : 8, 8, 8, 0),
+      padding: EdgeInsets.fromLTRB(isReply ? 56 : 8, 8, 8, 0),
       child: IconRow(
         icon: Icons.reply,
         iconPadding: 40, // same as avatar width
-        child: replyAuthors,
+        child: authors,
       ),
     );
   }
