@@ -20,8 +20,7 @@ class TweetTileContent extends StatefulWidget {
   _TweetTileContentState createState() => _TweetTileContentState();
 }
 
-class _TweetTileContentState extends State<TweetTileContent>
-    with SingleTickerProviderStateMixin<TweetTileContent> {
+class _TweetTileContentState extends State<TweetTileContent> {
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
@@ -53,7 +52,7 @@ class _TweetTileContentState extends State<TweetTileContent>
                 TweetAvatarNameRow(model),
                 TweetText(model),
                 TweetQuote(model),
-                TweetTranslation(model, vsync: this),
+                TweetTranslation(model),
                 if (model.hasMedia) CollapsibleMedia(),
                 TweetActionsRow(model),
               ],
@@ -275,15 +274,17 @@ class TweetText extends StatelessWidget {
 
 /// If the [Tweet] has been translated this builds the translation info and
 /// the translated text.
-class TweetTranslation extends StatelessWidget {
-  const TweetTranslation(
-    this.model, {
-    @required this.vsync,
-  });
+class TweetTranslation extends StatefulWidget {
+  TweetTranslation(this.model);
 
   final TweetModel model;
-  final TickerProvider vsync;
 
+  @override
+  _TweetTranslationState createState() => _TweetTranslationState();
+}
+
+class _TweetTranslationState extends State<TweetTranslation>
+    with SingleTickerProviderStateMixin<TweetTranslation> {
   Widget _buildTranslatingIndicator() {
     return const Center(
       child: Padding(
@@ -294,7 +295,7 @@ class TweetTranslation extends StatelessWidget {
   }
 
   Widget _buildTranslatedText(BuildContext context) {
-    final language = model.translation?.language ?? "Unknown";
+    final language = widget.model.translation?.language ?? "Unknown";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,10 +319,11 @@ class TweetTranslation extends StatelessWidget {
 
         // text
         TwitterText(
-          text: model.translation.text,
-          entities: model.tweet.entities,
+          text: widget.model.translation.text,
+          entities: widget.model.tweet.entities,
           onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
-          expandedUrlToIgnore: model.tweet.quotedStatusPermalink?.expanded,
+          expandedUrlToIgnore:
+              widget.model.tweet.quotedStatusPermalink?.expanded,
         ),
       ],
     );
@@ -331,10 +333,11 @@ class TweetTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
 
-    if (model.translating) {
+    if (widget.model.translating) {
       // progress indicator
       child = _buildTranslatingIndicator();
-    } else if (!model.isTranslated || model.translationUnchanged) {
+    } else if (!widget.model.isTranslated ||
+        widget.model.translationUnchanged) {
       // build nothing
       child = Container();
     } else {
@@ -342,7 +345,7 @@ class TweetTranslation extends StatelessWidget {
     }
 
     return AnimatedSize(
-      vsync: vsync,
+      vsync: this,
       curve: Curves.easeInOut,
       duration: const Duration(milliseconds: 300),
       child: child,

@@ -55,6 +55,21 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   }
 
   @override
+  void didUpdateWidget(CustomExpansionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (_controller.value == 1 && !widget.initiallyExpanded) {
+      setState(() {
+        _controller.value = 0;
+      });
+    } else if (_controller.value == 0 && widget.initiallyExpanded) {
+      setState(() {
+        _controller.value = 1;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

@@ -25,18 +25,28 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeTimelineModel = HomeTimelineModel.of(context);
+    OnTweetUpdated onTweetUpdated;
+
     TimelineModel timelineModel;
 
     try {
       // use the user timeline model if it exists above the home timeline model
       timelineModel = UserTimelineModel.of(context);
+
+      // make sure tweets in the home timeline get updated when updating a
+      // tweet in the user timeline
+      onTweetUpdated = homeTimelineModel.updateTweet;
     } on ProviderNotFoundError {
-      timelineModel = HomeTimelineModel.of(context);
+      timelineModel = homeTimelineModel;
     }
+
+    // todo: on update, update home timeline tweet
 
     return ChangeNotifierProvider<TweetModel>(
       builder: (_) => TweetModel(
         originalTweet: tweet,
+        onTweetUpdated: onTweetUpdated,
       )..replyAuthors = timelineModel.findTweetReplyAuthors(tweet),
       child: content,
     );

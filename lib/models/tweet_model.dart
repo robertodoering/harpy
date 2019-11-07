@@ -13,6 +13,8 @@ import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 
+typedef OnTweetUpdated = void Function(Tweet tweet);
+
 /// The model for a single [Tweet].
 ///
 /// Handles changes on the [Tweet] including actions (favorite, retweet,
@@ -20,10 +22,14 @@ import 'package:provider/provider.dart';
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
+    this.onTweetUpdated,
     this.isQuote = false,
   });
 
   final Tweet originalTweet;
+
+  /// Used as a callback when a tweet is updated.
+  final OnTweetUpdated onTweetUpdated;
 
   /// Whether or not the [TweetModel] is showing a quoted [Tweet].
   final bool isQuote;
@@ -90,6 +96,16 @@ class TweetModel extends ChangeNotifier {
 
   /// Whether or not this tweet can be translated.
   bool get allowTranslation => !tweet.emptyText && tweet.lang != "en";
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
+
+    // also call onTweetUpdated when notifying listeners
+    if (onTweetUpdated != null) {
+      onTweetUpdated(tweet);
+    }
+  }
 
   /// Retweet this [tweet].
   void retweet() {
