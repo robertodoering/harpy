@@ -47,7 +47,10 @@ class UserTimelineModel extends TimelineModel {
 
       tweets = updatedTweets;
       timelineDatabase.recordUserTimelineIds(userId, updatedTweets);
-      tweetDatabase.recordTweetList(updatedTweets);
+//      tweetDatabase.recordTweetList(updatedTweets);
+      // todo: maybe user timeline tweets shouldn't get cached, otherwise the
+      //  cache limits gets reached easily and the harpyData of home timeline
+      //  tweets get lost (translations, etc.).
     }
 
     loadingInitialTweets = false;
