@@ -29,6 +29,7 @@ dependencies:
   sentry: ^2.2.0
 
   # plugins
+  share: ^0.6.3+1
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   url_launcher: ^5.1.4

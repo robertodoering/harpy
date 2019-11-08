@@ -54,6 +54,8 @@ class Tweet {
 
   bool get emptyText => displayTextRange[1] == 0;
 
+  String get shareUrl => "https://twitter.com/${user.screenName}/status/$idStr";
+
   Map<String, dynamic> toJson() => _$TweetToJson(this);
 
   @override
