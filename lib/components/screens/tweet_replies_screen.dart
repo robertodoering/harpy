@@ -102,8 +102,7 @@ class _BigTweetTile extends StatefulWidget {
   _BigTweetTileState createState() => _BigTweetTileState();
 }
 
-class _BigTweetTileState extends State<_BigTweetTile>
-    with SingleTickerProviderStateMixin<_BigTweetTile> {
+class _BigTweetTileState extends State<_BigTweetTile> {
   Widget _buildContent(BuildContext context) {
     final model = TweetModel.of(context);
 
@@ -119,7 +118,7 @@ class _BigTweetTileState extends State<_BigTweetTile>
               TweetAvatarNameRow(model),
               TweetText(model),
               TweetQuote(model),
-              TweetTranslation(model, vsync: this),
+              TweetTranslation(model),
               if (model.hasMedia) CollapsibleMedia(),
               TweetActionsRow(model),
             ],
