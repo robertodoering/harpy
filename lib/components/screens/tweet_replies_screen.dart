@@ -102,8 +102,7 @@ class _BigTweetTile extends StatefulWidget {
   _BigTweetTileState createState() => _BigTweetTileState();
 }
 
-class _BigTweetTileState extends State<_BigTweetTile>
-    with TickerProviderStateMixin<_BigTweetTile> {
+class _BigTweetTileState extends State<_BigTweetTile> {
   Widget _buildContent(BuildContext context) {
     final model = TweetModel.of(context);
 
