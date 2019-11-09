@@ -162,15 +162,18 @@ class TweetAvatarNameRow extends StatelessWidget {
           onTap: () => HarpyNavigator.pushUserProfileScreen(
             user: model.tweet.user,
           ),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: ClipOval(
-              child: CachedNetworkImage(imageUrl: imageUrl),
-            ),
+          child: Row(
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: CachedNetworkImage(imageUrl: imageUrl),
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
           ),
         ),
-
-        const SizedBox(width: 8),
 
         Expanded(child: TweetNameColumn(model)),
       ],
@@ -204,28 +207,19 @@ class TweetNameColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        // name
-        GestureDetector(
-          onTap: () => HarpyNavigator.pushUserProfileScreen(
-            user: model.tweet.user,
-          ),
-          child: _buildNameRow(),
-        ),
-
-        // username · time since tweet in hours
-        GestureDetector(
-          onTap: () => HarpyNavigator.pushUserProfileScreen(
-            user: model.tweet.user,
-          ),
-          child: Text(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => HarpyNavigator.pushUserProfileScreen(user: model.tweet.user),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildNameRow(),
+          Text(
             model.screenNameAndTime,
             style: Theme.of(context).textTheme.body2,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
