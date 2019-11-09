@@ -59,18 +59,9 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
 
   Widget _buildImage(TwitterMedia media) {
     return GestureDetector(
-      onTapDown: (_) {
-        print("true");
-        imageTapped = true;
-      },
-      onTapUp: (_) {
-        print("false");
-        imageTapped = false;
-      },
-      onTapCancel: () {
-        print("false");
-        imageTapped = false;
-      },
+      onTapDown: (_) => imageTapped = true,
+      onTapUp: (_) => imageTapped = false,
+      onTapCancel: () => imageTapped = false,
       child: CachedNetworkImage(
         imageUrl: media.mediaUrl,
         fit: BoxFit.cover,
