@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_media.dart';
@@ -31,6 +33,11 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
   /// close the gallery through the [MediaDismissible].
   bool _locked = false;
 
+  /// `true` when tapping on the image.
+  ///
+  /// Used to distinguish between tapping the image and the background.
+  bool imageTapped = false;
+
   @override
   void initState() {
     _pageController = PageController(initialPage: widget.index);
@@ -50,6 +57,29 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
     });
   }
 
+  Widget _buildImage(TwitterMedia media) {
+    return GestureDetector(
+      onTapDown: (_) {
+        print("true");
+        imageTapped = true;
+      },
+      onTapUp: (_) {
+        print("false");
+        imageTapped = false;
+      },
+      onTapCancel: () {
+        print("false");
+        imageTapped = false;
+      },
+      child: CachedNetworkImage(
+        imageUrl: media.mediaUrl,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ),
+    );
+  }
+
   /// Builds the [PhotoView]s wrapped in a [MediaDismissible] to display in the
   /// [PageView] of the image gallery.
   List<Widget> _buildPhotoViews() {
@@ -57,13 +87,6 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
       final String heroTag = widget.mediaModel.mediaHeroTag(
         index: widget.mediaModel.media.indexOf(media),
         prefix: widget.routeName,
-      );
-
-      final Widget child = CachedNetworkImage(
-        imageUrl: media.mediaUrl,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
       );
 
       final Size childSize = Size(
@@ -80,7 +103,13 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,
           scaleStateChangedCallback: _scaleStateChangedCallback,
-          child: child,
+          onTapUp: (context, details, value) {
+            // dismiss when the background is tapped
+            if (!imageTapped) {
+              _dismiss();
+            }
+          },
+          child: _buildImage(media),
         ),
       );
     }).toList();
