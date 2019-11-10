@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/url.dart';
@@ -42,12 +41,9 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     return Row(
       children: <Widget>[
         // avatar
-        CircleAvatar(
+        CachedCircleAvatar(
           radius: 36,
-          backgroundColor: Colors.transparent,
-          child: ClipOval(
-            child: CachedNetworkImage(imageUrl: imageUrl),
-          ),
+          imageUrl: imageUrl,
         ),
 
         const SizedBox(width: 8),
