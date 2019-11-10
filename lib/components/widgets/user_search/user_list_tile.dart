@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/widgets/shared/misc.dart';
 import 'package:harpy/components/widgets/user_search/user_search_delegate.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 
@@ -23,10 +24,7 @@ class UserListTile extends StatelessWidget {
     final String imageUrl = user.getProfileImageUrlFromQuality(2);
 
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        backgroundImage: NetworkImage(imageUrl),
-      ),
+      leading: CachedCircleAvatar(imageUrl: imageUrl),
       title: UserNameRow(user: user),
       subtitle: Text("@${user.screenName}"),
       trailing: Text("${prettyPrintNumber(user.followersCount)} Followers"),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
@@ -164,12 +163,7 @@ class TweetAvatarNameRow extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: CachedNetworkImage(imageUrl: imageUrl),
-                ),
-              ),
+              CachedCircleAvatar(imageUrl: imageUrl),
               const SizedBox(width: 8),
             ],
           ),

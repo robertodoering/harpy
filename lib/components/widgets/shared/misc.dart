@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/following_followers_screen.dart';
@@ -101,6 +102,35 @@ class TweetDivider extends StatelessWidget {
       color: brightness == Brightness.dark
           ? const Color(0x55FFFFFF)
           : const Color(0x35000000),
+    );
+  }
+}
+
+/// Builds a [CircleAvatar] with a [CachedNetworkImage].
+class CachedCircleAvatar extends StatelessWidget {
+  const CachedCircleAvatar({
+    @required this.imageUrl,
+    this.backgroundColor = Colors.transparent,
+    this.radius,
+  });
+
+  final String imageUrl;
+  final Color backgroundColor;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: backgroundColor,
+      child: SizedBox.expand(
+        child: ClipOval(
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            imageUrl: imageUrl,
+          ),
+        ),
+      ),
     );
   }
 }

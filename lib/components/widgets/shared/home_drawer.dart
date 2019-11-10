@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
 import 'package:harpy/components/screens/compose_tweet_screen.dart';
@@ -116,12 +115,9 @@ class UserDrawerHeader extends StatelessWidget {
         // circle avatar
         GestureDetector(
           onTap: () => _navigateToUserScreen(context),
-          child: CircleAvatar(
+          child: CachedCircleAvatar(
             radius: 32,
-            backgroundColor: Colors.transparent,
-            child: ClipOval(
-              child: CachedNetworkImage(imageUrl: imageUrl),
-            ),
+            imageUrl: imageUrl,
           ),
         ),
 
