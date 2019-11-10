@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
@@ -15,7 +16,17 @@ class EntryScreen extends StatelessWidget {
     // pre-cache flare icons
     FlareIcon.cacheIcons(context);
 
-    // todo: create a proper entry screen + a native splash screen
-    return Container(color: Colors.black);
+    return Container(
+      color: Colors.black,
+      width: double.infinity,
+      height: double.infinity,
+      child: const FractionallySizedBox(
+        widthFactor: 0.66,
+        child: FlareActor(
+          "assets/flare/harpy_logo.flr",
+          animation: "show",
+        ),
+      ),
+    );
   }
 }
