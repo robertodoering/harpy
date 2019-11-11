@@ -48,7 +48,7 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
       // a new banner needs to be instantiated, otherwise we can't reload the
       // banner ad
 
-      Future.delayed(const Duration(seconds: 30)).then((_) => showBanner());
+      Future.delayed(const Duration(minutes: 10)).then((_) => showBanner());
     }
 
     // other events such as failedToLoad or closed dont imply that no banner
