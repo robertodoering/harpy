@@ -10,6 +10,8 @@ import 'package:logging/logging.dart';
 
 final Logger _log = Logger("Error handler");
 
+final _flushbarService = app<FlushbarService>();
+
 /// Handles the [error] from a request.
 ///
 /// An error message is shown in a [Flushbar] when the [error] has been handled.
@@ -17,40 +19,28 @@ void twitterClientErrorHandler(
   dynamic error, {
   String message,
 }) {
-  final flushbarService = app<FlushbarService>();
-
   _log.warning("handling error: $error");
 
-  if (error is String) {
-    flushbarService.error(error);
-    return;
-  }
-
+  // response
   if (error is Response) {
-    if (_reachedRateLimit(error)) {
-      final limitReset = _limitResetDuration(error);
-
-      _log.fine("rate limit reached, reset in $limitReset");
-
-      flushbarService.show(
-        child: _RateLimitReachedText(limitReset),
-        type: FlushbarType.error,
-      );
+    if (_handleRateLimitReached(error)) {
       return;
+    } else {
+      _log.severe("unhandled response exception\n"
+          "statuscode: ${error.statusCode}\n"
+          "body: ${error.body}");
+
+      message ??= "An unexpected error occurred (${error.statusCode})/n"
+          "Please try again later";
     }
-
-    _log.severe("unhandled response exception\n"
-        "statuscode: ${error.statusCode}\n"
-        "body: ${error.body}");
+  } else if (error is TimeoutException) {
+    message = "Request timed out/n"
+        "Please try again later";
   }
 
-  if (error is TimeoutException) {
-    flushbarService.error("Request timed out");
-    return;
-  }
-
+  // show the error message
   if (message != null) {
-    flushbarService.error(message);
+    _flushbarService.error(message);
     return;
   }
 
@@ -59,9 +49,9 @@ void twitterClientErrorHandler(
   } else if (error is Exception) {
     _log.warning("exception not handled", error);
   }
+  // todo: allow to report the error
 
-  // todo: maybe allow to report the error through a flushbar action
-  flushbarService.error("An unexpected error occurred");
+  _flushbarService.error("An unexpected error occurred");
 }
 
 /// Does nothing with the error except logging it.
@@ -71,7 +61,25 @@ void silentErrorHandler(dynamic error) {
   _log.warning("silently ignoring error: $error");
 }
 
-/// The message in the [Flushbar] when the rate limit has been reached.
+bool _handleRateLimitReached(Response response) {
+  if (response.statusCode == 429) {
+    // rate limit has been reached
+    final limitReset = _limitResetDuration(response);
+
+    _log.fine("rate limit reached, reset in $limitReset");
+
+    _flushbarService.show(
+      child: _RateLimitReachedText(limitReset),
+      type: FlushbarType.error,
+    );
+
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/// The message in the [Flushbar] when the api rate limit has been reached.
 ///
 /// The remaining time will automatically count down in the message.
 class _RateLimitReachedText extends StatefulWidget {
@@ -127,8 +135,8 @@ class __RateLimitReachedTextState extends State<_RateLimitReachedText> {
   }
 }
 
-bool _reachedRateLimit(Response response) => response.statusCode == 429;
-
+/// Gets the duration of how long the request is blocked due to being rate
+/// limited from the twitter api.
 Duration _limitResetDuration(Response response) {
   try {
     final limitReset = int.parse(response.headers["x-rate-limit-reset"]);

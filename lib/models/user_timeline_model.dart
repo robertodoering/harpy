@@ -36,8 +36,9 @@ class UserTimelineModel extends TimelineModel {
 
     List<Tweet> updatedTweets = await tweetService
         .getUserTimeline("$userId", timeout: timeout)
-        .catchError(silentError ? (_) {} : twitterClientErrorHandler);
-    // todo: silent twitter error handler
+        .catchError(
+          silentError ? silentErrorHandler : twitterClientErrorHandler,
+        );
 
     if (updatedTweets != null) {
       final List<Tweet> cachedTweets = await getCachedTweets();
