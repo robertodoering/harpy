@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 

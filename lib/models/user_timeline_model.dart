@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
