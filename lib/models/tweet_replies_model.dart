@@ -63,11 +63,10 @@ class TweetRepliesModel extends ChangeNotifier {
   Future<void> _loadParentTweets(Tweet tweet) async {
     final hasParent = tweet.inReplyToStatusIdStr?.isNotEmpty == true;
 
-    // todo: catch error silently
     if (hasParent) {
       final Tweet parent = await tweetService
           .getTweet(tweet.inReplyToStatusIdStr)
-          .catchError(twitterClientErrorHandler);
+          .catchError(silentErrorHandler);
 
       if (parent != null) {
         _parentTweets.add(parent);

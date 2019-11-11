@@ -183,17 +183,9 @@ class LoginModel extends ChangeNotifier {
 
     final String userId = applicationModel.twitterSession.userId;
 
-    final User user = await userService.getUserDetails(id: userId).catchError(
-      (error) {
-        _log.warning("unable to update logged in user");
-
-        twitterClientErrorHandler(
-          error,
-          "An unexpected error occurred while trying to update the logged in "
-          "user",
-        );
-      },
-    );
+    final User user = await userService
+        .getUserDetails(id: userId)
+        .catchError(silentErrorHandler);
 
     if (user != null) {
       userDatabase.recordUser(user);

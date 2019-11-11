@@ -8,15 +8,15 @@ import 'package:harpy/harpy.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-Logger _log = Logger("Error handler");
+final Logger _log = Logger("Error handler");
 
 /// Handles the [error] from a request.
 ///
 /// An error message is shown in a [Flushbar] when the [error] has been handled.
-///
-/// If the error hasn't been handled and [backupErrorMessage] is set, the
-/// [backupErrorMessage] is shown in a [Flushbar].
-void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
+void twitterClientErrorHandler(
+  dynamic error, {
+  String message,
+}) {
   final flushbarService = app<FlushbarService>();
 
   _log.warning("handling error: $error");
@@ -49,8 +49,8 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
     return;
   }
 
-  if (backupErrorMessage != null) {
-    flushbarService.error(backupErrorMessage);
+  if (message != null) {
+    flushbarService.error(message);
     return;
   }
 
@@ -62,6 +62,13 @@ void twitterClientErrorHandler(dynamic error, [String backupErrorMessage]) {
 
   // todo: maybe allow to report the error through a flushbar action
   flushbarService.error("An unexpected error occurred");
+}
+
+/// Does nothing with the error except logging it.
+///
+/// Used when an error can just be ignored.
+void silentErrorHandler(dynamic error) {
+  _log.warning("silently ignoring error: $error");
 }
 
 /// The message in the [Flushbar] when the rate limit has been reached.
