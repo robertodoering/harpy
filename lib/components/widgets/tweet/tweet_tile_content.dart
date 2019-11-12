@@ -396,8 +396,11 @@ class TweetShareButton extends StatelessWidget {
   }
 
   void _shareTweet() {
-    Share.share(tweet.shareUrl);
+    Share.share(shareUrl);
   }
+
+  String get shareUrl =>
+      "https://twitter.com/${tweet.user.screenName}/status/${tweet.idStr}";
 }
 
 class _TweetTranslationButton extends StatelessWidget {
