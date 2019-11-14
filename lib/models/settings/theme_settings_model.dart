@@ -129,8 +129,6 @@ class ThemeSettingsModel extends ChangeNotifier {
       }
     }
 
-    updateSystemUi();
-
     notifyListeners();
   }
 

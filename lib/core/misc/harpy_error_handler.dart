@@ -112,6 +112,8 @@ class HarpyErrorHandler {
       return;
     }
 
+    _lastReportTime = DateTime.now();
+
     if (kReleaseMode) {
       // this await fixes an error when showing dialog in the same frame when
       // the error is thrown during a navigation

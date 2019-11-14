@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/screens/webview_screen.dart';
@@ -20,8 +19,7 @@ class TweetTileContent extends StatefulWidget {
   _TweetTileContentState createState() => _TweetTileContentState();
 }
 
-class _TweetTileContentState extends State<TweetTileContent>
-    with SingleTickerProviderStateMixin<TweetTileContent> {
+class _TweetTileContentState extends State<TweetTileContent> {
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
@@ -53,7 +51,7 @@ class _TweetTileContentState extends State<TweetTileContent>
                 TweetAvatarNameRow(model),
                 TweetText(model),
                 TweetQuote(model),
-                TweetTranslation(model, vsync: this),
+                TweetTranslation(model),
                 if (model.hasMedia) CollapsibleMedia(),
                 TweetActionsRow(model),
               ],
@@ -163,15 +161,13 @@ class TweetAvatarNameRow extends StatelessWidget {
           onTap: () => HarpyNavigator.pushUserProfileScreen(
             user: model.tweet.user,
           ),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: ClipOval(
-              child: CachedNetworkImage(imageUrl: imageUrl),
-            ),
+          child: Row(
+            children: <Widget>[
+              CachedCircleAvatar(imageUrl: imageUrl),
+              const SizedBox(width: 8),
+            ],
           ),
         ),
-
-        const SizedBox(width: 8),
 
         Expanded(child: TweetNameColumn(model)),
       ],
@@ -205,28 +201,19 @@ class TweetNameColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        // name
-        GestureDetector(
-          onTap: () => HarpyNavigator.pushUserProfileScreen(
-            user: model.tweet.user,
-          ),
-          child: _buildNameRow(),
-        ),
-
-        // username · time since tweet in hours
-        GestureDetector(
-          onTap: () => HarpyNavigator.pushUserProfileScreen(
-            user: model.tweet.user,
-          ),
-          child: Text(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => HarpyNavigator.pushUserProfileScreen(user: model.tweet.user),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildNameRow(),
+          Text(
             model.screenNameAndTime,
             style: Theme.of(context).textTheme.body2,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -275,15 +262,17 @@ class TweetText extends StatelessWidget {
 
 /// If the [Tweet] has been translated this builds the translation info and
 /// the translated text.
-class TweetTranslation extends StatelessWidget {
-  const TweetTranslation(
-    this.model, {
-    @required this.vsync,
-  });
+class TweetTranslation extends StatefulWidget {
+  TweetTranslation(this.model);
 
   final TweetModel model;
-  final TickerProvider vsync;
 
+  @override
+  _TweetTranslationState createState() => _TweetTranslationState();
+}
+
+class _TweetTranslationState extends State<TweetTranslation>
+    with SingleTickerProviderStateMixin<TweetTranslation> {
   Widget _buildTranslatingIndicator() {
     return const Center(
       child: Padding(
@@ -294,7 +283,7 @@ class TweetTranslation extends StatelessWidget {
   }
 
   Widget _buildTranslatedText(BuildContext context) {
-    final language = model.translation?.language ?? "Unknown";
+    final language = widget.model.translation?.language ?? "Unknown";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,10 +307,11 @@ class TweetTranslation extends StatelessWidget {
 
         // text
         TwitterText(
-          text: model.translation.text,
-          entities: model.tweet.entities,
+          text: widget.model.translation.text,
+          entities: widget.model.tweet.entities,
           onEntityTap: (entityModel) => _onEntityTap(context, entityModel),
-          expandedUrlToIgnore: model.tweet.quotedStatusPermalink?.expanded,
+          expandedUrlToIgnore:
+              widget.model.tweet.quotedStatusPermalink?.expanded,
         ),
       ],
     );
@@ -331,10 +321,11 @@ class TweetTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
 
-    if (model.translating) {
+    if (widget.model.translating) {
       // progress indicator
       child = _buildTranslatingIndicator();
-    } else if (!model.isTranslated || model.translationUnchanged) {
+    } else if (!widget.model.isTranslated ||
+        widget.model.translationUnchanged) {
       // build nothing
       child = Container();
     } else {
@@ -342,7 +333,7 @@ class TweetTranslation extends StatelessWidget {
     }
 
     return AnimatedSize(
-      vsync: vsync,
+      vsync: this,
       curve: Curves.easeInOut,
       duration: const Duration(milliseconds: 300),
       child: child,

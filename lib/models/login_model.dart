@@ -72,8 +72,13 @@ class LoginModel extends ChangeNotifier {
   }
 
   Future<void> _onSuccessfulLogin(TwitterLoginResult result) async {
-    // init tweet cache logged in user
-    await (applicationModel..twitterSession = result.session).initLoggedIn();
+    applicationModel.twitterSession = result.session;
+
+    applicationModel.themeSettingsModel.initTheme();
+    applicationModel.themeSettingsModel.updateSystemUi();
+
+    // init tweet cache of logged in user
+    await applicationModel.initLoggedIn();
 
     // initialize before navigating
     final bool knownUser = await initBeforeHome();

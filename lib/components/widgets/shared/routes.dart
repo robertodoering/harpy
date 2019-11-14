@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// A [PageRoute] with a semi transparent background.
@@ -25,7 +27,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => Colors.black54;
+  Color get barrierColor => null;
 
   @override
   Widget buildTransitions(
@@ -34,9 +36,24 @@ class HeroDialogRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return FadeTransition(
-      opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
-      child: child,
+    return Stack(
+      children: <Widget>[
+        BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: lerpDouble(0, 3, animation.value),
+            sigmaY: lerpDouble(0, 3, animation.value),
+          ),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black12,
+          ),
+        ),
+        FadeTransition(
+          opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+          child: child,
+        ),
+      ],
     );
   }
 

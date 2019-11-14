@@ -139,7 +139,7 @@ abstract class TimelineModel extends ChangeNotifier {
   }
 
   /// Copies the [Tweet.harpyData] from [origin] to [target] in an isolate
-  /// and returns the updated [origin] list.
+  /// and returns the updated [target] list.
   Future<List<Tweet>> copyHarpyData({
     List<Tweet> origin,
     List<Tweet> target,

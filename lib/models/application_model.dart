@@ -76,8 +76,6 @@ class ApplicationModel {
     harpyPrefs.applicationModel = this;
     loginModel.applicationModel = this;
 
-    themeSettingsModel.updateSystemUi();
-
     await Future.wait([
       // parse the app config and init the twitter session
       _initTwitterSession(),
@@ -90,6 +88,8 @@ class ApplicationModel {
     ]);
 
     if (loggedIn) {
+      // init theme from shared prefs
+      themeSettingsModel.initTheme();
       await initLoggedIn();
     }
 
@@ -125,6 +125,11 @@ class ApplicationModel {
         type: RouteType.fade,
       );
     }
+
+    // update system ui after screen transition
+    Future.delayed(const Duration(milliseconds: 300)).then((_) {
+      themeSettingsModel.updateSystemUi();
+    });
   }
 
   Future<void> _initTwitterSession() async {
@@ -179,9 +184,6 @@ class ApplicationModel {
   /// in the [LoginModel] after logging in for the first time.
   Future<void> initLoggedIn() async {
     _log.fine("init logged in");
-
-    // init theme from shared prefs
-    themeSettingsModel.initTheme();
 
     // init databases
     await Future.wait([

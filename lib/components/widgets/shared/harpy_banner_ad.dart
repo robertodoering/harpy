@@ -1,4 +1,5 @@
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/harpy.dart';
@@ -26,7 +27,7 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
   double _height = 0;
 
   void showBanner() {
-    if (Harpy.isFree) {
+    if (Harpy.isFree && kReleaseMode) {
       bannerAd = BannerAd(
         size: AdSize.fullBanner,
         adUnitId: "ca-app-pub-8177884628224651/1410925457",
@@ -47,7 +48,7 @@ class _HarpyBannerAdState extends State<HarpyBannerAd> {
       // a new banner needs to be instantiated, otherwise we can't reload the
       // banner ad
 
-      Future.delayed(const Duration(seconds: 30)).then((_) => showBanner());
+      Future.delayed(const Duration(minutes: 10)).then((_) => showBanner());
     }
 
     // other events such as failedToLoad or closed dont imply that no banner
