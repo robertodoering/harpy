@@ -34,9 +34,7 @@ class TranslationService {
 
     final String requestUrl = appendParamsToUrl(_url, params);
 
-    final Response response = await get(requestUrl).catchError((error) {
-      return Future.error(error);
-    });
+    final Response response = await get(requestUrl);
 
     if (response.statusCode != 200) {
       return Future.error(response.statusCode);

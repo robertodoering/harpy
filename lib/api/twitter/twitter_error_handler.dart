@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,10 @@ void twitterClientErrorHandler(
   } else if (error is TimeoutException) {
     message = "Request timed out/n"
         "Please try again later";
+  } else if (error is SocketException) {
+    // no internet connection
+    message = "Unable to connect to the Twitter servers\n"
+        "Please try again later";
   }
 
   // show the error message
@@ -61,6 +66,7 @@ void silentErrorHandler(dynamic error) {
   _log.warning("silently ignoring error: $error");
 }
 
+/// Handles the response if it is a rate limit reached exception.
 bool _handleRateLimitReached(Response response) {
   if (response.statusCode == 429) {
     // rate limit has been reached

@@ -28,17 +28,16 @@ class UserTimelineModel extends TimelineModel {
   @override
   Future<void> updateTweets({
     Duration timeout,
-    bool silentError = true,
+    bool silentError = false,
   }) async {
     _log.fine("updating tweets");
     loadingInitialTweets = tweets.isEmpty;
     notifyListeners();
 
+    // never catch home timeline errors silently
     List<Tweet> updatedTweets = await tweetService
         .getUserTimeline("$userId", timeout: timeout)
-        .catchError(
-          silentError ? silentErrorHandler : twitterClientErrorHandler,
-        );
+        .catchError(twitterClientErrorHandler);
 
     if (updatedTweets != null) {
       final List<Tweet> cachedTweets = await getCachedTweets();

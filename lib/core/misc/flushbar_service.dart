@@ -26,7 +26,7 @@ class FlushbarService {
   static final Logger _log = Logger("Flushbar");
 
   /// The time the same [Flushbar] has to wait to be shown again.
-  final Duration _reshowLimit = const Duration(seconds: 10);
+  final Duration _reshowLimit = const Duration(seconds: 5);
 
   /// The queue of [Flushbar]s that will be shown until empty.
   ///
