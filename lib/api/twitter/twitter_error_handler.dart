@@ -54,7 +54,6 @@ void twitterClientErrorHandler(
   } else if (error is Exception) {
     _log.warning("exception not handled", error);
   }
-  // todo: allow to report the error
 
   _flushbarService.error("An unexpected error occurred");
 }
