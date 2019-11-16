@@ -137,11 +137,20 @@ class FlushbarService {
         break;
     }
 
+    child ??= IntrinsicHeight(
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Text(message, style: harpyTheme.theme.textTheme.subhead),
+      ),
+    );
+
+    child ??= Text(message, style: harpyTheme.theme.textTheme.subhead);
+
     return Flushbar(
       backgroundColor: harpyTheme.backgroundColors.first,
       icon: Icon(icon, color: color),
-      messageText:
-          child ?? Text(message, style: harpyTheme.theme.textTheme.subhead),
+      messageText: child,
       duration: duration,
       leftBarIndicatorColor: color,
       animationDuration: const Duration(milliseconds: 600),
