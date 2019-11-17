@@ -9,6 +9,7 @@ import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -39,6 +40,7 @@ class ApplicationModel {
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
   final TimelineDatabase timelineDatabase = app<TimelineDatabase>();
   final UserDatabase userDatabase = app<UserDatabase>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   final ThemeSettingsModel themeSettingsModel;
   final LoginModel loginModel;
@@ -112,6 +114,7 @@ class ApplicationModel {
         );
       } else {
         // unable to get the logged in user, go back to the login screen
+        flushbarService.error("An error occurred during login.");
         loginModel.onLoginError();
       }
     } else {

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/data/tweet_search.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/service_utils.dart';
 import 'package:harpy/api/twitter/twitter_client.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/setup_screen.dart';
@@ -188,17 +188,9 @@ class LoginModel extends ChangeNotifier {
 
     final String userId = applicationModel.twitterSession.userId;
 
-    final User user = await userService.getUserDetails(id: userId).catchError(
-      (error) {
-        _log.warning("unable to update logged in user");
-
-        twitterClientErrorHandler(
-          error,
-          "An unexpected error occurred while trying to update the logged in "
-          "user",
-        );
-      },
-    );
+    final User user = await userService
+        .getUserDetails(id: userId)
+        .catchError(silentErrorHandler);
 
     if (user != null) {
       userDatabase.recordUser(user);

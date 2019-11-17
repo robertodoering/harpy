@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/user_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/core/cache/user_database.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:logging/logging.dart';
@@ -24,6 +25,7 @@ class UserProfileModel extends ChangeNotifier {
 
   final UserService userService = app<UserService>();
   final UserDatabase userDatabase = app<UserDatabase>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   final LoginModel loginModel;
 
@@ -38,9 +40,6 @@ class UserProfileModel extends ChangeNotifier {
 
   /// `true` while loading the user.
   bool loadingUser = true;
-
-  /// `true` if the user was unable to be loaded.
-  bool get loadingError => user == null && loadingUser == false;
 
   /// `true` if [user] is the logged in user (When the user is looking at his
   /// own profile).
@@ -64,7 +63,7 @@ class UserProfileModel extends ChangeNotifier {
       _log.fine("user not in cache, waiting to update user");
 
       if (!await _updateUser(id)) {
-        // user was unable to update
+        // user was unable to update, error shown in screen
         loadingUser = false;
         notifyListeners();
       }
@@ -75,16 +74,8 @@ class UserProfileModel extends ChangeNotifier {
   Future<bool> _updateUser(String id) async {
     _log.fine("updating user");
 
-    final User loadedUser = await userService.getUserDetails(id: id).catchError(
-      (error) {
-        _log.warning("unable to update user with id $id");
-
-        twitterClientErrorHandler(
-          error,
-          "An unexpected error occurred while trying to update logged in user",
-        );
-      },
-    );
+    final User loadedUser =
+        await userService.getUserDetails(id: id).catchError(silentErrorHandler);
 
     if (loadedUser != null) {
       userDatabase.recordUser(loadedUser);
@@ -111,7 +102,8 @@ class UserProfileModel extends ChangeNotifier {
 
         twitterClientErrorHandler(
           error,
-          "An unexpected error occurred while trying to unfollow the user",
+          message: "An unexpected error occurred while trying to unfollow the "
+              "user",
         );
 
         user.following = true;
@@ -127,7 +119,8 @@ class UserProfileModel extends ChangeNotifier {
 
         twitterClientErrorHandler(
           error,
-          "An unexpected error occurred while trying to follow the user",
+          message: "An unexpected error occurred while trying to follow the "
+              "user",
         );
 
         user.following = false;

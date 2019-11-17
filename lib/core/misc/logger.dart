@@ -1,46 +1,41 @@
 import 'package:logging/logging.dart';
 import 'package:logs/logs.dart';
 
-import 'ansi_color.dart';
-
-/// Controls whether or not the log messages sent to the terminal are colored.
-///
-/// Set this to `false` if your terminal doesn't support [AnsiColor]s.
-const _enableColoredLogs = false;
-
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
 
   // show network traffic logs in the dev tools logging view
   Log('http').enabled = true;
 
+  const separator = " | ";
+  const horizontalSeparator = "--------------------------------";
+
   Logger.root.onRecord.listen((rec) {
-    final color = AnsiColor.fromLogLevel(rec.level);
+    final content = <String>[
+      if (prefix != null) ...[
+        prefix,
+        separator,
+      ],
+      rec.level.name.padRight(7),
+      separator,
+      rec.loggerName.padRight(22),
+      separator,
+      rec.message,
+    ];
 
-    final separator = _colored("  ::  ", color);
-
-    final logString =
-        "${prefix != null ? '${_colored(prefix, AnsiColor.cyan)}$separator' : ''}"
-        "${_colored(rec.level.name, color)}$separator"
-        "${rec.loggerName}$separator"
-        "${_colored(rec.message, color)}";
-
-    print(logString);
+    print(content.join());
 
     if (rec.error != null) {
-      print(_colored("----------------", color));
-      print(_colored("error", color));
-      print(rec.error);
-      print(_colored("----------------", color));
+      print(horizontalSeparator);
+      print("ERROR");
+      print(rec.error.toString());
+      print(horizontalSeparator);
+
       if (rec.stackTrace != null) {
-        print(_colored("stack trace", color));
-        print(rec.stackTrace.toString());
-        print(_colored("----------------", color));
+        print("STACK TRACE");
+        rec.stackTrace.toString().trim().split("\n").forEach(print);
+        print(horizontalSeparator);
       }
     }
   });
-}
-
-String _colored(String message, AnsiColor color) {
-  return _enableColoredLogs ? "$color$message${AnsiColor.reset}" : message;
 }
