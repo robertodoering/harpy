@@ -18,6 +18,7 @@ import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart';
 import 'package:yaml/yaml.dart';
 
 /// The [ApplicationModel] handles initialization when starting the app.
@@ -85,6 +86,9 @@ class ApplicationModel {
 
       // init connectivity status
       connectivityService.init(),
+
+      // timezone database
+      _initializeTimezoneDatabase(),
     ]);
 
     if (loggedIn) {
@@ -191,5 +195,17 @@ class ApplicationModel {
       timelineDatabase.initialize(subDirectory: twitterSession.userId),
       userDatabase.initialize(subDirectory: twitterSession.userId),
     ]);
+  }
+
+  /// Initializes the database to determine the timezones.
+  ///
+  /// Used for calculating the Tweet creation time difference to the current
+  /// time.
+  Future<void> _initializeTimezoneDatabase() async {
+    final data = await rootBundle.load(
+      "assets/packages/timezone/data/$tzDataDefaultFilename",
+    );
+
+    initializeDatabase(data.buffer.asUint8List());
   }
 }

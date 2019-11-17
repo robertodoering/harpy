@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart';
 
 /// Removes the timezone to allow [DateTime] to parse the string.
 String formatTwitterDateString(String twitterDateString) {
@@ -46,9 +47,29 @@ String parseHtmlEntities(String source) {
 String prettyPrintNumber(int number) => NumberFormat.compact().format(number);
 
 /// Gets the time difference of the [createdAt] time to [DateTime.now].
+///
+/// The createdAt time is in UTC, so we need to make sure we take the
+/// timezone into account.
 String tweetTimeDifference(DateTime createdAt) {
-  final Duration timeDifference = DateTime.now().difference(createdAt);
-  if (timeDifference.inHours <= 24) {
+  final utcTime = TZDateTime.now(UTC);
+
+  // convert the current utc time into a DateTime
+  final utcConverted = DateTime(
+    utcTime.year,
+    utcTime.month,
+    utcTime.day,
+    utcTime.hour,
+    utcTime.minute,
+    utcTime.second,
+    utcTime.millisecond,
+    utcTime.microsecond,
+  );
+
+  final Duration timeDifference = utcConverted.difference(createdAt);
+
+  if (timeDifference.inMinutes <= 59) {
+    return "${timeDifference.inMinutes}m";
+  } else if (timeDifference.inHours <= 24) {
     return "${timeDifference.inHours}h";
   } else if (timeDifference.inDays > 365) {
     return DateFormat("MMM d yyyy").format(createdAt);
