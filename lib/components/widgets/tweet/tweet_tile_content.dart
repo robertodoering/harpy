@@ -13,6 +13,7 @@ import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
+import 'package:share/share.dart';
 
 class TweetTileContent extends StatefulWidget {
   @override
@@ -371,13 +372,35 @@ class TweetActionsRow extends StatelessWidget {
           favorite: model.favorite,
           unfavorite: model.unfavorite,
         ),
+        Spacer(),
         if (model.allowTranslation) ...[
-          Spacer(),
           _TweetTranslationButton(model),
         ],
+        TweetShareButton(model.tweet),
       ],
     );
   }
+}
+
+class TweetShareButton extends StatelessWidget {
+  TweetShareButton(this.tweet);
+
+  final Tweet tweet;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.share),
+      onPressed: _shareTweet,
+    );
+  }
+
+  void _shareTweet() {
+    Share.share(shareUrl);
+  }
+
+  String get shareUrl =>
+      "https://twitter.com/${tweet.user.screenName}/status/${tweet.idStr}";
 }
 
 class _TweetTranslationButton extends StatelessWidget {
