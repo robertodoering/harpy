@@ -14,6 +14,7 @@ class HarpyData {
   Translation translation;
   bool parentOfReply;
   bool childOfReply;
+  bool hide;
 
   Map<String, dynamic> toJson() => _$HarpyDataToJson(this);
 }
