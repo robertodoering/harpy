@@ -9,6 +9,7 @@ import 'package:harpy/core/cache/timeline_database.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/cache/user_database.dart';
 import 'package:harpy/core/misc/connectivity_service.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/logger.dart';
 import 'package:harpy/core/shared_preferences/harpy_prefs.dart';
@@ -17,6 +18,7 @@ import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart';
 import 'package:yaml/yaml.dart';
 
 /// The [ApplicationModel] handles initialization when starting the app.
@@ -39,6 +41,7 @@ class ApplicationModel {
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
   final TimelineDatabase timelineDatabase = app<TimelineDatabase>();
   final UserDatabase userDatabase = app<UserDatabase>();
+  final FlushbarService flushbarService = app<FlushbarService>();
 
   final ThemeSettingsModel themeSettingsModel;
   final LoginModel loginModel;
@@ -83,6 +86,9 @@ class ApplicationModel {
 
       // init connectivity status
       connectivityService.init(),
+
+      // timezone database
+      _initializeTimezoneDatabase(),
     ]);
 
     if (loggedIn) {
@@ -112,6 +118,7 @@ class ApplicationModel {
         );
       } else {
         // unable to get the logged in user, go back to the login screen
+        flushbarService.error("An error occurred during login.");
         loginModel.onLoginError();
       }
     } else {
@@ -188,5 +195,17 @@ class ApplicationModel {
       timelineDatabase.initialize(subDirectory: twitterSession.userId),
       userDatabase.initialize(subDirectory: twitterSession.userId),
     ]);
+  }
+
+  /// Initializes the database to determine the timezones.
+  ///
+  /// Used for calculating the Tweet creation time difference to the current
+  /// time.
+  Future<void> _initializeTimezoneDatabase() async {
+    final data = await rootBundle.load(
+      "assets/packages/timezone/data/$tzDataDefaultFilename",
+    );
+
+    initializeDatabase(data.buffer.asUint8List());
   }
 }

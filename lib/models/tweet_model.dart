@@ -113,15 +113,16 @@ class TweetModel extends ChangeNotifier {
     tweet.retweetCount++;
     notifyListeners();
 
-    tweetService.retweet(tweet.idStr)
-      ..then((_) => tweetDatabase.recordTweet(originalTweet))
-      ..catchError((error) {
-        if (!_actionPerformed(error)) {
-          tweet.retweeted = false;
-          tweet.retweetCount--;
-          notifyListeners();
-        }
-      });
+    tweetService
+        .retweet(tweet.idStr)
+        .then((_) => tweetDatabase.recordTweet(originalTweet))
+        .catchError((error) {
+      if (!_actionPerformed(error)) {
+        tweet.retweeted = false;
+        tweet.retweetCount--;
+        notifyListeners();
+      }
+    });
   }
 
   /// Unretweet this [tweet].
@@ -130,15 +131,16 @@ class TweetModel extends ChangeNotifier {
     tweet.retweetCount--;
     notifyListeners();
 
-    tweetService.unretweet(tweet.idStr)
-      ..then((_) => tweetDatabase.recordTweet(originalTweet))
-      ..catchError((error) {
-        if (!_actionPerformed(error)) {
-          tweet.retweeted = true;
-          tweet.retweetCount++;
-          notifyListeners();
-        }
-      });
+    tweetService
+        .unretweet(tweet.idStr)
+        .then((_) => tweetDatabase.recordTweet(originalTweet))
+        .catchError((error) {
+      if (!_actionPerformed(error)) {
+        tweet.retweeted = true;
+        tweet.retweetCount++;
+        notifyListeners();
+      }
+    });
   }
 
   /// Favorite this [tweet].
@@ -147,15 +149,16 @@ class TweetModel extends ChangeNotifier {
     tweet.favoriteCount++;
     notifyListeners();
 
-    tweetService.favorite(tweet.idStr)
-      ..then((_) => tweetDatabase.recordTweet(originalTweet))
-      ..catchError((error) {
-        if (!_actionPerformed(error)) {
-          tweet.favorited = false;
-          tweet.favoriteCount--;
-          notifyListeners();
-        }
-      });
+    tweetService
+        .favorite(tweet.idStr)
+        .then((_) => tweetDatabase.recordTweet(originalTweet))
+        .catchError((error) {
+      if (!_actionPerformed(error)) {
+        tweet.favorited = false;
+        tweet.favoriteCount--;
+        notifyListeners();
+      }
+    });
   }
 
   /// Unfavorite this [tweet].
@@ -164,15 +167,16 @@ class TweetModel extends ChangeNotifier {
     tweet.favoriteCount--;
     notifyListeners();
 
-    tweetService.unfavorite(tweet.idStr)
-      ..then((_) => tweetDatabase.recordTweet(originalTweet))
-      ..catchError((error) {
-        if (!_actionPerformed(error)) {
-          tweet.favorited = true;
-          tweet.favoriteCount++;
-          notifyListeners();
-        }
-      });
+    tweetService
+        .unfavorite(tweet.idStr)
+        .then((_) => tweetDatabase.recordTweet(originalTweet))
+        .catchError((error) {
+      if (!_actionPerformed(error)) {
+        tweet.favorited = true;
+        tweet.favoriteCount++;
+        notifyListeners();
+      }
+    });
   }
 
   /// Translate this [tweet].
@@ -192,14 +196,16 @@ class TweetModel extends ChangeNotifier {
 
     originalTweet.harpyData.translation = translation;
 
-    if (translationUnchanged) {
+    if (translation == null || translationUnchanged) {
       flushbarService.info("Tweet not translated");
+    }
+
+    if (translation != null) {
+      tweetDatabase.recordTweet(originalTweet);
     }
 
     translating = false;
     notifyListeners();
-
-    tweetDatabase.recordTweet(originalTweet);
   }
 
   /// Returns `true` if the error contains any of the following error codes:
@@ -214,7 +220,7 @@ class TweetModel extends ChangeNotifier {
           error["code"] == 139 || // already favorited
           error["code"] == 327 || // already retweeted
           error["code"] == 144); // not found
-    } on Exception {
+    } catch (e) {
       // unexpected error format
       return false;
     }

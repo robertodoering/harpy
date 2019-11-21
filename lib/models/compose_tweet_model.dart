@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:flutter/material.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/media_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/file_utils.dart';
 import 'package:harpy/harpy.dart';

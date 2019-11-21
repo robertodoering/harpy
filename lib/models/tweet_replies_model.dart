@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
-import 'package:harpy/api/twitter/error_handler.dart';
 import 'package:harpy/api/twitter/services/tweet_search_service.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/harpy.dart';
 import 'package:logging/logging.dart';
 
@@ -63,11 +63,10 @@ class TweetRepliesModel extends ChangeNotifier {
   Future<void> _loadParentTweets(Tweet tweet) async {
     final hasParent = tweet.inReplyToStatusIdStr?.isNotEmpty == true;
 
-    // todo: catch error silently
     if (hasParent) {
       final Tweet parent = await tweetService
           .getTweet(tweet.inReplyToStatusIdStr)
-          .catchError(twitterClientErrorHandler);
+          .catchError(silentErrorHandler);
 
       if (parent != null) {
         _parentTweets.add(parent);
