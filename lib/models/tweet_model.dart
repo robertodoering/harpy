@@ -9,9 +9,11 @@ import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
+import 'package:harpy/models/login_model.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 typedef OnTweetUpdated = void Function(Tweet tweet);
 
@@ -22,9 +24,12 @@ typedef OnTweetUpdated = void Function(Tweet tweet);
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
+    @required this.loginModel,
     this.onTweetUpdated,
     this.isQuote = false,
   });
+
+  final LoginModel loginModel;
 
   final Tweet originalTweet;
 
@@ -96,6 +101,12 @@ class TweetModel extends ChangeNotifier {
 
   /// Whether or not this tweet can be translated.
   bool get allowTranslation => !tweet.emptyText && tweet.lang != "en";
+
+  /// Whether or not this tweet is from the authorized user.
+  bool get isAuthorizedUserTweet => tweet.user.id == loginModel.loggedInUser.id;
+
+  /// Whether or not the tweet should be hidden.
+  bool get hidden => originalTweet.harpyData.hide == true;
 
   @override
   void notifyListeners() {
@@ -206,6 +217,31 @@ class TweetModel extends ChangeNotifier {
 
     translating = false;
     notifyListeners();
+  }
+
+  /// Share this [tweet].
+  ///
+  /// Uses the [Share] plugin to show the share menu of the underlying OS.
+  void share() {
+    Share.share(
+      "https://twitter.com/${tweet.user.screenName}/status/${tweet.idStr}",
+    );
+  }
+
+  /// Hides this [tweet] or shows it if it has been hidden before.
+  void toggleVisibility() {
+    final hidden = originalTweet.harpyData.hide == true;
+
+    originalTweet.harpyData.hide = !hidden;
+    tweetDatabase.recordTweet(originalTweet);
+    notifyListeners();
+  }
+
+  /// Deletes this [tweet].
+  ///
+  /// Only available if the [isAuthorizedUserTweet] is `true`.
+  void delete() {
+    // todo
   }
 
   /// Returns `true` if the error contains any of the following error codes:

@@ -71,7 +71,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       iconBuilder: _iconBuilder,
       foregroundColor: _color,
       onTap: widget.favorited ? widget.unfavorite : widget.favorite,
-      dense: true,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     );
   }
 }
