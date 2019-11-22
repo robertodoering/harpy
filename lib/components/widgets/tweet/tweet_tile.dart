@@ -50,6 +50,7 @@ class TweetTile extends StatelessWidget {
         loginModel: loginModel,
         originalTweet: tweet,
         onTweetUpdated: onTweetUpdated,
+        timelineModel: timelineModel,
       )..replyAuthors = timelineModel.findTweetReplyAuthors(tweet),
       child: content,
     );

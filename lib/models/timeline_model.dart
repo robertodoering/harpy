@@ -152,6 +152,19 @@ abstract class TimelineModel extends ChangeNotifier {
       "origin": origin,
     });
   }
+
+  /// Removes the [tweet] from the [_tweets] list.
+  ///
+  /// Returns `true` and notifies if the [tweet] was able to be removed.
+  bool removeTweet(Tweet tweet) {
+    final removed = _tweets.remove(tweet);
+
+    if (removed) {
+      notifyListeners();
+    }
+
+    return removed;
+  }
 }
 
 List<Tweet> _isolateCopyHarpyData(Map<String, List<Tweet>> tweetLists) {

@@ -171,6 +171,31 @@ class TweetDatabase extends HarpyDatabase {
 
     return findTweets([id]).then((tweets) => tweets.isNotEmpty);
   }
+
+  /// Deletes the tweet with the [id] in the database and returns `true` if
+  /// the tweet had been deleted.
+  Future<bool> deleteTweet(int id) async {
+    _log.fine("deleting tweet with $id in database");
+
+    try {
+      final finder = Finder(
+        filter: Filter.byKey(id),
+      );
+
+      // count should be 1 if the tweet was in the cache, 0 otherwise.
+      final count = await databaseService.delete(
+        path: path,
+        store: store,
+        finder: finder,
+      );
+
+      _log.fine("deleted $count entries");
+      return count != 0;
+    } catch (e, st) {
+      _log.severe("exception while deleting tweet", e, st);
+      return false;
+    }
+  }
 }
 
 List<Map<String, dynamic>> _handleTweetListSerialization(List<Tweet> tweets) {

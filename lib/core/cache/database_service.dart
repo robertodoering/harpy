@@ -55,6 +55,29 @@ class DatabaseService {
     return compute<Map<String, dynamic>, dynamic>(_isolateRecord, message);
   }
 
+  /// Deletes the entry associated to the [key] in the [store] for this
+  /// database in an isolate.
+  Future<int> delete({
+    @required String path,
+    @required StoreRef store,
+    @required Finder finder,
+  }) async {
+    final Map<String, dynamic> message = {
+      "path": path,
+      "store": store,
+      "finder": finder,
+    };
+
+    assert(message["path"] is String);
+    assert(message["store"] is StoreRef);
+    assert(message["finder"] is Finder);
+
+    return compute<Map<String, dynamic>, int>(
+      _isolateDelete,
+      message,
+    );
+  }
+
   /// Creates a transaction to record the [dataList] associated to their [keys]
   /// in the [store] for this database in an isolate.
   ///
@@ -193,4 +216,14 @@ Future<bool> _isolateDrop(String path) async {
     Logger("IsolateDrop").warning("error while dropping database", e, st);
     return false;
   }
+}
+
+Future<int> _isolateDelete(Map<String, dynamic> message) async {
+  final String path = message["path"];
+  final StoreRef store = message["store"];
+  final Finder finder = message["finder"];
+
+  final Database db = await databaseFactoryIo.openDatabase(path);
+
+  return store.delete(db, finder: finder);
 }
