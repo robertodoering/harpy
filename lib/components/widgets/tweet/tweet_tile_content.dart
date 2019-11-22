@@ -471,7 +471,6 @@ class TweetActionsRow extends StatelessWidget {
 
     final retweeted = model.tweet.retweeted;
 
-    // todo: the first icon should be aligned with the retweet / hidden icon
     return Row(
       children: <Widget>[
         HarpyButton.flat(
