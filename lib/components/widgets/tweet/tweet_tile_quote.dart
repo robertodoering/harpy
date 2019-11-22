@@ -28,7 +28,11 @@ class TweetQuote extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: ChangeNotifierProvider<TweetModel>(
-          builder: (_) => TweetModel(originalTweet: model.quote, isQuote: true),
+          builder: (_) => TweetModel(
+            loginModel: model.loginModel,
+            originalTweet: model.quote,
+            isQuote: true,
+          ),
           child: const _QuoteContent(),
         ),
       ),

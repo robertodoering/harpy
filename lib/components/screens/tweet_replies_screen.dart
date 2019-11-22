@@ -115,7 +115,7 @@ class _BigTweetTileState extends State<_BigTweetTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TweetAvatarNameRow(model),
+              TweetTopRow(model),
               TweetText(model),
               TweetQuote(model),
               TweetTranslation(model),

@@ -13,14 +13,62 @@ import 'package:harpy/core/misc/harpy_navigator.dart';
 import 'package:harpy/core/misc/url_launcher.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 import 'package:harpy/models/tweet_model.dart';
-import 'package:share/share.dart';
 
 class TweetTileContent extends StatefulWidget {
   @override
   _TweetTileContentState createState() => _TweetTileContentState();
 }
 
-class _TweetTileContentState extends State<TweetTileContent> {
+class _TweetTileContentState extends State<TweetTileContent>
+    with SingleTickerProviderStateMixin<TweetTileContent> {
+  List<Widget> _buildContent(TweetModel model) {
+    return [
+      TweetRetweetedRow(model),
+      _TweetContentPadding(
+        model,
+        children: <Widget>[
+          TweetTopRow(model),
+          TweetText(model),
+          TweetQuote(model),
+          TweetTranslation(model),
+          if (model.hasMedia) CollapsibleMedia(),
+          TweetActionsRow(model),
+        ],
+      ),
+    ];
+  }
+
+  List<Widget> _buildHidden(TweetModel model) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return [
+      Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(
+              width: 40,
+              child: Icon(Icons.visibility_off, size: 18),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                "@${model.tweet.user.screenName}",
+                style: textTheme.body2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            HarpyButton.flat(
+              text: 'Show',
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              onTap: model.toggleVisibility,
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final model = TweetModel.of(context);
@@ -41,29 +89,30 @@ class _TweetTileContentState extends State<TweetTileContent> {
       offset: offset,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => HarpyNavigator.pushTweetRepliesScreen(model.tweet),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TweetRetweetedRow(model),
-            _TweetContentPadding(
-              model,
-              children: <Widget>[
-                TweetAvatarNameRow(model),
-                TweetText(model),
-                TweetQuote(model),
-                TweetTranslation(model),
-                if (model.hasMedia) CollapsibleMedia(),
-                TweetActionsRow(model),
-              ],
-            ),
-            const TweetDivider(),
-            if (model.replyAuthors != null)
-              TweetReplyParent(
-                authors: model.replyAuthors,
-                isReply: model.isReply,
-              ),
-          ],
+        onTap: () {
+          if (!model.hidden) {
+            HarpyNavigator.pushTweetRepliesScreen(model.tweet);
+          }
+        },
+        child: AnimatedSize(
+          vsync: this,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (model.hidden)
+                ..._buildHidden(model)
+              else
+                ..._buildContent(model),
+              const TweetDivider(),
+              if (model.replyAuthors != null)
+                TweetReplyParent(
+                  authors: model.replyAuthors,
+                  isReply: model.isReply,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -141,9 +190,10 @@ class TweetRetweetedRow extends StatelessWidget {
   }
 }
 
-/// Builds the [Tweet] avatar next to the [TweetNameColumn].
-class TweetAvatarNameRow extends StatelessWidget {
-  const TweetAvatarNameRow(this.model);
+/// Builds the [Tweet] avatar next to the [TweetNameColumn] and a
+/// [PopupMenuButton] on the right.
+class TweetTopRow extends StatelessWidget {
+  const TweetTopRow(this.model);
 
   final TweetModel model;
 
@@ -170,10 +220,75 @@ class TweetAvatarNameRow extends StatelessWidget {
           ),
         ),
 
+        // name
         Expanded(child: TweetNameColumn(model)),
+
+        // action menu
+        TweetActionMenu(model),
       ],
     );
   }
+}
+
+/// Builds a [PopupMenuButton] with additional actions for the tweet.
+class TweetActionMenu extends StatelessWidget {
+  const TweetActionMenu(this.model);
+
+  final TweetModel model;
+
+  void _onSelected(TweetActionMenuEntry selection) {
+    switch (selection) {
+      case TweetActionMenuEntry.share:
+        model.share();
+        break;
+      case TweetActionMenuEntry.delete:
+        model.delete();
+        break;
+      case TweetActionMenuEntry.hide:
+        model.toggleVisibility();
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<TweetActionMenuEntry>(
+      icon: Icon(Icons.keyboard_arrow_down),
+      onSelected: _onSelected,
+      itemBuilder: (_) => [
+        const PopupMenuItem(
+          value: TweetActionMenuEntry.share,
+          child: ListTile(
+            leading: Icon(Icons.share),
+            title: Text("Share"),
+          ),
+        ),
+        if (model.isAuthorizedUserTweet)
+          const PopupMenuItem(
+            value: TweetActionMenuEntry.delete,
+            child: ListTile(
+              leading: Icon(Icons.delete),
+              title: Text("Delete"),
+            ),
+          )
+        else
+          const PopupMenuItem(
+            value: TweetActionMenuEntry.hide,
+            child: ListTile(
+              leading: Icon(Icons.visibility_off),
+              title: Text("Hide"),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// The selections for the [TweetActionMenu].
+enum TweetActionMenuEntry {
+  share,
+  delete,
+  hide,
 }
 
 /// Builds the name with the username and the time since tweet in hours.
@@ -364,7 +479,7 @@ class TweetActionsRow extends StatelessWidget {
           text: model.retweetCount,
           foregroundColor: retweeted ? Colors.green : null,
           iconSize: 20,
-          dense: true,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         ),
         FavoriteButton(
           favorited: model.tweet.favorited,
@@ -372,35 +487,13 @@ class TweetActionsRow extends StatelessWidget {
           favorite: model.favorite,
           unfavorite: model.unfavorite,
         ),
-        Spacer(),
         if (model.allowTranslation) ...[
+          Spacer(),
           _TweetTranslationButton(model),
         ],
-        TweetShareButton(model.tweet),
       ],
     );
   }
-}
-
-class TweetShareButton extends StatelessWidget {
-  TweetShareButton(this.tweet);
-
-  final Tweet tweet;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.share),
-      onPressed: _shareTweet,
-    );
-  }
-
-  void _shareTweet() {
-    Share.share(shareUrl);
-  }
-
-  String get shareUrl =>
-      "https://twitter.com/${tweet.user.screenName}/status/${tweet.idStr}";
 }
 
 class _TweetTranslationButton extends StatelessWidget {

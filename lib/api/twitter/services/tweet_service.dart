@@ -125,6 +125,22 @@ class TweetService {
         );
   }
 
+  /// Deletes the tweet with the [tweetId].
+  ///
+  /// Only works if the authorized user is the author of the tweet.
+  Future<Tweet> deleteTweet(String tweetId) async {
+    _log.fine("delete $tweetId");
+
+    return twitterClient
+        .post("https://api.twitter.com/1.1/statuses/destroy/$tweetId.json")
+        .then(
+          (response) => compute<String, Tweet>(
+            _handleSingleTweetResponse,
+            response.body,
+          ),
+        );
+  }
+
   /// Retweets the tweet with the [tweetId].
   Future<Response> retweet(String tweetId) async {
     _log.fine("retweet $tweetId");

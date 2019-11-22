@@ -5,13 +5,18 @@ import 'package:harpy/api/translate/data/translation.dart';
 import 'package:harpy/api/translate/translate_service.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/api/twitter/services/tweet_service.dart';
+import 'package:harpy/api/twitter/twitter_error_handler.dart';
 import 'package:harpy/core/cache/tweet_database.dart';
 import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
+import 'package:harpy/models/login_model.dart';
+import 'package:harpy/models/timeline_model.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 typedef OnTweetUpdated = void Function(Tweet tweet);
 
@@ -22,9 +27,16 @@ typedef OnTweetUpdated = void Function(Tweet tweet);
 class TweetModel extends ChangeNotifier {
   TweetModel({
     @required this.originalTweet,
+    @required this.loginModel,
+    this.timelineModel,
     this.onTweetUpdated,
     this.isQuote = false,
   });
+
+  final LoginModel loginModel;
+
+  /// The closest [TimelineModel] for the tweet.
+  final TimelineModel timelineModel;
 
   final Tweet originalTweet;
 
@@ -38,6 +50,8 @@ class TweetModel extends ChangeNotifier {
   final TranslationService translationService = app<TranslationService>();
   final FlushbarService flushbarService = app<FlushbarService>();
   final TweetDatabase tweetDatabase = app<TweetDatabase>();
+
+  static final Logger _log = Logger("TweetModel");
 
   static TweetModel of(BuildContext context) {
     return Provider.of<TweetModel>(context);
@@ -96,6 +110,14 @@ class TweetModel extends ChangeNotifier {
 
   /// Whether or not this tweet can be translated.
   bool get allowTranslation => !tweet.emptyText && tweet.lang != "en";
+
+  /// Whether or not this tweet is from the authorized user.
+  bool get isAuthorizedUserTweet => tweet.user.id == loginModel.loggedInUser.id;
+
+  /// Whether or not the tweet should be hidden.
+  ///
+  /// Hidden tweets appear collapsed but can be shown again with an action.
+  bool get hidden => originalTweet.harpyData.hide == true;
 
   @override
   void notifyListeners() {
@@ -208,11 +230,60 @@ class TweetModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Share this [tweet].
+  ///
+  /// Uses the [Share] plugin to show the share menu of the underlying OS.
+  void share() {
+    Share.share(
+      "https://twitter.com/${tweet.user.screenName}/status/${tweet.idStr}",
+    );
+  }
+
+  /// Hides this [tweet] or shows it if it has been hidden before.
+  void toggleVisibility() {
+    final hidden = originalTweet.harpyData.hide == true;
+
+    originalTweet.harpyData.hide = !hidden;
+    tweetDatabase.recordTweet(originalTweet);
+    notifyListeners();
+  }
+
+  /// Deletes this [tweet].
+  ///
+  /// Only available if the [isAuthorizedUserTweet] is `true`.
+  Future<void> delete() async {
+    if (timelineModel == null) {
+      _log.warning("timeline model not defined");
+      return;
+    }
+
+    bool deleted;
+
+    final resultTweet =
+        await tweetService.deleteTweet(originalTweet.idStr).catchError((e) {
+      if (_actionPerformed(e)) {
+        _log.info("tweet already deleted");
+        deleted = true;
+      } else {
+        twitterClientErrorHandler(e);
+      }
+    });
+
+    deleted ??= resultTweet != null;
+
+    if (deleted) {
+      // remove the tweet from the database and the timeline
+      tweetDatabase.deleteTweet(originalTweet.id);
+      timelineModel.removeTweet(originalTweet);
+    }
+  }
+
   /// Returns `true` if the error contains any of the following error codes:
   ///
   /// 139: already favorited (trying to favorite a tweet twice)
   /// 327: already retweeted
-  /// 144: tweet with id not found (trying to unfavorite a tweet twice)
+  /// 144: tweet with id not found (trying to unfavorite a tweet twice) or
+  /// trying to delete a tweet that has already been deleted before.
   bool _actionPerformed(dynamic error) {
     try {
       final List errors = jsonDecode((error as Response).body)["errors"];

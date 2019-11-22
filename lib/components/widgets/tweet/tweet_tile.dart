@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet.dart';
 import 'package:harpy/components/widgets/tweet/tweet_tile_content.dart';
 import 'package:harpy/models/home_timeline_model.dart';
+import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/timeline_model.dart';
 import 'package:harpy/models/tweet_model.dart';
 import 'package:harpy/models/user_timeline_model.dart';
@@ -25,6 +26,7 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginModel = LoginModel.of(context);
     final homeTimelineModel = HomeTimelineModel.of(context);
     OnTweetUpdated onTweetUpdated;
 
@@ -45,8 +47,10 @@ class TweetTile extends StatelessWidget {
 
     return ChangeNotifierProvider<TweetModel>(
       builder: (_) => TweetModel(
+        loginModel: loginModel,
         originalTweet: tweet,
         onTweetUpdated: onTweetUpdated,
+        timelineModel: timelineModel,
       )..replyAuthors = timelineModel.findTweetReplyAuthors(tweet),
       child: content,
     );

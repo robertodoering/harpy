@@ -13,7 +13,8 @@ HarpyData _$HarpyDataFromJson(Map<String, dynamic> json) {
         ? null
         : Translation.fromJson(json['translation'] as Map<String, dynamic>)
     ..parentOfReply = json['parentOfReply'] as bool
-    ..childOfReply = json['childOfReply'] as bool;
+    ..childOfReply = json['childOfReply'] as bool
+    ..hide = json['hide'] as bool;
 }
 
 Map<String, dynamic> _$HarpyDataToJson(HarpyData instance) => <String, dynamic>{
@@ -21,4 +22,5 @@ Map<String, dynamic> _$HarpyDataToJson(HarpyData instance) => <String, dynamic>{
       'translation': instance.translation,
       'parentOfReply': instance.parentOfReply,
       'childOfReply': instance.childOfReply,
+      'hide': instance.hide,
     };
