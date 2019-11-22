@@ -31,11 +31,11 @@ void twitterClientErrorHandler(
           "statuscode: ${error.statusCode}\n"
           "body: ${error.body}");
 
-      message ??= "An unexpected error occurred (${error.statusCode})/n"
+      message ??= "An unexpected error occurred (${error.statusCode})\n"
           "Please try again later";
     }
   } else if (error is TimeoutException) {
-    message = "Request timed out/n"
+    message = "Request timed out\n"
         "Please try again later";
   } else if (error is SocketException) {
     // no internet connection
