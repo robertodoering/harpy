@@ -96,6 +96,7 @@ class _TweetTileContentState extends State<TweetTileContent>
         },
         child: AnimatedSize(
           vsync: this,
+          alignment: Alignment.topCenter,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           child: Column(
