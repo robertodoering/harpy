@@ -94,6 +94,7 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,
           scaleStateChangedCallback: _scaleStateChangedCallback,
+          enableDoubleTap: false,
           onTapUp: (context, details, value) {
             // dismiss when the background is tapped
             if (!imageTapped) {
