@@ -7,6 +7,8 @@ import 'package:harpy/harpy.dart';
 
 /// A [ListTile] that clears the cache and shows a flushbar if it has been
 /// cleared.
+///
+/// Not used anymore.
 class ClearCacheListTile extends StatefulWidget {
   @override
   _ClearCacheListTileState createState() => _ClearCacheListTileState();
