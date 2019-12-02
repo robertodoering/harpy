@@ -23,9 +23,6 @@ class _AboutScreenState extends State<AboutScreen> {
   void initState() {
     super.initState();
 
-    _recognizer["flutter"] = TapGestureRecognizer()
-      ..onTap = () => launchUrl("https://flutter.dev");
-
     _recognizer["github"] = TapGestureRecognizer()
       ..onTap = () => launchUrl("https://github.com/robertodoering/harpy");
 
@@ -63,13 +60,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget _buildIntroductionText(TextStyle linkStyle) {
     return Text.rich(TextSpan(
       children: [
-        const TextSpan(text: "Harpy has been made with "),
-        TextSpan(
-          text: "Flutter",
-          style: linkStyle,
-          recognizer: _recognizer["flutter"],
-        ),
-        const TextSpan(text: " and is open source on "),
+        const TextSpan(text: "Harpy is open source on "),
         TextSpan(
           text: "GitHub",
           style: linkStyle,
