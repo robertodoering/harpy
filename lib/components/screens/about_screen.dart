@@ -90,7 +90,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 "To support the development of Harpy, please buy Harpy Pro "
                 "in the Play Store."),
           ),
-          FlareIcon.shiningStar(size: 44),
+          const FlareIcon.shiningStar(size: 44),
         ],
       ),
       const SizedBox(height: 8),

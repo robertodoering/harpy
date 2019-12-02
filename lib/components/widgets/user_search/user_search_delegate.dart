@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
-import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/widgets/shared/animations.dart';
+import 'package:harpy/components/widgets/shared/home_screen_actions.dart';
 import 'package:harpy/components/widgets/shared/load_more_list.dart';
 import 'package:harpy/components/widgets/shared/loading_tile.dart';
 import 'package:harpy/components/widgets/user_search/user_list_tile.dart';
