@@ -112,3 +112,31 @@ String reduceText(String text, {int limit = 100}) {
 
   return text;
 }
+
+/// Returns the ordinal number string corresponding to the [index].
+///
+/// 0: 'First'
+/// 1: 'Second'
+/// etc.
+///
+/// Only the first 10 numbers are supported.
+///
+/// Returns the [index] + 1 as a `String` if it is out of range.
+String indexToOrdinalNumber(int index) {
+  try {
+    return <String>[
+      "First",
+      "Second",
+      "Third",
+      "Fourth",
+      "Fifth",
+      "Sixth",
+      "Seventh",
+      "Eighth",
+      "Ninth",
+      "Tenth",
+    ][index];
+  } on RangeError {
+    return "${index + 1}";
+  }
+}

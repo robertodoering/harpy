@@ -7,6 +7,7 @@ import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/scaffolds.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 import 'package:harpy/core/shared_preferences/theme/harpy_theme_data.dart';
+import 'package:harpy/core/utils/string_utils.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/models/custom_theme_model.dart';
 import 'package:harpy/models/settings/theme_settings_model.dart';
@@ -81,16 +82,15 @@ class _CustomThemeDeleteButton extends StatelessWidget {
     final themeSettingsModel = ThemeSettingsModel.of(context);
 
     showDialog(
-        context: context,
-        builder: (context) {
-          return HarpyDialog(
-            title: "Really delete?",
-            actions: [
-              DialogAction.discard,
-              DialogAction.confirm,
-            ],
-          );
-        }).then((result) {
+      context: context,
+      builder: (context) => HarpyDialog(
+        title: "Really delete?",
+        actions: [
+          DialogAction.discard,
+          DialogAction.confirm,
+        ],
+      ),
+    ).then((result) {
       if (result == true) {
         if (themeSettingsModel.selectedThemeId ==
             customThemeModel.editingThemeId) {
@@ -189,64 +189,136 @@ class _CustomThemeNameFieldState extends State<_CustomThemeNameField> {
 
 /// Builds a [ListView] with [ListTile]s to change the colors in a custom
 /// [HarpyTheme].
-class _CustomThemeColorSelections extends StatelessWidget {
-  List<_CustomThemeColor> _getThemeColors(CustomThemeModel model) {
-    final harpyTheme = HarpyTheme.fromData(model.customThemeData);
+class _CustomThemeColorSelections extends StatefulWidget {
+  @override
+  __CustomThemeColorSelectionsState createState() =>
+      __CustomThemeColorSelectionsState();
+}
 
-    return <_CustomThemeColor>[
-      _CustomThemeColor(
-        name: "First background color",
-        color: harpyTheme.backgroundColors.first,
-        onColorChanged: model.changeFirstBackgroundColor,
-      ),
-      _CustomThemeColor(
-        name: "Second background color",
-        color: harpyTheme.backgroundColors.last,
-        onColorChanged: model.changeSecondBackgroundColor,
-      ),
-      _CustomThemeColor(
-        name: "Accent color",
-        color: harpyTheme.theme.accentColor,
-        onColorChanged: model.changeAccentColor,
+class __CustomThemeColorSelectionsState
+    extends State<_CustomThemeColorSelections>
+    with SingleTickerProviderStateMixin<_CustomThemeColorSelections> {
+  List<Widget> _buildThemeColors(
+    BuildContext context,
+    CustomThemeModel model,
+  ) {
+    return <Widget>[
+      _ChangeColorListTile(
+        model: model,
+        title: "Accent color",
+        color: Color(model.customThemeData.accentColor),
+        onChanged: model.changeAccentColor,
       ),
     ];
   }
 
-  List<Widget> _buildThemeColorSelections(BuildContext context) {
-    final customThemeModel = CustomThemeModel.of(context);
+  /// Builds the [_ChangeColorListTile]s for the background colors.
+  List<Widget> _buildBackgroundColors(
+    BuildContext context,
+    CustomThemeModel model,
+  ) {
+    final backgroundColors = model.customThemeData.backgroundColors;
 
-    return _getThemeColors(customThemeModel).map((themeColorModel) {
-      return ListTile(
-        leading: CircleColor(color: themeColorModel.color, circleSize: 40),
-        title: Text(themeColorModel.name),
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => _CustomThemeColorDialog(
-              themeColorModel,
-              customThemeModel,
-            ),
-          );
-        },
-      );
-    }).toList();
+    return backgroundColors
+        .asMap()
+        .entries
+        .map((entry) => _ChangeColorListTile(
+              model: model,
+              title: "${indexToOrdinalNumber(entry.key)} background color",
+              color: Color(entry.value),
+              onRemove: backgroundColors.length > 1
+                  ? () => model.removeBackgroundColor(entry.key)
+                  : null,
+              onChanged: (color) => model.changeBackgroundColor(
+                entry.key,
+                color,
+              ),
+            ))
+        .toList();
+  }
+
+  Widget _buildAddBackgroundColorTile(CustomThemeModel model) {
+    return ListTile(
+      leading: SizedBox(width: 40, child: Icon(Icons.add)),
+      title: const Text("Add background color"),
+      dense: true,
+      onTap: model.addBackgroundColor,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SettingsColumn(
-      title: "Colors",
-      children: _buildThemeColorSelections(context),
+    final customThemeModel = CustomThemeModel.of(context);
+
+    return AnimatedSize(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      alignment: Alignment.topCenter,
+      child: SettingsColumn(
+        title: "Colors",
+        children: <Widget>[
+          ..._buildThemeColors(context, customThemeModel),
+          ..._buildBackgroundColors(context, customThemeModel),
+          if (customThemeModel.canAddBackgroundColor)
+            _buildAddBackgroundColorTile(customThemeModel),
+        ],
+      ),
     );
   }
 }
 
-/// The dialog that shows the color picker in a dialog.
-class _CustomThemeColorDialog extends StatefulWidget {
-  const _CustomThemeColorDialog(this.themeColorModel, this.customThemeModel);
+/// Builds a [ListTile] that opens a [_CustomThemeColorDialog] on tap.
+class _ChangeColorListTile extends StatelessWidget {
+  const _ChangeColorListTile({
+    @required this.model,
+    @required this.title,
+    @required this.color,
+    @required this.onChanged,
+    this.onRemove,
+  });
 
-  final _CustomThemeColor themeColorModel;
+  final CustomThemeModel model;
+  final String title;
+  final Color color;
+  final ValueChanged<Color> onChanged;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final enableRemove = onRemove != null;
+
+    return ListTile(
+      leading: CircleColor(color: color, circleSize: 40),
+      title: Text(title),
+      trailing: enableRemove
+          ? IconButton(icon: Icon(Icons.clear), onPressed: onRemove)
+          : null,
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => _CustomThemeColorDialog(
+            customThemeModel: model,
+            initialColor: color,
+            onChanged: onChanged,
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// The dialog that shows the color picker.
+class _CustomThemeColorDialog extends StatefulWidget {
+  const _CustomThemeColorDialog({
+    @required this.customThemeModel,
+    @required this.initialColor,
+    @required this.onChanged,
+  });
+
   final CustomThemeModel customThemeModel;
+  final Color initialColor;
+  final ValueChanged<Color> onChanged;
 
   @override
   _CustomThemeColorDialogState createState() => _CustomThemeColorDialogState();
@@ -262,7 +334,7 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog>
   void initState() {
     super.initState();
 
-    _color = widget.themeColorModel.color;
+    _color = widget.initialColor;
 
     _showMaterialColorPicker();
   }
@@ -272,7 +344,7 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog>
       _color = color;
     });
 
-    widget.themeColorModel.onColorChanged(color);
+    widget.onChanged(color);
   }
 
   /// Sets the [_content] to be a [ColorPicker] that shows a customizable
@@ -330,18 +402,4 @@ class _CustomThemeColorDialogState extends State<_CustomThemeColorDialog>
       ],
     );
   }
-}
-
-/// Contains information used for customizing colors in the
-/// [_CustomThemeColorSelections].
-class _CustomThemeColor {
-  const _CustomThemeColor({
-    @required this.name,
-    @required this.color,
-    @required this.onColorChanged,
-  });
-
-  final String name;
-  final Color color;
-  final ValueChanged<Color> onColorChanged;
 }
