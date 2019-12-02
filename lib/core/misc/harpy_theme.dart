@@ -17,11 +17,13 @@ class HarpyTheme {
 
     backgroundColors = data.backgroundColors?.map(_colorFromValue)?.toList();
 
-    if (backgroundColors == null || backgroundColors.length < 2) {
-      backgroundColors = [Colors.black, const Color(0xff17233d)];
-    }
+    accentColor = _colorFromValue(data.accentColor);
 
-    accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
+    // fallback for background colors
+    backgroundColors ??= [Colors.black, const Color(0xff17233d)];
+
+    // fallback for accent color
+    accentColor ??= const Color(0xff6b99ff);
   }
 
   /// Returns the currently selected [HarpyTheme].
@@ -217,38 +219,25 @@ class PredefinedThemes {
 
   static final List<HarpyTheme> _themes = [];
 
-  static List<HarpyThemeData> get data => [
-        crow,
-        swan,
-        phoenix,
-        harpy,
-      ];
+  static List<HarpyThemeData> get data => [crow, swan, phoenix, harpy];
 
-  static HarpyThemeData get crow {
-    return HarpyThemeData()
-      ..name = "crow"
-      ..backgroundColors = [Colors.black.value, 0xff17233d]
-      ..accentColor = 0xff4178f0;
-  }
+  static HarpyThemeData get crow => HarpyThemeData()
+    ..name = "crow"
+    ..backgroundColors = [Colors.black.value, 0xff17233d]
+    ..accentColor = 0xff4178f0;
 
-  static HarpyThemeData get phoenix {
-    return HarpyThemeData()
-      ..name = "phoenix"
-      ..backgroundColors = [0xff9e0000, 0xffd1670a]
-      ..accentColor = Colors.orangeAccent.value;
-  }
+  static HarpyThemeData get phoenix => HarpyThemeData()
+    ..name = "phoenix"
+    ..backgroundColors = [0xff9e0000, 0xffd1670a]
+    ..accentColor = Colors.orangeAccent.value;
 
-  static HarpyThemeData get swan {
-    return HarpyThemeData()
-      ..name = "swan"
-      ..backgroundColors = [Colors.white.value, Colors.white.value]
-      ..accentColor = 0xff444444;
-  }
+  static HarpyThemeData get swan => HarpyThemeData()
+    ..name = "swan"
+    ..backgroundColors = [Colors.white.value]
+    ..accentColor = 0xff444444;
 
-  static HarpyThemeData get harpy {
-    return HarpyThemeData()
-      ..name = "harpy"
-      ..backgroundColors = [0xff40148b, 0xff5b1051, 0xff850a2f]
-      ..accentColor = 0xffd4d4d4;
-  }
+  static HarpyThemeData get harpy => HarpyThemeData()
+    ..name = "harpy"
+    ..backgroundColors = [0xff40148b, 0xff5b1051, 0xff850a2f]
+    ..accentColor = 0xffd4d4d4;
 }
