@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/user.dart';
+import 'package:harpy/components/screens/about_screen.dart';
 import 'package:harpy/components/screens/compose_tweet_screen.dart';
 import 'package:harpy/components/screens/home_screen.dart';
 import 'package:harpy/components/screens/login_screen.dart';
 import 'package:harpy/components/screens/settings_screen.dart';
+import 'package:harpy/components/widgets/shared/flare_icons.dart';
 import 'package:harpy/components/widgets/shared/harpy_background.dart';
 import 'package:harpy/components/widgets/shared/misc.dart';
+import 'package:harpy/core/misc/flushbar_service.dart';
 import 'package:harpy/core/misc/harpy_navigator.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/models/login_model.dart';
 import 'package:harpy/models/settings/media_settings_model.dart';
 
@@ -59,6 +63,30 @@ class HomeDrawer extends StatelessWidget {
           onTap: () async {
             await Navigator.of(context).maybePop();
             HarpyNavigator.push(const SettingsScreen(), name: "settings");
+          },
+        ),
+
+        // harpy pro
+        if (Harpy.isFree)
+          ListTile(
+            leading: const FlareIcon.shiningStar(
+              size: 30,
+              offset: Offset(-2.5, 0),
+            ),
+            title: const Text("Harpy Pro"),
+            onTap: () {
+              // todo: link to harpy pro
+              app<FlushbarService>().info("Not yet available");
+            },
+          ),
+
+        // about
+        ListTile(
+          leading: const FlareIcon.harpyLogo(),
+          title: const Text("About"),
+          onTap: () async {
+            await Navigator.of(context).maybePop();
+            HarpyNavigator.push(const AboutScreen(), name: "about");
           },
         ),
 

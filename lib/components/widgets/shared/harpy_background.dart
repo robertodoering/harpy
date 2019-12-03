@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/core/misc/harpy_theme.dart';
 
 /// Builds a background with a gradient from top to bottom.
@@ -13,15 +14,18 @@ class HarpyBackground extends StatelessWidget {
 
   final Widget child;
   final List<Color> colors;
+
+  /// The [borderRadius] of the [BoxDecoration].
+  ///
+  /// Used by the [HarpyDialog].
   final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
-
-    final backgroundColors = colors ?? harpyTheme.backgroundColors;
+    final backgroundColors = colors ?? HarpyTheme.of(context).backgroundColors;
 
     if (backgroundColors.length == 1) {
+      // need at least 2 colors for the gradient
       backgroundColors.add(backgroundColors.first);
     }
 
@@ -30,9 +34,9 @@ class HarpyBackground extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: colors ?? harpyTheme.backgroundColors,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: backgroundColors,
         ),
       ),
       child: Material(

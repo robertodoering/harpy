@@ -192,8 +192,8 @@ class ThemeCirclePainter extends CustomPainter {
       radius,
       Paint()
         ..shader = ui.Gradient.linear(
-          size.topLeft(Offset.zero),
-          size.bottomRight(Offset.zero),
+          size.topCenter(Offset.zero),
+          size.bottomCenter(Offset.zero),
           [theme.backgroundColors.first, theme.backgroundColors.last],
         ),
     );
