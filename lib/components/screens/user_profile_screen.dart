@@ -24,7 +24,7 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<UserProfileModel>(
-      builder: (_) => UserProfileModel(
+      create: (_) => UserProfileModel(
         user: user,
         userId: userId,
         loginModel: LoginModel.of(context),

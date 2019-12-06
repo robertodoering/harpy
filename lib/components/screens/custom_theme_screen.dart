@@ -37,7 +37,7 @@ class CustomThemeScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: ChangeNotifierProvider<CustomThemeModel>(
-        builder: (_) => CustomThemeModel(
+        create: (_) => CustomThemeModel(
           themeSettingsModel: ThemeSettingsModel.of(context),
           editingThemeData: editingThemeData,
           editingThemeId: editingThemeId,

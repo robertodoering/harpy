@@ -19,10 +19,10 @@ class SettingsModelsProvider extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<MediaSettingsModel>(
-          builder: (_) => MediaSettingsModel(),
+          create: (_) => MediaSettingsModel(),
         ),
         ChangeNotifierProvider<ThemeSettingsModel>(
-          builder: (_) => ThemeSettingsModel(),
+          create: (_) => ThemeSettingsModel(),
         ),
       ],
       child: child,

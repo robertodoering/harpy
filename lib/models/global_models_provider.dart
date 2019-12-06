@@ -21,10 +21,10 @@ class GlobalModelsProvider extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<HomeTimelineModel>(
-          builder: (_) => HomeTimelineModel(),
+          create: (_) => HomeTimelineModel(),
         ),
         ChangeNotifierProvider<LoginModel>(
-          builder: (context) => LoginModel(
+          create: (context) => LoginModel(
             homeTimelineModel: Provider.of<HomeTimelineModel>(
               context,
               listen: false,
@@ -32,7 +32,7 @@ class GlobalModelsProvider extends StatelessWidget {
           ),
         ),
         Provider<ApplicationModel>(
-          builder: (context) => ApplicationModel(
+          create: (context) => ApplicationModel(
             loginModel: Provider.of<LoginModel>(
               context,
               listen: false,
@@ -44,7 +44,7 @@ class GlobalModelsProvider extends StatelessWidget {
           ),
         ),
         Provider<UserSearchHistoryModel>(
-          builder: (_) => UserSearchHistoryModel(),
+          create: (_) => UserSearchHistoryModel(),
         )
       ],
       child: child,

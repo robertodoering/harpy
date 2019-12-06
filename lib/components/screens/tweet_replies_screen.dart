@@ -76,7 +76,7 @@ class TweetRepliesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TweetRepliesModel>(
-      builder: (_) => TweetRepliesModel(
+      create: (_) => TweetRepliesModel(
         tweet: tweet,
       ),
       child: HarpyScaffold(

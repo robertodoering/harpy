@@ -54,10 +54,10 @@ class FollowingFollowerScreen extends StatelessWidget {
         body: MultiProvider(
           providers: [
             ChangeNotifierProvider<UserFollowersModel>(
-              builder: (_) => UserFollowersModel(userId: "${user.id}"),
+              create: (_) => UserFollowersModel(userId: "${user.id}"),
             ),
             ChangeNotifierProvider<UserFollowingModel>(
-              builder: (_) => UserFollowingModel(userId: "${user.id}"),
+              create: (_) => UserFollowingModel(userId: "${user.id}"),
             ),
           ],
           child: const TabBarView(

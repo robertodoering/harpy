@@ -20,7 +20,7 @@ class CollapsibleMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MediaModel>(
-      builder: (_) => MediaModel(
+      create: (_) => MediaModel(
         tweetModel: TweetModel.of(context),
         homeTimelineModel: HomeTimelineModel.of(context),
         mediaSettingsModel: MediaSettingsModel.of(context),

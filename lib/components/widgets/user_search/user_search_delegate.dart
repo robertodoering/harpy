@@ -80,7 +80,7 @@ class UserSearchDelegate extends SearchDelegate<User> {
   @override
   Widget buildResults(BuildContext context) {
     return ChangeNotifierProvider<UserSearchModel>(
-      builder: (_) => UserSearchModel(
+      create: (_) => UserSearchModel(
         userSearchHistoryModel: Provider.of<UserSearchHistoryModel>(context),
         query: query,
       ),

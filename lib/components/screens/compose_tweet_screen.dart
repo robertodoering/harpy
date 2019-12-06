@@ -111,7 +111,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
     return HarpyScaffold(
       title: "New Tweet",
       body: ChangeNotifierProvider<ComposeTweetModel>(
-        builder: (_) => ComposeTweetModel(
+        create: (_) => ComposeTweetModel(
           onTweeted: _controller.clear,
         ),
         child: Consumer<ComposeTweetModel>(

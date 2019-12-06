@@ -46,7 +46,7 @@ class TweetTile extends StatelessWidget {
     // todo: on update, update home timeline tweet
 
     return ChangeNotifierProvider<TweetModel>(
-      builder: (_) => TweetModel(
+      create: (_) => TweetModel(
         loginModel: loginModel,
         originalTweet: tweet,
         onTweetUpdated: onTweetUpdated,
