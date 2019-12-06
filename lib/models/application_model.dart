@@ -203,7 +203,7 @@ class ApplicationModel {
   /// time.
   Future<void> _initializeTimezoneDatabase() async {
     final data = await rootBundle.load(
-      "assets/packages/timezone/data/$tzDataDefaultFilename",
+      "assets/packages/timezone/data/2019b.tzf",
     );
 
     initializeDatabase(data.buffer.asUint8List());
