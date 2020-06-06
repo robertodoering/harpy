@@ -89,7 +89,7 @@ class _MediaImageGalleryState extends State<MediaImageGallery> {
         disableDismiss: _locked,
         onDismissed: _dismiss,
         child: PhotoView.customChild(
-          backgroundDecoration: BoxDecoration(),
+          backgroundDecoration: const BoxDecoration(),
           heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
           childSize: childSize,
           minScale: PhotoViewComputedScale.contained,

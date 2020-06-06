@@ -56,7 +56,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
               FittedBox(
                 child: UserNameRow(
                   user: model.user,
-                  style: textTheme.title,
+                  style: textTheme.headline6,
                   iconSize: 22,
                 ),
               ),
@@ -64,7 +64,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
               FittedBox(
                 child: Text(
                   "@${model.user.screenName}",
-                  style: textTheme.subhead,
+                  style: textTheme.subtitle1,
                 ),
               ),
             ],
@@ -187,7 +187,7 @@ class _UserProfileHeaderState extends State<UserProfileHeader> {
     final text = Text.rich(
       TextSpan(
         text: url.displayUrl,
-        style: Theme.of(context).textTheme.body1.copyWith(
+        style: Theme.of(context).textTheme.bodyText2.copyWith(
               color: Theme.of(context).accentColor, // todo: user color?
               fontWeight: FontWeight.bold,
             ),

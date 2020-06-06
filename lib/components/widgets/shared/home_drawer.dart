@@ -90,7 +90,7 @@ class HomeDrawer extends StatelessWidget {
           },
         ),
 
-        Spacer(),
+        const Spacer(),
 
         ListTile(
           leading: const Icon(Icons.arrow_back),
@@ -160,7 +160,7 @@ class UserDrawerHeader extends StatelessWidget {
                 onTap: () => _navigateToUserScreen(context),
                 child: Text(
                   user.name,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
               ),
               const SizedBox(height: 4),
@@ -168,7 +168,7 @@ class UserDrawerHeader extends StatelessWidget {
                 onTap: () => _navigateToUserScreen(context),
                 child: Text(
                   "@${user.screenName}",
-                  style: Theme.of(context).textTheme.subhead,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
             ],

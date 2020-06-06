@@ -98,8 +98,7 @@ class ScrollDirection extends InheritedWidget {
   bool get right => down;
 
   static ScrollDirection of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(ScrollDirection)
-        as ScrollDirection;
+    return context.dependOnInheritedWidgetOfExactType<ScrollDirection>();
   }
 
   @override

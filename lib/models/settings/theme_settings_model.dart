@@ -15,7 +15,7 @@ class ThemeSettingsModel extends ChangeNotifier {
   final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
 
   static ThemeSettingsModel of(BuildContext context) {
-    return Provider.of<ThemeSettingsModel>(context);
+    return Provider.of<ThemeSettingsModel>(context, listen: false);
   }
 
   static final Logger _log = Logger("ThemeSettingsModel");

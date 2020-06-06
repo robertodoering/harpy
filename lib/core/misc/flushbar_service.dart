@@ -141,11 +141,11 @@ class FlushbarService {
       child: FittedBox(
         fit: BoxFit.scaleDown,
         alignment: Alignment.centerLeft,
-        child: Text(message, style: harpyTheme.theme.textTheme.subhead),
+        child: Text(message, style: harpyTheme.theme.textTheme.subtitle1),
       ),
     );
 
-    child ??= Text(message, style: harpyTheme.theme.textTheme.subhead);
+    child ??= Text(message, style: harpyTheme.theme.textTheme.subtitle1);
 
     return Flushbar(
       backgroundColor: harpyTheme.backgroundColors.first,
@@ -173,7 +173,6 @@ class FlushbarService {
 
     _route = FlushbarRoute(
       flushbar: flushbar,
-      theme: Theme.of(context),
       settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
     );
 

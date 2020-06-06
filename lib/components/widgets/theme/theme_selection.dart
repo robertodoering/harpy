@@ -110,7 +110,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
           child: SlideFadeInAnimation(
             child: Text(
               _themes[_currentPage].name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
                 letterSpacing: 2,

@@ -38,7 +38,7 @@ class FollowingFollowerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.subhead;
+    final textStyle = Theme.of(context).textTheme.subtitle1;
 
     return DefaultTabController(
       length: 2,

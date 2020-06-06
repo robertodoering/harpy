@@ -101,25 +101,25 @@ class HarpyTheme {
 
     return Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // display
-          display4: TextStyle(
+          headline1: TextStyle(
             fontSize: 64,
             letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),
-          display3: TextStyle(
+          headline2: TextStyle(
             fontSize: 48,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),
-          display2: TextStyle(
+          headline3: TextStyle(
             fontFamily: displayFont,
             color: complimentaryColor,
           ),
-          display1: TextStyle(
+          headline4: TextStyle(
             fontSize: 18,
             letterSpacing: 2,
             fontFamily: displayFont,
@@ -128,21 +128,21 @@ class HarpyTheme {
           ),
 
           // title
-          title: TextStyle(
+          headline6: TextStyle(
             fontFamily: displayFont,
             letterSpacing: 2,
             fontWeight: FontWeight.w300,
             color: complimentaryColor,
           ),
 
-          subhead: TextStyle(
+          subtitle1: TextStyle(
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: complimentaryColor.withOpacity(0.9),
           ),
 
-          subtitle: TextStyle(
+          subtitle2: TextStyle(
             height: 1.1,
             fontSize: 16,
             fontFamily: bodyFont,
@@ -151,12 +151,12 @@ class HarpyTheme {
           ),
 
           // body
-          body1: TextStyle(
+          bodyText2: const TextStyle(
             fontSize: 16,
             fontFamily: bodyFont,
           ),
 
-          body2: TextStyle(
+          bodyText1: TextStyle(
             fontSize: 14,
             fontFamily: bodyFont,
             color: complimentaryColor.withOpacity(0.7),

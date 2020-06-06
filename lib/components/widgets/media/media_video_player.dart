@@ -56,7 +56,7 @@ class MediaVideoPlayerState extends State<MediaVideoPlayer>
     fullscreen = true;
 
     await Navigator.of(context).push(PageRouteBuilder(
-      settings: const RouteSettings(isInitialRoute: false),
+      settings: const RouteSettings(),
       pageBuilder: _buildFullscreen,
     ));
 
@@ -326,7 +326,7 @@ class _MediaVideoOverlayState extends State<MediaVideoOverlay>
                 ),
               ),
 
-              Spacer(),
+              const Spacer(),
 
               CircleButton(
                 onPressed: _toggleMute,

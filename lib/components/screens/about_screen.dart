@@ -135,9 +135,9 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final color = textTheme.body1.color;
+    final color = textTheme.bodyText2.color;
 
-    final linkStyle = textTheme.body1.copyWith(
+    final linkStyle = textTheme.bodyText2.copyWith(
       color: theme.accentColor,
       fontWeight: FontWeight.bold,
     );
@@ -150,7 +150,7 @@ class _AboutScreenState extends State<AboutScreen> {
           child: Column(
             children: <Widget>[
               ..._buildTitleWithLogo(color),
-              _VersionCode(style: textTheme.subtitle),
+              _VersionCode(style: textTheme.subtitle2),
               const Divider(height: 32),
               _buildIntroductionText(linkStyle),
               if (Harpy.isFree) ...[

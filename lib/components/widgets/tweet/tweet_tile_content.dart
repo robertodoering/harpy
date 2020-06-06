@@ -54,7 +54,7 @@ class _TweetTileContentState extends State<TweetTileContent>
             Expanded(
               child: Text(
                 "@${model.tweet.user.screenName}",
-                style: textTheme.body2,
+                style: textTheme.bodyText1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -327,7 +327,7 @@ class TweetNameColumn extends StatelessWidget {
           _buildNameRow(),
           Text(
             model.screenNameAndTime,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),
@@ -412,7 +412,7 @@ class _TweetTranslationState extends State<TweetTranslation>
           children: <TextSpan>[
             TextSpan(
               text: "Translated from",
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             TextSpan(
               text: " $language",
@@ -489,7 +489,7 @@ class TweetActionsRow extends StatelessWidget {
           unfavorite: model.unfavorite,
         ),
         if (model.allowTranslation) ...[
-          Spacer(),
+          const Spacer(),
           _TweetTranslationButton(model),
         ],
       ],

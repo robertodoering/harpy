@@ -18,6 +18,7 @@ class GlobalModelsProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('built global models provider');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<HomeTimelineModel>(
@@ -32,16 +33,19 @@ class GlobalModelsProvider extends StatelessWidget {
           ),
         ),
         Provider<ApplicationModel>(
-          create: (context) => ApplicationModel(
-            loginModel: Provider.of<LoginModel>(
-              context,
-              listen: false,
-            ),
-            themeSettingsModel: Provider.of<ThemeSettingsModel>(
-              context,
-              listen: false,
-            ),
-          ),
+          lazy: false,
+          create: (context) {
+            return ApplicationModel(
+              loginModel: Provider.of<LoginModel>(
+                context,
+                listen: false,
+              ),
+              themeSettingsModel: Provider.of<ThemeSettingsModel>(
+                context,
+                listen: false,
+              ),
+            );
+          },
         ),
         Provider<UserSearchHistoryModel>(
           create: (_) => UserSearchHistoryModel(),

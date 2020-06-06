@@ -39,7 +39,7 @@ class TweetTile extends StatelessWidget {
       // make sure tweets in the home timeline get updated when updating a
       // tweet in the user timeline
       onTweetUpdated = homeTimelineModel.updateTweet;
-    } on ProviderNotFoundError {
+    } on ProviderNotFoundException {
       timelineModel = homeTimelineModel;
     }
 

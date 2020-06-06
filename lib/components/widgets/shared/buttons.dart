@@ -31,7 +31,7 @@ class CircleButton extends StatelessWidget {
         highlightColor: highlightColor,
         splashColor: splashColor,
         onTap: onPressed,
-        customBorder: CircleBorder(),
+        customBorder: const CircleBorder(),
         child: Padding(
           padding: padding,
           child: child,
@@ -164,7 +164,7 @@ class HarpyButton extends StatelessWidget {
   /// The color of the [icon] and [text] of the button.
   ///
   /// Defaults to [TextTheme.button] if the [backgroundColor] is `null`,
-  /// to the [TextTheme.body1] color if the [backgroundColor] is transparent
+  /// to the [TextTheme.bodyText2] color if the [backgroundColor] is transparent
   /// or to a complimentary color when [backgroundColor] is set.
   final Color foregroundColor;
 
@@ -204,7 +204,7 @@ class HarpyButton extends StatelessWidget {
       // the text color since the button is transparent, therefore directly
       // on the background
 
-      return theme.textTheme.body1.color;
+      return theme.textTheme.bodyText2.color;
     } else if (backgroundColor == null) {
       // dont override the button color
       return theme.textTheme.button.color;

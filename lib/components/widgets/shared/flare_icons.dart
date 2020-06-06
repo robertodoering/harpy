@@ -1,5 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/widgets/shared/dialogs.dart';
 import 'package:harpy/components/widgets/shared/flare_buttons.dart';
@@ -78,8 +79,14 @@ class FlareIcon extends StatelessWidget {
   /// using a [FlareIcon] doesn't appear blank for a few frames when it
   /// builds for the first time.
   static void cacheIcons(BuildContext context) {
-    cachedActor(DefaultAssetBundle.of(context), "$_path/favorite.flr");
-    cachedActor(DefaultAssetBundle.of(context), "$_path/shining_star.flr");
+    cachedActor(AssetFlare(
+      bundle: DefaultAssetBundle.of(context),
+      name: "$_path/favorite.flr",
+    ));
+    cachedActor(AssetFlare(
+      bundle: DefaultAssetBundle.of(context),
+      name: "$_path/shining_star.flr",
+    ));
   }
 
   @override

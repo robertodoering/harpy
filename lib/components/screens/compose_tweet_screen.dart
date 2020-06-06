@@ -40,7 +40,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
       expands: true,
       enabled: !model.tweeting,
       textAlignVertical: TextAlignVertical.top,
-      style: Theme.of(context).textTheme.body1,
+      style: Theme.of(context).textTheme.bodyText2,
     );
   }
 
@@ -73,7 +73,7 @@ class _ComposeTweetScreenState extends State<ComposeTweetScreen> {
               icon: const Icon(Icons.image),
               onPressed: model.canAddMedia ? model.addMedia : null,
             ),
-            Spacer(),
+            const Spacer(),
             HarpyButton.raised(
               text: "Tweet",
               dense: true,

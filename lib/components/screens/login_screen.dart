@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildTitle(BuildContext context) {
-    final color = Theme.of(context).textTheme.body1.color;
+    final color = Theme.of(context).textTheme.bodyText2.color;
 
     return Expanded(
       child: FractionallySizedBox(

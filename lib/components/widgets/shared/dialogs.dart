@@ -42,11 +42,11 @@ class HarpyDialog extends StatelessWidget {
   List<Widget> _buildContent(TextTheme textTheme) {
     return <Widget>[
       if (title != null) ...[
-        Text(title, style: textTheme.title, textAlign: TextAlign.center),
+        Text(title, style: textTheme.headline6, textAlign: TextAlign.center),
         const SizedBox(height: 12),
       ],
       if (text != null) ...[
-        Text(text, style: textTheme.subtitle, textAlign: TextAlign.center),
+        Text(text, style: textTheme.subtitle2, textAlign: TextAlign.center),
         const SizedBox(height: 12),
       ],
       if (body != null) ...[
@@ -201,7 +201,7 @@ class _ProFeatureDialogState extends State<ProFeatureDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final style = theme.textTheme.subtitle;
+    final style = theme.textTheme.subtitle2;
 
     final linkStyle = style.copyWith(
       color: theme.accentColor,

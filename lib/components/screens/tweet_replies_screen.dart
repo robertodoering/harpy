@@ -48,7 +48,7 @@ class TweetRepliesScreen extends StatelessWidget {
             const Text("No replies found"),
             Text(
               "Only replies of the last 7 days can be retrieved.",
-              style: textTheme.body2,
+              style: textTheme.bodyText1,
             ),
           ],
         ),

@@ -42,7 +42,7 @@ class SettingsColumn extends StatelessWidget {
             vertical: 4,
             horizontal: 8,
           ),
-          child: Text(title, style: Theme.of(context).textTheme.display1),
+          child: Text(title, style: Theme.of(context).textTheme.headline4),
         ),
         ...children,
       ],

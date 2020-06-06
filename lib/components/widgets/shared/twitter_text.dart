@@ -117,8 +117,8 @@ class TwitterTextState extends State<TwitterText> {
 
     // the styles used by the text and entities (urls, hashtags) of the tweet
     final _styles = <_TextType, TextStyle>{
-      _TextType.text: theme.textTheme.body1,
-      _TextType.entity: theme.textTheme.body1.copyWith(
+      _TextType.text: theme.textTheme.bodyText2,
+      _TextType.entity: theme.textTheme.bodyText2.copyWith(
         color: widget.entityColor ?? theme.accentColor,
         fontWeight: FontWeight.bold,
       ),

@@ -52,7 +52,7 @@ class WebviewScreenState extends State<WebviewScreen> {
                       icon: const Icon(Icons.arrow_forward),
                       onPressed: _goForward,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.refresh),
                       onPressed: _reload,
@@ -82,9 +82,10 @@ class WebviewScreenState extends State<WebviewScreen> {
     return Theme(
       data: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.copyWith(
-              title: Theme.of(context).textTheme.title.copyWith(
-                    letterSpacing: 1,
-                  ),
+              headline6: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(letterSpacing: 1),
             ),
       ),
       child: HarpyScaffold(

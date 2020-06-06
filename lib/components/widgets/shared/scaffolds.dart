@@ -42,7 +42,7 @@ class HarpyScaffold extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           if (showIcon) ...[
             const SizedBox(width: 4),
@@ -165,7 +165,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
               opacity: opacity,
               child: Text(
                 widget.title ?? "",
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

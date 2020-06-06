@@ -27,7 +27,7 @@ class IconRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.body1;
+    final textStyle = Theme.of(context).textTheme.bodyText2;
 
     return Row(
       children: <Widget>[

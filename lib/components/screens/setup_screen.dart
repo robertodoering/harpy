@@ -63,7 +63,7 @@ class _SetupScreenState extends State<SetupScreen> {
           child: FittedBox(
             child: PrimaryDisplayText(
               loginModel.loggedInUser.name,
-              style: Theme.of(context).textTheme.display3,
+              style: Theme.of(context).textTheme.headline2,
               delay: const Duration(milliseconds: 800),
             ),
           ),
@@ -95,7 +95,7 @@ class _SetupScreenState extends State<SetupScreen> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           BounceInAnimation(
             delay: const Duration(milliseconds: 4000),
             child: HarpyButton.flat(
