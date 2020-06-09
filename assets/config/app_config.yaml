@@ -1,0 +1,6 @@
+twitter:
+  consumer_key: "ZoBFkBkmwJdaeMLi1xHrCgXay"
+  consumer_secret: "I1dZRPpczxTFaEavpOPZmMKUzcsA8EDmfswhbVvKucf9aOGxR7"
+
+sentry:
+  dsn: "https://ff06f787f5534bf8aa768ebebf245991@sentry.io/1769469"

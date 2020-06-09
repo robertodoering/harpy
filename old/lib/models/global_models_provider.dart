@@ -18,7 +18,6 @@ class GlobalModelsProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('built global models provider');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<HomeTimelineModel>(
