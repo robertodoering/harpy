@@ -10,14 +10,26 @@ import 'package:yaml/yaml.dart';
 
 @immutable
 abstract class AuthenticationEvent {
+  const AuthenticationEvent();
+
   Stream<AuthenticationState> applyAsync({
     AuthenticationState currentState,
     AuthenticationBloc bloc,
   });
 }
 
+/// Used to initialize the twitter session upon app start.
+///
+/// If the user has been authenticated before, an active twitter session will be
+/// retrieved and the users automatically authenticates to skip the login
+/// screen. In this case [AuthenticatedState] is yielded.
+///
+/// If no active twitter session is retrieved, [UnauthenticatedState] is
+/// yielded.
 class InitializeTwitterSessionEvent extends AuthenticationEvent {
-  final Logger _log = Logger('InitializeTwitterSessionEvent');
+  const InitializeTwitterSessionEvent();
+
+  static final Logger _log = Logger('InitializeTwitterSessionEvent');
 
   /// Parses the app configuration located at `assets/config/app_config.yaml`
   /// and returns it as an [AppConfig] object.
@@ -93,8 +105,12 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
   }
 }
 
+/// Used to unauthenticate the currently authenticated user.
 class LogoutEvent extends AuthenticationEvent {
-  final Logger _log = Logger('LogoutEvent');
+  const LogoutEvent();
+
+  static final Logger _log = Logger('LogoutEvent');
+
   @override
   Stream<AuthenticationState> applyAsync({
     AuthenticationState currentState,
@@ -109,6 +125,37 @@ class LogoutEvent extends AuthenticationEvent {
   }
 }
 
+/// Used to authenticate a user.
+class LoginEvent extends AuthenticationEvent {
+  const LoginEvent();
+
+  static final Logger _log = Logger('LoginEvent');
+
+  @override
+  Stream<AuthenticationState> applyAsync({
+    AuthenticationState currentState,
+    AuthenticationBloc bloc,
+  }) async* {
+    final TwitterLoginResult result = await bloc.twitterLogin.authorize();
+
+    switch (result.status) {
+      case TwitterLoginStatus.loggedIn:
+        _log.fine('successfully logged in');
+        // todo: handle successful login
+        break;
+      case TwitterLoginStatus.cancelledByUser:
+        _log.info('login cancelled by user');
+        // todo: navigate back to login screen
+        break;
+      case TwitterLoginStatus.error:
+        _log.warning('error during login');
+        // todo: handle error and navigate back to login screen
+        break;
+    }
+  }
+}
+
+// todo: move
 @immutable
 class AppConfig {
   const AppConfig({

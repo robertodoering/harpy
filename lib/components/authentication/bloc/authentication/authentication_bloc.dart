@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
@@ -13,11 +15,15 @@ class AuthenticationBloc
   /// The [twitterSession] contains information about the authenticated user.
   ///
   /// If the user is not authenticated, [twitterSession] will be `null`.
+  /// todo: maybe put in the state?
   TwitterSession twitterSession;
 
   /// Completes with either `true` or `false` whether the user has an active
   /// twitter session after initialization.
   Completer<bool> sessionInitialization = Completer<bool>();
+
+  static AuthenticationBloc of(BuildContext context) =>
+      BlocProvider.of<AuthenticationBloc>(context);
 
   @override
   AuthenticationState get initialState => const UnauthenticatedState();
