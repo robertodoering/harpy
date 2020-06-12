@@ -11,7 +11,7 @@ analyzer:
   exclude:
     # ignore all generated files
     - lib/**.g.dart
-    - old/**/**.dart
+    - old/**
 
 linter:
   rules:
