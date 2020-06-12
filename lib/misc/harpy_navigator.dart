@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/harpy.dart';
+import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.
 ///
@@ -8,6 +9,8 @@ enum RouteType {
   defaultRoute,
   fade,
 }
+
+final Logger _log = Logger('HarpyNavigator');
 
 /// The [HarpyNavigator] contains the [Navigator] key used by the root
 /// [MaterialApp]. This allows for navigation without access to the
@@ -51,6 +54,8 @@ class HarpyNavigator {
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   final String routeName = settings.name;
 
+  _log.fine('navigating to $routeName');
+
   final Map<String, dynamic> arguments =
       settings.arguments as Map<String, dynamic> ?? <String, dynamic>{};
 
@@ -60,8 +65,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget screen;
 
   switch (routeName) {
+    case HomeScreen.route:
+      screen = HomeScreen();
+      break;
     case LoginScreen.route:
+      screen = LoginScreen();
+      break;
     default:
+      _log.warning('route does not exist; navigating to login screen instead');
       screen = LoginScreen();
   }
 
