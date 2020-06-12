@@ -15,6 +15,7 @@ class AuthenticationBloc
   /// The [twitterSession] contains information about the authenticated user.
   ///
   /// If the user is not authenticated, [twitterSession] will be `null`.
+  ///
   /// todo: maybe put in the state?
   TwitterSession twitterSession;
 
