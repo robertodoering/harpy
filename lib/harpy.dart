@@ -83,7 +83,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Home')),
       body: Center(
         child: RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            AuthenticationBloc.of(context).add(const LogoutEvent());
+          },
           child: const Text('Logout'),
         ),
       ),
