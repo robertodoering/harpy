@@ -9,28 +9,27 @@ enum RouteType {
   fade,
 }
 
-/// A convenience class to wrap [Navigator] functionality.
-///
-/// Since a [GlobalKey] is used for the [Navigator], the [BuildContext] is not
-/// necessary when changing the current route.
+/// The [HarpyNavigator] contains the [Navigator] key used by the root
+/// [MaterialApp]. This allows for navigation without access to the
+/// [BuildContext].
 class HarpyNavigator {
-  static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
   /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
-  static void push(Widget widget, {String name}) {
-    key.currentState.push<void>(MaterialPageRoute(
+  void push(Widget widget, {String name}) {
+    key.currentState.push<void>(MaterialPageRoute<void>(
       builder: (BuildContext context) => widget,
       settings: RouteSettings(name: name),
     ));
   }
 
   /// A convenience method to push a new [route] to the [Navigator].
-  static void pushRoute(Route<void> route) {
+  void pushRoute(Route<void> route) {
     key.currentState.push<void>(route);
   }
 
   /// A convenience method to push a named replacement route.
-  static void pushReplacementNamed(
+  void pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
   }) {
