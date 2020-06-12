@@ -20,9 +20,9 @@ final FirebaseAnalytics analytics = FirebaseAnalytics();
 
 /// Runs the app with the given [flavor].
 ///
-/// To app can be build with the 'free' or 'pro' flavor by running
-/// `flutter build --flavor free -t lib/main_free.dart` or
-/// `flutter build --flavor pro -t lib/main_pro.dart`.
+/// To app can be run with the 'free' or 'pro' flavor by running
+/// `flutter run --flavor free -t lib/main_free.dart` or
+/// `flutter run --flavor pro -t lib/main_pro.dart`.
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 

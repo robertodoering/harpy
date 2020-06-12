@@ -1,9 +1,9 @@
 import 'package:harpy/harpy.dart';
 
-/// Runs Harpy with [Flavor.free].
+/// Runs Harpy with [Flavor.run].
 ///
-/// To build the app with the 'free' flavor run
-/// `flutter build --flavor pro -t lib/main_pro.dart`
+/// To build the app with the 'pro' flavor run
+/// `flutter run --flavor pro -t lib/main_pro.dart`
 void main() {
   runHarpy(Flavor.pro);
 }
