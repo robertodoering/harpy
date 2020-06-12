@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
-
-/// [GetIt] is a simple service locator for accessing services from anywhere
-/// in the app.
-final GetIt app = GetIt.instance;
 
 /// Runs the app with the given [flavor].
 ///
@@ -16,6 +12,8 @@ final GetIt app = GetIt.instance;
 /// `flutter build --flavor pro -t lib/main_pro.dart`.
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
+
+  setupServices();
 
   runApp(
     GlobalBlocProvider(
@@ -34,7 +32,7 @@ class Harpy extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Harpy',
-      navigatorKey: HarpyNavigator.key,
+      navigatorKey: app<HarpyNavigator>().key,
       onGenerateRoute: onGenerateRoute,
       home: SplashScreen(),
     );
@@ -67,7 +65,7 @@ class LoginScreen extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           onPressed: () {
-            AuthenticationBloc.of(context).add(LoginEvent());
+            AuthenticationBloc.of(context).add(const LoginEvent());
           },
           child: const Text('Login'),
         ),
