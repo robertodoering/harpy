@@ -3,12 +3,12 @@ import 'package:logging/logging.dart';
 void initLogger({String prefix}) {
   Logger.root.level = Level.ALL;
 
-  const separator = " | ";
-  const horizontalSeparator = "--------------------------------";
+  const String separator = ' | ';
+  const String horizontalSeparator = '--------------------------------';
 
-  Logger.root.onRecord.listen((rec) {
-    final content = <String>[
-      if (prefix != null) ...[
+  Logger.root.onRecord.listen((LogRecord rec) {
+    final List<String> content = <String>[
+      if (prefix != null) ...<String>[
         prefix,
         separator,
       ],
@@ -23,13 +23,13 @@ void initLogger({String prefix}) {
 
     if (rec.error != null) {
       print(horizontalSeparator);
-      print("ERROR");
+      print('ERROR');
       print(rec.error.toString());
       print(horizontalSeparator);
 
       if (rec.stackTrace != null) {
-        print("STACK TRACE");
-        rec.stackTrace.toString().trim().split("\n").forEach(print);
+        print('STACK TRACE');
+        rec.stackTrace.toString().trim().split('\n').forEach(print);
         print(horizontalSeparator);
       }
     }
