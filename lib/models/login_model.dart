@@ -30,7 +30,7 @@ class LoginModel extends ChangeNotifier {
   ApplicationModel applicationModel;
 
   static LoginModel of(context) {
-    return Provider.of<LoginModel>(context);
+    return Provider.of<LoginModel>(context, listen: false);
   }
 
   static final Logger _log = Logger("LoginModel");
