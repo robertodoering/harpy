@@ -43,8 +43,8 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     if (appConfig != null) {
       // init twitter login
       bloc.twitterLogin = TwitterLogin(
-        consumerKey: 'consumerKey',
-        consumerSecret: 'consumerSecret',
+        consumerKey: appConfig.twitterConsumerKey,
+        consumerSecret: appConfig.twitterConsumerSecret,
       );
 
       // init active twitter session
@@ -80,6 +80,8 @@ class LogoutEvent extends AuthenticationEvent {
     bloc.twitterSession = null;
 
     yield const UnauthenticatedState();
+
+    app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }
 }
 
