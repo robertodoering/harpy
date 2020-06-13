@@ -56,8 +56,10 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     bloc.sessionInitialization.complete(bloc.twitterSession != null);
 
     if (bloc.twitterSession != null) {
+      _log.info('authenticated');
       yield const AuthenticatedState();
     } else {
+      _log.info('not authenticated');
       yield const UnauthenticatedState();
     }
   }
@@ -104,6 +106,7 @@ class LoginEvent extends AuthenticationEvent {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
         // todo: handle successful login
+        yield const AuthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
         break;
       case TwitterLoginStatus.cancelledByUser:

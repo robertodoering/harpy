@@ -16,6 +16,6 @@ class AwaitingAuthenticationState extends AuthenticationState {
 }
 
 /// The state when the user has not yet been authenticated.
-class UnauthenticatedState extends AuthenticatedState {
+class UnauthenticatedState extends AuthenticationState {
   const UnauthenticatedState();
 }
