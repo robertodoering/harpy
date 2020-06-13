@@ -24,7 +24,7 @@ Future<AppConfig> parseAppConfig() async {
     final AppConfig appConfig = AppConfig(
       twitterConsumerKey: yamlMap['twitter']['consumer_key'],
       twitterConsumerSecret: yamlMap['twitter']['consumer_secret'],
-      sentryDsn: yamlMap['sentry']['dsn'],
+      sentryDsn: yamlMap['sentry'] != null ? yamlMap['sentry']['dsn'] : null,
     );
 
     if (appConfig.invalidTwitterConfig) {
