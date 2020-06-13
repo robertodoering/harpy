@@ -16,6 +16,7 @@ Future<AppConfig> parseAppConfig() async {
   try {
     final String appConfigString = await rootBundle.loadString(
       'assets/config/app_config.yaml',
+      cache: false,
     );
 
     // parse app config
@@ -24,7 +25,7 @@ Future<AppConfig> parseAppConfig() async {
     final AppConfig appConfig = AppConfig(
       twitterConsumerKey: yamlMap['twitter']['consumer_key'],
       twitterConsumerSecret: yamlMap['twitter']['consumer_secret'],
-      sentryDsn: yamlMap['sentry'] != null ? yamlMap['sentry']['dsn'] : null,
+      sentryDsn: yamlMap['sentry'] != null ? yamlMap['sentry']['dns'] : null,
     );
 
     if (appConfig.invalidTwitterConfig) {
