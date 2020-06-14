@@ -105,18 +105,15 @@ class LoginEvent extends AuthenticationEvent {
     switch (result?.status) {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
-        // todo: handle successful login
         yield const AuthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
-        // todo: navigate back to login screen
         break;
       case TwitterLoginStatus.error:
       default:
         _log.warning('error during login');
-        // todo: handle error and navigate back to login screen
         break;
     }
   }
