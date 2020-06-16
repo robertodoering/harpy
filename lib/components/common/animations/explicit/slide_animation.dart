@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-/// The default duration for a long animation.
-const Duration kLongAnimationDuration = Duration(milliseconds: 600);
+import 'package:harpy/components/common/animations/animation_constants.dart';
 
 /// Slides its [child] to the [endPosition] after calling
 /// [SlideAnimationState.forward()].
@@ -31,12 +29,7 @@ class SlideAnimationState extends State<SlideAnimation>
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = Tween<Offset>(
       begin: Offset.zero,
@@ -59,8 +52,12 @@ class SlideAnimationState extends State<SlideAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: _animation.value,
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (BuildContext context, Widget child) => Transform.translate(
+        offset: _animation.value,
+        child: child,
+      ),
       child: widget.child,
     );
   }
