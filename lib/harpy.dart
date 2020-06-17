@@ -55,25 +55,6 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-class LoginScreen extends StatelessWidget {
-  static const String route = 'login_screen';
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            AuthenticationBloc.of(context).add(const LoginEvent());
-          },
-          child: const Text('Login'),
-        ),
-      ),
-    );
-  }
-}
-
 class HomeScreen extends StatelessWidget {
   static const String route = 'home_screen';
 
