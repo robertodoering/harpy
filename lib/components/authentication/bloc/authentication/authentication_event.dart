@@ -111,10 +111,12 @@ class LoginEvent extends AuthenticationEvent {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
+        app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
         break;
       case TwitterLoginStatus.error:
       default:
         _log.warning('error during login');
+        app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
         break;
     }
   }
