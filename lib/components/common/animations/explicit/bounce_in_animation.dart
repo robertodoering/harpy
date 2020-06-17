@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
 
 /// The default duration used by the [BounceInAnimation].
 const Duration kDefaultBounceInDuration = Duration(seconds: 1);
@@ -8,7 +7,7 @@ const Duration kDefaultBounceInDuration = Duration(seconds: 1);
 class BounceInAnimation extends StatefulWidget {
   const BounceInAnimation({
     @required this.child,
-    this.duration = kLongAnimationDuration,
+    this.duration = kDefaultBounceInDuration,
     this.delay = Duration.zero,
   });
 
