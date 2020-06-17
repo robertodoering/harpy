@@ -15,11 +15,12 @@ dependencies:
   
   # packages
   dart_twitter_api: ^0.1.0
-  get_it: ^4.0.2
-  flutter_bloc: ^4.0.0
-  logging: ^0.11.4
-  yaml: ^2.2.1
   flare_flutter: ^2.0.3
+  flutter_bloc: ^4.0.0
+  get_it: ^4.0.2
+  logging: ^0.11.4
+  url_launcher: ^5.4.10
+  yaml: ^2.2.1
 
   # plugins
   flutter_twitter_login:

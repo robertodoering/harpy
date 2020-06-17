@@ -11,6 +11,7 @@ import 'package:harpy/components/common/animations/explicit/fade_animation.dart'
 import 'package:harpy/components/common/animations/explicit/slide_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = 'login';
@@ -158,8 +159,7 @@ class _CreateAccountButton extends StatelessWidget {
       delay: const Duration(milliseconds: 3000),
       child: HarpyButton.flat(
         text: 'Create an account',
-        onTap: null,
-        // onTap: () => launchUrl("https://twitter.com/signup"),
+        onTap: () => launchUrl('https://twitter.com/signup'),
       ),
     );
   }
