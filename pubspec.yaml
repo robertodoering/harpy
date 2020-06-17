@@ -19,6 +19,7 @@ dependencies:
   flutter_bloc: ^4.0.0
   logging: ^0.11.4
   yaml: ^2.2.1
+  flare_flutter: ^2.0.3
 
   # plugins
   flutter_twitter_login:
@@ -34,3 +35,4 @@ flutter:
 
   assets:
     - assets/config/
+    - assets/flare/
