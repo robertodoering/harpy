@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application/application_state.dart';
+import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
@@ -23,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _startLogin() async {
     await _slideLoginKey.currentState.forward();
-    // start login
+    AuthenticationBloc.of(context).add(const LoginEvent());
   }
 
   Widget _buildText() {
