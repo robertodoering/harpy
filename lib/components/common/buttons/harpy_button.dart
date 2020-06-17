@@ -61,7 +61,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 /// widget with more control.
 ///
 /// When [onTap] is `null`, the button will appear disabled by reducing the
-/// foreground and background opacity by 30%.
+/// foreground and background opacity.
 ///
 /// Either [icon], [iconBuilder] or [text] must not be `null`.
 class HarpyButton extends StatelessWidget {
@@ -184,7 +184,7 @@ class HarpyButton extends StatelessWidget {
   }
 
   /// Builds the row with the [Icon] and [Text] widget.
-  Widget _buildContent(BuildContext context, ThemeData theme) {
+  Widget _buildContent(BuildContext context) {
     Widget iconWidget;
     Widget textWidget;
 
@@ -193,7 +193,7 @@ class HarpyButton extends StatelessWidget {
       // constrained, for example during an AnimatedCrossFade transition
       textWidget = Text(
         text,
-        style: theme.textTheme.button,
+        style: Theme.of(context).textTheme.button,
         overflow: TextOverflow.fade,
         softWrap: false,
       );
@@ -227,8 +227,8 @@ class HarpyButton extends StatelessWidget {
 
     if (onTap == null) {
       // reduce the opacity by 30% when disabled
-      bgColor = bgColor.withOpacity(max(0, bgColor.opacity - 0.3));
-      fgColor = fgColor.withOpacity(max(0, fgColor.opacity - 0.3));
+      bgColor = bgColor.withOpacity(max(0, bgColor.opacity - 0.5));
+      fgColor = fgColor.withOpacity(max(0, fgColor.opacity - 0.5));
     }
 
     return _HarpyButtonBase(
@@ -253,9 +253,7 @@ class HarpyButton extends StatelessWidget {
           child: Padding(
             padding: _padding,
             // use a builder so the context references the animated theme
-            child: Builder(
-              builder: (BuildContext context) => _buildContent(context, theme),
-            ),
+            child: Builder(builder: _buildContent),
           ),
         ),
       ),
