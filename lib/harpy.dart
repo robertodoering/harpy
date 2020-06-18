@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/application/bloc/application/application_bloc.dart';
+import 'package:harpy/components/application/bloc/application/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
@@ -30,11 +33,14 @@ class Harpy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Harpy',
-      navigatorKey: app<HarpyNavigator>().key,
-      onGenerateRoute: onGenerateRoute,
-      home: SplashScreen(),
+    return BlocBuilder<ApplicationBloc, ApplicationState>(
+      builder: (BuildContext context, ApplicationState state) => MaterialApp(
+        title: 'Harpy',
+        theme: ApplicationBloc.of(context).harpyTheme.data,
+        navigatorKey: app<HarpyNavigator>().key,
+        onGenerateRoute: onGenerateRoute,
+        home: SplashScreen(),
+      ),
     );
   }
 }
