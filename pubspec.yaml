@@ -31,6 +31,8 @@ dev_dependencies:
     sdk: flutter
   mockito: ^4.1.1
   bloc_test: ^5.1.0
+  build_runner: ^1.7.1
+  json_serializable: ^3.2.3
 
 flutter:
   uses-material-design: true
@@ -38,3 +40,20 @@ flutter:
   assets:
     - assets/config/
     - assets/flare/
+  
+  fonts:  
+  - family: Comfortaa
+    fonts:
+    - asset: assets/fonts/Comfortaa-Light.ttf
+      weight: 300
+    - asset: assets/fonts/Comfortaa-Regular.ttf
+    - asset: assets/fonts/Comfortaa-Bold.ttf
+      weight: 700
+
+  - family: OpenSans
+    fonts:
+    - asset: assets/fonts/OpenSans-Light.ttf
+      weight: 300
+    - asset: assets/fonts/OpenSans-Regular.ttf
+    - asset: assets/fonts/OpenSans-Bold.ttf
+      weight: 700
