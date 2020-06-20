@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application/application_bloc.dart';
+import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
