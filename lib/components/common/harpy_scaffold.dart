@@ -41,7 +41,7 @@ class HarpyScaffold extends StatelessWidget {
             title,
             style: theme.textTheme.headline6,
           ),
-          if (showIcon) ...[
+          if (showIcon) ...<Widget>[
             const SizedBox(width: 4),
             // const FlareIcon.harpyLogo(size: 24),
           ],
