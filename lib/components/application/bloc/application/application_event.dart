@@ -4,11 +4,10 @@ import 'package:harpy/components/application/bloc/application/application_bloc.d
 import 'package:harpy/components/application/bloc/application/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
+import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
 import 'package:logging/logging.dart';
@@ -43,7 +42,9 @@ class InitializeEvent extends ApplicationEvent {
 
   /// Waits for the [AuthenticationBloc] to complete the twitter session
   /// initialization and handles user specific initialization.
-  Future<void> _userInitialization(
+  ///
+  /// Returns whether the uses is authenticated.
+  Future<bool> _userInitialization(
     ApplicationBloc bloc,
     AuthenticationBloc authenticationBloc,
   ) async {
@@ -57,6 +58,8 @@ class InitializeEvent extends ApplicationEvent {
         await authenticationBloc.sessionInitialization.future;
 
     if (authenticated) {}
+
+    return authenticated;
   }
 
   @override
@@ -65,13 +68,15 @@ class InitializeEvent extends ApplicationEvent {
     ApplicationBloc bloc,
   }) async* {
     await _commonInitialization(bloc);
-    await _userInitialization(bloc, bloc.authenticationBloc);
+
+    final bool authenticated =
+        await _userInitialization(bloc, bloc.authenticationBloc);
 
     _log.fine('finished app initialization');
 
     yield const InitializedState();
 
-    if (bloc.authenticationBloc.state is AuthenticatedState) {
+    if (authenticated) {
       // navigate to home screen
       app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
     } else {
