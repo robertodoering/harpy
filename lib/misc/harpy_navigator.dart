@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
-import 'package:harpy/harpy.dart';
+import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.

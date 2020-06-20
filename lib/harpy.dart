@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application/application_state.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -56,25 +54,6 @@ class SplashScreen extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text('splash screen'),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  static const String route = 'home_screen';
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            AuthenticationBloc.of(context).add(const LogoutEvent());
-          },
-          child: const Text('Logout'),
-        ),
       ),
     );
   }

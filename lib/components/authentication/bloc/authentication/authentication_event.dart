@@ -4,9 +4,9 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
+import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -116,6 +116,7 @@ class LoginEvent extends AuthenticationEvent {
       case TwitterLoginStatus.error:
       default:
         _log.warning('error during login');
+        // todo: show message: 'authentication failed, please try again'
         app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
         break;
     }
