@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';

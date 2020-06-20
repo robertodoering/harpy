@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_state.dart';
+import 'package:harpy/components/authentication/bloc/authentication_event.dart';
+import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

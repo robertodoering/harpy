@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_event.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';

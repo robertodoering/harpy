@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
-import 'package:harpy/components/authentication/bloc/authentication/authentication_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
