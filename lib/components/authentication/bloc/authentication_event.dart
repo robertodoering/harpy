@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
@@ -14,6 +15,20 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class AuthenticationEvent {
   const AuthenticationEvent();
+
+  /// Executed when a user is authenticated either after a session is retrieved
+  /// automatically after initialization or after a user authenticated manually.
+  Future<void> onLogin(AuthenticationBloc bloc, AppConfig appConfig) {
+    // set twitter api
+    bloc.twitterApi = TwitterApi(
+      client: TwitterClient(
+        consumerKey: appConfig.twitterConsumerKey,
+        consumerSecret: appConfig.twitterConsumerSecret,
+        token: bloc.twitterSession?.token ?? '',
+        secret: bloc.twitterSession?.secret ?? '',
+      ),
+    );
+  }
 
   Stream<AuthenticationState> applyAsync({
     AuthenticationState currentState,
@@ -58,6 +73,9 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
 
     if (bloc.twitterSession != null) {
       _log.info('authenticated');
+
+      await onLogin(bloc, appConfig);
+
       yield const AuthenticatedState();
     } else {
       _log.info('not authenticated');
@@ -90,7 +108,9 @@ class LogoutEvent extends AuthenticationEvent {
 
 /// Used to authenticate a user.
 class LoginEvent extends AuthenticationEvent {
-  const LoginEvent();
+  const LoginEvent(this.appConfig);
+
+  final AppConfig appConfig;
 
   static final Logger _log = Logger('LoginEvent');
 
@@ -106,6 +126,7 @@ class LoginEvent extends AuthenticationEvent {
     switch (result?.status) {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
+        await onLogin(bloc, appConfig);
         yield const AuthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
         break;
