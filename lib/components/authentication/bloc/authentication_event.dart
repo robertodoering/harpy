@@ -18,7 +18,7 @@ abstract class AuthenticationEvent {
 
   /// Executed when a user is authenticated either after a session is retrieved
   /// automatically after initialization or after a user authenticated manually.
-  Future<void> onLogin(AuthenticationBloc bloc, AppConfig appConfig) {
+  void onLogin(AuthenticationBloc bloc, AppConfig appConfig) {
     // set twitter api client keys
     (app<TwitterApi>().client as TwitterClient)
       ..consumerKey = appConfig.twitterConsumerKey
@@ -71,7 +71,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     if (bloc.twitterSession != null) {
       _log.info('authenticated');
 
-      await onLogin(bloc, appConfig);
+      onLogin(bloc, appConfig);
 
       yield const AuthenticatedState();
     } else {
@@ -123,7 +123,7 @@ class LoginEvent extends AuthenticationEvent {
     switch (result?.status) {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
-        await onLogin(bloc, appConfig);
+        onLogin(bloc, appConfig);
         yield const AuthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
         break;
