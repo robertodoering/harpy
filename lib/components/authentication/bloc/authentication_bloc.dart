@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
@@ -17,11 +16,6 @@ class AuthenticationBloc
   ///
   /// If the user is not authenticated, [twitterSession] will be `null`.
   TwitterSession twitterSession;
-
-  /// The [TwitterApi] used to make authenticated requests to twitter.
-  ///
-  /// /// If the user is not authenticated, [twitterApi] will be `null`.
-  TwitterApi twitterApi;
 
   /// Completes with either `true` or `false` whether the user has an active
   /// twitter session after initialization.

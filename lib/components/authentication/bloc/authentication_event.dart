@@ -19,15 +19,12 @@ abstract class AuthenticationEvent {
   /// Executed when a user is authenticated either after a session is retrieved
   /// automatically after initialization or after a user authenticated manually.
   Future<void> onLogin(AuthenticationBloc bloc, AppConfig appConfig) {
-    // set twitter api
-    bloc.twitterApi = TwitterApi(
-      client: TwitterClient(
-        consumerKey: appConfig.twitterConsumerKey,
-        consumerSecret: appConfig.twitterConsumerSecret,
-        token: bloc.twitterSession?.token ?? '',
-        secret: bloc.twitterSession?.secret ?? '',
-      ),
-    );
+    // set twitter api client keys
+    (app<TwitterApi>().client as TwitterClient)
+      ..consumerKey = appConfig.twitterConsumerKey
+      ..consumerSecret = appConfig.twitterConsumerSecret
+      ..token = bloc.twitterSession?.token ?? ''
+      ..secret = bloc.twitterSession?.secret ?? '';
   }
 
   Stream<AuthenticationState> applyAsync({
