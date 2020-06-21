@@ -36,9 +36,8 @@ class TweetList extends StatelessWidget {
       child: ScrollToStart(
         child: ListView.separated(
           itemCount: tweets.length,
-          itemBuilder: (BuildContext context, int index) {
-            return TweetTile(tweets[index]);
-          },
+          itemBuilder: (BuildContext context, int index) =>
+              TweetTile(tweets[index]),
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(color: Colors.white),
         ),
