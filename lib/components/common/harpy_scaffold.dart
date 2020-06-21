@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/harpy_background.dart';
 
 /// A convenience Widget that wraps a [Scaffold].
@@ -43,7 +44,7 @@ class HarpyScaffold extends StatelessWidget {
           ),
           if (showIcon) ...<Widget>[
             const SizedBox(width: 4),
-            // const FlareIcon.harpyLogo(size: 24),
+            const FlareIcon.harpyLogo(size: 24),
           ],
         ],
       ),

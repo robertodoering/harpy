@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
+import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -51,6 +52,9 @@ enum Flavor {
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // start caching flare icons
+    FlareIcon.cacheIcons(context);
+
     return const Scaffold(
       body: Center(
         child: Text('splash screen'),
