@@ -48,6 +48,7 @@ class TweetData {
   /// Whether this is a retweet.
   bool get isRetweet => retweetUserName != null;
 
+  /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
 }
 
