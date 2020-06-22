@@ -123,6 +123,7 @@ class LoginEvent extends AuthenticationEvent {
     switch (result?.status) {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
+        bloc.twitterSession = result.session;
         onLogin(bloc, appConfig);
         yield const AuthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
