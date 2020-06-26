@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/components/common/followers_count.dart';
 
 class HomeDrawerHeader extends StatelessWidget {
   const HomeDrawerHeader();
@@ -66,38 +66,12 @@ class HomeDrawerHeader extends StatelessWidget {
         children: <Widget>[
           _buildAvatarRow(context),
           const SizedBox(height: 16),
-          SizedBox(
+          const SizedBox(
             width: double.infinity,
             child: FollowersCount(),
           ),
         ],
       ),
-    );
-  }
-}
-
-// todo: move widget
-class FollowersCount extends StatelessWidget {
-  const FollowersCount();
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 8,
-      alignment: WrapAlignment.spaceBetween,
-      children: <Widget>[
-        HarpyButton.flat(
-          text: '123 Following',
-          padding: EdgeInsets.zero,
-          onTap: () {},
-        ),
-        HarpyButton.flat(
-          text: '123 Followers',
-          padding: EdgeInsets.zero,
-          onTap: () {},
-        ),
-      ],
     );
   }
 }
