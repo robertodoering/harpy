@@ -8,6 +8,7 @@ import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/tweet/tweet_data.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -18,13 +19,40 @@ abstract class AuthenticationEvent {
 
   /// Executed when a user is authenticated either after a session is retrieved
   /// automatically after initialization or after a user authenticated manually.
-  void onLogin(AuthenticationBloc bloc, AppConfig appConfig) {
+  ///
+  /// Returns `true` when the initialization was successful.
+  Future<bool> onLogin(AuthenticationBloc bloc, AppConfig appConfig) async {
     // set twitter api client keys
-    (app<TwitterApi>().client as TwitterClient)
+    (bloc.twitterApi.client as TwitterClient)
       ..consumerKey = appConfig.twitterConsumerKey
       ..consumerSecret = appConfig.twitterConsumerSecret
       ..token = bloc.twitterSession?.token ?? ''
       ..secret = bloc.twitterSession?.secret ?? '';
+
+    return initializeAuthenticatedUser(bloc);
+  }
+
+  /// Retrieves the [UserData] of the authenticated user.
+  ///
+  /// Returns whether the user was able to be retrieved.
+  Future<bool> initializeAuthenticatedUser(AuthenticationBloc bloc) async {
+    final String userId = bloc.twitterSession.userId;
+
+    // todo: silent error handler
+    bloc.authenticatedUser = await bloc.twitterApi.userService
+        .usersShow(userId: userId)
+        .then((User user) => UserData.fromUser(user))
+        .catchError((dynamic error) {});
+
+    return bloc.authenticatedUser != null;
+  }
+
+  /// Logs out of the twitter login and resets hte [AuthenticationBloc] session
+  /// data.
+  Future<void> onLogout(AuthenticationBloc bloc) async {
+    await bloc.twitterLogin?.logOut();
+    bloc.twitterSession = null;
+    bloc.authenticatedUser = null;
   }
 
   Stream<AuthenticationState> applyAsync({
@@ -66,40 +94,24 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
       _log.fine('twitter session initialized');
     }
 
-    bloc.sessionInitialization.complete(bloc.twitterSession != null);
-
     if (bloc.twitterSession != null) {
-      _log.info('authenticated');
+      if (await onLogin(bloc, appConfig)) {
+        // retrieved session and initialized login
+        _log.info('authenticated');
 
-      onLogin(bloc, appConfig);
-
-      yield const AuthenticatedState();
-    } else {
-      _log.info('not authenticated');
-      yield const UnauthenticatedState();
+        bloc.sessionInitialization.complete(true);
+        yield const AuthenticatedState();
+        return;
+      } else {
+        // failed initializing login
+        await onLogout(bloc);
+      }
     }
-  }
-}
 
-/// Used to unauthenticate the currently authenticated user.
-class LogoutEvent extends AuthenticationEvent {
-  const LogoutEvent();
+    _log.info('not authenticated');
 
-  static final Logger _log = Logger('LogoutEvent');
-
-  @override
-  Stream<AuthenticationState> applyAsync({
-    AuthenticationState currentState,
-    AuthenticationBloc bloc,
-  }) async* {
-    _log.fine('logging out');
-
-    await bloc.twitterLogin.logOut();
-    bloc.twitterSession = null;
-
+    bloc.sessionInitialization.complete(false);
     yield const UnauthenticatedState();
-
-    app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }
 }
 
@@ -124,9 +136,17 @@ class LoginEvent extends AuthenticationEvent {
       case TwitterLoginStatus.loggedIn:
         _log.fine('successfully logged in');
         bloc.twitterSession = result.session;
-        onLogin(bloc, appConfig);
-        yield const AuthenticatedState();
-        app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
+
+        if (await onLogin(bloc, appConfig)) {
+          // successfully initialized the login
+          yield const AuthenticatedState();
+          app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
+        } else {
+          // failed initializing login
+          await onLogout(bloc);
+          app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+        }
+
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
@@ -139,5 +159,26 @@ class LoginEvent extends AuthenticationEvent {
         app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
         break;
     }
+  }
+}
+
+/// Used to unauthenticate the currently authenticated user.
+class LogoutEvent extends AuthenticationEvent {
+  const LogoutEvent();
+
+  static final Logger _log = Logger('LogoutEvent');
+
+  @override
+  Stream<AuthenticationState> applyAsync({
+    AuthenticationState currentState,
+    AuthenticationBloc bloc,
+  }) async* {
+    _log.fine('logging out');
+
+    await onLogout(bloc);
+
+    yield const UnauthenticatedState();
+
+    app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }
 }
