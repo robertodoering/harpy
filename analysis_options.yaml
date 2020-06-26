@@ -8,10 +8,11 @@ analyzer:
     missing_required_param: warning
     # treat missing returns as a warning (not a hint)
     missing_return: warning
-  exclude:
+  exclude: [
     # ignore all generated files
-    - lib/**.g.dart
-    - old/**
+    lib/**.g.dart,
+    old/**.*,
+  ]
 
 linter:
   rules:
