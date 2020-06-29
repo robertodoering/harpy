@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/followers_count.dart';
+import 'package:harpy/core/tweet/tweet_data.dart';
 
 class HomeDrawerHeader extends StatelessWidget {
   const HomeDrawerHeader();
 
-  Widget _buildAvatarRow(BuildContext context) {
+  Widget _buildAvatarRow(BuildContext context, UserData user) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         // circle avatar
         GestureDetector(
           onTap: () {},
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 32,
-            child: Text('rd'),
+            backgroundImage: NetworkImage(user.profileImageUrlHttps),
           ),
         ),
 
@@ -28,7 +29,7 @@ class HomeDrawerHeader extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  'name',
+                  user.name,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
@@ -36,7 +37,7 @@ class HomeDrawerHeader extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  '@screenName',
+                  '@${user.screenName}',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
@@ -49,7 +50,7 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+    final UserData user = AuthenticationBloc.of(context).authenticatedUser;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -67,11 +68,11 @@ class HomeDrawerHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildAvatarRow(context),
+          _buildAvatarRow(context, user),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            child: FollowersCount(authBloc.authenticatedUser),
+            child: FollowersCount(user),
           ),
         ],
       ),
