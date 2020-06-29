@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/followers_count.dart';
 
 class HomeDrawerHeader extends StatelessWidget {
@@ -48,6 +49,8 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.fromLTRB(
@@ -66,9 +69,9 @@ class HomeDrawerHeader extends StatelessWidget {
         children: <Widget>[
           _buildAvatarRow(context),
           const SizedBox(height: 16),
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
-            child: FollowersCount(),
+            child: FollowersCount(authBloc.authenticatedUser),
           ),
         ],
       ),

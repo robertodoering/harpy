@@ -59,6 +59,8 @@ class UserData {
     name = user.name;
     screenName = user.screenName;
     verified = user.verified;
+    followersCount = user.followersCount;
+    friendsCount = user.friendsCount;
     profileImageUrlHttps = user.profileImageUrlHttps;
   }
 
@@ -77,6 +79,15 @@ class UserData {
 
   /// When `true`, indicates that the user has a verified account.
   bool verified;
+
+  /// The number of followers this account currently has. Under certain
+  /// conditions of duress, this field will temporarily indicate `0`.
+  int followersCount;
+
+  /// The number of users this account is following (AKA their “followings”).
+  /// Under certain conditions of duress, this field will temporarily indicate
+  /// `0`.
+  int friendsCount;
 
   /// A HTTPS-based URL pointing to the user’s profile image.
   String profileImageUrlHttps;

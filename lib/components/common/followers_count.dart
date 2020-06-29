@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/core/tweet/tweet_data.dart';
 
 /// A widget to display the number of following users and followers for the
 /// [user].
 class FollowersCount extends StatelessWidget {
-  const FollowersCount();
+  const FollowersCount(this.user);
+
+  final UserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +17,12 @@ class FollowersCount extends StatelessWidget {
       alignment: WrapAlignment.spaceBetween,
       children: <Widget>[
         HarpyButton.flat(
-          text: '123 Following',
+          text: '${user.friendsCount} Following',
           padding: EdgeInsets.zero,
           onTap: () {},
         ),
         HarpyButton.flat(
-          text: '123 Followers',
+          text: '${user.followersCount} Followers',
           padding: EdgeInsets.zero,
           onTap: () {},
         ),
