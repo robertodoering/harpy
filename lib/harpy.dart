@@ -4,8 +4,15 @@ import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
+import 'package:harpy/core/harpy_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+
+/// The [Flavor] the app is built in.
+enum Flavor {
+  free,
+  pro,
+}
 
 /// Runs the app with the given [flavor].
 ///
@@ -15,15 +22,18 @@ import 'package:harpy/misc/harpy_navigator.dart';
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 
+  // sets up the global service locator
   setupServices();
 
-  runApp(
-    GlobalBlocProvider(
+  // HarpyErrorHandler will run the app and handle uncaught errors
+  HarpyErrorHandler(
+    child: GlobalBlocProvider(
       child: Harpy(),
     ),
   );
 }
 
+/// Builds the root [MaterialApp].
 class Harpy extends StatelessWidget {
   static Flavor flavor;
 
@@ -42,11 +52,6 @@ class Harpy extends StatelessWidget {
       ),
     );
   }
-}
-
-enum Flavor {
-  free,
-  pro,
 }
 
 class SplashScreen extends StatelessWidget {

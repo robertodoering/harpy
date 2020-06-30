@@ -7,6 +7,8 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/error_reporter.dart';
+import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
@@ -38,6 +40,11 @@ class InitializeEvent extends ApplicationEvent {
 
     initLogger();
     bloc.appConfig = await parseAppConfig();
+
+    Future.wait<void>(<Future<void>>[
+      app<HarpyInfo>().initialize(),
+      app<ErrorReporter>().initialize(),
+    ]);
   }
 
   /// Waits for the [AuthenticationBloc] to complete the twitter session
