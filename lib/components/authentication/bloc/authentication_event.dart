@@ -7,6 +7,7 @@ import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/network_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/tweet/tweet_data.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -38,16 +39,15 @@ abstract class AuthenticationEvent {
   Future<bool> initializeAuthenticatedUser(AuthenticationBloc bloc) async {
     final String userId = bloc.twitterSession.userId;
 
-    // todo: silent error handler
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
         .then((User user) => UserData.fromUser(user))
-        .catchError((dynamic error) {});
+        .catchError(silentErrorHandler);
 
     return bloc.authenticatedUser != null;
   }
 
-  /// Logs out of the twitter login and resets hte [AuthenticationBloc] session
+  /// Logs out of the twitter login and resets the [AuthenticationBloc] session
   /// data.
   Future<void> onLogout(AuthenticationBloc bloc) async {
     await bloc.twitterLogin?.logOut();

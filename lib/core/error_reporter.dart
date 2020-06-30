@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/common/dialogs/error_dialog.dart';
 import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/network_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
@@ -92,9 +93,8 @@ class ErrorReporter {
         tags: tags,
       );
 
-      // todo: use global silent error handler
       final SentryResponse sentryResponse =
-          await _sentry.capture(event: event).catchError((dynamic error) {});
+          await _sentry.capture(event: event).catchError(silentErrorHandler);
 
       if (sentryResponse?.isSuccessful == true) {
         _log.fine('error reported to sentry');
