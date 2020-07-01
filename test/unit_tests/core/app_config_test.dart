@@ -4,9 +4,16 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/service_locator.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    app.registerLazySingleton<AppConfig>(() => AppConfig());
+  });
+
+  tearDown(app.reset);
 
   test('parseAppConfig parses a complete app config', () async {
     ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
@@ -15,12 +22,13 @@ void main() {
           utf8.encoder.convert(_fullAppConfig).buffer.asByteData(),
     );
 
-    final AppConfig appConfig = await parseAppConfig();
+    final AppConfig appConfig = app<AppConfig>();
+    await appConfig.parseAppConfig();
 
-    expect(appConfig, isNotNull);
-    expect(appConfig.twitterConsumerKey, 'abcd1234');
-    expect(appConfig.twitterConsumerSecret, 'asdfkslatejwkhfcm');
-    expect(appConfig.sentryDsn, '143jkjrewajd');
+    expect(appConfig.data, isNotNull);
+    expect(appConfig.data.twitterConsumerKey, 'abcd1234');
+    expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
+    expect(appConfig.data.sentryDsn, '143jkjrewajd');
   });
 
   test('parseAppConfig ignores missing sentry entry', () async {
@@ -30,12 +38,13 @@ void main() {
           utf8.encoder.convert(_missingSentryAppConfig).buffer.asByteData(),
     );
 
-    final AppConfig appConfig = await parseAppConfig();
+    final AppConfig appConfig = app<AppConfig>();
+    await appConfig.parseAppConfig();
 
-    expect(appConfig, isNotNull);
-    expect(appConfig.twitterConsumerKey, 'abcd1234');
-    expect(appConfig.twitterConsumerSecret, 'asdfkslatejwkhfcm');
-    expect(appConfig.sentryDsn, isNull);
+    expect(appConfig.data, isNotNull);
+    expect(appConfig.data.twitterConsumerKey, 'abcd1234');
+    expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
+    expect(appConfig.data.sentryDsn, isNull);
   });
 
   test('parseAppConfig returns null if twitter config is empty', () async {
@@ -45,9 +54,10 @@ void main() {
           utf8.encoder.convert(_emptyTwitterAppConfig).buffer.asByteData(),
     );
 
-    final AppConfig appConfig = await parseAppConfig();
+    final AppConfig appConfig = app<AppConfig>();
+    await appConfig.parseAppConfig();
 
-    expect(appConfig, isNull);
+    expect(appConfig.data, isNull);
   });
 
   test('parseAppConfig returns null if twitter config is missing', () async {
@@ -57,9 +67,10 @@ void main() {
           utf8.encoder.convert(_missingTwitterAppConfig).buffer.asByteData(),
     );
 
-    final AppConfig appConfig = await parseAppConfig();
+    final AppConfig appConfig = app<AppConfig>();
+    await appConfig.parseAppConfig();
 
-    expect(appConfig, isNull);
+    expect(appConfig.data, isNull);
   });
 }
 

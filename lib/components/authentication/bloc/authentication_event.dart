@@ -22,7 +22,7 @@ abstract class AuthenticationEvent {
   /// automatically after initialization or after a user authenticated manually.
   ///
   /// Returns `true` when the initialization was successful.
-  Future<bool> onLogin(AuthenticationBloc bloc, AppConfig appConfig) async {
+  Future<bool> onLogin(AuthenticationBloc bloc, AppConfigData appConfig) async {
     // set twitter api client keys
     (bloc.twitterApi.client as TwitterClient)
       ..consumerKey = appConfig.twitterConsumerKey
@@ -70,9 +70,7 @@ abstract class AuthenticationEvent {
 /// If no active twitter session is retrieved, [UnauthenticatedState] is
 /// yielded.
 class InitializeTwitterSessionEvent extends AuthenticationEvent {
-  const InitializeTwitterSessionEvent(this.appConfig);
-
-  final AppConfig appConfig;
+  const InitializeTwitterSessionEvent();
 
   static final Logger _log = Logger('InitializeTwitterSessionEvent');
 
@@ -81,11 +79,13 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     AuthenticationState currentState,
     AuthenticationBloc bloc,
   }) async* {
-    if (appConfig != null) {
+    final AppConfigData appConfigData = app<AppConfig>().data;
+
+    if (appConfigData != null) {
       // init twitter login
       bloc.twitterLogin = TwitterLogin(
-        consumerKey: appConfig.twitterConsumerKey,
-        consumerSecret: appConfig.twitterConsumerSecret,
+        consumerKey: appConfigData.twitterConsumerKey,
+        consumerSecret: appConfigData.twitterConsumerSecret,
       );
 
       // init active twitter session
@@ -95,7 +95,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     }
 
     if (bloc.twitterSession != null) {
-      if (await onLogin(bloc, appConfig)) {
+      if (await onLogin(bloc, appConfigData)) {
         // retrieved session and initialized login
         _log.info('authenticated');
 
@@ -117,9 +117,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
 
 /// Used to authenticate a user.
 class LoginEvent extends AuthenticationEvent {
-  const LoginEvent(this.appConfig);
-
-  final AppConfig appConfig;
+  const LoginEvent();
 
   static final Logger _log = Logger('LoginEvent');
 
@@ -137,7 +135,7 @@ class LoginEvent extends AuthenticationEvent {
         _log.fine('successfully logged in');
         bloc.twitterSession = result.session;
 
-        if (await onLogin(bloc, appConfig)) {
+        if (await onLogin(bloc, app<AppConfig>().data)) {
           // successfully initialized the login
           yield const AuthenticatedState();
           app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);

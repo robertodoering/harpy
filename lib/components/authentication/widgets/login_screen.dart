@@ -12,7 +12,6 @@ import 'package:harpy/components/common/animations/explicit/slide_animation.dart
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/harpy_background.dart';
-import 'package:harpy/core/app_config.dart';
 import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _startLogin() async {
     await _slideLoginKey.currentState.forward();
 
-    final AppConfig appConfig = ApplicationBloc.of(context).appConfig;
-    AuthenticationBloc.of(context).add(LoginEvent(appConfig));
+    AuthenticationBloc.of(context).add(const LoginEvent());
   }
 
   Widget _buildText() {

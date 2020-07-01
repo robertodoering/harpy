@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
-import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:meta/meta.dart';
@@ -21,10 +20,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   }
 
   final AuthenticationBloc authenticationBloc;
-
-  /// The app configuration is located in `assets/config/app_config.yaml` and
-  /// parsed when the app is initialized
-  AppConfig appConfig;
 
   /// The [HarpyTheme] used in the root [MaterialApp].
   HarpyTheme harpyTheme = predefinedThemes.first;

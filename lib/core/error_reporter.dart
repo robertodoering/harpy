@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/common/dialogs/error_dialog.dart';
+import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/network_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -39,13 +39,7 @@ class ErrorReporter {
   /// Initializes the [SentryClient] with the DSN of the [AppConfig] to report
   /// errors in release mode.
   Future<void> initialize() async {
-    // get the context from the navigator since its below the application bloc
-    final BuildContext context =
-        app<HarpyNavigator>().key.currentState.overlay.context;
-
-    final ApplicationBloc bloc = ApplicationBloc.of(context);
-
-    final String dsn = bloc.appConfig?.sentryDsn;
+    final String dsn = app<AppConfig>().data?.sentryDsn;
 
     if (dsn?.isNotEmpty == true) {
       _sentry = SentryClient(dsn: dsn);

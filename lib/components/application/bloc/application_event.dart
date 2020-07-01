@@ -39,7 +39,7 @@ class InitializeEvent extends ApplicationEvent {
     _log.fine('start common initialization');
 
     initLogger();
-    bloc.appConfig = await parseAppConfig();
+    await app<AppConfig>().parseAppConfig();
 
     Future.wait<void>(<Future<void>>[
       app<HarpyInfo>().initialize(),
@@ -58,7 +58,7 @@ class InitializeEvent extends ApplicationEvent {
     _log.fine('start user initialization');
 
     // start twitter session initialization
-    authenticationBloc.add(InitializeTwitterSessionEvent(bloc.appConfig));
+    authenticationBloc.add(const InitializeTwitterSessionEvent());
 
     // wait for the session to initialize
     final bool authenticated =
