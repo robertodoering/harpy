@@ -47,11 +47,11 @@ class ErrorReporter {
 
     final String dsn = bloc.appConfig?.sentryDsn;
 
-    if (dsn?.isEmpty == true) {
+    if (dsn?.isNotEmpty == true) {
+      _sentry = SentryClient(dsn: dsn);
+    } else {
       _log.warning('No dsn set for sentry. \n'
           'Errors that are thrown will not be reported to sentry.');
-    } else {
-      _sentry = SentryClient(dsn: dsn);
     }
   }
 
