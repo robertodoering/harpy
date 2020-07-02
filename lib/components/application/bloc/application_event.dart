@@ -39,9 +39,12 @@ class InitializeEvent extends ApplicationEvent {
     _log.fine('start common initialization');
 
     initLogger();
+
+    // need to parse app config before we continue with initialization that is
+    // reliant on the app config
     await app<AppConfig>().parseAppConfig();
 
-    Future.wait<void>(<Future<void>>[
+    await Future.wait<void>(<Future<void>>[
       app<HarpyInfo>().initialize(),
       app<ErrorReporter>().initialize(),
     ]);
