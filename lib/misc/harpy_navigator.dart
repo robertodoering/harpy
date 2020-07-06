@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
+import 'package:harpy/components/common/fade_route.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:logging/logging.dart';
 
@@ -79,11 +80,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
   switch (routeType) {
     case RouteType.fade:
-    // todo: add fade route
-    // return FadeRoute(
-    //   builder: (_) => screen,
-    //   settings: RouteSettings(name: routeName),
-    // );
+      return FadeRoute<void>(
+        builder: (_) => screen,
+        settings: RouteSettings(name: routeName),
+      );
     case RouteType.defaultRoute:
     default:
       return MaterialPageRoute<void>(
