@@ -9,6 +9,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 /// to jump to the start of the list.
 ///
 /// The affected list must be built above this widget in the widget tree.
+/// Only one primary scroll controller must exist below this widget.
 ///
 /// The button is visible if the current scroll position is greater than the
 /// screen size and the current scroll direction is [ScrollDirection.up].
@@ -51,7 +52,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
-    if (_scrollController.position.pixels < mediaQuery.size.height && mounted) {
+    if (_scrollController.offset < mediaQuery.size.height && mounted) {
       setState(() {});
     }
   }
@@ -65,16 +66,22 @@ class _ScrollToStartState extends State<ScrollToStart> {
       return false;
     }
 
-    return _scrollController.position.pixels > mediaQuery.size.height &&
+    return _scrollController.offset > mediaQuery.size.height &&
         scrollDirection.up;
   }
 
   void _scrollToStart() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(seconds: 1),
-      curve: Curves.easeOut,
-    );
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
+    if (_scrollController.offset > mediaQuery.size.height * 5) {
+      _scrollController.jumpTo(0);
+    } else {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   @override

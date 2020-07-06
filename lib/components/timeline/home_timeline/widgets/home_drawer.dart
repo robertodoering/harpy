@@ -13,6 +13,7 @@ class HomeDrawer extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
+            primary: false,
             padding: EdgeInsets.zero,
             children: <Widget>[
               // profile
