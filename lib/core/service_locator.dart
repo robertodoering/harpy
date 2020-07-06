@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/message_service.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// [GetIt] is a simple service locator for accessing services from anywhere
@@ -25,5 +26,6 @@ void setupServices() {
     )
     ..registerLazySingleton<HarpyInfo>(() => HarpyInfo())
     ..registerLazySingleton<ErrorReporter>(() => ErrorReporter())
-    ..registerLazySingleton<AppConfig>(() => AppConfig());
+    ..registerLazySingleton<AppConfig>(() => AppConfig())
+    ..registerLazySingleton<MessageService>(() => MessageService());
 }

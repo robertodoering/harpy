@@ -4,6 +4,7 @@ import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/global_bloc_provider.dart';
+import 'package:harpy/components/common/harpy_message_handler.dart';
 import 'package:harpy/core/harpy_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -49,6 +50,10 @@ class Harpy extends StatelessWidget {
         navigatorKey: app<HarpyNavigator>().key,
         onGenerateRoute: onGenerateRoute,
         home: SplashScreen(),
+        builder: (BuildContext widget, Widget child) => HarpyMessageHandler(
+          key: HarpyMessageHandler.globalKey,
+          child: child,
+        ),
       ),
     );
   }
