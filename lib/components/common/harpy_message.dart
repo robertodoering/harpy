@@ -122,12 +122,12 @@ class _HarpyMessageState extends State<HarpyMessage>
               color: theme.backgroundColors.first,
               key: _boxKey,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     _buildIcon(),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(widget.text),
                     ),
