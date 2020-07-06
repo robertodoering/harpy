@@ -88,10 +88,16 @@ class InitializeEvent extends ApplicationEvent {
 
     if (authenticated) {
       // navigate to home screen
-      app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
+      app<HarpyNavigator>().pushReplacementNamed(
+        HomeScreen.route,
+        type: RouteType.fade,
+      );
     } else {
       // navigate to login screen
-      app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+      app<HarpyNavigator>().pushReplacementNamed(
+        LoginScreen.route,
+        type: RouteType.fade,
+      );
     }
   }
 }

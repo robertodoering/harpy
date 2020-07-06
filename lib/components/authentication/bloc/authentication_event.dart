@@ -139,17 +139,26 @@ class LoginEvent extends AuthenticationEvent {
         if (await onLogin(bloc, app<AppConfig>().data)) {
           // successfully initialized the login
           yield const AuthenticatedState();
-          app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
+          app<HarpyNavigator>().pushReplacementNamed(
+            HomeScreen.route,
+            type: RouteType.fade,
+          );
         } else {
           // failed initializing login
           await onLogout(bloc);
-          app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+          app<HarpyNavigator>().pushReplacementNamed(
+            LoginScreen.route,
+            type: RouteType.fade,
+          );
         }
 
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
-        app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+        app<HarpyNavigator>().pushReplacementNamed(
+          LoginScreen.route,
+          type: RouteType.fade,
+        );
         break;
       case TwitterLoginStatus.error:
       default:
@@ -157,7 +166,10 @@ class LoginEvent extends AuthenticationEvent {
         app<MessageService>().showWarning(
           'Authentication failed, please try again.',
         );
-        app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+        app<HarpyNavigator>().pushReplacementNamed(
+          LoginScreen.route,
+          type: RouteType.fade,
+        );
         break;
     }
   }
