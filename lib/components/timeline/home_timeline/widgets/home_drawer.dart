@@ -13,6 +13,7 @@ class HomeDrawer extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
+            padding: EdgeInsets.zero,
             children: <Widget>[
               // profile
               ListTile(
@@ -66,7 +67,12 @@ class HomeDrawer extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const HomeDrawerHeader(),
-            Expanded(child: SafeArea(child: _buildActions(context))),
+            Expanded(
+              child: SafeArea(
+                top: false,
+                child: _buildActions(context),
+              ),
+            ),
           ],
         ),
       ),
