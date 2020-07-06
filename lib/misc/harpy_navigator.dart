@@ -17,7 +17,7 @@ final Logger _log = Logger('HarpyNavigator');
 /// [MaterialApp]. This allows for navigation without access to the
 /// [BuildContext].
 class HarpyNavigator {
-  GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
   /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
   void push(Widget widget, {String name}) {
