@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
 import 'package:harpy/core/api/handle_tweets.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
+import 'package:harpy/core/api/tweet_data.dart';
 
 @immutable
 abstract class TimelineEvent {
@@ -24,8 +26,13 @@ abstract class UpdateTimelineEvent extends TimelineEvent {
     TimelineState currentState,
     TimelineBloc bloc,
   }) async* {
-    bloc.tweets = await requestTimeline(bloc).then(handleTweets);
+    final List<TweetData> tweets = await requestTimeline(bloc)
+        .then(handleTweets)
+        .catchError(twitterApiErrorHandler);
 
-    yield const ShowingTimelineState();
+    if (tweets != null) {
+      bloc.tweets = tweets;
+      yield const ShowingTimelineState();
+    }
   }
 }
