@@ -4,7 +4,7 @@ import 'package:harpy/components/common/scroll_direction_listener.dart';
 import 'package:harpy/components/common/scroll_to_start.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
-import 'package:harpy/core/tweet/tweet_data.dart';
+import 'package:harpy/core/api/tweet_data.dart';
 
 class TweetTimeline<T extends TimelineBloc> extends StatefulWidget {
   @override

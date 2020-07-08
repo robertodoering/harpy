@@ -2,7 +2,7 @@ import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
-import 'package:harpy/core/tweet/handle_tweets.dart';
+import 'package:harpy/core/api/handle_tweets.dart';
 
 @immutable
 abstract class TimelineEvent {

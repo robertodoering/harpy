@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/followers_count.dart';
-import 'package:harpy/core/tweet/tweet_data.dart';
+import 'package:harpy/core/api/tweet_data.dart';
 
 class HomeDrawerHeader extends StatelessWidget {
   const HomeDrawerHeader();

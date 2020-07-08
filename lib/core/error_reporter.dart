@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/error_dialog.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/network_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';

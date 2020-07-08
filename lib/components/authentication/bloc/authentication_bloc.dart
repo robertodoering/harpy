@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
+import 'package:harpy/core/api/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/tweet/tweet_data.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
