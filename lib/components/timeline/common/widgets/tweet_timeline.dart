@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/scroll_direction_listener.dart';
 import 'package:harpy/components/common/scroll_to_start.dart';
+import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
 import 'package:harpy/core/api/tweet_data.dart';
@@ -64,13 +65,21 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       children: <Widget>[
         if (tweet.isRetweet) Text('retweeted by ${tweet.retweetUserName}'),
         Text(tweet.userData.name),
-        Text(tweet.createdAt.toIso8601String()),
-        Text(tweet.fullText),
-        if (tweet.replies.isNotEmpty) ..._buildReplies(),
+        // Text(tweet.createdAt.toIso8601String()),
+        // Text(tweet.fullText),
+        TwitterText(
+          tweet.fullText,
+          entities: tweet.entities,
+          entityColor: theme.accentColor,
+        ),
+        if (tweet.replies.isNotEmpty)
+          ..._buildReplies(),
       ],
     );
   }

@@ -1,5 +1,4 @@
-import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
-import 'package:dart_twitter_api/api/users/data/user.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
 
 /// Contains everything necessary to build a Tweet.
 ///
@@ -18,6 +17,7 @@ class TweetData {
     userData = UserData.fromUser(tweet.user);
     retweetCount = tweet.retweetCount;
     favoriteCount = tweet.favoriteCount;
+    entities = tweet.entities;
   }
 
   /// UTC time when this Tweet was created.
@@ -38,6 +38,9 @@ class TweetData {
   /// Indicates approximately how many times this Tweet has been liked by
   /// Twitter users.
   int favoriteCount;
+
+  /// Entities which have been parsed out of the text of the Tweet.
+  Entities entities;
 
   /// If this [TweetData] is a retweet, the [retweetUserName] is the name of the
   /// person that retweeted this tweet.

@@ -31,4 +31,10 @@ void main() {
 
     expect(prettyPrintDurationDifference(difference3), '5:04 minutes');
   });
+
+  test('Parses html entities as they appear in twitter text respones', () {
+    const String source = '&lt;body&gt;Hello world &amp;&lt;/body&gt;';
+
+    expect(parseHtmlEntities(source), '<body>Hello world &</body>');
+  });
 }

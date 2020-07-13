@@ -7,6 +7,6 @@ import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
 class UpdateHomeTimelineEvent extends UpdateTimelineEvent {
   @override
   Future<List<Tweet>> requestTimeline(TimelineBloc bloc) {
-    return bloc.timelineService.homeTimeline(count: 50);
+    return bloc.timelineService.homeTimeline(count: 200);
   }
 }

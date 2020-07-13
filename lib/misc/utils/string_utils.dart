@@ -14,3 +14,16 @@ String prettyPrintDurationDifference(Duration difference) {
     return '$seconds seconds';
   }
 }
+
+/// Parses `<`, `>` and `&` when they appear as html entities in the [source].
+String parseHtmlEntities(String source) {
+  <String, String>{
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+  }.forEach((String entity, String value) {
+    source = source.replaceAll(entity, value);
+  });
+
+  return source;
+}
