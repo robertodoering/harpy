@@ -72,8 +72,59 @@ class _TweetTileContent extends StatelessWidget {
               entityColor: theme.accentColor,
             ),
           ),
+        if (tweet.hasQuote) ...<Widget>[
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: _TweetQuoteContent(tweet.quote),
+          ),
+        ],
         const SizedBox(height: 8),
       ],
+    );
+  }
+}
+
+class _TweetQuoteContent extends StatelessWidget {
+  const _TweetQuoteContent(this.tweet);
+
+  final TweetData tweet;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    // todo: change tweet quote style
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white.withOpacity(.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (tweet.isRetweet)
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              child: TweetRetweetedRow(tweet),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TweetAuthorRow(tweet),
+          ),
+          if (tweet.hasText)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: TwitterText(
+                tweet.fullText,
+                entities: tweet.entities,
+                entityColor: theme.accentColor,
+              ),
+            ),
+          if (tweet.hasQuote) _TweetQuoteContent(tweet.quote),
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 }

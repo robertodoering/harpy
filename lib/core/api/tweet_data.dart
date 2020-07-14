@@ -11,6 +11,10 @@ class TweetData {
       tweet = tweet.retweetedStatus;
     }
 
+    if (tweet.quotedStatus != null) {
+      quote = TweetData.fromTweet(tweet.quotedStatus);
+    }
+
     createdAt = tweet.createdAt;
     idStr = tweet.idStr;
     fullText = tweet.fullText;
@@ -48,6 +52,10 @@ class TweetData {
   /// `null` if this is not a retweet.
   String retweetUserName;
 
+  /// This field only surfaces when the Tweet is a quote Tweet. This attribute
+  /// contains the Tweet object of the original Tweet that was quoted.
+  TweetData quote;
+
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
 
@@ -56,6 +64,9 @@ class TweetData {
 
   /// Whether this tweet has text.
   bool get hasText => fullText?.isNotEmpty == true;
+
+  /// Whether this tweet has quoted another tweet.
+  bool get hasQuote => quote != null;
 }
 
 /// The user data for [TweetData].
