@@ -20,10 +20,12 @@ class TweetRetweetedRow extends StatelessWidget {
           child: Icon(Icons.repeat, size: 18),
         ),
         const SizedBox(width: 8),
-        Text(
-          '${tweet.retweetUserName} retweeted',
-          style: theme.textTheme.bodyText2.copyWith(
-            color: theme.textTheme.bodyText2.color.withOpacity(.8),
+        Expanded(
+          child: Text(
+            '${tweet.retweetUserName} retweeted',
+            style: theme.textTheme.bodyText2.copyWith(
+              color: theme.textTheme.bodyText2.color.withOpacity(.8),
+            ),
           ),
         ),
       ],
