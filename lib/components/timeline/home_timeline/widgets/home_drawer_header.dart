@@ -4,48 +4,47 @@ import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/followers_count.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
+/// The header for the [HomeDrawer].
 class HomeDrawerHeader extends StatelessWidget {
   const HomeDrawerHeader();
 
+  void _onUserTap() {
+    // todo: go to user screen
+  }
+
   Widget _buildAvatarRow(BuildContext context, UserData user) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        // circle avatar
-        GestureDetector(
-          onTap: () {},
-          child: CachedCircleAvatar(
+    return GestureDetector(
+      onTap: _onUserTap,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // circle avatar
+          CachedCircleAvatar(
             radius: 32,
             imageUrl: user.profileImageUrlHttps,
           ),
-        ),
 
-        const SizedBox(width: 16),
+          const SizedBox(width: 16),
 
-        // name + username
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {},
-                child: Text(
+          // name + username
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
                   user.name,
                   style: Theme.of(context).textTheme.headline6,
                 ),
-              ),
-              const SizedBox(height: 4),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
+                const SizedBox(height: 4),
+                Text(
                   '@${user.screenName}',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

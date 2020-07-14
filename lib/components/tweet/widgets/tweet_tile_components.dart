@@ -38,36 +38,52 @@ class TweetAuthorRow extends StatelessWidget {
 
   final TweetData tweet;
 
+  void _onUserTap() {
+    // todo: go to user screen
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
     return Row(
       children: <Widget>[
-        CachedCircleAvatar(imageUrl: tweet.userData.profileImageUrlHttps),
+        GestureDetector(
+          onTap: _onUserTap,
+          child: CachedCircleAvatar(
+            imageUrl: tweet.userData.profileImageUrlHttps,
+          ),
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Flexible(
-                    child: Text(
-                      tweet.userData.name,
-                      overflow: TextOverflow.ellipsis,
+              GestureDetector(
+                onTap: _onUserTap,
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        tweet.userData.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  if (tweet.userData.verified)
-                    const Padding(
-                      padding: EdgeInsets.only(left: 4),
-                      child: Icon(Icons.verified_user, size: 16),
-                    ),
-                ],
+                    if (tweet.userData.verified)
+                      const Padding(
+                        padding: EdgeInsets.only(left: 4),
+                        child: Icon(Icons.verified_user, size: 16),
+                      ),
+                  ],
+                ),
               ),
-              Text(
-                '@${tweet.userData.screenName} \u00b7 ${tweet.createdAt}',
-                style: theme.textTheme.bodyText1,
+              GestureDetector(
+                onTap: _onUserTap,
+                child: Text(
+                  // todo: format created at string
+                  '@${tweet.userData.screenName} \u00b7 ${tweet.createdAt}',
+                  style: theme.textTheme.bodyText1,
+                ),
               ),
             ],
           ),
