@@ -48,11 +48,14 @@ class TweetData {
   /// `null` if this is not a retweet.
   String retweetUserName;
 
+  /// A list of replies to this tweet.
+  List<TweetData> replies = <TweetData>[];
+
   /// Whether this is a retweet.
   bool get isRetweet => retweetUserName != null;
 
-  /// A list of replies to this tweet.
-  List<TweetData> replies = <TweetData>[];
+  /// Whether this tweet has text.
+  bool get hasText => fullText?.isNotEmpty == true;
 }
 
 /// The user data for [TweetData].

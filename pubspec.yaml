@@ -22,6 +22,7 @@ dependencies:
   url_launcher: ^5.4.10
   yaml: ^2.2.1
   sentry: ^3.0.1
+  cached_network_image: ^2.2.0+1
   
   # plugins
   flutter_twitter_login:
