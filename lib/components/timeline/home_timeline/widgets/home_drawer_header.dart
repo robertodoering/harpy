@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/followers_count.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
@@ -13,9 +14,9 @@ class HomeDrawerHeader extends StatelessWidget {
         // circle avatar
         GestureDetector(
           onTap: () {},
-          child: CircleAvatar(
+          child: CachedCircleAvatar(
             radius: 32,
-            backgroundImage: NetworkImage(user.profileImageUrlHttps),
+            imageUrl: user.profileImageUrlHttps,
           ),
         ),
 
