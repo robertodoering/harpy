@@ -6,7 +6,7 @@ class AnimatedScale extends ImplicitlyAnimatedWidget {
   const AnimatedScale({
     @required this.scale,
     @required this.child,
-    Curve curve = Curves.easeInCubic,
+    Curve curve = Curves.easeInOut,
     Duration duration = kShortAnimationDuration,
   }) : super(curve: curve, duration: duration);
 

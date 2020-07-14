@@ -35,6 +35,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   Widget build(BuildContext context) {
     return AnimatedScale(
       scale: _tapDown ? .9 : 1,
+      curve: Curves.easeOutCirc,
       child: GestureDetector(
         onTapDown: (_) => _updateTapDown(true),
         onTapUp: (_) => _updateTapDown(false),
@@ -226,7 +227,7 @@ class HarpyButton extends StatelessWidget {
     Color fgColor = _getForegroundColor(theme);
 
     if (onTap == null) {
-      // reduce the opacity by 30% when disabled
+      // reduce the opacity by 50% when disabled
       bgColor = bgColor.withOpacity(max(0, bgColor.opacity - 0.5));
       fgColor = fgColor.withOpacity(max(0, fgColor.opacity - 0.5));
     }
