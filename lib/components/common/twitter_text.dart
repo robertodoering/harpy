@@ -15,6 +15,7 @@ class TwitterText extends StatefulWidget {
     this.text, {
     this.entities,
     this.entityColor,
+    this.style,
     this.onHashtagTap,
     this.onUrlTap,
     this.onUserMentionTap,
@@ -28,6 +29,9 @@ class TwitterText extends StatefulWidget {
 
   /// The color of the entity in the text.
   final Color entityColor;
+
+  /// The text style used as a base for the text.
+  final TextStyle style;
 
   /// Called when a hashtag is tapped.
   final EntityTapped<Hashtag> onHashtagTap;
@@ -142,6 +146,7 @@ class _TwitterTextState extends State<TwitterText> {
   Widget build(BuildContext context) {
     return Text.rich(
       TextSpan(children: _textSpans),
+      style: widget.style,
     );
   }
 }

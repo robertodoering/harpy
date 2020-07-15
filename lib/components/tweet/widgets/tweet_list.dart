@@ -18,7 +18,7 @@ class TweetList extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) =>
               TweetTile(tweets[index]),
           separatorBuilder: (BuildContext context, int index) =>
-              const Divider(color: Colors.white),
+              const SizedBox(),
         ),
       ),
     );

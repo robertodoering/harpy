@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/widgets/tweet_tile_components.dart';
 import 'package:harpy/core/api/tweet_data.dart';
@@ -103,14 +104,52 @@ class _TweetQuoteContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (tweet.isRetweet)
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-              child: TweetRetweetedRow(tweet),
-            ),
           Padding(
             padding: const EdgeInsets.all(8),
-            child: TweetAuthorRow(tweet),
+            child: Row(
+              children: <Widget>[
+                CachedCircleAvatar(
+                  imageUrl: tweet.userData.profileImageUrlHttps,
+                  radius: 14,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              tweet.userData.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodyText2.copyWith(
+                                fontSize:
+                                    theme.textTheme.bodyText2.fontSize - 2,
+                              ),
+                            ),
+                          ),
+                          if (tweet.userData.verified)
+                            const Padding(
+                              padding: EdgeInsets.only(left: 4),
+                              child: Icon(Icons.verified_user, size: 14),
+                            ),
+                        ],
+                      ),
+                      Text(
+                        // todo: format created at string
+                        '@${tweet.userData.screenName} \u00b7 '
+                        '${tweet.createdAt}',
+                        style: theme.textTheme.bodyText1.copyWith(
+                          fontSize: theme.textTheme.bodyText1.fontSize - 2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           if (tweet.hasText)
             Padding(
@@ -119,9 +158,11 @@ class _TweetQuoteContent extends StatelessWidget {
                 tweet.fullText,
                 entities: tweet.entities,
                 entityColor: theme.accentColor,
+                style: theme.textTheme.bodyText2.copyWith(
+                  fontSize: theme.textTheme.bodyText2.fontSize - 2,
+                ),
               ),
             ),
-          if (tweet.hasQuote) _TweetQuoteContent(tweet.quote),
           const SizedBox(height: 8),
         ],
       ),
