@@ -16,6 +16,7 @@ class TwitterText extends StatefulWidget {
     this.entities,
     this.entityColor,
     this.style,
+    this.urlToIgnore,
     this.onHashtagTap,
     this.onUrlTap,
     this.onUserMentionTap,
@@ -32,6 +33,11 @@ class TwitterText extends StatefulWidget {
 
   /// The text style used as a base for the text.
   final TextStyle style;
+
+  /// A url that won't be built if it is part of [Entity.urls].
+  ///
+  /// Used to hide the quoted status url.
+  final String urlToIgnore;
 
   /// Called when a hashtag is tapped.
   final EntityTapped<Hashtag> onHashtagTap;
@@ -71,15 +77,29 @@ class _TwitterTextState extends State<TwitterText> {
       textStart = entity.endIndex;
     }
 
-    _addTextSpan(textStart, widget.text.length);
+    _addTextSpan(textStart, widget.text.length, trimEnd: true);
   }
 
   /// Adds the plain text with html entities parsed into the proper symbol.
-  void _addTextSpan(int start, int end) {
+  ///
+  /// [trimEnd] can be used to trim the last whitespace character in the text
+  /// span. This is used to prevent softwraps at the end of the [TwitterText]
+  /// with only one wrapped whitespace character.
+  void _addTextSpan(int start, int end, {bool trimEnd = false}) {
     if (start < end && end <= widget.text.length) {
-      _textSpans.add(
-        TextSpan(text: parseHtmlEntities(widget.text.substring(start, end))),
+      final String text = parseHtmlEntities(
+        trimOne(
+          widget.text.substring(start, end),
+          start: false,
+          end: trimEnd,
+        ),
       );
+
+      if (text.isNotEmpty) {
+        _textSpans.add(
+          TextSpan(text: text),
+        );
+      }
     }
   }
 
@@ -104,6 +124,12 @@ class _TwitterTextState extends State<TwitterText> {
     }
 
     if (value is Url) {
+      if (value.url == widget.urlToIgnore) {
+        // hide the url to ignore
+        // usually the quoted status link at the end of the text
+        return;
+      }
+
       recognizer = TapGestureRecognizer()
         ..onTap = () => widget.onUrlTap?.call(value);
       _gestureRecognizer.add(recognizer);

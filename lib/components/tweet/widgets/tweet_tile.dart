@@ -71,6 +71,7 @@ class _TweetTileContent extends StatelessWidget {
               tweet.fullText,
               entities: tweet.entities,
               entityColor: theme.accentColor,
+              urlToIgnore: tweet.quotedStatusUrl,
             ),
           ),
         if (tweet.hasQuote) ...<Widget>[
@@ -87,9 +88,14 @@ class _TweetTileContent extends StatelessWidget {
 }
 
 class _TweetQuoteContent extends StatelessWidget {
-  const _TweetQuoteContent(this.tweet);
+  const _TweetQuoteContent(
+    this.tweet, {
+    this.fontSizeDelta = -2,
+  });
 
   final TweetData tweet;
+
+  final int fontSizeDelta;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +111,12 @@ class _TweetQuoteContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(
+              top: 8,
+              left: 8,
+              right: 8,
+              bottom: 4,
+            ),
             child: Row(
               children: <Widget>[
                 CachedCircleAvatar(
@@ -123,9 +134,8 @@ class _TweetQuoteContent extends StatelessWidget {
                             child: Text(
                               tweet.userData.name,
                               overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodyText2.copyWith(
-                                fontSize:
-                                    theme.textTheme.bodyText2.fontSize - 2,
+                              style: theme.textTheme.bodyText2.apply(
+                                fontSizeDelta: -2,
                               ),
                             ),
                           ),
@@ -140,8 +150,8 @@ class _TweetQuoteContent extends StatelessWidget {
                         // todo: format created at string
                         '@${tweet.userData.screenName} \u00b7 '
                         '${tweet.createdAt}',
-                        style: theme.textTheme.bodyText1.copyWith(
-                          fontSize: theme.textTheme.bodyText1.fontSize - 2,
+                        style: theme.textTheme.bodyText1.apply(
+                          fontSizeDelta: -2,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -158,9 +168,10 @@ class _TweetQuoteContent extends StatelessWidget {
                 tweet.fullText,
                 entities: tweet.entities,
                 entityColor: theme.accentColor,
-                style: theme.textTheme.bodyText2.copyWith(
-                  fontSize: theme.textTheme.bodyText2.fontSize - 2,
+                style: theme.textTheme.bodyText2.apply(
+                  fontSizeDelta: -2,
                 ),
+                urlToIgnore: tweet.quotedStatusUrl,
               ),
             ),
           const SizedBox(height: 8),

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 void main() {
-  test('Pretty print a duration difference', () {
+  test('prettyPrintDurationDifference pretty prints a duration difference', () {
     const int timestamp = 1557836948;
 
     final DateTime now = DateTime.fromMillisecondsSinceEpoch(
@@ -32,9 +32,49 @@ void main() {
     expect(prettyPrintDurationDifference(difference3), '5:04 minutes');
   });
 
-  test('Parses html entities as they appear in twitter text respones', () {
-    const String source = '&lt;body&gt;Hello world &amp;&lt;/body&gt;';
+  group('parseHtmlEntities', () {
+    test('parses entities as they appear in twitter text respones', () {
+      const String source = '&lt;body&gt;Hello world &amp;&lt;/body&gt;';
 
-    expect(parseHtmlEntities(source), '<body>Hello world &</body>');
+      expect(parseHtmlEntities(source), '<body>Hello world &</body>');
+    });
+
+    test('does nothing when the source does not contain any entites', () {
+      const String source = 'This is just a regular string';
+
+      expect(parseHtmlEntities(source), 'This is just a regular string');
+    });
+  });
+
+  group('trimOne', () {
+    test('trims the first and last whitespace of a string', () {
+      const String source = '  Hello World   \n';
+
+      expect(trimOne(source), ' Hello World   ');
+    });
+
+    test('trims the first whitespace of a string', () {
+      const String source = '  Hello World   \n';
+
+      expect(trimOne(source, end: false), ' Hello World   \n');
+    });
+
+    test('trims the last whitespace of a string', () {
+      const String source = '  Hello World   \n';
+
+      expect(trimOne(source, start: false), '  Hello World   ');
+    });
+
+    test('returns the string if it has no starting or ending whitespace', () {
+      const String source = 'Hello World';
+
+      expect(trimOne(source), 'Hello World');
+    });
+
+    test('returns null if the source is null', () {
+      String source;
+
+      expect(trimOne(source), null);
+    });
   });
 }

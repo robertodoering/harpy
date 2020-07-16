@@ -13,6 +13,7 @@ class TweetData {
 
     if (tweet.quotedStatus != null) {
       quote = TweetData.fromTweet(tweet.quotedStatus);
+      quotedStatusUrl = tweet.quotedStatusPermalink?.url;
     }
 
     createdAt = tweet.createdAt;
@@ -55,6 +56,9 @@ class TweetData {
   /// This field only surfaces when the Tweet is a quote Tweet. This attribute
   /// contains the Tweet object of the original Tweet that was quoted.
   TweetData quote;
+
+  /// Shortened url of the quoted status.
+  String quotedStatusUrl;
 
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
