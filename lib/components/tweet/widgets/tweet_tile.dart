@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/widgets/tweet_tile_components.dart';
 import 'package:harpy/core/api/tweet_data.dart';
@@ -43,6 +42,7 @@ class TweetTile extends StatelessWidget {
   }
 }
 
+/// Builds the content for a tweet.
 class _TweetTileContent extends StatelessWidget {
   const _TweetTileContent(this.tweet);
 
@@ -87,6 +87,7 @@ class _TweetTileContent extends StatelessWidget {
   }
 }
 
+/// Builds the content for a tweet quote.
 class _TweetQuoteContent extends StatelessWidget {
   const _TweetQuoteContent(
     this.tweet, {
@@ -101,7 +102,6 @@ class _TweetQuoteContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    // todo: change tweet quote style
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -110,57 +110,7 @@ class _TweetQuoteContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              left: 8,
-              right: 8,
-              bottom: 4,
-            ),
-            child: Row(
-              children: <Widget>[
-                CachedCircleAvatar(
-                  imageUrl: tweet.userData.profileImageUrlHttps,
-                  radius: 14,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              tweet.userData.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodyText2.apply(
-                                fontSizeDelta: -2,
-                              ),
-                            ),
-                          ),
-                          if (tweet.userData.verified)
-                            const Padding(
-                              padding: EdgeInsets.only(left: 4),
-                              child: Icon(Icons.verified_user, size: 14),
-                            ),
-                        ],
-                      ),
-                      Text(
-                        // todo: format created at string
-                        '@${tweet.userData.screenName} \u00b7 '
-                        '${tweet.createdAt}',
-                        style: theme.textTheme.bodyText1.apply(
-                          fontSizeDelta: -2,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+          TweetQuoteAuthorRow(tweet),
           if (tweet.hasText)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
