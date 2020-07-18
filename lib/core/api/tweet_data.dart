@@ -99,6 +99,35 @@ class TweetData {
   /// When [gif] is not `null`, no [images] or [video] exists for this tweet.
   VideoData gif;
 
+  String _replyAuthors;
+
+  /// Finds and returns the display names of the authors that replied to this
+  /// tweet.
+  ///
+  /// If the only reply author is the author of this tweet, an empty string is
+  /// returned instead.
+  ///
+  /// After getting the reply authors once, the value is cached in
+  /// [_replyAuthors].
+  String get replyAuthors {
+    if (_replyAuthors != null) {
+      return _replyAuthors;
+    }
+
+    final Set<String> replyNames = <String>{};
+
+    for (TweetData reply in replies) {
+      replyNames.add(reply.userData.name);
+    }
+
+    if (replyNames.isEmpty ||
+        replyNames.length == 1 && replyNames.first == userData.name) {
+      return _replyAuthors = '';
+    } else {
+      return _replyAuthors = replyNames.join(', ');
+    }
+  }
+
   /// Whether this is a retweet.
   bool get isRetweet => retweetUserName != null;
 

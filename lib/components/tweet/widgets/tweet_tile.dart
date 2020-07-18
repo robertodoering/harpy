@@ -9,18 +9,30 @@ class TweetTile extends StatelessWidget {
 
   final TweetData tweet;
 
-  List<Widget> _buildReplies() {
-    return tweet.replies.map((TweetData tweet) {
-      return Column(
+  Widget _buildReplies(ThemeData theme) {
+    final String replyAuthors = tweet.replyAuthors;
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 48),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text('reply'),
-          Padding(
-            padding: const EdgeInsets.only(left: 48),
-            child: _TweetTileContent(tweet),
+          if (replyAuthors?.isNotEmpty == true)
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8),
+              child: Text(
+                '$replyAuthors, $replyAuthors, $replyAuthors replied',
+                style: theme.textTheme.bodyText1.copyWith(
+                  color: theme.textTheme.bodyText1.color.withOpacity(.8),
+                ),
+              ),
+            ),
+          ...tweet.replies.map(
+            (TweetData reply) => _TweetTileContent(reply),
           ),
         ],
-      );
-    }).toList();
+      ),
+    );
   }
 
   @override
@@ -36,7 +48,7 @@ class TweetTile extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _TweetTileContent(tweet),
-          if (tweet.replies.isNotEmpty) ..._buildReplies(),
+          if (tweet.replies.isNotEmpty) _buildReplies(theme),
         ],
       ),
     );
