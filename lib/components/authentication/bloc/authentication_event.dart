@@ -7,7 +7,7 @@ import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/user_data.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';

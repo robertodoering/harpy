@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/twitter_text.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet_tile_components.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
@@ -74,6 +75,13 @@ class _TweetTileContent extends StatelessWidget {
               urlToIgnore: tweet.quotedStatusUrl,
             ),
           ),
+        if (tweet.hasMedia) ...<Widget>[
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: TweetMedia(tweet),
+          ),
+        ],
         if (tweet.hasQuote) ...<Widget>[
           const SizedBox(height: 8),
           Padding(

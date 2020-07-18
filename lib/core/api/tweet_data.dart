@@ -1,4 +1,11 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/api/media_data.dart';
+import 'package:harpy/core/api/user_data.dart';
+
+/// The media types for [Media.type].
+const String kMediaPhoto = 'photo';
+const String kMediaVideo = 'video';
+const String kMediaGif = 'animated_gif';
 
 /// Contains everything necessary to build a Tweet.
 ///
@@ -14,6 +21,19 @@ class TweetData {
     if (tweet.quotedStatus != null) {
       quote = TweetData.fromTweet(tweet.quotedStatus);
       quotedStatusUrl = tweet.quotedStatusPermalink?.url;
+    }
+
+    if (tweet.extendedEntities?.media?.isNotEmpty == true) {
+      for (Media media in tweet.extendedEntities.media) {
+        if (media.type == kMediaPhoto) {
+          images ??= <ImageData>[];
+          images.add(ImageData.fromMedia(media));
+        } else if (media.type == kMediaVideo) {
+          video = VideoData.fromMedia(media);
+        } else if (media.type == kMediaGif) {
+          gif = VideoData.fromMedia(media);
+        }
+      }
     }
 
     createdAt = tweet.createdAt;
@@ -57,11 +77,27 @@ class TweetData {
   /// contains the Tweet object of the original Tweet that was quoted.
   TweetData quote;
 
-  /// Shortened url of the quoted status.
+  /// If this [TweetData] has quoted another tweet, the [quotedStatusUrl] is a
+  /// shortened url of the quoted status.
   String quotedStatusUrl;
 
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
+
+  /// Contains up to 4 [ImageData] for the images of this tweet.
+  ///
+  /// When [images] is not `null`, no [video] or [gif] exists for this tweet.
+  List<ImageData> images;
+
+  /// The [VideoData] for the video of this tweet.
+  ///
+  /// When [video] is not `null`, no [images] or [gif] exists for this tweet.
+  VideoData video;
+
+  /// The [VideoData] for the gif of this tweet.
+  ///
+  /// When [gif] is not `null`, no [images] or [video] exists for this tweet.
+  VideoData gif;
 
   /// Whether this is a retweet.
   bool get isRetweet => retweetUserName != null;
@@ -71,45 +107,8 @@ class TweetData {
 
   /// Whether this tweet has quoted another tweet.
   bool get hasQuote => quote != null;
-}
 
-/// The user data for [TweetData].
-class UserData {
-  UserData.fromUser(User user) {
-    idStr = user.idStr;
-    name = user.name;
-    screenName = user.screenName;
-    verified = user.verified;
-    followersCount = user.followersCount;
-    friendsCount = user.friendsCount;
-    profileImageUrlHttps = user.profileImageUrlHttps;
-  }
-
-  /// The string representation of the unique identifier for this User.
-  String idStr;
-
-  /// The name of the user, as they’ve defined it. Not necessarily a person’s
-  /// name. Typically capped at 50 characters, but subject to change.
-  String name;
-
-  /// The screen name, handle, or alias that this user identifies themselves
-  /// with. [screen_names] are unique but subject to change. Use id_str as a
-  /// user identifier whenever possible. Typically a maximum of 15 characters
-  /// long, but some historical accounts may exist with longer names.
-  String screenName;
-
-  /// When `true`, indicates that the user has a verified account.
-  bool verified;
-
-  /// The number of followers this account currently has. Under certain
-  /// conditions of duress, this field will temporarily indicate `0`.
-  int followersCount;
-
-  /// The number of users this account is following (AKA their “followings”).
-  /// Under certain conditions of duress, this field will temporarily indicate
-  /// `0`.
-  int friendsCount;
-
-  /// A HTTPS-based URL pointing to the user’s profile image.
-  String profileImageUrlHttps;
+  /// Whether this tweet has up to 4 images, a video or a gif.
+  bool get hasMedia =>
+      images?.isNotEmpty == true || video != null || gif != null;
 }
