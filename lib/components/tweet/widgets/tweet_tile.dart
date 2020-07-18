@@ -132,7 +132,11 @@ class _TweetQuoteContent extends StatelessWidget {
                 urlToIgnore: tweet.quotedStatusUrl,
               ),
             ),
-          const SizedBox(height: 8),
+          if (tweet.hasMedia) ...<Widget>[
+            const SizedBox(height: 8),
+            TweetMedia(tweet),
+          ] else
+            const SizedBox(height: 8),
         ],
       ),
     );
