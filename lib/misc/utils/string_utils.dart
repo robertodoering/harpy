@@ -15,6 +15,26 @@ String prettyPrintDurationDifference(Duration difference) {
   }
 }
 
+/// Pretty prints the [duration].
+///
+/// Returns an empty string if duration is `null`.
+///
+/// Example:
+/// ```dart
+/// prettyPrintDuration(Duration(minutes: 13, seconds: 37)) == '13:37';
+///
+/// prettyPrintDuration(Duration(minutes: 72, seconds: 7)) == '72:07';
+/// ```
+String prettyPrintDuration(Duration duration) {
+  if (duration == null) {
+    return '';
+  }
+
+  final String seconds = duration.inSeconds.toString();
+
+  return '${duration.inMinutes}:${seconds.length < 2 ? "0$seconds" : seconds}';
+}
+
 /// Contains html entities that are returned in twitter text responses with
 /// their corresponding character.
 const Map<String, String> _twitterHtmlEntities = <String, String>{

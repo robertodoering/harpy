@@ -17,6 +17,7 @@ dependencies:
   dart_twitter_api: ^0.3.0
   flare_flutter: ^2.0.3
   flutter_bloc: ^4.0.0
+  provider: ^4.3.1
   get_it: ^4.0.2
   logging: ^0.11.4
   url_launcher: ^5.4.10
@@ -29,6 +30,7 @@ dependencies:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   package_info: '>=0.4.1 <2.0.0'
   device_info: '>=0.4.2+4 <2.0.0'
+  video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:
   flutter_test:
