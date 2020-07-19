@@ -19,7 +19,8 @@ class FadeAnimation extends StatefulWidget {
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
-  });
+    Key key,
+  }) : super(key: key);
 
   final Widget child;
   final FadeType fadeType;
