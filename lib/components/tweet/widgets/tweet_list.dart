@@ -14,6 +14,7 @@ class TweetList extends StatelessWidget {
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: ListView.separated(
+          padding: EdgeInsets.zero,
           itemCount: tweets.length,
           itemBuilder: (BuildContext context, int index) =>
               TweetTile(tweets[index]),

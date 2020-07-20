@@ -242,13 +242,28 @@ class _OverlayActionRow extends StatelessWidget {
     );
   }
 
+  Widget _buildProgressIndicator(HarpyVideoPlayerModel model, ThemeData theme) {
+    return Transform(
+      transform: Matrix4.diagonal3Values(1, .66, 1),
+      alignment: Alignment.bottomCenter,
+      transformHitTests: false,
+      child: VideoProgressIndicator(
+        model.controller,
+        allowScrubbing: true,
+        colors: VideoProgressColors(
+          playedColor: theme.accentColor.withOpacity(.7),
+        ),
+      ),
+    );
+  }
+
   Widget _buildActions(HarpyVideoPlayerModel model) {
     return Row(
       children: <Widget>[
         if (model.finished)
           // replay button
           CircleButton(
-            onTap: model.togglePlayback,
+            onTap: model.replay,
             child: Icon(
               Icons.replay,
               color: Colors.white,
@@ -300,6 +315,7 @@ class _OverlayActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Stack(
       children: <Widget>[
@@ -309,13 +325,7 @@ class _OverlayActionRow extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: VideoProgressIndicator(
-                model.controller,
-                allowScrubbing: true,
-                colors: VideoProgressColors(
-                  playedColor: Theme.of(context).accentColor.withOpacity(.7),
-                ),
-              ),
+              child: _buildProgressIndicator(model, theme),
             ),
             Padding(
               padding: const EdgeInsets.all(4),
