@@ -39,6 +39,9 @@ class _FadeAnimationState extends State<FadeAnimation>
 
   bool _hidden = false;
 
+  bool get _hide =>
+      _hidden || _controller.isCompleted && widget.fadeType == FadeType.fadeOut;
+
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: widget.duration)
@@ -69,8 +72,8 @@ class _FadeAnimationState extends State<FadeAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => _hidden
-          ? Container()
+      builder: (BuildContext context, Widget child) => _hide
+          ? const SizedBox()
           : Opacity(
               opacity: widget.fadeType == FadeType.fadeIn
                   ? _animation.value
