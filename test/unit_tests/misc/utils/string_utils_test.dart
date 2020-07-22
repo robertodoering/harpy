@@ -32,6 +32,18 @@ void main() {
     expect(prettyPrintDurationDifference(difference3), '5:04 minutes');
   });
 
+  test('prettyPrintDuration pretty prints a duration', () {
+    const Duration duration1 = Duration(minutes: 1, seconds: 9);
+
+    const Duration duration2 = Duration(minutes: 4, seconds: 20);
+
+    const Duration duration3 = Duration(hours: 1, minutes: 6, seconds: 9);
+
+    expect(prettyPrintDuration(duration1), '1:09');
+    expect(prettyPrintDuration(duration2), '4:20');
+    expect(prettyPrintDuration(duration3), '66:09');
+  });
+
   group('parseHtmlEntities', () {
     test('parses entities as they appear in twitter text respones', () {
       const String source = '&lt;body&gt;Hello world &amp;&lt;/body&gt;';

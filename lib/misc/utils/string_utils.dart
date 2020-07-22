@@ -30,7 +30,7 @@ String prettyPrintDuration(Duration duration) {
     return '';
   }
 
-  final String seconds = duration.inSeconds.toString();
+  final String seconds = (duration.inSeconds % 60).toString();
 
   return '${duration.inMinutes}:${seconds.length < 2 ? "0$seconds" : seconds}';
 }
