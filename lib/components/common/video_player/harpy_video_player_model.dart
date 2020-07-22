@@ -13,6 +13,7 @@ enum HarpyVideoPlayerAction {
 /// Defines a callback that is called when an action is taken on a video.
 typedef OnAction = void Function(HarpyVideoPlayerAction);
 
+/// A [ChangeNotifer] handling changes to a [HarpyVideoPlayer].
 class HarpyVideoPlayerModel extends ChangeNotifier {
   HarpyVideoPlayerModel(this.controller);
 
@@ -62,10 +63,6 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   /// Plays or pauses the video.
   void togglePlayback() {
-    print('finished: $finished');
-    print('position: $position');
-    print('duration: $duration');
-
     if (finished) {
       return;
     }

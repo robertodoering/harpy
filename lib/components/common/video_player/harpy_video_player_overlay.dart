@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
+import 'package:harpy/components/common/animations/explicit/transform_animation.dart';
 import 'package:harpy/components/common/animations/implicit/animated_icon.dart';
 import 'package:harpy/components/common/buttons/circle_button.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
@@ -203,17 +204,23 @@ class _OverlayPlaybackIcon extends StatelessWidget {
     return Center(
       child: FadeAnimation(
         key: ValueKey<int>(icon.codePoint),
+        curve: Curves.easeInOut,
         fadeType: FadeType.fadeOut,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black38,
-            shape: BoxShape.circle,
-          ),
-          padding: const EdgeInsets.all(8),
-          child: Icon(
-            icon,
-            size: 32,
-            color: Colors.white,
+        child: TransformInAnimation.scale(
+          beginScale: 1,
+          endScale: 1.5,
+          curve: Curves.easeInOutSine,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black38,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Icon(
+              icon,
+              size: 32,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
