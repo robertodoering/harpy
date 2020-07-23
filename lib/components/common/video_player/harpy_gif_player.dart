@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
-import 'package:harpy/components/common/video_player/harpy_video_player_overlay.dart';
 import 'package:harpy/components/common/video_player/video_thumbnail.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-/// Builds a [VideoPlayer] with a [VideoPlayerOverlay] to control the video.
+/// Builds a [VideoPlayer] for an animated gif.
 ///
-/// When built initially, the video will not be initialized and instead the
-/// [thumbnail] url is used to build an image in place of the video. After being
-/// tapped the video will be initialized and starts playing.
-///
-/// A [HarpyVideoPlayerModel] is used to control the video.
-class HarpyVideoPlayer extends StatefulWidget {
-  const HarpyVideoPlayer(
+/// The video representing the gif will loop after initializing and play on tap.
+class HarpyGifPlayer extends StatefulWidget {
+  const HarpyGifPlayer(
     this.url, {
     this.thumbnail,
   });
@@ -26,17 +21,17 @@ class HarpyVideoPlayer extends StatefulWidget {
   final String thumbnail;
 
   @override
-  _HarpyVideoPlayerState createState() => _HarpyVideoPlayerState();
+  _HarpyGifPlayerState createState() => _HarpyGifPlayerState();
 }
 
-class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
+class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.url);
+    _controller = VideoPlayerController.network(widget.url)..setLooping(true);
   }
 
   @override
@@ -51,19 +46,17 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _buildUninitialized(HarpyVideoPlayerModel model) {
     return VideoThumbnail(
       thumbnail: widget.thumbnail,
-      icon: Icons.play_arrow,
+      icon: Icons.gif,
       initializing: model.initializing,
-      onTap: model.initialize,
+      onTap: () async {
+        await model.initialize();
+        _controller.play();
+      },
     );
   }
 
-  Widget _buildVideo(HarpyVideoPlayerModel model) {
-    return Stack(
-      children: <Widget>[
-        VideoPlayer(_controller),
-        VideoPlayerOverlay(model),
-      ],
-    );
+  Widget _buildGif(HarpyVideoPlayerModel model) {
+    return VideoPlayer(_controller);
   }
 
   @override
@@ -76,7 +69,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
         if (!model.initialized) {
           return _buildUninitialized(model);
         } else {
-          return _buildVideo(model);
+          return _buildGif(model);
         }
       },
     );

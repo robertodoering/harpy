@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_gif.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_video.dart';
 import 'package:harpy/core/api/tweet_data.dart';
@@ -22,6 +23,12 @@ class TweetMedia extends StatelessWidget {
             ? tweet.video.aspectRatioDouble
             : 16 / 9,
         child: TweetVideo(tweet.video),
+      );
+    } else if (tweet.gif != null) {
+      return AspectRatio(
+        aspectRatio:
+            tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9,
+        child: TweetGif(tweet.gif),
       );
     } else {
       return const SizedBox();
