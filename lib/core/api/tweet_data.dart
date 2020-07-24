@@ -13,6 +13,10 @@ const String kMediaGif = 'animated_gif';
 /// custom data to be stored.
 class TweetData {
   TweetData.fromTweet(Tweet tweet) {
+    if (tweet == null) {
+      return;
+    }
+
     if (tweet.retweetedStatus != null) {
       retweetUserName = tweet.user.name;
       tweet = tweet.retweetedStatus;

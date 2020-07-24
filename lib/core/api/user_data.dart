@@ -3,6 +3,10 @@ import 'package:dart_twitter_api/twitter_api.dart';
 /// The user data for [TweetData].
 class UserData {
   UserData.fromUser(User user) {
+    if (user == null) {
+      return;
+    }
+
     idStr = user.idStr;
     name = user.name;
     screenName = user.screenName;

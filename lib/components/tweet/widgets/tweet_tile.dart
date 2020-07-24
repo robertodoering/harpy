@@ -21,7 +21,7 @@ class TweetTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8, left: 8),
               child: Text(
-                '$replyAuthors, $replyAuthors, $replyAuthors replied',
+                '$replyAuthors replied',
                 style: theme.textTheme.bodyText1.copyWith(
                   color: theme.textTheme.bodyText1.color.withOpacity(.8),
                 ),
