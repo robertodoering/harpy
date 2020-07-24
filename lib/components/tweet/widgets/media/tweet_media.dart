@@ -5,6 +5,9 @@ import 'package:harpy/components/tweet/widgets/media/tweet_video.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
 /// Builds the media for the tweet.
+///
+/// Images are limited to a 16 / 9 aspect ratio.
+/// Videos and gifs will retain their aspect ratio when built.
 class TweetMedia extends StatelessWidget {
   const TweetMedia(this.tweet);
 

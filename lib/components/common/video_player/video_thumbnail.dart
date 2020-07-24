@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-/// Builds a [thumbnail] with a centered [icon] that changes to a
+/// Builds the [thumbnail] as an image with a centered [icon] that changes to a
 /// [CircularProgressIndicator] when [initializing] is `true`.
 class VideoThumbnail extends StatelessWidget {
   const VideoThumbnail({
