@@ -309,9 +309,9 @@ class _OverlayActionRow extends StatelessWidget {
 
         // toggle fullscreen
         CircleButton(
-          onTap: () {},
+          onTap: model.toggleFullscreen,
           child: Icon(
-            Icons.fullscreen,
+            model.fullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
             color: Colors.white,
           ),
         ),
