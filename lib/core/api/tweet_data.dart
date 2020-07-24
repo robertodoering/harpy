@@ -43,6 +43,8 @@ class TweetData {
     retweetCount = tweet.retweetCount;
     favoriteCount = tweet.favoriteCount;
     entities = tweet.entities;
+    hasText = tweet.displayTextRange?.elementAt(0) != 0 ||
+        tweet.displayTextRange?.elementAt(1) != 0;
   }
 
   /// UTC time when this Tweet was created.
@@ -66,6 +68,14 @@ class TweetData {
 
   /// Entities which have been parsed out of the text of the Tweet.
   Entities entities;
+
+  /// Whether this tweet has any display text.
+  ///
+  /// Display text is the user typed text. Entities such as a media link may be
+  /// added to the [fullText] for this tweet.
+  set hasText(bool hasText) => _hasText = hasText;
+  bool _hasText;
+  bool get hasText => _hasText != false;
 
   /// If this [TweetData] is a retweet, the [retweetUserName] is the name of the
   /// person that retweeted this tweet.
@@ -130,9 +140,6 @@ class TweetData {
 
   /// Whether this is a retweet.
   bool get isRetweet => retweetUserName != null;
-
-  /// Whether this tweet has text.
-  bool get hasText => fullText?.isNotEmpty == true;
 
   /// Whether this tweet has quoted another tweet.
   bool get hasQuote => quote != null;

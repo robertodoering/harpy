@@ -65,44 +65,31 @@ class _TweetTileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        if (tweet.isRetweet)
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-            child: TweetRetweetedRow(tweet),
-          ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: TweetAuthorRow(tweet),
+    final List<Widget> content = <Widget>[
+      if (tweet.isRetweet) TweetRetweetedRow(tweet),
+      TweetAuthorRow(tweet),
+      if (tweet.hasText)
+        TwitterText(
+          tweet.fullText,
+          entities: tweet.entities,
+          entityColor: theme.accentColor,
+          urlToIgnore: tweet.quotedStatusUrl,
         ),
-        if (tweet.hasText)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: TwitterText(
-              tweet.fullText,
-              entities: tweet.entities,
-              entityColor: theme.accentColor,
-              urlToIgnore: tweet.quotedStatusUrl,
-            ),
-          ),
-        if (tweet.hasMedia) ...<Widget>[
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: TweetMedia(tweet),
-          ),
+      if (tweet.hasMedia) TweetMedia(tweet),
+      if (tweet.hasQuote) _TweetQuoteContent(tweet.quote),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          for (Widget child in content) ...<Widget>[
+            child,
+            const SizedBox(height: 8),
+          ],
         ],
-        if (tweet.hasQuote) ...<Widget>[
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: _TweetQuoteContent(tweet.quote),
-          ),
-        ],
-        const SizedBox(height: 8),
-      ],
+      ),
     );
   }
 }
@@ -122,33 +109,32 @@ class _TweetQuoteContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    final List<Widget> content = <Widget>[
+      TweetQuoteAuthorRow(tweet),
+      if (tweet.hasText)
+        TwitterText(
+          tweet.fullText,
+          entities: tweet.entities,
+          entityColor: theme.accentColor,
+          style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
+          urlToIgnore: tweet.quotedStatusUrl,
+        ),
+      if (tweet.hasMedia) TweetMedia(tweet),
+    ];
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withOpacity(.2)),
       ),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TweetQuoteAuthorRow(tweet),
-          if (tweet.hasText)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: TwitterText(
-                tweet.fullText,
-                entities: tweet.entities,
-                entityColor: theme.accentColor,
-                style: theme.textTheme.bodyText2.apply(
-                  fontSizeDelta: -2,
-                ),
-                urlToIgnore: tweet.quotedStatusUrl,
-              ),
-            ),
-          if (tweet.hasMedia) ...<Widget>[
+          for (Widget child in content) ...<Widget>[
+            child,
             const SizedBox(height: 8),
-            TweetMedia(tweet),
-          ] else
-            const SizedBox(height: 8),
+          ],
         ],
       ),
     );

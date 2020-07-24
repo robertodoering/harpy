@@ -108,56 +108,48 @@ class TweetQuoteAuthorRow extends StatelessWidget {
 
     const double fontSizeDelta = -2;
 
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 8,
-        left: 8,
-        right: 8,
-        bottom: 4,
-      ),
-      child: Row(
-        children: <Widget>[
-          CachedCircleAvatar(
-            imageUrl: tweet.userData.profileImageUrlHttps,
-            radius: 14,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        tweet.userData.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyText2.apply(
-                          fontSizeDelta: fontSizeDelta,
-                        ),
+    return Row(
+      children: <Widget>[
+        CachedCircleAvatar(
+          imageUrl: tweet.userData.profileImageUrlHttps,
+          radius: 14,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      tweet.userData.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyText2.apply(
+                        fontSizeDelta: fontSizeDelta,
                       ),
                     ),
-                    if (tweet.userData.verified)
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4),
-                        child: Icon(Icons.verified_user, size: 14),
-                      ),
-                  ],
-                ),
-                Text(
-                  // todo: format created at string
-                  '@${tweet.userData.screenName} \u00b7 '
-                  '${tweet.createdAt}',
-                  style: theme.textTheme.bodyText1.apply(
-                    fontSizeDelta: fontSizeDelta,
                   ),
-                  overflow: TextOverflow.ellipsis,
+                  if (tweet.userData.verified)
+                    const Padding(
+                      padding: EdgeInsets.only(left: 4),
+                      child: Icon(Icons.verified_user, size: 14),
+                    ),
+                ],
+              ),
+              Text(
+                // todo: format created at string
+                '@${tweet.userData.screenName} \u00b7 '
+                '${tweet.createdAt}',
+                style: theme.textTheme.bodyText1.apply(
+                  fontSizeDelta: fontSizeDelta,
                 ),
-              ],
-            ),
-          )
-        ],
-      ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
