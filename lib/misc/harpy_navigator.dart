@@ -20,6 +20,8 @@ final Logger _log = Logger('HarpyNavigator');
 class HarpyNavigator {
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
+  NavigatorState get state => key.currentState;
+
   /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
   void push(Widget widget, {String name}) {
     key.currentState.push<void>(MaterialPageRoute<void>(
