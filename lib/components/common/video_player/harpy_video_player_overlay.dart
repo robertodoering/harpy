@@ -36,6 +36,18 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
   AnimationController _opacityController;
   Animation<double> _opacityAnimation;
 
+  /// The center play / pause icon.
+  ///
+  /// Stored in the instance to prevent the fade animation to play when entering
+  /// fullscreen.
+  Widget _centerIcon;
+
+  /// Whether the replay icon should fade in when the video finishes.
+  ///
+  /// Used to prevent the fade in animation to play when entering fullscreen
+  /// with the video already finished and the icon showing.
+  bool _replayFade = true;
+
   HarpyVideoPlayerModel get model => widget.model;
 
   /// Whether to show the overlay.
@@ -70,6 +82,10 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
       _opacityController.value = 1;
       _hideOverlayController.reset();
     }
+
+    // disable the fade in animation of the replay icon when the video is
+    // already finished (entering fullscreen when replay button is visible)
+    _replayFade = !model.finished;
   }
 
   @override
@@ -124,7 +140,10 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
           // hide overlay
           _opacityController.reverse();
 
-          centerIcon = const _OverlayPlaybackIcon.play();
+          setState(() {
+            _centerIcon = const _OverlayPlaybackIcon.play();
+          });
+
           break;
         case HarpyVideoPlayerAction.pause:
           // constantly show overlay
@@ -133,7 +152,10 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
             _opacityController.forward();
           }
 
-          centerIcon = const _OverlayPlaybackIcon.pause();
+          setState(() {
+            _centerIcon = const _OverlayPlaybackIcon.pause();
+          });
+
           break;
         case HarpyVideoPlayerAction.mute:
         case HarpyVideoPlayerAction.unmute:
@@ -151,6 +173,7 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
 
   void _onVideoTap() {
     if (model.finished) {
+      _replayFade = true;
       model.replay();
     } else if (_show) {
       // if the overlay is already showing, play / pause the video
@@ -161,26 +184,28 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
   }
 
   Widget _buildReplayIcon() {
-    return Center(
-      child: FadeAnimation(
-        key: ValueKey<int>(Icons.replay.codePoint),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black38,
-            shape: BoxShape.circle,
-          ),
-          padding: const EdgeInsets.all(8),
-          child: Icon(
-            Icons.replay,
-            size: kVideoPlayerCenterIconSize,
-            color: Colors.white,
-          ),
-        ),
+    final Widget replayIcon = Container(
+      decoration: BoxDecoration(
+        color: Colors.black38,
+        shape: BoxShape.circle,
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Icon(
+        Icons.replay,
+        size: kVideoPlayerCenterIconSize,
+        color: Colors.white,
       ),
     );
-  }
 
-  Widget centerIcon;
+    return Center(
+      child: _replayFade
+          ? FadeAnimation(
+              key: ValueKey<int>(Icons.replay.codePoint),
+              child: replayIcon,
+            )
+          : replayIcon,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,12 +224,8 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
           ),
         if (model.finished)
           _buildReplayIcon()
-        else if (centerIcon != null)
-          centerIcon,
-        // else if (model.playing)
-        //   const _OverlayPlaybackIcon.play()
-        // else
-        //   const _OverlayPlaybackIcon.pause(),
+        else if (_centerIcon != null)
+          _centerIcon,
       ],
     );
   }
