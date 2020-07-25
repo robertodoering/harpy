@@ -140,9 +140,7 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
           // hide overlay
           _opacityController.reverse();
 
-          setState(() {
-            _centerIcon = const _OverlayPlaybackIcon.play();
-          });
+          _centerIcon = const _OverlayPlaybackIcon.play();
 
           break;
         case HarpyVideoPlayerAction.pause:
@@ -152,9 +150,7 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
             _opacityController.forward();
           }
 
-          setState(() {
-            _centerIcon = const _OverlayPlaybackIcon.pause();
-          });
+          _centerIcon = const _OverlayPlaybackIcon.pause();
 
           break;
         case HarpyVideoPlayerAction.mute:
@@ -168,6 +164,9 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
           }
           break;
       }
+
+      // rebuild on action taken
+      setState(() {});
     }
   }
 
