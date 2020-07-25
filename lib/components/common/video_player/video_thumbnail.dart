@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 
 /// Builds the [thumbnail] as an image with a centered [icon] that changes to a
 /// [CircularProgressIndicator] when [initializing] is `true`.
@@ -22,13 +23,17 @@ class VideoThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget child = initializing
-        ? const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ? const SizedBox(
+            width: kVideoPlayerCenterIconSize,
+            height: kVideoPlayerCenterIconSize,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
           )
         : Icon(
             icon,
             color: Colors.white,
-            size: 38,
+            size: kVideoPlayerCenterIconSize,
           );
 
     return Stack(

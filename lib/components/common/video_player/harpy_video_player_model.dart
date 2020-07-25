@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/common/video_player/harpy_video_fullscreen.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -26,8 +27,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   static HarpyVideoPlayerModel of(BuildContext context) =>
       Provider.of<HarpyVideoPlayerModel>(context);
 
-  /// Called whenever an action on the video has been taken.
-  OnAction onAction;
+  /// Lists of listeners called whenever an action on the video has been taken.
+  final List<OnAction> _actionListener = <OnAction>[];
 
   /// Whether the video has already been initialized.
   bool get initialized => controller.value.initialized;
@@ -77,10 +78,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
     if (playing) {
       controller.pause();
-      onAction?.call(HarpyVideoPlayerAction.pause);
+      _onAction(HarpyVideoPlayerAction.pause);
     } else {
       controller.play();
-      onAction?.call(HarpyVideoPlayerAction.play);
+      _onAction(HarpyVideoPlayerAction.play);
     }
 
     notifyListeners();
@@ -90,7 +91,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   void replay() {
     controller.seekTo(Duration.zero);
     controller.play();
-    onAction?.call(HarpyVideoPlayerAction.play);
+    _onAction(HarpyVideoPlayerAction.play);
 
     notifyListeners();
   }
@@ -99,10 +100,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   void toggleMute() {
     if (controller.value.volume == 0) {
       controller.setVolume(1);
-      onAction?.call(HarpyVideoPlayerAction.unmute);
+      _onAction(HarpyVideoPlayerAction.unmute);
     } else {
       controller.setVolume(0);
-      onAction?.call(HarpyVideoPlayerAction.mute);
+      _onAction(HarpyVideoPlayerAction.mute);
     }
 
     notifyListeners();
@@ -141,9 +142,9 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     }
 
     app<HarpyNavigator>().state.push<void>(
-          PageRouteBuilder<void>(
-            settings: const RouteSettings(),
-            pageBuilder: _fullscreenBuilder,
+          HeroDialogRoute<void>(
+            onBackgroundTap: toggleFullscreen,
+            builder: (BuildContext context) => HarpyVideoFullscreen(this),
           ),
         );
   }
@@ -169,17 +170,23 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The [PageRouteBuilder] for a fullscreen video.
-  Widget _fullscreenBuilder(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (BuildContext context, Widget child) {
-        return HarpyVideoFullscreen(this);
-      },
-    );
+  /// Adds the listener [onAction] to the [_actionListener] list.
+  ///
+  /// Listeners should get removes via [removeActionListener] when no longer
+  /// needed.
+  void addActionListener(OnAction onAction) {
+    _actionListener.add(onAction);
+  }
+
+  /// Removes the listener [onAction] from the [_actionListener] list.
+  void removeActionListener(OnAction onAction) {
+    _actionListener.remove(onAction);
+  }
+
+  /// Calls the action listeners with the [action].
+  void _onAction(HarpyVideoPlayerAction action) {
+    for (OnAction onAction in _actionListener) {
+      onAction(action);
+    }
   }
 }

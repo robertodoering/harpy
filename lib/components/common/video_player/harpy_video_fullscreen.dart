@@ -14,21 +14,22 @@ class HarpyVideoFullscreen extends StatelessWidget {
   final HarpyVideoPlayerModel model;
 
   Widget _buildVideo() {
-    return Stack(
-      children: <Widget>[
-        VideoPlayer(model.controller),
-        VideoPlayerOverlay(model),
-      ],
+    return Hero(
+      tag: model.controller.dataSource,
+      child: Stack(
+        children: <Widget>[
+          VideoPlayer(model.controller),
+          VideoPlayerOverlay(model),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // todo: build blurred background instead of just black
-    return Scaffold(
-      body: Container(
-        color: Colors.black,
-        alignment: Alignment.center,
+    return Center(
+      child: AspectRatio(
+        aspectRatio: model.controller.value.aspectRatio,
         child: ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
           value: model,
           child: _buildVideo(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
-import 'package:harpy/components/common/fade_route.dart';
+import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:logging/logging.dart';
 

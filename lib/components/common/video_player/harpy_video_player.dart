@@ -5,6 +5,9 @@ import 'package:harpy/components/common/video_player/video_thumbnail.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
+/// The size for icons appearing in the center of the video player
+const double kVideoPlayerCenterIconSize = 48;
+
 /// Builds a [VideoPlayer] with a [VideoPlayerOverlay] to control the video.
 ///
 /// When built initially, the video will not be initialized and instead the
@@ -58,11 +61,14 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   }
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
-    return Stack(
-      children: <Widget>[
-        VideoPlayer(_controller),
-        VideoPlayerOverlay(model),
-      ],
+    return Hero(
+      tag: model.controller.dataSource,
+      child: Stack(
+        children: <Widget>[
+          VideoPlayer(_controller),
+          VideoPlayerOverlay(model),
+        ],
+      ),
     );
   }
 

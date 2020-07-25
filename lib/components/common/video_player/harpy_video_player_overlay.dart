@@ -4,6 +4,7 @@ import 'package:harpy/components/common/animations/explicit/fade_animation.dart'
 import 'package:harpy/components/common/animations/explicit/transform_animation.dart';
 import 'package:harpy/components/common/animations/implicit/animated_icon.dart';
 import 'package:harpy/components/common/buttons/circle_button.dart';
+import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:video_player/video_player.dart';
@@ -60,14 +61,22 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
       curve: Curves.easeInOut,
     ).animate(_opacityController);
 
-    model.onAction = _onVideoPlayerAction;
+    model.addActionListener(_onVideoPlayerAction);
     model.controller.addListener(_videoControllerListener);
+
+    if (!model.playing) {
+      // show overlay when building overlay with the player paused (e.g. when
+      // toggling fullscreen)
+      _opacityController.value = 1;
+      _hideOverlayController.reset();
+    }
   }
 
   @override
   void dispose() {
     _hideOverlayController.dispose();
     _opacityController.dispose();
+    model.removeActionListener(_onVideoPlayerAction);
 
     super.dispose();
   }
@@ -109,28 +118,34 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
   }
 
   void _onVideoPlayerAction(HarpyVideoPlayerAction action) {
-    switch (action) {
-      case HarpyVideoPlayerAction.play:
-        // hide overlay
-        _opacityController.reverse();
-        break;
-      case HarpyVideoPlayerAction.pause:
-        // constantly show overlay
-        _hideOverlayController.reset();
-        if (_opacityController.isAnimating) {
-          _opacityController.forward();
-        }
-        break;
-      case HarpyVideoPlayerAction.mute:
-      case HarpyVideoPlayerAction.unmute:
-        // reset auto hide timer
-        _hideOverlayController
-          ..reset()
-          ..forward();
-        if (_opacityController.isAnimating) {
-          _opacityController.forward();
-        }
-        break;
+    if (mounted) {
+      switch (action) {
+        case HarpyVideoPlayerAction.play:
+          // hide overlay
+          _opacityController.reverse();
+
+          centerIcon = const _OverlayPlaybackIcon.play();
+          break;
+        case HarpyVideoPlayerAction.pause:
+          // constantly show overlay
+          _hideOverlayController.reset();
+          if (_opacityController.isAnimating) {
+            _opacityController.forward();
+          }
+
+          centerIcon = const _OverlayPlaybackIcon.pause();
+          break;
+        case HarpyVideoPlayerAction.mute:
+        case HarpyVideoPlayerAction.unmute:
+          // reset auto hide timer
+          _hideOverlayController
+            ..reset()
+            ..forward();
+          if (_opacityController.isAnimating) {
+            _opacityController.forward();
+          }
+          break;
+      }
     }
   }
 
@@ -157,13 +172,15 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
           padding: const EdgeInsets.all(8),
           child: Icon(
             Icons.replay,
-            size: 32,
+            size: kVideoPlayerCenterIconSize,
             color: Colors.white,
           ),
         ),
       ),
     );
   }
+
+  Widget centerIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -177,15 +194,17 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
             alignment: Alignment.bottomCenter,
             child: Opacity(
               opacity: _opacityAnimation.value,
-              child: const _OverlayActionRow(),
+              child: _OverlayActionRow(model),
             ),
           ),
         if (model.finished)
           _buildReplayIcon()
-        else if (model.playing)
-          const _OverlayPlaybackIcon.play()
-        else
-          const _OverlayPlaybackIcon.pause(),
+        else if (centerIcon != null)
+          centerIcon,
+        // else if (model.playing)
+        //   const _OverlayPlaybackIcon.play()
+        // else
+        //   const _OverlayPlaybackIcon.pause(),
       ],
     );
   }
@@ -218,7 +237,7 @@ class _OverlayPlaybackIcon extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Icon(
               icon,
-              size: 32,
+              size: kVideoPlayerCenterIconSize,
               color: Colors.white,
             ),
           ),
@@ -230,7 +249,9 @@ class _OverlayPlaybackIcon extends StatelessWidget {
 
 /// Builds the actions at the bottom of the overlay.
 class _OverlayActionRow extends StatelessWidget {
-  const _OverlayActionRow();
+  const _OverlayActionRow(this.model);
+
+  final HarpyVideoPlayerModel model;
 
   Widget _buildBackground() {
     return Positioned.fill(
@@ -264,7 +285,7 @@ class _OverlayActionRow extends StatelessWidget {
     );
   }
 
-  Widget _buildActions(HarpyVideoPlayerModel model) {
+  Widget _buildActions(HarpyVideoPlayerModel model, ThemeData theme) {
     return Row(
       children: <Widget>[
         if (model.finished)
@@ -301,11 +322,12 @@ class _OverlayActionRow extends StatelessWidget {
 
         // position text
         _OverlayPositionText(model),
-        Text(
-          ' / ${prettyPrintDuration(model.duration)}',
-          style: const TextStyle(color: Colors.white),
+        Expanded(
+          child: Text(
+            ' / ${prettyPrintDuration(model.duration)}',
+            style: theme.textTheme.bodyText2.apply(color: Colors.white),
+          ),
         ),
-        const Spacer(),
 
         // toggle fullscreen
         CircleButton(
@@ -321,7 +343,6 @@ class _OverlayActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
     final ThemeData theme = Theme.of(context);
 
     return Stack(
@@ -336,7 +357,7 @@ class _OverlayActionRow extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(4),
-              child: _buildActions(model),
+              child: _buildActions(model, theme),
             ),
           ],
         ),
@@ -380,7 +401,7 @@ class _OverlayPositionTextState extends State<_OverlayPositionText> {
   Widget build(BuildContext context) {
     return Text(
       prettyPrintDuration(widget.model.position),
-      style: const TextStyle(color: Colors.white),
+      style: Theme.of(context).textTheme.bodyText2.apply(color: Colors.white),
     );
   }
 }
