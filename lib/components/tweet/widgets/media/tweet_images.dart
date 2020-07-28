@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/routes/hero_dialog_route.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_image_gallery.dart';
 import 'package:harpy/core/api/media_data.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the images for the [TweetMedia].
 ///
@@ -12,6 +16,17 @@ class TweetImages extends StatelessWidget {
 
   /// The padding between each image.
   static const double _padding = 2;
+
+  void _openGallery(ImageData image) {
+    app<HarpyNavigator>().state.push<void>(
+          HeroDialogRoute<void>(
+            builder: (BuildContext context) => TweetImageGallery(
+              images: images,
+              index: images.indexOf(image),
+            ),
+          ),
+        );
+  }
 
   Widget _buildImage(
     ImageData image, {
@@ -29,11 +44,18 @@ class TweetImages extends StatelessWidget {
         topRight: topRight ? radius : Radius.zero,
         bottomRight: bottomRight ? radius : Radius.zero,
       ),
-      child: CachedNetworkImage(
-        imageUrl: image.medium,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
+      child: GestureDetector(
+        onTap: () => _openGallery(image),
+        child: Hero(
+          tag: image,
+          child: CachedNetworkImage(
+            // todo: quality settings
+            imageUrl: image.medium,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
       ),
     );
   }
@@ -70,7 +92,7 @@ class TweetImages extends StatelessWidget {
     );
   }
 
-  Widget _buildTheeImages() {
+  Widget _buildThreeImages() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -157,7 +179,7 @@ class TweetImages extends StatelessWidget {
     } else if (images.length == 2) {
       return _buildTwoImages();
     } else if (images.length == 3) {
-      return _buildTheeImages();
+      return _buildThreeImages();
     } else if (images.length == 4) {
       return _buildFourImages();
     } else {
