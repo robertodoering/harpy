@@ -43,7 +43,7 @@ class TweetTile extends StatelessWidget {
       color: theme.brightness == Brightness.dark
           ? Colors.white.withOpacity(.1)
           : Colors.black.withOpacity(.1),
-      margin: const EdgeInsets.all(8),
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Column(
         children: <Widget>[
