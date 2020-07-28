@@ -25,14 +25,29 @@ class VideoFullscreen extends StatelessWidget {
     );
   }
 
+  /// Makes sure to pop the fullscreen using the [model] when using the back
+  /// button to go back.
+  Future<bool> _onWillPop() async {
+    if (model.fullscreen) {
+      // back button pressed
+      model.toggleFullscreen();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: AspectRatio(
-        aspectRatio: model.controller.value.aspectRatio,
-        child: ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
-          value: model,
-          child: _buildVideo(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Center(
+        child: AspectRatio(
+          aspectRatio: model.controller.value.aspectRatio,
+          child: ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+            value: model,
+            child: _buildVideo(),
+          ),
         ),
       ),
     );
