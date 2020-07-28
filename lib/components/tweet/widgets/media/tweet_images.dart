@@ -37,17 +37,22 @@ class TweetImages extends StatelessWidget {
   }) {
     const Radius radius = Radius.circular(8);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: topLeft ? radius : Radius.zero,
-        bottomLeft: bottomLeft ? radius : Radius.zero,
-        topRight: topRight ? radius : Radius.zero,
-        bottomRight: bottomRight ? radius : Radius.zero,
-      ),
-      child: GestureDetector(
-        onTap: () => _openGallery(image),
-        child: Hero(
-          tag: image,
+    return Hero(
+      tag: image,
+      placeholderBuilder: (BuildContext context, Size heroSize, Widget child) {
+        // keep building the image since the image are visible in the background
+        // of the image gallery
+        return child;
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: topLeft ? radius : Radius.zero,
+          bottomLeft: bottomLeft ? radius : Radius.zero,
+          topRight: topRight ? radius : Radius.zero,
+          bottomRight: bottomRight ? radius : Radius.zero,
+        ),
+        child: GestureDetector(
+          onTap: () => _openGallery(image),
           child: CachedNetworkImage(
             // todo: quality settings
             imageUrl: image.medium,
