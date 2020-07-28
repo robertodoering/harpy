@@ -40,8 +40,8 @@ class TweetImages extends StatelessWidget {
     return Hero(
       tag: image,
       placeholderBuilder: (BuildContext context, Size heroSize, Widget child) {
-        // keep building the image since the image are visible in the background
-        // of the image gallery
+        // keep building the image since the images can be visible in the
+        // background of the image gallery
         return child;
       },
       child: ClipRRect(
