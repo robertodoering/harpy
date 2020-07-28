@@ -15,7 +15,7 @@ class VideoFullscreen extends StatelessWidget {
 
   Widget _buildVideo() {
     return Hero(
-      tag: model.controller.dataSource,
+      tag: model.controller,
       child: Stack(
         children: <Widget>[
           VideoPlayer(model.controller),

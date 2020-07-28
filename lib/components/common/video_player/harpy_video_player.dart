@@ -62,7 +62,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     return Hero(
-      tag: model.controller.dataSource,
+      tag: model.controller,
       child: Stack(
         children: <Widget>[
           VideoPlayer(_controller),
