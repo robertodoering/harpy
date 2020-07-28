@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
-import 'package:harpy/components/common/video_player/harpy_video_fullscreen.dart';
+import 'package:harpy/components/common/video_player/video_fullscreen.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
@@ -144,7 +144,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     app<HarpyNavigator>().state.push<void>(
           HeroDialogRoute<void>(
             onBackgroundTap: toggleFullscreen,
-            builder: (BuildContext context) => HarpyVideoFullscreen(this),
+            builder: (BuildContext context) => VideoFullscreen(this),
           ),
         );
   }

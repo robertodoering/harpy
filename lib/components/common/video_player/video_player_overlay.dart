@@ -44,7 +44,7 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
 
   /// Whether the replay icon should fade in when the video finishes.
   ///
-  /// Used to prevent the fade in animation to play when entering fullscreen
+  /// Used to prevent the fade-in animation to play when entering fullscreen
   /// with the video already finished and the icon showing.
   bool _replayFade = true;
 
@@ -83,7 +83,7 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
       _hideOverlayController.reset();
     }
 
-    // disable the fade in animation of the replay icon when the video is
+    // disable the fade-in animation of the replay icon when the video is
     // already finished (entering fullscreen when replay button is visible)
     _replayFade = !model.finished;
   }
