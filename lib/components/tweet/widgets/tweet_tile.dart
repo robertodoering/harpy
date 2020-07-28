@@ -12,18 +12,23 @@ class TweetTile extends StatelessWidget {
   Widget _buildReplies(ThemeData theme) {
     final String replyAuthors = tweet.replyAuthors;
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 48),
+    return Card(
+      color: theme.brightness == Brightness.dark
+          ? Colors.white.withOpacity(.1)
+          : Colors.black.withOpacity(.1),
+      margin: const EdgeInsets.only(left: 56, right: 8, bottom: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (replyAuthors?.isNotEmpty == true)
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8),
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
               child: Text(
                 '$replyAuthors replied',
                 style: theme.textTheme.bodyText1.copyWith(
                   color: theme.textTheme.bodyText1.color.withOpacity(.8),
+                  height: 1,
                 ),
               ),
             ),
