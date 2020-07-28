@@ -253,7 +253,7 @@ class HarpyButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(64),
           child: Padding(
             padding: _padding,
-            // use a builder so the context references the animated theme
+            // use a builder so the context can reference the animated theme
             child: Builder(builder: _buildContent),
           ),
         ),

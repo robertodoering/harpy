@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 
 /// Transforms its [child] from a [begin] [Matrix4] transform to an [end]
 /// transform.

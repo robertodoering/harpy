@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/shifted_position.dart';
 
 /// The default duration a message is shown on screen.

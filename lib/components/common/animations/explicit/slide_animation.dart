@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 
 /// Slides its [child] to the [endPosition] after calling
 /// [SlideAnimationState.forward()].

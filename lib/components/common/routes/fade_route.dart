@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 
 /// A [PageRoute] that fades into the new widget.
 class FadeRoute<T> extends PageRoute<T> {

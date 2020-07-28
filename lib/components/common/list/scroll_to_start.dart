@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/implicit/animated_shifted_position.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/scroll_direction_listener.dart';
+import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a button at the bottom of the screen that listens to the

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/explicit/animation_constants.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
 import 'package:harpy/components/common/animations/explicit/transform_animation.dart';
 import 'package:harpy/components/common/animations/implicit/animated_icon.dart';

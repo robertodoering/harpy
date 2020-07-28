@@ -3,12 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
-/// Signature for callbacks that report that an entity has been tapped.
+/// Signature for callbacks that are called when an entity has been tapped.
 typedef EntityTapped<T> = void Function(T value);
 
 /// Builds a [Text] widget with the [entities] parsed in the [text].
 ///
-/// The entity texts are styled with [entityColor] and the appropriate callback
+/// The entity texts are styled with [entityColor] and the relevant callback
 /// is fired when the entity is tapped.
 class TwitterText extends StatefulWidget {
   const TwitterText(
@@ -36,13 +36,14 @@ class TwitterText extends StatefulWidget {
 
   /// A url that won't be built if it is part of [Entity.urls].
   ///
-  /// Used to hide the quoted status url.
+  /// Used to hide the quoted status url that appears at the end of the text
+  /// when the tweet includes a quote.
   final String urlToIgnore;
 
   /// Called when a hashtag is tapped.
   final EntityTapped<Hashtag> onHashtagTap;
 
-  /// Called when an url is tapped.
+  /// Called when a url is tapped.
   final EntityTapped<Url> onUrlTap;
 
   /// Called when a user mention is tapped.
@@ -179,9 +180,16 @@ class _TwitterTextState extends State<TwitterText> {
 
 /// Returns a list of [TwitterTextEntity] from the [entities] as they appear in
 /// the [text] sorted by their occurrence.
+///
+/// The [Tweet] object returns the indices where the entity appears in the full
+/// tweet text that should make it easy to parse, however we can't use that
+/// since the utf8 encoded characters that are returned by Twitter are handled
+/// differently in dart.
+/// Therefore we use [_findIndices] to find the entity indices ourselves.
 List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   final List<TwitterTextEntity> twitterTextEntities = <TwitterTextEntity>[];
 
+  // hashtags
   int indexStart = 0;
   for (Hashtag hashtag in entities?.hashtags ?? <Hashtag>[]) {
     final List<int> indices = _findIndices(
@@ -194,6 +202,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
     _addEntity(TwitterTextEntity(indices, hashtag), twitterTextEntities);
   }
 
+  // urls
   indexStart = 0;
   for (Url url in entities?.urls ?? <Url>[]) {
     final List<int> indices = _findIndices(text, url.url, indexStart);
@@ -202,6 +211,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
     _addEntity(TwitterTextEntity(indices, url), twitterTextEntities);
   }
 
+  // user mentions
   indexStart = 0;
   for (UserMention userMention in entities?.userMentions ?? <UserMention>[]) {
     final List<int> indices = _findIndices(
@@ -217,6 +227,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
     );
   }
 
+  // media
   indexStart = 0;
   for (Media media in entities?.media ?? <Media>[]) {
     final List<int> indices = _findIndices(text, media.url, indexStart);
@@ -230,7 +241,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
 
 /// Finds and returns the start and end index for the [entity] in the [text].
 ///
-/// We can't rely on the twitter returned indices as they are counted
+/// We can't rely on the Twitter returned indices as they are counted
 /// differently in dart when unicode characters are involved, even when using
 /// the https://pub.dev/packages/characters package for counting the characters.
 ///
