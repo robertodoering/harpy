@@ -14,12 +14,12 @@ class TweetList extends StatelessWidget {
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: ListView.separated(
-          padding: EdgeInsets.zero,
+          padding: const EdgeInsets.all(8),
           itemCount: tweets.length,
           itemBuilder: (BuildContext context, int index) =>
               TweetTile(tweets[index]),
           separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(),
+              const SizedBox(height: 16),
         ),
       ),
     );
