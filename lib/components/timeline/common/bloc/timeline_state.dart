@@ -1,11 +1,8 @@
-abstract class TimelineState {
-  const TimelineState();
-}
+import 'package:flutter/foundation.dart';
 
-class UninitializedState extends TimelineState {
-  const UninitializedState();
-}
+@immutable
+abstract class TimelineState {}
 
-class ShowingTimelineState extends TimelineState {
-  const ShowingTimelineState();
-}
+class UninitializedState extends TimelineState {}
+
+class ShowingTimelineState extends TimelineState {}

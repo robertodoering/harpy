@@ -101,7 +101,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
         _log.info('authenticated');
 
         bloc.sessionInitialization.complete(true);
-        yield const AuthenticatedState();
+        yield AuthenticatedState();
         return;
       } else {
         // failed initializing login
@@ -112,7 +112,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     _log.info('not authenticated');
 
     bloc.sessionInitialization.complete(false);
-    yield const UnauthenticatedState();
+    yield UnauthenticatedState();
   }
 }
 
@@ -138,7 +138,7 @@ class LoginEvent extends AuthenticationEvent {
 
         if (await onLogin(bloc, app<AppConfig>().data)) {
           // successfully initialized the login
-          yield const AuthenticatedState();
+          yield AuthenticatedState();
           app<HarpyNavigator>().pushReplacementNamed(
             HomeScreen.route,
             type: RouteType.fade,
@@ -190,7 +190,7 @@ class LogoutEvent extends AuthenticationEvent {
 
     await onLogout(bloc);
 
-    yield const UnauthenticatedState();
+    yield UnauthenticatedState();
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }

@@ -13,7 +13,7 @@ abstract class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   List<TweetData> tweets = <TweetData>[];
 
   @override
-  TimelineState get initialState => const UninitializedState();
+  TimelineState get initialState => UninitializedState();
 
   @override
   Stream<TimelineState> mapEventToState(

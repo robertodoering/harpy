@@ -35,7 +35,7 @@ class AuthenticationBloc
       BlocProvider.of<AuthenticationBloc>(context);
 
   @override
-  AuthenticationState get initialState => const UnauthenticatedState();
+  AuthenticationState get initialState => UnauthenticatedState();
 
   @override
   Stream<AuthenticationState> mapEventToState(

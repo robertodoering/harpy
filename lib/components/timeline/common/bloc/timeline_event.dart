@@ -32,7 +32,7 @@ abstract class UpdateTimelineEvent extends TimelineEvent {
 
     if (tweets != null) {
       bloc.tweets = tweets;
-      yield const ShowingTimelineState();
+      yield ShowingTimelineState();
     }
   }
 }
