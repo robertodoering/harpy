@@ -82,6 +82,7 @@ class _TweetTileContent extends StatelessWidget {
         ),
       if (tweet.hasMedia) TweetMedia(tweet),
       if (tweet.hasQuote) _TweetQuoteContent(tweet.quote),
+      TweetActionRow(tweet),
     ];
 
     return Padding(
@@ -101,14 +102,9 @@ class _TweetTileContent extends StatelessWidget {
 
 /// Builds the content for a tweet quote.
 class _TweetQuoteContent extends StatelessWidget {
-  const _TweetQuoteContent(
-    this.tweet, {
-    this.fontSizeDelta = -2,
-  });
+  const _TweetQuoteContent(this.tweet);
 
   final TweetData tweet;
-
-  final int fontSizeDelta;
 
   @override
   Widget build(BuildContext context) {

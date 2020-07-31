@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/buttons/favorite_button.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
@@ -149,6 +151,44 @@ class TweetQuoteAuthorRow extends StatelessWidget {
             ],
           ),
         )
+      ],
+    );
+  }
+}
+
+/// Builds the buttons with actions for the [tweet].
+class TweetActionRow extends StatelessWidget {
+  const TweetActionRow(this.tweet);
+
+  final TweetData tweet;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        HarpyButton.flat(
+          onTap: () {},
+          icon: Icons.repeat,
+          text: '${tweet.retweetCount}',
+          foregroundColor: Colors.green,
+          iconSize: 20,
+          padding: const EdgeInsets.all(8),
+        ),
+        const SizedBox(width: 8),
+        FavoriteButton(
+          favorited: true,
+          text: '${tweet.favoriteCount}',
+          favorite: () {},
+          unfavorite: () {},
+        ),
+        const Spacer(),
+        HarpyButton.flat(
+          onTap: () {},
+          foregroundColor: Colors.blue,
+          icon: Icons.translate,
+          iconSize: 20,
+          padding: const EdgeInsets.all(8),
+        ),
       ],
     );
   }
