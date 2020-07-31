@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/twitter_text.dart';
+import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet_tile_components.dart';
 import 'package:harpy/core/api/tweet_data.dart';
@@ -85,16 +87,19 @@ class _TweetTileContent extends StatelessWidget {
       TweetActionRow(tweet),
     ];
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          for (Widget child in content) ...<Widget>[
-            child,
-            const SizedBox(height: 8),
+    return BlocProvider<TweetBloc>(
+      create: (BuildContext content) => TweetBloc(tweet),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (Widget child in content) ...<Widget>[
+              child,
+              const SizedBox(height: 8),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

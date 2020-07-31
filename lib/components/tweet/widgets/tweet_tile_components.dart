@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
+import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/bloc/tweet_event.dart';
+import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
 /// Builds a row with the retweeter's display name indicating that a tweet is a
@@ -164,32 +168,40 @@ class TweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        HarpyButton.flat(
-          onTap: () {},
-          icon: Icons.repeat,
-          text: '${tweet.retweetCount}',
-          foregroundColor: Colors.green,
-          iconSize: 20,
-          padding: const EdgeInsets.all(8),
-        ),
-        const SizedBox(width: 8),
-        FavoriteButton(
-          favorited: true,
-          text: '${tweet.favoriteCount}',
-          favorite: () {},
-          unfavorite: () {},
-        ),
-        const Spacer(),
-        HarpyButton.flat(
-          onTap: () {},
-          foregroundColor: Colors.blue,
-          icon: Icons.translate,
-          iconSize: 20,
-          padding: const EdgeInsets.all(8),
-        ),
-      ],
+    final TweetBloc tweetBloc = TweetBloc.of(context);
+
+    return BlocBuilder<TweetBloc, TweetState>(
+      builder: (BuildContext context, TweetState state) {
+        return Row(
+          children: <Widget>[
+            HarpyButton.flat(
+              onTap: () => tweetBloc.tweet.retweeted
+                  ? tweetBloc.add(const UnretweetTweet())
+                  : tweetBloc.add(const RetweetTweet()),
+              icon: Icons.repeat,
+              text: '${tweet.retweetCount}',
+              foregroundColor: tweetBloc.tweet.retweeted ? Colors.green : null,
+              iconSize: 20,
+              padding: const EdgeInsets.all(8),
+            ),
+            const SizedBox(width: 8),
+            FavoriteButton(
+              favorited: tweetBloc.tweet.favorited,
+              text: '${tweet.favoriteCount}',
+              favorite: () => tweetBloc.add(const FavoriteTweet()),
+              unfavorite: () => tweetBloc.add(const UnfavoriteTweet()),
+            ),
+            const Spacer(),
+            HarpyButton.flat(
+              onTap: () {},
+              foregroundColor: Colors.blue,
+              icon: Icons.translate,
+              iconSize: 20,
+              padding: const EdgeInsets.all(8),
+            ),
+          ],
+        );
+      },
     );
   }
 }

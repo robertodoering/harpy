@@ -46,6 +46,8 @@ class TweetData {
     userData = UserData.fromUser(tweet.user);
     retweetCount = tweet.retweetCount;
     favoriteCount = tweet.favoriteCount;
+    retweeted = tweet.retweeted;
+    favorited = tweet.favorited;
     entities = tweet.entities;
     hasText = tweet.displayTextRange?.elementAt(0) != 0 ||
         tweet.displayTextRange?.elementAt(1) != 0;
@@ -94,6 +96,13 @@ class TweetData {
   /// If this [TweetData] has quoted another tweet, the [quotedStatusUrl] is a
   /// shortened url of the quoted status.
   String quotedStatusUrl;
+
+  /// Indicates whether this Tweet has been liked by the authenticating user.
+  bool favorited;
+
+  /// Indicates whether this Tweet has been Retweeted by the authenticating
+  /// user.
+  bool retweeted;
 
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];

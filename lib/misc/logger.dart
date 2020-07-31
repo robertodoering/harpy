@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 void initLogger({String prefix}) {
@@ -24,7 +25,13 @@ void initLogger({String prefix}) {
     if (rec.error != null) {
       print(horizontalSeparator);
       print('ERROR');
-      print(rec.error.toString());
+
+      if (rec.error is Response) {
+        print((rec.error as Response).body);
+      } else {
+        print(rec.error.toString());
+      }
+
       print(horizontalSeparator);
 
       if (rec.stackTrace != null) {
