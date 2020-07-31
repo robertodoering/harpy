@@ -11,7 +11,7 @@ typedef LoadingBuilder = Widget Function();
 /// [onLoadMore] callback when the end of the list has been reached.
 ///
 /// While the [onLoadMore] callback is not completed, a loading widget is
-/// placed at the end of the list.
+/// built at the end of the list.
 /// The [loadingBuilder] is used to build that widget. Alternatively a
 /// default loading widget is used with the [loadingText].
 ///
@@ -37,7 +37,7 @@ class LoadMoreList extends StatefulWidget {
   /// Defaults to the default loading builder if `null`.
   final LoadingBuilder loadingBuilder;
 
-  /// Used by the default loading builder..
+  /// Used by the default loading builder.
   final String loadingText;
 
   /// The callback when reaching the end of the list to load more.
@@ -45,8 +45,8 @@ class LoadMoreList extends StatefulWidget {
   /// Error handling should be done in the [onLoadMore] callback.
   final OnLoadMore onLoadMore;
 
-  /// Whether or not the [onLoadMore] callback should be called when reaching
-  /// the end of the list.
+  /// Whether the [onLoadMore] callback should be called when reaching the end
+  /// of the list.
   ///
   /// This should be set to `false` when no more data can be loaded.
   /// For example when reaching the last page of a paginated response.
@@ -91,13 +91,9 @@ class _LoadMoreListState extends State<LoadMoreList> {
 
   /// Builds the default loading widget.
   ///
-  /// The [widget.loadingBuilder] is used to build the loading widget if it
-  /// is not `null`.
+  /// The [widget.loadingBuilder] is used to build the loading widget instead if
+  /// it is not `null`.
   Widget _buildLoading() {
-    if (widget.loadingBuilder != null) {
-      return widget.loadingBuilder();
-    }
-
     return SizedBox(
       height: 100,
       child: Column(
@@ -125,7 +121,7 @@ class _LoadMoreListState extends State<LoadMoreList> {
       // the item builder when the loading footer is showing
       Widget itemBuilder(BuildContext context, int index) {
         if (index == itemCount - 1) {
-          return _buildLoading();
+          return widget.loadingBuilder?.call() ?? _buildLoading();
         }
         return delegate.builder(context, index);
       }
