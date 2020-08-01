@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:get_it/get_it.dart';
+import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
@@ -24,6 +25,7 @@ void setupServices() {
         ),
       ),
     )
+    ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<HarpyInfo>(() => HarpyInfo())
     ..registerLazySingleton<ErrorReporter>(() => ErrorReporter())
     ..registerLazySingleton<AppConfig>(() => AppConfig())
