@@ -30,13 +30,15 @@ class _SlideInAnimationState extends State<SlideInAnimation>
   AnimationController _controller;
   Animation<double> _animation;
 
-  bool _hidden = true;
+  bool _hidden = false;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = CurveTween(curve: widget.curve).animate(_controller);
+
+    _hidden = widget.delay != Duration.zero;
 
     Future<void>.delayed(widget.delay).then((_) {
       if (mounted) {

@@ -50,7 +50,8 @@ class _FadeAnimationState extends State<FadeAnimation>
     _animation = CurveTween(curve: widget.curve).animate(_controller);
 
     // only hide when fading in (with a delay)
-    _hidden = widget.fadeType == FadeType.fadeIn;
+    _hidden =
+        widget.fadeType == FadeType.fadeIn && widget.delay != Duration.zero;
 
     Future<void>.delayed(widget.delay).then((_) {
       if (mounted) {
