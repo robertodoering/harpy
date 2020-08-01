@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/core/api/media_data.dart';
+import 'package:harpy/core/api/translate/data/translation.dart';
 import 'package:harpy/core/api/user_data.dart';
 
 /// The media types for [Media.type].
@@ -46,9 +47,10 @@ class TweetData {
     userData = UserData.fromUser(tweet.user);
     retweetCount = tweet.retweetCount;
     favoriteCount = tweet.favoriteCount;
+    entities = tweet.entities;
     retweeted = tweet.retweeted;
     favorited = tweet.favorited;
-    entities = tweet.entities;
+    lang = tweet.lang;
     hasText = tweet.displayTextRange?.elementAt(0) != 0 ||
         tweet.displayTextRange?.elementAt(1) != 0;
   }
@@ -104,6 +106,11 @@ class TweetData {
   /// user.
   bool retweeted;
 
+  /// Indicates a BCP 47 language identifier corresponding to the
+  /// machine-detected language of the Tweet text, or `und` if no language could
+  /// be detected.
+  String lang;
+
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
 
@@ -122,6 +129,10 @@ class TweetData {
   /// When [gif] is not `null`, no [images] or [video] exists for this tweet.
   VideoData gif;
 
+  /// The translation for this [TweetData].
+  Translation translation;
+
+  /// Cached [replyAuthors].
   String _replyAuthors;
 
   /// Finds and returns the display names of the authors that replied to this
@@ -160,4 +171,8 @@ class TweetData {
   /// Whether this tweet has up to 4 images, a video or a gif.
   bool get hasMedia =>
       images?.isNotEmpty == true || video != null || gif != null;
+
+  bool get hasTranslation => translation != null;
+
+  bool get translatable => hasText && lang != 'en';
 }

@@ -82,6 +82,7 @@ class _TweetTileContent extends StatelessWidget {
           entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
         ),
+      if (tweet.translatable) TweetTranslation(tweet),
       if (tweet.hasMedia) TweetMedia(tweet),
       if (tweet.hasQuote) _TweetQuoteContent(tweet.quote),
       TweetActionRow(tweet),

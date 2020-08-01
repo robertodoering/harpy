@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
+import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
@@ -160,48 +163,118 @@ class TweetQuoteAuthorRow extends StatelessWidget {
   }
 }
 
+/// Builds the translation for the tweet if it exists, or an empty [SizedBox] as
+/// a placeholder if no translation exists.
+///
+/// Listens to the [TweetBloc] to build the translation text with an animation
+/// when it exists.
+class TweetTranslation extends StatelessWidget {
+  const TweetTranslation(this.tweet);
+
+  final TweetData tweet;
+
+  Widget _buildTranslatedText(ThemeData theme) {
+    final String language = tweet.translation.language ?? 'Unknown';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // ensure full width column for the animated size animation
+        const SizedBox(width: double.infinity),
+
+        // 'translated from' original language text
+        Text.rich(TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Translated from',
+              style: theme.textTheme.bodyText1,
+            ),
+            TextSpan(text: ' $language'),
+          ],
+        )),
+
+        // translated text
+        TwitterText(
+          tweet.translation.text,
+          entities: tweet.entities,
+          entityColor: theme.accentColor,
+          urlToIgnore: tweet.quotedStatusUrl,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return CustomAnimatedSize(
+      child: BlocBuilder<TweetBloc, TweetState>(
+        builder: (BuildContext context, TweetState state) => AnimatedOpacity(
+          opacity: tweet.hasTranslation ? 1 : 0,
+          duration: kShortAnimationDuration,
+          curve: Curves.easeOut,
+          child: tweet.hasTranslation && !tweet.translation.unchanged
+              ? _buildTranslatedText(theme)
+              : const SizedBox(width: double.infinity),
+        ),
+      ),
+    );
+  }
+}
+
 /// Builds the buttons with actions for the [tweet].
 class TweetActionRow extends StatelessWidget {
   const TweetActionRow(this.tweet);
 
   final TweetData tweet;
 
+  Widget _buildTranslateButton(TweetBloc tweetBloc) {
+    final bool enable = !tweetBloc.tweet.hasTranslation &&
+        tweetBloc.state is! TranslatingTweetState;
+
+    final Color color = tweetBloc.state is TranslatingTweetState ||
+            tweetBloc.tweet.hasTranslation
+        ? Colors.blue
+        : null;
+
+    return HarpyButton.flat(
+      onTap: enable ? () => tweetBloc.add(const TranslateTweet()) : null,
+      foregroundColor: color,
+      icon: Icons.translate,
+      iconSize: 20,
+      padding: const EdgeInsets.all(8),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final TweetBloc tweetBloc = TweetBloc.of(context);
 
     return BlocBuilder<TweetBloc, TweetState>(
-      builder: (BuildContext context, TweetState state) {
-        return Row(
-          children: <Widget>[
-            HarpyButton.flat(
-              onTap: () => tweetBloc.tweet.retweeted
-                  ? tweetBloc.add(const UnretweetTweet())
-                  : tweetBloc.add(const RetweetTweet()),
-              icon: Icons.repeat,
-              text: '${tweet.retweetCount}',
-              foregroundColor: tweetBloc.tweet.retweeted ? Colors.green : null,
-              iconSize: 20,
-              padding: const EdgeInsets.all(8),
-            ),
-            const SizedBox(width: 8),
-            FavoriteButton(
-              favorited: tweetBloc.tweet.favorited,
-              text: '${tweet.favoriteCount}',
-              favorite: () => tweetBloc.add(const FavoriteTweet()),
-              unfavorite: () => tweetBloc.add(const UnfavoriteTweet()),
-            ),
-            const Spacer(),
-            HarpyButton.flat(
-              onTap: () {},
-              foregroundColor: Colors.blue,
-              icon: Icons.translate,
-              iconSize: 20,
-              padding: const EdgeInsets.all(8),
-            ),
-          ],
-        );
-      },
+      builder: (BuildContext context, TweetState state) => Row(
+        children: <Widget>[
+          HarpyButton.flat(
+            onTap: () => tweetBloc.tweet.retweeted
+                ? tweetBloc.add(const UnretweetTweet())
+                : tweetBloc.add(const RetweetTweet()),
+            icon: Icons.repeat,
+            text: '${tweet.retweetCount}',
+            foregroundColor: tweetBloc.tweet.retweeted ? Colors.green : null,
+            iconSize: 20,
+            padding: const EdgeInsets.all(8),
+          ),
+          const SizedBox(width: 8),
+          FavoriteButton(
+            favorited: tweetBloc.tweet.favorited,
+            text: '${tweet.favoriteCount}',
+            favorite: () => tweetBloc.add(const FavoriteTweet()),
+            unfavorite: () => tweetBloc.add(const UnfavoriteTweet()),
+          ),
+          const Spacer(),
+          if (tweetBloc.tweet.translatable) _buildTranslateButton(tweetBloc),
+        ],
+      ),
     );
   }
 }

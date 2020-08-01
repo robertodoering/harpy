@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dart_twitter_api/api/tweets/tweet_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
+import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
@@ -15,6 +18,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   final TweetData tweet;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
+
+  final TranslationService translationService = app<TranslationService>();
 
   static TweetBloc of(BuildContext context) =>
       BlocProvider.of<TweetBloc>(context);

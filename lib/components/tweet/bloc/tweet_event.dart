@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
+import 'package:harpy/core/api/translate/data/translation.dart';
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -157,7 +161,9 @@ class UnfavoriteTweet extends TweetEvent {
   }
 }
 
-/// Translate the tweet.
+/// Translates the tweet.
+///
+/// The [Translation] is saved in the [TweetData.translation].
 class TranslateTweet extends TweetEvent {
   const TranslateTweet();
 
@@ -166,6 +172,20 @@ class TranslateTweet extends TweetEvent {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
-    // todo: implement
+    yield TranslatingTweetState();
+
+    final Translation translation = await bloc.translationService
+        .translate(text: bloc.tweet.fullText)
+        .catchError(silentErrorHandler);
+
+    if (translation != null) {
+      bloc.tweet.translation = translation;
+    }
+
+    if (translation?.unchanged != false) {
+      app<MessageService>().showInfo('Tweet not translated');
+    }
+
+    yield UpdatedTweetState();
   }
 }
