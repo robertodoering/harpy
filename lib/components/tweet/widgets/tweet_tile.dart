@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
+import 'package:harpy/components/tweet/widgets/tweet_tile_animation.dart';
 import 'package:harpy/components/tweet/widgets/tweet_tile_components.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 
 class TweetTile extends StatelessWidget {
-  const TweetTile(this.tweet);
+  TweetTile(this.tweet) : super(key: ValueKey<String>(tweet.idStr));
 
   final TweetData tweet;
 
@@ -46,17 +47,19 @@ class TweetTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Card(
-      color: theme.brightness == Brightness.dark
-          ? Colors.white.withOpacity(.1)
-          : Colors.black.withOpacity(.1),
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        children: <Widget>[
-          _TweetTileContent(tweet),
-          if (tweet.replies.isNotEmpty) _buildReplies(theme),
-        ],
+    return TweetTileAnimation(
+      child: Card(
+        color: theme.brightness == Brightness.dark
+            ? Colors.white.withOpacity(.1)
+            : Colors.black.withOpacity(.1),
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          children: <Widget>[
+            _TweetTileContent(tweet),
+            if (tweet.replies.isNotEmpty) _buildReplies(theme),
+          ],
+        ),
       ),
     );
   }
