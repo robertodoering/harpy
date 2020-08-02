@@ -10,7 +10,7 @@ class UpdateHomeTimelineEvent extends UpdateTimelineEvent {
 
   @override
   Future<List<Tweet>> requestTimeline(TimelineBloc bloc) {
-    return bloc.timelineService.homeTimeline(count: 30); // todo: count
+    return bloc.timelineService.homeTimeline(count: 200);
   }
 }
 
@@ -24,7 +24,7 @@ class RequestMoreHomeTimelineEvent extends RequestMoreTimelineEvent {
 
     if (maxId != null) {
       return bloc.timelineService.homeTimeline(
-        count: 30, // todo: count
+        count: 200,
         maxId: maxId,
       );
     } else {
