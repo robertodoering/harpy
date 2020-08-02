@@ -27,12 +27,19 @@ class TweetTile extends StatelessWidget {
           if (replyAuthors?.isNotEmpty == true)
             Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-              child: Text(
-                '$replyAuthors replied',
-                style: theme.textTheme.bodyText1.copyWith(
-                  color: theme.textTheme.bodyText1.color.withOpacity(.8),
-                  height: 1,
-                ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    // same width as avatar with padding
+                    width: 40,
+                    child: Icon(Icons.reply, size: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$replyAuthors replied',
+                    style: theme.textTheme.bodyText1,
+                  ),
+                ],
               ),
             ),
           ...tweet.replies.map(

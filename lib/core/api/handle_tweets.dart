@@ -3,7 +3,7 @@ import 'package:harpy/core/api/tweet_data.dart';
 
 /// Handles a tweet list response.
 ///
-/// Every tweet is turned into a [TweetData] and their replies are added to
+/// Every [Tweet] is turned into a [TweetData] and their replies are added to
 /// [TweetData.replies].
 ///
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
