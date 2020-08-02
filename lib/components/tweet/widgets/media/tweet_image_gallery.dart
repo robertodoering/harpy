@@ -74,7 +74,6 @@ class _TweetImageGalleryState extends State<TweetImageGallery> {
               // todo: quality settings
               imageUrl: image.medium,
               fit: BoxFit.contain,
-              width: double.infinity,
             ),
           ),
         ),
