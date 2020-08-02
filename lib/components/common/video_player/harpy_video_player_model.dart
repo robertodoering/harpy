@@ -162,8 +162,6 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   Future<void> _popFullscreen() async {
     _fullscreen = false;
 
-    // todo: when pressing back instead of the fullscreen button,
-    //   the orientation and the system ui overlays are not restored
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     // delay to wait for the system ui to show again to prevent a jump in the

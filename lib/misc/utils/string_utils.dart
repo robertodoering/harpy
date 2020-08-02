@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 /// Pretty prints a duration difference as long as the difference is smaller
 /// than an hour.
 String prettyPrintDurationDifference(Duration difference) {
@@ -99,4 +101,23 @@ String trimOne(
   }
 
   return source;
+}
+
+/// Returns a formatted String displaying the difference of a tweet creation
+/// time to the local time if the difference is less than 1 day.
+///
+/// Otherwise returns a formatted time for the creation time.
+String tweetTimeDifference(DateTime createdAt) {
+  final DateTime localCreatedAt = createdAt.toLocal();
+  final Duration difference = DateTime.now().difference(localCreatedAt);
+
+  if (difference.inMinutes <= 59) {
+    return '${difference.inMinutes}m';
+  } else if (difference.inHours <= 24) {
+    return '${difference.inHours}h';
+  } else if (difference.inDays > 365) {
+    return DateFormat('MMM d yyyy').format(localCreatedAt);
+  } else {
+    return DateFormat('MMMd').format(localCreatedAt);
+  }
 }

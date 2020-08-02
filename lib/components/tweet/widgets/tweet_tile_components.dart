@@ -10,6 +10,7 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Builds a row with the retweeter's display name indicating that a tweet is a
 /// retweet.
@@ -92,8 +93,8 @@ class TweetAuthorRow extends StatelessWidget {
               GestureDetector(
                 onTap: _onUserTap,
                 child: Text(
-                  // todo: format created at string
-                  '@${tweet.userData.screenName} \u00b7 ${tweet.createdAt}',
+                  '@${tweet.userData.screenName} \u00b7 '
+                  '${tweetTimeDifference(tweet.createdAt)}',
                   style: theme.textTheme.bodyText1,
                 ),
               ),
@@ -147,9 +148,8 @@ class TweetQuoteAuthorRow extends StatelessWidget {
                 ],
               ),
               Text(
-                // todo: format created at string
                 '@${tweet.userData.screenName} \u00b7 '
-                '${tweet.createdAt}',
+                '${tweetTimeDifference(tweet.createdAt)}',
                 style: theme.textTheme.bodyText1.apply(
                   fontSizeDelta: fontSizeDelta,
                 ),
