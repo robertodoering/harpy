@@ -11,6 +11,7 @@ import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/tweet_data.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
+import 'package:intl/intl.dart';
 
 /// Builds a row with the retweeter's display name indicating that a tweet is a
 /// retweet.
@@ -225,9 +226,11 @@ class TweetTranslation extends StatelessWidget {
 
 /// Builds the buttons with actions for the [tweet].
 class TweetActionRow extends StatelessWidget {
-  const TweetActionRow(this.tweet);
+  TweetActionRow(this.tweet);
 
   final TweetData tweet;
+
+  final NumberFormat _numberFormat = NumberFormat.compact();
 
   Widget _buildTranslateButton(TweetBloc tweetBloc) {
     final bool enable = !tweetBloc.tweet.hasTranslation &&
@@ -259,7 +262,7 @@ class TweetActionRow extends StatelessWidget {
                 ? tweetBloc.add(const UnretweetTweet())
                 : tweetBloc.add(const RetweetTweet()),
             icon: Icons.repeat,
-            text: '${tweet.retweetCount}',
+            text: _numberFormat.format(tweet.retweetCount),
             foregroundColor: tweetBloc.tweet.retweeted ? Colors.green : null,
             iconSize: 20,
             padding: const EdgeInsets.all(8),
@@ -267,7 +270,7 @@ class TweetActionRow extends StatelessWidget {
           const SizedBox(width: 8),
           FavoriteButton(
             favorited: tweetBloc.tweet.favorited,
-            text: '${tweet.favoriteCount}',
+            text: _numberFormat.format(tweet.favoriteCount),
             favorite: () => tweetBloc.add(const FavoriteTweet()),
             unfavorite: () => tweetBloc.add(const UnfavoriteTweet()),
           ),
