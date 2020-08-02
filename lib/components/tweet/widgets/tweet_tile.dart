@@ -129,6 +129,7 @@ class _TweetQuoteContent extends StatelessWidget {
           style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
           urlToIgnore: tweet.quotedStatusUrl,
         ),
+      if (tweet.translatable) TweetTranslation(tweet, fontSizeDelta: -2),
       if (tweet.hasMedia) TweetMedia(tweet),
     ];
 

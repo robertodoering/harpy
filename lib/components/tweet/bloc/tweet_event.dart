@@ -174,16 +174,30 @@ class TranslateTweet extends TweetEvent {
   }) async* {
     yield TranslatingTweetState();
 
-    final Translation translation = await bloc.translationService
-        .translate(text: bloc.tweet.fullText)
-        .catchError(silentErrorHandler);
+    await Future.wait<void>(<Future<void>>[
+      // tweet translation
+      if (bloc.tweet.translatable)
+        bloc.translationService
+            .translate(text: bloc.tweet.fullText)
+            .then((Translation translation) =>
+                bloc.tweet.translation = translation)
+            .catchError(silentErrorHandler),
 
-    if (translation != null) {
-      bloc.tweet.translation = translation;
-    }
+      // quote translation
+      if (bloc.tweet.quoteTranslatable)
+        bloc.translationService
+            .translate(text: bloc.tweet.quote.fullText)
+            .then((Translation translation) =>
+                bloc.tweet.quote.translation = translation)
+            .catchError(silentErrorHandler)
+    ]);
 
-    if (translation?.unchanged != false) {
+    // show an info when the tweet or quote was unable to be translated
+    if (bloc.tweet.translatable && bloc.tweet.translation?.unchanged != false) {
       app<MessageService>().showInfo('Tweet not translated');
+    } else if (bloc.tweet.quoteTranslatable &&
+        bloc.tweet.quote.translation?.unchanged != false) {
+      app<MessageService>().showInfo('Quoted Tweet not translated');
     }
 
     yield UpdatedTweetState();

@@ -170,29 +170,46 @@ class TweetQuoteAuthorRow extends StatelessWidget {
 /// Listens to the [TweetBloc] to build the translation text with an animation
 /// when it exists.
 class TweetTranslation extends StatelessWidget {
-  const TweetTranslation(this.tweet);
+  const TweetTranslation(
+    this.tweet, {
+    this.fontSizeDelta = 0,
+  });
 
   final TweetData tweet;
 
+  /// An optional font size delta for the translation text.
+  final double fontSizeDelta;
+
   Widget _buildTranslatedText(ThemeData theme) {
     final String language = tweet.translation.language ?? 'Unknown';
+
+    final TextStyle bodyText1 = theme.textTheme.bodyText1.apply(
+      fontSizeDelta: fontSizeDelta,
+    );
+
+    final TextStyle bodyText2 = theme.textTheme.bodyText2.apply(
+      fontSizeDelta: fontSizeDelta,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // ensure full width column for the animated size animation
-        const SizedBox(width: double.infinity),
+        const SizedBox(height: 8, width: double.infinity),
 
         // 'translated from' original language text
-        Text.rich(TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              text: 'Translated from',
-              style: theme.textTheme.bodyText1,
-            ),
-            TextSpan(text: ' $language'),
-          ],
-        )),
+        Text.rich(
+          TextSpan(
+            children: <TextSpan>[
+              const TextSpan(text: 'Translated from'),
+              TextSpan(
+                text: ' $language',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          style: bodyText1,
+        ),
 
         // translated text
         TwitterText(
@@ -200,6 +217,7 @@ class TweetTranslation extends StatelessWidget {
           entities: tweet.entities,
           entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
+          style: bodyText2,
         ),
       ],
     );
@@ -232,17 +250,17 @@ class TweetActionRow extends StatelessWidget {
 
   final NumberFormat _numberFormat = NumberFormat.compact();
 
-  Widget _buildTranslateButton(TweetBloc tweetBloc) {
-    final bool enable = !tweetBloc.tweet.hasTranslation &&
-        tweetBloc.state is! TranslatingTweetState;
+  Widget _buildTranslateButton(TweetBloc bloc) {
+    final bool enable =
+        !bloc.tweet.hasTranslation && bloc.state is! TranslatingTweetState;
 
-    final Color color = tweetBloc.state is TranslatingTweetState ||
-            tweetBloc.tweet.hasTranslation
-        ? Colors.blue
-        : null;
+    final Color color =
+        bloc.state is TranslatingTweetState || bloc.tweet.hasTranslation
+            ? Colors.blue
+            : null;
 
     return HarpyButton.flat(
-      onTap: enable ? () => tweetBloc.add(const TranslateTweet()) : null,
+      onTap: enable ? () => bloc.add(const TranslateTweet()) : null,
       foregroundColor: color,
       icon: Icons.translate,
       iconSize: 20,
@@ -252,30 +270,31 @@ class TweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TweetBloc tweetBloc = TweetBloc.of(context);
+    final TweetBloc bloc = TweetBloc.of(context);
 
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
         children: <Widget>[
           HarpyButton.flat(
-            onTap: () => tweetBloc.tweet.retweeted
-                ? tweetBloc.add(const UnretweetTweet())
-                : tweetBloc.add(const RetweetTweet()),
+            onTap: () => bloc.tweet.retweeted
+                ? bloc.add(const UnretweetTweet())
+                : bloc.add(const RetweetTweet()),
             icon: Icons.repeat,
             text: _numberFormat.format(tweet.retweetCount),
-            foregroundColor: tweetBloc.tweet.retweeted ? Colors.green : null,
+            foregroundColor: bloc.tweet.retweeted ? Colors.green : null,
             iconSize: 20,
             padding: const EdgeInsets.all(8),
           ),
           const SizedBox(width: 8),
           FavoriteButton(
-            favorited: tweetBloc.tweet.favorited,
+            favorited: bloc.tweet.favorited,
             text: _numberFormat.format(tweet.favoriteCount),
-            favorite: () => tweetBloc.add(const FavoriteTweet()),
-            unfavorite: () => tweetBloc.add(const UnfavoriteTweet()),
+            favorite: () => bloc.add(const FavoriteTweet()),
+            unfavorite: () => bloc.add(const UnfavoriteTweet()),
           ),
           const Spacer(),
-          if (tweetBloc.tweet.translatable) _buildTranslateButton(tweetBloc),
+          if (bloc.tweet.translatable || bloc.tweet.quoteTranslatable)
+            _buildTranslateButton(bloc),
         ],
       ),
     );
