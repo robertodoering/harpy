@@ -15,6 +15,8 @@ import 'package:harpy/components/common/harpy_background.dart';
 import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen();
+
   static const String route = 'login';
 
   @override
