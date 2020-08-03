@@ -59,7 +59,7 @@ android {
     defaultConfig {
         applicationId "com.robertodoering.harpy"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
     }
 
     flavorDimensions "app"
