@@ -22,9 +22,6 @@ class TranslationService {
   }) async {
     _log.fine('translating from $from to $to');
 
-    // encode text
-    // text = Uri.encodeComponent(text);
-
     final Map<String, String> params = <String, String>{
       'client': 'gtx',
       'sl': from,
