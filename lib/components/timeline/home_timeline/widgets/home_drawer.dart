@@ -21,6 +21,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const Icon(Icons.face),
                 title: const Text('Profile'),
                 onTap: () {},
+                enabled: false,
               ),
 
               const Divider(),
@@ -30,6 +31,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
                 onTap: () {},
+                enabled: false,
               ),
 
               // harpy pro
@@ -40,6 +42,7 @@ class HomeDrawer extends StatelessWidget {
                 ),
                 title: const Text('Harpy Pro'),
                 onTap: () {},
+                enabled: false,
               ),
 
               // about
@@ -47,6 +50,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const FlareIcon.harpyLogo(),
                 title: const Text('About'),
                 onTap: () {},
+                enabled: false,
               ),
             ],
           ),
