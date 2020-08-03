@@ -3,13 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/harpy_background.dart';
 
-/// A convenience Widget that wraps a [Scaffold].
+/// A convenience Widget that wraps a [Scaffold] to build a transparent [AppBar]
+/// on top of a [HarpyBackground].
 ///
 /// If [showIcon] is `true`, the [FlareIcon.harpyLogo] is built next to the
 /// [title] in the [AppBar].
-///
-/// [HarpyScaffold] builds a transparent [AppBar] on top of a
-/// [HarpyBackground].
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
     @required this.title,
@@ -30,7 +28,7 @@ class HarpyScaffold extends StatelessWidget {
 
   /// The colors used by the [HarpyBackground].
   ///
-  /// If `null`, uses the colors of the current theme.
+  /// Uses the colors of the current theme if `null`.
   final List<Color> backgroundColors;
 
   Widget _buildTitle(ThemeData theme) {

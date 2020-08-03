@@ -34,13 +34,13 @@ class HarpyMessageHandler extends StatefulWidget {
 class HarpyMessageHandlerState extends State<HarpyMessageHandler>
     with SingleTickerProviderStateMixin {
   /// The queue of messages.
-  Queue<Widget> messages = Queue<Widget>();
+  final Queue<Widget> _messages = Queue<Widget>();
 
   /// Whether the queue of messages is not empty.
-  bool get hasMessage => messages.isNotEmpty;
+  bool get _hasMessage => _messages.isNotEmpty;
 
   /// Whether a message is currently showing
-  bool isShowing = false;
+  bool _showing = false;
 
   AnimationController _controller;
   Animation<Offset> _offsetAnimation;
@@ -63,22 +63,22 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
   }
 
   /// Shows the [message] at the bottom of the screen or adds it to the
-  /// [messages] queue.
+  /// [_messages] queue.
   void showMessage(Widget message) {
-    messages.addLast(message);
+    _messages.addLast(message);
 
-    if (!isShowing) {
+    if (!_showing) {
       _showNextMessages();
     }
   }
 
   /// Starts the animation to show the next message and then removes it from the
-  /// [messages] queue.
+  /// [_messages] queue.
   ///
   /// The animation repeats for the next message until the queue is empty.
   Future<void> _showNextMessages() async {
     _hideMessageCompleter = Completer<void>();
-    isShowing = true;
+    _showing = true;
 
     await _controller.forward();
 
@@ -91,12 +91,12 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
     await _hideMessageCompleter.future;
 
     await _controller.reverse();
-    messages.removeFirst();
+    _messages.removeFirst();
 
-    if (hasMessage) {
+    if (_hasMessage) {
       _showNextMessages();
     } else {
-      isShowing = false;
+      _showing = false;
     }
   }
 
@@ -107,7 +107,7 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
           _hideMessageCompleter.complete();
         }
       },
-      child: messages.first,
+      child: _messages.first,
     );
   }
 
@@ -120,12 +120,12 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
           alignment: Alignment.bottomCenter,
           child: AnimatedBuilder(
             animation: _controller,
-            builder: (BuildContext context, Widget child) => hasMessage
+            builder: (BuildContext context, Widget child) => _hasMessage
                 ? ShiftedPosition(
                     shift: _offsetAnimation.value,
                     child: _buildMessage(),
                   )
-                : Container(),
+                : const SizedBox(),
           ),
         ),
       ],

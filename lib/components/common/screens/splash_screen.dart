@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/harpy_background.dart';
 
-/// The initial screen shown when opening the app.
+/// The initial screen that is shown when opening the app.
 ///
 /// After initializiation, the [ApplicationBloc] will navigate to either the
 /// [LoginScreen] or the [HomeScreen].

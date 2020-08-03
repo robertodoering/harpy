@@ -24,7 +24,7 @@ class HarpyErrorHandler {
   }) {
     if (kReleaseMode) {
       // override the error widget in release mode (the red error screen)
-      ErrorWidget.builder = (FlutterErrorDetails details) => Container();
+      ErrorWidget.builder = (FlutterErrorDetails details) => const SizedBox();
     }
 
     FlutterError.onError = _handleFlutterError;
@@ -50,8 +50,7 @@ class HarpyErrorHandler {
 
   /// Prints the [error] and shows a dialog asking to send the error report.
   ///
-  /// Additional device diagnostic data will be sent along the error if the
-  /// user consents for it.
+  /// Additional device diagnostic data will be sent along the error.
   Future<void> _handleError(Object error, StackTrace stackTrace) async {
     if (error is SocketException) {
       // no internet connection, can be ignored

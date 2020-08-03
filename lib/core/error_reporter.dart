@@ -93,7 +93,7 @@ class ErrorReporter {
       if (sentryResponse?.isSuccessful == true) {
         _log.fine('error reported to sentry');
       } else {
-        _log.severe('error while reporting to sentry', sentryResponse.error);
+        _log.severe('error while reporting to sentry', sentryResponse?.error);
       }
     } else {
       _log.warning('not sending the report');
@@ -120,14 +120,14 @@ class ErrorReporter {
         'product': harpyInfo.deviceInfo.product,
         'tags': harpyInfo.deviceInfo.tags,
         'type': harpyInfo.deviceInfo.type,
-        'version.baseOS': harpyInfo.deviceInfo.version.baseOS,
-        'version.codename': harpyInfo.deviceInfo.version.codename,
-        'version.incremental': harpyInfo.deviceInfo.version.incremental,
+        'version.baseOS': harpyInfo.deviceInfo.version?.baseOS,
+        'version.codename': harpyInfo.deviceInfo.version?.codename,
+        'version.incremental': harpyInfo.deviceInfo.version?.incremental,
         'version.previewSdkInt':
-            '${harpyInfo.deviceInfo.version.previewSdkInt}',
-        'version.release': harpyInfo.deviceInfo.version.release,
-        'version.sdkInt': '${harpyInfo.deviceInfo.version.sdkInt}',
-        'version.securityPatch': harpyInfo.deviceInfo.version.securityPatch,
+            '${harpyInfo.deviceInfo.version?.previewSdkInt}',
+        'version.release': harpyInfo.deviceInfo.version?.release,
+        'version.sdkInt': '${harpyInfo.deviceInfo.version?.sdkInt}',
+        'version.securityPatch': harpyInfo.deviceInfo.version?.securityPatch,
       };
     } else {
       // non android devices are currently not supported
