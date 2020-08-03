@@ -6,7 +6,7 @@ class FadeRoute<T> extends PageRoute<T> {
   FadeRoute({
     @required this.builder,
     RouteSettings settings,
-    this.duration = kShortAnimationDuration,
+    this.duration = kLongAnimationDuration,
   }) : super(settings: settings);
 
   final WidgetBuilder builder;
