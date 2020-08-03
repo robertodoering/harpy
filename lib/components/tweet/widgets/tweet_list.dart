@@ -3,7 +3,7 @@ import 'package:harpy/components/common/list/load_more_list.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_tile.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds a list for the [tweets].
 class TweetList extends StatelessWidget {

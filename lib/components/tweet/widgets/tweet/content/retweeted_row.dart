@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds a row with the retweeter's display name indicating that a tweet is a
 /// retweet.

@@ -5,7 +5,7 @@ import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:intl/intl.dart';
 
 /// Builds the buttons with actions for the [tweet].

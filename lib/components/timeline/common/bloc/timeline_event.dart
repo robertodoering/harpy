@@ -4,9 +4,9 @@ import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
-import 'package:harpy/core/api/handle_tweets.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/handle_tweets.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:logging/logging.dart';
 
 @immutable

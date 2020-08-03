@@ -1,7 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/core/api/media_data.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
-import 'package:harpy/core/api/user_data.dart';
+import 'package:harpy/core/api/twitter/media_data.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 
 /// The media types for [Media.type].
 const String kMediaPhoto = 'photo';
@@ -10,8 +10,8 @@ const String kMediaGif = 'animated_gif';
 
 /// Contains everything necessary to build a Tweet.
 ///
-/// Uses less memory compared to the twitter API's [Tweet] object and allows for
-/// custom data to be stored.
+/// Allows for custom data to be stored compared to the Twitter returned [Tweet]
+/// object.
 class TweetData {
   TweetData.fromTweet(Tweet tweet) {
     if (tweet == null) {

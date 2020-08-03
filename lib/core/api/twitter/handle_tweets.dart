@@ -1,5 +1,5 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Handles a tweet list response.
 ///

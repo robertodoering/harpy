@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 
+/// The image data for a [TweetData].
 class ImageData {
   ImageData.fromMedia(Media media) {
     baseUrl = media.mediaUrlHttps;
@@ -14,6 +15,7 @@ class ImageData {
   String get large => '$baseUrl?name=large';
 }
 
+/// The video (and animated gif) data for a [TweetData].
 class VideoData {
   VideoData.fromMedia(Media media) {
     aspectRatio = media.videoInfo.aspectRatio;

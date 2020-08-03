@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_image_gallery.dart';
-import 'package:harpy/core/api/media_data.dart';
+import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 

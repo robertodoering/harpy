@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
-import 'package:harpy/core/api/media_data.dart';
+import 'package:harpy/core/api/twitter/media_data.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
 class TweetVideo extends StatelessWidget {

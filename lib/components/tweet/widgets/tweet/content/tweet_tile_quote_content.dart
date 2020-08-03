@@ -3,7 +3,7 @@ import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/quote_author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the content for a tweet quote.
 class TweetQuoteContent extends StatelessWidget {

@@ -5,7 +5,7 @@ import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the translation for the tweet if it exists, or an empty [SizedBox] as
 /// a placeholder if no translation exists.

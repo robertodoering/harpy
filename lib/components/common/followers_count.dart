@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/core/api/user_data.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:intl/intl.dart';
 
 /// A widget to display the number of following users and followers for the

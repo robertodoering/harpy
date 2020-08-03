@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_gif.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_video.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the media for the tweet.
 ///

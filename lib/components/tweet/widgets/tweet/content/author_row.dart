@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
-import 'package:harpy/core/api/tweet_data.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Builds the tweet author's avatar, display name, username and the creation

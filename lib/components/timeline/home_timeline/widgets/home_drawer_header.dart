@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/followers_count.dart';
-import 'package:harpy/core/api/user_data.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 
 /// The header for the [HomeDrawer].
 class HomeDrawerHeader extends StatelessWidget {
