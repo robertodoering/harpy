@@ -1,3 +1,4 @@
+// local.properties
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -10,6 +11,40 @@ def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
+
+// key.properties
+boolean hasKeyStore = false
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    hasKeyStore = true
+} else {
+    println "+++"
+    println "No keystore defined. The app will not be signed."
+    println "Create a android/key.properties file with the following properties:"
+    println "storePassword"
+    println "keyPassword"
+    println "keyAlias"
+    println "storeFile"
+    println "+++"
+}
+
+// version.properties
+def versionProperties = new Properties()
+def versionPropertiesFile = rootProject.file('version.properties')
+if (versionPropertiesFile.exists()) {
+    versionPropertiesFile.withReader('UTF-8') { reader ->
+        versionProperties.load(reader)
+    }
+}
+
+def freeVersionCode = versionProperties.getProperty('freeVersionCode')
+def freeVersionName = versionProperties.getProperty('freeVersionName')
+
+def proVersionCode = versionProperties.getProperty('proVersionCode')
+def proVersionName = versionProperties.getProperty('proVersionName')
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -31,21 +66,34 @@ android {
     productFlavors {
         free {
             applicationId "com.robertodoering.harpy.free"
-            versionCode 1 // todo
-            versionName "1.0.0"
+            versionCode freeVersionCode.toInteger()
+            versionName freeVersionName
         }
         pro {
             applicationId "com.robertodoering.harpy.pro"
-            versionCode 1
-            versionName "1.0.0"
+            versionCode proVersionCode.toInteger()
+            versionName proVersionName
+        }
+    }
+
+    if (hasKeyStore) {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            if (hasKeyStore) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
 }
