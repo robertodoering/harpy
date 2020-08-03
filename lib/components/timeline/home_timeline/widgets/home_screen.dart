@@ -8,6 +8,8 @@ import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatelessWidget {
+  const HomeScreen();
+
   static const String route = 'home';
 
   @override

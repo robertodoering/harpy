@@ -70,14 +70,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
 
   switch (routeName) {
     case HomeScreen.route:
-      screen = HomeScreen();
+      screen = const HomeScreen();
       break;
     case LoginScreen.route:
-      screen = LoginScreen();
+      screen = const LoginScreen();
       break;
     default:
       _log.warning('route does not exist; navigating to login screen instead');
-      screen = LoginScreen();
+      screen = const LoginScreen();
   }
 
   switch (routeType) {
