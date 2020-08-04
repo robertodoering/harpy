@@ -30,6 +30,7 @@ class UserProfileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return FadingNestedScaffold(
       title: bloc.user.name,
+      alwaysShowTitle: bloc.user.profileBannerUrl == null,
       background: _buildAppBarBackground(),
       header: <Widget>[
         UserProfileHeader(bloc),

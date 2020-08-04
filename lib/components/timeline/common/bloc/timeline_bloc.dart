@@ -24,7 +24,14 @@ abstract class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   /// [RequestMoreTimelineEvent].
   Completer<void> requestMoreCompleter = Completer<void>();
 
+  /// Whether the tweet list should be able to request more.
   bool get enableRequestMore => tweets.isNotEmpty;
+
+  /// Whether a loading widget should be shown.
+  bool get showLoading => state is UpdatingTimelineState && tweets.isEmpty;
+
+  /// Whether a failed request widget should be shown.
+  bool get showFailed => state is FailedLoadingTimelineState && tweets.isEmpty;
 
   @override
   Stream<TimelineState> mapEventToState(
