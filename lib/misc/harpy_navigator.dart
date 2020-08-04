@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
@@ -123,7 +124,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RouteType.defaultRoute:
     default:
-      return MaterialPageRoute<void>(
+      return CupertinoPageRoute<void>(
         builder: (_) => screen,
         settings: RouteSettings(name: routeName),
       );
