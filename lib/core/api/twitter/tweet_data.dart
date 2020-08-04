@@ -172,12 +172,12 @@ class TweetData {
   bool get hasMedia =>
       images?.isNotEmpty == true || video != null || gif != null;
 
-  /// Wether this tweet has a translation.
+  /// Whether this tweet has a translation.
   bool get hasTranslation => translation != null || quote?.translation != null;
 
   /// Whether this tweet can be translated.
   bool get translatable => hasText && lang != 'en';
 
-  /// Wether the quote of this tweet can be translated, if one exists.
+  /// Whether the quote of this tweet can be translated, if one exists.
   bool get quoteTranslatable => quote?.translatable == true;
 }
