@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// A [NestedScrollView] within a [Scaffold] where the [title] fades in when the
 /// [FlexibleSpaceBar] in the [SliverAppBar] starts showing.
@@ -62,11 +63,12 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     final SliverAppBar sliverAppBar = SliverAppBar(
       expandedHeight: widget.expandedAppBarSpace,
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: harpyTheme.backgroundColors.first,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         // padding to prevent the text to get below the back arrow
@@ -84,16 +86,14 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
       ),
     );
 
-    return HarpyBackground(
-      child: NestedScrollView(
-        controller: _controller,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            sliverAppBar,
-          ];
-        },
-        body: widget.body,
-      ),
+    return NestedScrollView(
+      controller: _controller,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          sliverAppBar,
+        ];
+      },
+      body: HarpyBackground(child: widget.body),
     );
   }
 }
