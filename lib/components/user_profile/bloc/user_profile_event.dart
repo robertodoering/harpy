@@ -100,12 +100,28 @@ class InitializeUserEvent extends UserProfileEvent {
 class FollowUserEvent extends UserProfileEvent {
   const FollowUserEvent();
 
+  static final Logger _log = Logger('FollowUserEvent');
+
   @override
   Stream<UserProfileState> applyAsync({
     UserProfileState currentState,
     UserProfileBloc bloc,
   }) async* {
-    // todo
+    _log.fine('following @${bloc.user.screenName}');
+
+    bloc.user.connections?.add('following');
+    yield InitializedUserState();
+
+    try {
+      await bloc.userService.friendshipsCreate(userId: bloc.user.idStr);
+      _log.fine('successfully followed @${bloc.user.screenName}');
+    } catch (e) {
+      twitterApiErrorHandler(e);
+
+      // assume still not following
+      bloc.user.connections?.remove('following');
+      yield InitializedUserState();
+    }
   }
 }
 
@@ -113,11 +129,27 @@ class FollowUserEvent extends UserProfileEvent {
 class UnfollowUserEvent extends UserProfileEvent {
   const UnfollowUserEvent();
 
+  static final Logger _log = Logger('UnfollowUserEvent');
+
   @override
   Stream<UserProfileState> applyAsync({
     UserProfileState currentState,
     UserProfileBloc bloc,
   }) async* {
-    // todo
+    _log.fine('unfollowing @${bloc.user.screenName}');
+
+    bloc.user.connections?.remove('following');
+    yield InitializedUserState();
+
+    try {
+      await bloc.userService.friendshipsDestroy(userId: bloc.user.idStr);
+      _log.fine('successfully unfollowed @${bloc.user.screenName}');
+    } catch (e) {
+      twitterApiErrorHandler(e);
+
+      // assume still following
+      bloc.user.connections?.add('following');
+      yield InitializedUserState();
+    }
   }
 }
