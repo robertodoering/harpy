@@ -30,7 +30,6 @@ class UserProfileInfo extends StatelessWidget {
         onTap: () => bloc.add(const FollowUserEvent()),
         dense: true,
       ),
-      // todo: add following flag to user data
       crossFadeState: bloc.user.following
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
@@ -48,7 +47,7 @@ class UserProfileInfo extends StatelessWidget {
               Text(bloc.user.name, style: theme.textTheme.headline6),
               if (bloc.user.verified) ...<Widget>[
                 const Text(' '),
-                Icon(Icons.verified_user, size: 22),
+                const Icon(Icons.verified_user, size: 22),
               ],
             ],
           ),

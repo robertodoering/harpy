@@ -10,11 +10,13 @@ class UserData {
     idStr = user.idStr;
     name = user.name;
     screenName = user.screenName;
+    location = user.location;
     entities = user.entities;
     description = user.description;
     verified = user.verified;
     followersCount = user.followersCount;
     friendsCount = user.friendsCount;
+    createdAt = user.createdAt;
     profileBannerUrl = user.profileBannerUrl;
     profileImageUrlHttps = user.profileImageUrlHttps;
   }
@@ -31,6 +33,11 @@ class UserData {
   /// user identifier whenever possible. Typically a maximum of 15 characters
   /// long, but some historical accounts may exist with longer names.
   String screenName;
+
+  /// Nullable. The user-defined location for this account’s profile. Not
+  /// necessarily a location, nor machine-parseable. This field will
+  /// occasionally be fuzzily interpreted by the Search service.
+  String location;
 
   /// Entities for User Objects describe URLs that appear in the user defined
   /// profile URL and description fields.
@@ -50,6 +57,9 @@ class UserData {
   /// Under certain conditions of duress, this field will temporarily indicate
   /// `0`.
   int friendsCount;
+
+  /// The UTC datetime that the user account was created on Twitter.
+  DateTime createdAt;
 
   /// The HTTPS-based URL pointing to the standard web representation of the
   /// user’s uploaded profile banner. By adding a final path element of the URL,
@@ -82,4 +92,13 @@ class UserData {
 
   /// Whether this user has a description.
   bool get hasDescription => description?.isNotEmpty == true;
+
+  /// Whether this user has a url for their profile.
+  bool get hasUrl => entities?.url?.urls?.isNotEmpty == true;
+
+  /// Whether this user has a location set for their profile.
+  bool get hasLocation => location?.isNotEmpty == true;
+
+  /// Wether this user has a created at time.
+  bool get hasCreatedAt => createdAt != null;
 }

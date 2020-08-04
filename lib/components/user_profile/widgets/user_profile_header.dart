@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/followers_count.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
+import 'package:harpy/components/user_profile/widgets/content/user_additional_info.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_description.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_info.dart';
 
@@ -17,7 +19,13 @@ class UserProfileHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UserProfileInfo(bloc),
-          if (bloc.user.hasDescription) UserProfileDescription(bloc),
+          const SizedBox(height: 8),
+          if (bloc.user.hasDescription) ...<Widget>[
+            UserProfileDescription(bloc),
+            const SizedBox(height: 8),
+          ],
+          UserProfileAdditionalInfo(bloc),
+          FollowersCount(bloc.user),
         ],
       ),
     );
