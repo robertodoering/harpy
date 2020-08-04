@@ -145,12 +145,12 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
       ]);
     }
 
-    app<HarpyNavigator>().state.push<void>(
-          HeroDialogRoute<void>(
-            onBackgroundTap: toggleFullscreen,
-            builder: (BuildContext context) => VideoFullscreen(this),
-          ),
-        );
+    app<HarpyNavigator>().pushRoute(
+      HeroDialogRoute<void>(
+        onBackgroundTap: toggleFullscreen,
+        builder: (BuildContext context) => VideoFullscreen(this),
+      ),
+    );
   }
 
   /// Exits the fullscreen video.

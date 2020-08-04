@@ -24,13 +24,6 @@ class HarpyNavigator {
 
   NavigatorState get state => key.currentState;
 
-  /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
-  void push(Widget widget) {
-    key.currentState.push<void>(MaterialPageRoute<void>(
-      builder: (BuildContext context) => widget,
-    ));
-  }
-
   /// A convenience method to push a new [route] to the [Navigator].
   void pushRoute(Route<void> route) {
     key.currentState.push<void>(route);
