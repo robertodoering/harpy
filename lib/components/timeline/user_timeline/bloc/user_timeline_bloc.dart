@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
-import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_state.dart';
+import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_event.dart';
 
 class UserTimelineBloc extends TimelineBloc {
   UserTimelineBloc({

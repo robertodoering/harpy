@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
+import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_event.dart';
 
 class UserTimeline extends StatelessWidget {
   const UserTimeline({
@@ -18,9 +19,14 @@ class UserTimeline extends StatelessWidget {
         screenName: screenName,
       ),
       child: TweetTimeline<UserTimelineBloc>(
-        // todo
-        onRefresh: (_) async {},
-        onLoadMore: (_) async {},
+        onRefresh: (UserTimelineBloc bloc) {
+          bloc.add(UpdateUserTimelineEvent(screenName: screenName));
+          return bloc.updateTimelineCompleter.future;
+        },
+        onLoadMore: (UserTimelineBloc bloc) {
+          bloc.add(RequestMoreUserTimelineEvent(screenName: screenName));
+          return bloc.requestMoreCompleter.future;
+        },
       ),
     );
   }
