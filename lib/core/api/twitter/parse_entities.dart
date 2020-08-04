@@ -5,7 +5,7 @@ void parseEntities(String text, Entities entities) {
   entities.hashtags ??= <Hashtag>[];
   entities.userMentions ??= <UserMention>[];
 
-  for (String part in text.split(' ')) {
+  for (String part in text.split(RegExp(r'\s'))) {
     if (part.startsWith('#')) {
       entities.hashtags.add(
         Hashtag()..text = part.replaceFirst('#', ''),
