@@ -8,11 +8,13 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class FadingNestedScaffold extends StatefulWidget {
   const FadingNestedScaffold({
     @required this.body,
+    this.header,
     this.title,
     this.background,
     this.expandedAppBarSpace = 200.0,
   });
 
+  final List<Widget> header;
   final Widget body;
   final String title;
   final Widget background;
@@ -86,14 +88,20 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
       ),
     );
 
-    return NestedScrollView(
-      controller: _controller,
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          sliverAppBar,
-        ];
-      },
-      body: HarpyBackground(child: widget.body),
+    return HarpyBackground(
+      child: NestedScrollView(
+        controller: _controller,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            sliverAppBar,
+            if (widget.header != null)
+              SliverList(
+                delegate: SliverChildListDelegate(widget.header),
+              ),
+          ];
+        },
+        body: widget.body,
+      ),
     );
   }
 }

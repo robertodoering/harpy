@@ -39,7 +39,7 @@ abstract class UpdateTimelineEvent extends TimelineEvent {
         .catchError(twitterApiErrorHandler);
 
     if (tweets != null) {
-      _log.fine('updated timeline');
+      _log.fine('updated timeline with ${tweets.length} tweets');
 
       bloc.tweets = tweets;
       yield ShowingTimelineState();
