@@ -66,20 +66,20 @@ class HarpyNavigator {
     );
   }
 
-  /// Pushes a [UserProfileScreen] for [user] or [userId].
+  /// Pushes a [UserProfileScreen] for the [user] or [screenName].
   ///
-  /// Either [user] or [userId] must not be `null`.
+  /// Either [user] or [screenName] must not be `null`.
   void pushUserProfile({
     UserData user,
-    String userId,
+    String screenName,
   }) {
-    assert(user != null || userId != null);
+    assert(user != null || screenName != null);
 
     pushNamed(
       UserProfileScreen.route,
       arguments: <String, dynamic>{
         'user': user,
-        'userId': userId,
+        'screenName': screenName,
       },
     );
   }
@@ -108,7 +108,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case UserProfileScreen.route:
       screen = UserProfileScreen(
         user: arguments['user'],
-        userId: arguments['userId'],
+        screenName: arguments['screenName'],
       );
       break;
     case HomeScreen.route:

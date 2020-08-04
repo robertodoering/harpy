@@ -31,8 +31,9 @@ class UserProfileInfo extends StatelessWidget {
         dense: true,
       ),
       // todo: add following flag to user data
-      crossFadeState:
-          true ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      crossFadeState: bloc.user.following
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
     );
   }
 
@@ -70,8 +71,11 @@ class UserProfileInfo extends StatelessWidget {
     final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
 
     // hide follow button when the profile of the authenticated user is showing
+    // or when the connections have not been requested to determine whether the
+    // authenticated user is following this user.
     final bool enableFollow =
-        authBloc.authenticatedUser.idStr != bloc.user.idStr;
+        authBloc.authenticatedUser.idStr != bloc.user.idStr &&
+            bloc.user.hasConnections;
 
     return Row(
       children: <Widget>[

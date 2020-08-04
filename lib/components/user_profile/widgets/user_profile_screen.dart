@@ -13,20 +13,20 @@ import 'package:harpy/core/api/twitter/user_data.dart';
 /// Builds the screen for a user profile.
 ///
 /// The [user] is used to display the user data if not `null`.
-/// Otherwise the [userId] is used to load the user data upon creation.
+/// Otherwise the [screenName] is used to load the user data upon creation.
 ///
-/// Either [user] or [userId] must not be `null`.
+/// Either [user] or [screenName] must not be `null`.
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     this.user,
-    this.userId,
-  }) : assert(user != null || userId != null);
+    this.screenName,
+  }) : assert(user != null || screenName != null);
 
   /// The user to display.
   final UserData user;
 
-  /// The user id that is used to load the user data.
-  final String userId;
+  /// The screenName that is used to load the user data.
+  final String screenName;
 
   static const String route = 'user_profile';
 
@@ -57,7 +57,7 @@ class UserProfileScreen extends StatelessWidget {
               text: 'retry',
               onTap: () => bloc.add(InitializeUserEvent(
                 user: user,
-                userId: userId,
+                screenName: screenName,
               )),
             ),
           ],
@@ -88,7 +88,7 @@ class UserProfileScreen extends StatelessWidget {
     return BlocProvider<UserProfileBloc>(
       create: (BuildContext context) => UserProfileBloc(
         user: user,
-        userId: userId,
+        screenName: screenName,
       ),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         builder: (BuildContext context, UserProfileState state) {

@@ -18,9 +18,9 @@ abstract class UserProfileEvent {
 
 /// Initializes the data for the [UserProfileBloc.user].
 ///
-/// Either [user] or [userId] must not be `null`.
+/// Either [user] or [screenName] must not be `null`.
 ///
-/// If [user] is `null`, requests the user data for the [userId] and the
+/// If [user] is `null`, requests the user data for the [screenName] and the
 /// relationship status (following / followed_by).
 ///
 /// Otherwise if the [user.connections] is `null`, only requests the
@@ -34,12 +34,15 @@ abstract class UserProfileEvent {
 class InitializeUserEvent extends UserProfileEvent {
   const InitializeUserEvent({
     this.user,
-    this.userId,
-  }) : assert(user != null || userId != null);
+    this.screenName,
+  }) : assert(user != null || screenName != null);
 
   final UserData user;
 
-  final String userId;
+  final String screenName;
+
+  /// The user id used to request the user or the relationship status.
+  String get _screenName => screenName ?? user?.screenName;
 
   static final Logger _log = Logger('InitializeUserEvent');
 
@@ -51,34 +54,39 @@ class InitializeUserEvent extends UserProfileEvent {
     _log.fine('initialize user');
 
     UserData userData = user;
-    Friendship friendship;
+    List<String> connections = user?.connections;
 
     if (user?.connections == null) {
       await Future.wait<void>(<Future<void>>[
         // user data
-        if (userData == null)
+        if (userData == null && _screenName != null)
           bloc.userService
-              .usersShow(userId: userId)
+              .usersShow(screenName: _screenName)
               .then((User user) => UserData.fromUser(user))
               .then((UserData user) => userData = user)
               .catchError(silentErrorHandler),
 
-        // friendship lookup for the relationship status (following / followed_by)
-        bloc.userService
-            .friendshipsLookup(userIds: <String>[userId])
-            .then(
-              (List<Friendship> response) =>
-                  response.length == 1 ? response.first : null,
-            )
-            .then((Friendship userFriendship) => friendship = userFriendship)
-            .catchError(silentErrorHandler),
+        // friendship lookup for the relationship status (following /
+        // followed_by)
+        if (connections == null && _screenName != null)
+          bloc.userService
+              .friendshipsLookup(screenNames: <String>[_screenName])
+              .then(
+                (List<Friendship> response) =>
+                    response.length == 1 ? response.first : null,
+              )
+              .then(
+                (Friendship friendship) =>
+                    connections = friendship?.connections,
+              )
+              .catchError(silentErrorHandler),
       ]);
     }
 
     if (userData == null) {
       yield FailedLoadingUserState();
     } else {
-      userData.connections = friendship?.connections;
+      userData.connections = connections;
       bloc.user = userData;
 
       yield InitializedUserState();

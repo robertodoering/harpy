@@ -10,6 +10,7 @@ class UserData {
     idStr = user.idStr;
     name = user.name;
     screenName = user.screenName;
+    entities = user.entities;
     description = user.description;
     verified = user.verified;
     followersCount = user.followersCount;
@@ -30,6 +31,10 @@ class UserData {
   /// user identifier whenever possible. Typically a maximum of 15 characters
   /// long, but some historical accounts may exist with longer names.
   String screenName;
+
+  /// Entities for User Objects describe URLs that appear in the user defined
+  /// profile URL and description fields.
+  UserEntities entities;
 
   /// Nullable. The user-defined UTF-8 string describing their account.
   String description;
@@ -66,6 +71,15 @@ class UserData {
   /// Requested via [UserService.friendshipsLookup].
   List<String> connections;
 
-  /// Wether this user has a description.
+  /// Whether the relationship status for this user has been requested and the
+  /// [Friendship.connections] set to [connecitons].
+  bool get hasConnections => connections != null;
+
+  /// Whether the authenticated user is following this user.
+  ///
+  /// Returns `false` if [connections] is `null`.
+  bool get following => connections?.contains('following') == true;
+
+  /// Whether this user has a description.
   bool get hasDescription => description?.isNotEmpty == true;
 }
