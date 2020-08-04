@@ -53,6 +53,8 @@ class InitializeUserEvent extends UserProfileEvent {
   }) async* {
     _log.fine('initialize user');
 
+    yield LoadingUserState();
+
     UserData userData = user;
     List<String> connections = user?.connections;
 
