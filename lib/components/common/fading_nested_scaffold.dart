@@ -10,15 +10,29 @@ class FadingNestedScaffold extends StatefulWidget {
     @required this.body,
     this.header,
     this.title,
+    this.alwaysShowTitle = false,
     this.background,
-    this.expandedAppBarSpace = 200.0,
+    this.expandedHeight = 200.0,
   });
 
+  /// The header widgets built below the [SliverAppBar].
   final List<Widget> header;
+
+  /// The body of the [NestedScrollView].
   final Widget body;
+
+  /// The title used in the [SliverAppBar] that fades in when the user scrolls
+  /// down.
   final String title;
+
+  /// If `true`, always shows the title regardless of the scroll position.
+  final bool alwaysShowTitle;
+
+  /// The background of the [SliverAppBar].
   final Widget background;
-  final double expandedAppBarSpace;
+
+  /// The expanded height of the [SliverAppBar].
+  final double expandedHeight;
 
   @override
   _FadingNestedScaffoldState createState() => _FadingNestedScaffoldState();
@@ -32,12 +46,14 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   void initState() {
     super.initState();
 
-    final double fadeStart = widget.expandedAppBarSpace - 125;
-    final double fadeEnd = widget.expandedAppBarSpace - 40;
+    final double fadeStart = widget.expandedHeight - 125;
+    final double fadeEnd = widget.expandedHeight - 40;
     final double difference = fadeEnd - fadeStart;
 
-    _controller = ScrollController()
-      ..addListener(() {
+    _controller = ScrollController();
+
+    if (!widget.alwaysShowTitle) {
+      _controller.addListener(() {
         if (_controller.offset >= fadeStart && _controller.offset <= fadeEnd) {
           final double val = _controller.offset - fadeStart;
 
@@ -54,6 +70,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
           });
         }
       });
+    }
   }
 
   @override
@@ -67,8 +84,26 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     final ThemeData theme = Theme.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
+    final Widget title = widget.alwaysShowTitle
+        ? Text(
+            widget.title ?? '',
+            style: theme.textTheme.headline6,
+            overflow: TextOverflow.ellipsis,
+          )
+        : Opacity(
+            opacity: _opacity,
+            child: Text(
+              widget.title ?? '',
+              style: theme.textTheme.headline6,
+              overflow: TextOverflow.ellipsis,
+            ),
+          );
+
+    // todo: set icon theme data to match the background
+    //  maybe when scrolling down the icon theme data can change while the
+    //  background fades out
     final SliverAppBar sliverAppBar = SliverAppBar(
-      expandedHeight: widget.expandedAppBarSpace,
+      expandedHeight: widget.expandedHeight,
       elevation: 0,
       backgroundColor: harpyTheme.backgroundColors.first,
       pinned: true,
@@ -76,14 +111,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
         // padding to prevent the text to get below the back arrow
         titlePadding: const EdgeInsets.only(left: 54, right: 54, bottom: 16),
         centerTitle: true,
-        title: Opacity(
-          opacity: _opacity,
-          child: Text(
-            widget.title ?? '',
-            style: theme.textTheme.headline6,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+        title: title,
         background: widget.background,
       ),
     );
@@ -91,6 +119,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     return HarpyBackground(
       child: NestedScrollView(
         controller: _controller,
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             sliverAppBar,
