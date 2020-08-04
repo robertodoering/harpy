@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.
@@ -23,10 +25,9 @@ class HarpyNavigator {
   NavigatorState get state => key.currentState;
 
   /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
-  void push(Widget widget, {String name}) {
+  void push(Widget widget) {
     key.currentState.push<void>(MaterialPageRoute<void>(
       builder: (BuildContext context) => widget,
-      settings: RouteSettings(name: name),
     ));
   }
 
@@ -39,11 +40,46 @@ class HarpyNavigator {
   void pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
+    Map<String, dynamic> arguments,
   }) {
     key.currentState.pushReplacementNamed<void, void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
+        ...?arguments,
+      },
+    );
+  }
+
+  /// A convenience method to push a named route.
+  void pushNamed(
+    String route, {
+    RouteType type = RouteType.defaultRoute,
+    Map<String, dynamic> arguments,
+  }) {
+    key.currentState.pushNamed<void>(
+      route,
+      arguments: <String, dynamic>{
+        'routeType': type,
+        ...?arguments,
+      },
+    );
+  }
+
+  /// Pushes a [UserProfileScreen] for [user] or [userId].
+  ///
+  /// Either [user] or [userId] must not be `null`.
+  void pushUserProfile({
+    UserData user,
+    String userId,
+  }) {
+    assert(user != null || userId != null);
+
+    pushNamed(
+      UserProfileScreen.route,
+      arguments: <String, dynamic>{
+        'user': user,
+        'userId': userId,
       },
     );
   }
@@ -69,6 +105,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget screen;
 
   switch (routeName) {
+    case UserProfileScreen.route:
+      screen = UserProfileScreen(
+        user: arguments['user'],
+        userId: arguments['userId'],
+      );
+      break;
     case HomeScreen.route:
       screen = const HomeScreen();
       break;
