@@ -23,6 +23,11 @@ if (keystorePropertiesFile.exists()) {
 } else {
     println "+++"
     println "No keystore defined. The app will not be signed."
+    println "Create a android/key.properties file with the following properties:"
+    println "storePassword"
+    println "keyPassword"
+    println "keyAlias"
+    println "storeFile"
     println "+++"
 }
 
@@ -53,8 +58,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 29
     }
 
     flavorDimensions "app"
@@ -89,7 +93,6 @@ android {
             } else {
                 signingConfig signingConfigs.debug
             }
-
         }
     }
 }
@@ -97,11 +100,3 @@ android {
 flutter {
     source '../..'
 }
-
-dependencies {
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-}
-
-apply plugin: 'com.google.gms.google-services'

@@ -1,46 +1,40 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:harpy/components/screens/entry_screen.dart';
-import 'package:harpy/components/widgets/shared/harpy_banner_ad.dart';
-import 'package:harpy/core/misc/harpy_error_handler.dart';
-import 'package:harpy/core/misc/harpy_navigator.dart';
-import 'package:harpy/core/misc/harpy_theme.dart';
-import 'package:harpy/core/misc/route_observer.dart';
-import 'package:harpy/core/misc/service_setup.dart';
-import 'package:harpy/models/global_models_provider.dart';
-import 'package:harpy/models/settings/settings_models_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/application/bloc/application_bloc.dart';
+import 'package:harpy/components/application/bloc/application_state.dart';
+import 'package:harpy/components/common/global_bloc_provider.dart';
+import 'package:harpy/components/common/harpy_message_handler.dart';
+import 'package:harpy/components/common/screens/splash_screen.dart';
+import 'package:harpy/core/harpy_error_handler.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
-/// [GetIt] is a simple service locator for accessing services from anywhere
-/// in the app.
-final GetIt app = GetIt.instance;
-
-/// Used for firebase analytics.
-final FirebaseAnalytics analytics = FirebaseAnalytics();
+/// The [Flavor] the app is built in.
+enum Flavor {
+  free,
+  pro,
+}
 
 /// Runs the app with the given [flavor].
 ///
-/// To app can be run with the 'free' or 'pro' flavor by running
-/// `flutter run --flavor free -t lib/main_free.dart` or
-/// `flutter run --flavor pro -t lib/main_pro.dart`.
+/// The app can be built with the 'free' or 'pro' flavor by running
+/// `flutter build --flavor free -t lib/main_free.dart` or
+/// `flutter build --flavor pro -t lib/main_pro.dart`.
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 
+  // sets up the global service locator
   setupServices();
-
-  // WidgetsFlutterBinding.ensureInitialized();
-  // analytics.logAppOpen();
 
   // HarpyErrorHandler will run the app and handle uncaught errors
   HarpyErrorHandler(
-    child: SettingsModelsProvider(
-      child: GlobalModelsProvider(
-        child: Harpy(),
-      ),
+    child: GlobalBlocProvider(
+      child: Harpy(),
     ),
   );
 }
 
+/// Builds the root [MaterialApp].
 class Harpy extends StatelessWidget {
   static Flavor flavor;
 
@@ -49,37 +43,18 @@ class Harpy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Harpy",
-      theme: HarpyTheme.of(context).theme,
-      navigatorKey: HarpyNavigator.key,
-      onGenerateRoute: onGenerateRoute,
-      navigatorObservers: [routeObserver],
-      home: EntryScreen(),
-      builder: _builder,
+    return BlocBuilder<ApplicationBloc, ApplicationState>(
+      builder: (BuildContext context, ApplicationState state) => MaterialApp(
+        title: 'Harpy',
+        theme: ApplicationBloc.of(context).harpyTheme.data,
+        navigatorKey: app<HarpyNavigator>().key,
+        onGenerateRoute: onGenerateRoute,
+        home: const SplashScreen(),
+        builder: (BuildContext widget, Widget child) => HarpyMessageHandler(
+          key: HarpyMessageHandler.globalKey,
+          child: child,
+        ),
+      ),
     );
   }
-
-  /// Builds the content for the app.
-  ///
-  /// The [child] is the screen pushed by the navigator.
-  Widget _builder(BuildContext context, Widget child) {
-    if (isFree) {
-      // add space at the bottom occupied by a banner ad in Harpy free
-      return Column(
-        children: <Widget>[
-          Expanded(child: child),
-          HarpyBannerAd(),
-        ],
-      );
-    } else {
-      return child;
-    }
-  }
-}
-
-enum Flavor {
-  free,
-  pro,
 }

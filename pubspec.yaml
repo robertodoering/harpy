@@ -1,75 +1,54 @@
 name: harpy
 description: A Twitter app built with Flutter.
 
+publish_to: 'none'
+
 # android/version.properties is used to manage the versions
 version: 0.0.0
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  # packages
-  oauth1: ^1.0.4
-  logging: ^0.11.3+2
-  logs:
-    git: https://github.com/pq/logs
-  intl: ^0.16.0
-  cached_network_image: ^2.2.0+1
-  photo_view:
-    git:
-      url: git://github.com/robertodoering/photo_view.git
-      ref: double_tap_gesture
-  provider: ^4.1.3
-  flutter_material_color_picker: ^1.0.5
-  flutter_hsvcolor_picker: ^0.0.1
-  flare_flutter: ^2.0.3
-  flushbar: ^1.10.4
-  mime_type: ^0.3.1
-  get_it: ^4.0.2
-  sembast: ^2.1.0
-  shimmer:
-    git: git://github.com/robertodoering/flutter_shimmer.git
-  sentry: ^3.0.1
-  timezone: ^0.5.5
-  dart_twitter_api: ^0.1.0
-
-  # plugins
-  share: ^0.6.3+1
-  flutter_twitter_login:
-    git: git://github.com/robertodoering/flutter_twitter_login.git
-  url_launcher: ^5.1.4
-  video_player: ^0.10.2+3
-  webview_flutter: ^0.3.14+1
-  path_provider: ^1.3.0
-  connectivity: ^0.4.4
-  shared_preferences: ^0.5.3+4
-  file_picker: ^1.4.2
-  device_info: ^0.4.0+3
-  package_info: ^0.4.0+6
-  firebase_admob: ^0.9.0+7
-  firebase_core: ^0.4.0+9
-  firebase_analytics: ^5.0.2
-
   flutter:
     sdk: flutter
+  
+  # packages
+  dart_twitter_api: ^0.3.1
+  flare_flutter: ^2.0.3
+  flutter_bloc: ^4.0.0
+  provider: ^4.3.1
+  get_it: ^4.0.2
+  logging: ^0.11.4
+  url_launcher: ^5.4.10
+  yaml: ^2.2.1
+  sentry: ^3.0.1
+  cached_network_image: ^2.2.0+1
+  intl : ^0.16.1
+  
+  # plugins
+  flutter_twitter_login:
+    git: git://github.com/robertodoering/flutter_twitter_login.git
+  package_info: '>=0.4.1 <2.0.0'
+  device_info: '>=0.4.2+4 <2.0.0'
+  video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mockito: ^4.1.1
+  bloc_test: ^5.1.0
   build_runner: ^1.7.1
   json_serializable: ^3.2.3
-  mockito: ^4.1.1
-  flutter_launcher_icons: ^0.7.3
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/config/
     - assets/flare/
-    - assets/packages/timezone/data/
-
-  fonts:
+  
+  fonts:  
   - family: Comfortaa
     fonts:
     - asset: assets/fonts/Comfortaa-Light.ttf

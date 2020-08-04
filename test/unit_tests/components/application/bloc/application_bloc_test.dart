@@ -1,0 +1,57 @@
+import 'package:bloc_test/bloc_test.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:harpy/components/application/bloc/application_bloc.dart';
+import 'package:harpy/components/application/bloc/application_event.dart';
+import 'package:harpy/components/application/bloc/application_state.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication_state.dart';
+import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/error_reporter.dart';
+import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:mockito/mockito.dart';
+
+class MockAppConfig extends Mock implements AppConfig {}
+
+class MockHarpyInfo extends Mock implements HarpyInfo {}
+
+class MockErrorReporter extends Mock implements ErrorReporter {}
+
+class MockTwitterApi extends Mock implements TwitterApi {}
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    app.registerLazySingleton<TwitterApi>(() => MockTwitterApi());
+    app.registerLazySingleton<AppConfig>(() => MockAppConfig());
+    app.registerLazySingleton<ErrorReporter>(() => MockErrorReporter());
+    app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
+  });
+
+  tearDown(app.reset);
+
+  blocTest<ApplicationBloc, ApplicationEvent, ApplicationState>(
+    'application bloc initializes the app with empty app config data',
+    build: () async {
+      when(app<AppConfig>().parseAppConfig()).thenAnswer((_) async {});
+      when(app<HarpyInfo>().initialize()).thenAnswer((_) async {});
+      when(app<ErrorReporter>().initialize()).thenAnswer((_) async {});
+
+      return ApplicationBloc(
+        authenticationBloc: AuthenticationBloc(),
+      );
+    },
+    expect: <ApplicationState>[
+      const InitializedState(),
+    ],
+    verify: (ApplicationBloc bloc) async {
+      verify(app<AppConfig>().parseAppConfig());
+      verify(app<HarpyInfo>().initialize());
+      verify(app<ErrorReporter>().initialize());
+
+      expect(bloc.authenticationBloc.state, isA<UnauthenticatedState>());
+    },
+  );
+}
