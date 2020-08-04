@@ -36,6 +36,7 @@ class TweetList extends StatelessWidget {
             onLoadMore: onLoadMore,
             enable: enableLoadMore,
             child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(8),
               itemCount: tweets.length,
               itemBuilder: (BuildContext context, int index) =>
