@@ -7,7 +7,7 @@ abstract class UserProfileState {}
 class LoadingUserState extends UserProfileState {}
 
 /// The state when a user has been loaded.
-class InitializedState extends UserProfileState {}
+class InitializedUserState extends UserProfileState {}
 
 /// The state when a user was unable to be loaded.
 class FailedLoadingUserState extends UserProfileState {}

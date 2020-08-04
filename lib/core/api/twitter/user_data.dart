@@ -58,6 +58,14 @@ class UserData {
   /// A HTTPS-based URL pointing to the user’s profile image.
   String profileImageUrlHttps;
 
+  /// The connections for this relationship for the authenticated user.
+  ///
+  /// Can be: `following`, `following_requested`, `followed_by`, `none`,
+  /// `blocking`, `muting`.
+  ///
+  /// Requested via [UserService.friendshipsLookup].
+  List<String> connections;
+
   /// Wether this user has a description.
   bool get hasDescription => description?.isNotEmpty == true;
 }

@@ -55,7 +55,10 @@ class UserProfileScreen extends StatelessWidget {
             HarpyButton.flat(
               dense: true,
               text: 'retry',
-              onTap: () => bloc.add(LoadUserEvent(userId)),
+              onTap: () => bloc.add(InitializeUserEvent(
+                user: user,
+                userId: userId,
+              )),
             ),
           ],
         ),
@@ -92,7 +95,7 @@ class UserProfileScreen extends StatelessWidget {
           final UserProfileBloc bloc = UserProfileBloc.of(context);
           if (state is LoadingUserState) {
             return _buildLoading();
-          } else if (state is InitializedState) {
+          } else if (state is InitializedUserState) {
             return _buildUserProfile(bloc);
           } else {
             return _buildError(theme, bloc);

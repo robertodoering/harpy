@@ -11,15 +11,15 @@ import 'package:harpy/core/service_locator.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
-    this.user,
+    UserData user,
     String userId,
   }) : assert(user != null || userId != null) {
-    if (user == null && userId != null) {
-      add(LoadUserEvent(userId));
-    }
+    add(InitializeUserEvent(user: user, userId: userId));
   }
 
   /// The [UserData] for the user to display.
+  ///
+  /// Set with an [InitializeUserEvent].
   UserData user;
 
   final UserService userService = app<TwitterApi>().userService;
@@ -28,8 +28,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       BlocProvider.of<UserProfileBloc>(context);
 
   @override
-  UserProfileState get initialState =>
-      user == null ? LoadingUserState() : InitializedState();
+  UserProfileState get initialState => LoadingUserState();
 
   @override
   Stream<UserProfileState> mapEventToState(
