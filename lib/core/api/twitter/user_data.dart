@@ -10,9 +10,14 @@ class UserData {
     idStr = user.idStr;
     name = user.name;
     screenName = user.screenName;
+    location = user.location;
+    entities = user.entities;
+    description = user.description;
     verified = user.verified;
     followersCount = user.followersCount;
     friendsCount = user.friendsCount;
+    createdAt = user.createdAt;
+    profileBannerUrl = user.profileBannerUrl;
     profileImageUrlHttps = user.profileImageUrlHttps;
   }
 
@@ -29,6 +34,18 @@ class UserData {
   /// long, but some historical accounts may exist with longer names.
   String screenName;
 
+  /// Nullable. The user-defined location for this account’s profile. Not
+  /// necessarily a location, nor machine-parseable. This field will
+  /// occasionally be fuzzily interpreted by the Search service.
+  String location;
+
+  /// Entities for User Objects describe URLs that appear in the user defined
+  /// profile URL and description fields.
+  UserEntities entities;
+
+  /// Nullable. The user-defined UTF-8 string describing their account.
+  String description;
+
   /// When `true`, indicates that the user has a verified account.
   bool verified;
 
@@ -41,6 +58,47 @@ class UserData {
   /// `0`.
   int friendsCount;
 
+  /// The UTC datetime that the user account was created on Twitter.
+  DateTime createdAt;
+
+  /// The HTTPS-based URL pointing to the standard web representation of the
+  /// user’s uploaded profile banner. By adding a final path element of the URL,
+  /// it is possible to obtain different image sizes optimized for specific
+  /// displays.
+  ///
+  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
+  /// for size variants.
+  String profileBannerUrl;
+
   /// A HTTPS-based URL pointing to the user’s profile image.
   String profileImageUrlHttps;
+
+  /// The connections for this relationship for the authenticated user.
+  ///
+  /// Can be: `following`, `following_requested`, `followed_by`, `none`,
+  /// `blocking`, `muting`.
+  ///
+  /// Requested via [UserService.friendshipsLookup].
+  List<String> connections;
+
+  /// Whether the relationship status for this user has been requested and the
+  /// [Friendship.connections] set to [connecitons].
+  bool get hasConnections => connections != null;
+
+  /// Whether the authenticated user is following this user.
+  ///
+  /// Returns `false` if [connections] is `null`.
+  bool get following => connections?.contains('following') == true;
+
+  /// Whether this user has a description.
+  bool get hasDescription => description?.isNotEmpty == true;
+
+  /// Whether this user has a url for their profile.
+  bool get hasUrl => entities?.url?.urls?.isNotEmpty == true;
+
+  /// Whether this user has a location set for their profile.
+  bool get hasLocation => location?.isNotEmpty == true;
+
+  /// Wether this user has a created at time.
+  bool get hasCreatedAt => createdAt != null;
 }

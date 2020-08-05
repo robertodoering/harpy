@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.
@@ -22,14 +25,6 @@ class HarpyNavigator {
 
   NavigatorState get state => key.currentState;
 
-  /// A convenience method to push a new [MaterialPageRoute] to the [Navigator].
-  void push(Widget widget, {String name}) {
-    key.currentState.push<void>(MaterialPageRoute<void>(
-      builder: (BuildContext context) => widget,
-      settings: RouteSettings(name: name),
-    ));
-  }
-
   /// A convenience method to push a new [route] to the [Navigator].
   void pushRoute(Route<void> route) {
     key.currentState.push<void>(route);
@@ -39,11 +34,46 @@ class HarpyNavigator {
   void pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
+    Map<String, dynamic> arguments,
   }) {
     key.currentState.pushReplacementNamed<void, void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
+        ...?arguments,
+      },
+    );
+  }
+
+  /// A convenience method to push a named route.
+  void pushNamed(
+    String route, {
+    RouteType type = RouteType.defaultRoute,
+    Map<String, dynamic> arguments,
+  }) {
+    key.currentState.pushNamed<void>(
+      route,
+      arguments: <String, dynamic>{
+        'routeType': type,
+        ...?arguments,
+      },
+    );
+  }
+
+  /// Pushes a [UserProfileScreen] for the [user] or [screenName].
+  ///
+  /// Either [user] or [screenName] must not be `null`.
+  void pushUserProfile({
+    UserData user,
+    String screenName,
+  }) {
+    assert(user != null || screenName != null);
+
+    pushNamed(
+      UserProfileScreen.route,
+      arguments: <String, dynamic>{
+        'user': user,
+        'screenName': screenName,
       },
     );
   }
@@ -69,6 +99,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget screen;
 
   switch (routeName) {
+    case UserProfileScreen.route:
+      screen = UserProfileScreen(
+        user: arguments['user'],
+        screenName: arguments['screenName'],
+      );
+      break;
     case HomeScreen.route:
       screen = const HomeScreen();
       break;
@@ -88,7 +124,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RouteType.defaultRoute:
     default:
-      return MaterialPageRoute<void>(
+      return CupertinoPageRoute<void>(
         builder: (_) => screen,
         settings: RouteSettings(name: routeName),
       );

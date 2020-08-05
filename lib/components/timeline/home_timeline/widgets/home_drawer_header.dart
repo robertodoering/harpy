@@ -3,18 +3,18 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/components/common/followers_count.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 /// The header for the [HomeDrawer].
 class HomeDrawerHeader extends StatelessWidget {
   const HomeDrawerHeader();
 
-  void _onUserTap() {
-    // todo: go to user screen
-  }
-
   Widget _buildAvatarRow(BuildContext context, UserData user) {
     return GestureDetector(
-      onTap: _onUserTap,
+      onTap: () => app<HarpyNavigator>().pushUserProfile(
+        user: user,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

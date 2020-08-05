@@ -34,15 +34,24 @@ abstract class UpdateTimelineEvent extends TimelineEvent {
   }) async* {
     _log.fine('updating timeline');
 
+    yield UpdatingTimelineState();
+
     final List<TweetData> tweets = await requestTimeline(bloc)
         .then(handleTweets)
         .catchError(twitterApiErrorHandler);
 
     if (tweets != null) {
-      _log.fine('updated timeline');
+      _log.fine('updated timeline with ${tweets.length} tweets');
 
       bloc.tweets = tweets;
-      yield ShowingTimelineState();
+
+      if (tweets.isNotEmpty) {
+        yield ShowingTimelineState();
+      } else {
+        yield NoTweetsFoundState();
+      }
+    } else {
+      yield FailedLoadingTimelineState();
     }
 
     bloc.updateTimelineCompleter.complete();

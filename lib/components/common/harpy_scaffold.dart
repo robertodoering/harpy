@@ -10,8 +10,8 @@ import 'package:harpy/components/common/harpy_background.dart';
 /// [title] in the [AppBar].
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
-    @required this.title,
     @required this.body,
+    this.title,
     this.showIcon = false,
     this.actions,
     this.drawer,
@@ -58,7 +58,7 @@ class HarpyScaffold extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       actions: actions,
-      title: _buildTitle(theme),
+      title: title?.isNotEmpty == true ? _buildTitle(theme) : null,
       bottom: appBarBottom,
     );
 

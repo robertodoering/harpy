@@ -18,14 +18,14 @@ class TweetImages extends StatelessWidget {
   static const double _padding = 2;
 
   void _openGallery(ImageData image) {
-    app<HarpyNavigator>().state.push<void>(
-          HeroDialogRoute<void>(
-            builder: (BuildContext context) => TweetImageGallery(
-              images: images,
-              index: images.indexOf(image),
-            ),
-          ),
-        );
+    app<HarpyNavigator>().pushRoute(
+      HeroDialogRoute<void>(
+        builder: (BuildContext context) => TweetImageGallery(
+          images: images,
+          index: images.indexOf(image),
+        ),
+      ),
+    );
   }
 
   Widget _buildImage(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/cached_circle_avatar.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Builds the tweet author's avatar, display name, username and the creation
@@ -11,7 +13,7 @@ class TweetAuthorRow extends StatelessWidget {
   final TweetData tweet;
 
   void _onUserTap() {
-    // todo: go to user screen
+    app<HarpyNavigator>().pushUserProfile(user: tweet.userData);
   }
 
   @override

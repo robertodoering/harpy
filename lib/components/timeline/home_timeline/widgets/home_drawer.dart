@@ -4,11 +4,15 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/common/flare_icons.dart';
 import 'package:harpy/components/common/harpy_background.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
   Widget _buildActions(BuildContext context) {
+    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+
     return Column(
       children: <Widget>[
         Expanded(
@@ -20,8 +24,12 @@ class HomeDrawer extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.face),
                 title: const Text('Profile'),
-                onTap: () {},
-                enabled: false,
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushUserProfile(
+                    user: authBloc.authenticatedUser,
+                  );
+                },
               ),
 
               const Divider(),
