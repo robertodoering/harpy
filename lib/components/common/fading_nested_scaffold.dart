@@ -79,30 +79,32 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     _controller.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+  Widget _buildTitle(ThemeData theme) {
+    final Widget title = Text(
+      widget.title ?? '',
+      style: theme.textTheme.headline6,
+      overflow: TextOverflow.ellipsis,
+    );
 
-    final Widget title = widget.alwaysShowTitle
-        ? Text(
-            widget.title ?? '',
-            style: theme.textTheme.headline6,
-            overflow: TextOverflow.ellipsis,
-          )
-        : Opacity(
-            opacity: _opacity,
-            child: Text(
-              widget.title ?? '',
-              style: theme.textTheme.headline6,
-              overflow: TextOverflow.ellipsis,
-            ),
-          );
+    if (widget.alwaysShowTitle) {
+      return title;
+    } else if (_opacity == 0) {
+      // return empty sized box to prevent the invisible title to block gesture
+      // detection
+      return const SizedBox();
+    } else {
+      return Opacity(
+        opacity: _opacity,
+        child: title,
+      );
+    }
+  }
 
+  Widget _buildSliverAppBar(HarpyTheme harpyTheme, ThemeData theme) {
     // todo: set icon theme data to match the background
     //  maybe when scrolling down the icon theme data can change while the
     //  background fades out
-    final SliverAppBar sliverAppBar = SliverAppBar(
+    return SliverAppBar(
       expandedHeight: widget.expandedHeight,
       elevation: 0,
       backgroundColor: harpyTheme.backgroundColors.first,
@@ -111,10 +113,16 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
         // padding to prevent the text to get below the back arrow
         titlePadding: const EdgeInsets.only(left: 54, right: 54, bottom: 16),
         centerTitle: true,
-        title: title,
+        title: _buildTitle(theme),
         background: widget.background,
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return HarpyBackground(
       child: NestedScrollView(
@@ -122,7 +130,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
         physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            sliverAppBar,
+            _buildSliverAppBar(harpyTheme, theme),
             if (widget.header != null)
               SliverList(
                 delegate: SliverChildListDelegate(widget.header),
