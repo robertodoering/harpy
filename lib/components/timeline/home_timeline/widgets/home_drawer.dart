@@ -24,9 +24,12 @@ class HomeDrawer extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.face),
                 title: const Text('Profile'),
-                onTap: () => app<HarpyNavigator>().pushUserProfile(
-                  user: authBloc.authenticatedUser,
-                ),
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushUserProfile(
+                    user: authBloc.authenticatedUser,
+                  );
+                },
               ),
 
               const Divider(),
