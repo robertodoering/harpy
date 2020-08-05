@@ -1,0 +1,3 @@
+<i>Harpy</i> provides you with a beautiful and fast Twitter experience.
+
+<i>Harpy</i> is currently in beta with more features to come.
