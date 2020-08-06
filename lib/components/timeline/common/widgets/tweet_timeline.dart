@@ -24,6 +24,20 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
   /// The callback for a [LoadMoreList] for the [TweetList].
   final OnTimelineAction<T> onLoadMore;
 
+  /// Builds a widget for the end of the [TweetList] when
+  /// [TmelineBloc.lockRequestMore] is `true`.
+  Widget _buildLockLoadMore() {
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.all(16),
+      alignment: Alignment.center,
+      child: const Text(
+        'Please wait a moment until more Tweets can be requested',
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<T, TimelineState>(
@@ -42,6 +56,7 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
             onRefresh: () => onRefresh(bloc),
             onLoadMore: () => onLoadMore(bloc),
             enableLoadMore: bloc.enableRequestMore,
+            disabledWidget: bloc.lockRequestMore ? _buildLockLoadMore() : null,
           );
         }
 

@@ -12,6 +12,7 @@ class TweetList extends StatelessWidget {
     @required this.onRefresh,
     @required this.onLoadMore,
     @required this.enableLoadMore,
+    this.disabledWidget,
   });
 
   /// The list of tweets to be displayed in this list.
@@ -26,6 +27,10 @@ class TweetList extends StatelessWidget {
   /// Whether to enable the [LoadMoreList] to load more data.
   final bool enableLoadMore;
 
+  /// A widget used by the [LoadMoreList] to display a list when
+  /// [enableLoadMore] is `false`.
+  final Widget disabledWidget;
+
   @override
   Widget build(BuildContext context) {
     return ScrollDirectionListener(
@@ -35,6 +40,7 @@ class TweetList extends StatelessWidget {
           child: LoadMoreList(
             onLoadMore: onLoadMore,
             enable: enableLoadMore,
+            disabledWidget: disabledWidget,
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(8),

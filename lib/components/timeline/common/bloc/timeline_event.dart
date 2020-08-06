@@ -78,15 +78,27 @@ abstract class RequestMoreTimelineEvent extends TimelineEvent {
     if (bloc.tweets.isNotEmpty) {
       final int lastId = int.tryParse(bloc.tweets.last.idStr);
 
-      print('last id: $lastId');
-
       if (lastId != null) {
-        print('max id: ${lastId - 1}');
         return '${lastId - 1}';
       }
     }
 
     return null;
+  }
+
+  /// Prevents successive [RequestMoreTimelineEvent]s to trigger and adds a
+  /// [UnlockRequestMoreTimelineEvent] to the [bloc] after 5 minutes to unlock
+  /// future requests.
+  void _lockRequestMore(TimelineBloc bloc) {
+    bloc.lockRequestMore = true;
+
+    Future<void>.delayed(const Duration(minutes: 5)).then((_) {
+      if (bloc?.state is ShowingTimelineState) {
+        bloc?.add(const UnlockRequestMoreTimelineEvent());
+      } else {
+        bloc?.lockRequestMore = false;
+      }
+    });
   }
 
   @override
@@ -96,6 +108,13 @@ abstract class RequestMoreTimelineEvent extends TimelineEvent {
   }) async* {
     _log.fine('requesting more');
 
+    if (bloc.lockRequestMore) {
+      _log.warning('tried to request more while still locked');
+    } else {
+      // lock successive requests
+      _lockRequestMore(bloc);
+    }
+
     final List<TweetData> tweets = await requestMore(bloc)
         .then(handleTweets)
         .catchError(twitterApiErrorHandler);
@@ -104,10 +123,32 @@ abstract class RequestMoreTimelineEvent extends TimelineEvent {
       _log.fine('found more tweets');
 
       bloc.tweets.addAll(tweets);
-      yield ShowingTimelineState();
     }
+
+    // always rebuild to lock successive requests
+    yield ShowingTimelineState();
 
     bloc.requestMoreCompleter.complete();
     bloc.requestMoreCompleter = Completer<void>();
+  }
+}
+
+/// Sets the [TimelineBloc.lockRequestMore] flag to `false` to unlock requesting
+/// more and rebuilds the timeline.
+class UnlockRequestMoreTimelineEvent extends TimelineEvent {
+  const UnlockRequestMoreTimelineEvent();
+
+  static final Logger _log = Logger('UnlockRequestMoreTimelineEvent');
+
+  @override
+  Stream<TimelineState> applyAsync({
+    TimelineState currentState,
+    TimelineBloc bloc,
+  }) async* {
+    _log.fine('unlocking request more');
+
+    bloc.lockRequestMore = false;
+
+    yield ShowingTimelineState();
   }
 }

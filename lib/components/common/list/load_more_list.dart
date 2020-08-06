@@ -22,6 +22,7 @@ class LoadMoreList extends StatefulWidget {
     @required this.child,
     this.onLoadMore,
     this.enable = true,
+    this.disabledWidget,
     this.loadingBuilder,
     this.loadingText = 'Loading...',
     this.triggerExtend = 200,
@@ -51,6 +52,9 @@ class LoadMoreList extends StatefulWidget {
   /// This should be set to `false` when no more data can be loaded.
   /// For example when reaching the last page of a paginated response.
   final bool enable;
+
+  /// A widget that is built at the end of the list when [enabled] is `true`.
+  final Widget disabledWidget;
 
   /// The distance in pixels that the scroll position needs to be away from
   /// the bottom of the [child] for the [onLoadMore] to trigger.
@@ -91,15 +95,19 @@ class _LoadMoreListState extends State<LoadMoreList> {
 
   /// Builds the default loading widget.
   ///
-  /// The [widget.loadingBuilder] is used to build the loading widget instead if
-  /// it is not `null`.
-  Widget _buildLoading() {
-    return SizedBox(
-      height: 100,
+  /// The [widget.loadingBuilder] is used to build the loading widget instead,
+  /// if it is not `null`.
+  Widget _buildDefaultLoadingWidget() {
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(widget.loadingText),
+          Text(
+            widget.loadingText,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 16),
           const CircularProgressIndicator(),
         ],
@@ -107,28 +115,45 @@ class _LoadMoreListState extends State<LoadMoreList> {
     );
   }
 
-  /// Builds the [widget.child] with the [_buildLoading] at the end if
-  /// [_loading] is `true`.
+  /// Returns the widget intended to be built at the end of the list.
+  ///
+  /// Either a loading widget or the [widget.disabledWidget].
+  ///
+  /// Returns `null` if no widget is to be appended at the end of the list.
+  Widget _buildFooter() {
+    if (_loading) {
+      return widget.loadingBuilder?.call() ?? _buildDefaultLoadingWidget();
+    } else if (!widget.enable) {
+      return widget.disabledWidget;
+    } else {
+      return null;
+    }
+  }
+
+  /// Builds the [widget.child] with a widget at the end of the list that is
+  /// returned by [_buildFooter].
   Widget _buildListView() {
     final ListView listView = widget.child;
     final SliverChildDelegate delegate = listView.childrenDelegate;
 
     if (delegate is SliverChildBuilderDelegate) {
-      final int itemCount = _loading
+      final Widget footer = _buildFooter();
+
+      final int itemCount = footer != null
           ? delegate.estimatedChildCount + 1
           : delegate.estimatedChildCount;
 
       // the item builder when the loading footer is showing
       Widget itemBuilder(BuildContext context, int index) {
-        if (index == itemCount - 1) {
-          return widget.loadingBuilder?.call() ?? _buildLoading();
+        if (footer != null && index == itemCount - 1) {
+          return footer;
         }
         return delegate.builder(context, index);
       }
 
       return ListView.builder(
         key: listView.key,
-        itemBuilder: _loading ? itemBuilder : delegate.builder,
+        itemBuilder: itemBuilder,
         addAutomaticKeepAlives: delegate.addAutomaticKeepAlives,
         addRepaintBoundaries: delegate.addRepaintBoundaries,
         addSemanticIndexes: delegate.addSemanticIndexes,

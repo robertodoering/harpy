@@ -24,8 +24,12 @@ abstract class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   /// [RequestMoreTimelineEvent].
   Completer<void> requestMoreCompleter = Completer<void>();
 
+  /// `True` when [RequestMoreTimelineEvent] requests should be locked.
+  bool lockRequestMore = false;
+
   /// Whether the tweet list should be able to request more.
-  bool get enableRequestMore => tweets.isNotEmpty;
+  bool get enableRequestMore =>
+      state is ShowingTimelineState && !lockRequestMore;
 
   /// Whether a loading widget should be shown.
   bool get showLoading => state is UpdatingTimelineState && tweets.isEmpty;
