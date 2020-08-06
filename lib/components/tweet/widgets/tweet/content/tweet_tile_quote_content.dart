@@ -2,7 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/twitter_text.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
-import 'package:harpy/components/tweet/widgets/tweet/content/quote_author_row.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -25,7 +25,12 @@ class TweetQuoteContent extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     final List<Widget> content = <Widget>[
-      TweetQuoteAuthorRow(tweet),
+      TweetAuthorRow(
+        tweet,
+        avatarRadius: 14,
+        fontSizeDelta: -2,
+        iconSize: 14,
+      ),
       if (tweet.hasText)
         TwitterText(
           tweet.fullText,
