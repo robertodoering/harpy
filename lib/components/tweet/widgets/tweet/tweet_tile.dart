@@ -7,7 +7,7 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 /// Builds a [Card] with the [TweetTileContent] that animates when scrolling
 /// down with a [TweetTileAnimation].
 class TweetTile extends StatelessWidget {
-  TweetTile(this.tweet) : super(key: ValueKey<String>(tweet.idStr));
+  TweetTile(this.tweet) : super(key: ValueKey<int>(tweet.hashCode));
 
   final TweetData tweet;
 
