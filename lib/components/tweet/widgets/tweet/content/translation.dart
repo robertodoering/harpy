@@ -47,7 +47,7 @@ class TweetTranslation extends StatelessWidget {
               const TextSpan(text: 'Translated from'),
               TextSpan(
                 text: ' $language',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),

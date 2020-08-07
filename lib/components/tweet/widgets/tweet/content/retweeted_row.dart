@@ -14,7 +14,7 @@ class TweetRetweetedRow extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           // same width as avatar with padding
           width: 40,
           child: Icon(Icons.repeat, size: 18),

@@ -20,16 +20,18 @@ class TweetTileAnimation extends StatelessWidget {
     // only slide and fade in the tweet tile from the right when scrolling down
     final Offset offset = scrollDirection.direction == VerticalDirection.up
         ? const Offset(0, 0)
-        : Offset(mediaQuery.size.width / 2, 0);
+        : Offset(mediaQuery.size.width * .66, 0);
 
     final Duration duration = scrollDirection.direction == VerticalDirection.up
         ? Duration.zero
-        : kShortAnimationDuration;
+        : kLongAnimationDuration;
 
     return SlideInAnimation(
+      curve: Curves.easeOutQuad,
       offset: offset,
       duration: duration,
       child: FadeAnimation(
+        curve: Curves.easeInOut,
         duration: duration,
         child: child,
       ),

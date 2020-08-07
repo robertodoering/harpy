@@ -47,7 +47,7 @@ class VideoThumbnail extends StatelessWidget {
           ),
         Center(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.black45,
             ),

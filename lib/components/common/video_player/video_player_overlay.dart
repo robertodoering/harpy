@@ -184,12 +184,12 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
 
   Widget _buildReplayIcon() {
     final Widget replayIcon = Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.black38,
         shape: BoxShape.circle,
       ),
       padding: const EdgeInsets.all(8),
-      child: Icon(
+      child: const Icon(
         Icons.replay,
         size: kVideoPlayerCenterIconSize,
         color: Colors.white,
@@ -250,7 +250,7 @@ class _OverlayPlaybackIcon extends StatelessWidget {
           endScale: 1.5,
           curve: Curves.easeInOutSine,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.black38,
               shape: BoxShape.circle,
             ),
@@ -276,7 +276,7 @@ class _OverlayActionRow extends StatelessWidget {
   Widget _buildBackground() {
     return Positioned.fill(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -312,7 +312,7 @@ class _OverlayActionRow extends StatelessWidget {
           // replay button
           CircleButton(
             onTap: model.replay,
-            child: Icon(
+            child: const Icon(
               Icons.replay,
               color: Colors.white,
             ),

@@ -24,7 +24,7 @@ class TweetReplies extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     // same width as avatar with padding
                     width: 40,
                     child: Icon(Icons.reply, size: 18),
