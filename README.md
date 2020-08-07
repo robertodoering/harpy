@@ -60,8 +60,8 @@ The app can be built with the 'free' or 'pro' flavor by running:
 
 An appbundle for release can be built using:
 
-- `flutter build appbundle --flavor free -t lib/main_free.dart`
-- `flutter build appbundle --flavor pro -t lib/main_pro.dart`
+- `flutter build appbundle --flavor free -t lib/main_free.dart --bundle-sksl-path sksl.json`
+- `flutter build appbundle --flavor pro -t lib/main_pro.dart --bundle-sksl-path sksl.json`
 
 ### Misc
 
