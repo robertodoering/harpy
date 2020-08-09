@@ -20,7 +20,7 @@ or alternatively using `brew install fastlane`
 ```
 fastlane android beta
 ```
-Uploads the the latest appbundle build to the play store beta track
+Builds an appbundle and uploads it to the play store beta track
 
 ----
 

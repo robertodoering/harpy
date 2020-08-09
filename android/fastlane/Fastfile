@@ -16,8 +16,21 @@
 default_platform(:android)
 
 platform :android do
-  desc "Uploads the the latest appbundle build to the play store beta track"
+  desc "Builds an appbundle and uploads it to the play store beta track"
   lane :beta do
+
+    # build appbundle
+    sh(
+      "flutter",
+      "build",
+      "appbundle",
+      "--flavor",
+      "free",
+      "-t",
+      "lib/main_free.dart",
+      "--bundle-sksl-path",
+      "sksl.json"
+    )
 
     upload_to_play_store(
       track: 'beta',
