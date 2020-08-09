@@ -9,13 +9,13 @@ class CustomDismissible extends StatefulWidget {
     @required this.child,
     this.onDismissed,
     this.dismissThreshold = 0.2,
-    this.disableDismiss = false,
+    this.enabled = true,
   });
 
   final Widget child;
   final double dismissThreshold;
   final VoidCallback onDismissed;
-  final bool disableDismiss;
+  final bool enabled;
 
   @override
   _CustomDismissibleState createState() => _CustomDismissibleState();
@@ -129,9 +129,9 @@ class _CustomDismissibleState extends State<CustomDismissible>
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onVerticalDragStart: widget.disableDismiss ? null : _handleDragStart,
-      onVerticalDragUpdate: widget.disableDismiss ? null : _handleDragUpdate,
-      onVerticalDragEnd: widget.disableDismiss ? null : _handleDragEnd,
+      onVerticalDragStart: widget.enabled ? _handleDragStart : null,
+      onVerticalDragUpdate: widget.enabled ? _handleDragUpdate : null,
+      onVerticalDragEnd: widget.enabled ? _handleDragEnd : null,
       child: content,
     );
   }
