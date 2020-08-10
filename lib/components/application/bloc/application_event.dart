@@ -9,6 +9,7 @@ import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/preferences/harpy_prefs.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
@@ -47,6 +48,7 @@ class InitializeEvent extends ApplicationEvent {
     await Future.wait<void>(<Future<void>>[
       app<HarpyInfo>().initialize(),
       app<ErrorReporter>().initialize(),
+      app<HarpyPrefs>().initialize(),
     ]);
   }
 

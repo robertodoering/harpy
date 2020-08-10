@@ -32,6 +32,7 @@ dependencies:
   package_info: '>=0.4.1 <2.0.0'
   device_info: '>=0.4.2+4 <2.0.0'
   video_player: '>=0.10.11+2 <2.0.0'
+  shared_preferences: '>=0.5.8 <2.0.0'
 
 dev_dependencies:
   flutter_test:
