@@ -2,7 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Wraps the [SharedPreferences].
-class HarpyPrefs {
+class HarpyPreferences {
   static final Logger _log = Logger('HarpyPrefs');
 
   SharedPreferences _preferences;

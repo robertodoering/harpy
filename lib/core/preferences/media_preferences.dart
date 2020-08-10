@@ -1,8 +1,8 @@
-import 'package:harpy/core/preferences/harpy_prefs.dart';
+import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
-class MediaSettings {
-  final HarpyPrefs harpyPrefs = app<HarpyPrefs>();
+class MediaPreferences {
+  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
 
   /// The media quality when using wifi.
   ///
