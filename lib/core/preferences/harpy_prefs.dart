@@ -30,6 +30,8 @@ class HarpyPrefs {
     }
   }
 
+  void setInt(String key, int value) => _preferences.setInt(key, value);
+
   /// Gets the bool value for the [key] if it exists.
   bool getBool(String key, bool defaultValue) {
     try {
@@ -39,6 +41,8 @@ class HarpyPrefs {
     }
   }
 
+  void setBool(String key, bool value) => _preferences.setBool(key, value);
+
   /// Gets the string list for the [key] or an empty list if it doesn't exist.
   List<String> getStringList(String key) {
     try {
@@ -47,4 +51,7 @@ class HarpyPrefs {
       return <String>[];
     }
   }
+
+  void setStringList(String key, List<String> value) =>
+      _preferences.setStringList(key, value);
 }
