@@ -5,7 +5,7 @@ import 'package:harpy/components/common/animations/explicit/slide_in_animation.d
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 
 /// Fades and slides the [child] in from the right when scrolling down.
-class TweetTileAnimation extends StatelessWidget {
+class TweetTileAnimation extends StatefulWidget {
   const TweetTileAnimation({
     @required this.child,
   });
@@ -13,18 +13,34 @@ class TweetTileAnimation extends StatelessWidget {
   final Widget child;
 
   @override
+  _TweetTileAnimationState createState() => _TweetTileAnimationState();
+}
+
+class _TweetTileAnimationState extends State<TweetTileAnimation> {
+  ScrollDirection _scrollDirection;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // only set the scroll direction once to prevent a change in direction to
+    // stop the animation
+    _scrollDirection ??= ScrollDirection.of(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ScrollDirection scrollDirection = ScrollDirection.of(context);
 
     // only slide and fade in the tweet tile from the right when scrolling down
-    final Offset offset = scrollDirection.direction == VerticalDirection.up
+    final Offset offset = _scrollDirection?.direction == VerticalDirection.up
         ? const Offset(0, 0)
         : Offset(mediaQuery.size.width * .66, 0);
 
-    final Duration duration = scrollDirection.direction == VerticalDirection.up
-        ? Duration.zero
-        : kLongAnimationDuration;
+    final Duration duration =
+        _scrollDirection?.direction == VerticalDirection.up
+            ? Duration.zero
+            : kLongAnimationDuration;
 
     return SlideInAnimation(
       curve: Curves.easeOutQuad,
@@ -33,7 +49,7 @@ class TweetTileAnimation extends StatelessWidget {
       child: FadeAnimation(
         curve: Curves.easeInOut,
         duration: duration,
-        child: child,
+        child: widget.child,
       ),
     );
   }
