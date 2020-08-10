@@ -11,7 +11,7 @@ import 'package:harpy/components/common/animations/explicit/fade_animation.dart'
 import 'package:harpy/components/common/animations/explicit/slide_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:harpy/components/common/harpy_message.dart';
-import 'package:harpy/components/common/harpy_message_handler.dart';
+import 'package:harpy/components/common/misc/harpy_message.dart';
+import 'package:harpy/components/common/misc/harpy_message_handler.dart';
 
 /// Uses the [HarpyMessageHandler] to show info / warning / error messages at
 /// the bottom of the screen.

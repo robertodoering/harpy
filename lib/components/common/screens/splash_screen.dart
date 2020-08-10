@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/flare_icons.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 
 /// The initial screen that is shown when opening the app.
 ///

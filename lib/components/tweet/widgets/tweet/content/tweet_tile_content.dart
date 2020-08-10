@@ -1,7 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/twitter_text.dart';
+import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/action_row.dart';

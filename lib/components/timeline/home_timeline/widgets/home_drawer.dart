@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
-import 'package:harpy/components/common/flare_icons.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/flare_icons.dart';
+import 'package:harpy/components/common/misc/flare_icons.dart';
 
 /// Builds a [HarpyButton] to favorite / unfavorite a tweet.
 ///

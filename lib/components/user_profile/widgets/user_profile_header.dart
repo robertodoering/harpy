@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/followers_count.dart';
+import 'package:harpy/components/common/misc/followers_count.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_additional_info.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_description.dart';

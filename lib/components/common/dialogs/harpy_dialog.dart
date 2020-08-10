@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 
 /// A styled dialog used with [showDialog].
 ///

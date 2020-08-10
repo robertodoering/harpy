@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// A [NestedScrollView] within a [Scaffold] where the [title] fades in when the

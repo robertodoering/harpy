@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/custom_dismissible.dart';
-import 'package:harpy/components/common/interactive_viewer_boundary.dart';
+import 'package:harpy/components/common/misc/custom_dismissible.dart';
+import 'package:harpy/components/common/misc/interactive_viewer_boundary.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/custom_dismissible.dart';
-import 'package:harpy/components/common/fading_nested_scaffold.dart';
+import 'package:harpy/components/common/misc/custom_dismissible.dart';
+import 'package:harpy/components/common/misc/fading_nested_scaffold.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/timeline/user_timeline/widget/user_timeline.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';

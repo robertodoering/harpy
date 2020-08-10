@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 
 /// Builds the loading screen for the [UserProfileScreen].
 class UserProfileLoading extends StatelessWidget {

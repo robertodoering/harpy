@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/cached_circle_avatar.dart';
-import 'package:harpy/components/common/custom_animated_crossfade.dart';
+import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
+import 'package:harpy/components/common/misc/custom_animated_crossfade.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_event.dart';
 

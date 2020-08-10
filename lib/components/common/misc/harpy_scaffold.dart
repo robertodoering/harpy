@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:harpy/components/common/flare_icons.dart';
-import 'package:harpy/components/common/harpy_background.dart';
+import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/components/common/misc/harpy_background.dart';
 
 /// A convenience Widget that wraps a [Scaffold] to build a transparent [AppBar]
 /// on top of a [HarpyBackground].

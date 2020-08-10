@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/shifted_position.dart';
+import 'package:harpy/components/common/misc/shifted_position.dart';
 
 /// Implicitly animates the position of the [child] relative to the size of the
 /// [child].

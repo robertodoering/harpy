@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/shifted_position.dart';
+import 'package:harpy/components/common/misc/shifted_position.dart';
 
 /// The default duration a message is shown on screen.
 const Duration kMessageShowDuration = Duration(seconds: 3);

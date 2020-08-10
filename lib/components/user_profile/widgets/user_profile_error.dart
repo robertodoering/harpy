@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_event.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';

@@ -1,6 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/twitter_text.dart';
+import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';

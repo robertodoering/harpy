@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
