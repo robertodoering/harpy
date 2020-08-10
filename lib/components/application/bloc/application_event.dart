@@ -7,6 +7,7 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/harpy_prefs.dart';
@@ -49,6 +50,7 @@ class InitializeEvent extends ApplicationEvent {
       app<HarpyInfo>().initialize(),
       app<ErrorReporter>().initialize(),
       app<HarpyPrefs>().initialize(),
+      app<ConnectivityService>().initialize(),
     ]);
   }
 
