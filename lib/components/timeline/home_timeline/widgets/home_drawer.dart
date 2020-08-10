@@ -3,6 +3,7 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:harpy/components/settings/widgets/settings_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -38,8 +39,10 @@ class HomeDrawer extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
-                onTap: () {},
-                enabled: false,
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushNamed(SettingsScreen.route);
+                },
               ),
 
               // harpy pro
