@@ -51,6 +51,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
             mediaPreferences.defaultHideMedia = value;
           });
         },
+        // todo: implement
+        enabled: false,
       ),
       RadioDialogTile(
         leading: Icons.play_circle_outline,
@@ -67,15 +69,18 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
             mediaPreferences.autoplayMedia = value;
           });
         },
-        enabled: mediaPreferences.enableAutoplayMedia,
+        // todo: implement
+        // enabled: mediaPreferences.enableAutoplayMedia,
+        enabled: false,
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),
         title: const Text('Always open links externally'),
         value: mediaPreferences.openLinksExternally,
-        onChanged: (bool value) {
-          setState(() => mediaPreferences.openLinksExternally = value);
-        },
+        // todo: implement
+        // onChanged: (bool value) {
+        //   setState(() => mediaPreferences.openLinksExternally = value);
+        // },
       ),
     ];
   }
