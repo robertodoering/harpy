@@ -77,6 +77,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         secondary: const Icon(Icons.link),
         title: const Text('Always open links externally'),
         value: mediaPreferences.openLinksExternally,
+        onChanged: null,
         // todo: implement
         // onChanged: (bool value) {
         //   setState(() => mediaPreferences.openLinksExternally = value);
