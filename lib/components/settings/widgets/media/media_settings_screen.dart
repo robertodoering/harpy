@@ -67,7 +67,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
             mediaPreferences.autoplayMedia = value;
           });
         },
-        enabled: mediaPreferences.defaultHideMedia != 2,
+        enabled: mediaPreferences.enableAutoplayMedia,
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),

@@ -46,6 +46,9 @@ class MediaPreferences {
   set openLinksExternally(bool value) =>
       harpyPrefs.setBool('openLinksExternally', value);
 
+  /// Whether the [autoplayMedia] setting should be enabled.
+  bool get enableAutoplayMedia => defaultHideMedia != 2;
+
   /// Sets all media settings to the default settings.
   void defaultSettings() {
     wifiMediaQuality = 0;
