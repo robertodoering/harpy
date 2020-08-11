@@ -111,7 +111,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = const SettingsScreen();
       break;
     case MediaSettingsScreen.route:
-      screen = const MediaSettingsScreen();
+      screen = MediaSettingsScreen();
       break;
     case HomeScreen.route:
       screen = const HomeScreen();

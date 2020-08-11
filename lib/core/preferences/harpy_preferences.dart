@@ -30,7 +30,10 @@ class HarpyPreferences {
     }
   }
 
-  void setInt(String key, int value) => _preferences.setInt(key, value);
+  void setInt(String key, int value) {
+    _log.fine('set $key to $value');
+    _preferences.setInt(key, value);
+  }
 
   /// Gets the bool value for the [key] if it exists.
   bool getBool(String key, bool defaultValue) {
@@ -41,7 +44,10 @@ class HarpyPreferences {
     }
   }
 
-  void setBool(String key, bool value) => _preferences.setBool(key, value);
+  void setBool(String key, bool value) {
+    _log.fine('set $key to $value');
+    _preferences.setBool(key, value);
+  }
 
   /// Gets the string list for the [key] or an empty list if it doesn't exist.
   List<String> getStringList(String key) {
@@ -52,6 +58,8 @@ class HarpyPreferences {
     }
   }
 
-  void setStringList(String key, List<String> value) =>
-      _preferences.setStringList(key, value);
+  void setStringList(String key, List<String> value) {
+    _log.fine('set $key to $value');
+    _preferences.setStringList(key, value);
+  }
 }
