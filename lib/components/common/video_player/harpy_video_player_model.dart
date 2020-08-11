@@ -20,7 +20,14 @@ typedef OnAction = void Function(HarpyVideoPlayerAction);
 
 /// A [ChangeNotifer] handling changes to a [HarpyVideoPlayer].
 class HarpyVideoPlayerModel extends ChangeNotifier {
-  HarpyVideoPlayerModel(this.controller);
+  HarpyVideoPlayerModel(
+    this.controller, {
+    bool autoplay = false,
+  }) {
+    if (autoplay) {
+      initialize();
+    }
+  }
 
   final VideoPlayerController controller;
 

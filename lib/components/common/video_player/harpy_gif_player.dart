@@ -11,6 +11,7 @@ class HarpyGifPlayer extends StatefulWidget {
   const HarpyGifPlayer(
     this.url, {
     this.thumbnail,
+    this.autoplay,
   });
 
   /// The url of the video.
@@ -19,6 +20,9 @@ class HarpyGifPlayer extends StatefulWidget {
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
   final String thumbnail;
+
+  /// Whether the gif should start playing automatically.
+  final bool autoplay;
 
   @override
   _HarpyGifPlayerState createState() => _HarpyGifPlayerState();
@@ -62,7 +66,10 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HarpyVideoPlayerModel>(
-      create: (BuildContext context) => HarpyVideoPlayerModel(_controller),
+      create: (BuildContext context) => HarpyVideoPlayerModel(
+        _controller,
+        autoplay: widget.autoplay,
+      ),
       builder: (BuildContext context, Widget child) {
         final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 

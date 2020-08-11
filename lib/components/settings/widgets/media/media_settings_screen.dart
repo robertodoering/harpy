@@ -69,9 +69,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
             mediaPreferences.autoplayMedia = value;
           });
         },
-        // todo: implement
-        // enabled: mediaPreferences.enableAutoplayMedia,
-        enabled: false,
+        enabled: mediaPreferences.enableAutoplayMedia,
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),
