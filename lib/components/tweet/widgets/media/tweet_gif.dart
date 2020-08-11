@@ -14,7 +14,7 @@ class TweetGif extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: HarpyGifPlayer(
-        gif.variants.last.url,
+        gif.appropriateUrl,
         thumbnail: gif.thumbnailUrl,
       ),
     );

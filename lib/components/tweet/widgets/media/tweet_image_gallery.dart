@@ -190,8 +190,7 @@ class _TweetImageGalleryState extends State<TweetImageGallery>
             tag: image,
             flightShuttleBuilder: _flightShuttleBuilder,
             child: CachedNetworkImage(
-              // todo: quality settings
-              imageUrl: image.medium,
+              imageUrl: image.appropriateUrl,
               fit: BoxFit.contain,
             ),
           ),

@@ -1,4 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/connectivity_service.dart';
+import 'package:harpy/core/preferences/media_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 
 /// The user data for [TweetData].
 class UserData {
@@ -101,4 +104,59 @@ class UserData {
 
   /// Wether this user has a created at time.
   bool get hasCreatedAt => createdAt != null;
+
+  /// Whether this user has a profile banner.
+  bool get hasBanner => profileBannerUrl != null;
+
+  /// Returns the user profile image url based on the media setting and
+  /// connectivity.
+  ///
+  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
+  String get appropriateUserImageUrl {
+    final int value = app<ConnectivityService>().wifi
+        ? app<MediaPreferences>().wifiMediaQuality
+        : app<MediaPreferences>().nonWifiMediaQuality;
+
+    switch (value) {
+      case 1:
+        // 48x48
+        return profileImageUrlHttps;
+        break;
+      case 2:
+        // 24x24
+        return profileImageUrlHttps.replaceFirst('_normal', '_mini');
+        break;
+      case 0:
+      default:
+        // 73x73
+        return profileImageUrlHttps.replaceFirst('_normal', '_bigger');
+        break;
+    }
+  }
+
+  /// Returns the user profile banner url based on the media setting and
+  /// connectivity.
+  ///
+  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
+  String get appropriateUserBannerUrl {
+    final int value = app<ConnectivityService>().wifi
+        ? app<MediaPreferences>().wifiMediaQuality
+        : app<MediaPreferences>().nonWifiMediaQuality;
+
+    switch (value) {
+      case 1:
+        // 640x320
+        return '$profileBannerUrl/mobile_retina';
+        break;
+      case 2:
+        // 320x160
+        return '$profileBannerUrl/mobile';
+        break;
+      case 0:
+      default:
+        // 1040x520
+        return '$profileBannerUrl/web_retina';
+        break;
+    }
+  }
 }

@@ -20,13 +20,15 @@ class UserProfileContent extends StatelessWidget {
   /// Builds the profile banner for a [HeroDialogRoute] when the user taps on
   /// the banner.
   Widget _buildDialogImage() {
+    final String url = bloc.user.appropriateUserBannerUrl;
+
     return CustomDismissible(
       onDismissed: () => app<HarpyNavigator>().state.maybePop(),
       child: Center(
         child: Hero(
-          tag: bloc.user.profileBannerUrl,
+          tag: url,
           child: CachedNetworkImage(
-            imageUrl: bloc.user.profileBannerUrl,
+            imageUrl: url,
             fit: BoxFit.contain,
           ),
         ),
@@ -35,7 +37,9 @@ class UserProfileContent extends StatelessWidget {
   }
 
   Widget _buildAppBarBackground() {
-    if (bloc.user.profileBannerUrl != null) {
+    final String url = bloc.user.appropriateUserBannerUrl;
+
+    if (bloc.user.hasBanner) {
       return GestureDetector(
         onTap: () {
           app<HarpyNavigator>().pushRoute(HeroDialogRoute<void>(
@@ -44,11 +48,11 @@ class UserProfileContent extends StatelessWidget {
           ));
         },
         child: Hero(
-          tag: bloc.user.profileBannerUrl,
+          tag: url,
           placeholderBuilder:
               (BuildContext context, Size heroSize, Widget child) => child,
           child: CachedNetworkImage(
-            imageUrl: bloc.user.profileBannerUrl,
+            imageUrl: url,
             fit: BoxFit.cover,
           ),
         ),
@@ -67,7 +71,7 @@ class UserProfileContent extends StatelessWidget {
 
     return FadingNestedScaffold(
       title: bloc.user.name,
-      alwaysShowTitle: bloc.user.profileBannerUrl == null,
+      alwaysShowTitle: !bloc.user.hasBanner,
       background: _buildAppBarBackground(),
       header: <Widget>[
         UserProfileHeader(bloc),
