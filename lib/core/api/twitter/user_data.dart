@@ -1,5 +1,4 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
@@ -113,9 +112,7 @@ class UserData {
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get appropriateUserImageUrl {
-    final int value = app<ConnectivityService>().wifi
-        ? app<MediaPreferences>().wifiMediaQuality
-        : app<MediaPreferences>().nonWifiMediaQuality;
+    final int value = app<MediaPreferences>().appropriateMediaQuality;
 
     switch (value) {
       case 1:
@@ -139,9 +136,7 @@ class UserData {
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get appropriateUserBannerUrl {
-    final int value = app<ConnectivityService>().wifi
-        ? app<MediaPreferences>().wifiMediaQuality
-        : app<MediaPreferences>().nonWifiMediaQuality;
+    final int value = app<MediaPreferences>().appropriateMediaQuality;
 
     switch (value) {
       case 1:

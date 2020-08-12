@@ -1,5 +1,4 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
@@ -27,9 +26,7 @@ class ImageData {
   ///
   /// See https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/entities-object#photo_format.
   String get appropriateUrl {
-    final int value = app<ConnectivityService>().wifi
-        ? app<MediaPreferences>().wifiMediaQuality
-        : app<MediaPreferences>().nonWifiMediaQuality;
+    final int value = app<MediaPreferences>().appropriateMediaQuality;
 
     switch (value) {
       case 1:
@@ -84,9 +81,7 @@ class VideoData {
   ///
   /// Returns an empty string if no video [variants] exist.
   String get appropriateUrl {
-    final int value = app<ConnectivityService>().wifi
-        ? app<MediaPreferences>().wifiMediaQuality
-        : app<MediaPreferences>().nonWifiMediaQuality;
+    final int value = app<MediaPreferences>().appropriateMediaQuality;
 
     if (variants?.isNotEmpty == true) {
       final int index = value.clamp(0, variants.length - 1);

@@ -45,6 +45,10 @@ class MediaPreferences {
   bool get shouldAutoplayMedia =>
       autoplayMedia == 0 || autoplayMedia == 1 && connectivityService.wifi;
 
+  /// The media quality, taking the connectivity into account.
+  int get appropriateMediaQuality =>
+      connectivityService.wifi ? wifiMediaQuality : nonWifiMediaQuality;
+
   /// Sets all media settings to the default settings.
   void defaultSettings() {
     wifiMediaQuality = 0;
