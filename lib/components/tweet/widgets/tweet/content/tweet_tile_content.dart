@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
@@ -10,21 +9,12 @@ import 'package:harpy/components/tweet/widgets/tweet/content/retweeted_row.dart'
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/tweet_tile_quote_content.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
-import 'package:harpy/misc/url_launcher.dart';
 
 /// Builds the content for a tweet.
 class TweetTileContent extends StatelessWidget {
   const TweetTileContent(this.tweet);
 
   final TweetData tweet;
-
-  void _onUserMentionTap(UserMention userMention) {
-    if (userMention.screenName != null) {
-      app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +29,6 @@ class TweetTileContent extends StatelessWidget {
           entities: tweet.entities,
           entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
-          onUserMentionTap: _onUserMentionTap,
-          onUrlTap: (Url url) => launchUrl(url.expandedUrl),
         ),
       if (tweet.translatable) TweetTranslation(tweet),
       if (tweet.hasMedia) TweetMedia(tweet),
