@@ -1,6 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
+import 'package:harpy/misc/url_launcher.dart';
 import 'package:intl/intl.dart';
 
 /// Builds additional info about a user for the [UserProfileHeader].
@@ -10,10 +11,6 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   final UserProfileBloc bloc;
 
   final DateFormat _createdAtFormat = DateFormat('MMMM yyyy');
-
-  void _onUrlTap() {
-    // todo: implement url launcher
-  }
 
   Widget _buildRow(
     ThemeData theme,
@@ -41,7 +38,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     final Url url = bloc.user.entities.url.urls.first;
 
     final Widget child = GestureDetector(
-      onTap: _onUrlTap,
+      onTap: () => launchUrl(url.expandedUrl),
       child: Text(
         url.displayUrl,
         style: theme.textTheme.bodyText1.copyWith(

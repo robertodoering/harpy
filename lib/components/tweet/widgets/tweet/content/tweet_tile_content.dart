@@ -12,6 +12,7 @@ import 'package:harpy/components/tweet/widgets/tweet/content/tweet_tile_quote_co
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/url_launcher.dart';
 
 /// Builds the content for a tweet.
 class TweetTileContent extends StatelessWidget {
@@ -39,6 +40,7 @@ class TweetTileContent extends StatelessWidget {
           entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
           onUserMentionTap: _onUserMentionTap,
+          onUrlTap: (Url url) => launchUrl(url.expandedUrl),
         ),
       if (tweet.translatable) TweetTranslation(tweet),
       if (tweet.hasMedia) TweetMedia(tweet),

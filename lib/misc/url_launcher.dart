@@ -1,3 +1,5 @@
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,5 +11,6 @@ Future<void> launchUrl(String url) async {
     await launch(url);
   } else {
     _log.warning('cant launch url $url');
+    app<MessageService>().showError('Unable to launch $url');
   }
 }

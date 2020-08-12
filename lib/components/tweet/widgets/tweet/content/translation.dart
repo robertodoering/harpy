@@ -1,3 +1,4 @@
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
@@ -6,6 +7,9 @@ import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/url_launcher.dart';
 
 /// Builds the translation for the tweet if it exists, or an empty [SizedBox] as
 /// a placeholder if no translation exists.
@@ -22,6 +26,12 @@ class TweetTranslation extends StatelessWidget {
 
   /// An optional font size delta for the translation text.
   final double fontSizeDelta;
+
+  void _onUserMentionTap(UserMention userMention) {
+    if (userMention.screenName != null) {
+      app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
+    }
+  }
 
   Widget _buildTranslatedText(ThemeData theme) {
     final String language = tweet.translation.language ?? 'Unknown';
@@ -61,6 +71,8 @@ class TweetTranslation extends StatelessWidget {
           entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
           style: bodyText2,
+          onUserMentionTap: _onUserMentionTap,
+          onUrlTap: (Url url) => launchUrl(url.expandedUrl),
         ),
       ],
     );
