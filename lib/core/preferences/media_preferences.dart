@@ -26,15 +26,6 @@ class MediaPreferences {
   set nonWifiMediaQuality(int value) =>
       harpyPrefs.setInt('nonWifiMediaQuality', value);
 
-  /// Whether the media should be hidden by default.
-  ///
-  /// 0: always show
-  /// 1: only show when using wifi
-  /// 2: always hide
-  int get defaultHideMedia => harpyPrefs.getInt('defaultHideMedia', 0, 0, 2);
-  set defaultHideMedia(int value) =>
-      harpyPrefs.setInt('defaultHideMedia', value);
-
   /// Whether gifs should play automatically.
   ///
   /// 0: always autoplay
@@ -49,9 +40,6 @@ class MediaPreferences {
   set openLinksExternally(bool value) =>
       harpyPrefs.setBool('openLinksExternally', value);
 
-  /// Whether the [autoplayMedia] setting should be enabled.
-  bool get enableAutoplayMedia => defaultHideMedia != 2;
-
   /// Whether gifs should play automatically, taking the connectivity into
   /// account.
   bool get shouldAutoplayMedia =>
@@ -61,7 +49,6 @@ class MediaPreferences {
   void defaultSettings() {
     wifiMediaQuality = 0;
     nonWifiMediaQuality = 0;
-    defaultHideMedia = 0;
     autoplayMedia = 1;
     openLinksExternally = false;
   }

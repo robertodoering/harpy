@@ -23,9 +23,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.wifiMediaQuality,
         items: const <String>['High', 'Medium', 'Small'],
         onChanged: (int value) {
-          setState(() {
-            mediaPreferences.wifiMediaQuality = value;
-          });
+          setState(() => mediaPreferences.wifiMediaQuality = value);
         },
       ),
       RadioDialogTile(
@@ -35,24 +33,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.nonWifiMediaQuality,
         items: const <String>['High', 'Medium', 'Small'],
         onChanged: (int value) {
-          setState(() {
-            mediaPreferences.nonWifiMediaQuality = value;
-          });
+          setState(() => mediaPreferences.nonWifiMediaQuality = value);
         },
-      ),
-      RadioDialogTile(
-        leading: Icons.visibility,
-        title: 'Show media initially',
-        description: 'Change when the media should show initially',
-        value: mediaPreferences.defaultHideMedia,
-        items: const <String>['Always show', 'Only on WiFi', 'Never show'],
-        onChanged: (int value) {
-          setState(() {
-            mediaPreferences.defaultHideMedia = value;
-          });
-        },
-        // todo: implement
-        enabled: false,
       ),
       RadioDialogTile(
         leading: Icons.play_circle_outline,
@@ -65,11 +47,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           'Never autoplay',
         ],
         onChanged: (int value) {
-          setState(() {
-            mediaPreferences.autoplayMedia = value;
-          });
+          setState(() => mediaPreferences.autoplayMedia = value);
         },
-        enabled: mediaPreferences.enableAutoplayMedia,
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),
@@ -84,10 +63,28 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     ];
   }
 
+  /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
+  List<Widget> _buildActions() {
+    return <Widget>[
+      PopupMenuButton<void>(
+        onSelected: (_) => setState(mediaPreferences.defaultSettings),
+        itemBuilder: (BuildContext context) {
+          return <PopupMenuEntry<void>>[
+            const PopupMenuItem<void>(
+              value: 0,
+              child: Text('Reset to default'),
+            ),
+          ];
+        },
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: 'Media settings',
+      actions: _buildActions(),
       body: ListView(
         // todo: change default physics globally if possible
         physics: const BouncingScrollPhysics(),

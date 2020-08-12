@@ -12,6 +12,8 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      // todo: set default physics
+      physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.zero,
       children: <Widget>[
         for (MapEntry<String, List<Widget>> entry in settings.entries)
