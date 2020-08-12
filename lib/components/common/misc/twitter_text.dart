@@ -1,10 +1,25 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
 typedef EntityTapped<T> = void Function(T value);
+
+/// The default behaviour when a user mention inside of [TwitterText] is tapped.
+void defaultOnUserMentionTap(UserMention userMention) {
+  if (userMention.screenName != null) {
+    app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
+  }
+}
+
+/// The default behaviour when a url inside of [TwitterText] is tapped.
+void defaultOnUrlTap(Url url) {
+  launchUrl(url.expandedUrl);
+}
 
 /// Builds a [Text] widget with the [entities] parsed in the [text].
 ///
@@ -18,8 +33,8 @@ class TwitterText extends StatefulWidget {
     this.style,
     this.urlToIgnore,
     this.onHashtagTap,
-    this.onUrlTap,
-    this.onUserMentionTap,
+    this.onUrlTap = defaultOnUrlTap,
+    this.onUserMentionTap = defaultOnUserMentionTap,
   });
 
   /// The full twitter text.
@@ -44,9 +59,13 @@ class TwitterText extends StatefulWidget {
   final EntityTapped<Hashtag> onHashtagTap;
 
   /// Called when a url is tapped.
+  ///
+  /// Set to [defaultOnUrlTap] by default.
   final EntityTapped<Url> onUrlTap;
 
   /// Called when a user mention is tapped.
+  ///
+  /// Set to [defaultOnUserMentionTap] by default.
   final EntityTapped<UserMention> onUserMentionTap;
 
   @override

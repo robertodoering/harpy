@@ -13,7 +13,7 @@ class TweetVideo extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: HarpyVideoPlayer(
-        video.variants.last.url,
+        video.appropriateUrl,
         thumbnail: video.thumbnailUrl,
       ),
     );

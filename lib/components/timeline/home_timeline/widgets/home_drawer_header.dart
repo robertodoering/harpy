@@ -21,7 +21,7 @@ class HomeDrawerHeader extends StatelessWidget {
           // circle avatar
           CachedCircleAvatar(
             radius: 32,
-            imageUrl: user.profileImageUrlHttps,
+            imageUrl: user.appropriateUserImageUrl,
           ),
 
           const SizedBox(width: 16),

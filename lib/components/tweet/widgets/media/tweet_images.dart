@@ -54,8 +54,7 @@ class TweetImages extends StatelessWidget {
         child: GestureDetector(
           onTap: () => _openGallery(image),
           child: CachedNetworkImage(
-            // todo: quality settings
-            imageUrl: image.medium,
+            imageUrl: image.appropriateUrl,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

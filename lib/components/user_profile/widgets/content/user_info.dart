@@ -80,8 +80,7 @@ class UserProfileInfo extends StatelessWidget {
       children: <Widget>[
         // avatar
         CachedCircleAvatar(
-          // todo: quality setting
-          imageUrl: bloc.user.profileImageUrlHttps,
+          imageUrl: bloc.user.appropriateUserImageUrl,
           radius: 36,
         ),
 

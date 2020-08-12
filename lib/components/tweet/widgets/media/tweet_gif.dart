@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
+import 'package:harpy/core/preferences/media_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
 class TweetGif extends StatelessWidget {
@@ -11,11 +13,14 @@ class TweetGif extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaPreferences mediaPreferences = app<MediaPreferences>();
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: HarpyGifPlayer(
-        gif.variants.last.url,
+        gif.appropriateUrl,
         thumbnail: gif.thumbnailUrl,
+        autoplay: mediaPreferences.shouldAutoplayMedia,
       ),
     );
   }

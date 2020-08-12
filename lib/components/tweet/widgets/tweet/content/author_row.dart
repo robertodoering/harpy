@@ -36,7 +36,7 @@ class TweetAuthorRow extends StatelessWidget {
         GestureDetector(
           onTap: _onUserTap,
           child: CachedCircleAvatar(
-            imageUrl: tweet.userData.profileImageUrlHttps,
+            imageUrl: tweet.userData.appropriateUserImageUrl,
             radius: avatarRadius,
           ),
         ),

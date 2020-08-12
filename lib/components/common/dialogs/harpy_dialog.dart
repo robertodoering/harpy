@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
+import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+
+/// Determines the animation that is used when building a [HarpyDialog].
+enum DialogAnimationType {
+  // the default material animation
+  material,
+
+  // a playful bounce in animation
+  bounce,
+
+  // a subtle slide animation
+  slide,
+}
 
 /// A styled dialog used with [showDialog].
 ///
@@ -10,15 +23,18 @@ import 'package:harpy/components/common/misc/harpy_background.dart';
 /// right.
 class HarpyDialog extends StatelessWidget {
   const HarpyDialog({
-    @required this.actions,
     this.title,
+    this.actions,
     this.text,
     this.body,
     this.backgroundColors,
-    this.scrollPhysics,
+    this.scrollPhysics = const BouncingScrollPhysics(),
+    this.animationType = DialogAnimationType.bounce,
   });
 
   final String title;
+
+  /// The actions that appear at the bottom of the dialog.
   final List<DialogAction<dynamic>> actions;
 
   /// The text is build below the [title] if not `null`.
@@ -35,23 +51,10 @@ class HarpyDialog extends StatelessWidget {
   /// The scroll physics of the dialog (title, text + body).
   final ScrollPhysics scrollPhysics;
 
-  List<Widget> _buildContent(TextTheme textTheme) {
-    return <Widget>[
-      if (title != null) ...<Widget>[
-        Text(title, style: textTheme.headline6, textAlign: TextAlign.center),
-        const SizedBox(height: 12),
-      ],
-      if (text != null) ...<Widget>[
-        Text(text, style: textTheme.subtitle2, textAlign: TextAlign.center),
-        const SizedBox(height: 12),
-      ],
-      if (body != null) ...<Widget>[
-        body,
-        const SizedBox(height: 12),
-      ],
-      const SizedBox(height: 12),
-    ];
-  }
+  /// Determines the animation used for building the harpy dialog.
+  final DialogAnimationType animationType;
+
+  bool get _hasActions => actions?.isNotEmpty == true;
 
   Widget _buildActions() {
     if (actions.length > 1) {
@@ -62,10 +65,27 @@ class HarpyDialog extends StatelessWidget {
           children: actions,
         ),
       );
-    } else if (actions.length == 1) {
-      return actions.first;
     } else {
-      return Container();
+      return actions.first;
+    }
+  }
+
+  Widget _buildAnimation({@required Widget child}) {
+    switch (animationType) {
+      case DialogAnimationType.slide:
+        return SlideInAnimation(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutQuad,
+          offset: const Offset(0, 40),
+          child: child,
+        );
+      case DialogAnimationType.bounce:
+        return BounceInAnimation(child: child);
+        break;
+      case DialogAnimationType.material:
+      default:
+        return child;
+        break;
     }
   }
 
@@ -73,29 +93,58 @@ class HarpyDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return BounceInAnimation(
+    return _buildAnimation(
       child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         child: HarpyBackground(
-          colors: backgroundColors,
           borderRadius: BorderRadius.circular(16),
           child: Container(
             width: double.infinity,
             // less on the bottom to compensate for the button padding
-            padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
+            padding: const EdgeInsets.only(
+              left: 16,
+              top: 32,
+              right: 16,
+              bottom: 16,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                if (title != null) ...<Widget>[
+                  Text(
+                    title,
+                    style: textTheme.headline6.copyWith(height: 1.2),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 Flexible(
                   child: ListView(
-                    shrinkWrap: true,
                     physics: scrollPhysics,
-                    children: _buildContent(textTheme),
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      if (text != null) ...<Widget>[
+                        Text(
+                          text,
+                          style: textTheme.subtitle2,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                      if (body != null) ...<Widget>[
+                        body,
+                        const SizedBox(height: 16),
+                      ],
+                    ],
                   ),
                 ),
-                _buildActions(),
+                if (_hasActions)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: _buildActions(),
+                  ),
               ],
             ),
           ),
