@@ -1,8 +1,11 @@
+import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class MediaPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
+
+  final ConnectivityService connectivityService = app<ConnectivityService>();
 
   /// The media quality when using wifi.
   ///
@@ -23,7 +26,7 @@ class MediaPreferences {
   set nonWifiMediaQuality(int value) =>
       harpyPrefs.setInt('nonWifiMediaQuality', value);
 
-  /// Whether the media should be hidden by default
+  /// Whether the media should be hidden by default.
   ///
   /// 0: always show
   /// 1: only show when using wifi
@@ -48,6 +51,11 @@ class MediaPreferences {
 
   /// Whether the [autoplayMedia] setting should be enabled.
   bool get enableAutoplayMedia => defaultHideMedia != 2;
+
+  /// Whether gifs should play automatically, taking the connectivity into
+  /// account.
+  bool get shouldAutoplayMedia =>
+      autoplayMedia == 0 || autoplayMedia == 1 && connectivityService.wifi;
 
   /// Sets all media settings to the default settings.
   void defaultSettings() {
