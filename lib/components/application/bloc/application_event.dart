@@ -125,15 +125,19 @@ class ChangeThemeEvent extends ApplicationEvent {
     _log.fine('changing theme to ${harpyTheme.name}');
     bloc.harpyTheme = harpyTheme;
 
-    // change the system ui colors
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: harpyTheme.backgroundColors.last,
-      systemNavigationBarDividerColor: null,
-      systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
-      statusBarColor: harpyTheme.backgroundColors.first,
-      statusBarBrightness: harpyTheme.brightness,
-      statusBarIconBrightness: harpyTheme.complimentaryBrightness,
-    ));
+    // change the system ui colors once the theme change animation ended
+    Future<void>.delayed(kThemeAnimationDuration).then(
+      (_) => SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          systemNavigationBarColor: harpyTheme.backgroundColors.last,
+          systemNavigationBarDividerColor: null,
+          systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
+          statusBarColor: harpyTheme.backgroundColors.first,
+          statusBarBrightness: harpyTheme.brightness,
+          statusBarIconBrightness: harpyTheme.complimentaryBrightness,
+        ),
+      ),
+    );
 
     yield InitializedState();
   }
