@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/settings/widgets/media/media_settings_screen.dart';
@@ -112,6 +113,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case MediaSettingsScreen.route:
       screen = MediaSettingsScreen();
+      break;
+    case AboutScreen.route:
+      screen = const AboutScreen();
       break;
     case HomeScreen.route:
       screen = const HomeScreen();

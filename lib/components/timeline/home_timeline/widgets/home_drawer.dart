@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
@@ -60,8 +61,10 @@ class HomeDrawer extends StatelessWidget {
               ListTile(
                 leading: const FlareIcon.harpyLogo(),
                 title: const Text('About'),
-                onTap: () {},
-                enabled: false,
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushNamed(AboutScreen.route);
+                },
               ),
             ],
           ),
