@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/misc/shifted_position.dart';
 
 /// The default duration a message is shown on screen.
 const Duration kMessageShowDuration = Duration(seconds: 3);
@@ -43,7 +41,8 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
   bool _showing = false;
 
   AnimationController _controller;
-  Animation<Offset> _offsetAnimation;
+  Animation<double> _opacityAnimation;
+  Animation<double> _scaleAnimation;
 
   Completer<void> _hideMessageCompleter;
 
@@ -51,13 +50,16 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: kShortAnimationDuration,
+      duration: const Duration(milliseconds: 200),
     );
 
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(CurveTween(curve: Curves.fastOutSlowIn).animate(_controller));
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurveTween(curve: Curves.easeInOut).animate(_controller),
+    );
+
+    _scaleAnimation = Tween<double>(begin: .95, end: 1).animate(
+      CurveTween(curve: Curves.easeInOut).animate(_controller),
+    );
 
     super.initState();
   }
@@ -121,9 +123,12 @@ class HarpyMessageHandlerState extends State<HarpyMessageHandler>
           child: AnimatedBuilder(
             animation: _controller,
             builder: (BuildContext context, Widget child) => _hasMessage
-                ? ShiftedPosition(
-                    shift: _offsetAnimation.value,
-                    child: _buildMessage(),
+                ? Opacity(
+                    opacity: _opacityAnimation.value,
+                    child: Transform.scale(
+                      scale: _scaleAnimation.value,
+                      child: _buildMessage(),
+                    ),
                   )
                 : const SizedBox(),
           ),
