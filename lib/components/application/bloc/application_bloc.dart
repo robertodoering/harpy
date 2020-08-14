@@ -28,7 +28,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       BlocProvider.of<ApplicationBloc>(context);
 
   @override
-  ApplicationState get initialState => const AwaitingInitializationState();
+  ApplicationState get initialState => AwaitingInitializationState();
 
   @override
   Stream<ApplicationState> mapEventToState(
