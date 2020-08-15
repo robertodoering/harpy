@@ -25,6 +25,23 @@ import 'package:meta/meta.dart';
 abstract class ApplicationEvent {
   const ApplicationEvent();
 
+  /// Updates the system ui to match the [bloc.harpyTheme].
+  ///
+  /// Used by the [InitializeEvent] and the [ChangeThemeEvent].
+  void updateSystemUi(ApplicationBloc bloc) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: bloc.harpyTheme.backgroundColors.last,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness:
+            bloc.harpyTheme.complimentaryBrightness,
+        statusBarColor: bloc.harpyTheme.backgroundColors.first,
+        statusBarBrightness: bloc.harpyTheme.brightness,
+        statusBarIconBrightness: bloc.harpyTheme.complimentaryBrightness,
+      ),
+    );
+  }
+
   Stream<ApplicationState> applyAsync({
     ApplicationState currentState,
     ApplicationBloc bloc,
@@ -45,6 +62,9 @@ class InitializeEvent extends ApplicationEvent {
     _log.fine('start common initialization');
 
     initLogger();
+
+    // update the system ui to match the initial theme
+    updateSystemUi(bloc);
 
     // need to parse app config before we continue with initialization that is
     // reliant on the app config
@@ -135,19 +155,7 @@ class ChangeThemeEvent extends ApplicationEvent {
       app<ThemePreferences>().selectedTheme = id;
     }
 
-    // change the system ui colors once the theme change animation ended
-    Future<void>.delayed(kThemeAnimationDuration).then(
-      (_) => SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          systemNavigationBarColor: harpyTheme.backgroundColors.last,
-          systemNavigationBarDividerColor: null,
-          systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
-          statusBarColor: harpyTheme.backgroundColors.first,
-          statusBarBrightness: harpyTheme.brightness,
-          statusBarIconBrightness: harpyTheme.complimentaryBrightness,
-        ),
-      ),
-    );
+    updateSystemUi(bloc);
 
     yield InitializedState();
   }
