@@ -13,15 +13,10 @@ class TweetTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return TweetTileAnimation(
       child: Card(
-        color: theme.brightness == Brightness.dark
-            ? Colors.white.withOpacity(.1)
-            : Colors.black.withOpacity(.1),
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        elevation: 0,
         child: Column(
           children: <Widget>[
             TweetTileContent(tweet),

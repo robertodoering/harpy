@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a widget similar to a [SnackBar] that is intended to be shown at the
 /// bottom of the screen with the [HarpyMessageHandler].
@@ -44,7 +42,7 @@ class _HarpyMessageState extends State<HarpyMessage>
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme theme = ApplicationBloc.of(context).harpyTheme;
+    final ThemeData theme = Theme.of(context);
 
     return SafeArea(
       left: false,
@@ -55,8 +53,7 @@ class _HarpyMessageState extends State<HarpyMessage>
         width: double.infinity,
         child: Card(
           margin: const EdgeInsets.all(16),
-          color: theme.backgroundColors.first,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: theme.primaryColor,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(

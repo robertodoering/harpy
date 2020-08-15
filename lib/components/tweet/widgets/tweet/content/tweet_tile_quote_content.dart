@@ -37,7 +37,7 @@ class TweetQuoteContent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withOpacity(.2)),
+        border: Border.all(color: theme.dividerColor),
       ),
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
