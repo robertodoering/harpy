@@ -183,16 +183,19 @@ class _VideoPlayerOverlayState extends State<VideoPlayerOverlay>
   }
 
   Widget _buildReplayIcon() {
-    final Widget replayIcon = Container(
-      decoration: const BoxDecoration(
-        color: Colors.black38,
-        shape: BoxShape.circle,
-      ),
-      padding: const EdgeInsets.all(8),
-      child: const Icon(
-        Icons.replay,
-        size: kVideoPlayerCenterIconSize,
-        color: Colors.white,
+    final Widget replayIcon = GestureDetector(
+      onTap: _onVideoTap,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.black38,
+          shape: BoxShape.circle,
+        ),
+        padding: const EdgeInsets.all(8),
+        child: const Icon(
+          Icons.replay,
+          size: kVideoPlayerCenterIconSize,
+          color: Colors.white,
+        ),
       ),
     );
 
