@@ -20,7 +20,8 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  final Map<String, GestureRecognizer> _recognizer = {};
+  final Map<String, GestureRecognizer> _recognizer =
+      <String, GestureRecognizer>{};
 
   @override
   void initState() {
@@ -126,7 +127,7 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 
   List<Widget> _buildDeveloperText(Color accentColor, TextStyle linkStyle) {
-    return [
+    return <Widget>[
       const Text('Developed by Roberto Doering'),
       Text.rich(TextSpan(
         text: 'rbydoering@gmail.com',
