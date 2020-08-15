@@ -75,7 +75,7 @@ class TwitterText extends StatefulWidget {
 class _TwitterTextState extends State<TwitterText> {
   final List<GestureRecognizer> _gestureRecognizer = <GestureRecognizer>[];
 
-  final List<TextSpan> _textSpans = <TextSpan>[];
+  final List<TwitterTextSpan> _textSpans = <TwitterTextSpan>[];
 
   @override
   void initState() {
@@ -117,7 +117,7 @@ class _TwitterTextState extends State<TwitterText> {
 
       if (text.isNotEmpty) {
         _textSpans.add(
-          TextSpan(text: text),
+          TwitterTextSpan(text),
         );
       }
     }
@@ -167,13 +167,10 @@ class _TwitterTextState extends State<TwitterText> {
 
     if (text != null) {
       _textSpans.add(
-        TextSpan(
-          text: text,
+        TwitterTextSpan(
+          text,
           recognizer: recognizer,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: widget.entityColor,
-          ),
+          entity: true,
         ),
       );
     }
@@ -190,8 +187,20 @@ class _TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle entityStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      color: widget.entityColor,
+    );
+
     return Text.rich(
-      TextSpan(children: _textSpans),
+      TextSpan(children: <TextSpan>[
+        for (TwitterTextSpan textSpan in _textSpans)
+          TextSpan(
+            text: textSpan.text,
+            recognizer: textSpan.recognizer,
+            style: textSpan.entity ? entityStyle : null,
+          )
+      ]),
       style: widget.style,
     );
   }
@@ -316,4 +325,24 @@ class TwitterTextEntity {
   int get startIndex => indices[0];
 
   int get endIndex => indices[1];
+}
+
+/// A class that represents a text span for the [TwitterText].
+@immutable
+class TwitterTextSpan {
+  const TwitterTextSpan(
+    this.text, {
+    this.recognizer,
+    this.entity = false,
+  });
+
+  /// The text for this text span.
+  final String text;
+
+  /// An optional gesture recognizer for this textspan.
+  final GestureRecognizer recognizer;
+
+  /// Whether this text span represents an entity and should be styled
+  /// differently.
+  final bool entity;
 }
