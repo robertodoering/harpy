@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/harpy.dart';
 
 /// A card used to add a custom theme for the [ThemeSelectionScreen].
@@ -33,6 +35,7 @@ class AddCustomThemeCard extends StatelessWidget {
           trailing: trailing,
           onTap: () {
             // todo: navigate to custom theme screen
+            app<MessageService>().showInfo('Not yet available');
           },
         ),
       ),
