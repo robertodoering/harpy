@@ -16,6 +16,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     @required this.authenticationBloc,
   }) {
+    // initialize application bloc reference
+    authenticationBloc.applicationBloc = this;
+
     add(const InitializeEvent());
   }
 

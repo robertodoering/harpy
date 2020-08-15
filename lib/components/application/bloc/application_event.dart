@@ -13,6 +13,7 @@ import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
+import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -74,8 +75,6 @@ class InitializeEvent extends ApplicationEvent {
     final bool authenticated =
         await authenticationBloc.sessionInitialization.future;
 
-    if (authenticated) {}
-
     return authenticated;
   }
 
@@ -111,9 +110,16 @@ class InitializeEvent extends ApplicationEvent {
 
 /// The event to change the app wide theme.
 class ChangeThemeEvent extends ApplicationEvent {
-  const ChangeThemeEvent(this.harpyTheme);
+  const ChangeThemeEvent({
+    @required this.harpyTheme,
+    this.id,
+  });
 
+  /// The theme to change to.
   final HarpyTheme harpyTheme;
+
+  /// The `id` used to save the selection to.
+  final int id;
 
   static final Logger _log = Logger('ChangeThemeEvent');
 
@@ -124,6 +130,10 @@ class ChangeThemeEvent extends ApplicationEvent {
   }) async* {
     _log.fine('changing theme to ${harpyTheme.name}');
     bloc.harpyTheme = harpyTheme;
+
+    if (id != null) {
+      app<ThemePreferences>().selectedTheme = id;
+    }
 
     // change the system ui colors once the theme change animation ended
     Future<void>.delayed(kThemeAnimationDuration).then(

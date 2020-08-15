@@ -31,7 +31,10 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
               harpyTheme,
               selected: harpyTheme == activeHarpyTheme,
               onTap: () => setState(() {
-                applicationBloc.add(ChangeThemeEvent(harpyTheme));
+                applicationBloc.add(ChangeThemeEvent(
+                  harpyTheme: harpyTheme,
+                  id: predefinedThemes.indexOf(harpyTheme),
+                ));
               }),
             ),
           const AddCustomThemeCard(),
