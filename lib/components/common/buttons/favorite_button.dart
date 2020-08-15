@@ -62,19 +62,23 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     }
   }
 
-  Widget _iconBuilder(ThemeData theme) {
-    final Color color = _color ?? theme.iconTheme.color;
+  Widget _iconBuilder(BuildContext context) {
+    final Color color = _color ?? Theme.of(context).iconTheme.color;
 
-    return FlareIcon.favorite(animation: _animation, color: color);
+    return FlareIcon.favorite(
+      animation: _animation,
+      color: color,
+      // force rebuild when color changes since the flare actor doesn't
+      // automatically update itself on color change
+      key: Key('${color.value}'),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return HarpyButton.flat(
       text: widget.text,
-      iconBuilder: (BuildContext context) => _iconBuilder(theme),
+      iconBuilder: _iconBuilder,
       foregroundColor: _color,
       onTap: widget.favorited ? widget.unfavorite : widget.favorite,
       padding: widget.padding,
