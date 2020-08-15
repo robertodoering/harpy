@@ -7,18 +7,37 @@ class HarpyPreferences {
 
   SharedPreferences _preferences;
 
+  /// Can be used to prefix the given key.
+  ///
+  /// Used to differentiate user preferences.
+  String prefix;
+
   /// Initializes the [_preferences] instance.
   Future<void> initialize() async {
     _log.fine('initializing harpy prefs');
     _preferences = await SharedPreferences.getInstance();
   }
 
+  String _key(String key, bool usePrefix) {
+    if (usePrefix && prefix.isNotEmpty == true) {
+      return '$prefix.$key';
+    } else {
+      return key;
+    }
+  }
+
   /// Gets the int value for the [key] if it exists.
   ///
   /// Limits the value if [lowerLimit] and [upperLimit] are not `null`.
-  int getInt(String key, int defaultValue, [int lowerLimit, int upperLimit]) {
+  int getInt(
+    String key,
+    int defaultValue, {
+    bool prefix = false,
+    int lowerLimit,
+    int upperLimit,
+  }) {
     try {
-      final int value = _preferences.getInt(key) ?? defaultValue;
+      final int value = _preferences.getInt(_key(key, prefix)) ?? defaultValue;
 
       if (lowerLimit != null && upperLimit != null) {
         return value.clamp(lowerLimit, upperLimit);
@@ -30,36 +49,55 @@ class HarpyPreferences {
     }
   }
 
-  void setInt(String key, int value) {
-    _log.fine('set $key to $value');
-    _preferences.setInt(key, value);
+  void setInt(
+    String key,
+    int value, {
+    bool prefix = false,
+  }) {
+    _log.fine('set ${_key(key, prefix)} to $value');
+    _preferences.setInt(_key(key, prefix), value);
   }
 
   /// Gets the bool value for the [key] if it exists.
-  bool getBool(String key, bool defaultValue) {
+  bool getBool(
+    String key,
+    bool defaultValue, {
+    bool prefix = false,
+  }) {
     try {
-      return _preferences.getBool(key) ?? defaultValue;
+      return _preferences.getBool(_key(key, prefix)) ?? defaultValue;
     } catch (e) {
       return defaultValue;
     }
   }
 
-  void setBool(String key, bool value) {
-    _log.fine('set $key to $value');
-    _preferences.setBool(key, value);
+  void setBool(
+    String key,
+    bool value, {
+    bool prefix = false,
+  }) {
+    _log.fine('set ${_key(key, prefix)} to $value');
+    _preferences.setBool(_key(key, prefix), value);
   }
 
   /// Gets the string list for the [key] or an empty list if it doesn't exist.
-  List<String> getStringList(String key) {
+  List<String> getStringList(
+    String key, {
+    bool prefix = false,
+  }) {
     try {
-      return _preferences.getStringList(key) ?? <String>[];
+      return _preferences.getStringList(_key(key, prefix)) ?? <String>[];
     } catch (e) {
       return <String>[];
     }
   }
 
-  void setStringList(String key, List<String> value) {
-    _log.fine('set $key to $value');
+  void setStringList(
+    String key,
+    List<String> value, {
+    bool prefix = false,
+  }) {
+    _log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setStringList(key, value);
   }
 }
