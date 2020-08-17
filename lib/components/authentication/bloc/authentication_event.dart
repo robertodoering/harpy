@@ -6,12 +6,14 @@ import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
+import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
+import 'package:harpy/core/preferences/setup_preferences.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
@@ -60,11 +62,9 @@ abstract class AuthenticationEvent {
 
       if (selectedTheme != -1) {
         _log.fine('initializing selected theme with id $selectedTheme');
-        // todo: change selected theme
+
         bloc.applicationBloc.add(
-          ChangeThemeEvent(
-            harpyTheme: predefinedThemes[selectedTheme],
-          ),
+          ChangeThemeEvent(harpyTheme: predefinedThemes[selectedTheme]),
         );
       }
     }
@@ -78,6 +78,9 @@ abstract class AuthenticationEvent {
     await bloc.twitterLogin?.logOut();
     bloc.twitterSession = null;
     bloc.authenticatedUser = null;
+
+    // reset the theme to the default theme
+    bloc.applicationBloc.harpyTheme = predefinedThemes.first;
   }
 
   Stream<AuthenticationState> applyAsync({
@@ -153,6 +156,8 @@ class LoginEvent extends AuthenticationEvent {
   }) async* {
     _log.fine('logging in');
 
+    yield AwaitingAuthenticationState();
+
     final TwitterLoginResult result = await bloc.twitterLogin?.authorize();
 
     switch (result?.status) {
@@ -163,10 +168,20 @@ class LoginEvent extends AuthenticationEvent {
         if (await onLogin(bloc, app<AppConfig>().data)) {
           // successfully initialized the login
           yield AuthenticatedState();
-          app<HarpyNavigator>().pushReplacementNamed(
-            HomeScreen.route,
-            type: RouteType.fade,
-          );
+
+          if (app<SetupPreferences>().performedSetup) {
+            // the user has previously performed a setup
+            app<HarpyNavigator>().pushReplacementNamed(
+              HomeScreen.route,
+              type: RouteType.fade,
+            );
+          } else {
+            // new user, should navigate to setup screen
+            app<HarpyNavigator>().pushReplacementNamed(
+              SetupScreen.route,
+              type: RouteType.fade,
+            );
+          }
         } else {
           // failed initializing login
           await onLogout(bloc);
