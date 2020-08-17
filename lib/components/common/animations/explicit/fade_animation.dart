@@ -44,8 +44,7 @@ class _FadeAnimationState extends State<FadeAnimation>
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..forward();
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = CurveTween(curve: widget.curve).animate(_controller);
 
