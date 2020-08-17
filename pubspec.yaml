@@ -14,34 +14,34 @@ dependencies:
     sdk: flutter
   
   # packages
+  cached_network_image: ^2.2.0+1
   dart_twitter_api: ^0.3.4
   flare_flutter: ^2.0.3
   flutter_bloc: ^4.0.0
-  provider: ^4.3.1
   get_it: ^4.0.2
+  intl : ^0.16.1
   logging: ^0.11.4
+  provider: ^4.3.1
+  sentry: ^3.0.1
   url_launcher: ^5.4.10
   yaml: ^2.2.1
-  sentry: ^3.0.1
-  cached_network_image: ^2.2.0+1
-  intl : ^0.16.1
   
   # plugins
+  connectivity: '>=0.4.9 <2.0.0'
+  device_info: '>=0.4.2+4 <2.0.0'
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   package_info: '>=0.4.1 <2.0.0'
-  device_info: '>=0.4.2+4 <2.0.0'
-  video_player: '>=0.10.11+2 <2.0.0'
   shared_preferences: '>=0.5.8 <2.0.0'
-  connectivity: '>=0.4.9 <2.0.0'
+  video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  mockito: ^4.1.1
   bloc_test: ^5.1.0
   build_runner: ^1.7.1
+  flutter_test:
+    sdk: flutter
   json_serializable: ^3.2.3
+  mockito: ^4.1.1
 
 flutter:
   uses-material-design: true
