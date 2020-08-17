@@ -1,7 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
@@ -11,7 +10,6 @@ import 'package:harpy/components/common/animations/explicit/slide_animation.dart
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -112,19 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (BuildContext context, AuthenticationState state) {
-        final HarpyTheme harpyTheme = ApplicationBloc.of(context).harpyTheme;
-        final ThemeData theme = harpyTheme.data;
+        final ThemeData theme = Theme.of(context);
 
-        // uses the current ApplicationBloc.harpyTheme as the theme to properly
-        // handle a theme reset to the default theme on logout before the
-        // Theme.of(context) has updated to the default theme
-        return Theme(
-          data: theme,
-          child: HarpyBackground(
-            child: state is AwaitingAuthenticationState
-                ? const Center(child: CircularProgressIndicator())
-                : _buildLoginScreen(theme),
-          ),
+        return HarpyBackground(
+          child: state is AwaitingAuthenticationState
+              ? const Center(child: CircularProgressIndicator())
+              : _buildLoginScreen(theme),
         );
       },
     );

@@ -76,12 +76,19 @@ abstract class AuthenticationEvent {
   /// data.
   Future<void> onLogout(AuthenticationBloc bloc) async {
     await bloc.twitterLogin?.logOut();
-    bloc.twitterSession = null;
-    bloc.authenticatedUser = null;
+
+    // wait until navigation changed to clear user information to avoid
+    // rebuilding the home screen without an authenticated user and therefore
+    // causing unexpected errors
+    Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
+      bloc.twitterSession = null;
+      bloc.authenticatedUser = null;
+    });
 
     // reset the theme to the default theme
-    bloc.applicationBloc.harpyTheme = predefinedThemes.first;
-    bloc.applicationBloc.updateSystemUi();
+    bloc.applicationBloc.add(
+      ChangeThemeEvent(harpyTheme: predefinedThemes.first),
+    );
   }
 
   Stream<AuthenticationState> applyAsync({
