@@ -36,7 +36,8 @@ void main() {
     app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
     app.registerLazySingleton<HarpyPreferences>(() => MockHarpyPreferences());
     app.registerLazySingleton<ConnectivityService>(
-        () => MockConnectivityService());
+      () => MockConnectivityService(),
+    );
   });
 
   tearDown(app.reset);
@@ -54,9 +55,6 @@ void main() {
         authenticationBloc: AuthenticationBloc(),
       );
     },
-    expect: <ApplicationState>[
-      const InitializedState(),
-    ],
     verify: (ApplicationBloc bloc) async {
       verify(app<AppConfig>().parseAppConfig());
       verify(app<HarpyInfo>().initialize());

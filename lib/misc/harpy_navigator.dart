@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
+import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/settings/widgets/media/media_settings_screen.dart';
 import 'package:harpy/components/settings/widgets/settings_screen.dart';
+import 'package:harpy/components/settings/widgets/theme/theme_selection/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
@@ -111,6 +113,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case SettingsScreen.route:
       screen = const SettingsScreen();
       break;
+    case ThemeSelectionScreen.route:
+      screen = const ThemeSelectionScreen();
+      break;
     case MediaSettingsScreen.route:
       screen = MediaSettingsScreen();
       break;
@@ -119,6 +124,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case HomeScreen.route:
       screen = const HomeScreen();
+      break;
+    case SetupScreen.route:
+      screen = const SetupScreen();
       break;
     case LoginScreen.route:
       screen = const LoginScreen();

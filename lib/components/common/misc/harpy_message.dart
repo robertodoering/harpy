@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a widget similar to a [SnackBar] that is intended to be shown at the
 /// bottom of the screen with the [HarpyMessageHandler].
@@ -32,19 +30,35 @@ class HarpyMessage extends StatefulWidget {
 
 class _HarpyMessageState extends State<HarpyMessage>
     with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
+  Color textColor;
+  Color iconColor;
 
   @override
-  void dispose() {
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final ThemeData theme = Theme.of(context);
+
+    final Brightness backgroundBrightness =
+        ThemeData.estimateBrightnessForColor(theme.accentColor);
+
+    final Brightness iconColorBrightness =
+        ThemeData.estimateBrightnessForColor(widget.iconColor);
+
+    // set the text color to compliment the background color
+    textColor =
+        backgroundBrightness == Brightness.dark ? Colors.white : Colors.black;
+
+    // if the widget.iconColor does not compliment the background color, use the
+    // same color as the text instead
+    iconColor = iconColorBrightness == backgroundBrightness
+        ? textColor
+        : widget.iconColor;
   }
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme theme = ApplicationBloc.of(context).harpyTheme;
+    final ThemeData theme = Theme.of(context);
 
     return SafeArea(
       left: false,
@@ -55,22 +69,24 @@ class _HarpyMessageState extends State<HarpyMessage>
         width: double.infinity,
         child: Card(
           margin: const EdgeInsets.all(16),
-          color: theme.backgroundColors.first,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: theme.accentColor,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
               children: <Widget>[
                 Icon(
                   widget.icon,
-                  color: widget.iconColor,
+                  color: iconColor,
                   size: 28,
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
                     widget.text,
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        .apply(color: textColor),
                   ),
                 ),
               ],

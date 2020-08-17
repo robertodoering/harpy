@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
@@ -13,6 +14,9 @@ import 'package:harpy/core/service_locator.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final TwitterApi twitterApi = app<TwitterApi>();
+
+  /// A reference to the [ApplicationBloc].
+  ApplicationBloc applicationBloc;
 
   /// The [twitterLogin] is used to log in and out with the native twitter sdk.
   TwitterLogin twitterLogin;

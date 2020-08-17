@@ -1,13 +1,11 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
+import 'package:harpy/components/authentication/widgets/headlines.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
-import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
@@ -34,26 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildText() {
-    return Align(
+    return const Align(
       alignment: Alignment.bottomCenter,
-      child: FadeAnimation(
-        curve: Curves.easeInOut,
-        duration: const Duration(seconds: 1),
-        child: SlideInAnimation(
-          offset: const Offset(0, 50),
-          curve: Curves.easeInOut,
-          duration: const Duration(seconds: 1),
-          child: Text(
-            'welcome to',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ),
-      ),
+      child: SecondaryHeadline('welcome to'),
     );
   }
 
-  Widget _buildTitle() {
-    final Color color = Theme.of(context).textTheme.bodyText2.color;
+  Widget _buildTitle(ThemeData theme) {
+    final Color color = theme.textTheme.bodyText2.color;
 
     return FractionallySizedBox(
       widthFactor: 2 / 3,
@@ -95,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginScreen() {
+  Widget _buildLoginScreen(ThemeData theme) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     return SlideAnimation(
@@ -109,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             flex: 2,
             child: Column(
               children: <Widget>[
-                Expanded(child: _buildTitle()),
+                Expanded(child: _buildTitle(theme)),
                 Expanded(child: _buildLogo()),
               ],
             ),
@@ -122,12 +108,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApplicationBloc, ApplicationState>(
-      builder: (BuildContext context, ApplicationState state) {
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (BuildContext context, AuthenticationState state) {
+        final ThemeData theme = Theme.of(context);
+
         return HarpyBackground(
-          child: state is AuthenticatedState
+          child: state is AwaitingAuthenticationState
               ? const Center(child: CircularProgressIndicator())
-              : _buildLoginScreen(),
+              : _buildLoginScreen(theme),
         );
       },
     );

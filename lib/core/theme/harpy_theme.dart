@@ -180,6 +180,10 @@ class HarpyTheme {
       accentColor: accentColor,
       buttonColor: complimentaryColor,
 
+      dividerColor: brightness == Brightness.dark
+          ? Colors.white.withOpacity(.2)
+          : Colors.black.withOpacity(.2),
+
       // determines the status bar icon color
       primaryColorBrightness: brightness,
 
@@ -192,6 +196,18 @@ class HarpyTheme {
 
       // used by a textfield when it has focus
       textSelectionHandleColor: accentColor,
+
+      cardTheme: CardTheme(
+        // use the accent color and make it slightly brighter / darker
+        color: Color.lerp(
+          accentColor.withOpacity(.1),
+          brightness == Brightness.dark
+              ? Colors.white.withOpacity(.2)
+              : Colors.black.withOpacity(.2),
+          .1,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
     );
   }
 }

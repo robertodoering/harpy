@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_shifted_position.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a button at the bottom of the screen that listens to the
 /// [ScrollDirection] and animates in or out of the screen to provide a button
@@ -87,7 +87,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Stack(
       children: <Widget>[
@@ -97,7 +97,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
           child: AnimatedOpacity(
             opacity: _show ? 1 : 0,
             curve: Curves.easeInOut,
-            duration: const Duration(milliseconds: 300),
+            duration: kShortAnimationDuration,
             child: AnimatedShiftedPosition(
               shift: _show ? Offset.zero : const Offset(0, 1),
               child: Padding(
@@ -105,7 +105,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                 child: HarpyButton.raised(
                   text: 'Jump to top',
                   icon: Icons.arrow_upward,
-                  backgroundColor: harpyTheme.backgroundColors.last,
+                  backgroundColor: theme.primaryColor,
                   dense: true,
                   onTap: _scrollToStart,
                 ),

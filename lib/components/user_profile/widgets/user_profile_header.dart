@@ -13,14 +13,9 @@ class UserProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return Card(
-      color: theme.brightness == Brightness.dark
-          ? Colors.white.withOpacity(.1)
-          : Colors.black.withOpacity(.1),
       margin: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 0,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(

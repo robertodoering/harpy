@@ -12,7 +12,8 @@ class MediaPreferences {
   /// 0: large
   /// 1: medium
   /// 2: small
-  int get wifiMediaQuality => harpyPrefs.getInt('wifiMediaQuality', 0, 0, 2);
+  int get wifiMediaQuality =>
+      harpyPrefs.getInt('wifiMediaQuality', 0, lowerLimit: 0, upperLimit: 2);
   set wifiMediaQuality(int value) =>
       harpyPrefs.setInt('wifiMediaQuality', value);
 
@@ -22,7 +23,7 @@ class MediaPreferences {
   /// 1: medium
   /// 2: small
   int get nonWifiMediaQuality =>
-      harpyPrefs.getInt('nonWifiMediaQuality', 0, 0, 2);
+      harpyPrefs.getInt('nonWifiMediaQuality', 0, lowerLimit: 0, upperLimit: 2);
   set nonWifiMediaQuality(int value) =>
       harpyPrefs.setInt('nonWifiMediaQuality', value);
 
@@ -31,7 +32,8 @@ class MediaPreferences {
   /// 0: always autoplay
   /// 1: only autoplay when using wifi
   /// 2: never autoplay
-  int get autoplayMedia => harpyPrefs.getInt('autoplayMedia', 1, 0, 2);
+  int get autoplayMedia =>
+      harpyPrefs.getInt('autoplayMedia', 1, lowerLimit: 0, upperLimit: 2);
   set autoplayMedia(int value) => harpyPrefs.setInt('autoplayMedia', value);
 
   /// Whether links should open externally instead of using a built in web view.

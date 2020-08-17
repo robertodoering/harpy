@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
@@ -11,7 +12,9 @@ import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
+import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
 import 'package:logging/logging.dart';
@@ -42,6 +45,9 @@ class InitializeEvent extends ApplicationEvent {
 
     initLogger();
 
+    // update the system ui to match the initial theme
+    bloc.updateSystemUi();
+
     // need to parse app config before we continue with initialization that is
     // reliant on the app config
     await app<AppConfig>().parseAppConfig();
@@ -71,8 +77,6 @@ class InitializeEvent extends ApplicationEvent {
     final bool authenticated =
         await authenticationBloc.sessionInitialization.future;
 
-    if (authenticated) {}
-
     return authenticated;
   }
 
@@ -88,7 +92,7 @@ class InitializeEvent extends ApplicationEvent {
 
     _log.fine('finished app initialization');
 
-    yield const InitializedState();
+    yield InitializedState();
 
     if (authenticated) {
       // navigate to home screen
@@ -103,5 +107,38 @@ class InitializeEvent extends ApplicationEvent {
         type: RouteType.fade,
       );
     }
+  }
+}
+
+/// The event to change the app wide theme.
+class ChangeThemeEvent extends ApplicationEvent {
+  const ChangeThemeEvent({
+    @required this.harpyTheme,
+    this.id,
+  });
+
+  /// The theme to change to.
+  final HarpyTheme harpyTheme;
+
+  /// The `id` used to save the selection to.
+  final int id;
+
+  static final Logger _log = Logger('ChangeThemeEvent');
+
+  @override
+  Stream<ApplicationState> applyAsync({
+    ApplicationState currentState,
+    ApplicationBloc bloc,
+  }) async* {
+    _log.fine('changing theme to ${harpyTheme.name}');
+    bloc.harpyTheme = harpyTheme;
+
+    if (id != null) {
+      app<ThemePreferences>().selectedTheme = id;
+    }
+
+    bloc.updateSystemUi();
+
+    yield InitializedState();
   }
 }
