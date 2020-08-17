@@ -58,7 +58,15 @@ class PrimaryHeadline extends StatelessWidget {
         offset: const Offset(0, 75),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.headline2.copyWith(
+            shadows: <Shadow>[
+              Shadow(
+                color: Colors.black.withOpacity(.6),
+                offset: const Offset(3, 3),
+                blurRadius: 3,
+              ),
+            ],
+          ),
           textAlign: TextAlign.center,
         ),
       ),
