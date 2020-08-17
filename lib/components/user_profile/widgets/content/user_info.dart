@@ -83,6 +83,8 @@ class UserProfileInfo extends StatelessWidget {
           child: Row(
             children: <Widget>[
               // avatar
+              // todo: clicking on avatar should open the avatar in a fullscreen
+              //   image view
               CachedCircleAvatar(
                 imageUrl: bloc.user.appropriateUserImageUrl,
                 radius: 36,
