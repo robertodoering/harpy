@@ -67,7 +67,7 @@ class _SetupScreenState extends State<SetupScreen> {
         offset: const Offset(0, 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Text('select your theme', style: theme.textTheme.headline4),
             const SizedBox(height: 16),
             const ThemeSelection(),
@@ -107,7 +107,7 @@ class _SetupScreenState extends State<SetupScreen> {
         key: _slideSetupKey,
         endPosition: Offset(0, -mediaQuery.size.height),
         child: Column(
-          children: [
+          children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),

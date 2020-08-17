@@ -12,15 +12,7 @@ import 'package:harpy/core/theme/predefined_themes.dart';
 /// The carousel contains the [predefinedThemes] and changes the selected
 /// [HarpyTheme].
 class ThemeSelection extends StatefulWidget {
-  const ThemeSelection({
-    this.delay = Duration.zero,
-  });
-
-  /// The delay until gestures to change the theme are registered.
-  ///
-  /// Used to prevent theme changes when the [ThemeSelection] is still invisible
-  /// in the [SetupScreen].
-  final Duration delay;
+  const ThemeSelection();
 
   @override
   _ThemeSelectionState createState() => _ThemeSelectionState();
@@ -30,8 +22,6 @@ class _ThemeSelectionState extends State<ThemeSelection> {
   List<HarpyTheme> get _themes => predefinedThemes;
 
   PageController _controller;
-
-  bool _lockGestures = true;
 
   int _currentPage = 0;
 
@@ -47,12 +37,6 @@ class _ThemeSelectionState extends State<ThemeSelection> {
           _currentPage = _controller.page.round();
         });
       });
-
-    Future<void>.delayed(widget.delay).then((_) {
-      setState(() {
-        _lockGestures = false;
-      });
-    });
   }
 
   @override
@@ -176,7 +160,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: _lockGestures ? null : _previous,
+                      onTap: _previous,
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),
@@ -184,7 +168,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: _lockGestures ? null : _next,
+                      onTap: _next,
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),
