@@ -62,7 +62,7 @@ class PrimaryHeadline extends StatelessWidget {
             shadows: <Shadow>[
               Shadow(
                 color: Colors.black.withOpacity(.6),
-                offset: const Offset(3, 3),
+                offset: const Offset(2, 2),
                 blurRadius: 3,
               ),
             ],
