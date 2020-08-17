@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 
+/// Builds a text that fades and slides into view after the [delay].
+///
+/// Used by the [SetupScreen].
 class SecondaryHeadline extends StatelessWidget {
   const SecondaryHeadline(
     this.text, {
@@ -31,6 +34,9 @@ class SecondaryHeadline extends StatelessWidget {
   }
 }
 
+/// Builds a text that fades and slides into view after the [delay].
+///
+/// Used by the [SetupScreen].
 class PrimaryHeadline extends StatelessWidget {
   const PrimaryHeadline(
     this.text, {
@@ -42,8 +48,6 @@ class PrimaryHeadline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo: maybe use Curves.easeOutCubic
-    // todo: text overlflow
     return FadeAnimation(
       curve: Curves.easeInOut,
       duration: const Duration(seconds: 2),
@@ -54,7 +58,15 @@ class PrimaryHeadline extends StatelessWidget {
         offset: const Offset(0, 75),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.headline2.copyWith(
+            shadows: <Shadow>[
+              Shadow(
+                color: Colors.black.withOpacity(.6),
+                offset: const Offset(2, 2),
+                blurRadius: 3,
+              ),
+            ],
+          ),
           textAlign: TextAlign.center,
         ),
       ),

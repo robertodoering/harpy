@@ -21,8 +21,8 @@ final HarpyThemeData swan = HarpyThemeData()
 
 final HarpyThemeData phoenix = HarpyThemeData()
   ..name = 'phoenix'
-  ..backgroundColors = <int>[0xfffd1320, 0xffff6215]
-  ..accentColor = 0xffffD600;
+  ..backgroundColors = <int>[0xfffc2c2e, 0xffff6215, 0xffff6215, 0xfffc2c2e]
+  ..accentColor = 0xffffe60f;
 
 final HarpyThemeData harpy = HarpyThemeData()
   ..name = 'harpy'

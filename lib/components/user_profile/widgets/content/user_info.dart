@@ -77,18 +77,26 @@ class UserProfileInfo extends StatelessWidget {
             bloc.user.hasConnections;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // avatar
-        CachedCircleAvatar(
-          imageUrl: bloc.user.appropriateUserImageUrl,
-          radius: 36,
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              // avatar
+              // todo: clicking on avatar should open the avatar in a fullscreen
+              //   image view
+              CachedCircleAvatar(
+                imageUrl: bloc.user.appropriateUserImageUrl,
+                radius: 36,
+              ),
+
+              const SizedBox(width: 8),
+
+              // user name
+              Expanded(child: _buildUserName(theme)),
+            ],
+          ),
         ),
-
-        const SizedBox(width: 8),
-
-        // user name
-        Expanded(child: _buildUserName(theme)),
-
         if (enableFollow) ...<Widget>[
           const SizedBox(width: 8),
           _buildFollowButton(theme),

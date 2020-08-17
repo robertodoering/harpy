@@ -6,7 +6,9 @@ import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/components/settings/widgets/settings_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
+import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -47,15 +49,16 @@ class HomeDrawer extends StatelessWidget {
               ),
 
               // harpy pro
-              ListTile(
-                leading: const FlareIcon.shiningStar(
-                  size: 30,
-                  offset: Offset(-2.5, 0),
+              if (Harpy.isFree)
+                ListTile(
+                  leading: const FlareIcon.shiningStar(
+                    size: 30,
+                    offset: Offset(-2.5, 0),
+                  ),
+                  title: const Text('Harpy Pro'),
+                  onTap: () =>
+                      app<MessageService>().showInfo('Not yet available'),
                 ),
-                title: const Text('Harpy Pro'),
-                onTap: () {},
-                enabled: false,
-              ),
 
               // about
               ListTile(
