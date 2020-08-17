@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
@@ -25,23 +24,6 @@ import 'package:meta/meta.dart';
 abstract class ApplicationEvent {
   const ApplicationEvent();
 
-  /// Updates the system ui to match the [bloc.harpyTheme].
-  ///
-  /// Used by the [InitializeEvent] and the [ChangeThemeEvent].
-  void updateSystemUi(ApplicationBloc bloc) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor: bloc.harpyTheme.backgroundColors.last,
-        systemNavigationBarDividerColor: null,
-        systemNavigationBarIconBrightness:
-            bloc.harpyTheme.complimentaryBrightness,
-        statusBarColor: bloc.harpyTheme.backgroundColors.first,
-        statusBarBrightness: bloc.harpyTheme.brightness,
-        statusBarIconBrightness: bloc.harpyTheme.complimentaryBrightness,
-      ),
-    );
-  }
-
   Stream<ApplicationState> applyAsync({
     ApplicationState currentState,
     ApplicationBloc bloc,
@@ -64,7 +46,7 @@ class InitializeEvent extends ApplicationEvent {
     initLogger();
 
     // update the system ui to match the initial theme
-    updateSystemUi(bloc);
+    bloc.updateSystemUi();
 
     // need to parse app config before we continue with initialization that is
     // reliant on the app config
@@ -155,7 +137,7 @@ class ChangeThemeEvent extends ApplicationEvent {
       app<ThemePreferences>().selectedTheme = id;
     }
 
-    updateSystemUi(bloc);
+    bloc.updateSystemUi();
 
     yield InitializedState();
   }

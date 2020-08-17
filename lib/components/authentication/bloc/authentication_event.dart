@@ -81,6 +81,7 @@ abstract class AuthenticationEvent {
 
     // reset the theme to the default theme
     bloc.applicationBloc.harpyTheme = predefinedThemes.first;
+    bloc.applicationBloc.updateSystemUi();
   }
 
   Stream<AuthenticationState> applyAsync({

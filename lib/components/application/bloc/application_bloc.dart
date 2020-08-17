@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
@@ -32,6 +33,20 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
   @override
   ApplicationState get initialState => AwaitingInitializationState();
+
+  /// Updates the system ui to match the current [harpyTheme].
+  void updateSystemUi() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: harpyTheme.backgroundColors.last,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
+        statusBarColor: harpyTheme.backgroundColors.first,
+        statusBarBrightness: harpyTheme.brightness,
+        statusBarIconBrightness: harpyTheme.complimentaryBrightness,
+      ),
+    );
+  }
 
   @override
   Stream<ApplicationState> mapEventToState(
