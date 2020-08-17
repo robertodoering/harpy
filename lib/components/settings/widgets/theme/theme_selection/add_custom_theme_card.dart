@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/dialogs/pro_dialog.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -7,6 +8,24 @@ import 'package:harpy/harpy.dart';
 /// A card used to add a custom theme for the [ThemeSelectionScreen].
 class AddCustomThemeCard extends StatelessWidget {
   const AddCustomThemeCard();
+
+  Future<void> _onTap(BuildContext context) async {
+    if (Harpy.isFree) {
+      final bool result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => const ProDialog(
+          feature: 'Theme customization',
+        ),
+      );
+
+      if (result == true) {
+        app<MessageService>().showInfo('Not yet available');
+      }
+    } else {
+      // todo: navigate to custom theme screen
+      app<MessageService>().showInfo('Not yet available');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +49,7 @@ class AddCustomThemeCard extends StatelessWidget {
           leading: const Icon(Icons.add),
           title: const Text('Add custom theme'),
           trailing: trailing,
-          onTap: () {
-            // todo: navigate to custom theme screen
-            app<MessageService>().showInfo('Not yet available');
-          },
+          onTap: () => _onTap(context),
         ),
       ),
     );
