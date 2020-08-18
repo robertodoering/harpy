@@ -16,4 +16,4 @@ jobs:
       with:
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter build apk --flavor free -t lib/main_free.dart --release
+    - run: flutter build appbundle --flavor free -t lib/main_free.dart --bundle-sksl-path sksl.json
