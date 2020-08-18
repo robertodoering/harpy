@@ -11,38 +11,41 @@ import 'package:harpy/core/theme/predefined_themes.dart';
 ///
 /// The carousel contains the [predefinedThemes] and changes the selected
 /// [HarpyTheme].
-class ThemeSelection extends StatefulWidget {
-  const ThemeSelection();
+class ThemeSelectionCarousel extends StatefulWidget {
+  const ThemeSelectionCarousel();
 
   @override
-  _ThemeSelectionState createState() => _ThemeSelectionState();
+  _ThemeSelectionCarouselState createState() => _ThemeSelectionCarouselState();
 }
 
-class _ThemeSelectionState extends State<ThemeSelection> {
-  List<HarpyTheme> get _themes => predefinedThemes;
-
+class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   PageController _controller;
 
   int _currentPage = 0;
 
   bool get _canPrevious => _currentPage > 0;
-  bool get _canNext => _currentPage < _themes.length - 1;
+  bool get _canNext => _currentPage < predefinedThemes.length - 1;
 
   @override
   void initState() {
     super.initState();
-    _controller = PageController(viewportFraction: .3)
-      ..addListener(() {
-        setState(() {
-          _currentPage = _controller.page.round();
-        });
-      });
+    _controller = PageController(viewportFraction: .3)..addListener(_listener);
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  void _listener() {
+    final int currentPage = _controller.page.round();
+
+    if (_currentPage != currentPage) {
+      setState(() {
+        _currentPage = currentPage;
+      });
+    }
   }
 
   List<Widget> _buildItems() {
@@ -70,36 +73,41 @@ class _ThemeSelectionState extends State<ThemeSelection> {
     ];
   }
 
-  void _previous() {
+  void _previous(ApplicationBloc applicationBloc) {
     if (_canPrevious) {
       _controller.previousPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
-      _onSelectionChange(_currentPage - 1);
+      _onSelectionChange(applicationBloc, _currentPage - 1);
     }
   }
 
-  void _next() {
+  void _next(ApplicationBloc applicationBloc) {
     if (_canNext) {
       _controller.nextPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
 
-      _onSelectionChange(_currentPage + 1);
+      _onSelectionChange(applicationBloc, _currentPage + 1);
     }
   }
 
-  void _onSelectionChange(int index) {
-    ApplicationBloc.of(context).add(
-      ChangeThemeEvent(harpyTheme: _themes[index], id: index),
+  void _onSelectionChange(ApplicationBloc applicationBloc, int index) {
+    applicationBloc.add(
+      ChangeThemeEvent(
+        harpyTheme: predefinedThemes[index],
+        id: index,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ApplicationBloc applicationBloc = ApplicationBloc.of(context);
+
     final Color iconColor = IconTheme.of(context).color;
     final Color leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
     final Color rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
@@ -110,7 +118,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
         FadeAnimation(
           duration: kShortAnimationDuration,
           child: Text(
-            _themes[_currentPage].name,
+            predefinedThemes[_currentPage].name,
             style: theme.textTheme.subtitle2.copyWith(
               fontStyle: FontStyle.italic,
               letterSpacing: 2,
@@ -160,7 +168,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: _previous,
+                      onTap: () => _previous(applicationBloc),
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),
@@ -168,7 +176,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: _next,
+                      onTap: () => _next(applicationBloc),
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),

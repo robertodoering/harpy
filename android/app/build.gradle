@@ -100,3 +100,6 @@ android {
 flutter {
     source '../..'
 }
+
+// for firebase analytics
+apply plugin: 'com.google.gms.google-services'

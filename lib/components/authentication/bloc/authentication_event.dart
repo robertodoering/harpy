@@ -8,6 +8,7 @@ import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/app_config.dart';
@@ -39,7 +40,13 @@ abstract class AuthenticationEvent {
       ..token = bloc.twitterSession?.token ?? ''
       ..secret = bloc.twitterSession?.secret ?? '';
 
-    return initializeAuthenticatedUser(bloc);
+    final bool initialized = await initializeAuthenticatedUser(bloc);
+
+    if (initialized) {
+      app<AnalyticsService>().logLogin();
+    }
+
+    return initialized;
   }
 
   /// Retrieves the [UserData] of the authenticated user and initializes user
@@ -193,6 +200,8 @@ class LoginEvent extends AuthenticationEvent {
         } else {
           // failed initializing login
           await onLogout(bloc);
+
+          yield UnauthenticatedState();
           app<HarpyNavigator>().pushReplacementNamed(
             LoginScreen.route,
             type: RouteType.fade,
@@ -202,6 +211,8 @@ class LoginEvent extends AuthenticationEvent {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
+
+        yield UnauthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
           type: RouteType.fade,
@@ -210,6 +221,8 @@ class LoginEvent extends AuthenticationEvent {
       case TwitterLoginStatus.error:
       default:
         _log.warning('error during login');
+
+        yield UnauthenticatedState();
         app<MessageService>().showWarning(
           'Authentication failed, please try again.',
         );
@@ -236,6 +249,8 @@ class LogoutEvent extends AuthenticationEvent {
     _log.fine('logging out');
 
     await onLogout(bloc);
+
+    app<AnalyticsService>().logLogout();
 
     yield UnauthenticatedState();
 

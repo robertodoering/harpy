@@ -23,6 +23,8 @@ class _AboutScreenState extends State<AboutScreen> {
   final Map<String, GestureRecognizer> _recognizer =
       <String, GestureRecognizer>{};
 
+  final String _mailto = 'mailto:rbydoering+harpy@gmail.com?subject=Harpy';
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +33,7 @@ class _AboutScreenState extends State<AboutScreen> {
       ..onTap = () => launchUrl('https://github.com/robertodoering/harpy');
 
     _recognizer['email'] = TapGestureRecognizer()
-      ..onTap = () => launchUrl('mailto:rbydoering+harpy@gmail.com'
-          '?subject=Harpy');
+      ..onTap = () => launchUrl(_mailto);
   }
 
   @override
@@ -101,6 +102,7 @@ class _AboutScreenState extends State<AboutScreen> {
           backgroundColor: accentColor,
           dense: true,
           // todo: link to harpy pro
+          // todo: add harpy pro analytics
           onTap: () => app<MessageService>().showInfo('Not yet available'),
         ),
       ),
@@ -120,6 +122,7 @@ class _AboutScreenState extends State<AboutScreen> {
           backgroundColor: accentColor,
           dense: true,
           // todo harpy free or pro playstore link
+          // todo: add rate harpy analytics
           onTap: () => app<MessageService>().showInfo('Not yet available'),
         ),
       ),
@@ -143,9 +146,7 @@ class _AboutScreenState extends State<AboutScreen> {
           icon: Icons.mail,
           backgroundColor: accentColor,
           dense: true,
-          onTap: () => launchUrl(
-            'mailto:rbydoering+harpy@gmail.com?subject=Harpy feedback',
-          ),
+          onTap: () => launchUrl(_mailto),
         ),
       ),
     ];
