@@ -29,6 +29,7 @@ dependencies:
   # plugins
   connectivity: '>=0.4.9 <2.0.0'
   device_info: '>=0.4.2+4 <2.0.0'
+  firebase_analytics: ^6.0.0
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   package_info: '>=0.4.1 <2.0.0'

@@ -9,6 +9,9 @@ GeneratedPluginRegistrant.java
 # play store key
 fastlane/fastlane_key.json
 
+# firebase analytics
+app/google-services.json
+
 # fastlane specific
 **/fastlane/report.xml
 
