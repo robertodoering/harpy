@@ -194,7 +194,7 @@ class HarpyTheme {
       // used by toggleable widgets
       toggleableActiveColor: accentColor,
 
-      // used by a textfield when it has focus
+      // used by a text field when it has focus
       textSelectionHandleColor: accentColor,
 
       cardTheme: CardTheme(

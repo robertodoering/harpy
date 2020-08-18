@@ -84,7 +84,7 @@ class UserData {
   List<String> connections;
 
   /// Whether the relationship status for this user has been requested and the
-  /// [Friendship.connections] set to [connecitons].
+  /// [Friendship.connections] set to [connections].
   bool get hasConnections => connections != null;
 
   /// Whether the authenticated user is following this user.

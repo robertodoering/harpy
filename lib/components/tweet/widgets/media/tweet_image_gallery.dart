@@ -42,7 +42,7 @@ class _TweetImageGalleryState extends State<TweetImageGallery>
   AnimationController _animationController;
   Animation<Matrix4> _animation;
 
-  /// `true` when an image is zoomed in and not at the at a horziontal boundary
+  /// `true` when an image is zoomed in and not at the at a horizontal boundary
   /// to disable the [PageView].
   bool _enablePageView = true;
 

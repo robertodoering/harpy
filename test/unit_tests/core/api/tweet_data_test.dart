@@ -40,7 +40,7 @@ void main() {
     });
 
     test(
-        'ignores the name of the orignial tweets author if they are the only '
+        'ignores the name of the original tweets author if they are the only '
         'replier', () {
       final User originalUser = User()..name = 'Original author';
       final TweetData tweetData = TweetData.fromTweet(

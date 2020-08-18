@@ -5,7 +5,7 @@ import 'package:harpy/components/common/misc/harpy_background.dart';
 
 /// The initial screen that is shown when opening the app.
 ///
-/// After initializiation, the [ApplicationBloc] will navigate to either the
+/// After initialization, the [ApplicationBloc] will navigate to either the
 /// [LoginScreen] or the [HomeScreen].
 class SplashScreen extends StatelessWidget {
   const SplashScreen();

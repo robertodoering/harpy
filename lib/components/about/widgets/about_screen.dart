@@ -121,7 +121,7 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
           backgroundColor: accentColor,
           dense: true,
-          // todo harpy free or pro playstore link
+          // todo harpy free or pro play store link
           // todo: add rate harpy analytics
           onTap: () => app<MessageService>().showInfo('Not yet available'),
         ),
@@ -172,7 +172,7 @@ class _AboutScreenState extends State<AboutScreen> {
             return <PopupMenuEntry<void>>[
               const PopupMenuItem<void>(
                 value: 0,
-                child: Text('Show licences'),
+                child: Text('Show licenses'),
               ),
             ];
           },

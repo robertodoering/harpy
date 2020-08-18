@@ -30,7 +30,7 @@ class AnalyticsService {
       _log.fine('settings analytics user property: $name with $value');
       await analytics.setUserProperty(name: name, value: value);
     } else {
-      _log.fine('not settings analytics userproperty: $name with $value '
+      _log.fine('not settings analytics user property: $name with $value '
           'in debug mode');
     }
   }

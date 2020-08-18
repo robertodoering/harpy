@@ -71,7 +71,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
       children: <Widget>[
         for (int i = 0; i < content.length; i++) ...<Widget>[
           content[i],
-          // add a padding of 4 inbetween the content and 8 at the bottom
+          // add a padding of 4 between the content and 8 at the bottom
           if (i != content.length - 1)
             const SizedBox(height: 4)
           else

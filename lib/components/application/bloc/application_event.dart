@@ -40,7 +40,7 @@ class InitializeEvent extends ApplicationEvent {
   static final Logger _log = Logger('InitializeEvent');
 
   /// Used for common initialization that always needs to be run and is
-  /// independed of a previously authenticated user.
+  /// independent of a previously authenticated user.
   Future<void> _commonInitialization(ApplicationBloc bloc) async {
     _log.fine('start common initialization');
 

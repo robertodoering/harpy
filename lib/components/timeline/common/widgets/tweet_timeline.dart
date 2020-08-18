@@ -25,7 +25,7 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
   final OnTimelineAction<T> onLoadMore;
 
   /// Builds a widget for the end of the [TweetList] when
-  /// [TmelineBloc.lockRequestMore] is `true`.
+  /// [TimelineBloc.lockRequestMore] is `true`.
   Widget _buildLockLoadMore() {
     return Container(
       height: 200,

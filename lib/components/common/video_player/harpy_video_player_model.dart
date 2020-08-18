@@ -18,7 +18,7 @@ enum HarpyVideoPlayerAction {
 /// Defines a callback that is called when an action is taken on a video.
 typedef OnAction = void Function(HarpyVideoPlayerAction);
 
-/// A [ChangeNotifer] handling changes to a [HarpyVideoPlayer].
+/// A [ChangeNotifier] handling changes to a [HarpyVideoPlayer].
 class HarpyVideoPlayerModel extends ChangeNotifier {
   HarpyVideoPlayerModel(
     this.controller, {

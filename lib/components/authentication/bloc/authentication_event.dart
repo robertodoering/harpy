@@ -235,7 +235,7 @@ class LoginEvent extends AuthenticationEvent {
   }
 }
 
-/// Used to unauthenticate the currently authenticated user.
+/// Used to un-authenticate the currently authenticated user.
 class LogoutEvent extends AuthenticationEvent {
   const LogoutEvent();
 

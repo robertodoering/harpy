@@ -28,7 +28,7 @@ class ErrorReporter {
 
   /// The last time the error dialog has been shown.
   ///
-  /// Used to prevent a lot of dialogs to show in a short timespan.
+  /// Used to prevent a lot of dialogs to show in a short time span.
   DateTime _lastReportTime;
 
   /// Returns `true` if the report dialog should not be shown.

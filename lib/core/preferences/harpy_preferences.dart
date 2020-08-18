@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Wraps the [SharedPreferences].
 class HarpyPreferences {
-  static final Logger _log = Logger('HarpyPrefs');
+  static final Logger _log = Logger('HarpyPreferences');
 
   SharedPreferences _preferences;
 
@@ -14,7 +14,7 @@ class HarpyPreferences {
 
   /// Initializes the [_preferences] instance.
   Future<void> initialize() async {
-    _log.fine('initializing harpy prefs');
+    _log.fine('initializing harpy preferences');
     _preferences = await SharedPreferences.getInstance();
   }
 

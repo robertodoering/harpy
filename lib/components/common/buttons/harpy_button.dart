@@ -171,7 +171,7 @@ class HarpyButton extends StatelessWidget {
 
       return theme.textTheme.bodyText2.color;
     } else if (backgroundColor == null) {
-      // dont override the button color
+      // don't override the button color
 
       return theme.textTheme.button.color;
     } else {

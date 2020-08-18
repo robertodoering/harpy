@@ -9,14 +9,14 @@ import 'package:harpy/misc/utils/string_utils.dart';
 /// Signature for callbacks that are called when an entity has been tapped.
 typedef EntityTapped<T> = void Function(T value);
 
-/// The default behaviour when a user mention inside of [TwitterText] is tapped.
+/// The default behavior when a user mention inside of [TwitterText] is tapped.
 void defaultOnUserMentionTap(UserMention userMention) {
   if (userMention.screenName != null) {
     app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
   }
 }
 
-/// The default behaviour when a url inside of [TwitterText] is tapped.
+/// The default behavior when a url inside of [TwitterText] is tapped.
 void defaultOnUrlTap(Url url) {
   launchUrl(url.expandedUrl);
 }
@@ -103,7 +103,7 @@ class _TwitterTextState extends State<TwitterText> {
   /// Adds the plain text with html entities parsed into the proper symbol.
   ///
   /// [trimEnd] can be used to trim the last whitespace character in the text
-  /// span. This is used to prevent softwraps at the end of the [TwitterText]
+  /// span. This is used to prevent soft wraps at the end of the [TwitterText]
   /// with only one wrapped whitespace character.
   void _addTextSpan(int start, int end, {bool trimEnd = false}) {
     if (start < end && end <= widget.text.length) {
@@ -339,7 +339,7 @@ class TwitterTextSpan {
   /// The text for this text span.
   final String text;
 
-  /// An optional gesture recognizer for this textspan.
+  /// An optional gesture recognizer for this text span.
   final GestureRecognizer recognizer;
 
   /// Whether this text span represents an entity and should be styled
