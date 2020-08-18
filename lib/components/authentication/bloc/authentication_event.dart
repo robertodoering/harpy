@@ -200,6 +200,8 @@ class LoginEvent extends AuthenticationEvent {
         } else {
           // failed initializing login
           await onLogout(bloc);
+
+          yield UnauthenticatedState();
           app<HarpyNavigator>().pushReplacementNamed(
             LoginScreen.route,
             type: RouteType.fade,
@@ -209,6 +211,8 @@ class LoginEvent extends AuthenticationEvent {
         break;
       case TwitterLoginStatus.cancelledByUser:
         _log.info('login cancelled by user');
+
+        yield UnauthenticatedState();
         app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
           type: RouteType.fade,
@@ -217,6 +221,8 @@ class LoginEvent extends AuthenticationEvent {
       case TwitterLoginStatus.error:
       default:
         _log.warning('error during login');
+
+        yield UnauthenticatedState();
         app<MessageService>().showWarning(
           'Authentication failed, please try again.',
         );
