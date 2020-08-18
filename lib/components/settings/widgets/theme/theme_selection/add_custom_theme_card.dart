@@ -19,6 +19,7 @@ class AddCustomThemeCard extends StatelessWidget {
       );
 
       if (result == true) {
+        // todo: add try pro feature analytics
         app<MessageService>().showInfo('Not yet available');
       }
     } else {

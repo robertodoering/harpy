@@ -56,6 +56,7 @@ class HomeDrawer extends StatelessWidget {
                     offset: Offset(-2.5, 0),
                   ),
                   title: const Text('Harpy Pro'),
+                  // todo: add harpy pro analytics
                   onTap: () =>
                       app<MessageService>().showInfo('Not yet available'),
                 ),
