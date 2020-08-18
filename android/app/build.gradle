@@ -101,5 +101,8 @@ flutter {
     source '../..'
 }
 
-// for firebase analytics
-apply plugin: 'com.google.gms.google-services'
+
+if (hasKeyStore) {
+    // enable google services for firebase analytics when signing the app
+    apply plugin: 'com.google.gms.google-services'
+}
