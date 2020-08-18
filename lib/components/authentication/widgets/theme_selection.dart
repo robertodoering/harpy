@@ -92,6 +92,7 @@ class _ThemeSelectionState extends State<ThemeSelection> {
   }
 
   void _onSelectionChange(int index) {
+    // todo: cleanup
     ApplicationBloc.of(context).add(
       ChangeThemeEvent(harpyTheme: _themes[index], id: index),
     );

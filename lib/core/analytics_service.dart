@@ -35,6 +35,12 @@ class AnalyticsService {
     }
   }
 
+  /// Logs a login event for the first login or a recurring login.
+  Future<void> logLogin() async => _logEvent(name: 'login');
+
+  /// Logs a logout event when a user logs out manually.
+  Future<void> logLogout() async => _logEvent(name: 'logout');
+
   /// Logs the id of the currently selected theme as a user property.
   Future<void> logThemeId(int id) async {
     await _setUserProperty('theme_id', '$id');

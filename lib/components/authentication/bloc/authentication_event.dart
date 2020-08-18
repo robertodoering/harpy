@@ -8,6 +8,7 @@ import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/app_config.dart';
@@ -39,7 +40,13 @@ abstract class AuthenticationEvent {
       ..token = bloc.twitterSession?.token ?? ''
       ..secret = bloc.twitterSession?.secret ?? '';
 
-    return initializeAuthenticatedUser(bloc);
+    final bool initialized = await initializeAuthenticatedUser(bloc);
+
+    if (initialized) {
+      app<AnalyticsService>().logLogin();
+    }
+
+    return initialized;
   }
 
   /// Retrieves the [UserData] of the authenticated user and initializes user
@@ -236,6 +243,8 @@ class LogoutEvent extends AuthenticationEvent {
     _log.fine('logging out');
 
     await onLogout(bloc);
+
+    app<AnalyticsService>().logLogout();
 
     yield UnauthenticatedState();
 
