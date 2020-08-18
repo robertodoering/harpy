@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/widgets/headlines.dart';
-import 'package:harpy/components/authentication/widgets/theme_selection.dart';
+import 'package:harpy/components/authentication/widgets/theme_selection_carousel.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_animation.dart';
@@ -73,7 +73,7 @@ class _SetupScreenState extends State<SetupScreen> {
           children: <Widget>[
             Text('select your theme', style: theme.textTheme.headline4),
             const SizedBox(height: 16),
-            const ThemeSelection(),
+            const ThemeSelectionCarousel(),
           ],
         ),
       ),
