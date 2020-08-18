@@ -7,6 +7,7 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
@@ -135,6 +136,7 @@ class ChangeThemeEvent extends ApplicationEvent {
 
     if (id != null) {
       app<ThemePreferences>().selectedTheme = id;
+      app<AnalyticsService>().logThemeId(id);
     }
 
     bloc.updateSystemUi();
