@@ -36,21 +36,17 @@ class AnalyticsService {
   }
 
   /// Logs a login event for the first login or a recurring login.
-  Future<void> logLogin() async => _logEvent(name: 'login');
+  void logLogin() => _logEvent(name: 'login');
 
   /// Logs a logout event when a user logs out manually.
-  Future<void> logLogout() async => _logEvent(name: 'logout');
+  void logLogout() => _logEvent(name: 'logout');
 
   /// Logs the id of the currently selected theme as a user property.
-  Future<void> logThemeId(int id) async {
-    await _setUserProperty('theme_id', '$id');
-  }
+  void logThemeId(int id) => _setUserProperty('theme_id', '$id');
 
   /// Logs the name of the theme that has been chosen in the setup screen as a
   /// user property.
-  Future<void> logSetupTheme(String name) async {
-    await _setUserProperty('setup_theme', name);
-  }
+  void logSetupTheme(String name) => _setUserProperty('setup_theme', name);
 }
 
 final Logger _log = Logger('FirebaseAnalyticsObserver');
