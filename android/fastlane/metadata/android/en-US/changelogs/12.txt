@@ -1,0 +1,5 @@
+· Added about screen
+· Added theme selection settings with 4 predefined themese
+· Added setup screen for the first login
+· Changed the design for info messages
+· Fixed video player central replay button not working
