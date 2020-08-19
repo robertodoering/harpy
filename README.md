@@ -7,6 +7,21 @@ Currently still in development. See the
 [project](https://github.com/robertodoering/harpy/projects/1) for more
 information about the progress.
 
+---
+
+<center>
+
+## Become a beta tester for Harpy
+
+##### Any feedback is welcome
+
+[<img alt='Get it on Google Play'
+src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
+width="200"/>](https://play.google.com/apps/testing/com.robertodoering.harpy.free)
+</center>
+
+---
+
 ## Showcase
 
 (Subject to change)
@@ -15,6 +30,14 @@ information about the progress.
 | :---: | :---: |
 | `login_screen.dart` | `setup_screen.dart` |
 | ![Login screen](media/login_screen.gif) | ![Setup screen](media/setup_screen.gif) |
+
+<details>
+  <summary>More images</summary>
+  
+  | Home | User profile | Theme selection |
+  | :---: | :---: | :---: |
+  | ![Home screen](media/home_screen.png) | ![User profile](media/user_profile.png) | ![Theme selection](media/theme_selection.png) |
+</details>
 
 ## Development / Setup
 
