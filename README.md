@@ -7,14 +7,17 @@ Currently still in development. See the
 [project](https://github.com/robertodoering/harpy/projects/1) for more
 information about the progress.
 
-## Become a beta tester for Harpy
+---
 
+### Become a beta tester for Harpy
 ##### Any feedback is welcome
 
 [<img alt='Get it on Google Play'
 src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
 width="200"/>](https://play.google.com/apps/testing/com.robertodoering.harpy.free)
+</p>
 
+---
 
 ## Showcase
 
