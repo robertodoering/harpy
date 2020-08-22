@@ -45,13 +45,13 @@ void main() {
   });
 
   group('parseHtmlEntities', () {
-    test('parses entities as they appear in twitter text respones', () {
+    test('parses entities as they appear in twitter text responses', () {
       const String source = '&lt;body&gt;Hello world &amp;&lt;/body&gt;';
 
       expect(parseHtmlEntities(source), '<body>Hello world &</body>');
     });
 
-    test('does nothing when the source does not contain any entites', () {
+    test('does nothing when the source does not contain any entities', () {
       const String source = 'This is just a regular string';
 
       expect(parseHtmlEntities(source), 'This is just a regular string');

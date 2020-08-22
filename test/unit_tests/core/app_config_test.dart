@@ -15,62 +15,64 @@ void main() {
 
   tearDown(app.reset);
 
-  test('parseAppConfig parses a complete app config', () async {
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
-      'flutter/assets',
-      (ByteData message) async =>
-          utf8.encoder.convert(_fullAppConfig).buffer.asByteData(),
-    );
+  group('parseAppConfig', () {
+    test('parses a complete app config', () async {
+      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+        'flutter/assets',
+        (ByteData message) async =>
+            utf8.encoder.convert(_fullAppConfig).buffer.asByteData(),
+      );
 
-    final AppConfig appConfig = app<AppConfig>();
-    await appConfig.parseAppConfig();
+      final AppConfig appConfig = app<AppConfig>();
+      await appConfig.parseAppConfig();
 
-    expect(appConfig.data, isNotNull);
-    expect(appConfig.data.twitterConsumerKey, 'abcd1234');
-    expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
-    expect(appConfig.data.sentryDsn, '143jkjrewajd');
-  });
+      expect(appConfig.data, isNotNull);
+      expect(appConfig.data.twitterConsumerKey, 'abcd1234');
+      expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
+      expect(appConfig.data.sentryDsn, '143jkjrewajd');
+    });
 
-  test('parseAppConfig ignores missing sentry entry', () async {
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
-      'flutter/assets',
-      (ByteData message) async =>
-          utf8.encoder.convert(_missingSentryAppConfig).buffer.asByteData(),
-    );
+    test('ignores missing sentry entry', () async {
+      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+        'flutter/assets',
+        (ByteData message) async =>
+            utf8.encoder.convert(_missingSentryAppConfig).buffer.asByteData(),
+      );
 
-    final AppConfig appConfig = app<AppConfig>();
-    await appConfig.parseAppConfig();
+      final AppConfig appConfig = app<AppConfig>();
+      await appConfig.parseAppConfig();
 
-    expect(appConfig.data, isNotNull);
-    expect(appConfig.data.twitterConsumerKey, 'abcd1234');
-    expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
-    expect(appConfig.data.sentryDsn, isNull);
-  });
+      expect(appConfig.data, isNotNull);
+      expect(appConfig.data.twitterConsumerKey, 'abcd1234');
+      expect(appConfig.data.twitterConsumerSecret, 'asdfkslatejwkhfcm');
+      expect(appConfig.data.sentryDsn, isNull);
+    });
 
-  test('parseAppConfig returns null if twitter config is empty', () async {
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
-      'flutter/assets',
-      (ByteData message) async =>
-          utf8.encoder.convert(_emptyTwitterAppConfig).buffer.asByteData(),
-    );
+    test('returns null if twitter config is empty', () async {
+      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+        'flutter/assets',
+        (ByteData message) async =>
+            utf8.encoder.convert(_emptyTwitterAppConfig).buffer.asByteData(),
+      );
 
-    final AppConfig appConfig = app<AppConfig>();
-    await appConfig.parseAppConfig();
+      final AppConfig appConfig = app<AppConfig>();
+      await appConfig.parseAppConfig();
 
-    expect(appConfig.data, isNull);
-  });
+      expect(appConfig.data, isNull);
+    });
 
-  test('parseAppConfig returns null if twitter config is missing', () async {
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
-      'flutter/assets',
-      (ByteData message) async =>
-          utf8.encoder.convert(_missingTwitterAppConfig).buffer.asByteData(),
-    );
+    test('returns null if twitter config is missing', () async {
+      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+        'flutter/assets',
+        (ByteData message) async =>
+            utf8.encoder.convert(_missingTwitterAppConfig).buffer.asByteData(),
+      );
 
-    final AppConfig appConfig = app<AppConfig>();
-    await appConfig.parseAppConfig();
+      final AppConfig appConfig = app<AppConfig>();
+      await appConfig.parseAppConfig();
 
-    expect(appConfig.data, isNull);
+      expect(appConfig.data, isNull);
+    });
   });
 }
 
