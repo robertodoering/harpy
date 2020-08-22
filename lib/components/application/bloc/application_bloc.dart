@@ -16,7 +16,7 @@ import 'package:meta/meta.dart';
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     @required this.authenticationBloc,
-  }) {
+  }) : super(AwaitingInitializationState()) {
     // initialize application bloc reference
     authenticationBloc.applicationBloc = this;
 
@@ -30,9 +30,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
   static ApplicationBloc of(BuildContext context) =>
       BlocProvider.of<ApplicationBloc>(context);
-
-  @override
-  ApplicationState get initialState => AwaitingInitializationState();
 
   /// Updates the system ui to match the current [harpyTheme].
   void updateSystemUi() {

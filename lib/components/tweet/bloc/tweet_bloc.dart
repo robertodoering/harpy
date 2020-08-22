@@ -13,7 +13,7 @@ import 'package:harpy/core/service_locator.dart';
 /// Handles actions done on a single tweet, such as retweeting, favoriting,
 /// translating, etc.
 class TweetBloc extends Bloc<TweetEvent, TweetState> {
-  TweetBloc(this.tweet);
+  TweetBloc(this.tweet) : super(InitialState());
 
   final TweetData tweet;
 
@@ -23,9 +23,6 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
   static TweetBloc of(BuildContext context) =>
       BlocProvider.of<TweetBloc>(context);
-
-  @override
-  TweetState get initialState => InitialState();
 
   @override
   Stream<TweetState> mapEventToState(

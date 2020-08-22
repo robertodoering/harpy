@@ -9,13 +9,12 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 abstract class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
+  TimelineBloc() : super(UninitializedState());
+
   final TimelineService timelineService = app<TwitterApi>().timelineService;
 
   /// The [tweets] for this timeline.
   List<TweetData> tweets = <TweetData>[];
-
-  @override
-  TimelineState get initialState => UninitializedState();
 
   /// Completes when the timeline has been updated using [UpdateTimelineEvent].
   Completer<void> updateTimelineCompleter = Completer<void>();

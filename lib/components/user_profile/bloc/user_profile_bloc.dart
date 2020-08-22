@@ -14,7 +14,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
     UserData user,
     String screenName,
-  }) : assert(user != null || screenName != null) {
+  })  : assert(user != null || screenName != null),
+        super(LoadingUserState()) {
     add(InitializeUserEvent(user: user, screenName: screenName));
   }
 
@@ -43,9 +44,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
   static UserProfileBloc of(BuildContext context) =>
       BlocProvider.of<UserProfileBloc>(context);
-
-  @override
-  UserProfileState get initialState => LoadingUserState();
 
   @override
   Stream<UserProfileState> mapEventToState(

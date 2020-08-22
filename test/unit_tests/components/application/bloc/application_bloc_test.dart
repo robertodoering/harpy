@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
@@ -42,9 +41,9 @@ void main() {
 
   tearDown(app.reset);
 
-  blocTest<ApplicationBloc, ApplicationEvent, ApplicationState>(
+  blocTest<ApplicationBloc, ApplicationState>(
     'application bloc initializes the app with empty app config data',
-    build: () async {
+    build: () {
       when(app<AppConfig>().parseAppConfig()).thenAnswer((_) async {});
       when(app<HarpyInfo>().initialize()).thenAnswer((_) async {});
       when(app<ErrorReporter>().initialize()).thenAnswer((_) async {});

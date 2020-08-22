@@ -13,6 +13,8 @@ import 'package:harpy/core/service_locator.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  AuthenticationBloc() : super(UnauthenticatedState());
+
   final TwitterApi twitterApi = app<TwitterApi>();
 
   /// A reference to the [ApplicationBloc].
@@ -37,9 +39,6 @@ class AuthenticationBloc
 
   static AuthenticationBloc of(BuildContext context) =>
       BlocProvider.of<AuthenticationBloc>(context);
-
-  @override
-  AuthenticationState get initialState => UnauthenticatedState();
 
   @override
   Stream<AuthenticationState> mapEventToState(
