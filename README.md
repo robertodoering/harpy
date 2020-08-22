@@ -1,31 +1,38 @@
-<p align='center'>
-  <img height='128' src='media/harpy_title.png'/>
+<p align="center">
+  <img height="172" src="media/harpy_title.png"/>
 </p>
 
-<p align='center'>
-a future rich twitter experience built with <a href='https://flutter.dev/'>flutter</a>
+<p align="center">
+a future rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>
 </p>
 
-<p align='center'>
-  <a href='https://play.google.com/apps/testing/com.robertodoering.harpy.free'>
-    <img alt='Get it on Google Play'
-         src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
+<p align="center">
+  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free">
+    <img alt="Get it on Google Play"
+         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
          width="200"/>
   </a>
 </p>
 
 <br>
 
-<p align='center'>
-Harpy is currently still in development. See the <a href='https://github.com/robertodoering/harpy/projects/1'>project</a> for more
+<p align="center">
+  <img src="https://img.shields.io/github/license/robertodoering/harpy?color=8B00FD"/>
+  <img src="https://img.shields.io/github/v/release/robertodoering/harpy?color=BC0492"/>
+  <img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=DE0747"/>
+  <img src="https://img.shields.io/github/commit-activity/m/robertodoering/harpy?color=FD0A04"/>
+</p>
+
+<p align="center">
+Harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
 information about the progress.
 </p>
 
 <br>
 
-<p align='center'>
-  <img src='media/login_screen.gif' style='padding-right: 32px'/>
-  <img src='media/setup_screen.gif'/>
+<p align="center">
+  <img src="media/login_screen.gif"/>
+  <img src="media/setup_screen.gif"/>
 </p>
 
 <details>
@@ -38,7 +45,7 @@ information about the progress.
 
 ## Development / Setup
 
-Harpy is expected to be released in the PlayStore for Android, therefore only
+Harpy is expected to be released in the Play Store for Android, therefore only
 Android devices are used for testing the builds.
 
 ### Twitter API key
@@ -73,7 +80,7 @@ release mode.
 
 ### Building
 
-The app can be built with the 'free' or 'pro' flavor by running:
+The app can be built with the "free" or "pro" flavor by running:
 
 - `flutter run --flavor free -t lib/main_free.dart`
 - `flutter run --flavor pro -t lib/main_pro.dart`
