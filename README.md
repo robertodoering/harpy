@@ -10,6 +10,7 @@ information about the progress.
 ---
 
 ### Become a beta tester for Harpy
+
 ###### Any feedback is welcome
 
 [<img alt='Get it on Google Play'
