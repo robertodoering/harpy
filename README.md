@@ -1,33 +1,32 @@
-# Harpy
-
-Harpy is a feature rich twitter experience built in
-[Flutter](https://flutter.dev/).
-
-Currently still in development. See the
-[project](https://github.com/robertodoering/harpy/projects/1) for more
-information about the progress.
-
----
-
-### Become a beta tester for Harpy
-
-###### Any feedback is welcome
-
-[<img alt='Get it on Google Play'
-src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
-width="200"/>](https://play.google.com/apps/testing/com.robertodoering.harpy.free)
+<p align='center'>
+  <img height='128' src='media/harpy_title.png'/>
 </p>
 
----
+<p align='center'>
+a future rich twitter experience built with <a href='https://flutter.dev/'>flutter</a>
+</p>
 
-## Showcase
+<p align='center'>
+  <a href='https://play.google.com/apps/testing/com.robertodoering.harpy.free'>
+    <img alt='Get it on Google Play'
+         src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'
+         width="200"/>
+  </a>
+</p>
 
-(Subject to change)
+<br>
 
-| Login | Setup |
-| :---: | :---: |
-| `login_screen.dart` | `setup_screen.dart` |
-| ![Login screen](media/login_screen.gif) | ![Setup screen](media/setup_screen.gif) |
+<p align='center'>
+Harpy is currently still in development. See the <a href='https://github.com/robertodoering/harpy/projects/1'>project</a> for more
+information about the progress.
+</p>
+
+<br>
+
+<p align='center'>
+  <img src='media/login_screen.gif' style='padding-right: 32px'/>
+  <img src='media/setup_screen.gif'/>
+</p>
 
 <details>
   <summary>More images</summary>
