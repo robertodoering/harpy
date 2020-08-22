@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-a future rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>
+a feature rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>
 </p>
 
 <p align="center">
