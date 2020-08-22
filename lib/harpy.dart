@@ -20,8 +20,8 @@ enum Flavor {
 /// Runs the app with the given [flavor].
 ///
 /// The app can be built with the 'free' or 'pro' flavor by running
-/// `flutter build --flavor free -t lib/main_free.dart` or
-/// `flutter build --flavor pro -t lib/main_pro.dart`.
+/// `flutter run --flavor free -t lib/main_free.dart` or
+/// `flutter run --flavor pro -t lib/main_pro.dart`.
 void runHarpy(Flavor flavor) {
   Harpy.flavor = flavor;
 
