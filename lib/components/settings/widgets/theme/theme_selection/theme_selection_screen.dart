@@ -34,8 +34,8 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
                 if (harpyTheme != activeHarpyTheme) {
                   setState(() {
                     applicationBloc.add(ChangeThemeEvent(
-                      harpyTheme: harpyTheme,
                       id: predefinedThemes.indexOf(harpyTheme),
+                      saveSelection: true,
                     ));
                   });
                 }

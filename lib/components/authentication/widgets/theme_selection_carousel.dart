@@ -96,10 +96,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
   void _onSelectionChange(ApplicationBloc applicationBloc, int index) {
     applicationBloc.add(
-      ChangeThemeEvent(
-        harpyTheme: predefinedThemes[index],
-        id: index,
-      ),
+      ChangeThemeEvent(id: index, saveSelection: true),
     );
   }
 

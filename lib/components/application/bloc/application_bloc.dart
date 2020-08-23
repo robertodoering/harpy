@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:meta/meta.dart';
@@ -16,6 +17,7 @@ import 'package:meta/meta.dart';
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     @required this.authenticationBloc,
+    @required this.customThemeBloc,
   }) : super(AwaitingInitializationState()) {
     // initialize application bloc reference
     authenticationBloc.applicationBloc = this;
@@ -24,6 +26,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   }
 
   final AuthenticationBloc authenticationBloc;
+  final CustomThemeBloc customThemeBloc;
 
   /// The [HarpyTheme] used in the root [MaterialApp].
   HarpyTheme harpyTheme = predefinedThemes.first;

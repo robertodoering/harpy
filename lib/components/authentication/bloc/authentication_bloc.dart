@@ -8,14 +8,21 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
+import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc() : super(UnauthenticatedState());
+  AuthenticationBloc({
+    @required this.customThemeBloc,
+  }) : super(UnauthenticatedState());
 
   final TwitterApi twitterApi = app<TwitterApi>();
+
+  /// A reference to the [CustomThemeBloc] to load the custom themes for the
+  /// user after am authentication.
+  final CustomThemeBloc customThemeBloc;
 
   /// A reference to the [ApplicationBloc].
   ApplicationBloc applicationBloc;

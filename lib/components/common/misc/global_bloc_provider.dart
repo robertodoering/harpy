@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
 
 /// The [GlobalBlocProvider] is built above the root [MaterialApp] to provide
 /// every descendant with globally available blocs.
@@ -18,9 +19,16 @@ class GlobalBlocProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: <BlocProvider<Bloc<dynamic, dynamic>>>[
+        // custom theme
+        BlocProvider<CustomThemeBloc>(
+          create: (BuildContext context) => CustomThemeBloc(),
+        ),
+
         // authentication
         BlocProvider<AuthenticationBloc>(
-          create: (BuildContext context) => AuthenticationBloc(),
+          create: (BuildContext context) => AuthenticationBloc(
+            customThemeBloc: CustomThemeBloc.of(context),
+          ),
         ),
 
         // application
@@ -29,6 +37,7 @@ class GlobalBlocProvider extends StatelessWidget {
           lazy: false,
           create: (BuildContext context) => ApplicationBloc(
             authenticationBloc: AuthenticationBloc.of(context),
+            customThemeBloc: CustomThemeBloc.of(context),
           ),
         ),
       ],

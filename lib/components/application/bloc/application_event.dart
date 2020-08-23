@@ -16,6 +16,7 @@ import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
 import 'package:logging/logging.dart';
@@ -114,29 +115,51 @@ class InitializeEvent extends ApplicationEvent {
 /// The event to change the app wide theme.
 class ChangeThemeEvent extends ApplicationEvent {
   const ChangeThemeEvent({
-    @required this.harpyTheme,
-    this.id,
+    @required this.id,
+    this.saveSelection = false,
   });
 
-  /// The theme to change to.
-  final HarpyTheme harpyTheme;
-
   /// The `id` used to save the selection to.
+  ///
+  /// 0..9: index of predefined theme (unused indices are reserved)
+  /// 10+: index of custom theme (pro only)
   final int id;
 
+  /// Whether the selection should be saved using the [ThemePreferences].
+  final bool saveSelection;
+
   static final Logger _log = Logger('ChangeThemeEvent');
+
+  HarpyTheme _findTheme(ApplicationBloc bloc) {
+    try {
+      if (id < 10) {
+        return predefinedThemes[id];
+      } else {
+        // selected theme id = 10 -> index = 0
+        final int index = id - 10;
+        return bloc.customThemeBloc.customThemes[index];
+      }
+    } catch (e, st) {
+      _log.severe('theme id does not correspond to a theme', e, st);
+      return null;
+    }
+  }
 
   @override
   Stream<ApplicationState> applyAsync({
     ApplicationState currentState,
     ApplicationBloc bloc,
   }) async* {
-    _log.fine('changing theme to ${harpyTheme.name}');
-    bloc.harpyTheme = harpyTheme;
+    final HarpyTheme harpyTheme = _findTheme(bloc);
 
-    if (id != null) {
-      app<ThemePreferences>().selectedTheme = id;
-      app<AnalyticsService>().logThemeId(id);
+    if (harpyTheme != null) {
+      _log.fine('changing theme to ${harpyTheme.name}');
+      bloc.harpyTheme = harpyTheme;
+
+      if (saveSelection) {
+        app<ThemePreferences>().selectedTheme = id;
+        app<AnalyticsService>().logThemeId(id);
+      }
     }
 
     bloc.updateSystemUi();
