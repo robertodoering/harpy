@@ -6,10 +6,12 @@ import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/settings/widgets/media/media_settings_screen.dart';
 import 'package:harpy/components/settings/widgets/settings_screen.dart';
+import 'package:harpy/components/settings/widgets/theme/custom_theme/custom_theme_screen.dart';
 import 'package:harpy/components/settings/widgets/theme/theme_selection/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
+import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.
@@ -82,6 +84,20 @@ class HarpyNavigator {
       },
     );
   }
+
+  /// Pushes a [CustomThemeScreen] with the [themeData] for [themeId].
+  void pushCustomTheme({
+    @required HarpyThemeData themeData,
+    @required int themeId,
+  }) {
+    pushNamed(
+      CustomThemeScreen.route,
+      arguments: <String, dynamic>{
+        'themeData': themeData,
+        'themeId': themeId,
+      },
+    );
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -115,6 +131,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case ThemeSelectionScreen.route:
       screen = const ThemeSelectionScreen();
+      break;
+    case CustomThemeScreen.route:
+      screen = CustomThemeScreen(
+        themeData: arguments['themeData'],
+        themeId: arguments['themeId'],
+      );
       break;
     case MediaSettingsScreen.route:
       screen = MediaSettingsScreen();
