@@ -43,9 +43,30 @@ information about the progress.
   | ![Home screen](media/home_screen.png) | ![User profile](media/user_profile.png) | ![Theme selection](media/theme_selection.png) |
 </details>
 
+## About
+
+This project aims to provide a good example for a medium-big sized Flutter app
+in hopes that it will be useful for some.
+
+Some interesting things featured in the app include:
+
+* [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management.
+* [get_it](https://pub.dev/packages/get_it) as a service provider that includes
+  the ability to navigate and to show on screen messages from anywhere in the app.
+* [firebase_analytics](https://pub.dev/packages/firebase_analytics) for
+  analytics.
+* [sentry](https://pub.dev/packages/sentry) as an online error tracking service
+  where users can send a crash report when an exception has not been handled in
+  the app.
+* Fully featured theme customization.
+* Fully featured video player using the
+  [video_player](https://pub.dev/packages/video_player) package.
+* A 'pro' and 'free' android
+  [product flavor](https://developer.android.com/studio/build/build-variants).
+
 ## Development / Setup
 
-Harpy is expected to be released in the Play Store for Android, therefore only
+Harpy is being released in the Play Store for Android, therefore only
 Android devices are used for testing the builds.
 
 ### Twitter API key
@@ -53,7 +74,7 @@ Android devices are used for testing the builds.
 Get your [Twitter API](https://developer.twitter.com/en/docs) key
 [here](https://developer.twitter.com/en/apply-for-access).
 
-- Create a yaml file `app_config.yaml` in [`assets/config/`](assets/config) with
+* Create a yaml file `app_config.yaml` in [`assets/config/`](assets/config) with
   the key and secret.
 
 ```yaml
@@ -67,7 +88,7 @@ twitter:
 The [Sentry](https://sentry.io) error tracking service is used to report errors
 in release mode.
 
-- The DSN provided by Sentry can be entered in the `app_config.yaml` in
+* The DSN provided by Sentry can be entered in the `app_config.yaml` in
   [`assets/config/`](assets/config).
 
 ```yaml
@@ -82,16 +103,23 @@ release mode.
 
 The app can be built with the "free" or "pro" flavor by running:
 
-- `flutter run --flavor free -t lib/main_free.dart`
-- `flutter run --flavor pro -t lib/main_pro.dart`
+* `flutter run --flavor free -t lib/main_free.dart`
+* `flutter run --flavor pro -t lib/main_pro.dart`
 
 An appbundle for release can be built using:
 
-- `flutter build appbundle --flavor free -t lib/main_free.dart --bundle-sksl-path sksl.json`
-- `flutter build appbundle --flavor pro -t lib/main_pro.dart --bundle-sksl-path sksl.json`
+* `flutter build appbundle --flavor free -t lib/main_free.dart --bundle-sksl-path sksl.json`
+* `flutter build appbundle --flavor pro -t lib/main_pro.dart --bundle-sksl-path
+  sksl.json`
+
+The `--bundle-sksl-path` flag is used to pre-compile shaders used in the app for
+improved animations on the first run.
+See [Reduce shader compilation jank on
+mobile](https://flutter.dev/docs/perf/rendering/shader) for more information.
 
 ### Misc
 
-To generate json_serializable models:
+To generate (json_serializable)[https://pub.dev/packages/json_serializable]
+models:
 
-- `flutter packages pub run build_runner build`
+* `flutter packages pub run build_runner build`
