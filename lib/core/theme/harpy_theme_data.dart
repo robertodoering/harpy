@@ -38,8 +38,7 @@ class HarpyThemeData {
   }
 
   @override
-  int get hashCode =>
-      name.hashCode ^ hashList(backgroundColors) ^ accentColor.hashCode;
+  int get hashCode => hashValues(name, hashList(backgroundColors), accentColor);
 
   Map<String, dynamic> toJson() => _$HarpyThemeDataToJson(this);
 }
