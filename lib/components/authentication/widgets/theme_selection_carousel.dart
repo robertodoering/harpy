@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 
@@ -73,29 +73,29 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
     ];
   }
 
-  void _previous(ApplicationBloc applicationBloc) {
+  void _previous(ThemeBloc themeBloc) {
     if (_canPrevious) {
       _controller.previousPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
-      _onSelectionChange(applicationBloc, _currentPage - 1);
+      _onSelectionChange(themeBloc, _currentPage - 1);
     }
   }
 
-  void _next(ApplicationBloc applicationBloc) {
+  void _next(ThemeBloc themeBloc) {
     if (_canNext) {
       _controller.nextPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
 
-      _onSelectionChange(applicationBloc, _currentPage + 1);
+      _onSelectionChange(themeBloc, _currentPage + 1);
     }
   }
 
-  void _onSelectionChange(ApplicationBloc applicationBloc, int index) {
-    applicationBloc.add(
+  void _onSelectionChange(ThemeBloc themeBloc, int index) {
+    themeBloc.add(
       ChangeThemeEvent(id: index, saveSelection: true),
     );
   }
@@ -103,7 +103,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ApplicationBloc applicationBloc = ApplicationBloc.of(context);
+    final ThemeBloc themeBloc = ThemeBloc.of(context);
 
     final Color iconColor = IconTheme.of(context).color;
     final Color leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
@@ -165,7 +165,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: () => _previous(applicationBloc),
+                      onTap: () => _previous(themeBloc),
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),
@@ -173,7 +173,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
                   Expanded(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: () => _next(applicationBloc),
+                      onTap: () => _next(themeBloc),
                       behavior: HitTestBehavior.translucent,
                     ),
                   ),

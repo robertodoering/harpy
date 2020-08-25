@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_event.dart';
 import 'package:harpy/components/settings/widgets/theme/theme_selection/add_custom_theme_card.dart';
 import 'package:harpy/components/settings/widgets/theme/theme_selection/theme_card.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 
 class ThemeSelectionScreen extends StatefulWidget {
@@ -21,13 +19,13 @@ class ThemeSelectionScreen extends StatefulWidget {
 
 class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
   void _changeTheme(
-    ApplicationBloc applicationBloc,
+    ThemeBloc themeBloc,
     int selectedThemeId,
     int newThemeId,
   ) {
     if (selectedThemeId != newThemeId) {
       setState(() {
-        applicationBloc.add(ChangeThemeEvent(
+        themeBloc.add(ChangeThemeEvent(
           id: newThemeId,
           saveSelection: true,
         ));
@@ -36,7 +34,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
   }
 
   List<Widget> _buildPredefinedThemes(
-    ApplicationBloc applicationBloc,
+    ThemeBloc themeBloc,
     int selectedThemeId,
   ) {
     return <Widget>[
@@ -44,22 +42,21 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
         ThemeCard(
           predefinedThemes[i],
           selected: i == selectedThemeId,
-          onTap: () => _changeTheme(applicationBloc, selectedThemeId, i),
+          onTap: () => _changeTheme(themeBloc, selectedThemeId, i),
         ),
     ];
   }
 
   List<Widget> _buildCustomThemes(
-    ApplicationBloc applicationBloc,
+    ThemeBloc themeBloc,
     int selectedThemeId,
-    List<HarpyTheme> customThemes,
   ) {
     return <Widget>[
-      for (int i = 0; i < customThemes.length; i++)
+      for (int i = 0; i < themeBloc.customThemes.length; i++)
         ThemeCard(
-          customThemes[i],
+          themeBloc.customThemes[i],
           selected: i + 10 == selectedThemeId,
-          onTap: () => _changeTheme(applicationBloc, selectedThemeId, i + 10),
+          onTap: () => _changeTheme(themeBloc, selectedThemeId, i + 10),
           // todo: delete action
           // todo: edit action
         ),
@@ -68,20 +65,18 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ApplicationBloc applicationBloc = ApplicationBloc.of(context);
-    final CustomThemeBloc customThemeBloc = applicationBloc.customThemeBloc;
+    final ThemeBloc themeBloc = ThemeBloc.of(context);
     final int selectedThemeId = app<ThemePreferences>().selectedTheme;
 
     return HarpyScaffold(
       title: 'Theme selection',
       body: Column(
         children: <Widget>[
-          ..._buildPredefinedThemes(applicationBloc, selectedThemeId),
+          ..._buildPredefinedThemes(themeBloc, selectedThemeId),
           const AddCustomThemeCard(),
           ..._buildCustomThemes(
-            applicationBloc,
+            themeBloc,
             selectedThemeId,
-            customThemeBloc.customThemes,
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/pro_dialog.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
-import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -41,14 +41,14 @@ class AddCustomThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final CustomThemeBloc customThemeBloc = CustomThemeBloc.of(context);
+    final ThemeBloc themeBloc = ThemeBloc.of(context);
 
     // the initial custom theme data uses the currently selected theme
     final HarpyThemeData initialCustomThemeData =
         HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context));
 
     // use the next available custom theme id
-    final int nextCustomThemeId = customThemeBloc.customThemes.length + 10;
+    final int nextCustomThemeId = themeBloc.customThemes.length + 10;
 
     // only build a trailing icon when using harpy free
     final Widget trailing =

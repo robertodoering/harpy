@@ -7,16 +7,12 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
-import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
 import 'package:logging/logging.dart';
@@ -34,7 +30,7 @@ abstract class ApplicationEvent {
 
 /// The event used to initialize the app.
 ///
-/// Run when the application bloc is created.
+/// Runs when the application bloc is created when the application starts.
 class InitializeEvent extends ApplicationEvent {
   const InitializeEvent();
 
@@ -48,7 +44,7 @@ class InitializeEvent extends ApplicationEvent {
     initLogger();
 
     // update the system ui to match the initial theme
-    bloc.updateSystemUi();
+    bloc.themeBloc.updateSystemUi();
 
     // need to parse app config before we continue with initialization that is
     // reliant on the app config
@@ -109,61 +105,5 @@ class InitializeEvent extends ApplicationEvent {
         type: RouteType.fade,
       );
     }
-  }
-}
-
-/// The event to change the app wide theme.
-class ChangeThemeEvent extends ApplicationEvent {
-  const ChangeThemeEvent({
-    @required this.id,
-    this.saveSelection = false,
-  });
-
-  /// The `id` used to save the selection to.
-  ///
-  /// 0..9: index of predefined theme (unused indices are reserved)
-  /// 10+: index of custom theme (pro only)
-  final int id;
-
-  /// Whether the selection should be saved using the [ThemePreferences].
-  final bool saveSelection;
-
-  static final Logger _log = Logger('ChangeThemeEvent');
-
-  HarpyTheme _findTheme(ApplicationBloc bloc) {
-    try {
-      if (id < 10) {
-        return predefinedThemes[id];
-      } else {
-        // selected theme id = 10 -> index = 0
-        final int index = id - 10;
-        return bloc.customThemeBloc.customThemes[index];
-      }
-    } catch (e, st) {
-      _log.severe('theme id does not correspond to a theme', e, st);
-      return null;
-    }
-  }
-
-  @override
-  Stream<ApplicationState> applyAsync({
-    ApplicationState currentState,
-    ApplicationBloc bloc,
-  }) async* {
-    final HarpyTheme harpyTheme = _findTheme(bloc);
-
-    if (harpyTheme != null) {
-      _log.fine('changing theme to ${harpyTheme.name}');
-      bloc.harpyTheme = harpyTheme;
-
-      if (saveSelection) {
-        app<ThemePreferences>().selectedTheme = id;
-        app<AnalyticsService>().logThemeId(id);
-      }
-    }
-
-    bloc.updateSystemUi();
-
-    yield InitializedState();
   }
 }

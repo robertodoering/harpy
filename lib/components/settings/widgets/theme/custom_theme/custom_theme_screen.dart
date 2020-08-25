@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
 class CustomThemeScreen extends StatelessWidget {
@@ -27,9 +28,31 @@ class CustomThemeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyScaffold(
-      title: 'Theme customization',
-      body: Container(),
+    // todo: create custom theme bloc & listener
+    return Theme(
+      // data: _customTheme.data,
+      data: HarpyTheme.fromData(themeData).data,
+      child: HarpyScaffold(
+        // backgroundColors: _customTheme.backgroundColors,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.check),
+            // todo: save theme
+            onPressed: () {},
+          ),
+        ],
+        title: 'Theme customization',
+        body: Container(),
+      ),
     );
+  }
+}
+
+class CustomThemeBackgroundColors extends StatelessWidget {
+  const CustomThemeBackgroundColors();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

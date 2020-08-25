@@ -1,11 +1,11 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/common/misc/global_bloc_provider.dart';
 import 'package:harpy/components/common/misc/harpy_message_handler.dart';
 import 'package:harpy/components/common/screens/splash_screen.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_state.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/harpy_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -45,10 +45,10 @@ class Harpy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApplicationBloc, ApplicationState>(
-      builder: (BuildContext context, ApplicationState state) => MaterialApp(
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (BuildContext context, ThemeState state) => MaterialApp(
         title: 'Harpy',
-        theme: ApplicationBloc.of(context).harpyTheme.data,
+        theme: ThemeBloc.of(context).harpyTheme.data,
         navigatorKey: app<HarpyNavigator>().key,
         onGenerateRoute: onGenerateRoute,
         navigatorObservers: <NavigatorObserver>[

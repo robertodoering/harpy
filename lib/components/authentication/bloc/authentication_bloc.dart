@@ -5,27 +5,23 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
-import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
-    @required this.customThemeBloc,
+    @required this.themeBloc,
   }) : super(UnauthenticatedState());
 
   final TwitterApi twitterApi = app<TwitterApi>();
 
-  /// A reference to the [CustomThemeBloc] to load the custom themes for the
-  /// user after am authentication.
-  final CustomThemeBloc customThemeBloc;
-
-  /// A reference to the [ApplicationBloc].
-  ApplicationBloc applicationBloc;
+  /// A reference to the [ThemeBloc] to load change the theme for the
+  /// authenticated user and to load the custom themes of the user.
+  final ThemeBloc themeBloc;
 
   /// The [twitterLogin] is used to log in and out with the native twitter sdk.
   TwitterLogin twitterLogin;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
+import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
 class HarpyTheme {
@@ -19,7 +19,7 @@ class HarpyTheme {
 
   /// Returns the currently selected [HarpyTheme].
   static HarpyTheme of(BuildContext context) {
-    return ApplicationBloc.of(context).harpyTheme;
+    return ThemeBloc.of(context).harpyTheme;
   }
 
   /// The name of the theme.
