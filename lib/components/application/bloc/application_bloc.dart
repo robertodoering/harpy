@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:meta/meta.dart';
 
 /// The [ApplicationBloc] contains handles initialization of the app upon start.

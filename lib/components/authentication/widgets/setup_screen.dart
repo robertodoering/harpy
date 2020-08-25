@@ -8,7 +8,7 @@ import 'package:harpy/components/common/animations/explicit/slide_animation.dart
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/preferences/setup_preferences.dart';

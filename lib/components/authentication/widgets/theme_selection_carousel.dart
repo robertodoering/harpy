@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_event.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 

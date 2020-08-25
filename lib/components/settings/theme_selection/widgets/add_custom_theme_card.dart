@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/pro_dialog.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_state.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_state.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';

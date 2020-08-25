@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_event.dart';
-import 'package:harpy/components/settings/widgets/theme/theme_selection/add_custom_theme_card.dart';
-import 'package:harpy/components/settings/widgets/theme/theme_selection/theme_card.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
+import 'package:harpy/components/settings/theme_selection/widgets/add_custom_theme_card.dart';
+import 'package:harpy/components/settings/theme_selection/widgets/theme_card.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';

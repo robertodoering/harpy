@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 
 /// The [GlobalBlocProvider] is built above the root [MaterialApp] to provide
 /// every descendant with globally available blocs.

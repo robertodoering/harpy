@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/widgets/common/settings_group.dart';
+import 'package:harpy/components/settings/common/widgets/settings_group.dart';
 
 /// Builds a [ListView] with [SettingsGroup]s for each entry in [settings].
 class SettingsList extends StatelessWidget {

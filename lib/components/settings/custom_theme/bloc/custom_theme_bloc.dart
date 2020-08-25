@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_event.dart';
-import 'package:harpy/components/settings/bloc/custom_theme/custom_theme_state.dart';
+
+import 'custom_theme_event.dart';
+import 'custom_theme_state.dart';
 
 /// Handles creating and modifying custom themes.
 class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {

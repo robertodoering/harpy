@@ -6,7 +6,7 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
-import 'package:harpy/components/settings/theme/bloc/theme_event.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
