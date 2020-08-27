@@ -19,8 +19,8 @@ class AuthenticationBloc
 
   final TwitterApi twitterApi = app<TwitterApi>();
 
-  /// A reference to the [ThemeBloc] to load change the theme for the
-  /// authenticated user and to load the custom themes of the user.
+  /// A reference to the [ThemeBloc] to change the theme for the authenticated
+  /// user and to load the custom themes of the user.
   final ThemeBloc themeBloc;
 
   /// The [twitterLogin] is used to log in and out with the native twitter sdk.

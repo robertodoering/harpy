@@ -30,7 +30,7 @@ abstract class ApplicationEvent {
 
 /// The event used to initialize the app.
 ///
-/// Runs when the application bloc is created when the application starts.
+/// Runs when the application bloc is created as soon as the application starts.
 class InitializeEvent extends ApplicationEvent {
   const InitializeEvent();
 
