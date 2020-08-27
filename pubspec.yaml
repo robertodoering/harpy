@@ -18,6 +18,11 @@ dependencies:
   dart_twitter_api: ^0.3.4
   flare_flutter: ^2.0.3
   flutter_bloc: ^6.0.1
+  flutter_colorpicker:
+    # todo: use pub version when PR gets merged and released: 
+    #   https://github.com/mchome/flutter_colorpicker/pull/28
+    git: https://github.com/robertodoering/flutter_colorpicker
+  flutter_material_color_picker: ^1.0.5
   get_it: ^4.0.2
   intl : ^0.16.1
   logging: ^0.11.4

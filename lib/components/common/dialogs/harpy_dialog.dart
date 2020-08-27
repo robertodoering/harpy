@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
@@ -21,12 +24,16 @@ enum DialogAnimationType {
 /// If the [actions] contain discard and confirm actions, the discard action
 /// should always be on the left while the confirm action should be on the
 /// right.
-class HarpyDialog extends StatelessWidget {
+///
+/// todo: refactor
+class HarpyDialog extends StatefulWidget {
   const HarpyDialog({
     this.title,
     this.actions,
     this.text,
     this.body,
+    this.padding = const EdgeInsets.all(16),
+    this.actionsPadding = EdgeInsets.zero,
     this.backgroundColors,
     this.scrollPhysics = const BouncingScrollPhysics(),
     this.animationType = DialogAnimationType.bounce,
@@ -43,6 +50,12 @@ class HarpyDialog extends StatelessWidget {
   /// The body is build below the [text] if not `null`.
   final Widget body;
 
+  /// The padding of the dialog content.
+  final EdgeInsets padding;
+
+  /// The padding for the actions.
+  final EdgeInsets actionsPadding;
+
   /// The colors used by the [HarpyBackground].
   ///
   /// Uses the theme colors when `null`.
@@ -54,24 +67,53 @@ class HarpyDialog extends StatelessWidget {
   /// Determines the animation used for building the harpy dialog.
   final DialogAnimationType animationType;
 
-  bool get _hasActions => actions?.isNotEmpty == true;
+  @override
+  _HarpyDialogState createState() => _HarpyDialogState();
+}
+
+class _HarpyDialogState extends State<HarpyDialog> {
+  final GlobalKey _dialogKey = GlobalKey();
+
+  final Completer<Size> _dialogSizeCompleter = Completer<Size>();
+
+  bool get _hasActions => widget.actions?.isNotEmpty == true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _configureDialogSize();
+  }
+
+  Future<void> _configureDialogSize() async {
+    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
+      final RenderBox box = _dialogKey?.currentContext?.findRenderObject();
+      _dialogSizeCompleter.complete(box?.size);
+    });
+  }
 
   Widget _buildActions() {
-    if (actions.length > 1) {
-      return SizedBox(
-        width: double.infinity,
-        child: Wrap(
-          alignment: WrapAlignment.spaceAround,
-          children: actions,
-        ),
+    if (widget.actions.length > 1) {
+      return FutureBuilder<Size>(
+        future: _dialogSizeCompleter.future,
+        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+          return Container(
+            width: snapshot?.data?.width,
+            // padding: widget.actionsPadding,
+            child: Wrap(
+              alignment: WrapAlignment.spaceAround,
+              children: widget.actions,
+            ),
+          );
+        },
       );
     } else {
-      return actions.first;
+      return widget.actions.first;
     }
   }
 
   Widget _buildAnimation({@required Widget child}) {
-    switch (animationType) {
+    switch (widget.animationType) {
       case DialogAnimationType.slide:
         return SlideInAnimation(
           duration: const Duration(milliseconds: 200),
@@ -98,54 +140,46 @@ class HarpyDialog extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: HarpyBackground(
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            width: double.infinity,
-            // less on the bottom to compensate for the button padding
-            padding: const EdgeInsets.only(
-              left: 16,
-              top: 32,
-              right: 16,
-              bottom: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                if (title != null) ...<Widget>[
-                  Text(
-                    title,
-                    style: textTheme.headline6.copyWith(height: 1.2),
-                    textAlign: TextAlign.center,
+        child: SizedBox(
+          key: _dialogKey,
+          child: HarpyBackground(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: widget.padding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  if (widget.title != null) ...<Widget>[
+                    Text(
+                      widget.title,
+                      style: textTheme.headline6.copyWith(height: 1.2),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  Flexible(
+                    child: SingleChildScrollView(
+                      physics: widget.scrollPhysics,
+                      child: Column(children: <Widget>[
+                        if (widget.text != null) ...<Widget>[
+                          Text(
+                            widget.text,
+                            style: textTheme.subtitle2,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                        if (widget.body != null) widget.body,
+                      ]),
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  if (_hasActions)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: _buildActions(),
+                    ),
                 ],
-                Flexible(
-                  child: ListView(
-                    physics: scrollPhysics,
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      if (text != null) ...<Widget>[
-                        Text(
-                          text,
-                          style: textTheme.subtitle2,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                      if (body != null) ...<Widget>[
-                        body,
-                        const SizedBox(height: 16),
-                      ],
-                    ],
-                  ),
-                ),
-                if (_hasActions)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: _buildActions(),
-                  ),
-              ],
+              ),
             ),
           ),
         ),
@@ -163,18 +197,22 @@ class HarpyDialog extends StatelessWidget {
 /// [icon].
 ///
 /// Either [text] or [icon] must not be `null`.
+///
+/// todo: refactor
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
     this.result,
     this.onTap,
     this.text,
     this.icon,
+    this.iconBuilder,
   })  : assert(result != null || onTap != null),
-        assert(text != null || icon != null);
+        assert(text != null || icon != null || iconBuilder != null);
 
   final T result;
   final VoidCallback onTap;
   final String text;
+  final WidgetBuilder iconBuilder;
   final IconData icon;
 
   static DialogAction<bool> discard = const DialogAction<bool>(
@@ -191,20 +229,12 @@ class DialogAction<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final Function callback = onTap ?? () => Navigator.of(context).pop(result);
 
-    if (text != null) {
-      return HarpyButton.flat(
-        text: text,
-        onTap: callback,
-        dense: true,
-      );
-    } else if (icon != null) {
-      return HarpyButton.flat(
-        icon: icon,
-        onTap: callback,
-        dense: true,
-      );
-    } else {
-      return Container();
-    }
+    return HarpyButton.flat(
+      text: text,
+      icon: icon,
+      iconBuilder: iconBuilder,
+      onTap: callback,
+      dense: true,
+    );
   }
 }
