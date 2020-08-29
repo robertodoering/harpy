@@ -14,3 +14,21 @@ abstract class CustomThemeEvent {
     CustomThemeBloc bloc,
   });
 }
+
+class AddBackgroundColor extends CustomThemeEvent {
+  const AddBackgroundColor({
+    @required this.color,
+  });
+
+  final Color color;
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    bloc.themeData.backgroundColors.add(color.value);
+
+    yield ModifiedCustomThemeState();
+  }
+}
