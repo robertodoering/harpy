@@ -99,7 +99,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
         builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
           return Container(
             width: snapshot?.data?.width,
-            // padding: widget.actionsPadding,
+            padding: widget.actionsPadding,
             child: Wrap(
               alignment: WrapAlignment.spaceAround,
               children: widget.actions,
@@ -173,11 +173,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
                       ]),
                     ),
                   ),
-                  if (_hasActions)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: _buildActions(),
-                    ),
+                  if (_hasActions) _buildActions(),
                 ],
               ),
             ),
@@ -206,6 +202,7 @@ class DialogAction<T> extends StatelessWidget {
     this.text,
     this.icon,
     this.iconBuilder,
+    this.padding = const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
   })  : assert(result != null || onTap != null),
         assert(text != null || icon != null || iconBuilder != null);
 
@@ -214,6 +211,7 @@ class DialogAction<T> extends StatelessWidget {
   final String text;
   final WidgetBuilder iconBuilder;
   final IconData icon;
+  final EdgeInsets padding;
 
   static DialogAction<bool> discard = const DialogAction<bool>(
     result: false,
@@ -233,6 +231,7 @@ class DialogAction<T> extends StatelessWidget {
       text: text,
       icon: icon,
       iconBuilder: iconBuilder,
+      padding: padding,
       onTap: callback,
       dense: true,
     );

@@ -163,6 +163,8 @@ class CustomThemeBackgroundColors extends StatelessWidget {
   }
 }
 
+/// Builds a [HarpyDialog] with a color picker and pops the navigator with the
+/// selected [Color] or `null` if no color has been selected.
 class ColorPickerDialog extends StatefulWidget {
   const ColorPickerDialog({
     @required this.color,
@@ -190,7 +192,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   ///
   /// Used to give the [SliderPicker] the same width as [MaterialColorPicker] so
   /// that during the transition from one to the other the width stays the same.
-  final Completer<Size> _colorPickerSizeCompleter = Completer<Size>();
+  Completer<Size> _colorPickerSizeCompleter = Completer<Size>();
 
   @override
   void initState() {
@@ -204,11 +206,10 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   /// object from the [_colorPickerKey].
   ///
   /// Used to determine the size of the [MaterialColorPicker] in the dialog.
-  ///
-  /// todo: maybe handle rebuilding with different size
   Future<void> _configureColorPickerSize() async {
     SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
       final RenderBox box = _colorPickerKey?.currentContext?.findRenderObject();
+      _colorPickerSizeCompleter = Completer<Size>();
       _colorPickerSizeCompleter.complete(box?.size);
     });
   }
@@ -217,15 +218,17 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     return <DialogAction<void>>[
       if (_showCustomPicker)
         DialogAction<void>(
-          text: 'Back',
+          icon: Icons.color_lens,
           onTap: () => setState(() {
+            _configureColorPickerSize();
             _showCustomPicker = false;
           }),
         )
       else
         DialogAction<void>(
-          text: 'Custom',
+          icon: Icons.colorize,
           onTap: () => setState(() {
+            _configureColorPickerSize();
             _showCustomPicker = true;
           }),
         ),
@@ -263,6 +266,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     return SizedBox(
       key: _colorPickerKey,
       child: MaterialColorPicker(
+        physics: const BouncingScrollPhysics(),
         selectedColor: widget.color,
         shrinkWrap: true,
         onColorChange: (Color color) => _color = color,
@@ -272,12 +276,12 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQuery.of(context);
     final Widget child =
         _showCustomPicker ? _buildCustomPicker() : _buildMaterialPicker();
 
     return HarpyDialog(
       padding: EdgeInsets.zero,
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 16),
       body: CustomAnimatedSize(
         child: AnimatedSwitcher(
           duration: kShortAnimationDuration,
