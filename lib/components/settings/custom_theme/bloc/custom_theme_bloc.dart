@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -13,7 +14,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   CustomThemeBloc({
     @required this.themeData,
     @required this.themeId,
-  }) : super(UninitializedState());
+  }) : super(UnchangedCustomThemeState());
 
   /// The [HarpyThemeData] for the theme customization.
   HarpyThemeData themeData;
@@ -26,6 +27,12 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
 
   static CustomThemeBloc of(BuildContext context) =>
       BlocProvider.of<CustomThemeBloc>(context);
+
+  /// Whether more background colors can be added.
+  bool get canAddMoreBackgroundColors => themeData.backgroundColors.length < 5;
+
+  /// Whether background colors can be removed.
+  bool get canRemoveBackgroundColor => themeData.backgroundColors.length > 1;
 
   @override
   Stream<CustomThemeState> mapEventToState(

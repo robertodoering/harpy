@@ -1,5 +1,7 @@
 abstract class CustomThemeState {}
 
-class UninitializedState extends CustomThemeState {}
+/// The initial state where a custom theme has not yet been modified.
+class UnchangedCustomThemeState extends CustomThemeState {}
 
+/// The state after the custom theme has been modified.
 class ModifiedCustomThemeState extends CustomThemeState {}

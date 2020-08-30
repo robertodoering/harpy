@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
+import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the background color selection for a custom theme.
@@ -9,40 +11,17 @@ class CustomThemeBackgroundColors extends StatelessWidget {
 
   final CustomThemeBloc bloc;
 
-  String _nameFromIndex(int index) {
-    // todo: move to string utils
-    if (index == 0) {
-      return 'First';
-    } else if (index == 1) {
-      return 'Second';
-    } else if (index == 2) {
-      return 'Third';
-    } else if (index == 3) {
-      return 'Fourth';
-    } else {
-      return 'Fifth';
-    }
-  }
-
-  List<Widget> _buildBackgroundColors(HarpyTheme harpyTheme) {
+  List<Widget> _buildBackgroundColors(
+    BuildContext context,
+    HarpyTheme harpyTheme,
+  ) {
     return <Widget>[
       for (int i = 0; i < harpyTheme.backgroundColors.length; i++)
-        Card(
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        _BackgroundColorTile(
+          bloc: bloc,
+          index: i,
           color: harpyTheme.backgroundColors[i],
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            width: double.infinity,
-            child: Material(
-              type: MaterialType.transparency,
-              child: ListTile(
-                title: Text('${_nameFromIndex(i)} background color'),
-                // todo: change color
-                onTap: () {},
-              ),
-            ),
-          ),
-        )
+        ),
     ];
   }
 
@@ -60,16 +39,7 @@ class CustomThemeBackgroundColors extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           leading: const Icon(Icons.add),
           title: const Text('Add background color'),
-          onTap: () async {
-            final Color color = await showDialog<Color>(
-              context: context,
-              builder: (BuildContext context) => ColorPickerDialog(
-                color: harpyTheme.backgroundColors.first,
-              ),
-            );
-
-            // todo: add background color
-          },
+          onTap: () => bloc.add(const AddBackgroundColor()),
         ),
       ),
     );
@@ -82,9 +52,95 @@ class CustomThemeBackgroundColors extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ..._buildBackgroundColors(harpyTheme),
-        _buildAddBackgroundColor(context, harpyTheme),
+        ..._buildBackgroundColors(context, harpyTheme),
+        if (bloc.canAddMoreBackgroundColors)
+          _buildAddBackgroundColor(context, harpyTheme),
       ],
+    );
+  }
+}
+
+class _BackgroundColorTile extends StatelessWidget {
+  const _BackgroundColorTile({
+    @required this.bloc,
+    @required this.color,
+    @required this.index,
+  });
+
+  final CustomThemeBloc bloc;
+  final Color color;
+  final int index;
+
+  String _nameFromIndex(int index) {
+    // todo: move to string utils
+    if (index == 0) {
+      return 'First';
+    } else if (index == 1) {
+      return 'Second';
+    } else if (index == 2) {
+      return 'Third';
+    } else if (index == 3) {
+      return 'Fourth';
+    } else {
+      return 'Fifth';
+    }
+  }
+
+  Future<void> _changeBackgroundColor(BuildContext context) async {
+    final Color newColor = await showDialog<Color>(
+      context: context,
+      builder: (BuildContext context) => ColorPickerDialog(
+        color: color,
+      ),
+    );
+
+    if (newColor != null) {
+      bloc.add(ChangeBackgroundColor(index: index, color: newColor));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // todo: icon / text theme based on color
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      color: color,
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Stack(
+              children: <Widget>[
+                ListTile(
+                  leading: const SizedBox(),
+                  trailing: const SizedBox(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  // todo: maybe remove title
+                  // title: Text('${_nameFromIndex(index)} background color'),
+                  onTap: () => _changeBackgroundColor(context),
+                ),
+                HarpyButton.flat(
+                  icon: Icons.delete_outline,
+                  padding: const EdgeInsets.all(16),
+                  onTap: bloc.canRemoveBackgroundColor
+                      ? () => bloc.add(RemoveBackgroundColor(index: index))
+                      : null,
+                ),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    // todo: implement
+                    child: Icon(Icons.drag_handle),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

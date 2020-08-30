@@ -17,6 +17,13 @@ class HarpyThemeData {
     accentColor = harpyTheme.accentColor.value;
   }
 
+  /// Creates a [HarpyThemeData] from a [HarpyThemeData].
+  HarpyThemeData.from(HarpyThemeData other) {
+    name = other.name;
+    backgroundColors = List<int>.from(other.backgroundColors);
+    accentColor = other.accentColor;
+  }
+
   factory HarpyThemeData.fromJson(Map<String, dynamic> json) =>
       _$HarpyThemeDataFromJson(json);
 

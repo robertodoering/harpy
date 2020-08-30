@@ -34,7 +34,7 @@ class CustomThemeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CustomThemeBloc>(
       create: (BuildContext context) => CustomThemeBloc(
-        themeData: themeData,
+        themeData: HarpyThemeData.from(themeData),
         themeId: themeId,
       ),
       child: BlocBuilder<CustomThemeBloc, CustomThemeState>(
@@ -55,6 +55,7 @@ class CustomThemeScreen extends StatelessWidget {
               ],
               title: 'Theme customization',
               body: ListView(
+                physics: const BouncingScrollPhysics(),
                 children: <Widget>[
                   // todo: theme name
                   CustomThemeBackgroundColors(bloc),

@@ -15,10 +15,30 @@ abstract class CustomThemeEvent {
   });
 }
 
+/// Adds a background color to the [CustomThemeBloc.themeData] and initializes
+/// it with the last background color.
 class AddBackgroundColor extends CustomThemeEvent {
-  const AddBackgroundColor({
+  const AddBackgroundColor();
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
+
+    yield ModifiedCustomThemeState();
+  }
+}
+
+/// Changes a background color of the [CustomThemeBloc.themeData].
+class ChangeBackgroundColor extends CustomThemeEvent {
+  const ChangeBackgroundColor({
+    @required this.index,
     @required this.color,
   });
+
+  final int index;
 
   final Color color;
 
@@ -27,7 +47,26 @@ class AddBackgroundColor extends CustomThemeEvent {
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    bloc.themeData.backgroundColors.add(color.value);
+    bloc.themeData.backgroundColors[index] = color.value;
+
+    yield ModifiedCustomThemeState();
+  }
+}
+
+/// Removes a background color of the [CustomThemeBloc.themeData].
+class RemoveBackgroundColor extends CustomThemeEvent {
+  const RemoveBackgroundColor({
+    @required this.index,
+  });
+
+  final int index;
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    bloc.themeData.backgroundColors.removeAt(index);
 
     yield ModifiedCustomThemeState();
   }
