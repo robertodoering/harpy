@@ -1,12 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:harpy/components/common/animations/explicit/expand_animation.dart';
 
 /// Wraps the [ReorderableList] to allow the [children] to reorder.
 ///
 /// The [children] must build their own [ReorderableListener] that will start a
 /// reorder on drag.
 class CustomReorderableList extends StatefulWidget {
-  const CustomReorderableList({
+  CustomReorderableList({
     @required this.children,
     @required this.onReorder,
     this.physics,
@@ -14,7 +17,10 @@ class CustomReorderableList extends StatefulWidget {
     this.shrinkWrap = false,
     this.reorderOpacity = .8,
     this.separatorBuilder,
-  });
+  }) : assert(
+          children.every((Widget w) => w.key != null),
+          'All children of this widget must have a key.',
+        );
 
   /// The children for the [ReorderableList].
   final List<Widget> children;
@@ -54,24 +60,92 @@ class _CustomReorderableListState extends State<CustomReorderableList> {
   @override
   void didUpdateWidget(CustomReorderableList oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     _children = List<Widget>.from(widget.children);
+    final List<Widget> oldChildren = List<Widget>.from(oldWidget.children);
+
+    if (oldChildren.length != _children.length) {
+      _animateUpdateDifference(oldChildren);
+    }
+  }
+
+  /// Wraps the updated child in an [ExpandedAnimation] to implicitly animate an
+  /// update in the [widget.children].
+  void _animateUpdateDifference(List<Widget> oldChildren) {
+    final int index = _findListDifference(oldChildren, _children);
+
+    if (oldChildren.length < widget.children.length) {
+      // added widget
+      final Widget newChild = _children[index];
+
+      _children[index] = ExpandAnimation(
+        key: newChild.key,
+        onAnimated: () {
+          if (mounted) {
+            try {
+              _children[index] = newChild;
+            } catch (e) {
+              // children state might have updated during animation, ignore
+            }
+          }
+        },
+        child: _children.last,
+      );
+    } else {
+      // removed widget
+      final Widget removedChild = oldChildren[index];
+
+      _children.insert(
+        index,
+        ExpandAnimation(
+          expandType: ExpandType.expandOut,
+          onAnimated: () {
+            if (mounted) {
+              setState(() {
+                try {
+                  _children.removeAt(index);
+                } catch (e) {
+                  // children state might have updated during animation,
+                  // ignore
+                }
+              });
+            }
+          },
+          child: removedChild,
+        ),
+      );
+    }
+  }
+
+  /// Finds the index where key of the [oldChildren] and [newChildren] entry
+  /// differs.
+  ///
+  /// Returns `-1` when the lists are identical.
+  int _findListDifference(List<Widget> oldChildren, List<Widget> newChildren) {
+    for (int i = 0; i < max(oldChildren.length, newChildren.length); i++) {
+      if (oldChildren.length - 1 < i || newChildren.length - 1 < i) {
+        return i;
+      }
+
+      if (oldChildren[i].key != newChildren[i].key) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   int _oldIndexOfKey(Key key) {
-    return widget.children.indexWhere(
-      (Widget widget) => ValueKey<int>(widget.hashCode) == key,
-    );
+    return widget.children.indexWhere((Widget widget) => widget.key == key);
   }
 
   int _indexOfKey(Key key) {
-    return _children.indexWhere(
-      (Widget widget) => ValueKey<int>(widget.hashCode) == key,
-    );
+    return _children.indexWhere((Widget widget) => widget.key == key);
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
     return _CustomReorderableItem(
-      key: ValueKey<int>(_children[index].hashCode),
+      key: _children[index].key,
       reorderOpacity: widget.reorderOpacity,
       child: _children[index],
     );

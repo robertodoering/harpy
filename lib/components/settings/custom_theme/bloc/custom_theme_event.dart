@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -20,14 +21,22 @@ abstract class CustomThemeEvent {
 class AddBackgroundColor extends CustomThemeEvent {
   const AddBackgroundColor();
 
+  static final Logger _log = Logger('AddBackgroundColor');
+
   @override
   Stream<CustomThemeState> applyAsync({
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
+    _log.fine('adding new background color');
 
-    yield ModifiedCustomThemeState();
+    try {
+      bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
+
+      yield ModifiedCustomThemeState();
+    } catch (e, st) {
+      _log.warning('ignoring unexpected list state', e, st);
+    }
   }
 }
 
@@ -39,17 +48,24 @@ class ChangeBackgroundColor extends CustomThemeEvent {
   });
 
   final int index;
-
   final Color color;
+
+  static final Logger _log = Logger('ChangeBackgroundColor');
 
   @override
   Stream<CustomThemeState> applyAsync({
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    bloc.themeData.backgroundColors[index] = color.value;
+    _log.fine('changing background color: $color at index: $index');
 
-    yield ModifiedCustomThemeState();
+    try {
+      bloc.themeData.backgroundColors[index] = color.value;
+
+      yield ModifiedCustomThemeState();
+    } catch (e, st) {
+      _log.warning('ignoring unexpected list state', e, st);
+    }
   }
 }
 
@@ -61,14 +77,22 @@ class RemoveBackgroundColor extends CustomThemeEvent {
 
   final int index;
 
+  static final Logger _log = Logger('RemoveBackgroundColor');
+
   @override
   Stream<CustomThemeState> applyAsync({
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    bloc.themeData.backgroundColors.removeAt(index);
+    _log.fine('removing background color at index: $index');
 
-    yield ModifiedCustomThemeState();
+    try {
+      bloc.themeData.backgroundColors.removeAt(index);
+
+      yield ModifiedCustomThemeState();
+    } catch (e, st) {
+      _log.warning('ignoring unexpected list state', e, st);
+    }
   }
 }
 
@@ -82,17 +106,25 @@ class ReorderBackgroundColor extends CustomThemeEvent {
   final int oldIndex;
   final int newIndex;
 
+  static final Logger _log = Logger('ReorderBackgroundColor');
+
   @override
   Stream<CustomThemeState> applyAsync({
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    final int color = bloc.themeData.backgroundColors[oldIndex];
+    _log.fine('reordering background color from index: $oldIndex to $newIndex');
 
-    bloc.themeData.backgroundColors
-      ..removeAt(oldIndex)
-      ..insert(newIndex, color);
+    try {
+      final int color = bloc.themeData.backgroundColors[oldIndex];
 
-    yield ModifiedCustomThemeState();
+      bloc.themeData.backgroundColors
+        ..removeAt(oldIndex)
+        ..insert(newIndex, color);
+
+      yield ModifiedCustomThemeState();
+    } catch (e, st) {
+      _log.warning('ignoring unexpected list state', e, st);
+    }
   }
 }
