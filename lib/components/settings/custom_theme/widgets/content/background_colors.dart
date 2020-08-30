@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
+import 'package:harpy/components/common/list/custom_reorderable_list.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -52,7 +54,14 @@ class CustomThemeBackgroundColors extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ..._buildBackgroundColors(context, harpyTheme),
+        CustomReorderableList(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          onReorder: (int oldIndex, int newIndex) => bloc.add(
+            ReorderBackgroundColor(oldIndex: oldIndex, newIndex: newIndex),
+          ),
+          children: _buildBackgroundColors(context, harpyTheme),
+        ),
         if (bloc.canAddMoreBackgroundColors)
           _buildAddBackgroundColor(context, harpyTheme),
       ],
@@ -70,21 +79,6 @@ class _BackgroundColorTile extends StatelessWidget {
   final CustomThemeBloc bloc;
   final Color color;
   final int index;
-
-  String _nameFromIndex(int index) {
-    // todo: move to string utils
-    if (index == 0) {
-      return 'First';
-    } else if (index == 1) {
-      return 'Second';
-    } else if (index == 2) {
-      return 'Third';
-    } else if (index == 3) {
-      return 'Fourth';
-    } else {
-      return 'Fifth';
-    }
-  }
 
   Future<void> _changeBackgroundColor(BuildContext context) async {
     final Color newColor = await showDialog<Color>(
@@ -117,8 +111,6 @@ class _BackgroundColorTile extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  // todo: maybe remove title
-                  // title: Text('${_nameFromIndex(index)} background color'),
                   onTap: () => _changeBackgroundColor(context),
                 ),
                 HarpyButton.flat(
@@ -128,12 +120,16 @@ class _BackgroundColorTile extends StatelessWidget {
                       ? () => bloc.add(RemoveBackgroundColor(index: index))
                       : null,
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    // todo: implement
-                    child: Icon(Icons.drag_handle),
+                  child: ReorderableListener(
+                    // wrap in container to have the reorderable listener catch
+                    // gestures on transparency
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.all(16),
+                      child: const Icon(Icons.drag_handle),
+                    ),
                   ),
                 ),
               ],

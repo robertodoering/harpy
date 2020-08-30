@@ -71,3 +71,28 @@ class RemoveBackgroundColor extends CustomThemeEvent {
     yield ModifiedCustomThemeState();
   }
 }
+
+/// Changes the index of a background color.
+class ReorderBackgroundColor extends CustomThemeEvent {
+  const ReorderBackgroundColor({
+    @required this.oldIndex,
+    @required this.newIndex,
+  });
+
+  final int oldIndex;
+  final int newIndex;
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    final int color = bloc.themeData.backgroundColors[oldIndex];
+
+    bloc.themeData.backgroundColors
+      ..removeAt(oldIndex)
+      ..insert(newIndex, color);
+
+    yield ModifiedCustomThemeState();
+  }
+}

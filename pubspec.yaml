@@ -23,6 +23,7 @@ dependencies:
     #   https://github.com/mchome/flutter_colorpicker/pull/28
     git: https://github.com/robertodoering/flutter_colorpicker
   flutter_material_color_picker: ^1.0.5
+  flutter_reorderable_list: ^0.1.4
   get_it: ^4.0.2
   intl : ^0.16.1
   logging: ^0.11.4
