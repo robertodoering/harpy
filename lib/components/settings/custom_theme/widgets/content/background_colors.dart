@@ -100,39 +100,33 @@ class _BackgroundColorTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       color: color,
       clipBehavior: Clip.antiAlias,
-      child: Row(
+      child: Stack(
         children: <Widget>[
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                ListTile(
-                  leading: const SizedBox(),
-                  trailing: const SizedBox(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  onTap: () => _changeBackgroundColor(context),
-                ),
-                HarpyButton.flat(
-                  icon: Icons.delete_outline,
-                  padding: const EdgeInsets.all(16),
-                  onTap: bloc.canRemoveBackgroundColor
-                      ? () => bloc.add(RemoveBackgroundColor(index: index))
-                      : null,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ReorderableListener(
-                    // wrap in container to have the reorderable listener catch
-                    // gestures on transparency
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.all(16),
-                      child: const Icon(Icons.drag_handle),
-                    ),
-                  ),
-                ),
-              ],
+          ListTile(
+            leading: const SizedBox(),
+            trailing: const SizedBox(),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            onTap: () => _changeBackgroundColor(context),
+          ),
+          HarpyButton.flat(
+            icon: Icons.delete_outline,
+            padding: const EdgeInsets.all(16),
+            onTap: bloc.canRemoveBackgroundColor
+                ? () => bloc.add(RemoveBackgroundColor(index: index))
+                : null,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ReorderableListener(
+              // wrap in container to have the reorderable listener catch
+              // gestures on transparency
+              child: Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.all(16),
+                child: const Icon(Icons.drag_handle),
+              ),
             ),
           ),
         ],

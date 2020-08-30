@@ -98,6 +98,7 @@ class _CustomReorderableListState extends State<CustomReorderableList> {
       _children.insert(
         index,
         ExpandAnimation(
+          // key: removedChild.key,
           expandType: ExpandType.expandOut,
           onAnimated: () {
             if (mounted) {
