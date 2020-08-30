@@ -75,7 +75,6 @@ class _ExpandAnimationState extends State<ExpandAnimation>
 
   @override
   Widget build(BuildContext context) {
-    print(_animation);
     return SizeTransition(
       sizeFactor: _animation,
       child: widget.child,
