@@ -70,11 +70,11 @@ class CustomThemeBackgroundColors extends StatelessWidget {
 }
 
 class _BackgroundColorTile extends StatelessWidget {
-  const _BackgroundColorTile({
+  _BackgroundColorTile({
     @required this.bloc,
     @required this.color,
     @required this.index,
-  });
+  }) : super(key: ValueKey<int>(hashValues(color, index)));
 
   final CustomThemeBloc bloc;
   final Color color;
