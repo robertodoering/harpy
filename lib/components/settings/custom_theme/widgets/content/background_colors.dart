@@ -95,41 +95,53 @@ class _BackgroundColorTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo: icon / text theme based on color
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      color: color,
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: <Widget>[
-          ListTile(
-            leading: const SizedBox(),
-            trailing: const SizedBox(),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+    final ThemeData theme = Theme.of(context);
+
+    final Color complimentaryColor =
+        ThemeData.estimateBrightnessForColor(color) == Brightness.light
+            ? Colors.black
+            : Colors.white;
+
+    return Theme(
+      data: theme.copyWith(
+        textTheme: theme.textTheme.apply(bodyColor: complimentaryColor),
+        iconTheme: theme.iconTheme.copyWith(color: complimentaryColor),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        color: color,
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: <Widget>[
+            ListTile(
+              leading: const SizedBox(),
+              trailing: const SizedBox(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              onTap: () => _changeBackgroundColor(context),
             ),
-            onTap: () => _changeBackgroundColor(context),
-          ),
-          HarpyButton.flat(
-            icon: Icons.delete_outline,
-            padding: const EdgeInsets.all(16),
-            onTap: bloc.canRemoveBackgroundColor
-                ? () => bloc.add(RemoveBackgroundColor(index: index))
-                : null,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ReorderableListener(
-              // wrap in container to have the reorderable listener catch
-              // gestures on transparency
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.all(16),
-                child: const Icon(Icons.drag_handle),
+            HarpyButton.flat(
+              icon: Icons.delete_outline,
+              padding: const EdgeInsets.all(16),
+              onTap: bloc.canRemoveBackgroundColor
+                  ? () => bloc.add(RemoveBackgroundColor(index: index))
+                  : null,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ReorderableListener(
+                // wrap in container to have the reorderable listener catch
+                // gestures on transparency
+                child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(16),
+                  child: const Icon(Icons.drag_handle),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
