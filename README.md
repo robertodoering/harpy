@@ -48,7 +48,7 @@ information about the progress.
 This project aims to provide a good example for a medium-big sized Flutter app
 in hopes that it will be useful for some.
 
-Some interesting things featured in the app include:
+Some interesting features of the app include:
 
 * [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management.
 * [get_it](https://pub.dev/packages/get_it) as a service provider that includes
