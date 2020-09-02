@@ -29,10 +29,17 @@ class BackgroundColorSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HarpyTheme harpyTheme = bloc.harpyTheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text('Background colors', style: textTheme.headline4),
+        ),
+        const SizedBox(height: 8),
         CustomReorderableList(
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
