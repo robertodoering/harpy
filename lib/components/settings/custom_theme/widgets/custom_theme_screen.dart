@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/background_colors.dart';
+import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
@@ -42,6 +42,9 @@ class CustomThemeScreen extends StatelessWidget {
           final CustomThemeBloc bloc = CustomThemeBloc.of(context);
           final HarpyTheme harpyTheme = bloc.harpyTheme;
 
+          // todo: update system ui on background color change
+          //  and change back when going back to theme selection
+
           return Theme(
             data: harpyTheme.data,
             child: HarpyScaffold(
@@ -58,7 +61,7 @@ class CustomThemeScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 children: <Widget>[
                   // todo: theme name
-                  CustomThemeBackgroundColors(bloc),
+                  BackgroundColorSelection(bloc),
                 ],
               ),
             ),
