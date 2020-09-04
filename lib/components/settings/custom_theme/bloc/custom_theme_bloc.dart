@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
@@ -14,16 +15,19 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   CustomThemeBloc({
     @required this.themeData,
     @required this.themeId,
+    @required this.themeBloc,
   }) : super(UnchangedCustomThemeState());
+
+  final ThemeBloc themeBloc;
 
   /// The [HarpyThemeData] for the theme customization.
   HarpyThemeData themeData;
 
-  /// Returns the [themeData] as a [HarpyTheme].
-  HarpyTheme get harpyTheme => HarpyTheme.fromData(themeData);
-
   /// The id of this custom theme, starting at 10 for the first custom theme.
   int themeId;
+
+  /// Returns the [themeData] as a [HarpyTheme].
+  HarpyTheme get harpyTheme => HarpyTheme.fromData(themeData);
 
   static CustomThemeBloc of(BuildContext context) =>
       BlocProvider.of<CustomThemeBloc>(context);

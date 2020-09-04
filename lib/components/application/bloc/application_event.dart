@@ -44,7 +44,7 @@ class InitializeEvent extends ApplicationEvent {
     initLogger();
 
     // update the system ui to match the initial theme
-    bloc.themeBloc.updateSystemUi();
+    bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
 
     // need to parse app config before we continue with initialization that is
     // reliant on the app config

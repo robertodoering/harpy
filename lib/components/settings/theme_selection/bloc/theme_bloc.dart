@@ -54,16 +54,16 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         .toList();
   }
 
-  /// Updates the system ui to match the current [harpyTheme].
-  void updateSystemUi() {
+  /// Updates the system ui to match the [theme].
+  void updateSystemUi(HarpyTheme theme) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: harpyTheme.backgroundColors.last,
+        systemNavigationBarColor: theme.backgroundColors.last,
         systemNavigationBarDividerColor: null,
-        systemNavigationBarIconBrightness: harpyTheme.complimentaryBrightness,
-        statusBarColor: harpyTheme.backgroundColors.first,
-        statusBarBrightness: harpyTheme.brightness,
-        statusBarIconBrightness: harpyTheme.complimentaryBrightness,
+        systemNavigationBarIconBrightness: theme.complimentaryBrightness,
+        statusBarColor: theme.backgroundColors.first,
+        statusBarBrightness: theme.brightness,
+        statusBarIconBrightness: theme.complimentaryBrightness,
       ),
     );
   }

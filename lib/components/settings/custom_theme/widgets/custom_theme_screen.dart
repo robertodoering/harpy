@@ -6,6 +6,8 @@ import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.d
 import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
@@ -32,42 +34,51 @@ class CustomThemeScreen extends StatelessWidget {
 
   static const String route = 'custom_theme_screen';
 
+  Future<bool> _onWillPop(ThemeBloc themeBloc) async {
+    // reset the system ui
+    themeBloc.add(UpdateSystemUi(theme: themeBloc.harpyTheme));
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ThemeBloc themeBloc = ThemeBloc.of(context);
+
     return BlocProvider<CustomThemeBloc>(
       create: (BuildContext context) => CustomThemeBloc(
         themeData: HarpyThemeData.from(themeData),
         themeId: themeId,
+        themeBloc: themeBloc,
       ),
       child: BlocBuilder<CustomThemeBloc, CustomThemeState>(
         builder: (BuildContext context, CustomThemeState state) {
-          final CustomThemeBloc bloc = CustomThemeBloc.of(context);
-          final HarpyTheme harpyTheme = bloc.harpyTheme;
+          final CustomThemeBloc customThemeBloc = CustomThemeBloc.of(context);
+          final HarpyTheme harpyTheme = customThemeBloc.harpyTheme;
 
-          // todo: update system ui on background color change
-          //  and change back when going back to theme selection
-
-          return Theme(
-            data: harpyTheme.data,
-            child: HarpyScaffold(
-              backgroundColors: harpyTheme.backgroundColors,
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.check),
-                  // todo: save theme
-                  onPressed: () {},
-                ),
-              ],
-              title: 'Theme customization',
-              body: ListView(
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
-                  ThemeNameSelection(bloc),
-                  const SizedBox(height: 32),
-                  AccentColorSelection(bloc),
-                  const SizedBox(height: 32),
-                  BackgroundColorSelection(bloc),
+          return WillPopScope(
+            onWillPop: () => _onWillPop(themeBloc),
+            child: Theme(
+              data: harpyTheme.data,
+              child: HarpyScaffold(
+                backgroundColors: harpyTheme.backgroundColors,
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.check),
+                    // todo: save theme
+                    onPressed: () {},
+                  ),
                 ],
+                title: 'Theme customization',
+                body: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: <Widget>[
+                    ThemeNameSelection(customThemeBloc),
+                    const SizedBox(height: 32),
+                    AccentColorSelection(customThemeBloc),
+                    const SizedBox(height: 32),
+                    BackgroundColorSelection(customThemeBloc),
+                  ],
+                ),
               ),
             ),
           );

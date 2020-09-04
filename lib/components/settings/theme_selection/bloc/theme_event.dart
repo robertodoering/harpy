@@ -71,8 +71,27 @@ class ChangeThemeEvent extends ThemeEvent {
       }
     }
 
-    bloc.updateSystemUi();
+    bloc.updateSystemUi(bloc.harpyTheme);
 
     yield ThemeSetState();
+  }
+}
+
+/// Updates the system ui based on the [theme].
+///
+/// Does not yield anything.
+class UpdateSystemUi extends ThemeEvent {
+  const UpdateSystemUi({
+    @required this.theme,
+  });
+
+  final HarpyTheme theme;
+
+  @override
+  Stream<ThemeState> applyAsync({
+    ThemeState currentState,
+    ThemeBloc bloc,
+  }) async* {
+    bloc.updateSystemUi(theme);
   }
 }

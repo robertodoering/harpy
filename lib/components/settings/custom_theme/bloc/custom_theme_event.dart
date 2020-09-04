@@ -32,6 +32,7 @@ class AddBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
+      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -61,6 +62,7 @@ class ChangeBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors[index] = color.value;
+      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -88,6 +90,7 @@ class RemoveBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors.removeAt(index);
+      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -121,6 +124,8 @@ class ReorderBackgroundColor extends CustomThemeEvent {
       bloc.themeData.backgroundColors
         ..removeAt(oldIndex)
         ..insert(newIndex, color);
+
+      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
