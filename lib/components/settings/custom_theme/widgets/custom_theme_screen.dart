@@ -48,6 +48,7 @@ class CustomThemeScreen extends StatelessWidget {
 
       final bool discard = await showDialog<bool>(
         context: context,
+        // todo: harpy dialog should match custom theme
         builder: (BuildContext context) => HarpyDialog(
           title: 'Discard changes?',
           actions: <DialogAction<bool>>[
