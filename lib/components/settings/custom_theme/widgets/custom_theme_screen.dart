@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
+import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -62,6 +63,8 @@ class CustomThemeScreen extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 children: <Widget>[
                   ThemeNameSelection(bloc),
+                  const SizedBox(height: 32),
+                  AccentColorSelection(bloc),
                   const SizedBox(height: 32),
                   BackgroundColorSelection(bloc),
                 ],

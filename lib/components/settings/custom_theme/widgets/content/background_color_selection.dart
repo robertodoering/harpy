@@ -6,7 +6,7 @@ import 'package:harpy/components/settings/custom_theme/widgets/content/add_backg
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_card.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
-/// Builds the background color selection for a custom theme.
+/// Builds the background color customization for the [CustomThemeScreen].
 class BackgroundColorSelection extends StatelessWidget {
   const BackgroundColorSelection(this.bloc);
 

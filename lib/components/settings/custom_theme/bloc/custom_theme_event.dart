@@ -153,3 +153,26 @@ class RenameTheme extends CustomThemeEvent {
     }
   }
 }
+
+/// Changes the accent color of the [CustomThemeBloc.themeData].
+class ChangeAccentColor extends CustomThemeEvent {
+  const ChangeAccentColor({
+    @required this.color,
+  });
+
+  final Color color;
+
+  static final Logger _log = Logger('ChangeAccentColor');
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    _log.fine('changing accent color to $color');
+
+    bloc.themeData.accentColor = color.value;
+
+    yield ModifiedCustomThemeState();
+  }
+}

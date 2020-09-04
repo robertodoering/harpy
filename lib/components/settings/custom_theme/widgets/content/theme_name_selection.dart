@@ -30,7 +30,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
       child: Row(
         children: <Widget>[
           Icon(
-            Icons.info_outline,
+            Icons.error_outline,
             color: theme.errorColor,
           ),
           const SizedBox(width: 8),
