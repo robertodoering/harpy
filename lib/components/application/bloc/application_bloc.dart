@@ -9,7 +9,7 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:meta/meta.dart';
 
-/// The [ApplicationBloc] contains handles initialization of the app upon start.
+/// The [ApplicationBloc] handles initialization of the app upon start.
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     @required this.authenticationBloc,
