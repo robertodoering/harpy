@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/harpy.dart';
 
 import 'custom_theme_event.dart';
 import 'custom_theme_state.dart';
@@ -49,6 +50,9 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   bool get accentColorCompliments =>
       ThemeData.estimateBrightnessForColor(harpyTheme.accentColor) !=
       harpyTheme.brightness;
+
+  /// Whether the custom theme can be saved.
+  bool get canSaveTheme => state is ModifiedCustomThemeState && Harpy.isPro;
 
   @override
   Stream<CustomThemeState> mapEventToState(

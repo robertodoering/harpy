@@ -181,3 +181,20 @@ class ChangeAccentColor extends CustomThemeEvent {
     yield ModifiedCustomThemeState();
   }
 }
+
+/// Saves the custom theme for the [CustomThemeBloc] into the
+/// [ThemePreferences].
+class SaveCustomTheme extends CustomThemeEvent {
+  const SaveCustomTheme();
+
+  static final Logger _log = Logger('SaveCustomTheme');
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    _log.fine('saving the custom theme');
+    // todo: save theme
+  }
+}

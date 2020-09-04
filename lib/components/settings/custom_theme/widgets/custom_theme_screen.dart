@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
+import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
@@ -34,10 +36,37 @@ class CustomThemeScreen extends StatelessWidget {
 
   static const String route = 'custom_theme_screen';
 
-  Future<bool> _onWillPop(ThemeBloc themeBloc) async {
-    // reset the system ui
-    themeBloc.add(UpdateSystemUi(theme: themeBloc.harpyTheme));
-    return true;
+  Future<bool> _onWillPop(
+    BuildContext context,
+    ThemeBloc themeBloc,
+    CustomThemeBloc customThemeBloc,
+  ) async {
+    bool pop = true;
+
+    if (customThemeBloc.canSaveTheme) {
+      // ask to discard changes before exiting customization
+
+      final bool discard = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => HarpyDialog(
+          title: 'Discard changes?',
+          actions: <DialogAction<bool>>[
+            DialogAction.discard,
+            DialogAction.confirm,
+          ],
+        ),
+      );
+
+      pop = discard == true;
+    }
+
+    if (pop) {
+      // reset the system ui
+      themeBloc.add(UpdateSystemUi(theme: themeBloc.harpyTheme));
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -56,7 +85,7 @@ class CustomThemeScreen extends StatelessWidget {
           final HarpyTheme harpyTheme = customThemeBloc.harpyTheme;
 
           return WillPopScope(
-            onWillPop: () => _onWillPop(themeBloc),
+            onWillPop: () => _onWillPop(context, themeBloc, customThemeBloc),
             child: Theme(
               data: harpyTheme.data,
               child: HarpyScaffold(
@@ -64,8 +93,9 @@ class CustomThemeScreen extends StatelessWidget {
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.check),
-                    // todo: save theme
-                    onPressed: () {},
+                    onPressed: customThemeBloc.canSaveTheme
+                        ? () => customThemeBloc.add(const SaveCustomTheme())
+                        : null,
                   ),
                 ],
                 title: 'Theme customization',
@@ -77,6 +107,7 @@ class CustomThemeScreen extends StatelessWidget {
                     AccentColorSelection(customThemeBloc),
                     const SizedBox(height: 32),
                     BackgroundColorSelection(customThemeBloc),
+                    // todo: delete theme button
                   ],
                 ),
               ),
