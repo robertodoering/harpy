@@ -96,7 +96,7 @@ class RemoveBackgroundColor extends CustomThemeEvent {
   }
 }
 
-/// Changes the index of a background color.
+/// Changes the index of a background color for the [CustomThemeBloc.themeData].
 class ReorderBackgroundColor extends CustomThemeEvent {
   const ReorderBackgroundColor({
     @required this.oldIndex,
@@ -125,6 +125,31 @@ class ReorderBackgroundColor extends CustomThemeEvent {
       yield ModifiedCustomThemeState();
     } catch (e, st) {
       _log.warning('ignoring unexpected list state', e, st);
+    }
+  }
+}
+
+/// Changes the name of the [CustomThemeBloc.themeData].
+class RenameTheme extends CustomThemeEvent {
+  const RenameTheme({
+    @required this.name,
+  });
+
+  final String name;
+
+  static final Logger _log = Logger('RenameTheme');
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    if (bloc.themeData.name != name) {
+      _log.fine('changing name to $name');
+
+      bloc.themeData.name = name;
+
+      yield ModifiedCustomThemeState();
     }
   }
 }

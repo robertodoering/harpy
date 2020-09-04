@@ -34,6 +34,12 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   /// Whether background colors can be removed.
   bool get canRemoveBackgroundColor => themeData.backgroundColors.length > 1;
 
+  /// Whether the name only contains alphanumeric characters, '-', '_' and
+  /// spaces.
+  bool get validName =>
+      themeData.name.isNotEmpty &&
+      themeData.name.contains(RegExp(r'^[-_ a-zA-Z0-9]+$'));
+
   @override
   Stream<CustomThemeState> mapEventToState(
     CustomThemeEvent event,

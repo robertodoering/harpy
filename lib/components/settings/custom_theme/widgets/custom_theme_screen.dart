@@ -4,6 +4,7 @@ import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
+import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
@@ -60,7 +61,8 @@ class CustomThemeScreen extends StatelessWidget {
               body: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: <Widget>[
-                  // todo: theme name
+                  ThemeNameSelection(bloc),
+                  const SizedBox(height: 32),
                   BackgroundColorSelection(bloc),
                 ],
               ),
