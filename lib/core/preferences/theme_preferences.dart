@@ -17,5 +17,5 @@ class ThemePreferences {
   List<String> get customThemes =>
       harpyPrefs.getStringList('customThemes', prefix: true);
   set customThemes(List<String> value) =>
-      harpyPrefs.setStringList('customThemes', value);
+      harpyPrefs.setStringList('customThemes', value, prefix: true);
 }
