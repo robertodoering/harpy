@@ -234,15 +234,21 @@ class DeleteCustomTheme extends CustomThemeEvent {
     bloc.themeBloc.customThemes.removeAt(bloc.customThemeIndex);
     bloc.themeBloc.add(const SaveCustomThemes());
 
-    if (app<ThemePreferences>().selectedTheme == bloc.themeId) {
+    final int selectedThemeId = app<ThemePreferences>().selectedTheme;
+
+    if (bloc.themeId == selectedThemeId) {
       // reset theme to default theme when deleting the currently selected theme
       bloc.themeBloc.add(const ChangeThemeEvent(id: 0, saveSelection: true));
+    } else if (bloc.themeId < selectedThemeId) {
+      // the index of the currently selected theme changed by -1
+      bloc.themeBloc.add(
+        ChangeThemeEvent(id: selectedThemeId - 1, saveSelection: true),
+      );
+    } else {
+      // just reset the system ui after deleting the theme; the selected theme
+      // did not change
+      bloc.themeBloc.add(UpdateSystemUi(theme: bloc.themeBloc.harpyTheme));
     }
-
-    bloc.themeBloc.add(UpdateSystemUi(theme: bloc.themeBloc.harpyTheme));
-
-    // todo: change index of selected theme when deleting a theme with an index
-    //   less than selected theme id (decrement selected theme id)
 
     yield DeletedCustomThemeState();
 
