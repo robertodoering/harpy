@@ -7,6 +7,7 @@ import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.d
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
+import 'package:harpy/components/settings/custom_theme/widgets/content/delete_theme_button.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
@@ -102,15 +103,23 @@ class CustomThemeScreen extends StatelessWidget {
                   ),
                 ],
                 title: 'Theme customization',
-                body: ListView(
-                  physics: const BouncingScrollPhysics(),
+                body: Column(
                   children: <Widget>[
-                    ThemeNameSelection(customThemeBloc),
-                    const SizedBox(height: 32),
-                    AccentColorSelection(customThemeBloc),
-                    const SizedBox(height: 32),
-                    BackgroundColorSelection(customThemeBloc),
-                    // todo: delete theme button
+                    Expanded(
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: <Widget>[
+                          ThemeNameSelection(customThemeBloc),
+                          const SizedBox(height: 32),
+                          AccentColorSelection(customThemeBloc),
+                          const SizedBox(height: 32),
+                          BackgroundColorSelection(customThemeBloc),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
+                    ),
+                    if (customThemeBloc.editingCustomTheme)
+                      DeleteThemeButton(customThemeBloc),
                   ],
                 ),
               ),

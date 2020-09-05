@@ -6,6 +6,7 @@ import 'package:harpy/components/settings/theme_selection/widgets/add_custom_the
 import 'package:harpy/components/settings/theme_selection/widgets/theme_card.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -55,8 +56,13 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   }
 
   void _editCustomTheme(ThemeBloc themeBloc, int themeId, int index) {
+    final HarpyTheme editingHarpyTheme = themeBloc.customThemes[index];
+
+    // update system ui when editing theme
+    themeBloc.add(UpdateSystemUi(theme: editingHarpyTheme));
+
     app<HarpyNavigator>().pushCustomTheme(
-      themeData: HarpyThemeData.fromHarpyTheme(themeBloc.customThemes[index]),
+      themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
       themeId: themeId,
     );
   }

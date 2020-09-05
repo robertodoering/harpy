@@ -8,3 +8,6 @@ class ModifiedCustomThemeState extends CustomThemeState {}
 
 /// The state after the custom theme has been saved.
 class SavedCustomThemeState extends CustomThemeState {}
+
+/// The state after the custom theme has been deleted.
+class DeletedCustomThemeState extends CustomThemeState {}

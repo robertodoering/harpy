@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
+import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
@@ -212,6 +213,38 @@ class SaveCustomTheme extends CustomThemeEvent {
       ..add(ChangeThemeEvent(id: bloc.themeId, saveSelection: true));
 
     yield SavedCustomThemeState();
+
+    app<HarpyNavigator>().state.pop();
+  }
+}
+
+/// Deletes the custom theme for the [CustomThemeBloc].
+class DeleteCustomTheme extends CustomThemeEvent {
+  const DeleteCustomTheme();
+
+  static final Logger _log = Logger('DeleteCustomTheme');
+
+  @override
+  Stream<CustomThemeState> applyAsync({
+    CustomThemeState currentState,
+    CustomThemeBloc bloc,
+  }) async* {
+    _log.fine('deleting the custom theme with themeId ${bloc.themeId}');
+
+    bloc.themeBloc.customThemes.removeAt(bloc.customThemeIndex);
+    bloc.themeBloc.add(const SaveCustomThemes());
+
+    if (app<ThemePreferences>().selectedTheme == bloc.themeId) {
+      // reset theme to default theme when deleting the currently selected theme
+      bloc.themeBloc.add(const ChangeThemeEvent(id: 0, saveSelection: true));
+    }
+
+    bloc.themeBloc.add(UpdateSystemUi(theme: bloc.themeBloc.harpyTheme));
+
+    // todo: change index of selected theme when deleting a theme with an index
+    //   less than selected theme id (decrement selected theme id)
+
+    yield DeletedCustomThemeState();
 
     app<HarpyNavigator>().state.pop();
   }
