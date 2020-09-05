@@ -27,6 +27,9 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   /// The id of this custom theme, starting at 10 for the first custom theme.
   int themeId;
 
+  /// The index for this custom theme based on the `themeId`.
+  int get customThemeIndex => themeId - 10;
+
   /// Returns the [themeData] as a [HarpyTheme].
   HarpyTheme get harpyTheme => HarpyTheme.fromData(themeData);
 
@@ -53,6 +56,11 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
 
   /// Whether the custom theme can be saved.
   bool get canSaveTheme => state is ModifiedCustomThemeState && Harpy.isPro;
+
+  /// Whether this custom theme is an existing theme that is being edited or a
+  /// newly added theme.
+  bool get editingCustomTheme =>
+      themeBloc.customThemes.length < customThemeIndex;
 
   @override
   Stream<CustomThemeState> mapEventToState(

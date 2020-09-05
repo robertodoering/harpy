@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -46,6 +48,10 @@ class ChangeThemeEvent extends ThemeEvent {
       } else {
         // selected theme id = 10 -> index = 0
         final int index = id - 10;
+
+        _log.fine('using custom theme with index $index '
+            'in ${bloc.customThemes}');
+
         return bloc.customThemes[index];
       }
     } catch (e, st) {
@@ -62,7 +68,7 @@ class ChangeThemeEvent extends ThemeEvent {
     final HarpyTheme harpyTheme = _findTheme(bloc);
 
     if (harpyTheme != null) {
-      _log.fine('changing theme to ${harpyTheme.name}');
+      _log.fine('changing theme to ${harpyTheme.name} with id $id');
       bloc.harpyTheme = harpyTheme;
 
       if (saveSelection) {
@@ -93,5 +99,38 @@ class UpdateSystemUi extends ThemeEvent {
     ThemeBloc bloc,
   }) async* {
     bloc.updateSystemUi(theme);
+  }
+}
+
+/// Saves the custom themes in [ThemeBloc.customThemes] using the
+/// [ThemePreferences].
+class SaveCustomThemes extends ThemeEvent {
+  const SaveCustomThemes();
+
+  static final Logger _log = Logger('SaveCustomThemes');
+
+  String _encodeThemeData(HarpyThemeData themeData) {
+    try {
+      return jsonEncode(themeData.toJson());
+    } catch (e, st) {
+      _log.warning('unable to encode custom theme data', e, st);
+      return null;
+    }
+  }
+
+  @override
+  Stream<ThemeState> applyAsync({
+    ThemeState currentState,
+    ThemeBloc bloc,
+  }) async* {
+    final List<String> encodedCustomThemes = bloc.customThemes
+        .map((HarpyTheme theme) => HarpyThemeData.fromHarpyTheme(theme))
+        .map(_encodeThemeData)
+        .where((String themeDataJson) => themeDataJson != null)
+        .toList();
+
+    _log.fine('saving ${encodedCustomThemes.length} custom themes');
+
+    app<ThemePreferences>().customThemes = encodedCustomThemes;
   }
 }

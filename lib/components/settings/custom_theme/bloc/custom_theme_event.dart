@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 
@@ -194,7 +197,22 @@ class SaveCustomTheme extends CustomThemeEvent {
     CustomThemeState currentState,
     CustomThemeBloc bloc,
   }) async* {
-    _log.fine('saving the custom theme');
-    // todo: save theme
+    _log.fine('saving the custom theme with themeId ${bloc.themeId}');
+
+    if (bloc.editingCustomTheme) {
+      _log.fine('updating existing custom theme');
+      bloc.themeBloc.customThemes[bloc.customThemeIndex] = bloc.harpyTheme;
+    } else {
+      _log.fine('adding new custom theme');
+      bloc.themeBloc.customThemes.add(bloc.harpyTheme);
+    }
+
+    bloc.themeBloc
+      ..add(const SaveCustomThemes())
+      ..add(ChangeThemeEvent(id: bloc.themeId, saveSelection: true));
+
+    yield SavedCustomThemeState();
+
+    app<HarpyNavigator>().state.pop();
   }
 }

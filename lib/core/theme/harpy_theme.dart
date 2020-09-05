@@ -210,6 +210,15 @@ class HarpyTheme {
       ),
     );
   }
+
+  @override
+  String toString() {
+    return 'HarpyTheme: {'
+        'name: $name, '
+        'accentColor: $accentColor, '
+        'backgroundColors: $backgroundColors'
+        '}';
+  }
 }
 
 Color _colorFromValue(int value) => value != null ? Color(value) : null;

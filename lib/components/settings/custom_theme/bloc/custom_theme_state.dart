@@ -5,3 +5,6 @@ class UnchangedCustomThemeState extends CustomThemeState {}
 
 /// The state after the custom theme has been modified.
 class ModifiedCustomThemeState extends CustomThemeState {}
+
+/// The state after the custom theme has been saved.
+class SavedCustomThemeState extends CustomThemeState {}

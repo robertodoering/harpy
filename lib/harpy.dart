@@ -56,6 +56,7 @@ class Harpy extends StatelessWidget {
             analytics: app<AnalyticsService>().analytics,
             nameExtractor: screenNameExtractor,
           ),
+          app<HarpyNavigator>().routeObserver,
         ],
         home: const SplashScreen(),
         builder: (BuildContext widget, Widget child) => HarpyMessageHandler(

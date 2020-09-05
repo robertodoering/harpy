@@ -30,6 +30,11 @@ final Logger _log = Logger('HarpyNavigator');
 class HarpyNavigator {
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
+  /// A [Navigator] observer that notifies [RouteAware]s of changes to the state
+  /// of their [Route].
+  final RouteObserver<PageRoute<dynamic>> routeObserver =
+      RouteObserver<PageRoute<dynamic>>();
+
   NavigatorState get state => key.currentState;
 
   /// A convenience method to push a new [route] to the [Navigator].

@@ -13,6 +13,8 @@ import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart'
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
+/// The custom theme screen for modifying existing custom themes and creating
+/// new custom themes.
 class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({
     @required this.themeData,

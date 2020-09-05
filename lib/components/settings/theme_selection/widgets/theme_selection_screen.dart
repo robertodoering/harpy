@@ -7,6 +7,7 @@ import 'package:harpy/components/settings/theme_selection/widgets/theme_card.dar
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/predefined_themes.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 class ThemeSelectionScreen extends StatefulWidget {
   const ThemeSelectionScreen();
@@ -17,7 +18,26 @@ class ThemeSelectionScreen extends StatefulWidget {
   _ThemeSelectionScreenState createState() => _ThemeSelectionScreenState();
 }
 
-class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
+class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
+    with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    app<HarpyNavigator>().routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPopNext() {
+    // rebuild in case custom themes changes
+    setState(() {});
+  }
+
   void _changeTheme(
     ThemeBloc themeBloc,
     int selectedThemeId,
@@ -73,11 +93,11 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen> {
       body: Column(
         children: <Widget>[
           ..._buildPredefinedThemes(themeBloc, selectedThemeId),
-          const AddCustomThemeCard(),
           ..._buildCustomThemes(
             themeBloc,
             selectedThemeId,
           ),
+          const AddCustomThemeCard(),
         ],
       ),
     );

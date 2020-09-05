@@ -46,12 +46,16 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   /// Loads the custom themes from the [ThemePreferences] for the currently
   /// authenticated user.
   void loadCustomThemes() {
+    _log.fine('loading custom themes');
+
     customThemes = app<ThemePreferences>()
         .customThemes
         .map(_decodeThemeData)
         .where((HarpyThemeData themeData) => themeData != null)
         .map((HarpyThemeData themeData) => HarpyTheme.fromData(themeData))
         .toList();
+
+    _log.fine('found ${customThemes.length} custom themes');
   }
 
   /// Updates the system ui to match the [theme].
