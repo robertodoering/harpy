@@ -84,11 +84,11 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
         ThemeCard(
           themeBloc.customThemes[i],
           selected: i + 10 == selectedThemeId,
+          canEdit: true,
           onTap: () => selectedThemeId == i + 10
-              ? _editCustomTheme(themeBloc, selectedThemeId, i)
+              ? _editCustomTheme(themeBloc, i + 10, i)
               : _changeTheme(themeBloc, selectedThemeId, i + 10),
-          // todo: delete action
-          // todo: edit action
+          onEdit: () => _editCustomTheme(themeBloc, i + 10, i),
         ),
     ];
   }
@@ -100,7 +100,8 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
 
     return HarpyScaffold(
       title: 'Theme selection',
-      body: Column(
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
         children: <Widget>[
           ..._buildPredefinedThemes(themeBloc, selectedThemeId),
           ..._buildCustomThemes(
