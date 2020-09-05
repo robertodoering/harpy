@@ -60,7 +60,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   /// Whether this custom theme is an existing theme that is being edited or a
   /// newly added theme.
   bool get editingCustomTheme =>
-      themeBloc.customThemes.length < customThemeIndex;
+      customThemeIndex < themeBloc.customThemes.length;
 
   @override
   Stream<CustomThemeState> mapEventToState(
