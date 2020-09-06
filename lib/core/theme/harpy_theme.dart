@@ -54,7 +54,7 @@ class HarpyTheme {
   ///
   /// This is the color that the text that is written on the background should
   /// have.
-  Color get backgroundComplementaryColor =>
+  Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
   /// Calculates the brightness by averaging the relative luminance of each
@@ -99,7 +99,7 @@ class HarpyTheme {
     const String displayFont = 'Comfortaa';
     const String bodyFont = 'OpenSans';
 
-    final Color complementaryColor = backgroundComplementaryColor;
+    final Color textColor = foregroundColor;
 
     textTheme = Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // headline
@@ -108,31 +108,31 @@ class HarpyTheme {
             letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor,
+            color: textColor,
           ),
           headline2: TextStyle(
             fontSize: 48,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor,
+            color: textColor,
           ),
           headline3: TextStyle(
             fontFamily: displayFont,
-            color: complementaryColor,
+            color: textColor,
           ),
           headline4: TextStyle(
             fontSize: 18,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor.withOpacity(0.8),
+            color: textColor.withOpacity(0.8),
           ),
           headline6: TextStyle(
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor,
+            color: textColor,
           ),
 
           // subtitle
@@ -140,14 +140,14 @@ class HarpyTheme {
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor.withOpacity(0.9),
+            color: textColor.withOpacity(0.9),
           ),
           subtitle2: TextStyle(
             height: 1.1,
             fontSize: 16,
             fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
-            color: complementaryColor,
+            color: textColor,
           ),
 
           // body
@@ -158,7 +158,7 @@ class HarpyTheme {
           bodyText1: TextStyle(
             fontSize: 14,
             fontFamily: bodyFont,
-            color: complementaryColor.withOpacity(0.7),
+            color: textColor.withOpacity(0.7),
           ),
 
           button: TextStyle(
@@ -171,14 +171,12 @@ class HarpyTheme {
   }
 
   void _setupThemeData() {
-    final Color complementaryColor = backgroundComplementaryColor;
-
     data = ThemeData(
       brightness: brightness,
       textTheme: textTheme,
       primaryColor: primaryColor,
       accentColor: accentColor,
-      buttonColor: complementaryColor,
+      buttonColor: foregroundColor,
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)

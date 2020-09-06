@@ -54,9 +54,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
         Container(
           margin: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: harpyTheme.backgroundComplementaryColor,
-            ),
+            border: Border.all(color: harpyTheme.foregroundColor),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
