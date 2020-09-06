@@ -119,7 +119,7 @@ mobile](https://flutter.dev/docs/perf/rendering/shader) for more information.
 
 ### Misc
 
-To generate (json_serializable)[https://pub.dev/packages/json_serializable]
+To generate [json_serializable](https://pub.dev/packages/json_serializable)
 models:
 
 * `flutter packages pub run build_runner build`
