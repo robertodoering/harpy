@@ -64,10 +64,10 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       SystemUiOverlayStyle(
         systemNavigationBarColor: theme.backgroundColors.last,
         systemNavigationBarDividerColor: null,
-        systemNavigationBarIconBrightness: theme.complimentaryBrightness,
+        systemNavigationBarIconBrightness: theme.complementaryBrightness,
         statusBarColor: theme.backgroundColors.first,
         statusBarBrightness: theme.brightness,
-        statusBarIconBrightness: theme.complimentaryBrightness,
+        statusBarIconBrightness: theme.complementaryBrightness,
       ),
     );
   }

@@ -35,15 +35,15 @@ class BackgroundColorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final Color complimentaryColor =
+    final Color complementaryColor =
         ThemeData.estimateBrightnessForColor(color) == Brightness.light
             ? Colors.black
             : Colors.white;
 
     return Theme(
       data: theme.copyWith(
-        textTheme: theme.textTheme.apply(bodyColor: complimentaryColor),
-        iconTheme: theme.iconTheme.copyWith(color: complimentaryColor),
+        textTheme: theme.textTheme.apply(bodyColor: complementaryColor),
+        iconTheme: theme.iconTheme.copyWith(color: complementaryColor),
       ),
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

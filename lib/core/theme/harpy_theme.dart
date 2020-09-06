@@ -46,7 +46,7 @@ class HarpyTheme {
   ThemeData data;
 
   /// The opposite of [brightness].
-  Brightness get complimentaryBrightness =>
+  Brightness get complementaryBrightness =>
       brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
   /// Either [Colors.black] or [Colors.white] depending on the background
@@ -54,7 +54,7 @@ class HarpyTheme {
   ///
   /// This is the color that the text that is written on the background should
   /// have.
-  Color get backgroundComplimentaryColor =>
+  Color get backgroundComplementaryColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
   /// Calculates the brightness by averaging the relative luminance of each
@@ -76,7 +76,7 @@ class HarpyTheme {
   }
 
   /// Calculates the button text color, which is the [primaryColor] if it is not
-  /// the same brightness as the button color, otherwise a complimentary color
+  /// the same brightness as the button color, otherwise a complementary color
   /// (white / black).
   void _calculateButtonTextColor() {
     final Brightness primaryColorBrightness =
@@ -99,7 +99,7 @@ class HarpyTheme {
     const String displayFont = 'Comfortaa';
     const String bodyFont = 'OpenSans';
 
-    final Color complimentaryColor = backgroundComplimentaryColor;
+    final Color complementaryColor = backgroundComplementaryColor;
 
     textTheme = Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // headline
@@ -108,31 +108,31 @@ class HarpyTheme {
             letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: complementaryColor,
           ),
           headline2: TextStyle(
             fontSize: 48,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: complementaryColor,
           ),
           headline3: TextStyle(
             fontFamily: displayFont,
-            color: complimentaryColor,
+            color: complementaryColor,
           ),
           headline4: TextStyle(
             fontSize: 18,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor.withOpacity(0.8),
+            color: complementaryColor.withOpacity(0.8),
           ),
           headline6: TextStyle(
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: complementaryColor,
           ),
 
           // subtitle
@@ -140,14 +140,14 @@ class HarpyTheme {
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor.withOpacity(0.9),
+            color: complementaryColor.withOpacity(0.9),
           ),
           subtitle2: TextStyle(
             height: 1.1,
             fontSize: 16,
             fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: complementaryColor,
           ),
 
           // body
@@ -158,7 +158,7 @@ class HarpyTheme {
           bodyText1: TextStyle(
             fontSize: 14,
             fontFamily: bodyFont,
-            color: complimentaryColor.withOpacity(0.7),
+            color: complementaryColor.withOpacity(0.7),
           ),
 
           button: TextStyle(
@@ -171,14 +171,14 @@ class HarpyTheme {
   }
 
   void _setupThemeData() {
-    final Color complimentaryColor = backgroundComplimentaryColor;
+    final Color complementaryColor = backgroundComplementaryColor;
 
     data = ThemeData(
       brightness: brightness,
       textTheme: textTheme,
       primaryColor: primaryColor,
       accentColor: accentColor,
-      buttonColor: complimentaryColor,
+      buttonColor: complementaryColor,
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
