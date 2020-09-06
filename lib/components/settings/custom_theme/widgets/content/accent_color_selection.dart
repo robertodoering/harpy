@@ -24,15 +24,13 @@ class AccentColorSelection extends StatelessWidget {
   }
 
   Widget _buildColorWarning(ThemeData theme) {
-    final Color color = theme.textTheme.bodyText2.color;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
-        children: <Widget>[
-          const Icon(Icons.error_outline),
-          const SizedBox(width: 8),
-          const Expanded(
+        children: const <Widget>[
+          Icon(Icons.error_outline),
+          SizedBox(width: 8),
+          Expanded(
             child: Text(
               'Accent color should provide more contrast on the background',
             ),
