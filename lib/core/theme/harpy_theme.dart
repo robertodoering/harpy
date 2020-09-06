@@ -27,6 +27,7 @@ class HarpyTheme {
 
     _calculateBrightness();
     _calculateButtonTextColor();
+    _setupAverageBackgroundColor();
     _setupTextTheme();
     _setupThemeData();
   }
@@ -52,6 +53,12 @@ class HarpyTheme {
 
   /// A list of colors that define the background gradient.
   List<Color> backgroundColors;
+
+  /// The average luminance of the [backgroundColors].
+  double backgroundLuminance;
+
+  /// The average color of the [backgroundColors].
+  Color averageBackgroundColor;
 
   Color get primaryColor => backgroundColors.last;
 
@@ -82,9 +89,6 @@ class HarpyTheme {
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
-  /// The average luminance of the [backgroundColors].
-  double backgroundLuminance;
-
   /// Calculates the background brightness by averaging the relative luminance
   /// of each background color.
   ///
@@ -102,6 +106,16 @@ class HarpyTheme {
         (backgroundLuminance + 0.05) * (backgroundLuminance + 0.05) > kThreshold
             ? Brightness.light
             : Brightness.dark;
+  }
+
+  void _setupAverageBackgroundColor() {
+    Color average = backgroundColors.first;
+
+    for (Color color in backgroundColors) {
+      average = Color.lerp(average, color, .5);
+    }
+
+    averageBackgroundColor = average;
   }
 
   /// Calculates the button text color, which is the [primaryColor] if the
@@ -214,6 +228,10 @@ class HarpyTheme {
       // used for the background color of material widgets
       cardColor: primaryColor,
       canvasColor: primaryColor,
+
+      // scaffold background is never used but changes whenever a background
+      // color changes to trigger theme data changes
+      scaffoldBackgroundColor: averageBackgroundColor,
 
       // used by toggleable widgets
       toggleableActiveColor: accentColor,
