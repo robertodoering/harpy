@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/pro_dialog.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
@@ -28,7 +27,10 @@ class AddCustomThemeCard extends StatelessWidget {
 
       if (result == true) {
         // todo: add try pro feature analytics
-        app<MessageService>().showInfo('Not yet available');
+        app<HarpyNavigator>().pushCustomTheme(
+          themeData: themeData,
+          themeId: themeId,
+        );
       }
     } else {
       app<HarpyNavigator>().pushCustomTheme(
@@ -45,7 +47,8 @@ class AddCustomThemeCard extends StatelessWidget {
 
     // the initial custom theme data uses the currently selected theme
     final HarpyThemeData initialCustomThemeData =
-        HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context));
+        HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context))
+          ..name = 'New theme';
 
     // use the next available custom theme id
     final int nextCustomThemeId = themeBloc.customThemes.length + 10;

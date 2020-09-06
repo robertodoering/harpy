@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
+import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
@@ -11,8 +13,11 @@ import 'package:harpy/components/settings/custom_theme/widgets/content/delete_th
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/harpy.dart';
 
 /// The custom theme screen for modifying existing custom themes and creating
 /// new custom themes.
@@ -73,6 +78,26 @@ class CustomThemeScreen extends StatelessWidget {
     }
   }
 
+  Widget _buildProOnlyText() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          const FlareIcon.shiningStar(size: 32),
+          HarpyButton.flat(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            text: 'Buy Harpy Pro',
+            // todo: link to harpy pro
+            // todo: analytics
+            onTap: () => app<MessageService>().showInfo('Not yet available'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeBloc themeBloc = ThemeBloc.of(context);
@@ -109,6 +134,10 @@ class CustomThemeScreen extends StatelessWidget {
                       child: ListView(
                         physics: const BouncingScrollPhysics(),
                         children: <Widget>[
+                          if (Harpy.isFree) ...<Widget>[
+                            _buildProOnlyText(),
+                            const SizedBox(height: 32),
+                          ],
                           ThemeNameSelection(customThemeBloc),
                           const SizedBox(height: 32),
                           AccentColorSelection(customThemeBloc),

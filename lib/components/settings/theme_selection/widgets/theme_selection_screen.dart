@@ -102,7 +102,11 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   @override
   Widget build(BuildContext context) {
     final ThemeBloc themeBloc = ThemeBloc.of(context);
-    final int selectedThemeId = app<ThemePreferences>().selectedTheme;
+    int selectedThemeId = app<ThemePreferences>().selectedTheme;
+    if (selectedThemeId == -1) {
+      // default to theme id 0
+      selectedThemeId = 0;
+    }
 
     return HarpyScaffold(
       title: 'Theme selection',
