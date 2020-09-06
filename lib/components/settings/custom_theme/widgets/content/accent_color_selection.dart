@@ -24,19 +24,17 @@ class AccentColorSelection extends StatelessWidget {
   }
 
   Widget _buildColorWarning(ThemeData theme) {
-    // todo: color
-    final Color color = Colors.orangeAccent;
+    final Color color = theme.textTheme.bodyText2.color;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: <Widget>[
-          Icon(Icons.error_outline, color: color),
+          const Icon(Icons.error_outline),
           const SizedBox(width: 8),
-          Expanded(
+          const Expanded(
             child: Text(
-              'Accent color should compliment background',
-              style: TextStyle(color: color),
+              'Accent color should provide more contrast on the background',
             ),
           ),
         ],
@@ -73,7 +71,7 @@ class AccentColorSelection extends StatelessWidget {
               onTap: () => _changeAccentColor(context, theme),
             ),
           ),
-          if (!bloc.accentColorCompliments) ...<Widget>[
+          if (!bloc.accentColorContrasts) ...<Widget>[
             const SizedBox(height: 8),
             _buildColorWarning(theme),
           ],

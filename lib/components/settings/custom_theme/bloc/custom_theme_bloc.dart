@@ -48,11 +48,14 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
       themeData.name.isNotEmpty &&
       themeData.name.contains(RegExp(r'^[-_ a-zA-Z0-9]+$'));
 
-  /// Whether the accent color compliments the background color.
-  // todo: don't make it dependant on the color's brightness
-  bool get accentColorCompliments =>
-      ThemeData.estimateBrightnessForColor(harpyTheme.accentColor) !=
-      harpyTheme.brightness;
+  /// Whether the accent color provides enough contrast for text on the
+  /// background.
+  bool get accentColorContrasts =>
+      HarpyTheme.contrastRatio(
+        harpyTheme.accentColor.computeLuminance(),
+        harpyTheme.backgroundLuminance,
+      ) >=
+      kTextContrastRatio;
 
   /// Whether the custom theme can be saved.
   bool get canSaveTheme => state is ModifiedCustomThemeState && Harpy.isPro;

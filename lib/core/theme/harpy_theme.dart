@@ -1,6 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
+
+/// The minimum recommended contrast ratio for the visual representation of
+/// text.
+///
+/// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
+const double kTextContrastRatio = 4.5;
+
+/// The minimum recommended contrast ratio for the visual representation of
+/// large text.
+///
+/// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
+const double kLargeTextContrastRatio = 3;
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
@@ -20,6 +34,17 @@ class HarpyTheme {
   /// Returns the currently selected [HarpyTheme].
   static HarpyTheme of(BuildContext context) {
     return ThemeBloc.of(context).harpyTheme;
+  }
+
+  /// Calculates the contrast ratio of two colors using the W3C accessibility
+  /// guidelines.
+  ///
+  /// Values range from 1 (no contrast) to 21 (max contrast).
+  ///
+  /// See https://www.w3.org/TR/WCAG20/#contrast-ratiodef.
+  static double contrastRatio(double firstLuminance, double secondLuminance) {
+    return (max(firstLuminance, secondLuminance) + 0.05) /
+        (min(firstLuminance, secondLuminance) + 0.05);
   }
 
   /// The name of the theme.
@@ -57,41 +82,42 @@ class HarpyTheme {
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
-  /// Calculates the brightness by averaging the relative luminance of each
-  /// background color.
+  /// The average luminance of the [backgroundColors].
+  double backgroundLuminance;
+
+  /// Calculates the background brightness by averaging the relative luminance
+  /// of each background color.
   ///
   /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
   void _calculateBrightness() {
-    final double relativeLuminance = backgroundColors
+    backgroundLuminance = backgroundColors
             .map((Color color) => color.computeLuminance())
             .reduce((double a, double b) => a + b) /
         backgroundColors.length;
 
+    // the Material Design color brightness threshold
     const double kThreshold = 0.15;
 
     brightness =
-        (relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold
+        (backgroundLuminance + 0.05) * (backgroundLuminance + 0.05) > kThreshold
             ? Brightness.light
             : Brightness.dark;
   }
 
-  /// Calculates the button text color, which is the [primaryColor] if it is not
-  /// the same brightness as the button color, otherwise a complementary color
-  /// (white / black).
+  /// Calculates the button text color, which is the [primaryColor] if the
+  /// contrast ratio is at least [kTextContrastRatio], or white / black
+  /// depending on the button color contrast.
   void _calculateButtonTextColor() {
-    final Brightness primaryColorBrightness =
-        ThemeData.estimateBrightnessForColor(primaryColor);
+    final double ratio = contrastRatio(
+      foregroundColor.computeLuminance(),
+      primaryColor.computeLuminance(),
+    );
 
-    if (brightness == Brightness.dark) {
-      // button color is light
-      buttonTextColor = primaryColorBrightness == Brightness.light
-          ? Colors.black
-          : primaryColor;
+    if (ratio >= kTextContrastRatio) {
+      buttonTextColor = primaryColor;
     } else {
-      // button color is dark
-      buttonTextColor = primaryColorBrightness == Brightness.dark
-          ? Colors.white
-          : primaryColor;
+      buttonTextColor =
+          brightness == Brightness.dark ? Colors.black : Colors.white;
     }
   }
 
