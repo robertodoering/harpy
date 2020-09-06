@@ -49,8 +49,7 @@ class ChangeThemeEvent extends ThemeEvent {
         // selected theme id = 10 -> index = 0
         final int index = id - 10;
 
-        _log.fine('using custom theme with index $index '
-            'in ${bloc.customThemes}');
+        _log.fine('using custom theme with index $index');
 
         return bloc.customThemes[index];
       }
