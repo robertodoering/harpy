@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
-import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
+import 'package:harpy/components/settings/custom_theme/widgets/content/buy_pro_text.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/delete_theme_button.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/core/message_service.dart';
-import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:harpy/harpy.dart';
@@ -83,23 +80,38 @@ class CustomThemeScreen extends StatelessWidget {
     }
   }
 
-  Widget _buildProOnlyText() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          const FlareIcon.shiningStar(size: 32),
-          HarpyButton.flat(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            text: 'Buy Harpy Pro',
-            // todo: link to harpy pro
-            // todo: analytics
-            onTap: () => app<MessageService>().showInfo('Not yet available'),
+  Widget _buildSaveAction(CustomThemeBloc customThemeBloc) {
+    return IconButton(
+      icon: const Icon(Icons.check),
+      onPressed: customThemeBloc.canSaveTheme
+          ? () => customThemeBloc.add(const SaveCustomTheme())
+          : null,
+    );
+  }
+
+  Widget _buildBody(CustomThemeBloc customThemeBloc) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            children: <Widget>[
+              if (Harpy.isFree) ...const <Widget>[
+                BuyProText(),
+                SizedBox(height: 32),
+              ],
+              ThemeNameSelection(customThemeBloc),
+              const SizedBox(height: 32),
+              AccentColorSelection(customThemeBloc),
+              const SizedBox(height: 32),
+              BackgroundColorSelection(customThemeBloc),
+              const SizedBox(height: 32),
+            ],
           ),
-        ],
-      ),
+        ),
+        if (customThemeBloc.editingCustomTheme)
+          DeleteThemeButton(customThemeBloc),
+      ],
     );
   }
 
@@ -122,42 +134,18 @@ class CustomThemeScreen extends StatelessWidget {
             data: harpyTheme.data,
             child: Builder(
               builder: (BuildContext context) => WillPopScope(
-                onWillPop: () =>
-                    _onWillPop(context, themeBloc, customThemeBloc),
+                onWillPop: () => _onWillPop(
+                  context,
+                  themeBloc,
+                  customThemeBloc,
+                ),
                 child: HarpyScaffold(
                   backgroundColors: harpyTheme.backgroundColors,
                   actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      onPressed: customThemeBloc.canSaveTheme
-                          ? () => customThemeBloc.add(const SaveCustomTheme())
-                          : null,
-                    ),
+                    _buildSaveAction(customThemeBloc),
                   ],
                   title: 'Theme customization',
-                  body: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: <Widget>[
-                            if (Harpy.isFree) ...<Widget>[
-                              _buildProOnlyText(),
-                              const SizedBox(height: 32),
-                            ],
-                            ThemeNameSelection(customThemeBloc),
-                            const SizedBox(height: 32),
-                            AccentColorSelection(customThemeBloc),
-                            const SizedBox(height: 32),
-                            BackgroundColorSelection(customThemeBloc),
-                            const SizedBox(height: 32),
-                          ],
-                        ),
-                      ),
-                      if (customThemeBloc.editingCustomTheme)
-                        DeleteThemeButton(customThemeBloc),
-                    ],
-                  ),
+                  body: _buildBody(customThemeBloc),
                 ),
               ),
             ),
