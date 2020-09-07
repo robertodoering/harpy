@@ -28,6 +28,7 @@ class HarpyTheme {
     _setupAverageBackgroundColor();
     _calculateBrightness();
     _calculateButtonTextColor();
+    _calculateErrorColor();
     _setupTextTheme();
     _setupThemeData();
   }
@@ -54,23 +55,33 @@ class HarpyTheme {
   /// A list of colors that define the background gradient.
   List<Color> backgroundColors;
 
+  /// The accent color of the theme.
+  Color accentColor;
+
   /// The average luminance of the [backgroundColors].
   double backgroundLuminance;
 
   /// The average color of the [backgroundColors].
   ///
-  /// Used as the for backgrounds where only a single color is desired (e.g. a
+  /// Used as the background where only a single color is desired (e.g. a
   /// dialog background or a pop up menu).
   Color averageBackgroundColor;
 
-  /// The accent color of the theme.
-  Color accentColor;
-
   /// The brightness of the theme.
+  ///
+  /// The brightness is dependent on the [backgroundLuminance] and determines
+  /// whether to use white or black foreground colors.
   Brightness brightness;
 
-  /// The color used by buttons.
+  /// The color of the text used by buttons.
   Color buttonTextColor;
+
+  /// The error color of the theme.
+  ///
+  /// Is [Colors.red] if the contrast ratio on the background exceeds
+  /// [kTextContrastRatio].
+  /// Otherwise the [accentColor] is used as the error color.
+  Color errorColor;
 
   /// The text theme of the theme.
   TextTheme textTheme;
@@ -82,8 +93,7 @@ class HarpyTheme {
   Brightness get complementaryBrightness =>
       brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
-  /// Either [Colors.black] or [Colors.white] depending on the background
-  /// brightness.
+  /// Either [Colors.black] or [Colors.white] depending on the theme brightness.
   ///
   /// This is the color that the text that is written on the background should
   /// have.
@@ -118,21 +128,29 @@ class HarpyTheme {
     averageBackgroundColor = average;
   }
 
-  /// Calculates the button text color, which is the [primaryColor] if the
-  /// contrast ratio is at least [kTextContrastRatio], or white / black
-  /// depending on the button color contrast.
+  /// Calculates the button text color, which is the [averageBackgroundColor] if
+  /// the contrast ratio is at least [kTextContrastRatio], or white / black
+  /// depending on the [brightness].
   void _calculateButtonTextColor() {
     final double ratio = contrastRatio(
-      foregroundColor.computeLuminance(),
       averageBackgroundColor.computeLuminance(),
+      foregroundColor.computeLuminance(),
     );
 
-    if (ratio >= kTextContrastRatio) {
-      buttonTextColor = averageBackgroundColor;
-    } else {
-      buttonTextColor =
-          brightness == Brightness.dark ? Colors.black : Colors.white;
-    }
+    buttonTextColor = ratio >= kTextContrastRatio
+        ? averageBackgroundColor
+        : brightness == Brightness.dark ? Colors.black : Colors.white;
+  }
+
+  /// Calculates the error color, which is [Colors.red] if the contrast ratio is
+  /// at least [kTextContrastRatio], or the [accentColor].
+  void _calculateErrorColor() {
+    final double ratio = contrastRatio(
+      Colors.red.computeLuminance(),
+      backgroundLuminance,
+    );
+
+    errorColor = ratio >= kTextContrastRatio ? Colors.red : accentColor;
   }
 
   void _setupTextTheme() {
@@ -217,6 +235,7 @@ class HarpyTheme {
       primaryColor: accentColor,
       accentColor: accentColor,
       buttonColor: foregroundColor,
+      errorColor: errorColor,
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
