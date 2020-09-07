@@ -57,6 +57,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextField(
               controller: _controller,
+              maxLength: 20,
             ),
           ),
           if (!widget.bloc.validName) ...<Widget>[
