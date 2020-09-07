@@ -56,12 +56,17 @@ class CustomThemeScreen extends StatelessWidget {
 
       final bool discard = await showDialog<bool>(
         context: context,
-        // todo: harpy dialog should match custom theme
-        builder: (BuildContext context) => HarpyDialog(
-          title: 'Discard changes?',
+        builder: (BuildContext context) => const HarpyDialog(
+          title: Text('Discard changes?'),
           actions: <DialogAction<bool>>[
-            DialogAction.discard,
-            DialogAction.confirm,
+            DialogAction<bool>(
+              result: false,
+              text: 'Cancel',
+            ),
+            DialogAction<bool>(
+              result: true,
+              text: 'Discard',
+            ),
           ],
         ),
       );
@@ -113,43 +118,46 @@ class CustomThemeScreen extends StatelessWidget {
           final CustomThemeBloc customThemeBloc = CustomThemeBloc.of(context);
           final HarpyTheme harpyTheme = customThemeBloc.harpyTheme;
 
-          return WillPopScope(
-            onWillPop: () => _onWillPop(context, themeBloc, customThemeBloc),
-            child: Theme(
-              data: harpyTheme.data,
-              child: HarpyScaffold(
-                backgroundColors: harpyTheme.backgroundColors,
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.check),
-                    onPressed: customThemeBloc.canSaveTheme
-                        ? () => customThemeBloc.add(const SaveCustomTheme())
-                        : null,
-                  ),
-                ],
-                title: 'Theme customization',
-                body: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        physics: const BouncingScrollPhysics(),
-                        children: <Widget>[
-                          if (Harpy.isFree) ...<Widget>[
-                            _buildProOnlyText(),
+          return Theme(
+            data: harpyTheme.data,
+            child: Builder(
+              builder: (BuildContext context) => WillPopScope(
+                onWillPop: () =>
+                    _onWillPop(context, themeBloc, customThemeBloc),
+                child: HarpyScaffold(
+                  backgroundColors: harpyTheme.backgroundColors,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      onPressed: customThemeBloc.canSaveTheme
+                          ? () => customThemeBloc.add(const SaveCustomTheme())
+                          : null,
+                    ),
+                  ],
+                  title: 'Theme customization',
+                  body: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(
+                          physics: const BouncingScrollPhysics(),
+                          children: <Widget>[
+                            if (Harpy.isFree) ...<Widget>[
+                              _buildProOnlyText(),
+                              const SizedBox(height: 32),
+                            ],
+                            ThemeNameSelection(customThemeBloc),
+                            const SizedBox(height: 32),
+                            AccentColorSelection(customThemeBloc),
+                            const SizedBox(height: 32),
+                            BackgroundColorSelection(customThemeBloc),
                             const SizedBox(height: 32),
                           ],
-                          ThemeNameSelection(customThemeBloc),
-                          const SizedBox(height: 32),
-                          AccentColorSelection(customThemeBloc),
-                          const SizedBox(height: 32),
-                          BackgroundColorSelection(customThemeBloc),
-                          const SizedBox(height: 32),
-                        ],
+                        ),
                       ),
-                    ),
-                    if (customThemeBloc.editingCustomTheme)
-                      DeleteThemeButton(customThemeBloc),
-                  ],
+                      if (customThemeBloc.editingCustomTheme)
+                        DeleteThemeButton(customThemeBloc),
+                    ],
+                  ),
                 ),
               ),
             ),

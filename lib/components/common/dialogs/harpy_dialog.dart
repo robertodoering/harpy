@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/bounce_in_animation.dart';
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/misc/harpy_background.dart';
 
 /// Determines the animation that is used when building a [HarpyDialog].
 enum DialogAnimationType {
@@ -21,48 +21,50 @@ enum DialogAnimationType {
 
 /// A styled dialog used with [showDialog].
 ///
-/// If the [actions] contain discard and confirm actions, the discard action
-/// should always be on the left while the confirm action should be on the
-/// right.
-///
-/// todo: refactor
+/// Confirming actions should always be placed on the right side while
+/// dismissive actions should be placed on the left side.
 class HarpyDialog extends StatefulWidget {
   const HarpyDialog({
     this.title,
+    this.titlePadding,
+    this.content,
+    this.contentPadding = const EdgeInsets.all(24),
     this.actions,
-    this.text,
-    this.body,
-    this.padding = const EdgeInsets.all(16),
-    this.actionsPadding = EdgeInsets.zero,
-    this.backgroundColors,
-    this.scrollPhysics = const BouncingScrollPhysics(),
+    this.constrainActionSize = false,
     this.animationType = DialogAnimationType.bounce,
   });
 
-  final String title;
-
-  /// The actions that appear at the bottom of the dialog.
-  final List<DialogAction<dynamic>> actions;
-
-  /// The text is build below the [title] if not `null`.
-  final String text;
-
-  /// The body is build below the [text] if not `null`.
-  final Widget body;
-
-  /// The padding of the dialog content.
-  final EdgeInsets padding;
-
-  /// The padding for the actions.
-  final EdgeInsets actionsPadding;
-
-  /// The colors used by the [HarpyBackground].
+  /// The (optional) title of the dialog is displayed in a large font at the top
+  /// of the dialog.
   ///
-  /// Uses the theme colors when `null`.
-  final List<Color> backgroundColors;
+  /// Typically a [Text] widget.
+  final Widget title;
 
-  /// The scroll physics of the dialog (title, text + body).
-  final ScrollPhysics scrollPhysics;
+  /// Padding around the title.
+  ///
+  /// If there is no title, no padding will be provided.
+  final EdgeInsetsGeometry titlePadding;
+
+  /// The (optional) content of the dialog is displayed in the center of the
+  /// dialog in a lighter font.
+  final Widget content;
+
+  /// Padding around the content.
+  ///
+  /// If there is no content, no padding will be provided.
+  final EdgeInsetsGeometry contentPadding;
+
+  /// The (optional) set of actions that are displayed at the bottom of the
+  /// dialog.
+  ///
+  /// Typically this is a list of [DialogAction] widgets.
+  final List<Widget> actions;
+
+  /// Whether the size of the actions should be constrained to the intrinsic
+  /// width of the dialog.
+  ///
+  /// When `true`, the actions might not have enough space and get clipped.
+  final bool constrainActionSize;
 
   /// Determines the animation used for building the harpy dialog.
   final DialogAnimationType animationType;
@@ -72,11 +74,22 @@ class HarpyDialog extends StatefulWidget {
 }
 
 class _HarpyDialogState extends State<HarpyDialog> {
-  final GlobalKey _dialogKey = GlobalKey();
+  final GlobalKey _dialogSizeKey = GlobalKey();
 
+  /// Completes with the size of the dialog content.
+  ///
+  /// Used to configure the size of the button bar to space around the actions
+  /// based on the content width.
   final Completer<Size> _dialogSizeCompleter = Completer<Size>();
 
-  bool get _hasActions => widget.actions?.isNotEmpty == true;
+  EdgeInsets get _titlePadding =>
+      widget.titlePadding ??
+      EdgeInsets.only(
+        top: 24,
+        left: 24,
+        right: 24,
+        bottom: widget.content != null || widget.actions != null ? 0 : 24,
+      );
 
   @override
   void initState() {
@@ -87,29 +100,9 @@ class _HarpyDialogState extends State<HarpyDialog> {
 
   Future<void> _configureDialogSize() async {
     SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      final RenderBox box = _dialogKey?.currentContext?.findRenderObject();
+      final RenderBox box = _dialogSizeKey?.currentContext?.findRenderObject();
       _dialogSizeCompleter.complete(box?.size);
     });
-  }
-
-  Widget _buildActions() {
-    if (widget.actions.length > 1) {
-      return FutureBuilder<Size>(
-        future: _dialogSizeCompleter.future,
-        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
-          return Container(
-            width: snapshot?.data?.width,
-            padding: widget.actionsPadding,
-            child: Wrap(
-              alignment: WrapAlignment.spaceAround,
-              children: widget.actions,
-            ),
-          );
-        },
-      );
-    } else {
-      return widget.actions.first;
-    }
   }
 
   Widget _buildAnimation({@required Widget child}) {
@@ -131,52 +124,86 @@ class _HarpyDialogState extends State<HarpyDialog> {
     }
   }
 
+  Widget _buildTitle(TextTheme textTheme) {
+    return DefaultTextStyle(
+      style: textTheme.headline6.copyWith(height: 1.2),
+      textAlign: TextAlign.center,
+      child: Padding(
+        padding: _titlePadding,
+        child: widget.title,
+      ),
+    );
+  }
+
+  Widget _buildContent(TextTheme textTheme) {
+    return Flexible(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: <Widget>[
+            if (widget.content != null)
+              DefaultTextStyle(
+                style: textTheme.subtitle2,
+                textAlign: TextAlign.center,
+                child: Padding(
+                  padding: widget.contentPadding,
+                  child: widget.content,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActions() {
+    final Widget actions = widget.actions.length == 2
+        ? Row(
+            children: <Widget>[
+              for (Widget action in widget.actions)
+                Expanded(child: Center(child: action)),
+            ],
+          )
+        : Wrap(
+            alignment: WrapAlignment.spaceAround,
+            children: widget.actions,
+          );
+
+    if (widget.constrainActionSize) {
+      return FutureBuilder<Size>(
+        future: _dialogSizeCompleter.future,
+        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: snapshot?.data?.width ?? 0,
+            ),
+            child: actions,
+          );
+        },
+      );
+    } else {
+      return actions;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ThemeData theme = Theme.of(context);
+    final TextTheme textTheme = theme.textTheme;
 
     return _buildAnimation(
       child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        insetAnimationDuration: kShortAnimationDuration,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: SizedBox(
-          key: _dialogKey,
-          child: HarpyBackground(
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: widget.padding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  if (widget.title != null) ...<Widget>[
-                    Text(
-                      widget.title,
-                      style: textTheme.headline6.copyWith(height: 1.2),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                  Flexible(
-                    child: SingleChildScrollView(
-                      physics: widget.scrollPhysics,
-                      child: Column(children: <Widget>[
-                        if (widget.text != null) ...<Widget>[
-                          Text(
-                            widget.text,
-                            style: textTheme.subtitle2,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                        if (widget.body != null) widget.body,
-                      ]),
-                    ),
-                  ),
-                  if (_hasActions) _buildActions(),
-                ],
-              ),
-            ),
+          key: _dialogSizeKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (widget.title != null) _buildTitle(textTheme),
+              if (widget.content != null) _buildContent(textTheme),
+              if (widget.actions != null) _buildActions(),
+            ],
           ),
         ),
       ),
@@ -184,55 +211,46 @@ class _HarpyDialogState extends State<HarpyDialog> {
   }
 }
 
-/// An action for a [HarpyDialog].
+/// Builds a [HarpyButton] as an action for the [HarpyDialog].
 ///
-/// If [result] is not `null` the action will pop the dialog with the [result].
-/// If [onTap] is not `null` the action will execute the callback.
+/// When [result] is not `null`, [Navigator.pop] is called with the [result]
+/// when the button is tapped.
+/// An additional [onTap] can be provided that is called when the button is
+/// tapped.
 ///
-/// The action will build a text button with [text] or an icon button with
-/// [icon].
+/// When both [result] and [onTap] is `null`, the button will appear disabled.
 ///
 /// Either [text] or [icon] must not be `null`.
-///
-/// todo: refactor
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
     this.result,
     this.onTap,
     this.text,
     this.icon,
-    this.iconBuilder,
-    this.padding = const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-  })  : assert(result != null || onTap != null),
-        assert(text != null || icon != null || iconBuilder != null);
+    this.padding = const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+  }) : assert(text != null || icon != null);
 
   final T result;
   final VoidCallback onTap;
   final String text;
-  final WidgetBuilder iconBuilder;
   final IconData icon;
   final EdgeInsets padding;
 
-  static DialogAction<bool> discard = const DialogAction<bool>(
-    result: false,
-    icon: Icons.close,
-  );
+  void _onTap(BuildContext context) {
+    onTap?.call();
 
-  static DialogAction<bool> confirm = const DialogAction<bool>(
-    result: true,
-    icon: Icons.check,
-  );
+    if (result != null) {
+      Navigator.of(context).pop<T>(result);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Function callback = onTap ?? () => Navigator.of(context).pop(result);
-
     return HarpyButton.flat(
       text: text,
       icon: icon,
-      iconBuilder: iconBuilder,
       padding: padding,
-      onTap: callback,
+      onTap: result == null && onTap == null ? null : () => _onTap(context),
       dense: true,
     );
   }

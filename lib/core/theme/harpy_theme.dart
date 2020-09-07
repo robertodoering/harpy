@@ -25,9 +25,9 @@ class HarpyTheme {
 
     accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
 
+    _setupAverageBackgroundColor();
     _calculateBrightness();
     _calculateButtonTextColor();
-    _setupAverageBackgroundColor();
     _setupTextTheme();
     _setupThemeData();
   }
@@ -58,9 +58,10 @@ class HarpyTheme {
   double backgroundLuminance;
 
   /// The average color of the [backgroundColors].
+  ///
+  /// Used as the for backgrounds where only a single color is desired (e.g. a
+  /// dialog background or a pop up menu).
   Color averageBackgroundColor;
-
-  Color get primaryColor => backgroundColors.last;
 
   /// The accent color of the theme.
   Color accentColor;
@@ -108,12 +109,11 @@ class HarpyTheme {
             : Brightness.dark;
   }
 
+  /// Reduces the [backgroundColor] to a single color by interpolating the
+  /// colors.
   void _setupAverageBackgroundColor() {
-    Color average = backgroundColors.first;
-
-    for (Color color in backgroundColors) {
-      average = Color.lerp(average, color, .5);
-    }
+    final Color average = backgroundColors
+        .reduce((Color value, Color element) => Color.lerp(value, element, .5));
 
     averageBackgroundColor = average;
   }
@@ -124,11 +124,11 @@ class HarpyTheme {
   void _calculateButtonTextColor() {
     final double ratio = contrastRatio(
       foregroundColor.computeLuminance(),
-      primaryColor.computeLuminance(),
+      averageBackgroundColor.computeLuminance(),
     );
 
     if (ratio >= kTextContrastRatio) {
-      buttonTextColor = primaryColor;
+      buttonTextColor = averageBackgroundColor;
     } else {
       buttonTextColor =
           brightness == Brightness.dark ? Colors.black : Colors.white;
@@ -214,7 +214,7 @@ class HarpyTheme {
     data = ThemeData(
       brightness: brightness,
       textTheme: textTheme,
-      primaryColor: primaryColor,
+      primaryColor: accentColor,
       accentColor: accentColor,
       buttonColor: foregroundColor,
 
@@ -226,11 +226,9 @@ class HarpyTheme {
       primaryColorBrightness: brightness,
 
       // used for the background color of material widgets
-      cardColor: primaryColor,
-      canvasColor: primaryColor,
-
-      // scaffold background is never used but changes whenever a background
-      // color changes to trigger theme data changes
+      cardColor: averageBackgroundColor,
+      canvasColor: averageBackgroundColor,
+      dialogBackgroundColor: averageBackgroundColor,
       scaffoldBackgroundColor: averageBackgroundColor,
 
       // used by toggleable widgets

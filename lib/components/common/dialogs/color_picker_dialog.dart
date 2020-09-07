@@ -65,7 +65,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     return <DialogAction<void>>[
       if (_showCustomPicker)
         DialogAction<void>(
-          icon: Icons.color_lens,
+          text: 'Back',
           onTap: () => setState(() {
             _configureColorPickerSize();
             _showCustomPicker = false;
@@ -73,14 +73,14 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
         )
       else
         DialogAction<void>(
-          icon: Icons.colorize,
+          text: 'Custom',
           onTap: () => setState(() {
             _configureColorPickerSize();
             _showCustomPicker = true;
           }),
         ),
       DialogAction<void>(
-        icon: Icons.check,
+        text: 'Select',
         onTap: () {
           app<HarpyNavigator>().state.pop(_color);
         },
@@ -127,9 +127,10 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
         _showCustomPicker ? _buildCustomPicker() : _buildMaterialPicker();
 
     return HarpyDialog(
-      padding: EdgeInsets.zero,
       animationType: DialogAnimationType.slide,
-      body: CustomAnimatedSize(
+      contentPadding: EdgeInsets.zero,
+      constrainActionSize: true,
+      content: CustomAnimatedSize(
         child: AnimatedSwitcher(
           duration: kShortAnimationDuration,
           child: child,
