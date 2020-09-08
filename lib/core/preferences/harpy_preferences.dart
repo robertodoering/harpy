@@ -98,6 +98,6 @@ class HarpyPreferences {
     bool prefix = false,
   }) {
     _log.fine('set ${_key(key, prefix)} to $value');
-    _preferences.setStringList(key, value);
+    _preferences.setStringList(_key(key, prefix), value);
   }
 }

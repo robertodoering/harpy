@@ -99,7 +99,6 @@ class _AboutScreenState extends State<AboutScreen> {
           iconBuilder: (BuildContext context) => const FlareIcon.shiningStar(
             size: 22,
           ),
-          backgroundColor: accentColor,
           dense: true,
           // todo: link to harpy pro
           // todo: add harpy pro analytics
@@ -119,7 +118,6 @@ class _AboutScreenState extends State<AboutScreen> {
           iconBuilder: (BuildContext context) => const FlareIcon.shiningStar(
             size: 22,
           ),
-          backgroundColor: accentColor,
           dense: true,
           // todo harpy free or pro play store link
           // todo: add rate harpy analytics
@@ -144,7 +142,6 @@ class _AboutScreenState extends State<AboutScreen> {
         child: HarpyButton.raised(
           text: 'Contact',
           icon: Icons.mail,
-          backgroundColor: accentColor,
           dense: true,
           onTap: () => launchUrl(_mailto),
         ),

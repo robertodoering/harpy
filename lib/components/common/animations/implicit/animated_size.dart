@@ -10,13 +10,13 @@ class CustomAnimatedSize extends StatefulWidget {
     @required this.child,
     this.duration = kShortAnimationDuration,
     this.curve = Curves.easeOutCubic,
+    this.alignment = Alignment.center,
   });
 
   final Widget child;
-
   final Duration duration;
-
   final Curve curve;
+  final Alignment alignment;
 
   @override
   _CustomAnimatedSizeState createState() => _CustomAnimatedSizeState();
@@ -30,7 +30,7 @@ class _CustomAnimatedSizeState extends State<CustomAnimatedSize>
       vsync: this,
       duration: widget.duration,
       curve: widget.curve,
-      alignment: Alignment.center,
+      alignment: widget.alignment,
       child: widget.child,
     );
   }

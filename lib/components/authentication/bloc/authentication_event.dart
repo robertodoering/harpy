@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:harpy/components/application/bloc/application_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
@@ -17,7 +17,6 @@ import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/preferences/setup_preferences.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/predefined_themes.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -65,14 +64,17 @@ abstract class AuthenticationEvent {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = userId;
 
-      final int selectedTheme = app<ThemePreferences>().selectedTheme;
+      final int selectedThemeId = app<ThemePreferences>().selectedTheme;
 
-      if (selectedTheme != -1) {
-        _log.fine('initializing selected theme with id $selectedTheme');
+      // initialize the custom themes for this user
+      bloc.themeBloc.loadCustomThemes();
 
-        bloc.applicationBloc.add(
-          ChangeThemeEvent(harpyTheme: predefinedThemes[selectedTheme]),
-        );
+      if (selectedThemeId != -1) {
+        _log.fine('initializing selected theme with id $selectedThemeId');
+
+        bloc.themeBloc.add(ChangeThemeEvent(id: selectedThemeId));
+      } else {
+        _log.fine('no theme selected for the user');
       }
     }
 
@@ -93,9 +95,7 @@ abstract class AuthenticationEvent {
     });
 
     // reset the theme to the default theme
-    bloc.applicationBloc.add(
-      ChangeThemeEvent(harpyTheme: predefinedThemes.first),
-    );
+    bloc.themeBloc.add(const ChangeThemeEvent(id: 0));
   }
 
   Stream<AuthenticationState> applyAsync({

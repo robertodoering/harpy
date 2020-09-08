@@ -5,6 +5,7 @@ import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
@@ -50,8 +51,11 @@ void main() {
       when(app<HarpyPreferences>().initialize()).thenAnswer((_) async {});
       when(app<ConnectivityService>().initialize()).thenAnswer((_) async {});
 
+      final ThemeBloc themeBloc = ThemeBloc();
+
       return ApplicationBloc(
-        authenticationBloc: AuthenticationBloc(),
+        authenticationBloc: AuthenticationBloc(themeBloc: themeBloc),
+        themeBloc: themeBloc,
       );
     },
     verify: (ApplicationBloc bloc) async {

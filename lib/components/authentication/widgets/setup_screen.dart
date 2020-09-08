@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/widgets/headlines.dart';
 import 'package:harpy/components/authentication/widgets/theme_selection_carousel.dart';
@@ -9,6 +8,7 @@ import 'package:harpy/components/common/animations/explicit/slide_animation.dart
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/preferences/setup_preferences.dart';
@@ -30,12 +30,12 @@ class _SetupScreenState extends State<SetupScreen> {
   final GlobalKey<SlideAnimationState> _slideSetupKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _continue(ApplicationBloc applicationBloc) async {
+  Future<void> _continue(ThemeBloc themeBloc) async {
     // setup completed
     await _slideSetupKey.currentState.forward();
 
     app<SetupPreferences>().performedSetup = true;
-    app<AnalyticsService>().logSetupTheme(applicationBloc.harpyTheme.name);
+    app<AnalyticsService>().logSetupTheme(themeBloc.harpyTheme.name);
 
     app<HarpyNavigator>().pushReplacementNamed(
       HomeScreen.route,
@@ -80,14 +80,14 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
-  Widget _buildContinueButton(ApplicationBloc applicationBloc) {
+  Widget _buildContinueButton(ThemeBloc themeBloc) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: BounceInAnimation(
         delay: const Duration(milliseconds: 4000),
         child: HarpyButton.flat(
           text: 'continue',
-          onTap: () => _continue(applicationBloc),
+          onTap: () => _continue(themeBloc),
         ),
       ),
     );
@@ -97,9 +97,10 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final ThemeData theme = Theme.of(context);
+
+    final ThemeBloc themeBloc = ThemeBloc.of(context);
     final AuthenticationBloc authenticationBloc =
         AuthenticationBloc.of(context);
-    final ApplicationBloc applicationBloc = ApplicationBloc.of(context);
 
     // the max height constraints for the welcome text and the user name
     final double maxTextHeight = mediaQuery.orientation == Orientation.portrait
@@ -134,7 +135,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
               ),
             ),
-            _buildContinueButton(applicationBloc),
+            _buildContinueButton(themeBloc),
           ],
         ),
       ),

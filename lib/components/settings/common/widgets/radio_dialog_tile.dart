@@ -40,8 +40,8 @@ class RadioDialogTile extends StatelessWidget {
   Widget _buildDialog() {
     return HarpyDialog(
       animationType: DialogAnimationType.slide,
-      title: description,
-      body: Column(
+      title: Text(description),
+      content: Column(
         children: <Widget>[
           for (int i = 0; i < items.length; i++)
             RadioListTile<int>(

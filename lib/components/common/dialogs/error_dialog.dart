@@ -10,9 +10,9 @@ class ErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const HarpyDialog(
-      title: 'Crash report',
-      text: 'An unexpected error occurred.\n'
-          'Send a crash report?',
+      title: Text('Crash report'),
+      content: Text('An unexpected error occurred.\n'
+          'Send a crash report?'),
       actions: <DialogAction<bool>>[
         DialogAction<bool>(
           result: false,

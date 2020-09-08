@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/widgets/common/radio_dialog_tile.dart';
+import 'package:harpy/components/settings/common/widgets/radio_dialog_tile.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 

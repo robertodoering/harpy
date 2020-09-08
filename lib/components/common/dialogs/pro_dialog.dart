@@ -50,8 +50,8 @@ class _ProDialogState extends State<ProDialog> {
     );
 
     return HarpyDialog(
-      title: 'Harpy Pro',
-      body: Column(
+      title: const Text('Harpy Pro'),
+      content: Column(
         children: <Widget>[
           const FlareIcon.shiningStar(size: 64),
           const SizedBox(height: 16),

@@ -12,7 +12,7 @@ final List<HarpyTheme> predefinedThemes = <HarpyTheme>[
 final HarpyThemeData crow = HarpyThemeData()
   ..name = 'crow'
   ..backgroundColors = <int>[0xff000005, 0xff17233d]
-  ..accentColor = 0xff4178f0;
+  ..accentColor = 0xff2196f3;
 
 final HarpyThemeData swan = HarpyThemeData()
   ..name = 'swan'
@@ -21,10 +21,10 @@ final HarpyThemeData swan = HarpyThemeData()
 
 final HarpyThemeData phoenix = HarpyThemeData()
   ..name = 'phoenix'
-  ..backgroundColors = <int>[0xfffc2c2e, 0xffff6215, 0xffff6215, 0xfffc2c2e]
-  ..accentColor = 0xffffe60f;
+  ..backgroundColors = <int>[0xffd91a1c, 0xffd94700, 0xffd94700, 0xffd91a1c]
+  ..accentColor = 0xffffffc0;
 
 final HarpyThemeData harpy = HarpyThemeData()
   ..name = 'harpy'
   ..backgroundColors = <int>[0xff40148b, 0xff850a2f]
-  ..accentColor = 0xffEB3965;
+  ..accentColor = 0xffff6ffe;

@@ -1,6 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
+import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
+
+/// The minimum recommended contrast ratio for the visual representation of
+/// text.
+///
+/// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
+const double kTextContrastRatio = 4.5;
+
+/// The minimum recommended contrast ratio for the visual representation of
+/// large text.
+///
+/// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
+const double kLargeTextContrastRatio = 3;
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
@@ -11,15 +25,28 @@ class HarpyTheme {
 
     accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
 
+    _setupAverageBackgroundColor();
     _calculateBrightness();
     _calculateButtonTextColor();
+    _calculateErrorColor();
     _setupTextTheme();
     _setupThemeData();
   }
 
   /// Returns the currently selected [HarpyTheme].
   static HarpyTheme of(BuildContext context) {
-    return ApplicationBloc.of(context).harpyTheme;
+    return ThemeBloc.of(context).harpyTheme;
+  }
+
+  /// Calculates the contrast ratio of two colors using the W3C accessibility
+  /// guidelines.
+  ///
+  /// Values range from 1 (no contrast) to 21 (max contrast).
+  ///
+  /// See https://www.w3.org/TR/WCAG20/#contrast-ratiodef.
+  static double contrastRatio(double firstLuminance, double secondLuminance) {
+    return (max(firstLuminance, secondLuminance) + 0.05) /
+        (min(firstLuminance, secondLuminance) + 0.05);
   }
 
   /// The name of the theme.
@@ -28,16 +55,33 @@ class HarpyTheme {
   /// A list of colors that define the background gradient.
   List<Color> backgroundColors;
 
-  Color get primaryColor => backgroundColors.last;
-
   /// The accent color of the theme.
   Color accentColor;
 
+  /// The average luminance of the [backgroundColors].
+  double backgroundLuminance;
+
+  /// The average color of the [backgroundColors].
+  ///
+  /// Used as the background where only a single color is desired (e.g. a
+  /// dialog background or a pop up menu).
+  Color averageBackgroundColor;
+
   /// The brightness of the theme.
+  ///
+  /// The brightness is dependent on the [backgroundLuminance] and determines
+  /// whether to use white or black foreground colors.
   Brightness brightness;
 
-  /// The color used by buttons.
+  /// The color of the text used by buttons.
   Color buttonTextColor;
+
+  /// The error color of the theme.
+  ///
+  /// Is [Colors.red] if the contrast ratio on the background exceeds
+  /// [kTextContrastRatio].
+  /// Otherwise the [accentColor] is used as the error color.
+  Color errorColor;
 
   /// The text theme of the theme.
   TextTheme textTheme;
@@ -46,60 +90,74 @@ class HarpyTheme {
   ThemeData data;
 
   /// The opposite of [brightness].
-  Brightness get complimentaryBrightness =>
+  Brightness get complementaryBrightness =>
       brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
-  /// Either [Colors.black] or [Colors.white] depending on the background
-  /// brightness.
+  /// Either [Colors.black] or [Colors.white] depending on the theme brightness.
   ///
   /// This is the color that the text that is written on the background should
   /// have.
-  Color get backgroundComplimentaryColor =>
+  Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
-  /// Calculates the brightness by averaging the relative luminance of each
-  /// background color.
+  /// Calculates the background brightness by averaging the relative luminance
+  /// of each background color.
   ///
   /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
   void _calculateBrightness() {
-    final double relativeLuminance = backgroundColors
+    backgroundLuminance = backgroundColors
             .map((Color color) => color.computeLuminance())
             .reduce((double a, double b) => a + b) /
         backgroundColors.length;
 
+    // the Material Design color brightness threshold
     const double kThreshold = 0.15;
 
     brightness =
-        (relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold
+        (backgroundLuminance + 0.05) * (backgroundLuminance + 0.05) > kThreshold
             ? Brightness.light
             : Brightness.dark;
   }
 
-  /// Calculates the button text color, which is the [primaryColor] if it is not
-  /// the same brightness as the button color, otherwise a complimentary color
-  /// (white / black).
-  void _calculateButtonTextColor() {
-    final Brightness primaryColorBrightness =
-        ThemeData.estimateBrightnessForColor(primaryColor);
+  /// Reduces the [backgroundColor] to a single color by interpolating the
+  /// colors.
+  void _setupAverageBackgroundColor() {
+    final Color average = backgroundColors
+        .reduce((Color value, Color element) => Color.lerp(value, element, .5));
 
-    if (brightness == Brightness.dark) {
-      // button color is light
-      buttonTextColor = primaryColorBrightness == Brightness.light
-          ? Colors.black
-          : primaryColor;
-    } else {
-      // button color is dark
-      buttonTextColor = primaryColorBrightness == Brightness.dark
-          ? Colors.white
-          : primaryColor;
-    }
+    averageBackgroundColor = average;
+  }
+
+  /// Calculates the button text color, which is the [averageBackgroundColor] if
+  /// the contrast ratio is at least [kTextContrastRatio], or white / black
+  /// depending on the [brightness].
+  void _calculateButtonTextColor() {
+    final double ratio = contrastRatio(
+      averageBackgroundColor.computeLuminance(),
+      foregroundColor.computeLuminance(),
+    );
+
+    buttonTextColor = ratio >= kTextContrastRatio
+        ? averageBackgroundColor
+        : brightness == Brightness.dark ? Colors.black : Colors.white;
+  }
+
+  /// Calculates the error color, which is [Colors.red] if the contrast ratio is
+  /// at least [kTextContrastRatio], or the [accentColor].
+  void _calculateErrorColor() {
+    final double ratio = contrastRatio(
+      Colors.red.computeLuminance(),
+      backgroundLuminance,
+    );
+
+    errorColor = ratio >= kTextContrastRatio ? Colors.red : accentColor;
   }
 
   void _setupTextTheme() {
     const String displayFont = 'Comfortaa';
     const String bodyFont = 'OpenSans';
 
-    final Color complimentaryColor = backgroundComplimentaryColor;
+    final Color textColor = foregroundColor;
 
     textTheme = Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // headline
@@ -108,31 +166,31 @@ class HarpyTheme {
             letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: textColor,
           ),
           headline2: TextStyle(
             fontSize: 48,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: textColor,
           ),
           headline3: TextStyle(
             fontFamily: displayFont,
-            color: complimentaryColor,
+            color: textColor,
           ),
           headline4: TextStyle(
             fontSize: 18,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor.withOpacity(0.8),
+            color: textColor.withOpacity(0.8),
           ),
           headline6: TextStyle(
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: textColor,
           ),
 
           // subtitle
@@ -140,14 +198,14 @@ class HarpyTheme {
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor.withOpacity(0.9),
+            color: textColor.withOpacity(0.9),
           ),
           subtitle2: TextStyle(
             height: 1.1,
             fontSize: 16,
             fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
-            color: complimentaryColor,
+            color: textColor,
           ),
 
           // body
@@ -158,7 +216,7 @@ class HarpyTheme {
           bodyText1: TextStyle(
             fontSize: 14,
             fontFamily: bodyFont,
-            color: complimentaryColor.withOpacity(0.7),
+            color: textColor.withOpacity(0.7),
           ),
 
           button: TextStyle(
@@ -171,14 +229,13 @@ class HarpyTheme {
   }
 
   void _setupThemeData() {
-    final Color complimentaryColor = backgroundComplimentaryColor;
-
     data = ThemeData(
       brightness: brightness,
       textTheme: textTheme,
-      primaryColor: primaryColor,
+      primaryColor: accentColor,
       accentColor: accentColor,
-      buttonColor: complimentaryColor,
+      buttonColor: foregroundColor,
+      errorColor: errorColor,
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
@@ -188,8 +245,10 @@ class HarpyTheme {
       primaryColorBrightness: brightness,
 
       // used for the background color of material widgets
-      cardColor: primaryColor,
-      canvasColor: primaryColor,
+      cardColor: averageBackgroundColor,
+      canvasColor: averageBackgroundColor,
+      dialogBackgroundColor: averageBackgroundColor,
+      scaffoldBackgroundColor: averageBackgroundColor,
 
       // used by toggleable widgets
       toggleableActiveColor: accentColor,
@@ -209,6 +268,15 @@ class HarpyTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return 'HarpyTheme: {'
+        'name: $name, '
+        'accentColor: $accentColor, '
+        'backgroundColors: $backgroundColors'
+        '}';
   }
 }
 
