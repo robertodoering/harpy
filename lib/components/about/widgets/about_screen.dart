@@ -91,6 +91,7 @@ class _AboutScreenState extends State<AboutScreen> {
       const Text(
         'To support the development of Harpy, please buy Harpy Pro '
         'in the Play Store.',
+        textAlign: TextAlign.center,
       ),
       const SizedBox(height: 16),
       Center(
@@ -110,7 +111,10 @@ class _AboutScreenState extends State<AboutScreen> {
 
   List<Widget> _buildRateAppText(Color accentColor) {
     return <Widget>[
-      const Text('Please rate Harpy in the Play Store!'),
+      const Text(
+        'Please rate Harpy in the Play Store!',
+        textAlign: TextAlign.center,
+      ),
       const SizedBox(height: 16),
       Center(
         child: HarpyButton.raised(
@@ -129,14 +133,20 @@ class _AboutScreenState extends State<AboutScreen> {
 
   List<Widget> _buildDeveloperText(Color accentColor, TextStyle linkStyle) {
     return <Widget>[
-      const Text('Developed by Roberto Doering'),
+      const Text(
+        'Developed by Roberto Doering',
+        textAlign: TextAlign.center,
+      ),
       Text.rich(TextSpan(
         text: 'rbydoering@gmail.com',
         style: linkStyle,
         recognizer: _recognizer['email'],
       )),
       const SizedBox(height: 16),
-      const Text('Thank you for your feedback and bug reports!'),
+      const Text(
+        'Thank you for your feedback and bug reports!',
+        textAlign: TextAlign.center,
+      ),
       const SizedBox(height: 16),
       Center(
         child: HarpyButton.raised(
@@ -180,7 +190,6 @@ class _AboutScreenState extends State<AboutScreen> {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ..._buildTitleWithLogo(color),
               _buildVersionCode(textTheme.subtitle2),
