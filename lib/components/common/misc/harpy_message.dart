@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a widget similar to a [SnackBar] that is intended to be shown at the
 /// bottom of the screen with the [HarpyMessageHandler].
@@ -30,7 +31,6 @@ class HarpyMessage extends StatefulWidget {
 
 class _HarpyMessageState extends State<HarpyMessage>
     with SingleTickerProviderStateMixin {
-  Color textColor;
   Color iconColor;
 
   @override
@@ -39,21 +39,13 @@ class _HarpyMessageState extends State<HarpyMessage>
 
     final ThemeData theme = Theme.of(context);
 
-    final Brightness backgroundBrightness =
-        ThemeData.estimateBrightnessForColor(theme.accentColor);
+    final double ratio = HarpyTheme.contrastRatio(
+      theme.cardColor.computeLuminance(),
+      widget.iconColor.computeLuminance(),
+    );
 
-    final Brightness iconColorBrightness =
-        ThemeData.estimateBrightnessForColor(widget.iconColor);
-
-    // set the text color to compliment the background color
-    textColor =
-        backgroundBrightness == Brightness.dark ? Colors.white : Colors.black;
-
-    // if the widget.iconColor does not compliment the background color, use the
-    // same color as the text instead
-    iconColor = iconColorBrightness == backgroundBrightness
-        ? textColor
-        : widget.iconColor;
+    iconColor =
+        ratio > kTextContrastRatio ? widget.iconColor : theme.iconTheme.color;
   }
 
   @override
@@ -68,8 +60,8 @@ class _HarpyMessageState extends State<HarpyMessage>
       child: SizedBox(
         width: double.infinity,
         child: Card(
+          color: theme.cardColor,
           margin: const EdgeInsets.all(16),
-          color: theme.accentColor,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -83,10 +75,7 @@ class _HarpyMessageState extends State<HarpyMessage>
                 Expanded(
                   child: Text(
                     widget.text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        .apply(color: textColor),
+                    style: theme.textTheme.subtitle2,
                   ),
                 ),
               ],
