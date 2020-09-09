@@ -15,6 +15,17 @@
             ]
         },
         {
+            "name": "Harpy free profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_free.dart",
+            "args": [
+                "--profile",
+                "--flavor",
+                "free"
+            ]
+        },
+        {
             "name": "Harpy free release",
             "request": "launch",
             "type": "dart",
@@ -26,7 +37,7 @@
             ]
         },
         {
-            "name": "Harpy Pro debug",
+            "name": "Harpy pro debug",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_pro.dart",
@@ -36,7 +47,18 @@
             ]
         },
         {
-            "name": "Harpy Pro release",
+            "name": "Harpy pro profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_pro.dart",
+            "args": [
+                "--profile",
+                "--flavor",
+                "pro"
+            ]
+        },
+        {
+            "name": "Harpy pro release",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_pro.dart",
