@@ -110,10 +110,13 @@ abstract class RequestMoreTimelineEvent extends TimelineEvent {
 
     if (bloc.lockRequestMore) {
       _log.warning('tried to request more while still locked');
+      return;
     } else {
       // lock successive requests
       _lockRequestMore(bloc);
     }
+
+    yield RequestingMoreState();
 
     final List<TweetData> tweets = await requestMore(bloc)
         .then(handleTweets)
