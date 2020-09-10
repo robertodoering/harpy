@@ -31,6 +31,8 @@ class HarpyScaffold extends StatelessWidget {
   /// Uses the colors of the current theme if `null`.
   final List<Color> backgroundColors;
 
+  bool get _hasAppBar => title != null || showIcon;
+
   Widget _buildTitle(ThemeData theme) {
     return FittedBox(
       child: Row(
@@ -49,10 +51,7 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
+  Widget _buildAppBar(ThemeData theme, MediaQueryData mediaQuery) {
     final AppBar appBar = AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
@@ -62,8 +61,19 @@ class HarpyScaffold extends StatelessWidget {
       bottom: appBarBottom,
     );
 
-    final double topPadding = MediaQuery.of(context).padding.top;
+    final double topPadding = mediaQuery.padding.top;
     final double extent = appBar.preferredSize.height + topPadding;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: extent),
+      child: appBar,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       drawer: drawer,
@@ -71,10 +81,7 @@ class HarpyScaffold extends StatelessWidget {
         colors: backgroundColors,
         child: Column(
           children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: extent),
-              child: appBar,
-            ),
+            if (_hasAppBar) _buildAppBar(theme, mediaQuery),
             Expanded(child: body),
           ],
         ),
