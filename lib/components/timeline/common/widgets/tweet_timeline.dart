@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
@@ -6,6 +7,9 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
+import 'package:harpy/components/timeline/common/widgets/load_more_indicator.dart';
+import 'package:harpy/components/timeline/common/widgets/load_more_listener.dart';
+import 'package:harpy/components/timeline/common/widgets/load_more_locked.dart';
 import 'package:harpy/components/timeline/common/widgets/no_timeline_tweets.dart';
 import 'package:harpy/components/timeline/common/widgets/timeline_loading.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
@@ -27,7 +31,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
   final OnTimelineAction<T> onRefresh;
 
   /// The callback for a [LoadMoreList] for the [TweetList].
-  // todo: re-implement
   final OnTimelineAction<T> onLoadMore;
 
   /// Slivers built at the beginning of the [CustomScrollView] in the
@@ -36,20 +39,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
 
   /// The [RefreshIndicator.displacement].
   final double refreshIndicatorDisplacement;
-
-  /// Builds a widget for the end of the [TweetList] when
-  /// [TimelineBloc.lockRequestMore] is `true`.
-  Widget _buildLockLoadMore() {
-    return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
-      alignment: Alignment.center,
-      child: const Text(
-        'Please wait a moment until more Tweets can be requested',
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,27 +54,37 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
           timelineInfo = NoTimelineTweets<T>(bloc, onRefresh: onRefresh);
         }
 
-        return ScrollDirectionListener(
-          child: ScrollToStart(
-            child: RefreshIndicator(
-              displacement: refreshIndicatorDisplacement,
-              onRefresh: () => onRefresh(bloc),
-              child: TweetList(
-                bloc.tweets,
-                enableScroll: !bloc.showLoading && !bloc.showFailed,
-                headerSlivers: <Widget>[
-                  ...headerSlivers,
-                  if (timelineInfo != null)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: AnimatedSwitcher(
-                        duration: kShortAnimationDuration,
-                        switchInCurve: Curves.easeInOut,
-                        switchOutCurve: Curves.easeInOut,
-                        child: timelineInfo,
+        return LoadMoreListener(
+          listen: bloc.enableRequestMore,
+          onLoadMore: () => onLoadMore(bloc),
+          child: ScrollDirectionListener(
+            child: ScrollToStart(
+              child: RefreshIndicator(
+                displacement: refreshIndicatorDisplacement,
+                onRefresh: () => onRefresh(bloc),
+                child: TweetList(
+                  bloc.tweets,
+                  enableScroll: !bloc.showLoading && !bloc.showFailed,
+                  beginSlivers: <Widget>[
+                    ...headerSlivers,
+                    if (timelineInfo != null)
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: AnimatedSwitcher(
+                          duration: kShortAnimationDuration,
+                          switchInCurve: Curves.easeInOut,
+                          switchOutCurve: Curves.easeInOut,
+                          child: timelineInfo,
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                  endSlivers: <Widget>[
+                    if (state is RequestingMoreState)
+                      const LoadMoreIndicator()
+                    else if (!bloc.enableRequestMore)
+                      const LoadingMoreLocked(),
+                  ],
+                ),
               ),
             ),
           ),

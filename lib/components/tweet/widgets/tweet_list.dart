@@ -4,11 +4,13 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds a [CustomScrollView] for the [tweets].
 ///
-/// An optional list of [headerSlivers] are built before the [tweets].
+/// An optional list of [beginSlivers] are built before the [tweets] and
+/// [endSlivers] are built after the [tweets].
 class TweetList extends StatelessWidget {
   const TweetList(
     this.tweets, {
-    this.headerSlivers = const <Widget>[],
+    this.beginSlivers = const <Widget>[],
+    this.endSlivers = const <Widget>[],
     this.enableScroll = true,
   });
 
@@ -16,7 +18,10 @@ class TweetList extends StatelessWidget {
   final List<TweetData> tweets;
 
   /// Slivers built at the beginning of the [CustomScrollView].
-  final List<Widget> headerSlivers;
+  final List<Widget> beginSlivers;
+
+  /// Slivers built at the end of the [CustomScrollView].
+  final List<Widget> endSlivers;
 
   /// Whether the tweet list should be scrollable.
   final bool enableScroll;
@@ -39,7 +44,7 @@ class TweetList extends StatelessWidget {
           : const NeverScrollableScrollPhysics(),
       cacheExtent: 800,
       slivers: <Widget>[
-        ...headerSlivers,
+        ...beginSlivers,
         SliverPadding(
           padding: const EdgeInsets.all(8),
           sliver: SliverList(
@@ -50,6 +55,7 @@ class TweetList extends StatelessWidget {
             ),
           ),
         ),
+        ...endSlivers,
       ],
     );
   }
