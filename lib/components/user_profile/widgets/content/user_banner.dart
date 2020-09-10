@@ -6,6 +6,7 @@ import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
+/// Builds the user banner image as the background for a [HarpySliverAppBar].
 class UserBanner extends StatelessWidget {
   const UserBanner(this.bloc);
 
