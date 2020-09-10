@@ -36,15 +36,15 @@ class _ScrollToStartState extends State<ScrollToStart> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _scrollController ??= PrimaryScrollController.of(context)
-      ..addListener(_scrollListener);
+    _scrollController ??= PrimaryScrollController.of(context);
+    _scrollController?.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    _scrollController.removeListener(_scrollListener);
+    _scrollController?.removeListener(_scrollListener);
   }
 
   void _scrollListener() {
@@ -62,7 +62,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
     final ScrollDirection scrollDirection = ScrollDirection.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
-    if (!_scrollController.hasClients) {
+    if (_scrollController == null || !_scrollController.hasClients) {
       return false;
     }
 

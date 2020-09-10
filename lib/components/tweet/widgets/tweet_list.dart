@@ -1,58 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/list/load_more_list.dart';
-import 'package:harpy/components/common/list/scroll_direction_listener.dart';
-import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-/// Builds a list for the [tweets].
+/// Builds a [CustomScrollView] for the [tweets].
+///
+/// An optional list of [headerSlivers] are built before the [tweets].
 class TweetList extends StatelessWidget {
   const TweetList(
     this.tweets, {
-    @required this.onRefresh,
-    @required this.onLoadMore,
-    @required this.enableLoadMore,
-    this.disabledWidget,
+    this.headerSlivers = const <Widget>[],
+    this.controller,
+    this.enableScroll = true,
   });
 
   /// The list of tweets to be displayed in this list.
   final List<TweetData> tweets;
 
-  /// The callback for a [RefreshIndicator] built above the list.
-  final RefreshCallback onRefresh;
+  /// Slivers built at the beginning of the [CustomScrollView].
+  final List<Widget> headerSlivers;
 
-  /// The callback for loading more data.
-  final OnLoadMore onLoadMore;
+  /// An optional scroll controller used by the [CustomScrollView].
+  final ScrollController controller;
 
-  /// Whether to enable the [LoadMoreList] to load more data.
-  final bool enableLoadMore;
+  /// Whether the tweet list should be scrollable.
+  final bool enableScroll;
 
-  /// A widget used by the [LoadMoreList] to display a list when
-  /// [enableLoadMore] is `false`.
-  final Widget disabledWidget;
+  Widget _itemBuilder(BuildContext context, int index) {
+    final int itemIndex = index ~/ 2;
+
+    if (index.isEven) {
+      return TweetTile(tweets[itemIndex]);
+    } else {
+      return const SizedBox(height: 16);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ScrollDirectionListener(
-      child: ScrollToStart(
-        child: RefreshIndicator(
-          onRefresh: onRefresh,
-          child: LoadMoreList(
-            onLoadMore: onLoadMore,
-            enable: enableLoadMore,
-            disabledWidget: disabledWidget,
-            child: ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(8),
-              itemCount: tweets.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  TweetTile(tweets[index]),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const SizedBox(height: 16),
+    return CustomScrollView(
+      controller: controller,
+      physics: enableScroll
+          ? const BouncingScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
+      cacheExtent: 800,
+      slivers: <Widget>[
+        ...headerSlivers,
+        SliverPadding(
+          padding: const EdgeInsets.all(8),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              _itemBuilder,
+              childCount: tweets.length * 2 - 1,
+              addAutomaticKeepAlives: false,
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

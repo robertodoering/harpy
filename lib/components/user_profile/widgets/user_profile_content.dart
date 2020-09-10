@@ -1,83 +1,80 @@
-import 'dart:math';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/misc/custom_dismissible.dart';
-import 'package:harpy/components/common/misc/fading_nested_scaffold.dart';
-import 'package:harpy/components/common/routes/hero_dialog_route.dart';
-import 'package:harpy/components/timeline/user_timeline/widget/user_timeline.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
+import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
+import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
+import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_event.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
+import 'package:harpy/components/user_profile/bloc/user_profile_state.dart';
+import 'package:harpy/components/user_profile/widgets/content/user_banner.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_header.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the content for the [UserProfileScreen].
-class UserProfileContent extends StatelessWidget {
-  const UserProfileContent(this.bloc);
+class UserProfileContent extends StatefulWidget {
+  const UserProfileContent();
 
-  final UserProfileBloc bloc;
+  @override
+  _UserProfileContentState createState() => _UserProfileContentState();
+}
 
-  /// Builds the profile banner for a [HeroDialogRoute] when the user taps on
-  /// the banner.
-  Widget _buildDialogImage() {
-    final String url = bloc.user.appropriateUserBannerUrl;
+class _UserProfileContentState extends State<UserProfileContent> {
+  ScrollController _controller;
 
-    return CustomDismissible(
-      onDismissed: () => app<HarpyNavigator>().state.maybePop(),
-      child: Center(
-        child: Hero(
-          tag: url,
-          child: CachedNetworkImage(
-            imageUrl: url,
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = ScrollController();
   }
 
-  Widget _buildAppBarBackground() {
-    final String url = bloc.user.appropriateUserBannerUrl;
+  @override
+  void dispose() {
+    super.dispose();
 
-    if (bloc.user.hasBanner) {
-      return GestureDetector(
-        onTap: () {
-          app<HarpyNavigator>().pushRoute(HeroDialogRoute<void>(
-            onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
-            builder: (BuildContext context) => _buildDialogImage(),
-          ));
-        },
-        child: Hero(
-          tag: url,
-          placeholderBuilder:
-              (BuildContext context, Size heroSize, Widget child) => child,
-          child: CachedNetworkImage(
-            imageUrl: url,
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    } else {
-      return const SizedBox();
-    }
+    _controller?.dispose();
+  }
+
+  Widget _buildSliverAppBar(UserProfileBloc bloc) {
+    final bool _hasUser = bloc.state is InitializedUserState;
+
+    return HarpySliverAppBar(
+      title: bloc.user?.name ?? '',
+      stretch: true,
+      pinned: true,
+      background: _hasUser ? UserBanner(bloc) : null,
+      scrollController: _controller,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final UserProfileBloc bloc = UserProfileBloc.of(context);
 
-    // limit the app bar extended height
-    final double appBarHeight = min(200, mediaQuery.size.height * .25);
+    final String screenName = bloc.user?.screenName;
 
-    return FadingNestedScaffold(
-      title: bloc.user.name,
-      alwaysShowTitle: !bloc.user.hasBanner,
-      background: _buildAppBarBackground(),
-      header: <Widget>[
-        UserProfileHeader(bloc),
-      ],
-      body: UserTimeline(screenName: bloc.user.screenName),
-      expandedHeight: appBarHeight,
+    return BlocProvider<UserTimelineBloc>(
+      create: (BuildContext context) => UserTimelineBloc(
+        screenName: screenName,
+      ),
+      child: HarpyScaffold(
+        body: TweetTimeline<UserTimelineBloc>(
+          controller: _controller,
+          headerSlivers: <Widget>[
+            _buildSliverAppBar(bloc),
+            SliverToBoxAdapter(child: UserProfileHeader(bloc)),
+          ],
+          onRefresh: (UserTimelineBloc timelineBloc) {
+            timelineBloc.add(UpdateUserTimelineEvent(screenName: screenName));
+            return timelineBloc.updateTimelineCompleter.future;
+          },
+          onLoadMore: (UserTimelineBloc timelineBloc) {
+            timelineBloc
+                .add(RequestMoreUserTimelineEvent(screenName: screenName));
+            return timelineBloc.requestMoreCompleter.future;
+          },
+        ),
+      ),
     );
   }
 }

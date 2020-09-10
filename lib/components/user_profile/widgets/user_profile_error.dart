@@ -24,6 +24,7 @@ class UserProfileError extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return HarpyScaffold(
+      title: '',
       body: Container(
         padding: const EdgeInsets.all(16),
         alignment: Alignment.center,

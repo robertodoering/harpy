@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/list/scroll_direction_listener.dart';
+import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
 import 'package:harpy/components/timeline/common/widgets/no_timeline_tweets.dart';
@@ -16,13 +19,28 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
   const TweetTimeline({
     @required this.onRefresh,
     @required this.onLoadMore,
+    this.headerSlivers = const <Widget>[],
+    this.refreshIndicatorDisplacement = 40,
+    this.controller,
   });
 
   /// The callback for a [RefreshIndicator] for the [TweetList].
   final OnTimelineAction<T> onRefresh;
 
   /// The callback for a [LoadMoreList] for the [TweetList].
+  // todo: re-implement
   final OnTimelineAction<T> onLoadMore;
+
+  /// Slivers built at the beginning of the [CustomScrollView] in the
+  /// [TweetList].
+  final List<Widget> headerSlivers;
+
+  /// The [RefreshIndicator.displacement].
+  final double refreshIndicatorDisplacement;
+
+  /// An optional scroll controller used by the [CustomScrollView] in the
+  /// [TweetList].
+  final ScrollController controller;
 
   /// Builds a widget for the end of the [TweetList] when
   /// [TimelineBloc.lockRequestMore] is `true`.
@@ -44,27 +62,42 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
       builder: (BuildContext context, TimelineState state) {
         final T bloc = BlocProvider.of<T>(context);
 
-        Widget child;
+        Widget timelineInfo;
 
         if (bloc.showLoading) {
-          child = const TimelineLoading();
+          timelineInfo = const TimelineLoading();
         } else if (state is NoTweetsFoundState || bloc.showFailed) {
-          child = NoTimelineTweets<T>(bloc, onRefresh: onRefresh);
-        } else {
-          child = TweetList(
-            bloc.tweets,
-            onRefresh: () => onRefresh(bloc),
-            onLoadMore: () => onLoadMore(bloc),
-            enableLoadMore: bloc.enableRequestMore,
-            disabledWidget: bloc.lockRequestMore ? _buildLockLoadMore() : null,
-          );
+          timelineInfo = NoTimelineTweets<T>(bloc, onRefresh: onRefresh);
         }
 
-        return AnimatedSwitcher(
-          duration: kShortAnimationDuration,
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          child: child,
+        // todo: scroll to start does not work in user profile screen when the
+        //   scroll controller is being created
+
+        return ScrollDirectionListener(
+          child: ScrollToStart(
+            child: RefreshIndicator(
+              displacement: refreshIndicatorDisplacement,
+              onRefresh: () => onRefresh(bloc),
+              child: TweetList(
+                bloc.tweets,
+                controller: controller,
+                enableScroll: !bloc.showLoading && !bloc.showFailed,
+                headerSlivers: <Widget>[
+                  ...headerSlivers,
+                  if (timelineInfo != null)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: AnimatedSwitcher(
+                        duration: kShortAnimationDuration,
+                        switchInCurve: Curves.easeInOut,
+                        switchOutCurve: Curves.easeInOut,
+                        child: timelineInfo,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );

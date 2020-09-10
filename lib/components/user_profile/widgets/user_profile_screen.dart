@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_state.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_content.dart';
@@ -45,18 +44,20 @@ class UserProfileScreen extends StatelessWidget {
           if (state is LoadingUserState) {
             child = const UserProfileLoading();
           } else if (state is InitializedUserState) {
-            child = UserProfileContent(bloc);
+            child = const UserProfileContent();
           } else {
-            child = UserProfileError(bloc, user: user, screenName: screenName);
+            child = UserProfileError(
+              bloc,
+              user: user,
+              screenName: screenName,
+            );
           }
 
-          return HarpyBackground(
-            child: AnimatedSwitcher(
-              duration: kShortAnimationDuration,
-              switchInCurve: Curves.easeInOut,
-              switchOutCurve: Curves.easeInOut,
-              child: child,
-            ),
+          return AnimatedSwitcher(
+            duration: kShortAnimationDuration,
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
+            child: child,
           );
         },
       ),

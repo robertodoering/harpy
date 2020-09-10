@@ -8,6 +8,7 @@ class UserProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const HarpyScaffold(
+      title: '',
       body: Center(
         child: CircularProgressIndicator(),
       ),
