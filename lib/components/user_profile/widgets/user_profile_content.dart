@@ -53,26 +53,28 @@ class _UserProfileContentState extends State<UserProfileContent> {
 
     final String screenName = bloc.user?.screenName;
 
-    return BlocProvider<UserTimelineBloc>(
-      create: (BuildContext context) => UserTimelineBloc(
-        screenName: screenName,
-      ),
-      child: HarpyScaffold(
-        body: TweetTimeline<UserTimelineBloc>(
-          controller: _controller,
-          headerSlivers: <Widget>[
-            _buildSliverAppBar(bloc),
-            SliverToBoxAdapter(child: UserProfileHeader(bloc)),
-          ],
-          onRefresh: (UserTimelineBloc timelineBloc) {
-            timelineBloc.add(UpdateUserTimelineEvent(screenName: screenName));
-            return timelineBloc.updateTimelineCompleter.future;
-          },
-          onLoadMore: (UserTimelineBloc timelineBloc) {
-            timelineBloc
-                .add(RequestMoreUserTimelineEvent(screenName: screenName));
-            return timelineBloc.requestMoreCompleter.future;
-          },
+    return PrimaryScrollController(
+      controller: _controller,
+      child: BlocProvider<UserTimelineBloc>(
+        create: (BuildContext context) => UserTimelineBloc(
+          screenName: screenName,
+        ),
+        child: HarpyScaffold(
+          body: TweetTimeline<UserTimelineBloc>(
+            headerSlivers: <Widget>[
+              _buildSliverAppBar(bloc),
+              SliverToBoxAdapter(child: UserProfileHeader(bloc)),
+            ],
+            onRefresh: (UserTimelineBloc timelineBloc) {
+              timelineBloc.add(UpdateUserTimelineEvent(screenName: screenName));
+              return timelineBloc.updateTimelineCompleter.future;
+            },
+            onLoadMore: (UserTimelineBloc timelineBloc) {
+              timelineBloc
+                  .add(RequestMoreUserTimelineEvent(screenName: screenName));
+              return timelineBloc.requestMoreCompleter.future;
+            },
+          ),
         ),
       ),
     );

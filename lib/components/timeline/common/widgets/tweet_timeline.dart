@@ -21,7 +21,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
     @required this.onLoadMore,
     this.headerSlivers = const <Widget>[],
     this.refreshIndicatorDisplacement = 40,
-    this.controller,
   });
 
   /// The callback for a [RefreshIndicator] for the [TweetList].
@@ -37,10 +36,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
 
   /// The [RefreshIndicator.displacement].
   final double refreshIndicatorDisplacement;
-
-  /// An optional scroll controller used by the [CustomScrollView] in the
-  /// [TweetList].
-  final ScrollController controller;
 
   /// Builds a widget for the end of the [TweetList] when
   /// [TimelineBloc.lockRequestMore] is `true`.
@@ -70,9 +65,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
           timelineInfo = NoTimelineTweets<T>(bloc, onRefresh: onRefresh);
         }
 
-        // todo: scroll to start does not work in user profile screen when the
-        //   scroll controller is being created
-
         return ScrollDirectionListener(
           child: ScrollToStart(
             child: RefreshIndicator(
@@ -80,7 +72,6 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
               onRefresh: () => onRefresh(bloc),
               child: TweetList(
                 bloc.tweets,
-                controller: controller,
                 enableScroll: !bloc.showLoading && !bloc.showFailed,
                 headerSlivers: <Widget>[
                   ...headerSlivers,

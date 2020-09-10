@@ -9,7 +9,6 @@ class TweetList extends StatelessWidget {
   const TweetList(
     this.tweets, {
     this.headerSlivers = const <Widget>[],
-    this.controller,
     this.enableScroll = true,
   });
 
@@ -18,9 +17,6 @@ class TweetList extends StatelessWidget {
 
   /// Slivers built at the beginning of the [CustomScrollView].
   final List<Widget> headerSlivers;
-
-  /// An optional scroll controller used by the [CustomScrollView].
-  final ScrollController controller;
 
   /// Whether the tweet list should be scrollable.
   final bool enableScroll;
@@ -38,7 +34,6 @@ class TweetList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: controller,
       physics: enableScroll
           ? const BouncingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
