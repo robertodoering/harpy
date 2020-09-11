@@ -129,28 +129,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   ///
   /// The system ui overlay will be hidden while the video is played in
   /// fullscreen.
-  ///
-  /// The device orientation is determined by the aspect ratio of the video.
   Future<void> _pushFullscreen() async {
     _fullscreen = true;
 
     SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
-
-    // delay to wait for the system ui to hide to prevent a jump in the
-    // transition animation
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-
-    if (controller.value.aspectRatio > 1) {
-      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    } else {
-      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    }
 
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -163,24 +145,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   /// Exits the fullscreen video.
   ///
   /// The system ui overlays will be shown again.
-  ///
-  /// The device orientation is restored to allow for both portrait and
-  /// landscape.
   Future<void> _popFullscreen() async {
     _fullscreen = false;
 
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
-    // delay to wait for the system ui to show again to prevent a jump in the
-    // transition animation
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-
-    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
 
     app<HarpyNavigator>().state.maybePop();
     notifyListeners();

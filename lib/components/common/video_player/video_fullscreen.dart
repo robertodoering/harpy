@@ -14,14 +14,11 @@ class VideoFullscreen extends StatelessWidget {
   final HarpyVideoPlayerModel model;
 
   Widget _buildVideo() {
-    return Hero(
-      tag: model.controller,
-      child: Stack(
-        children: <Widget>[
-          VideoPlayer(model.controller),
-          VideoPlayerOverlay(model),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        VideoPlayer(model.controller),
+        VideoPlayerOverlay(model),
+      ],
     );
   }
 
@@ -39,14 +36,29 @@ class VideoFullscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
+    // rotate the video depending on its aspect ratio and the current
+    // orientation
+    int quarterTurns;
+
+    if (model.controller.value.aspectRatio > 1) {
+      quarterTurns = mediaQuery.orientation == Orientation.portrait ? 1 : 0;
+    } else {
+      quarterTurns = mediaQuery.orientation == Orientation.portrait ? 0 : 1;
+    }
+
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Center(
-        child: AspectRatio(
-          aspectRatio: model.controller.value.aspectRatio,
-          child: ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
-            value: model,
-            child: _buildVideo(),
+      child: RotatedBox(
+        quarterTurns: quarterTurns,
+        child: Center(
+          child: AspectRatio(
+            aspectRatio: model.controller.value.aspectRatio,
+            child: ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+              value: model,
+              child: _buildVideo(),
+            ),
           ),
         ),
       ),
