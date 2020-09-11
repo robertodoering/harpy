@@ -81,7 +81,8 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
                   endSlivers: <Widget>[
                     if (state is RequestingMoreState)
                       const LoadMoreIndicator()
-                    else if (!bloc.enableRequestMore)
+                    else if (state is ShowingTimelineState &&
+                        bloc.lockRequestMore)
                       const LoadingMoreLocked(),
                   ],
                 ),
