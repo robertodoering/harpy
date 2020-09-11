@@ -12,9 +12,13 @@ import 'package:harpy/components/user_profile/widgets/user_profile_header.dart';
 
 /// Builds the content for the [UserProfileScreen].
 class UserProfileContent extends StatelessWidget {
-  const UserProfileContent();
+  const UserProfileContent({
+    @required this.bloc,
+  });
 
-  Widget _buildSliverAppBar(UserProfileBloc bloc) {
+  final UserProfileBloc bloc;
+
+  Widget _buildSliverAppBar() {
     final bool _hasUser = bloc.state is InitializedUserState;
 
     return HarpySliverAppBar(
@@ -27,8 +31,6 @@ class UserProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProfileBloc bloc = UserProfileBloc.of(context);
-
     final String screenName = bloc.user?.screenName;
 
     return BlocProvider<UserTimelineBloc>(
@@ -38,7 +40,7 @@ class UserProfileContent extends StatelessWidget {
       child: HarpyScaffold(
         body: TweetTimeline<UserTimelineBloc>(
           headerSlivers: <Widget>[
-            _buildSliverAppBar(bloc),
+            _buildSliverAppBar(),
             SliverToBoxAdapter(child: UserProfileHeader(bloc)),
           ],
           onRefresh: (UserTimelineBloc timelineBloc) {
