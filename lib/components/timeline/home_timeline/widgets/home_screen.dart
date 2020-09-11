@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
@@ -15,12 +16,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'Harpy',
-      showIcon: true,
       drawer: const HomeDrawer(),
       body: BlocProvider<HomeTimelineBloc>(
         create: (BuildContext context) => HomeTimelineBloc(),
         child: TweetTimeline<HomeTimelineBloc>(
+          headerSlivers: const <Widget>[
+            HarpySliverAppBar(
+              title: 'Harpy',
+              showIcon: true,
+              floating: true,
+            ),
+          ],
+          refreshIndicatorDisplacement: 80,
           onRefresh: (HomeTimelineBloc bloc) {
             bloc.add(const UpdateHomeTimelineEvent());
             return bloc.updateTimelineCompleter.future;

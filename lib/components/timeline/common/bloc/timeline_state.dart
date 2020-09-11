@@ -11,6 +11,9 @@ class UpdatingTimelineState extends TimelineState {}
 /// The state when the timeline is showing with tweets.
 class ShowingTimelineState extends TimelineState {}
 
+/// The state when the timeline is requesting more tweets.
+class RequestingMoreState extends TimelineState {}
+
 /// The state when the timeline does not return any tweets.
 class NoTweetsFoundState extends TimelineState {}
 

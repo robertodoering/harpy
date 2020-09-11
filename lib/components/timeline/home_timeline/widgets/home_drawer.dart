@@ -75,7 +75,7 @@ class HomeDrawer extends StatelessWidget {
         ),
         // logout
         ListTile(
-          leading: const Icon(Icons.arrow_back),
+          leading: const Icon(Icons.exit_to_app),
           title: const Text('Logout'),
           onTap: () => AuthenticationBloc.of(context).add(const LogoutEvent()),
         ),
