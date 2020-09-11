@@ -29,6 +29,7 @@ dependencies:
   logging: ^0.11.4
   provider: ^4.3.1
   sentry: ^3.0.1
+  timeago: ^2.0.27
   url_launcher: ^5.4.10
   yaml: ^2.2.1
   

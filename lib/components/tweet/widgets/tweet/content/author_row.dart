@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/created_at_time.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
-import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Builds the tweet author's avatar, display name, username and the creation
 /// date of the tweet.
@@ -68,13 +68,25 @@ class TweetAuthorRow extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: _onUserTap,
-                child: Text(
-                  '@${tweet.userData.screenName} \u00b7 '
-                  '${tweetTimeDifference(tweet.createdAt)}',
-                  style: theme.textTheme.bodyText1.apply(
-                    fontSizeDelta: fontSizeDelta,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        '@${tweet.userData.screenName} \u00b7 ',
+                        style: theme.textTheme.bodyText1.apply(
+                          fontSizeDelta: fontSizeDelta,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Flexible(
+                      child: CreatedAtTime(
+                        createdAt: tweet.createdAt,
+                        fontSizeDelta: fontSizeDelta,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

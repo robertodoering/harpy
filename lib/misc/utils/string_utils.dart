@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 /// Pretty prints a duration difference as long as the difference is smaller
 /// than an hour.
@@ -103,21 +103,8 @@ String trimOne(
   return source;
 }
 
-/// Returns a formatted String displaying the difference of a tweet creation
-/// time to the local time if the difference is less than 1 day.
-///
-/// Otherwise returns a formatted time for the creation time.
+/// Returns a formatted String displaying the difference of the tweet creation
+/// time.
 String tweetTimeDifference(DateTime createdAt) {
-  final DateTime localCreatedAt = createdAt.toLocal();
-  final Duration difference = DateTime.now().difference(localCreatedAt);
-
-  if (difference.inMinutes <= 59) {
-    return '${difference.inMinutes}m';
-  } else if (difference.inHours <= 24) {
-    return '${difference.inHours}h';
-  } else if (difference.inDays > 365) {
-    return DateFormat('MMM d yyyy').format(localCreatedAt);
-  } else {
-    return DateFormat('MMMd').format(localCreatedAt);
-  }
+  return timeago.format(createdAt.toLocal());
 }
