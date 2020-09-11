@@ -9,11 +9,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 ///
 /// When a [background] is provided, a [FlexibleSpaceBar] will be built behind
 /// the [AppBar].
-///
-/// [scrollController] can be used to add a listener that will fade the [title]
-/// in, based on the scroll position. This should be used in combination with a
-/// [background].
-class HarpySliverAppBar extends StatefulWidget {
+class HarpySliverAppBar extends StatelessWidget {
   const HarpySliverAppBar({
     this.title,
     this.showIcon = false,
@@ -21,7 +17,6 @@ class HarpySliverAppBar extends StatefulWidget {
     this.stretch = false,
     this.pinned = false,
     this.background,
-    this.scrollController,
   });
 
   final String title;
@@ -30,91 +25,25 @@ class HarpySliverAppBar extends StatefulWidget {
   final bool stretch;
   final bool pinned;
   final Widget background;
-  final ScrollController scrollController;
-
-  @override
-  _HarpySliverAppBarState createState() => _HarpySliverAppBarState();
-}
-
-class _HarpySliverAppBarState extends State<HarpySliverAppBar> {
-  double _expandedHeight;
-  double _opacity;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.scrollController?.addListener(_scrollListener);
-
-    _opacity = widget.scrollController == null ? 1 : 0;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.scrollController?.removeListener(_scrollListener);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    _expandedHeight = min(200, mediaQuery.size.height * .25);
-  }
-
-  void _scrollListener() {
-    final double fadeStart = _expandedHeight - 125;
-    final double fadeEnd = _expandedHeight - 40;
-    final double difference = fadeEnd - fadeStart;
-
-    if (widget.scrollController.offset >= fadeStart &&
-        widget.scrollController.offset <= fadeEnd) {
-      final double val = widget.scrollController.offset - fadeStart;
-
-      setState(() {
-        _opacity = val / difference;
-      });
-    } else if (widget.scrollController.offset < fadeStart && _opacity != 0) {
-      setState(() {
-        _opacity = 0;
-      });
-    } else if (widget.scrollController.offset > fadeEnd && _opacity != 1.0) {
-      setState(() {
-        _opacity = 1.0;
-      });
-    }
-  }
 
   Widget _buildTitle(ThemeData theme) {
-    final Widget title = Row(
+    return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Flexible(
           child: Text(
-            widget.title ?? '',
+            title ?? '',
             style: theme.textTheme.headline6,
             overflow: TextOverflow.fade,
             softWrap: false,
           ),
         ),
-        if (widget.showIcon) ...<Widget>[
+        if (showIcon) ...<Widget>[
           const SizedBox(width: 4),
           const FlareIcon.harpyLogo(size: 24),
         ],
       ],
     );
-
-    // todo: add widget.alwaysShowTitle?
-
-    if (_opacity == 0) {
-      // return empty sized box to prevent the invisible title to block gesture
-      // detection
-      return const SizedBox();
-    } else {
-      return Opacity(
-        opacity: _opacity,
-        child: title,
-      );
-    }
   }
 
   Widget _buildFlexibleSpace(ThemeData theme) {
@@ -123,7 +52,7 @@ class _HarpySliverAppBarState extends State<HarpySliverAppBar> {
       titlePadding: const EdgeInsets.only(left: 54, right: 54, bottom: 16),
       centerTitle: true,
       title: _buildTitle(theme),
-      background: widget.background,
+      background: background,
       stretchModes: const <StretchMode>[
         StretchMode.zoomBackground,
         StretchMode.fadeTitle,
@@ -173,7 +102,9 @@ class _HarpySliverAppBarState extends State<HarpySliverAppBar> {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     // whether a flexible space widget should be built for the sliver app bar
-    final bool hasFlexibleSpace = widget.background != null;
+    final bool hasFlexibleSpace = background != null;
+
+    final double expandedHeight = min(200, mediaQuery.size.height * .25);
 
     return CustomSliverAppBar(
       decorationBuilder: (double minExtend, double maxExtend) =>
@@ -181,12 +112,12 @@ class _HarpySliverAppBarState extends State<HarpySliverAppBar> {
       elevation: 0,
       centerTitle: true,
       backgroundColor: Colors.transparent,
-      floating: widget.floating,
-      stretch: widget.stretch,
-      pinned: widget.pinned,
+      floating: floating,
+      stretch: stretch,
+      pinned: pinned,
       title: hasFlexibleSpace ? null : _buildTitle(theme),
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
-      expandedHeight: hasFlexibleSpace ? _expandedHeight : null,
+      expandedHeight: hasFlexibleSpace ? expandedHeight : null,
     );
   }
 }

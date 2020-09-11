@@ -11,29 +11,8 @@ import 'package:harpy/components/user_profile/widgets/content/user_banner.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_header.dart';
 
 /// Builds the content for the [UserProfileScreen].
-class UserProfileContent extends StatefulWidget {
+class UserProfileContent extends StatelessWidget {
   const UserProfileContent();
-
-  @override
-  _UserProfileContentState createState() => _UserProfileContentState();
-}
-
-class _UserProfileContentState extends State<UserProfileContent> {
-  ScrollController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _controller?.dispose();
-  }
 
   Widget _buildSliverAppBar(UserProfileBloc bloc) {
     final bool _hasUser = bloc.state is InitializedUserState;
@@ -43,7 +22,6 @@ class _UserProfileContentState extends State<UserProfileContent> {
       stretch: true,
       pinned: true,
       background: _hasUser ? UserBanner(bloc) : null,
-      scrollController: _controller,
     );
   }
 
@@ -53,28 +31,25 @@ class _UserProfileContentState extends State<UserProfileContent> {
 
     final String screenName = bloc.user?.screenName;
 
-    return PrimaryScrollController(
-      controller: _controller,
-      child: BlocProvider<UserTimelineBloc>(
-        create: (BuildContext context) => UserTimelineBloc(
-          screenName: screenName,
-        ),
-        child: HarpyScaffold(
-          body: TweetTimeline<UserTimelineBloc>(
-            headerSlivers: <Widget>[
-              _buildSliverAppBar(bloc),
-              SliverToBoxAdapter(child: UserProfileHeader(bloc)),
-            ],
-            onRefresh: (UserTimelineBloc timelineBloc) {
-              timelineBloc.add(UpdateUserTimelineEvent(screenName: screenName));
-              return timelineBloc.updateTimelineCompleter.future;
-            },
-            onLoadMore: (UserTimelineBloc timelineBloc) {
-              timelineBloc
-                  .add(RequestMoreUserTimelineEvent(screenName: screenName));
-              return timelineBloc.requestMoreCompleter.future;
-            },
-          ),
+    return BlocProvider<UserTimelineBloc>(
+      create: (BuildContext context) => UserTimelineBloc(
+        screenName: screenName,
+      ),
+      child: HarpyScaffold(
+        body: TweetTimeline<UserTimelineBloc>(
+          headerSlivers: <Widget>[
+            _buildSliverAppBar(bloc),
+            SliverToBoxAdapter(child: UserProfileHeader(bloc)),
+          ],
+          onRefresh: (UserTimelineBloc timelineBloc) {
+            timelineBloc.add(UpdateUserTimelineEvent(screenName: screenName));
+            return timelineBloc.updateTimelineCompleter.future;
+          },
+          onLoadMore: (UserTimelineBloc timelineBloc) {
+            timelineBloc
+                .add(RequestMoreUserTimelineEvent(screenName: screenName));
+            return timelineBloc.requestMoreCompleter.future;
+          },
         ),
       ),
     );

@@ -43,7 +43,7 @@ class _LoadMoreListenerState extends State<LoadMoreListener> {
       _loadMore();
     }
 
-    return true;
+    return false;
   }
 
   @override
