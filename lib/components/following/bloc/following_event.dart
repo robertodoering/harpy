@@ -1,45 +1,22 @@
 import 'package:dart_twitter_api/api/users/data/paginated_users.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/foundation.dart';
+import 'package:harpy/components/common/paginated_bloc/paginated_bloc.dart';
+import 'package:harpy/components/common/paginated_bloc/paginated_event.dart';
 import 'package:harpy/components/following/bloc/following_bloc.dart';
-import 'package:harpy/components/following/bloc/following_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
-import 'package:logging/logging.dart';
 
-@immutable
-abstract class FollowingEvent {
-  const FollowingEvent();
-
-  Stream<FollowingState> applyAsync({
-    FollowingState currentState,
-    FollowingBloc bloc,
-  });
-}
-
-/// Loads the next page of following users for the [FollowingBloc.userId] and
-/// sets it to the [FollowingBloc.users].
-class LoadFollowingUsersEvent extends FollowingEvent {
-  const LoadFollowingUsersEvent();
-
-  static final Logger _log = Logger('LoadFollowersEvent');
+/// Loads the following users and sets it to the [FollowingBloc.users];
+class LoadFollowingUsers extends LoadPaginatedData {
+  const LoadFollowingUsers();
 
   @override
-  Stream<FollowingState> applyAsync({
-    FollowingState currentState,
-    FollowingBloc bloc,
-  }) async* {
-    _log.fine('loading following');
+  Future<bool> loadData(PaginatedBloc bloc) async {
+    final FollowingBloc followingBloc = bloc as FollowingBloc;
 
-    if (bloc.cursor == null) {
-      return;
-    }
-
-    yield LoadingFollowingState();
-
-    final PaginatedUsers paginatedUsers = await bloc.userService
+    final PaginatedUsers paginatedUsers = await followingBloc.userService
         .followersList(
-          userId: bloc.userId,
+          userId: followingBloc.userId,
           skipStatus: true,
           count: 200,
           cursor: bloc.cursor,
@@ -47,14 +24,14 @@ class LoadFollowingUsersEvent extends FollowingEvent {
         .catchError(twitterApiErrorHandler);
 
     if (paginatedUsers == null) {
-      yield FailedLoadingFollowingState();
+      return false;
     } else {
-      bloc.cursor = int.tryParse(paginatedUsers.nextCursorStr);
-      bloc.users.addAll(
+      followingBloc.cursor = int.tryParse(paginatedUsers.nextCursorStr);
+      followingBloc.users.addAll(
         paginatedUsers.users.map((User user) => UserData.fromUser(user)),
       );
 
-      yield LoadedFollowingState();
+      return true;
     }
   }
 }
