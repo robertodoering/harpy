@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/list/scroll_to_start.dart';
-import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/following/bloc/following_bloc.dart';
-import 'package:harpy/components/following/bloc/following_event.dart';
-import 'package:harpy/components/timeline/common/widgets/load_more_listener.dart';
-import 'package:harpy/core/api/twitter/user_data.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/components/following/widgets/content/following_error.dart';
+import 'package:harpy/components/following/widgets/content/following_list.dart';
 
 /// Builds the screen with a list of the following users for the user with the
 /// [userId].
@@ -23,10 +18,6 @@ class FollowingScreen extends StatelessWidget {
 
   static const String route = 'following';
 
-  Widget _itemBuilder(int index, FollowingBloc bloc) {
-    return UserCard(bloc.users[index]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FollowingBloc>(
@@ -35,72 +26,26 @@ class FollowingScreen extends StatelessWidget {
         builder: (BuildContext context, PaginatedState state) {
           final FollowingBloc bloc = FollowingBloc.of(context);
 
+          Widget child;
+
+          if (bloc.loadingInitialData) {
+            child = const Center(child: CircularProgressIndicator());
+          } else if (bloc.showNoDataExists) {
+            child = LoadingFollowingUsersError(bloc);
+          } else {
+            child = FollowingList(bloc);
+          }
+
           return HarpyScaffold(
             title: 'Following',
-            body: LoadMoreListener(
-              listen: bloc.canLoadMore,
-              onLoadMore: () async {
-                bloc.add(const LoadFollowingUsers());
-                await bloc.loadDataCompleter.future;
-              },
-              child: ScrollToStart(
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(8),
-                  itemCount: bloc.users.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _itemBuilder(index, bloc),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 8),
-                ),
-              ),
+            body: AnimatedSwitcher(
+              duration: kShortAnimationDuration,
+              switchInCurve: Curves.easeInOut,
+              switchOutCurve: Curves.easeInOut,
+              child: child,
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class UserCard extends StatelessWidget {
-  const UserCard(this.user);
-
-  final UserData user;
-
-  void _onUserTap(BuildContext context) {
-    app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context).settings,
-      screenName: user.screenName,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return Card(
-      margin: EdgeInsets.zero,
-      child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        isThreeLine: user.hasDescription,
-        leading: CachedCircleAvatar(
-          imageUrl: user.profileImageUrlHttps,
-        ),
-        title: Text(user.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('@${user.screenName}'),
-            if (user.hasDescription)
-              TwitterText(
-                user.description,
-                entities: user.userDescriptionEntities,
-                entityColor: theme.accentColor,
-                maxLines: 1,
-              ),
-          ],
-        ),
-        onTap: () => _onUserTap(context),
       ),
     );
   }
