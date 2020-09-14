@@ -4,6 +4,7 @@ import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
+import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
@@ -120,6 +121,16 @@ class HarpyNavigator {
       'userId': userId,
     });
   }
+
+  /// Pushes a [FollowersScreen] with the followers for the user with the
+  /// [userId].
+  void pushFollowersScreen({
+    @required String userId,
+  }) {
+    pushNamed(FollowersScreen.route, arguments: <String, dynamic>{
+      'userId': userId,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -149,6 +160,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case FollowingScreen.route:
       screen = FollowingScreen(
+        userId: arguments['userId'],
+      );
+      break;
+    case FollowersScreen.route:
+      screen = FollowersScreen(
         userId: arguments['userId'],
       );
       break;
