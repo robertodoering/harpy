@@ -27,7 +27,7 @@ class FollowingList extends StatelessWidget {
           endSlivers: <Widget>[
             if (bloc.showLoadingMore)
               const LoadMoreIndicator()
-            else if (bloc.lockRequests)
+            else if (bloc.lockRequests && bloc.hasNextPage)
               const LoadingMoreLocked(type: 'users'),
           ],
         ),
