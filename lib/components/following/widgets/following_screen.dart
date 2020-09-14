@@ -14,6 +14,7 @@ class FollowingScreen extends StatelessWidget {
     @required this.userId,
   });
 
+  /// The [userId] of the user whom to search the following users for.
   final String userId;
 
   static const String route = 'following';
