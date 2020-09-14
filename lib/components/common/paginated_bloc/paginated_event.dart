@@ -29,7 +29,7 @@ abstract class LoadPaginatedData extends PaginatedEvent {
   void _lockRequests(PaginatedBloc bloc) {
     bloc.lockRequests = true;
 
-    Future<void>.delayed(const Duration(seconds: 0)).then(
+    Future<void>.delayed(const Duration(seconds: 30)).then(
       (_) => bloc.add(const UnlockRequests()),
     );
   }
