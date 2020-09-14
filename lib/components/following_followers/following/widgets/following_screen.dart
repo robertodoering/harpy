@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/api/loading_data_error.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
+import 'package:harpy/components/following_followers/common/widgets/following_followers_screen.dart';
 import 'package:harpy/components/following_followers/following/bloc/following_bloc.dart';
 import 'package:harpy/components/following_followers/following/bloc/following_event.dart';
-import 'package:harpy/components/following_followers/following/widgets/content/following_list.dart';
 
 /// Builds the screen with a list of the following users for the user with the
 /// [userId].
@@ -22,36 +17,12 @@ class FollowingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<FollowingBloc>(
+    return FollowingFollowersScreen<FollowingBloc>(
       create: (BuildContext context) => FollowingBloc(userId: userId),
-      child: BlocBuilder<FollowingBloc, PaginatedState>(
-        builder: (BuildContext context, PaginatedState state) {
-          final FollowingBloc bloc = FollowingBloc.of(context);
-
-          Widget child;
-
-          if (bloc.loadingInitialData) {
-            child = const Center(child: CircularProgressIndicator());
-          } else if (bloc.showNoDataExists) {
-            child = LoadingDataError(
-              message: 'Error loading following users',
-              onTap: () => bloc.add(const LoadFollowingUsers()),
-            );
-          } else {
-            child = FollowingList(bloc);
-          }
-
-          return HarpyScaffold(
-            title: 'Following',
-            body: AnimatedSwitcher(
-              duration: kShortAnimationDuration,
-              switchInCurve: Curves.easeInOut,
-              switchOutCurve: Curves.easeInOut,
-              child: child,
-            ),
-          );
-        },
-      ),
+      userId: userId,
+      title: 'Following',
+      errorMessage: 'Error loading following users',
+      loadUsers: (FollowingBloc bloc) => bloc.add(const LoadFollowingUsers()),
     );
   }
 }
