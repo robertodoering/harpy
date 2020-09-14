@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/components/common/api/loading_data_error.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_event.dart';
@@ -21,32 +21,14 @@ class UserProfileError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return HarpyScaffold(
       title: '',
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              'Error loading user',
-              style: theme.textTheme.headline6,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            HarpyButton.flat(
-              dense: true,
-              text: 'retry',
-              onTap: () => bloc.add(InitializeUserEvent(
-                user: user,
-                screenName: screenName,
-              )),
-            ),
-          ],
-        ),
+      body: LoadingDataError(
+        message: 'Error loading user',
+        onTap: () => bloc.add(InitializeUserEvent(
+          user: user,
+          screenName: screenName,
+        )),
       ),
     );
   }

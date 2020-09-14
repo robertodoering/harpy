@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/following/bloc/following_bloc.dart';
-import 'package:harpy/components/following/bloc/following_event.dart';
 
-/// Builds an error message for the [FollowingScreen].
-class LoadingFollowingUsersError extends StatelessWidget {
-  const LoadingFollowingUsersError(this.bloc);
+/// Builds an error message with an optional retry button when [onTap] is not
+/// `null`.
+class LoadingDataError extends StatelessWidget {
+  const LoadingDataError({
+    @required this.message,
+    this.onTap,
+  });
 
-  final FollowingBloc bloc;
+  final String message;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +23,17 @@ class LoadingFollowingUsersError extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            'Error loading following users',
+            message,
             style: theme.textTheme.headline6,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          HarpyButton.flat(
-            dense: true,
-            text: 'retry',
-            onTap: () => bloc.add(const LoadFollowingUsers()),
-          ),
+          if (onTap != null)
+            HarpyButton.flat(
+              dense: true,
+              text: 'retry',
+              onTap: onTap,
+            ),
         ],
       ),
     );

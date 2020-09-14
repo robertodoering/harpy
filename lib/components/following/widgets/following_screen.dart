@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/api/loading_data_error.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/following/bloc/following_bloc.dart';
-import 'package:harpy/components/following/widgets/content/following_error.dart';
+import 'package:harpy/components/following/bloc/following_event.dart';
 import 'package:harpy/components/following/widgets/content/following_list.dart';
 
 /// Builds the screen with a list of the following users for the user with the
@@ -32,7 +33,10 @@ class FollowingScreen extends StatelessWidget {
           if (bloc.loadingInitialData) {
             child = const Center(child: CircularProgressIndicator());
           } else if (bloc.showNoDataExists) {
-            child = LoadingFollowingUsersError(bloc);
+            child = LoadingDataError(
+              message: 'Error loading following users',
+              onTap: () => bloc.add(const LoadFollowingUsers()),
+            );
           } else {
             child = FollowingList(bloc);
           }
