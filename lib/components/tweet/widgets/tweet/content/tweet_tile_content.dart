@@ -11,8 +11,8 @@ import 'package:harpy/components/tweet/widgets/tweet/content/tweet_tile_quote_co
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the content for a tweet.
-class TweetTileContent extends StatelessWidget {
-  const TweetTileContent(this.tweet);
+class TweetCardContent extends StatelessWidget {
+  const TweetCardContent(this.tweet);
 
   final TweetData tweet;
 

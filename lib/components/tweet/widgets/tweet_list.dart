@@ -30,7 +30,7 @@ class TweetList extends StatelessWidget {
     final int itemIndex = index ~/ 2;
 
     if (index.isEven) {
-      return TweetTile(tweets[itemIndex]);
+      return TweetCard(tweets[itemIndex]);
     } else {
       return const SizedBox(height: 16);
     }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_tile.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-/// Builds [TweetTile]s for the replies in [tweet].
+/// Builds [TweetCard]s for the replies in [tweet].
 ///
-/// [TweetData.replyAuthors] are built above the [TweetTile]s if they exist.
+/// [TweetData.replyAuthors] are built above the [TweetCard]s if they exist.
 class TweetReplies extends StatelessWidget {
   const TweetReplies(this.tweet);
 
@@ -40,7 +40,7 @@ class TweetReplies extends StatelessWidget {
           ...tweet.replies.map(
             (TweetData reply) => Padding(
               padding: const EdgeInsets.only(bottom: 8, right: 8),
-              child: TweetTile(reply),
+              child: TweetCard(reply),
             ),
           ),
         ],
