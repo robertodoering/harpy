@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/list/load_more_indicator.dart';
+import 'package:harpy/components/common/list/load_more_listener.dart';
+import 'package:harpy/components/common/list/load_more_locked.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
-import 'package:harpy/components/timeline/common/widgets/load_more_indicator.dart';
-import 'package:harpy/components/timeline/common/widgets/load_more_listener.dart';
-import 'package:harpy/components/timeline/common/widgets/load_more_locked.dart';
 import 'package:harpy/components/timeline/common/widgets/no_timeline_tweets.dart';
 import 'package:harpy/components/timeline/common/widgets/timeline_loading.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
@@ -81,7 +81,7 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
                     const LoadMoreIndicator()
                   else if (state is ShowingTimelineState &&
                       bloc.lockRequestMore)
-                    const LoadingMoreLocked(),
+                    const LoadingMoreLocked(type: 'Tweets'),
                 ],
               ),
             ),
