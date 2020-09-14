@@ -67,7 +67,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
     }
 
     return _scrollController.offset > mediaQuery.size.height &&
-        scrollDirection.up;
+        scrollDirection?.up == true;
   }
 
   void _scrollToStart() {
