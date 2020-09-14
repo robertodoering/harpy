@@ -15,7 +15,7 @@ class LoadFollowingUsers extends LoadPaginatedData {
     final FollowingBloc followingBloc = bloc as FollowingBloc;
 
     final PaginatedUsers paginatedUsers = await followingBloc.userService
-        .followersList(
+        .friendsList(
           userId: followingBloc.userId,
           skipStatus: true,
           count: 200,

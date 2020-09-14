@@ -111,6 +111,8 @@ class HarpyNavigator {
     );
   }
 
+  /// Pushes a [FollowingScreen] with the following users for the user with the
+  /// [userId].
   void pushFollowingScreen({
     @required String userId,
   }) {

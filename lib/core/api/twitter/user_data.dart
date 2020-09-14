@@ -1,4 +1,5 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/api/twitter/parse_entities.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
@@ -82,6 +83,22 @@ class UserData {
   ///
   /// Requested via [UserService.friendshipsLookup].
   List<String> connections;
+
+  /// The [Entities] used by the [TwitterText] for the user description.
+  Entities _userDescriptionEntities;
+  Entities get userDescriptionEntities {
+    if (_userDescriptionEntities != null) {
+      return _userDescriptionEntities;
+    }
+
+    _userDescriptionEntities = Entities()..urls = entities?.description?.urls;
+
+    if (description != null) {
+      parseEntities(description, _userDescriptionEntities);
+    }
+
+    return _userDescriptionEntities;
+  }
 
   /// Whether the relationship status for this user has been requested and the
   /// [Friendship.connections] set to [connections].

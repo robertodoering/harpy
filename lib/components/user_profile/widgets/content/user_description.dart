@@ -14,7 +14,7 @@ class UserProfileDescription extends StatelessWidget {
 
     return TwitterText(
       bloc.user.description,
-      entities: bloc.userEntities,
+      entities: bloc.user.userDescriptionEntities,
       entityColor: theme.accentColor,
     );
   }
