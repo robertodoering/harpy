@@ -35,6 +35,7 @@ class TwitterText extends StatefulWidget {
     this.entityColor,
     this.style,
     this.maxLines,
+    this.overflow,
     this.urlToIgnore,
     this.onHashtagTap,
     this.onUrlTap = defaultOnUrlTap,
@@ -56,6 +57,9 @@ class TwitterText extends StatefulWidget {
   /// An optional maximum number of lines for the text to span, wrapping if
   /// necessary.
   final int maxLines;
+
+  /// How visual overflow should be handled.
+  final TextOverflow overflow;
 
   /// A url that won't be built if it is part of [Entity.urls].
   ///
@@ -211,6 +215,7 @@ class _TwitterTextState extends State<TwitterText> {
       ]),
       style: widget.style,
       maxLines: widget.maxLines,
+      overflow: widget.overflow,
     );
   }
 }
