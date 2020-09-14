@@ -7,7 +7,7 @@ import 'package:harpy/components/tweet/widgets/tweet/content/action_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/retweeted_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
-import 'package:harpy/components/tweet/widgets/tweet/content/tweet_tile_quote_content.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/tweet_card_quote_content.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the content for a tweet.

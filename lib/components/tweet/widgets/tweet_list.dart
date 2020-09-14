@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/tweet/widgets/tweet/tweet_tile.dart';
+import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds a [CustomScrollView] for the [tweets].
