@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/list/list_card_animation.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
-import 'package:harpy/components/tweet/widgets/tweet/tweet_tile_animation.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -23,7 +23,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return TweetTileAnimation(
+    return ListCardAnimation(
       child: Card(
         margin: EdgeInsets.zero,
         child: ListTile(
