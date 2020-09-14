@@ -23,7 +23,7 @@ abstract class LoadPaginatedData extends PaginatedEvent {
 
   /// Loads the data and returns `true` when the data was able to be loaded or
   /// `false` when an error occurred.
-  Future<bool> loadData(PaginatedBloc bloc);
+  Future<bool> loadData(PaginatedBloc paginatedBloc);
 
   /// Prevents successive requests for 30 seconds.
   void _lockRequests(PaginatedBloc bloc) {

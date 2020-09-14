@@ -4,7 +4,7 @@ import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
-import 'package:harpy/components/following/widgets/following_screen.dart';
+import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
 import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';

@@ -1,19 +1,19 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_bloc.dart';
-import 'package:harpy/components/following/bloc/following_event.dart';
+import 'package:harpy/components/following_followers/following/bloc/following_event.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
-class FollowingBloc extends PaginatedBloc {
-  FollowingBloc({
+/// An abstraction for the [FollowersBloc] and the [FollowingBloc].
+abstract class FollowingFollowersBloc extends PaginatedBloc {
+  FollowingFollowersBloc({
     @required this.userId,
   }) {
     add(const LoadFollowingUsers());
   }
 
-  /// The id of the user for whom to load the followers.
+  /// The id of the user for whom to load the following users.
   final String userId;
 
   final UserService userService = app<TwitterApi>().userService;
@@ -23,7 +23,4 @@ class FollowingBloc extends PaginatedBloc {
 
   @override
   bool get hasData => users.isNotEmpty;
-
-  static FollowingBloc of(BuildContext context) =>
-      BlocProvider.of<FollowingBloc>(context);
 }

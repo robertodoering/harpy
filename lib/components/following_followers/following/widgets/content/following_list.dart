@@ -4,8 +4,8 @@ import 'package:harpy/components/common/list/load_more_listener.dart';
 import 'package:harpy/components/common/list/load_more_locked.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
-import 'package:harpy/components/following/bloc/following_bloc.dart';
-import 'package:harpy/components/following/bloc/following_event.dart';
+import 'package:harpy/components/following_followers/following/bloc/following_bloc.dart';
+import 'package:harpy/components/following_followers/following/bloc/following_event.dart';
 import 'package:harpy/components/user/widgets/user_list.dart';
 
 /// Builds a [UserList] for the following users.
