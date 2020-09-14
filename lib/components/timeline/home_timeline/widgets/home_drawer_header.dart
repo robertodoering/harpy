@@ -13,7 +13,7 @@ class HomeDrawerHeader extends StatelessWidget {
   Widget _buildAvatarRow(BuildContext context, UserData user) {
     return GestureDetector(
       onTap: () => app<HarpyNavigator>().pushUserProfile(
-        user: user,
+        screenName: user.screenName,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

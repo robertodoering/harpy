@@ -23,8 +23,11 @@ class TweetAuthorRow extends StatelessWidget {
 
   final double iconSize;
 
-  void _onUserTap() {
-    app<HarpyNavigator>().pushUserProfile(user: tweet.userData);
+  void _onUserTap(BuildContext context) {
+    app<HarpyNavigator>().pushUserProfile(
+      currentRoute: ModalRoute.of(context).settings,
+      screenName: tweet.userData.screenName,
+    );
   }
 
   @override
@@ -34,7 +37,7 @@ class TweetAuthorRow extends StatelessWidget {
     return Row(
       children: <Widget>[
         GestureDetector(
-          onTap: _onUserTap,
+          onTap: () => _onUserTap(context),
           child: CachedCircleAvatar(
             imageUrl: tweet.userData.appropriateUserImageUrl,
             radius: avatarRadius,
@@ -46,7 +49,7 @@ class TweetAuthorRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: _onUserTap,
+                onTap: () => _onUserTap(context),
                 child: Row(
                   children: <Widget>[
                     Flexible(
@@ -67,7 +70,7 @@ class TweetAuthorRow extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: _onUserTap,
+                onTap: () => _onUserTap(context),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[

@@ -11,7 +11,6 @@ import 'package:harpy/components/settings/media/widgets/media_settings_screen.da
 import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
-import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 
@@ -77,15 +76,22 @@ class HarpyNavigator {
   ///
   /// Either [user] or [screenName] must not be `null`.
   void pushUserProfile({
-    UserData user,
-    String screenName,
+    @required String screenName,
+    RouteSettings currentRoute,
   }) {
-    assert(user != null || screenName != null);
+    if (currentRoute?.name == UserProfileScreen.route) {
+      final Map<String, dynamic> arguments =
+          currentRoute.arguments as Map<String, dynamic> ?? <String, dynamic>{};
+
+      if (arguments['screenName'] == screenName) {
+        _log.fine('preventing navigation to current user');
+        return;
+      }
+    }
 
     pushNamed(
       UserProfileScreen.route,
       arguments: <String, dynamic>{
-        'user': user,
         'screenName': screenName,
       },
     );
@@ -136,7 +142,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (routeName) {
     case UserProfileScreen.route:
       screen = UserProfileScreen(
-        user: arguments['user'],
         screenName: arguments['screenName'],
       );
       break;
@@ -181,13 +186,13 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RouteType.fade:
       return FadeRoute<void>(
         builder: (_) => screen,
-        settings: RouteSettings(name: routeName),
+        settings: RouteSettings(name: routeName, arguments: arguments),
       );
     case RouteType.defaultRoute:
     default:
       return CupertinoPageRoute<void>(
         builder: (_) => screen,
-        settings: RouteSettings(name: routeName),
+        settings: RouteSettings(name: routeName, arguments: arguments),
       );
   }
 }

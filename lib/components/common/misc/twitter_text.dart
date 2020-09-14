@@ -7,17 +7,20 @@ import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
-typedef EntityTapped<T> = void Function(T value);
+typedef EntityTapped<T> = void Function(BuildContext context, T value);
 
 /// The default behavior when a user mention inside of [TwitterText] is tapped.
-void defaultOnUserMentionTap(UserMention userMention) {
+void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
   if (userMention.screenName != null) {
-    app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
+    app<HarpyNavigator>().pushUserProfile(
+      currentRoute: ModalRoute.of(context).settings,
+      screenName: userMention.screenName,
+    );
   }
 }
 
 /// The default behavior when a url inside of [TwitterText] is tapped.
-void defaultOnUrlTap(Url url) {
+void defaultOnUrlTap(BuildContext context, Url url) {
   launchUrl(url.expandedUrl);
 }
 
@@ -137,7 +140,7 @@ class _TwitterTextState extends State<TwitterText> {
 
     if (value is Hashtag) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onHashtagTap?.call(value);
+        ..onTap = () => widget.onHashtagTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = '#${value.text}';
@@ -151,7 +154,7 @@ class _TwitterTextState extends State<TwitterText> {
       }
 
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUrlTap?.call(value);
+        ..onTap = () => widget.onUrlTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = value.displayUrl;
@@ -159,7 +162,7 @@ class _TwitterTextState extends State<TwitterText> {
 
     if (value is UserMention) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUserMentionTap?.call(value);
+        ..onTap = () => widget.onUserMentionTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = '@${value.screenName}';
