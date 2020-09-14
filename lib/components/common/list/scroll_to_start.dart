@@ -89,31 +89,33 @@ class _ScrollToStartState extends State<ScrollToStart> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Stack(
-      children: <Widget>[
-        widget.child,
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: AnimatedOpacity(
-            opacity: _show ? 1 : 0,
-            curve: Curves.easeInOut,
-            duration: kShortAnimationDuration,
-            child: AnimatedShiftedPosition(
-              shift: _show ? Offset.zero : const Offset(0, 1),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: HarpyButton.raised(
-                  text: 'Jump to top',
-                  icon: Icons.arrow_upward,
-                  backgroundColor: theme.primaryColor,
-                  dense: true,
-                  onTap: _scrollToStart,
+    return ScrollDirectionListener(
+      child: Stack(
+        children: <Widget>[
+          widget.child,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: AnimatedOpacity(
+              opacity: _show ? 1 : 0,
+              curve: Curves.easeInOut,
+              duration: kShortAnimationDuration,
+              child: AnimatedShiftedPosition(
+                shift: _show ? Offset.zero : const Offset(0, 1),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: HarpyButton.raised(
+                    text: 'Jump to top',
+                    icon: Icons.arrow_upward,
+                    backgroundColor: theme.primaryColor,
+                    dense: true,
+                    onTap: _scrollToStart,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

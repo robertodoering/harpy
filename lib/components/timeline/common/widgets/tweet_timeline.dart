@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_state.dart';
@@ -57,35 +56,33 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
         return LoadMoreListener(
           listen: bloc.enableRequestMore,
           onLoadMore: () => onLoadMore(bloc),
-          child: ScrollDirectionListener(
-            child: ScrollToStart(
-              child: RefreshIndicator(
-                displacement: refreshIndicatorDisplacement,
-                onRefresh: () => onRefresh(bloc),
-                child: TweetList(
-                  bloc.tweets,
-                  enableScroll: !bloc.showLoading && !bloc.showFailed,
-                  beginSlivers: <Widget>[
-                    ...headerSlivers,
-                    if (timelineInfo != null)
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: AnimatedSwitcher(
-                          duration: kShortAnimationDuration,
-                          switchInCurve: Curves.easeInOut,
-                          switchOutCurve: Curves.easeInOut,
-                          child: timelineInfo,
-                        ),
+          child: ScrollToStart(
+            child: RefreshIndicator(
+              displacement: refreshIndicatorDisplacement,
+              onRefresh: () => onRefresh(bloc),
+              child: TweetList(
+                bloc.tweets,
+                enableScroll: !bloc.showLoading && !bloc.showFailed,
+                beginSlivers: <Widget>[
+                  ...headerSlivers,
+                  if (timelineInfo != null)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: AnimatedSwitcher(
+                        duration: kShortAnimationDuration,
+                        switchInCurve: Curves.easeInOut,
+                        switchOutCurve: Curves.easeInOut,
+                        child: timelineInfo,
                       ),
-                  ],
-                  endSlivers: <Widget>[
-                    if (state is RequestingMoreState)
-                      const LoadMoreIndicator()
-                    else if (state is ShowingTimelineState &&
-                        bloc.lockRequestMore)
-                      const LoadingMoreLocked(),
-                  ],
-                ),
+                    ),
+                ],
+                endSlivers: <Widget>[
+                  if (state is RequestingMoreState)
+                    const LoadMoreIndicator()
+                  else if (state is ShowingTimelineState &&
+                      bloc.lockRequestMore)
+                    const LoadingMoreLocked(),
+                ],
               ),
             ),
           ),
