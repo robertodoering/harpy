@@ -11,8 +11,7 @@ import 'package:harpy/core/service_locator.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
-    UserData user,
-    String screenName,
+    @required String screenName,
   })  : assert(user != null || screenName != null),
         super(LoadingUserState()) {
     add(InitializeUserEvent(user: user, screenName: screenName));
