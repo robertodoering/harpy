@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a [HarpyButton] to favorite / unfavorite a tweet.
 ///
@@ -40,8 +41,6 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
   String _animation;
 
-  Color get _color => widget.favorited ? Colors.red : null;
-
   @override
   void initState() {
     super.initState();
@@ -62,8 +61,9 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     }
   }
 
-  Widget _iconBuilder(BuildContext context) {
-    final Color color = _color ?? Theme.of(context).iconTheme.color;
+  Widget _iconBuilder(ThemeData theme, HarpyTheme harpyTheme) {
+    final Color color =
+        widget.favorited ? harpyTheme.likeColor : theme.iconTheme.color;
 
     return FlareIcon.favorite(
       animation: _animation,
@@ -76,10 +76,13 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+
     return HarpyButton.flat(
       text: widget.text,
-      iconBuilder: _iconBuilder,
-      foregroundColor: _color,
+      iconBuilder: (BuildContext context) => _iconBuilder(theme, harpyTheme),
+      foregroundColor: widget.favorited ? harpyTheme.likeColor : null,
       onTap: widget.favorited ? widget.unfavorite : widget.favorite,
       padding: widget.padding,
     );

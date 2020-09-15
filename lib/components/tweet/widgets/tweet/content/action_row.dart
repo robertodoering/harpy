@@ -6,6 +6,7 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:intl/intl.dart';
 
 /// Builds the buttons with actions for the [tweet].
@@ -16,13 +17,13 @@ class TweetActionRow extends StatelessWidget {
 
   final NumberFormat _numberFormat = NumberFormat.compact();
 
-  Widget _buildTranslateButton(TweetBloc bloc) {
+  Widget _buildTranslateButton(TweetBloc bloc, HarpyTheme harpyTheme) {
     final bool enable =
         !bloc.tweet.hasTranslation && bloc.state is! TranslatingTweetState;
 
     final Color color =
         bloc.state is TranslatingTweetState || bloc.tweet.hasTranslation
-            ? Colors.blue
+            ? harpyTheme.translateColor
             : null;
 
     return HarpyButton.flat(
@@ -37,6 +38,7 @@ class TweetActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
+    final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
@@ -47,7 +49,8 @@ class TweetActionRow extends StatelessWidget {
                 : bloc.add(const RetweetTweet()),
             icon: Icons.repeat,
             text: _numberFormat.format(tweet.retweetCount),
-            foregroundColor: bloc.tweet.retweeted ? Colors.green : null,
+            foregroundColor:
+                bloc.tweet.retweeted ? harpyTheme.retweetColor : null,
             iconSize: 20,
             padding: const EdgeInsets.all(8),
           ),
@@ -60,7 +63,7 @@ class TweetActionRow extends StatelessWidget {
           ),
           const Spacer(),
           if (bloc.tweet.translatable || bloc.tweet.quoteTranslatable)
-            _buildTranslateButton(bloc),
+            _buildTranslateButton(bloc, harpyTheme),
         ],
       ),
     );

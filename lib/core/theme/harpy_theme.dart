@@ -29,6 +29,7 @@ class HarpyTheme {
     _calculateBrightness();
     _calculateButtonTextColor();
     _calculateErrorColor();
+    _setupTweetColors();
     _setupTextTheme();
     _setupThemeData();
   }
@@ -89,6 +90,15 @@ class HarpyTheme {
   /// The [ThemeData] used by the root [MaterialApp].
   ThemeData data;
 
+  /// The color for the like button.
+  Color likeColor = Colors.red;
+
+  /// The color for the retweet button.
+  Color retweetColor = Colors.green;
+
+  /// The color for the translate button.
+  Color translateColor = Colors.blue;
+
   /// The opposite of [brightness].
   Brightness get complementaryBrightness =>
       brightness == Brightness.light ? Brightness.dark : Brightness.light;
@@ -126,6 +136,59 @@ class HarpyTheme {
         .reduce((Color value, Color element) => Color.lerp(value, element, .5));
 
     averageBackgroundColor = average;
+  }
+
+  void _setupTweetColors() {
+    final List<Color> likeColors = <Color>[
+      const Color(0xFFFF4538), // light red
+      const Color(0xFF940C01), // dark red
+    ];
+
+    final List<Color> retweetColors = <Color>[
+      const Color(0xFF94E096), // light green
+      const Color(0xFF347736), // dark green
+    ];
+
+    final List<Color> translateColors = <Color>[
+      const Color(0xFF6EB7EF), // light blue
+      const Color(0xFF0F578E), // dark blue
+    ];
+
+    final double likeContrast = contrastRatio(
+      likeColor.computeLuminance(),
+      backgroundLuminance,
+    );
+
+    for (Color color in likeColors) {
+      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
+          likeContrast) {
+        likeColor = color;
+      }
+    }
+
+    final double retweetContrast = contrastRatio(
+      retweetColor.computeLuminance(),
+      backgroundLuminance,
+    );
+
+    for (Color color in retweetColors) {
+      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
+          retweetContrast) {
+        retweetColor = color;
+      }
+    }
+
+    final double translateContrast = contrastRatio(
+      translateColor.computeLuminance(),
+      backgroundLuminance,
+    );
+
+    for (Color color in translateColors) {
+      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
+          translateContrast) {
+        translateColor = color;
+      }
+    }
   }
 
   /// Calculates the button text color, which is the [averageBackgroundColor] if
