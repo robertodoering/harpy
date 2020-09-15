@@ -22,8 +22,6 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return ListCardAnimation(
       child: Card(
         margin: EdgeInsets.zero,
@@ -42,9 +40,12 @@ class UserCard extends StatelessWidget {
                 TwitterText(
                   user.description,
                   entities: user.userDescriptionEntities,
-                  entityColor: theme.accentColor,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  entityStyle: const TextStyle(),
+                  onHashtagTap: null,
+                  onUserMentionTap: null,
+                  onUrlTap: null,
                 ),
             ],
           ),

@@ -10,12 +10,9 @@ class UserProfileDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return TwitterText(
       bloc.user.description,
       entities: bloc.user.userDescriptionEntities,
-      entityColor: theme.accentColor,
     );
   }
 }

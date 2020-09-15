@@ -18,8 +18,6 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     final List<Widget> content = <Widget>[
       if (tweet.isRetweet) TweetRetweetedRow(tweet),
       TweetAuthorRow(tweet),
@@ -27,7 +25,6 @@ class TweetCardContent extends StatelessWidget {
         TwitterText(
           tweet.fullText,
           entities: tweet.entities,
-          entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
         ),
       if (tweet.translatable) TweetTranslation(tweet),

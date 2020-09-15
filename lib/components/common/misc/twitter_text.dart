@@ -32,7 +32,7 @@ class TwitterText extends StatefulWidget {
   const TwitterText(
     this.text, {
     this.entities,
-    this.entityColor,
+    this.entityStyle,
     this.style,
     this.maxLines,
     this.overflow,
@@ -48,8 +48,10 @@ class TwitterText extends StatefulWidget {
   /// The entities appearing in the [text].
   final Entities entities;
 
-  /// The color of the entity in the text.
-  final Color entityColor;
+  /// The style of the entity in the text.
+  ///
+  /// Uses a bold font weight with the accent color if `null`.
+  final TextStyle entityStyle;
 
   /// The text style used as a base for the text.
   final TextStyle style;
@@ -199,10 +201,13 @@ class _TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle entityStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      color: widget.entityColor,
-    );
+    final ThemeData theme = Theme.of(context);
+
+    final TextStyle entityStyle = widget.entityStyle ??
+        TextStyle(
+          fontWeight: FontWeight.bold,
+          color: theme.accentColor,
+        );
 
     return Text.rich(
       TextSpan(children: <TextSpan>[
