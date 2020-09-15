@@ -16,7 +16,7 @@ dependencies:
   # packages
   cached_network_image: ^2.2.0+1
   dart_twitter_api: ^0.3.4
-  flare_flutter: ^2.0.3
+  flare_flutter: ^2.0.6
   flutter_bloc: ^6.0.1
   flutter_colorpicker:
     # todo: use pub version when PR gets merged and released: 

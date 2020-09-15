@@ -70,7 +70,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       color: color,
       // force rebuild when color changes since the flare actor doesn't
       // automatically update itself on color change
-      key: Key('${color.value}'),
+      key: UniqueKey(),
     );
   }
 
