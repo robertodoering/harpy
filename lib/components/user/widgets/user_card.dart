@@ -23,6 +23,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListCardAnimation(
+      key: ValueKey<int>(user.hashCode),
       child: Card(
         margin: EdgeInsets.zero,
         child: ListTile(

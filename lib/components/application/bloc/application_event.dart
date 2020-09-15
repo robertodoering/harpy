@@ -17,6 +17,7 @@ import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/logger.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 @immutable
 abstract class ApplicationEvent {
@@ -42,6 +43,11 @@ class InitializeEvent extends ApplicationEvent {
     _log.fine('start common initialization');
 
     initLogger();
+
+    // sets the visibility detector controller update interval to zero to fire
+    // every frame
+    // this is used by the VisibilityDetector for the ListCardAnimation
+    VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
     // update the system ui to match the initial theme
     bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);

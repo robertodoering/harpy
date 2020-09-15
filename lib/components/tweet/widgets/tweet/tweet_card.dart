@@ -14,6 +14,7 @@ class TweetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListCardAnimation(
+      key: key,
       child: Card(
         margin: EdgeInsets.zero,
         elevation: 0,
