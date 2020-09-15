@@ -6,22 +6,14 @@ import 'package:harpy/components/user_profile/bloc/user_profile_state.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_content.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_error.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_loading.dart';
-import 'package:harpy/core/api/twitter/user_data.dart';
 
 /// Builds the screen for a user profile.
 ///
-/// The [user] is used to display the user data if not `null`.
-/// Otherwise the [screenName] is used to load the user data upon creation.
-///
-/// Either [user] or [screenName] must not be `null`.
+/// The [screenName] is used to load the user data upon creation.
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
-    this.user,
-    this.screenName,
-  }) : assert(user != null || screenName != null);
-
-  /// The user to display.
-  final UserData user;
+    @required this.screenName,
+  });
 
   /// The screenName that is used to load the user data.
   final String screenName;
@@ -31,10 +23,7 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UserProfileBloc>(
-      create: (BuildContext context) => UserProfileBloc(
-        user: user,
-        screenName: screenName,
-      ),
+      create: (BuildContext context) => UserProfileBloc(screenName: screenName),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         builder: (BuildContext context, UserProfileState state) {
           final UserProfileBloc bloc = UserProfileBloc.of(context);
@@ -46,11 +35,7 @@ class UserProfileScreen extends StatelessWidget {
           } else if (state is InitializedUserState) {
             child = UserProfileContent(bloc: bloc);
           } else {
-            child = UserProfileError(
-              bloc,
-              user: user,
-              screenName: screenName,
-            );
+            child = UserProfileError(bloc, screenName: screenName);
           }
 
           return AnimatedSwitcher(

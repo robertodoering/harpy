@@ -5,18 +5,18 @@ import 'package:harpy/components/common/animations/explicit/slide_in_animation.d
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 
 /// Fades and slides the [child] in from the right when scrolling down.
-class TweetTileAnimation extends StatefulWidget {
-  const TweetTileAnimation({
+class ListCardAnimation extends StatefulWidget {
+  const ListCardAnimation({
     @required this.child,
   });
 
   final Widget child;
 
   @override
-  _TweetTileAnimationState createState() => _TweetTileAnimationState();
+  _ListCardAnimationState createState() => _ListCardAnimationState();
 }
 
-class _TweetTileAnimationState extends State<TweetTileAnimation> {
+class _ListCardAnimationState extends State<ListCardAnimation> {
   ScrollDirection _scrollDirection;
 
   @override

@@ -1,36 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
-import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/components/user/widgets/user_card.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 
-/// Builds a [CustomScrollView] for the [tweets].
+/// Builds a [CustomScrollView] for the [users].
 ///
-/// An optional list of [beginSlivers] are built before the [tweets] and
-/// [endSlivers] are built after the [tweets].
-class TweetList extends StatelessWidget {
-  const TweetList(
-    this.tweets, {
-    this.beginSlivers = const <Widget>[],
+/// An optional list of [endSlivers] are built after the [users].
+class UserList extends StatelessWidget {
+  const UserList(
+    this.users, {
     this.endSlivers = const <Widget>[],
     this.enableScroll = true,
   });
 
-  /// The list of tweets to be displayed in this list.
-  final List<TweetData> tweets;
-
-  /// Slivers built at the beginning of the [CustomScrollView].
-  final List<Widget> beginSlivers;
+  final List<UserData> users;
 
   /// Slivers built at the end of the [CustomScrollView].
   final List<Widget> endSlivers;
 
-  /// Whether the tweet list should be scrollable.
+  /// Whether the user list should be scrollable.
   final bool enableScroll;
 
   Widget _itemBuilder(BuildContext context, int index) {
     final int itemIndex = index ~/ 2;
 
     if (index.isEven) {
-      return TweetCard(tweets[itemIndex]);
+      return UserCard(users[itemIndex]);
     } else {
       return const SizedBox(height: 16);
     }
@@ -42,15 +36,13 @@ class TweetList extends StatelessWidget {
       physics: enableScroll
           ? const BouncingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
-      cacheExtent: 800,
       slivers: <Widget>[
-        ...beginSlivers,
         SliverPadding(
           padding: const EdgeInsets.all(8),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               _itemBuilder,
-              childCount: tweets.length * 2 - 1,
+              childCount: users.length * 2 - 1,
               addAutomaticKeepAlives: false,
             ),
           ),

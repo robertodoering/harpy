@@ -31,7 +31,7 @@ class HomeDrawer extends StatelessWidget {
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushUserProfile(
-                    user: authBloc.authenticatedUser,
+                    screenName: authBloc.authenticatedUser.screenName,
                   );
                 },
               ),

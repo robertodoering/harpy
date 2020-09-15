@@ -26,7 +26,6 @@ class TweetQuoteContent extends StatelessWidget {
         TwitterText(
           tweet.fullText,
           entities: tweet.entities,
-          entityColor: theme.accentColor,
           style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
           urlToIgnore: tweet.quotedStatusUrl,
         ),

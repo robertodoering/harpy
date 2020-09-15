@@ -58,7 +58,6 @@ class TweetTranslation extends StatelessWidget {
         TwitterText(
           tweet.translation.text,
           entities: tweet.entities,
-          entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
           style: bodyText2,
         ),

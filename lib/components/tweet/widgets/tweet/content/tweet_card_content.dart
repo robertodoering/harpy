@@ -7,19 +7,17 @@ import 'package:harpy/components/tweet/widgets/tweet/content/action_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/retweeted_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
-import 'package:harpy/components/tweet/widgets/tweet/content/tweet_tile_quote_content.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/tweet_card_quote_content.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds the content for a tweet.
-class TweetTileContent extends StatelessWidget {
-  const TweetTileContent(this.tweet);
+class TweetCardContent extends StatelessWidget {
+  const TweetCardContent(this.tweet);
 
   final TweetData tweet;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     final List<Widget> content = <Widget>[
       if (tweet.isRetweet) TweetRetweetedRow(tweet),
       TweetAuthorRow(tweet),
@@ -27,7 +25,6 @@ class TweetTileContent extends StatelessWidget {
         TwitterText(
           tweet.fullText,
           entities: tweet.entities,
-          entityColor: theme.accentColor,
           urlToIgnore: tweet.quotedStatusUrl,
         ),
       if (tweet.translatable) TweetTranslation(tweet),

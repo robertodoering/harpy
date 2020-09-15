@@ -7,17 +7,20 @@ import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
-typedef EntityTapped<T> = void Function(T value);
+typedef EntityTapped<T> = void Function(BuildContext context, T value);
 
 /// The default behavior when a user mention inside of [TwitterText] is tapped.
-void defaultOnUserMentionTap(UserMention userMention) {
+void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
   if (userMention.screenName != null) {
-    app<HarpyNavigator>().pushUserProfile(screenName: userMention.screenName);
+    app<HarpyNavigator>().pushUserProfile(
+      currentRoute: ModalRoute.of(context).settings,
+      screenName: userMention.screenName,
+    );
   }
 }
 
 /// The default behavior when a url inside of [TwitterText] is tapped.
-void defaultOnUrlTap(Url url) {
+void defaultOnUrlTap(BuildContext context, Url url) {
   launchUrl(url.expandedUrl);
 }
 
@@ -29,8 +32,10 @@ class TwitterText extends StatefulWidget {
   const TwitterText(
     this.text, {
     this.entities,
-    this.entityColor,
+    this.entityStyle,
     this.style,
+    this.maxLines,
+    this.overflow,
     this.urlToIgnore,
     this.onHashtagTap,
     this.onUrlTap = defaultOnUrlTap,
@@ -43,11 +48,20 @@ class TwitterText extends StatefulWidget {
   /// The entities appearing in the [text].
   final Entities entities;
 
-  /// The color of the entity in the text.
-  final Color entityColor;
+  /// The style of the entity in the text.
+  ///
+  /// Uses a bold font weight with the accent color if `null`.
+  final TextStyle entityStyle;
 
   /// The text style used as a base for the text.
   final TextStyle style;
+
+  /// An optional maximum number of lines for the text to span, wrapping if
+  /// necessary.
+  final int maxLines;
+
+  /// How visual overflow should be handled.
+  final TextOverflow overflow;
 
   /// A url that won't be built if it is part of [Entity.urls].
   ///
@@ -137,7 +151,7 @@ class _TwitterTextState extends State<TwitterText> {
 
     if (value is Hashtag) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onHashtagTap?.call(value);
+        ..onTap = () => widget.onHashtagTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = '#${value.text}';
@@ -151,7 +165,7 @@ class _TwitterTextState extends State<TwitterText> {
       }
 
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUrlTap?.call(value);
+        ..onTap = () => widget.onUrlTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = value.displayUrl;
@@ -159,7 +173,7 @@ class _TwitterTextState extends State<TwitterText> {
 
     if (value is UserMention) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUserMentionTap?.call(value);
+        ..onTap = () => widget.onUserMentionTap?.call(context, value);
       _gestureRecognizer.add(recognizer);
 
       text = '@${value.screenName}';
@@ -187,10 +201,13 @@ class _TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle entityStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      color: widget.entityColor,
-    );
+    final ThemeData theme = Theme.of(context);
+
+    final TextStyle entityStyle = widget.entityStyle ??
+        TextStyle(
+          fontWeight: FontWeight.bold,
+          color: theme.accentColor,
+        );
 
     return Text.rich(
       TextSpan(children: <TextSpan>[
@@ -202,6 +219,8 @@ class _TwitterTextState extends State<TwitterText> {
           )
       ]),
       style: widget.style,
+      maxLines: widget.maxLines,
+      overflow: widget.overflow,
     );
   }
 }

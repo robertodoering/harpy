@@ -58,21 +58,16 @@ class _ScrollToStartState extends State<ScrollToStart> {
   }
 
   /// Determines if the button should show.
-  bool get _show {
-    final ScrollDirection scrollDirection = ScrollDirection.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-
+  bool _show(MediaQueryData mediaQuery, ScrollDirection scrollDirection) {
     if (_scrollController == null || !_scrollController.hasClients) {
       return false;
     }
 
     return _scrollController.offset > mediaQuery.size.height &&
-        scrollDirection.up;
+        scrollDirection?.up == true;
   }
 
-  void _scrollToStart() {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-
+  void _scrollToStart(MediaQueryData mediaQuery) {
     if (_scrollController.offset > mediaQuery.size.height * 5) {
       // .1 to prevent a refresh indicator to fire when jumping to the start
       _scrollController.jumpTo(.1);
@@ -88,6 +83,8 @@ class _ScrollToStartState extends State<ScrollToStart> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ScrollDirection scrollDirection = ScrollDirection.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
 
     return Stack(
       children: <Widget>[
@@ -95,11 +92,13 @@ class _ScrollToStartState extends State<ScrollToStart> {
         Align(
           alignment: Alignment.bottomCenter,
           child: AnimatedOpacity(
-            opacity: _show ? 1 : 0,
+            opacity: _show(mediaQuery, scrollDirection) ? 1 : 0,
             curve: Curves.easeInOut,
             duration: kShortAnimationDuration,
             child: AnimatedShiftedPosition(
-              shift: _show ? Offset.zero : const Offset(0, 1),
+              shift: _show(mediaQuery, scrollDirection)
+                  ? Offset.zero
+                  : const Offset(0, 1),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: HarpyButton.raised(
@@ -107,7 +106,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                   icon: Icons.arrow_upward,
                   backgroundColor: theme.primaryColor,
                   dense: true,
-                  onTap: _scrollToStart,
+                  onTap: () => _scrollToStart(mediaQuery),
                 ),
               ),
             ),

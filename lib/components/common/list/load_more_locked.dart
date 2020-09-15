@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
-import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
-/// Builds a widget for the end of the [TweetList] when
-/// [TimelineBloc.lockRequestMore] is `true`.
+/// Builds a sliver for the end of a [CustomListView] indicating that loading
+/// more data is currently not possible.
 class LoadingMoreLocked extends StatelessWidget {
-  const LoadingMoreLocked();
+  const LoadingMoreLocked({
+    this.type = 'data',
+  });
+
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +17,8 @@ class LoadingMoreLocked extends StatelessWidget {
         height: 200,
         padding: const EdgeInsets.all(16),
         alignment: Alignment.center,
-        child: const Text(
-          'Please wait a moment until more Tweets can be requested',
+        child: Text(
+          'Please wait a moment until more $type can be requested',
           textAlign: TextAlign.center,
         ),
       ),

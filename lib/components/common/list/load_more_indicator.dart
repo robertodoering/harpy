@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
-/// Builds a widget for the end of the [TweetList] when more tweets are being
-/// requested.
+/// Builds a sliver for the end of a [CustomListView] indicating that more data
+/// is being requested.
 class LoadMoreIndicator extends StatelessWidget {
   const LoadMoreIndicator();
 
