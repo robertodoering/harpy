@@ -44,13 +44,17 @@ class _ListCardAnimationState extends State<ListCardAnimation>
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, .8),
+      begin: const Offset(0, 150),
       end: Offset.zero,
-    ).animate(CurveTween(curve: Curves.easeOutQuad).animate(
-      _controller,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutQuad,
     ));
 
-    _fadeAnimation = CurveTween(curve: Curves.easeInOut).animate(_controller);
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -101,8 +105,8 @@ class _ListCardAnimationState extends State<ListCardAnimation>
         animation: _controller,
         builder: (BuildContext context, Widget child) => FadeTransition(
           opacity: _fadeAnimation,
-          child: SlideTransition(
-            position: _slideAnimation,
+          child: Transform.translate(
+            offset: _slideAnimation.value,
             child: widget.child,
           ),
         ),
