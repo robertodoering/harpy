@@ -43,6 +43,7 @@ class TweetData {
 
     createdAt = tweet.createdAt;
     idStr = tweet.idStr;
+    inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
     fullText = tweet.fullText;
     userData = UserData.fromUser(tweet.user);
     retweetCount = tweet.retweetCount;
@@ -60,6 +61,10 @@ class TweetData {
 
   /// The string representation of the unique identifier for this Tweet.
   String idStr;
+
+  /// If the represented Tweet is a reply, this field will contain the string
+  /// representation of the original Tweet’s ID.
+  String inReplyToStatusIdStr;
 
   /// The actual UTF-8 text of the status update.
   String fullText;
@@ -180,4 +185,7 @@ class TweetData {
 
   /// Whether the quote of this tweet can be translated, if one exists.
   bool get quoteTranslatable => quote?.translatable == true;
+
+  /// Whether this tweet is a reply to another tweet.
+  bool get hasParent => inReplyToStatusIdStr.isNotEmpty == true;
 }

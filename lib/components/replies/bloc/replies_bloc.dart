@@ -8,14 +8,32 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
-  RepliesBloc(TweetData tweet) : super(LoadingRepliesState()) {
-    add(LoadRepliesEvent(tweet));
+  RepliesBloc(this.tweet) : super(LoadingRepliesState()) {
+    add(const LoadRepliesEvent());
   }
+
+  final TweetData tweet;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
   static RepliesBloc of(BuildContext context) => context.bloc<RepliesBloc>();
+
+  /// If this [tweet] is a reply itself, this list will contain all parent
+  /// tweets.
+  List<TweetData> parentTweets = <TweetData>[];
+
+  /// The list of replies for this [tweet].
+  List<TweetData> replies = <TweetData>[];
+
+  /// The last tweet search response.
+  RepliesResult lastResult;
+
+  /// Whether all replies have been loaded.
+  bool get allRepliesLoaded => lastResult?.lastPage ?? true;
+
+  /// Whether no replies exists for this [tweet].
+  bool get noRepliesExists => state is LoadedRepliesState && replies.isEmpty;
 
   @override
   Stream<RepliesState> mapEventToState(
