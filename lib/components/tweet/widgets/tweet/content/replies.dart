@@ -14,37 +14,29 @@ class TweetReplies extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (tweet.replyAuthors?.isNotEmpty == true)
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(
-                    // same width as avatar with padding
-                    width: 40,
-                    child: Icon(Icons.reply, size: 18),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${tweet.replyAuthors} replied',
-                    style: theme.textTheme.bodyText1,
-                  ),
-                ],
-              ),
-            ),
-          ...tweet.replies.map(
-            (TweetData reply) => Padding(
-              padding: const EdgeInsets.only(bottom: 8, right: 8),
-              child: TweetCard(reply),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (tweet.replyAuthors?.isNotEmpty == true)
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+            child: Row(
+              children: <Widget>[
+                const SizedBox(
+                  // same width as avatar with padding
+                  width: 40,
+                  child: Icon(Icons.reply, size: 18),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${tweet.replyAuthors} replied',
+                  style: theme.textTheme.bodyText1,
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ...tweet.replies.map((TweetData reply) => TweetCard(reply)),
+      ],
     );
   }
 }
