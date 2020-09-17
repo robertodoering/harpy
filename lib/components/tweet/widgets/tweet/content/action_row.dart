@@ -6,7 +6,9 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:intl/intl.dart';
 
 /// Builds the buttons with actions for the [tweet].
@@ -39,6 +41,7 @@ class TweetActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final RouteSettings route = ModalRoute.of(context).settings;
 
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
@@ -61,6 +64,17 @@ class TweetActionRow extends StatelessWidget {
             favorite: () => bloc.add(const FavoriteTweet()),
             unfavorite: () => bloc.add(const UnfavoriteTweet()),
           ),
+          if (!tweet.currentReplyParent(route)) ...<Widget>[
+            const SizedBox(width: 8),
+            HarpyButton.flat(
+              onTap: () => app<HarpyNavigator>().pushRepliesScreen(
+                tweet: bloc.tweet,
+              ),
+              icon: Icons.chat_bubble_outline,
+              iconSize: 20,
+              padding: const EdgeInsets.all(8),
+            ),
+          ],
           const Spacer(),
           if (bloc.tweet.translatable || bloc.tweet.quoteTranslatable)
             _buildTranslateButton(bloc, harpyTheme),

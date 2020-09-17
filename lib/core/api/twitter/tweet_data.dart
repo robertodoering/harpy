@@ -1,4 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/material.dart';
+import 'package:harpy/components/replies/widgets/replies_screen.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
@@ -187,5 +189,17 @@ class TweetData {
   bool get quoteTranslatable => quote?.translatable == true;
 
   /// Whether this tweet is a reply to another tweet.
-  bool get hasParent => inReplyToStatusIdStr.isNotEmpty == true;
+  bool get hasParent => inReplyToStatusIdStr?.isNotEmpty == true;
+
+  /// Whether this tweet is the current reply in the [ReplyScreen].
+  bool currentReplyParent(RouteSettings route) {
+    if (route.name == RepliesScreen.route) {
+      final Map<String, dynamic> arguments =
+          route.arguments as Map<String, dynamic> ?? <String, dynamic>{};
+
+      return (arguments['tweet'] as TweetData)?.idStr == idStr;
+    } else {
+      return false;
+    }
+  }
 }

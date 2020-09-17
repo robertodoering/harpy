@@ -8,20 +8,23 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
-  RepliesBloc(this.tweet) : super(LoadingRepliesState()) {
+  RepliesBloc(this.originalTweet) : super(LoadingParentsState()) {
     add(const LoadRepliesEvent());
   }
 
-  final TweetData tweet;
+  /// The tweet to load the replies for.
+  final TweetData originalTweet;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
   static RepliesBloc of(BuildContext context) => context.bloc<RepliesBloc>();
 
-  /// If this [tweet] is a reply itself, this list will contain all parent
-  /// tweets.
-  List<TweetData> parentTweets = <TweetData>[];
+  /// The parent tweet.
+  ///
+  /// If the original tweet is a reply itself, this will be the first tweet that
+  /// is not a reply and has its replies as the [TweetData.replies].
+  TweetData tweet;
 
   /// The list of replies for this [tweet].
   List<TweetData> replies = <TweetData>[];

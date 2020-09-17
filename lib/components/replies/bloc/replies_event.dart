@@ -15,14 +15,18 @@ abstract class RepliesEvent {
 
   Future<void> _loadReplies(RepliesBloc bloc) async {
     final RepliesResult result = await bloc.searchService
-        .findReplies(bloc.tweet, bloc.lastResult)
+        .findReplies(bloc.originalTweet, bloc.lastResult)
         .catchError(twitterApiErrorHandler);
 
     if (result != null) {
       bloc.lastResult = result;
 
+      result.replies.sort((TweetData a, TweetData b) {
+        return b.favoriteCount - a.favoriteCount;
+      });
+
       bloc.replies.addAll(result.replies);
-      _log.fine('found ${result.replies} replies');
+      _log.fine('found ${result.replies.length} replies');
     }
   }
 
@@ -41,20 +45,25 @@ class LoadRepliesEvent extends RepliesEvent {
 
   static final Logger _log = Logger('LoadRepliesEvent');
 
-  Future<void> _loadParentTweets(RepliesBloc bloc, TweetData replyTweet) async {
-    if (replyTweet.hasParent) {
+  Future<TweetData> _loadParentTweets(
+    RepliesBloc bloc,
+    TweetData tweet,
+  ) async {
+    if (tweet.hasParent) {
       final TweetData parent = await bloc.tweetService
-          .show(id: replyTweet.inReplyToStatusIdStr)
+          .show(id: tweet.inReplyToStatusIdStr)
           .then((Tweet tweet) => TweetData.fromTweet(tweet))
           .catchError(silentErrorHandler);
 
       if (parent != null) {
-        bloc.parentTweets.add(parent);
+        parent.replies.add(tweet);
         return _loadParentTweets(bloc, parent);
       }
-
-      _log.fine('found ${bloc.parentTweets.length} parent tweets');
     }
+
+    _log.fine('found ${tweet.replies.length} parent tweets');
+
+    return tweet;
   }
 
   @override
@@ -62,10 +71,19 @@ class LoadRepliesEvent extends RepliesEvent {
     RepliesState currentState,
     RepliesBloc bloc,
   }) async* {
-    await Future.wait<void>(<Future<void>>[
-      _loadParentTweets(bloc, bloc.tweet),
-      _loadReplies(bloc),
-    ]);
+    yield LoadingParentsState();
+
+    bloc.tweet = await _loadParentTweets(bloc, bloc.originalTweet);
+
+    yield LoadingRepliesState();
+
+    await _loadReplies(bloc);
+
+    if (bloc.replies.isEmpty && !bloc.lastResult.lastPage) {
+      // try loading next page if first result did not yield any replies for
+      // the tweet
+      await _loadReplies(bloc);
+    }
 
     yield LoadedRepliesState();
   }
@@ -141,7 +159,7 @@ extension on TweetSearchService {
 
     return RepliesResult(
       replies: replies,
-      maxId: result.statuses.last.idStr,
+      maxId: result.statuses.isEmpty ? '0' : result.statuses.last.idStr,
       lastPage: lastPage,
     );
   }

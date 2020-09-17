@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 @immutable
 abstract class RepliesState {}
 
+/// The state when the parent tweets are currently being loaded.
+class LoadingParentsState extends RepliesState {}
+
 /// The state when replies are currently being loaded.
 class LoadingRepliesState extends RepliesState {}
 
