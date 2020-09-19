@@ -137,7 +137,7 @@ extension on TweetSearchService {
         lastResult == null ? null : '${int.tryParse(lastResult.maxId) + 1}';
 
     final TweetSearch result = await searchTweets(
-      q: Uri.encodeQueryComponent('to:$screenName'),
+      q: 'to:$screenName',
       sinceId: tweet.idStr,
       count: 100,
       maxId: maxId,
