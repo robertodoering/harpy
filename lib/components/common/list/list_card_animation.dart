@@ -3,7 +3,8 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-/// Fades and slides the [child] when scrolling down.
+/// Fades and slides the [child] when scrolling down or on the initial build if
+/// it is visible.
 ///
 /// A [ScrollDirectionListener] needs to be built above the list for this widget
 /// to retrieve the current [ScrollDirection].
@@ -11,7 +12,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 /// The animation starts as soon as the [child] becomes visible. The [child] may
 /// be built before, depending on the [ScrollView.cacheExtent].
 ///
-/// The [key] is used by the [VisibilityDetector] to determine the [child]
+/// The [key] is used by the [VisibilityDetector] to determine the [child]'s
 /// visibility and should be the same as the list item.
 class ListCardAnimation extends StatefulWidget {
   const ListCardAnimation({
@@ -27,8 +28,7 @@ class ListCardAnimation extends StatefulWidget {
 
 class _ListCardAnimationState extends State<ListCardAnimation>
     with SingleTickerProviderStateMixin<ListCardAnimation> {
-  ScrollDirection _scrollDirection;
-  bool _visible;
+  bool _visible = false;
 
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
@@ -64,35 +64,27 @@ class _ListCardAnimationState extends State<ListCardAnimation>
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // only set the scroll direction once to prevent a change in direction to
-    // stop the animation
-    if (_scrollDirection == null) {
-      _scrollDirection = ScrollDirection.of(context);
-      _visible = !_scrollDirection.down;
-
-      if (_scrollDirection.direction == null) {
-        // first time building the parent list, animate child
-        _visible = true;
-        _controller.forward();
-      } else if (_scrollDirection.up) {
-        // scrolling up, skip animation
-        _visible = true;
-        _controller.forward(from: 1);
-      }
-    }
-  }
-
   void _onVisibilityChanged(VisibilityInfo info) {
-    // start animation when the child comes into view
     if (!_visible && info.visibleBounds.height > 0) {
+      // child came into view
       _visible = true;
-      if (mounted) {
-        _controller.forward();
+
+      final ScrollDirection scrollDirection = ScrollDirection.of(context);
+
+      if (scrollDirection.direction == null || scrollDirection.down) {
+        // first time building the parent list or scrolling down, animate child
+        if (mounted) {
+          _controller.forward(from: 0);
+        }
+      } else {
+        // scrolling up, skip animation
+        if (mounted) {
+          _controller.forward(from: 1);
+        }
       }
+    } else if (_visible && info.visibleBounds.height == 0) {
+      // reset animation when child gets scrolled out of view
+      _visible = false;
     }
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 /// A callback used by the [ScrollDirectionListener] that is invoked when the
 /// scroll direction changes.
@@ -29,9 +31,33 @@ class ScrollDirectionListener extends StatefulWidget {
       _ScrollDirectionListenerState();
 }
 
-class _ScrollDirectionListenerState extends State<ScrollDirectionListener> {
+class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
+    with RouteAware {
   double _lastPosition = 0;
   VerticalDirection _direction;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    app<HarpyNavigator>().routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPushNext() {
+    setState(() {
+      // Assume scrolling up when a new route gets pushed onto the screen.
+      // This is a workaround for the ListCardAnimation to prevent a repeating
+      // animation when the next route gets popped and the list cards become
+      // visible again.
+      _direction = VerticalDirection.up;
+    });
+  }
 
   void _changeDirection(VerticalDirection direction) {
     if (_direction != direction) {
@@ -39,9 +65,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener> {
         _direction = direction;
       });
 
-      if (widget.onScrollDirectionChanged != null) {
-        widget.onScrollDirectionChanged(direction);
-      }
+      widget.onScrollDirectionChanged?.call(direction);
     }
   }
 
