@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
-/// The duration for the [ListCardAnimation].
-///
-/// An in-between of the [kShortAnimationDuration] and [kLongAnimationDuration].
-const Duration kListCardAnimationDuration = Duration(milliseconds: 450);
 
 /// Fades and slides the [child] when scrolling down or on the initial build if
 /// it is visible.
@@ -44,7 +40,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
     _controller = AnimationController(
       vsync: this,
-      duration: kListCardAnimationDuration,
+      duration: kShortAnimationDuration,
     );
 
     _slideAnimation = Tween<Offset>(
@@ -52,7 +48,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeOutQuad,
+      curve: Curves.easeOutCubic,
     ));
 
     _fadeAnimation = CurvedAnimation(
