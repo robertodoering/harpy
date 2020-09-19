@@ -24,7 +24,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   final UserService userService = app<TwitterApi>().userService;
 
   static UserProfileBloc of(BuildContext context) =>
-      BlocProvider.of<UserProfileBloc>(context);
+      context.bloc<UserProfileBloc>();
 
   @override
   Stream<UserProfileState> mapEventToState(

@@ -23,7 +23,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   final ThemeBloc themeBloc;
 
   static ApplicationBloc of(BuildContext context) =>
-      BlocProvider.of<ApplicationBloc>(context);
+      context.bloc<ApplicationBloc>();
 
   @override
   Stream<ApplicationState> mapEventToState(

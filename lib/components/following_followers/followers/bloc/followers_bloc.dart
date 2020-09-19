@@ -11,5 +11,5 @@ class FollowersBloc extends FollowingFollowersBloc {
   }
 
   static FollowersBloc of(BuildContext context) =>
-      BlocProvider.of<FollowersBloc>(context);
+      context.bloc<FollowersBloc>();
 }

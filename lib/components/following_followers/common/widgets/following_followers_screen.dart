@@ -73,7 +73,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
       create: create,
       child: BlocBuilder<B, PaginatedState>(
         builder: (BuildContext context, PaginatedState state) {
-          final B bloc = BlocProvider.of<B>(context);
+          final B bloc = context.bloc<B>();
 
           Widget child;
 

@@ -6,12 +6,14 @@ import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
+import 'package:harpy/components/replies/widgets/replies_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
 import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:logging/logging.dart';
 
@@ -131,6 +133,15 @@ class HarpyNavigator {
       'userId': userId,
     });
   }
+
+  /// Pushes a [RepliesScreen] with the replies to the [tweet].
+  void pushRepliesScreen({
+    @required TweetData tweet,
+  }) {
+    pushNamed(RepliesScreen.route, arguments: <String, dynamic>{
+      'tweet': tweet,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -153,6 +164,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget screen;
 
   switch (routeName) {
+    case RepliesScreen.route:
+      screen = RepliesScreen(
+        tweet: arguments['tweet'],
+      );
+      break;
     case UserProfileScreen.route:
       screen = UserProfileScreen(
         screenName: arguments['screenName'],

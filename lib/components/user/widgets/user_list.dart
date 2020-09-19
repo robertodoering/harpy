@@ -21,10 +21,8 @@ class UserList extends StatelessWidget {
   final bool enableScroll;
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final int itemIndex = index ~/ 2;
-
     if (index.isEven) {
-      return UserCard(users[itemIndex]);
+      return UserCard(users[index ~/ 2]);
     } else {
       return const SizedBox(height: 16);
     }
