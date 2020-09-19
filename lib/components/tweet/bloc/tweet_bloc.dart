@@ -21,8 +21,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
   final TranslationService translationService = app<TranslationService>();
 
-  static TweetBloc of(BuildContext context) =>
-      BlocProvider.of<TweetBloc>(context);
+  static TweetBloc of(BuildContext context) => context.bloc<TweetBloc>();
 
   @override
   Stream<TweetState> mapEventToState(
