@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -40,7 +39,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
     _controller = AnimationController(
       vsync: this,
-      duration: kLongAnimationDuration,
+      duration: const Duration(milliseconds: 450),
     );
 
     _slideAnimation = Tween<Offset>(
