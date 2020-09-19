@@ -19,6 +19,8 @@ extension RepliesExtension on TweetSearchService {
   /// We could request until we received all of the user replies of the last
   /// 7 days to make sure every reply to the [tweet] has been found but that
   /// could mean many requests without any replies.
+  ///
+  /// Throws an exception when the [searchTweets] did not return a 200 response.
   Future<RepliesResult> findReplies(
     TweetData tweet,
     RepliesResult lastResult,
