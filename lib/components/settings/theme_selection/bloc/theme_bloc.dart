@@ -31,7 +31,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ///
   /// Is empty when no user is authenticated, or when the user has no custom
   /// themes.
-  /// Custom themes can only be created with Harpy Pro.
+  /// Custom themes can only be created when using Harpy Pro.
   List<HarpyTheme> customThemes = <HarpyTheme>[];
 
   HarpyThemeData _decodeThemeData(String themeDataJson) {

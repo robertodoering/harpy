@@ -129,8 +129,8 @@ class HarpyButton extends StatelessWidget {
   /// The color of the [icon] and [text] of the button.
   ///
   /// Defaults to [TextTheme.button] if the [backgroundColor] is `null`,
-  /// to the [TextTheme.bodyText2] color if the [backgroundColor] is transparent
-  /// or to a complementary color when [backgroundColor] is set.
+  /// to the text foreground color if the [backgroundColor] is transparent or to
+  /// white or black when [backgroundColor] is set.
   final Color foregroundColor;
 
   /// Whether or not the button should have less padding.

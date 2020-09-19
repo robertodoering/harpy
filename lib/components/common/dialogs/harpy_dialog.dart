@@ -46,7 +46,7 @@ class HarpyDialog extends StatefulWidget {
   final EdgeInsetsGeometry titlePadding;
 
   /// The (optional) content of the dialog is displayed in the center of the
-  /// dialog in a lighter font.
+  /// dialog.
   final Widget content;
 
   /// Padding around the content.

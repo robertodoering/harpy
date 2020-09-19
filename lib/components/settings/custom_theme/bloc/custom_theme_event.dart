@@ -240,7 +240,8 @@ class DeleteCustomTheme extends CustomThemeEvent {
       // reset theme to default theme when deleting the currently selected theme
       bloc.themeBloc.add(const ChangeThemeEvent(id: 0, saveSelection: true));
     } else if (bloc.themeId < selectedThemeId) {
-      // the index of the currently selected theme changed by -1
+      // the index of the currently selected theme changed by -1, because we
+      // deleted a theme that comes before the currently selected theme
       bloc.themeBloc.add(
         ChangeThemeEvent(id: selectedThemeId - 1, saveSelection: true),
       );

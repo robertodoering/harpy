@@ -6,6 +6,12 @@ import 'package:harpy/components/common/animations/explicit/expand_animation.dar
 
 /// Wraps the [ReorderableList] to allow the [children] to reorder.
 ///
+/// The [ReorderableList] is an implementation of a reorderable list from the
+/// [flutter_reorderable_list](https://pub.dev/packages/flutter_reorderable_list)
+/// package.
+/// This implementation looks and feels a lot better than the default flutter
+/// [ReorderableListView].
+///
 /// The [children] must build their own [ReorderableListener] that will start a
 /// reorder on drag.
 class CustomReorderableList extends StatefulWidget {

@@ -11,7 +11,7 @@ import 'package:harpy/harpy.dart';
 import 'custom_theme_event.dart';
 import 'custom_theme_state.dart';
 
-/// Handles creating and modifying custom themes.
+/// Handles creating and editing custom themes.
 class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   CustomThemeBloc({
     @required this.themeData,

@@ -16,7 +16,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 import 'package:harpy/harpy.dart';
 
-/// The custom theme screen for modifying existing custom themes and creating
+/// The custom theme screen for editing existing custom themes and creating
 /// new custom themes.
 class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({

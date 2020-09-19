@@ -64,8 +64,8 @@ class HarpyTheme {
 
   /// The average color of the [backgroundColors].
   ///
-  /// Used as the background where only a single color is desired (e.g. a
-  /// dialog background or a pop up menu).
+  /// Used as the background color where only a single color is desired (e.g.
+  /// the dialog background or a pop up menu).
   Color averageBackgroundColor;
 
   /// The brightness of the theme.
