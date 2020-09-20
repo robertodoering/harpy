@@ -31,7 +31,7 @@ class TweetActionRow extends StatelessWidget {
     return HarpyButton.flat(
       onTap: enable ? () => bloc.add(const TranslateTweet()) : null,
       foregroundColor: color,
-      icon: Icons.translate,
+      icon: const Icon(Icons.translate),
       iconSize: 20,
       padding: const EdgeInsets.all(8),
     );
@@ -94,7 +94,7 @@ class TweetActionRow extends StatelessWidget {
               onTap: () => app<HarpyNavigator>().pushRepliesScreen(
                 tweet: bloc.tweet,
               ),
-              icon: Icons.chat_bubble_outline,
+              icon: const Icon(Icons.chat_bubble_outline),
               iconSize: 20,
               padding: const EdgeInsets.all(8),
             ),

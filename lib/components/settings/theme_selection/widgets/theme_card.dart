@@ -52,7 +52,7 @@ class ThemeCard extends StatelessWidget {
             ),
             if (canEdit)
               HarpyButton.flat(
-                icon: Icons.edit,
+                icon: const Icon(Icons.edit),
                 padding: const EdgeInsets.all(16),
                 onTap: onEdit,
               ),

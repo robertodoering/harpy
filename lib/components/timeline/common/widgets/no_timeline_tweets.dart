@@ -33,7 +33,7 @@ class NoTimelineTweets<T extends TimelineBloc> extends StatelessWidget {
           const SizedBox(height: 16),
           HarpyButton.flat(
             dense: true,
-            text: 'refresh',
+            text: const Text('refresh'),
             onTap: () => onRefresh(bloc),
           ),
         ],

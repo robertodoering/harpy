@@ -92,10 +92,10 @@ class _ActionButtonState extends State<ActionButton>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
+      value: widget.active ? 1 : 0,
     );
   }
 
@@ -107,6 +107,7 @@ class _ActionButtonState extends State<ActionButton>
       if (widget.active) {
         _controller.forward(from: 0);
       } else {
+        // TODO: add reset animation
         _controller.reset();
       }
     }
@@ -159,7 +160,7 @@ class _ActionButtonState extends State<ActionButton>
         HarpyButton.flat(
           padding: const EdgeInsets.all(8),
           onTap: widget.active ? widget.deactivate : widget.activate,
-          iconBuilder: (BuildContext context) => child,
+          icon: child,
         ),
         AnimatedNumber(
           number: widget.value,

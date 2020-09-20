@@ -80,8 +80,8 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return HarpyButton.flat(
-      text: widget.text,
-      iconBuilder: (BuildContext context) => _iconBuilder(theme, harpyTheme),
+      text: Text(widget.text),
+      icon: _iconBuilder(theme, harpyTheme),
       foregroundColor: widget.favorited ? harpyTheme.likeColor : null,
       onTap: widget.favorited ? widget.unfavorite : widget.favorite,
       padding: widget.padding,

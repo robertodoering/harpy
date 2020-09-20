@@ -60,7 +60,7 @@ class BackgroundColorCard extends StatelessWidget {
               onTap: () => _changeBackgroundColor(context),
             ),
             HarpyButton.flat(
-              icon: Icons.delete_outline,
+              icon: const Icon(Icons.delete_outline),
               padding: const EdgeInsets.all(16),
               onTap: bloc.canRemoveBackgroundColor
                   ? () => bloc.add(RemoveBackgroundColor(index: index))

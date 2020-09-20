@@ -31,7 +31,7 @@ class LoadingDataError extends StatelessWidget {
           if (onTap != null)
             HarpyButton.flat(
               dense: true,
-              text: 'retry',
+              text: const Text('retry'),
               onTap: onTap,
             ),
         ],
