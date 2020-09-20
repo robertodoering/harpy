@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/buttons/favorite_button.dart';
+import 'package:harpy/components/common/buttons/action_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
@@ -46,24 +46,48 @@ class TweetActionRow extends StatelessWidget {
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
         children: <Widget>[
-          HarpyButton.flat(
-            onTap: () => bloc.tweet.retweeted
-                ? bloc.add(const UnretweetTweet())
-                : bloc.add(const RetweetTweet()),
-            icon: Icons.repeat,
-            text: _numberFormat.format(tweet.retweetCount),
-            foregroundColor:
-                bloc.tweet.retweeted ? harpyTheme.retweetColor : null,
-            iconSize: 20,
-            padding: const EdgeInsets.all(8),
+          ActionButton(
+            active: bloc.tweet.retweeted,
+            activeIconColor: harpyTheme.retweetColor,
+            value: tweet.retweetCount,
+            activate: () => bloc.add(const RetweetTweet()),
+            deactivate: () => bloc.add(const UnretweetTweet()),
+            iconAnimationBuilder: (Animation<double> animation, Widget child) {
+              return RotationTransition(
+                turns: CurvedAnimation(
+                  curve: Curves.easeOutBack,
+                  parent: animation,
+                ),
+                child: child,
+              );
+            },
+            iconBuilder: (
+              BuildContext context,
+              bool active,
+              double size,
+            ) {
+              return Icon(Icons.repeat, size: size);
+            },
           ),
           const SizedBox(width: 8),
-          FavoriteButton(
-            favorited: bloc.tweet.favorited,
-            text: _numberFormat.format(tweet.favoriteCount),
-            favorite: () => bloc.add(const FavoriteTweet()),
-            unfavorite: () => bloc.add(const UnfavoriteTweet()),
+          ActionButton(
+            active: bloc.tweet.favorited,
+            activeIconColor: harpyTheme.likeColor,
+            value: tweet.favoriteCount,
+            activate: () => bloc.add(const FavoriteTweet()),
+            deactivate: () => bloc.add(const UnfavoriteTweet()),
+            iconBuilder: (
+              BuildContext context,
+              bool active,
+              double size,
+            ) {
+              return Icon(
+                active ? Icons.favorite : Icons.favorite_border,
+                size: size,
+              );
+            },
           ),
+          const SizedBox(width: 8),
           if (!tweet.currentReplyParent(route)) ...<Widget>[
             const SizedBox(width: 8),
             HarpyButton.flat(
