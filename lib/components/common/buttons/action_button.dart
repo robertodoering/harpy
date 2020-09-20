@@ -135,24 +135,20 @@ class _ActionButtonState extends State<ActionButton>
           width: widget.iconSize,
           height: widget.iconSize,
           alignment: Alignment.center,
-          child: SizedBox(
-            height: widget.iconSize,
-            width: widget.iconSize,
-            child: _controller.isAnimating || widget.active
-                ? widget.iconAnimationBuilder(
-                    _controller,
-                    widget.iconBuilder(
-                      context,
-                      widget.active,
-                      widget.iconSize,
-                    ),
-                  )
-                : widget.iconBuilder(
+          child: _controller.isAnimating || widget.active
+              ? widget.iconAnimationBuilder(
+                  _controller,
+                  widget.iconBuilder(
                     context,
                     widget.active,
                     widget.iconSize,
                   ),
-          ),
+                )
+              : widget.iconBuilder(
+                  context,
+                  widget.active,
+                  widget.iconSize,
+                ),
         ),
       ),
     );
