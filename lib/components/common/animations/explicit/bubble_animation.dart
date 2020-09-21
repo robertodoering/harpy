@@ -10,16 +10,8 @@ class BubbleAnimation extends StatefulWidget {
     @required this.builder,
     @required this.controller,
     this.size = 20,
-    this.bubblesColor = const BubblesColor(
-      dotPrimaryColor: Color(0xFFFFC107),
-      dotSecondaryColor: Color(0xFFFF9800),
-      dotThirdColor: Color(0xFFFF5722),
-      dotLastColor: Color(0xFFF44336),
-    ),
-    this.circleColor = const CircleColor(
-      start: Color(0xFFFF5722),
-      end: Color(0xFFFFC107),
-    ),
+    this.bubblesColor,
+    this.circleColor,
   })  : bubbleSize = size * 2,
         circleSize = size * .8;
 

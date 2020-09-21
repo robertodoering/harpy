@@ -3,6 +3,7 @@ import 'package:harpy/components/common/animations/explicit/bubble_animation.dar
 import 'package:harpy/components/common/animations/implicit/animated_number.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 
 /// Builds the icon for an [ActionButton].
 typedef IconBuilder = Widget Function(
@@ -32,9 +33,20 @@ class ActionButton extends StatefulWidget {
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.activeIconColor,
     this.value,
+    this.activeTextColor,
     this.iconSize = 20,
     this.activate,
     this.deactivate,
+    this.bubblesColor = const BubblesColor(
+      dotPrimaryColor: Color(0xFFFFC107),
+      dotSecondaryColor: Color(0xFFFF9800),
+      dotThirdColor: Color(0xFFFF5722),
+      dotLastColor: Color(0xFFF44336),
+    ),
+    this.circleColor = const CircleColor(
+      start: Color(0xFFFF5722),
+      end: Color(0xFFFFC107),
+    ),
   });
 
   /// Builds the icon for the current [active] state.
@@ -53,6 +65,9 @@ class ActionButton extends StatefulWidget {
   /// An optional value displayed next to the icon.
   final int value;
 
+  /// The color for the text when [active] is `true`.
+  final Color activeTextColor;
+
   /// The size of the icon.
   ///
   /// Also determines the sizes of the [BubbleAnimation].
@@ -65,6 +80,11 @@ class ActionButton extends StatefulWidget {
   /// The callback that is fired when the button is tapped and [active] is
   /// `true`.
   final VoidCallback deactivate;
+
+  /// The colors used by the [BubbleAnimation] that starts when [active] changes
+  /// from `false` to `true`.
+  final BubblesColor bubblesColor;
+  final CircleColor circleColor;
 
   /// The default icon animation that builds the icon in a [ScaleTransition].
   static Widget defaultIconAnimationBuilder(
@@ -123,7 +143,7 @@ class _ActionButtonState extends State<ActionButton>
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final Widget child = AnimatedTheme(
+    final Widget icon = AnimatedTheme(
       data: theme.copyWith(
         iconTheme: theme.iconTheme.copyWith(
           color: widget.active ? widget.activeIconColor : null,
@@ -132,6 +152,8 @@ class _ActionButtonState extends State<ActionButton>
       child: BubbleAnimation(
         controller: _controller,
         size: widget.iconSize,
+        bubblesColor: widget.bubblesColor,
+        circleColor: widget.circleColor,
         builder: (BuildContext context) => Container(
           width: widget.iconSize,
           height: widget.iconSize,
@@ -154,18 +176,14 @@ class _ActionButtonState extends State<ActionButton>
       ),
     );
 
-    // todo: build text using text builder in harpy button
-    return Row(
-      children: <Widget>[
-        HarpyButton.flat(
-          padding: const EdgeInsets.all(8),
-          onTap: widget.active ? widget.deactivate : widget.activate,
-          icon: child,
-        ),
-        AnimatedNumber(
-          number: widget.value,
-        ),
-      ],
+    return HarpyButton.flat(
+      padding: const EdgeInsets.all(8),
+      onTap: widget.active ? widget.deactivate : widget.activate,
+      icon: icon,
+      foregroundColor: widget.active ? widget.activeTextColor : null,
+      text: AnimatedNumber(
+        number: widget.value,
+      ),
     );
   }
 }

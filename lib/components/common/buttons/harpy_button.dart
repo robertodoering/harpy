@@ -181,7 +181,7 @@ class HarpyButton extends StatelessWidget {
   }
 
   /// Builds the row with the [Icon] and [Text] widget.
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent() {
     return IntrinsicWidth(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -223,19 +223,19 @@ class HarpyButton extends StatelessWidget {
           // icon color
           iconTheme: IconThemeData(color: fgColor, size: iconSize),
         ),
-        child: Builder(
-          builder: (BuildContext context) => DefaultTextStyle(
-            style: Theme.of(context).textTheme.button,
-            overflow: TextOverflow.fade,
-            softWrap: false,
-            child: Material(
-              elevation: elevation,
-              type: materialType,
-              borderRadius: BorderRadius.circular(64),
-              child: Padding(
-                padding: _padding,
-                // use a builder so the context can reference the animated theme
-                child: Builder(builder: _buildContent),
+        child: Material(
+          elevation: elevation,
+          type: materialType,
+          borderRadius: BorderRadius.circular(64),
+          child: Padding(
+            padding: _padding,
+            // use a builder so the context can reference the animated theme
+            child: Builder(
+              builder: (BuildContext context) => DefaultTextStyle(
+                style: Theme.of(context).textTheme.button,
+                overflow: TextOverflow.fade,
+                softWrap: false,
+                child: _buildContent(),
               ),
             ),
           ),
