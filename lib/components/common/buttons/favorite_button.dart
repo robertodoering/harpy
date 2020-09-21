@@ -6,17 +6,21 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// The favorite button for the [TweetActionRow].
 class FavoriteButton extends StatelessWidget {
-  const FavoriteButton();
+  const FavoriteButton(this.bloc);
+
+  final TweetBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    final TweetBloc bloc = TweetBloc.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
       active: bloc.tweet.favorited,
-      activeIconColor: Colors.pinkAccent,
-      activeTextColor: Colors.pinkAccent,
+      activeIconColor: harpyTheme.favoriteColor,
+      activeTextStyle: TextStyle(
+        color: harpyTheme.favoriteColor,
+        fontWeight: FontWeight.bold,
+      ),
       value: bloc.tweet.favoriteCount,
       activate: () => bloc.add(const FavoriteTweet()),
       deactivate: () => bloc.add(const UnfavoriteTweet()),

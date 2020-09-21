@@ -7,17 +7,21 @@ import 'package:like_button/like_button.dart';
 
 /// The retweet button for a [TweetActionRow].
 class RetweetButton extends StatelessWidget {
-  const RetweetButton();
+  const RetweetButton(this.bloc);
+
+  final TweetBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    final TweetBloc bloc = TweetBloc.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
       active: bloc.tweet.retweeted,
       activeIconColor: harpyTheme.retweetColor,
-      activeTextColor: harpyTheme.retweetColor,
+      activeTextStyle: TextStyle(
+        color: harpyTheme.retweetColor,
+        fontWeight: FontWeight.bold,
+      ),
       value: bloc.tweet.retweetCount,
       activate: () => bloc.add(const RetweetTweet()),
       deactivate: () => bloc.add(const UnretweetTweet()),

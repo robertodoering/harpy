@@ -44,9 +44,9 @@ class TweetActionRow extends StatelessWidget {
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
         children: <Widget>[
-          const RetweetButton(),
+          RetweetButton(bloc),
           const SizedBox(width: 8),
-          const FavoriteButton(),
+          FavoriteButton(bloc),
           const SizedBox(width: 8),
           if (!tweet.currentReplyParent(route)) ...<Widget>[
             const SizedBox(width: 8),

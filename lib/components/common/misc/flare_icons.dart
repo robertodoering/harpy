@@ -83,10 +83,6 @@ class FlareIcon extends StatelessWidget {
   static void cacheIcons(BuildContext context) {
     cachedActor(AssetFlare(
       bundle: DefaultAssetBundle.of(context),
-      name: '$_path/favorite.flr',
-    ));
-    cachedActor(AssetFlare(
-      bundle: DefaultAssetBundle.of(context),
       name: '$_path/shining_star.flr',
     ));
   }

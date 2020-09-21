@@ -78,6 +78,7 @@ class HarpyButton extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.foregroundColor,
+    this.style,
   })  : materialType = MaterialType.canvas,
         elevation = 8,
         assert(text != null || icon != null);
@@ -93,6 +94,7 @@ class HarpyButton extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.foregroundColor,
+    this.style,
   })  : backgroundColor = null,
         materialType = MaterialType.transparency,
         elevation = 0,
@@ -128,6 +130,8 @@ class HarpyButton extends StatelessWidget {
   /// to the text foreground color if the [backgroundColor] is transparent or to
   /// white or black when [backgroundColor] is set.
   final Color foregroundColor;
+
+  final TextStyle style;
 
   /// Whether the button should have less padding.
   ///
@@ -232,7 +236,7 @@ class HarpyButton extends StatelessWidget {
             // use a builder so the context can reference the animated theme
             child: Builder(
               builder: (BuildContext context) => DefaultTextStyle(
-                style: Theme.of(context).textTheme.button,
+                style: Theme.of(context).textTheme.button.merge(style),
                 overflow: TextOverflow.fade,
                 softWrap: false,
                 child: _buildContent(),

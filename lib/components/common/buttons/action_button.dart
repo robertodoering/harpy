@@ -33,7 +33,7 @@ class ActionButton extends StatefulWidget {
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.activeIconColor,
     this.value,
-    this.activeTextColor,
+    this.activeTextStyle,
     this.iconSize = 20,
     this.activate,
     this.deactivate,
@@ -65,8 +65,8 @@ class ActionButton extends StatefulWidget {
   /// An optional value displayed next to the icon.
   final int value;
 
-  /// The color for the text when [active] is `true`.
-  final Color activeTextColor;
+  /// The style for the text when [active] is `true`.
+  final TextStyle activeTextStyle;
 
   /// The size of the icon.
   ///
@@ -180,7 +180,7 @@ class _ActionButtonState extends State<ActionButton>
       padding: const EdgeInsets.all(8),
       onTap: widget.active ? widget.deactivate : widget.activate,
       icon: icon,
-      foregroundColor: widget.active ? widget.activeTextColor : null,
+      style: widget.active ? widget.activeTextStyle : null,
       text: AnimatedNumber(
         number: widget.value,
       ),
