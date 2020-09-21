@@ -29,7 +29,7 @@ class HarpyTheme {
     _calculateBrightness();
     _calculateButtonTextColor();
     _calculateErrorColor();
-    _setupTweetColors();
+    _setupTweetActionColors();
     _setupTextTheme();
     _setupThemeData();
   }
@@ -90,14 +90,14 @@ class HarpyTheme {
   /// The [ThemeData] used by the root [MaterialApp].
   ThemeData data;
 
-  /// The color for the like button.
-  Color likeColor = Colors.red;
+  /// The color for the favorite button.
+  Color favoriteColor = Colors.pinkAccent;
 
   /// The color for the retweet button.
-  Color retweetColor = Colors.green;
+  Color retweetColor = Colors.lightGreenAccent;
 
   /// The color for the translate button.
-  Color translateColor = Colors.blue;
+  Color translateColor = Colors.lightBlueAccent;
 
   /// The opposite of [brightness].
   Brightness get complementaryBrightness =>
@@ -138,55 +138,74 @@ class HarpyTheme {
     averageBackgroundColor = average;
   }
 
-  void _setupTweetColors() {
-    final List<Color> likeColors = <Color>[
-      const Color(0xFFFF4538), // light red
-      const Color(0xFF940C01), // dark red
+  /// Contains lighter and darker color variants for the tweet actions and
+  /// changes the corresponding color depending on the background contrast.
+  ///
+  /// This is used to make sure the color looks good on any colored background.
+  void _setupTweetActionColors() {
+    final List<Color> favoriteColors = <Color>[
+      Colors.pinkAccent[100],
+      Colors.redAccent[700],
     ];
 
     final List<Color> retweetColors = <Color>[
-      const Color(0xFF94E096), // light green
-      const Color(0xFF347736), // dark green
+      Colors.lightGreenAccent[100],
+      Colors.lightGreenAccent[700],
     ];
 
     final List<Color> translateColors = <Color>[
-      const Color(0xFF6EB7EF), // light blue
-      const Color(0xFF0F578E), // dark blue
+      Colors.lightBlueAccent[100],
+      Colors.lightBlueAccent[700],
     ];
 
-    final double likeContrast = contrastRatio(
-      likeColor.computeLuminance(),
+    double favoriteContrast = contrastRatio(
+      favoriteColor.computeLuminance(),
       backgroundLuminance,
     );
 
-    for (Color color in likeColors) {
-      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
-          likeContrast) {
-        likeColor = color;
+    for (Color color in favoriteColors) {
+      final double contrast = contrastRatio(
+        color.computeLuminance(),
+        backgroundLuminance,
+      );
+
+      if (contrast > favoriteContrast) {
+        favoriteColor = color;
+        favoriteContrast = contrast;
       }
     }
 
-    final double retweetContrast = contrastRatio(
+    double retweetContrast = contrastRatio(
       retweetColor.computeLuminance(),
       backgroundLuminance,
     );
 
     for (Color color in retweetColors) {
-      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
-          retweetContrast) {
+      final double contrast = contrastRatio(
+        color.computeLuminance(),
+        backgroundLuminance,
+      );
+
+      if (contrast > retweetContrast) {
         retweetColor = color;
+        retweetContrast = contrast;
       }
     }
 
-    final double translateContrast = contrastRatio(
+    double translateContrast = contrastRatio(
       translateColor.computeLuminance(),
       backgroundLuminance,
     );
 
     for (Color color in translateColors) {
-      if (contrastRatio(color.computeLuminance(), backgroundLuminance) >
-          translateContrast) {
+      final double contrast = contrastRatio(
+        color.computeLuminance(),
+        backgroundLuminance,
+      );
+
+      if (contrast > translateContrast) {
         translateColor = color;
+        translateContrast = contrast;
       }
     }
   }
