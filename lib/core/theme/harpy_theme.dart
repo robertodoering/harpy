@@ -144,7 +144,7 @@ class HarpyTheme {
   /// This is used to make sure the color looks good on any colored background.
   void _setupTweetActionColors() {
     final List<Color> favoriteColors = <Color>[
-      Colors.pinkAccent[100],
+      Colors.pink[300],
       Colors.redAccent[700],
     ];
 
