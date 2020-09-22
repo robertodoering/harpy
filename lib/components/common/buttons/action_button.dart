@@ -127,7 +127,6 @@ class _ActionButtonState extends State<ActionButton>
       if (widget.active) {
         _controller.forward(from: 0);
       } else {
-        // TODO: add reset animation
         _controller.reset();
       }
     }

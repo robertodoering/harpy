@@ -80,7 +80,6 @@ class _AnimatedNumberState extends State<AnimatedNumber>
 
   @override
   Widget build(BuildContext context) {
-    // todo: fix difference in width when number changes
     if (_oldNumberStr != _newNumberStr) {
       int changedIndex = 0;
 
