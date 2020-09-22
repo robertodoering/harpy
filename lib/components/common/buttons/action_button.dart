@@ -181,9 +181,7 @@ class _ActionButtonState extends State<ActionButton>
       onTap: widget.active ? widget.deactivate : widget.activate,
       icon: icon,
       style: widget.active ? widget.activeTextStyle : null,
-      text: AnimatedNumber(
-        number: widget.value,
-      ),
+      text: widget.value != null ? AnimatedNumber(number: widget.value) : null,
     );
   }
 }

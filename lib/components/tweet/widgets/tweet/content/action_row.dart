@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
+import 'package:harpy/components/common/buttons/translation_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
@@ -38,7 +39,6 @@ class TweetActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
     final RouteSettings route = ModalRoute.of(context).settings;
 
     return BlocBuilder<TweetBloc, TweetState>(
@@ -61,7 +61,7 @@ class TweetActionRow extends StatelessWidget {
           ],
           const Spacer(),
           if (tweet.translatable || tweet.quoteTranslatable)
-            _buildTranslateButton(bloc, harpyTheme),
+            TranslationButton(bloc),
         ],
       ),
     );
