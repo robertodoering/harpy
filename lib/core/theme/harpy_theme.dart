@@ -16,6 +16,14 @@ const double kTextContrastRatio = 4.5;
 /// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
 const double kLargeTextContrastRatio = 3;
 
+/// The default border radius used throughout the app.
+const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
+  borderRadius: kDefaultBorderRadius,
+);
+const BorderRadiusGeometry kDefaultBorderRadius =
+    BorderRadius.all(kDefaultRadius);
+const Radius kDefaultRadius = Radius.circular(16);
+
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
     name = data.name ?? '';
@@ -347,7 +355,7 @@ class HarpyTheme {
               : Colors.black.withOpacity(.2),
           .1,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: kDefaultShapeBorder,
       ),
     );
   }

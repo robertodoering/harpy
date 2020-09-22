@@ -4,6 +4,7 @@ import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds a card for the [user] that animates when scroll dowing with a
@@ -27,7 +28,7 @@ class UserCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.zero,
         child: ListTile(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: kDefaultShapeBorder,
           isThreeLine: user.hasDescription,
           leading: CachedCircleAvatar(
             imageUrl: user.profileImageUrlHttps,

@@ -4,6 +4,7 @@ import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the content for a tweet quote.
 class TweetQuoteContent extends StatelessWidget {
@@ -35,7 +36,7 @@ class TweetQuoteContent extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),

@@ -3,6 +3,7 @@ import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the accent color customization for the [CustomThemeScreen].
 class AccentColorSelection extends StatelessWidget {
@@ -63,9 +64,7 @@ class AccentColorSelection extends StatelessWidget {
             child: ListTile(
               leading: const SizedBox(),
               trailing: const SizedBox(),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              shape: kDefaultShapeBorder,
               onTap: () => _changeAccentColor(context, theme),
             ),
           ),
