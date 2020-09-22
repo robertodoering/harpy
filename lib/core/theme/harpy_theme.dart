@@ -149,13 +149,13 @@ class HarpyTheme {
     ];
 
     final List<Color> retweetColors = <Color>[
-      Colors.lightGreenAccent[100],
-      Colors.lightGreenAccent[700],
+      Colors.lightGreen[100],
+      Colors.green[800],
     ];
 
     final List<Color> translateColors = <Color>[
       Colors.lightBlueAccent[100],
-      Colors.lightBlueAccent[700],
+      Colors.indigoAccent[700],
     ];
 
     double favoriteContrast = contrastRatio(
