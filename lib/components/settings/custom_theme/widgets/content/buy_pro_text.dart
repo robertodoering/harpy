@@ -19,7 +19,7 @@ class BuyProText extends StatelessWidget {
           const FlareIcon.shiningStar(size: 32),
           HarpyButton.flat(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            text: 'Buy Harpy Pro',
+            text: const Text('Buy Harpy Pro'),
             // todo: link to harpy pro
             // todo: analytics
             onTap: () => app<MessageService>().showInfo('Not yet available'),

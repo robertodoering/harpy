@@ -4,6 +4,7 @@ import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a colored card for the background color selection of the
 /// [CustomThemeBloc].
@@ -54,13 +55,11 @@ class BackgroundColorCard extends StatelessWidget {
             ListTile(
               leading: const SizedBox(),
               trailing: const SizedBox(),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              shape: kDefaultShapeBorder,
               onTap: () => _changeBackgroundColor(context),
             ),
             HarpyButton.flat(
-              icon: Icons.delete_outline,
+              icon: const Icon(Icons.delete_outline),
               padding: const EdgeInsets.all(16),
               onTap: bloc.canRemoveBackgroundColor
                   ? () => bloc.add(RemoveBackgroundColor(index: index))

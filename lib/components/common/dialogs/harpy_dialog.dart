@@ -247,8 +247,8 @@ class DialogAction<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyButton.flat(
-      text: text,
-      icon: icon,
+      text: Text(text),
+      icon: Icon(icon),
       padding: padding,
       onTap: result == null && onTap == null ? null : () => _onTap(context),
       dense: true,

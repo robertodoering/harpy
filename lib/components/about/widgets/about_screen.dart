@@ -96,10 +96,8 @@ class _AboutScreenState extends State<AboutScreen> {
       const SizedBox(height: 16),
       Center(
         child: HarpyButton.raised(
-          text: 'Harpy Pro',
-          iconBuilder: (BuildContext context) => const FlareIcon.shiningStar(
-            size: 22,
-          ),
+          text: const Text('Harpy Pro'),
+          icon: const FlareIcon.shiningStar(size: 22),
           dense: true,
           // todo: link to harpy pro
           // todo: add harpy pro analytics
@@ -118,10 +116,8 @@ class _AboutScreenState extends State<AboutScreen> {
       const SizedBox(height: 16),
       Center(
         child: HarpyButton.raised(
-          text: 'Rate Harpy',
-          iconBuilder: (BuildContext context) => const FlareIcon.shiningStar(
-            size: 22,
-          ),
+          text: const Text('Rate Harpy'),
+          icon: const FlareIcon.shiningStar(size: 22),
           dense: true,
           // todo harpy free or pro play store link
           // todo: add rate harpy analytics
@@ -150,8 +146,8 @@ class _AboutScreenState extends State<AboutScreen> {
       const SizedBox(height: 16),
       Center(
         child: HarpyButton.raised(
-          text: 'Contact',
-          icon: Icons.mail,
+          text: const Text('Contact'),
+          icon: const Icon(Icons.mail),
           dense: true,
           onTap: () => launchUrl(_mailto),
         ),

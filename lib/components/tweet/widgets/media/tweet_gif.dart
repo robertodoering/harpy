@@ -4,6 +4,7 @@ import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
 class TweetGif extends StatelessWidget {
@@ -16,7 +17,7 @@ class TweetGif extends StatelessWidget {
     final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: kDefaultBorderRadius,
       child: HarpyGifPlayer(
         gif.appropriateUrl,
         thumbnail: gif.thumbnailUrl,

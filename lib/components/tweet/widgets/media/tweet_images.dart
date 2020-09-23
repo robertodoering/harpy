@@ -4,6 +4,7 @@ import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_image_gallery.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the images for the [TweetMedia].
@@ -35,8 +36,6 @@ class TweetImages extends StatelessWidget {
     bool topRight = false,
     bool bottomRight = false,
   }) {
-    const Radius radius = Radius.circular(8);
-
     return Hero(
       tag: image,
       placeholderBuilder: (BuildContext context, Size heroSize, Widget child) {
@@ -46,10 +45,10 @@ class TweetImages extends StatelessWidget {
       },
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-          topLeft: topLeft ? radius : Radius.zero,
-          bottomLeft: bottomLeft ? radius : Radius.zero,
-          topRight: topRight ? radius : Radius.zero,
-          bottomRight: bottomRight ? radius : Radius.zero,
+          topLeft: topLeft ? kDefaultRadius : Radius.zero,
+          bottomLeft: bottomLeft ? kDefaultRadius : Radius.zero,
+          topRight: topRight ? kDefaultRadius : Radius.zero,
+          bottomRight: bottomRight ? kDefaultRadius : Radius.zero,
         ),
         child: GestureDetector(
           onTap: () => _openGallery(image),

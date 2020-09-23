@@ -86,7 +86,7 @@ class _SetupScreenState extends State<SetupScreen> {
       child: BounceInAnimation(
         delay: const Duration(milliseconds: 4000),
         child: HarpyButton.flat(
-          text: 'continue',
+          text: const Text('continue'),
           onTap: () => _continue(themeBloc),
         ),
       ),

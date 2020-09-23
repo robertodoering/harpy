@@ -22,13 +22,12 @@ class AddBackgroundColorCard extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: harpyTheme.data.dividerColor),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: kDefaultBorderRadius,
         ),
         child: Material(
           type: MaterialType.transparency,
           child: ListTile(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: kDefaultShapeBorder,
             leading: const Icon(Icons.add),
             title: const Text('Add background color'),
             onTap: () {
