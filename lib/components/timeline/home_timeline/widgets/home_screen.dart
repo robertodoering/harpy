@@ -6,12 +6,37 @@ import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 /// The home screen for an authenticated user.
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen();
 
   static const String route = 'home';
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    app<HarpyNavigator>().routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPopNext() {
+    // force a rebuild when the home screen shows again
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
