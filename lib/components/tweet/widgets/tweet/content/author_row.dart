@@ -12,6 +12,7 @@ class TweetAuthorRow extends StatelessWidget {
   const TweetAuthorRow(
     this.tweet, {
     this.avatarRadius = defaultAvatarRadius,
+    this.avatarPadding,
     this.fontSizeDelta = 0,
     this.iconSize = 16,
   });
@@ -19,6 +20,11 @@ class TweetAuthorRow extends StatelessWidget {
   final TweetData tweet;
 
   final double avatarRadius;
+
+  /// The horizontal padding between the avatar and the username.
+  ///
+  /// Defaults to the [defaultPaddingValue] if `null`.
+  final double avatarPadding;
 
   final double fontSizeDelta;
 
@@ -50,7 +56,7 @@ class TweetAuthorRow extends StatelessWidget {
                 imageUrl: tweet.userData.appropriateUserImageUrl,
                 radius: avatarRadius,
               ),
-              defaultHorizontalSpacer,
+              SizedBox(width: avatarPadding ?? defaultPaddingValue),
             ],
           ),
         ),

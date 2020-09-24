@@ -20,6 +20,7 @@ class TweetQuoteContent extends StatelessWidget {
     final List<Widget> content = <Widget>[
       TweetAuthorRow(
         tweet,
+        avatarPadding: defaultPaddingValue / 2,
         avatarRadius: 18,
         fontSizeDelta: -2,
         iconSize: 14,
