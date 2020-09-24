@@ -4,6 +4,7 @@ import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a colored card for the background color selection of the
@@ -47,7 +48,11 @@ class BackgroundColorCard extends StatelessWidget {
         iconTheme: theme.iconTheme.copyWith(color: textColor),
       ),
       child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        margin: EdgeInsets.only(
+          left: defaultPaddingValue,
+          right: defaultPaddingValue,
+          bottom: defaultPaddingValue / 2,
+        ),
         color: color,
         clipBehavior: Clip.antiAlias,
         child: Stack(

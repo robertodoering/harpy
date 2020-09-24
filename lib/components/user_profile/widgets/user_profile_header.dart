@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/followers_count.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_additional_info.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_description.dart';
@@ -14,18 +15,18 @@ class UserProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8),
+      margin: DefaultEdgeInsets.only(left: true, right: true, top: true),
       elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: DefaultEdgeInsets.all(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UserProfileInfo(bloc),
-            const SizedBox(height: 8),
+            defaultSmallVerticalSpacer,
             if (bloc.user.hasDescription) ...<Widget>[
               UserProfileDescription(bloc),
-              const SizedBox(height: 8),
+              defaultSmallVerticalSpacer,
             ],
             UserProfileAdditionalInfo(bloc),
             FollowersCount(bloc.user),

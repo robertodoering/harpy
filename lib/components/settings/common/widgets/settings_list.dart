@@ -11,16 +11,16 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return ListView.separated(
       physics: const BouncingScrollPhysics(),
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        for (MapEntry<String, List<Widget>> entry in settings.entries)
-          SettingsGroup(
-            title: entry.key,
-            children: entry.value,
-          ),
-      ],
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      itemCount: settings.length,
+      itemBuilder: (BuildContext context, int index) => SettingsGroup(
+        title: settings.keys.elementAt(index),
+        children: settings.values.elementAt(index),
+      ),
+      separatorBuilder: (BuildContext context, int index) =>
+          const SizedBox(height: 16),
     );
   }
 }

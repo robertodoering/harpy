@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/misc/url_launcher.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +22,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     return Row(
       children: <Widget>[
         Icon(icon, size: 18),
-        const SizedBox(width: 8),
+        defaultHorizontalSpacer,
         Expanded(
           child: text != null
               ? Text(
@@ -55,7 +56,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final List<Widget> content = <Widget>[
+    final List<Widget> children = <Widget>[
       if (bloc.user.hasLocation)
         _buildRow(theme, Icons.place, text: bloc.user.location),
       if (bloc.user.hasCreatedAt)
@@ -69,13 +70,12 @@ class UserProfileAdditionalInfo extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        for (int i = 0; i < content.length; i++) ...<Widget>[
-          content[i],
-          // add a padding of 4 between the content and 8 at the bottom
-          if (i != content.length - 1)
-            const SizedBox(height: 4)
+        for (Widget child in children) ...<Widget>[
+          child,
+          if (child == children.last)
+            defaultSmallVerticalSpacer
           else
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
         ],
       ],
     );

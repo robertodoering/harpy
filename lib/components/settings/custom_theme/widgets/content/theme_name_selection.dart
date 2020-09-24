@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds the theme name customization for the [CustomThemeScreen].
 class ThemeNameSelection extends StatefulWidget {
@@ -26,14 +27,14 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
 
   Widget _buildInvalidName(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: DefaultEdgeInsets.symmetric(horizontal: true),
       child: Row(
         children: <Widget>[
           Icon(
             Icons.error_outline,
             color: theme.errorColor,
           ),
-          const SizedBox(width: 8),
+          defaultHorizontalSpacer,
           Text(
             'Invalid name',
             style: TextStyle(color: theme.errorColor),
@@ -54,14 +55,14 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: DefaultEdgeInsets.symmetric(horizontal: true),
             child: TextField(
               controller: _controller,
               maxLength: 20,
             ),
           ),
           if (!widget.bloc.validName) ...<Widget>[
-            const SizedBox(height: 8),
+            defaultSmallVerticalSpacer,
             _buildInvalidName(theme),
           ],
         ],

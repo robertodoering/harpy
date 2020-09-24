@@ -4,6 +4,7 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/common/misc/custom_animated_crossfade.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_event.dart';
 
@@ -90,7 +91,7 @@ class UserProfileInfo extends StatelessWidget {
                 radius: 36,
               ),
 
-              const SizedBox(width: 8),
+              defaultHorizontalSpacer,
 
               // user name
               Expanded(child: _buildUserName(theme)),
@@ -98,7 +99,7 @@ class UserProfileInfo extends StatelessWidget {
           ),
         ),
         if (enableFollow) ...<Widget>[
-          const SizedBox(width: 8),
+          defaultHorizontalSpacer,
           _buildFollowButton(theme),
         ],
       ],

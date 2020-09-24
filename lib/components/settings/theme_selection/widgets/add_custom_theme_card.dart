@@ -58,7 +58,6 @@ class AddCustomThemeCard extends StatelessWidget {
         Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/created_at_time.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -10,7 +12,8 @@ import 'package:harpy/misc/harpy_navigator.dart';
 class TweetAuthorRow extends StatelessWidget {
   const TweetAuthorRow(
     this.tweet, {
-    this.avatarRadius,
+    this.avatarRadius = defaultAvatarRadius,
+    this.avatarPadding,
     this.fontSizeDelta = 0,
     this.iconSize = 16,
   });
@@ -19,9 +22,16 @@ class TweetAuthorRow extends StatelessWidget {
 
   final double avatarRadius;
 
+  /// The horizontal padding between the avatar and the username.
+  ///
+  /// Defaults to the [defaultPaddingValue] if `null`.
+  final double avatarPadding;
+
   final double fontSizeDelta;
 
   final double iconSize;
+
+  static const double defaultAvatarRadius = 22;
 
   void _onUserTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
@@ -35,15 +45,25 @@ class TweetAuthorRow extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: () => _onUserTap(context),
-          child: CachedCircleAvatar(
-            imageUrl: tweet.userData.appropriateUserImageUrl,
-            radius: avatarRadius,
+          // todo: avatar should scale based off of the text height
+          child: Row(
+            children: <Widget>[
+              CachedCircleAvatar(
+                imageUrl: tweet.userData.appropriateUserImageUrl,
+                radius: avatarRadius,
+              ),
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                width: avatarPadding ?? defaultPaddingValue,
+              ),
+            ],
           ),
         ),
-        const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

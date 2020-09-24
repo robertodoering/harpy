@@ -9,6 +9,7 @@ import 'package:harpy/components/following_followers/following/widgets/following
 import 'package:harpy/components/replies/widgets/replies_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_settings_screen.dart';
 import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
@@ -196,8 +197,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         themeId: arguments['themeId'],
       );
       break;
+    case LayoutSettingsScreen.route:
+      screen = const LayoutSettingsScreen();
+      break;
     case MediaSettingsScreen.route:
-      screen = MediaSettingsScreen();
+      screen = const MediaSettingsScreen();
       break;
     case AboutScreen.route:
       screen = const AboutScreen();

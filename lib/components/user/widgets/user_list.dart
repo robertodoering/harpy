@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user/widgets/user_card.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 
@@ -24,7 +25,7 @@ class UserList extends StatelessWidget {
     if (index.isEven) {
       return UserCard(users[index ~/ 2]);
     } else {
-      return const SizedBox(height: 16);
+      return defaultVerticalSpacer;
     }
   }
 
@@ -36,7 +37,7 @@ class UserList extends StatelessWidget {
           : const NeverScrollableScrollPhysics(),
       slivers: <Widget>[
         SliverPadding(
-          padding: const EdgeInsets.all(8),
+          padding: DefaultEdgeInsets.all(),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               _itemBuilder,

@@ -10,6 +10,7 @@ import 'package:harpy/components/settings/custom_theme/widgets/content/backgroun
 import 'package:harpy/components/settings/custom_theme/widgets/content/buy_pro_text.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/delete_theme_button.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -95,17 +96,18 @@ class CustomThemeScreen extends StatelessWidget {
         Expanded(
           child: ListView(
             physics: const BouncingScrollPhysics(),
+            padding: DefaultEdgeInsets.symmetric(vertical: true),
             children: <Widget>[
-              if (Harpy.isFree) ...const <Widget>[
-                BuyProText(),
-                SizedBox(height: 32),
+              if (Harpy.isFree) ...<Widget>[
+                const BuyProText(),
+                defaultVerticalSpacer,
               ],
               ThemeNameSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
               AccentColorSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
               BackgroundColorSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
             ],
           ),
         ),

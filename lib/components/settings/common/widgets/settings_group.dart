@@ -16,10 +16,7 @@ class SettingsGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 4,
-            horizontal: 8,
-          ),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
           child: Text(title, style: Theme.of(context).textTheme.headline4),
         ),
         ...children,

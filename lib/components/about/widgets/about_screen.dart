@@ -101,7 +101,7 @@ class _AboutScreenState extends State<AboutScreen> {
           dense: true,
           // todo: link to harpy pro
           // todo: add harpy pro analytics
-          onTap: () => app<MessageService>().showInfo('Not yet available'),
+          onTap: () => app<MessageService>().showInfo('Coming soon!'),
         ),
       ),
     ];
@@ -121,7 +121,7 @@ class _AboutScreenState extends State<AboutScreen> {
           dense: true,
           // todo harpy free or pro play store link
           // todo: add rate harpy analytics
-          onTap: () => app<MessageService>().showInfo('Not yet available'),
+          onTap: () => app<MessageService>().showInfo('Coming soon!'),
         ),
       ),
     ];

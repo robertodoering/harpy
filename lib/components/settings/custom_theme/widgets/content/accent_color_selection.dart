@@ -3,6 +3,7 @@ import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the accent color customization for the [CustomThemeScreen].
@@ -26,12 +27,12 @@ class AccentColorSelection extends StatelessWidget {
 
   Widget _buildColorWarning(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: DefaultEdgeInsets.symmetric(horizontal: true),
       child: Row(
-        children: const <Widget>[
-          Icon(Icons.error_outline),
-          SizedBox(width: 8),
-          Expanded(
+        children: <Widget>[
+          const Icon(Icons.error_outline),
+          defaultHorizontalSpacer,
+          const Expanded(
             child: Text(
               'Accent color should provide more contrast on the background',
             ),
@@ -53,12 +54,12 @@ class AccentColorSelection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: DefaultEdgeInsets.symmetric(horizontal: true),
             child: Text('Accent color', style: textTheme.headline4),
           ),
-          const SizedBox(height: 8),
+          defaultVerticalSpacer,
           Card(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: DefaultEdgeInsets.symmetric(horizontal: true),
             color: theme.accentColor,
             clipBehavior: Clip.antiAlias,
             child: ListTile(
@@ -69,7 +70,7 @@ class AccentColorSelection extends StatelessWidget {
             ),
           ),
           if (!bloc.accentColorContrasts) ...<Widget>[
-            const SizedBox(height: 8),
+            defaultVerticalSpacer,
             _buildColorWarning(theme),
           ],
         ],
