@@ -69,8 +69,13 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   void _scrollToStart(MediaQueryData mediaQuery) {
     if (_scrollController.offset > mediaQuery.size.height * 5) {
-      // .1 to prevent a refresh indicator to fire when jumping to the start
-      _scrollController.jumpTo(.1);
+      // We use animateTo instead of jumpTo because jumpTo(0) will cause the
+      // refresh indicator to trigger.
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(microseconds: 1),
+        curve: Curves.linear,
+      );
     } else {
       _scrollController.animateTo(
         0,
