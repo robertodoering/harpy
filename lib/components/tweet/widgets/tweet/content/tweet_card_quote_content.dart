@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
@@ -36,7 +37,8 @@ class TweetQuoteContent extends StatelessWidget {
       if (tweet.hasMedia) TweetMedia(tweet),
     ];
 
-    return Container(
+    return AnimatedContainer(
+      duration: kShortAnimationDuration,
       decoration: BoxDecoration(
         borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
@@ -52,9 +54,15 @@ class TweetQuoteContent extends StatelessWidget {
           for (Widget child in content) ...<Widget>[
             child,
             if (child == content.last)
-              defaultSmallVerticalSpacer
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                height: defaultPaddingValue / 2,
+              )
             else
-              SizedBox(height: defaultPaddingValue / 4),
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                height: defaultPaddingValue / 4,
+              ),
           ],
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
@@ -20,7 +21,8 @@ class TweetReplies extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (tweet.replyAuthors?.isNotEmpty == true)
-          Padding(
+          AnimatedPadding(
+            duration: kShortAnimationDuration,
             padding: DefaultEdgeInsets.only(
               left: true,
               right: true,
@@ -28,9 +30,10 @@ class TweetReplies extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                const SizedBox(
+                AnimatedContainer(
+                  duration: kShortAnimationDuration,
                   width: TweetAuthorRow.defaultAvatarRadius * 2,
-                  child: Icon(Icons.reply, size: 18),
+                  child: const Icon(Icons.reply, size: 18),
                 ),
                 defaultHorizontalSpacer,
                 Text(

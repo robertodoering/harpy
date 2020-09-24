@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -36,7 +37,8 @@ class TweetCardContent extends StatelessWidget {
 
     return BlocProvider<TweetBloc>(
       create: (BuildContext content) => TweetBloc(tweet),
-      child: Padding(
+      child: AnimatedPadding(
+        duration: kShortAnimationDuration,
         padding: DefaultEdgeInsets.only(top: true, left: true, right: true),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,9 +46,15 @@ class TweetCardContent extends StatelessWidget {
             for (Widget child in content) ...<Widget>[
               child,
               if (child == content.last)
-                defaultVerticalSpacer
+                AnimatedContainer(
+                  duration: kLongAnimationDuration,
+                  height: defaultPaddingValue,
+                )
               else
-                defaultSmallVerticalSpacer,
+                AnimatedContainer(
+                  duration: kLongAnimationDuration,
+                  height: defaultPaddingValue / 2,
+                ),
             ],
           ],
         ),

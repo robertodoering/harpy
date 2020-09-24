@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/created_at_time.dart';
@@ -56,7 +57,10 @@ class TweetAuthorRow extends StatelessWidget {
                 imageUrl: tweet.userData.appropriateUserImageUrl,
                 radius: avatarRadius,
               ),
-              SizedBox(width: avatarPadding ?? defaultPaddingValue),
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                width: avatarPadding ?? defaultPaddingValue,
+              ),
             ],
           ),
         ),

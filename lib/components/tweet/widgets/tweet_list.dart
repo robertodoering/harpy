@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -31,7 +32,10 @@ class TweetList extends StatelessWidget {
     if (index.isEven) {
       return TweetCard(tweets[index ~/ 2]);
     } else {
-      return defaultVerticalSpacer;
+      return AnimatedContainer(
+        duration: kShortAnimationDuration,
+        height: defaultPaddingValue,
+      );
     }
   }
 
