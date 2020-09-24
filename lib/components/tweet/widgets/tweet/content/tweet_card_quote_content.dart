@@ -40,16 +40,20 @@ class TweetQuoteContent extends StatelessWidget {
         borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
-      padding: DefaultEdgeInsets.only(top: true, left: true, right: true),
+      padding: EdgeInsets.only(
+        top: defaultPaddingValue / 2,
+        left: defaultPaddingValue / 2,
+        right: defaultPaddingValue / 2,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           for (Widget child in content) ...<Widget>[
             child,
             if (child == content.last)
-              defaultVerticalSpacer
+              defaultSmallVerticalSpacer
             else
-              defaultSmallVerticalSpacer,
+              SizedBox(height: defaultPaddingValue / 4),
           ],
         ],
       ),

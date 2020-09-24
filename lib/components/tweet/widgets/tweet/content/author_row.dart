@@ -45,7 +45,7 @@ class TweetAuthorRow extends StatelessWidget {
           onTap: () => _onUserTap(context),
           // todo: avatar should scale based off of the text height
           child: Row(
-            children: [
+            children: <Widget>[
               CachedCircleAvatar(
                 imageUrl: tweet.userData.appropriateUserImageUrl,
                 radius: avatarRadius,
