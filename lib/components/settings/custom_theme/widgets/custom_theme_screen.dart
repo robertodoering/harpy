@@ -98,16 +98,16 @@ class CustomThemeScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             padding: DefaultEdgeInsets.symmetric(vertical: true),
             children: <Widget>[
-              if (Harpy.isFree) ...const <Widget>[
-                BuyProText(),
-                SizedBox(height: 32),
+              if (Harpy.isFree) ...<Widget>[
+                const BuyProText(),
+                defaultVerticalSpacer,
               ],
               ThemeNameSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
               AccentColorSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
               BackgroundColorSelection(customThemeBloc),
-              const SizedBox(height: 32),
+              SizedBox(height: defaultPaddingValue * 2),
             ],
           ),
         ),

@@ -13,19 +13,15 @@ class BuyProText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          const FlareIcon.shiningStar(size: 32),
-          HarpyButton.flat(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            text: const Text('Buy Harpy Pro'),
-            // todo: link to harpy pro
-            // todo: analytics
-            onTap: () => app<MessageService>().showInfo('Not yet available'),
-          ),
-        ],
+      child: Center(
+        child: HarpyButton.flat(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          icon: const FlareIcon.shiningStar(size: 32),
+          text: const Text('Buy Harpy Pro'),
+          // todo: link to harpy pro
+          // todo: analytics
+          onTap: () => app<MessageService>().showInfo('Not yet available'),
+        ),
       ),
     );
   }
