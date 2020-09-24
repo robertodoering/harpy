@@ -5,6 +5,8 @@ import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class MediaSettingsScreen extends StatefulWidget {
+  const MediaSettingsScreen();
+
   static const String route = 'media_settings';
 
   @override
@@ -53,6 +55,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       SwitchListTile(
         secondary: const Icon(Icons.link),
         title: const Text('Always open links externally'),
+        subtitle: const Text('Coming soon!'),
         value: mediaPreferences.openLinksExternally,
         onChanged: null,
         // todo: implement

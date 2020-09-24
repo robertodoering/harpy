@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/common/widgets/settings_list.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_settings_screen.dart';
 import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -30,6 +31,14 @@ class SettingsScreen extends StatelessWidget {
           subtitle: const Text('Select your theme'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             ThemeSelectionScreen.route,
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.view_agenda),
+          title: const Text('Layout'),
+          subtitle: const Text('Change the layout of the app'),
+          onTap: () => app<HarpyNavigator>().pushNamed(
+            LayoutSettingsScreen.route,
           ),
         ),
       ],

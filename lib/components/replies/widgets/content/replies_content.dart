@@ -7,6 +7,7 @@ import 'package:harpy/components/replies/bloc/replies_bloc.dart';
 import 'package:harpy/components/replies/bloc/replies_state.dart';
 import 'package:harpy/components/replies/widgets/content/no_replies_found.dart';
 import 'package:harpy/components/replies/widgets/content/replies_list_title.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
@@ -30,7 +31,7 @@ class RepliesContent extends StatelessWidget {
               floating: true,
             ),
             SliverPadding(
-              padding: const EdgeInsets.all(8),
+              padding: DefaultEdgeInsets.all(),
               sliver: SliverToBoxAdapter(
                 child: TweetCard(bloc.tweet),
               ),

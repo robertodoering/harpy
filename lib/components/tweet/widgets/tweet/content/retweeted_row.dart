@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 /// Builds a row with the retweeter's display name indicating that a tweet is a
@@ -15,11 +17,10 @@ class TweetRetweetedRow extends StatelessWidget {
     return Row(
       children: <Widget>[
         const SizedBox(
-          // same width as avatar with padding
-          width: 40,
+          width: TweetAuthorRow.defaultAvatarRadius * 2,
           child: Icon(Icons.repeat, size: 18),
         ),
-        const SizedBox(width: 8),
+        defaultHorizontalSpacer,
         Expanded(
           child: Text(
             '${tweet.retweetUserName} retweeted',

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/list/list_card_animation.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 
 /// Builds a sliver for the title of the replies tweet list in the
 /// [RepliesScreen].
@@ -14,14 +16,17 @@ class RepliesListTitle extends StatelessWidget {
       child: ListCardAnimation(
         key: const Key('replies'),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(
+            horizontal: defaultPaddingValue * 2,
+            vertical: defaultPaddingValue / 2,
+          ),
           child: Row(
             children: <Widget>[
               const SizedBox(
-                width: 40,
+                width: TweetAuthorRow.defaultAvatarRadius * 2,
                 child: Icon(Icons.reply, size: 18),
               ),
-              const SizedBox(width: 8),
+              defaultHorizontalSpacer,
               Expanded(
                 child: Text(
                   'Replies',

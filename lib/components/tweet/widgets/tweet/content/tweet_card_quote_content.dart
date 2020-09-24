@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
@@ -19,7 +20,7 @@ class TweetQuoteContent extends StatelessWidget {
     final List<Widget> content = <Widget>[
       TweetAuthorRow(
         tweet,
-        avatarRadius: 14,
+        avatarRadius: 18,
         fontSizeDelta: -2,
         iconSize: 14,
       ),
@@ -39,13 +40,16 @@ class TweetQuoteContent extends StatelessWidget {
         borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
-      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+      padding: DefaultEdgeInsets.only(top: true, left: true, right: true),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           for (Widget child in content) ...<Widget>[
             child,
-            const SizedBox(height: 8),
+            if (child == content.last)
+              defaultVerticalSpacer
+            else
+              defaultSmallVerticalSpacer,
           ],
         ],
       ),

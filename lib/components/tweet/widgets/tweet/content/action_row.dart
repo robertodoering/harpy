@@ -4,12 +4,11 @@ import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
 import 'package:harpy/components/common/buttons/translation_button.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
-import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the buttons with actions for the [tweet].
@@ -17,24 +16,6 @@ class TweetActionRow extends StatelessWidget {
   const TweetActionRow(this.tweet);
 
   final TweetData tweet;
-
-  Widget _buildTranslateButton(TweetBloc bloc, HarpyTheme harpyTheme) {
-    final bool enable =
-        !bloc.tweet.hasTranslation && bloc.state is! TranslatingTweetState;
-
-    final Color color =
-        bloc.state is TranslatingTweetState || bloc.tweet.hasTranslation
-            ? harpyTheme.translateColor
-            : null;
-
-    return HarpyButton.flat(
-      onTap: enable ? () => bloc.add(const TranslateTweet()) : null,
-      foregroundColor: color,
-      icon: const Icon(Icons.translate),
-      iconSize: 20,
-      padding: const EdgeInsets.all(8),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +26,10 @@ class TweetActionRow extends StatelessWidget {
       builder: (BuildContext context, TweetState state) => Row(
         children: <Widget>[
           RetweetButton(bloc),
-          const SizedBox(width: 8),
+          defaultSmallHorizontalSpacer,
           FavoriteButton(bloc),
-          const SizedBox(width: 8),
           if (!tweet.currentReplyParent(route)) ...<Widget>[
-            const SizedBox(width: 8),
+            defaultSmallHorizontalSpacer,
             HarpyButton.flat(
               onTap: () => app<HarpyNavigator>().pushRepliesScreen(
                 tweet: tweet,

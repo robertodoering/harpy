@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/add_custom_theme_card.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/theme_card.dart';
-import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
@@ -102,24 +102,26 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   @override
   Widget build(BuildContext context) {
     final ThemeBloc themeBloc = ThemeBloc.of(context);
-    int selectedThemeId = app<ThemePreferences>().selectedTheme;
-    if (selectedThemeId == -1) {
-      // default to theme id 0
-      selectedThemeId = 0;
-    }
+    final int selectedThemeId = themeBloc.selectedThemeId;
+
+    final List<Widget> children = <Widget>[
+      ..._buildPredefinedThemes(themeBloc, selectedThemeId),
+      ..._buildCustomThemes(
+        themeBloc,
+        selectedThemeId,
+      ),
+      const AddCustomThemeCard(),
+    ];
 
     return HarpyScaffold(
       title: 'Theme selection',
-      body: ListView(
+      body: ListView.separated(
         physics: const BouncingScrollPhysics(),
-        children: <Widget>[
-          ..._buildPredefinedThemes(themeBloc, selectedThemeId),
-          ..._buildCustomThemes(
-            themeBloc,
-            selectedThemeId,
-          ),
-          const AddCustomThemeCard(),
-        ],
+        padding: DefaultEdgeInsets.all(),
+        itemCount: children.length,
+        itemBuilder: (BuildContext context, int index) => children[index],
+        separatorBuilder: (BuildContext context, int index) =>
+            defaultSmallVerticalSpacer,
       ),
     );
   }

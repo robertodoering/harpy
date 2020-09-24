@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
@@ -19,15 +21,18 @@ class TweetReplies extends StatelessWidget {
       children: <Widget>[
         if (tweet.replyAuthors?.isNotEmpty == true)
           Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+            padding: DefaultEdgeInsets.only(
+              left: true,
+              right: true,
+              bottom: true,
+            ),
             child: Row(
               children: <Widget>[
                 const SizedBox(
-                  // same width as avatar with padding
-                  width: 40,
+                  width: TweetAuthorRow.defaultAvatarRadius * 2,
                   child: Icon(Icons.reply, size: 18),
                 ),
-                const SizedBox(width: 8),
+                defaultHorizontalSpacer,
                 Text(
                   '${tweet.replyAuthors} replied',
                   style: theme.textTheme.bodyText1,

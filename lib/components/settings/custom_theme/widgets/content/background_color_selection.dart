@@ -4,6 +4,7 @@ import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.da
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/add_background_color_card.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_card.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the background color customization for the [CustomThemeScreen].
@@ -36,10 +37,10 @@ class BackgroundColorSelection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: Text('Background colors', style: textTheme.headline4),
         ),
-        const SizedBox(height: 8),
+        defaultVerticalSpacer,
         CustomReorderableList(
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/created_at_time.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -10,7 +11,7 @@ import 'package:harpy/misc/harpy_navigator.dart';
 class TweetAuthorRow extends StatelessWidget {
   const TweetAuthorRow(
     this.tweet, {
-    this.avatarRadius,
+    this.avatarRadius = defaultAvatarRadius,
     this.fontSizeDelta = 0,
     this.iconSize = 16,
   });
@@ -22,6 +23,8 @@ class TweetAuthorRow extends StatelessWidget {
   final double fontSizeDelta;
 
   final double iconSize;
+
+  static const double defaultAvatarRadius = 22;
 
   void _onUserTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
@@ -35,15 +38,22 @@ class TweetAuthorRow extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: () => _onUserTap(context),
-          child: CachedCircleAvatar(
-            imageUrl: tweet.userData.appropriateUserImageUrl,
-            radius: avatarRadius,
+          // todo: avatar should scale based off of the text height
+          child: Row(
+            children: [
+              CachedCircleAvatar(
+                imageUrl: tweet.userData.appropriateUserImageUrl,
+                radius: avatarRadius,
+              ),
+              defaultHorizontalSpacer,
+            ],
           ),
         ),
-        const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

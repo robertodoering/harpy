@@ -34,6 +34,17 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   /// Custom themes can only be created when using Harpy Pro.
   List<HarpyTheme> customThemes = <HarpyTheme>[];
 
+  /// Returns the selected theme id based off of the [ThemePreferences].
+  ///
+  /// If the selected theme id is `-1` (no theme selected), `0` is returned
+  /// instead.
+  int get selectedThemeId {
+    final int id = app<ThemePreferences>().selectedTheme;
+
+    // default to theme id 0
+    return id == -1 ? 0 : id;
+  }
+
   HarpyThemeData _decodeThemeData(String themeDataJson) {
     try {
       return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
