@@ -20,7 +20,7 @@ class BuyProText extends StatelessWidget {
           text: const Text('Buy Harpy Pro'),
           // todo: link to harpy pro
           // todo: analytics
-          onTap: () => app<MessageService>().showInfo('Coming soon!'),
+          onTap: () => app<MessageService>().show('Coming soon!'),
         ),
       ),
     );

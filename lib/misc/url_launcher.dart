@@ -11,6 +11,6 @@ Future<void> launchUrl(String url) async {
     await launch(url);
   } else {
     _log.warning('cant launch url $url');
-    app<MessageService>().showError('Unable to launch $url');
+    app<MessageService>().show('Unable to launch $url');
   }
 }

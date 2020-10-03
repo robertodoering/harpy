@@ -57,7 +57,7 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   title: const Text('Harpy Pro'),
                   // todo: add harpy pro analytics
-                  onTap: () => app<MessageService>().showInfo('Coming soon!'),
+                  onTap: () => app<MessageService>().show('Coming soon!'),
                 ),
 
               // about
