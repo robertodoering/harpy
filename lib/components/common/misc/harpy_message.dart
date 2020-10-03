@@ -1,88 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
 
-/// Builds a widget similar to a [SnackBar] that is intended to be shown at the
-/// bottom of the screen with the [HarpyMessageHandler].
+/// Wraps the [child] with a [Scaffold] to show [SnackBar]s from anywhere in the
+/// app using the [globalKey].
 class HarpyMessage extends StatefulWidget {
-  const HarpyMessage.info(this.text)
-      : iconColor = Colors.blue,
-        icon = Icons.info_outline;
+  HarpyMessage({
+    @required this.child,
+  }) : super(key: globalKey);
 
-  const HarpyMessage.warning(this.text)
-      : iconColor = Colors.orange,
-        icon = Icons.error_outline;
+  final Widget child;
 
-  const HarpyMessage.error(this.text)
-      : iconColor = Colors.red,
-        icon = Icons.error_outline;
-
-  /// The text for this message.
-  final String text;
-
-  /// The color for the icon.
-  final Color iconColor;
-
-  /// The icon built to the left of the text.
-  final IconData icon;
+  static final GlobalKey<HarpyMessageState> globalKey =
+      GlobalKey<HarpyMessageState>();
 
   @override
-  _HarpyMessageState createState() => _HarpyMessageState();
+  HarpyMessageState createState() => HarpyMessageState();
 }
 
-class _HarpyMessageState extends State<HarpyMessage>
-    with SingleTickerProviderStateMixin {
-  Color iconColor;
+class HarpyMessageState extends State<HarpyMessage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final ThemeData theme = Theme.of(context);
-
-    final double ratio = HarpyTheme.contrastRatio(
-      theme.cardColor.computeLuminance(),
-      widget.iconColor.computeLuminance(),
+  void show(String message, [SnackBarAction action]) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: action,
+      ),
     );
-
-    iconColor =
-        ratio > kTextContrastRatio ? widget.iconColor : theme.iconTheme.color;
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return SafeArea(
-      left: false,
-      right: false,
-      top: false,
-      bottom: true,
-      child: SizedBox(
-        width: double.infinity,
-        child: Card(
-          color: theme.cardColor,
-          margin: const EdgeInsets.all(16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  widget.icon,
-                  color: iconColor,
-                  size: 28,
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    widget.text,
-                    style: theme.textTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return Scaffold(
+      key: _scaffoldKey,
+      body: widget.child,
     );
   }
 }
