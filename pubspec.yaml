@@ -23,7 +23,9 @@ dependencies:
     #   https://github.com/mchome/flutter_colorpicker/pull/28
     git: https://github.com/robertodoering/flutter_colorpicker
   flutter_material_color_picker: ^1.0.5
-  flutter_reorderable_list: ^0.1.4
+  flutter_reorderable_list:
+    # todo: use pub version when flutter 1.22.0 fix gets released
+    git: https://github.com/knopp/flutter_reorderable_list
   get_it: ^4.0.2
   intl : ^0.16.1
   like_button: ^1.0.1
@@ -46,12 +48,12 @@ dependencies:
   video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:
-  bloc_test: ^7.0.2
+  bloc_test: ^7.0.4
   build_runner: ^1.7.1
   flutter_test:
     sdk: flutter
   json_serializable: ^3.2.3
-  mockito: ^4.1.1
+  mockito: ">=4.0.0 <4.1.2"
 
 flutter:
   uses-material-design: true
