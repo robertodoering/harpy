@@ -5,9 +5,8 @@ import 'package:harpy/core/message_service.dart';
 
 void main() {
   group('harpy message', () {
-    testWidgets(
-        'uses a message handler to display a snack bar'
-        ' when show is called', (WidgetTester tester) async {
+    testWidgets('display a snack bar when show is called',
+        (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
         home: HarpyMessage(
           child: Container(),
@@ -25,7 +24,7 @@ void main() {
   });
 
   group('message service', () {
-    testWidgets('uses harpy message global key to show message',
+    testWidgets('uses the harpy message global key to show message',
         (WidgetTester tester) async {
       final MessageService messageService = MessageService();
 
