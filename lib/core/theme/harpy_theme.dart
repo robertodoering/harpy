@@ -357,6 +357,15 @@ class HarpyTheme {
         ),
         shape: kDefaultShapeBorder,
       ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: averageBackgroundColor,
+        contentTextStyle: textTheme.subtitle2,
+        actionTextColor: accentColor,
+        disabledActionTextColor: accentColor.withOpacity(.5),
+        shape: kDefaultShapeBorder,
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 

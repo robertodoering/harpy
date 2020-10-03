@@ -70,7 +70,7 @@ void twitterApiErrorHandler(
 
   message ??= 'An unexpected error occurred';
 
-  messageService.showError(message);
+  messageService.show(message);
 }
 
 /// Gets the duration of how long the request is blocked due to being rate

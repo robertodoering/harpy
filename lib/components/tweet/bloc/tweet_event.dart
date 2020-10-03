@@ -194,10 +194,10 @@ class TranslateTweet extends TweetEvent {
 
     // show an info when the tweet or quote was unable to be translated
     if (bloc.tweet.translatable && bloc.tweet.translation?.unchanged != false) {
-      app<MessageService>().showInfo('Tweet not translated');
+      app<MessageService>().show('Tweet not translated');
     } else if (bloc.tweet.quoteTranslatable &&
         bloc.tweet.quote.translation?.unchanged != false) {
-      app<MessageService>().showInfo('Quoted Tweet not translated');
+      app<MessageService>().show('Quoted Tweet not translated');
     }
 
     yield UpdatedTweetState();

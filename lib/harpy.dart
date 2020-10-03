@@ -2,7 +2,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/global_bloc_provider.dart';
-import 'package:harpy/components/common/misc/harpy_message_handler.dart';
+import 'package:harpy/components/common/misc/harpy_message.dart';
 import 'package:harpy/components/common/screens/splash_screen.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_state.dart';
@@ -59,8 +59,7 @@ class Harpy extends StatelessWidget {
           app<HarpyNavigator>().routeObserver,
         ],
         home: const SplashScreen(),
-        builder: (BuildContext widget, Widget child) => HarpyMessageHandler(
-          key: HarpyMessageHandler.globalKey,
+        builder: (BuildContext widget, Widget child) => HarpyMessage(
           child: child,
         ),
       ),
