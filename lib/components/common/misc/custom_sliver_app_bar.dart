@@ -382,7 +382,6 @@ class _SliverAppBarState extends State<CustomSliverAppBar>
   void _updateSnapConfiguration() {
     if (widget.snap && widget.floating) {
       _snapConfiguration = FloatingHeaderSnapConfiguration(
-        vsync: this,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 200),
       );
@@ -441,6 +440,7 @@ class _SliverAppBarState extends State<CustomSliverAppBar>
         floating: widget.floating,
         pinned: widget.pinned,
         delegate: _SliverAppBarDelegate(
+          vsync: this,
           leading: widget.leading,
           automaticallyImplyLeading: widget.automaticallyImplyLeading,
           title: widget.title,
@@ -500,6 +500,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     @required this.topPadding,
     @required this.floating,
     @required this.pinned,
+    @required this.vsync,
     @required this.snapConfiguration,
     @required this.stretchConfiguration,
     @required this.shape,
@@ -545,6 +546,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       topPadding +
           (expandedHeight ?? (toolbarHeight ?? kToolbarHeight) + _bottomHeight),
       minExtent);
+
+  @override
+  final TickerProvider vsync;
 
   @override
   final FloatingHeaderSnapConfiguration snapConfiguration;
