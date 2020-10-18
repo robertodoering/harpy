@@ -1,11 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/routes/hero_dialog_route.dart';
-import 'package:harpy/components/tweet/widgets/media/tweet_image_gallery.dart';
+import 'package:harpy/components/common/image_gallery/image_gallery.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
-import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the images for the [TweetMedia].
 ///
@@ -19,13 +16,10 @@ class TweetImages extends StatelessWidget {
   static const double _padding = 2;
 
   void _openGallery(ImageData image) {
-    app<HarpyNavigator>().pushRoute(
-      HeroDialogRoute<void>(
-        builder: (BuildContext context) => TweetImageGallery(
-          images: images,
-          index: images.indexOf(image),
-        ),
-      ),
+    ImageGallery.show(
+      urls: images.map((ImageData image) => image.appropriateUrl).toList(),
+      heroTags: images,
+      index: images.indexOf(image),
     );
   }
 
