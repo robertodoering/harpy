@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
@@ -8,18 +9,25 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 ///
 /// Up to 4 images are built using [images].
 class TweetImages extends StatelessWidget {
-  const TweetImages(this.images);
+  const TweetImages(
+    this.images, {
+    @required this.onOpenMediaOverlay,
+  });
 
   final List<ImageData> images;
+
+  final OnOpenMediaOverlay onOpenMediaOverlay;
 
   /// The padding between each image.
   static const double _padding = 2;
 
   void _openGallery(ImageData image) {
-    ImageGallery.show(
-      urls: images.map((ImageData image) => image.appropriateUrl).toList(),
-      heroTags: images,
-      index: images.indexOf(image),
+    onOpenMediaOverlay(
+      ImageGallery(
+        urls: images.map((ImageData image) => image.appropriateUrl).toList(),
+        heroTags: images,
+        index: images.indexOf(image),
+      ),
     );
   }
 

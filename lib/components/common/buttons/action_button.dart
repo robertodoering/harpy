@@ -34,7 +34,7 @@ class ActionButton extends StatefulWidget {
     this.activeIconColor,
     this.value,
     this.activeTextStyle,
-    this.iconSize = 20,
+    this.iconSize,
     this.activate,
     this.deactivate,
     this.bubblesColor = const BubblesColor(
@@ -70,7 +70,8 @@ class ActionButton extends StatefulWidget {
 
   /// The size of the icon.
   ///
-  /// Also determines the sizes of the [BubbleAnimation].
+  /// Defaults to the [IconThemeData]'s icon size if `null`. Also determines the
+  /// sizes of the [BubbleAnimation].
   final double iconSize;
 
   /// The callback that is fired when the button is tapped and [active] is
@@ -141,6 +142,7 @@ class _ActionButtonState extends State<ActionButton>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final double iconSize = widget.iconSize ?? IconTheme.of(context).size ?? 20;
 
     final Widget icon = AnimatedTheme(
       data: theme.copyWith(
@@ -150,12 +152,12 @@ class _ActionButtonState extends State<ActionButton>
       ),
       child: BubbleAnimation(
         controller: _controller,
-        size: widget.iconSize,
+        size: iconSize,
         bubblesColor: widget.bubblesColor,
         circleColor: widget.circleColor,
         builder: (BuildContext context) => Container(
-          width: widget.iconSize,
-          height: widget.iconSize,
+          width: iconSize,
+          height: iconSize,
           alignment: Alignment.center,
           child: _controller.isAnimating || widget.active
               ? widget.iconAnimationBuilder(
@@ -163,13 +165,13 @@ class _ActionButtonState extends State<ActionButton>
                   widget.iconBuilder(
                     context,
                     widget.active,
-                    widget.iconSize,
+                    iconSize,
                   ),
                 )
               : widget.iconBuilder(
                   context,
                   widget.active,
-                  widget.iconSize,
+                  iconSize,
                 ),
         ),
       ),

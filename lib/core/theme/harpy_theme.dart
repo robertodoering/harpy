@@ -229,7 +229,9 @@ class HarpyTheme {
 
     buttonTextColor = ratio >= kTextContrastRatio
         ? averageBackgroundColor
-        : brightness == Brightness.dark ? Colors.black : Colors.white;
+        : brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white;
   }
 
   /// Calculates the error color, which is [Colors.red] if the contrast ratio is
@@ -366,6 +368,8 @@ class HarpyTheme {
         shape: kDefaultShapeBorder,
         behavior: SnackBarBehavior.floating,
       ),
+
+      iconTheme: IconThemeData(size: 20, color: foregroundColor),
     );
   }
 

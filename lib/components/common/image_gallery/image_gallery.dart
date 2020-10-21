@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/fullscreen_image.dart';
-import 'package:harpy/components/common/routes/hero_dialog_route.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the [urls] as [FullscreenImage]s.
 ///
@@ -23,22 +20,6 @@ class ImageGallery extends StatelessWidget {
   final List<String> urls;
   final List<Object> heroTags;
   final int index;
-
-  static void show({
-    @required List<String> urls,
-    List<Object> heroTags,
-    int index = 0,
-  }) {
-    app<HarpyNavigator>().pushRoute(
-      HeroDialogRoute<void>(
-        builder: (BuildContext context) => ImageGallery(
-          urls: urls,
-          heroTags: heroTags,
-          index: index,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
