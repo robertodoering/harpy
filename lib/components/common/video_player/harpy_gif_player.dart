@@ -60,7 +60,14 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   }
 
   Widget _buildGif(HarpyVideoPlayerModel model) {
-    return VideoPlayer(_controller);
+    return OverflowBox(
+      minHeight: 0,
+      maxHeight: double.infinity,
+      child: AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      ),
+    );
   }
 
   @override

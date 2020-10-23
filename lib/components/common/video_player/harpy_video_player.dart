@@ -21,7 +21,6 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.thumbnail,
   });
 
-  /// The url of the video.
   final String url;
 
   /// An optional url to a thumbnail that is built when the video is not
@@ -63,7 +62,15 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     return Stack(
       children: <Widget>[
-        VideoPlayer(_controller),
+        // let the top / bottom overflow
+        OverflowBox(
+          minHeight: 0,
+          maxHeight: double.infinity,
+          child: AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          ),
+        ),
         VideoPlayerOverlay(model),
       ],
     );

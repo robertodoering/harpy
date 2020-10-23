@@ -13,11 +13,8 @@ class VideoThumbnail extends StatelessWidget {
   });
 
   final String thumbnail;
-
   final IconData icon;
-
   final bool initializing;
-
   final VoidCallback onTap;
 
   @override
