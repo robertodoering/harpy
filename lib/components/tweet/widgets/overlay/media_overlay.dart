@@ -40,8 +40,8 @@ class MediaOverlay extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: <Color>[
-            Colors.black87,
             Colors.transparent,
+            Colors.black87,
           ],
         ),
       ),
