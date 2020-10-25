@@ -14,7 +14,6 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   final WidgetBuilder builder;
 
-  /// Called when the background is tapped.
   final VoidCallback onBackgroundTap;
 
   /// The color tween used in the transition to animate the background color.
