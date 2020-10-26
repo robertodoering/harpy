@@ -62,7 +62,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     return Stack(
       children: <Widget>[
-        // let the top / bottom overflow
+        // let the top / bottom overflow when the height is constrained
         OverflowBox(
           minHeight: 0,
           maxHeight: double.infinity,

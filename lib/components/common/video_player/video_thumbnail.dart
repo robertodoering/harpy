@@ -9,7 +9,7 @@ class VideoThumbnail extends StatelessWidget {
     @required this.thumbnail,
     @required this.icon,
     @required this.initializing,
-    @required this.onTap,
+    this.onTap,
   });
 
   final String thumbnail;
@@ -52,7 +52,7 @@ class VideoThumbnail extends StatelessWidget {
             child: child,
           ),
         ),
-        GestureDetector(onTap: onTap),
+        if (onTap != null) GestureDetector(onTap: onTap),
       ],
     );
   }

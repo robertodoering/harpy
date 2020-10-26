@@ -107,7 +107,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onWillPop(),
+      onWillPop: _onWillPop,
       child: Stack(
         children: <Widget>[
           GestureDetector(
