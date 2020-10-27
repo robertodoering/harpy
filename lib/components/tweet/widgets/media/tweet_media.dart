@@ -74,7 +74,10 @@ class TweetMedia extends StatelessWidget {
       child = _constrainVideoHeight(
         maxHeight: maxHeight,
         aspectRatio: videoAspectRatio,
-        child: TweetVideo(tweet.video),
+        child: TweetVideo(
+          tweet,
+          tweetBloc: bloc,
+        ),
       );
     } else if (tweet.gif != null) {
       final double gifAspectRatio =

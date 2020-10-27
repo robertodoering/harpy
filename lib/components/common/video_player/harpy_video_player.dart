@@ -8,6 +8,8 @@ import 'package:video_player/video_player.dart';
 /// The size for icons appearing in the center of the video player
 const double kVideoPlayerCenterIconSize = 48;
 
+typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
+
 /// Builds a [VideoPlayer] with a [VideoPlayerOverlay] to control the video.
 ///
 /// When built initially, the video will not be initialized and instead the
@@ -16,16 +18,29 @@ const double kVideoPlayerCenterIconSize = 48;
 ///
 /// A [HarpyVideoPlayerModel] is used to control the video.
 class HarpyVideoPlayer extends StatefulWidget {
-  const HarpyVideoPlayer(
+  const HarpyVideoPlayer.fromUrl(
     this.url, {
     this.thumbnail,
-  });
+    this.thumbnailAspectRatio,
+    this.onVideoPlayerTap,
+  }) : model = null;
+
+  const HarpyVideoPlayer.fromModel(
+    this.model, {
+    this.thumbnail,
+    this.thumbnailAspectRatio,
+    this.onVideoPlayerTap,
+  }) : url = null;
 
   final String url;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
   final String thumbnail;
+  final double thumbnailAspectRatio;
+
+  final HarpyVideoPlayerModel model;
+  final OnVideoPlayerTap onVideoPlayerTap;
 
   @override
   _HarpyVideoPlayerState createState() => _HarpyVideoPlayerState();
@@ -38,12 +53,15 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.url);
+    _controller =
+        widget.model?.controller ?? VideoPlayerController.network(widget.url);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.model == null) {
+      _controller.dispose();
+    }
 
     super.dispose();
   }
@@ -53,13 +71,19 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _buildUninitialized(HarpyVideoPlayerModel model) {
     return VideoThumbnail(
       thumbnail: widget.thumbnail,
+      aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.play_arrow,
       initializing: model.initializing,
-      onTap: model.initialize,
+      onTap: () {
+        model.initialize();
+        widget.onVideoPlayerTap(model);
+      },
     );
   }
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
+    // todo: change overlay to be static and not use a gesture detector
+
     return Stack(
       children: <Widget>[
         // let the top / bottom overflow when the height is constrained
@@ -76,19 +100,28 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     );
   }
 
+  Widget _builder(BuildContext context, Widget child) {
+    final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
+
+    if (!model.initialized) {
+      return _buildUninitialized(model);
+    } else {
+      return _buildVideo(model);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HarpyVideoPlayerModel>(
-      create: (BuildContext context) => HarpyVideoPlayerModel(_controller),
-      builder: (BuildContext context, Widget child) {
-        final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
-
-        if (!model.initialized) {
-          return _buildUninitialized(model);
-        } else {
-          return _buildVideo(model);
-        }
-      },
-    );
+    if (widget.model != null) {
+      return ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+        value: widget.model,
+        builder: _builder,
+      );
+    } else {
+      return ChangeNotifierProvider<HarpyVideoPlayerModel>(
+        create: (BuildContext context) => HarpyVideoPlayerModel(_controller),
+        builder: _builder,
+      );
+    }
   }
 }
