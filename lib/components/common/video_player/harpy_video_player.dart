@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/common/video_player/overlay/static_video_player_overlay.dart';
 import 'package:harpy/components/common/video_player/video_thumbnail.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -77,9 +78,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.play_arrow,
       initializing: model.initializing,
-      onTap: () {
-        model.initialize();
-      },
+      onTap: model.initialize,
     );
   }
 
@@ -101,9 +100,34 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       model,
       child: GestureDetector(
         onTap: widget.onVideoPlayerTap == null
-            ? null
+            ? model.togglePlayback
             : () => widget.onVideoPlayerTap(model),
         child: child,
+      ),
+    );
+  }
+
+  Widget _flightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    final Hero hero = flightDirection == HeroFlightDirection.push
+        ? fromHeroContext.widget
+        : toHeroContext.widget;
+
+    final BorderRadiusTween tween = BorderRadiusTween(
+      begin: const BorderRadius.all(kDefaultRadius),
+      end: BorderRadius.zero,
+    );
+
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget child) => ClipRRect(
+        borderRadius: tween.evaluate(animation),
+        child: hero.child,
       ),
     );
   }
@@ -121,6 +145,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
     return Hero(
       tag: model,
+      flightShuttleBuilder: _flightShuttleBuilder,
       child: child,
     );
   }
