@@ -19,7 +19,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   /// The color tween used in the transition to animate the background color.
   final ColorTween _colorTween = ColorTween(
     begin: Colors.transparent,
-    end: Colors.black.withOpacity(.5),
+    end: Colors.black.withOpacity(.66),
   );
 
   @override
