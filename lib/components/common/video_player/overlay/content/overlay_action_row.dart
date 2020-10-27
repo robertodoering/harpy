@@ -12,22 +12,16 @@ class OverlayActionRow extends StatelessWidget {
 
   final HarpyVideoPlayerModel model;
 
-  Widget _buildBackground() {
-    return Positioned.fill(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[
-              Colors.transparent,
-              Colors.black45,
-            ],
-          ),
+  BoxDecoration get _backgroundDecoration => const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            Colors.transparent,
+            Colors.black45,
+          ],
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildProgressIndicator(HarpyVideoPlayerModel model, ThemeData theme) {
     return Transform(
@@ -105,23 +99,21 @@ class OverlayActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Stack(
-      children: <Widget>[
-        _buildBackground(),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildProgressIndicator(model, theme),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: _buildActions(model, theme),
-            ),
-          ],
-        ),
-      ],
+    return Container(
+      decoration: _backgroundDecoration,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildProgressIndicator(model, theme),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: _buildActions(model, theme),
+          ),
+        ],
+      ),
     );
   }
 }
