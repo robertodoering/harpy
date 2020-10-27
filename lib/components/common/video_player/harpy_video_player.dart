@@ -23,6 +23,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.thumbnail,
     this.thumbnailAspectRatio,
     this.onVideoPlayerTap,
+    this.allowVerticalOverflow = false,
   }) : model = null;
 
   const HarpyVideoPlayer.fromModel(
@@ -30,6 +31,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.thumbnail,
     this.thumbnailAspectRatio,
     this.onVideoPlayerTap,
+    this.allowVerticalOverflow = false,
   }) : url = null;
 
   final String url;
@@ -41,6 +43,7 @@ class HarpyVideoPlayer extends StatefulWidget {
 
   final HarpyVideoPlayerModel model;
   final OnVideoPlayerTap onVideoPlayerTap;
+  final bool allowVerticalOverflow;
 
   @override
   _HarpyVideoPlayerState createState() => _HarpyVideoPlayerState();
@@ -76,27 +79,32 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       initializing: model.initializing,
       onTap: () {
         model.initialize();
-        // widget.onVideoPlayerTap(model);
       },
     );
   }
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
-    // todo: change overlay to be static and not use a gesture detector
+    Widget child = AspectRatio(
+      aspectRatio: _controller.value.aspectRatio,
+      child: VideoPlayer(_controller),
+    );
 
-    return Stack(
-      children: <Widget>[
-        // let the top / bottom overflow when the height is constrained
-        OverflowBox(
-          minHeight: 0,
-          maxHeight: double.infinity,
-          child: AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          ),
-        ),
-        StaticVideoPlayerOverlay(model),
-      ],
+    if (widget.allowVerticalOverflow) {
+      child = OverflowBox(
+        minHeight: 0,
+        maxHeight: double.infinity,
+        child: child,
+      );
+    }
+
+    return StaticVideoPlayerOverlay(
+      model,
+      child: GestureDetector(
+        onTap: widget.onVideoPlayerTap == null
+            ? null
+            : () => widget.onVideoPlayerTap(model),
+        child: child,
+      ),
     );
   }
 

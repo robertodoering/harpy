@@ -9,9 +9,13 @@ import 'package:harpy/components/common/video_player/overlay/content/overlay_rep
 /// The static overlay always shows the action controls and does not detect
 /// gestures when the video is tapped.
 class StaticVideoPlayerOverlay extends StatefulWidget {
-  const StaticVideoPlayerOverlay(this.model);
+  const StaticVideoPlayerOverlay(
+    this.model, {
+    @required this.child,
+  });
 
   final HarpyVideoPlayerModel model;
+  final Widget child;
 
   @override
   _StaticVideoPlayerOverlayState createState() =>
@@ -21,6 +25,9 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
 class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   Widget _centerIcon;
 
+  // todo: refactor with dynamic overlay to independent widget
+  bool _replayFade = true;
+
   HarpyVideoPlayerModel get _model => widget.model;
 
   @override
@@ -28,6 +35,9 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     super.initState();
 
     _model.addActionListener(_onVideoPlayerAction);
+    _model.controller.addListener(_videoControllerListener);
+
+    _replayFade = !_model.finished;
   }
 
   @override
@@ -35,6 +45,14 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     super.dispose();
 
     _model.removeActionListener(_onVideoPlayerAction);
+    _model.controller.removeListener(_videoControllerListener);
+  }
+
+  void _videoControllerListener() {
+    if (_model.finished && mounted) {
+      // rebuild when finished
+      setState(() {});
+    }
   }
 
   void _onVideoPlayerAction(HarpyVideoPlayerAction action) {
@@ -53,17 +71,27 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: <Widget>[
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: OverlayActionRow(widget.model),
+        if (widget.child != null) widget.child,
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: OverlayActionRow(widget.model),
+          ),
         ),
         if (widget.model.finished)
-          OverplayReplayIcon(
-            onTap: () {}, //todo
+          Positioned.fill(
+            child: OverplayReplayIcon(
+              fadeIn: _replayFade,
+              onTap: () {
+                _replayFade = true;
+                _model.replay();
+              },
+            ),
           )
         else if (_centerIcon != null)
-          _centerIcon,
+          Positioned.fill(child: _centerIcon),
       ],
     );
   }

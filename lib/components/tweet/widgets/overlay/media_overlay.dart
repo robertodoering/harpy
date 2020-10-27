@@ -132,9 +132,11 @@ class _MediaOverlayState extends State<MediaOverlay>
       onWillPop: _onWillPop,
       child: Stack(
         children: <Widget>[
-          GestureDetector(
-            onTap: _onMediaTap,
-            child: widget.child,
+          Center(
+            child: GestureDetector(
+              onTap: _onMediaTap,
+              child: widget.child,
+            ),
           ),
           SafeArea(
             // app bar handles top safe area

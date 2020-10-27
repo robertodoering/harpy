@@ -42,6 +42,7 @@ class TweetVideo extends StatelessWidget {
         tweet.video.appropriateUrl,
         thumbnail: tweet.video.thumbnailUrl,
         onVideoPlayerTap: _openGallery,
+        allowVerticalOverflow: true,
       ),
     );
   }
