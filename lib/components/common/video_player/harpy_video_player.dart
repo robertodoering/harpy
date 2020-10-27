@@ -111,11 +111,18 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _builder(BuildContext context, Widget child) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 
+    Widget child;
+
     if (!model.initialized) {
-      return _buildUninitialized(model);
+      child = _buildUninitialized(model);
     } else {
-      return _buildVideo(model);
+      child = _buildVideo(model);
     }
+
+    return Hero(
+      tag: model,
+      child: child,
+    );
   }
 
   @override

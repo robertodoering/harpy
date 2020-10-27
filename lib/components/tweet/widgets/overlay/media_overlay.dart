@@ -27,6 +27,7 @@ class MediaOverlay extends StatefulWidget {
   }) {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
+        onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
         builder: (BuildContext context) => MediaOverlay(
           tweet: tweet,
           tweetBloc: tweetBloc,
