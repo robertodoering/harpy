@@ -91,6 +91,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     _hideOverlayController.dispose();
     _opacityController.dispose();
     _model.removeActionListener(_onVideoPlayerAction);
+    _model.controller.removeListener(_videoControllerListener);
 
     super.dispose();
   }
