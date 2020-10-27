@@ -57,14 +57,13 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
 
   void _onVideoPlayerAction(HarpyVideoPlayerAction action) {
     if (mounted) {
-      if (action == HarpyVideoPlayerAction.play) {
-        _centerIcon = const OverlayPlaybackIcon.play();
-      } else if (action == HarpyVideoPlayerAction.pause) {
-        _centerIcon = const OverlayPlaybackIcon.pause();
-      }
-
-      // rebuild on action taken
-      setState(() {});
+      setState(() {
+        if (action == HarpyVideoPlayerAction.play) {
+          _centerIcon = const OverlayPlaybackIcon.play();
+        } else if (action == HarpyVideoPlayerAction.pause) {
+          _centerIcon = const OverlayPlaybackIcon.pause();
+        }
+      });
     }
   }
 
