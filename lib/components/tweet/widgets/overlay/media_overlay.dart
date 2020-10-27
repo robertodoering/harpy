@@ -13,17 +13,23 @@ class MediaOverlay extends StatefulWidget {
     @required this.tweet,
     @required this.tweetBloc,
     @required this.child,
+    this.enableImmersiveMode = true,
   });
 
   final TweetData tweet;
   final TweetBloc tweetBloc;
   final Widget child;
 
+  /// When set to `true`, tapping the [child] will hide the overlay and disable
+  /// the system ui.
+  final bool enableImmersiveMode;
+
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   static void open({
     @required TweetData tweet,
     @required TweetBloc tweetBloc,
     @required Widget child,
+    bool enableImmersiveMode = true,
   }) {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -31,6 +37,7 @@ class MediaOverlay extends StatefulWidget {
         builder: (BuildContext context) => MediaOverlay(
           tweet: tweet,
           tweetBloc: tweetBloc,
+          enableImmersiveMode: enableImmersiveMode,
           child: child,
         ),
       ),
@@ -75,10 +82,13 @@ class _MediaOverlayState extends State<MediaOverlay>
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+
+    _controller.reverse(from: 1);
   }
 
   Future<bool> _onWillPop() async {
     _model.resetOverlays();
+    _controller.forward();
     return true;
   }
 
@@ -129,37 +139,34 @@ class _MediaOverlayState extends State<MediaOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final Widget child = widget.enableImmersiveMode
+        ? GestureDetector(
+            onTap: _onMediaTap,
+            child: widget.child,
+          )
+        : widget.child;
+
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: GestureDetector(
-              onTap: _onMediaTap,
-              child: widget.child,
-            ),
-          ),
-          SafeArea(
-            // app bar handles top safe area
-            top: false,
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (BuildContext context, Widget child) => Column(
-                children: <Widget>[
-                  SlideTransition(
-                    position: _topAnimation,
-                    child: _buildAppBar(),
-                  ),
-                  const Spacer(),
-                  SlideTransition(
-                    position: _bottomAnimation,
-                    child: _buildActions(),
-                  ),
-                ],
+      child: SafeArea(
+        // app bar handles top safe area
+        top: false,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (BuildContext context, Widget _) => Column(
+            children: <Widget>[
+              SlideTransition(
+                position: _topAnimation,
+                child: _buildAppBar(),
               ),
-            ),
+              Expanded(child: Center(child: child)),
+              SlideTransition(
+                position: _bottomAnimation,
+                child: _buildActions(),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

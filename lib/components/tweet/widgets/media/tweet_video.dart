@@ -20,6 +20,7 @@ class TweetVideo extends StatelessWidget {
     MediaOverlay.open(
       tweet: tweet,
       tweetBloc: tweetBloc,
+      enableImmersiveMode: false,
       child: HarpyVideoPlayer.fromModel(
         model,
         thumbnail: tweet.video.thumbnailUrl,
@@ -32,10 +33,6 @@ class TweetVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo: pass along an on tap method that opens the overlay and gets the
-    //   video controller which is used in building a harpy video player with an
-    //   existing controller.
-
     return ClipRRect(
       borderRadius: kDefaultBorderRadius,
       child: HarpyVideoPlayer.fromUrl(
