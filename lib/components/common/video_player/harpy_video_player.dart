@@ -83,9 +83,14 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   }
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
-    Widget child = AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
+    Widget child = GestureDetector(
+      onTap: widget.onVideoPlayerTap == null
+          ? model.togglePlayback
+          : () => widget.onVideoPlayerTap(model),
+      child: AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      ),
     );
 
     if (widget.allowVerticalOverflow) {
@@ -98,12 +103,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
     return StaticVideoPlayerOverlay(
       model,
-      child: GestureDetector(
-        onTap: widget.onVideoPlayerTap == null
-            ? model.togglePlayback
-            : () => widget.onVideoPlayerTap(model),
-        child: child,
-      ),
+      child: child,
     );
   }
 
@@ -135,13 +135,8 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _builder(BuildContext context, Widget child) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 
-    Widget child;
-
-    if (!model.initialized) {
-      child = _buildUninitialized(model);
-    } else {
-      child = _buildVideo(model);
-    }
+    final Widget child =
+        !model.initialized ? _buildUninitialized(model) : _buildVideo(model);
 
     return Hero(
       tag: model,

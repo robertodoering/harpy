@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/common/video_player/video_thumbnail.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -8,21 +10,37 @@ import 'package:video_player/video_player.dart';
 ///
 /// The video representing the gif will loop after initializing and play on tap.
 class HarpyGifPlayer extends StatefulWidget {
-  const HarpyGifPlayer(
+  const HarpyGifPlayer.fromUrl(
     this.url, {
     this.thumbnail,
-    this.autoplay,
-  });
+    this.thumbnailAspectRatio,
+    this.autoplay = false,
+    this.onGifTap,
+    this.allowVerticalOverflow = false,
+  }) : model = null;
 
-  /// The url of the video.
+  const HarpyGifPlayer.fromModel(
+    this.model, {
+    this.thumbnail,
+    this.thumbnailAspectRatio,
+    this.autoplay = false,
+    this.onGifTap,
+    this.allowVerticalOverflow = false,
+  }) : url = null;
+
   final String url;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
   final String thumbnail;
+  final double thumbnailAspectRatio;
 
   /// Whether the gif should start playing automatically.
   final bool autoplay;
+
+  final HarpyVideoPlayerModel model;
+  final OnVideoPlayerTap onGifTap;
+  final bool allowVerticalOverflow;
 
   @override
   _HarpyGifPlayerState createState() => _HarpyGifPlayerState();
@@ -35,57 +53,107 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(widget.url)..setLooping(true);
+    _controller =
+        widget.model?.controller ?? VideoPlayerController.network(widget.url)
+          ..setLooping(true);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.model == null) {
+      _controller.dispose();
+    }
 
     super.dispose();
   }
 
-  /// Builds a [VideoThumbnail] that will start to initialize the video when
+  /// Builds a [VideoThumbnail] that will start to initialize the gif when
   /// tapped.
   Widget _buildUninitialized(HarpyVideoPlayerModel model) {
     return VideoThumbnail(
       thumbnail: widget.thumbnail,
+      aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.gif,
       initializing: model.initializing,
-      onTap: () async {
-        await model.initialize();
-        _controller.play();
-      },
+      onTap: model.initialize,
     );
   }
 
   Widget _buildGif(HarpyVideoPlayerModel model) {
-    return OverflowBox(
-      minHeight: 0,
-      maxHeight: double.infinity,
+    final Widget child = GestureDetector(
+      onTap: widget.onGifTap == null
+          ? model.togglePlayback
+          : () => widget.onGifTap(model),
       child: AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child: VideoPlayer(_controller),
       ),
     );
+
+    if (widget.allowVerticalOverflow) {
+      return OverflowBox(
+        minHeight: 0,
+        maxHeight: double.infinity,
+        child: child,
+      );
+    } else {
+      return child;
+    }
+  }
+
+  Widget _flightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    final Hero hero = flightDirection == HeroFlightDirection.push
+        ? fromHeroContext.widget
+        : toHeroContext.widget;
+
+    final BorderRadiusTween tween = BorderRadiusTween(
+      begin: const BorderRadius.all(kDefaultRadius),
+      end: BorderRadius.zero,
+    );
+
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget child) => ClipRRect(
+        borderRadius: tween.evaluate(animation),
+        child: hero.child,
+      ),
+    );
+  }
+
+  Widget _builder(BuildContext context, Widget child) {
+    final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
+
+    final Widget child =
+        !model.initialized ? _buildUninitialized(model) : _buildGif(model);
+
+    return Hero(
+      tag: model,
+      flightShuttleBuilder: _flightShuttleBuilder,
+      child: child,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HarpyVideoPlayerModel>(
-      create: (BuildContext context) => HarpyVideoPlayerModel(
-        _controller,
-        autoplay: widget.autoplay,
-      ),
-      builder: (BuildContext context, Widget child) {
-        final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
-
-        if (!model.initialized) {
-          return _buildUninitialized(model);
-        } else {
-          return _buildGif(model);
-        }
-      },
-    );
+    if (widget.model != null) {
+      return ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+        value: widget.model,
+        builder: _builder,
+      );
+    } else {
+      return ChangeNotifierProvider<HarpyVideoPlayerModel>(
+        create: (BuildContext context) => HarpyVideoPlayerModel(
+          _controller,
+          autoplay: widget.autoplay,
+        ),
+        builder: _builder,
+      );
+    }
   }
 }
