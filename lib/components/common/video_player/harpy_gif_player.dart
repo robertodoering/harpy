@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
+import 'package:harpy/components/common/video_player/overlay/gif_player_overlay.dart';
 import 'package:harpy/components/common/video_player/video_thumbnail.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +81,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   }
 
   Widget _buildGif(HarpyVideoPlayerModel model) {
-    final Widget child = GestureDetector(
+    Widget child = GestureDetector(
       onTap: widget.onGifTap == null
           ? model.togglePlayback
           : () => widget.onGifTap(model),
@@ -91,14 +92,14 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
     );
 
     if (widget.allowVerticalOverflow) {
-      return OverflowBox(
+      child = OverflowBox(
         minHeight: 0,
         maxHeight: double.infinity,
         child: child,
       );
-    } else {
-      return child;
     }
+
+    return GifPlayerOverlay(model, child: child);
   }
 
   Widget _flightShuttleBuilder(

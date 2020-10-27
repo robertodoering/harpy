@@ -24,11 +24,20 @@ class TweetGif extends StatelessWidget {
       tweet: tweet,
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
-      child: HarpyGifPlayer.fromModel(
-        model,
-        thumbnail: tweet.gif.thumbnailUrl,
-        thumbnailAspectRatio:
-            tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9,
+      child: WillPopScope(
+        onWillPop: () async {
+          // resume playing when the overlay closes with the gif paused
+          if (!model.playing) {
+            model.togglePlayback();
+          }
+          return true;
+        },
+        child: HarpyGifPlayer.fromModel(
+          model,
+          thumbnail: tweet.gif.thumbnailUrl,
+          thumbnailAspectRatio:
+              tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9,
+        ),
       ),
     );
   }
