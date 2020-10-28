@@ -70,6 +70,18 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     super.dispose();
   }
 
+  void _onVideoTap(HarpyVideoPlayerModel model) {
+    if (widget.onVideoPlayerTap == null) {
+      if (model.finished) {
+        model.replay();
+      } else {
+        model.togglePlayback();
+      }
+    } else {
+      widget.onVideoPlayerTap(model);
+    }
+  }
+
   /// Builds a [VideoThumbnail] that will start to initialize the video when
   /// tapped.
   Widget _buildUninitialized(HarpyVideoPlayerModel model) {
@@ -84,9 +96,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     Widget child = GestureDetector(
-      onTap: widget.onVideoPlayerTap == null
-          ? model.togglePlayback
-          : () => widget.onVideoPlayerTap(model),
+      onTap: () => _onVideoTap(model),
       child: AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child: VideoPlayer(_controller),
