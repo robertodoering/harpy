@@ -24,6 +24,7 @@ class TweetGif extends StatelessWidget {
       tweet: tweet,
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
+      overlap: true,
       child: WillPopScope(
         onWillPop: () async {
           // resume playing when the overlay closes with the gif paused

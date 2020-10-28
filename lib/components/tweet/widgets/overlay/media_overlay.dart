@@ -14,6 +14,7 @@ class MediaOverlay extends StatefulWidget {
     @required this.tweetBloc,
     @required this.child,
     this.enableImmersiveMode = true,
+    this.overlap = false,
   });
 
   final TweetData tweet;
@@ -24,12 +25,16 @@ class MediaOverlay extends StatefulWidget {
   /// the system ui.
   final bool enableImmersiveMode;
 
+  /// Whether the overlay should overlap the [child].
+  final bool overlap;
+
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   static void open({
     @required TweetData tweet,
     @required TweetBloc tweetBloc,
     @required Widget child,
     bool enableImmersiveMode = true,
+    bool overlap = false,
   }) {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -38,6 +43,7 @@ class MediaOverlay extends StatefulWidget {
           tweet: tweet,
           tweetBloc: tweetBloc,
           enableImmersiveMode: enableImmersiveMode,
+          overlap: overlap,
           child: child,
         ),
       ),
@@ -148,14 +154,11 @@ class _MediaOverlayState extends State<MediaOverlay>
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: SafeArea(
-        // app bar handles top safe area
-        top: false,
-        child: AnimatedBuilder(
+  Widget _buildOverlappingOverlay() {
+    return Stack(
+      children: <Widget>[
+        Center(child: _buildMedia()),
+        AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext context, Widget _) => Column(
             children: <Widget>[
@@ -163,7 +166,7 @@ class _MediaOverlayState extends State<MediaOverlay>
                 position: _topAnimation,
                 child: _buildAppBar(),
               ),
-              Expanded(child: Center(child: _buildMedia())),
+              const Spacer(),
               SlideTransition(
                 position: _bottomAnimation,
                 child: _buildActions(),
@@ -171,6 +174,37 @@ class _MediaOverlayState extends State<MediaOverlay>
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildOverlay() {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (BuildContext context, Widget _) => Column(
+        children: <Widget>[
+          SlideTransition(
+            position: _topAnimation,
+            child: _buildAppBar(),
+          ),
+          Expanded(child: Center(child: _buildMedia())),
+          SlideTransition(
+            position: _bottomAnimation,
+            child: _buildActions(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: SafeArea(
+        // app bar handles top safe area
+        top: false,
+        child: widget.overlap ? _buildOverlappingOverlay() : _buildOverlay(),
       ),
     );
   }

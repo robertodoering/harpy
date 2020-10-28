@@ -29,6 +29,7 @@ class TweetImages extends StatelessWidget {
     MediaOverlay.open(
       tweet: tweet,
       tweetBloc: tweetBloc,
+      overlap: true,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
