@@ -151,7 +151,12 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       return ChangeNotifierProvider<HarpyVideoPlayerModel>(
         create: (BuildContext context) => HarpyVideoPlayerModel(
           _controller,
-          autoplay: widget.autoplay,
+          autoplay: false,
+          // todo: fix autoplay not playing gif when scrolling too fast
+          // add a visibility detector listener for tweet cards to start
+          //   initializing and playing the video / gif. can also be used to
+          //   autoplay videos (new setting)
+          // autoplay: widget.autoplay,
         ),
         builder: _builder,
       );
