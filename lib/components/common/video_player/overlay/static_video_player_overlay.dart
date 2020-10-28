@@ -25,7 +25,6 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
 class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   Widget _centerIcon;
 
-  // todo: refactor with dynamic overlay to independent widget
   bool _replayFade = true;
 
   HarpyVideoPlayerModel get _model => widget.model;
