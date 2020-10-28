@@ -137,15 +137,19 @@ class _MediaOverlayState extends State<MediaOverlay>
     );
   }
 
+  Widget _buildMedia() {
+    if (widget.enableImmersiveMode) {
+      return GestureDetector(
+        onTap: _onMediaTap,
+        child: widget.child,
+      );
+    } else {
+      return widget.child;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Widget child = widget.enableImmersiveMode
-        ? GestureDetector(
-            onTap: _onMediaTap,
-            child: widget.child,
-          )
-        : widget.child;
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: SafeArea(
@@ -159,7 +163,7 @@ class _MediaOverlayState extends State<MediaOverlay>
                 position: _topAnimation,
                 child: _buildAppBar(),
               ),
-              Expanded(child: Center(child: child)),
+              Expanded(child: Center(child: _buildMedia())),
               SlideTransition(
                 position: _bottomAnimation,
                 child: _buildActions(),
