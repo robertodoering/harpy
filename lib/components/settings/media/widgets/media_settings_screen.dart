@@ -63,7 +63,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         title: 'Autoplay videos',
         description: 'Change when videos should automatically play',
         value: 0,
-        items: const <String>[
+        items: <String>[
           'Coming soon!',
         ],
         enabled: false,
