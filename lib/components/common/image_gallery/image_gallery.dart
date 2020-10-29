@@ -8,7 +8,7 @@ import 'package:harpy/components/common/image_gallery/fullscreen_image.dart';
 /// instead.
 ///
 /// [heroTags] must be `null` or the same length as [url].
-class ImageGallery extends StatelessWidget {
+class ImageGallery extends StatefulWidget {
   const ImageGallery({
     @required this.urls,
     this.heroTags,
@@ -22,38 +22,10 @@ class ImageGallery extends StatelessWidget {
   final int index;
 
   @override
-  Widget build(BuildContext context) {
-    if (urls.length == 1) {
-      return FullscreenImage(url: urls.first, heroTag: heroTags?.first);
-    } else {
-      return _MultipleImageGalleryImages(
-        urls: urls,
-        heroTags: heroTags,
-        index: index,
-      );
-    }
-  }
+  _ImageGalleryState createState() => _ImageGalleryState();
 }
 
-class _MultipleImageGalleryImages extends StatefulWidget {
-  const _MultipleImageGalleryImages({
-    @required this.urls,
-    this.heroTags,
-    this.index,
-  })  : assert(urls.length > 0),
-        assert(heroTags == null || heroTags.length == urls.length);
-
-  final List<String> urls;
-  final List<Object> heroTags;
-  final int index;
-
-  @override
-  __MultipleImageGalleryImagesState createState() =>
-      __MultipleImageGalleryImagesState();
-}
-
-class __MultipleImageGalleryImagesState
-    extends State<_MultipleImageGalleryImages> {
+class _ImageGalleryState extends State<ImageGallery> {
   PageController _pageController;
 
   /// `true` when an image is zoomed in and not at the at a horizontal boundary
@@ -152,6 +124,7 @@ class __MultipleImageGalleryImagesState
             onLeftBoundaryHit: _onLeftBoundaryHit,
             onRightBoundaryHit: _onRightBoundaryHit,
             onNoBoundaryHit: _onNoBoundaryHit,
+            enableDismiss: _enableDismiss,
           ),
       ],
     );
