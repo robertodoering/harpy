@@ -11,16 +11,21 @@ class FullscreenImage extends StatelessWidget {
   const FullscreenImage({
     @required this.url,
     this.heroTag,
+    this.flightShuttleBuilder,
+    this.placeholderBuilder,
   });
 
   final String url;
   final Object heroTag;
+  final HeroFlightShuttleBuilder flightShuttleBuilder;
+  final HeroPlaceholderBuilder placeholderBuilder;
 
-  /// The [FlightShuttleBuilder] for the hero widget.
+  /// The default [FlightShuttleBuilder] for the hero widget that is used when
+  /// no [flightShuttleBuilder] is specified.
   ///
   /// Since the initial image can have a different box fit, this flight shuttle
   /// builder is used to make sure the hero transitions properly.
-  Widget _flightShuttleBuilder(
+  Widget _defaultFlightShuttleBuilder(
     BuildContext flightContext,
     Animation<double> animation,
     HeroFlightDirection flightDirection,
@@ -45,7 +50,9 @@ class FullscreenImage extends StatelessWidget {
     if (heroTag != null) {
       image = Hero(
         tag: heroTag,
-        flightShuttleBuilder: _flightShuttleBuilder,
+        flightShuttleBuilder:
+            flightShuttleBuilder ?? _defaultFlightShuttleBuilder,
+        placeholderBuilder: placeholderBuilder,
         child: image,
       );
     }

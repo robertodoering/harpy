@@ -8,6 +8,8 @@ class ImageGallery extends StatelessWidget {
   const ImageGallery({
     @required this.urls,
     this.heroTags,
+    this.flightShuttleBuilder,
+    this.placeholderBuilder,
     this.index = 0,
   })  : assert(urls.length > 0),
         assert(index >= 0 && index < urls.length),
@@ -15,6 +17,8 @@ class ImageGallery extends StatelessWidget {
 
   final List<String> urls;
   final List<Object> heroTags;
+  final HeroFlightShuttleBuilder flightShuttleBuilder;
+  final HeroPlaceholderBuilder placeholderBuilder;
   final int index;
 
   @override
@@ -26,6 +30,8 @@ class ImageGallery extends StatelessWidget {
           FullscreenImage(
             url: urls[i],
             heroTag: heroTags?.elementAt(i),
+            flightShuttleBuilder: flightShuttleBuilder,
+            placeholderBuilder: placeholderBuilder,
           ),
       ],
     );

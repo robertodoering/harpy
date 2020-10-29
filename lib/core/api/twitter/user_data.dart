@@ -148,6 +148,12 @@ class UserData {
     }
   }
 
+  /// Returns the user profile image url in its original size.
+  ///
+  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
+  String get originalUserImageUrl =>
+      profileImageUrlHttps.replaceAll('_normal', '');
+
   /// Returns the user profile banner url based on the media setting and
   /// connectivity.
   ///
