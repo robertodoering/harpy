@@ -9,16 +9,33 @@ class VideoThumbnail extends StatelessWidget {
     @required this.thumbnail,
     @required this.icon,
     @required this.initializing,
-    @required this.onTap,
+    this.aspectRatio,
+    this.onTap,
   });
 
   final String thumbnail;
-
+  final double aspectRatio;
   final IconData icon;
-
   final bool initializing;
-
   final VoidCallback onTap;
+
+  Widget _buildThumbnailImage() {
+    final Widget child = CachedNetworkImage(
+      fit: BoxFit.cover,
+      imageUrl: thumbnail,
+      height: double.infinity,
+      width: double.infinity,
+    );
+
+    if (aspectRatio != null) {
+      return AspectRatio(
+        aspectRatio: aspectRatio,
+        child: child,
+      );
+    } else {
+      return child;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +55,7 @@ class VideoThumbnail extends StatelessWidget {
 
     return Stack(
       children: <Widget>[
-        if (thumbnail != null)
-          CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: thumbnail,
-            height: double.infinity,
-            width: double.infinity,
-          ),
+        if (thumbnail != null) Center(child: _buildThumbnailImage()),
         Center(
           child: Container(
             decoration: const BoxDecoration(
@@ -55,7 +66,7 @@ class VideoThumbnail extends StatelessWidget {
             child: child,
           ),
         ),
-        GestureDetector(onTap: onTap),
+        if (onTap != null) GestureDetector(onTap: onTap),
       ],
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
-import 'package:harpy/components/common/video_player/video_player_overlay.dart';
+import 'package:harpy/components/common/video_player/overlay/dynamic_video_player_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,7 +17,7 @@ class VideoFullscreen extends StatelessWidget {
     return Stack(
       children: <Widget>[
         VideoPlayer(model.controller),
-        VideoPlayerOverlay(model),
+        DynamicVideoPlayerOverlay(model),
       ],
     );
   }

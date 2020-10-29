@@ -110,7 +110,9 @@ class HarpyButton extends StatelessWidget {
   /// Can be `null` if the button has no icon.
   final Widget icon;
 
-  /// The size of the [icon];
+  /// The size of the [icon].
+  ///
+  /// Defaults to the current icon theme's size (22).
   final double iconSize;
 
   /// The callback when the button is tapped.
@@ -131,6 +133,8 @@ class HarpyButton extends StatelessWidget {
   /// white or black when [backgroundColor] is set.
   final Color foregroundColor;
 
+  /// Merges the [TextTheme.button] style with this [style] to use as the text
+  /// style.
   final TextStyle style;
 
   /// Whether the button should have less padding.

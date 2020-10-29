@@ -14,13 +14,12 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   final WidgetBuilder builder;
 
-  /// Called when the background is tapped.
   final VoidCallback onBackgroundTap;
 
   /// The color tween used in the transition to animate the background color.
   final ColorTween _colorTween = ColorTween(
     begin: Colors.transparent,
-    end: Colors.black26,
+    end: Colors.black.withOpacity(.66),
   );
 
   @override
@@ -52,17 +51,23 @@ class HeroDialogRoute<T> extends PageRoute<T> {
       children: <Widget>[
         GestureDetector(
           onTap: onBackgroundTap,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: lerpDouble(0, 3, animation.value),
-              sigmaY: lerpDouble(0, 3, animation.value),
-            ),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: _colorTween.evaluate(animation),
-            ),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: _colorTween.evaluate(animation),
           ),
+          // todo: re-add blur when using a high performance device
+          // child: BackdropFilter(
+          //   filter: ImageFilter.blur(
+          //     sigmaX: lerpDouble(0, 3, animation.value),
+          //     sigmaY: lerpDouble(0, 3, animation.value),
+          //   ),
+          //   child: Container(
+          //     width: double.infinity,
+          //     height: double.infinity,
+          //     color: _colorTween.evaluate(animation),
+          //   ),
+          // ),
         ),
         FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),

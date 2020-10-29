@@ -1,30 +1,40 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/routes/hero_dialog_route.dart';
-import 'package:harpy/components/tweet/widgets/media/tweet_image_gallery.dart';
+import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
+import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Builds the images for the [TweetMedia].
 ///
-/// Up to 4 images are built using [images].
+/// Up to 4 images are built using the [tweet] images.
 class TweetImages extends StatelessWidget {
-  const TweetImages(this.images);
+  const TweetImages(
+    this.tweet, {
+    @required this.tweetBloc,
+  });
 
-  final List<ImageData> images;
+  final TweetData tweet;
+  final TweetBloc tweetBloc;
 
   /// The padding between each image.
   static const double _padding = 2;
 
+  List<ImageData> get _images => tweet.images;
+
   void _openGallery(ImageData image) {
-    app<HarpyNavigator>().pushRoute(
-      HeroDialogRoute<void>(
-        builder: (BuildContext context) => TweetImageGallery(
-          images: images,
-          index: images.indexOf(image),
-        ),
+    MediaOverlay.open(
+      tweet: tweet,
+      tweetBloc: tweetBloc,
+      overlap: true,
+      enableDismissible: false,
+      child: ImageGallery(
+        urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
+        heroTags: _images,
+        index: _images.indexOf(image),
       ),
     );
   }
@@ -65,7 +75,7 @@ class TweetImages extends StatelessWidget {
 
   Widget _buildOneImage() {
     return _buildImage(
-      images[0],
+      _images[0],
       topLeft: true,
       bottomLeft: true,
       topRight: true,
@@ -78,7 +88,7 @@ class TweetImages extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: _buildImage(
-            images[0],
+            _images[0],
             topLeft: true,
             bottomLeft: true,
           ),
@@ -86,7 +96,7 @@ class TweetImages extends StatelessWidget {
         const SizedBox(width: _padding),
         Expanded(
           child: _buildImage(
-            images[1],
+            _images[1],
             topRight: true,
             bottomRight: true,
           ),
@@ -100,7 +110,7 @@ class TweetImages extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: _buildImage(
-            images[0],
+            _images[0],
             topLeft: true,
             bottomLeft: true,
           ),
@@ -111,14 +121,14 @@ class TweetImages extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: _buildImage(
-                  images[1],
+                  _images[1],
                   topRight: true,
                 ),
               ),
               const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
-                  images[2],
+                  _images[2],
                   bottomRight: true,
                 ),
               ),
@@ -137,14 +147,14 @@ class TweetImages extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: _buildImage(
-                  images[0],
+                  _images[0],
                   topLeft: true,
                 ),
               ),
               const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
-                  images[2],
+                  _images[2],
                   bottomLeft: true,
                 ),
               ),
@@ -157,14 +167,14 @@ class TweetImages extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: _buildImage(
-                  images[1],
+                  _images[1],
                   topRight: true,
                 ),
               ),
               const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
-                  images[3],
+                  _images[3],
                   bottomRight: true,
                 ),
               ),
@@ -177,13 +187,13 @@ class TweetImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (images.length == 1) {
+    if (_images.length == 1) {
       return _buildOneImage();
-    } else if (images.length == 2) {
+    } else if (_images.length == 2) {
       return _buildTwoImages();
-    } else if (images.length == 3) {
+    } else if (_images.length == 3) {
       return _buildThreeImages();
-    } else if (images.length == 4) {
+    } else if (_images.length == 4) {
       return _buildFourImages();
     } else {
       return const SizedBox();

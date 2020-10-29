@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: deprecated_member_use_from_same_package
 /// A callback for the [InteractiveViewerBoundary] that is called when the scale
 /// changed.
 typedef ScaleChanged = void Function(double scale);
@@ -9,6 +10,7 @@ typedef ScaleChanged = void Function(double scale);
 ///
 /// The callbacks are called when an interaction ends by listening to the
 /// [InteractiveViewer.onInteractionEnd] callback.
+@Deprecated('The interactive viewer does not work well for our use case')
 class InteractiveViewerBoundary extends StatefulWidget {
   const InteractiveViewerBoundary({
     @required this.child,
@@ -48,6 +50,7 @@ class InteractiveViewerBoundary extends StatefulWidget {
       InteractiveViewerBoundaryState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary> {
   TransformationController _controller;
 

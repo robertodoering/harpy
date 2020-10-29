@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
-import 'package:harpy/core/api/twitter/media_data.dart';
+import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
+import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
-/// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
+/// Builds a [HarpyVideoPlayer] for the [TweetMedia] gif.
 class TweetGif extends StatelessWidget {
-  const TweetGif(this.gif);
+  const TweetGif(
+    this.tweet, {
+    @required this.tweetBloc,
+  });
 
-  final VideoData gif;
+  final TweetData tweet;
+  final TweetBloc tweetBloc;
+
+  void _openGallery(HarpyVideoPlayerModel model) {
+    MediaOverlay.open(
+      tweet: tweet,
+      tweetBloc: tweetBloc,
+      enableImmersiveMode: false,
+      overlap: true,
+      child: WillPopScope(
+        onWillPop: () async {
+          // resume playing when the overlay closes with the gif paused
+          if (!model.playing) {
+            model.togglePlayback();
+          }
+          return true;
+        },
+        child: HarpyGifPlayer.fromModel(
+          model,
+          thumbnail: tweet.gif.thumbnailUrl,
+          thumbnailAspectRatio:
+              tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +49,12 @@ class TweetGif extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: kDefaultBorderRadius,
-      child: HarpyGifPlayer(
-        gif.appropriateUrl,
-        thumbnail: gif.thumbnailUrl,
+      child: HarpyGifPlayer.fromUrl(
+        tweet.gif.appropriateUrl,
+        thumbnail: tweet.gif.thumbnailUrl,
+        onGifTap: _openGallery,
         autoplay: mediaPreferences.shouldAutoplayMedia,
+        allowVerticalOverflow: true,
       ),
     );
   }
