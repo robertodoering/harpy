@@ -157,7 +157,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   Widget _buildOverlappingOverlay() {
     return Stack(
       children: <Widget>[
-        Center(child: _buildMedia()),
+        SafeArea(child: Center(child: _buildMedia())),
         AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext context, Widget _) => Column(
@@ -167,9 +167,11 @@ class _MediaOverlayState extends State<MediaOverlay>
                 child: _buildAppBar(),
               ),
               const Spacer(),
-              SlideTransition(
-                position: _bottomAnimation,
-                child: _buildActions(),
+              SafeArea(
+                child: SlideTransition(
+                  position: _bottomAnimation,
+                  child: _buildActions(),
+                ),
               ),
             ],
           ),
@@ -179,20 +181,22 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildOverlay() {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (BuildContext context, Widget _) => Column(
-        children: <Widget>[
-          SlideTransition(
-            position: _topAnimation,
-            child: _buildAppBar(),
-          ),
-          Expanded(child: Center(child: _buildMedia())),
-          SlideTransition(
-            position: _bottomAnimation,
-            child: _buildActions(),
-          ),
-        ],
+    return SafeArea(
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (BuildContext context, Widget _) => Column(
+          children: <Widget>[
+            SlideTransition(
+              position: _topAnimation,
+              child: _buildAppBar(),
+            ),
+            Expanded(child: Center(child: _buildMedia())),
+            SlideTransition(
+              position: _bottomAnimation,
+              child: _buildActions(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -201,11 +205,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: SafeArea(
-        // app bar handles top safe area
-        top: false,
-        child: widget.overlap ? _buildOverlappingOverlay() : _buildOverlay(),
-      ),
+      child: widget.overlap ? _buildOverlappingOverlay() : _buildOverlay(),
     );
   }
 }
