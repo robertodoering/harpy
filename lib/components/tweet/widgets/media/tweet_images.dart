@@ -10,7 +10,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the images for the [TweetMedia].
 ///
-/// Up to 4 images are built using [_images].
+/// Up to 4 images are built using the [tweet] images.
 class TweetImages extends StatelessWidget {
   const TweetImages(
     this.tweet, {
