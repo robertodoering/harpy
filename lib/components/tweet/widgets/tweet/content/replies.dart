@@ -43,7 +43,10 @@ class TweetReplies extends StatelessWidget {
               ],
             ),
           ),
-        ...tweet.replies.map((TweetData reply) => TweetCard(reply)),
+        for (TweetData reply in tweet.replies) ...<Widget>[
+          TweetCard(reply),
+          if (reply != tweet.replies.last) defaultVerticalSpacer,
+        ],
       ],
     );
   }
