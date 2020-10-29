@@ -1,34 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/custom_dismissible.dart';
-import 'package:harpy/components/common/misc/interactive_viewer_boundary.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
-/// Builds a network image for the [url] with an [InteractiveViewer] to allow
-/// for zooming and panning on the image.
+/// Builds a network image for the [url].
 ///
-/// A [CustomDismissible] is used to pop the navigator when [enableDismiss] is
-/// `true`.
+/// Tapping the background or swiping up / down will pop the navigator.
 class FullscreenImage extends StatelessWidget {
   const FullscreenImage({
     @required this.url,
     this.heroTag,
-    this.enableDismiss = true,
-    this.onScaleChanged,
-    this.onLeftBoundaryHit,
-    this.onRightBoundaryHit,
-    this.onNoBoundaryHit,
   });
 
   final String url;
   final Object heroTag;
-
-  final bool enableDismiss;
-  final ScaleChanged onScaleChanged;
-  final VoidCallback onLeftBoundaryHit;
-  final VoidCallback onRightBoundaryHit;
-  final VoidCallback onNoBoundaryHit;
 
   /// The [FlightShuttleBuilder] for the hero widget.
   ///
@@ -73,7 +59,6 @@ class FullscreenImage extends StatelessWidget {
 
     return CustomDismissible(
       onDismissed: () => app<HarpyNavigator>().state.maybePop(),
-      enabled: enableDismiss,
       child: SafeArea(
         child: Stack(
           children: <Widget>[

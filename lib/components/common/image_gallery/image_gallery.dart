@@ -3,12 +3,8 @@ import 'package:harpy/components/common/image_gallery/fullscreen_image.dart';
 
 /// Builds the [urls] as [FullscreenImage]s.
 ///
-/// When when only one url is given, a single [FullscreenImage] is built.
-/// Otherwise a horizontally scrollable [PageView] with all images is built
-/// instead.
-///
 /// [heroTags] must be `null` or the same length as [url].
-class ImageGallery extends StatefulWidget {
+class ImageGallery extends StatelessWidget {
   const ImageGallery({
     @required this.urls,
     this.heroTags,
@@ -22,109 +18,14 @@ class ImageGallery extends StatefulWidget {
   final int index;
 
   @override
-  _ImageGalleryState createState() => _ImageGalleryState();
-}
-
-class _ImageGalleryState extends State<ImageGallery> {
-  PageController _pageController;
-
-  /// `true` when an image is zoomed in and not at the at a horizontal boundary
-  /// to disable the [PageView].
-  bool _enablePageView = true;
-
-  /// `true` when an image is zoomed in to disable the [CustomDismissible].
-  bool _enableDismiss = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _pageController = PageController(initialPage: widget.index);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-
-    super.dispose();
-  }
-
-  /// When the image gets scaled up, the swipe up / down to dismiss gets
-  /// disabled.
-  ///
-  /// When the scale resets, the dismiss and the page view swiping gets enabled.
-  void _onScaleChanged(double scale) {
-    final bool initialScale = scale <= 1.01;
-
-    if (initialScale) {
-      if (!_enableDismiss) {
-        setState(() {
-          _enableDismiss = true;
-        });
-      }
-
-      if (!_enablePageView) {
-        setState(() {
-          _enablePageView = true;
-        });
-      }
-    } else {
-      if (_enableDismiss) {
-        setState(() {
-          _enableDismiss = false;
-        });
-      }
-    }
-  }
-
-  /// When the left boundary has been hit after scaling up the image, the page
-  /// view swiping gets enabled if it has a page to swipe to.
-  void _onLeftBoundaryHit() {
-    if (!_enablePageView && _pageController.page.floor() > 0) {
-      setState(() {
-        _enablePageView = true;
-      });
-    }
-  }
-
-  /// When the right boundary has been hit after scaling up the image, the page
-  /// view swiping gets enabled if it has a page to swipe to.
-  void _onRightBoundaryHit() {
-    if (!_enablePageView &&
-        _pageController.page.floor() < widget.urls.length - 1) {
-      setState(() {
-        _enablePageView = true;
-      });
-    }
-  }
-
-  /// When the image has been scaled up and no horizontal boundary has been hit,
-  /// the page view swiping gets disabled.
-  void _onNoBoundaryHit() {
-    if (_enablePageView) {
-      setState(() {
-        _enablePageView = false;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PageView(
-      controller: _pageController,
-      physics: _enablePageView
-          ? const BouncingScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       children: <Widget>[
-        for (int i = 0; i < widget.urls.length; i++)
+        for (int i = 0; i < urls.length; i++)
           FullscreenImage(
-            url: widget.urls[i],
-            heroTag: widget.heroTags?.elementAt(i),
-            onScaleChanged: _onScaleChanged,
-            onLeftBoundaryHit: _onLeftBoundaryHit,
-            onRightBoundaryHit: _onRightBoundaryHit,
-            onNoBoundaryHit: _onNoBoundaryHit,
-            enableDismiss: _enableDismiss,
+            url: urls[i],
+            heroTag: heroTags?.elementAt(i),
           ),
       ],
     );
