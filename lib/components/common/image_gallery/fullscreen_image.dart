@@ -48,8 +48,8 @@ class FullscreenImage extends StatelessWidget {
     return hero.child;
   }
 
-  Widget _buildInteractiveImage(MediaQueryData mediaQuery) {
-    // todo: allow for image to take up the full width
+  Widget _buildImage(MediaQueryData mediaQuery) {
+    // todo: allow for image to take up the full width / height
 
     Widget image = CachedNetworkImage(
       imageUrl: url,
@@ -64,14 +64,7 @@ class FullscreenImage extends StatelessWidget {
       );
     }
 
-    return InteractiveViewerBoundary(
-      boundaryWidth: mediaQuery.size.width,
-      onScaleChanged: onScaleChanged,
-      onLeftBoundaryHit: onLeftBoundaryHit,
-      onRightBoundaryHit: onRightBoundaryHit,
-      onNoBoundaryHit: onNoBoundaryHit,
-      child: image,
-    );
+    return image;
   }
 
   @override
@@ -89,7 +82,7 @@ class FullscreenImage extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.center,
-              child: _buildInteractiveImage(mediaQuery),
+              child: _buildImage(mediaQuery),
             ),
           ],
         ),
