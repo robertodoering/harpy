@@ -30,6 +30,7 @@ class TweetImages extends StatelessWidget {
       tweet: tweet,
       tweetBloc: tweetBloc,
       overlap: true,
+      enableDismissible: false,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,

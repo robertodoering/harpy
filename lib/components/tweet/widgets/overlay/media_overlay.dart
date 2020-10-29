@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/misc/custom_dismissible.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/model/tweet_media_model.dart';
@@ -14,6 +15,7 @@ class MediaOverlay extends StatefulWidget {
     @required this.tweetBloc,
     @required this.child,
     this.enableImmersiveMode = true,
+    this.enableDismissible = true,
     this.overlap = false,
   });
 
@@ -25,6 +27,9 @@ class MediaOverlay extends StatefulWidget {
   /// the system ui.
   final bool enableImmersiveMode;
 
+  /// Wraps the child in a [CustomDismissible] when set to `true`.
+  final bool enableDismissible;
+
   /// Whether the overlay should overlap the [child].
   final bool overlap;
 
@@ -34,6 +39,7 @@ class MediaOverlay extends StatefulWidget {
     @required TweetBloc tweetBloc,
     @required Widget child,
     bool enableImmersiveMode = true,
+    bool enableDismissible = true,
     bool overlap = false,
   }) {
     app<HarpyNavigator>().pushRoute(
@@ -43,6 +49,7 @@ class MediaOverlay extends StatefulWidget {
           tweet: tweet,
           tweetBloc: tweetBloc,
           enableImmersiveMode: enableImmersiveMode,
+          enableDismissible: enableDismissible,
           overlap: overlap,
           child: child,
         ),
@@ -144,20 +151,29 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildMedia() {
+    Widget child = Center(child: widget.child);
+
     if (widget.enableImmersiveMode) {
-      return GestureDetector(
+      child = GestureDetector(
         onTap: _onMediaTap,
-        child: widget.child,
+        child: child,
       );
-    } else {
-      return widget.child;
     }
+
+    if (widget.enableDismissible) {
+      child = CustomDismissible(
+        onDismissed: () => app<HarpyNavigator>().state.maybePop(),
+        child: child,
+      );
+    }
+
+    return child;
   }
 
   Widget _buildOverlappingOverlay() {
     return Stack(
       children: <Widget>[
-        SafeArea(child: Center(child: _buildMedia())),
+        SafeArea(child: _buildMedia()),
         AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext context, Widget _) => Column(
@@ -190,7 +206,7 @@ class _MediaOverlayState extends State<MediaOverlay>
               position: _topAnimation,
               child: _buildAppBar(),
             ),
-            Expanded(child: Center(child: _buildMedia())),
+            Expanded(child: _buildMedia()),
             SlideTransition(
               position: _bottomAnimation,
               child: _buildActions(),
