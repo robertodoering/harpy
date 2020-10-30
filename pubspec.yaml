@@ -16,6 +16,7 @@ dependencies:
   # packages
   cached_network_image: ^2.2.0+1
   dart_twitter_api: ^0.3.4
+  downloads_path_provider: ^0.1.0
   flare_flutter: ^2.0.6
   flutter_bloc: ^6.0.1
   flutter_colorpicker:
@@ -41,9 +42,11 @@ dependencies:
   connectivity: '>=0.4.9 <2.0.0'
   device_info: '>=0.4.2+4 <2.0.0'
   firebase_analytics: ^6.0.0
+  flutter_downloader: ^1.5.2
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   package_info: '>=0.4.1 <2.0.0'
+  permission_handler: ^5.0.1+1
   shared_preferences: '>=0.5.8 <2.0.0'
   video_player: '>=0.10.11+2 <2.0.0'
 
