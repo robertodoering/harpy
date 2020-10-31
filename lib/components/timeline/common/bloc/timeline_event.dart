@@ -155,3 +155,16 @@ class UnlockRequestMoreTimelineEvent extends TimelineEvent {
     yield ShowingTimelineState();
   }
 }
+
+/// Clears the tweets without yielding a new state.
+class ClearTweetsEvents extends TimelineEvent {
+  const ClearTweetsEvents();
+
+  @override
+  Stream<TimelineState> applyAsync({
+    TimelineState currentState,
+    TimelineBloc bloc,
+  }) async* {
+    bloc.tweets = <TweetData>[];
+  }
+}

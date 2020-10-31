@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
+import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
 import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
@@ -38,6 +39,30 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     setState(() {});
   }
 
+  List<Widget> _buildActions() {
+    return <Widget>[
+      Builder(
+        builder: (BuildContext context) => PopupMenuButton<int>(
+          onSelected: (int selection) {
+            if (selection == 0) {
+              context.bloc<HomeTimelineBloc>()
+                ..add(const ClearTweetsEvents())
+                ..add(const UpdateHomeTimelineEvent());
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return <PopupMenuEntry<int>>[
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text('Refresh'),
+              ),
+            ];
+          },
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
@@ -45,11 +70,12 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       body: BlocProvider<HomeTimelineBloc>(
         create: (BuildContext context) => HomeTimelineBloc(),
         child: TweetTimeline<HomeTimelineBloc>(
-          headerSlivers: const <Widget>[
+          headerSlivers: <Widget>[
             HarpySliverAppBar(
               title: 'Harpy',
               showIcon: true,
               floating: true,
+              actions: _buildActions(),
             ),
           ],
           refreshIndicatorDisplacement: 80,
