@@ -214,8 +214,6 @@ class DownloadMedia extends TweetEvent {
     this.index,
   });
 
-  // todo: does not work with media from quotes
-
   /// The tweet that has the media to download.
   ///
   /// Can differ from [TweetBloc.tweet] when downloading media from quotes.
