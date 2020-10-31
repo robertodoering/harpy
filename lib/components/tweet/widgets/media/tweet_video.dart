@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -21,6 +22,7 @@ class TweetVideo extends StatelessWidget {
       tweet: tweet,
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
+      onDownload: () => tweetBloc.add(const DownloadMedia()),
       child: HarpyVideoPlayer.fromModel(
         model,
         thumbnail: tweet.video.thumbnailUrl,

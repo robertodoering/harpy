@@ -6,13 +6,15 @@ import 'package:harpy/components/common/buttons/retweet_button.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
-import 'package:harpy/core/message_service.dart';
-import 'package:harpy/core/service_locator.dart';
 
 class MediaOverlayActionRow extends StatelessWidget {
-  const MediaOverlayActionRow(this.tweetBloc);
+  const MediaOverlayActionRow(
+    this.tweetBloc, {
+    this.onDownload,
+  });
 
   final TweetBloc tweetBloc;
+  final VoidCallback onDownload;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +43,7 @@ class MediaOverlayActionRow extends StatelessWidget {
                     icon: const Icon(Icons.download_rounded),
                     iconSize: 24,
                     padding: const EdgeInsets.all(8),
-                    onTap: () {
-                      app<MessageService>().show('Media download coming soon!');
-                    },
+                    onTap: onDownload,
                   ),
                 ],
               ),

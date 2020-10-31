@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
@@ -11,7 +12,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 /// Builds the images for the [TweetMedia].
 ///
 /// Up to 4 images are built using the [tweet] images.
-class TweetImages extends StatelessWidget {
+class TweetImages extends StatefulWidget {
   const TweetImages(
     this.tweet, {
     @required this.tweetBloc,
@@ -23,18 +24,31 @@ class TweetImages extends StatelessWidget {
   /// The padding between each image.
   static const double _padding = 2;
 
-  List<ImageData> get _images => tweet.images;
+  @override
+  _TweetImagesState createState() => _TweetImagesState();
+}
+
+class _TweetImagesState extends State<TweetImages> {
+  List<ImageData> get _images => widget.tweet.images;
+
+  int _galleryIndex = 0;
 
   void _openGallery(ImageData image) {
+    _galleryIndex = _images.indexOf(image);
+
     MediaOverlay.open(
-      tweet: tweet,
-      tweetBloc: tweetBloc,
+      tweet: widget.tweet,
+      tweetBloc: widget.tweetBloc,
       overlap: true,
       enableDismissible: false,
+      onDownload: () {
+        widget.tweetBloc.add(DownloadMedia(index: _galleryIndex));
+      },
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
-        index: _images.indexOf(image),
+        index: _galleryIndex,
+        onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
       ),
     );
   }
@@ -93,7 +107,7 @@ class TweetImages extends StatelessWidget {
             bottomLeft: true,
           ),
         ),
-        const SizedBox(width: _padding),
+        const SizedBox(width: TweetImages._padding),
         Expanded(
           child: _buildImage(
             _images[1],
@@ -115,7 +129,7 @@ class TweetImages extends StatelessWidget {
             bottomLeft: true,
           ),
         ),
-        const SizedBox(width: _padding),
+        const SizedBox(width: TweetImages._padding),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -125,7 +139,7 @@ class TweetImages extends StatelessWidget {
                   topRight: true,
                 ),
               ),
-              const SizedBox(height: _padding),
+              const SizedBox(height: TweetImages._padding),
               Expanded(
                 child: _buildImage(
                   _images[2],
@@ -151,7 +165,7 @@ class TweetImages extends StatelessWidget {
                   topLeft: true,
                 ),
               ),
-              const SizedBox(height: _padding),
+              const SizedBox(height: TweetImages._padding),
               Expanded(
                 child: _buildImage(
                   _images[2],
@@ -161,7 +175,7 @@ class TweetImages extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: _padding),
+        const SizedBox(width: TweetImages._padding),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -171,7 +185,7 @@ class TweetImages extends StatelessWidget {
                   topRight: true,
                 ),
               ),
-              const SizedBox(height: _padding),
+              const SizedBox(height: TweetImages._padding),
               Expanded(
                 child: _buildImage(
                   _images[3],

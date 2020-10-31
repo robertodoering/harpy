@@ -17,6 +17,7 @@ class MediaOverlay extends StatefulWidget {
     this.enableImmersiveMode = true,
     this.enableDismissible = true,
     this.overlap = false,
+    this.onDownload,
   });
 
   final TweetData tweet;
@@ -33,6 +34,8 @@ class MediaOverlay extends StatefulWidget {
   /// Whether the overlay should overlap the [child].
   final bool overlap;
 
+  final VoidCallback onDownload;
+
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   static void open({
     @required TweetData tweet,
@@ -41,6 +44,7 @@ class MediaOverlay extends StatefulWidget {
     bool enableImmersiveMode = true,
     bool enableDismissible = true,
     bool overlap = false,
+    VoidCallback onDownload,
   }) {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -51,6 +55,7 @@ class MediaOverlay extends StatefulWidget {
           enableImmersiveMode: enableImmersiveMode,
           enableDismissible: enableDismissible,
           overlap: overlap,
+          onDownload: onDownload,
           child: child,
         ),
       ),
@@ -146,7 +151,10 @@ class _MediaOverlayState extends State<MediaOverlay>
           ],
         ),
       ),
-      child: MediaOverlayActionRow(widget.tweetBloc),
+      child: MediaOverlayActionRow(
+        widget.tweetBloc,
+        onDownload: widget.onDownload,
+      ),
     );
   }
 
