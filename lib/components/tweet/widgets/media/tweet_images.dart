@@ -42,7 +42,10 @@ class _TweetImagesState extends State<TweetImages> {
       overlap: true,
       enableDismissible: false,
       onDownload: () {
-        widget.tweetBloc.add(DownloadMedia(index: _galleryIndex));
+        widget.tweetBloc.add(DownloadMedia(
+          tweet: widget.tweet,
+          index: _galleryIndex,
+        ));
       },
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),

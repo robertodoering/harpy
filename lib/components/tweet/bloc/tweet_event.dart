@@ -5,6 +5,7 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -209,10 +210,16 @@ class TranslateTweet extends TweetEvent {
 /// Uses the [DownloadService] to download the
 class DownloadMedia extends TweetEvent {
   const DownloadMedia({
+    @required this.tweet,
     this.index,
   });
 
   // todo: does not work with media from quotes
+
+  /// The tweet that has the media to download.
+  ///
+  /// Can differ from [TweetBloc.tweet] when downloading media from quotes.
+  final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image
   /// gets downloaded.
@@ -227,16 +234,16 @@ class DownloadMedia extends TweetEvent {
   }) async* {
     final DownloadService downloadService = app<DownloadService>();
 
-    if (bloc.tweet.hasMedia) {
+    if (tweet.hasMedia) {
       try {
         String url;
 
-        if (bloc.tweet.images?.isNotEmpty == true) {
-          url = bloc.tweet.images[index ?? 0].baseUrl;
-        } else if (bloc.tweet.gif != null) {
-          url = bloc.tweet.gif.variants.first.url;
-        } else if (bloc.tweet.video != null) {
-          url = bloc.tweet.video.variants.first.url;
+        if (tweet.images?.isNotEmpty == true) {
+          url = tweet.images[index ?? 0].baseUrl;
+        } else if (tweet.gif != null) {
+          url = tweet.gif.variants.first.url;
+        } else if (tweet.video != null) {
+          url = tweet.video.variants.first.url;
         }
 
         final String fileName = fileNameFromUrl(url);
