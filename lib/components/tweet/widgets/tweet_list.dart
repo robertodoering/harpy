@@ -43,7 +43,7 @@ class TweetList extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       physics: enableScroll
-          ? const BouncingScrollPhysics()
+          ? const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
           : const NeverScrollableScrollPhysics(),
       cacheExtent: 800,
       slivers: <Widget>[
