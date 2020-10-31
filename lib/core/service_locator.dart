@@ -4,6 +4,7 @@ import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
+import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/message_service.dart';
@@ -39,6 +40,7 @@ void setupServices() {
     ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
     ..registerLazySingleton<AnalyticsService>(() => AnalyticsService())
+    ..registerLazySingleton<DownloadService>(() => DownloadService())
 
     // preferences
     ..registerLazySingleton<HarpyPreferences>(() => HarpyPreferences())
