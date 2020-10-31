@@ -21,9 +21,6 @@ class TweetImages extends StatefulWidget {
   final TweetData tweet;
   final TweetBloc tweetBloc;
 
-  /// The padding between each image.
-  static const double _padding = 2;
-
   @override
   _TweetImagesState createState() => _TweetImagesState();
 }
@@ -32,6 +29,9 @@ class _TweetImagesState extends State<TweetImages> {
   List<ImageData> get _images => widget.tweet.images;
 
   int _galleryIndex = 0;
+
+  /// The padding between each image.
+  static const double _padding = 2;
 
   void _openGallery(ImageData image) {
     _galleryIndex = _images.indexOf(image);
@@ -110,7 +110,7 @@ class _TweetImagesState extends State<TweetImages> {
             bottomLeft: true,
           ),
         ),
-        const SizedBox(width: TweetImages._padding),
+        const SizedBox(width: _padding),
         Expanded(
           child: _buildImage(
             _images[1],
@@ -132,7 +132,7 @@ class _TweetImagesState extends State<TweetImages> {
             bottomLeft: true,
           ),
         ),
-        const SizedBox(width: TweetImages._padding),
+        const SizedBox(width: _padding),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -142,7 +142,7 @@ class _TweetImagesState extends State<TweetImages> {
                   topRight: true,
                 ),
               ),
-              const SizedBox(height: TweetImages._padding),
+              const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
                   _images[2],
@@ -168,7 +168,7 @@ class _TweetImagesState extends State<TweetImages> {
                   topLeft: true,
                 ),
               ),
-              const SizedBox(height: TweetImages._padding),
+              const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
                   _images[2],
@@ -178,7 +178,7 @@ class _TweetImagesState extends State<TweetImages> {
             ],
           ),
         ),
-        const SizedBox(width: TweetImages._padding),
+        const SizedBox(width: _padding),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -188,7 +188,7 @@ class _TweetImagesState extends State<TweetImages> {
                   topRight: true,
                 ),
               ),
-              const SizedBox(height: TweetImages._padding),
+              const SizedBox(height: _padding),
               Expanded(
                 child: _buildImage(
                   _images[3],
