@@ -12,6 +12,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class HarpySliverAppBar extends StatelessWidget {
   const HarpySliverAppBar({
     this.title,
+    this.actions,
     this.showIcon = false,
     this.floating = false,
     this.stretch = false,
@@ -20,6 +21,7 @@ class HarpySliverAppBar extends StatelessWidget {
   });
 
   final String title;
+  final List<Widget> actions;
   final bool showIcon;
   final bool floating;
   final bool stretch;
@@ -116,6 +118,7 @@ class HarpySliverAppBar extends StatelessWidget {
       stretch: stretch,
       pinned: pinned,
       title: hasFlexibleSpace ? null : _buildTitle(theme),
+      actions: actions,
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
       expandedHeight: hasFlexibleSpace ? expandedHeight : null,
     );
