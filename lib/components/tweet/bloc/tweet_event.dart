@@ -5,8 +5,11 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -201,5 +204,56 @@ class TranslateTweet extends TweetEvent {
     }
 
     yield UpdatedTweetState();
+  }
+}
+
+/// Uses the [DownloadService] to download the
+class DownloadMedia extends TweetEvent {
+  const DownloadMedia({
+    @required this.tweet,
+    this.index,
+  });
+
+  /// The tweet that has the media to download.
+  ///
+  /// Can differ from [TweetBloc.tweet] when downloading media from quotes.
+  final TweetData tweet;
+
+  /// When the tweet media is of type image, the index determines which image
+  /// gets downloaded.
+  final int index;
+
+  static final Logger _log = Logger('DownloadMedia');
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    final DownloadService downloadService = app<DownloadService>();
+
+    if (tweet.hasMedia) {
+      try {
+        String url;
+
+        if (tweet.images?.isNotEmpty == true) {
+          url = tweet.images[index ?? 0].baseUrl;
+        } else if (tweet.gif != null) {
+          url = tweet.gif.variants.first.url;
+        } else if (tweet.video != null) {
+          url = tweet.video.variants.first.url;
+        }
+
+        final String fileName = fileNameFromUrl(url);
+
+        if (url != null && fileName != null) {
+          await downloadService.download(url: url, name: fileName);
+        } else {
+          _log.warning('unable to get url or to parse filename from $url');
+        }
+      } catch (e, st) {
+        _log.severe('error while downloading tweet media', e, st);
+      }
+    }
   }
 }

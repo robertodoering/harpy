@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
@@ -11,7 +12,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 /// Builds the images for the [TweetMedia].
 ///
 /// Up to 4 images are built using the [tweet] images.
-class TweetImages extends StatelessWidget {
+class TweetImages extends StatefulWidget {
   const TweetImages(
     this.tweet, {
     @required this.tweetBloc,
@@ -20,21 +21,37 @@ class TweetImages extends StatelessWidget {
   final TweetData tweet;
   final TweetBloc tweetBloc;
 
+  @override
+  _TweetImagesState createState() => _TweetImagesState();
+}
+
+class _TweetImagesState extends State<TweetImages> {
+  List<ImageData> get _images => widget.tweet.images;
+
+  int _galleryIndex = 0;
+
   /// The padding between each image.
   static const double _padding = 2;
 
-  List<ImageData> get _images => tweet.images;
-
   void _openGallery(ImageData image) {
+    _galleryIndex = _images.indexOf(image);
+
     MediaOverlay.open(
-      tweet: tweet,
-      tweetBloc: tweetBloc,
+      tweet: widget.tweet,
+      tweetBloc: widget.tweetBloc,
       overlap: true,
       enableDismissible: false,
+      onDownload: () {
+        widget.tweetBloc.add(DownloadMedia(
+          tweet: widget.tweet,
+          index: _galleryIndex,
+        ));
+      },
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
-        index: _images.indexOf(image),
+        index: _galleryIndex,
+        onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
       ),
     );
   }

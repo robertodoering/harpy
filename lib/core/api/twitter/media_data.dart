@@ -62,7 +62,7 @@ class VideoData {
   /// The aspect ratio of the video.
   List<int> aspectRatio;
 
-  /// The video variants sorted by their quality (lowest quality first).
+  /// The video variants sorted by their quality (best quality first).
   List<Variant> variants;
 
   /// The url for a thumbnail image of the video.
