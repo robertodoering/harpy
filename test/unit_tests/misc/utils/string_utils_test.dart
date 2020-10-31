@@ -89,4 +89,30 @@ void main() {
       expect(trimOne(source), null);
     });
   });
+
+  group('fileNameFromUrl', () {
+    test('returns the file name from a url', () {
+      const String url =
+          'https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4';
+
+      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+    });
+
+    test('removes query params', () {
+      const String url =
+          'https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4?tag=10';
+
+      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+    });
+
+    test('returns the url if its just the file name', () {
+      const String url = 'VoCc7t0UyB_R-KvW.mp4';
+
+      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+    });
+
+    test('returns null when the url is null', () {
+      expect(fileNameFromUrl(null), isNull);
+    });
+  });
 }
