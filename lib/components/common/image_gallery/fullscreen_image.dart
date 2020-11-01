@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/custom_dismissible.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -42,7 +42,7 @@ class FullscreenImage extends StatelessWidget {
   Widget _buildImage(MediaQueryData mediaQuery) {
     // todo: allow for image to take up the full width / height
 
-    Widget image = CachedNetworkImage(
+    Widget image = HarpyImage(
       imageUrl: url,
       fit: BoxFit.contain,
     );

@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
@@ -79,7 +79,7 @@ class _TweetImagesState extends State<TweetImages> {
         ),
         child: GestureDetector(
           onTap: () => _openGallery(image),
-          child: CachedNetworkImage(
+          child: HarpyImage(
             imageUrl: image.appropriateUrl,
             fit: BoxFit.cover,
             width: double.infinity,

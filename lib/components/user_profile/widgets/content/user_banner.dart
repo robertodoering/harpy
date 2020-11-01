@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/custom_dismissible.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -22,7 +22,7 @@ class UserBanner extends StatelessWidget {
       child: Center(
         child: Hero(
           tag: url,
-          child: CachedNetworkImage(
+          child: HarpyImage(
             imageUrl: url,
             fit: BoxFit.contain,
           ),
@@ -47,7 +47,7 @@ class UserBanner extends StatelessWidget {
           tag: url,
           placeholderBuilder:
               (BuildContext context, Size heroSize, Widget child) => child,
-          child: CachedNetworkImage(
+          child: HarpyImage(
             imageUrl: url,
             fit: BoxFit.cover,
           ),
