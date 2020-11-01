@@ -69,9 +69,12 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     _initializing = true;
     notifyListeners();
 
-    await controller.initialize();
-
-    togglePlayback();
+    try {
+      await controller.initialize();
+      togglePlayback();
+    } catch (e) {
+      // video didn't load / ignore
+    }
 
     _initializing = false;
     notifyListeners();
