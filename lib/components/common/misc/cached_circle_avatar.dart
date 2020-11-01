@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 
-/// Builds a [CircleAvatar] with a [CachedNetworkImage].
+/// Builds a [CircleAvatar] with a [HarpyImage].
 class CachedCircleAvatar extends StatelessWidget {
   const CachedCircleAvatar({
     @required this.imageUrl,
@@ -17,7 +17,7 @@ class CachedCircleAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget image = CachedNetworkImage(
+    Widget image = HarpyImage(
       fit: BoxFit.cover,
       imageUrl: imageUrl,
     );

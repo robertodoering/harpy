@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 
 /// Builds the [thumbnail] as an image with a centered [icon] that changes to a
@@ -20,7 +20,7 @@ class VideoThumbnail extends StatelessWidget {
   final VoidCallback onTap;
 
   Widget _buildThumbnailImage() {
-    final Widget child = CachedNetworkImage(
+    final Widget child = HarpyImage(
       fit: BoxFit.cover,
       imageUrl: thumbnail,
       height: double.infinity,
