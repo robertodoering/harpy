@@ -19,7 +19,8 @@ class UserProfileContent extends StatelessWidget {
   final UserProfileBloc bloc;
 
   Widget _buildSliverAppBar() {
-    final bool _hasUser = bloc.state is InitializedUserState;
+    final bool _hasUser = bloc.state is InitializedUserState ||
+        bloc.state is TranslatingDescriptionState;
 
     return HarpySliverAppBar(
       title: bloc.user?.name ?? '',

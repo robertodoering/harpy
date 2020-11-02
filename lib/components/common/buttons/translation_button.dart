@@ -3,25 +3,28 @@ import 'package:harpy/components/common/buttons/action_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
+import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
+import 'package:harpy/components/user_profile/bloc/user_profile_event.dart';
+import 'package:harpy/components/user_profile/bloc/user_profile_state.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:like_button/like_button.dart';
 
-/// The translation button for the [TweetActionRow].
 class TranslationButton extends StatelessWidget {
-  const TranslationButton(this.bloc);
+  const TranslationButton({
+    @required this.active,
+    @required this.activate,
+  });
 
-  final TweetBloc bloc;
+  final bool active;
+  final VoidCallback activate;
 
   @override
   Widget build(BuildContext context) {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
-    final bool active =
-        bloc.tweet.hasTranslation || bloc.state is TranslatingTweetState;
-
     return ActionButton(
       active: active,
-      activate: () => bloc.add(const TranslateTweet()),
+      activate: activate,
       bubblesColor: const BubblesColor(
         dotPrimaryColor: Colors.teal,
         dotSecondaryColor: Colors.tealAccent,
@@ -38,6 +41,42 @@ class TranslationButton extends StatelessWidget {
         color: active ? harpyTheme.translateColor : null,
       ),
       iconSize: 20,
+    );
+  }
+}
+
+/// The translation button for the [TweetActionRow].
+class TweetTranslationButton extends StatelessWidget {
+  const TweetTranslationButton(this.bloc);
+
+  final TweetBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool active =
+        bloc.tweet.hasTranslation || bloc.state is TranslatingTweetState;
+
+    return TranslationButton(
+      active: active,
+      activate: () => bloc.add(const TranslateTweet()),
+    );
+  }
+}
+
+/// The translation button for the [UserProfileHeader].
+class UserDescriptionTranslationButton extends StatelessWidget {
+  const UserDescriptionTranslationButton(this.bloc);
+
+  final UserProfileBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool active = bloc.user.hasDescriptionTranslation ||
+        bloc.state is TranslatingDescriptionState;
+
+    return TranslationButton(
+      active: active,
+      activate: () => bloc.add(const TranslateUserDescriptionEvent()),
     );
   }
 }

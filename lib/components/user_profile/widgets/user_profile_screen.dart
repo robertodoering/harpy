@@ -32,7 +32,8 @@ class UserProfileScreen extends StatelessWidget {
 
           if (state is LoadingUserState) {
             child = const UserProfileLoading();
-          } else if (state is InitializedUserState) {
+          } else if (state is InitializedUserState ||
+              state is TranslatingDescriptionState) {
             child = UserProfileContent(bloc: bloc);
           } else {
             child = UserProfileError(bloc, screenName: screenName);

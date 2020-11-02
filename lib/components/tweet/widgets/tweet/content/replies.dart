@@ -36,9 +36,11 @@ class TweetReplies extends StatelessWidget {
                   child: const Icon(Icons.reply, size: 18),
                 ),
                 defaultHorizontalSpacer,
-                Text(
-                  '${tweet.replyAuthors} replied',
-                  style: theme.textTheme.bodyText1,
+                Expanded(
+                  child: Text(
+                    '${tweet.replyAuthors} replied',
+                    style: theme.textTheme.bodyText1,
+                  ),
                 ),
               ],
             ),

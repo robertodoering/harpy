@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/buttons/translation_button.dart';
 import 'package:harpy/components/common/misc/followers_count.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_additional_info.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_description.dart';
+import 'package:harpy/components/user_profile/widgets/content/user_description_translation.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_info.dart';
 
 /// Builds the header for the [UserProfileScreen].
@@ -26,6 +28,11 @@ class UserProfileHeader extends StatelessWidget {
             defaultSmallVerticalSpacer,
             if (bloc.user.hasDescription) ...<Widget>[
               UserProfileDescription(bloc),
+              UserProfileDescriptionTranslation(bloc),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[UserDescriptionTranslationButton(bloc)],
+              ),
               defaultSmallVerticalSpacer,
             ],
             UserProfileAdditionalInfo(bloc),

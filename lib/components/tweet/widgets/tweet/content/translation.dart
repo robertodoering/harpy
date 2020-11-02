@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
-import 'package:harpy/components/common/misc/twitter_text.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/common/misc/translated_text.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -24,51 +23,8 @@ class TweetTranslation extends StatelessWidget {
   /// An optional font size delta for the translation text.
   final double fontSizeDelta;
 
-  Widget _buildTranslatedText(ThemeData theme) {
-    final String language = tweet.translation.language ?? 'Unknown';
-
-    final TextStyle bodyText1 = theme.textTheme.bodyText1.apply(
-      fontSizeDelta: fontSizeDelta,
-    );
-
-    final TextStyle bodyText2 = theme.textTheme.bodyText2.apply(
-      fontSizeDelta: fontSizeDelta,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        defaultSmallVerticalSpacer,
-
-        // 'translated from' original language text
-        Text.rich(
-          TextSpan(
-            children: <TextSpan>[
-              const TextSpan(text: 'Translated from'),
-              TextSpan(
-                text: ' $language',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          style: bodyText1,
-        ),
-
-        // translated text
-        TwitterText(
-          tweet.translation.text,
-          entities: tweet.entities,
-          urlToIgnore: tweet.quotedStatusUrl,
-          style: bodyText2,
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return CustomAnimatedSize(
       child: BlocBuilder<TweetBloc, TweetState>(
         builder: (BuildContext context, TweetState state) => AnimatedOpacity(
@@ -76,7 +32,13 @@ class TweetTranslation extends StatelessWidget {
           duration: kShortAnimationDuration,
           curve: Curves.easeOut,
           child: tweet.hasTranslation && !tweet.translation.unchanged
-              ? _buildTranslatedText(theme)
+              ? TranslatedText(
+                  tweet.translation.text,
+                  language: tweet.translation.language,
+                  entities: tweet.entities,
+                  urlToIgnore: tweet.quotedStatusUrl,
+                  fontSizeDelta: fontSizeDelta,
+                )
               : const SizedBox(width: double.infinity),
         ),
       ),
