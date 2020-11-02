@@ -37,6 +37,7 @@ class TweetTranslation extends StatelessWidget {
                   language: tweet.translation.language,
                   entities: tweet.entities,
                   urlToIgnore: tweet.quotedStatusUrl,
+                  fontSizeDelta: fontSizeDelta,
                 )
               : const SizedBox(width: double.infinity),
         ),
