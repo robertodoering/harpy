@@ -3,7 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
+import 'package:harpy/core/api/translate/data/translation.dart';
+import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:logging/logging.dart';
 
 @immutable
@@ -151,5 +155,35 @@ class UnfollowUserEvent extends UserProfileEvent {
       bloc.user.connections?.add('following');
       yield InitializedUserState();
     }
+  }
+}
+
+/// Translates the user description.
+///
+/// The translation is saved in the [UserData.descriptionTranslation].
+class TranslateUserDescriptionEvent extends UserProfileEvent {
+  const TranslateUserDescriptionEvent();
+
+  @override
+  Stream<UserProfileState> applyAsync({
+    UserProfileState currentState,
+    UserProfileBloc bloc,
+  }) async* {
+    final TranslationService translationService = app<TranslationService>();
+
+    yield TranslatingDescriptionState();
+
+    await translationService
+        .translate(text: bloc.user.description)
+        .then((Translation translation) =>
+            bloc.user.descriptionTranslation = translation)
+        .catchError(silentErrorHandler);
+
+    if (!bloc.user.hasDescriptionTranslation ||
+        bloc.user.descriptionTranslation.unchanged) {
+      app<MessageService>().show('Description not translated');
+    }
+
+    yield InitializedUserState();
   }
 }

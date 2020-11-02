@@ -41,7 +41,7 @@ class TweetActionRow extends StatelessWidget {
           ],
           const Spacer(),
           if (tweet.translatable || tweet.quoteTranslatable)
-            TranslationButton(bloc),
+            TweetTranslationButton(bloc),
         ],
       ),
     );

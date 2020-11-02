@@ -1,4 +1,5 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/api/translate/data/translation.dart';
 import 'package:harpy/core/api/twitter/parse_entities.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -99,6 +100,12 @@ class UserData {
 
     return _userDescriptionEntities;
   }
+
+  /// The translation for this [description].
+  Translation descriptionTranslation;
+
+  /// Whether this user's description has been translated.
+  bool get hasDescriptionTranslation => descriptionTranslation != null;
 
   /// Whether the relationship status for this user has been requested and the
   /// [Friendship.connections] set to [connections].

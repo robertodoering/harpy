@@ -11,3 +11,6 @@ class InitializedUserState extends UserProfileState {}
 
 /// The state when a user was unable to be loaded.
 class FailedLoadingUserState extends UserProfileState {}
+
+/// The state when the user description is being translated.
+class TranslatingDescriptionState extends UserProfileState {}
