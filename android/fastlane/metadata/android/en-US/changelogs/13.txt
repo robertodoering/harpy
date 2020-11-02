@@ -1,4 +1,0 @@
-· Added theme customization
-· Changed Harpy logo
-· Changed predefined themes
-· Changed about screen layout

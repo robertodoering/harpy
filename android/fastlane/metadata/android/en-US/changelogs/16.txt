@@ -1,8 +1,0 @@
-· Added Tweet replies screen
-· Added Tweet action button animations
-· Added compact layout settings
-· Changed default layout
-· Changed action button colors
-· Changed Tweet list animation
-· Fixed Tweet created at time not updating in realtime
-· Fixed refreshing not triggering after tapping 'Scroll to start'

@@ -34,7 +34,8 @@ platform :android do
 
     upload_to_play_store(
       track: 'beta',
-      aab: '../build/app/outputs/bundle/freeRelease/app-free-release.aab'
+      aab: '../build/app/outputs/bundle/freeRelease/app-free-release.aab',
+      metadata_path: './fastlane/metadata/android/free'
     )
 
   end

@@ -1,7 +1,0 @@
-· Added Twitter Media settings:
-    · Set the quality when using WiFi
-    · Set the quality when using mobile data
-    · Autplay gifs
-· Added launching urls when tapping a url
-· Fixed animation when viewing user profiles
-· Fixed Tweet animation abruptly stopping when changing scroll direction
