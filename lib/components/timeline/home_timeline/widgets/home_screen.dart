@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
@@ -7,6 +8,7 @@ import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart';
+import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -21,6 +23,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _showChangelogDialog();
+  }
+
+  Future<void> _showChangelogDialog() async {
+    if (changelogPreferences.shouldShowChangelogDialog) {
+      ChangelogDialog.show(context);
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
