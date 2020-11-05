@@ -8,11 +8,13 @@ import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/preferences/setup_preferences.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
+import 'package:harpy/misc/changelog_parser.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// [GetIt] is a simple service locator for accessing services from anywhere
@@ -36,6 +38,7 @@ void setupServices() {
     ..registerLazySingleton<HarpyInfo>(() => HarpyInfo())
     ..registerLazySingleton<ErrorReporter>(() => ErrorReporter())
     ..registerLazySingleton<AppConfig>(() => AppConfig())
+    ..registerLazySingleton<ChangelogParser>(() => ChangelogParser())
     ..registerLazySingleton<MessageService>(() => MessageService())
     ..registerLazySingleton<TranslationService>(() => TranslationService())
     ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
@@ -47,5 +50,6 @@ void setupServices() {
     ..registerLazySingleton<MediaPreferences>(() => MediaPreferences())
     ..registerLazySingleton<ThemePreferences>(() => ThemePreferences())
     ..registerLazySingleton<SetupPreferences>(() => SetupPreferences())
-    ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences());
+    ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences())
+    ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences());
 }
