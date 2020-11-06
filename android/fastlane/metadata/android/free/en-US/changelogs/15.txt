@@ -1,0 +1,3 @@
+· Added Followers & Following users screen
+· Changed color of Tweet buttons to adapt for the background color
+· Fix favorite button animation
