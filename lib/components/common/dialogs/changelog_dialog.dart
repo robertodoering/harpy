@@ -32,15 +32,70 @@ class ChangelogDialog extends StatefulWidget {
 }
 
 class _ChangelogDialogState extends State<ChangelogDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return HarpyDialog(
+      title: const Text('Whats new?'),
+      contentPadding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+      content: Column(
+        children: <Widget>[
+          const ChangelogWidget.current(),
+          const SizedBox(height: 24),
+          CheckboxListTile(
+            value: false,
+            title: Text(
+              "Don't show this again",
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            onChanged: (bool value) {
+              // todo: implement
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        DialogAction<void>(
+          text: 'Ok',
+          onTap: () => app<HarpyNavigator>().state.maybePop(),
+        )
+      ],
+    );
+  }
+}
+
+class ChangelogWidget extends StatefulWidget {
+  const ChangelogWidget({
+    @required this.versionCode,
+    this.version,
+  });
+
+  const ChangelogWidget.current()
+      : versionCode = null,
+        version = null;
+
+  final String versionCode;
+  final String version;
+
+  @override
+  _ChangelogWidgetState createState() => _ChangelogWidgetState();
+}
+
+class _ChangelogWidgetState extends State<ChangelogWidget> {
   Future<ChangelogData> _changelogData;
 
-  final HarpyInfo harpyInfo = app<HarpyInfo>();
+  String _version;
 
   @override
   void initState() {
     super.initState();
 
-    _changelogData = app<ChangelogParser>().current();
+    if (widget.versionCode == null) {
+      _changelogData = app<ChangelogParser>().current();
+      _version = app<HarpyInfo>().packageInfo.version;
+    } else {
+      _changelogData = app<ChangelogParser>().parse(widget.versionCode);
+      _version = widget.version;
+    }
   }
 
   Widget _spacedColumn(List<Widget> children) {
@@ -56,11 +111,10 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
 
   Widget _buildVersionText() {
     final String flavor = Harpy.isFree ? 'Free' : 'Pro';
-    final String version = harpyInfo.packageInfo.version;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Text('Harpy $flavor $version'),
+      child: Text('Harpy $flavor $_version'),
     );
   }
 
@@ -144,44 +198,17 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyDialog(
-      title: const Text('Whats new?'),
-      contentPadding: const EdgeInsets.only(top: 24, left: 24, right: 24),
-      content: FutureBuilder<ChangelogData>(
-        future: _changelogData,
-        builder: (BuildContext context, AsyncSnapshot<ChangelogData> snapshot) {
-          Widget child;
-
-          if (snapshot.hasData) {
-            child = _buildChangelogData(snapshot.data);
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            child = const CircularProgressIndicator();
-          } else {
-            child = const Text('No changelog found');
-          }
-
-          return Column(
-            children: <Widget>[
-              child,
-              const SizedBox(height: 24),
-              CheckboxListTile(
-                value: false,
-                title: Text(
-                  "Don't show this again",
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                onChanged: (bool value) {},
-              ),
-            ],
-          );
-        },
-      ),
-      actions: <Widget>[
-        DialogAction<void>(
-          text: 'Ok',
-          onTap: () => app<HarpyNavigator>().state.maybePop(),
-        )
-      ],
+    return FutureBuilder<ChangelogData>(
+      future: _changelogData,
+      builder: (BuildContext context, AsyncSnapshot<ChangelogData> snapshot) {
+        if (snapshot.hasData) {
+          return _buildChangelogData(snapshot.data);
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else {
+          return const Text('No changelog found');
+        }
+      },
     );
   }
 }
