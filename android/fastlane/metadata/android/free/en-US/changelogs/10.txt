@@ -1,3 +1,3 @@
 · Added zooming & panning when viewing Tweet images
-· Added precompiled shaders to improve initial performance
+· Added pre-compiled shaders to improve initial performance
 · Fixed animation when viewing user profiles
