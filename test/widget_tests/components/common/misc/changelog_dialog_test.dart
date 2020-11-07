@@ -9,6 +9,7 @@ import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/changelog_parser.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
@@ -30,6 +31,7 @@ void main() {
     app.registerLazySingleton<ChangelogPreferences>(
       () => ChangelogPreferences(),
     );
+    app.registerLazySingleton<ChangelogParser>(() => ChangelogParser());
 
     when(app<HarpyNavigator>().routeObserver).thenReturn(MockRouteObserver());
   });
