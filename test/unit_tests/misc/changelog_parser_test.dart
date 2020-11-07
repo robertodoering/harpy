@@ -51,13 +51,16 @@ void main() {
 
       final ChangelogData data = await app<ChangelogParser>().current();
 
-      expect(data.additions.first.line, equals('about screen'));
-      expect(data.changes.first.line, equals('the design for info messages'));
+      expect(data.additions.first.line, equals('Added about screen'));
+      expect(
+        data.changes.first.line,
+        equals('Changed the design for info messages'),
+      );
       expect(
         data.fixes.first.line,
-        equals('video player central replay button not working'),
+        equals('Fixed video player central replay button not working'),
       );
-      expect(data.removals.first.line, equals('my sanity'));
+      expect(data.removals.first.line, equals('Removed my sanity'));
       expect(data.others.first.line, equals('Unrelated changelog entry'));
     });
 
@@ -72,7 +75,10 @@ void main() {
       final ChangelogData data = await app<ChangelogParser>().current();
 
       expect(data.additions.length, equals(2));
-      expect(data.additions.first.line, equals('Twitter Media settings:'));
+      expect(
+        data.additions.first.line,
+        equals('Added Twitter Media settings:'),
+      );
       expect(data.additions.first.additionalInfo.length, equals(3));
       expect(
         data.additions.first.additionalInfo.first,

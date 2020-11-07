@@ -33,20 +33,24 @@ class ChangelogParser {
       for (String line in changelogString.split('\n')) {
         line = line.replaceFirst(linePrefix, '');
 
+        if (line.trim().isEmpty) {
+          continue;
+        }
+
         if (line.startsWith(' ') && entry != null) {
           // additional information for the last line
           entry?.additionalInfo?.add(line.trim());
         } else if (line.startsWith('Added')) {
-          entry = _parseLine(line, 'Added');
+          entry = _parseLine(line);
           data.additions.add(entry);
         } else if (line.startsWith('Changed')) {
-          entry = _parseLine(line, 'Changed');
+          entry = _parseLine(line);
           data.changes.add(entry);
         } else if (line.startsWith('Fixed')) {
-          entry = _parseLine(line, 'Fixed');
+          entry = _parseLine(line);
           data.fixes.add(entry);
         } else if (line.startsWith('Removed')) {
-          entry = _parseLine(line, 'Removed');
+          entry = _parseLine(line);
           data.removals.add(entry);
         } else {
           entry = _parseLine(line);
@@ -68,8 +72,8 @@ class ChangelogParser {
         '/$flavor/en-US/changelogs/$versionCode.txt';
   }
 
-  ChangelogEntry _parseLine(String line, [String prefix = '']) {
-    return ChangelogEntry(line: line.replaceFirst(prefix, '').trim());
+  ChangelogEntry _parseLine(String line) {
+    return ChangelogEntry(line: line.trim());
   }
 }
 
