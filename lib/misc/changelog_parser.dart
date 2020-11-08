@@ -26,7 +26,7 @@ class ChangelogParser {
         cache: false,
       );
 
-      final ChangelogData data = ChangelogData();
+      final ChangelogData data = ChangelogData(versionCode: versionCode);
 
       ChangelogEntry entry;
 
@@ -79,6 +79,12 @@ class ChangelogParser {
 
 /// Represents the data of a changelog for one version.
 class ChangelogData {
+  ChangelogData({
+    this.versionCode,
+  });
+
+  final String versionCode;
+
   /// Entries that start with 'Added'.
   final List<ChangelogEntry> additions = <ChangelogEntry>[];
 
