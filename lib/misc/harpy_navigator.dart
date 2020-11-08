@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
+import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
@@ -205,6 +206,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case AboutScreen.route:
       screen = const AboutScreen();
+      break;
+    case ChangelogScreen.route:
+      screen = const ChangelogScreen();
       break;
     case HomeScreen.route:
       screen = const HomeScreen();
