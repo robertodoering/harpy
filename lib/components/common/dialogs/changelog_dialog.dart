@@ -4,6 +4,7 @@ import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/changelog_parser.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 class ChangelogDialog extends StatefulWidget {
@@ -31,6 +32,30 @@ class ChangelogDialog extends StatefulWidget {
 }
 
 class _ChangelogDialogState extends State<ChangelogDialog> {
+  Future<ChangelogData> _data;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _data = app<ChangelogParser>().current();
+  }
+
+  Widget _buildChangelogWidget() {
+    return FutureBuilder<ChangelogData>(
+      future: _data,
+      builder: (BuildContext context, AsyncSnapshot<ChangelogData> snapshot) {
+        if (snapshot.hasData) {
+          return ChangelogWidget(snapshot.data);
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else {
+          return const Text('No changelog found');
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return HarpyDialog(
@@ -38,7 +63,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
       contentPadding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       content: Column(
         children: <Widget>[
-          const ChangelogWidget.current(),
+          _buildChangelogWidget(),
           const SizedBox(height: 24),
           CheckboxListTile(
             value: false,

@@ -1,46 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 
-/// Builds the changelog for the [versionCode] or for the current version.
-///
-/// Uses the [ChangelogParser] to parse the changelog file.
-class ChangelogWidget extends StatefulWidget {
-  const ChangelogWidget({
-    @required this.versionCode,
+/// Builds the changelog widget for the [data].
+class ChangelogWidget extends StatelessWidget {
+  const ChangelogWidget(
+    this.data, {
     this.version,
   });
 
-  const ChangelogWidget.current()
-      : versionCode = null,
-        version = null;
-
-  final String versionCode;
+  final ChangelogData data;
   final String version;
-
-  @override
-  _ChangelogWidgetState createState() => _ChangelogWidgetState();
-}
-
-class _ChangelogWidgetState extends State<ChangelogWidget> {
-  Future<ChangelogData> _changelogData;
-
-  String _version;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.versionCode == null) {
-      _changelogData = app<ChangelogParser>().current();
-      _version = app<HarpyInfo>().packageInfo.version;
-    } else {
-      _changelogData = app<ChangelogParser>().parse(widget.versionCode);
-      _version = widget.version;
-    }
-  }
 
   Widget _spacedColumn(List<Widget> children) {
     return Column(
@@ -58,44 +28,8 @@ class _ChangelogWidgetState extends State<ChangelogWidget> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Text('Harpy $flavor $_version'),
+      child: Text('Harpy $flavor $version'),
     );
-  }
-
-  Widget _buildChangelogData(ChangelogData data) {
-    final List<Widget> additions = data.additions
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.add, color: Colors.green)))
-        .toList();
-
-    final List<Widget> changes = data.changes
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.compare_arrows, color: Colors.yellow)))
-        .toList();
-
-    final List<Widget> fixes = data.fixes
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.bug_report_outlined, color: Colors.green)))
-        .toList();
-
-    final List<Widget> removals = data.removals
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.remove, color: Colors.red)))
-        .toList();
-
-    final List<Widget> others = data.others
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.info_outline, color: Colors.yellow)))
-        .toList();
-
-    return _spacedColumn(<Widget>[
-      _buildVersionText(),
-      if (additions.isNotEmpty) _spacedColumn(additions),
-      if (changes.isNotEmpty) _spacedColumn(changes),
-      if (fixes.isNotEmpty) _spacedColumn(fixes),
-      if (removals.isNotEmpty) _spacedColumn(removals),
-      if (others.isNotEmpty) _spacedColumn(others),
-    ]);
   }
 
   Widget _buildEntry(ChangelogEntry entry, Widget icon) {
@@ -142,17 +76,38 @@ class _ChangelogWidgetState extends State<ChangelogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ChangelogData>(
-      future: _changelogData,
-      builder: (BuildContext context, AsyncSnapshot<ChangelogData> snapshot) {
-        if (snapshot.hasData) {
-          return _buildChangelogData(snapshot.data);
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else {
-          return const Text('No changelog found');
-        }
-      },
-    );
+    final List<Widget> additions = data.additions
+        .map((ChangelogEntry entry) =>
+            _buildEntry(entry, const Icon(Icons.add, color: Colors.green)))
+        .toList();
+
+    final List<Widget> changes = data.changes
+        .map((ChangelogEntry entry) => _buildEntry(
+            entry, const Icon(Icons.compare_arrows, color: Colors.yellow)))
+        .toList();
+
+    final List<Widget> fixes = data.fixes
+        .map((ChangelogEntry entry) => _buildEntry(
+            entry, const Icon(Icons.bug_report_outlined, color: Colors.green)))
+        .toList();
+
+    final List<Widget> removals = data.removals
+        .map((ChangelogEntry entry) =>
+            _buildEntry(entry, const Icon(Icons.remove, color: Colors.red)))
+        .toList();
+
+    final List<Widget> others = data.others
+        .map((ChangelogEntry entry) => _buildEntry(
+            entry, const Icon(Icons.info_outline, color: Colors.yellow)))
+        .toList();
+
+    return _spacedColumn(<Widget>[
+      if (version != null) _buildVersionText(),
+      if (additions.isNotEmpty) _spacedColumn(additions),
+      if (changes.isNotEmpty) _spacedColumn(changes),
+      if (fixes.isNotEmpty) _spacedColumn(fixes),
+      if (removals.isNotEmpty) _spacedColumn(removals),
+      if (others.isNotEmpty) _spacedColumn(others),
+    ]);
   }
 }
