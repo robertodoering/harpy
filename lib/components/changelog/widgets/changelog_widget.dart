@@ -79,8 +79,8 @@ class ChangelogWidget extends StatelessWidget {
         .toList();
 
     final List<Widget> changes = data.changes
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.compare_arrows, color: Colors.yellow)))
+        .map((ChangelogEntry entry) =>
+            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.yellow)))
         .toList();
 
     final List<Widget> fixes = data.fixes
