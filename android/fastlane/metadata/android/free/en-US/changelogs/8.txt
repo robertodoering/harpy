@@ -1,1 +1,2 @@
+Version 0.1.0
 · Added user profile

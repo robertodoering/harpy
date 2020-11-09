@@ -1,3 +1,4 @@
+Version 0.2.0
 · Added about screen
 · Added theme selection settings with 4 predefined themes
 · Added setup screen for the first login
