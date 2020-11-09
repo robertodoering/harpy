@@ -61,6 +61,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
 
   Widget _buildChangelogWidgets() {
     return ListView.separated(
+      physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.zero,
       itemCount: _dataList.length,
       itemBuilder: (BuildContext context, int index) {
