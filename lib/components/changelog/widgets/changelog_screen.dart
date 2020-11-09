@@ -4,7 +4,6 @@ import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 
 class ChangelogScreen extends StatefulWidget {
@@ -21,12 +20,6 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
   final ChangelogParser changelogParser = app<ChangelogParser>();
 
   List<ChangelogData> _dataList;
-
-  String get _path {
-    final String flavor = Harpy.isFree ? 'free' : 'pro';
-
-    return 'android/fastlane/metadata/android/$flavor/en-US/changelogs/';
-  }
 
   int get _currentVersion =>
       int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
@@ -54,9 +47,12 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     });
   }
 
-  Widget _buildVersionText(ChangelogData data) {
-    // todo: map version code to version string
-    return Text('Version ${data.versionCode}');
+  Widget _buildHeaderText(ChangelogData data) {
+    return Column(
+      children: <Widget>[
+        for (String headerLine in data.headerLines) Text(headerLine),
+      ],
+    );
   }
 
   Widget _buildChangelogWidgets() {
@@ -71,7 +67,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
           padding: DefaultEdgeInsets.all(),
           child: Column(
             children: <Widget>[
-              _buildVersionText(data),
+              _buildHeaderText(data),
               defaultVerticalSpacer,
               ChangelogWidget(data),
             ],
