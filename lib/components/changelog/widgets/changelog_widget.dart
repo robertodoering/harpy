@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 
 /// Builds the changelog widget for the [data].
 class ChangelogWidget extends StatelessWidget {
-  const ChangelogWidget(
-    this.data, {
-    this.version,
-  });
+  const ChangelogWidget(this.data);
 
   final ChangelogData data;
-  final String version;
 
   Widget _spacedColumn(List<Widget> children) {
     return Column(
@@ -23,12 +18,14 @@ class ChangelogWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildVersionText() {
-    final String flavor = Harpy.isFree ? 'Free' : 'Pro';
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Text('Harpy $flavor $version'),
+  Widget _buildHeaderText() {
+    return Column(
+      children: <Widget>[
+        for (String headerLine in data.headerLines) ...<Widget>[
+          Text(headerLine),
+          const SizedBox(height: 12),
+        ],
+      ],
     );
   }
 
@@ -102,7 +99,7 @@ class ChangelogWidget extends StatelessWidget {
         .toList();
 
     return _spacedColumn(<Widget>[
-      if (version != null) _buildVersionText(),
+      if (data.headerLines != null) _buildHeaderText(),
       if (additions.isNotEmpty) _spacedColumn(additions),
       if (changes.isNotEmpty) _spacedColumn(changes),
       if (fixes.isNotEmpty) _spacedColumn(fixes),

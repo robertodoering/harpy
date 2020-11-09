@@ -33,7 +33,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
 
   Future<void> _initChangelogData() async {
     final List<Future<ChangelogData>> dataFutures =
-        List<int>.generate(_currentVersion, (int index) => index)
+        List<int>.generate(_currentVersion + 1, (int index) => index)
             .map((int versionCode) => changelogParser.parse('$versionCode'))
             .toList();
 
@@ -45,14 +45,6 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     setState(() {
       _dataList = dataList;
     });
-  }
-
-  Widget _buildHeaderText(ChangelogData data) {
-    return Column(
-      children: <Widget>[
-        for (String headerLine in data.headerLines) Text(headerLine),
-      ],
-    );
   }
 
   Widget _buildChangelogWidgets() {
@@ -67,8 +59,6 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
           padding: DefaultEdgeInsets.all(),
           child: Column(
             children: <Widget>[
-              _buildHeaderText(data),
-              defaultVerticalSpacer,
               ChangelogWidget(data),
             ],
           ),
