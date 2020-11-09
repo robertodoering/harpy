@@ -30,7 +30,23 @@ class ChangelogParser {
 
       ChangelogEntry entry;
 
-      for (String line in changelogString.split('\n')) {
+      int entryStart = changelogString.indexOf(linePrefix);
+      if (entryStart == -1) {
+        entryStart = 0;
+      }
+
+      final String headerString = changelogString.substring(0, entryStart);
+
+      for (String line in headerString.split('\n')) {
+        line = line.trim();
+        if (line.isNotEmpty) {
+          data.headerLines.add(line);
+        }
+      }
+
+      final String entryString = changelogString.substring(entryStart);
+
+      for (String line in entryString.split('\n')) {
         line = line.replaceFirst(linePrefix, '');
 
         if (line.trim().isEmpty) {
@@ -84,6 +100,9 @@ class ChangelogData {
   });
 
   final String versionCode;
+
+  /// Optional information at the beginning of the changelog.
+  final List<String> headerLines = <String>[];
 
   /// Entries that start with 'Added'.
   final List<ChangelogEntry> additions = <ChangelogEntry>[];

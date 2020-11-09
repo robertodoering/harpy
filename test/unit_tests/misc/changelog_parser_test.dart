@@ -34,6 +34,11 @@ void main() {
       final ChangelogData data = await app<ChangelogParser>().current();
 
       expect(data.empty, isFalse);
+      expect(
+        data.headerLines.length,
+        equals(2),
+        reason: 'invalid header lines',
+      );
       expect(data.additions.length, equals(3), reason: 'invalid additions');
       expect(data.changes.length, equals(1), reason: 'invalid changes');
       expect(data.fixes.length, equals(1), reason: 'invalid fixes');
@@ -50,6 +55,12 @@ void main() {
       );
 
       final ChangelogData data = await app<ChangelogParser>().current();
+
+      expect(data.headerLines[0], equals('First header line.'));
+      expect(
+        data.headerLines[1],
+        equals('Second header line. This is a long one.'),
+      );
 
       expect(data.additions.first.line, equals('Added about screen'));
       expect(
@@ -103,7 +114,10 @@ void main() {
   });
 }
 
-const String _changelog1 = '''· Added about screen
+const String _changelog1 = '''First header line.
+Second header line. This is a long one.
+
+· Added about screen
 · Added theme selection settings with 4 predefined themes
 · Added setup screen for the first login
 · Changed the design for info messages
