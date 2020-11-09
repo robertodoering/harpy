@@ -9,6 +9,7 @@ import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
+import 'package:line_icons/line_icons.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen();
@@ -50,7 +51,7 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildIntroductionText(TextStyle linkStyle) {
     return ListTile(
-      leading: const Icon(Icons.link),
+      leading: const Icon(LineIcons.github),
       title: Text.rich(
         TextSpan(
           children: <TextSpan>[
@@ -104,7 +105,14 @@ class AboutScreen extends StatelessWidget {
     return <Widget>[
       ListTile(
         leading: const Icon(Icons.mail),
-        title: const Text('Developed by Roberto Doering'),
+        title: Text.rich(
+          TextSpan(
+            children: <InlineSpan>[
+              const TextSpan(text: 'Developed by '),
+              TextSpan(text: 'Roberto Doering', style: linkStyle),
+            ],
+          ),
+        ),
         isThreeLine: true,
         subtitle: Text.rich(
           TextSpan(
@@ -127,7 +135,7 @@ class AboutScreen extends StatelessWidget {
     final TextTheme textTheme = theme.textTheme;
     final Color color = textTheme.bodyText2.color;
 
-    final TextStyle linkStyle = textTheme.bodyText2.copyWith(
+    final TextStyle linkStyle = TextStyle(
       color: theme.accentColor,
       fontWeight: FontWeight.bold,
     );
