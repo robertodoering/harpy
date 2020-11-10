@@ -23,5 +23,6 @@ class ChangelogPreferences {
 
   /// Whether the current version code is bigger than the [lastShownVersion].
   bool get shouldShowChangelogDialog =>
+      showChangelogDialog &&
       (int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0) > lastShownVersion;
 }
