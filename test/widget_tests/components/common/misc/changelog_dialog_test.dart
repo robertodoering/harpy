@@ -132,6 +132,34 @@ void main() {
 
       expect(find.byType(HarpyDialog), findsNothing);
     });
+
+    testWidgets(
+        'does not show when the `showChangelogDialog` settings is disabled',
+        (WidgetTester tester) async {
+      when(
+        app<HarpyPreferences>().getBool('showChangelogDialog', any),
+      ).thenAnswer(
+        (_) => false,
+      );
+
+      when(
+        app<HarpyPreferences>().getInt('lastShownVersion', any),
+      ).thenAnswer(
+        (_) => 13,
+      );
+
+      when(app<HarpyInfo>().packageInfo).thenReturn(
+        PackageInfo(buildNumber: '14'),
+      );
+
+      await tester.pumpWidget(const MaterialApp(
+        home: MockHomeScreen(),
+      ));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HarpyDialog), findsNothing);
+    });
   });
 }
 

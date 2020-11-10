@@ -78,6 +78,17 @@ class HarpyNavigator {
     );
   }
 
+  void pushHomeScreen({
+    bool showChangelogDialog = false,
+  }) {
+    pushNamed(
+      HomeScreen.route,
+      arguments: <String, dynamic>{
+        'showChangelogDialog': showChangelogDialog,
+      },
+    );
+  }
+
   /// Pushes a [UserProfileScreen] for the [user] or [screenName].
   ///
   /// Either [user] or [screenName] must not be `null`.
@@ -215,7 +226,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = const ChangelogScreen();
       break;
     case HomeScreen.route:
-      screen = const HomeScreen();
+      screen = HomeScreen(
+        showChangelogDialog: arguments['showChangelogDialog'],
+      );
       break;
     case SetupScreen.route:
       screen = const SetupScreen();

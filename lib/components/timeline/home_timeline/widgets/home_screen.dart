@@ -8,13 +8,17 @@ import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart';
-import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen();
+  const HomeScreen({
+    this.showChangelogDialog = false,
+  });
+
+  /// Whether to show the [ChangelogDialog] when first building the home screen.
+  final bool showChangelogDialog;
 
   static const String route = 'home';
 
@@ -23,17 +27,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
-  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
-
   @override
   void initState() {
     super.initState();
 
-    _showChangelogDialog();
-  }
-
-  Future<void> _showChangelogDialog() async {
-    if (changelogPreferences.shouldShowChangelogDialog) {
+    if (widget.showChangelogDialog == true) {
       ChangelogDialog.show(context);
     }
   }

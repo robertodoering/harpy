@@ -6,12 +6,12 @@ import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
-import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -34,7 +34,11 @@ abstract class ApplicationEvent {
 ///
 /// Runs when the application bloc is created as soon as the application starts.
 class InitializeEvent extends ApplicationEvent {
-  const InitializeEvent();
+  InitializeEvent();
+
+  final HarpyNavigator harpyNavigator = app<HarpyNavigator>();
+  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
+  final HarpyInfo harpyInfo = app<HarpyInfo>();
 
   static final Logger _log = Logger('InitializeEvent');
 
@@ -102,13 +106,16 @@ class InitializeEvent extends ApplicationEvent {
 
     if (authenticated) {
       // navigate to home screen
-      app<HarpyNavigator>().pushReplacementNamed(
-        HomeScreen.route,
-        type: RouteType.fade,
+      harpyNavigator.pushHomeScreen(
+        showChangelogDialog: changelogPreferences.shouldShowChangelogDialog,
       );
     } else {
+      // prevent showing changelog dialog for this version
+      changelogPreferences.lastShownVersion =
+          int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
+
       // navigate to login screen
-      app<HarpyNavigator>().pushReplacementNamed(
+      harpyNavigator.pushReplacementNamed(
         LoginScreen.route,
         type: RouteType.fade,
       );

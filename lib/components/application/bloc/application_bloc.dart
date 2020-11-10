@@ -15,7 +15,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     @required this.authenticationBloc,
     @required this.themeBloc,
   }) : super(AwaitingInitializationState()) {
-    add(const InitializeEvent());
+    add(InitializeEvent());
   }
 
   final AuthenticationBloc authenticationBloc;
