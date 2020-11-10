@@ -21,6 +21,11 @@ class ChangelogPreferences {
   set lastShownVersion(int value) =>
       harpyPrefs.setInt('lastShownVersion', value);
 
+  /// Sets the [lastShownVersion] to the current version.
+  void setToCurrentShownVersion() {
+    lastShownVersion = int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
+  }
+
   /// Whether the current version code is bigger than the [lastShownVersion].
   bool get shouldShowChangelogDialog =>
       showChangelogDialog &&

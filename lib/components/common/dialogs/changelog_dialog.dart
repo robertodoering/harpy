@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/changelog/widgets/changelog_widget.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
-import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/changelog_parser.dart';
@@ -10,21 +9,22 @@ import 'package:harpy/misc/harpy_navigator.dart';
 class ChangelogDialog extends StatefulWidget {
   const ChangelogDialog();
 
-  static Future<void> show(BuildContext context) async {
+  static Future<void> maybeShow(BuildContext context) async {
     final ChangelogPreferences changelogPreferences =
         app<ChangelogPreferences>();
-    final HarpyInfo harpyInfo = app<HarpyInfo>();
 
-    // set last shown version to current version when
-    changelogPreferences.lastShownVersion =
-        int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
+    if (changelogPreferences.shouldShowChangelogDialog) {
+      await Future<void>.delayed(Duration.zero);
 
-    await Future<void>.delayed(Duration.zero);
+      showDialog<void>(
+        context: context,
+        child: const ChangelogDialog(),
+      );
+    }
 
-    showDialog<void>(
-      context: context,
-      child: const ChangelogDialog(),
-    );
+    // always set to current shown version, even when the setting to show dialog
+    // is false
+    changelogPreferences.setToCurrentShownVersion();
   }
 
   @override

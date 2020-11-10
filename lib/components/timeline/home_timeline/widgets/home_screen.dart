@@ -14,11 +14,12 @@ import 'package:harpy/misc/harpy_navigator.dart';
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
-    this.showChangelogDialog = false,
+    this.autoLogin = false,
   });
 
-  /// Whether to show the [ChangelogDialog] when first building the home screen.
-  final bool showChangelogDialog;
+  /// Whether the user got automatically logged in when opening the app
+  /// (previous session got restored).
+  final bool autoLogin;
 
   static const String route = 'home';
 
@@ -31,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   void initState() {
     super.initState();
 
-    if (widget.showChangelogDialog == true) {
-      ChangelogDialog.show(context);
+    if (widget.autoLogin == true) {
+      ChangelogDialog.maybeShow(context);
     }
   }
 

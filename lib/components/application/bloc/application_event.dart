@@ -106,13 +106,10 @@ class InitializeEvent extends ApplicationEvent {
 
     if (authenticated) {
       // navigate to home screen
-      harpyNavigator.pushHomeScreen(
-        showChangelogDialog: changelogPreferences.shouldShowChangelogDialog,
-      );
+      harpyNavigator.pushHomeScreen(autoLogin: true);
     } else {
       // prevent showing changelog dialog for this version
-      changelogPreferences.lastShownVersion =
-          int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
+      changelogPreferences.setToCurrentShownVersion();
 
       // navigate to login screen
       harpyNavigator.pushReplacementNamed(

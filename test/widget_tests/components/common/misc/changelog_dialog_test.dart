@@ -171,15 +171,11 @@ class MockHomeScreen extends StatefulWidget {
 }
 
 class _MockHomeScreenState extends State<MockHomeScreen> {
-  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
-
   @override
   void initState() {
     super.initState();
 
-    if (changelogPreferences.shouldShowChangelogDialog) {
-      ChangelogDialog.show(context);
-    }
+    ChangelogDialog.maybeShow(context);
   }
 
   @override
