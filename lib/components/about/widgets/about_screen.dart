@@ -66,13 +66,24 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildProText(ThemeData theme) {
+  List<Widget> _buildProText(ThemeData theme, TextStyle linkStyle) {
     return <Widget>[
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(
-          'To support the development of Harpy, please buy Harpy Pro '
-          'in the Play Store.',
+        child: Text.rich(
+          TextSpan(
+            children: <TextSpan>[
+              const TextSpan(
+                text: 'Support the development of Harpy and get access '
+                    'to a number of exclusive features by purchasing ',
+              ),
+              TextSpan(
+                text: 'Harpy Pro',
+                style: linkStyle,
+              ),
+              const TextSpan(text: ' in the Play Store.'),
+            ],
+          ),
           style: theme.textTheme.subtitle2,
         ),
       ),
@@ -172,7 +183,7 @@ class AboutScreen extends StatelessWidget {
             _buildIntroductionText(linkStyle),
             if (Harpy.isFree) ...<Widget>[
               const Divider(height: 32),
-              ..._buildProText(theme),
+              ..._buildProText(theme, linkStyle),
             ],
             const Divider(height: 32),
             ..._buildRateAppText(theme),
