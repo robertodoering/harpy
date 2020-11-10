@@ -32,6 +32,8 @@ class ChangelogDialog extends StatefulWidget {
 }
 
 class _ChangelogDialogState extends State<ChangelogDialog> {
+  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
+
   Future<ChangelogData> _data;
 
   @override
@@ -56,6 +58,19 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
     );
   }
 
+  Widget _buildCheckbox() {
+    return CheckboxListTile(
+      value: !changelogPreferences.showChangelogDialog,
+      title: Text(
+        "Don't show this again",
+        style: Theme.of(context).textTheme.subtitle2,
+      ),
+      onChanged: (bool value) {
+        setState(() => changelogPreferences.showChangelogDialog = !value);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return HarpyDialog(
@@ -65,16 +80,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
         children: <Widget>[
           _buildChangelogWidget(),
           const SizedBox(height: 24),
-          CheckboxListTile(
-            value: false,
-            title: Text(
-              "Don't show this again",
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            onChanged: (bool value) {
-              // todo: implement
-            },
-          ),
+          _buildCheckbox(),
         ],
       ),
       actions: <Widget>[
