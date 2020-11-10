@@ -75,7 +75,7 @@ class ChangelogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> additions = data.additions
         .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.add, color: Colors.green)))
+            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.green)))
         .toList();
 
     final List<Widget> changes = data.changes
@@ -84,18 +84,18 @@ class ChangelogWidget extends StatelessWidget {
         .toList();
 
     final List<Widget> fixes = data.fixes
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.bug_report_outlined, color: Colors.green)))
+        .map((ChangelogEntry entry) =>
+            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.orange)))
         .toList();
 
     final List<Widget> removals = data.removals
         .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.remove, color: Colors.red)))
+            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.red)))
         .toList();
 
     final List<Widget> others = data.others
-        .map((ChangelogEntry entry) => _buildEntry(
-            entry, const Icon(Icons.info_outline, color: Colors.yellow)))
+        .map((ChangelogEntry entry) =>
+            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.blue)))
         .toList();
 
     return _spacedColumn(<Widget>[
