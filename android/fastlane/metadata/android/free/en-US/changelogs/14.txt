@@ -1,3 +1,4 @@
+Version 0.2.2
 · Changed App bar to hide automatically when scrolling down the home timeline
 · Changed video full screen rotation to no longer change the device's orientation
 · Changed tweet creation time text

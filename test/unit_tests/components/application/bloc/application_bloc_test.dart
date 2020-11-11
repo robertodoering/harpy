@@ -10,8 +10,10 @@ import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
+import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:mockito/mockito.dart';
 
 class MockAppConfig extends Mock implements AppConfig {}
@@ -35,6 +37,9 @@ void main() {
     app.registerLazySingleton<ErrorReporter>(() => MockErrorReporter());
     app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
     app.registerLazySingleton<HarpyPreferences>(() => MockHarpyPreferences());
+    app.registerLazySingleton<HarpyNavigator>(() => HarpyNavigator());
+    app.registerLazySingleton<ChangelogPreferences>(
+        () => ChangelogPreferences());
     app.registerLazySingleton<ConnectivityService>(
       () => MockConnectivityService(),
     );

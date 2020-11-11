@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
@@ -12,7 +13,13 @@ import 'package:harpy/misc/harpy_navigator.dart';
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen();
+  const HomeScreen({
+    this.autoLogin = false,
+  });
+
+  /// Whether the user got automatically logged in when opening the app
+  /// (previous session got restored).
+  final bool autoLogin;
 
   static const String route = 'home';
 
@@ -21,6 +28,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.autoLogin == true) {
+      ChangelogDialog.maybeShow(context);
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

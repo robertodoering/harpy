@@ -1,3 +1,4 @@
+Version 0.2.1
 · Added theme customization
 · Changed Harpy logo
 · Changed predefined themes

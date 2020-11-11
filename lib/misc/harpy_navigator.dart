@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
+import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
@@ -11,6 +12,7 @@ import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_settings_screen.dart';
 import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
+import 'package:harpy/components/settings/other/widgets/misc_settings_screen.dart';
 import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
@@ -76,9 +78,18 @@ class HarpyNavigator {
     );
   }
 
-  /// Pushes a [UserProfileScreen] for the [user] or [screenName].
-  ///
-  /// Either [user] or [screenName] must not be `null`.
+  void pushHomeScreen({
+    bool autoLogin = false,
+  }) {
+    pushNamed(
+      HomeScreen.route,
+      arguments: <String, dynamic>{
+        'autoLogin': autoLogin,
+      },
+    );
+  }
+
+  /// Pushes a [UserProfileScreen] for the user with the [screenName].
   void pushUserProfile({
     @required String screenName,
     RouteSettings currentRoute,
@@ -203,11 +214,19 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case MediaSettingsScreen.route:
       screen = const MediaSettingsScreen();
       break;
+    case MiscSettingsScreen.route:
+      screen = const MiscSettingsScreen();
+      break;
     case AboutScreen.route:
       screen = const AboutScreen();
       break;
+    case ChangelogScreen.route:
+      screen = const ChangelogScreen();
+      break;
     case HomeScreen.route:
-      screen = const HomeScreen();
+      screen = HomeScreen(
+        autoLogin: arguments['autoLogin'],
+      );
       break;
     case SetupScreen.route:
       screen = const SetupScreen();

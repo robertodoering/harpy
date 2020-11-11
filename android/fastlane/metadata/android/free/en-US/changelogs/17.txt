@@ -1,3 +1,4 @@
+Version 0.2.5
 · Added Tweet media download
 · Added additional home timeline refresh button
 · Changed full-screen media overlay

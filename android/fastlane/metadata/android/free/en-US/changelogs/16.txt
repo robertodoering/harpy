@@ -1,3 +1,4 @@
+Version 0.2.4
 · Added Tweet replies screen
 · Added Tweet action button animations
 · Added compact layout settings

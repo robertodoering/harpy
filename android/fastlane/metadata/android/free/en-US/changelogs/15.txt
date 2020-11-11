@@ -1,3 +1,4 @@
+Version 0.2.3
 · Added Followers & Following users screen
 · Changed color of Tweet buttons to adapt for the background color
-· Fix favorite button animation
+· Fixed favorite button animation
