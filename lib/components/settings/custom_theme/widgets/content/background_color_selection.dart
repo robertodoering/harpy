@@ -42,7 +42,6 @@ class BackgroundColorSelection extends StatelessWidget {
         ),
         defaultVerticalSpacer,
         CustomReorderableList(
-          physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           onReorder: (int oldIndex, int newIndex) => bloc.add(
             ReorderBackgroundColor(oldIndex: oldIndex, newIndex: newIndex),

@@ -10,6 +10,7 @@ import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/harpy_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/scroll_behavior.dart';
 
 /// The [Flavor] the app is built in.
 enum Flavor {
@@ -59,8 +60,11 @@ class Harpy extends StatelessWidget {
           app<HarpyNavigator>().routeObserver,
         ],
         home: const SplashScreen(),
-        builder: (BuildContext widget, Widget child) => HarpyMessage(
-          child: child,
+        builder: (BuildContext widget, Widget child) => ScrollConfiguration(
+          behavior: const HarpyScrollBehavior(),
+          child: HarpyMessage(
+            child: child,
+          ),
         ),
       ),
     );

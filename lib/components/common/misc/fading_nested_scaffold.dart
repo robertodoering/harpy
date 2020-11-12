@@ -127,7 +127,6 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     return HarpyBackground(
       child: NestedScrollView(
         controller: _controller,
-        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             _buildSliverAppBar(harpyTheme, theme),

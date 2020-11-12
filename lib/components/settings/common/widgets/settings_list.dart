@@ -12,7 +12,6 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: 16),
       itemCount: settings.length,
       itemBuilder: (BuildContext context, int index) => SettingsGroup(

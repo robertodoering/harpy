@@ -115,7 +115,6 @@ class _SetupScreenState extends State<SetupScreen> {
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.only(top: mediaQuery.padding.top),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,

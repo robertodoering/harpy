@@ -47,7 +47,6 @@ class _ImageGalleryState extends State<ImageGallery> {
   @override
   Widget build(BuildContext context) {
     return PageView(
-      physics: const BouncingScrollPhysics(),
       onPageChanged: widget.onIndexChanged,
       controller: _controller,
       children: <Widget>[

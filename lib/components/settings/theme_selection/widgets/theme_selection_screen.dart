@@ -116,7 +116,6 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     return HarpyScaffold(
       title: 'Theme selection',
       body: ListView.separated(
-        physics: const BouncingScrollPhysics(),
         padding: DefaultEdgeInsets.all(),
         itemCount: children.length,
         itemBuilder: (BuildContext context, int index) => children[index],

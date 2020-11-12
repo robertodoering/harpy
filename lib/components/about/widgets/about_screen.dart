@@ -167,7 +167,6 @@ class AboutScreen extends StatelessWidget {
         ),
       ],
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

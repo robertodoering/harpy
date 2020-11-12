@@ -34,7 +34,6 @@ class _MiscSettingsScreenState extends State<MiscSettingsScreen> {
     return HarpyScaffold(
       title: 'Miscellaneous Settings',
       body: ListView(
-        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         children: _settings,
       ),

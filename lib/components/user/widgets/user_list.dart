@@ -32,9 +32,7 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      physics: enableScroll
-          ? const BouncingScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
+      physics: enableScroll ? null : const NeverScrollableScrollPhysics(),
       slivers: <Widget>[
         SliverPadding(
           padding: DefaultEdgeInsets.all(),

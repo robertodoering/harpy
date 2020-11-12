@@ -138,7 +138,6 @@ class _HarpyDialogState extends State<HarpyDialog> {
   Widget _buildContent(TextTheme textTheme) {
     return Flexible(
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             if (widget.content != null)

@@ -95,7 +95,6 @@ class CustomThemeScreen extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
-            physics: const BouncingScrollPhysics(),
             padding: DefaultEdgeInsets.symmetric(vertical: true),
             children: <Widget>[
               if (Harpy.isFree) ...<Widget>[

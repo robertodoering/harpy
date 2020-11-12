@@ -106,7 +106,6 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       title: 'Media settings',
       actions: _buildActions(),
       body: ListView(
-        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         children: _settings,
       ),

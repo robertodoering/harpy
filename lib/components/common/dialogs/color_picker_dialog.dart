@@ -113,7 +113,6 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     return SizedBox(
       key: _colorPickerKey,
       child: MaterialColorPicker(
-        physics: const BouncingScrollPhysics(),
         selectedColor: widget.color,
         shrinkWrap: true,
         onColorChange: (Color color) => _color = color,

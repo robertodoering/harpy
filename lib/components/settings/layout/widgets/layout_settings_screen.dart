@@ -58,7 +58,6 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
       title: 'Layout settings',
       actions: _buildActions(),
       body: ListView(
-        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         children: _settings,
       ),
