@@ -3,16 +3,16 @@ import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
-class MiscSettingsScreen extends StatefulWidget {
-  const MiscSettingsScreen();
+class GeneralSettingsScreen extends StatefulWidget {
+  const GeneralSettingsScreen();
 
-  static const String route = 'misc_settings';
+  static const String route = 'general_settings';
 
   @override
-  _MiscSettingsScreenState createState() => _MiscSettingsScreenState();
+  _GeneralSettingsScreenState createState() => _GeneralSettingsScreenState();
 }
 
-class _MiscSettingsScreenState extends State<MiscSettingsScreen> {
+class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
 
   List<Widget> get _settings {
@@ -32,7 +32,7 @@ class _MiscSettingsScreenState extends State<MiscSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'Miscellaneous Settings',
+      title: 'General',
       body: ListView(
         padding: EdgeInsets.zero,
         children: _settings,
