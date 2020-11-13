@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/list/visibility_change_detector.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/common/video_player/overlay/gif_player_overlay.dart';
@@ -130,8 +131,20 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   Widget _builder(BuildContext context, Widget child) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 
-    final Widget child =
+    Widget child =
         !model.initialized ? _buildUninitialized(model) : _buildGif(model);
+
+    if (widget.autoplay) {
+      child = VisibilityChangeDetector(
+        key: ValueKey<HarpyVideoPlayerModel>(model),
+        onVisibilityChanged: (bool visible) {
+          if (visible && !model.initialized && !model.playing) {
+            model.initialize();
+          }
+        },
+        child: child,
+      );
+    }
 
     return Hero(
       tag: model,
