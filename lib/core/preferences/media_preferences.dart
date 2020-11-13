@@ -70,6 +70,7 @@ class MediaPreferences {
     wifiMediaQuality = 0;
     nonWifiMediaQuality = 0;
     autoplayMedia = 1;
+    autoplayVideos = 2;
     openLinksExternally = false;
   }
 }
