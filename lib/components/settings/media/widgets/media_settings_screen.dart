@@ -44,30 +44,27 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         description: 'Change when gifs should automatically play',
         value: mediaPreferences.autoplayMedia,
         items: const <String>[
-          '(Temporarily disabled)',
-          '(Temporarily disabled)',
-          '(Temporarily disabled)',
+          'Always autoplay',
+          'Only on WiFi',
+          'Never autoplay',
         ],
-        enabled: false,
-        // items: const <String>[
-        //   'Always autoplay',
-        //   'Only on WiFi',
-        //   'Never autoplay',
-        // ],
         onChanged: (int value) {
           setState(() => mediaPreferences.autoplayMedia = value);
         },
       ),
-      const RadioDialogTile(
+      RadioDialogTile(
         leading: Icons.play_circle_outline,
         title: 'Autoplay videos',
         description: 'Change when videos should automatically play',
-        value: 0,
-        items: <String>[
-          'Coming soon!',
+        value: mediaPreferences.autoplayVideos,
+        items: const <String>[
+          'Always autoplay',
+          'Only on WiFi',
+          'Never autoplay',
         ],
-        enabled: false,
-        onChanged: null,
+        onChanged: (int value) {
+          setState(() => mediaPreferences.autoplayVideos = value);
+        },
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),
