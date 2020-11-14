@@ -348,6 +348,10 @@ class HarpyTheme {
       // used by a text field when it has focus
       textSelectionHandleColor: accentColor,
 
+      // used when interacting with material widgets
+      splashColor: accentColor.withOpacity(.1),
+      highlightColor: accentColor.withOpacity(.1),
+
       cardTheme: CardTheme(
         // use the accent color and make it slightly brighter / darker
         color: Color.lerp(
