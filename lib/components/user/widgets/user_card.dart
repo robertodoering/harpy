@@ -33,11 +33,19 @@ class UserCard extends StatelessWidget {
           leading: CachedCircleAvatar(
             imageUrl: user.profileImageUrlHttps,
           ),
-          title: Text(user.name),
+          title: Text(
+            user.name,
+            softWrap: false,
+            overflow: TextOverflow.fade,
+          ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('@${user.screenName}'),
+              Text(
+                '@${user.screenName}',
+                softWrap: false,
+                overflow: TextOverflow.fade,
+              ),
               if (user.hasDescription)
                 TwitterText(
                   user.description,
