@@ -99,30 +99,37 @@ class UserProfileInfo extends StatelessWidget {
     );
   }
 
-  /// Builds the name with the verified icon and the @username.
+  /// Builds the `@screenName` for the user.
+  Widget _buildScreenName(ThemeData theme) {
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Text(
+        '@${bloc.user.screenName}',
+        style: theme.textTheme.subtitle1,
+      ),
+    );
+  }
+
+  /// Builds the user's real name with the verified icon if the user is
+  /// verified.
   Widget _buildUserName(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        FittedBox(
-          child: Wrap(
-            children: <Widget>[
-              Text(bloc.user.name, style: theme.textTheme.headline6),
-              if (bloc.user.verified) ...<Widget>[
-                const Text(' '),
-                const Icon(Icons.verified_user, size: 22),
-              ],
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        FittedBox(
-          child: Text(
-            '@${bloc.user.screenName}',
-            style: theme.textTheme.subtitle1,
-          ),
-        ),
-      ],
+    return Text.rich(
+      TextSpan(
+        children: <InlineSpan>[
+          TextSpan(text: bloc.user.name),
+          if (bloc.user.verified) ...<InlineSpan>[
+            const TextSpan(text: ' '),
+            const WidgetSpan(
+              child: Icon(
+                Icons.verified_user,
+                size: 22,
+              ),
+            ),
+          ],
+        ],
+        style: theme.textTheme.headline6,
+      ),
     );
   }
 
@@ -140,21 +147,27 @@ class UserProfileInfo extends StatelessWidget {
             bloc.user.hasConnections;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        _buildAvatar(),
+        defaultHorizontalSpacer,
         Expanded(
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildAvatar(),
-              defaultHorizontalSpacer,
-              Expanded(child: _buildUserName(theme)),
+              Row(
+                children: <Widget>[
+                  Expanded(child: _buildScreenName(theme)),
+                  if (enableFollow) ...<Widget>[
+                    defaultHorizontalSpacer,
+                    _buildFollowButton(theme),
+                  ],
+                ],
+              ),
+              defaultVerticalSpacer,
+              _buildUserName(theme),
             ],
           ),
         ),
-        if (enableFollow) ...<Widget>[
-          defaultHorizontalSpacer,
-          _buildFollowButton(theme),
-        ],
       ],
     );
   }
