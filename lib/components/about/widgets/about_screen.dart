@@ -98,6 +98,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: DefaultEdgeInsets.all(),
@@ -138,6 +139,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: DefaultEdgeInsets.all(),
@@ -228,26 +230,23 @@ class AboutScreen extends StatelessWidget {
           },
         ),
       ],
-      body: SingleChildScrollView(
+      body: ListView(
         padding: DefaultEdgeInsets.all(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ..._buildTitleWithLogo(color),
-            defaultSmallVerticalSpacer,
-            _buildVersionCode(theme),
+        children: <Widget>[
+          ..._buildTitleWithLogo(color),
+          defaultSmallVerticalSpacer,
+          _buildVersionCode(theme),
+          defaultVerticalSpacer,
+          _buildIntroductionText(linkStyle),
+          if (Harpy.isFree) ...<Widget>[
             defaultVerticalSpacer,
-            _buildIntroductionText(linkStyle),
-            if (Harpy.isFree) ...<Widget>[
-              defaultVerticalSpacer,
-              _buildProText(theme, linkStyle),
-            ],
-            defaultVerticalSpacer,
-            _buildRateAppText(theme),
-            defaultVerticalSpacer,
-            _buildDeveloperText(linkStyle),
+            _buildProText(theme, linkStyle),
           ],
-        ),
+          defaultVerticalSpacer,
+          _buildRateAppText(theme),
+          defaultVerticalSpacer,
+          _buildDeveloperText(linkStyle),
+        ],
       ),
     );
   }
