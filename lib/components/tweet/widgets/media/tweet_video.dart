@@ -5,6 +5,8 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/preferences/media_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
@@ -35,12 +37,15 @@ class TweetVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaPreferences mediaPreferences = app<MediaPreferences>();
+
     return ClipRRect(
       borderRadius: kDefaultBorderRadius,
       child: HarpyVideoPlayer.fromUrl(
         tweet.video.appropriateUrl,
         thumbnail: tweet.video.thumbnailUrl,
         onVideoPlayerTap: _openGallery,
+        autoplay: mediaPreferences.shouldAutoplayVideos,
         allowVerticalOverflow: true,
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/list/visibility_change_detector.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/common/video_player/overlay/static_video_player_overlay.dart';
 import 'package:harpy/components/common/video_player/video_thumbnail.dart';
@@ -23,6 +24,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.url, {
     this.thumbnail,
     this.thumbnailAspectRatio,
+    this.autoplay = false,
     this.onVideoPlayerTap,
     this.allowVerticalOverflow = false,
   }) : model = null;
@@ -31,6 +33,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.model, {
     this.thumbnail,
     this.thumbnailAspectRatio,
+    this.autoplay = false,
     this.onVideoPlayerTap,
     this.allowVerticalOverflow = false,
   }) : url = null;
@@ -43,6 +46,7 @@ class HarpyVideoPlayer extends StatefulWidget {
   final double thumbnailAspectRatio;
 
   final HarpyVideoPlayerModel model;
+  final bool autoplay;
   final OnVideoPlayerTap onVideoPlayerTap;
   final bool allowVerticalOverflow;
 
@@ -145,8 +149,21 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _builder(BuildContext context, Widget child) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 
-    final Widget child =
+    Widget child =
         !model.initialized ? _buildUninitialized(model) : _buildVideo(model);
+
+    if (widget.autoplay) {
+      child = VisibilityChangeDetector(
+        key: ValueKey<HarpyVideoPlayerModel>(model),
+        onVisibilityChanged: (bool visible) {
+          if (visible && !model.initialized && !model.playing) {
+            _controller.setVolume(0);
+            model.initialize();
+          }
+        },
+        child: child,
+      );
+    }
 
     return Hero(
       tag: model,

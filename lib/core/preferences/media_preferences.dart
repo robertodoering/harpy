@@ -36,6 +36,15 @@ class MediaPreferences {
       harpyPrefs.getInt('autoplayMedia', 1, lowerLimit: 0, upperLimit: 2);
   set autoplayMedia(int value) => harpyPrefs.setInt('autoplayMedia', value);
 
+  /// Whether videos should play automatically.
+  ///
+  /// 0: always autoplay
+  /// 1: only autoplay when using wifi
+  /// 2: never autoplay
+  int get autoplayVideos =>
+      harpyPrefs.getInt('autoplayVideos', 2, lowerLimit: 0, upperLimit: 2);
+  set autoplayVideos(int value) => harpyPrefs.setInt('autoplayVideos', value);
+
   /// Whether links should open externally instead of using a built in web view.
   bool get openLinksExternally =>
       harpyPrefs.getBool('openLinksExternally', false);
@@ -47,6 +56,11 @@ class MediaPreferences {
   bool get shouldAutoplayMedia =>
       autoplayMedia == 0 || autoplayMedia == 1 && connectivityService.wifi;
 
+  /// Whether videos should play automatically, taking the connectivity into
+  /// account.
+  bool get shouldAutoplayVideos =>
+      autoplayVideos == 0 || autoplayVideos == 1 && connectivityService.wifi;
+
   /// The media quality, taking the connectivity into account.
   int get appropriateMediaQuality =>
       connectivityService.wifi ? wifiMediaQuality : nonWifiMediaQuality;
@@ -56,6 +70,7 @@ class MediaPreferences {
     wifiMediaQuality = 0;
     nonWifiMediaQuality = 0;
     autoplayMedia = 1;
+    autoplayVideos = 2;
     openLinksExternally = false;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
+import 'package:harpy/components/common/list/visibility_change_detector.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Fades and slides the [child] when scrolling down or on the initial build if
@@ -28,8 +29,6 @@ class ListCardAnimation extends StatefulWidget {
 
 class _ListCardAnimationState extends State<ListCardAnimation>
     with SingleTickerProviderStateMixin<ListCardAnimation> {
-  bool _visible = false;
-
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _fadeAnimation;
@@ -64,11 +63,8 @@ class _ListCardAnimationState extends State<ListCardAnimation>
     super.dispose();
   }
 
-  void _onVisibilityChanged(VisibilityInfo info) {
-    if (!_visible && info.visibleBounds.height > 0) {
-      // child came into view
-      _visible = true;
-
+  void _onVisibilityChanged(bool visible) {
+    if (visible) {
       final ScrollDirection scrollDirection = ScrollDirection.of(context);
 
       if (scrollDirection.direction == null || scrollDirection.down) {
@@ -82,15 +78,12 @@ class _ListCardAnimationState extends State<ListCardAnimation>
           _controller.forward(from: 1);
         }
       }
-    } else if (_visible && info.visibleBounds.height == 0) {
-      // reset animation when child gets scrolled out of view
-      _visible = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
+    return VisibilityChangeDetector(
       key: widget.key,
       onVisibilityChanged: _onVisibilityChanged,
       child: AnimatedBuilder(
