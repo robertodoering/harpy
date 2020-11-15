@@ -40,10 +40,12 @@ class TweetAuthorRow extends StatelessWidget {
   static const double defaultAvatarRadius = 22;
 
   void _onUserTap(BuildContext context) {
-    app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context).settings,
-      screenName: user.screenName,
-    );
+    if (enableUserTap) {
+      app<HarpyNavigator>().pushUserProfile(
+        currentRoute: ModalRoute.of(context).settings,
+        screenName: user.screenName,
+      );
+    }
   }
 
   Widget _buildAvatar(BuildContext context) {
