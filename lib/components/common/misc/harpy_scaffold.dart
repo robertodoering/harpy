@@ -17,6 +17,7 @@ class HarpyScaffold extends StatelessWidget {
     this.drawer,
     this.backgroundColors,
     this.appBarBottom,
+    this.floatingActionButton,
   });
 
   final String title;
@@ -25,6 +26,7 @@ class HarpyScaffold extends StatelessWidget {
   final List<Widget> actions;
   final Widget drawer;
   final PreferredSizeWidget appBarBottom;
+  final Widget floatingActionButton;
 
   /// The colors used by the [HarpyBackground].
   ///
@@ -77,6 +79,7 @@ class HarpyScaffold extends StatelessWidget {
 
     return Scaffold(
       drawer: drawer,
+      floatingActionButton: floatingActionButton,
       body: HarpyBackground(
         colors: backgroundColors,
         child: Column(
