@@ -27,9 +27,7 @@ platform :android do
       "--flavor",
       "free",
       "-t",
-      "lib/main_free.dart",
-      "--bundle-sksl-path",
-      "sksl.json"
+      "lib/main_free.dart"
     )
 
     upload_to_play_store(
