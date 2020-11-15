@@ -26,7 +26,6 @@ class UserCard extends StatelessWidget {
     return ListCardAnimation(
       key: ValueKey<int>(user.hashCode),
       child: Card(
-        margin: EdgeInsets.zero,
         child: ListTile(
           shape: kDefaultShapeBorder,
           isThreeLine: user.hasDescription,

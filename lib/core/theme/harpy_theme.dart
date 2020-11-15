@@ -362,6 +362,8 @@ class HarpyTheme {
           .1,
         ),
         shape: kDefaultShapeBorder,
+        elevation: 0,
+        margin: EdgeInsets.zero,
       ),
 
       snackBarTheme: SnackBarThemeData(

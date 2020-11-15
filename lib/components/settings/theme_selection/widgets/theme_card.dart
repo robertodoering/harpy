@@ -32,7 +32,6 @@ class ThemeCard extends StatelessWidget {
     return Theme(
       data: harpyTheme.data,
       child: Card(
-        margin: EdgeInsets.zero,
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,
         child: Stack(
