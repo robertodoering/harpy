@@ -3,7 +3,7 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/created_at_time.dart';
-import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -11,14 +11,20 @@ import 'package:harpy/misc/harpy_navigator.dart';
 /// date of the tweet.
 class TweetAuthorRow extends StatelessWidget {
   const TweetAuthorRow(
-    this.tweet, {
+    this.user, {
+    this.createdAt,
+    this.enableUserTap = true,
     this.avatarRadius = defaultAvatarRadius,
     this.avatarPadding,
     this.fontSizeDelta = 0,
     this.iconSize = 16,
   });
 
-  final TweetData tweet;
+  final UserData user;
+
+  final DateTime createdAt;
+
+  final bool enableUserTap;
 
   final double avatarRadius;
 
@@ -36,7 +42,83 @@ class TweetAuthorRow extends StatelessWidget {
   void _onUserTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: ModalRoute.of(context).settings,
-      screenName: tweet.userData.screenName,
+      screenName: user.screenName,
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => _onUserTap(context),
+      // todo: avatar should scale based off of the text height
+      child: Row(
+        children: <Widget>[
+          CachedCircleAvatar(
+            imageUrl: user.appropriateUserImageUrl,
+            radius: avatarRadius,
+          ),
+          AnimatedContainer(
+            duration: kShortAnimationDuration,
+            width: avatarPadding ?? defaultPaddingValue,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScreenName(BuildContext context, ThemeData theme) {
+    return GestureDetector(
+      onTap: () => _onUserTap(context),
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: Text(
+              user.name,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyText2.apply(
+                fontSizeDelta: fontSizeDelta,
+              ),
+            ),
+          ),
+          if (user.verified)
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Icon(Icons.verified_user, size: iconSize),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserName(BuildContext context, ThemeData theme) {
+    return GestureDetector(
+      onTap: () => _onUserTap(context),
+      child: Text.rich(
+        TextSpan(
+          children: <InlineSpan>[
+            TextSpan(
+              text: '@${user.screenName}',
+              style: theme.textTheme.bodyText1.apply(
+                fontSizeDelta: fontSizeDelta,
+              ),
+            ),
+            if (createdAt != null) ...<InlineSpan>[
+              TextSpan(
+                text: ' \u00b7 ',
+                style: theme.textTheme.bodyText1.apply(
+                  fontSizeDelta: fontSizeDelta,
+                ),
+              ),
+              WidgetSpan(
+                child: CreatedAtTime(
+                  createdAt: createdAt,
+                  fontSizeDelta: fontSizeDelta,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
@@ -47,74 +129,16 @@ class TweetAuthorRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => _onUserTap(context),
-          // todo: avatar should scale based off of the text height
-          child: Row(
-            children: <Widget>[
-              CachedCircleAvatar(
-                imageUrl: tweet.userData.appropriateUserImageUrl,
-                radius: avatarRadius,
-              ),
-              AnimatedContainer(
-                duration: kShortAnimationDuration,
-                width: avatarPadding ?? defaultPaddingValue,
-              ),
-            ],
-          ),
-        ),
+        _buildAvatar(context),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              GestureDetector(
-                onTap: () => _onUserTap(context),
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        tweet.userData.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyText2.apply(
-                          fontSizeDelta: fontSizeDelta,
-                        ),
-                      ),
-                    ),
-                    if (tweet.userData.verified)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Icon(Icons.verified_user, size: iconSize),
-                      ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () => _onUserTap(context),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        '@${tweet.userData.screenName} \u00b7 ',
-                        style: theme.textTheme.bodyText1.apply(
-                          fontSizeDelta: fontSizeDelta,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Flexible(
-                      child: CreatedAtTime(
-                        createdAt: tweet.createdAt,
-                        fontSizeDelta: fontSizeDelta,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildScreenName(context, theme),
+              _buildUserName(context, theme),
             ],
           ),
-        )
+        ),
       ],
     );
   }

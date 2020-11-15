@@ -22,7 +22,7 @@ class TweetCardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> content = <Widget>[
       if (tweet.isRetweet) TweetRetweetedRow(tweet),
-      TweetAuthorRow(tweet),
+      TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
       if (tweet.hasText)
         TwitterText(
           tweet.fullText,
