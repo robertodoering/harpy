@@ -1,0 +1,10 @@
+Version 0.2.6
+· Added gif & video autoplay
+    · In Settings > Media
+· Added changelog dialog
+    · Changes after updating the app will now show once when the app is launched.
+    · You can disable this in Settings > General
+· Added version history in about screen
+· Changed about screen
+· Changed user profile name scaling
+· Changed list scroll physics
