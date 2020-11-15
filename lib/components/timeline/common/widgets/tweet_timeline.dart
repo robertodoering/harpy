@@ -44,7 +44,7 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<T, TimelineState>(
       builder: (BuildContext context, TimelineState state) {
-        final T bloc = context.bloc<T>();
+        final T bloc = context.watch<T>();
 
         Widget timelineInfo;
 

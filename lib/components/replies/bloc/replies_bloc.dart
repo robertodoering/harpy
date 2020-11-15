@@ -19,7 +19,7 @@ class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
   final TweetService tweetService = app<TwitterApi>().tweetService;
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
-  static RepliesBloc of(BuildContext context) => context.bloc<RepliesBloc>();
+  static RepliesBloc of(BuildContext context) => context.watch<RepliesBloc>();
 
   /// The parent tweet.
   ///

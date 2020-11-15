@@ -27,7 +27,7 @@ class GlobalBlocProvider extends StatelessWidget {
         // authentication
         BlocProvider<AuthenticationBloc>(
           create: (BuildContext context) => AuthenticationBloc(
-            themeBloc: ThemeBloc.of(context),
+            themeBloc: context.read<ThemeBloc>(),
           ),
         ),
 
@@ -36,8 +36,8 @@ class GlobalBlocProvider extends StatelessWidget {
         BlocProvider<ApplicationBloc>(
           lazy: false,
           create: (BuildContext context) => ApplicationBloc(
-            authenticationBloc: AuthenticationBloc.of(context),
-            themeBloc: ThemeBloc.of(context),
+            authenticationBloc: context.read<AuthenticationBloc>(),
+            themeBloc: context.read<ThemeBloc>(),
           ),
         ),
       ],

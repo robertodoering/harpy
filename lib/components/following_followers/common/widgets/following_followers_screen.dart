@@ -12,6 +12,7 @@ import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/following_followers/common/bloc/following_followers_bloc.dart';
 import 'package:harpy/components/user/widgets/user_list.dart';
+import 'package:provider/provider.dart';
 
 /// A callback for actions on a timeline, such as refreshing or loading more
 /// tweets for a timeline.
@@ -32,7 +33,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
   final String userId;
 
   /// Builds the bloc for the [BlocProvider].
-  final CreateBloc<B> create;
+  final Create<B> create;
 
   /// The scaffold title.
   final String title;
@@ -73,7 +74,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
       create: create,
       child: BlocBuilder<B, PaginatedState>(
         builder: (BuildContext context, PaginatedState state) {
-          final B bloc = context.bloc<B>();
+          final B bloc = context.watch<B>();
 
           Widget child;
 

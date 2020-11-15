@@ -34,7 +34,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   HarpyTheme get harpyTheme => HarpyTheme.fromData(themeData);
 
   static CustomThemeBloc of(BuildContext context) =>
-      context.bloc<CustomThemeBloc>();
+      context.watch<CustomThemeBloc>();
 
   /// Whether more background colors can be added.
   bool get canAddMoreBackgroundColors => themeData.backgroundColors.length < 5;

@@ -41,7 +41,7 @@ class AuthenticationBloc
   UserData authenticatedUser;
 
   static AuthenticationBloc of(BuildContext context) =>
-      context.bloc<AuthenticationBloc>();
+      context.watch<AuthenticationBloc>();
 
   @override
   Stream<AuthenticationState> mapEventToState(

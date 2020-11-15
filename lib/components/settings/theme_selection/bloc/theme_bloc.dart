@@ -20,7 +20,7 @@ import 'package:logging/logging.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(UninitializedState());
 
-  static ThemeBloc of(BuildContext context) => context.bloc<ThemeBloc>();
+  static ThemeBloc of(BuildContext context) => context.watch<ThemeBloc>();
 
   static final Logger _log = Logger('ThemeBloc');
 

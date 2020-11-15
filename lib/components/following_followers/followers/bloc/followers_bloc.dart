@@ -11,5 +11,5 @@ class FollowersBloc extends FollowingFollowersBloc {
   }
 
   static FollowersBloc of(BuildContext context) =>
-      context.bloc<FollowersBloc>();
+      context.watch<FollowersBloc>();
 }
