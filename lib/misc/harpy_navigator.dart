@@ -5,6 +5,7 @@ import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
+import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
 import 'package:harpy/components/replies/widgets/replies_screen.dart';
@@ -185,6 +186,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = UserProfileScreen(
         screenName: arguments['screenName'],
       );
+      break;
+    case ComposeScreen.route:
+      screen = const ComposeScreen();
       break;
     case FollowingScreen.route:
       screen = FollowingScreen(
