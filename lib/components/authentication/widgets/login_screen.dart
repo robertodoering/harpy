@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _startLogin() async {
     await _slideLoginKey.currentState.forward();
 
-    AuthenticationBloc.of(context).add(const LoginEvent());
+    context.read<AuthenticationBloc>().add(const LoginEvent());
   }
 
   Widget _buildText() {
