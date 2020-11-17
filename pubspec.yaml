@@ -32,6 +32,7 @@ dependencies:
   like_button: ^1.0.4
   line_awesome_flutter: ^1.0.1
   logging: ^0.11.4
+  mime_type: ^0.3.2
   provider: ^4.3.1
   sentry: ^3.0.1
   timeago: ^2.0.28
@@ -42,6 +43,7 @@ dependencies:
   # plugins
   connectivity: ^2.0.0
   device_info: '>=0.4.2+4 <2.0.0'
+  file_picker: ^2.0.13
   firebase_analytics: ^6.1.0
   flutter_downloader: ^1.5.2
   flutter_twitter_login:
