@@ -4,16 +4,17 @@ import 'package:harpy/core/service_locator.dart';
 
 /// The padding value based on the [LayoutPreferences].
 double get defaultPaddingValue => app<LayoutPreferences>().compactMode ? 8 : 16;
+double get defaultSmallPaddingValue => defaultPaddingValue / 2;
 
 /// A horizontal spacer widget based on the [LayoutPreferences].
 Widget get defaultHorizontalSpacer => SizedBox(width: defaultPaddingValue);
 Widget get defaultSmallHorizontalSpacer =>
-    SizedBox(width: defaultPaddingValue / 2);
+    SizedBox(width: defaultSmallPaddingValue);
 
 /// A vertical spacer widget based on the [LayoutPreferences].
 Widget get defaultVerticalSpacer => SizedBox(height: defaultPaddingValue);
 Widget get defaultSmallVerticalSpacer =>
-    SizedBox(height: defaultPaddingValue / 2);
+    SizedBox(height: defaultSmallPaddingValue);
 
 /// The [EdgeInsets] that uses the [LayoutPreferences] to create the insets.
 class DefaultEdgeInsets extends EdgeInsets {
