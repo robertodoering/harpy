@@ -12,8 +12,8 @@ import 'package:video_player/video_player.dart';
 ///
 /// The video representing the gif will loop after initializing and play on tap.
 class HarpyGifPlayer extends StatefulWidget {
-  const HarpyGifPlayer.fromUrl(
-    this.url, {
+  const HarpyGifPlayer.fromController(
+    this.controller, {
     this.thumbnail,
     this.thumbnailAspectRatio,
     this.autoplay = false,
@@ -28,9 +28,9 @@ class HarpyGifPlayer extends StatefulWidget {
     this.autoplay = false,
     this.onGifTap,
     this.allowVerticalOverflow = false,
-  }) : url = null;
+  }) : controller = null;
 
-  final String url;
+  final VideoPlayerController controller;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
@@ -55,9 +55,11 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   void initState() {
     super.initState();
 
-    _controller =
-        widget.model?.controller ?? VideoPlayerController.network(widget.url)
-          ..setLooping(true);
+    if (widget.model == null) {
+      _controller = widget.controller..setLooping(true);
+    } else {
+      _controller = widget.model.controller;
+    }
   }
 
   @override
