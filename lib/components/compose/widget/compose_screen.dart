@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/compose/bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/bloc/compose_event.dart';
+import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:harpy/components/compose/widget/content/compose_media.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 
@@ -24,14 +30,16 @@ class _ComposeScreenState extends State<ComposeScreen> {
     _controller = TextEditingController();
   }
 
-  Widget _buildActionRow() {
+  Widget _buildActionRow(ComposeBloc bloc) {
     return Row(
       children: <Widget>[
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(Icons.image),
           iconSize: 20,
-          onTap: () {},
+          onTap: () {
+            bloc.add(const PickTweetMediaEvent());
+          },
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
@@ -81,32 +89,57 @@ class _ComposeScreenState extends State<ComposeScreen> {
     );
   }
 
+  Widget _buildMedia(ComposeBloc bloc) {
+    return AnimatedSwitcher(
+      duration: kShortAnimationDuration,
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      child: bloc.hasMedia ? ComposeTweetMedia(bloc) : const SizedBox(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
 
-    return HarpyScaffold(
-      title: 'Compose Tweet',
-      body: Padding(
-        padding: DefaultEdgeInsets.all(),
-        child: Card(
-          elevation: 0,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: DefaultEdgeInsets.all(),
-                child: TweetAuthorRow(
-                  authBloc.authenticatedUser,
-                  enableUserTap: false,
+    return BlocProvider<ComposeBloc>(
+      create: (BuildContext context) => ComposeBloc(),
+      child: BlocBuilder<ComposeBloc, ComposeState>(
+        builder: (BuildContext context, ComposeState state) {
+          final ComposeBloc bloc = ComposeBloc.of(context);
+
+          return HarpyScaffold(
+            title: 'Compose Tweet',
+            body: Padding(
+              padding: DefaultEdgeInsets.all(),
+              child: Card(
+                elevation: 0,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          Padding(
+                            padding: DefaultEdgeInsets.all(),
+                            child: TweetAuthorRow(
+                              authBloc.authenticatedUser,
+                              enableUserTap: false,
+                            ),
+                          ),
+                          _buildTextField(theme),
+                          _buildMedia(bloc),
+                        ],
+                      ),
+                    ),
+                    _buildActionRow(bloc),
+                  ],
                 ),
               ),
-              _buildTextField(theme),
-              const Spacer(),
-              _buildActionRow(),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
