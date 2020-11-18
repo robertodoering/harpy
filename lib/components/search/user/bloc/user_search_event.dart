@@ -22,6 +22,8 @@ class SearchUsers extends LoadPaginatedData {
     final UserSearchBloc bloc = paginatedBloc as UserSearchBloc;
     bloc.lastQuery = query;
 
+    _log.fine('searching users with $query');
+
     final List<UserData> users = await bloc.userService
         .usersSearch(
           q: query,
