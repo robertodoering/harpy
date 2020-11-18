@@ -14,9 +14,10 @@ class ComposeTweetActionRow extends StatelessWidget {
   final TextEditingController controller;
 
   void _appendCharacter(String character) {
-    final String newText = controller.text.endsWith(' ')
-        ? '${controller.text}$character'
-        : '${controller.text} $character';
+    final String newText =
+        controller.text.isEmpty || controller.text.endsWith(' ')
+            ? '${controller.text}$character'
+            : '${controller.text} $character';
 
     controller.value = TextEditingValue(
       text: newText,
