@@ -63,24 +63,26 @@ class PickTweetMediaEvent extends ComposeEvent {
       allowMultiple: true,
     );
 
-    if (result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.image,
-    )) {
-      _addImages(bloc, result);
-    } else if (result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.gif,
-    )) {
-      _addGif(bloc, result);
-    } else if (result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.video,
-    )) {
-      _addVideo(bloc, result);
-    } else {
-      app<MessageService>().show('Invalid selection\n'
-          'Add up to 4 images, 1 gif or 1 video');
-    }
+    if (result != null) {
+      if (result.files.every(
+        (PlatformFile file) => findMediaType(file.path) == MediaType.image,
+      )) {
+        _addImages(bloc, result);
+      } else if (result.files.every(
+        (PlatformFile file) => findMediaType(file.path) == MediaType.gif,
+      )) {
+        _addGif(bloc, result);
+      } else if (result.files.every(
+        (PlatformFile file) => findMediaType(file.path) == MediaType.video,
+      )) {
+        _addVideo(bloc, result);
+      } else {
+        app<MessageService>().show('Invalid selection\n'
+            'Add up to 4 images, 1 gif or 1 video');
+      }
 
-    yield UpdatedComposeTweetState();
+      yield UpdatedComposeTweetState();
+    }
   }
 }
 
