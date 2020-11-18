@@ -40,18 +40,18 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
       if (text.isNotEmpty &&
           selection.baseOffset >= 0 &&
           selection.baseOffset == selection.extentOffset) {
-        // only start searching for suggestions when no change has been made
-        // after some time
-        await Future<void>.delayed(const Duration(milliseconds: 300));
+        // todo: when selection is inside a word, substring to next space
+        final List<String> content =
+            text.substring(0, selection.baseOffset).split(' ');
 
-        if (widget.controller.value.text == text) {
-          // todo: when selection is inside a word, substring to next space
-          final List<String> content =
-              text.substring(0, selection.baseOffset).split(' ');
+        final String last = content.last;
 
-          final String last = content.last;
+        if (last.startsWith(widget.identifier)) {
+          // only start searching for suggestions when no change has been made
+          // after some time
+          await Future<void>.delayed(const Duration(milliseconds: 500));
 
-          if (last.startsWith(widget.identifier)) {
+          if (widget.controller.value.text == text) {
             _changeShowSuggestions(true);
 
             final String query = last.replaceAll(widget.identifier, '');
@@ -60,9 +60,9 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
               widget.onSearch(query);
               _lastQuery = query;
             }
-          } else {
-            _changeShowSuggestions(false);
           }
+        } else {
+          _changeShowSuggestions(false);
         }
       } else {
         _changeShowSuggestions(false);
