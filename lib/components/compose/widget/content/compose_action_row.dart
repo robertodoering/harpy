@@ -13,6 +13,19 @@ class ComposeTweetActionRow extends StatelessWidget {
   final ComposeBloc bloc;
   final TextEditingController controller;
 
+  void _appendCharacter(String character) {
+    final String newText = controller.text.endsWith(' ')
+        ? '${controller.text}$character'
+        : '${controller.text} $character';
+
+    controller.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(
+        offset: newText.length,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -30,26 +43,26 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(Icons.add_a_photo),
           iconSize: 20,
-          onTap: () {},
+          onTap: null,
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('@', style: TextStyle(fontSize: 20)),
-          onTap: () => controller.text += '@',
+          onTap: () => _appendCharacter('@'),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('#', style: TextStyle(fontSize: 20)),
-          onTap: () => controller.text += '#',
+          onTap: () => _appendCharacter('#'),
         ),
         const Spacer(),
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(Icons.send),
           iconSize: 20,
-          onTap: () {},
+          onTap: null,
         ),
       ],
     );
