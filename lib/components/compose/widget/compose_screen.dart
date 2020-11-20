@@ -8,6 +8,7 @@ import 'package:harpy/components/compose/bloc/compose_state.dart';
 import 'package:harpy/components/compose/widget/content/compose_action_row.dart';
 import 'package:harpy/components/compose/widget/content/compose_media.dart';
 import 'package:harpy/components/compose/widget/content/compose_mentions.dart';
+import 'package:harpy/components/compose/widget/content/compose_trends.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 
@@ -92,6 +93,13 @@ class _ComposeScreenState extends State<ComposeScreen> {
                           Padding(
                             padding: DefaultEdgeInsets.all(),
                             child: ComposeTweetMentions(
+                              bloc,
+                              controller: _controller,
+                            ),
+                          ),
+                          Padding(
+                            padding: DefaultEdgeInsets.all(),
+                            child: ComposeTweetTrends(
                               bloc,
                               controller: _controller,
                             ),
