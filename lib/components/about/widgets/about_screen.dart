@@ -51,7 +51,6 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildIntroductionText(TextStyle linkStyle) {
     return Card(
-      margin: EdgeInsets.zero,
       child: Column(
         children: <Widget>[
           ListTile(
@@ -96,7 +95,6 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildProText(ThemeData theme, TextStyle linkStyle) {
     return Card(
-      margin: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -137,7 +135,6 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildRateAppText(ThemeData theme) {
     return Card(
-      margin: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -166,7 +163,6 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildDeveloperText(TextStyle linkStyle) {
     return Card(
-      margin: EdgeInsets.zero,
       child: Column(
         children: <Widget>[
           ListTile(

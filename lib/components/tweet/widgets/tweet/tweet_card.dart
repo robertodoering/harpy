@@ -16,8 +16,6 @@ class TweetCard extends StatelessWidget {
     return ListCardAnimation(
       key: key,
       child: Card(
-        margin: EdgeInsets.zero,
-        elevation: 0,
         child: Column(
           children: <Widget>[
             TweetCardContent(tweet),

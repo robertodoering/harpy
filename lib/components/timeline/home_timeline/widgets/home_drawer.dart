@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
@@ -76,7 +77,8 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.exit_to_app),
           title: const Text('Logout'),
-          onTap: () => AuthenticationBloc.of(context).add(const LogoutEvent()),
+          onTap: () =>
+              context.read<AuthenticationBloc>().add(const LogoutEvent()),
         ),
       ],
     );

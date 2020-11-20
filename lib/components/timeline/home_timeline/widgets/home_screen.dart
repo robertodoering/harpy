@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         builder: (BuildContext context) => PopupMenuButton<int>(
           onSelected: (int selection) {
             if (selection == 0) {
-              context.watch<HomeTimelineBloc>()
+              context.read<HomeTimelineBloc>()
                 ..add(const ClearTweetsEvents())
                 ..add(const UpdateHomeTimelineEvent());
             }

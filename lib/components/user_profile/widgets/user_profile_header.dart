@@ -18,7 +18,6 @@ class UserProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: DefaultEdgeInsets.only(left: true, right: true, top: true),
-      elevation: 0,
       child: Padding(
         padding: DefaultEdgeInsets.all(),
         child: Column(
