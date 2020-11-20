@@ -78,10 +78,10 @@ class HarpyNavigator {
     );
   }
 
-  void pushHomeScreen({
+  void pushReplacementHomeScreen({
     bool autoLogin = false,
   }) {
-    pushNamed(
+    pushReplacementNamed(
       HomeScreen.route,
       arguments: <String, dynamic>{
         'autoLogin': autoLogin,
