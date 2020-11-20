@@ -56,7 +56,7 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
 
             final String query = last.replaceAll(widget.identifier, '');
 
-            if (query.isNotEmpty && query != _lastQuery) {
+            if (query != _lastQuery) {
               widget.onSearch(query);
               _lastQuery = query;
             }

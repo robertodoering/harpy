@@ -45,7 +45,9 @@ class ComposeTweetMentions extends StatelessWidget {
             controller: controller,
             identifier: '@',
             onSearch: (String query) {
-              userSearchBloc.add(SearchUsers(query));
+              if (query.isNotEmpty) {
+                userSearchBloc.add(SearchUsers(query));
+              }
             },
             child: child,
           );
