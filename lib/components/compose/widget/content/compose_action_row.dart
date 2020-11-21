@@ -50,6 +50,7 @@ class ComposeTweetActionRow extends StatelessWidget {
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('@', style: TextStyle(fontSize: 20)),
+          // todo: also focus text field
           onTap: () => _appendCharacter('@'),
         ),
         defaultSmallHorizontalSpacer,
