@@ -5,12 +5,14 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
 import 'package:harpy/components/compose/widget/content/compose_action_row.dart';
 import 'package:harpy/components/compose/widget/content/compose_media.dart';
 import 'package:harpy/components/compose/widget/content/compose_mentions.dart';
 import 'package:harpy/components/compose/widget/content/compose_trends.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
+import 'package:harpy/core/regex/twitter_regex.dart';
 
 class ComposeScreen extends StatefulWidget {
   const ComposeScreen();
@@ -22,13 +24,22 @@ class ComposeScreen extends StatefulWidget {
 }
 
 class _ComposeScreenState extends State<ComposeScreen> {
-  TextEditingController _controller;
+  ComposeTextController _controller;
 
   @override
   void initState() {
     super.initState();
+  }
 
-    _controller = TextEditingController();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _controller = ComposeTextController(
+      textStyleMap: <RegExp, TextStyle>{
+        hashtagRegex: TextStyle(color: Theme.of(context).accentColor),
+      },
+    );
   }
 
   Widget _buildTextField(ThemeData theme) {
