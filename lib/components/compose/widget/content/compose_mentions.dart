@@ -43,7 +43,7 @@ class ComposeTweetMentions extends StatelessWidget {
           return ComposeTweetSuggestions(
             bloc,
             controller: controller,
-            identifier: '@',
+            selectionRegExp: RegExp('@'), // todo
             onSearch: (String query) {
               if (query.isNotEmpty) {
                 userSearchBloc.add(SearchUsers(query));

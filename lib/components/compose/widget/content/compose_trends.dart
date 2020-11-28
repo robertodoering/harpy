@@ -2,11 +2,13 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
 import 'package:harpy/components/compose/widget/content/compose_suggestions.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/trends/bloc/trends_bloc.dart';
 import 'package:harpy/components/trends/bloc/trends_event.dart';
 import 'package:harpy/components/trends/bloc/trends_state.dart';
+import 'package:harpy/core/regex/twitter_regex.dart';
 
 /// Displays global trends after typing `#`.
 class ComposeTweetTrends extends StatelessWidget {
@@ -16,7 +18,7 @@ class ComposeTweetTrends extends StatelessWidget {
   });
 
   final ComposeBloc bloc;
-  final TextEditingController controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,8 @@ class ComposeTweetTrends extends StatelessWidget {
           return ComposeTweetSuggestions(
             bloc,
             controller: controller,
-            identifier: '#',
-            onSearch: (String query) {
+            selectionRegExp: hashtagStartRegex,
+            onSearch: (String hashtag) {
               if (state is! RequestingTrendsState && !trendsBloc.hasTrends) {
                 trendsBloc.add(const FindTrendsEvent.global());
               }

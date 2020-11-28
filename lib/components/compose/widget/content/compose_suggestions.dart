@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
 
-/// Listens to the [controller] to start searching for suggestions using the
-/// [onSearch] callback after the [identifier] has been typed.
+/// Builds the [child] as suggestions when the [selectionRegExp] matches the
+/// selection.
 class ComposeTweetSuggestions extends StatefulWidget {
   const ComposeTweetSuggestions(
     this.bloc, {
     @required this.child,
     @required this.controller,
-    @required this.identifier,
+    @required this.selectionRegExp,
     @required this.onSearch,
   });
 
   final ComposeBloc bloc;
   final Widget child;
-  final TextEditingController controller;
-  final String identifier;
+  final ComposeTextController controller;
+  final RegExp selectionRegExp;
   final ValueChanged<String> onSearch;
 
   @override
@@ -27,47 +28,22 @@ class ComposeTweetSuggestions extends StatefulWidget {
 
 class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
   bool _showSuggestions = false;
-  String _lastQuery;
 
   @override
   void initState() {
     super.initState();
 
-    widget.controller.addListener(() async {
-      final String text = widget.controller.value.text;
-      final TextSelection selection = widget.controller.selection;
-
-      if (text.isNotEmpty &&
-          selection.baseOffset >= 0 &&
-          selection.baseOffset == selection.extentOffset) {
-        // todo: when selection is inside a word, substring to next space
-        final List<String> content =
-            text.substring(0, selection.baseOffset).split(' ');
-
-        final String last = content.last;
-
-        if (last.startsWith(widget.identifier)) {
-          // only start searching for suggestions when no change has been made
-          // after some time
-          await Future<void>.delayed(const Duration(milliseconds: 500));
-
-          if (widget.controller.value.text == text) {
-            _changeShowSuggestions(true);
-
-            final String query = last.replaceAll(widget.identifier, '');
-
-            if (query != _lastQuery) {
-              widget.onSearch(query);
-              _lastQuery = query;
-            }
-          }
-        } else {
-          _changeShowSuggestions(false);
-        }
-      } else {
+    widget.controller.selectionRecognizers[widget.selectionRegExp] =
+        (String value) {
+      if (value == null) {
+        // selection does not match
         _changeShowSuggestions(false);
+      } else {
+        // show suggestions
+        widget.onSearch(value);
+        _changeShowSuggestions(true);
       }
-    });
+    };
   }
 
   void _changeShowSuggestions(bool show) {
