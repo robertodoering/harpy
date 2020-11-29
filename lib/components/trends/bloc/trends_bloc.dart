@@ -18,6 +18,12 @@ class TrendsBloc extends Bloc<TrendsEvent, TrendsState> {
   bool get hasTrends =>
       trends?.isNotEmpty == true && trends.first.trends?.isNotEmpty == true;
 
+  List<Trend> get hashtags => hasTrends
+      ? trends.first.trends
+          .where((Trend trend) => trend.name.startsWith('#'))
+          .toList()
+      : <Trend>[];
+
   @override
   Stream<TrendsState> mapEventToState(
     TrendsEvent event,
