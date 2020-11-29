@@ -13,6 +13,7 @@ import 'package:harpy/components/compose/widget/content/compose_trends.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/core/regex/twitter_regex.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class ComposeScreen extends StatefulWidget {
   const ComposeScreen();
@@ -25,21 +26,38 @@ class ComposeScreen extends StatefulWidget {
 
 class _ComposeScreenState extends State<ComposeScreen> {
   ComposeTextController _controller;
+  FocusNode _focusNode;
+  int _keyboardListenerId;
 
   @override
   void initState() {
     super.initState();
+
+    _focusNode = FocusNode();
+    _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
+      onHide: _focusNode.unfocus,
+    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller = ComposeTextController(
+    _controller ??= ComposeTextController(
       textStyleMap: <RegExp, TextStyle>{
         hashtagRegex: TextStyle(color: Theme.of(context).accentColor),
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    KeyboardVisibilityNotification().removeListener(_keyboardListenerId);
+
+    _controller.dispose();
+    _focusNode.dispose();
   }
 
   Widget _buildTextField(ThemeData theme) {
@@ -47,6 +65,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
       child: TextField(
         controller: _controller,
+        focusNode: _focusNode,
         style: theme.textTheme.bodyText1,
         maxLines: null,
         decoration: const InputDecoration(
@@ -85,42 +104,45 @@ class _ComposeScreenState extends State<ComposeScreen> {
             title: 'Compose Tweet',
             body: Padding(
               padding: DefaultEdgeInsets.all(),
-              child: Card(
-                elevation: 0,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        children: <Widget>[
-                          Padding(
-                            padding: DefaultEdgeInsets.all(),
-                            child: TweetAuthorRow(
-                              authBloc.authenticatedUser,
-                              enableUserTap: false,
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+                child: Card(
+                  elevation: 0,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: <Widget>[
+                            Padding(
+                              padding: DefaultEdgeInsets.all(),
+                              child: TweetAuthorRow(
+                                authBloc.authenticatedUser,
+                                enableUserTap: false,
+                              ),
                             ),
-                          ),
-                          _buildTextField(theme),
-                          Padding(
-                            padding: DefaultEdgeInsets.all(),
-                            child: ComposeTweetMentions(
-                              bloc,
-                              controller: _controller,
+                            _buildTextField(theme),
+                            Padding(
+                              padding: DefaultEdgeInsets.all(),
+                              child: ComposeTweetMentions(
+                                bloc,
+                                controller: _controller,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: DefaultEdgeInsets.all(),
-                            child: ComposeTweetTrends(
-                              bloc,
-                              controller: _controller,
+                            Padding(
+                              padding: DefaultEdgeInsets.all(),
+                              child: ComposeTweetTrends(
+                                bloc,
+                                controller: _controller,
+                              ),
                             ),
-                          ),
-                          _buildMedia(bloc),
-                        ],
+                            _buildMedia(bloc),
+                          ],
+                        ),
                       ),
-                    ),
-                    ComposeTweetActionRow(bloc, controller: _controller),
-                  ],
+                      ComposeTweetActionRow(bloc, controller: _controller),
+                    ],
+                  ),
                 ),
               ),
             ),
