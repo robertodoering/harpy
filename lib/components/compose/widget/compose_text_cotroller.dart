@@ -23,6 +23,62 @@ class ComposeTextController extends TextEditingController {
   final Map<RegExp, ValueChanged<String>> selectionRecognizers =
       <RegExp, ValueChanged<String>>{};
 
+  void replaceSelection(String replacement) {
+    if (text.isNotEmpty &&
+        selection.baseOffset >= 0 &&
+        selection.baseOffset == selection.extentOffset) {
+      int selectionStart = selection.baseOffset - 1;
+      int selectionEnd = selection.baseOffset;
+
+      while (selectionStart >= 0) {
+        if (RegExp(r'\s').hasMatch(text[selectionStart])) {
+          break;
+        }
+
+        selectionStart--;
+      }
+
+      while (selectionEnd < text.length) {
+        if (RegExp(r'\s').hasMatch(text[selectionEnd])) {
+          break;
+        }
+
+        selectionEnd++;
+      }
+
+      final String textStart = text.substring(0, selectionStart + 1);
+      final String textEnd = text.substring(selectionEnd, text.length);
+
+      value = TextEditingValue(
+        text: '$textStart$replacement$textEnd',
+        selection: TextSelection.collapsed(
+          offset: selectionStart + 1 + replacement.length,
+        ),
+      );
+    }
+  }
+
+  void insertString(String string) {
+    if (selection.baseOffset < 0) {
+      value = TextEditingValue(
+        text: '$text$string',
+        selection: TextSelection.collapsed(
+          offset: selection.baseOffset + string.length,
+        ),
+      );
+    } else if (selection.baseOffset == selection.extentOffset) {
+      final String textStart = text.substring(0, selection.baseOffset);
+      final String textEnd = text.substring(selection.baseOffset);
+
+      value = TextEditingValue(
+        text: '$textStart$string$textEnd',
+        selection: TextSelection.collapsed(
+          offset: selection.baseOffset + string.length,
+        ),
+      );
+    }
+  }
+
   /// A listener that will fire the [selectionRecognizers] if a selected word
   /// matches the regex.
   void _listener() {
