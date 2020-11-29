@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
+import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
@@ -11,20 +12,15 @@ class ComposeTweetActionRow extends StatelessWidget {
   });
 
   final ComposeBloc bloc;
-  final TextEditingController controller;
+  final ComposeTextController controller;
 
-  void _appendCharacter(String character) {
-    final String newText =
-        controller.text.isEmpty || controller.text.endsWith(' ')
-            ? '${controller.text}$character'
-            : '${controller.text} $character';
+  void _insertCharacter(String character) {
+    if (controller.selection.baseOffset == controller.text.length &&
+        !controller.text.endsWith(' ')) {
+      character = ' $character';
+    }
 
-    controller.value = TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(
-        offset: newText.length,
-      ),
-    );
+    controller.insertString(character);
   }
 
   @override
@@ -51,13 +47,13 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           text: const Text('@', style: TextStyle(fontSize: 20)),
           // todo: also focus text field
-          onTap: () => _appendCharacter('@'),
+          onTap: () => _insertCharacter('@'),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('#', style: TextStyle(fontSize: 20)),
-          onTap: () => _appendCharacter('#'),
+          onTap: () => _insertCharacter('#'),
         ),
         const Spacer(),
         HarpyButton.flat(
