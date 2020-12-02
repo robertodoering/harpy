@@ -18,7 +18,6 @@ dependencies:
   dart_twitter_api:
     git:
       url: https://github.com/robertodoering/twitter_api
-      ref: trends
   downloads_path_provider: ^0.1.0
   flare_flutter: ^2.0.6
   flutter_bloc: ^6.1.1
