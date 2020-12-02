@@ -39,4 +39,32 @@ void main() {
       expect(hashtagStartRegex.hasMatch('#hashtag'), isTrue);
     });
   });
+
+  group('mention regex', () {
+    test('matches mentions', () {
+      expect(mentionRegex.hasMatch('@username'), isTrue);
+      expect(mentionRegex.hasMatch('@123'), isTrue);
+      expect(mentionRegex.hasMatch('@user_name123'), isTrue);
+      expect(mentionRegex.hasMatch('bad@username'), isFalse);
+      expect(mentionRegex.hasMatch('。@username'), isTrue);
+      expect(mentionRegex.hasMatch('これはOK @username'), isTrue);
+      expect(mentionRegex.hasMatch('これもOK。@username'), isTrue);
+      expect(mentionRegex.hasMatch('これはダメ@username'), isFalse);
+
+      expect(mentionRegex.hasMatch('@'), isFalse);
+      expect(mentionRegex.hasMatch('.@'), isFalse);
+      expect(mentionRegex.hasMatch('。@'), isFalse);
+    });
+  });
+
+  group('mention start regex', () {
+    test('matches the start of a mention', () {
+      expect(mentionStartRegex.hasMatch('@'), isTrue);
+      expect(mentionStartRegex.hasMatch('no@'), isFalse);
+      expect(mentionStartRegex.hasMatch('.@'), isTrue);
+      expect(mentionStartRegex.hasMatch('。@'), isTrue);
+      expect(mentionStartRegex.hasMatch('@'), isTrue);
+      expect(mentionStartRegex.hasMatch('@username'), isTrue);
+    });
+  });
 }

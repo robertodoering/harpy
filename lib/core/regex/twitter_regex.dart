@@ -17,3 +17,15 @@ final RegExp hashtagStartRegex = RegExp(
   caseSensitive: false,
   unicode: true,
 );
+
+final RegExp mentionRegex = RegExp(
+  // ignore: prefer_interpolation_to_compose_strings
+  _tagBeginGroup + r'(@{1}\w+)',
+  caseSensitive: false,
+);
+
+final RegExp mentionStartRegex = RegExp(
+  // ignore: prefer_interpolation_to_compose_strings
+  _tagBeginGroup + r'(@{1})',
+  caseSensitive: false,
+);
