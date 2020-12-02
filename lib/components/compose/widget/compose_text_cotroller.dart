@@ -82,7 +82,12 @@ class ComposeTextController extends TextEditingController {
   /// A listener that will fire the [selectionRecognizers] if a selected word
   /// matches the regex.
   void _listener() {
-    if (text.isNotEmpty &&
+    if (text.isEmpty) {
+      // reset selection recognizers when text got deleted
+      for (ValueChanged<String> recognizer in selectionRecognizers.values) {
+        recognizer(null);
+      }
+    } else if (text.isNotEmpty &&
         selection.baseOffset >= 0 &&
         selection.baseOffset == selection.extentOffset) {
       final String start =
