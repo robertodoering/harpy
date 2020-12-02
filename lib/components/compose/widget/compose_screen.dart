@@ -46,6 +46,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
     _controller ??= ComposeTextController(
       textStyleMap: <RegExp, TextStyle>{
         hashtagRegex: TextStyle(color: Theme.of(context).accentColor),
+        mentionRegex: TextStyle(color: Theme.of(context).accentColor),
       },
     );
   }
@@ -122,19 +123,13 @@ class _ComposeScreenState extends State<ComposeScreen> {
                               ),
                             ),
                             _buildTextField(theme),
-                            Padding(
-                              padding: DefaultEdgeInsets.all(),
-                              child: ComposeTweetMentions(
-                                bloc,
-                                controller: _controller,
-                              ),
+                            ComposeTweetMentions(
+                              bloc,
+                              controller: _controller,
                             ),
-                            Padding(
-                              padding: DefaultEdgeInsets.all(),
-                              child: ComposeTweetTrends(
-                                bloc,
-                                controller: _controller,
-                              ),
+                            ComposeTweetTrends(
+                              bloc,
+                              controller: _controller,
                             ),
                             _buildMedia(bloc),
                           ],

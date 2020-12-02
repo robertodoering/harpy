@@ -3,6 +3,7 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds the [child] as suggestions when the [selectionRegExp] matches the
 /// selection.
@@ -62,10 +63,13 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
     Widget child;
 
     if (widget.child != null && _showSuggestions) {
-      child = Card(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: maxHeight),
-          child: widget.child,
+      child = Padding(
+        padding: DefaultEdgeInsets.all(),
+        child: Card(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            child: widget.child,
+          ),
         ),
       );
     } else {
