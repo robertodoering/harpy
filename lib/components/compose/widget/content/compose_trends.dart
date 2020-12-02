@@ -94,7 +94,7 @@ class TrendSuggestions extends StatelessWidget {
                     color: theme.accentColor,
                   ),
                 ),
-                onTap: () => controller.replaceSelection(trend.name),
+                onTap: () => controller.replaceSelection('${trend.name} '),
               ),
           ],
         )
