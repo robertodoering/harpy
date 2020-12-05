@@ -41,6 +41,7 @@ void runHarpy(Flavor flavor) {
 class Harpy extends StatelessWidget {
   static Flavor flavor;
 
+  // todo: use compile-time argument for flavors instead of different targets
   static bool get isFree => flavor == Flavor.free;
   static bool get isPro => flavor == Flavor.pro;
 
