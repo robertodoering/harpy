@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
+import 'package:harpy/core/api/twitter/media_upload_service.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:logging/logging.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:video_compress/video_compress.dart';
 
 @immutable
 abstract class ComposeEvent {
@@ -95,6 +101,71 @@ class ClearTweetMediaEvent extends ComposeEvent {
     ComposeBloc bloc,
   }) async* {
     bloc.media.clear();
+
+    yield UpdatedComposeTweetState();
+  }
+}
+
+class SendTweetEvent extends ComposeEvent {
+  SendTweetEvent(this.status);
+
+  final String status;
+
+  final MediaUploadService mediaUploadService = app<MediaUploadService>();
+  final MessageService messageService = app<MessageService>();
+
+  static final Logger _log = Logger('SendTweetEvent');
+
+  Future<List<String>> _uploadMedia(ComposeBloc bloc) async {
+    if (bloc.hasVideo) {
+      final MediaInfo video = await VideoCompress.compressVideo(
+        bloc.media.first.path,
+      ).catchError(silentErrorHandler);
+
+      return Future.wait<String>(<Future<String>>[
+        mediaUploadService.upload(File(video.path)),
+      ]);
+    } else {
+      return Future.wait<String>(
+        bloc.media.map(
+          (PlatformFile file) => mediaUploadService.upload(File(file.path)),
+        ),
+      );
+    }
+  }
+
+  @override
+  Stream<ComposeState> applyAsync({
+    ComposeState currentState,
+    ComposeBloc bloc,
+  }) async* {
+    List<String> mediaIds;
+
+    // todo: open dialog with upload status
+
+    if (bloc.hasMedia) {
+      yield UploadingMediaState();
+
+      _log.fine('uploading media');
+
+      mediaIds = await _uploadMedia(bloc).catchError(silentErrorHandler);
+
+      _log.fine('${mediaIds.length} media uploaded');
+
+      if (mediaIds == null) {
+        messageService.show('Unable to upload media');
+        return;
+      }
+    }
+
+    yield SendingTweetState();
+
+    // await bloc.tweetService.update(
+    //   status: status,
+    //   mediaIds: mediaIds,
+    // );
+
+    messageService.show('Tweet sent');
 
     yield UpdatedComposeTweetState();
   }

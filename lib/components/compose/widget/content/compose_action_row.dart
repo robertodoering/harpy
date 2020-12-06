@@ -48,7 +48,7 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(Icons.send),
           iconSize: 20,
-          onTap: null,
+          onTap: () => bloc.add(SendTweetEvent(controller.text)),
         ),
       ],
     );

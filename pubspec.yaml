@@ -54,6 +54,7 @@ dependencies:
   package_info: '>=0.4.1 <2.0.0'
   permission_handler: ^5.0.1+1
   shared_preferences: '>=0.5.8 <2.0.0'
+  video_compress: ^2.1.1
   video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:
