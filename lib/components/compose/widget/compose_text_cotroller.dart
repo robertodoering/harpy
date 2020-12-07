@@ -115,7 +115,7 @@ class ComposeTextController extends TextEditingController {
 
     text.splitMapJoin(
       RegExp(
-        textStyleMap.keys.map((e) => e.pattern).join('|'),
+        textStyleMap.keys.map((RegExp regExp) => regExp.pattern).join('|'),
         unicode: true,
         caseSensitive: false,
       ),

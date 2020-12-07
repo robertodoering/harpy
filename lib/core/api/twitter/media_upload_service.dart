@@ -101,7 +101,7 @@ class MediaUploadService {
 
   /// Splits the [list] into smaller lists with a max [length].
   List<List<T>> splitList<T>(List<T> list, int length) {
-    final List<List<T>> chunks = [];
+    final List<List<T>> chunks = <List<T>>[];
     Iterable<T> chunk;
 
     do {
