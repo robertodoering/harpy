@@ -102,6 +102,9 @@ class PostTweet extends PostTweetEvent {
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
         .catchError(silentErrorHandler);
 
+    // todo: instead of using the silent error handler, parse the error message
+    //  in the response
+
     if (sentStatus != null) {
       yield StatusSuccessfullyUpdated();
     } else {
