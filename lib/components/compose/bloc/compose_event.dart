@@ -1,16 +1,9 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
-import 'package:harpy/core/api/network_error_handler.dart';
-import 'package:harpy/core/api/twitter/media_upload_service.dart';
-import 'package:harpy/core/api/twitter/media_video_converter.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
-import 'package:logging/logging.dart';
-import 'package:mime_type/mime_type.dart';
 
 @immutable
 abstract class ComposeEvent {
@@ -24,7 +17,9 @@ abstract class ComposeEvent {
 
 /// Opens a [FilePicker] for selecting media files.
 ///
-/// Selected files will be verified and added to the [ComposeBloc.media].
+/// Selected files will be handled and added to the [ComposeBloc.media].
+///
+/// A message will be shown when an invalid selection is made.
 class PickTweetMediaEvent extends ComposeEvent {
   const PickTweetMediaEvent();
 
@@ -32,6 +27,7 @@ class PickTweetMediaEvent extends ComposeEvent {
     List<PlatformFile> newImages = List<PlatformFile>.from(result.files);
 
     if (bloc.hasImages) {
+      // add the new images to the existing ones
       newImages = List<PlatformFile>.from(bloc.media)..addAll(newImages);
     }
 
@@ -92,6 +88,7 @@ class PickTweetMediaEvent extends ComposeEvent {
   }
 }
 
+/// Removes the references to the previously attached media.
 class ClearTweetMediaEvent extends ComposeEvent {
   const ClearTweetMediaEvent();
 
@@ -103,27 +100,5 @@ class ClearTweetMediaEvent extends ComposeEvent {
     bloc.media.clear();
 
     yield UpdatedComposeTweetState();
-  }
-}
-
-enum MediaType {
-  image,
-  gif,
-  video,
-}
-
-MediaType findMediaType(String path) {
-  final String mimeType = mime(path);
-
-  if (mimeType == null) {
-    return null;
-  } else if (mimeType.startsWith('video')) {
-    return MediaType.video;
-  } else if (mimeType == 'image/gif') {
-    return MediaType.gif;
-  } else if (mimeType.startsWith('image')) {
-    return MediaType.image;
-  } else {
-    return null;
   }
 }

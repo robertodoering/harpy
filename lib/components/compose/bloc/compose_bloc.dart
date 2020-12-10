@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:mime_type/mime_type.dart';
 
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc() : super(InitialComposeTweetState());
@@ -47,5 +48,28 @@ class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
     ComposeEvent event,
   ) async* {
     yield* event.applyAsync(currentState: state, bloc: this);
+  }
+}
+
+enum MediaType {
+  image,
+  gif,
+  video,
+}
+
+/// Uses [mime] to find the [MediaType] from a file path.
+MediaType findMediaType(String path) {
+  final String mimeType = mime(path);
+
+  if (mimeType == null) {
+    return null;
+  } else if (mimeType.startsWith('video')) {
+    return MediaType.video;
+  } else if (mimeType == 'image/gif') {
+    return MediaType.gif;
+  } else if (mimeType.startsWith('image')) {
+    return MediaType.image;
+  } else {
+    return null;
   }
 }
