@@ -71,11 +71,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
     );
   }
 
-  Widget _buildCard(
-    AuthenticationBloc authBloc,
-    ThemeData theme,
-    ComposeBloc bloc,
-  ) {
+  Widget _buildCard(AuthenticationBloc authBloc, ComposeBloc bloc) {
     return Card(
       elevation: 0,
       child: Column(
@@ -109,7 +105,6 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
 
     return BlocProvider<ComposeBloc>(
@@ -124,7 +119,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
               padding: DefaultEdgeInsets.all(),
               child: GestureDetector(
                 onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-                child: _buildCard(authBloc, theme, bloc),
+                child: _buildCard(authBloc, bloc),
               ),
             ),
           );
