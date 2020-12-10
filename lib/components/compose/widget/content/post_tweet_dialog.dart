@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
@@ -20,7 +21,13 @@ class PostTweetDialog extends StatelessWidget {
   final ComposeBloc composeBloc;
 
   Widget _buildStateMessage(PostTweetState state) {
-    return Text(state.message);
+    return AnimatedSwitcher(
+      duration: kShortAnimationDuration ~/ 2,
+      child: Text(
+        state.message,
+        key: Key(state.message),
+      ),
+    );
   }
 
   Widget _buildLoading(PostTweetBloc bloc) {
