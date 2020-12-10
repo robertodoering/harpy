@@ -9,6 +9,7 @@ import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
 import 'package:harpy/components/compose/widget/content/compose_action_row.dart';
 import 'package:harpy/components/compose/widget/content/compose_media.dart';
 import 'package:harpy/components/compose/widget/content/compose_mentions.dart';
+import 'package:harpy/components/compose/widget/content/compose_text_field.dart';
 import 'package:harpy/components/compose/widget/content/compose_trends.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
@@ -61,24 +62,6 @@ class _ComposeScreenState extends State<ComposeScreen> {
     _focusNode.dispose();
   }
 
-  Widget _buildTextField(ThemeData theme) {
-    return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
-      child: TextField(
-        controller: _controller,
-        focusNode: _focusNode,
-        style: theme.textTheme.bodyText1,
-        maxLines: null,
-        decoration: const InputDecoration(
-          hintText: "What's happening?",
-          isDense: true,
-          contentPadding: EdgeInsets.zero,
-          border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-
   Widget _buildMedia(ComposeBloc bloc) {
     return AnimatedSwitcher(
       duration: kShortAnimationDuration,
@@ -108,7 +91,10 @@ class _ComposeScreenState extends State<ComposeScreen> {
                     enableUserTap: false,
                   ),
                 ),
-                _buildTextField(theme),
+                ComposeTextField(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                ),
                 ComposeTweetMentions(bloc, controller: _controller),
                 ComposeTweetTrends(bloc, controller: _controller),
                 _buildMedia(bloc),
