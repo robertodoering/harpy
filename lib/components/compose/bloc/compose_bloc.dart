@@ -1,15 +1,11 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
-import 'package:harpy/core/service_locator.dart';
 
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc() : super(InitialComposeTweetState());
-
-  final TweetService tweetService = app<TwitterApi>().tweetService;
 
   static ComposeBloc of(BuildContext context) => context.watch<ComposeBloc>();
 
@@ -31,6 +27,20 @@ class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   /// Whether the media contains a single video.
   bool get hasVideo =>
       media.length == 1 && findMediaType(media.first.path) == MediaType.video;
+
+  /// Returns the [MediaType] of the attached media or `null` if no media has
+  /// been attached.
+  MediaType get mediaType {
+    if (hasImages) {
+      return MediaType.image;
+    } else if (hasGif) {
+      return MediaType.gif;
+    } else if (hasVideo) {
+      return MediaType.video;
+    } else {
+      return null;
+    }
+  }
 
   @override
   Stream<ComposeState> mapEventToState(
