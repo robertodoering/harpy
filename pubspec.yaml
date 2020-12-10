@@ -47,14 +47,15 @@ dependencies:
   device_info: '>=0.4.2+4 <2.0.0'
   file_picker: ^2.0.13
   firebase_analytics: ^6.1.0
+  flutter_ffmpeg: ^0.3.0
   flutter_downloader: ^1.5.2
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
   keyboard_visibility: ^0.5.6
   package_info: '>=0.4.1 <2.0.0'
+  path_provider: ^1.6.24
   permission_handler: ^5.0.1+1
   shared_preferences: '>=0.5.8 <2.0.0'
-  video_compress: ^2.1.1
   video_player: '>=0.10.11+2 <2.0.0'
 
 dev_dependencies:

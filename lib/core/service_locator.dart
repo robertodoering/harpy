@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/api/twitter/media_upload_service.dart';
+import 'package:harpy/core/api/twitter/media_video_converter.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/download_service.dart';
@@ -46,6 +47,7 @@ void setupServices() {
     ..registerLazySingleton<AnalyticsService>(() => AnalyticsService())
     ..registerLazySingleton<DownloadService>(() => DownloadService())
     ..registerLazySingleton<MediaUploadService>(() => MediaUploadService())
+    ..registerLazySingleton<MediaVideoConverter>(() => MediaVideoConverter())
 
     // preferences
     ..registerLazySingleton<HarpyPreferences>(() => HarpyPreferences())
