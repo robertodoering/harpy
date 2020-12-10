@@ -26,12 +26,13 @@ class ComposeTweetActionRow extends StatelessWidget {
           onTap: () => bloc.add(const PickTweetMediaEvent()),
         ),
         defaultSmallHorizontalSpacer,
-        HarpyButton.flat(
-          padding: DefaultEdgeInsets.all(),
-          icon: const Icon(Icons.add_a_photo),
-          iconSize: 20,
-          onTap: null,
-        ),
+        // todo: implement adding new photos
+        // HarpyButton.flat(
+        //   padding: DefaultEdgeInsets.all(),
+        //   icon: const Icon(Icons.add_a_photo),
+        //   iconSize: 20,
+        //   onTap: null,
+        // ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
