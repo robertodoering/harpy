@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/core/regex/common_regex.dart';
 
 /// A [TextEditingController] for the [ComposeScreen].
 class ComposeTextController extends TextEditingController {
@@ -31,7 +32,7 @@ class ComposeTextController extends TextEditingController {
       int selectionEnd = selection.baseOffset;
 
       while (selectionStart >= 0) {
-        if (RegExp(r'\s').hasMatch(text[selectionStart])) {
+        if (whitespaceRegex.hasMatch(text[selectionStart])) {
           break;
         }
 
@@ -39,7 +40,7 @@ class ComposeTextController extends TextEditingController {
       }
 
       while (selectionEnd < text.length) {
-        if (RegExp(r'\s').hasMatch(text[selectionEnd])) {
+        if (whitespaceRegex.hasMatch(text[selectionEnd])) {
           break;
         }
 
@@ -91,10 +92,10 @@ class ComposeTextController extends TextEditingController {
         selection.baseOffset >= 0 &&
         selection.baseOffset == selection.extentOffset) {
       final String start =
-          text.substring(0, selection.baseOffset).split(RegExp(r'\s')).last;
+          text.substring(0, selection.baseOffset).split(whitespaceRegex).last;
 
       final String end =
-          text.substring(selection.baseOffset).split(RegExp(r'\s')).first;
+          text.substring(selection.baseOffset).split(whitespaceRegex).first;
 
       final String word = '$start$end'.trim();
 
