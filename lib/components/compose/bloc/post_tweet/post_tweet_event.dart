@@ -84,6 +84,8 @@ class PostTweet extends PostTweetEvent {
       }
     }
 
+    _log.fine('updating status');
+
     yield UpdatingStatusState();
 
     final TweetData sentStatus = await bloc.tweetService
