@@ -88,6 +88,39 @@ class _ComposeScreenState extends State<ComposeScreen> {
     );
   }
 
+  Widget _buildCard(
+    AuthenticationBloc authBloc,
+    ThemeData theme,
+    ComposeBloc bloc,
+  ) {
+    return Card(
+      elevation: 0,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Padding(
+                  padding: DefaultEdgeInsets.all(),
+                  child: TweetAuthorRow(
+                    authBloc.authenticatedUser,
+                    enableUserTap: false,
+                  ),
+                ),
+                _buildTextField(theme),
+                ComposeTweetMentions(bloc, controller: _controller),
+                ComposeTweetTrends(bloc, controller: _controller),
+                _buildMedia(bloc),
+              ],
+            ),
+          ),
+          ComposeTweetActionRow(bloc, controller: _controller),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -99,46 +132,13 @@ class _ComposeScreenState extends State<ComposeScreen> {
         builder: (BuildContext context, ComposeState state) {
           final ComposeBloc bloc = ComposeBloc.of(context);
 
-          // todo: focus text field when card is tapped
-
           return HarpyScaffold(
             title: 'Compose Tweet',
             body: Padding(
               padding: DefaultEdgeInsets.all(),
               child: GestureDetector(
                 onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-                child: Card(
-                  elevation: 0,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          children: <Widget>[
-                            Padding(
-                              padding: DefaultEdgeInsets.all(),
-                              child: TweetAuthorRow(
-                                authBloc.authenticatedUser,
-                                enableUserTap: false,
-                              ),
-                            ),
-                            _buildTextField(theme),
-                            ComposeTweetMentions(
-                              bloc,
-                              controller: _controller,
-                            ),
-                            ComposeTweetTrends(
-                              bloc,
-                              controller: _controller,
-                            ),
-                            _buildMedia(bloc),
-                          ],
-                        ),
-                      ),
-                      ComposeTweetActionRow(bloc, controller: _controller),
-                    ],
-                  ),
-                ),
+                child: _buildCard(authBloc, theme, bloc),
               ),
             ),
           );
