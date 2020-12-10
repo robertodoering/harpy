@@ -30,6 +30,7 @@ dependencies:
     # todo: use pub version when flutter 1.22.0 fix gets released
     git: https://github.com/knopp/flutter_reorderable_list
   get_it: ^5.0.1
+  humanize: ^0.3.0
   intl : ^0.16.1
   like_button: ^1.0.4
   line_awesome_flutter: ^1.0.1

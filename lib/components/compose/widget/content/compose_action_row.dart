@@ -3,6 +3,7 @@ import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
 import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/content/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
@@ -48,7 +49,14 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(Icons.send),
           iconSize: 20,
-          onTap: () => bloc.add(SendTweetEvent(controller.text)),
+          onTap: () => showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => PostTweetDialog(
+              text: controller.text,
+              composeBloc: bloc,
+            ),
+          ),
         ),
       ],
     );
