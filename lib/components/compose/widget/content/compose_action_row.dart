@@ -46,20 +46,53 @@ class ComposeTweetActionRow extends StatelessWidget {
           onTap: () => controller.insertString('#'),
         ),
         const Spacer(),
-        HarpyButton.flat(
-          padding: DefaultEdgeInsets.all(),
-          icon: const Icon(Icons.send),
-          iconSize: 20,
-          onTap: () => showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) => PostTweetDialog(
-              text: controller.text,
-              composeBloc: bloc,
-            ),
-          ),
-        ),
+        PostTweetButton(controller: controller, bloc: bloc),
       ],
+    );
+  }
+}
+
+class PostTweetButton extends StatefulWidget {
+  const PostTweetButton({
+    Key key,
+    @required this.controller,
+    @required this.bloc,
+  }) : super(key: key);
+
+  final ComposeTextController controller;
+  final ComposeBloc bloc;
+
+  @override
+  _PostTweetButtonState createState() => _PostTweetButtonState();
+}
+
+class _PostTweetButtonState extends State<PostTweetButton> {
+  @override
+  void initState() {
+    super.initState();
+
+    widget.controller.addListener(() => setState(() {}));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool canTweet =
+        widget.bloc.hasMedia || widget.controller.text.isNotEmpty;
+
+    return HarpyButton.flat(
+      padding: DefaultEdgeInsets.all(),
+      icon: const Icon(Icons.send),
+      iconSize: 20,
+      onTap: canTweet
+          ? () => showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) => PostTweetDialog(
+                  text: widget.controller.text,
+                  composeBloc: widget.bloc,
+                ),
+              )
+          : null,
     );
   }
 }
