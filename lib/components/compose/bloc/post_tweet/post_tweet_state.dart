@@ -47,7 +47,7 @@ class UploadingMediaState extends PostTweetState {
 /// The event when the tweet is being sent to the twitter api.
 class UpdatingStatusState extends PostTweetState {
   @override
-  String get message => 'Tweeting...';
+  String get message => 'Sending tweet...';
 }
 
 /// The state when the tweet hast been posted successfully.
@@ -71,6 +71,7 @@ class UploadMediaError extends PostTweetError {
 }
 
 /// The state when posting the tweet failed.
+// todo: parse response error message
 class UpdatingStatusError extends PostTweetError {
   @override
   String get message => 'Error sending tweet.';
