@@ -21,6 +21,11 @@ abstract class PostTweetEvent {
   });
 }
 
+/// Posts the tweet for the authenticated user.
+///
+/// The attached media (if any) is uploaded separately before posting the tweet.
+/// If the attached media is a video, it is converted beforehand to comply with
+/// the twitter requirements.
 class PostTweet extends PostTweetEvent {
   const PostTweet(this.text);
 

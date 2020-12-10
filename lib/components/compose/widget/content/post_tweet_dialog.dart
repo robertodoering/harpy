@@ -10,7 +10,9 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
-/// A non-dismissible dialog that uses the [PostTweetBloc] to post a tweet.
+/// A dialog that uses the [PostTweetBloc] to post a tweet.
+///
+/// While posting the tweet is in progress, the dialog is not dismissible.
 class PostTweetDialog extends StatelessWidget {
   const PostTweetDialog({
     @required this.text,
