@@ -89,6 +89,10 @@ class PostTweet extends PostTweetEvent {
       }
     }
 
+    if (bloc.state is UploadMediaError) {
+      return;
+    }
+
     _log.fine('updating status');
 
     yield UpdatingStatusState();
