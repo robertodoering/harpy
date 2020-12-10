@@ -93,15 +93,20 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
     Widget child;
     double aspectRatio;
 
-    if (widget.bloc.hasImages) {
-      child = _buildImages();
-    } else if (widget.bloc.hasGif) {
-      child = _buildGif();
-    } else if (widget.bloc.hasVideo) {
-      child = _buildVideo();
-      aspectRatio = _controller.value?.aspectRatio ?? 16 / 9;
-    } else {
-      child = const SizedBox();
+    switch (widget.bloc.mediaType) {
+      case MediaType.image:
+        child = _buildImages();
+        break;
+      case MediaType.gif:
+        child = _buildGif();
+        break;
+      case MediaType.video:
+        child = _buildVideo();
+        aspectRatio = _controller.value?.aspectRatio ?? 16 / 9;
+        break;
+      default:
+        child = const SizedBox();
+        break;
     }
 
     return Padding(
