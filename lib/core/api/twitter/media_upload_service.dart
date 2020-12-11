@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:mime_type/mime_type.dart';
 
@@ -16,7 +17,10 @@ class MediaUploadService {
   /// Returns `null` if the [media] file is invalid.
   ///
   /// Throws an exception when a request returns an error or times out.
-  Future<String> upload(File media) async {
+  Future<String> upload(
+    File media, {
+    MediaType type,
+  }) async {
     final List<int> mediaBytes = media.readAsBytesSync();
     final int totalBytes = mediaBytes.length;
     final String mediaType = mime(media.path);
@@ -30,6 +34,7 @@ class MediaUploadService {
     final UploadInit uploadInit = await twitterApi.mediaService.uploadInit(
       totalBytes: totalBytes,
       mediaType: mediaType,
+      mediaCategory: mediaCategoryFromType(type),
     );
 
     final String mediaId = uploadInit.mediaIdString;
@@ -96,6 +101,23 @@ class MediaUploadService {
       );
     } else {
       return null;
+    }
+  }
+
+  String mediaCategoryFromType(MediaType type) {
+    switch (type) {
+      case MediaType.image:
+        return 'TWEET_IMAGE';
+        break;
+      case MediaType.gif:
+        return 'TWEET_GIF';
+        break;
+      case MediaType.video:
+        return 'TWEET_VIDEO';
+        break;
+      default:
+        return null;
+        break;
     }
   }
 

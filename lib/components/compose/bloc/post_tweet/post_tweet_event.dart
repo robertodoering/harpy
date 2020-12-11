@@ -64,8 +64,10 @@ class PostTweet extends PostTweetEvent {
     try {
       for (int i = 0; i < mediaFiles.length; i++) {
         yield UploadingMediaState(index: i, type: bloc.composeBloc.mediaType);
-        final String mediaId =
-            await bloc.mediaUploadService.upload(mediaFiles[i]);
+        final String mediaId = await bloc.mediaUploadService.upload(
+          mediaFiles[i],
+          type: bloc.composeBloc.mediaType,
+        );
 
         if (mediaId != null) {
           bloc.mediaIds ??= <String>[];

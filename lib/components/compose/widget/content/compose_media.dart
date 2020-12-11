@@ -49,7 +49,19 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
             File(widget.bloc.media.first.path),
           );
           await _controller.initialize();
-          setState(() {});
+          if (_controller.value.duration > const Duration(seconds: 140)) {
+            // video too long
+            widget.bloc.add(const ClearTweetMediaEvent());
+            app<MessageService>()
+                .show('Video must be shorter than 140 seconds');
+          } else if (_controller.value.duration <
+              const Duration(milliseconds: 500)) {
+            // video too short
+            widget.bloc.add(const ClearTweetMediaEvent());
+            app<MessageService>().show('Video must be longer than 0.5 seconds');
+          } else {
+            setState(() {});
+          }
         } catch (e) {
           // invalid video
           widget.bloc.add(const ClearTweetMediaEvent());
