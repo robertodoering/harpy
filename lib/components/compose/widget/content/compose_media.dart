@@ -9,6 +9,8 @@ import 'package:harpy/components/compose/bloc/compose_event.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media_layout.dart';
+import 'package:harpy/core/message_service.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:video_player/video_player.dart';
 
@@ -38,13 +40,21 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
     _initController();
   }
 
-  void _initController() {
+  Future<void> _initController() async {
     if (widget.bloc.hasVideo) {
       if (_controller == null ||
           !_controller.dataSource.contains(widget.bloc.media.first.path)) {
-        _controller = VideoPlayerController.file(
-          File(widget.bloc.media.first.path),
-        )..initialize().then((_) => setState(() {}));
+        try {
+          _controller = VideoPlayerController.file(
+            File(widget.bloc.media.first.path),
+          );
+          await _controller.initialize();
+          setState(() {});
+        } catch (e) {
+          // invalid video
+          widget.bloc.add(const ClearTweetMediaEvent());
+          app<MessageService>().show('Invalid video');
+        }
       }
     } else {
       _controller = null;
@@ -102,7 +112,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
         break;
       case MediaType.video:
         child = _buildVideo();
-        aspectRatio = _controller.value?.aspectRatio ?? 16 / 9;
+        aspectRatio = _controller?.value?.aspectRatio ?? 16 / 9;
         break;
       default:
         child = const SizedBox();
