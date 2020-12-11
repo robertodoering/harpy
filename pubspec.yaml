@@ -57,7 +57,7 @@ dependencies:
   path_provider: ^1.6.24
   permission_handler: ^5.0.1+1
   shared_preferences: '>=0.5.8 <2.0.0'
-  video_player: '>=0.10.11+2 <2.0.0'
+  video_player: ^1.0.1
 
 dev_dependencies:
   bloc_test: ^7.1.0
