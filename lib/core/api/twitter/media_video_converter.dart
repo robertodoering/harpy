@@ -24,6 +24,8 @@ class MediaVideoConverter {
     _log.fine(
         'converting video from: $sourcePath to destinationPath: $outputPath');
 
+    // todo: also limit length of video
+
     final int result = await _ffmpeg.execute(
       // override existing output
       '-y '
