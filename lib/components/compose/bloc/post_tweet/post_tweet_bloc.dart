@@ -39,7 +39,7 @@ class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
   bool get postingSuccessful => state is StatusSuccessfullyUpdated;
 
   /// Whether posting the tweet failed.
-  bool get postingFailed => state is ConvertingVideoError;
+  bool get postingFailed => state is PostTweetError;
 
   @override
   Stream<PostTweetState> mapEventToState(

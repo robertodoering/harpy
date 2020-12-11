@@ -72,7 +72,7 @@ class PostTweet extends PostTweetEvent {
           bloc.mediaIds.add(mediaId);
         }
       }
-      _log.fine('${bloc.mediaIds.length} media uploaded');
+      _log.fine('${bloc.mediaIds?.length} media uploaded');
     } catch (e, st) {
       _log.severe('error while uploading media', e, st);
       yield UploadMediaError();
@@ -90,7 +90,7 @@ class PostTweet extends PostTweetEvent {
       }
     }
 
-    if (bloc.state is UploadMediaError) {
+    if (bloc.state is PostTweetError) {
       return;
     }
 
