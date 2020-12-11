@@ -68,6 +68,7 @@ class PostTweet extends PostTweetEvent {
             await bloc.mediaUploadService.upload(mediaFiles[i]);
 
         if (mediaId != null) {
+          bloc.mediaIds ??= <String>[];
           bloc.mediaIds.add(mediaId);
         }
       }
