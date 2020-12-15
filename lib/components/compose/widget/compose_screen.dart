@@ -5,7 +5,7 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_state.dart';
-import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/content/compose_action_row.dart';
 import 'package:harpy/components/compose/widget/content/compose_media.dart';
 import 'package:harpy/components/compose/widget/content/compose_mentions.dart';

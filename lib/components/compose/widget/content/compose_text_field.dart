@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class ComposeTextField extends StatelessWidget {

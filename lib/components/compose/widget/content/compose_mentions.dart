@@ -6,7 +6,7 @@ import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_bloc.dart';
 import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_event.dart';
 import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_state.dart';
-import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/content/compose_suggestions.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
-import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/content/compose_suggestions.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/trends/bloc/trends_bloc.dart';
