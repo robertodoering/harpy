@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     if (_showFab) {
       return FloatingActionButton(
         onPressed: () => app<HarpyNavigator>().pushNamed(ComposeScreen.route),
-        child: const Icon(LineAwesomeIcons.alternate_feather),
+        child: const Icon(LineAwesomeIcons.alternate_feather, size: 30),
       );
     } else {
       return null;
