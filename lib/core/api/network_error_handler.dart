@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:harpy/core/message_service.dart';
@@ -83,6 +84,25 @@ Duration _limitResetDuration(Response response) {
       limitReset * 1000,
     ).difference(DateTime.now());
   } catch (e) {
+    return null;
+  }
+}
+
+/// Returns the error message of an error response or `null` if the error was
+/// unable to be parsed.
+///
+/// Example response:
+/// {"errors":[{"code":324,"message":"Duration too long, maximum:30000,
+/// actual:30528 (MediaId: snf:1338982061273714688)"}]}
+String responseErrorMessage(String body) {
+  try {
+    return jsonDecode(body)['errors'][0]['message'];
+  } catch (e, st) {
+    _log.warning(
+      'unable to parse error message from response body: $body',
+      e,
+      st,
+    );
     return null;
   }
 }

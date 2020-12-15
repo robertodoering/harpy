@@ -9,6 +9,7 @@ import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/media_video_converter.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 @immutable
@@ -105,6 +106,9 @@ class PostTweet extends PostTweetEvent {
 
     yield UpdatingStatusState();
 
+    // additional info that will be displayed in the dialog (e.g. error message)
+    String additionalInfo;
+
     final TweetData sentStatus = await bloc.tweetService
         .update(
           status: text,
@@ -112,7 +116,18 @@ class PostTweet extends PostTweetEvent {
           trimUser: true,
         )
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
-        .catchError(silentErrorHandler);
+        .catchError((dynamic error) {
+      if (error is Response) {
+        final String message = responseErrorMessage(error.body);
+        _log.info(
+          'handling error while sending status with message $message',
+          error,
+        );
+        additionalInfo = message;
+      } else {
+        silentErrorHandler(error);
+      }
+    });
 
     // todo: instead of using the silent error handler, parse the error message
     //  in the response
@@ -120,7 +135,7 @@ class PostTweet extends PostTweetEvent {
     if (sentStatus != null) {
       yield StatusSuccessfullyUpdated();
     } else {
-      yield UpdatingStatusError();
+      yield UpdatingStatusError(errorMessage: additionalInfo);
     }
   }
 }

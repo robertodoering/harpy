@@ -47,11 +47,10 @@ class PostTweetDialog extends StatelessWidget {
             state.message,
             key: Key(state.message),
           ),
-          if (state is ConvertingVideoState ||
-              state is UploadingMediaState) ...<Widget>[
+          if (state.hasAdditionalInfo) ...<Widget>[
             defaultSmallVerticalSpacer,
             Text(
-              'This may take a moment',
+              state.additionalInfo,
               style: theme.textTheme.bodyText1,
             ),
           ],

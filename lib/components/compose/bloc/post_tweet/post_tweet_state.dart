@@ -6,8 +6,13 @@ import 'package:humanize/humanize.dart';
 abstract class PostTweetState {
   String get message => null;
 
+  String get additionalInfo => null;
+
   /// Whether the state has a humanly readable message.
   bool get hasMessage => message != null;
+
+  /// Whether additional info exists for this message.
+  bool get hasAdditionalInfo => additionalInfo != null;
 }
 
 class InitialPostTweetStateState extends PostTweetState {}
@@ -16,6 +21,9 @@ class InitialPostTweetStateState extends PostTweetState {}
 class ConvertingVideoState extends PostTweetState {
   @override
   String get message => 'Preparing video...';
+
+  @override
+  String get additionalInfo => 'This may take a moment';
 }
 
 class UploadingMediaState extends PostTweetState {
@@ -46,6 +54,9 @@ class UploadingMediaState extends PostTweetState {
         return 'Uploading media...';
     }
   }
+
+  @override
+  String get additionalInfo => 'This may take a moment';
 }
 
 /// The event when the tweet is being sent to the twitter api.
@@ -65,8 +76,10 @@ abstract class PostTweetError extends PostTweetState {}
 /// The state when converting a video was not successful.
 class ConvertingVideoError extends PostTweetError {
   @override
-  String get message => 'Error preparing video.\n'
-      'The video format may not be supported.';
+  String get message => 'Error preparing video.';
+
+  @override
+  String get additionalInfo => 'The video format may not be supported.';
 }
 
 /// The state when uploading the media was not successful.
@@ -76,8 +89,23 @@ class UploadMediaError extends PostTweetError {
 }
 
 /// The state when posting the tweet failed.
-// todo: parse response error message
 class UpdatingStatusError extends PostTweetError {
+  UpdatingStatusError({
+    this.errorMessage,
+  });
+
+  final String errorMessage;
+
   @override
   String get message => 'Error sending tweet.';
+
+  @override
+  String get additionalInfo {
+    if (errorMessage != null) {
+      return 'Twitter error message:\n'
+          '$errorMessage';
+    } else {
+      return null;
+    }
+  }
 }
