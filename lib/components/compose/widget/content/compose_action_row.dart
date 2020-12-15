@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
-import 'package:harpy/components/compose/widget/compose_text_cotroller.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/content/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
@@ -88,7 +88,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) => PostTweetDialog(
-                  text: widget.controller.text,
+                  controller: widget.controller,
                   composeBloc: widget.bloc,
                 ),
               )

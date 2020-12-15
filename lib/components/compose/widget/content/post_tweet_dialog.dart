@@ -4,8 +4,10 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/bloc/compose_event.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_state.dart';
+import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -15,19 +17,45 @@ import 'package:harpy/misc/harpy_navigator.dart';
 /// While posting the tweet is in progress, the dialog is not dismissible.
 class PostTweetDialog extends StatelessWidget {
   const PostTweetDialog({
-    @required this.text,
+    @required this.controller,
     @required this.composeBloc,
   });
 
-  final String text;
+  final ComposeTextController controller;
   final ComposeBloc composeBloc;
 
-  Widget _buildStateMessage(PostTweetState state) {
+  Future<bool> _onWillPop(PostTweetBloc bloc) async {
+    if (bloc.inProgress) {
+      return false;
+    } else {
+      if (bloc.postingSuccessful) {
+        // cleanup after successful post
+        composeBloc.add(const ClearTweetMediaEvent());
+        controller.text = '';
+      }
+
+      return true;
+    }
+  }
+
+  Widget _buildStateMessage(ThemeData theme, PostTweetState state) {
     return AnimatedSwitcher(
       duration: kShortAnimationDuration ~/ 2,
-      child: Text(
-        state.message,
-        key: Key(state.message),
+      child: Column(
+        children: <Widget>[
+          Text(
+            state.message,
+            key: Key(state.message),
+          ),
+          if (state is ConvertingVideoState ||
+              state is UploadingMediaState) ...<Widget>[
+            defaultSmallVerticalSpacer,
+            Text(
+              'This may take a moment',
+              style: theme.textTheme.bodyText1,
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -43,9 +71,11 @@ class PostTweetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return BlocProvider<PostTweetBloc>(
       create: (BuildContext context) => PostTweetBloc(
-        text,
+        controller.text,
         composeBloc: composeBloc,
       ),
       child: BlocBuilder<PostTweetBloc, PostTweetState>(
@@ -54,13 +84,13 @@ class PostTweetDialog extends StatelessWidget {
 
           return WillPopScope(
             // prevent back button to close the dialog while in progress
-            onWillPop: () async => !bloc.inProgress,
+            onWillPop: () => _onWillPop(bloc),
             child: HarpyDialog(
               title: const Text('Tweeting'),
               content: CustomAnimatedSize(
                 child: Column(
                   children: <Widget>[
-                    if (state.hasMessage) _buildStateMessage(state),
+                    if (state.hasMessage) _buildStateMessage(theme, state),
                     if (bloc.inProgress) _buildLoading(bloc),
                   ],
                 ),

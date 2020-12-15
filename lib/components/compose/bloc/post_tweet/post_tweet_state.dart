@@ -15,25 +15,29 @@ class InitialPostTweetStateState extends PostTweetState {}
 /// The state when a video is being converted
 class ConvertingVideoState extends PostTweetState {
   @override
-  String get message => 'Converting video...';
+  String get message => 'Preparing video...';
 }
 
 class UploadingMediaState extends PostTweetState {
   UploadingMediaState({
     @required this.index,
+    @required this.multiple,
     @required this.type,
   });
 
   /// The index of the media that is currently being uploaded.
   final int index;
 
+  final bool multiple;
   final MediaType type;
 
   @override
   String get message {
     switch (type) {
       case MediaType.image:
-        return 'Uploading ${ordinal(index)} image...';
+        return multiple
+            ? 'Uploading ${ordinal(index + 1)} image...'
+            : 'Uploading image...';
       case MediaType.gif:
         return 'Uploading gif...';
       case MediaType.video:
@@ -61,7 +65,8 @@ abstract class PostTweetError extends PostTweetState {}
 /// The state when converting a video was not successful.
 class ConvertingVideoError extends PostTweetError {
   @override
-  String get message => 'Error converting video.';
+  String get message => 'Error preparing video.\n'
+      'The video format may not be supported.';
 }
 
 /// The state when uploading the media was not successful.

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
@@ -63,7 +63,12 @@ class PostTweet extends PostTweetEvent {
 
     try {
       for (int i = 0; i < mediaFiles.length; i++) {
-        yield UploadingMediaState(index: i, type: bloc.composeBloc.mediaType);
+        yield UploadingMediaState(
+          index: i,
+          multiple: mediaFiles.length > 1,
+          type: bloc.composeBloc.mediaType,
+        );
+
         final String mediaId = await bloc.mediaUploadService.upload(
           mediaFiles[i],
           type: bloc.composeBloc.mediaType,
