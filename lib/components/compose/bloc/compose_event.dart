@@ -27,7 +27,18 @@ class PickTweetMediaEvent extends ComposeEvent {
     List<PlatformFile> newImages = List<PlatformFile>.from(result.files);
 
     if (bloc.hasImages) {
-      // add the new images to the existing ones
+      // add the new images to the existing ones if it doesn't already exist
+
+      // filter out any already existing images
+      for (PlatformFile image in List<PlatformFile>.from(newImages)) {
+        if (bloc.media.any(
+            (PlatformFile existingImage) => existingImage.path == image.path)) {
+          // remove the duplicate image
+          newImages.removeWhere(
+              (PlatformFile duplicate) => duplicate.path == image.path);
+        }
+      }
+
       newImages = List<PlatformFile>.from(bloc.media)..addAll(newImages);
     }
 
