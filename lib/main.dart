@@ -10,7 +10,7 @@ import 'package:harpy/harpy.dart';
 /// Additionally a twitter api key is required for authentication and can be
 /// specified using
 /// `--dart-define=twitter_consumer_key=your_consumer_key` and
-/// `--dart-define=twitter_consumer_secret=your_consumer_secret`
+/// `--dart-define=twitter_consumer_secret=your_consumer_secret`.
 void main() {
   // sets up the global service locator
   setupServices();
