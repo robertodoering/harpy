@@ -33,7 +33,7 @@ class ComposeTweetActionRow extends StatelessWidget {
         //   iconSize: 20,
         //   onTap: null,
         // ),
-        defaultSmallHorizontalSpacer,
+        // defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('@', style: TextStyle(fontSize: 20)),
