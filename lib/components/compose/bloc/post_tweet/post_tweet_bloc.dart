@@ -13,7 +13,7 @@ class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
     String text, {
     @required this.composeBloc,
   }) : super(InitialPostTweetStateState()) {
-    add(PostTweet(text));
+    add(PostTweetEvent(text));
   }
 
   final ComposeBloc composeBloc;

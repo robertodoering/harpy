@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
@@ -12,23 +11,13 @@ import 'package:harpy/core/service_locator.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-@immutable
-abstract class PostTweetEvent {
-  const PostTweetEvent();
-
-  Stream<PostTweetState> applyAsync({
-    PostTweetState currentState,
-    PostTweetBloc bloc,
-  });
-}
-
 /// Posts the tweet for the authenticated user.
 ///
 /// The attached media (if any) is uploaded separately before posting the tweet.
 /// If the attached media is a video, it is converted beforehand to comply with
 /// the twitter requirements.
-class PostTweet extends PostTweetEvent {
-  const PostTweet(this.text);
+class PostTweetEvent {
+  const PostTweetEvent(this.text);
 
   final String text;
 
@@ -128,9 +117,6 @@ class PostTweet extends PostTweetEvent {
         silentErrorHandler(error);
       }
     });
-
-    // todo: instead of using the silent error handler, parse the error message
-    //  in the response
 
     if (sentStatus != null) {
       yield StatusSuccessfullyUpdated();
