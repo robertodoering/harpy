@@ -23,9 +23,9 @@ platform :android do
     api_secret = ENV['twitter_consumer_secret']
 
     if api_key.nil?
-      puts "missing twitter_api_key environment variable in android/fastlane/.env"
+      puts "missing twitter_consumer_key environment variable in android/fastlane/.env"
     elsif api_secret.nil?
-      puts "missing twitter_api_secret environment variable in android/fastlane/.env"
+      puts "missing twitter_consumer_secret environment variable in android/fastlane/.env"
     else
       # build appbundle
       sh(
