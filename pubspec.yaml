@@ -69,7 +69,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/config/
     - assets/flare/
     - android/fastlane/metadata/android/free/en-US/changelogs/
   

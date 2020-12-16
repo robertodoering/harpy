@@ -50,7 +50,7 @@ void main() {
   blocTest<ApplicationBloc, ApplicationState>(
     'application bloc initializes the app with empty app config data',
     build: () {
-      when(app<AppConfig>().parseAppConfig()).thenAnswer((_) async {});
+      when(app<AppConfig>().initialize()).thenAnswer((_) async {});
       when(app<HarpyInfo>().initialize()).thenAnswer((_) async {});
       when(app<ErrorReporter>().initialize()).thenAnswer((_) async {});
       when(app<HarpyPreferences>().initialize()).thenAnswer((_) async {});
@@ -64,7 +64,7 @@ void main() {
       );
     },
     verify: (ApplicationBloc bloc) async {
-      verify(app<AppConfig>().parseAppConfig());
+      verify(app<AppConfig>().initialize());
       verify(app<HarpyInfo>().initialize());
       verify(app<ErrorReporter>().initialize());
       verify(app<HarpyPreferences>().initialize());

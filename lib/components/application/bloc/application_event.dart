@@ -57,9 +57,9 @@ class InitializeEvent extends ApplicationEvent {
     // update the system ui to match the initial theme
     bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
 
-    // need to parse app config before we continue with initialization that is
-    // reliant on the app config
-    await app<AppConfig>().parseAppConfig();
+    // need to initialize app config before we continue with initialization
+    // that is reliant on the app config
+    app<AppConfig>().initialize();
 
     await Future.wait<void>(<Future<void>>[
       app<HarpyInfo>().initialize(),
