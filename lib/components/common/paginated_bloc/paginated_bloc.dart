@@ -12,6 +12,9 @@ abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
   /// Whether data has been loaded.
   bool get hasData;
 
+  /// The duration requests should be locked for.
+  Duration get lockDuration => const Duration(seconds: 30);
+
   /// The cursor for the paginated requests.
   ///
   /// When `-1`, the first page will be requested.

@@ -20,8 +20,8 @@ typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
 ///
 /// A [HarpyVideoPlayerModel] is used to control the video.
 class HarpyVideoPlayer extends StatefulWidget {
-  const HarpyVideoPlayer.fromUrl(
-    this.url, {
+  const HarpyVideoPlayer.fromController(
+    this.controller, {
     this.thumbnail,
     this.thumbnailAspectRatio,
     this.autoplay = false,
@@ -36,9 +36,9 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.autoplay = false,
     this.onVideoPlayerTap,
     this.allowVerticalOverflow = false,
-  }) : url = null;
+  }) : controller = null;
 
-  final String url;
+  final VideoPlayerController controller;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
@@ -61,8 +61,11 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   void initState() {
     super.initState();
 
-    _controller =
-        widget.model?.controller ?? VideoPlayerController.network(widget.url);
+    if (widget.model == null) {
+      _controller = widget.controller;
+    } else {
+      _controller = widget.model.controller;
+    }
   }
 
   @override

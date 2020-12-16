@@ -5,12 +5,14 @@ import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
@@ -34,6 +36,16 @@ class HomeDrawer extends StatelessWidget {
                   app<HarpyNavigator>().pushUserProfile(
                     screenName: authBloc.authenticatedUser.screenName,
                   );
+                },
+              ),
+
+              // compose tweet
+              ListTile(
+                leading: const Icon(LineAwesomeIcons.alternate_feather),
+                title: const Text('Compose Tweet'),
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushNamed(ComposeScreen.route);
                 },
               ),
 

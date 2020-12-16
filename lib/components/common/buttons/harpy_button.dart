@@ -37,6 +37,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
       scale: _tapDown ? .9 : 1,
       curve: Curves.easeOutCirc,
       child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTapDown: (_) => _updateTapDown(true),
         onTapUp: (_) => _updateTapDown(false),
         onTapCancel: () => _updateTapDown(false),

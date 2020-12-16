@@ -11,7 +11,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen();
@@ -65,7 +65,7 @@ class AboutScreen extends StatelessWidget {
             onTap: () => app<HarpyNavigator>().pushNamed(ChangelogScreen.route),
           ),
           ListTile(
-            leading: const Icon(LineIcons.github),
+            leading: const Icon(LineAwesomeIcons.github),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16,
               vertical: defaultPaddingValue,
