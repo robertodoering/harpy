@@ -76,7 +76,6 @@ class PostTweetEvent {
     }
   }
 
-  @override
   Stream<PostTweetState> applyAsync({
     PostTweetState currentState,
     PostTweetBloc bloc,
