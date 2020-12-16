@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 /// The max height of the tweet media is always constrained to half of the
 /// screen size.
 ///
-/// The aspect ratio of the available space for images is always to 16:9.
+/// The aspect ratio of the available space for images is always set to 16:9.
 ///
 /// The aspect ratio of the available space for videos and gifs will be
-/// conserved if it does not take up the constrained height.
+/// conserved if it does not take up more than the constrained height.
 class TweetMediaLayout extends StatelessWidget {
   const TweetMediaLayout({
     @required this.child,
@@ -47,8 +47,8 @@ class TweetMediaLayout extends StatelessWidget {
               child: child,
             );
           } else {
-            // video takes up all of the constrained height and overflows
-            // the width of the child gets limited to a 16:9 aspect ratio
+            // video takes up all of the constrained height and overflows.
+            // the width of the child gets reduced to match a 16:9 aspect ratio
             return AspectRatio(
               aspectRatio: min(constraintsAspectRatio, 16 / 9),
               child: child,
