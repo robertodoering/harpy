@@ -27,6 +27,7 @@ class AppConfig {
   /// ```
   /// flutter run \
   /// --flavor free \
+  /// --dart-define=flavor=free \
   /// --dart-define=twitter_consumer_key=your_consumer_key \
   /// --dart-define=twitter_consumer_secret=your_consumer_secret
   /// ```
@@ -46,6 +47,8 @@ class AppConfig {
           'the app.\n\n'
           'For example:\n'
           'flutter run \\\n'
+          '--flavor free \\\n'
+          '--dart-define=flavor=free \\\n'
           '--dart-define=twitter_consumer_key=your_consumer_key \\\n'
           '--dart-define=twitter_consumer_secret=your_consumer_secret');
     } else {
