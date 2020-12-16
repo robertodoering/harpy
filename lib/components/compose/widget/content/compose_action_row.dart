@@ -77,7 +77,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   @override
   Widget build(BuildContext context) {
     final bool canTweet =
-        widget.bloc.hasMedia || widget.controller.text.isNotEmpty;
+        widget.bloc.hasMedia || widget.controller.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
       padding: DefaultEdgeInsets.all(),
