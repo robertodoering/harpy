@@ -81,11 +81,6 @@ The app can be built with the "free" or "pro" flavor by running:
 * `flutter run --flavor free --dart-define=flavor=free --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
 * `flutter run --flavor pro --dart-define=flavor=pro --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
 
-An appbundle for release can be built using:
-
-* `flutter build appbundle --flavor free --dart-define=flavor=free --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
-* `flutter build appbundle --flavor pro --dart-define=flavor=pro --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
-
 ### Misc
 
 To generate [json_serializable](https://pub.dev/packages/json_serializable)
