@@ -16,25 +16,38 @@
 default_platform(:android)
 
 platform :android do
+
   desc "Builds an appbundle and uploads it to the play store beta track"
   lane :beta do
+    api_key = ENV['twitter_consumer_key']
+    api_secret = ENV['twitter_consumer_secret']
 
-    # build appbundle
-    sh(
-      "flutter",
-      "build",
-      "appbundle",
-      "--flavor",
-      "free",
-      "-t",
-      "lib/main_free.dart"
-    )
+    if api_key.nil?
+      puts "missing twitter_api_key environment variable in android/fastlane/.env"
+    elsif api_secret.nil?
+      puts "missing twitter_api_secret environment variable in android/fastlane/.env"
+    else
+      # build appbundle
+      sh(
+        "flutter",
+        "build",
+        "appbundle",
+        "--flavor",
+        "free",
+        "--dart-define",
+        "flavor=free",
+        "--dart-define",
+        "twitter_consumer_key=#{api_key}",
+        "--dart-define",
+        "twitter_consumer_key=#{api_secret}"
+      )
 
-    upload_to_play_store(
-      track: 'beta',
-      aab: '../build/app/outputs/bundle/freeRelease/app-free-release.aab',
-      metadata_path: './fastlane/metadata/android/free'
-    )
+      upload_to_play_store(
+        track: 'beta',
+        aab: '../build/app/outputs/bundle/freeRelease/app-free-release.aab',
+        metadata_path: './fastlane/metadata/android/free'
+      )
+    end
 
   end
 end
