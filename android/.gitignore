@@ -14,6 +14,8 @@ app/google-services.json
 
 # fastlane specific
 **/fastlane/report.xml
+fastlane/.env
+fastlane/.env.*
 
 # deliver temporary files
 **/fastlane/Preview.html
