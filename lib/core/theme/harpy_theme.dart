@@ -58,13 +58,8 @@ class HarpyTheme {
         (min(firstLuminance, secondLuminance) + 0.05);
   }
 
-  /// The name of the theme.
   String name;
-
-  /// A list of colors that define the background gradient.
   List<Color> backgroundColors;
-
-  /// The accent color of the theme.
   Color accentColor;
 
   /// The average luminance of the [backgroundColors].
@@ -82,9 +77,6 @@ class HarpyTheme {
   /// whether to use white or black foreground colors.
   Brightness brightness;
 
-  /// The color of the text used by buttons.
-  Color buttonTextColor;
-
   /// The error color of the theme.
   ///
   /// Is [Colors.red] if the contrast ratio on the background exceeds
@@ -92,20 +84,14 @@ class HarpyTheme {
   /// Otherwise the [accentColor] is used as the error color.
   Color errorColor;
 
-  /// The text theme of the theme.
   TextTheme textTheme;
+  Color buttonTextColor;
+  Color favoriteColor = Colors.pinkAccent;
+  Color retweetColor = Colors.lightGreenAccent;
+  Color translateColor = Colors.lightBlueAccent;
 
   /// The [ThemeData] used by the root [MaterialApp].
   ThemeData data;
-
-  /// The color for the favorite button.
-  Color favoriteColor = Colors.pinkAccent;
-
-  /// The color for the retweet button.
-  Color retweetColor = Colors.lightGreenAccent;
-
-  /// The color for the translate button.
-  Color translateColor = Colors.lightBlueAccent;
 
   /// The opposite of [brightness].
   Brightness get complementaryBrightness =>
@@ -259,6 +245,7 @@ class HarpyTheme {
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline2: TextStyle(
             fontSize: 48,
@@ -266,10 +253,12 @@ class HarpyTheme {
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline3: TextStyle(
             fontFamily: displayFont,
             color: textColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline4: TextStyle(
             fontSize: 18,
@@ -277,12 +266,14 @@ class HarpyTheme {
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor.withOpacity(0.8),
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline6: TextStyle(
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
 
           // subtitle
@@ -291,6 +282,7 @@ class HarpyTheme {
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor.withOpacity(0.9),
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
           subtitle2: TextStyle(
             height: 1.1,
@@ -298,17 +290,20 @@ class HarpyTheme {
             fontFamily: bodyFont,
             fontWeight: FontWeight.w300,
             color: textColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
 
           // body
           bodyText2: const TextStyle(
             fontSize: 16,
             fontFamily: bodyFont,
+            fontFamilyFallback: <String>['NotoSans'],
           ),
           bodyText1: TextStyle(
             fontSize: 14,
             fontFamily: bodyFont,
             color: textColor.withOpacity(0.7),
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
 
           button: TextStyle(
@@ -316,6 +311,7 @@ class HarpyTheme {
             letterSpacing: 1.2,
             fontFamily: bodyFont,
             color: buttonTextColor,
+            fontFamilyFallback: const <String>['NotoSans'],
           ),
         );
   }

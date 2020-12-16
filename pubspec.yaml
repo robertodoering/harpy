@@ -89,3 +89,12 @@ flutter:
     - asset: assets/fonts/OpenSans-Regular.ttf
     - asset: assets/fonts/OpenSans-Bold.ttf
       weight: 700
+
+  - family: NotoSans
+    # used as a fallback font
+    # covers a lot of scripts and obscure unicode characters
+    # https://fonts.google.com/specimen/Noto+Sans
+    fonts:
+      - asset: assets/fonts/NotoSans-Regular.ttf
+      - asset: assets/fonts/NotoSans-Bold.ttf
+        weight: 700
