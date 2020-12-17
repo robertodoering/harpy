@@ -22,7 +22,7 @@ class ChangelogWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         for (String headerLine in data.headerLines) ...<Widget>[
-          Text(headerLine),
+          Text(headerLine, textAlign: TextAlign.start),
           const SizedBox(height: 12),
         ],
       ],

@@ -101,7 +101,8 @@ class ChangelogData {
 
   final String versionCode;
 
-  /// Optional information at the beginning of the changelog.
+  /// Optional information at the beginning of the changelog, including the
+  /// name of the version ('Version x.y.z').
   final List<String> headerLines = <String>[];
 
   /// Entries that start with 'Added'.
