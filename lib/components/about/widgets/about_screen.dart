@@ -21,6 +21,9 @@ class AboutScreen extends StatelessWidget {
   static const String _mailto =
       'mailto:rbydoering+harpy@gmail.com?subject=Harpy';
 
+  static const String _privacyPolicy =
+      'https://developer.twitter.com/en/developer-terms/policy';
+
   List<Widget> _buildTitleWithLogo(Color textColor) {
     return <Widget>[
       SizedBox(
@@ -49,13 +52,16 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildIntroductionText(TextStyle linkStyle) {
+  Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
     return Card(
       child: Column(
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.history),
-            title: const Text('Version history'),
+            title: Text(
+              'Version history',
+              style: theme.textTheme.subtitle1,
+            ),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topLeft: kDefaultRadius,
@@ -66,20 +72,8 @@ class AboutScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(LineAwesomeIcons.github),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: defaultPaddingValue,
-            ),
-            title: Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  const TextSpan(text: 'Harpy is open source on '),
-                  TextSpan(text: 'GitHub', style: linkStyle),
-                  const TextSpan(text: '.'),
-                ],
-              ),
-            ),
-            subtitle: const Text('github.com/robertodoering/harpy'),
+            title: const Text('Harpy is open source'),
+            subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: kDefaultRadius,
@@ -200,6 +194,17 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildPrivacyPolicy() {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.privacy_tip),
+        title: const Text('Privacy policy'),
+        shape: kDefaultShapeBorder,
+        onTap: () => launchUrl(_privacyPolicy),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -233,7 +238,7 @@ class AboutScreen extends StatelessWidget {
           defaultSmallVerticalSpacer,
           _buildVersionCode(theme),
           defaultVerticalSpacer,
-          _buildIntroductionText(linkStyle),
+          _buildIntroductionText(theme, linkStyle),
           if (Harpy.isFree) ...<Widget>[
             defaultVerticalSpacer,
             _buildProText(theme, linkStyle),
@@ -242,6 +247,8 @@ class AboutScreen extends StatelessWidget {
           _buildRateAppText(theme),
           defaultVerticalSpacer,
           _buildDeveloperText(linkStyle),
+          defaultVerticalSpacer,
+          _buildPrivacyPolicy(),
         ],
       ),
     );
