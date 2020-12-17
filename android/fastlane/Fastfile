@@ -42,7 +42,7 @@ platform :android do
         "--dart-define",
         "twitter_consumer_key=#{api_key}",
         "--dart-define",
-        "twitter_consumer_key=#{api_secret}",
+        "twitter_consumer_secret=#{api_secret}",
         "--dart-define",
         "sentry_dsn=#{sentry_dsn}"
       )
