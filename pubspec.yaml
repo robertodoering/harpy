@@ -45,7 +45,7 @@ dependencies:
   connectivity: ^2.0.0
   device_info: '>=0.4.2+4 <2.0.0'
   file_picker: ^2.0.13
-  firebase_analytics: ^6.1.0
+  firebase_analytics: ^6.3.0
   flutter_ffmpeg: ^0.3.0
   flutter_downloader: ^1.5.2
   flutter_twitter_login:
