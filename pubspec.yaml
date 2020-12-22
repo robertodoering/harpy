@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # packages
   cached_network_image: ^2.2.0+1
   dart_twitter_api: ^0.3.5
@@ -20,7 +20,7 @@ dependencies:
   flare_flutter: ^2.0.6
   flutter_bloc: ^6.1.1
   flutter_colorpicker:
-    # todo: use pub version when PR gets merged and released: 
+    # todo: use pub version when PR gets merged and released:
     #   https://github.com/mchome/flutter_colorpicker/pull/28
     git: https://github.com/robertodoering/flutter_colorpicker
   flutter_material_color_picker: ^1.0.5
@@ -40,7 +40,7 @@ dependencies:
   url_launcher: ^5.7.8
   visibility_detector: ^0.1.5
   yaml: ^2.2.1
-  
+
   # plugins
   connectivity: ^2.0.0
   device_info: '>=0.4.2+4 <2.0.0'
@@ -71,8 +71,8 @@ flutter:
   assets:
     - assets/flare/
     - android/fastlane/metadata/android/free/en-US/changelogs/
-  
-  fonts:  
+
+  fonts:
   - family: Comfortaa
     fonts:
     - asset: assets/fonts/Comfortaa-Light.ttf
