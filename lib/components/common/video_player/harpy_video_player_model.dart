@@ -82,7 +82,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   /// Plays or pauses the video.
   void togglePlayback() {
-    if (finished) {
+    if (finished || !hasListeners) {
+      // finished or if no listeners exist (already disposed)
       return;
     }
 
