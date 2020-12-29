@@ -85,28 +85,34 @@ class MediaOverlayActionRow extends StatelessWidget {
 
     return Theme(
       data: theme.copyWith(
-        iconTheme: theme.iconTheme.copyWith(size: 24),
+        // force foreground colors to be white since they are always on a
+        // dark background (independent of the theme)
+        iconTheme: theme.iconTheme.copyWith(size: 24, color: Colors.white),
         textTheme: theme.textTheme.copyWith(
-          button: theme.textTheme.button.copyWith(fontSize: 18),
+          button: theme.textTheme.button.copyWith(
+            fontSize: 18,
+            color: Colors.white,
+          ),
+          bodyText2: theme.textTheme.bodyText2.copyWith(
+            color: Colors.white,
+          ),
         ),
       ),
       child: BlocProvider<TweetBloc>.value(
         value: tweetBloc,
         child: BlocBuilder<TweetBloc, TweetState>(
-          builder: (BuildContext context, TweetState state) {
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: <Widget>[
-                  RetweetButton(tweetBloc),
-                  defaultSmallHorizontalSpacer,
-                  FavoriteButton(tweetBloc),
-                  const Spacer(),
-                  _buildMoreActionsButton(harpyTheme, context),
-                ],
-              ),
-            );
-          },
+          builder: (BuildContext context, TweetState state) => Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: <Widget>[
+                RetweetButton(tweetBloc),
+                defaultSmallHorizontalSpacer,
+                FavoriteButton(tweetBloc),
+                const Spacer(),
+                _buildMoreActionsButton(harpyTheme, context),
+              ],
+            ),
+          ),
         ),
       ),
     );
