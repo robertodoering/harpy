@@ -26,6 +26,7 @@ class TweetVideo extends StatelessWidget {
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
       onDownload: () => tweetBloc.add(DownloadMedia(tweet: tweet)),
+      onOpenExternally: () => tweetBloc.add(OpenMediaExternally(tweet: tweet)),
       child: HarpyVideoPlayer.fromModel(
         model,
         thumbnail: tweet.video.thumbnailUrl,
