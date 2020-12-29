@@ -13,12 +13,14 @@ class FullscreenImage extends StatelessWidget {
     this.heroTag,
     this.flightShuttleBuilder,
     this.placeholderBuilder,
+    this.enableDismissible = true,
   });
 
   final String url;
   final Object heroTag;
   final HeroFlightShuttleBuilder flightShuttleBuilder;
   final HeroPlaceholderBuilder placeholderBuilder;
+  final bool enableDismissible;
 
   /// The default [FlightShuttleBuilder] for the hero widget that is used when
   /// no [flightShuttleBuilder] is specified.
@@ -66,6 +68,7 @@ class FullscreenImage extends StatelessWidget {
 
     return CustomDismissible(
       onDismissed: () => app<HarpyNavigator>().state.maybePop(),
+      enabled: enableDismissible,
       child: SafeArea(
         child: Stack(
           children: <Widget>[

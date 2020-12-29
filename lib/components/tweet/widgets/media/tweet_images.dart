@@ -38,7 +38,6 @@ class _TweetImagesState extends State<TweetImages> {
       tweet: widget.tweet,
       tweetBloc: widget.tweetBloc,
       overlap: true,
-      enableDismissible: false,
       onDownload: () {
         widget.tweetBloc.add(DownloadMedia(
           tweet: widget.tweet,
@@ -50,6 +49,7 @@ class _TweetImagesState extends State<TweetImages> {
         heroTags: _images,
         index: _galleryIndex,
         onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
+        enableDismissible: false,
       ),
     );
   }

@@ -12,6 +12,7 @@ class ImageGallery extends StatefulWidget {
     this.placeholderBuilder,
     this.index = 0,
     this.onIndexChanged,
+    this.enableDismissible = true,
   })  : assert(urls.length > 0),
         assert(index >= 0 && index < urls.length),
         assert(heroTags == null || heroTags.length == urls.length);
@@ -22,6 +23,7 @@ class ImageGallery extends StatefulWidget {
   final HeroPlaceholderBuilder placeholderBuilder;
   final int index;
   final ValueChanged<int> onIndexChanged;
+  final bool enableDismissible;
 
   @override
   _ImageGalleryState createState() => _ImageGalleryState();
@@ -30,11 +32,22 @@ class ImageGallery extends StatefulWidget {
 class _ImageGalleryState extends State<ImageGallery> {
   PageController _controller;
 
+  /// The current (closest) page.
+  ///
+  /// When the [PageView] is transitioning between two pages, the page that
+  /// is most visible will be the current [_page].
+  int _page;
+
+  bool _isAnimating = false;
+
   @override
   void initState() {
     super.initState();
 
-    _controller = PageController(initialPage: widget.index);
+    _page = widget.index;
+
+    _controller = PageController(initialPage: widget.index)
+      ..addListener(_pageChangeListener);
   }
 
   @override
@@ -44,20 +57,52 @@ class _ImageGalleryState extends State<ImageGallery> {
     _controller.dispose();
   }
 
+  void _pageChangeListener() {
+    final int page = _controller.page.round();
+
+    if (!_isAnimating && _controller.page != _page) {
+      // between two pages
+      setState(() {
+        _isAnimating = true;
+      });
+    } else if (_isAnimating && _controller.page == _page) {
+      // showing a single page
+      setState(() {
+        _isAnimating = false;
+      });
+    }
+
+    if (page != _page) {
+      // closest page changed
+      setState(() {
+        _page = page;
+      });
+
+      widget.onIndexChanged(_page);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      onPageChanged: widget.onIndexChanged,
-      controller: _controller,
-      children: <Widget>[
-        for (int i = 0; i < widget.urls.length; i++)
-          FullscreenImage(
-            url: widget.urls[i],
-            heroTag: widget.heroTags?.elementAt(i),
-            flightShuttleBuilder: widget.flightShuttleBuilder,
-            placeholderBuilder: widget.placeholderBuilder,
-          ),
-      ],
+    return GestureDetector(
+      // Eat the onTap gesture detection while animating.
+      // This prevents gesture detection sitting above the PageView to
+      // receive bad hit tests during the animation (no translucency is
+      // considered during the animation and therefore tapping the background
+      // during animation cam trigger gesture detection)
+      onTap: _isAnimating ? () {} : null,
+      child: PageView(
+        controller: _controller,
+        children: <Widget>[
+          for (int i = 0; i < widget.urls.length; i++)
+            FullscreenImage(
+              url: widget.urls[i],
+              heroTag: _page == i ? widget.heroTags?.elementAt(i) : null,
+              flightShuttleBuilder: widget.flightShuttleBuilder,
+              placeholderBuilder: widget.placeholderBuilder,
+            ),
+        ],
+      ),
     );
   }
 }
