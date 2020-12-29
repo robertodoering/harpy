@@ -24,9 +24,7 @@ dependencies:
     #   https://github.com/mchome/flutter_colorpicker/pull/28
     git: https://github.com/robertodoering/flutter_colorpicker
   flutter_material_color_picker: ^1.0.5
-  flutter_reorderable_list:
-    # todo: use pub version when flutter 1.22.0 fix gets released
-    git: https://github.com/knopp/flutter_reorderable_list
+  flutter_reorderable_list: ^0.1.5
   get_it: ^5.0.1
   humanize: ^0.3.0
   intl : ^0.16.1
@@ -42,9 +40,9 @@ dependencies:
   yaml: ^2.2.1
 
   # plugins
-  connectivity: ^2.0.0
+  connectivity: ^2.0.2
   device_info: '>=0.4.2+4 <2.0.0'
-  file_picker: ^2.0.13
+  file_picker: ^2.1.4
   firebase_analytics: ^6.3.0
   flutter_ffmpeg: ^0.3.0
   flutter_downloader: ^1.5.2
