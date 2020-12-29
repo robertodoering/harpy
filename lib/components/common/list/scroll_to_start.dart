@@ -28,11 +28,6 @@ class _ScrollToStartState extends State<ScrollToStart> {
   ScrollController _scrollController;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -91,19 +86,20 @@ class _ScrollToStartState extends State<ScrollToStart> {
     final ScrollDirection scrollDirection = ScrollDirection.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
+    final bool show = _show(mediaQuery, scrollDirection);
+
     return Stack(
       children: <Widget>[
         widget.child,
         Align(
           alignment: Alignment.bottomCenter,
           child: AnimatedOpacity(
-            opacity: _show(mediaQuery, scrollDirection) ? 1 : 0,
+            opacity: show ? 1 : 0,
             curve: Curves.easeInOut,
             duration: kShortAnimationDuration,
             child: AnimatedShiftedPosition(
-              shift: _show(mediaQuery, scrollDirection)
-                  ? Offset.zero
-                  : const Offset(0, 1),
+              shift: show ? Offset.zero : const Offset(0, 1),
+              hideOnCompletion: !show,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: HarpyButton.raised(
