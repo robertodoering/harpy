@@ -50,6 +50,12 @@ class _TweetImagesState extends State<TweetImages> {
           index: _galleryIndex,
         ));
       },
+      onShare: () {
+        widget.tweetBloc.add(ShareMedia(
+          tweet: widget.tweet,
+          index: _galleryIndex,
+        ));
+      },
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,

@@ -15,11 +15,13 @@ class MediaOverlayActionRow extends StatelessWidget {
     this.tweetBloc, {
     this.onDownload,
     this.onOpenExternally,
+    this.onShare,
   });
 
   final TweetBloc tweetBloc;
   final VoidCallback onDownload;
   final VoidCallback onOpenExternally;
+  final VoidCallback onShare;
 
   Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
     return HarpyButton.flat(
@@ -68,9 +70,9 @@ class MediaOverlayActionRow extends StatelessWidget {
                 leading: const Icon(Icons.share),
                 title: const Text('Share'),
                 onTap: () {
+                  onShare?.call();
                   app<HarpyNavigator>().state.maybePop();
                 },
-                enabled: false, // todo: implement share media
               ),
             ],
           ),

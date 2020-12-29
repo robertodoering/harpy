@@ -13,6 +13,7 @@ import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
+import 'package:share/share.dart';
 
 @immutable
 abstract class TweetEvent {
@@ -285,6 +286,25 @@ class OpenMediaExternally extends MediaActionEvent {
 
     if (url != null) {
       launchUrl(url);
+    }
+  }
+}
+
+class ShareMedia extends MediaActionEvent {
+  const ShareMedia({
+    @required TweetData tweet,
+    int index,
+  }) : super(tweet: tweet, index: index);
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    final String url = mediaUrl;
+
+    if (url != null) {
+      Share.share(url);
     }
   }
 }
