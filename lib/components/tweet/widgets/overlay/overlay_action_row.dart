@@ -24,6 +24,7 @@ class MediaOverlayActionRow extends StatelessWidget {
   Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
     return HarpyButton.flat(
       icon: const Icon(Icons.more_vert),
+      padding: const EdgeInsets.all(16),
       onTap: () {
         showModalBottomSheet<void>(
           context: context,
@@ -101,17 +102,14 @@ class MediaOverlayActionRow extends StatelessWidget {
       child: BlocProvider<TweetBloc>.value(
         value: tweetBloc,
         child: BlocBuilder<TweetBloc, TweetState>(
-          builder: (BuildContext context, TweetState state) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: <Widget>[
-                RetweetButton(tweetBloc),
-                defaultSmallHorizontalSpacer,
-                FavoriteButton(tweetBloc),
-                const Spacer(),
-                _buildMoreActionsButton(harpyTheme, context),
-              ],
-            ),
+          builder: (BuildContext context, TweetState state) => Row(
+            children: <Widget>[
+              RetweetButton(tweetBloc, padding: const EdgeInsets.all(16)),
+              defaultSmallHorizontalSpacer,
+              FavoriteButton(tweetBloc, padding: const EdgeInsets.all(16)),
+              const Spacer(),
+              _buildMoreActionsButton(harpyTheme, context),
+            ],
           ),
         ),
       ),
