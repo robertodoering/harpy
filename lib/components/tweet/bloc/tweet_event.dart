@@ -9,6 +9,7 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -207,9 +208,8 @@ class TranslateTweet extends TweetEvent {
   }
 }
 
-/// Uses the [DownloadService] to download the
-class DownloadMedia extends TweetEvent {
-  const DownloadMedia({
+abstract class MediaActionEvent extends TweetEvent {
+  const MediaActionEvent({
     @required this.tweet,
     this.index,
   });
@@ -223,6 +223,29 @@ class DownloadMedia extends TweetEvent {
   /// gets downloaded.
   final int index;
 
+  /// Returns the url of the selected media or `null` if no url exist.
+  String get mediaUrl {
+    if (tweet.hasMedia) {
+      if (tweet.images?.isNotEmpty == true) {
+        return tweet.images[index ?? 0]?.baseUrl;
+      } else if (tweet.gif != null) {
+        return tweet.gif.variants?.first?.url;
+      } else if (tweet.video != null) {
+        return tweet.video.variants?.first?.url;
+      }
+    }
+
+    return null;
+  }
+}
+
+/// Uses the [DownloadService] to download the media of a tweet.
+class DownloadMedia extends MediaActionEvent {
+  const DownloadMedia({
+    @required TweetData tweet,
+    int index,
+  }) : super(tweet: tweet, index: index);
+
   static final Logger _log = Logger('DownloadMedia');
 
   @override
@@ -232,28 +255,36 @@ class DownloadMedia extends TweetEvent {
   }) async* {
     final DownloadService downloadService = app<DownloadService>();
 
-    if (tweet.hasMedia) {
-      try {
-        String url;
+    final String url = mediaUrl;
+    final String fileName = fileNameFromUrl(url);
 
-        if (tweet.images?.isNotEmpty == true) {
-          url = tweet.images[index ?? 0].baseUrl;
-        } else if (tweet.gif != null) {
-          url = tweet.gif.variants.first.url;
-        } else if (tweet.video != null) {
-          url = tweet.video.variants.first.url;
-        }
+    if (url != null && fileName != null) {
+      await downloadService
+          .download(url: url, name: fileName)
+          .catchError((dynamic error) {
+        _log.severe('error while downloading tweet media', error);
+      });
+    } else {
+      _log.warning('unable to get url or to parse filename from $url');
+    }
+  }
+}
 
-        final String fileName = fileNameFromUrl(url);
+class OpenMediaExternally extends MediaActionEvent {
+  const OpenMediaExternally({
+    @required TweetData tweet,
+    int index,
+  }) : super(tweet: tweet, index: index);
 
-        if (url != null && fileName != null) {
-          await downloadService.download(url: url, name: fileName);
-        } else {
-          _log.warning('unable to get url or to parse filename from $url');
-        }
-      } catch (e, st) {
-        _log.severe('error while downloading tweet media', e, st);
-      }
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    final String url = mediaUrl;
+
+    if (url != null) {
+      launchUrl(url);
     }
   }
 }
