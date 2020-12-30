@@ -8,9 +8,11 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class ViewMoreActionButton extends StatelessWidget {
   const ViewMoreActionButton({
     @required this.children,
+    this.padding = const EdgeInsets.all(16),
   });
 
   final List<Widget> children;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ViewMoreActionButton extends StatelessWidget {
 
     return HarpyButton.flat(
       icon: const Icon(Icons.more_vert),
-      padding: const EdgeInsets.all(16),
+      padding: padding,
       onTap: () {
         showModalBottomSheet<void>(
           context: context,
