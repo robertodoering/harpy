@@ -205,7 +205,8 @@ class TweetData {
   /// The twitter url for this tweet.
   String get tweetUrl => 'https://twitter.com/${userData.name}/status/$idStr';
 
-  /// Returns the [fullText] without the url to the quoted tweet or media.
+  /// Returns the [fullText] without the url to the quoted tweet or media and
+  /// updates the shortened urls to the display url.
   String get visibleText {
     String visibleText = fullText;
 
