@@ -13,6 +13,7 @@ import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/regex/twitter_regex.dart';
 
 /// Displays user mention suggestions after typing `@`.
+// todo: should not show exact match in suggestions list
 class ComposeTweetMentions extends StatelessWidget {
   const ComposeTweetMentions(
     this.bloc, {
