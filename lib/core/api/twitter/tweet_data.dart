@@ -208,7 +208,7 @@ class TweetData {
   /// Returns the [fullText] without the url to the quoted tweet or media and
   /// updates the shortened urls to the display url.
   String get visibleText {
-    String visibleText = fullText;
+    String visibleText = fullText ?? '';
 
     // remove url of quote if it exists
     if (quotedStatusUrl != null) {
