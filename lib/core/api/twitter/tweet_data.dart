@@ -183,7 +183,7 @@ class TweetData {
   bool get hasTranslation => translation != null || quote?.translation != null;
 
   /// Whether this tweet can be translated.
-  bool get translatable => hasText && lang != 'en';
+  bool get translatable => hasText && lang != 'en' && lang != 'und';
 
   /// Whether the quote of this tweet can be translated, if one exists.
   bool get quoteTranslatable => quote?.translatable == true;
