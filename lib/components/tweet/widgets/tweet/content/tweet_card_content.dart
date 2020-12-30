@@ -30,12 +30,18 @@ class TweetCardContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                if (tweet.isRetweet) TweetRetweetedRow(tweet),
+                if (tweet.isRetweet) ...<Widget>[
+                  TweetRetweetedRow(tweet),
+                  AnimatedContainer(
+                    duration: kLongAnimationDuration,
+                    height: defaultPaddingValue,
+                  ),
+                ],
                 TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
               ],
             ),
           ),
-          TweetActionsButton(),
+          TweetActionsButton(tweet),
         ],
       ),
       if (tweet.hasText)

@@ -3,12 +3,12 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/actions_button.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
-/// Builds the content for a tweet quote.
 class TweetQuoteContent extends StatelessWidget {
   const TweetQuoteContent(this.tweet);
 
@@ -19,13 +19,21 @@ class TweetQuoteContent extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     final List<Widget> content = <Widget>[
-      TweetAuthorRow(
-        tweet.userData,
-        createdAt: tweet.createdAt,
-        avatarPadding: defaultPaddingValue / 2,
-        avatarRadius: 18,
-        fontSizeDelta: -2,
-        iconSize: 14,
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: TweetAuthorRow(
+              tweet.userData,
+              createdAt: tweet.createdAt,
+              avatarPadding: defaultPaddingValue / 2,
+              avatarRadius: 18,
+              fontSizeDelta: -2,
+              iconSize: 14,
+            ),
+          ),
+          TweetActionsButton(tweet, sizeDelta: -2),
+        ],
       ),
       if (tweet.hasText)
         TwitterText(

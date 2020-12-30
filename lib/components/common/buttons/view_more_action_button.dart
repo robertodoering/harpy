@@ -9,17 +9,20 @@ class ViewMoreActionButton extends StatelessWidget {
   const ViewMoreActionButton({
     @required this.children,
     this.padding = const EdgeInsets.all(16),
+    this.sizeDelta = 0,
   });
 
   final List<Widget> children;
   final EdgeInsets padding;
+  final double sizeDelta;
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return HarpyButton.flat(
-      icon: const Icon(Icons.more_vert),
+      icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
       padding: padding,
       onTap: () {
         showModalBottomSheet<void>(
