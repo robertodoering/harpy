@@ -54,8 +54,7 @@ class TweetData {
     retweeted = tweet.retweeted;
     favorited = tweet.favorited;
     lang = tweet.lang;
-    hasText = tweet.displayTextRange?.elementAt(0) != 0 ||
-        tweet.displayTextRange?.elementAt(1) != 0;
+    hasText = visibleText.isNotEmpty;
   }
 
   /// UTC time when this Tweet was created.
@@ -201,5 +200,25 @@ class TweetData {
     } else {
       return false;
     }
+  }
+
+  /// The twitter url for this tweet.
+  String get tweetUrl => 'https://twitter.com/${userData.name}/status/$idStr';
+
+  /// Returns the [fullText] without the url to the quoted tweet or media.
+  String get visibleText {
+    String visibleText = fullText;
+
+    if (quotedStatusUrl != null) {
+      // remove url of quote if it exists
+      visibleText = visibleText.replaceAll(quotedStatusUrl, '');
+    }
+
+    for (Media media in entities?.media ?? <Media>[]) {
+      // remove url of media if it exists
+      visibleText = visibleText.replaceAll(media.url, '');
+    }
+
+    return visibleText.trim();
   }
 }
