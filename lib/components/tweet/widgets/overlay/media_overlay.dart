@@ -18,6 +18,8 @@ class MediaOverlay extends StatefulWidget {
     this.enableDismissible = true,
     this.overlap = false,
     this.onDownload,
+    this.onOpenExternally,
+    this.onShare,
   });
 
   final TweetData tweet;
@@ -35,6 +37,8 @@ class MediaOverlay extends StatefulWidget {
   final bool overlap;
 
   final VoidCallback onDownload;
+  final VoidCallback onOpenExternally;
+  final VoidCallback onShare;
 
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   static void open({
@@ -45,6 +49,8 @@ class MediaOverlay extends StatefulWidget {
     bool enableDismissible = true,
     bool overlap = false,
     VoidCallback onDownload,
+    VoidCallback onOpenExternally,
+    VoidCallback onShare,
   }) {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -56,6 +62,8 @@ class MediaOverlay extends StatefulWidget {
           enableDismissible: enableDismissible,
           overlap: overlap,
           onDownload: onDownload,
+          onOpenExternally: onOpenExternally,
+          onShare: onShare,
           child: child,
         ),
       ),
@@ -154,6 +162,8 @@ class _MediaOverlayState extends State<MediaOverlay>
       child: MediaOverlayActionRow(
         widget.tweetBloc,
         onDownload: widget.onDownload,
+        onOpenExternally: widget.onOpenExternally,
+        onShare: widget.onShare,
       ),
     );
   }

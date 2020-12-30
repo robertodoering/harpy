@@ -6,9 +6,13 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// The favorite button for the [TweetActionRow].
 class FavoriteButton extends StatelessWidget {
-  const FavoriteButton(this.bloc);
+  const FavoriteButton(
+    this.bloc, {
+    this.padding = const EdgeInsets.all(8),
+  });
 
   final TweetBloc bloc;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +20,7 @@ class FavoriteButton extends StatelessWidget {
 
     return ActionButton(
       active: bloc.tweet.favorited,
+      padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: TextStyle(
         color: harpyTheme.favoriteColor,

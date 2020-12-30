@@ -33,6 +33,7 @@ class ActionButton extends StatefulWidget {
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.activeIconColor,
     this.value,
+    this.padding = const EdgeInsets.all(8),
     this.activeTextStyle,
     this.iconSize,
     this.activate,
@@ -64,6 +65,9 @@ class ActionButton extends StatefulWidget {
 
   /// An optional value displayed next to the icon.
   final int value;
+
+  /// The padding for the [HarpyButton].
+  final EdgeInsets padding;
 
   /// The style for the text when [active] is `true`.
   final TextStyle activeTextStyle;
@@ -178,7 +182,7 @@ class _ActionButtonState extends State<ActionButton>
     );
 
     return HarpyButton.flat(
-      padding: const EdgeInsets.all(8),
+      padding: widget.padding,
       onTap: widget.active ? widget.deactivate : widget.activate,
       icon: icon,
       style: widget.active ? widget.activeTextStyle : null,
