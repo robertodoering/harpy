@@ -317,7 +317,7 @@ abstract class TweetActionEvent extends TweetEvent {
 
   /// The selected Tweet.
   ///
-  /// Can differ from [TweetBloc.tweet] when downloading media from quotes.
+  /// Can differ from [TweetBloc.tweet] when selecting quotes.
   final TweetData tweet;
 }
 
