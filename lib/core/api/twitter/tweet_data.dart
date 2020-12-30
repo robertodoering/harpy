@@ -209,14 +209,19 @@ class TweetData {
   String get visibleText {
     String visibleText = fullText;
 
+    // remove url of quote if it exists
     if (quotedStatusUrl != null) {
-      // remove url of quote if it exists
       visibleText = visibleText.replaceAll(quotedStatusUrl, '');
     }
 
+    // remove url of media if it exists
     for (Media media in entities?.media ?? <Media>[]) {
-      // remove url of media if it exists
       visibleText = visibleText.replaceAll(media.url, '');
+    }
+
+    // replace the shortened urls to the display urls
+    for (Url url in entities?.urls ?? <Url>[]) {
+      visibleText = visibleText.replaceAll(url.url, url.displayUrl);
     }
 
     return visibleText.trim();
