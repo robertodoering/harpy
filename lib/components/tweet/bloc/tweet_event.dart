@@ -345,7 +345,7 @@ class CopyTweetText extends TweetActionEvent {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
-    Clipboard.setData(ClipboardData(text: tweet.fullText));
+    Clipboard.setData(ClipboardData(text: tweet.visibleText));
     app<MessageService>().show('Copied Tweet text');
   }
 }
