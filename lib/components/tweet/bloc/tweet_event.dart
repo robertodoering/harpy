@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
@@ -215,13 +216,13 @@ abstract class MediaActionEvent extends TweetEvent {
     this.index,
   });
 
-  /// The tweet that has the media to download.
+  /// The tweet that has the action for the media.
   ///
-  /// Can differ from [TweetBloc.tweet] when downloading media from quotes.
+  /// Can differ from [TweetBloc.tweet] when using media from quotes.
   final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image
-  /// gets downloaded.
+  /// to select.
   final int index;
 
   /// Returns the url of the selected media or `null` if no url exist.
@@ -306,5 +307,59 @@ class ShareMedia extends MediaActionEvent {
     if (url != null) {
       Share.share(url);
     }
+  }
+}
+
+abstract class TweetActionEvent extends TweetEvent {
+  const TweetActionEvent({
+    @required this.tweet,
+  });
+
+  /// The selected Tweet.
+  ///
+  /// Can differ from [TweetBloc.tweet] when selecting quotes.
+  final TweetData tweet;
+}
+
+class OpenTweetExternally extends TweetActionEvent {
+  const OpenTweetExternally({
+    @required TweetData tweet,
+  }) : super(tweet: tweet);
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    launchUrl(tweet.tweetUrl);
+  }
+}
+
+class CopyTweetText extends TweetActionEvent {
+  const CopyTweetText({
+    @required TweetData tweet,
+  }) : super(tweet: tweet);
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    Clipboard.setData(ClipboardData(text: tweet.visibleText));
+    app<MessageService>().show('Copied Tweet text');
+  }
+}
+
+class ShareTweet extends TweetActionEvent {
+  const ShareTweet({
+    @required TweetData tweet,
+  }) : super(tweet: tweet);
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    Share.share(tweet.tweetUrl);
   }
 }

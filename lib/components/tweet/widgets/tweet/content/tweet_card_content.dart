@@ -6,6 +6,7 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/action_row.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/actions_button.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/retweeted_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
@@ -21,8 +22,28 @@ class TweetCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> content = <Widget>[
-      if (tweet.isRetweet) TweetRetweetedRow(tweet),
-      TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (tweet.isRetweet) ...<Widget>[
+                  TweetRetweetedRow(tweet),
+                  AnimatedContainer(
+                    duration: kLongAnimationDuration,
+                    height: defaultPaddingValue,
+                  ),
+                ],
+                TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
+              ],
+            ),
+          ),
+          TweetActionsButton(tweet),
+        ],
+      ),
       if (tweet.hasText)
         TwitterText(
           tweet.fullText,
