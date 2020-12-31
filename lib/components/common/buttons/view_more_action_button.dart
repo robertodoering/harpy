@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a button that opens a modal bottom sheet with the [children] in a
@@ -24,34 +23,31 @@ class ViewMoreActionButton extends StatelessWidget {
     return HarpyButton.flat(
       icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
       padding: padding,
-      onTap: () {
-        showModalBottomSheet<void>(
-          context: context,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: kDefaultRadius,
-              topRight: kDefaultRadius,
-            ),
+      onTap: () => showModalBottomSheet<void>(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: kDefaultRadius,
+            topRight: kDefaultRadius,
           ),
-          builder: (BuildContext context) => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              // handle
-              Container(
-                width: 50,
-                height: 2,
-                margin: EdgeInsets.all(defaultPaddingValue / 4),
-                decoration: BoxDecoration(
-                  borderRadius: kDefaultBorderRadius,
-                  color: harpyTheme.foregroundColor.withOpacity(.2),
-                ),
+        ),
+        builder: (BuildContext context) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // handle
+            Container(
+              width: 40,
+              height: 3,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: kDefaultBorderRadius,
+                color: harpyTheme.foregroundColor.withOpacity(.2),
               ),
-              defaultSmallVerticalSpacer,
-              ...children,
-            ],
-          ),
-        );
-      },
+            ),
+            ...children,
+          ],
+        ),
+      ),
     );
   }
 }
