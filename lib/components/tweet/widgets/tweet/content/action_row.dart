@@ -25,23 +25,20 @@ class TweetActionRow extends StatelessWidget {
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
         children: <Widget>[
-          RetweetButton(bloc),
-          defaultSmallHorizontalSpacer,
-          FavoriteButton(bloc),
-          if (!tweet.currentReplyParent(route)) ...<Widget>[
-            defaultSmallHorizontalSpacer,
+          RetweetButton(bloc, padding: DefaultEdgeInsets.all()),
+          FavoriteButton(bloc, padding: DefaultEdgeInsets.all()),
+          if (!tweet.currentReplyParent(route))
             HarpyButton.flat(
               onTap: () => app<HarpyNavigator>().pushRepliesScreen(
                 tweet: tweet,
               ),
               icon: const Icon(Icons.chat_bubble_outline),
               iconSize: 20,
-              padding: const EdgeInsets.all(8),
+              padding: DefaultEdgeInsets.all(),
             ),
-          ],
           const Spacer(),
           if (tweet.translatable || tweet.quoteTranslatable)
-            TweetTranslationButton(bloc),
+            TweetTranslationButton(bloc, padding: DefaultEdgeInsets.all()),
         ],
       ),
     );

@@ -9,10 +9,12 @@ import 'package:harpy/misc/harpy_navigator.dart';
 class TweetActionsButton extends StatelessWidget {
   const TweetActionsButton(
     this.tweet, {
+    this.padding = const EdgeInsets.all(8),
     this.sizeDelta = 0,
   });
 
   final TweetData tweet;
+  final EdgeInsets padding;
   final double sizeDelta;
 
   @override
@@ -20,7 +22,7 @@ class TweetActionsButton extends StatelessWidget {
     final TweetBloc bloc = TweetBloc.of(context);
 
     return ViewMoreActionButton(
-      padding: const EdgeInsets.all(8),
+      padding: padding,
       children: <Widget>[
         ListTile(
           leading: const Icon(Icons.open_in_browser),

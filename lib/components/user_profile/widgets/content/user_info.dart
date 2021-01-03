@@ -147,6 +147,7 @@ class UserProfileInfo extends StatelessWidget {
             bloc.user.hasConnections;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildAvatar(),
         defaultHorizontalSpacer,
@@ -163,7 +164,7 @@ class UserProfileInfo extends StatelessWidget {
                   ],
                 ],
               ),
-              defaultVerticalSpacer,
+              defaultSmallVerticalSpacer,
               _buildUserName(theme),
             ],
           ),

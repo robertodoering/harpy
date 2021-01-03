@@ -18,26 +18,45 @@ class UserProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: DefaultEdgeInsets.only(left: true, right: true, top: true),
-      child: Padding(
-        padding: DefaultEdgeInsets.all(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            UserProfileInfo(bloc),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          defaultVerticalSpacer,
+          Padding(
+            padding: DefaultEdgeInsets.symmetric(horizontal: true),
+            child: UserProfileInfo(bloc),
+          ),
+          defaultSmallVerticalSpacer,
+          if (bloc.user.hasDescription) ...<Widget>[
+            Padding(
+              padding: DefaultEdgeInsets.symmetric(horizontal: true),
+              child: UserProfileDescription(bloc),
+            ),
+            Padding(
+              padding: DefaultEdgeInsets.symmetric(horizontal: true),
+              child: UserProfileDescriptionTranslation(bloc),
+            ),
             defaultSmallVerticalSpacer,
-            if (bloc.user.hasDescription) ...<Widget>[
-              UserProfileDescription(bloc),
-              UserProfileDescriptionTranslation(bloc),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[UserDescriptionTranslationButton(bloc)],
-              ),
-              defaultSmallVerticalSpacer,
-            ],
-            UserProfileAdditionalInfo(bloc),
-            FollowersCount(bloc.user),
           ],
-        ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: DefaultEdgeInsets.only(left: true),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      UserProfileAdditionalInfo(bloc),
+                      FollowersCount(bloc.user),
+                    ],
+                  ),
+                ),
+              ),
+              UserDescriptionTranslationButton(bloc),
+            ],
+          ),
+          defaultVerticalSpacer,
+        ],
       ),
     );
   }

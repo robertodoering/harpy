@@ -5,6 +5,7 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/actions_button.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/top_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -19,11 +20,14 @@ class TweetQuoteContent extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     final List<Widget> content = <Widget>[
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: TweetAuthorRow(
+      TweetTopRow(
+        beginPadding: EdgeInsets.only(
+          left: defaultPaddingValue / 2,
+          top: defaultPaddingValue / 2,
+        ),
+        begin: <Widget>[
+          if (tweet.isRetweet) ...<Widget>[
+            TweetAuthorRow(
               tweet.userData,
               createdAt: tweet.createdAt,
               avatarPadding: defaultPaddingValue / 2,
@@ -31,9 +35,14 @@ class TweetQuoteContent extends StatelessWidget {
               fontSizeDelta: -2,
               iconSize: 14,
             ),
-          ),
-          TweetActionsButton(tweet, sizeDelta: -2),
+          ],
+          TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
         ],
+        end: TweetActionsButton(
+          tweet,
+          padding: EdgeInsets.all(defaultPaddingValue / 2),
+          sizeDelta: -2,
+        ),
       ),
       if (tweet.hasText)
         TwitterText(
@@ -52,25 +61,30 @@ class TweetQuoteContent extends StatelessWidget {
         borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
-      padding: EdgeInsets.only(
-        top: defaultPaddingValue / 2,
-        left: defaultPaddingValue / 2,
-        right: defaultPaddingValue / 2,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           for (Widget child in content) ...<Widget>[
-            child,
-            if (child == content.last)
-              AnimatedContainer(
-                duration: kShortAnimationDuration,
-                height: defaultPaddingValue / 2,
-              )
+            if (child == content.first)
+              child
             else
+              AnimatedPadding(
+                duration: kShortAnimationDuration,
+                padding: EdgeInsets.only(
+                  left: defaultSmallPaddingValue,
+                  right: defaultSmallPaddingValue,
+                ),
+                child: child,
+              ),
+            if (child is! TweetTranslation && child != content.last)
               AnimatedContainer(
                 duration: kShortAnimationDuration,
-                height: defaultPaddingValue / 4,
+                height: defaultSmallPaddingValue / 2,
+              )
+            else if (child == content.last)
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                height: defaultSmallPaddingValue,
               ),
           ],
         ],

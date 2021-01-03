@@ -1,7 +1,6 @@
 import 'package:dart_twitter_api/api/common/data/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/twitter_text.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds text for translated [TwitterText] with the original [language] above
 /// the [text].
@@ -35,8 +34,6 @@ class TranslatedText extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        defaultSmallVerticalSpacer,
-
         // 'translated from' original language text
         Text.rich(
           TextSpan(

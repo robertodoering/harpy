@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/action_button.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
@@ -13,10 +14,12 @@ class TranslationButton extends StatelessWidget {
   const TranslationButton({
     @required this.active,
     @required this.activate,
+    this.padding = const EdgeInsets.all(8),
   });
 
   final bool active;
   final VoidCallback activate;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,7 @@ class TranslationButton extends StatelessWidget {
     return ActionButton(
       active: active,
       activate: activate,
+      padding: padding,
       bubblesColor: const BubblesColor(
         dotPrimaryColor: Colors.teal,
         dotSecondaryColor: Colors.tealAccent,
@@ -47,9 +51,13 @@ class TranslationButton extends StatelessWidget {
 
 /// The translation button for the [TweetActionRow].
 class TweetTranslationButton extends StatelessWidget {
-  const TweetTranslationButton(this.bloc);
+  const TweetTranslationButton(
+    this.bloc, {
+    this.padding = const EdgeInsets.all(8),
+  });
 
   final TweetBloc bloc;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +66,7 @@ class TweetTranslationButton extends StatelessWidget {
 
     return TranslationButton(
       active: active,
+      padding: padding,
       activate: () => bloc.add(const TranslateTweet()),
     );
   }
@@ -76,6 +85,7 @@ class UserDescriptionTranslationButton extends StatelessWidget {
 
     return TranslationButton(
       active: active,
+      padding: DefaultEdgeInsets.all(),
       activate: () => bloc.add(const TranslateUserDescriptionEvent()),
     );
   }

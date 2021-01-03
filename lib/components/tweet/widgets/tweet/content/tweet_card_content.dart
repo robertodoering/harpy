@@ -9,6 +9,7 @@ import 'package:harpy/components/tweet/widgets/tweet/content/action_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/actions_button.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/retweeted_row.dart';
+import 'package:harpy/components/tweet/widgets/tweet/content/top_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/translation.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/tweet_card_quote_content.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -22,27 +23,19 @@ class TweetCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> content = <Widget>[
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                if (tweet.isRetweet) ...<Widget>[
-                  TweetRetweetedRow(tweet),
-                  AnimatedContainer(
-                    duration: kLongAnimationDuration,
-                    height: defaultPaddingValue,
-                  ),
-                ],
-                TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
-              ],
+      TweetTopRow(
+        beginPadding: DefaultEdgeInsets.only(left: true, top: true),
+        begin: <Widget>[
+          if (tweet.isRetweet) ...<Widget>[
+            TweetRetweetedRow(tweet),
+            AnimatedContainer(
+              duration: kLongAnimationDuration,
+              height: defaultSmallPaddingValue,
             ),
-          ),
-          TweetActionsButton(tweet),
+          ],
+          TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
         ],
+        end: TweetActionsButton(tweet, padding: DefaultEdgeInsets.all()),
       ),
       if (tweet.hasText)
         TwitterText(
@@ -58,27 +51,27 @@ class TweetCardContent extends StatelessWidget {
 
     return BlocProvider<TweetBloc>(
       create: (BuildContext content) => TweetBloc(tweet),
-      child: AnimatedPadding(
-        duration: kShortAnimationDuration,
-        padding: DefaultEdgeInsets.only(top: true, left: true, right: true),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            for (Widget child in content) ...<Widget>[
-              child,
-              if (child == content.last)
-                AnimatedContainer(
-                  duration: kLongAnimationDuration,
-                  height: defaultPaddingValue,
-                )
-              else
-                AnimatedContainer(
-                  duration: kLongAnimationDuration,
-                  height: defaultPaddingValue / 2,
-                ),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          for (Widget child in content) ...<Widget>[
+            if (child == content.first || child == content.last)
+              child
+            else
+              AnimatedPadding(
+                duration: kShortAnimationDuration,
+                padding: DefaultEdgeInsets.only(left: true, right: true),
+                child: child,
+              ),
+            if (child is! TweetTranslation &&
+                child != content.last &&
+                child != content[content.length - 2])
+              AnimatedContainer(
+                duration: kLongAnimationDuration,
+                height: defaultSmallPaddingValue,
+              ),
           ],
-        ),
+        ],
       ),
     );
   }
