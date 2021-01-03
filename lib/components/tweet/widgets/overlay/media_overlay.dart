@@ -143,6 +143,7 @@ class _MediaOverlayState extends State<MediaOverlay>
       child: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
     );
   }
