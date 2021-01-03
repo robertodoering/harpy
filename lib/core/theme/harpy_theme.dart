@@ -374,15 +374,6 @@ class HarpyTheme {
       iconTheme: IconThemeData(size: 20, color: foregroundColor),
     );
   }
-
-  @override
-  String toString() {
-    return 'HarpyTheme: {'
-        'name: $name, '
-        'accentColor: $accentColor, '
-        'backgroundColors: $backgroundColors'
-        '}';
-  }
 }
 
 Color _colorFromValue(int value) => value != null ? Color(value) : null;
