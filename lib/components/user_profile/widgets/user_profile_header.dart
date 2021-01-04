@@ -39,6 +39,7 @@ class UserProfileHeader extends StatelessWidget {
             defaultSmallVerticalSpacer,
           ],
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Expanded(
                 child: Padding(
@@ -48,6 +49,7 @@ class UserProfileHeader extends StatelessWidget {
                     children: <Widget>[
                       UserProfileAdditionalInfo(bloc),
                       FollowersCount(bloc.user),
+                      defaultVerticalSpacer,
                     ],
                   ),
                 ),
@@ -55,7 +57,6 @@ class UserProfileHeader extends StatelessWidget {
               UserDescriptionTranslationButton(bloc),
             ],
           ),
-          defaultVerticalSpacer,
         ],
       ),
     );
