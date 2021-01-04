@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/misc/translated_text.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -16,10 +15,12 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 class TweetTranslation extends StatelessWidget {
   const TweetTranslation(
     this.tweet, {
+    this.padding = EdgeInsets.zero,
     this.fontSizeDelta = 0,
   });
 
   final TweetData tweet;
+  final EdgeInsets padding;
 
   /// An optional font size delta for the translation text.
   final double fontSizeDelta;
@@ -35,7 +36,7 @@ class TweetTranslation extends StatelessWidget {
           child: tweet.hasTranslation && !tweet.translation.unchanged
               ? AnimatedPadding(
                   duration: kLongAnimationDuration,
-                  padding: EdgeInsets.only(bottom: defaultPaddingValue / 2),
+                  padding: padding,
                   child: TranslatedText(
                     tweet.translation.text,
                     language: tweet.translation.language,

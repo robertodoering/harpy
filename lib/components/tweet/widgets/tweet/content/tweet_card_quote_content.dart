@@ -15,6 +15,16 @@ class TweetQuoteContent extends StatelessWidget {
 
   final TweetData tweet;
 
+  bool _addBottomPadding(Widget child, List<Widget> content) {
+    final List<Widget> filtered = content
+        .where((Widget element) => element is! TweetTranslation)
+        .toList();
+
+    // tweet translation builds its own padding
+    // don't add padding to last child
+    return child is! TweetTranslation && child != filtered.last;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -22,15 +32,15 @@ class TweetQuoteContent extends StatelessWidget {
     final List<Widget> content = <Widget>[
       TweetTopRow(
         beginPadding: EdgeInsets.only(
-          left: defaultPaddingValue / 2,
-          top: defaultPaddingValue / 2,
+          left: defaultSmallPaddingValue,
+          top: defaultSmallPaddingValue,
         ),
         begin: <Widget>[
           if (tweet.isRetweet) ...<Widget>[
             TweetAuthorRow(
               tweet.userData,
               createdAt: tweet.createdAt,
-              avatarPadding: defaultPaddingValue / 2,
+              avatarPadding: defaultSmallPaddingValue,
               avatarRadius: 18,
               fontSizeDelta: -2,
               iconSize: 14,
@@ -40,7 +50,7 @@ class TweetQuoteContent extends StatelessWidget {
         ],
         end: TweetActionsButton(
           tweet,
-          padding: EdgeInsets.all(defaultPaddingValue / 2),
+          padding: EdgeInsets.all(defaultSmallPaddingValue),
           sizeDelta: -2,
         ),
       ),
@@ -51,7 +61,15 @@ class TweetQuoteContent extends StatelessWidget {
           style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
           urlToIgnore: tweet.quotedStatusUrl,
         ),
-      if (tweet.translatable) TweetTranslation(tweet, fontSizeDelta: -2),
+      if (tweet.translatable)
+        TweetTranslation(
+          tweet,
+          fontSizeDelta: -2,
+          padding: EdgeInsets.only(
+            top: !tweet.hasMedia ? defaultSmallPaddingValue / 2 : 0,
+            bottom: tweet.hasMedia ? defaultSmallPaddingValue / 2 : 0,
+          ),
+        ),
       if (tweet.hasMedia) TweetMedia(tweet),
     ];
 
@@ -61,6 +79,7 @@ class TweetQuoteContent extends StatelessWidget {
         borderRadius: kDefaultBorderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
+      padding: EdgeInsets.only(bottom: defaultSmallPaddingValue),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -76,16 +95,11 @@ class TweetQuoteContent extends StatelessWidget {
                 ),
                 child: child,
               ),
-            if (child is! TweetTranslation && child != content.last)
+            if (_addBottomPadding(child, content))
               AnimatedContainer(
                 duration: kShortAnimationDuration,
                 height: defaultSmallPaddingValue / 2,
               )
-            else if (child == content.last)
-              AnimatedContainer(
-                duration: kShortAnimationDuration,
-                height: defaultSmallPaddingValue,
-              ),
           ],
         ],
       ),

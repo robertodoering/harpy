@@ -20,6 +20,18 @@ class TweetCardContent extends StatelessWidget {
 
   final TweetData tweet;
 
+  bool _addBottomPadding(Widget child, List<Widget> content) {
+    final List<Widget> filtered = content
+        .where((Widget element) => element is! TweetTranslation)
+        .toList();
+
+    // tweet translation builds its own padding
+    // don't add padding to last and second to last child
+    return child is! TweetTranslation &&
+        child != content.last &&
+        child != filtered[filtered.length - 2];
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> content = <Widget>[
@@ -43,7 +55,17 @@ class TweetCardContent extends StatelessWidget {
           entities: tweet.entities,
           urlToIgnore: tweet.quotedStatusUrl,
         ),
-      if (tweet.translatable) TweetTranslation(tweet),
+      if (tweet.translatable)
+        TweetTranslation(
+          tweet,
+          padding: EdgeInsets.only(
+            top: !(tweet.hasMedia || tweet.hasQuote)
+                ? defaultSmallPaddingValue
+                : 0,
+            bottom:
+                tweet.hasMedia || tweet.hasQuote ? defaultSmallPaddingValue : 0,
+          ),
+        ),
       if (tweet.hasMedia) TweetMedia(tweet),
       if (tweet.hasQuote) TweetQuoteContent(tweet.quote),
       TweetActionRow(tweet),
@@ -63,11 +85,9 @@ class TweetCardContent extends StatelessWidget {
                 padding: DefaultEdgeInsets.only(left: true, right: true),
                 child: child,
               ),
-            if (child is! TweetTranslation &&
-                child != content.last &&
-                child != content[content.length - 2])
+            if (_addBottomPadding(child, content))
               AnimatedContainer(
-                duration: kLongAnimationDuration,
+                duration: kShortAnimationDuration,
                 height: defaultSmallPaddingValue,
               ),
           ],
