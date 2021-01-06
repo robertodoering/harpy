@@ -11,6 +11,7 @@ import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
+import 'package:harpy/core/preferences/general_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
@@ -55,5 +56,6 @@ void setupServices() {
     ..registerLazySingleton<ThemePreferences>(() => ThemePreferences())
     ..registerLazySingleton<SetupPreferences>(() => SetupPreferences())
     ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences())
-    ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences());
+    ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences())
+    ..registerLazySingleton<GeneralPreferences>(() => GeneralPreferences());
 }
