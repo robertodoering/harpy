@@ -246,7 +246,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
       '#${hashtag.text}',
       indexStart,
     );
-    indexStart = indices != null ? indices.last + 1 : indexStart;
+    indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, hashtag), twitterTextEntities);
   }
@@ -255,7 +255,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   indexStart = 0;
   for (Url url in entities?.urls ?? <Url>[]) {
     final List<int> indices = _findIndices(text, url.url, indexStart);
-    indexStart = indices != null ? indices.last + 1 : indexStart;
+    indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, url), twitterTextEntities);
   }
@@ -268,7 +268,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
       '@${userMention.screenName}',
       indexStart,
     );
-    indexStart = indices != null ? indices.last + 1 : indexStart;
+    indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(
       TwitterTextEntity(indices, userMention),
@@ -280,7 +280,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   indexStart = 0;
   for (Media media in entities?.media ?? <Media>[]) {
     final List<int> indices = _findIndices(text, media.url, indexStart);
-    indexStart = indices != null ? indices.last + 1 : indexStart;
+    indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, media), twitterTextEntities);
   }
@@ -296,11 +296,15 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
 ///
 /// Returns `null` if the [entityText] has not been found in the text.
 List<int> _findIndices(String text, String entityText, int indexStart) {
-  final int start = text.indexOf(entityText, indexStart);
+  try {
+    final int start = text.indexOf(entityText, indexStart);
 
-  if (start != -1) {
-    final int end = start + entityText.length;
-    return <int>[start, end];
+    if (start != -1) {
+      final int end = start + entityText.length;
+      return <int>[start, end];
+    }
+  } catch (e) {
+    // assume indices can't be found
   }
 
   return null;
