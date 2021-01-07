@@ -30,8 +30,5 @@ class ChangelogPreferences {
   // todo: prevent showing dialog when no changelog file exists
   bool get shouldShowChangelogDialog =>
       showChangelogDialog &&
-      // todo: crude (and temporary) fix to prevent showing the overlay for
-      //  version 24 which does not contain a changelog file
-      (int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0) != 24 &&
       (int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0) > lastShownVersion;
 }
