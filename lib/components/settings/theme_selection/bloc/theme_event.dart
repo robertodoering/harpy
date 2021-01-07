@@ -133,3 +133,15 @@ class SaveCustomThemes extends ThemeEvent {
     app<ThemePreferences>().customThemes = encodedCustomThemes;
   }
 }
+
+class RefreshTheme extends ThemeEvent {
+  const RefreshTheme();
+
+  @override
+  Stream<ThemeState> applyAsync({
+    ThemeState currentState,
+    ThemeBloc bloc,
+  }) async* {
+    bloc.add(ChangeThemeEvent(id: app<ThemePreferences>().selectedTheme));
+  }
+}

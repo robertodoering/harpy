@@ -11,6 +11,7 @@ import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
+import 'package:harpy/core/preferences/general_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -40,6 +41,7 @@ void main() {
     app.registerLazySingleton<HarpyNavigator>(() => HarpyNavigator());
     app.registerLazySingleton<ChangelogPreferences>(
         () => ChangelogPreferences());
+    app.registerLazySingleton<GeneralPreferences>(() => GeneralPreferences());
     app.registerLazySingleton<ConnectivityService>(
       () => MockConnectivityService(),
     );
@@ -55,7 +57,7 @@ void main() {
       when(app<ErrorReporter>().initialize()).thenAnswer((_) async {});
       when(app<HarpyPreferences>().initialize()).thenAnswer((_) async {});
       when(app<ConnectivityService>().initialize()).thenAnswer((_) async {});
-
+      when(app<GeneralPreferences>().performanceMode).thenReturn(false);
       final ThemeBloc themeBloc = ThemeBloc();
 
       return ApplicationBloc(

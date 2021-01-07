@@ -2,12 +2,12 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
 /// A list of [HarpyTheme]s that can be used as the theme for the app.
-final List<HarpyTheme> predefinedThemes = <HarpyTheme>[
-  HarpyTheme.fromData(crow),
-  HarpyTheme.fromData(swan),
-  HarpyTheme.fromData(phoenix),
-  HarpyTheme.fromData(harpy),
-];
+List<HarpyTheme> get predefinedThemes => <HarpyTheme>[
+      HarpyTheme.fromData(crow),
+      HarpyTheme.fromData(swan),
+      HarpyTheme.fromData(phoenix),
+      HarpyTheme.fromData(harpy),
+    ];
 
 final HarpyThemeData crow = HarpyThemeData()
   ..name = 'crow'

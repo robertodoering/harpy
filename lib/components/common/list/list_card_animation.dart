@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/visibility_change_detector.dart';
+import 'package:harpy/core/preferences/general_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Fades and slides the [child] when scrolling down or on the initial build if
@@ -15,6 +17,9 @@ import 'package:visibility_detector/visibility_detector.dart';
 ///
 /// The [key] is used by the [VisibilityDetector] to determine the [child]'s
 /// visibility and should be the same as the list item.
+///
+/// When enabling the performance mode, [ListCardAnimation] will simply build
+/// the [child] without any animation.
 class ListCardAnimation extends StatefulWidget {
   const ListCardAnimation({
     @required this.child,
@@ -29,6 +34,8 @@ class ListCardAnimation extends StatefulWidget {
 
 class _ListCardAnimationState extends State<ListCardAnimation>
     with SingleTickerProviderStateMixin<ListCardAnimation> {
+  final GeneralPreferences generalPreferences = app<GeneralPreferences>();
+
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _fadeAnimation;
@@ -83,19 +90,23 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityChangeDetector(
-      key: widget.key,
-      onVisibilityChanged: _onVisibilityChanged,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (BuildContext context, Widget child) => FadeTransition(
-          opacity: _fadeAnimation,
-          child: Transform.translate(
-            offset: _slideAnimation.value,
-            child: widget.child,
+    if (generalPreferences.performanceMode) {
+      return widget.child;
+    } else {
+      return VisibilityChangeDetector(
+        key: widget.key,
+        onVisibilityChanged: _onVisibilityChanged,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (BuildContext context, Widget child) => FadeTransition(
+            opacity: _fadeAnimation,
+            child: Transform.translate(
+              offset: _slideAnimation.value,
+              child: widget.child,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

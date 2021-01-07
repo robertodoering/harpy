@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
+import 'package:harpy/core/preferences/general_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme_data.dart';
 
 /// The minimum recommended contrast ratio for the visual representation of
@@ -92,6 +94,32 @@ class HarpyTheme {
 
   /// The [ThemeData] used by the root [MaterialApp].
   ThemeData data;
+
+  CardTheme get _cardTheme {
+    final bool performanceMode = app<GeneralPreferences>().performanceMode;
+
+    final Color color = performanceMode
+        ? Color.lerp(
+            averageBackgroundColor,
+            accentColor,
+            .1,
+          )
+        : Color.lerp(
+            accentColor.withOpacity(.1),
+            brightness == Brightness.dark
+                ? Colors.white.withOpacity(.2)
+                : Colors.black.withOpacity(.2),
+            .1,
+          );
+
+    return CardTheme(
+      clipBehavior: performanceMode ? Clip.hardEdge : Clip.antiAlias,
+      color: color,
+      shape: kDefaultShapeBorder,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+    );
+  }
 
   /// The opposite of [brightness].
   Brightness get complementaryBrightness =>
@@ -348,19 +376,7 @@ class HarpyTheme {
       splashColor: accentColor.withOpacity(.1),
       highlightColor: accentColor.withOpacity(.1),
 
-      cardTheme: CardTheme(
-        // use the accent color and make it slightly brighter / darker
-        color: Color.lerp(
-          accentColor.withOpacity(.1),
-          brightness == Brightness.dark
-              ? Colors.white.withOpacity(.2)
-              : Colors.black.withOpacity(.2),
-          .1,
-        ),
-        shape: kDefaultShapeBorder,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-      ),
+      cardTheme: _cardTheme,
 
       snackBarTheme: SnackBarThemeData(
         backgroundColor: averageBackgroundColor,
