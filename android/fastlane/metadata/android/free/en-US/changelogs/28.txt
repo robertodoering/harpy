@@ -4,6 +4,7 @@ Version 0.3.2
   · Reduces animations and effect
   · Settings › General › Performance mode
 
+· Added beta info screen
 · Improved layout padding for Tweets
 · Increased button hit target size
 · Fixed media overlay icon color for bright themes
