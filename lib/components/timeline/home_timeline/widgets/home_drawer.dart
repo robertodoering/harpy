@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
+import 'package:harpy/components/beta_info/widgets/beta_info_screen.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
@@ -18,6 +19,7 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
   Widget _buildActions(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
 
     return Column(
@@ -82,9 +84,26 @@ class HomeDrawer extends StatelessWidget {
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
                 },
               ),
+
+              // beta info
+              ListTile(
+                leading: Icon(Icons.info_outline, color: theme.accentColor),
+                title: Text(
+                  'Beta info',
+                  style: TextStyle(
+                    color: theme.accentColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushNamed(BetaInfoScreen.route);
+                },
+              ),
             ],
           ),
         ),
+
         // logout
         ListTile(
           leading: const Icon(Icons.exit_to_app),
