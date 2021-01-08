@@ -18,7 +18,7 @@ class AboutScreen extends StatelessWidget {
 
   static const String route = 'about';
 
-  static const String _mailto =
+  static const String mailto =
       'mailto:rbydoering+harpy@gmail.com?subject=Harpy';
 
   static const String _privacyPolicy =
@@ -112,7 +112,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 22),
+            leading: const FlareIcon.shiningStar(size: 24),
             title: const Text('Harpy Pro'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -140,7 +140,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 22),
+            leading: const FlareIcon.shiningStar(size: 24),
             title: const Text('Rate Harpy'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -189,7 +189,7 @@ class AboutScreen extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(kDefaultRadius),
             ),
-            onTap: () => launchUrl(_mailto),
+            onTap: () => launchUrl(mailto),
           ),
         ],
       ),
