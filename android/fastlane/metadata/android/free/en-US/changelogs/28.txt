@@ -5,5 +5,6 @@ Version 0.3.2
   · Settings › General › Performance mode
 
 · Improved layout padding for Tweets
+· Increased button hit target size
 · Fixed media overlay icon color for bright themes
 · Fixed a rare issue where some Tweet text was unable to be displayed
