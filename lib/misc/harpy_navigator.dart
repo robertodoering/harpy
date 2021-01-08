@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/components/authentication/widgets/setup_screen.dart';
+import 'package:harpy/components/beta_info/widgets/beta_info_screen.dart';
 import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/routes/fade_route.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
@@ -223,6 +224,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case AboutScreen.route:
       screen = const AboutScreen();
+      break;
+    case BetaInfoScreen.route:
+      screen = const BetaInfoScreen();
       break;
     case ChangelogScreen.route:
       screen = const ChangelogScreen();

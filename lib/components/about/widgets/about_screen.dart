@@ -18,7 +18,7 @@ class AboutScreen extends StatelessWidget {
 
   static const String route = 'about';
 
-  static const String _mailto =
+  static const String mailto =
       'mailto:rbydoering+harpy@gmail.com?subject=Harpy';
 
   static const String _privacyPolicy =
@@ -112,7 +112,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 22),
+            leading: const FlareIcon.shiningStar(size: 24),
             title: const Text('Harpy Pro'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -140,7 +140,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 22),
+            leading: const FlareIcon.shiningStar(size: 24),
             title: const Text('Rate Harpy'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -162,32 +162,34 @@ class AboutScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.mail),
             isThreeLine: true,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: defaultPaddingValue,
-            ),
-            title: Text.rich(
-              TextSpan(
-                children: <InlineSpan>[
-                  const TextSpan(text: 'Developed by '),
-                  TextSpan(text: 'Roberto Doering', style: linkStyle),
-                ],
+            title: Padding(
+              padding: EdgeInsets.only(top: defaultPaddingValue),
+              child: Text.rich(
+                TextSpan(
+                  children: <InlineSpan>[
+                    const TextSpan(text: 'Developed by '),
+                    TextSpan(text: 'Roberto Doering', style: linkStyle),
+                  ],
+                ),
               ),
             ),
-            subtitle: Text.rich(
-              TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(text: 'rbydoering@gmail.com\n', style: linkStyle),
-                  const TextSpan(
-                    text: 'Thank you for your feedback and bug reports!',
-                  ),
-                ],
+            subtitle: Padding(
+              padding: EdgeInsets.only(bottom: defaultPaddingValue),
+              child: Text.rich(
+                TextSpan(
+                  children: <InlineSpan>[
+                    TextSpan(text: 'rbydoering@gmail.com\n', style: linkStyle),
+                    const TextSpan(
+                      text: 'Thank you for your feedback and bug reports!',
+                    ),
+                  ],
+                ),
               ),
             ),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(kDefaultRadius),
             ),
-            onTap: () => launchUrl(_mailto),
+            onTap: () => launchUrl(mailto),
           ),
         ],
       ),

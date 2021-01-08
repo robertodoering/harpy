@@ -387,7 +387,9 @@ class HarpyTheme {
         behavior: SnackBarBehavior.floating,
       ),
 
-      iconTheme: IconThemeData(size: 20, color: foregroundColor),
+      iconTheme: const IconThemeData.fallback().copyWith(
+        color: foregroundColor,
+      ),
     );
   }
 }
