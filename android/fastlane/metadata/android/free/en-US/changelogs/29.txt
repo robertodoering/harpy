@@ -1,5 +1,7 @@
 Version 0.3.3
 
-· Changed swiping media up / down to dismiss to be easier (Thanks Daniel)
+· Changed changelog screen styling
+· Changed swiping media to dismiss to be easier (Thanks Daniel)
 · Fixed 'Jump to top' button prevents drag gesture (thanks again SONNY)
 · Fixed a typo in beta info
+· Fixed a typo in changelog screen
