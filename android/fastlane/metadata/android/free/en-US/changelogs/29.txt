@@ -1,3 +1,4 @@
 Version 0.3.2
 
+· Changed swiping media up / down to dismiss to be easier (Thanks Daniel)
 · Fixed a typo in beta info
