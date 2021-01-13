@@ -18,6 +18,7 @@ class HarpyScaffold extends StatelessWidget {
     this.backgroundColors,
     this.appBarBottom,
     this.floatingActionButton,
+    this.buildSafeArea = false,
   });
 
   final String title;
@@ -27,6 +28,7 @@ class HarpyScaffold extends StatelessWidget {
   final Widget drawer;
   final PreferredSizeWidget appBarBottom;
   final Widget floatingActionButton;
+  final bool buildSafeArea;
 
   /// The colors used by the [HarpyBackground].
   ///
@@ -72,6 +74,24 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
+  Widget _buildFloatingActionButton(MediaQueryData mediaQuery) {
+    if (floatingActionButton == null) {
+      return null;
+    } else {
+      return Padding(
+        // add padding if a bottom nav bar exists
+        // Some devices won't draw a bot nav bar, in which case the fab will
+        // have the correct padding of 16dp.
+        // If a bot nav bar exists we add a padding of 16dp because it will
+        // otherwise sit on the bot nav bar without padding.
+        padding: EdgeInsets.only(
+          bottom: mediaQuery.padding.bottom > 0 ? 16 : 0,
+        ),
+        child: floatingActionButton,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -79,13 +99,15 @@ class HarpyScaffold extends StatelessWidget {
 
     return Scaffold(
       drawer: drawer,
-      floatingActionButton: floatingActionButton,
+      floatingActionButton: _buildFloatingActionButton(mediaQuery),
       body: HarpyBackground(
         colors: backgroundColors,
         child: Column(
           children: <Widget>[
             if (_hasAppBar) _buildAppBar(theme, mediaQuery),
-            Expanded(child: body),
+            Expanded(
+              child: buildSafeArea ? SafeArea(top: false, child: body) : body,
+            ),
           ],
         ),
       ),

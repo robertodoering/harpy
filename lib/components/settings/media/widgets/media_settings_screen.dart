@@ -102,6 +102,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     return HarpyScaffold(
       title: 'Media settings',
       actions: _buildActions(),
+      buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,
         children: _settings,

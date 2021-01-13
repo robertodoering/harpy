@@ -41,6 +41,7 @@ class BetaInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final ThemeData theme = Theme.of(context);
 
     return HarpyScaffold(
@@ -53,6 +54,7 @@ class BetaInfoScreen extends StatelessWidget {
           Center(child: Text('FAQ', style: theme.textTheme.subtitle1)),
           defaultVerticalSpacer,
           BetaFaq(onEmailTap: launchEmail),
+          SizedBox(height: mediaQuery.padding.bottom),
         ],
       ),
     );

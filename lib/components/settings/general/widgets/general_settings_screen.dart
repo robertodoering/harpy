@@ -48,6 +48,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: 'General',
+      buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,
         children: _settings,

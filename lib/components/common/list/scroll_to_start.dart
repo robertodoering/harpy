@@ -3,6 +3,7 @@ import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_shifted_position.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds a button at the bottom of the screen that listens to the
 /// [ScrollDirection] and animates in or out of the screen to provide a button
@@ -100,7 +101,9 @@ class _ScrollToStartState extends State<ScrollToStart> {
             child: AnimatedShiftedPosition(
               shift: show ? Offset.zero : const Offset(0, 1),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.only(
+                  bottom: defaultPaddingValue + mediaQuery.padding.bottom,
+                ),
                 child: HarpyButton.raised(
                   text: const Text('Jump to top'),
                   icon: const Icon(Icons.arrow_upward),

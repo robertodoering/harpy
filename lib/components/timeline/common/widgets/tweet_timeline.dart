@@ -42,6 +42,8 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return BlocBuilder<T, TimelineState>(
       builder: (BuildContext context, TimelineState state) {
         final T bloc = context.watch<T>();
@@ -84,6 +86,9 @@ class TweetTimeline<T extends TimelineBloc> extends StatelessWidget {
                     else if (state is ShowingTimelineState &&
                         bloc.lockRequestMore)
                       const LoadingMoreLocked(type: 'Tweets'),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: mediaQuery.padding.bottom),
+                    )
                   ],
                 ),
               ),

@@ -57,6 +57,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
     return HarpyScaffold(
       title: 'Layout settings',
       actions: _buildActions(),
+      buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,
         children: _settings,
