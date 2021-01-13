@@ -23,7 +23,7 @@ class BetaInfoScreen extends StatelessWidget {
             children: <InlineSpan>[
               const TextSpan(
                 text: 'Harpy is currently in development.\n\n'
-                    'I appreciate every feedback you sent me. You can reach '
+                    'I appreciate every feedback you send me. You can reach '
                     'out to me via ',
               ),
               WidgetSpan(child: LinkText(text: 'email', onTap: launchEmail)),

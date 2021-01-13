@@ -1,0 +1,3 @@
+Version 0.3.2
+
+· Fixed a typo in beta info
