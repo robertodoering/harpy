@@ -15,7 +15,7 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@android:color/white</item>
 
-        <!-- prevent the system from adding a background to the navigation bar to allow for a
+        <!-- Prevent the system from adding a background to the navigation bar to allow for a
              fully transparent navigation bar -->
         <item name="android:enforceNavigationBarContrast">false</item>
     </style>
