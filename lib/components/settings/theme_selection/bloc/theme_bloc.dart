@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,12 +74,12 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   void updateSystemUi(HarpyTheme theme) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: theme.backgroundColors.last,
-        systemNavigationBarDividerColor: null,
-        systemNavigationBarIconBrightness: theme.complementaryBrightness,
-        statusBarColor: theme.backgroundColors.first,
+        statusBarColor: theme.backgroundColors.first.withOpacity(.3),
         statusBarBrightness: theme.brightness,
         statusBarIconBrightness: theme.complementaryBrightness,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: theme.complementaryBrightness,
       ),
     );
   }
