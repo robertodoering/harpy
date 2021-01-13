@@ -74,4 +74,29 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
       );
     }
   }
+
+  @override
+  bool hitTestChildren(
+    BoxHitTestResult result, {
+    @required Offset position,
+  }) {
+    if (child != null) {
+      final BoxParentData childParentData = child.parentData as BoxParentData;
+
+      final Offset shiftOffset = Offset(
+        _shift.dx * child.size.width,
+        _shift.dy * child.size.height,
+      );
+
+      return result.addWithPaintOffset(
+        offset: childParentData.offset,
+        position: position,
+        hitTest: (BoxHitTestResult result, Offset transformed) {
+          assert(transformed == position - childParentData.offset);
+          return child.hitTest(result, position: transformed + shiftOffset);
+        },
+      );
+    }
+    return false;
+  }
 }

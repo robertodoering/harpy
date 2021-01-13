@@ -99,7 +99,6 @@ class _ScrollToStartState extends State<ScrollToStart> {
             duration: kShortAnimationDuration,
             child: AnimatedShiftedPosition(
               shift: show ? Offset.zero : const Offset(0, 1),
-              hideOnCompletion: !show,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: HarpyButton.raised(

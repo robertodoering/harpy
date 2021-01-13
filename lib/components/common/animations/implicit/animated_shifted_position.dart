@@ -8,16 +8,12 @@ class AnimatedShiftedPosition extends ImplicitlyAnimatedWidget {
   const AnimatedShiftedPosition({
     @required this.child,
     @required this.shift,
-    this.hideOnCompletion = false,
     Curve curve = Curves.easeInOut,
     Duration duration = kShortAnimationDuration,
   }) : super(curve: curve, duration: duration);
 
   final Widget child;
   final Offset shift;
-
-  /// Whether an empty child should be built when the animation completes.
-  final bool hideOnCompletion;
 
   @override
   _AnimatedRelativePositionState createState() =>
@@ -41,13 +37,9 @@ class _AnimatedRelativePositionState
   Widget build(BuildContext context) {
     final Offset offset = _offsetTween.evaluate(animation);
 
-    if (widget.hideOnCompletion && animation.isCompleted) {
-      return const SizedBox();
-    } else {
-      return ShiftedPosition(
-        shift: offset,
-        child: widget.child,
-      );
-    }
+    return ShiftedPosition(
+      shift: offset,
+      child: widget.child,
+    );
   }
 }
