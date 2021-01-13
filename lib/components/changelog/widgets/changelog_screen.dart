@@ -49,21 +49,18 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
 
   Widget _buildChangelogWidgets() {
     return ListView.separated(
-      padding: EdgeInsets.zero,
+      padding: DefaultEdgeInsets.only(top: true, bottom: true),
       itemCount: _dataList.length,
-      itemBuilder: (BuildContext context, int index) {
-        final ChangelogData data = _dataList[index];
-
-        return Padding(
-          padding: DefaultEdgeInsets.all(),
-          child: Column(
-            children: <Widget>[
-              ChangelogWidget(data),
-            ],
+      itemBuilder: (BuildContext context, int index) => Padding(
+        padding: DefaultEdgeInsets.only(left: true, right: true),
+        child: Card(
+          child: Padding(
+            padding: DefaultEdgeInsets.all(),
+            child: ChangelogWidget(_dataList[index]),
           ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+        ),
+      ),
+      separatorBuilder: (_, __) => defaultVerticalSpacer,
     );
   }
 
@@ -80,7 +77,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     }
 
     return HarpyScaffold(
-      title: 'Changelogs',
+      title: 'Changelog',
       body: child,
     );
   }
