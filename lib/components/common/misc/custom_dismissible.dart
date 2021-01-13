@@ -8,7 +8,7 @@ class CustomDismissible extends StatefulWidget {
   const CustomDismissible({
     @required this.child,
     this.onDismissed,
-    this.dismissThreshold = 0.2,
+    this.dismissThreshold = 0.05,
     this.enabled = true,
   });
 
