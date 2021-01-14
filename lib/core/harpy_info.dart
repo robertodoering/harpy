@@ -19,7 +19,7 @@ class HarpyInfo {
   AndroidDeviceInfo deviceInfo;
 
   Future<void> initialize() async {
-    Future.wait<void>(<Future<void>>[
+    await Future.wait<void>(<Future<void>>[
       _initPackageInfo(),
       _initDeviceInfo(),
     ]);
