@@ -54,6 +54,9 @@ class InitializeEvent extends ApplicationEvent {
     // this is used by the VisibilityDetector for the ListCardAnimation
     VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
+    // need the device info before we continue with updating the system ui
+    await app<HarpyInfo>().initialize();
+
     // update the system ui to match the initial theme
     bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
 
@@ -62,7 +65,6 @@ class InitializeEvent extends ApplicationEvent {
     app<AppConfig>().initialize();
 
     await Future.wait<void>(<Future<void>>[
-      app<HarpyInfo>().initialize(),
       app<ErrorReporter>().initialize(),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
