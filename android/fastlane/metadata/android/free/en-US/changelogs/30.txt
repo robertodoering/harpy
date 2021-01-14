@@ -1,0 +1,4 @@
+Version 0.3.4
+
+· Added transparent navigation bar for Android 11
+· Added transparent status bar color
