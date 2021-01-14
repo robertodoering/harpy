@@ -75,7 +75,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   void updateSystemUi(HarpyTheme theme) {
     Color navigationBarColor;
 
-    if (app<HarpyInfo>().deviceInfo.version.sdkInt >= 30) {
+    if (app<HarpyInfo>().deviceInfo?.version?.sdkInt ?? 0 >= 30) {
       // android 11 and above allow for a transparent navigation bar where
       // the app can draw behind it
       navigationBarColor = Colors.transparent;
