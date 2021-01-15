@@ -20,4 +20,7 @@ abstract class FollowingFollowersBloc extends PaginatedBloc {
 
   @override
   bool get hasData => users.isNotEmpty;
+
+  @override
+  Duration get lockDuration => const Duration(seconds: 5);
 }
