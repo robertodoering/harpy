@@ -96,7 +96,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
               onTap: () => loadUsers(bloc),
             );
           } else {
-            scaffoldTitle = false
+            scaffoldTitle = false;
             child = _buildList(mediaQuery, bloc);
           }
 
