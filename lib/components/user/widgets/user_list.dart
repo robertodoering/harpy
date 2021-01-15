@@ -9,11 +9,15 @@ import 'package:harpy/core/api/twitter/user_data.dart';
 class UserList extends StatelessWidget {
   const UserList(
     this.users, {
+    this.beginSlivers = const <Widget>[],
     this.endSlivers = const <Widget>[],
     this.enableScroll = true,
   });
 
   final List<UserData> users;
+
+  /// Slivers built at the beginning of the [CustomScrollView].
+  final List<Widget> beginSlivers;
 
   /// Slivers built at the end of the [CustomScrollView].
   final List<Widget> endSlivers;
@@ -34,6 +38,7 @@ class UserList extends StatelessWidget {
     return CustomScrollView(
       physics: enableScroll ? null : const NeverScrollableScrollPhysics(),
       slivers: <Widget>[
+        ...beginSlivers,
         SliverPadding(
           padding: DefaultEdgeInsets.all(),
           sliver: SliverList(

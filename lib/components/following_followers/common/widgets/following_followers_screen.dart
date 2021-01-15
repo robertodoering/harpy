@@ -9,6 +9,7 @@ import 'package:harpy/components/common/list/load_more_locked.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/following_followers/common/bloc/following_followers_bloc.dart';
 import 'package:harpy/components/user/widgets/user_list.dart';
@@ -56,6 +57,9 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           },
           child: UserList(
             bloc.users,
+            beginSlivers: <Widget>[
+              HarpySliverAppBar(title: title, floating: true),
+            ],
             endSlivers: <Widget>[
               if (bloc.showLoadingMore)
                 const LoadMoreIndicator()
@@ -82,6 +86,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           final B bloc = context.watch<B>();
 
           Widget child;
+          bool scaffoldTitle = true;
 
           if (bloc.loadingInitialData) {
             child = const Center(child: CircularProgressIndicator());
@@ -91,11 +96,12 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
               onTap: () => loadUsers(bloc),
             );
           } else {
+            scaffoldTitle = false
             child = _buildList(mediaQuery, bloc);
           }
 
           return HarpyScaffold(
-            title: title,
+            title: scaffoldTitle ? title : null,
             body: AnimatedSwitcher(
               duration: kShortAnimationDuration,
               switchInCurve: Curves.easeInOut,
