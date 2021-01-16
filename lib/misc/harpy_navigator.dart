@@ -10,6 +10,7 @@ import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
 import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
 import 'package:harpy/components/replies/widgets/replies_screen.dart';
+import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
 import 'package:harpy/components/settings/general/widgets/general_settings_screen.dart';
@@ -230,6 +231,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case ChangelogScreen.route:
       screen = const ChangelogScreen();
+      break;
+    case UserSearchScreen.route:
+      screen = const UserSearchScreen();
       break;
     case HomeScreen.route:
       screen = HomeScreen(
