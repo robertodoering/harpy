@@ -353,6 +353,9 @@ class HarpyTheme {
       buttonColor: foregroundColor,
       errorColor: errorColor,
 
+      // cursor color used by text fields
+      cursorColor: accentColor,
+
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
           : Colors.black.withOpacity(.2),
