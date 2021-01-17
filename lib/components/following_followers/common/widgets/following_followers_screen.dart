@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 typedef BlocAction<T> = void Function(T);
 
 /// The shared base for the [FollowingScreen] and the [FollowersScreen].
+// todo: refactor similar to user search screen
 class FollowingFollowersScreen<B extends FollowingFollowersBloc>
     extends StatelessWidget {
   const FollowingFollowersScreen({
@@ -88,9 +89,9 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           Widget child;
           bool scaffoldTitle = true;
 
-          if (bloc.loadingInitialData) {
+          if (bloc.loadingInitialData || state is InitialState) {
             child = const Center(child: CircularProgressIndicator());
-          } else if (bloc.showNoDataExists) {
+          } else if (bloc.showNoDataExists || bloc.showError) {
             child = LoadingDataError(
               message: errorMessage,
               onTap: () => loadUsers(bloc),
