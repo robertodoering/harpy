@@ -87,7 +87,7 @@ class SearchUsers extends LoadPaginatedData {
   }
 }
 
-/// An event to clear the previously searched users..
+/// An event to clear the previously searched users.
 class ClearSearchedUsers extends PaginatedEvent {
   const ClearSearchedUsers();
 
