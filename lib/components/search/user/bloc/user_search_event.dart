@@ -16,7 +16,7 @@ import 'package:logging/logging.dart';
 /// last page has been requested, following pages will return duplicate users.
 /// To work around this, on every request duplicate duplicate users are
 /// filtered and once only a small number of new users have been received we
-/// assume no more users can be requested,
+/// assume no more users can be requested.
 class SearchUsers extends LoadPaginatedData {
   const SearchUsers(this.query);
 
