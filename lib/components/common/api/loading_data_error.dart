@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds an error message with an optional retry button when [onTap] is not
 /// `null`.
@@ -17,7 +18,7 @@ class LoadingDataError extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: DefaultEdgeInsets.all(),
       alignment: Alignment.center,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -27,7 +28,7 @@ class LoadingDataError extends StatelessWidget {
             style: theme.textTheme.headline6,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          defaultVerticalSpacer,
           if (onTap != null)
             HarpyButton.flat(
               dense: true,

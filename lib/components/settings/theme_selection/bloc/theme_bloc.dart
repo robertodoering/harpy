@@ -85,7 +85,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: theme.backgroundColors.first.withOpacity(.3),
+        statusBarColor: theme.backgroundColors.first.withOpacity(0),
         statusBarBrightness: theme.brightness,
         statusBarIconBrightness: theme.complementaryBrightness,
         systemNavigationBarColor: navigationBarColor,

@@ -25,7 +25,10 @@ class MentionSuggestionsBloc
     });
   }
 
-  final UserSearchBloc userSearchBloc = UserSearchBloc();
+  final UserSearchBloc userSearchBloc = UserSearchBloc(
+    silentErrors: true,
+    lock: Duration.zero,
+  );
   final FollowingBloc followingBloc;
 
   static MentionSuggestionsBloc of(BuildContext context) =>

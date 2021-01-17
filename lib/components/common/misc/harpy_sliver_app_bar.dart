@@ -12,34 +12,40 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class HarpySliverAppBar extends StatelessWidget {
   const HarpySliverAppBar({
     this.title,
+    this.titleWidget,
     this.actions,
     this.showIcon = false,
     this.floating = false,
     this.stretch = false,
     this.pinned = false,
     this.background,
+    this.bottom,
   });
 
   final String title;
+  final Widget titleWidget;
   final List<Widget> actions;
   final bool showIcon;
   final bool floating;
   final bool stretch;
   final bool pinned;
   final Widget background;
+  final PreferredSizeWidget bottom;
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Flexible(
-          child: Text(
-            title ?? '',
-            style: theme.textTheme.headline6,
-            overflow: TextOverflow.fade,
-            softWrap: false,
+        if (titleWidget != null) Expanded(child: titleWidget),
+        if (title != null)
+          Flexible(
+            child: Text(
+              title ?? '',
+              style: theme.textTheme.headline6,
+              overflow: TextOverflow.fade,
+              softWrap: false,
+            ),
           ),
-        ),
         if (showIcon) ...<Widget>[
           const SizedBox(width: 4),
           const FlareIcon.harpyLogo(size: 24),
@@ -69,27 +75,29 @@ class HarpySliverAppBar extends StatelessWidget {
     MediaQueryData mediaQuery,
     double minExtend,
   ) {
+    Color end;
+
     if (harpyTheme.backgroundColors.length == 1) {
-      return BoxDecoration(color: harpyTheme.backgroundColors.first);
+      end = harpyTheme.backgroundColors.first;
+    } else {
+      // min extend / mediaQuery.size * count of background colors minus the
+      // first one
+      final double t = minExtend /
+          mediaQuery.size.height *
+          (harpyTheme.backgroundColors.length - 1);
+
+      end = Color.lerp(
+        harpyTheme.backgroundColors[0],
+        harpyTheme.backgroundColors[1],
+        t,
+      );
     }
-
-    // min extend / mediaQuery.size * count of background colors minus the
-    // first one
-    final double t = minExtend /
-        mediaQuery.size.height *
-        (harpyTheme.backgroundColors.length - 1);
-
-    final Color color = Color.lerp(
-      harpyTheme.backgroundColors[0],
-      harpyTheme.backgroundColors[1],
-      t,
-    );
 
     return BoxDecoration(
       gradient: LinearGradient(
         colors: <Color>[
-          harpyTheme.backgroundColors.first,
-          color,
+          harpyTheme.backgroundColors.first.withOpacity(.8),
+          end.withOpacity(.8),
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -121,6 +129,7 @@ class HarpySliverAppBar extends StatelessWidget {
       actions: actions,
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
       expandedHeight: hasFlexibleSpace ? expandedHeight : null,
+      bottom: bottom,
     );
   }
 }

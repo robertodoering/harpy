@@ -5,6 +5,7 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
+import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
 import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
 import 'package:harpy/components/timeline/common/widgets/tweet_timeline.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
@@ -79,14 +80,14 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
               context.read<HomeTimelineBloc>()
                 ..add(const ClearTweetsEvents())
                 ..add(const UpdateHomeTimelineEvent());
+            } else if (selection == 1) {
+              app<HarpyNavigator>().pushNamed(UserSearchScreen.route);
             }
           },
           itemBuilder: (BuildContext context) {
             return <PopupMenuEntry<int>>[
-              const PopupMenuItem<int>(
-                value: 0,
-                child: Text('Refresh'),
-              ),
+              const PopupMenuItem<int>(value: 0, child: Text('Refresh')),
+              const PopupMenuItem<int>(value: 1, child: Text('Search users')),
             ];
           },
         ),

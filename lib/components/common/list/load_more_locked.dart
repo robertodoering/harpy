@@ -12,9 +12,11 @@ class LoadingMoreLocked extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return SliverToBoxAdapter(
       child: Container(
-        height: 200,
+        height: mediaQuery.padding.bottom * 2,
         padding: const EdgeInsets.all(16),
         alignment: Alignment.center,
         child: Text(

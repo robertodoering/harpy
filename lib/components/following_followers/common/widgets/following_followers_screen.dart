@@ -9,6 +9,7 @@ import 'package:harpy/components/common/list/load_more_locked.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/following_followers/common/bloc/following_followers_bloc.dart';
 import 'package:harpy/components/user/widgets/user_list.dart';
@@ -19,6 +20,7 @@ import 'package:provider/provider.dart';
 typedef BlocAction<T> = void Function(T);
 
 /// The shared base for the [FollowingScreen] and the [FollowersScreen].
+// todo: refactor similar to user search screen
 class FollowingFollowersScreen<B extends FollowingFollowersBloc>
     extends StatelessWidget {
   const FollowingFollowersScreen({
@@ -56,6 +58,9 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           },
           child: UserList(
             bloc.users,
+            beginSlivers: <Widget>[
+              HarpySliverAppBar(title: title, floating: true),
+            ],
             endSlivers: <Widget>[
               if (bloc.showLoadingMore)
                 const LoadMoreIndicator()
@@ -82,20 +87,22 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           final B bloc = context.watch<B>();
 
           Widget child;
+          bool scaffoldTitle = true;
 
-          if (bloc.loadingInitialData) {
+          if (bloc.loadingInitialData || state is InitialState) {
             child = const Center(child: CircularProgressIndicator());
-          } else if (bloc.showNoDataExists) {
+          } else if (bloc.showNoDataExists || bloc.showError) {
             child = LoadingDataError(
               message: errorMessage,
               onTap: () => loadUsers(bloc),
             );
           } else {
+            scaffoldTitle = false;
             child = _buildList(mediaQuery, bloc);
           }
 
           return HarpyScaffold(
-            title: title,
+            title: scaffoldTitle ? title : null,
             body: AnimatedSwitcher(
               duration: kShortAnimationDuration,
               switchInCurve: Curves.easeInOut,
