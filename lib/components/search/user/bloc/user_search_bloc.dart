@@ -6,6 +6,16 @@ import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/service_locator.dart';
 
 class UserSearchBloc extends PaginatedBloc {
+  UserSearchBloc({
+    this.silentErrors = false,
+    this.lock = const Duration(seconds: 1),
+  }) {
+    cursor = 1;
+  }
+
+  final bool silentErrors;
+  final Duration lock;
+
   final UserService userService = app<TwitterApi>().userService;
 
   static UserSearchBloc of(BuildContext context) =>
@@ -20,5 +30,5 @@ class UserSearchBloc extends PaginatedBloc {
   bool get hasData => users.isNotEmpty;
 
   @override
-  Duration get lockDuration => Duration.zero;
+  Duration get lockDuration => lock;
 }
