@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="172" src="media/harpy_title.png"/>
+  <img max-height="172" src="media/harpy_title.png"/>
 </p>
 
 <p align="center">
