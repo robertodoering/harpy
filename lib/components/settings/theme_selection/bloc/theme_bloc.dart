@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_state.dart';
+import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -71,14 +73,24 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   /// Updates the system ui to match the [theme].
   void updateSystemUi(HarpyTheme theme) {
+    Color navigationBarColor;
+
+    if ((app<HarpyInfo>().deviceInfo?.version?.sdkInt ?? 0) >= 30) {
+      // android 11 and above allow for a transparent navigation bar where
+      // the app can draw behind it
+      navigationBarColor = Colors.transparent;
+    } else {
+      navigationBarColor = theme.backgroundColors.last;
+    }
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: theme.backgroundColors.last,
-        systemNavigationBarDividerColor: null,
-        systemNavigationBarIconBrightness: theme.complementaryBrightness,
-        statusBarColor: theme.backgroundColors.first,
+        statusBarColor: theme.backgroundColors.first.withOpacity(.3),
         statusBarBrightness: theme.brightness,
         statusBarIconBrightness: theme.complementaryBrightness,
+        systemNavigationBarColor: navigationBarColor,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: theme.complementaryBrightness,
       ),
     );
   }

@@ -115,6 +115,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
           return HarpyScaffold(
             title: 'Compose Tweet',
+            buildSafeArea: true,
             body: Padding(
               padding: DefaultEdgeInsets.all(),
               child: GestureDetector(

@@ -209,6 +209,7 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final Color color = textTheme.bodyText2.color;
@@ -251,6 +252,7 @@ class AboutScreen extends StatelessWidget {
           _buildDeveloperText(linkStyle),
           defaultVerticalSpacer,
           _buildPrivacyPolicy(),
+          SizedBox(height: mediaQuery.padding.bottom),
         ],
       ),
     );

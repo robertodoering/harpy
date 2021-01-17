@@ -59,6 +59,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return HarpyScaffold(
       title: 'Settings',
+      buildSafeArea: true,
       body: SettingsList(settings: _settings),
     );
   }

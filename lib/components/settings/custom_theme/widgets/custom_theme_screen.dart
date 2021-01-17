@@ -146,6 +146,7 @@ class CustomThemeScreen extends StatelessWidget {
                     _buildSaveAction(customThemeBloc),
                   ],
                   title: 'Theme customization',
+                  buildSafeArea: true,
                   body: _buildBody(customThemeBloc),
                 ),
               ),

@@ -45,7 +45,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
   final BlocAction<B> loadUsers;
 
   /// Builds a [UserList] for the users.
-  Widget _buildList(B bloc) {
+  Widget _buildList(MediaQueryData mediaQuery, B bloc) {
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: LoadMoreListener(
@@ -61,6 +61,9 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
                 const LoadMoreIndicator()
               else if (bloc.lockRequests && bloc.hasNextPage)
                 const LoadingMoreLocked(type: 'users'),
+              SliverToBoxAdapter(
+                child: SizedBox(height: mediaQuery.padding.bottom),
+              )
             ],
           ),
         ),
@@ -70,6 +73,8 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return BlocProvider<B>(
       create: create,
       child: BlocBuilder<B, PaginatedState>(
@@ -86,7 +91,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
               onTap: () => loadUsers(bloc),
             );
           } else {
-            child = _buildList(bloc);
+            child = _buildList(mediaQuery, bloc);
           }
 
           return HarpyScaffold(

@@ -21,6 +21,8 @@ class RepliesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return HarpyScaffold(
       body: ScrollDirectionListener(
         child: TweetList(
@@ -42,6 +44,11 @@ class RepliesContent extends StatelessWidget {
               const RepliesListTitle()
             else if (bloc.noRepliesExists)
               const NoRepliesFound(),
+          ],
+          endSlivers: <Widget>[
+            SliverToBoxAdapter(
+              child: SizedBox(height: mediaQuery.padding.bottom),
+            )
           ],
         ),
       ),

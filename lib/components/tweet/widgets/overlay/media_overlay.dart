@@ -149,6 +149,8 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildActions() {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -160,6 +162,7 @@ class _MediaOverlayState extends State<MediaOverlay>
           ],
         ),
       ),
+      padding: EdgeInsets.only(bottom: mediaQuery.padding.bottom),
       child: MediaOverlayActionRow(
         widget.tweetBloc,
         onDownload: widget.onDownload,
@@ -192,7 +195,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   Widget _buildOverlappingOverlay() {
     return Stack(
       children: <Widget>[
-        SafeArea(child: _buildMedia()),
+        _buildMedia(),
         AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext context, Widget _) => Column(
@@ -202,11 +205,9 @@ class _MediaOverlayState extends State<MediaOverlay>
                 child: _buildAppBar(),
               ),
               const Spacer(),
-              SafeArea(
-                child: SlideTransition(
-                  position: _bottomAnimation,
-                  child: _buildActions(),
-                ),
+              SlideTransition(
+                position: _bottomAnimation,
+                child: _buildActions(),
               ),
             ],
           ),
@@ -216,22 +217,20 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildOverlay() {
-    return SafeArea(
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (BuildContext context, Widget _) => Column(
-          children: <Widget>[
-            SlideTransition(
-              position: _topAnimation,
-              child: _buildAppBar(),
-            ),
-            Expanded(child: _buildMedia()),
-            SlideTransition(
-              position: _bottomAnimation,
-              child: _buildActions(),
-            ),
-          ],
-        ),
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (BuildContext context, Widget _) => Column(
+        children: <Widget>[
+          SlideTransition(
+            position: _topAnimation,
+            child: _buildAppBar(),
+          ),
+          Expanded(child: _buildMedia()),
+          SlideTransition(
+            position: _bottomAnimation,
+            child: _buildActions(),
+          ),
+        ],
       ),
     );
   }
