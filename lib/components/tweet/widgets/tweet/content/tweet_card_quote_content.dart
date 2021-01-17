@@ -36,17 +36,14 @@ class TweetQuoteContent extends StatelessWidget {
           top: defaultSmallPaddingValue,
         ),
         begin: <Widget>[
-          if (tweet.isRetweet) ...<Widget>[
-            TweetAuthorRow(
-              tweet.userData,
-              createdAt: tweet.createdAt,
-              avatarPadding: defaultSmallPaddingValue,
-              avatarRadius: 18,
-              fontSizeDelta: -2,
-              iconSize: 14,
-            ),
-          ],
-          TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
+          TweetAuthorRow(
+            tweet.userData,
+            createdAt: tweet.createdAt,
+            avatarPadding: defaultSmallPaddingValue,
+            avatarRadius: 18,
+            fontSizeDelta: -2,
+            iconSize: 14,
+          ),
         ],
         end: TweetActionsButton(
           tweet,
