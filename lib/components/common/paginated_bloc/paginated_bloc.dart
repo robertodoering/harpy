@@ -7,7 +7,7 @@ import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 /// An abstract bloc for loading data from paginated twitter requests with the
 /// [TwitterApi].
 abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
-  PaginatedBloc() : super(LoadingPaginatedData());
+  PaginatedBloc() : super(InitialState());
 
   /// Whether data has been loaded.
   bool get hasData;
@@ -31,7 +31,8 @@ abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
   bool get hasNextPage => cursor != 0;
 
   /// Whether more data should be loaded when scrolling to the end of the list.
-  bool get canLoadMore => !lockRequests && state is LoadedData && hasNextPage;
+  bool get canLoadMore =>
+      !lockRequests && hasData && state is LoadedData && hasNextPage;
 
   /// Whether the initial data is being loaded.
   bool get loadingInitialData => !hasData && state is LoadingPaginatedData;

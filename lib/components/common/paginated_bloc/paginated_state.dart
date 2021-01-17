@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 @immutable
 abstract class PaginatedState {}
 
+class InitialState extends PaginatedState {}
+
 /// The state while loading the paginated data.
 ///
 /// This is yielded when the initial data is being loaded or when loading
