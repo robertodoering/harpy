@@ -9,11 +9,13 @@ class SearchTextField extends StatefulWidget {
   const SearchTextField({
     this.onSubmitted,
     this.onClear,
+    this.hintText,
     this.requestFocus = false,
   });
 
   final ValueChanged<String> onSubmitted;
   final VoidCallback onClear;
+  final String hintText;
   final bool requestFocus;
 
   @override
@@ -102,7 +104,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search),
           suffixIcon: widget.onClear != null ? _buildClearIcon(theme) : null,
-          hintText: 'Search users',
+          hintText: widget.hintText,
           filled: true,
           fillColor: fillColor,
           isDense: true,
