@@ -12,6 +12,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class HarpySliverAppBar extends StatelessWidget {
   const HarpySliverAppBar({
     this.title,
+    this.titleWidget,
     this.actions,
     this.showIcon = false,
     this.floating = false,
@@ -22,6 +23,7 @@ class HarpySliverAppBar extends StatelessWidget {
   });
 
   final String title;
+  final Widget titleWidget;
   final List<Widget> actions;
   final bool showIcon;
   final bool floating;
@@ -34,14 +36,16 @@ class HarpySliverAppBar extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Flexible(
-          child: Text(
-            title ?? '',
-            style: theme.textTheme.headline6,
-            overflow: TextOverflow.fade,
-            softWrap: false,
+        if (titleWidget != null) Expanded(child: titleWidget),
+        if (title != null)
+          Flexible(
+            child: Text(
+              title ?? '',
+              style: theme.textTheme.headline6,
+              overflow: TextOverflow.fade,
+              softWrap: false,
+            ),
           ),
-        ),
         if (showIcon) ...<Widget>[
           const SizedBox(width: 4),
           const FlareIcon.harpyLogo(size: 24),
