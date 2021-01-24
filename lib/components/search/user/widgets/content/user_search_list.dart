@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
 import 'package:harpy/components/common/api/loading_data_error.dart';
@@ -21,7 +20,7 @@ class UserSearchList extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final UserSearchBloc bloc = context.watch<UserSearchBloc>();
+    final UserSearchBloc bloc = UserSearchBloc.of(context);
 
     final bool enableScroll =
         !bloc.loadingInitialData && !bloc.showError && !bloc.showNoDataExists;
