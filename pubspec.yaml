@@ -17,6 +17,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   dart_twitter_api: ^0.3.5
   downloads_path_provider: ^0.1.0
+  equatable: ^1.2.5
   flare_flutter: ^2.0.6
   flutter_bloc: ^6.1.1
   flutter_colorpicker:
