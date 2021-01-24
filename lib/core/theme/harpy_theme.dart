@@ -315,7 +315,7 @@ class HarpyTheme {
           subtitle2: TextStyle(
             height: 1.1,
             fontSize: 16,
-            fontFamily: bodyFont,
+            fontFamily: displayFont,
             fontWeight: FontWeight.w300,
             color: textColor,
             fontFamilyFallback: const <String>['NotoSans'],
