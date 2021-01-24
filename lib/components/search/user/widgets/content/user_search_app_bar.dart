@@ -5,7 +5,8 @@ import 'package:harpy/components/search/user/bloc/user_search_bloc.dart';
 import 'package:harpy/components/search/user/bloc/user_search_event.dart';
 import 'package:harpy/components/search/widgets/search_text_field.dart';
 
-/// Builds a sliver app bar with a [SearchTextField] in the title.
+/// Builds a sliver app bar for the [UserSearchScreen] with a [SearchTextField]
+/// in the title.
 class UserSearchAppBar extends StatelessWidget {
   const UserSearchAppBar();
 
@@ -16,8 +17,8 @@ class UserSearchAppBar extends StatelessWidget {
     return HarpySliverAppBar(
       titleWidget: Container(
         child: SearchTextField(
-          requestFocus: true,
-          hintText: 'Search users',
+          autofocus: true,
+          hintText: 'search users',
           onSubmitted: (String text) {
             if (text.trim().isNotEmpty) {
               bloc..add(const ClearSearchedUsers())..add(SearchUsers(text));
