@@ -32,7 +32,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(tweetAuthor: '');
     } else {
       value = value.copyWith(
-        tweetAuthor: prependIfMissing(tweetAuthor, '@', <String>['@']),
+        tweetAuthor: removePrependedSymbol(tweetAuthor, <String>['@']),
       );
     }
   }
@@ -42,7 +42,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(replyingTo: '');
     } else {
       value = value.copyWith(
-        replyingTo: prependIfMissing(replyingTo, '@', <String>['@']),
+        replyingTo: removePrependedSymbol(replyingTo, <String>['@']),
       );
     }
   }
