@@ -33,7 +33,6 @@ class TweetSearchFilterDrawer extends StatelessWidget {
     return FilterGroup(
       title: 'general',
       children: <Widget>[
-        // todo text fields needs to clear when filter is cleared
         Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: ClearableTextField(
