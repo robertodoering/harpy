@@ -8,9 +8,13 @@ import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter.d
 class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   TweetSearchFilterModel(TweetSearchFilter value) : super(value);
 
+  bool get enableIncludesRetweets => value.excludesRetweets == false;
+
   bool get enableIncludesImages => value.excludesImages == false;
 
   bool get enableIncludesVideos => value.excludesVideo == false;
+
+  bool get enableExcludesRetweets => value.includesRetweets == false;
 
   bool get enableExcludesImages => value.includesImages == false;
 
@@ -120,6 +124,10 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     value = value.copyWith(includesImages: includesImages);
   }
 
+  void setIncludesRetweets(bool includesRetweets) {
+    value = value.copyWith(includesRetweets: includesRetweets);
+  }
+
   void setIncludesVideo(bool includesVideo) {
     value = value.copyWith(includesVideo: includesVideo);
   }
@@ -182,6 +190,10 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
         excludesMentions: list,
       ),
     );
+  }
+
+  void setExcludesRetweets(bool excludesRetweets) {
+    value = value.copyWith(excludesRetweets: excludesRetweets);
   }
 
   void setExcludesImages(bool excludesImages) {

@@ -10,11 +10,13 @@ class TweetSearchFilter extends Equatable {
     this.includesHashtags = const <String>[],
     this.includesMentions = const <String>[],
     this.includesUrls = const <String>[],
+    this.includesRetweets = false,
     this.includesImages = false,
     this.includesVideo = false,
     this.excludesPhrases = const <String>[],
     this.excludesHashtags = const <String>[],
     this.excludesMentions = const <String>[],
+    this.excludesRetweets = false,
     this.excludesImages = false,
     this.excludesVideo = false,
   });
@@ -26,27 +28,32 @@ class TweetSearchFilter extends Equatable {
   final List<String> includesHashtags;
   final List<String> includesMentions;
   final List<String> includesUrls;
+  final bool includesRetweets;
   final bool includesImages;
   final bool includesVideo;
 
   final List<String> excludesPhrases;
   final List<String> excludesHashtags;
   final List<String> excludesMentions;
+  final bool excludesRetweets;
   final bool excludesImages;
   final bool excludesVideo;
 
   @override
   List<Object> get props => <Object>[
         tweetAuthor,
+        replyingTo,
         includesPhrases,
         includesHashtags,
         includesMentions,
         includesUrls,
+        includesRetweets,
         includesImages,
         includesVideo,
         excludesPhrases,
         excludesHashtags,
         excludesMentions,
+        excludesRetweets,
         excludesImages,
         excludesVideo,
       ];
@@ -58,11 +65,13 @@ class TweetSearchFilter extends Equatable {
     List<String> includesHashtags,
     List<String> includesMentions,
     List<String> includesUrls,
+    bool includesRetweets,
     bool includesImages,
     bool includesVideo,
     List<String> excludesPhrases,
     List<String> excludesHashtags,
     List<String> excludesMentions,
+    bool excludesRetweets,
     bool excludesImages,
     bool excludesVideo,
   }) {
@@ -73,11 +82,13 @@ class TweetSearchFilter extends Equatable {
       includesHashtags: includesHashtags ?? this.includesHashtags,
       includesMentions: includesMentions ?? this.includesMentions,
       includesUrls: includesUrls ?? this.includesUrls,
+      includesRetweets: includesRetweets ?? this.includesRetweets,
       includesImages: includesImages ?? this.includesImages,
       includesVideo: includesVideo ?? this.includesVideo,
       excludesPhrases: excludesPhrases ?? this.excludesPhrases,
       excludesHashtags: excludesHashtags ?? this.excludesHashtags,
       excludesMentions: excludesMentions ?? this.excludesMentions,
+      excludesRetweets: excludesRetweets ?? this.excludesRetweets,
       excludesImages: excludesImages ?? this.excludesImages,
       excludesVideo: excludesVideo ?? this.excludesVideo,
     );

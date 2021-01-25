@@ -85,6 +85,12 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         ),
         defaultVerticalSpacer,
         FilterCheckBox(
+          text: 'retweets',
+          enabled: model.enableIncludesRetweets,
+          value: model.value.includesRetweets,
+          onChanged: model.setIncludesRetweets,
+        ),
+        FilterCheckBox(
           text: 'images',
           enabled: model.enableIncludesImages,
           value: model.value.includesImages,
@@ -125,6 +131,12 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           onDeleted: model.removeExcludingMention,
         ),
         defaultVerticalSpacer,
+        FilterCheckBox(
+          text: 'retweets',
+          enabled: model.enableExcludesRetweets,
+          value: model.value.excludesRetweets,
+          onChanged: model.setExcludesRetweets,
+        ),
         FilterCheckBox(
           text: 'images',
           enabled: model.enableExcludesImages,
