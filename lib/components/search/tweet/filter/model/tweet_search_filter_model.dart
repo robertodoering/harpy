@@ -9,6 +9,8 @@ import 'package:harpy/misc/utils/string_utils.dart';
 class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   TweetSearchFilterModel(TweetSearchFilter value) : super(value);
 
+  bool get isEmpty => value == const TweetSearchFilter();
+
   bool get enableIncludesRetweets => value.excludesRetweets == false;
 
   bool get enableIncludesImages => value.excludesImages == false;
@@ -21,22 +23,26 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   bool get enableExcludesVideos => value.includesVideo == false;
 
+  void clear() {
+    value = const TweetSearchFilter();
+  }
+
   void setTweetAuthor(String tweetAuthor) {
     if (tweetAuthor == null || tweetAuthor.isEmpty) {
-      value = value.copyWith(tweetAuthor: null);
+      value = value.copyWith(tweetAuthor: '');
     } else {
       value = value.copyWith(
-        tweetAuthor: removePrependedSymbol(tweetAuthor, <String>['@']),
+        tweetAuthor: prependIfMissing(tweetAuthor, '@', <String>['@']),
       );
     }
   }
 
   void setReplyingTo(String replyingTo) {
     if (replyingTo == null || replyingTo.isEmpty) {
-      value = value.copyWith(tweetAuthor: null);
+      value = value.copyWith(replyingTo: '');
     } else {
       value = value.copyWith(
-        tweetAuthor: removePrependedSymbol(replyingTo, <String>['@']),
+        replyingTo: prependIfMissing(replyingTo, '@', <String>['@']),
       );
     }
   }

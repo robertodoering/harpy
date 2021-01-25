@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/filter/filter_check_box.dart';
 import 'package:harpy/components/common/filter/filter_group.dart';
 import 'package:harpy/components/common/filter/filter_list_entry.dart';
@@ -12,13 +13,31 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
 
+  Widget _buildTitleRow(ThemeData theme, TweetSearchFilterModel model) {
+    return Row(
+      children: <Widget>[
+        defaultHorizontalSpacer,
+        Expanded(
+          child: Text('advanced filter', style: theme.textTheme.subtitle1),
+        ),
+        HarpyButton.flat(
+          dense: true,
+          icon: const Icon(Icons.clear),
+          onTap: model.isEmpty ? null : model.clear,
+        ),
+      ],
+    );
+  }
+
   Widget _buildGeneralGroup(TweetSearchFilterModel model) {
     return FilterGroup(
       title: 'general',
       children: <Widget>[
+        // todo text fields needs to clear when filter is cleared
         Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: ClearableTextField(
+            text: model.value.tweetAuthor,
             removeFocusOnClear: true,
             decoration: const InputDecoration(
               labelText: 'tweet author',
@@ -35,6 +54,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: ClearableTextField(
+            text: model.value.replyingTo,
             removeFocusOnClear: true,
             decoration: const InputDecoration(
               labelText: 'replying to',
@@ -44,7 +64,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
                 borderRadius: kDefaultBorderRadius,
               ),
             ),
-            onChanged: model.setTweetAuthor,
+            onChanged: model.setReplyingTo,
           ),
         ),
         defaultVerticalSpacer,
@@ -164,7 +184,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       children: <Widget>[
         // add status bar height to top padding and make it scrollable
         SizedBox(height: defaultPaddingValue + mediaQuery.padding.top),
-        Text('advanced filter', style: theme.textTheme.subtitle1),
+        _buildTitleRow(theme, model),
         defaultVerticalSpacer,
         _buildGeneralGroup(model),
         defaultVerticalSpacer,
@@ -187,10 +207,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
     return Drawer(
       child: HarpyBackground(
-        child: Padding(
-          padding: DefaultEdgeInsets.symmetric(horizontal: true),
-          child: _buildList(mediaQuery, theme, model),
-        ),
+        child: _buildList(mediaQuery, theme, model),
       ),
     );
   }

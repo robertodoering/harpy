@@ -6,6 +6,7 @@ import 'package:harpy/components/common/buttons/harpy_button.dart';
 class ClearableTextField extends StatefulWidget {
   const ClearableTextField({
     this.controller,
+    this.text,
     this.decoration,
     this.autofocus = false,
     this.removeFocusOnClear = false,
@@ -15,6 +16,7 @@ class ClearableTextField extends StatefulWidget {
   });
 
   final TextEditingController controller;
+  final String text;
   final InputDecoration decoration;
   final bool autofocus;
   final bool removeFocusOnClear;
@@ -37,8 +39,10 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
     super.initState();
 
     _controller = widget.controller ?? TextEditingController();
+    _controller.text = widget.text;
+
     _controller.addListener(() {
-      if (_showClear != _controller.value.text.isNotEmpty) {
+      if (mounted && _showClear != _controller.value.text.isNotEmpty) {
         setState(() => _showClear = !_showClear);
       }
     });
@@ -50,11 +54,23 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
   }
 
   @override
+  void didUpdateWidget(covariant ClearableTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (_controller.text != widget.text) {
+      _controller.text = widget.text;
+      _controller.selection = TextSelection.collapsed(
+        offset: _controller.text.length,
+      );
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
 
     if (widget.controller == null) {
-      _controller.clear();
+      _controller.dispose();
     }
     _focusNode.dispose();
   }
@@ -72,6 +88,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
         onTap: () {
           _controller.clear();
           widget.onClear?.call();
+          widget.onChanged?.call('');
 
           if (widget.removeFocusOnClear) {
             // prevents the text field from gaining focus when previously
