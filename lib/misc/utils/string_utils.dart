@@ -133,3 +133,46 @@ String fileNameFromUrl(String url) {
     return null;
   }
 }
+
+/// Prepends the [prependSymbol] to the [value] if the value does not start
+/// with any of the [symbols].
+///
+/// If the value only consists of one of the symbols, `null` is returned
+/// instead.
+String prependIfMissing(
+  String value,
+  String prependSymbol,
+  List<String> symbols,
+) {
+  if (value == null || value.isEmpty) {
+    return value;
+  } else {
+    for (String symbol in symbols) {
+      if (value.startsWith(symbol)) {
+        if (value.length == symbol.length) {
+          return null;
+        } else {
+          return value;
+        }
+      }
+    }
+
+    return '$prependSymbol$value';
+  }
+}
+
+/// Returns the [value] without its prepended symbol if it starts with any
+/// symbol in [symbols].
+String removePrependedSymbol(String value, List<String> symbols) {
+  if (value == null) {
+    return null;
+  }
+
+  for (String symbol in symbols) {
+    if (value.startsWith(symbol)) {
+      return value.substring(symbol.length);
+    }
+  }
+
+  return value;
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
 
 /// A [ValueNotifier] for a [TweetSearchFilter].
 ///
@@ -25,7 +26,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(tweetAuthor: null);
     } else {
       value = value.copyWith(
-        tweetAuthor: _removePrependedSymbol(tweetAuthor, '@'),
+        tweetAuthor: removePrependedSymbol(tweetAuthor, <String>['@']),
       );
     }
   }
@@ -35,7 +36,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(tweetAuthor: null);
     } else {
       value = value.copyWith(
-        tweetAuthor: _removePrependedSymbol(replyingTo, '@'),
+        tweetAuthor: removePrependedSymbol(replyingTo, <String>['@']),
       );
     }
   }
@@ -62,7 +63,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void addIncludingHashtag(String hashtag) {
     _appendToList(
-      value: _prependIfMissing(hashtag, <String>['#', '＃']),
+      value: prependIfMissing(hashtag, '#', <String>['#', '＃']),
       list: value.includesHashtags,
       onListUpdated: (List<String> list) => value = value.copyWith(
         includesHashtags: list,
@@ -82,7 +83,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void addIncludingMention(String mention) {
     _appendToList(
-      value: _prependIfMissing(mention, <String>['@']),
+      value: prependIfMissing(mention, '@', <String>['@']),
       list: value.includesMentions,
       onListUpdated: (List<String> list) => value = value.copyWith(
         includesMentions: list,
@@ -154,7 +155,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void addExcludingHashtag(String hashtag) {
     _appendToList(
-      value: _prependIfMissing(hashtag, <String>['#', '＃']),
+      value: prependIfMissing(hashtag, '#', <String>['#', '＃']),
       list: value.excludesHashtags,
       onListUpdated: (List<String> list) => value = value.copyWith(
         excludesHashtags: list,
@@ -174,7 +175,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void addExcludingMention(String mention) {
     _appendToList(
-      value: _prependIfMissing(mention, <String>['@']),
+      value: prependIfMissing(mention, '@', <String>['@']),
       list: value.excludesMentions,
       onListUpdated: (List<String> list) => value = value.copyWith(
         excludesMentions: list,
@@ -226,32 +227,6 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     if (index >= 0 && index < updatedList.length) {
       updatedList.removeAt(index);
       onListUpdated(updatedList);
-    }
-  }
-
-  String _prependIfMissing(String value, List<String> symbols) {
-    if (value == null || value.isEmpty) {
-      return value;
-    } else if (symbols.any((String symbol) => value.startsWith(symbol))) {
-      if (value.length == 1) {
-        return null;
-      } else {
-        return value;
-      }
-    } else {
-      return '${symbols.first}$value';
-    }
-  }
-
-  String _removePrependedSymbol(String value, String symbol) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value.startsWith(symbol)) {
-      return value.substring(1);
-    } else {
-      return value;
     }
   }
 }

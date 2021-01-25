@@ -115,4 +115,56 @@ void main() {
       expect(fileNameFromUrl(null), isNull);
     });
   });
+
+  group('prependIfMissing', () {
+    test('prepends the symbol if the value does not start with it', () {
+      expect(
+        prependIfMissing('hashtag', '#', <String>['#', '＃']),
+        equals('#hashtag'),
+      );
+    });
+
+    test('does nothing if the value starts with one of the symbols', () {
+      expect(
+        prependIfMissing('#hashtag', '#', <String>['#', '＃']),
+        equals('#hashtag'),
+      );
+      expect(
+        prependIfMissing('＃hashtag', '#', <String>['#', '＃']),
+        equals('＃hashtag'),
+      );
+    });
+
+    test('returns null if value is null', () {
+      expect(prependIfMissing(null, '@', <String>['@']), isNull);
+    });
+
+    test('returns empty string if value is empty', () {
+      expect(prependIfMissing('', '@', <String>['@']), equals(''));
+    });
+
+    test('returns null if value only starts with one of the symbols', () {
+      expect(prependIfMissing('@', '@', <String>['@']), isNull);
+
+      expect(prependIfMissing('＃', '#', <String>['#', '＃']), isNull);
+    });
+  });
+
+  group('removePrependedSymbol', () {
+    test('removes the prepended symbol if value starts with it', () {
+      expect(
+        removePrependedSymbol('#hashtag', <String>['#', '＃']),
+        equals('hashtag'),
+      );
+
+      expect(
+        removePrependedSymbol('_longSymbol_value', <String>['_longSymbol_']),
+        equals('value'),
+      );
+    });
+
+    test('returns null if value is null', () {
+      expect(removePrependedSymbol(null, <String>['#', '＃']), isNull);
+    });
+  });
 }
