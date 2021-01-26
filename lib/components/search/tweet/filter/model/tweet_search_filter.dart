@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
+/// A filter for the twitter standard tweet search api as defined here:
+/// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/guides/standard-operators.
 @immutable
 class TweetSearchFilter extends Equatable {
   const TweetSearchFilter({
@@ -38,6 +40,8 @@ class TweetSearchFilter extends Equatable {
   final bool excludesRetweets;
   final bool excludesImages;
   final bool excludesVideo;
+
+  // todo: add result type
 
   @override
   List<Object> get props => <Object>[
@@ -95,7 +99,74 @@ class TweetSearchFilter extends Equatable {
   }
 
   String buildQuery() {
-    // todo: build the query from the filters
-    throw UnimplementedError();
+    final List<String> filters = <String>[];
+
+    if (tweetAuthor.isNotEmpty) {
+      filters.add('from:$tweetAuthor');
+    }
+
+    if (replyingTo.isNotEmpty) {
+      filters.add('to:$replyingTo');
+    }
+
+    // phrases & keywords
+    for (String phrase in includesPhrases) {
+      if (phrase.contains(' ')) {
+        // multi word phrase
+        filters.add('"$phrase"');
+      } else {
+        // single key word
+        filters.add(phrase);
+      }
+    }
+
+    for (String phrase in excludesPhrases) {
+      if (phrase.contains(' ')) {
+        // multi word phrase
+        filters.add('-"$phrase"');
+      } else {
+        // single key word
+        filters.add('-$phrase');
+      }
+    }
+
+    // hashtags & mentions
+    includesHashtags.forEach(filters.add);
+    excludesHashtags.forEach(filters.add);
+    includesMentions.forEach(filters.add);
+    excludesMentions.forEach(filters.add);
+
+    // urls
+    for (String url in includesUrls) {
+      filters.add('url:$url');
+    }
+
+    // retweets
+    if (includesRetweets) {
+      filters.add('filter:retweets');
+    } else if (excludesRetweets) {
+      filters.add('-filter:retweets');
+    }
+
+    // media
+    if (includesImages && includesVideo) {
+      filters.add('filter:media');
+    } else if (excludesImages && excludesVideo) {
+      filters.add('-filter:media');
+    } else {
+      if (includesImages) {
+        filters.add('filter:images');
+      } else if (excludesImages) {
+        filters.add('-filter:images');
+      }
+
+      if (includesVideo) {
+        filters.add('filter:native_video');
+      } else if (excludesVideo) {
+        filters.add('-filter:native_video');
+      }
+    }
+
+    return filters.join(' ');
   }
 }
