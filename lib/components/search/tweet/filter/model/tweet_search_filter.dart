@@ -8,6 +8,7 @@ class TweetSearchFilter extends Equatable {
   const TweetSearchFilter({
     this.tweetAuthor = '',
     this.replyingTo = '',
+    this.resultType = 0,
     this.includesPhrases = const <String>[],
     this.includesHashtags = const <String>[],
     this.includesMentions = const <String>[],
@@ -26,6 +27,8 @@ class TweetSearchFilter extends Equatable {
   final String tweetAuthor;
   final String replyingTo;
 
+  final int resultType;
+
   final List<String> includesPhrases;
   final List<String> includesHashtags;
   final List<String> includesMentions;
@@ -41,12 +44,11 @@ class TweetSearchFilter extends Equatable {
   final bool excludesImages;
   final bool excludesVideo;
 
-  // todo: add result type
-
   @override
   List<Object> get props => <Object>[
         tweetAuthor,
         replyingTo,
+        resultType,
         includesPhrases,
         includesHashtags,
         includesMentions,
@@ -65,6 +67,7 @@ class TweetSearchFilter extends Equatable {
   TweetSearchFilter copyWith({
     String tweetAuthor,
     String replyingTo,
+    int resultType,
     List<String> includesPhrases,
     List<String> includesHashtags,
     List<String> includesMentions,
@@ -82,6 +85,7 @@ class TweetSearchFilter extends Equatable {
     return TweetSearchFilter(
       tweetAuthor: tweetAuthor ?? this.tweetAuthor,
       replyingTo: replyingTo ?? this.replyingTo,
+      resultType: resultType ?? this.resultType,
       includesPhrases: includesPhrases ?? this.includesPhrases,
       includesHashtags: includesHashtags ?? this.includesHashtags,
       includesMentions: includesMentions ?? this.includesMentions,

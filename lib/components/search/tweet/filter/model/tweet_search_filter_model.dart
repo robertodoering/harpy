@@ -47,6 +47,10 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     }
   }
 
+  void setResultType(int resultType) {
+    value = value.copyWith(resultType: resultType.clamp(0, 2));
+  }
+
   void addIncludingPhrase(String phrase) {
     _appendToList(
       value: phrase,

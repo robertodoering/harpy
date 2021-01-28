@@ -29,7 +29,9 @@ class TweetSearchFilterDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildGeneralGroup(TweetSearchFilterModel model) {
+  Widget _buildGeneralGroup(TweetSearchFilterModel model, ThemeData theme) {
+    final TextStyle style = theme.textTheme.subtitle1.copyWith(fontSize: 14);
+
     return FilterGroup(
       title: 'general',
       children: <Widget>[
@@ -64,6 +66,28 @@ class TweetSearchFilterDrawer extends StatelessWidget {
               ),
             ),
             onChanged: model.setReplyingTo,
+          ),
+        ),
+        defaultVerticalSpacer,
+        ListTile(
+          title: Text('results', style: style),
+          trailing: DropdownButton<int>(
+            value: model.value.resultType,
+            onChanged: model.setResultType,
+            items: <DropdownMenuItem<int>>[
+              DropdownMenuItem<int>(
+                value: 0,
+                child: Text('mixed (default)', style: style),
+              ),
+              DropdownMenuItem<int>(
+                value: 1,
+                child: Text('recent', style: style),
+              ),
+              DropdownMenuItem<int>(
+                value: 2,
+                child: Text('popular', style: style),
+              ),
+            ],
           ),
         ),
         defaultVerticalSpacer,
@@ -185,7 +209,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         SizedBox(height: defaultPaddingValue + mediaQuery.padding.top),
         _buildTitleRow(theme, model),
         defaultVerticalSpacer,
-        _buildGeneralGroup(model),
+        _buildGeneralGroup(model, theme),
         defaultVerticalSpacer,
         _buildIncludesGroup(model),
         defaultVerticalSpacer,
