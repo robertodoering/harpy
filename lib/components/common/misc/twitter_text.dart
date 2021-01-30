@@ -28,8 +28,6 @@ void defaultOnUrlTap(BuildContext context, Url url) {
 ///
 /// The entity texts are styled with [entityColor] and the relevant callback
 /// is fired when the entity is tapped.
-// todo: range error may be able to occur when parsing the entities. needs
-//  investigation
 class TwitterText extends StatefulWidget {
   const TwitterText(
     this.text, {
