@@ -1,0 +1,6 @@
+Version 0.4.0
+
+· Added tweet search
+· Moved user search to home drawer
+· Changed typography
+· Changed 'harpy' theme secondary background color
