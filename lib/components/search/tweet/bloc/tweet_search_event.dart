@@ -27,6 +27,16 @@ class SearchTweets extends TweetSearchEvent {
         filter,
       ];
 
+  bool _unchangedQuery(String searchQuery, TweetSearchBloc bloc) {
+    final TweetSearchState state = bloc.state;
+
+    if (state is TweetSearchResult) {
+      return state.searchQuery == searchQuery;
+    } else {
+      return false;
+    }
+  }
+
   String _searchQuery() {
     if (query != null && query.isNotEmpty) {
       return query;
@@ -64,13 +74,16 @@ class SearchTweets extends TweetSearchEvent {
     TweetSearchState currentState,
     TweetSearchBloc bloc,
   }) async* {
-    _log.fine('searching tweets');
-
-    // todo: do nothing if query is same as last
-
     final String searchQuery = _searchQuery();
 
+    if (_unchangedQuery(searchQuery, bloc)) {
+      _log.fine('search query does not differ from last query');
+      return;
+    }
+
     if (searchQuery != null) {
+      _log.fine('searching tweets');
+
       yield const TweetSearchLoading();
 
       // todo: catch error 'filter too complex'
@@ -109,6 +122,21 @@ class RetryTweetSearch extends TweetSearchEvent {
     TweetSearchState currentState,
     TweetSearchBloc bloc,
   }) async* {
-    // todo: retry search
+    // todo: retry search if last state is error state
+  }
+}
+
+class ClearSearchResult extends TweetSearchEvent {
+  const ClearSearchResult();
+
+  @override
+  List<Object> get props => <Object>[];
+
+  @override
+  Stream<TweetSearchState> applyAsync({
+    TweetSearchState currentState,
+    TweetSearchBloc bloc,
+  }) async* {
+    yield const TweetSearchInitial();
   }
 }

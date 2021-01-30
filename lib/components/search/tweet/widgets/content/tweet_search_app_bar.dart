@@ -23,7 +23,7 @@ class TweetSearchAppBar extends StatelessWidget {
           text: text,
           hintText: 'search tweets',
           onSubmitted: (String text) => bloc.add(SearchTweets(query: text)),
-          onClear: () {}, // todo: reset bloc
+          onClear: () => bloc.add(const ClearSearchResult()),
         ),
       ),
       actions: <Widget>[
