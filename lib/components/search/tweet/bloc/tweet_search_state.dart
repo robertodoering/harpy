@@ -5,6 +5,42 @@ abstract class TweetSearchState extends Equatable {
 }
 
 class TweetSearchInitial extends TweetSearchState {
+  const TweetSearchInitial();
+
   @override
   List<Object> get props => <Object>[];
+}
+
+class TweetSearchLoading extends TweetSearchState {
+  const TweetSearchLoading();
+
+  @override
+  List<Object> get props => <Object>[];
+}
+
+class TweetSearchResult extends TweetSearchState {
+  const TweetSearchResult({
+    @required this.tweets,
+    @required this.searchQuery,
+    this.filter,
+  });
+
+  final List<TweetData> tweets;
+
+  /// The query that was used in the search request.
+  ///
+  /// Either built from the [filter] or manually entered by the user.
+  final String searchQuery;
+
+  /// The filter that built the [searchQuery] if a filter was used.
+  ///
+  /// `null` if the user entered the query manually.
+  final TweetSearchFilter filter;
+
+  @override
+  List<Object> get props => <Object>[
+        tweets,
+        searchQuery,
+        filter,
+      ];
 }
