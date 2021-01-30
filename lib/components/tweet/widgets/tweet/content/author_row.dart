@@ -112,6 +112,8 @@ class TweetAuthorRow extends StatelessWidget {
                 ),
               ),
               WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
                 child: CreatedAtTime(
                   createdAt: createdAt,
                   fontSizeDelta: fontSizeDelta,

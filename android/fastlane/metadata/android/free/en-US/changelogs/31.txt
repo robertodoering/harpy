@@ -5,3 +5,4 @@ Version 0.4.0
 · Changed typography
 · Changed 'harpy' theme secondary background color
 · Fixed some urls were unable to be launched on Android 11
+· Fixed tweet timestamp vertical alignment
