@@ -55,6 +55,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
         defaultSmallVerticalSpacer,
         Wrap(
           spacing: defaultSmallPaddingValue,
+          runSpacing: defaultSmallPaddingValue,
           children: <Widget>[
             for (int i = 0; i < widget.activeFilters.length; i++)
               FadeAnimation(
