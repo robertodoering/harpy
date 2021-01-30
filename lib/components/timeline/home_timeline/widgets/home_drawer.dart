@@ -46,7 +46,7 @@ class HomeDrawer extends StatelessWidget {
               // compose tweet
               ListTile(
                 leading: const Icon(LineAwesomeIcons.alternate_feather),
-                title: const Text('compose Tweet'),
+                title: const Text('compose tweet'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushNamed(ComposeScreen.route);
@@ -56,18 +56,18 @@ class HomeDrawer extends StatelessWidget {
               // search
               ListTile(
                 leading: const Icon(Icons.search),
-                title: const Text('search users'),
-                onTap: () async {
-                  await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushNamed(UserSearchScreen.route);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.search),
                 title: const Text('search tweets'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushNamed(TweetSearchScreen.route);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('search users'),
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushNamed(UserSearchScreen.route);
                 },
               ),
 
