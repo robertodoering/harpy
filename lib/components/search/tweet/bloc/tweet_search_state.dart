@@ -44,3 +44,24 @@ class TweetSearchResult extends TweetSearchState {
         filter,
       ];
 }
+
+class TweetSearchFailure extends TweetSearchState {
+  const TweetSearchFailure({
+    @required this.searchQuery,
+    this.filter,
+  });
+
+  /// The query that was used in the search request.
+  ///
+  /// Used to retry the request using a [SearchTweets] event.
+  final String searchQuery;
+
+  /// The filter that built the [searchQuery] if a filter was used.
+  final TweetSearchFilter filter;
+
+  @override
+  List<Object> get props => <Object>[
+        searchQuery,
+        filter,
+      ];
+}

@@ -10,6 +10,15 @@ abstract class TweetSearchEvent extends Equatable {
 }
 
 /// Searches tweets based on the [query] or the [filter].
+///
+/// Does nothing if the query is `null` or empty and the filter is `null` or
+/// builds an empty query.
+///
+/// Does nothing if the current state is a [TweetSearchResult] and the search
+/// query is the same.
+///
+/// Yields a [TweetSearchResult] on successful request or a
+/// [TweetSearchFailure] on failure.
 class SearchTweets extends TweetSearchEvent {
   const SearchTweets({
     this.query,
@@ -27,11 +36,9 @@ class SearchTweets extends TweetSearchEvent {
         filter,
       ];
 
-  bool _unchangedQuery(String searchQuery, TweetSearchBloc bloc) {
-    final TweetSearchState state = bloc.state;
-
-    if (state is TweetSearchResult) {
-      return state.searchQuery == searchQuery;
+  bool _unchangedQuery(String searchQuery, TweetSearchState currentState) {
+    if (currentState is TweetSearchResult) {
+      return currentState.searchQuery == searchQuery;
     } else {
       return false;
     }
@@ -76,7 +83,7 @@ class SearchTweets extends TweetSearchEvent {
   }) async* {
     final String searchQuery = _searchQuery();
 
-    if (_unchangedQuery(searchQuery, bloc)) {
+    if (_unchangedQuery(searchQuery, currentState)) {
       _log.fine('search query does not differ from last query');
       return;
     }
@@ -104,12 +111,15 @@ class SearchTweets extends TweetSearchEvent {
           tweets: tweets,
         );
       } else {
-        // todo: yield error state
+        yield TweetSearchFailure(searchQuery: searchQuery);
       }
     }
   }
 }
 
+/// Retries the last search if it failed.
+///
+/// Does nothing if the current state is not a [TweetSearchFailure].
 class RetryTweetSearch extends TweetSearchEvent {
   const RetryTweetSearch();
 
@@ -121,10 +131,16 @@ class RetryTweetSearch extends TweetSearchEvent {
     TweetSearchState currentState,
     TweetSearchBloc bloc,
   }) async* {
-    // todo: retry search if last state is error state
+    if (currentState is TweetSearchFailure) {
+      bloc.add(SearchTweets(
+        query: currentState.searchQuery,
+        filter: currentState.filter,
+      ));
+    }
   }
 }
 
+/// Yields a [TweetSearchInitial] to reset the bloc and clear any results.
 class ClearSearchResult extends TweetSearchEvent {
   const ClearSearchResult();
 
