@@ -34,8 +34,6 @@ class TweetSearchList extends StatelessWidget {
           endSlivers: <Widget>[
             if (bloc.showLoading)
               const SliverFillLoadingIndicator()
-            else if (bloc.showFilterTooComplex)
-              const SliverFillMessage(message: Text('filter too complex'))
             else if (bloc.showNoResults)
               const SliverFillMessage(message: Text('no tweets found'))
             else if (bloc.showSearchError)

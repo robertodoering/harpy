@@ -24,8 +24,6 @@ class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
   bool get showNoResults =>
       state is TweetSearchResult && (state as TweetSearchResult).tweets.isEmpty;
 
-  bool get showFilterTooComplex => false; // todo
-
   bool get showSearchError => false; // todo
 
   bool get hasResults =>

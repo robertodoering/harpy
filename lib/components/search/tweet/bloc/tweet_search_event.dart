@@ -86,7 +86,6 @@ class SearchTweets extends TweetSearchEvent {
 
       yield const TweetSearchLoading();
 
-      // todo: catch error 'filter too complex'
       final List<TweetData> tweets = await bloc.searchService
           .searchTweets(
             q: searchQuery,
