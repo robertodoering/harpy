@@ -9,7 +9,7 @@ import 'package:harpy/misc/utils/string_utils.dart';
 class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   TweetSearchFilterModel(TweetSearchFilter value) : super(value);
 
-  bool get isEmpty => value == const TweetSearchFilter();
+  bool get hasFilter => value != TweetSearchFilter.empty;
 
   bool get enableIncludesRetweets => value.excludesRetweets == false;
 
@@ -24,7 +24,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   bool get enableExcludesVideos => value.includesVideo == false;
 
   void clear() {
-    value = const TweetSearchFilter();
+    value = TweetSearchFilter.empty;
   }
 
   void setTweetAuthor(String tweetAuthor) {
