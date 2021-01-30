@@ -97,3 +97,18 @@ class SearchTweets extends TweetSearchEvent {
     }
   }
 }
+
+class RetryTweetSearch extends TweetSearchEvent {
+  const RetryTweetSearch();
+
+  @override
+  List<Object> get props => <Object>[];
+
+  @override
+  Stream<TweetSearchState> applyAsync({
+    TweetSearchState currentState,
+    TweetSearchBloc bloc,
+  }) async* {
+    // todo: retry search
+  }
+}

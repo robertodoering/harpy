@@ -19,6 +19,19 @@ class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
 
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
+  bool get showLoading => state is TweetSearchLoading;
+
+  bool get showNoResults =>
+      state is TweetSearchResult && (state as TweetSearchResult).tweets.isEmpty;
+
+  bool get showFilterTooComplex => false; // todo
+
+  bool get showSearchError => false; // todo
+
+  bool get hasResults =>
+      state is TweetSearchResult &&
+      (state as TweetSearchResult).tweets.isNotEmpty;
+
   @override
   Stream<TweetSearchState> mapEventToState(
     TweetSearchEvent event,

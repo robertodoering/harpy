@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_message.dart';
 import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/widgets/content/tweet_search_app_bar.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
@@ -14,6 +17,7 @@ class TweetSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final TweetSearchBloc bloc = context.watch<TweetSearchBloc>();
     final TweetSearchState state = bloc.state;
 
@@ -21,10 +25,26 @@ class TweetSearchList extends StatelessWidget {
       child: ScrollToStart(
         child: TweetList(
           state is TweetSearchResult ? state.tweets : <TweetData>[],
-          enableScroll: state is TweetSearchResult,
+          enableScroll: bloc.hasResults,
           beginSlivers: <Widget>[
             TweetSearchAppBar(
               text: state is TweetSearchResult ? state.searchQuery : null,
+            ),
+          ],
+          endSlivers: <Widget>[
+            if (bloc.showLoading)
+              const SliverFillLoadingIndicator()
+            else if (bloc.showFilterTooComplex)
+              const SliverFillMessage(message: Text('filter too complex'))
+            else if (bloc.showNoResults)
+              const SliverFillMessage(message: Text('no tweets found'))
+            else if (bloc.showSearchError)
+              SliverFillLoadingError(
+                message: const Text('error searching tweets'),
+                onTap: () => bloc.add(const RetryTweetSearch()),
+              ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: mediaQuery.padding.bottom),
             ),
           ],
         ),
