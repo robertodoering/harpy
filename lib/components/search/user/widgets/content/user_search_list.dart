@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
-import 'package:harpy/components/common/api/loading_data_error.dart';
 import 'package:harpy/components/common/list/load_more_indicator.dart';
 import 'package:harpy/components/common/list/load_more_listener.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_message.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/search/user/bloc/user_search_bloc.dart';
 import 'package:harpy/components/search/user/bloc/user_search_event.dart';
@@ -18,7 +18,6 @@ class UserSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final UserSearchBloc bloc = UserSearchBloc.of(context);
 
@@ -38,39 +37,16 @@ class UserSearchList extends StatelessWidget {
             ],
             endSlivers: <Widget>[
               if (bloc.loadingInitialData)
-                const SliverFillRemaining(
-                  child: FadeAnimation(
-                    duration: kShortAnimationDuration,
-                    curve: Curves.easeInOut,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                )
+                const SliverFillLoadingIndicator()
               else if (bloc.state is LoadingPaginatedData)
                 const LoadMoreIndicator(),
               if (bloc.showError)
-                SliverFillRemaining(
-                  child: FadeAnimation(
-                    duration: kShortAnimationDuration,
-                    curve: Curves.easeInOut,
-                    child: LoadingDataError(
-                      message: 'Error loading users',
-                      onTap: () => bloc.add(SearchUsers(bloc.lastQuery)),
-                    ),
-                  ),
+                SliverFillLoadingError(
+                  message: const Text('Error searching users'),
+                  onTap: () => bloc.add(SearchUsers(bloc.lastQuery)),
                 )
               else if (bloc.showNoDataExists)
-                SliverFillRemaining(
-                  child: FadeAnimation(
-                    duration: kShortAnimationDuration,
-                    curve: Curves.easeInOut,
-                    child: Center(
-                      child: Text(
-                        'No users found',
-                        style: theme.textTheme.headline6,
-                      ),
-                    ),
-                  ),
-                ),
+                const SliverFillMessage(message: Text('No users found')),
               SliverToBoxAdapter(
                 child: SizedBox(height: mediaQuery.padding.bottom),
               ),

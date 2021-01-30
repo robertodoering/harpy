@@ -93,7 +93,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
             child = const Center(child: CircularProgressIndicator());
           } else if (bloc.showNoDataExists || bloc.showError) {
             child = LoadingDataError(
-              message: errorMessage,
+              message: Text(errorMessage),
               onTap: () => loadUsers(bloc),
             );
           } else {

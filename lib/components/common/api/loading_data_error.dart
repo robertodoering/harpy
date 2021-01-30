@@ -10,7 +10,7 @@ class LoadingDataError extends StatelessWidget {
     this.onTap,
   });
 
-  final String message;
+  final Widget message;
   final VoidCallback onTap;
 
   @override
@@ -23,18 +23,19 @@ class LoadingDataError extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-            message,
+          DefaultTextStyle(
             style: theme.textTheme.headline6,
             textAlign: TextAlign.center,
+            child: message,
           ),
-          defaultVerticalSpacer,
-          if (onTap != null)
+          if (onTap != null) ...<Widget>[
+            defaultVerticalSpacer,
             HarpyButton.flat(
               dense: true,
               text: const Text('retry'),
               onTap: onTap,
             ),
+          ],
         ],
       ),
     );
