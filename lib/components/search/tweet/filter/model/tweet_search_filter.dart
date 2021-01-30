@@ -44,6 +44,8 @@ class TweetSearchFilter extends Equatable {
   final bool excludesImages;
   final bool excludesVideo;
 
+  static const TweetSearchFilter empty = TweetSearchFilter();
+
   @override
   List<Object> get props => <Object>[
         tweetAuthor,
