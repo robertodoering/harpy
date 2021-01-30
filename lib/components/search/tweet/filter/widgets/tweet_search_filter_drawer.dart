@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/animations/animation_constants.dart';
+import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/filter/filter_check_box.dart';
 import 'package:harpy/components/common/filter/filter_group.dart';
 import 'package:harpy/components/common/filter/filter_list_entry.dart';
 import 'package:harpy/components/common/misc/clearable_text_field.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter_model.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
@@ -23,7 +28,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         HarpyButton.flat(
           dense: true,
           icon: const Icon(Icons.clear),
-          onTap: model.isEmpty ? null : model.clear,
+          onTap: model.hasFilter ? model.clear : null,
         ),
       ],
     );
@@ -196,10 +201,43 @@ class TweetSearchFilterDrawer extends StatelessWidget {
     );
   }
 
+  Widget _buildSearchButton(
+    TweetSearchFilterModel model,
+    TweetSearchBloc bloc,
+    EdgeInsets padding,
+  ) {
+    return CustomAnimatedSize(
+      child: AnimatedSwitcher(
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        duration: kShortAnimationDuration,
+        child: model.hasFilter
+            ? Padding(
+                padding: padding,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: HarpyButton.raised(
+                    icon: const Icon(Icons.search),
+                    text: const Text('search'),
+                    dense: true,
+                    onTap: () {
+                      bloc.add(SearchTweets(filter: model.value));
+
+                      app<HarpyNavigator>().state.maybePop();
+                    },
+                  ),
+                ),
+              )
+            : defaultVerticalSpacer,
+      ),
+    );
+  }
+
   Widget _buildList(
     MediaQueryData mediaQuery,
     ThemeData theme,
     TweetSearchFilterModel model,
+    TweetSearchBloc bloc,
   ) {
     return ListView(
       primary: false,
@@ -208,12 +246,17 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         // add status bar height to top padding and make it scrollable
         SizedBox(height: defaultPaddingValue + mediaQuery.padding.top),
         _buildTitleRow(theme, model),
-        defaultVerticalSpacer,
+        _buildSearchButton(model, bloc, DefaultEdgeInsets.all()),
         _buildGeneralGroup(model, theme),
         defaultVerticalSpacer,
         _buildIncludesGroup(model),
         defaultVerticalSpacer,
         _buildExcludesGroup(model),
+        _buildSearchButton(
+          model,
+          bloc,
+          DefaultEdgeInsets.all().copyWith(bottom: 0),
+        ),
         // add nav bar height to bottom padding and make it scrollable
         SizedBox(height: defaultPaddingValue + mediaQuery.padding.bottom),
       ],
@@ -224,13 +267,13 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-
+    final TweetSearchBloc bloc = context.watch<TweetSearchBloc>();
     final TweetSearchFilterModel model =
         context.watch<TweetSearchFilterModel>();
 
     return Drawer(
       child: HarpyBackground(
-        child: _buildList(mediaQuery, theme, model),
+        child: _buildList(mediaQuery, theme, model, bloc),
       ),
     );
   }
