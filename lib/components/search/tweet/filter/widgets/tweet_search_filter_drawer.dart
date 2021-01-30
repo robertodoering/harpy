@@ -211,7 +211,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         switchInCurve: Curves.easeInOut,
         switchOutCurve: Curves.easeInOut,
         duration: kShortAnimationDuration,
-        child: model.hasFilter
+        child: model.hasSearchQuery
             ? Padding(
                 padding: padding,
                 child: SizedBox(

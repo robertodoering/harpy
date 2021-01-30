@@ -11,6 +11,8 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   bool get hasFilter => value != TweetSearchFilter.empty;
 
+  bool get hasSearchQuery => value.buildQuery().isNotEmpty;
+
   bool get enableIncludesRetweets => value.excludesRetweets == false;
 
   bool get enableIncludesImages => value.excludesImages == false;
