@@ -29,7 +29,17 @@ class TweetSearchAppBar extends StatelessWidget {
       actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.filter_alt_outlined),
-          onPressed: Scaffold.of(context).openEndDrawer,
+          onPressed: () {
+            // unfocus search field before opening drawer
+            final FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus.unfocus();
+            }
+
+            Scaffold.of(context).openEndDrawer();
+          },
         ),
       ],
       floating: true,
