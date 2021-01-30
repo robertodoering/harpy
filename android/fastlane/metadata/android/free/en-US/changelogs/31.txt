@@ -4,3 +4,4 @@ Version 0.4.0
 · Moved user search to home drawer
 · Changed typography
 · Changed 'harpy' theme secondary background color
+· Fixed some urls were unable to be launched on Android 11
