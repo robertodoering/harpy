@@ -26,7 +26,7 @@ class NoTimelineTweets<T extends TimelineBloc> extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            'no Tweets found',
+            'no tweets found',
             style: theme.textTheme.headline6,
             textAlign: TextAlign.center,
           ),
