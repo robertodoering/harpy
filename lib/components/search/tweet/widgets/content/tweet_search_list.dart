@@ -26,9 +26,7 @@ class TweetSearchList extends StatelessWidget {
           state is TweetSearchResult ? state.tweets : <TweetData>[],
           enableScroll: bloc.hasResults,
           beginSlivers: <Widget>[
-            TweetSearchAppBar(
-              text: state is TweetSearchResult ? state.searchQuery : null,
-            ),
+            TweetSearchAppBar(text: bloc.searchQuery),
           ],
           endSlivers: <Widget>[
             if (bloc.showLoading)

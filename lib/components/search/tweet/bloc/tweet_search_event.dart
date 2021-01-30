@@ -92,7 +92,7 @@ class SearchTweets extends TweetSearchEvent {
     if (searchQuery != null) {
       _log.fine('searching tweets');
 
-      yield const TweetSearchLoading();
+      yield TweetSearchLoading(searchQuery: searchQuery);
 
       final List<TweetData> tweets = await bloc.searchService
           .searchTweets(
@@ -112,7 +112,7 @@ class SearchTweets extends TweetSearchEvent {
           tweets: tweets,
         );
       } else {
-        yield TweetSearchFailure(searchQuery: searchQuery);
+        yield TweetSearchFailure(searchQuery: searchQuery, filter: filter);
       }
     }
   }

@@ -12,7 +12,12 @@ class TweetSearchInitial extends TweetSearchState {
 }
 
 class TweetSearchLoading extends TweetSearchState {
-  const TweetSearchLoading();
+  const TweetSearchLoading({
+    @required this.searchQuery,
+  });
+
+  /// The query that was used in the search request.
+  final String searchQuery;
 
   @override
   List<Object> get props => <Object>[];

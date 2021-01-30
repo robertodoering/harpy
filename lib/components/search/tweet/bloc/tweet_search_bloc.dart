@@ -30,6 +30,20 @@ class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
       state is TweetSearchResult &&
       (state as TweetSearchResult).tweets.isNotEmpty;
 
+  /// Returns the active search query or `null` if none exist yet.
+  String get searchQuery {
+    if (state is TweetSearchResult) {
+      return (state as TweetSearchResult).searchQuery;
+    } else if (state is TweetSearchLoading) {
+      return (state as TweetSearchLoading).searchQuery;
+    } else if (state is TweetSearchFailure) {
+      return (state as TweetSearchFailure).searchQuery;
+    }
+      else {
+      return null;
+    }
+  }
+
   @override
   Stream<TweetSearchState> mapEventToState(
     TweetSearchEvent event,
