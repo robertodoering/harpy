@@ -26,5 +26,5 @@ final HarpyThemeData phoenix = HarpyThemeData()
 
 final HarpyThemeData harpy = HarpyThemeData()
   ..name = 'harpy'
-  ..backgroundColors = <int>[0xff40148b, 0xff850a2f]
+  ..backgroundColors = <int>[0xff40148b, 0xff880E4F]
   ..accentColor = 0xffff6ffe;

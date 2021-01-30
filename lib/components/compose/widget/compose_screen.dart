@@ -114,7 +114,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
           final ComposeBloc bloc = ComposeBloc.of(context);
 
           return HarpyScaffold(
-            title: 'Compose Tweet',
+            title: 'compose tweet',
             buildSafeArea: true,
             body: Padding(
               padding: DefaultEdgeInsets.all(),

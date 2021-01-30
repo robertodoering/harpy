@@ -48,7 +48,7 @@ class AboutScreen extends StatelessWidget {
     final String version = app<HarpyInfo>().packageInfo.version;
 
     return Center(
-      child: Text('Version $version', style: theme.textTheme.subtitle2),
+      child: Text('version $version', style: theme.textTheme.subtitle2),
     );
   }
 
@@ -59,7 +59,7 @@ class AboutScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.history),
             title: Text(
-              'Version history',
+              'version history',
               style: theme.textTheme.subtitle1,
             ),
             shape: const RoundedRectangleBorder(
@@ -72,7 +72,7 @@ class AboutScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(LineAwesomeIcons.github),
-            title: const Text('Harpy is open source'),
+            title: const Text('harpy is open source'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -98,14 +98,14 @@ class AboutScreen extends StatelessWidget {
               TextSpan(
                 children: <TextSpan>[
                   const TextSpan(
-                    text: 'Support the development of Harpy and get access '
+                    text: 'support the development of Harpy and get access '
                         'to a number of exclusive features by purchasing ',
                   ),
                   TextSpan(
-                    text: 'Harpy Pro',
+                    text: 'harpy Pro',
                     style: linkStyle,
                   ),
-                  const TextSpan(text: ' in the Play Store.'),
+                  const TextSpan(text: ' in the play store.'),
                 ],
               ),
               style: theme.textTheme.subtitle2,
@@ -113,14 +113,14 @@ class AboutScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const FlareIcon.shiningStar(size: 24),
-            title: const Text('Harpy Pro'),
+            title: const Text('harpy Pro'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: kDefaultRadius,
                 bottomRight: kDefaultRadius,
               ),
             ),
-            onTap: () => app<MessageService>().show('Coming soon!'),
+            onTap: () => app<MessageService>().show('coming soon!'),
           ),
         ],
       ),
@@ -135,20 +135,20 @@ class AboutScreen extends StatelessWidget {
           Padding(
             padding: DefaultEdgeInsets.all(),
             child: Text(
-              'Please rate Harpy in the Play Store!',
+              'please rate harpy in the play store!',
               style: theme.textTheme.subtitle2,
             ),
           ),
           ListTile(
             leading: const FlareIcon.shiningStar(size: 24),
-            title: const Text('Rate Harpy'),
+            title: const Text('rate harpy'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: kDefaultRadius,
                 bottomRight: kDefaultRadius,
               ),
             ),
-            onTap: () => app<MessageService>().show('Coming soon!'),
+            onTap: () => app<MessageService>().show('coming soon!'),
           ),
         ],
       ),
@@ -167,8 +167,8 @@ class AboutScreen extends StatelessWidget {
               child: Text.rich(
                 TextSpan(
                   children: <InlineSpan>[
-                    const TextSpan(text: 'Developed by '),
-                    TextSpan(text: 'Roberto Doering', style: linkStyle),
+                    const TextSpan(text: 'developed by '),
+                    TextSpan(text: 'roberto doering', style: linkStyle),
                   ],
                 ),
               ),
@@ -180,7 +180,7 @@ class AboutScreen extends StatelessWidget {
                   children: <InlineSpan>[
                     TextSpan(text: 'rbydoering@gmail.com\n', style: linkStyle),
                     const TextSpan(
-                      text: 'Thank you for your feedback and bug reports!',
+                      text: 'thank you for your feedback and bug reports!',
                     ),
                   ],
                 ),
@@ -200,7 +200,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: const Icon(Icons.privacy_tip),
-        title: const Text('Privacy policy'),
+        title: const Text('privacy policy'),
         shape: kDefaultShapeBorder,
         onTap: () => launchUrl(_privacyPolicy),
       ),
@@ -220,7 +220,7 @@ class AboutScreen extends StatelessWidget {
     );
 
     return HarpyScaffold(
-      title: 'About',
+      title: 'about',
       actions: <Widget>[
         PopupMenuButton<void>(
           onSelected: (_) => showLicensePage(context: context),
@@ -228,7 +228,7 @@ class AboutScreen extends StatelessWidget {
             return <PopupMenuEntry<void>>[
               const PopupMenuItem<void>(
                 value: 0,
-                child: Text('Show licenses'),
+                child: Text('show licenses'),
               ),
             ];
           },

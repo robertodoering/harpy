@@ -29,7 +29,7 @@ class RepliesContent extends StatelessWidget {
           bloc.replies,
           beginSlivers: <Widget>[
             const HarpySliverAppBar(
-              title: 'Replies',
+              title: 'replies',
               floating: true,
             ),
             SliverPadding(

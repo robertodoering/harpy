@@ -105,7 +105,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                   bottom: defaultPaddingValue + mediaQuery.padding.bottom,
                 ),
                 child: HarpyButton.raised(
-                  text: const Text('Jump to top'),
+                  text: const Text('jump to top'),
                   icon: const Icon(Icons.arrow_upward),
                   backgroundColor: theme.cardColor,
                   dense: true,

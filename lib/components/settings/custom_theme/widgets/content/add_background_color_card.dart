@@ -30,7 +30,7 @@ class AddBackgroundColorCard extends StatelessWidget {
           child: ListTile(
             shape: kDefaultShapeBorder,
             leading: const Icon(Icons.add),
-            title: const Text('Add background color'),
+            title: const Text('add background color'),
             onTap: () {
               if (bloc.canAddMoreBackgroundColors) {
                 bloc.add(const AddBackgroundColor());

@@ -86,7 +86,7 @@ class MentionSuggestions extends StatelessWidget {
                 padding: DefaultEdgeInsets.all()
                     .copyWith(bottom: defaultSmallPaddingValue / 2),
                 child: Text(
-                  'Following users',
+                  'following users',
                   style: theme.textTheme.subtitle1.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -120,10 +120,11 @@ class MentionSuggestions extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: DefaultEdgeInsets.all()
-                    .copyWith(bottom: defaultSmallPaddingValue / 2),
+                padding: DefaultEdgeInsets.all().copyWith(
+                  bottom: defaultSmallPaddingValue / 2,
+                ),
                 child: Text(
-                  'Other users',
+                  'other users',
                   style: theme.textTheme.subtitle1.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

@@ -16,6 +16,9 @@ class BetaFaq extends StatelessWidget {
   VoidCallback get launchKofi =>
       () => launchUrl('https://ko-fi.com/robertodoering');
 
+  VoidCallback get launchPaypal =>
+      () => launchUrl('https://paypal.me/robertodoering');
+
   List<_FaqEntry> _faqEntries(ThemeData theme) {
     return <_FaqEntry>[
       _FaqEntry(
@@ -64,6 +67,8 @@ class BetaFaq extends StatelessWidget {
                     'Additionally, you can support me by buying me a coffee ',
               ),
               WidgetSpan(child: LinkText(text: 'here', onTap: launchKofi)),
+              const TextSpan(text: ' or directly using '),
+              WidgetSpan(child: LinkText(text: 'PayPal', onTap: launchPaypal)),
               const TextSpan(text: '.'),
             ],
           ),

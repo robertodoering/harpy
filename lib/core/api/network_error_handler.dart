@@ -41,10 +41,10 @@ void twitterApiErrorHandler(
         // rate limit reached
         final Duration limitReset = _limitResetDuration(error);
 
-        message = 'Rate limit reached.\n';
+        message = 'rate limit reached.\n';
         message += limitReset != null
-            ? 'Please try again in ${prettyPrintDurationDifference(limitReset)}'
-            : 'Please try again later.';
+            ? 'please try again in ${prettyPrintDurationDifference(limitReset)}'
+            : 'please try again later.';
 
         break;
       default:
@@ -54,15 +54,15 @@ void twitterApiErrorHandler(
         break;
     }
 
-    message ??= 'An unexpected error occurred (${error.statusCode})\n'
-        'Please try again later';
+    message ??= 'an unexpected error occurred (${error.statusCode})\n'
+        'please try again later';
   } else if (error is TimeoutException) {
-    message = 'Request timed out\n'
-        'Please try again later';
+    message = 'request timed out\n'
+        'please try again later';
   } else if (error is SocketException) {
     // no internet connection
-    message = 'Unable to connect to the Twitter servers\n'
-        'Please try again later';
+    message = 'unable to connect to the twitter servers\n'
+        'please try again later';
   } else if (error is Error) {
     _log.warning('twitter api error not handled', error, error.stackTrace);
   } else if (error is Exception) {

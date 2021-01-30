@@ -43,7 +43,7 @@ class PickTweetMediaEvent extends ComposeEvent {
     }
 
     if (newImages.length > 4) {
-      app<MessageService>().show('Only up to 4 images can be attached');
+      app<MessageService>().show('only up to 4 images can be attached');
       newImages = newImages.sublist(0, 4);
     }
 
@@ -52,7 +52,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   void _addGif(ComposeBloc bloc, FilePickerResult result) {
     if (result.files.length > 1) {
-      app<MessageService>().show('Only one gif can be attached');
+      app<MessageService>().show('only one gif can be attached');
     }
 
     bloc.media = <PlatformFile>[result.files.first];
@@ -60,7 +60,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   void _addVideo(ComposeBloc bloc, FilePickerResult result) {
     if (result.files.length > 1) {
-      app<MessageService>().show('Only one video can be attached');
+      app<MessageService>().show('only one video can be attached');
     }
 
     bloc.media = <PlatformFile>[result.files.first];
@@ -89,12 +89,12 @@ class PickTweetMediaEvent extends ComposeEvent {
         (PlatformFile file) => findMediaType(file.path) == MediaType.video,
       )) {
         // todo: enable adding video when pub:flutter_ffmpeg gets fixed
-        app<MessageService>().show('Adding videos is temporarily disabled due'
+        app<MessageService>().show('adding videos is temporarily disabled due'
             ' to an issue');
         // _addVideo(bloc, result);
       } else {
-        app<MessageService>().show('Invalid selection\n'
-            'Add up to 4 images, 1 gif or 1 video');
+        app<MessageService>().show('invalid selection\n'
+            'add up to 4 images, 1 gif or 1 video');
       }
 
       yield UpdatedComposeTweetState();

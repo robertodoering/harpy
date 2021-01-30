@@ -24,7 +24,7 @@ class UserProfileError extends StatelessWidget {
     return HarpyScaffold(
       title: '',
       body: LoadingDataError(
-        message: const Text('Error loading user'),
+        message: const Text('error loading user'),
         onTap: () => bloc.add(InitializeUserEvent(
           user: user,
           screenName: screenName,

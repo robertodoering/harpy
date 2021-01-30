@@ -45,13 +45,13 @@ class BetaInfoScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return HarpyScaffold(
-      title: 'Beta info',
+      title: 'beta info',
       body: ListView(
         padding: DefaultEdgeInsets.all(),
         children: <Widget>[
           _buildIntroText(theme),
           defaultVerticalSpacer,
-          Center(child: Text('FAQ', style: theme.textTheme.subtitle1)),
+          Center(child: Text('faq', style: theme.textTheme.subtitle1)),
           defaultVerticalSpacer,
           BetaFaq(onEmailTap: launchEmail),
           SizedBox(height: mediaQuery.padding.bottom),

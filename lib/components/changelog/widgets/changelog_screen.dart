@@ -71,13 +71,13 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     if (_dataList == null) {
       child = const Center(child: CircularProgressIndicator());
     } else if (_dataList.isEmpty) {
-      child = const Center(child: Text('No changelog data found'));
+      child = const Center(child: Text('no changelog data found'));
     } else {
       child = _buildChangelogWidgets();
     }
 
     return HarpyScaffold(
-      title: 'Changelog',
+      title: 'changelog',
       body: child,
     );
   }

@@ -34,7 +34,7 @@ class HomeDrawer extends StatelessWidget {
               // profile
               ListTile(
                 leading: const Icon(Icons.face),
-                title: const Text('Profile'),
+                title: const Text('profile'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushUserProfile(
@@ -46,7 +46,7 @@ class HomeDrawer extends StatelessWidget {
               // compose tweet
               ListTile(
                 leading: const Icon(LineAwesomeIcons.alternate_feather),
-                title: const Text('Compose Tweet'),
+                title: const Text('compose Tweet'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushNamed(ComposeScreen.route);
@@ -76,7 +76,7 @@ class HomeDrawer extends StatelessWidget {
               // settings
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                title: const Text('settings'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushNamed(SettingsScreen.route);
@@ -90,15 +90,15 @@ class HomeDrawer extends StatelessWidget {
                     size: 30,
                     offset: Offset(-2.5, 0),
                   ),
-                  title: const Text('Harpy Pro'),
+                  title: const Text('harpy pro'),
                   // todo: add harpy pro analytics
-                  onTap: () => app<MessageService>().show('Coming soon!'),
+                  onTap: () => app<MessageService>().show('coming soon!'),
                 ),
 
               // about
               ListTile(
                 leading: const FlareIcon.harpyLogo(),
-                title: const Text('About'),
+                title: const Text('about'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
@@ -109,7 +109,7 @@ class HomeDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.info_outline, color: theme.accentColor),
                 title: Text(
-                  'Beta info',
+                  'beta info',
                   style: TextStyle(
                     color: theme.accentColor,
                     fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ class HomeDrawer extends StatelessWidget {
         // logout
         ListTile(
           leading: const Icon(Icons.exit_to_app),
-          title: const Text('Logout'),
+          title: const Text('logout'),
           onTap: () =>
               context.read<AuthenticationBloc>().add(const LogoutEvent()),
         ),

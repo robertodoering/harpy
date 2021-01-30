@@ -21,7 +21,7 @@ class AddCustomThemeCard extends StatelessWidget {
       final bool result = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => const ProDialog(
-          feature: 'Theme customization',
+          feature: 'theme customization',
         ),
       );
 
@@ -48,7 +48,7 @@ class AddCustomThemeCard extends StatelessWidget {
     // the initial custom theme data uses the currently selected theme
     final HarpyThemeData initialCustomThemeData =
         HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context))
-          ..name = 'New theme';
+          ..name = 'new theme';
 
     // use the next available custom theme id
     final int nextCustomThemeId = themeBloc.customThemes.length + 10;
@@ -68,7 +68,7 @@ class AddCustomThemeCard extends StatelessWidget {
         child: ListTile(
           shape: kDefaultShapeBorder,
           leading: const Icon(Icons.add),
-          title: const Text('Add custom theme'),
+          title: const Text('add custom theme'),
           trailing: trailing,
           onTap: () => _onTap(
             context,

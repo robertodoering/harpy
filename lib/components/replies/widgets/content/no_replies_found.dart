@@ -20,7 +20,7 @@ class NoRepliesFound extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'No replies found',
+                'no replies found',
                 style: theme.textTheme.subtitle1,
               ),
               const SizedBox(height: 8),

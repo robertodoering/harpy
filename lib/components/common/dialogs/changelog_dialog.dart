@@ -52,7 +52,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          return const Text('No changelog found');
+          return const Text('no changelog found');
         }
       },
     );
@@ -62,7 +62,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
     return CheckboxListTile(
       value: !changelogPreferences.showChangelogDialog,
       title: Text(
-        "Don't show this again",
+        "don't show this again",
         style: Theme.of(context).textTheme.subtitle2,
       ),
       onChanged: (bool value) {
@@ -74,7 +74,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
   @override
   Widget build(BuildContext context) {
     return HarpyDialog(
-      title: const Text('Whats new?'),
+      title: const Text('whats new?'),
       contentPadding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       content: Column(
         children: <Widget>[
@@ -85,7 +85,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
       ),
       actions: <Widget>[
         DialogAction<void>(
-          text: 'Ok',
+          text: 'ok',
           onTap: () => app<HarpyNavigator>().state.maybePop(),
         )
       ],

@@ -20,33 +20,33 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     return <Widget>[
       RadioDialogTile(
         leading: Icons.signal_wifi_4_bar,
-        title: 'Media quality on WiFi',
-        description: 'Change the media quality when using WiFi',
+        title: 'media quality on WiFi',
+        description: 'change the media quality when using WiFi',
         value: mediaPreferences.wifiMediaQuality,
-        items: const <String>['High', 'Medium', 'Small'],
+        items: const <String>['high', 'medium', 'small'],
         onChanged: (int value) {
           setState(() => mediaPreferences.wifiMediaQuality = value);
         },
       ),
       RadioDialogTile(
         leading: Icons.signal_wifi_off,
-        title: 'Media quality on mobile data',
-        description: 'Change the media quality when using mobile data',
+        title: 'media quality on mobile data',
+        description: 'change the media quality when using mobile data',
         value: mediaPreferences.nonWifiMediaQuality,
-        items: const <String>['High', 'Medium', 'Small'],
+        items: const <String>['high', 'medium', 'small'],
         onChanged: (int value) {
           setState(() => mediaPreferences.nonWifiMediaQuality = value);
         },
       ),
       RadioDialogTile(
         leading: Icons.play_circle_outline,
-        title: 'Autoplay gifs',
-        description: 'Change when gifs should automatically play',
+        title: 'autoplay gifs',
+        description: 'change when gifs should automatically play',
         value: mediaPreferences.autoplayMedia,
         items: const <String>[
-          'Always autoplay',
-          'Only on WiFi',
-          'Never autoplay',
+          'always autoplay',
+          'only on WiFi',
+          'never autoplay',
         ],
         onChanged: (int value) {
           setState(() => mediaPreferences.autoplayMedia = value);
@@ -54,13 +54,13 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       ),
       RadioDialogTile(
         leading: Icons.play_circle_outline,
-        title: 'Autoplay videos',
-        description: 'Change when videos should automatically play',
+        title: 'autoplay videos',
+        description: 'change when videos should automatically play',
         value: mediaPreferences.autoplayVideos,
         items: const <String>[
-          'Always autoplay',
-          'Only on WiFi',
-          'Never autoplay',
+          'always autoplay',
+          'only on WiFi',
+          'never autoplay',
         ],
         onChanged: (int value) {
           setState(() => mediaPreferences.autoplayVideos = value);
@@ -68,8 +68,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       ),
       SwitchListTile(
         secondary: const Icon(Icons.link),
-        title: const Text('Always open links externally'),
-        subtitle: const Text('Coming soon!'),
+        title: const Text('always open links externally'),
+        subtitle: const Text('coming soon!'),
         value: mediaPreferences.openLinksExternally,
         onChanged: null,
         // todo: implement
@@ -89,7 +89,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           return <PopupMenuEntry<void>>[
             const PopupMenuItem<void>(
               value: 0,
-              child: Text('Reset to default'),
+              child: Text('reset to default'),
             ),
           ];
         },
@@ -100,7 +100,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'Media settings',
+      title: 'media settings',
       actions: _buildActions(),
       buildSafeArea: true,
       body: ListView(

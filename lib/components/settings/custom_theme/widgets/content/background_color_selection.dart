@@ -38,7 +38,7 @@ class BackgroundColorSelection extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
-          child: Text('Background colors', style: textTheme.headline4),
+          child: Text('background colors', style: textTheme.headline4),
         ),
         defaultVerticalSpacer,
         CustomReorderableList(

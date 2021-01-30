@@ -36,7 +36,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
           ),
           defaultHorizontalSpacer,
           Text(
-            'Invalid name',
+            'invalid name',
             style: TextStyle(color: theme.errorColor),
           ),
         ],

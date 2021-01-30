@@ -114,7 +114,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     ];
 
     return HarpyScaffold(
-      title: 'Theme selection',
+      title: 'theme selection',
       buildSafeArea: true,
       body: ListView.separated(
         padding: DefaultEdgeInsets.all(),

@@ -200,10 +200,10 @@ class TranslateTweet extends TweetEvent {
 
     // show an info when the tweet or quote was unable to be translated
     if (bloc.tweet.translatable && bloc.tweet.translation?.unchanged != false) {
-      app<MessageService>().show('Tweet not translated');
+      app<MessageService>().show('tweet not translated');
     } else if (bloc.tweet.quoteTranslatable &&
         bloc.tweet.quote.translation?.unchanged != false) {
-      app<MessageService>().show('Quoted Tweet not translated');
+      app<MessageService>().show('quoted tweet not translated');
     }
 
     yield UpdatedTweetState();
@@ -346,7 +346,7 @@ class CopyTweetText extends TweetActionEvent {
     TweetBloc bloc,
   }) async* {
     Clipboard.setData(ClipboardData(text: tweet.visibleText));
-    app<MessageService>().show('Copied Tweet text');
+    app<MessageService>().show('copied tweet text');
   }
 }
 

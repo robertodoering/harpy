@@ -28,7 +28,7 @@ class MediaOverlayActionRow extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: const Icon(Icons.open_in_browser),
-          title: const Text('Open externally'),
+          title: const Text('open externally'),
           onTap: () {
             onOpenExternally?.call();
             app<HarpyNavigator>().state.maybePop();
@@ -36,7 +36,7 @@ class MediaOverlayActionRow extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.file_download),
-          title: const Text('Download'),
+          title: const Text('download'),
           onTap: () {
             onDownload?.call();
             app<HarpyNavigator>().state.maybePop();
@@ -44,7 +44,7 @@ class MediaOverlayActionRow extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.share),
-          title: const Text('Share'),
+          title: const Text('share'),
           onTap: () {
             onShare?.call();
             app<HarpyNavigator>().state.maybePop();

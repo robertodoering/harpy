@@ -20,8 +20,8 @@ class FollowingScreen extends StatelessWidget {
     return FollowingFollowersScreen<FollowingBloc>(
       create: (BuildContext context) => FollowingBloc(userId: userId),
       userId: userId,
-      title: 'Following',
-      errorMessage: 'Error loading following users',
+      title: 'following',
+      errorMessage: 'error loading following users',
       loadUsers: (FollowingBloc bloc) => bloc.add(const LoadFollowingUsers()),
     );
   }

@@ -65,7 +65,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     return <DialogAction<void>>[
       if (_showCustomPicker)
         DialogAction<void>(
-          text: 'Back',
+          text: 'back',
           onTap: () => setState(() {
             _configureColorPickerSize();
             _showCustomPicker = false;
@@ -73,14 +73,14 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
         )
       else
         DialogAction<void>(
-          text: 'Custom',
+          text: 'custom',
           onTap: () => setState(() {
             _configureColorPickerSize();
             _showCustomPicker = true;
           }),
         ),
       DialogAction<void>(
-        text: 'Select',
+        text: 'select',
         onTap: () {
           app<HarpyNavigator>().state.pop(_color);
         },

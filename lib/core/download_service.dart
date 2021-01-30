@@ -40,9 +40,9 @@ class DownloadService {
           fileName: name,
         );
 
-        messageService.show('Download started');
+        messageService.show('download started');
       } catch (e) {
-        messageService.show('Download failed');
+        messageService.show('download failed');
       }
     }
   }
@@ -55,7 +55,7 @@ class DownloadService {
     if (status.isGranted) {
       return DownloadsPathProvider.downloadsDirectory;
     } else {
-      messageService.show('Storage permission not granted');
+      messageService.show('storage permission not granted');
 
       return null;
     }

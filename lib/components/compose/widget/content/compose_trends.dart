@@ -73,7 +73,7 @@ class TrendSuggestions extends StatelessWidget {
           padding: DefaultEdgeInsets.all()
               .copyWith(bottom: defaultSmallPaddingValue / 2),
           child: Text(
-            'Worldwide trends',
+            'worldwide trends',
             style: theme.textTheme.subtitle1.copyWith(
               fontWeight: FontWeight.bold,
             ),

@@ -24,8 +24,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
     return <Widget>[
       SwitchListTile(
         secondary: const Icon(Icons.update),
-        title: const Text('Show changelog dialog'),
-        subtitle: const Text('When the app has been updated'),
+        title: const Text('show changelog dialog'),
+        subtitle: const Text('when the app has been updated'),
         value: changelogPreferences.showChangelogDialog,
         onChanged: (bool value) {
           setState(() => changelogPreferences.showChangelogDialog = value);
@@ -33,8 +33,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
       ),
       SwitchListTile(
         secondary: const Icon(Icons.speed),
-        title: const Text('Performance mode'),
-        subtitle: const Text('Reduces animations and effects'),
+        title: const Text('performance mode'),
+        subtitle: const Text('reduces animations and effects'),
         value: generalPreferences.performanceMode,
         onChanged: (bool value) {
           setState(() => generalPreferences.performanceMode = value);
@@ -47,7 +47,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'General',
+      title: 'general',
       buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,

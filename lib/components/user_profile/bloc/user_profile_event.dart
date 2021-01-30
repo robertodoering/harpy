@@ -181,7 +181,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
 
     if (!bloc.user.hasDescriptionTranslation ||
         bloc.user.descriptionTranslation.unchanged) {
-      app<MessageService>().show('Description not translated');
+      app<MessageService>().show('description not translated');
     }
 
     yield InitializedUserState();

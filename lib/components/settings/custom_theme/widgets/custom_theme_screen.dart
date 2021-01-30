@@ -55,15 +55,15 @@ class CustomThemeScreen extends StatelessWidget {
       final bool discard = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => const HarpyDialog(
-          title: Text('Discard changes?'),
+          title: Text('discard changes?'),
           actions: <DialogAction<bool>>[
             DialogAction<bool>(
               result: false,
-              text: 'Cancel',
+              text: 'cancel',
             ),
             DialogAction<bool>(
               result: true,
-              text: 'Discard',
+              text: 'discard',
             ),
           ],
         ),
@@ -145,7 +145,7 @@ class CustomThemeScreen extends StatelessWidget {
                   actions: <Widget>[
                     _buildSaveAction(customThemeBloc),
                   ],
-                  title: 'Theme customization',
+                  title: 'theme customization',
                   buildSafeArea: true,
                   body: _buildBody(customThemeBloc),
                 ),

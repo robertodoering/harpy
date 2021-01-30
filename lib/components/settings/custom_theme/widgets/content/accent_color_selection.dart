@@ -34,7 +34,7 @@ class AccentColorSelection extends StatelessWidget {
           defaultHorizontalSpacer,
           const Expanded(
             child: Text(
-              'Accent color should provide more contrast on the background',
+              'accent color should provide more contrast on the background',
             ),
           ),
         ],
@@ -55,7 +55,7 @@ class AccentColorSelection extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: DefaultEdgeInsets.symmetric(horizontal: true),
-            child: Text('Accent color', style: textTheme.headline4),
+            child: Text('accent color', style: textTheme.headline4),
           ),
           defaultVerticalSpacer,
           Card(

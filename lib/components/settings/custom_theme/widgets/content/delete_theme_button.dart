@@ -15,7 +15,7 @@ class DeleteThemeButton extends StatelessWidget {
     return Padding(
       padding: DefaultEdgeInsets.all(),
       child: HarpyButton.raised(
-        text: const Text('Delete theme'),
+        text: const Text('delete theme'),
         onTap: () => bloc.add(const DeleteCustomTheme()),
       ),
     );

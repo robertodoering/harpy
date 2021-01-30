@@ -134,7 +134,7 @@ class _LoginButton extends StatelessWidget {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 2800),
       child: HarpyButton.raised(
-        text: const Text('Login with Twitter'),
+        text: const Text('login with twitter'),
         onTap: onTap,
       ),
     );
@@ -149,7 +149,7 @@ class _CreateAccountButton extends StatelessWidget {
     return BounceInAnimation(
       delay: const Duration(milliseconds: 3000),
       child: HarpyButton.flat(
-        text: const Text('Create an account'),
+        text: const Text('create an account'),
         onTap: () => launchUrl('https://twitter.com/signup'),
       ),
     );

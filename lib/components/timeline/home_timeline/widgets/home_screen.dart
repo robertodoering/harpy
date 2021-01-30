@@ -92,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   }
 
   Widget _buildFloatingActionButton() {
+    // todo: change color to same as harpy color (accent color on white_
     if (_showFab) {
       return FloatingActionButton(
         onPressed: () => app<HarpyNavigator>().pushNamed(ComposeScreen.route),

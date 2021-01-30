@@ -8,7 +8,7 @@ class RepliesParentLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const HarpyScaffold(
-      title: 'Replies',
+      title: 'replies',
       body: Center(
         child: CircularProgressIndicator(),
       ),

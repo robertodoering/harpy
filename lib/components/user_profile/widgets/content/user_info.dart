@@ -25,13 +25,13 @@ class UserProfileInfo extends StatelessWidget {
     return CustomAnimatedCrossFade(
       duration: kShortAnimationDuration,
       firstChild: HarpyButton.raised(
-        text: const Text('Following'),
+        text: const Text('following'),
         onTap: () => bloc.add(const UnfollowUserEvent()),
         dense: true,
         backgroundColor: theme.primaryColor,
       ),
       secondChild: HarpyButton.raised(
-        text: const Text('Follow'),
+        text: const Text('follow'),
         onTap: () => bloc.add(const FollowUserEvent()),
         dense: true,
       ),

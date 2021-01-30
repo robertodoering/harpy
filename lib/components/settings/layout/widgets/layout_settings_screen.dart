@@ -19,8 +19,8 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
     return <Widget>[
       SwitchListTile(
         secondary: const Icon(Icons.view_headline),
-        title: const Text('Compact layout'),
-        subtitle: const Text('Use a visually dense layout'),
+        title: const Text('compact layout'),
+        subtitle: const Text('use a visually dense layout'),
         value: layoutPreferences.compactMode,
         onChanged: (bool value) {
           setState(() => layoutPreferences.compactMode = value);
@@ -28,8 +28,8 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
       ),
       const ListTile(
         leading: Icon(Icons.text_format),
-        title: Text('Font'),
-        subtitle: Text('Coming soon!'),
+        title: Text('font'),
+        subtitle: Text('coming soon!'),
         enabled: false,
       ),
     ];
@@ -43,8 +43,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[
             const PopupMenuItem<void>(
-              value: 0,
-              child: Text('Reset to default'),
+              child: Text('reset to default'),
             ),
           ];
         },
@@ -55,7 +54,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'Layout settings',
+      title: 'layout settings',
       actions: _buildActions(),
       buildSafeArea: true,
       body: ListView(

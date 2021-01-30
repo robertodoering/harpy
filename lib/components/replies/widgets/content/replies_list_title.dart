@@ -29,7 +29,7 @@ class RepliesListTitle extends StatelessWidget {
               defaultHorizontalSpacer,
               Expanded(
                 child: Text(
-                  'Replies',
+                  'replies',
                   style: theme.textTheme.subtitle1,
                 ),
               ),

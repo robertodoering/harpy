@@ -26,7 +26,7 @@ class ComposeTextField extends StatelessWidget {
         style: theme.textTheme.bodyText1,
         maxLines: null,
         decoration: const InputDecoration(
-          hintText: "What's happening?",
+          hintText: "what's happening?",
           isDense: true,
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,

@@ -26,7 +26,7 @@ class TweetActionsButton extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: const Icon(Icons.open_in_browser),
-          title: const Text('Open externally'),
+          title: const Text('open externally'),
           onTap: () {
             bloc.add(OpenTweetExternally(tweet: tweet));
             app<HarpyNavigator>().state.maybePop();
@@ -34,7 +34,7 @@ class TweetActionsButton extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.copy),
-          title: const Text('Copy text'),
+          title: const Text('copy text'),
           enabled: bloc.tweet.hasText,
           onTap: () {
             bloc.add(CopyTweetText(tweet: tweet));
@@ -43,7 +43,7 @@ class TweetActionsButton extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.share),
-          title: const Text('Share Tweet'),
+          title: const Text('share Tweet'),
           onTap: () {
             bloc.add(ShareTweet(tweet: tweet));
             app<HarpyNavigator>().state.maybePop();

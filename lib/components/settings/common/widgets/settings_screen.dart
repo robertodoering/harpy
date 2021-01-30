@@ -15,38 +15,38 @@ class SettingsScreen extends StatelessWidget {
 
   Map<String, List<Widget>> get _settings {
     return <String, List<Widget>>{
-      'Tweet': <Widget>[
+      'tweet': <Widget>[
         ListTile(
           leading: const Icon(Icons.image),
-          title: const Text('Media'),
-          subtitle: const Text('Settings for videos, images and gifs'),
+          title: const Text('media'),
+          subtitle: const Text('settings for videos, images and gifs'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             MediaSettingsScreen.route,
           ),
         ),
       ],
-      'Appearance': <Widget>[
+      'appearance': <Widget>[
         ListTile(
           leading: const Icon(Icons.color_lens),
-          title: const Text('Theme'),
-          subtitle: const Text('Select your theme'),
+          title: const Text('theme'),
+          subtitle: const Text('select your theme'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             ThemeSelectionScreen.route,
           ),
         ),
         ListTile(
           leading: const Icon(Icons.view_agenda),
-          title: const Text('Layout'),
-          subtitle: const Text('Change the layout of the app'),
+          title: const Text('layout'),
+          subtitle: const Text('change the layout of the app'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             LayoutSettingsScreen.route,
           ),
         ),
       ],
-      'Other': <Widget>[
+      'other': <Widget>[
         ListTile(
           leading: const Icon(Icons.miscellaneous_services),
-          title: const Text('General'),
+          title: const Text('general'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             GeneralSettingsScreen.route,
           ),
@@ -58,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      title: 'Settings',
+      title: 'settings',
       buildSafeArea: true,
       body: SettingsList(settings: _settings),
     );
