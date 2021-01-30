@@ -57,11 +57,8 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
   void didUpdateWidget(covariant ClearableTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (_controller.text != widget.text) {
-      _controller.text = widget.text;
-      _controller.selection = TextSelection.collapsed(
-        offset: _controller.text.length,
-      );
+    if (widget.text != null && _controller.text != widget.text) {
+      _controller.value = TextEditingValue(text: widget.text);
     }
   }
 
