@@ -15,7 +15,7 @@ abstract class TweetSearchEvent extends Equatable {
 /// builds an empty query.
 ///
 /// Does nothing if the current state is a [TweetSearchResult] and the search
-/// query is the same.
+/// query and filter is the same.
 ///
 /// Yields a [TweetSearchResult] on successful request or a
 /// [TweetSearchFailure] on failure.
@@ -38,7 +38,8 @@ class SearchTweets extends TweetSearchEvent {
 
   bool _unchangedQuery(String searchQuery, TweetSearchState currentState) {
     if (currentState is TweetSearchResult) {
-      return currentState.searchQuery == searchQuery;
+      return currentState.searchQuery == searchQuery &&
+          currentState.filter == filter;
     } else {
       return false;
     }
