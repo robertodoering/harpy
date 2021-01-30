@@ -7,12 +7,14 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 
 class SearchTextField extends StatelessWidget {
   const SearchTextField({
+    this.text,
     this.onSubmitted,
     this.onClear,
     this.hintText,
     this.autofocus = false,
   });
 
+  final String text;
   final ValueChanged<String> onSubmitted;
   final VoidCallback onClear;
   final String hintText;
@@ -33,6 +35,7 @@ class SearchTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(128),
       ),
       child: ClearableTextField(
+        text: text,
         autofocus: autofocus,
         onSubmitted: onSubmitted,
         onClear: onClear,
