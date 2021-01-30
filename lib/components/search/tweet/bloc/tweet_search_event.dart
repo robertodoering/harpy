@@ -45,12 +45,12 @@ class SearchTweets extends TweetSearchEvent {
   }
 
   String _searchQuery() {
-    if (query != null && query.isNotEmpty) {
+    if (query != null && query.trim().isNotEmpty) {
       return query;
     } else if (filter != null) {
       final String filterQuery = filter.buildQuery();
 
-      if (filterQuery != null && filterQuery.isNotEmpty) {
+      if (filterQuery != null && filterQuery.trim().isNotEmpty) {
         return filterQuery;
       }
     }
