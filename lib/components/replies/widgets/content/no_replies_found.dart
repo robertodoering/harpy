@@ -25,7 +25,7 @@ class NoRepliesFound extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Only replies of the last 7 days can be retrieved.',
+                'only replies of the last 7 days can be retrieved',
                 style: theme.textTheme.subtitle2,
               ),
             ],
