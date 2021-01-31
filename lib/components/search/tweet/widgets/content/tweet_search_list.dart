@@ -32,7 +32,12 @@ class TweetSearchList extends StatelessWidget {
             if (bloc.showLoading)
               const SliverFillLoadingIndicator()
             else if (bloc.showNoResults)
-              const SliverFillMessage(message: Text('no tweets found'))
+              const SliverFillMessage(
+                message: Text('no tweets found'),
+                secondaryMessage: Text(
+                  'only tweets of the last 7 days can be retrieved',
+                ),
+              )
             else if (bloc.showSearchError)
               SliverFillLoadingError(
                 message: const Text('error searching tweets'),
