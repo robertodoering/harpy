@@ -158,6 +158,14 @@ class HarpyNavigator {
       'tweet': tweet,
     });
   }
+
+  void pushTweetSearchScreen({
+    String initialSearchQuery,
+  }) {
+    pushNamed(TweetSearchScreen.route, arguments: <String, dynamic>{
+      'initialSearchQuery': initialSearchQuery,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -237,7 +245,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = const UserSearchScreen();
       break;
     case TweetSearchScreen.route:
-      screen = const TweetSearchScreen();
+      screen = TweetSearchScreen(
+        initialSearchQuery: arguments['initialSearchQuery'],
+      );
       break;
     case HomeScreen.route:
       screen = HomeScreen(

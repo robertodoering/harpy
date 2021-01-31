@@ -1,6 +1,9 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
+import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
@@ -24,6 +27,24 @@ void defaultOnUrlTap(BuildContext context, Url url) {
   launchUrl(url.expandedUrl);
 }
 
+/// The default behavior when a [Hashtag] inside of a [TwitterText] is tapped.
+void defaultOnHashtagTap(BuildContext context, Hashtag hashtag) {
+  if (hashtag != null &&
+      hashtag.text != null &&
+      hashtag.text.trim().isNotEmpty) {
+    final String searchQuery = '#${hashtag.text}';
+
+    if (ModalRoute.of(context).settings?.name == TweetSearchScreen.route) {
+      // already in tweet search
+      context.read<TweetSearchBloc>()?.add(SearchTweets(query: searchQuery));
+    } else {
+      app<HarpyNavigator>().pushTweetSearchScreen(
+        initialSearchQuery: '#${hashtag.text}',
+      );
+    }
+  }
+}
+
 /// Builds a [Text] widget with the [entities] parsed in the [text].
 ///
 /// The entity texts are styled with [entityColor] and the relevant callback
@@ -37,7 +58,7 @@ class TwitterText extends StatefulWidget {
     this.maxLines,
     this.overflow,
     this.urlToIgnore,
-    this.onHashtagTap,
+    this.onHashtagTap = defaultOnHashtagTap,
     this.onUrlTap = defaultOnUrlTap,
     this.onUserMentionTap = defaultOnUserMentionTap,
   });

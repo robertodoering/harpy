@@ -9,7 +9,11 @@ import 'package:harpy/components/search/tweet/widgets/content/tweet_search_list.
 import 'package:provider/provider.dart';
 
 class TweetSearchScreen extends StatelessWidget {
-  const TweetSearchScreen();
+  const TweetSearchScreen({
+    this.initialSearchQuery,
+  });
+
+  final String initialSearchQuery;
 
   static const String route = 'tweet_search_screen';
 
@@ -18,7 +22,7 @@ class TweetSearchScreen extends StatelessWidget {
     return ChangeNotifierProvider<TweetSearchFilterModel>(
       create: (_) => TweetSearchFilterModel(const TweetSearchFilter()),
       child: BlocProvider<TweetSearchBloc>(
-        create: (_) => TweetSearchBloc(),
+        create: (_) => TweetSearchBloc(initialSearchQuery: initialSearchQuery),
         child: const HarpyScaffold(
           endDrawer: TweetSearchFilterDrawer(),
           body: TweetSearchList(),

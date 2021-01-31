@@ -15,7 +15,13 @@ part 'tweet_search_event.dart';
 part 'tweet_search_state.dart';
 
 class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
-  TweetSearchBloc() : super(const TweetSearchInitial());
+  TweetSearchBloc({
+    String initialSearchQuery,
+  }) : super(const TweetSearchInitial()) {
+    if (initialSearchQuery != null && initialSearchQuery.trim().isNotEmpty) {
+      add(SearchTweets(query: initialSearchQuery));
+    }
+  }
 
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
@@ -38,8 +44,7 @@ class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
       return (state as TweetSearchLoading).searchQuery;
     } else if (state is TweetSearchFailure) {
       return (state as TweetSearchFailure).searchQuery;
-    }
-      else {
+    } else {
       return null;
     }
   }
