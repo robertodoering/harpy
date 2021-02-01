@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
@@ -20,7 +21,7 @@ class TweetRetweetedRow extends StatelessWidget {
         AnimatedContainer(
           duration: kShortAnimationDuration,
           width: TweetAuthorRow.defaultAvatarRadius * 2,
-          child: const Icon(Icons.repeat, size: 18),
+          child: const Icon(FeatherIcons.repeat, size: 18),
         ),
         defaultHorizontalSpacer,
         Expanded(

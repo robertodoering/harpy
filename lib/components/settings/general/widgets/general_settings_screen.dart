@@ -24,7 +24,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
     return <Widget>[
       SwitchListTile(
         secondary: const Icon(Icons.update),
-        title: const Text('show changelog dialog'),
+        title: const Text('Show changelog dialog'),
         subtitle: const Text('when the app has been updated'),
         value: changelogPreferences.showChangelogDialog,
         onChanged: (bool value) {
@@ -33,7 +33,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
       ),
       SwitchListTile(
         secondary: const Icon(Icons.speed),
-        title: const Text('performance mode'),
+        title: const Text('Performance mode'),
         subtitle: const Text('reduces animations and effects'),
         value: generalPreferences.performanceMode,
         onChanged: (bool value) {

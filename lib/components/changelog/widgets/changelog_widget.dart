@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 
 /// Builds the changelog widget for the [data].
@@ -74,28 +75,40 @@ class ChangelogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> additions = data.additions
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.green)))
+        .map(
+          (ChangelogEntry entry) => _buildEntry(
+            entry,
+            const Icon(FeatherIcons.plusCircle, color: Colors.green),
+          ),
+        )
         .toList();
 
     final List<Widget> changes = data.changes
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.yellow)))
+        .map((ChangelogEntry entry) => _buildEntry(
+              entry,
+              const Icon(FeatherIcons.plusCircle, color: Colors.yellow),
+            ))
         .toList();
 
     final List<Widget> fixes = data.fixes
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.orange)))
+        .map((ChangelogEntry entry) => _buildEntry(
+              entry,
+              const Icon(FeatherIcons.plusCircle, color: Colors.orange),
+            ))
         .toList();
 
     final List<Widget> removals = data.removals
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.red)))
+        .map((ChangelogEntry entry) => _buildEntry(
+              entry,
+              const Icon(FeatherIcons.minusCircle, color: Colors.red),
+            ))
         .toList();
 
     final List<Widget> others = data.others
-        .map((ChangelogEntry entry) =>
-            _buildEntry(entry, const Icon(Icons.adjust, color: Colors.blue)))
+        .map((ChangelogEntry entry) => _buildEntry(
+              entry,
+              const Icon(FeatherIcons.plusCircle, color: Colors.blue),
+            ))
         .toList();
 
     return _spacedColumn(<Widget>[

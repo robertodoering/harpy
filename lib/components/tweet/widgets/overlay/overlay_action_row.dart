@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
@@ -27,7 +28,7 @@ class MediaOverlayActionRow extends StatelessWidget {
     return ViewMoreActionButton(
       children: <Widget>[
         ListTile(
-          leading: const Icon(Icons.open_in_browser),
+          leading: const Icon(FeatherIcons.share),
           title: const Text('open externally'),
           onTap: () {
             onOpenExternally?.call();
@@ -35,7 +36,7 @@ class MediaOverlayActionRow extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.file_download),
+          leading: const Icon(FeatherIcons.download),
           title: const Text('download'),
           onTap: () {
             onDownload?.call();
@@ -43,7 +44,7 @@ class MediaOverlayActionRow extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.share),
+          leading: const Icon(FeatherIcons.share2),
           title: const Text('share'),
           onTap: () {
             onShare?.call();

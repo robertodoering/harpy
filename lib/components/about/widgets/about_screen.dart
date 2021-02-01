@@ -1,5 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
@@ -11,7 +12,6 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen();
@@ -71,7 +71,7 @@ class AboutScreen extends StatelessWidget {
             onTap: () => app<HarpyNavigator>().pushNamed(ChangelogScreen.route),
           ),
           ListTile(
-            leading: const Icon(LineAwesomeIcons.github),
+            leading: const Icon(FeatherIcons.github),
             title: const Text('harpy is open source'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
             shape: const RoundedRectangleBorder(
@@ -98,22 +98,22 @@ class AboutScreen extends StatelessWidget {
               TextSpan(
                 children: <TextSpan>[
                   const TextSpan(
-                    text: 'support the development of Harpy and get access '
+                    text: 'support the development of harpy and get access '
                         'to a number of exclusive features by purchasing ',
                   ),
-                  TextSpan(
-                    text: 'harpy Pro',
-                    style: linkStyle,
-                  ),
-                  const TextSpan(text: ' in the play store.'),
+                  TextSpan(text: 'harpy pro', style: linkStyle),
+                  const TextSpan(text: ' in the play store'),
                 ],
               ),
               style: theme.textTheme.subtitle2,
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 24),
-            title: const Text('harpy Pro'),
+            leading: const FlareIcon.shiningStar(
+              size: 28,
+              offset: Offset(-4, 0),
+            ),
+            title: const Text('harpy pro'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: kDefaultRadius,
@@ -140,7 +140,10 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const FlareIcon.shiningStar(size: 24),
+            leading: const FlareIcon.shiningStar(
+              size: 28,
+              offset: Offset(-4, 0),
+            ),
             title: const Text('rate harpy'),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -160,7 +163,7 @@ class AboutScreen extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: const Icon(Icons.mail),
+            leading: const Icon(FeatherIcons.mail),
             isThreeLine: true,
             title: Padding(
               padding: EdgeInsets.only(top: defaultPaddingValue),
@@ -199,7 +202,7 @@ class AboutScreen extends StatelessWidget {
   Widget _buildPrivacyPolicy() {
     return Card(
       child: ListTile(
-        leading: const Icon(Icons.privacy_tip),
+        leading: const Icon(Icons.privacy_tip_outlined),
         title: const Text('privacy policy'),
         shape: kDefaultShapeBorder,
         onTap: () => launchUrl(_privacyPolicy),

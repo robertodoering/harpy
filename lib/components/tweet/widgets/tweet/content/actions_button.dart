@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
@@ -25,7 +26,7 @@ class TweetActionsButton extends StatelessWidget {
       padding: padding,
       children: <Widget>[
         ListTile(
-          leading: const Icon(Icons.open_in_browser),
+          leading: const Icon(FeatherIcons.share),
           title: const Text('open externally'),
           onTap: () {
             bloc.add(OpenTweetExternally(tweet: tweet));
@@ -33,7 +34,7 @@ class TweetActionsButton extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.copy),
+          leading: const Icon(FeatherIcons.copy),
           title: const Text('copy text'),
           enabled: bloc.tweet.hasText,
           onTap: () {
@@ -42,8 +43,8 @@ class TweetActionsButton extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.share),
-          title: const Text('share Tweet'),
+          leading: const Icon(FeatherIcons.share2),
+          title: const Text('share tweet'),
           onTap: () {
             bloc.add(ShareTweet(tweet: tweet));
             app<HarpyNavigator>().state.maybePop();

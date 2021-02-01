@@ -146,7 +146,7 @@ class _ActionButtonState extends State<ActionButton>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final double iconSize = widget.iconSize ?? IconTheme.of(context).size ?? 20;
+    final double iconSize = widget.iconSize ?? IconTheme.of(context).size;
 
     final Widget icon = AnimatedTheme(
       data: theme.copyWith(

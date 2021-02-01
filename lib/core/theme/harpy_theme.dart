@@ -392,6 +392,7 @@ class HarpyTheme {
 
       iconTheme: const IconThemeData.fallback().copyWith(
         color: foregroundColor,
+        size: 20,
       ),
     );
   }

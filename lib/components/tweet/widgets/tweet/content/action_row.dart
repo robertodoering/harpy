@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
@@ -32,8 +33,8 @@ class TweetActionRow extends StatelessWidget {
               onTap: () => app<HarpyNavigator>().pushRepliesScreen(
                 tweet: tweet,
               ),
-              icon: const Icon(Icons.chat_bubble_outline),
-              iconSize: 20,
+              icon: const Icon(FeatherIcons.messageSquare),
+              iconSize: 22,
               padding: DefaultEdgeInsets.all(),
             ),
           const Spacer(),

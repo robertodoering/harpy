@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -18,8 +19,8 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
   List<Widget> get _settings {
     return <Widget>[
       SwitchListTile(
-        secondary: const Icon(Icons.view_headline),
-        title: const Text('compact layout'),
+        secondary: const Icon(FeatherIcons.alignJustify),
+        title: const Text('Compact layout'),
         subtitle: const Text('use a visually dense layout'),
         value: layoutPreferences.compactMode,
         onChanged: (bool value) {
@@ -27,8 +28,8 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         },
       ),
       const ListTile(
-        leading: Icon(Icons.text_format),
-        title: Text('font'),
+        leading: Icon(FeatherIcons.type),
+        title: Text('Font'),
         subtitle: Text('coming soon!'),
         enabled: false,
       ),

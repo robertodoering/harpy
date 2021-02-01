@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/misc/url_launcher.dart';
@@ -21,7 +22,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   }) {
     return Row(
       children: <Widget>[
-        Icon(icon, size: 18),
+        Icon(icon, size: 16),
         defaultHorizontalSpacer,
         Expanded(
           child: text != null
@@ -49,7 +50,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
       ),
     );
 
-    return _buildRow(theme, Icons.link, child: child);
+    return _buildRow(theme, FeatherIcons.link2, child: child);
   }
 
   @override
@@ -58,11 +59,11 @@ class UserProfileAdditionalInfo extends StatelessWidget {
 
     final List<Widget> children = <Widget>[
       if (bloc.user.hasLocation)
-        _buildRow(theme, Icons.place, text: bloc.user.location),
+        _buildRow(theme, FeatherIcons.mapPin, text: bloc.user.location),
       if (bloc.user.hasCreatedAt)
         _buildRow(
           theme,
-          Icons.date_range,
+          FeatherIcons.calendar,
           text: 'joined ${_createdAtFormat.format(bloc.user.createdAt)}',
         ),
       if (bloc.user.hasUrl) _buildUrl(theme),
@@ -75,7 +76,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
           if (child == children.last)
             defaultSmallVerticalSpacer
           else
-            const SizedBox(height: 4),
+            SizedBox(height: defaultSmallPaddingValue / 2),
         ],
       ],
     );

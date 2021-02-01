@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
@@ -12,7 +13,6 @@ import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event
 import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     if (_showFab) {
       return FloatingActionButton(
         onPressed: () => app<HarpyNavigator>().pushNamed(ComposeScreen.route),
-        child: const Icon(LineAwesomeIcons.alternate_feather, size: 30),
+        child: const Icon(FeatherIcons.feather, size: 28),
       );
     } else {
       return null;

@@ -39,12 +39,12 @@ class TranslationButton extends StatelessWidget {
         start: Colors.tealAccent,
         end: Colors.lightBlueAccent,
       ),
+      iconSize: 22,
       iconBuilder: (BuildContext context, bool active, double size) => Icon(
         Icons.translate,
         size: size,
         color: active ? harpyTheme.translateColor : null,
       ),
-      iconSize: 20,
     );
   }
 }

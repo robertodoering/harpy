@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
@@ -64,7 +65,7 @@ class BackgroundColorCard extends StatelessWidget {
               onTap: () => _changeBackgroundColor(context),
             ),
             HarpyButton.flat(
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(FeatherIcons.x),
               padding: const EdgeInsets.all(16),
               onTap: bloc.canRemoveBackgroundColor
                   ? () => bloc.add(RemoveBackgroundColor(index: index))

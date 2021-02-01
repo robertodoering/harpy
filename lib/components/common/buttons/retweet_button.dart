@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/action_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
@@ -17,6 +18,7 @@ class RetweetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
@@ -49,12 +51,13 @@ class RetweetButton extends StatelessWidget {
           child: child,
         );
       },
+      iconSize: 21,
       iconBuilder: (
         BuildContext context,
         bool active,
         double size,
       ) {
-        return Icon(Icons.repeat, size: size);
+        return Icon(FeatherIcons.repeat, size: size);
       },
     );
   }

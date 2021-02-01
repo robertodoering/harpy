@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
@@ -27,7 +28,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         ),
         HarpyButton.flat(
           dense: true,
-          icon: const Icon(Icons.clear),
+          icon: const Icon(FeatherIcons.x),
           onTap: model.hasFilter ? model.clear : null,
         ),
       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
@@ -44,14 +45,14 @@ class ThemeCard extends StatelessWidget {
                 child: ListTile(
                   title: Text(harpyTheme.name ?? ''),
                   leading: canEdit ? const SizedBox() : null,
-                  trailing: selected ? const Icon(Icons.check) : null,
+                  trailing: selected ? const Icon(FeatherIcons.check) : null,
                   onTap: onTap,
                 ),
               ),
             ),
             if (canEdit)
               HarpyButton.flat(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(FeatherIcons.edit2),
                 padding: const EdgeInsets.all(16),
                 onTap: onEdit,
               ),

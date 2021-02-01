@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/compose_event.dart';
@@ -21,7 +22,7 @@ class ComposeTweetActionRow extends StatelessWidget {
       children: <Widget>[
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
-          icon: const Icon(Icons.image),
+          icon: const Icon(FeatherIcons.image),
           iconSize: 20,
           onTap: () => bloc.add(const PickTweetMediaEvent()),
         ),

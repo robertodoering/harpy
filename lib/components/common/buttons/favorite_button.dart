@@ -29,6 +29,7 @@ class FavoriteButton extends StatelessWidget {
       value: bloc.tweet.favoriteCount,
       activate: () => bloc.add(const FavoriteTweet()),
       deactivate: () => bloc.add(const UnfavoriteTweet()),
+      iconSize: 22,
       iconBuilder: (
         BuildContext context,
         bool active,

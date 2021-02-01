@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/clearable_text_field.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
@@ -40,7 +41,7 @@ class SearchTextField extends StatelessWidget {
         onSubmitted: onSubmitted,
         onClear: onClear,
         decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: const Icon(FeatherIcons.search, size: 16),
           hintText: hintText,
           filled: true,
           fillColor: fillColor,
