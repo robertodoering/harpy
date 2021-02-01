@@ -52,6 +52,7 @@ void main() {
         includesHashtags: <String>['#cute', '#cat'],
       );
 
+      expect(filter1.buildQuery(), equals('#cute'));
       expect(filter2.buildQuery(), equals('#cute #cat'));
     });
 
@@ -141,6 +142,7 @@ void main() {
         excludesHashtags: <String>['-#cute', '-#cat'],
       );
 
+      expect(filter1.buildQuery(), equals('-#cute'));
       expect(filter2.buildQuery(), equals('-#cute -#cat'));
     });
 
