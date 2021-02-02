@@ -22,11 +22,13 @@ class NoRepliesFound extends StatelessWidget {
               Text(
                 'no replies found',
                 style: theme.textTheme.subtitle1,
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
                 'only replies of the last 7 days can be retrieved',
                 style: theme.textTheme.subtitle2,
+                textAlign: TextAlign.center,
               ),
             ],
           ),
