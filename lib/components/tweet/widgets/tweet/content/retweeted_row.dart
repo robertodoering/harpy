@@ -21,7 +21,7 @@ class TweetRetweetedRow extends StatelessWidget {
         AnimatedContainer(
           duration: kShortAnimationDuration,
           width: TweetAuthorRow.defaultAvatarRadius * 2,
-          child: const Icon(FeatherIcons.repeat, size: 18),
+          child: const Icon(FeatherIcons.repeat, size: 16),
         ),
         defaultHorizontalSpacer,
         Expanded(

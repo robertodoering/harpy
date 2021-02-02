@@ -18,7 +18,6 @@ class RetweetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
@@ -51,7 +50,7 @@ class RetweetButton extends StatelessWidget {
           child: child,
         );
       },
-      iconSize: 21,
+      iconSize: 20,
       iconBuilder: (
         BuildContext context,
         bool active,
