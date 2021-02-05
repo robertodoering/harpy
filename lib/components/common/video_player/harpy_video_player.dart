@@ -12,6 +12,8 @@ const double kVideoPlayerCenterIconSize = 48;
 
 typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
 
+typedef OnVideoPlayerLongPress = void Function();
+
 /// Builds a [VideoPlayer] with a [VideoPlayerOverlay] to control the video.
 ///
 /// When built initially, the video will not be initialized and instead the
@@ -26,6 +28,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.thumbnailAspectRatio,
     this.autoplay = false,
     this.onVideoPlayerTap,
+    this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
   }) : model = null;
 
@@ -35,6 +38,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.thumbnailAspectRatio,
     this.autoplay = false,
     this.onVideoPlayerTap,
+    this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
   }) : controller = null;
 
@@ -48,6 +52,7 @@ class HarpyVideoPlayer extends StatefulWidget {
   final HarpyVideoPlayerModel model;
   final bool autoplay;
   final OnVideoPlayerTap onVideoPlayerTap;
+  final OnVideoPlayerLongPress onVideoPlayerLongPress;
   final bool allowVerticalOverflow;
 
   @override
@@ -104,6 +109,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     Widget child = GestureDetector(
       onTap: () => _onVideoTap(model),
+      onLongPress: widget.onVideoPlayerLongPress,
       child: AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child: VideoPlayer(_controller),

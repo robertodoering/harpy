@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -20,20 +22,65 @@ class TweetVideo extends StatelessWidget {
   final TweetData tweet;
   final TweetBloc tweetBloc;
 
+  void _onDownloadVideo() {
+    tweetBloc.add(DownloadMedia(tweet: tweet));
+  }
+
+  void _onVideoOpenExternaly() {
+    tweetBloc.add(OpenMediaExternally(tweet: tweet));
+  }
+
+  void _onVideoShare() {
+    tweetBloc.add(ShareMedia(tweet: tweet));
+  }
+
   void _openGallery(HarpyVideoPlayerModel model) {
     MediaOverlay.open(
       tweet: tweet,
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
-      onDownload: () => tweetBloc.add(DownloadMedia(tweet: tweet)),
-      onOpenExternally: () => tweetBloc.add(OpenMediaExternally(tweet: tweet)),
-      onShare: () => tweetBloc.add(ShareMedia(tweet: tweet)),
+      onDownload: _onDownloadVideo,
+      onOpenExternally: _onVideoOpenExternaly,
+      onShare: _onVideoShare,
       child: HarpyVideoPlayer.fromModel(
         model,
         thumbnail: tweet.video.thumbnailUrl,
         thumbnailAspectRatio: tweet.video.validAspectRatio
             ? tweet.video.aspectRatioDouble
             : 16 / 9,
+      ),
+    );
+  }
+
+  Future<void> _onVideoPlayerLongPress(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: kDefaultRadius,
+          topRight: kDefaultRadius,
+        ),
+      ),
+      builder: (BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const ModalSheetHandle(),
+          ListTile(
+            leading: const Icon(FeatherIcons.share),
+            title: const Text('open externally'),
+            onTap: _onVideoShare,
+          ),
+          ListTile(
+            leading: const Icon(FeatherIcons.download),
+            title: const Text('download'),
+            onTap: _onDownloadVideo,
+          ),
+          ListTile(
+            leading: const Icon(FeatherIcons.share2),
+            title: const Text('share'),
+            onTap: _onVideoShare,
+          ),
+        ],
       ),
     );
   }
@@ -48,6 +95,7 @@ class TweetVideo extends StatelessWidget {
         VideoPlayerController.network(tweet.video.appropriateUrl),
         thumbnail: tweet.video.thumbnailUrl,
         onVideoPlayerTap: _openGallery,
+        onVideoPlayerLongPress: () => _onVideoPlayerLongPress(context),
         autoplay: mediaPreferences.shouldAutoplayVideos,
         allowVerticalOverflow: true,
       ),
