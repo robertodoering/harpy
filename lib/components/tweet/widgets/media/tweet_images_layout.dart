@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 typedef OnImageTap = void Function(int index);
+typedef OnImageLongPress = void Function(int index);
 
 /// Builds the layout for up to four tweet images.
 class TweetImagesLayout extends StatelessWidget {
   const TweetImagesLayout({
     @required this.children,
     this.onImageTap,
+    this.onImageLongPress,
     this.padding = 2,
   });
 
   final List<Widget> children;
   final OnImageTap onImageTap;
+  final OnImageLongPress onImageLongPress;
   final double padding;
 
+  // I don't want to add a BuildContext paramter to this method.
+  // But i need the BuildContext to show the BottomSheetModal.
+  // Is it dity to add this parameter?
   Widget _buildChild(
     int index, {
     bool topLeft = false,
@@ -31,6 +37,7 @@ class TweetImagesLayout extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => onImageTap?.call(index),
+        onLongPress: () => onImageLongPress?.call(index),
         child: children[index],
       ),
     );

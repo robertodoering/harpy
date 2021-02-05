@@ -38,24 +38,9 @@ class _TweetImagesState extends State<TweetImages> {
       tweet: widget.tweet,
       tweetBloc: widget.tweetBloc,
       overlap: true,
-      onDownload: () {
-        widget.tweetBloc.add(DownloadMedia(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
-      onOpenExternally: () {
-        widget.tweetBloc.add(OpenMediaExternally(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
-      onShare: () {
-        widget.tweetBloc.add(ShareMedia(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
+      onDownload: _onDownloadImage,
+      onOpenExternally: _onOpenImageExternaly,
+      onShare: _onShareImage,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
@@ -64,6 +49,31 @@ class _TweetImagesState extends State<TweetImages> {
         enableDismissible: false,
       ),
     );
+  }
+
+  void _onImageLongPress(int index) {
+    _galleryIndex = index;
+  }
+
+  void _onDownloadImage() {
+    widget.tweetBloc.add(DownloadMedia(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
+  }
+
+  void _onShareImage() {
+    widget.tweetBloc.add(ShareMedia(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
+  }
+
+  void _onOpenImageExternaly() {
+    widget.tweetBloc.add(OpenMediaExternally(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
   }
 
   List<Widget> _buildImages() {
@@ -94,6 +104,7 @@ class _TweetImagesState extends State<TweetImages> {
   Widget build(BuildContext context) {
     return TweetImagesLayout(
       onImageTap: _onImageTap,
+      onImageLongPress: _onImageLongPress,
       children: _buildImages(),
     );
   }

@@ -18,7 +18,6 @@ class ViewMoreActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return HarpyButton.flat(
       icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
@@ -35,18 +34,27 @@ class ViewMoreActionButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // handle
-            Container(
-              width: 40,
-              height: 3,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: kDefaultBorderRadius,
-                color: harpyTheme.foregroundColor.withOpacity(.2),
-              ),
-            ),
+            ViewMoreModalHeader(),
             ...children,
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ViewMoreModalHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+
+    return Container(
+      width: 40,
+      height: 3,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: kDefaultBorderRadius,
+        color: harpyTheme.foregroundColor.withOpacity(.2),
       ),
     );
   }
