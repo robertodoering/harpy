@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
 import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_modal_content.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
@@ -71,26 +70,10 @@ class TweetGif extends StatelessWidget {
           topRight: kDefaultRadius,
         ),
       ),
-      builder: (BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const ModalSheetHandle(),
-          ListTile(
-            leading: const Icon(FeatherIcons.share),
-            title: const Text('open externally'),
-            onTap: _onGifOpenExternaly,
-          ),
-          ListTile(
-            leading: const Icon(FeatherIcons.download),
-            title: const Text('download'),
-            onTap: _onGifDownload,
-          ),
-          ListTile(
-            leading: const Icon(FeatherIcons.share2),
-            title: const Text('share'),
-            onTap: _onGifShare,
-          ),
-        ],
+      builder: (BuildContext context) => TweetMediaModalContent(
+        onDownload: _onGifDownload,
+        onOpenExternaly: _onGifOpenExternaly,
+        onShare: _onGifShare,
       ),
     );
   }
