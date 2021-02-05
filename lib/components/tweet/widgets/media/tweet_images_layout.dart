@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 typedef OnImageTap = void Function(int index);
-typedef OnImageLongPress = void Function(int index);
+typedef OnImageLongPress = void Function(int index, BuildContext context);
 
 /// Builds the layout for up to four tweet images.
 class TweetImagesLayout extends StatelessWidget {
@@ -18,11 +18,9 @@ class TweetImagesLayout extends StatelessWidget {
   final OnImageLongPress onImageLongPress;
   final double padding;
 
-  // I don't want to add a BuildContext paramter to this method.
-  // But i need the BuildContext to show the BottomSheetModal.
-  // Is it dity to add this parameter?
   Widget _buildChild(
-    int index, {
+    int index,
+    BuildContext context, {
     bool topLeft = false,
     bool bottomLeft = false,
     bool topRight = false,
@@ -37,15 +35,16 @@ class TweetImagesLayout extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => onImageTap?.call(index),
-        onLongPress: () => onImageLongPress?.call(index),
+        onLongPress: () => onImageLongPress?.call(index, context),
         child: children[index],
       ),
     );
   }
 
-  Widget _buildOne() {
+  Widget _buildOne(BuildContext context) {
     return _buildChild(
       0,
+      context,
       topLeft: true,
       bottomLeft: true,
       topRight: true,
@@ -53,27 +52,43 @@ class TweetImagesLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildTwo() {
+  Widget _buildTwo(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(child: _buildChild(0, topLeft: true, bottomLeft: true)),
+        Expanded(
+          child: _buildChild(
+            0,
+            context,
+            topLeft: true,
+            bottomLeft: true,
+          ),
+        ),
         SizedBox(width: padding),
-        Expanded(child: _buildChild(1, topRight: true, bottomRight: true)),
+        Expanded(
+          child: _buildChild(
+            1,
+            context,
+            topRight: true,
+            bottomRight: true,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildThree() {
+  Widget _buildThree(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(child: _buildChild(0, topLeft: true, bottomLeft: true)),
+        Expanded(
+          child: _buildChild(0, context, topLeft: true, bottomLeft: true),
+        ),
         SizedBox(width: padding),
         Expanded(
           child: Column(
             children: <Widget>[
-              Expanded(child: _buildChild(1, topRight: true)),
+              Expanded(child: _buildChild(1, context, topRight: true)),
               SizedBox(height: padding),
-              Expanded(child: _buildChild(2, bottomRight: true)),
+              Expanded(child: _buildChild(2, context, bottomRight: true)),
             ],
           ),
         ),
@@ -81,15 +96,15 @@ class TweetImagesLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildFour() {
+  Widget _buildFour(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
           child: Column(
             children: <Widget>[
-              Expanded(child: _buildChild(0, topLeft: true)),
+              Expanded(child: _buildChild(0, context, topLeft: true)),
               SizedBox(height: padding),
-              Expanded(child: _buildChild(2, bottomLeft: true)),
+              Expanded(child: _buildChild(2, context, bottomLeft: true)),
             ],
           ),
         ),
@@ -97,9 +112,9 @@ class TweetImagesLayout extends StatelessWidget {
         Expanded(
           child: Column(
             children: <Widget>[
-              Expanded(child: _buildChild(1, topRight: true)),
+              Expanded(child: _buildChild(1, context, topRight: true)),
               SizedBox(height: padding),
-              Expanded(child: _buildChild(3, bottomRight: true)),
+              Expanded(child: _buildChild(3, context, bottomRight: true)),
             ],
           ),
         ),
@@ -110,13 +125,13 @@ class TweetImagesLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (children.length == 1) {
-      return _buildOne();
+      return _buildOne(context);
     } else if (children.length == 2) {
-      return _buildTwo();
+      return _buildTwo(context);
     } else if (children.length == 3) {
-      return _buildThree();
+      return _buildThree(context);
     } else if (children.length == 4) {
-      return _buildFour();
+      return _buildFour(context);
     } else {
       return const SizedBox();
     }
