@@ -4,6 +4,7 @@ import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_modal_content.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
@@ -27,9 +28,9 @@ class TweetGif extends StatelessWidget {
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
       overlap: true,
-      onDownload: () => tweetBloc.add(DownloadMedia(tweet: tweet)),
-      onOpenExternally: () => tweetBloc.add(OpenMediaExternally(tweet: tweet)),
-      onShare: () => tweetBloc.add(ShareMedia(tweet: tweet)),
+      onDownload: _onGifDownload,
+      onOpenExternally: _onGifOpenExternaly,
+      onShare: _onGifShare,
       child: WillPopScope(
         onWillPop: () async {
           // resume playing when the overlay closes with the gif paused
@@ -48,6 +49,35 @@ class TweetGif extends StatelessWidget {
     );
   }
 
+  void _onGifDownload() {
+    tweetBloc.add(DownloadMedia(tweet: tweet));
+  }
+
+  void _onGifShare() {
+    tweetBloc.add(ShareMedia(tweet: tweet));
+  }
+
+  void _onGifOpenExternaly() {
+    tweetBloc.add(OpenMediaExternally(tweet: tweet));
+  }
+
+  Future<void> _onGifLongPress(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: kDefaultRadius,
+          topRight: kDefaultRadius,
+        ),
+      ),
+      builder: (BuildContext context) => TweetMediaModalContent(
+        onDownload: _onGifDownload,
+        onOpenExternaly: _onGifOpenExternaly,
+        onShare: _onGifShare,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final MediaPreferences mediaPreferences = app<MediaPreferences>();
@@ -58,6 +88,7 @@ class TweetGif extends StatelessWidget {
         VideoPlayerController.network(tweet.gif.appropriateUrl),
         thumbnail: tweet.gif.thumbnailUrl,
         onGifTap: _openGallery,
+        onGifLongPress: () => _onGifLongPress(context),
         autoplay: mediaPreferences.shouldAutoplayMedia,
         allowVerticalOverflow: true,
       ),

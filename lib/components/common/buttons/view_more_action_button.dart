@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
+import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds a button that opens a modal bottom sheet with the [children] in a
@@ -18,7 +19,6 @@ class ViewMoreActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return HarpyButton.flat(
       icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
@@ -35,15 +35,7 @@ class ViewMoreActionButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // handle
-            Container(
-              width: 40,
-              height: 3,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: kDefaultBorderRadius,
-                color: harpyTheme.foregroundColor.withOpacity(.2),
-              ),
-            ),
+            const ModalSheetHandle(),
             ...children,
           ],
         ),

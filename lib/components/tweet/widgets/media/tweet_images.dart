@@ -5,9 +5,11 @@ import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_modal_content.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// Builds the images for the [TweetMedia] using the [TweetImagesLayout].
 class TweetImages extends StatefulWidget {
@@ -38,24 +40,9 @@ class _TweetImagesState extends State<TweetImages> {
       tweet: widget.tweet,
       tweetBloc: widget.tweetBloc,
       overlap: true,
-      onDownload: () {
-        widget.tweetBloc.add(DownloadMedia(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
-      onOpenExternally: () {
-        widget.tweetBloc.add(OpenMediaExternally(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
-      onShare: () {
-        widget.tweetBloc.add(ShareMedia(
-          tweet: widget.tweet,
-          index: _galleryIndex,
-        ));
-      },
+      onDownload: _onDownloadImage,
+      onOpenExternally: _onOpenImageExternaly,
+      onShare: _onShareImage,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
@@ -64,6 +51,46 @@ class _TweetImagesState extends State<TweetImages> {
         enableDismissible: false,
       ),
     );
+  }
+
+  Future<void> _onImageLongPress(int index, BuildContext context) async {
+    _galleryIndex = index;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: kDefaultRadius,
+          topRight: kDefaultRadius,
+        ),
+      ),
+      builder: (BuildContext context) => TweetMediaModalContent(
+        onDownload: _onDownloadImage,
+        onOpenExternaly: _onOpenImageExternaly,
+        onShare: _onShareImage,
+      ),
+    );
+  }
+
+  void _onDownloadImage() {
+    widget.tweetBloc.add(DownloadMedia(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
+  }
+
+  void _onShareImage() {
+    widget.tweetBloc.add(ShareMedia(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
+  }
+
+  void _onOpenImageExternaly() {
+    widget.tweetBloc.add(OpenMediaExternally(
+      tweet: widget.tweet,
+      index: _galleryIndex,
+    ));
   }
 
   List<Widget> _buildImages() {
@@ -94,6 +121,7 @@ class _TweetImagesState extends State<TweetImages> {
   Widget build(BuildContext context) {
     return TweetImagesLayout(
       onImageTap: _onImageTap,
+      onImageLongPress: _onImageLongPress,
       children: _buildImages(),
     );
   }

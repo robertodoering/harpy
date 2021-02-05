@@ -18,6 +18,7 @@ class HarpyGifPlayer extends StatefulWidget {
     this.thumbnailAspectRatio,
     this.autoplay = false,
     this.onGifTap,
+    this.onGifLongPress,
     this.allowVerticalOverflow = false,
   }) : model = null;
 
@@ -27,6 +28,7 @@ class HarpyGifPlayer extends StatefulWidget {
     this.thumbnailAspectRatio,
     this.autoplay = false,
     this.onGifTap,
+    this.onGifLongPress,
     this.allowVerticalOverflow = false,
   }) : controller = null;
 
@@ -42,6 +44,7 @@ class HarpyGifPlayer extends StatefulWidget {
 
   final HarpyVideoPlayerModel model;
   final OnVideoPlayerTap onGifTap;
+  final OnVideoPlayerLongPress onGifLongPress;
   final bool allowVerticalOverflow;
 
   @override
@@ -88,6 +91,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       onTap: widget.onGifTap == null
           ? model.togglePlayback
           : () => widget.onGifTap(model),
+      onLongPress: widget.onGifLongPress,
       child: AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child: VideoPlayer(_controller),
