@@ -1,0 +1,5 @@
+Version 0.4.1
+
+· Added long press on tweet media to show media actions
+· Added button to go to the about screen in the login screen
+· Fixed an issue when adding media to a composed tweet
