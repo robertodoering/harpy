@@ -115,15 +115,11 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           actions: [
             HarpyButton.flat(
               text: const Text('no'),
-              onTap: () {
-                Navigator.of(context).pop<bool>(false);
-              },
+              onTap: () => Navigator.of(context).pop<bool>(false),
             ),
             HarpyButton.flat(
               text: const Text('yes'),
-              onTap: () {
-                Navigator.of(context).pop<bool>(true);
-              },
+              onTap: () => Navigator.of(context).pop<bool>(true),
             ),
           ],
         );
