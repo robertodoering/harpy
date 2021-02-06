@@ -91,33 +91,38 @@ class _LoginScreenState extends State<LoginScreen> {
     return SlideAnimation(
       key: _slideLoginKey,
       endPosition: Offset(0, -mediaQuery.size.height),
+      child: Stack(
+        children: <Widget>[
+          _buildAboutButton(),
+          Column(
+            children: <Widget>[
+              Expanded(child: _buildText()),
+              const SizedBox(height: 16),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(child: _buildTitle(theme)),
+                    Expanded(child: _buildLogo()),
+                  ],
+                ),
+              ),
+              Expanded(child: _buildButtons()),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAboutButton() {
+    return Align(
+      alignment: Alignment.topRight,
       child: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: HarpyButton.flat(
-                icon: const Icon(FeatherIcons.info),
-                padding: const EdgeInsets.all(16),
-                onTap: () async {
-                  await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushNamed(AboutScreen.route);
-                },
-              ),
-            ),
-            Expanded(child: _buildText()),
-            const SizedBox(height: 16),
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: <Widget>[
-                  Expanded(child: _buildTitle(theme)),
-                  Expanded(child: _buildLogo()),
-                ],
-              ),
-            ),
-            Expanded(child: _buildButtons()),
-          ],
+        child: HarpyButton.flat(
+          icon: const Icon(FeatherIcons.info),
+          padding: const EdgeInsets.all(16),
+          onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
         ),
       ),
     );
