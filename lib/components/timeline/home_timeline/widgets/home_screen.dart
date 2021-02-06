@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
-import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
+import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
@@ -108,28 +107,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   Future<bool> _showExitDialog(BuildContext context) {
     return showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return HarpyDialog(
-          title: const Text('exit harpy'),
-          content: const Text('do you really want to exit?'),
-          actions: [
-            HarpyButton.flat(
-              text: const Text('no'),
-              onTap: () => Navigator.of(context).pop<bool>(false),
-            ),
-            HarpyButton.flat(
-              text: const Text('yes'),
-              onTap: () => Navigator.of(context).pop<bool>(true),
-            ),
-          ],
-        );
-      },
-    ).then((bool pop) {
-      if (pop == null) {
-        return false;
-      }
-      return pop;
-    });
+      builder: (BuildContext context) => HarpyExitDialog(),
+    ).then((bool pop) => pop == true);
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
