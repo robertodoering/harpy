@@ -110,19 +110,17 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       context: context,
       builder: (BuildContext context) {
         return HarpyDialog(
-          title: const Text('Exit Harpy'),
-          content: const Text('Do you really want to exit?'),
+          title: const Text('exit harpy'),
+          content: const Text('do you really want to exit?'),
           actions: [
             HarpyButton.flat(
-              icon: const Icon(FeatherIcons.x),
-              text: const Text('No'),
+              text: const Text('no'),
               onTap: () {
                 Navigator.of(context).pop<bool>(false);
               },
             ),
             HarpyButton.flat(
-              icon: const Icon(FeatherIcons.check),
-              text: const Text('Yes'),
+              text: const Text('yes'),
               onTap: () {
                 Navigator.of(context).pop<bool>(true);
               },
