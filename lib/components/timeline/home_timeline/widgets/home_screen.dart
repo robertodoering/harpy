@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
+import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
@@ -103,33 +104,51 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     }
   }
 
+  Future<bool> _showExitDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => HarpyExitDialog(),
+    ).then((bool pop) => pop == true);
+  }
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    // If the current pop request will close the application
+    if (!Navigator.of(context).canPop()) {
+      return _showExitDialog(context);
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScrollDirectionListener(
       onScrollDirectionChanged: _onScrollDirectionChanged,
-      child: HarpyScaffold(
-        drawer: const HomeDrawer(),
-        floatingActionButton: _buildFloatingActionButton(),
-        body: BlocProvider<HomeTimelineBloc>(
-          create: (BuildContext context) => HomeTimelineBloc(),
-          child: TweetTimeline<HomeTimelineBloc>(
-            headerSlivers: <Widget>[
-              HarpySliverAppBar(
-                title: 'Harpy',
-                showIcon: true,
-                floating: true,
-                actions: _buildActions(),
-              ),
-            ],
-            refreshIndicatorDisplacement: 80,
-            onRefresh: (HomeTimelineBloc bloc) {
-              bloc.add(const UpdateHomeTimelineEvent());
-              return bloc.updateTimelineCompleter.future;
-            },
-            onLoadMore: (HomeTimelineBloc bloc) {
-              bloc.add(const RequestMoreHomeTimelineEvent());
-              return bloc.requestMoreCompleter.future;
-            },
+      child: WillPopScope(
+        onWillPop: () => _onWillPop(context),
+        child: HarpyScaffold(
+          drawer: const HomeDrawer(),
+          floatingActionButton: _buildFloatingActionButton(),
+          body: BlocProvider<HomeTimelineBloc>(
+            create: (BuildContext context) => HomeTimelineBloc(),
+            child: TweetTimeline<HomeTimelineBloc>(
+              headerSlivers: <Widget>[
+                HarpySliverAppBar(
+                  title: 'Harpy',
+                  showIcon: true,
+                  floating: true,
+                  actions: _buildActions(),
+                ),
+              ],
+              refreshIndicatorDisplacement: 80,
+              onRefresh: (HomeTimelineBloc bloc) {
+                bloc.add(const UpdateHomeTimelineEvent());
+                return bloc.updateTimelineCompleter.future;
+              },
+              onLoadMore: (HomeTimelineBloc bloc) {
+                bloc.add(const RequestMoreHomeTimelineEvent());
+                return bloc.requestMoreCompleter.future;
+              },
+            ),
           ),
         ),
       ),
