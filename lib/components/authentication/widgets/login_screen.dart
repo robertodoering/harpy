@@ -35,6 +35,22 @@ class _LoginScreenState extends State<LoginScreen> {
     context.read<AuthenticationBloc>().add(const LoginEvent());
   }
 
+  Widget _buildAboutButton(ThemeData theme) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: SafeArea(
+        child: HarpyButton.flat(
+          icon: Icon(
+            FeatherIcons.info,
+            color: theme.textTheme.bodyText1.color.withOpacity(.8),
+          ),
+          padding: const EdgeInsets.all(16),
+          onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
+        ),
+      ),
+    );
+  }
+
   Widget _buildText() {
     return const Align(
       alignment: Alignment.bottomCenter,
@@ -93,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
       endPosition: Offset(0, -mediaQuery.size.height),
       child: Stack(
         children: <Widget>[
-          _buildAboutButton(),
+          _buildAboutButton(theme),
           Column(
             children: <Widget>[
               Expanded(child: _buildText()),
@@ -111,19 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAboutButton() {
-    return Align(
-      alignment: Alignment.topRight,
-      child: SafeArea(
-        child: HarpyButton.flat(
-          icon: const Icon(FeatherIcons.info),
-          padding: const EdgeInsets.all(16),
-          onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
-        ),
       ),
     );
   }
