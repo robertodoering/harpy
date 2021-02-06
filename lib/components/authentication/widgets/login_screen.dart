@@ -1,6 +1,8 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
@@ -10,6 +12,8 @@ import 'package:harpy/components/common/animations/explicit/slide_animation.dart
 import 'package:harpy/components/common/animations/explicit/slide_in_animation.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -87,21 +91,39 @@ class _LoginScreenState extends State<LoginScreen> {
     return SlideAnimation(
       key: _slideLoginKey,
       endPosition: Offset(0, -mediaQuery.size.height),
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          Expanded(child: _buildText()),
-          const SizedBox(height: 16),
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: <Widget>[
-                Expanded(child: _buildTitle(theme)),
-                Expanded(child: _buildLogo()),
-              ],
-            ),
+          _buildAboutButton(),
+          Column(
+            children: <Widget>[
+              Expanded(child: _buildText()),
+              const SizedBox(height: 16),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(child: _buildTitle(theme)),
+                    Expanded(child: _buildLogo()),
+                  ],
+                ),
+              ),
+              Expanded(child: _buildButtons()),
+            ],
           ),
-          Expanded(child: _buildButtons()),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAboutButton() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: SafeArea(
+        child: HarpyButton.flat(
+          icon: const Icon(FeatherIcons.info),
+          padding: const EdgeInsets.all(16),
+          onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
+        ),
       ),
     );
   }
