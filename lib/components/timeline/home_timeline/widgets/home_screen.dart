@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     }
   }
 
-  Future<bool> _showExitDialog(BuildContext context) async {
+  Future<bool> _showExitDialog(BuildContext context) {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
