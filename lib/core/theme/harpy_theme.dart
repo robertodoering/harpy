@@ -381,6 +381,11 @@ class HarpyTheme {
 
       cardTheme: _cardTheme,
 
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: foregroundColor,
+        backgroundColor: averageBackgroundColor,
+      ),
+
       snackBarTheme: SnackBarThemeData(
         backgroundColor: averageBackgroundColor,
         contentTextStyle: textTheme.subtitle2,

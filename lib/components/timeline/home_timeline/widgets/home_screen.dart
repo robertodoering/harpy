@@ -92,11 +92,9 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     ];
   }
 
-  Widget _buildFloatingActionButton(ThemeData theme) {
+  Widget _buildFloatingActionButton() {
     if (_showFab) {
       return FloatingActionButton(
-        backgroundColor: theme.buttonColor,
-        foregroundColor: theme.textTheme.button.color,
         onPressed: () => app<HarpyNavigator>().pushNamed(ComposeScreen.route),
         child: const Icon(FeatherIcons.feather, size: 28),
       );
@@ -122,15 +120,13 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return ScrollDirectionListener(
       onScrollDirectionChanged: _onScrollDirectionChanged,
       child: WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: HarpyScaffold(
           drawer: const HomeDrawer(),
-          floatingActionButton: _buildFloatingActionButton(theme),
+          floatingActionButton: _buildFloatingActionButton(),
           body: BlocProvider<HomeTimelineBloc>(
             create: (BuildContext context) => HomeTimelineBloc(),
             child: TweetTimeline<HomeTimelineBloc>(
