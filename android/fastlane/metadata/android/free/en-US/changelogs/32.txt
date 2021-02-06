@@ -2,4 +2,6 @@ Version 0.4.1
 
 · Added long press on tweet media to show media actions
 · Added button to go to the about screen in the login screen
+· Added show retweet user's profile on retweet user name tap
+· Added a dialog before exiting harpy when pressing the back button
 · Fixed an issue when adding media to a composed tweet
