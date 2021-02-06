@@ -22,6 +22,7 @@ class TweetData {
 
     if (tweet.retweetedStatus != null) {
       retweetUserName = tweet.user.name;
+      retweetScreenName = tweet.user.screenName;
       tweet = tweet.retweetedStatus;
     }
 
@@ -96,6 +97,12 @@ class TweetData {
   ///
   /// `null` if this is not a retweet.
   String retweetUserName;
+
+  /// If this [TweetData] is a retweet, the [retweetScreenName]
+  /// is the screenName of the person that retweeted this tweet.
+  ///
+  /// `null` if this is not a retweet.
+  String retweetScreenName;
 
   /// This field only surfaces when the Tweet is a quote Tweet. This attribute
   /// contains the Tweet object of the original Tweet that was quoted.
