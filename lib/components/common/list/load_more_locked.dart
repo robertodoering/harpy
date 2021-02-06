@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// Builds a sliver for the end of a [CustomListView] indicating that loading
