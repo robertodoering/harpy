@@ -24,21 +24,21 @@ class TweetSearchList extends StatelessWidget {
       child: ScrollToStart(
         child: TweetList(
           state is TweetSearchResult ? state.tweets : <TweetData>[],
-          enableScroll: bloc.hasResults,
+          enableScroll: state.hasResults,
           beginSlivers: <Widget>[
-            TweetSearchAppBar(text: bloc.searchQuery),
+            TweetSearchAppBar(text: state.searchQuery),
           ],
           endSlivers: <Widget>[
-            if (bloc.showLoading)
+            if (state.showLoading)
               const SliverFillLoadingIndicator()
-            else if (bloc.showNoResults)
+            else if (state.showNoResults)
               const SliverFillMessage(
                 message: Text('no tweets found'),
                 secondaryMessage: Text(
                   'only tweets of the last 7 days can be retrieved',
                 ),
               )
-            else if (bloc.showSearchError)
+            else if (state.showSearchError)
               SliverFillLoadingError(
                 message: const Text('error searching tweets'),
                 onTap: () => bloc.add(const RetryTweetSearch()),

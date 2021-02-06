@@ -36,7 +36,7 @@ void defaultOnHashtagTap(BuildContext context, Hashtag hashtag) {
 
     if (ModalRoute.of(context).settings?.name == TweetSearchScreen.route) {
       // already in tweet search
-      context.read<TweetSearchBloc>()?.add(SearchTweets(query: searchQuery));
+      context.read<TweetSearchBloc>()?.add(SearchTweets(customQuery: searchQuery));
     } else {
       app<HarpyNavigator>().pushTweetSearchScreen(
         initialSearchQuery: '#${hashtag.text}',

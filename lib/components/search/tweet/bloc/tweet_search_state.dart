@@ -2,6 +2,30 @@ part of 'tweet_search_bloc.dart';
 
 abstract class TweetSearchState extends Equatable {
   const TweetSearchState();
+
+  bool get showLoading => this is TweetSearchLoading;
+
+  bool get showNoResults =>
+      this is TweetSearchResult && (this as TweetSearchResult).tweets.isEmpty;
+
+  bool get showSearchError => this is TweetSearchFailure;
+
+  bool get hasResults =>
+      this is TweetSearchResult &&
+      (this as TweetSearchResult).tweets.isNotEmpty;
+
+  /// Returns the active search query or `null` if none exist yet.
+  String get searchQuery {
+    if (this is TweetSearchResult) {
+      return (this as TweetSearchResult).query;
+    } else if (this is TweetSearchLoading) {
+      return (this as TweetSearchLoading).query;
+    } else if (this is TweetSearchFailure) {
+      return (this as TweetSearchFailure).query;
+    } else {
+      return null;
+    }
+  }
 }
 
 class TweetSearchInitial extends TweetSearchState {
@@ -13,11 +37,11 @@ class TweetSearchInitial extends TweetSearchState {
 
 class TweetSearchLoading extends TweetSearchState {
   const TweetSearchLoading({
-    @required this.searchQuery,
+    @required this.query,
   });
 
   /// The query that was used in the search request.
-  final String searchQuery;
+  final String query;
 
   @override
   List<Object> get props => <Object>[];
@@ -26,7 +50,7 @@ class TweetSearchLoading extends TweetSearchState {
 class TweetSearchResult extends TweetSearchState {
   const TweetSearchResult({
     @required this.tweets,
-    @required this.searchQuery,
+    @required this.query,
     this.filter,
   });
 
@@ -35,9 +59,9 @@ class TweetSearchResult extends TweetSearchState {
   /// The query that was used in the search request.
   ///
   /// Either built from the [filter] or manually entered by the user.
-  final String searchQuery;
+  final String query;
 
-  /// The filter that built the [searchQuery] if a filter was used.
+  /// The filter that built the [query] if a filter was used.
   ///
   /// `null` if the user entered the query manually.
   final TweetSearchFilter filter;
@@ -45,28 +69,28 @@ class TweetSearchResult extends TweetSearchState {
   @override
   List<Object> get props => <Object>[
         tweets,
-        searchQuery,
+        query,
         filter,
       ];
 }
 
 class TweetSearchFailure extends TweetSearchState {
   const TweetSearchFailure({
-    @required this.searchQuery,
+    @required this.query,
     this.filter,
   });
 
   /// The query that was used in the search request.
   ///
   /// Used to retry the request using a [SearchTweets] event.
-  final String searchQuery;
+  final String query;
 
-  /// The filter that built the [searchQuery] if a filter was used.
+  /// The filter that built the [query] if a filter was used.
   final TweetSearchFilter filter;
 
   @override
   List<Object> get props => <Object>[
-        searchQuery,
+        query,
         filter,
       ];
 }

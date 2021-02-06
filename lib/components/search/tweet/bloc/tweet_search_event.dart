@@ -9,7 +9,7 @@ abstract class TweetSearchEvent extends Equatable {
   });
 }
 
-/// Searches tweets based on the [query] or the [filter].
+/// Searches tweets based on the [customQuery] or the [filter].
 ///
 /// Does nothing if the query is `null` or empty and the filter is `null` or
 /// builds an empty query.
@@ -21,33 +21,39 @@ abstract class TweetSearchEvent extends Equatable {
 /// [TweetSearchFailure] on failure.
 class SearchTweets extends TweetSearchEvent {
   const SearchTweets({
-    this.query,
+    this.customQuery,
     this.filter,
   });
 
-  final String query;
+  /// The query that the user entered in the search field.
+  ///
+  /// `null` if the [filter] was used to search tweets.
+  final String customQuery;
+
+  /// The filter that builds the tweet search query.
+  ///
+  /// `null` if a [customQuery] was used to search tweets.
   final TweetSearchFilter filter;
 
   static final Logger _log = Logger('SearchTweets');
 
   @override
   List<Object> get props => <Object>[
-        query,
+        customQuery,
         filter,
       ];
 
-  bool _unchangedQuery(String searchQuery, TweetSearchState currentState) {
+  bool _unchangedQuery(String query, TweetSearchState currentState) {
     if (currentState is TweetSearchResult) {
-      return currentState.searchQuery == searchQuery &&
-          currentState.filter == filter;
+      return currentState.query == query && currentState.filter == filter;
     } else {
       return false;
     }
   }
 
   String _searchQuery() {
-    if (query != null && query.trim().isNotEmpty) {
-      return query;
+    if (customQuery != null && customQuery.trim().isNotEmpty) {
+      return customQuery;
     } else if (filter != null) {
       final String filterQuery = filter.buildQuery();
 
@@ -82,21 +88,21 @@ class SearchTweets extends TweetSearchEvent {
     TweetSearchState currentState,
     TweetSearchBloc bloc,
   }) async* {
-    final String searchQuery = _searchQuery();
+    final String query = _searchQuery();
 
-    if (_unchangedQuery(searchQuery, currentState)) {
+    if (_unchangedQuery(query, currentState)) {
       _log.fine('search query does not differ from last query');
       return;
     }
 
-    if (searchQuery != null) {
+    if (query != null) {
       _log.fine('searching tweets');
 
-      yield TweetSearchLoading(searchQuery: searchQuery);
+      yield TweetSearchLoading(query: query);
 
       final List<TweetData> tweets = await bloc.searchService
           .searchTweets(
-            q: searchQuery,
+            q: query,
             count: 100,
             resultType: _resultType(),
           )
@@ -104,15 +110,15 @@ class SearchTweets extends TweetSearchEvent {
           .catchError(twitterApiErrorHandler);
 
       if (tweets != null) {
-        _log.fine('found ${tweets.length} tweets for query: $searchQuery');
+        _log.fine('found ${tweets.length} tweets for query: $query');
 
         yield TweetSearchResult(
           filter: filter,
-          searchQuery: searchQuery,
+          query: query,
           tweets: tweets,
         );
       } else {
-        yield TweetSearchFailure(searchQuery: searchQuery, filter: filter);
+        yield TweetSearchFailure(query: query, filter: filter);
       }
     }
   }
@@ -134,7 +140,7 @@ class RetryTweetSearch extends TweetSearchEvent {
   }) async* {
     if (currentState is TweetSearchFailure) {
       bloc.add(SearchTweets(
-        query: currentState.searchQuery,
+        customQuery: currentState.query,
         filter: currentState.filter,
       ));
     }
