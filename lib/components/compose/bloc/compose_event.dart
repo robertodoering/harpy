@@ -71,10 +71,13 @@ class PickTweetMediaEvent extends ComposeEvent {
     ComposeState currentState,
     ComposeBloc bloc,
   }) async* {
-    final FilePickerResult result = await FilePicker.platform.pickFiles(
-      type: FileType.media,
-      allowMultiple: true,
-    );
+    final FilePickerResult result = await FilePicker.platform
+        .pickFiles(
+          type: FileType.media,
+          allowMultiple: true,
+        )
+        // ignore exception
+        .catchError((dynamic e) {});
 
     if (result != null) {
       if (result.files.every(
