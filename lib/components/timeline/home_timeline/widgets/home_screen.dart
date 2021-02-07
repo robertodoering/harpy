@@ -5,18 +5,20 @@ import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer.dart';
 import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
-import 'home_app_bar.dart';
+import 'content/home_app_bar.dart';
+import 'content/home_drawer.dart';
+import 'content/new_tweets_text.dart';
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
@@ -168,26 +170,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
     }
   }
 
-  Widget _buildNewTweetsText(ThemeData theme) {
-    return Container(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Icon(FeatherIcons.chevronsUp),
-          defaultHorizontalSpacer,
-          Text(
-            'new tweets since last visit',
-            style: theme.textTheme.subtitle2,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _tweetBuilder(
-    ThemeData theme,
     HomeTimelineState state,
     TweetData tweet,
   ) {
@@ -197,7 +180,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       final List<Widget> children = <Widget>[
         TweetList.defaultTweetBuilder(tweet),
         defaultVerticalSpacer,
-        _buildNewTweetsText(theme),
+        const NewTweetsText(),
       ];
 
       return Column(
@@ -214,7 +197,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NewHomeTimelineBloc bloc = context.watch<NewHomeTimelineBloc>();
     final HomeTimelineState state = bloc.state;
 
@@ -229,16 +212,28 @@ class _HomeTimelineState extends State<HomeTimeline> {
           child: RefreshIndicator(
             onRefresh: () async {},
             child: TweetList(
-              state is HomeTimelineResult ? state.tweets : <TweetData>[],
+              state.timelineTweets,
               controller: _controller,
-              tweetBuilder: (TweetData tweet) =>
-                  _tweetBuilder(theme, state, tweet),
+              tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
               beginSlivers: const <Widget>[
                 HomeAppBar(),
               ],
               endSlivers: <Widget>[
-                if (state is HomeTimelineInitialLoading)
-                  const SliverFillLoadingIndicator(),
+                if (state.showInitialLoading)
+                  const SliverFillLoadingIndicator()
+                else if (state.showNoTweetsFound)
+                  SliverFillLoadingError(
+                    message: const Text('no tweets found'),
+                    onRetry: () => bloc.add(null),
+                  )
+                else if (state.showSearchError)
+                  SliverFillLoadingError(
+                    message: const Text('error loading tweets'),
+                    onRetry: () => bloc.add(null),
+                  ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: mediaQuery.padding.bottom),
+                ),
               ],
             ),
           ),

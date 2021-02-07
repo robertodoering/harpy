@@ -2,6 +2,24 @@ part of 'home_timeline_bloc.dart';
 
 abstract class HomeTimelineState extends Equatable {
   const HomeTimelineState();
+
+  bool get showInitialLoading => this is HomeTimelineInitialLoading;
+
+  bool get showNoTweetsFound => this is HomeTimelineNoResult;
+
+  bool get showSearchError => this is HomeTimelineFailure;
+
+  bool get enableRequestOlder => this is HomeTimelineResult;
+
+  List<TweetData> get timelineTweets {
+    if (this is HomeTimelineResult) {
+      return (this as HomeTimelineResult).tweets;
+    } else if (this is HomeTimelineLoadingOlder) {
+      return (this as HomeTimelineLoadingOlder).oldResult.tweets;
+    } else {
+      return <TweetData>[];
+    }
+  }
 }
 
 class HomeTimelineInitial extends HomeTimelineState {
