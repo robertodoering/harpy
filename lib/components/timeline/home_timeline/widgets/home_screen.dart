@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   Future<bool> _showExitDialog(BuildContext context) {
     return showDialog<bool>(
       context: context,
-      builder: (BuildContext context) => HarpyExitDialog(),
+      builder: (BuildContext context) => const HarpyExitDialog(),
     ).then((bool pop) => pop == true);
   }
 
@@ -190,14 +190,12 @@ class _HomeTimelineState extends State<HomeTimeline> {
     ThemeData theme,
     HomeTimelineState state,
     TweetData tweet,
-    int index,
   ) {
     if (state is HomeTimelineResult &&
-        state.lastInitialTweet == tweet.idStr &&
-        // todo: remove index != 0 check in favor of flag in state
-        index != 0) {
+        state.newTweetsExist &&
+        state.lastInitialTweet == tweet.idStr) {
       final List<Widget> children = <Widget>[
-        TweetList.defaultTweetBuilder(tweet, index),
+        TweetList.defaultTweetBuilder(tweet),
         defaultVerticalSpacer,
         _buildNewTweetsText(theme),
       ];
@@ -210,7 +208,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
             : children,
       );
     } else {
-      return TweetList.defaultTweetBuilder(tweet, index);
+      return TweetList.defaultTweetBuilder(tweet);
     }
   }
 
@@ -219,6 +217,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
     final ThemeData theme = Theme.of(context);
     final NewHomeTimelineBloc bloc = context.watch<NewHomeTimelineBloc>();
     final HomeTimelineState state = bloc.state;
+
+    // todo: show text at the end of a timeline when no older tweets can be
+    //  retrieved
 
     return BlocListener<NewHomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
@@ -230,8 +231,8 @@ class _HomeTimelineState extends State<HomeTimeline> {
             child: TweetList(
               state is HomeTimelineResult ? state.tweets : <TweetData>[],
               controller: _controller,
-              tweetBuilder: (TweetData tweet, int index) =>
-                  _tweetBuilder(theme, state, tweet, index),
+              tweetBuilder: (TweetData tweet) =>
+                  _tweetBuilder(theme, state, tweet),
               beginSlivers: const <Widget>[
                 HomeAppBar(),
               ],
