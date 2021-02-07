@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/list/load_more_indicator.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/common/list/slivers/sliver_box_info_message.dart';
+import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
@@ -11,8 +11,8 @@ import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_b
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-import 'home_app_bar.dart';
-import 'new_tweets_text.dart';
+import 'content/home_app_bar.dart';
+import 'content/new_tweets_text.dart';
 
 class HomeTimeline extends StatefulWidget {
   const HomeTimeline();
@@ -103,7 +103,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 if (state.showInitialLoading)
                   const SliverFillLoadingIndicator()
                 else if (state.showLoadingOlder)
-                  const LoadMoreIndicator()
+                  const SliverBoxLoadingIndicator()
                 else if (state.showReachedEnd)
                   const SliverBoxInfoMessage(
                     secondaryMessage: Text('no more tweets available'),
