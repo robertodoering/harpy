@@ -41,7 +41,7 @@ class TweetSearchList extends StatelessWidget {
             else if (state.showSearchError)
               SliverFillLoadingError(
                 message: const Text('error searching tweets'),
-                onTap: () => bloc.add(const RetryTweetSearch()),
+                onRetry: () => bloc.add(const RetryTweetSearch()),
               ),
             SliverToBoxAdapter(
               child: SizedBox(height: mediaQuery.padding.bottom),

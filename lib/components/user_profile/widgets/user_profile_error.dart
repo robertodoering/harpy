@@ -25,7 +25,7 @@ class UserProfileError extends StatelessWidget {
       title: '',
       body: LoadingDataError(
         message: const Text('error loading user'),
-        onTap: () => bloc.add(InitializeUserEvent(
+        onRetry: () => bloc.add(InitializeUserEvent(
           user: user,
           screenName: screenName,
         )),

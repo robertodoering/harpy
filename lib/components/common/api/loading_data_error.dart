@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
-/// Builds an error message with an optional retry button when [onTap] is not
+/// Builds an error message with an optional retry button when [onRetry] is not
 /// `null`.
 class LoadingDataError extends StatelessWidget {
   const LoadingDataError({
     @required this.message,
-    this.onTap,
+    this.onRetry,
   });
 
   final Widget message;
-  final VoidCallback onTap;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +28,12 @@ class LoadingDataError extends StatelessWidget {
             textAlign: TextAlign.center,
             child: message,
           ),
-          if (onTap != null) ...<Widget>[
+          if (onRetry != null) ...<Widget>[
             defaultVerticalSpacer,
             HarpyButton.flat(
               dense: true,
               text: const Text('retry'),
-              onTap: onTap,
+              onTap: onRetry,
             ),
           ],
         ],

@@ -94,7 +94,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
           } else if (bloc.showNoDataExists || bloc.showError) {
             child = LoadingDataError(
               message: Text(errorMessage),
-              onTap: () => loadUsers(bloc),
+              onRetry: () => loadUsers(bloc),
             );
           } else {
             scaffoldTitle = false;

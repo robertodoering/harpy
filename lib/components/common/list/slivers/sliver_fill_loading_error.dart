@@ -5,15 +5,15 @@ import 'package:harpy/components/common/api/loading_data_error.dart';
 
 /// A [LoadingDataError] widget for a [CustomScrollView].
 ///
-/// Builds an optional retry button when [onTap] is not `null`.
+/// Builds an optional retry button when [onRetry] is not `null`.
 class SliverFillLoadingError extends StatelessWidget {
   const SliverFillLoadingError({
     @required this.message,
-    this.onTap,
+    this.onRetry,
   });
 
   final Widget message;
-  final VoidCallback onTap;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SliverFillLoadingError extends StatelessWidget {
         curve: Curves.easeInOut,
         child: LoadingDataError(
           message: message,
-          onTap: onTap,
+          onRetry: onRetry,
         ),
       ),
     );

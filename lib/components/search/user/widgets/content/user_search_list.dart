@@ -43,7 +43,7 @@ class UserSearchList extends StatelessWidget {
               if (bloc.showError)
                 SliverFillLoadingError(
                   message: const Text('error searching users'),
-                  onTap: () => bloc.add(SearchUsers(bloc.lastQuery)),
+                  onRetry: () => bloc.add(SearchUsers(bloc.lastQuery)),
                 )
               else if (bloc.showNoDataExists)
                 const SliverFillMessage(message: Text('no users found')),
