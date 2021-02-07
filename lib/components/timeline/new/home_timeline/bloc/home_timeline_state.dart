@@ -47,17 +47,14 @@ class HomeTimelineInitialLoading extends HomeTimelineState {
 class HomeTimelineResult extends HomeTimelineState {
   const HomeTimelineResult({
     @required this.tweets,
-    @required this.lastInitialTweet,
     @required this.includesLastVisibleTweet,
     @required this.newTweetsExist,
+    this.lastInitialTweet = '',
     this.initialResults = false,
     this.canRequestOlder = true,
   });
 
   final List<TweetData> tweets;
-
-  /// The idStr of that last tweet from the initial request.
-  final String lastInitialTweet;
 
   /// Whether the last visible tweet from a previous sessions is included in
   /// the results.
@@ -69,6 +66,9 @@ class HomeTimelineResult extends HomeTimelineState {
   /// Whether the initial request found new tweets that were not present in a
   /// previous session.
   final bool newTweetsExist;
+
+  /// The idStr of that last tweet from the initial request.
+  final String lastInitialTweet;
 
   /// Whether we requested the initial home timeline with tweets that are
   /// newer than the last visible tweet from a previous session.
@@ -83,9 +83,9 @@ class HomeTimelineResult extends HomeTimelineState {
   @override
   List<Object> get props => <Object>[
         tweets,
-        lastInitialTweet,
         includesLastVisibleTweet,
         newTweetsExist,
+        lastInitialTweet,
         initialResults,
         canRequestOlder,
       ];

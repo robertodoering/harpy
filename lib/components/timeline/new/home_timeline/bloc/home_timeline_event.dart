@@ -144,10 +144,16 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 }
 
 class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
-  const RefreshHomeTimeline();
+  const RefreshHomeTimeline({
+    this.clearPrevious = false,
+  });
+
+  final bool clearPrevious;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        clearPrevious,
+      ];
 
   @override
   Stream<HomeTimelineState> applyAsync({
@@ -156,6 +162,34 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
   }) async* {
     log.fine('refreshing home timeline');
 
-    // todo: request newest home timeline
+    if (clearPrevious) {
+      yield const HomeTimelineInitialLoading();
+    }
+
+    final List<TweetData> tweets = await bloc.timelineService
+        .homeTimeline(
+          count: 200,
+        )
+        .then(handleTweets)
+        .catchError(twitterApiErrorHandler);
+
+    if (tweets != null) {
+      log.fine('found ${tweets.length} tweets');
+
+      if (tweets.isNotEmpty) {
+        yield HomeTimelineResult(
+          tweets: tweets,
+          includesLastVisibleTweet: false,
+          newTweetsExist: false,
+        );
+      } else {
+        yield const HomeTimelineNoResult();
+      }
+    } else {
+      yield const HomeTimelineFailure();
+    }
+
+    bloc.refreshCompleter.complete();
+    bloc.refreshCompleter = Completer<void>();
   }
 }

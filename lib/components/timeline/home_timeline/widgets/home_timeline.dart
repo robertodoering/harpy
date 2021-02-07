@@ -96,7 +96,10 @@ class _HomeTimelineState extends State<HomeTimeline> {
         child: ScrollToStart(
           controller: _controller,
           child: RefreshIndicator(
-            onRefresh: () async {},
+            onRefresh: () async {
+              bloc.add(const RefreshHomeTimeline());
+              await bloc.refreshCompleter.future;
+            },
             child: LoadMoreListener(
               listen: state.enableRequestOlder,
               onLoadMore: () async {},

@@ -24,6 +24,10 @@ class NewHomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState> {
   final TweetVisibilityPreferences tweetVisibilityPreferences =
       app<TweetVisibilityPreferences>();
 
+  /// Completes when the home timeline has been refreshed using the
+  /// [RefreshHomeTimeline] event.
+  Completer<void> refreshCompleter = Completer<void>();
+
   @override
   Stream<HomeTimelineState> mapEventToState(
     HomeTimelineEvent event,

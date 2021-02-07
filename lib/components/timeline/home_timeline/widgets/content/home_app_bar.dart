@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
-import 'package:harpy/components/timeline/common/bloc/timeline_event.dart';
-import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
-import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_event.dart';
+import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_bloc.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
@@ -14,9 +12,9 @@ class HomeAppBar extends StatelessWidget {
         builder: (BuildContext context) => PopupMenuButton<int>(
           onSelected: (int selection) {
             if (selection == 0) {
-              context.read<HomeTimelineBloc>()
-                ..add(const ClearTweetsEvents())
-                ..add(const UpdateHomeTimelineEvent());
+              context
+                  .read<NewHomeTimelineBloc>()
+                  .add(const RefreshHomeTimeline(clearPrevious: true));
             }
           },
           itemBuilder: (BuildContext context) {
