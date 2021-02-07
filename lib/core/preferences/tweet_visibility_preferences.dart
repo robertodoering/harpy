@@ -10,12 +10,10 @@ class TweetVisibilityPreferences with Logger {
   set lastVisibleTweet(int value) =>
       harpyPrefs.setInt('lastVisibleTweet', value);
 
-  /// Updates the [lastVisibleTweet] if it is newer than the previous one.
-  void maybeUpdateVisibleTweet(TweetData tweet) {
+  void updateVisibleTweet(TweetData tweet) {
     final int id = int.tryParse(tweet.idStr);
 
-    if (id != null && lastVisibleTweet < id) {
-      log.info('updating last visible tweet to $id');
+    if (id != null) {
       lastVisibleTweet = id;
     }
   }
