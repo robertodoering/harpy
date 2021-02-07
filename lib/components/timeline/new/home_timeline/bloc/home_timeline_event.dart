@@ -143,6 +143,12 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
   }
 }
 
+/// Refreshes the home timeline by requesting the newest 200 home timeline
+/// tweets.
+///
+/// If [clearPrevious] is `true`, [HomeTimelineInitialLoading] is yielded
+/// before requesting the timeline to clear the previous tweets and show a
+/// loading indicator.
 class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
   const RefreshHomeTimeline({
     this.clearPrevious = false,
