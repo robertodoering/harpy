@@ -13,7 +13,7 @@ class TweetVisibilityPreferences with Logger {
   void updateVisibleTweet(TweetData tweet) {
     final int id = int.tryParse(tweet.idStr);
 
-    if (id != null) {
+    if (id != null && id > lastVisibleTweet) {
       lastVisibleTweet = id;
     }
   }
