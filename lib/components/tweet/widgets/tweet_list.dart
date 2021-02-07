@@ -4,6 +4,8 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
+typedef TweetBuilder = Widget Function(TweetData tweet, int index);
+
 /// Builds a [CustomScrollView] for the [tweets].
 ///
 /// An optional list of [beginSlivers] are built before the [tweets] and
@@ -11,6 +13,8 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 class TweetList extends StatelessWidget {
   const TweetList(
     this.tweets, {
+    this.controller,
+    this.tweetBuilder = defaultTweetBuilder,
     this.beginSlivers = const <Widget>[],
     this.endSlivers = const <Widget>[],
     this.enableScroll = true,
@@ -18,6 +22,10 @@ class TweetList extends StatelessWidget {
 
   /// The list of tweets to be displayed in this list.
   final List<TweetData> tweets;
+
+  final ScrollController controller;
+
+  final TweetBuilder tweetBuilder;
 
   /// Slivers built at the beginning of the [CustomScrollView].
   final List<Widget> beginSlivers;
@@ -28,9 +36,15 @@ class TweetList extends StatelessWidget {
   /// Whether the tweet list should be scrollable.
   final bool enableScroll;
 
+  static Widget defaultTweetBuilder(TweetData tweet, int index) {
+    return TweetCard(tweet);
+  }
+
   Widget _itemBuilder(BuildContext context, int index) {
     if (index.isEven) {
-      return TweetCard(tweets[index ~/ 2]);
+      final int tweetIndex = index ~/ 2;
+
+      return tweetBuilder(tweets[tweetIndex], tweetIndex);
     } else {
       return AnimatedContainer(
         duration: kShortAnimationDuration,
@@ -42,6 +56,7 @@ class TweetList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: controller,
       physics: enableScroll
           ? const AlwaysScrollableScrollPhysics()
           : const NeverScrollableScrollPhysics(),
