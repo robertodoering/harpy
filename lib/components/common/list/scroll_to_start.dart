@@ -17,30 +17,34 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 class ScrollToStart extends StatefulWidget {
   const ScrollToStart({
     @required this.child,
+    this.controller,
   });
 
   final Widget child;
+  final ScrollController controller;
 
   @override
   _ScrollToStartState createState() => _ScrollToStartState();
 }
 
 class _ScrollToStartState extends State<ScrollToStart> {
-  ScrollController _scrollController;
+  ScrollController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _scrollController ??= PrimaryScrollController.of(context);
-    _scrollController?.addListener(_scrollListener);
+    if (_controller == null) {
+      _controller = widget.controller ?? PrimaryScrollController.of(context);
+      _controller?.addListener(_scrollListener);
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    _scrollController?.removeListener(_scrollListener);
+    _controller?.removeListener(_scrollListener);
   }
 
   void _scrollListener() {
@@ -48,32 +52,32 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
-    if (_scrollController.offset < mediaQuery.size.height && mounted) {
+    if (_controller.offset < mediaQuery.size.height && mounted) {
       setState(() {});
     }
   }
 
   /// Determines if the button should show.
   bool _show(MediaQueryData mediaQuery, ScrollDirection scrollDirection) {
-    if (_scrollController == null || !_scrollController.hasClients) {
+    if (_controller == null || !_controller.hasClients) {
       return false;
     }
 
-    return _scrollController.offset > mediaQuery.size.height &&
+    return _controller.offset > mediaQuery.size.height &&
         scrollDirection?.up == true;
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
-    if (_scrollController.offset > mediaQuery.size.height * 5) {
+    if (_controller.offset > mediaQuery.size.height * 5) {
       // We use animateTo instead of jumpTo because jumpTo(0) will cause the
       // refresh indicator to trigger.
-      _scrollController.animateTo(
+      _controller.animateTo(
         0,
         duration: const Duration(microseconds: 1),
         curve: Curves.linear,
       );
     } else {
-      _scrollController.animateTo(
+      _controller.animateTo(
         0,
         duration: const Duration(seconds: 1),
         curve: Curves.easeOut,
