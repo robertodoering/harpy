@@ -25,7 +25,8 @@ class TweetSearchAppBar extends StatelessWidget {
         child: SearchTextField(
           text: text,
           hintText: 'search tweets',
-          onSubmitted: (String text) => bloc.add(SearchTweets(customQuery: text)),
+          onSubmitted: (String text) =>
+              bloc.add(SearchTweets(customQuery: text)),
           onClear: () {
             bloc.add(const ClearSearchResult());
             model.clear();
