@@ -37,10 +37,8 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
 
     yield const HomeTimelineInitialLoading();
 
-    // final int lastVisibleTweet =
-    //     bloc.tweetVisibilityPreferences.lastVisibleTweet;
-
-    final int lastVisibleTweet = 1357814385293549571;
+    final int lastVisibleTweet =
+        bloc.tweetVisibilityPreferences.lastVisibleTweet;
 
     final List<TweetData> tweets = await bloc.timelineService
         .homeTimeline(
@@ -56,11 +54,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
-          // todo: if lastVisibleTweet is 0 then dont show the text
-          //       also don't show if length == 1 (last tweet is newest tweet)
-          //       -> add flag in state
           lastInitialTweet: tweets.last.idStr,
           includesLastVisibleTweet: '$lastVisibleTweet' == tweets.last.idStr,
+          newTweetsExist: lastVisibleTweet != 0 && tweets.length != 1,
           initialResults: true,
         );
 
@@ -103,6 +99,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
   }) async* {
     final HomeTimelineState state = bloc.state;
 
+    // todo: prevent request spam by blocking continues requests for x seconds
+
     if (state is HomeTimelineResult) {
       final String maxId = _findMaxId(state);
 
@@ -113,12 +111,13 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
       log.fine('requesting older home timeline tweets');
 
       // todo: yield loading older state to show end sliver in tweet list
+      // yield HomeTimelineLoadingOlder(oldResult: state);
 
       final List<TweetData> tweets = await bloc.timelineService
           .homeTimeline(
-        count: 200,
-        maxId: maxId,
-      )
+            count: 200,
+            maxId: maxId,
+          )
           .then(handleTweets)
           .catchError(twitterApiErrorHandler);
 
@@ -129,6 +128,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           tweets: state.tweets.followedBy(tweets).toList(),
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
+          newTweetsExist: state.newTweetsExist,
           canRequestOlder: tweets.isNotEmpty,
         );
       } else {
@@ -137,12 +137,12 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           tweets: state.tweets,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
+          newTweetsExist: state.newTweetsExist,
         );
       }
     }
   }
 }
-
 
 class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
   const RefreshHomeTimeline();
@@ -160,4 +160,3 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
     // todo: request newest home timeline
   }
 }
-
