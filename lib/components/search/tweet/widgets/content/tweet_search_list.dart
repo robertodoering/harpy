@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_info_message.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
-import 'package:harpy/components/common/list/slivers/sliver_fill_message.dart';
 import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/widgets/content/tweet_search_app_bar.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
@@ -32,8 +32,8 @@ class TweetSearchList extends StatelessWidget {
             if (state.showLoading)
               const SliverFillLoadingIndicator()
             else if (state.showNoResults)
-              const SliverFillMessage(
-                message: Text('no tweets found'),
+              const SliverFillInfoMessage(
+                primaryMessage: Text('no tweets found'),
                 secondaryMessage: Text(
                   'only tweets of the last 7 days can be retrieved',
                 ),
