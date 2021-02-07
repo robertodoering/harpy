@@ -17,6 +17,7 @@ import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/preferences/setup_preferences.dart';
 import 'package:harpy/core/preferences/theme_preferences.dart';
+import 'package:harpy/core/preferences/tweet_visibility_preferences.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -57,5 +58,7 @@ void setupServices() {
     ..registerLazySingleton<SetupPreferences>(() => SetupPreferences())
     ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences())
     ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences())
-    ..registerLazySingleton<GeneralPreferences>(() => GeneralPreferences());
+    ..registerLazySingleton<GeneralPreferences>(() => GeneralPreferences())
+    ..registerLazySingleton<TweetVisibilityPreferences>(
+        () => TweetVisibilityPreferences());
 }
