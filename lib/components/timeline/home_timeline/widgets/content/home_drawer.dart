@@ -11,11 +11,12 @@ import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
 import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
-import 'package:harpy/components/timeline/home_timeline/widgets/home_drawer_header.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+
+import 'home_drawer_header.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
