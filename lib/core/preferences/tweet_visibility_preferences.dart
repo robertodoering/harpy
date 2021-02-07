@@ -1,9 +1,8 @@
 import 'package:harpy/core/api/twitter/tweet_data.dart';
-import 'package:harpy/core/logger_mixin.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 
-class TweetVisibilityPreferences with Logger {
+class TweetVisibilityPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
 
   int get lastVisibleTweet => harpyPrefs.getInt('lastVisibleTweet', 0);
