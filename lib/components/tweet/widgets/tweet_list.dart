@@ -4,7 +4,7 @@ import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-typedef TweetBuilder = Widget Function(TweetData tweet, int index);
+typedef TweetBuilder = Widget Function(TweetData tweet);
 
 /// Builds a [CustomScrollView] for the [tweets].
 ///
@@ -36,15 +36,13 @@ class TweetList extends StatelessWidget {
   /// Whether the tweet list should be scrollable.
   final bool enableScroll;
 
-  static Widget defaultTweetBuilder(TweetData tweet, int index) {
+  static Widget defaultTweetBuilder(TweetData tweet) {
     return TweetCard(tweet);
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
     if (index.isEven) {
-      final int tweetIndex = index ~/ 2;
-
-      return tweetBuilder(tweets[tweetIndex], tweetIndex);
+      return tweetBuilder(tweets[index ~/ 2]);
     } else {
       return AnimatedContainer(
         duration: kShortAnimationDuration,
