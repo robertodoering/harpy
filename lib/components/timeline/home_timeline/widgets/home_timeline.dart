@@ -31,6 +31,13 @@ class _HomeTimelineState extends State<HomeTimeline> {
     _controller = ScrollController();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller.dispose();
+  }
+
   void _blocListener(BuildContext context, HomeTimelineState state) {
     if (state is HomeTimelineResult && state.initialResults) {
       // scroll to the end after the list has been built
@@ -81,9 +88,6 @@ class _HomeTimelineState extends State<HomeTimeline> {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NewHomeTimelineBloc bloc = context.watch<NewHomeTimelineBloc>();
     final HomeTimelineState state = bloc.state;
-
-    // todo: show text at the end of a timeline when no older tweets can be
-    //  retrieved
 
     return BlocListener<NewHomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
