@@ -11,7 +11,7 @@ import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 import 'content/home_drawer.dart';
-import 'content/home_timeline.dart';
+import 'home_timeline.dart';
 
 /// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
@@ -108,28 +108,6 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             lazy: false,
             create: (_) => NewHomeTimelineBloc(),
             child: const HomeTimeline(),
-            // child: BlocProvider<HomeTimelineBloc>(
-            //   create: (BuildContext context) => HomeTimelineBloc(),
-            //   child: TweetTimeline<HomeTimelineBloc>(
-            //     headerSlivers: <Widget>[
-            //       HarpySliverAppBar(
-            //         title: 'Harpy',
-            //         showIcon: true,
-            //         floating: true,
-            //         actions: _buildActions(),
-            //       ),
-            //     ],
-            //     refreshIndicatorDisplacement: 80,
-            //     onRefresh: (HomeTimelineBloc bloc) {
-            //       bloc.add(const UpdateHomeTimelineEvent());
-            //       return bloc.updateTimelineCompleter.future;
-            //     },
-            //     onLoadMore: (HomeTimelineBloc bloc) {
-            //       bloc.add(const RequestMoreHomeTimelineEvent());
-            //       return bloc.requestMoreCompleter.future;
-            //     },
-            //   ),
-            // ),
           ),
         ),
       ),
