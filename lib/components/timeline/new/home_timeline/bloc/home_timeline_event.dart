@@ -112,8 +112,6 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
       yield HomeTimelineLoadingOlder(oldResult: state);
 
-      await Future<void>.delayed(const Duration(seconds: 5));
-
       final List<TweetData> tweets = await bloc.timelineService
           .homeTimeline(
             count: 200,
