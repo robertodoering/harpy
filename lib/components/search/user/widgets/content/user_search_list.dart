@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/list/load_more_indicator.dart';
 import 'package:harpy/components/common/list/load_more_listener.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_info_message.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
@@ -39,7 +39,7 @@ class UserSearchList extends StatelessWidget {
               if (bloc.loadingInitialData)
                 const SliverFillLoadingIndicator()
               else if (bloc.state is LoadingPaginatedData)
-                const LoadMoreIndicator(),
+                const SliverBoxLoadingIndicator(),
               if (bloc.showError)
                 SliverFillLoadingError(
                   message: const Text('error searching users'),
