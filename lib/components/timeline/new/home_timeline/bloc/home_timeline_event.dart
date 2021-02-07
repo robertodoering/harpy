@@ -110,8 +110,9 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
       log.fine('requesting older home timeline tweets');
 
-      // todo: yield loading older state to show end sliver in tweet list
-      // yield HomeTimelineLoadingOlder(oldResult: state);
+      yield HomeTimelineLoadingOlder(oldResult: state);
+
+      await Future<void>.delayed(const Duration(seconds: 5));
 
       final List<TweetData> tweets = await bloc.timelineService
           .homeTimeline(

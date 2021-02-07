@@ -5,11 +5,17 @@ abstract class HomeTimelineState extends Equatable {
 
   bool get showInitialLoading => this is HomeTimelineInitialLoading;
 
+  bool get showLoadingOlder => this is HomeTimelineLoadingOlder;
+
   bool get showNoTweetsFound => this is HomeTimelineNoResult;
 
   bool get showSearchError => this is HomeTimelineFailure;
 
-  bool get enableRequestOlder => this is HomeTimelineResult;
+  bool get showReachedEnd => !enableRequestOlder;
+
+  bool get enableRequestOlder =>
+      this is HomeTimelineResult &&
+      (this as HomeTimelineResult).canRequestOlder;
 
   List<TweetData> get timelineTweets {
     if (this is HomeTimelineResult) {

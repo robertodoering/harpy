@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
+import 'package:harpy/components/common/list/load_more_indicator.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
@@ -174,9 +175,21 @@ class _HomeTimelineState extends State<HomeTimeline> {
     HomeTimelineState state,
     TweetData tweet,
   ) {
-    if (state is HomeTimelineResult &&
-        state.newTweetsExist &&
-        state.lastInitialTweet == tweet.idStr) {
+    bool newTweetsExist = false;
+    bool isLastInitialTweet = false;
+    bool includesLastVisibleTweet = false;
+
+    if (state is HomeTimelineResult) {
+      newTweetsExist = state.newTweetsExist;
+      isLastInitialTweet = state.lastInitialTweet == tweet.idStr;
+      includesLastVisibleTweet = state.includesLastVisibleTweet;
+    } else if (state is HomeTimelineLoadingOlder) {
+      newTweetsExist = state.oldResult.newTweetsExist;
+      isLastInitialTweet  = state.oldResult.lastInitialTweet == tweet.idStr;
+      includesLastVisibleTweet = state.oldResult.includesLastVisibleTweet;
+    }
+
+    if (newTweetsExist && isLastInitialTweet) {
       final List<Widget> children = <Widget>[
         TweetList.defaultTweetBuilder(tweet),
         defaultVerticalSpacer,
@@ -186,7 +199,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         // build the new tweets text above the last visible tweet if it exist
-        children: state.includesLastVisibleTweet
+        children: includesLastVisibleTweet
             ? children.reversed.toList()
             : children,
       );
@@ -221,6 +234,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
               endSlivers: <Widget>[
                 if (state.showInitialLoading)
                   const SliverFillLoadingIndicator()
+                else if (state.showLoadingOlder)
+                  const LoadMoreIndicator()
+                  // todo: show end reached
                 else if (state.showNoTweetsFound)
                   SliverFillLoadingError(
                     message: const Text('no tweets found'),
@@ -231,6 +247,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                     message: const Text('error loading tweets'),
                     onRetry: () => bloc.add(null),
                   ),
+
                 SliverToBoxAdapter(
                   child: SizedBox(height: mediaQuery.padding.bottom),
                 ),
