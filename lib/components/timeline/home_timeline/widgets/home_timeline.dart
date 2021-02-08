@@ -42,7 +42,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
   void _blocListener(BuildContext context, HomeTimelineState state) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
-    if (state is HomeTimelineResult && state.initialResults) {
+    if (state is HomeTimelineResult &&
+        state.initialResults &&
+        state.includesLastVisibleTweet) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.jumpTo(
