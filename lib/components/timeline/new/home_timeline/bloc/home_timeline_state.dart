@@ -82,7 +82,7 @@ class HomeTimelineResult extends HomeTimelineState {
   /// the results.
   ///
   /// This is `false` when the last visible tweet has been deleted or is
-  /// older than the last 800 tweets in the home timeline.
+  /// older than the last 200 tweets in the home timeline.
   final bool includesLastVisibleTweet;
 
   /// Whether the initial request found new tweets that were not present in a
