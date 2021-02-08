@@ -102,7 +102,10 @@ class _HomeTimelineState extends State<HomeTimeline> {
             },
             child: LoadMoreListener(
               listen: state.enableRequestOlder,
-              onLoadMore: () async {},
+              onLoadMore: () async {
+                bloc.add(const RequestOlderHomeTimeline());
+                await bloc.requestOlderCompleter.future;
+              },
               child: TweetList(
                 state.timelineTweets,
                 controller: _controller,

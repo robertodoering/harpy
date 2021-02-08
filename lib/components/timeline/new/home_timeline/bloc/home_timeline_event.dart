@@ -97,9 +97,11 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
     HomeTimelineState currentState,
     NewHomeTimelineBloc bloc,
   }) async* {
-    final HomeTimelineState state = bloc.state;
+    if (bloc.lock()) {
+      return;
+    }
 
-    // todo: prevent request spam by blocking continues requests for x seconds
+    final HomeTimelineState state = bloc.state;
 
     if (state is HomeTimelineResult) {
       final String maxId = _findMaxId(state);
@@ -140,6 +142,9 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
         );
       }
     }
+
+    bloc.requestOlderCompleter.complete();
+    bloc.requestOlderCompleter = Completer<void>();
   }
 }
 

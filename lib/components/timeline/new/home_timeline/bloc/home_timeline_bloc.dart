@@ -6,6 +6,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
+import 'package:harpy/core/api/request_lock_mixin.dart';
 import 'package:harpy/core/api/twitter/handle_tweets.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/logger_mixin.dart';
@@ -15,7 +16,8 @@ import 'package:harpy/core/service_locator.dart';
 part 'home_timeline_event.dart';
 part 'home_timeline_state.dart';
 
-class NewHomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState> {
+class NewHomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState>
+    with RequestLock {
   NewHomeTimelineBloc() : super(const HomeTimelineInitial()) {
     add(const RequestInitialHomeTimeline());
   }
@@ -27,6 +29,10 @@ class NewHomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState> {
   /// Completes when the home timeline has been refreshed using the
   /// [RefreshHomeTimeline] event.
   Completer<void> refreshCompleter = Completer<void>();
+
+  /// Completes when older tweets for the timeline have been requested using
+  /// [RequestOlderHomeTimeline].
+  Completer<void> requestOlderCompleter = Completer<void>();
 
   @override
   Stream<HomeTimelineState> mapEventToState(
