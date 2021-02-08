@@ -121,21 +121,25 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 endSlivers: <Widget>[
                   if (state.showInitialLoading)
                     const SliverFillLoadingIndicator()
+                  else if (state.showNoTweetsFound)
+                    SliverFillLoadingError(
+                      message: const Text('no tweets found'),
+                      onRetry: () => bloc.add(
+                        const RefreshHomeTimeline(clearPrevious: true),
+                      ),
+                    )
+                  else if (state.showSearchError)
+                    SliverFillLoadingError(
+                      message: const Text('error loading tweets'),
+                      onRetry: () => bloc.add(
+                        const RefreshHomeTimeline(clearPrevious: true),
+                      ),
+                    )
                   else if (state.showLoadingOlder)
                     const SliverBoxLoadingIndicator()
                   else if (state.showReachedEnd)
                     const SliverBoxInfoMessage(
                       secondaryMessage: Text('no more tweets available'),
-                    )
-                  else if (state.showNoTweetsFound)
-                    SliverFillLoadingError(
-                      message: const Text('no tweets found'),
-                      onRetry: () => bloc.add(null),
-                    )
-                  else if (state.showSearchError)
-                    SliverFillLoadingError(
-                      message: const Text('error loading tweets'),
-                      onRetry: () => bloc.add(null),
                     ),
                   SliverToBoxAdapter(
                     child: SizedBox(height: mediaQuery.padding.bottom),
