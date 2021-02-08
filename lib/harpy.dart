@@ -12,9 +12,9 @@ import 'package:harpy/misc/scroll_behavior.dart';
 
 /// Builds the root [MaterialApp].
 class Harpy extends StatelessWidget {
-  static bool get isFree =>
-      const String.fromEnvironment('flavor', defaultValue: 'free') == 'free';
-  static bool get isPro => const String.fromEnvironment('flavor') == 'pro';
+  static const bool isFree =
+      String.fromEnvironment('flavor', defaultValue: 'free') == 'free';
+  static const bool isPro = String.fromEnvironment('flavor') == 'pro';
 
   @override
   Widget build(BuildContext context) {

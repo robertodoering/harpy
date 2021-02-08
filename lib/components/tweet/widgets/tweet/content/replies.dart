@@ -19,19 +19,19 @@ class TweetReplies extends StatelessWidget {
   final int depth;
 
   Color _cardColor(HarpyTheme harpyTheme) {
-    final Color color1 = Color.lerp(
-      harpyTheme.averageBackgroundColor,
-      harpyTheme.accentColor,
-      .225,
-    );
-
-    final Color color2 = Color.lerp(
-      harpyTheme.averageBackgroundColor,
-      harpyTheme.accentColor,
-      .15,
-    );
-
-    return depth % 2 == 0 ? color1 : color2;
+    if (depth % 2 == 0) {
+      return Color.lerp(
+        harpyTheme.averageBackgroundColor,
+        harpyTheme.accentColor,
+        .225,
+      );
+    } else {
+      return Color.lerp(
+        harpyTheme.averageBackgroundColor,
+        harpyTheme.accentColor,
+        .15,
+      );
+    }
   }
 
   @override
