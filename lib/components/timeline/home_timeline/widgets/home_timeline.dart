@@ -40,10 +40,15 @@ class _HomeTimelineState extends State<HomeTimeline> {
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     if (state is HomeTimelineResult && state.initialResults) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller.jumpTo(_controller.position.maxScrollExtent);
+        _controller.jumpTo(
+          // + height to make sure we reach the end
+          _controller.position.maxScrollExtent + mediaQuery.size.height / 2,
+        );
       });
     }
   }
