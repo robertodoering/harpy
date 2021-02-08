@@ -8,7 +8,7 @@ import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicato
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
@@ -77,10 +77,10 @@ class _HomeTimelineState extends State<HomeTimeline> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final NewHomeTimelineBloc bloc = context.watch<NewHomeTimelineBloc>();
+    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
     final HomeTimelineState state = bloc.state;
 
-    return BlocListener<NewHomeTimelineBloc, HomeTimelineState>(
+    return BlocListener<HomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
       child: ScrollDirectionListener(
         child: ScrollToStart(

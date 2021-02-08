@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
-import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
@@ -13,7 +13,7 @@ class HomeAppBar extends StatelessWidget {
           onSelected: (int selection) {
             if (selection == 0) {
               context
-                  .read<NewHomeTimelineBloc>()
+                  .read<HomeTimelineBloc>()
                   .add(const RefreshHomeTimeline(clearPrevious: true));
             }
           },

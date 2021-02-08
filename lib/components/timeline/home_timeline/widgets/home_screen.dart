@@ -6,14 +6,13 @@ import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
-import 'package:harpy/components/timeline/new/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
 import 'content/home_drawer.dart';
 import 'home_timeline.dart';
 
-/// The home screen for an authenticated user.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     this.autoLogin = false,
@@ -104,9 +103,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         child: HarpyScaffold(
           drawer: const HomeDrawer(),
           floatingActionButton: _buildFloatingActionButton(),
-          body: BlocProvider<NewHomeTimelineBloc>(
-            lazy: false,
-            create: (_) => NewHomeTimelineBloc(),
+          body: BlocProvider<HomeTimelineBloc>(
+            create: (_) => HomeTimelineBloc(),
             child: const HomeTimeline(),
           ),
         ),
