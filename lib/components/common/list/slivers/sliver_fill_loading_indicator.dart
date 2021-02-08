@@ -9,6 +9,7 @@ class SliverFillLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SliverFillRemaining(
+      hasScrollBody: false,
       child: FadeAnimation(
         duration: kShortAnimationDuration,
         curve: Curves.easeInOut,

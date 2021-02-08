@@ -15,6 +15,7 @@ class SliverFillInfoMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
+      hasScrollBody: false,
       child: ListInfoMessage(
         primaryMessage: primaryMessage,
         secondaryMessage: secondaryMessage,
