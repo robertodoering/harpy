@@ -60,21 +60,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
     HomeTimelineState state,
     TweetData tweet,
   ) {
-    bool newTweetsExist = false;
-    bool isLastInitialTweet = false;
-    bool includesLastVisibleTweet = false;
-
-    if (state is HomeTimelineResult) {
-      newTweetsExist = state.newTweetsExist;
-      isLastInitialTweet = state.lastInitialTweet == tweet.idStr;
-      includesLastVisibleTweet = state.includesLastVisibleTweet;
-    } else if (state is HomeTimelineLoadingOlder) {
-      newTweetsExist = state.oldResult.newTweetsExist;
-      isLastInitialTweet = state.oldResult.lastInitialTweet == tweet.idStr;
-      includesLastVisibleTweet = state.oldResult.includesLastVisibleTweet;
-    }
-
-    if (includesLastVisibleTweet && newTweetsExist && isLastInitialTweet) {
+    if (state.showNewTweetsExist(tweet.idStr)) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

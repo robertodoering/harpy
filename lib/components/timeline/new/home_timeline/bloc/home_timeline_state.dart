@@ -28,6 +28,24 @@ abstract class HomeTimelineState extends Equatable {
       return <TweetData>[];
     }
   }
+
+  bool showNewTweetsExist(String idStr) {
+    HomeTimelineResult result;
+
+    if (this is HomeTimelineResult) {
+      result = this;
+    } else if (this is HomeTimelineLoadingOlder) {
+      result = (this as HomeTimelineLoadingOlder).oldResult;
+    }
+
+    if (result != null) {
+      return result.newTweetsExist &&
+          result.includesLastVisibleTweet &&
+          result.lastInitialTweet == idStr;
+    } else {
+      return false;
+    }
+  }
 }
 
 class HomeTimelineInitial extends HomeTimelineState {
