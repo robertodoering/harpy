@@ -11,6 +11,8 @@ abstract class HomeTimelineEvent extends Equatable {
 
 /// Requests the home timeline tweets that are newer than the newest last
 /// visible tweet from the previous session.
+/// If the last visible tweet is older than the last 200 tweets, it has no
+/// affect.
 ///
 /// After successful response, the older tweets are requested using the
 /// [RequestOlderHomeTimeline] event.
