@@ -114,7 +114,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                         const RefreshHomeTimeline(clearPrevious: true),
                       ),
                     )
-                  else if (state.showSearchError)
+                  else if (state.showTimelineError)
                     SliverFillLoadingError(
                       message: const Text('error loading tweets'),
                       onRetry: () => bloc.add(

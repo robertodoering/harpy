@@ -9,9 +9,11 @@ abstract class HomeTimelineState extends Equatable {
 
   bool get showNoTweetsFound => this is HomeTimelineNoResult;
 
-  bool get showSearchError => this is HomeTimelineFailure;
+  bool get showTimelineError => this is HomeTimelineFailure;
 
-  bool get showReachedEnd => !enableRequestOlder;
+  bool get showReachedEnd =>
+      this is HomeTimelineResult &&
+      !(this as HomeTimelineResult).canRequestOlder;
 
   bool get enableRequestOlder =>
       this is HomeTimelineResult &&
