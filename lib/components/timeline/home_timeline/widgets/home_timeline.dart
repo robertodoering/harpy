@@ -73,18 +73,14 @@ class _HomeTimelineState extends State<HomeTimeline> {
       includesLastVisibleTweet = state.oldResult.includesLastVisibleTweet;
     }
 
-    if (newTweetsExist && isLastInitialTweet) {
-      final List<Widget> children = <Widget>[
-        TweetList.defaultTweetBuilder(tweet),
-        defaultVerticalSpacer,
-        const NewTweetsText(),
-      ];
-
+    if (includesLastVisibleTweet && newTweetsExist && isLastInitialTweet) {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        // build the new tweets text above the last visible tweet if it exist
-        children:
-            includesLastVisibleTweet ? children.reversed.toList() : children,
+        children: <Widget>[
+          const NewTweetsText(),
+          defaultVerticalSpacer,
+          TweetList.defaultTweetBuilder(tweet),
+        ],
       );
     } else {
       return TweetList.defaultTweetBuilder(tweet);
