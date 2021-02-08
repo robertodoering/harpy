@@ -41,10 +41,10 @@ void twitterApiErrorHandler(
         // rate limit reached
         final Duration limitReset = _limitResetDuration(error);
 
-        message = 'rate limit reached.\n';
+        message = 'rate limit reached\n';
         message += limitReset != null
             ? 'please try again in ${prettyPrintDurationDifference(limitReset)}'
-            : 'please try again later.';
+            : 'please try again later';
 
         break;
       default:
