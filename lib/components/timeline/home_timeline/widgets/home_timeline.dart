@@ -115,6 +115,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 state.timelineTweets,
                 controller: _controller,
                 tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
+                enableScroll: state.enableScroll,
                 beginSlivers: const <Widget>[
                   HomeAppBar(),
                 ],

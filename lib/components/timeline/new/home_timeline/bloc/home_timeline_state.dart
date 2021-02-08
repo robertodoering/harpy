@@ -17,6 +17,8 @@ abstract class HomeTimelineState extends Equatable {
       this is HomeTimelineResult &&
       (this as HomeTimelineResult).canRequestOlder;
 
+  bool get enableScroll => timelineTweets.isNotEmpty;
+
   List<TweetData> get timelineTweets {
     if (this is HomeTimelineResult) {
       return (this as HomeTimelineResult).tweets;
