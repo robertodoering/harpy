@@ -9,6 +9,7 @@ import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.d
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
@@ -56,21 +57,18 @@ class _HomeTimelineState extends State<HomeTimeline> {
     }
   }
 
-  Widget _tweetBuilder(
-    HomeTimelineState state,
-    TweetData tweet,
-  ) {
+  Widget _tweetBuilder(HomeTimelineState state, TweetData tweet) {
     if (state.showNewTweetsExist(tweet.idStr)) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const NewTweetsText(),
           defaultVerticalSpacer,
-          TweetList.defaultTweetBuilder(tweet),
+          TweetCard(tweet, rememberVisibility: true),
         ],
       );
     } else {
-      return TweetList.defaultTweetBuilder(tweet);
+      return TweetCard(tweet, rememberVisibility: true);
     }
   }
 

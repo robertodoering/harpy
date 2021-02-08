@@ -12,30 +12,37 @@ class TweetCard extends StatelessWidget {
     this.tweet, {
     this.color,
     this.depth = 0,
+    this.rememberVisibility = false,
   }) : super(key: ValueKey<int>(tweet.hashCode));
 
   final TweetData tweet;
   final Color color;
   final int depth;
+  final bool rememberVisibility;
 
   @override
   Widget build(BuildContext context) {
-    // todo: disable saving visibility when not in home timeline
-    return TweetRememberVisibility(
-      key: Key('${tweet.hashCode}_visibility'),
-      tweet: tweet,
-      child: ListCardAnimation(
-        key: Key('${tweet.hashCode}_animation'),
-        child: Card(
-          color: color,
-          child: Column(
-            children: <Widget>[
-              TweetCardContent(tweet),
-              if (tweet.replies.isNotEmpty) TweetReplies(tweet, depth: depth),
-            ],
-          ),
+    final Widget child = ListCardAnimation(
+      key: Key('${tweet.hashCode}_animation'),
+      child: Card(
+        color: color,
+        child: Column(
+          children: <Widget>[
+            TweetCardContent(tweet),
+            if (tweet.replies.isNotEmpty) TweetReplies(tweet, depth: depth),
+          ],
         ),
       ),
     );
+
+    if (rememberVisibility) {
+      return TweetRememberVisibility(
+        key: Key('${tweet.hashCode}_visibility'),
+        tweet: tweet,
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 }
