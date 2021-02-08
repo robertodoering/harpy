@@ -44,7 +44,8 @@ class _HomeTimelineState extends State<HomeTimeline> {
 
     if (state is HomeTimelineResult &&
         state.initialResults &&
-        state.includesLastVisibleTweet) {
+        state.includesLastVisibleTweet &&
+        state.newTweetsExist) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.jumpTo(
