@@ -83,52 +83,56 @@ class _HomeTimelineState extends State<HomeTimeline> {
       child: ScrollDirectionListener(
         child: ScrollToStart(
           controller: _controller,
-          child: RefreshIndicator(
-            onRefresh: () async {
-              bloc.add(const RefreshHomeTimeline());
-              await bloc.refreshCompleter.future;
-            },
-            child: LoadMoreListener(
-              listen: state.enableRequestOlder,
-              onLoadMore: () async {
-                bloc.add(const RequestOlderHomeTimeline());
-                await bloc.requestOlderCompleter.future;
+          child: Builder(
+            builder: (BuildContext context) => RefreshIndicator(
+              onRefresh: () async {
+                ScrollDirection.of(context).reset();
+                bloc.add(const RefreshHomeTimeline());
+                await bloc.refreshCompleter.future;
               },
-              child: TweetList(
-                state.timelineTweets,
-                controller: _controller,
-                tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
-                enableScroll: state.enableScroll,
-                beginSlivers: const <Widget>[
-                  HomeAppBar(),
-                ],
-                endSlivers: <Widget>[
-                  if (state.showInitialLoading)
-                    const SliverFillLoadingIndicator()
-                  else if (state.showNoTweetsFound)
-                    SliverFillLoadingError(
-                      message: const Text('no tweets found'),
-                      onRetry: () => bloc.add(
-                        const RefreshHomeTimeline(clearPrevious: true),
+              child: LoadMoreListener(
+                listen: state.enableRequestOlder,
+                onLoadMore: () async {
+                  bloc.add(const RequestOlderHomeTimeline());
+                  await bloc.requestOlderCompleter.future;
+                },
+                child: TweetList(
+                  state.timelineTweets,
+                  controller: _controller,
+                  tweetBuilder: (TweetData tweet) =>
+                      _tweetBuilder(state, tweet),
+                  enableScroll: state.enableScroll,
+                  beginSlivers: const <Widget>[
+                    HomeAppBar(),
+                  ],
+                  endSlivers: <Widget>[
+                    if (state.showInitialLoading)
+                      const SliverFillLoadingIndicator()
+                    else if (state.showNoTweetsFound)
+                      SliverFillLoadingError(
+                        message: const Text('no tweets found'),
+                        onRetry: () => bloc.add(
+                          const RefreshHomeTimeline(clearPrevious: true),
+                        ),
+                      )
+                    else if (state.showTimelineError)
+                      SliverFillLoadingError(
+                        message: const Text('error loading tweets'),
+                        onRetry: () => bloc.add(
+                          const RefreshHomeTimeline(clearPrevious: true),
+                        ),
+                      )
+                    else if (state.showLoadingOlder)
+                      const SliverBoxLoadingIndicator()
+                    else if (state.showReachedEnd)
+                      const SliverBoxInfoMessage(
+                        secondaryMessage: Text('no more tweets available'),
                       ),
-                    )
-                  else if (state.showTimelineError)
-                    SliverFillLoadingError(
-                      message: const Text('error loading tweets'),
-                      onRetry: () => bloc.add(
-                        const RefreshHomeTimeline(clearPrevious: true),
-                      ),
-                    )
-                  else if (state.showLoadingOlder)
-                    const SliverBoxLoadingIndicator()
-                  else if (state.showReachedEnd)
-                    const SliverBoxInfoMessage(
-                      secondaryMessage: Text('no more tweets available'),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: mediaQuery.padding.bottom),
                     ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: mediaQuery.padding.bottom),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -85,12 +85,19 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
     return false;
   }
 
+  void _reset() {
+    setState(() {
+      _direction = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: _onNotification,
       child: ScrollDirection(
         direction: _direction,
+        reset: _reset,
         child: widget.child,
       ),
     );
@@ -106,11 +113,13 @@ class ScrollDirection extends InheritedWidget {
   const ScrollDirection({
     @required this.direction,
     @required Widget child,
+    this.reset,
     Key key,
   })  : assert(child != null),
         super(key: key, child: child);
 
   final VerticalDirection direction;
+  final VoidCallback reset;
 
   /// `true` when the user is scrolling up (or left if the axis is horizontal).
   bool get up => direction == VerticalDirection.up;
