@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/list/load_more_indicator.dart';
 import 'package:harpy/components/common/list/load_more_listener.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/list/scroll_to_start.dart';
+import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_info_message.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
-import 'package:harpy/components/common/list/slivers/sliver_fill_message.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
 import 'package:harpy/components/search/user/bloc/user_search_bloc.dart';
 import 'package:harpy/components/search/user/bloc/user_search_event.dart';
@@ -39,14 +39,15 @@ class UserSearchList extends StatelessWidget {
               if (bloc.loadingInitialData)
                 const SliverFillLoadingIndicator()
               else if (bloc.state is LoadingPaginatedData)
-                const LoadMoreIndicator(),
+                const SliverBoxLoadingIndicator(),
               if (bloc.showError)
                 SliverFillLoadingError(
                   message: const Text('error searching users'),
-                  onTap: () => bloc.add(SearchUsers(bloc.lastQuery)),
+                  onRetry: () => bloc.add(SearchUsers(bloc.lastQuery)),
                 )
               else if (bloc.showNoDataExists)
-                const SliverFillMessage(message: Text('no users found')),
+                const SliverFillInfoMessage(
+                    primaryMessage: Text('no users found')),
               SliverToBoxAdapter(
                 child: SizedBox(height: mediaQuery.padding.bottom),
               ),
