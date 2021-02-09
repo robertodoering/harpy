@@ -58,7 +58,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
   }
 
   Widget _tweetBuilder(HomeTimelineState state, TweetData tweet) {
-    if (state.showNewTweetsExist(tweet.idStr)) {
+    if (state.showNewTweetsExist(tweet.originalIdStr)) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

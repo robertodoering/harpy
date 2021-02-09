@@ -57,8 +57,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
-          lastInitialTweet: tweets.last.idStr,
-          includesLastVisibleTweet: '$lastVisibleTweet' == tweets.last.idStr,
+          lastInitialTweet: tweets.last.originalIdStr,
+          includesLastVisibleTweet:
+              '$lastVisibleTweet' == tweets.last.originalIdStr,
           newTweetsExist: lastVisibleTweet != 0 && tweets.length != 1,
           initialResults: true,
         );
@@ -86,7 +87,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
   List<Object> get props => <Object>[];
 
   String _findMaxId(HomeTimelineResult state) {
-    final int lastId = int.tryParse(state.tweets.last.idStr);
+    final int lastId = int.tryParse(state.tweets.last.originalIdStr);
 
     if (lastId != null) {
       return '${lastId - 1}';

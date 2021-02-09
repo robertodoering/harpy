@@ -31,7 +31,7 @@ abstract class HomeTimelineState extends Equatable {
     }
   }
 
-  bool showNewTweetsExist(String idStr) {
+  bool showNewTweetsExist(String originalIdStr) {
     HomeTimelineResult result;
 
     if (this is HomeTimelineResult) {
@@ -43,7 +43,7 @@ abstract class HomeTimelineState extends Equatable {
     if (result != null) {
       return result.newTweetsExist &&
           result.includesLastVisibleTweet &&
-          result.lastInitialTweet == idStr;
+          result.lastInitialTweet == originalIdStr;
     } else {
       return false;
     }

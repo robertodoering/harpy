@@ -20,6 +20,8 @@ class TweetData {
       return;
     }
 
+    originalIdStr = tweet.idStr;
+
     if (tweet.retweetedStatus != null) {
       retweetUserName = tweet.user.name;
       retweetScreenName = tweet.user.screenName;
@@ -63,6 +65,13 @@ class TweetData {
 
   /// The string representation of the unique identifier for this Tweet.
   String idStr;
+
+  /// The string representation of the unique identifier for this Tweet.
+  ///
+  /// If this tweet is a retweet, this will be the id of the retweet while
+  /// [idStr] is the id of the retweeted tweet.
+  /// Otherwise this will be equal to [idStr].
+  String originalIdStr;
 
   /// If the represented Tweet is a reply, this field will contain the string
   /// representation of the original Tweet’s ID.

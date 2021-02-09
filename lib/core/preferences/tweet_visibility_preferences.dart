@@ -7,10 +7,10 @@ class TweetVisibilityPreferences {
 
   int get lastVisibleTweet => harpyPrefs.getInt('lastVisibleTweet', 0);
   set lastVisibleTweet(int value) =>
-      harpyPrefs.setInt('lastVisibleTweet', value, disableLog: true);
+      harpyPrefs.setInt('lastVisibleTweet', value);
 
   void updateVisibleTweet(TweetData tweet) {
-    final int id = int.tryParse(tweet.idStr);
+    final int id = int.tryParse(tweet.originalIdStr);
 
     if (id != null && id > lastVisibleTweet) {
       lastVisibleTweet = id;

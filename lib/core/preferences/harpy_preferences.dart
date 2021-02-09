@@ -53,11 +53,8 @@ class HarpyPreferences {
     String key,
     int value, {
     bool prefix = false,
-    bool disableLog = false,
   }) {
-    if (!disableLog) {
-      _log.fine('set ${_key(key, prefix)} to $value');
-    }
+    _log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setInt(_key(key, prefix), value);
   }
 
