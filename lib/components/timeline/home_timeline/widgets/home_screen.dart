@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
-import 'package:harpy/components/common/dialogs/harpy_exit_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
+import 'package:harpy/components/common/misc/will_pop_harpy.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -79,27 +79,11 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     }
   }
 
-  Future<bool> _showExitDialog(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => const HarpyExitDialog(),
-    ).then((bool pop) => pop == true);
-  }
-
-  Future<bool> _onWillPop(BuildContext context) async {
-    // If the current pop request will close the application
-    if (!Navigator.of(context).canPop()) {
-      return _showExitDialog(context);
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScrollDirectionListener(
       onScrollDirectionChanged: _onScrollDirectionChanged,
-      child: WillPopScope(
-        onWillPop: () => _onWillPop(context),
+      child: WillPopHarpy(
         child: HarpyScaffold(
           drawer: const HomeDrawer(),
           floatingActionButton: _buildFloatingActionButton(),
