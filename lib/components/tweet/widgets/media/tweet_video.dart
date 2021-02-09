@@ -25,7 +25,7 @@ class TweetVideo extends StatelessWidget {
     tweetBloc.add(DownloadMedia(tweet: tweet));
   }
 
-  void _onVideoOpenExternaly() {
+  void _onVideoOpenExternally() {
     tweetBloc.add(OpenMediaExternally(tweet: tweet));
   }
 
@@ -39,7 +39,7 @@ class TweetVideo extends StatelessWidget {
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
       onDownload: _onVideoDownload,
-      onOpenExternally: _onVideoOpenExternaly,
+      onOpenExternally: _onVideoOpenExternally,
       onShare: _onVideoShare,
       child: HarpyVideoPlayer.fromModel(
         model,
@@ -62,7 +62,7 @@ class TweetVideo extends StatelessWidget {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onVideoDownload,
-        onOpenExternally: _onVideoOpenExternaly,
+        onOpenExternally: _onVideoOpenExternally,
         onShare: _onVideoShare,
       ),
     );

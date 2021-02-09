@@ -41,7 +41,7 @@ class _TweetImagesState extends State<TweetImages> {
       tweetBloc: widget.tweetBloc,
       overlap: true,
       onDownload: _onDownloadImage,
-      onOpenExternally: _onOpenImageExternaly,
+      onOpenExternally: _onOpenImageExternally,
       onShare: _onShareImage,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
@@ -66,7 +66,7 @@ class _TweetImagesState extends State<TweetImages> {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onDownloadImage,
-        onOpenExternally: _onOpenImageExternaly,
+        onOpenExternally: _onOpenImageExternally,
         onShare: _onShareImage,
       ),
     );
@@ -86,7 +86,7 @@ class _TweetImagesState extends State<TweetImages> {
     ));
   }
 
-  void _onOpenImageExternaly() {
+  void _onOpenImageExternally() {
     widget.tweetBloc.add(OpenMediaExternally(
       tweet: widget.tweet,
       index: _galleryIndex,
