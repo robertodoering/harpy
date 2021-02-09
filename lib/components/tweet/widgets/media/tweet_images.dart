@@ -46,11 +46,69 @@ class _TweetImagesState extends State<TweetImages> {
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
         heroTags: _images,
+        indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
         index: _galleryIndex,
         onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
         enableDismissible: false,
       ),
     );
+  }
+
+  Widget _indexedFlightShuttleBuilder(
+    BuildContext flightContext,
+    int index,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    final Hero hero = flightDirection == HeroFlightDirection.push
+        ? fromHeroContext.widget
+        : toHeroContext.widget;
+
+    final BorderRadiusTween tween = BorderRadiusTween(
+      begin: _borderRadiusForImage(index),
+      end: BorderRadius.zero,
+    );
+
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget child) => ClipRRect(
+        borderRadius: tween.evaluate(animation),
+        child: hero.child,
+      ),
+    );
+  }
+
+  BorderRadius _borderRadiusForImage(int index) {
+    final int count = _images.length;
+
+    if (count == 1) {
+      return const BorderRadius.all(kDefaultRadius);
+    } else if (count == 2) {
+      return BorderRadius.only(
+        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
+        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
+        topRight: index == 1 ? kDefaultRadius : Radius.zero,
+        bottomRight: index == 1 ? kDefaultRadius : Radius.zero,
+      );
+    } else if (count == 3) {
+      return BorderRadius.only(
+        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
+        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
+        topRight: index == 1 ? kDefaultRadius : Radius.zero,
+        bottomRight: index == 2 ? kDefaultRadius : Radius.zero,
+      );
+    } else if (count == 4) {
+      return BorderRadius.only(
+        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
+        bottomLeft: index == 2 ? kDefaultRadius : Radius.zero,
+        topRight: index == 1 ? kDefaultRadius : Radius.zero,
+        bottomRight: index == 3 ? kDefaultRadius : Radius.zero,
+      );
+    } else {
+      return BorderRadius.zero;
+    }
   }
 
   Future<void> _onImageLongPress(int index, BuildContext context) async {

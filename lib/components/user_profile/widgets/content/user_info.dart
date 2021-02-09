@@ -46,6 +46,7 @@ class UserProfileInfo extends StatelessWidget {
   /// Used to animate the border radius during the animation.
   Widget _flightShuttleBuilder(
     BuildContext flightContext,
+    int index,
     Animation<double> animation,
     HeroFlightDirection flightDirection,
     BuildContext fromHeroContext,
@@ -85,7 +86,7 @@ class UserProfileInfo extends StatelessWidget {
               return ImageGallery(
                 urls: <String>[bloc.user.originalUserImageUrl],
                 heroTags: <Object>[bloc.user],
-                flightShuttleBuilder: _flightShuttleBuilder,
+                indexedFlightShuttleBuilder: _flightShuttleBuilder,
               );
             },
           ),

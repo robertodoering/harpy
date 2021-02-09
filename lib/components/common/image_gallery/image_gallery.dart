@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/fullscreen_image.dart';
 
+typedef IndexedHeroFlightShuttleBuilder = Widget Function(
+  BuildContext flightContext,
+  int index,
+  Animation<double> animation,
+  HeroFlightDirection flightDirection,
+  BuildContext fromHeroContext,
+  BuildContext toHeroContext,
+);
+
 /// Builds the [urls] as [FullscreenImage]s.
 ///
 /// [heroTags] must be `null` or the same length as [url].
@@ -8,7 +17,7 @@ class ImageGallery extends StatefulWidget {
   const ImageGallery({
     @required this.urls,
     this.heroTags,
-    this.flightShuttleBuilder,
+    this.indexedFlightShuttleBuilder,
     this.placeholderBuilder,
     this.index = 0,
     this.onIndexChanged,
@@ -19,7 +28,7 @@ class ImageGallery extends StatefulWidget {
 
   final List<String> urls;
   final List<Object> heroTags;
-  final HeroFlightShuttleBuilder flightShuttleBuilder;
+  final IndexedHeroFlightShuttleBuilder indexedFlightShuttleBuilder;
   final HeroPlaceholderBuilder placeholderBuilder;
   final int index;
   final ValueChanged<int> onIndexChanged;
@@ -98,7 +107,22 @@ class _ImageGalleryState extends State<ImageGallery> {
             FullscreenImage(
               url: widget.urls[i],
               heroTag: _page == i ? widget.heroTags?.elementAt(i) : null,
-              flightShuttleBuilder: widget.flightShuttleBuilder,
+              flightShuttleBuilder: (
+                BuildContext flightContext,
+                Animation<double> animation,
+                HeroFlightDirection flightDirection,
+                BuildContext fromHeroContext,
+                BuildContext toHeroContext,
+              ) {
+                return widget.indexedFlightShuttleBuilder(
+                  flightContext,
+                  i,
+                  animation,
+                  flightDirection,
+                  fromHeroContext,
+                  toHeroContext,
+                );
+              },
               placeholderBuilder: widget.placeholderBuilder,
             ),
         ],
