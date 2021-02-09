@@ -29,7 +29,7 @@ class TweetGif extends StatelessWidget {
       enableImmersiveMode: false,
       overlap: true,
       onDownload: _onGifDownload,
-      onOpenExternally: _onGifOpenExternaly,
+      onOpenExternally: _onGifOpenExternally,
       onShare: _onGifShare,
       child: WillPopScope(
         onWillPop: () async {
@@ -57,7 +57,7 @@ class TweetGif extends StatelessWidget {
     tweetBloc.add(ShareMedia(tweet: tweet));
   }
 
-  void _onGifOpenExternaly() {
+  void _onGifOpenExternally() {
     tweetBloc.add(OpenMediaExternally(tweet: tweet));
   }
 
@@ -72,7 +72,7 @@ class TweetGif extends StatelessWidget {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onGifDownload,
-        onOpenExternally: _onGifOpenExternaly,
+        onOpenExternally: _onGifOpenExternally,
         onShare: _onGifShare,
       ),
     );
