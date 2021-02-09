@@ -62,7 +62,7 @@ class TweetVideo extends StatelessWidget {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onVideoDownload,
-        onOpenExternaly: _onVideoOpenExternaly,
+        onOpenExternally: _onVideoOpenExternaly,
         onShare: _onVideoShare,
       ),
     );

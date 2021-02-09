@@ -5,11 +5,11 @@ import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
 class TweetMediaModalContent extends StatelessWidget {
   const TweetMediaModalContent({
     this.onDownload,
-    this.onOpenExternaly,
+    this.onOpenExternally,
     this.onShare,
   });
 
-  final VoidCallback onOpenExternaly;
+  final VoidCallback onOpenExternally;
   final VoidCallback onDownload;
   final VoidCallback onShare;
 
@@ -22,7 +22,7 @@ class TweetMediaModalContent extends StatelessWidget {
         ListTile(
           leading: const Icon(FeatherIcons.share),
           title: const Text('open externally'),
-          onTap: onOpenExternaly,
+          onTap: onOpenExternally,
         ),
         ListTile(
           leading: const Icon(FeatherIcons.download),

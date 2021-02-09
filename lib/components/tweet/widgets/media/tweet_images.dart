@@ -66,7 +66,7 @@ class _TweetImagesState extends State<TweetImages> {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onDownloadImage,
-        onOpenExternaly: _onOpenImageExternaly,
+        onOpenExternally: _onOpenImageExternaly,
         onShare: _onShareImage,
       ),
     );

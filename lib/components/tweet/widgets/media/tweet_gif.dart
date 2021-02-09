@@ -72,7 +72,7 @@ class TweetGif extends StatelessWidget {
       ),
       builder: (BuildContext context) => TweetMediaModalContent(
         onDownload: _onGifDownload,
-        onOpenExternaly: _onGifOpenExternaly,
+        onOpenExternally: _onGifOpenExternaly,
         onShare: _onGifShare,
       ),
     );
