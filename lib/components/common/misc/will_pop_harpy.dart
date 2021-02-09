@@ -25,13 +25,17 @@ class _WillPopHarpyState extends State<WillPopHarpy> {
   }
 
   Future<bool> _onWillPop() async {
-    if (_willPop) {
-      return true;
-    } else {
-      app<MessageService>().show('press back again to exit harpy');
-      _updateWillPop();
-      return false;
+    // if the current pop request will close the application
+    if (!Navigator.of(context).canPop()) {
+      if (_willPop) {
+        return true;
+      } else {
+        app<MessageService>().show('press back again to exit harpy');
+        _updateWillPop();
+        return false;
+      }
     }
+    return true;
   }
 
   @override
