@@ -1,0 +1,3 @@
+Version 0.4.2
+
+· Added support for attaching videos when composing tweets

@@ -45,9 +45,7 @@ dependencies:
   device_info: '>=0.4.2+4 <2.0.0'
   file_picker: ^2.1.4
   firebase_analytics: ^6.3.0
-  # todo: re-add when fix gets released
-  #   https://github.com/tanersener/flutter-ffmpeg/issues/237
-#  flutter_ffmpeg: ^0.3.0
+  flutter_ffmpeg: ^0.3.1
   flutter_downloader: ^1.5.2
   flutter_twitter_login:
     git: git://github.com/robertodoering/flutter_twitter_login.git
