@@ -54,8 +54,8 @@ class AddCustomThemeCard extends StatelessWidget {
     final int nextCustomThemeId = themeBloc.customThemes.length + 10;
 
     // only build a trailing icon when using harpy free
-    final Widget trailing =
-        Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null;
+    const Widget trailing =
+        Harpy.isFree ? FlareIcon.shiningStar(size: 28) : null;
 
     return Container(
       width: double.infinity,

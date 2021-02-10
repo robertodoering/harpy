@@ -82,7 +82,7 @@ class ChangelogParser {
   }
 
   String _changelogString(String versionCode) {
-    final String flavor = Harpy.isFree ? 'free' : 'pro';
+    const String flavor = Harpy.isFree ? 'free' : 'pro';
 
     return 'android/fastlane/metadata/android'
         '/$flavor/en-US/changelogs/$versionCode.txt';
