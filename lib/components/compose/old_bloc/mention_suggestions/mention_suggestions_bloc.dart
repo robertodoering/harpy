@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
-import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_event.dart';
-import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_state.dart';
+import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_event.dart';
+import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_state.dart';
 import 'package:harpy/components/following_followers/following/bloc/following_bloc.dart';
 import 'package:harpy/components/search/user/bloc/user_search_bloc.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';

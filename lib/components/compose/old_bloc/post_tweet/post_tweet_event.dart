@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
-import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_state.dart';
+import 'package:harpy/components/compose/old_bloc/post_tweet/post_tweet_bloc.dart';
+import 'package:harpy/components/compose/old_bloc/post_tweet/post_tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/media_video_converter.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';

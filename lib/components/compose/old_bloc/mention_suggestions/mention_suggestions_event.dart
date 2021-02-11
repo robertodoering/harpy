@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_bloc.dart';
-import 'package:harpy/components/compose/bloc/mention_suggestions/mention_suggestions_state.dart';
+import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_bloc.dart';
+import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_state.dart';
 import 'package:harpy/components/search/user/bloc/user_search_event.dart';
 
 @immutable

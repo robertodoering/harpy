@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:harpy/components/compose/bloc/compose_bloc.dart';
-import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/old_bloc/compose_state.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 

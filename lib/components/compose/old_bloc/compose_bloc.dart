@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/compose/bloc/compose_event.dart';
-import 'package:harpy/components/compose/bloc/compose_state.dart';
+import 'package:harpy/components/compose/old_bloc/compose_event.dart';
+import 'package:harpy/components/compose/old_bloc/compose_state.dart';
 import 'package:mime_type/mime_type.dart';
 
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {

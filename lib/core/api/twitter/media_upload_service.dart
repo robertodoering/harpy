@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/foundation.dart';
-import 'package:harpy/components/compose/bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:mime_type/mime_type.dart';
 
