@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_bloc.dart';
 import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_event.dart';
 import 'package:harpy/components/compose/old_bloc/mention_suggestions/mention_suggestions_state.dart';
@@ -15,12 +14,10 @@ import 'package:harpy/core/regex/twitter_regex.dart';
 /// Displays user mention suggestions after typing `@`.
 // todo: should not show exact match in suggestions list
 class ComposeTweetMentions extends StatelessWidget {
-  const ComposeTweetMentions(
-    this.bloc, {
+  const ComposeTweetMentions({
     @required this.controller,
   });
 
-  final ComposeBloc bloc;
   final TextEditingController controller;
 
   @override
@@ -47,7 +44,6 @@ class ComposeTweetMentions extends StatelessWidget {
           }
 
           return ComposeTweetSuggestions(
-            bloc,
             controller: controller,
             selectionRegExp: mentionStartRegex,
             onSearch: (String query) {

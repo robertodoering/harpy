@@ -2,7 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/old_bloc/post_tweet/post_tweet_event.dart';
 import 'package:harpy/components/compose/old_bloc/post_tweet/post_tweet_state.dart';
 import 'package:harpy/core/api/twitter/media_upload_service.dart';

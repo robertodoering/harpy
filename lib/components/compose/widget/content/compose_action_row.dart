@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
-import 'package:harpy/components/compose/old_bloc/compose_event.dart';
+import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/content/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
-  const ComposeTweetActionRow(
-    this.bloc, {
+  const ComposeTweetActionRow({
     @required this.controller,
   });
 
-  final ComposeBloc bloc;
   final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
+    final ComposeBloc bloc = context.watch<ComposeBloc>();
+
     return Row(
       children: <Widget>[
         HarpyButton.flat(
@@ -47,7 +47,7 @@ class ComposeTweetActionRow extends StatelessWidget {
           onTap: () => controller.insertString('#'),
         ),
         const Spacer(),
-        PostTweetButton(controller: controller, bloc: bloc),
+        PostTweetButton(controller: controller),
       ],
     );
   }
@@ -55,13 +55,11 @@ class ComposeTweetActionRow extends StatelessWidget {
 
 class PostTweetButton extends StatefulWidget {
   const PostTweetButton({
-    Key key,
     @required this.controller,
-    @required this.bloc,
+    Key key,
   }) : super(key: key);
 
   final ComposeTextController controller;
-  final ComposeBloc bloc;
 
   @override
   _PostTweetButtonState createState() => _PostTweetButtonState();
@@ -77,8 +75,10 @@ class _PostTweetButtonState extends State<PostTweetButton> {
 
   @override
   Widget build(BuildContext context) {
+    final ComposeBloc bloc = context.watch<ComposeBloc>();
+
     final bool canTweet =
-        widget.bloc.hasMedia || widget.controller.text.trim().isNotEmpty;
+        bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
       padding: DefaultEdgeInsets.all(),
@@ -90,7 +90,6 @@ class _PostTweetButtonState extends State<PostTweetButton> {
                 barrierDismissible: false,
                 builder: (BuildContext context) => PostTweetDialog(
                   controller: widget.controller,
-                  composeBloc: widget.bloc,
                 ),
               )
           : null,

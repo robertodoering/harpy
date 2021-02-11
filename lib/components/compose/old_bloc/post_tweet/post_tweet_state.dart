@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:harpy/components/compose/old_bloc/compose_bloc.dart';
+import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:humanize/humanize.dart';
 
 @immutable

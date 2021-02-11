@@ -28,8 +28,8 @@ class PostTweetEvent {
 
     final List<File> mediaFiles = <File>[];
 
-    if (bloc.composeBloc.hasVideo) {
-      final PlatformFile videoSource = bloc.composeBloc.media.first;
+    if (bloc.composeBloc.state.hasVideo) {
+      final PlatformFile videoSource = bloc.composeBloc.state.media.first;
 
       yield ConvertingVideoState();
 
@@ -45,7 +45,7 @@ class PostTweetEvent {
       }
     } else {
       mediaFiles.addAll(
-        bloc.composeBloc.media.map(
+        bloc.composeBloc.state.media.map(
           (PlatformFile platformFile) => File(platformFile.path),
         ),
       );
@@ -56,12 +56,12 @@ class PostTweetEvent {
         yield UploadingMediaState(
           index: i,
           multiple: mediaFiles.length > 1,
-          type: bloc.composeBloc.mediaType,
+          type: bloc.composeBloc.state.type,
         );
 
         final String mediaId = await bloc.mediaUploadService.upload(
           mediaFiles[i],
-          type: bloc.composeBloc.mediaType,
+          type: bloc.composeBloc.state.type,
         );
 
         if (mediaId != null) {
@@ -80,7 +80,7 @@ class PostTweetEvent {
     PostTweetState currentState,
     PostTweetBloc bloc,
   }) async* {
-    if (bloc.composeBloc.hasMedia) {
+    if (bloc.composeBloc.state.hasMedia) {
       await for (PostTweetState state in _uploadMedia(bloc)) {
         yield state;
       }
