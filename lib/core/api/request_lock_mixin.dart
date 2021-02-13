@@ -9,7 +9,7 @@ mixin RequestLock {
   /// Returns `true` if it was already locked.
   bool lock({
     Duration duration = const Duration(seconds: 5),
-  })  {
+  }) {
     if (!_isLocked) {
       _isLocked = true;
       Future<void>.delayed(duration).then((_) {

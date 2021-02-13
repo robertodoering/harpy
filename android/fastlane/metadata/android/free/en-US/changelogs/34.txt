@@ -1,3 +1,4 @@
 Version 0.4.2
 
 · Added support for attaching videos when composing tweets
+· Fix sometimes not parsing @mention in the tweet text (Thanks Darren!)

@@ -395,6 +395,11 @@ class HarpyTheme {
         behavior: SnackBarBehavior.floating,
       ),
 
+      popupMenuTheme: PopupMenuThemeData(
+        color: averageBackgroundColor,
+        shape: kDefaultShapeBorder,
+      ),
+
       iconTheme: const IconThemeData.fallback().copyWith(
         color: foregroundColor,
         size: 20,
