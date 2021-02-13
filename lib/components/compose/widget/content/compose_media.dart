@@ -40,7 +40,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
 
   Future<void> _initController() async {
     final ComposeBloc bloc = context.read<ComposeBloc>();
-    final ComposeState state = bloc.state as ComposeState;
+    final ComposeState state = bloc.state;
 
     if (state.hasVideo) {
       final bool newVideo = _controller != null &&
@@ -124,7 +124,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
   @override
   Widget build(BuildContext context) {
     final ComposeBloc bloc = context.watch<ComposeBloc>();
-    final ComposeState state = bloc.state as ComposeState;
+    final ComposeState state = bloc.state;
 
     Widget child;
     double aspectRatio;

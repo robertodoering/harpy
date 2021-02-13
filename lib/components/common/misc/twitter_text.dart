@@ -318,7 +318,10 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
 /// Returns `null` if the [entityText] has not been found in the text.
 List<int> _findIndices(String text, String entityText, int indexStart) {
   try {
-    final int start = text.indexOf(entityText, indexStart);
+    final int start = text.toLowerCase().indexOf(
+          entityText.toLowerCase(),
+          indexStart,
+        );
 
     if (start != -1) {
       final int end = start + entityText.length;
