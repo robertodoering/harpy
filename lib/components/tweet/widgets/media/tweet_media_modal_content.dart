@@ -15,6 +15,8 @@ class TweetMediaModalContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -34,6 +36,7 @@ class TweetMediaModalContent extends StatelessWidget {
           title: const Text('share'),
           onTap: onShare,
         ),
+        SizedBox(height: mediaQuery.padding.bottom),
       ],
     );
   }
