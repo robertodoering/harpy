@@ -91,10 +91,7 @@ class PickTweetMediaEvent extends ComposeEvent {
       } else if (result.files.every(
         (PlatformFile file) => findMediaType(file.path) == MediaType.video,
       )) {
-        // todo: enable adding video when pub:flutter_ffmpeg gets fixed
-        app<MessageService>().show('adding videos is temporarily disabled due'
-            ' to an issue');
-        // _addVideo(bloc, result);
+        _addVideo(bloc, result);
       } else {
         app<MessageService>().show('invalid selection\n'
             'add up to 4 images, 1 gif or 1 video');
