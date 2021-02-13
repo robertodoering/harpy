@@ -1,0 +1,3 @@
+Version 0.4.2
+
+· Fix sometimes not parsing @mention in the tweet text (Thanks Darren!)
