@@ -4,9 +4,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
+import 'package:harpy/components/compose/widget/post_tweet/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-
-import 'file:///C:/workspace/harpy/lib/components/compose/widget/post_tweet/post_tweet_dialog.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
