@@ -17,5 +17,6 @@ class ComposeState extends Equatable {
   @override
   List<Object> get props => <Object>[
         media,
+        type,
       ];
 }
