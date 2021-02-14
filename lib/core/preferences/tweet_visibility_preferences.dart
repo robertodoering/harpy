@@ -5,9 +5,10 @@ import 'package:harpy/core/service_locator.dart';
 class TweetVisibilityPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
 
-  int get lastVisibleTweet => harpyPrefs.getInt('lastVisibleTweet', 0);
+  int get lastVisibleTweet =>
+      harpyPrefs.getInt('lastVisibleTweet', 0, prefix: true);
   set lastVisibleTweet(int value) =>
-      harpyPrefs.setInt('lastVisibleTweet', value);
+      harpyPrefs.setInt('lastVisibleTweet', value, prefix: true);
 
   void updateVisibleTweet(TweetData tweet) {
     final int id = int.tryParse(tweet.originalIdStr);
