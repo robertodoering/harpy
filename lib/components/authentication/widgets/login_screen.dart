@@ -89,14 +89,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(MediaQueryData mediaQuery) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         _LoginButton(onTap: _startLogin),
         const SizedBox(height: 8),
         const _CreateAccountButton(),
-        const SizedBox(height: 8),
+        SizedBox(height: mediaQuery.padding.bottom),
       ],
     );
   }
@@ -113,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
           Column(
             children: <Widget>[
               Expanded(child: _buildText()),
-              const SizedBox(height: 16),
               Expanded(
                 flex: 2,
                 child: Column(
@@ -123,7 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              Expanded(child: _buildButtons()),
+              const SizedBox(height: 16),
+              _buildButtons(mediaQuery),
             ],
           ),
         ],
