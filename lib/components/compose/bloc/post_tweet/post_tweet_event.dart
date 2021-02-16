@@ -95,8 +95,8 @@ class PostTweetEvent extends Equatable with Logger {
     yield const PostingTweet();
 
     List<String> mediaIds;
-    if (currentState is TweetMediaSuccessfullyUploaded) {
-      mediaIds = currentState.mediaIds;
+    if (bloc.state is TweetMediaSuccessfullyUploaded) {
+      mediaIds = (bloc.state as TweetMediaSuccessfullyUploaded).mediaIds;
     }
 
     // additional info that will be displayed in the dialog (e.g. error message)
