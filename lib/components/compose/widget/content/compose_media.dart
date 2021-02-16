@@ -14,109 +14,35 @@ import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:video_player/video_player.dart';
 
-class ComposeTweetMedia extends StatefulWidget {
+class ComposeTweetMedia extends StatelessWidget {
   const ComposeTweetMedia();
 
-  @override
-  _ComposeTweetMediaState createState() => _ComposeTweetMediaState();
-}
-
-class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
-  VideoPlayerController _controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _initController();
-  }
-
-  @override
-  void didUpdateWidget(ComposeTweetMedia oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    _initController();
-  }
-
-  Future<void> _initController() async {
-    final ComposeBloc bloc = context.read<ComposeBloc>();
-    final ComposeState state = bloc.state;
-
-    if (state.hasVideo) {
-      final bool newVideo = _controller != null &&
-          !_controller.dataSource.contains(state.media.first.path);
-
-      if (_controller == null || newVideo) {
-        try {
-          if (newVideo) {
-            await _controller.dispose();
-          }
-
-          _controller = VideoPlayerController.file(
-            File(state.media.first.path),
-          );
-
-          await _controller.initialize();
-
-          if (_controller.value.duration > const Duration(seconds: 140)) {
-            // video too long
-            bloc.add(const ClearComposedTweet());
-            app<MessageService>().show(
-              'video must be shorter than 140 seconds',
-            );
-          } else if (_controller.value.duration <
-              const Duration(milliseconds: 500)) {
-            // video too short
-            bloc.add(const ClearComposedTweet());
-            app<MessageService>().show('video must be longer than 0.5 seconds');
-          } else {
-            setState(() {});
-          }
-        } catch (e) {
-          // invalid video
-          bloc.add(const ClearComposedTweet());
-          app<MessageService>().show('invalid video');
-        }
-      }
-    } else if (_controller != null) {
-      await _controller.dispose();
-      _controller = null;
-    }
-  }
-
   Widget _buildImages(ComposeState state) {
-    return TweetImagesLayout(
-      children: state.media
-          .map((PlatformFile imageFile) => Image.file(
-                File(imageFile.path),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ))
-          .toList(),
+    return TweetMediaLayout(
+      child: TweetImagesLayout(
+        children: state.media
+            .map((PlatformFile imageFile) => Image.file(
+                  File(imageFile.path),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ))
+            .toList(),
+      ),
     );
   }
 
   Widget _buildGif(ComposeState state) {
-    return TweetImagesLayout(
-      children: <Widget>[
-        Image.file(
-          File(state.media.first.path),
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildVideo() {
-    return ClipRRect(
-      key: ValueKey<VideoPlayerController>(_controller),
-      borderRadius: kDefaultBorderRadius,
-      child: HarpyVideoPlayer.fromController(
-        _controller,
-        allowVerticalOverflow: true,
+    return TweetMediaLayout(
+      child: TweetImagesLayout(
+        children: <Widget>[
+          Image.file(
+            File(state.media.first.path),
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ],
       ),
     );
   }
@@ -127,7 +53,6 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
     final ComposeState state = bloc.state;
 
     Widget child;
-    double aspectRatio;
 
     switch (state.type) {
       case MediaType.image:
@@ -137,8 +62,10 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
         child = _buildGif(state);
         break;
       case MediaType.video:
-        child = _buildVideo();
-        aspectRatio = _controller?.value?.aspectRatio ?? 16 / 9;
+        child = ComposeMediaVideo(
+          bloc: bloc,
+          key: Key(state.media.first.path),
+        );
         break;
       default:
         child = const SizedBox();
@@ -149,11 +76,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
       padding: DefaultEdgeInsets.all(),
       child: Stack(
         children: <Widget>[
-          TweetMediaLayout(
-            isImage: !state.hasVideo,
-            videoAspectRatio: aspectRatio,
-            child: child,
-          ),
+          child,
           Align(
             alignment: Alignment.topRight,
             child: Padding(
@@ -166,6 +89,76 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ComposeMediaVideo extends StatefulWidget {
+  const ComposeMediaVideo({
+    @required this.bloc,
+    Key key,
+  }) : super(key: key);
+
+  final ComposeBloc bloc;
+
+  @override
+  _ComposeMediaVideoState createState() => _ComposeMediaVideoState();
+}
+
+class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
+  VideoPlayerController _controller;
+
+  double get _aspectRatio => _controller?.value?.aspectRatio ?? 16 / 9;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = VideoPlayerController.file(
+      File(widget.bloc.state.media.first.path),
+    );
+
+    _initController();
+  }
+
+  Future<void> _initController() async {
+    try {
+      await _controller.initialize();
+
+      if (_controller.value.duration > const Duration(seconds: 140)) {
+        // video too long
+        widget.bloc.add(const ClearComposedTweet());
+        app<MessageService>().show(
+          'video must be shorter than 140 seconds',
+        );
+      } else if (_controller.value.duration <
+          const Duration(milliseconds: 500)) {
+        // video too short
+        widget.bloc.add(const ClearComposedTweet());
+        app<MessageService>().show('video must be longer than 0.5 seconds');
+      } else {
+        setState(() {});
+      }
+    } catch (e) {
+      // invalid video
+      widget.bloc.add(const ClearComposedTweet());
+      app<MessageService>().show('invalid video');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TweetMediaLayout(
+      isImage: false,
+      videoAspectRatio: _aspectRatio,
+      child: ClipRRect(
+        key: ValueKey<VideoPlayerController>(_controller),
+        borderRadius: kDefaultBorderRadius,
+        child: HarpyVideoPlayer.fromController(
+          _controller,
+          allowVerticalOverflow: true,
+        ),
       ),
     );
   }
