@@ -100,7 +100,7 @@ class PostTweetDialogContent extends StatelessWidget {
       // prevent back button to close the dialog while in progress
       onWillPop: () => _onWillPop(state),
       child: HarpyDialog(
-        title: const Text('Tweeting'),
+        title: const Text('tweeting'),
         content: CustomAnimatedSize(
           child: Column(
             children: <Widget>[
