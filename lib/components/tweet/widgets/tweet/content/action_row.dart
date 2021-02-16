@@ -36,6 +36,15 @@ class TweetActionRow extends StatelessWidget {
               icon: const Icon(FeatherIcons.messageSquare),
               iconSize: 22,
               padding: DefaultEdgeInsets.all(),
+            )
+          else
+            HarpyButton.flat(
+              onTap: () => app<HarpyNavigator>().pushComposeScreen(
+                inReplyToStatus: tweet,
+              ),
+              icon: const Icon(Icons.reply),
+              iconSize: 22,
+              padding: DefaultEdgeInsets.all(),
             ),
           const Spacer(),
           if (tweet.translatable || tweet.quoteTranslatable)
