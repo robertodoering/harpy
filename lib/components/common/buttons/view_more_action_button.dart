@@ -20,7 +20,6 @@ class ViewMoreActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-
     return HarpyButton.flat(
       icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
       padding: padding,
@@ -32,6 +31,7 @@ class ViewMoreActionButton extends StatelessWidget {
             topRight: kDefaultRadius,
           ),
         ),
+        // todo: use list instead of column
         builder: (BuildContext context) => Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
