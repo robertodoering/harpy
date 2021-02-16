@@ -111,26 +111,23 @@ class AddImagesEvent extends ComposeEvent {
     ComposeState currentState,
     ComposeBloc bloc,
   }) async* {
-    if (currentState is ComposeState) {
-      List<PlatformFile> newFiles = List<PlatformFile>.from(files);
+    List<PlatformFile> newFiles = List<PlatformFile>.from(files);
 
-      if (currentState.hasImages) {
-        _removeDuplicates(newFiles, currentState);
+    if (currentState.hasImages) {
+      _removeDuplicates(newFiles, currentState);
 
-        newFiles = List<PlatformFile>.from(currentState.media)
-          ..addAll(newFiles);
-      }
-
-      if (newFiles.length > 4) {
-        app<MessageService>().show('only up to 4 images can be attached');
-        newFiles = newFiles.sublist(0, 4);
-      }
-
-      yield ComposeState(
-        media: newFiles,
-        type: MediaType.image,
-      );
+      newFiles = List<PlatformFile>.from(currentState.media)..addAll(newFiles);
     }
+
+    if (newFiles.length > 4) {
+      app<MessageService>().show('only up to 4 images can be attached');
+      newFiles = newFiles.sublist(0, 4);
+    }
+
+    yield ComposeState(
+      media: newFiles,
+      type: MediaType.image,
+    );
   }
 }
 
@@ -151,12 +148,10 @@ class AddGifEvent extends ComposeEvent {
     ComposeState currentState,
     ComposeBloc bloc,
   }) async* {
-    if (currentState is ComposeState) {
-      yield ComposeState(
-        media: <PlatformFile>[file],
-        type: MediaType.gif,
-      );
-    }
+    yield ComposeState(
+      media: <PlatformFile>[file],
+      type: MediaType.gif,
+    );
   }
 }
 
@@ -177,12 +172,10 @@ class AddVideoEvent extends ComposeEvent {
     ComposeState currentState,
     ComposeBloc bloc,
   }) async* {
-    if (currentState is ComposeState) {
-      yield ComposeState(
-        media: <PlatformFile>[file],
-        type: MediaType.video,
-      );
-    }
+    yield ComposeState(
+      media: <PlatformFile>[file],
+      type: MediaType.video,
+    );
   }
 }
 
