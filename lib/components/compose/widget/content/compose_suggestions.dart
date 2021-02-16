@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
-import 'package:harpy/components/compose/bloc/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 /// Builds the [child] as suggestions when the [selectionRegExp] matches the
 /// selection.
 class ComposeTweetSuggestions extends StatefulWidget {
-  const ComposeTweetSuggestions(
-    this.bloc, {
+  const ComposeTweetSuggestions({
     @required this.child,
     @required this.controller,
     @required this.selectionRegExp,
     @required this.onSearch,
   });
 
-  final ComposeBloc bloc;
   final Widget child;
   final ComposeTextController controller;
   final RegExp selectionRegExp;

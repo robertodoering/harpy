@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/src/platform_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/buttons/circle_button.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
-import 'package:harpy/components/compose/bloc/compose_bloc.dart';
-import 'package:harpy/components/compose/bloc/compose_event.dart';
+import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media_layout.dart';
@@ -15,9 +15,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:video_player/video_player.dart';
 
 class ComposeTweetMedia extends StatefulWidget {
-  const ComposeTweetMedia(this.bloc);
-
-  final ComposeBloc bloc;
+  const ComposeTweetMedia();
 
   @override
   _ComposeTweetMediaState createState() => _ComposeTweetMediaState();
@@ -27,8 +25,8 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
   VideoPlayerController _controller;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     _initController();
   }
@@ -41,41 +39,54 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
   }
 
   Future<void> _initController() async {
-    if (widget.bloc.hasVideo) {
-      if (_controller == null ||
-          !_controller.dataSource.contains(widget.bloc.media.first.path)) {
+    final ComposeBloc bloc = context.read<ComposeBloc>();
+    final ComposeState state = bloc.state;
+
+    if (state.hasVideo) {
+      final bool newVideo = _controller != null &&
+          !_controller.dataSource.contains(state.media.first.path);
+
+      if (_controller == null || newVideo) {
         try {
+          if (newVideo) {
+            await _controller.dispose();
+          }
+
           _controller = VideoPlayerController.file(
-            File(widget.bloc.media.first.path),
+            File(state.media.first.path),
           );
+
           await _controller.initialize();
+
           if (_controller.value.duration > const Duration(seconds: 140)) {
             // video too long
-            widget.bloc.add(const ClearTweetMediaEvent());
-            app<MessageService>()
-                .show('video must be shorter than 140 seconds');
+            bloc.add(const ClearComposedTweet());
+            app<MessageService>().show(
+              'video must be shorter than 140 seconds',
+            );
           } else if (_controller.value.duration <
               const Duration(milliseconds: 500)) {
             // video too short
-            widget.bloc.add(const ClearTweetMediaEvent());
+            bloc.add(const ClearComposedTweet());
             app<MessageService>().show('video must be longer than 0.5 seconds');
           } else {
             setState(() {});
           }
         } catch (e) {
           // invalid video
-          widget.bloc.add(const ClearTweetMediaEvent());
+          bloc.add(const ClearComposedTweet());
           app<MessageService>().show('invalid video');
         }
       }
-    } else {
+    } else if (_controller != null) {
+      await _controller.dispose();
       _controller = null;
     }
   }
 
-  Widget _buildImages() {
+  Widget _buildImages(ComposeState state) {
     return TweetImagesLayout(
-      children: widget.bloc.media
+      children: state.media
           .map((PlatformFile imageFile) => Image.file(
                 File(imageFile.path),
                 fit: BoxFit.cover,
@@ -86,11 +97,11 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
     );
   }
 
-  Widget _buildGif() {
+  Widget _buildGif(ComposeState state) {
     return TweetImagesLayout(
       children: <Widget>[
         Image.file(
-          File(widget.bloc.media.first.path),
+          File(state.media.first.path),
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
@@ -112,15 +123,18 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
 
   @override
   Widget build(BuildContext context) {
+    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final ComposeState state = bloc.state;
+
     Widget child;
     double aspectRatio;
 
-    switch (widget.bloc.mediaType) {
+    switch (state.type) {
       case MediaType.image:
-        child = _buildImages();
+        child = _buildImages(state);
         break;
       case MediaType.gif:
-        child = _buildGif();
+        child = _buildGif(state);
         break;
       case MediaType.video:
         child = _buildVideo();
@@ -136,7 +150,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
       child: Stack(
         children: <Widget>[
           TweetMediaLayout(
-            isImage: !widget.bloc.hasVideo,
+            isImage: !state.hasVideo,
             videoAspectRatio: aspectRatio,
             child: child,
           ),
@@ -146,7 +160,7 @@ class _ComposeTweetMediaState extends State<ComposeTweetMedia> {
               padding: EdgeInsets.all(defaultSmallPaddingValue),
               child: CircleButton(
                 color: Colors.black45,
-                onTap: () => widget.bloc.add(const ClearTweetMediaEvent()),
+                onTap: () => bloc.add(const ClearComposedTweet()),
                 child: const Icon(Icons.close),
               ),
             ),

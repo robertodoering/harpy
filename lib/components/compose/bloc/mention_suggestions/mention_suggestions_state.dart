@@ -1,8 +1,40 @@
-import 'package:flutter/foundation.dart';
+part of 'mention_suggestions_bloc.dart';
 
-@immutable
-abstract class MentionSuggestionsState {}
+class MentionSuggestionsState extends Equatable {
+  const MentionSuggestionsState({
+    this.lastQuery = '',
+    this.searchedUsers = const <String, List<UserData>>{},
+    this.followingUsers = const <UserData>[],
+  });
 
-class InitialMentionSuggestionsState extends MentionSuggestionsState {}
+  final String lastQuery;
 
-class UpdatedSuggestionsState extends MentionSuggestionsState {}
+  /// Searched users mapped by their query.
+  final Map<String, List<UserData>> searchedUsers;
+
+  final List<UserData> followingUsers;
+
+  /// The list of following users filtered by the query.
+  List<UserData> get filteredFollowing => followingUsers.isNotEmpty
+      ? followingUsers
+          .where((UserData user) =>
+              user.name.toLowerCase().contains(lastQuery.toLowerCase()) ||
+              user.screenName.toLowerCase().startsWith(lastQuery.toLowerCase()))
+          .toList()
+      : <UserData>[];
+
+  /// The searched users for the current query.
+  List<UserData> get filteredSearchedUsers =>
+      searchedUsers[lastQuery] ?? <UserData>[];
+
+  /// Whether user suggestions for the current query exist.
+  bool get hasSuggestions =>
+      filteredFollowing.isNotEmpty || filteredSearchedUsers.isNotEmpty;
+
+  @override
+  List<Object> get props => <Object>[
+        lastQuery,
+        searchedUsers,
+        followingUsers,
+      ];
+}

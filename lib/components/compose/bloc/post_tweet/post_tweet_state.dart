@@ -1,111 +1,142 @@
-import 'package:flutter/foundation.dart';
-import 'package:harpy/components/compose/bloc/compose_bloc.dart';
-import 'package:humanize/humanize.dart';
+part of 'post_tweet_bloc.dart';
 
 @immutable
-abstract class PostTweetState {
-  String get message => null;
+abstract class PostTweetState extends Equatable {
+  const PostTweetState({
+    this.message,
+    this.additionalInfo,
+  });
 
-  String get additionalInfo => null;
+  final String message;
+  final String additionalInfo;
+
+  @override
+  List<Object> get props => <Object>[
+        message,
+        additionalInfo,
+      ];
 
   /// Whether the state has a humanly readable message.
   bool get hasMessage => message != null;
 
   /// Whether additional info exists for this message.
   bool get hasAdditionalInfo => additionalInfo != null;
+
+  /// Whether the tweet is currently being posted.
+  bool get inProgress =>
+      this is! TweetSuccessfullyPosted && this is! PostTweetErrorState;
+
+  /// Whether the tweet has successfully been posted.
+  bool get postingSuccessful => this is TweetSuccessfullyPosted;
+
+  /// Whether posting the tweet failed.
+  bool get postingFailed => this is PostTweetErrorState;
 }
 
-class InitialPostTweetStateState extends PostTweetState {}
-
-/// The state when a video is being converted
-class ConvertingVideoState extends PostTweetState {
-  @override
-  String get message => 'Preparing video...';
-
-  @override
-  String get additionalInfo => 'This may take a moment';
+class PostTweetInitial extends PostTweetState {
+  const PostTweetInitial();
 }
 
-class UploadingMediaState extends PostTweetState {
-  UploadingMediaState({
-    @required this.index,
-    @required this.multiple,
-    @required this.type,
-  });
+class ConvertingTweetVideo extends PostTweetState {
+  const ConvertingTweetVideo()
+      : super(
+          message: 'preparing video...',
+          additionalInfo: 'this may take a moment',
+        );
+}
 
-  /// The index of the media that is currently being uploaded.
-  final int index;
+class UploadingTweetMedia extends PostTweetState {
+  UploadingTweetMedia({
+    @required int index,
+    @required bool multiple,
+    @required MediaType type,
+  }) : super(
+          message: _messageFromType(type, index, multiple),
+          additionalInfo: 'this may take a moment',
+        );
 
-  final bool multiple;
-  final MediaType type;
-
-  @override
-  String get message {
+  static String _messageFromType(MediaType type, int index, bool multiple) {
     switch (type) {
       case MediaType.image:
         return multiple
-            ? 'Uploading ${ordinal(index + 1)} image...'
-            : 'Uploading image...';
+            ? 'uploading ${ordinal(index + 1)} image...'
+            : 'uploading image...';
       case MediaType.gif:
-        return 'Uploading gif...';
+        return 'uploading gif...';
       case MediaType.video:
-        return 'Uploading video...';
+        return 'uploading video...';
       default:
-        return 'Uploading media...';
+        return 'uploading media...';
     }
   }
-
-  @override
-  String get additionalInfo => 'This may take a moment';
 }
 
-/// The event when the tweet is being sent to the twitter api.
-class UpdatingStatusState extends PostTweetState {
+class TweetMediaSuccessfullyUploaded extends PostTweetState {
+  const TweetMediaSuccessfullyUploaded({
+    @required String previousMessage,
+    @required String previousAdditionalInfo,
+    @required this.mediaIds,
+  }) : super(
+          message: previousMessage,
+          additionalInfo: previousAdditionalInfo,
+        );
+
+  final List<String> mediaIds;
+
   @override
-  String get message => 'Sending tweet...';
+  List<Object> get props => <Object>[
+        ...super.props,
+        mediaIds,
+      ];
 }
 
-/// The state when the tweet hast been posted successfully.
-class StatusSuccessfullyUpdated extends PostTweetState {
-  @override
-  String get message => 'Tweet successfully sent!';
+class PostingTweet extends PostTweetState {
+  const PostingTweet()
+      : super(
+          message: 'sending tweet...',
+        );
 }
 
-abstract class PostTweetError extends PostTweetState {}
-
-/// The state when converting a video was not successful.
-class ConvertingVideoError extends PostTweetError {
-  @override
-  String get message => 'Error preparing video.';
-
-  @override
-  String get additionalInfo => 'The video format may not be supported.';
+class TweetSuccessfullyPosted extends PostTweetState {
+  const TweetSuccessfullyPosted()
+      : super(
+          message: 'tweet successfully sent!',
+        );
 }
 
-/// The state when uploading the media was not successful.
-class UploadMediaError extends PostTweetError {
-  @override
-  String get message => 'Error uploading media.';
+abstract class PostTweetErrorState extends PostTweetState {
+  const PostTweetErrorState({
+    String message,
+    String additionalInfo,
+  }) : super(
+          message: message,
+          additionalInfo: additionalInfo,
+        );
 }
 
-/// The state when posting the tweet failed.
-class UpdatingStatusError extends PostTweetError {
-  UpdatingStatusError({
-    this.errorMessage,
-  });
+class ConvertingTweetVideoError extends PostTweetErrorState {
+  const ConvertingTweetVideoError()
+      : super(
+          message: 'error preparing video',
+          additionalInfo: 'the video format may not be supported',
+        );
+}
 
-  final String errorMessage;
+class UploadingTweetMediaError extends PostTweetErrorState {
+  const UploadingTweetMediaError()
+      : super(
+          message: 'error uploading media',
+        );
+}
 
-  @override
-  String get message => 'Error sending tweet.';
-
-  @override
-  String get additionalInfo {
-    if (errorMessage != null) {
-      return 'Twitter error message:\n'
-          '$errorMessage';
-    } else {
-      return null;
-    }
-  }
+class PostingTweetError extends PostTweetErrorState {
+  const PostingTweetError({
+    String errorMessage,
+  }) : super(
+          message: 'error sending tweet',
+          additionalInfo: errorMessage != null
+              ? 'twitter error message:\n'
+                  '$errorMessage'
+              : null,
+        );
 }
