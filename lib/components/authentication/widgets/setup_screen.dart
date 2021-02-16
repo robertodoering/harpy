@@ -135,6 +135,7 @@ class _SetupScreenState extends State<SetupScreen> {
               ),
             ),
             _buildContinueButton(themeBloc),
+            SizedBox(height: mediaQuery.padding.bottom),
           ],
         ),
       ),
