@@ -107,7 +107,7 @@ class PostTweetEvent extends Equatable with Logger {
           status: text,
           mediaIds: mediaIds,
           // todo: test with retweets
-          inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.originalIdStr,
+          inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
           autoPopulateReplyMetadata: true,
           trimUser: true,
         )
