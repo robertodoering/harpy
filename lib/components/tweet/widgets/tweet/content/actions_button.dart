@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
+import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -18,6 +19,10 @@ class TweetActionsButton extends StatelessWidget {
   final EdgeInsets padding;
   final double sizeDelta;
 
+  bool _shouldShowReply(BuildContext context) {
+    return ModalRoute.of(context).settings?.name != ComposeScreen.route;
+  }
+
   @override
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
@@ -25,16 +30,17 @@ class TweetActionsButton extends StatelessWidget {
     return ViewMoreActionButton(
       padding: padding,
       children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.reply),
-          title: const Text('reply'),
-          onTap: () async {
-            await app<HarpyNavigator>().state.maybePop();
-            app<HarpyNavigator>().pushComposeScreen(
-              inReplyToStatus: tweet,
-            );
-          },
-        ),
+        if (_shouldShowReply(context))
+          ListTile(
+            leading: const Icon(Icons.reply),
+            title: const Text('reply'),
+            onTap: () async {
+              await app<HarpyNavigator>().state.maybePop();
+              app<HarpyNavigator>().pushComposeScreen(
+                inReplyToStatus: tweet,
+              );
+            },
+          ),
         ListTile(
           leading: const Icon(FeatherIcons.share),
           title: const Text('open externally'),
