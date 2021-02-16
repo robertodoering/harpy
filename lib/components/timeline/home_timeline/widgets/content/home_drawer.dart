@@ -7,7 +7,6 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/beta_info/widgets/beta_info_screen.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
-import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
 import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
@@ -50,7 +49,7 @@ class HomeDrawer extends StatelessWidget {
                 title: const Text('Compose tweet'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushNamed(ComposeScreen.route);
+                  app<HarpyNavigator>().pushComposeScreen();
                 },
               ),
 

@@ -15,36 +15,38 @@ import 'package:harpy/misc/harpy_navigator.dart';
 /// While posting the tweet is in progress, the dialog is not dismissible.
 class PostTweetDialog extends StatelessWidget {
   const PostTweetDialog({
+    @required this.composeBloc,
     @required this.controller,
   });
 
+  final ComposeBloc composeBloc;
   final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc composeBloc = context.watch<ComposeBloc>();
-
     return BlocProvider<PostTweetBloc>(
       create: (BuildContext context) => PostTweetBloc(
         controller.text,
         composeBloc: composeBloc,
       ),
-      child: PostTweetDialogContent(controller: controller),
+      child: PostTweetDialogContent(
+        composeBloc: composeBloc,
+        controller: controller,
+      ),
     );
   }
 }
 
 class PostTweetDialogContent extends StatelessWidget {
   const PostTweetDialogContent({
+    @required this.composeBloc,
     @required this.controller,
   });
 
+  final ComposeBloc composeBloc;
   final ComposeTextController controller;
 
-  Future<bool> _onWillPop(
-    ComposeBloc composeBloc,
-    PostTweetState state,
-  ) async {
+  Future<bool> _onWillPop(PostTweetState state) async {
     if (state.inProgress) {
       return false;
     } else {
@@ -91,13 +93,12 @@ class PostTweetDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ComposeBloc composeBloc = context.watch<ComposeBloc>();
     final PostTweetBloc postTweetBloc = context.watch<PostTweetBloc>();
     final PostTweetState state = postTweetBloc.state;
 
     return WillPopScope(
       // prevent back button to close the dialog while in progress
-      onWillPop: () => _onWillPop(composeBloc, state),
+      onWillPop: () => _onWillPop(state),
       child: HarpyDialog(
         title: const Text('Tweeting'),
         content: CustomAnimatedSize(

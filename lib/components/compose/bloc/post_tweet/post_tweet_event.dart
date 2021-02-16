@@ -106,6 +106,9 @@ class PostTweetEvent extends Equatable with Logger {
         .update(
           status: text,
           mediaIds: mediaIds,
+          // todo: test with retweets
+          inReplyToStatusId: bloc.composeBloc.inReplyToStatus.originalIdStr,
+          autoPopulateReplyMetadata: true,
           trimUser: true,
         )
         .then((Tweet tweet) => TweetData.fromTweet(tweet))

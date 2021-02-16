@@ -5,7 +5,6 @@ import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/will_pop_harpy.dart';
-import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   Widget _buildFloatingActionButton() {
     if (_showFab) {
       return FloatingActionButton(
-        onPressed: () => app<HarpyNavigator>().pushNamed(ComposeScreen.route),
+        onPressed: () => app<HarpyNavigator>().pushComposeScreen(),
         child: const Icon(FeatherIcons.feather, size: 28),
       );
     } else {

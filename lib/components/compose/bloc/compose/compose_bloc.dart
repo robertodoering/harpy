@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:mime_type/mime_type.dart';
@@ -12,7 +13,16 @@ part 'compose_event.dart';
 part 'compose_state.dart';
 
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
-  ComposeBloc() : super(const ComposeState());
+  ComposeBloc({
+    this.inReplyToStatus,
+  }) : super(const ComposeState());
+
+  final TweetData inReplyToStatus;
+
+  /// Whether the user is replying to an existing tweet.
+  bool get isReplying => inReplyToStatus != null;
+
+  String get hintText => isReplying ? 'tweet your reply' : "what's happening?";
 
   @override
   Stream<ComposeState> mapEventToState(

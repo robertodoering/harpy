@@ -89,6 +89,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) => PostTweetDialog(
+                  composeBloc: bloc,
                   controller: widget.controller,
                 ),
               )

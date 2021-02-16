@@ -26,6 +26,16 @@ class TweetActionsButton extends StatelessWidget {
       padding: padding,
       children: <Widget>[
         ListTile(
+          leading: const Icon(Icons.reply),
+          title: const Text('reply'),
+          onTap: () async {
+            await app<HarpyNavigator>().state.maybePop();
+            app<HarpyNavigator>().pushComposeScreen(
+              inReplyToStatus: tweet,
+            );
+          },
+        ),
+        ListTile(
           leading: const Icon(FeatherIcons.share),
           title: const Text('open externally'),
           onTap: () {
