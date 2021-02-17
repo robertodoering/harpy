@@ -47,9 +47,6 @@ class PostTweetDialogContent extends StatelessWidget {
   final ComposeBloc composeBloc;
   final ComposeTextController controller;
 
-  // todo: try bloc state flags as extension w/ shadowing or overriting
-  //  state properties
-
   Widget _buildStateMessage(ThemeData theme, PostTweetState state) {
     return AnimatedSwitcher(
       duration: kShortAnimationDuration ~/ 2,
