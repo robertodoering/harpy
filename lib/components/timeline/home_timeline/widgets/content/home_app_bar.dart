@@ -1,14 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
+import 'package:harpy/components/search/widgets/search_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
 
   List<Widget> _buildActions(BuildContext context) {
     return <Widget>[
+      IconButton(
+        icon: const Icon(CupertinoIcons.search),
+        onPressed: () => app<HarpyNavigator>().pushNamed(SearchScreen.route),
+      ),
       PopupMenuButton<int>(
         onSelected: (int selection) {
           if (selection == 0) {

@@ -8,8 +8,6 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/beta_info/widgets/beta_info_screen.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
-import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
-import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
 import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -51,24 +49,6 @@ class HomeDrawer extends StatelessWidget {
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
                   app<HarpyNavigator>().pushComposeScreen();
-                },
-              ),
-
-              // search
-              ListTile(
-                leading: const Icon(CupertinoIcons.search),
-                title: const Text('Search tweets'),
-                onTap: () async {
-                  await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushNamed(TweetSearchScreen.route);
-                },
-              ),
-              ListTile(
-                leading: const Icon(CupertinoIcons.search),
-                title: const Text('Search users'),
-                onTap: () async {
-                  await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushNamed(UserSearchScreen.route);
                 },
               ),
 
