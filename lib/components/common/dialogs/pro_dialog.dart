@@ -58,7 +58,7 @@ class _ProDialogState extends State<ProDialog> {
           if (widget.feature != null) ...<Widget>[
             Text(
               '${widget.feature} is only available in the '
-              'pro version for harpy.',
+              'pro version for harpy',
               style: style,
             ),
             const SizedBox(height: 16),
@@ -72,7 +72,6 @@ class _ProDialogState extends State<ProDialog> {
                   style: linkStyle,
                   recognizer: _recognizer,
                 ),
-                const TextSpan(text: '.'),
               ],
               style: style,
             ),
