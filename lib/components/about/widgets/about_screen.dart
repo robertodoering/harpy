@@ -1,4 +1,5 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
@@ -44,22 +45,16 @@ class AboutScreen extends StatelessWidget {
     ];
   }
 
-  Widget _buildVersionCode(ThemeData theme) {
+  Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
     final String version = app<HarpyInfo>().packageInfo.version;
 
-    return Center(
-      child: Text('version $version', style: theme.textTheme.subtitle2),
-    );
-  }
-
-  Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
     return Card(
       child: Column(
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.history),
             title: Text(
-              'version history',
+              'version $version',
               style: theme.textTheme.subtitle1,
             ),
             shape: const RoundedRectangleBorder(
@@ -202,7 +197,7 @@ class AboutScreen extends StatelessWidget {
   Widget _buildPrivacyPolicy() {
     return Card(
       child: ListTile(
-        leading: const Icon(Icons.privacy_tip_outlined),
+        leading: const Icon(CupertinoIcons.exclamationmark_shield),
         title: const Text('privacy policy'),
         shape: kDefaultShapeBorder,
         onTap: () => launchUrl(_privacyPolicy),
@@ -241,8 +236,6 @@ class AboutScreen extends StatelessWidget {
         padding: DefaultEdgeInsets.all(),
         children: <Widget>[
           ..._buildTitleWithLogo(color),
-          defaultSmallVerticalSpacer,
-          _buildVersionCode(theme),
           defaultVerticalSpacer,
           _buildIntroductionText(theme, linkStyle),
           if (Harpy.isFree) ...<Widget>[
