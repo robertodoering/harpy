@@ -1,7 +1,8 @@
 Version 0.4.2
 
+· Added replying to tweets
 · Added support for attaching videos when composing tweets
-· Fix sometimes not parsing @mention in the tweet text (Thanks Darren!)
-· Fix tweet & tweet share button hidden behind navigation bar in Android 11
-· Fix 'create an account' button hidden behind navigation bar in Android 11
-· Fix keeping home timeline position cross session when switching accounts
+· Return to home timeline after posting a new tweet
+· Fixed sometimes not parsing @mention in the tweet text (Thanks Darren!)
+· Fixed some UI elements hidden behind navigation bar in Android 11
+· Fixed keeping home timeline position cross session when switching accounts
