@@ -93,7 +93,7 @@ class AboutScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: DefaultEdgeInsets.all(),
+            padding: const EdgeInsets.all(16),
             child: Text.rich(
               TextSpan(
                 children: <TextSpan>[
@@ -133,7 +133,7 @@ class AboutScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: DefaultEdgeInsets.all(),
+            padding: const EdgeInsets.all(16),
             child: Text(
               'please rate harpy in the play store!',
               style: theme.textTheme.subtitle2,
