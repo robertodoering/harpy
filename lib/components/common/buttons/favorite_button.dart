@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/action_button.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -36,7 +37,7 @@ class FavoriteButton extends StatelessWidget {
         double size,
       ) {
         return Icon(
-          active ? Icons.favorite : Icons.favorite_border,
+          active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
           size: size,
         );
       },

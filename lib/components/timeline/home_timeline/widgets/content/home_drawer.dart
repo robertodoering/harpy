@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -33,7 +34,7 @@ class HomeDrawer extends StatelessWidget {
             children: <Widget>[
               // profile
               ListTile(
-                leading: const Icon(FeatherIcons.user),
+                leading: const Icon(CupertinoIcons.person),
                 title: const Text('Profile'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
@@ -55,7 +56,7 @@ class HomeDrawer extends StatelessWidget {
 
               // search
               ListTile(
-                leading: const Icon(FeatherIcons.search),
+                leading: const Icon(CupertinoIcons.search),
                 title: const Text('Search tweets'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
@@ -63,7 +64,7 @@ class HomeDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(FeatherIcons.search),
+                leading: const Icon(CupertinoIcons.search),
                 title: const Text('Search users'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
@@ -107,7 +108,7 @@ class HomeDrawer extends StatelessWidget {
 
               // beta info
               ListTile(
-                leading: Icon(FeatherIcons.info, color: theme.accentColor),
+                leading: Icon(CupertinoIcons.info, color: theme.accentColor),
                 title: Text(
                   'Beta info',
                   style: TextStyle(
@@ -126,7 +127,7 @@ class HomeDrawer extends StatelessWidget {
 
         // logout
         ListTile(
-          leading: const Icon(FeatherIcons.logOut),
+          leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('Logout'),
           onTap: () =>
               context.read<AuthenticationBloc>().add(const LogoutEvent()),

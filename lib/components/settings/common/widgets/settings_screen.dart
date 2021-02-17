@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
@@ -18,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
     return <String, List<Widget>>{
       'tweet': <Widget>[
         ListTile(
-          leading: const Icon(FeatherIcons.image),
+          leading: const Icon(CupertinoIcons.photo),
           title: const Text('Media'),
           subtitle: const Text('settings for videos, images and gifs'),
           onTap: () => app<HarpyNavigator>().pushNamed(

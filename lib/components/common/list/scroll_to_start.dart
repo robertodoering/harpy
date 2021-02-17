@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_shifted_position.dart';
@@ -110,7 +111,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                 ),
                 child: HarpyButton.raised(
                   text: const Text('jump to top'),
-                  icon: const Icon(Icons.arrow_upward),
+                  icon: const Icon(CupertinoIcons.arrow_up, size: 20),
                   backgroundColor: theme.cardColor,
                   dense: true,
                   onTap: () => _scrollToStart(mediaQuery),

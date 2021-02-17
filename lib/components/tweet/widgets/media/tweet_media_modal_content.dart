@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
 
+// todo: refactor to be used in overlay_action_row
 class TweetMediaModalContent extends StatelessWidget {
   const TweetMediaModalContent({
     this.onDownload,
@@ -22,17 +23,17 @@ class TweetMediaModalContent extends StatelessWidget {
       children: <Widget>[
         const ModalSheetHandle(),
         ListTile(
-          leading: const Icon(FeatherIcons.share),
+          leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('open externally'),
           onTap: onOpenExternally,
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.download),
+          leading: const Icon(CupertinoIcons.arrow_down_to_line),
           title: const Text('download'),
           onTap: onDownload,
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.share2),
+          leading: const Icon(CupertinoIcons.share),
           title: const Text('share'),
           onTap: onShare,
         ),

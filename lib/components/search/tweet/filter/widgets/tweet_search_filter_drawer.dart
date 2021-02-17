@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
@@ -28,7 +28,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         ),
         HarpyButton.flat(
           dense: true,
-          icon: const Icon(FeatherIcons.x),
+          icon: const Icon(CupertinoIcons.xmark),
           onTap: model.hasFilter ? model.clear : null,
         ),
       ],
@@ -218,7 +218,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: HarpyButton.raised(
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(CupertinoIcons.search),
                     text: const Text('search'),
                     dense: true,
                     onTap: () {

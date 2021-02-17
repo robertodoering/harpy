@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
@@ -85,7 +86,7 @@ class TweetAuthorRow extends StatelessWidget {
           if (user.verified)
             Padding(
               padding: const EdgeInsets.only(left: 4),
-              child: Icon(Icons.verified_user, size: iconSize),
+              child: Icon(CupertinoIcons.checkmark_seal_fill, size: iconSize),
             ),
         ],
       ),

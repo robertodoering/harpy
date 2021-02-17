@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/misc/changelog_parser.dart';
 
 /// Builds the changelog widget for the [data].
@@ -78,7 +78,7 @@ class ChangelogWidget extends StatelessWidget {
         .map(
           (ChangelogEntry entry) => _buildEntry(
             entry,
-            const Icon(FeatherIcons.plusCircle, color: Colors.green),
+            const Icon(CupertinoIcons.plus_circled, color: Colors.green),
           ),
         )
         .toList();
@@ -86,28 +86,37 @@ class ChangelogWidget extends StatelessWidget {
     final List<Widget> changes = data.changes
         .map((ChangelogEntry entry) => _buildEntry(
               entry,
-              const Icon(FeatherIcons.plusCircle, color: Colors.yellow),
+              const Icon(
+                CupertinoIcons.smallcircle_fill_circle,
+                color: Colors.yellow,
+              ),
             ))
         .toList();
 
     final List<Widget> fixes = data.fixes
         .map((ChangelogEntry entry) => _buildEntry(
               entry,
-              const Icon(FeatherIcons.plusCircle, color: Colors.orange),
+              const Icon(
+                CupertinoIcons.smallcircle_fill_circle,
+                color: Colors.orange,
+              ),
             ))
         .toList();
 
     final List<Widget> removals = data.removals
         .map((ChangelogEntry entry) => _buildEntry(
               entry,
-              const Icon(FeatherIcons.minusCircle, color: Colors.red),
+              const Icon(CupertinoIcons.minus_circled, color: Colors.red),
             ))
         .toList();
 
     final List<Widget> others = data.others
         .map((ChangelogEntry entry) => _buildEntry(
               entry,
-              const Icon(FeatherIcons.plusCircle, color: Colors.blue),
+              const Icon(
+                CupertinoIcons.smallcircle_fill_circle,
+                color: Colors.blue,
+              ),
             ))
         .toList();
 

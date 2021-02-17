@@ -223,7 +223,7 @@ class LoginEvent extends AuthenticationEvent {
         _log.warning('error during login');
 
         yield UnauthenticatedState();
-        app<MessageService>().show('authentication failed, please try again.');
+        app<MessageService>().show('authentication failed, please try again');
         app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
           type: RouteType.fade,

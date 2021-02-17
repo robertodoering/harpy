@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
@@ -122,10 +123,7 @@ class UserProfileInfo extends StatelessWidget {
           if (bloc.user.verified) ...<InlineSpan>[
             const TextSpan(text: ' '),
             const WidgetSpan(
-              child: Icon(
-                Icons.verified_user,
-                size: 22,
-              ),
+              child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),
             ),
           ],
         ],

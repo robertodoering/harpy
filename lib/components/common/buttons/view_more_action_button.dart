@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/modal_sheet_handle.dart';
@@ -21,7 +22,10 @@ class ViewMoreActionButton extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return HarpyButton.flat(
-      icon: Icon(Icons.more_vert, size: theme.iconTheme.size + sizeDelta),
+      icon: Icon(
+        CupertinoIcons.ellipsis_vertical,
+        size: theme.iconTheme.size + sizeDelta,
+      ),
       padding: padding,
       onTap: () => showModalBottomSheet<void>(
         context: context,

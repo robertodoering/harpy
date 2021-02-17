@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/animations/explicit/fade_animation.dart';
@@ -66,7 +67,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
                     '${widget.activeFilters[i]}',
                     style: TextStyle(color: foregroundColor),
                   ),
-                  deleteIcon: const Icon(Icons.close, size: 16),
+                  deleteIcon: const Icon(CupertinoIcons.xmark, size: 14),
                   visualDensity: VisualDensity.compact,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   onDeleted: () => widget.onDeleted(i),
@@ -86,7 +87,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
     if (_showAddButton) {
       child = HarpyButton.flat(
         dense: true,
-        icon: const Icon(Icons.add),
+        icon: const Icon(CupertinoIcons.add),
         onTap: _controller.text.isEmpty
             ? null
             : () {

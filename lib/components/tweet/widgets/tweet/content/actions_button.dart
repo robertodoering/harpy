@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -32,7 +32,7 @@ class TweetActionsButton extends StatelessWidget {
       children: <Widget>[
         if (_shouldShowReply(context))
           ListTile(
-            leading: const Icon(Icons.reply),
+            leading: const Icon(CupertinoIcons.reply),
             title: const Text('reply'),
             onTap: () async {
               await app<HarpyNavigator>().state.maybePop();
@@ -42,7 +42,7 @@ class TweetActionsButton extends StatelessWidget {
             },
           ),
         ListTile(
-          leading: const Icon(FeatherIcons.share),
+          leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('open externally'),
           onTap: () {
             bloc.add(OpenTweetExternally(tweet: tweet));
@@ -50,7 +50,7 @@ class TweetActionsButton extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.copy),
+          leading: const Icon(CupertinoIcons.square_on_square),
           title: const Text('copy text'),
           enabled: bloc.tweet.hasText,
           onTap: () {
@@ -59,7 +59,7 @@ class TweetActionsButton extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.share2),
+          leading: const Icon(CupertinoIcons.share),
           title: const Text('share tweet'),
           onTap: () {
             bloc.add(ShareTweet(tweet: tweet));

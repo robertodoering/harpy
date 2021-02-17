@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/about/widgets/about_screen.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_event.dart';
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: SafeArea(
         child: HarpyButton.flat(
           icon: Icon(
-            FeatherIcons.info,
+            CupertinoIcons.info,
             color: theme.textTheme.bodyText1.color.withOpacity(.8),
           ),
           padding: const EdgeInsets.all(16),

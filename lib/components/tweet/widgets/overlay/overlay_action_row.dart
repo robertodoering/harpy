@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
@@ -28,7 +28,7 @@ class MediaOverlayActionRow extends StatelessWidget {
     return ViewMoreActionButton(
       children: <Widget>[
         ListTile(
-          leading: const Icon(FeatherIcons.share),
+          leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('open externally'),
           onTap: () {
             onOpenExternally?.call();
@@ -36,7 +36,7 @@ class MediaOverlayActionRow extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.download),
+          leading: const Icon(CupertinoIcons.arrow_down_to_line),
           title: const Text('download'),
           onTap: () {
             onDownload?.call();
@@ -44,7 +44,7 @@ class MediaOverlayActionRow extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: const Icon(FeatherIcons.share2),
+          leading: const Icon(CupertinoIcons.share),
           title: const Text('share'),
           onTap: () {
             onShare?.call();

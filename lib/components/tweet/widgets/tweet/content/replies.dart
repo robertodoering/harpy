@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
@@ -55,7 +56,7 @@ class TweetReplies extends StatelessWidget {
                 AnimatedContainer(
                   duration: kShortAnimationDuration,
                   width: TweetAuthorRow.defaultAvatarRadius * 2,
-                  child: const Icon(Icons.reply, size: 18),
+                  child: const Icon(CupertinoIcons.reply, size: 18),
                 ),
                 defaultHorizontalSpacer,
                 Expanded(

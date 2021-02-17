@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/common/widgets/radio_dialog_tile.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
@@ -20,7 +20,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   List<Widget> get _settings {
     return <Widget>[
       RadioDialogTile(
-        leading: FeatherIcons.wifi,
+        leading: CupertinoIcons.wifi,
         title: 'Media quality on wifi',
         description: 'change the media quality when using wifi',
         value: mediaPreferences.wifiMediaQuality,
@@ -30,7 +30,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         },
       ),
       RadioDialogTile(
-        leading: FeatherIcons.wifiOff,
+        leading: CupertinoIcons.wifi_slash,
         title: 'Media quality on mobile data',
         description: 'change the media quality when using mobile data',
         value: mediaPreferences.nonWifiMediaQuality,
@@ -40,7 +40,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         },
       ),
       RadioDialogTile(
-        leading: FeatherIcons.playCircle,
+        leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',
         description: 'change when gifs should automatically play',
         value: mediaPreferences.autoplayMedia,
@@ -54,7 +54,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         },
       ),
       RadioDialogTile(
-        leading: FeatherIcons.playCircle,
+        leading: CupertinoIcons.play_circle,
         title: 'Autoplay videos',
         description: 'change when videos should automatically play',
         value: mediaPreferences.autoplayVideos,
@@ -68,7 +68,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         },
       ),
       SwitchListTile(
-        secondary: const Icon(FeatherIcons.link2),
+        secondary: const Icon(CupertinoIcons.link),
         title: const Text('Always open links externally'),
         subtitle: const Text('coming soon!'),
         value: mediaPreferences.openLinksExternally,

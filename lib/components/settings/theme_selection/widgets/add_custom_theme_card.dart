@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/pro_dialog.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
@@ -67,7 +68,7 @@ class AddCustomThemeCard extends StatelessWidget {
         type: MaterialType.transparency,
         child: ListTile(
           shape: kDefaultShapeBorder,
-          leading: const Icon(Icons.add),
+          leading: const Icon(CupertinoIcons.add),
           title: const Text('add custom theme'),
           trailing: trailing,
           onTap: () => _onTap(

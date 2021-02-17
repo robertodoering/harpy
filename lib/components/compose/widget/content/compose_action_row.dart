@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
@@ -25,7 +25,7 @@ class ComposeTweetActionRow extends StatelessWidget {
       children: <Widget>[
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
-          icon: const Icon(FeatherIcons.image),
+          icon: const Icon(CupertinoIcons.photo),
           iconSize: 20,
           onTap: () => bloc.add(const PickTweetMediaEvent()),
         ),

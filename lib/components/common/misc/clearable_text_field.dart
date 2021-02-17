@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 
@@ -80,7 +80,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
       child = HarpyButton.flat(
         dense: true,
         icon: Icon(
-          FeatherIcons.x,
+          CupertinoIcons.xmark,
           size: 18,
           color: theme.iconTheme.color,
         ),

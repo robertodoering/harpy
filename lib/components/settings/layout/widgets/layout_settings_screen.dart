@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -19,7 +19,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
   List<Widget> get _settings {
     return <Widget>[
       SwitchListTile(
-        secondary: const Icon(FeatherIcons.alignJustify),
+        secondary: const Icon(CupertinoIcons.rectangle_compress_vertical),
         title: const Text('Compact layout'),
         subtitle: const Text('use a visually dense layout'),
         value: layoutPreferences.compactMode,
@@ -28,7 +28,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         },
       ),
       const ListTile(
-        leading: Icon(FeatherIcons.type),
+        leading: Icon(CupertinoIcons.textformat),
         title: Text('Font'),
         subtitle: Text('coming soon!'),
         enabled: false,

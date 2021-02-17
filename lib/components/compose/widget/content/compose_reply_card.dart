@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
@@ -21,7 +22,7 @@ class ComposeReplyCard extends StatelessWidget {
         children: <Widget>[
           const SizedBox(
             width: TweetAuthorRow.defaultAvatarRadius * 2,
-            child: Icon(Icons.reply, size: 18),
+            child: Icon(CupertinoIcons.reply, size: 18),
           ),
           defaultHorizontalSpacer,
           Expanded(

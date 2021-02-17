@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
@@ -29,7 +30,7 @@ class AddBackgroundColorCard extends StatelessWidget {
           type: MaterialType.transparency,
           child: ListTile(
             shape: kDefaultShapeBorder,
-            leading: const Icon(Icons.add),
+            leading: const Icon(CupertinoIcons.add),
             title: const Text('add background color'),
             onTap: () {
               if (bloc.canAddMoreBackgroundColors) {
