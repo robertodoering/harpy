@@ -153,7 +153,7 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDeveloperText(TextStyle linkStyle) {
+  Widget _buildDeveloperText(TextStyle linkStyle, TextTheme textTheme) {
     return Card(
       child: Column(
         children: <Widget>[
@@ -166,22 +166,17 @@ class AboutScreen extends StatelessWidget {
                 TextSpan(
                   children: <InlineSpan>[
                     const TextSpan(text: 'developed by '),
-                    TextSpan(text: 'roberto doering', style: linkStyle),
+                    TextSpan(text: 'roberto doering\n', style: linkStyle),
+                    TextSpan(text: 'rbydoering@gmail.com', style: linkStyle),
                   ],
                 ),
               ),
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(bottom: defaultPaddingValue),
-              child: Text.rich(
-                TextSpan(
-                  children: <InlineSpan>[
-                    TextSpan(text: 'rbydoering@gmail.com\n', style: linkStyle),
-                    const TextSpan(
-                      text: 'thank you for your feedback and bug reports!',
-                    ),
-                  ],
-                ),
+              padding: const EdgeInsets.only(top: 8, bottom: 16),
+              child: Text(
+                'thank you for your feedback and bug reports!',
+                style: textTheme.subtitle2,
               ),
             ),
             shape: const RoundedRectangleBorder(
@@ -245,7 +240,7 @@ class AboutScreen extends StatelessWidget {
           defaultVerticalSpacer,
           _buildRateAppText(theme),
           defaultVerticalSpacer,
-          _buildDeveloperText(linkStyle),
+          _buildDeveloperText(linkStyle, textTheme),
           defaultVerticalSpacer,
           _buildPrivacyPolicy(),
           SizedBox(height: mediaQuery.padding.bottom),
