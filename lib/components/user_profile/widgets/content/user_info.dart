@@ -124,6 +124,8 @@ class UserProfileInfo extends StatelessWidget {
             const TextSpan(text: ' '),
             const WidgetSpan(
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),
+              baseline: TextBaseline.alphabetic,
+              alignment: PlaceholderAlignment.baseline,
             ),
           ],
         ],
