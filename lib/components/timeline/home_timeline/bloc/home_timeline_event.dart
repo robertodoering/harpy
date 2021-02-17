@@ -208,3 +208,60 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
     bloc.refreshCompleter = Completer<void>();
   }
 }
+
+/// Adds a single [tweet] to the home timeline tweets.
+///
+/// If the tweet is a reply, the reply will be added to the replies for the
+/// parent tweet.
+/// Else it will be added to the beginning of the list.
+///
+/// Only affects the list when the state is [HomeTimelineResult].
+class AddToHomeTimeline extends HomeTimelineEvent {
+  const AddToHomeTimeline({
+    @required this.tweet,
+  });
+
+  final TweetData tweet;
+
+  @override
+  List<Object> get props => <Object>[
+        tweet,
+      ];
+
+  bool _addToParent(List<TweetData> tweets) {
+    final TweetData parent = tweets.firstWhere(
+      (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
+      orElse: () => null,
+    );
+
+    if (parent != null) {
+      parent.replies.add(tweet);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Stream<HomeTimelineState> applyAsync({
+    HomeTimelineState currentState,
+    HomeTimelineBloc bloc,
+  }) async* {
+    if (currentState is HomeTimelineResult) {
+      final List<TweetData> tweets = List<TweetData>.of(currentState.tweets);
+
+      if (tweet.inReplyToStatusIdStr == null || !_addToParent(tweets)) {
+        tweets.insert(0, tweet);
+      }
+
+      yield HomeTimelineResult(
+        tweets: tweets,
+        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
+        newTweetsExist: currentState.newTweetsExist,
+        lastInitialTweet: currentState.lastInitialTweet,
+        initialResults: currentState.initialResults,
+        canRequestOlder: currentState.canRequestOlder,
+      );
+    }
+  }
+}

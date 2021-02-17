@@ -108,7 +108,6 @@ class PostTweetEvent extends Equatable with Logger {
           mediaIds: mediaIds,
           inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
           autoPopulateReplyMetadata: true,
-          trimUser: true,
         )
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
         .catchError((dynamic error) {
@@ -125,7 +124,7 @@ class PostTweetEvent extends Equatable with Logger {
     });
 
     if (sentStatus != null) {
-      yield const TweetSuccessfullyPosted();
+      yield TweetSuccessfullyPosted(tweet: sentStatus);
     } else {
       yield PostingTweetError(errorMessage: additionalInfo);
     }

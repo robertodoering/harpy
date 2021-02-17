@@ -8,6 +8,7 @@ import 'package:harpy/components/compose/widget/post_tweet/post_tweet_dialog.dar
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
@@ -97,19 +98,17 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   Future<void> _showDialog(ComposeBloc bloc) async {
     _unfocus();
 
-    final bool result = await showDialog<bool>(
+    final TweetData sentTweet = await showDialog<TweetData>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => PostTweetDialog(
         composeBloc: bloc,
         controller: widget.controller,
       ),
-    ).then((bool value) => value == true);
+    );
 
-    if (result) {
-      context
-          .read<HomeTimelineBloc>()
-          .add(const RefreshHomeTimeline(clearPrevious: true));
+    if (sentTweet != null) {
+      context.read<HomeTimelineBloc>().add(AddToHomeTimeline(tweet: sentTweet));
 
       Navigator.popUntil(
         context,

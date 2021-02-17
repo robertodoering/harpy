@@ -7,6 +7,7 @@ import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -118,7 +119,11 @@ class WillPopPostTweetDialog extends StatelessWidget {
 
   Future<bool> _onWillPop(BuildContext context, PostTweetState state) async {
     if (!state.inProgress) {
-      Navigator.of(context).pop<bool>(state.postingSuccessful);
+      if (state is TweetSuccessfullyPosted) {
+        Navigator.of(context).pop<TweetData>(state.tweet);
+      } else {
+        Navigator.of(context).pop<void>();
+      }
     }
 
     return false;
