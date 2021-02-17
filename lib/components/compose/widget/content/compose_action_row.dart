@@ -121,7 +121,6 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     final bool canTweet =
         bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
-    // todo: loose focus on tap
     return HarpyButton.flat(
       padding: DefaultEdgeInsets.all(),
       icon: const Icon(Icons.send),
