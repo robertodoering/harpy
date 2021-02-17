@@ -6,6 +6,9 @@ import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/post_tweet/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
@@ -70,7 +73,48 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   void initState() {
     super.initState();
 
-    widget.controller.addListener(() => setState(() {}));
+    widget.controller.addListener(_listener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    widget.controller.removeListener(_listener);
+  }
+
+  void _listener() {
+    setState(() {});
+  }
+
+  void _unfocus() {
+    final FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus.unfocus();
+    }
+  }
+
+  Future<void> _showDialog(ComposeBloc bloc) async {
+    _unfocus();
+
+    final TweetData sentTweet = await showDialog<TweetData>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => PostTweetDialog(
+        composeBloc: bloc,
+        controller: widget.controller,
+      ),
+    );
+
+    if (sentTweet != null) {
+      context.read<HomeTimelineBloc>().add(AddToHomeTimeline(tweet: sentTweet));
+
+      Navigator.popUntil(
+        context,
+        (Route<dynamic> route) => route.settings.name == HomeScreen.route,
+      );
+    }
   }
 
   @override
@@ -84,15 +128,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
       padding: DefaultEdgeInsets.all(),
       icon: const Icon(Icons.send),
       iconSize: 20,
-      onTap: canTweet
-          ? () => showDialog<void>(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) => PostTweetDialog(
-                  controller: widget.controller,
-                ),
-              )
-          : null,
+      onTap: canTweet ? () => _showDialog(bloc) : null,
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
@@ -17,6 +19,7 @@ class ComposeTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ComposeBloc bloc = context.watch<ComposeBloc>();
 
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -25,8 +28,8 @@ class ComposeTextField extends StatelessWidget {
         focusNode: _focusNode,
         style: theme.textTheme.bodyText1,
         maxLines: null,
-        decoration: const InputDecoration(
-          hintText: "what's happening?",
+        decoration: InputDecoration(
+          hintText: bloc.hintText,
           isDense: true,
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,

@@ -74,7 +74,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
     if (visible) {
       final ScrollDirection scrollDirection = ScrollDirection.of(context);
 
-      if (scrollDirection.direction == null || scrollDirection.down) {
+      if (scrollDirection?.direction == null || scrollDirection.down) {
         // first time building the parent list or scrolling down, animate child
         if (mounted) {
           _controller.forward(from: 0);

@@ -18,9 +18,7 @@ part 'home_timeline_state.dart';
 
 class HomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState>
     with RequestLock {
-  HomeTimelineBloc() : super(const HomeTimelineInitial()) {
-    add(const RequestInitialHomeTimeline());
-  }
+  HomeTimelineBloc() : super(const HomeTimelineInitial());
 
   final TimelineService timelineService = app<TwitterApi>().timelineService;
   final TweetVisibilityPreferences tweetVisibilityPreferences =

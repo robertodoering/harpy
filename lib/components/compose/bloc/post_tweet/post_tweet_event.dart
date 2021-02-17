@@ -95,8 +95,8 @@ class PostTweetEvent extends Equatable with Logger {
     yield const PostingTweet();
 
     List<String> mediaIds;
-    if (currentState is TweetMediaSuccessfullyUploaded) {
-      mediaIds = currentState.mediaIds;
+    if (bloc.state is TweetMediaSuccessfullyUploaded) {
+      mediaIds = (bloc.state as TweetMediaSuccessfullyUploaded).mediaIds;
     }
 
     // additional info that will be displayed in the dialog (e.g. error message)
@@ -106,7 +106,8 @@ class PostTweetEvent extends Equatable with Logger {
         .update(
           status: text,
           mediaIds: mediaIds,
-          trimUser: true,
+          inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
+          autoPopulateReplyMetadata: true,
         )
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
         .catchError((dynamic error) {
@@ -123,7 +124,7 @@ class PostTweetEvent extends Equatable with Logger {
     });
 
     if (sentStatus != null) {
-      yield const TweetSuccessfullyPosted();
+      yield TweetSuccessfullyPosted(tweet: sentStatus);
     } else {
       yield PostingTweetError(errorMessage: additionalInfo);
     }

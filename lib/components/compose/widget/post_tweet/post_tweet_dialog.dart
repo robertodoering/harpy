@@ -7,6 +7,7 @@ import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/bloc/post_tweet/post_tweet_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -15,48 +16,36 @@ import 'package:harpy/misc/harpy_navigator.dart';
 /// While posting the tweet is in progress, the dialog is not dismissible.
 class PostTweetDialog extends StatelessWidget {
   const PostTweetDialog({
+    @required this.composeBloc,
     @required this.controller,
   });
 
+  final ComposeBloc composeBloc;
   final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc composeBloc = context.watch<ComposeBloc>();
-
     return BlocProvider<PostTweetBloc>(
       create: (BuildContext context) => PostTweetBloc(
         controller.text,
         composeBloc: composeBloc,
       ),
-      child: PostTweetDialogContent(controller: controller),
+      child: PostTweetDialogContent(
+        composeBloc: composeBloc,
+        controller: controller,
+      ),
     );
   }
 }
 
 class PostTweetDialogContent extends StatelessWidget {
   const PostTweetDialogContent({
+    @required this.composeBloc,
     @required this.controller,
   });
 
+  final ComposeBloc composeBloc;
   final ComposeTextController controller;
-
-  Future<bool> _onWillPop(
-    ComposeBloc composeBloc,
-    PostTweetState state,
-  ) async {
-    if (state.inProgress) {
-      return false;
-    } else {
-      if (state.postingSuccessful) {
-        // cleanup after successful post
-        composeBloc.add(const ClearComposedTweet());
-        controller.text = '';
-      }
-
-      return true;
-    }
-  }
 
   Widget _buildStateMessage(ThemeData theme, PostTweetState state) {
     return AnimatedSwitcher(
@@ -91,15 +80,12 @@ class PostTweetDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ComposeBloc composeBloc = context.watch<ComposeBloc>();
     final PostTweetBloc postTweetBloc = context.watch<PostTweetBloc>();
     final PostTweetState state = postTweetBloc.state;
 
-    return WillPopScope(
-      // prevent back button to close the dialog while in progress
-      onWillPop: () => _onWillPop(composeBloc, state),
+    return WillPopPostTweetDialog(
       child: HarpyDialog(
-        title: const Text('Tweeting'),
+        title: const Text('tweeting'),
         content: CustomAnimatedSize(
           child: Column(
             children: <Widget>[
@@ -117,6 +103,37 @@ class PostTweetDialogContent extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class WillPopPostTweetDialog extends StatelessWidget {
+  const WillPopPostTweetDialog({
+    @required this.child,
+  });
+
+  final Widget child;
+
+  Future<bool> _onWillPop(BuildContext context, PostTweetState state) async {
+    if (!state.inProgress) {
+      if (state is TweetSuccessfullyPosted) {
+        Navigator.of(context).pop<TweetData>(state.tweet);
+      } else {
+        Navigator.of(context).pop<void>();
+      }
+    }
+
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final PostTweetBloc postTweetBloc = context.watch<PostTweetBloc>();
+    final PostTweetState state = postTweetBloc.state;
+
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context, state),
+      child: child,
     );
   }
 }

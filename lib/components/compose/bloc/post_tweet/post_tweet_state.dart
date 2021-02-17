@@ -98,10 +98,19 @@ class PostingTweet extends PostTweetState {
 }
 
 class TweetSuccessfullyPosted extends PostTweetState {
-  const TweetSuccessfullyPosted()
-      : super(
+  const TweetSuccessfullyPosted({
+    @required this.tweet,
+  }) : super(
           message: 'tweet successfully sent!',
         );
+
+  final TweetData tweet;
+
+  @override
+  List<Object> get props => <Object>[
+        ...super.props,
+        tweet,
+      ];
 }
 
 abstract class PostTweetErrorState extends PostTweetState {

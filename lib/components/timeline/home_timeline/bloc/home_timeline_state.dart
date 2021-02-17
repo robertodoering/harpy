@@ -1,5 +1,8 @@
 part of 'home_timeline_bloc.dart';
 
+// todo: try bloc state flags as extension w/ shadowing or overriting
+//  state properties
+
 abstract class HomeTimelineState extends Equatable {
   const HomeTimelineState();
 

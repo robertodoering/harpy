@@ -166,6 +166,14 @@ class HarpyNavigator {
       'initialSearchQuery': initialSearchQuery,
     });
   }
+
+  void pushComposeScreen({
+    TweetData inReplyToStatus,
+  }) {
+    pushNamed(ComposeScreen.route, arguments: <String, dynamic>{
+      'inReplyToStatus': inReplyToStatus,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -199,7 +207,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
       break;
     case ComposeScreen.route:
-      screen = const ComposeScreen();
+      screen = ComposeScreen(
+        inReplyToStatus: arguments['inReplyToStatus'],
+      );
       break;
     case FollowingScreen.route:
       screen = FollowingScreen(
