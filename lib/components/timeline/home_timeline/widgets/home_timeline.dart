@@ -17,8 +17,6 @@ import 'content/home_app_bar.dart';
 import 'content/new_tweets_text.dart';
 
 class HomeTimeline extends StatefulWidget {
-  const HomeTimeline();
-
   @override
   _HomeTimelineState createState() => _HomeTimelineState();
 }

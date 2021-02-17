@@ -6,6 +6,7 @@ import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/compose/widget/compose_text_controller.dart';
 import 'package:harpy/components/compose/widget/post_tweet/post_tweet_dialog.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
@@ -106,7 +107,10 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     ).then((bool value) => value == true);
 
     if (result) {
-      // todo: refresh home timeline
+      context
+          .read<HomeTimelineBloc>()
+          .add(const RefreshHomeTimeline(clearPrevious: true));
+
       Navigator.popUntil(
         context,
         (Route<dynamic> route) => route.settings.name == HomeScreen.route,

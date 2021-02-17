@@ -37,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     if (widget.autoLogin == true) {
       ChangelogDialog.maybeShow(context);
     }
+
+    context.read<HomeTimelineBloc>().add(const RequestInitialHomeTimeline());
   }
 
   @override
@@ -86,10 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         child: HarpyScaffold(
           drawer: const HomeDrawer(),
           floatingActionButton: _buildFloatingActionButton(),
-          body: BlocProvider<HomeTimelineBloc>(
-            create: (_) => HomeTimelineBloc(),
-            child: const HomeTimeline(),
-          ),
+          body: HomeTimeline(),
         ),
       ),
     );
