@@ -35,7 +35,6 @@ class TweetSearchAppBar extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        // todo: show indicator when filter is active
         IconButton(
           icon: const Icon(Icons.filter_alt_outlined),
           onPressed: () {
