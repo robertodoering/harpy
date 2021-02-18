@@ -5,15 +5,20 @@ import 'package:harpy/components/compose/bloc/compose/compose_bloc.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-import 'content/compose_reply_card.dart';
+import 'content/compose_parent_tweet_card.dart';
 import 'content/compose_tweet_card.dart';
 
 class ComposeScreen extends StatelessWidget {
   const ComposeScreen({
     this.inReplyToStatus,
-  });
+    this.quotedTweet,
+  }) : assert(inReplyToStatus == null || quotedTweet == null);
 
+  /// The tweet that the user is replying to.
   final TweetData inReplyToStatus;
+
+  /// The tweet that the user is quoting (aka retweeting with quote).
+  final TweetData quotedTweet;
 
   static const String route = 'compose_screen';
 
@@ -28,7 +33,16 @@ class ComposeScreen extends StatelessWidget {
           child: const ComposeTweetCard(),
         ),
         defaultVerticalSpacer,
-        ComposeReplyCard(inReplyToStatus: inReplyToStatus),
+        if (inReplyToStatus != null)
+          ComposeParentTweetCard(
+            parentTweet: inReplyToStatus,
+            text: 'replying to',
+          )
+        else if (quotedTweet != null)
+          ComposeParentTweetCard(
+            parentTweet: quotedTweet,
+            text: 'quoting',
+          ),
       ],
     );
   }
@@ -39,7 +53,7 @@ class ComposeScreen extends StatelessWidget {
 
     Widget child;
 
-    if (inReplyToStatus != null) {
+    if (inReplyToStatus != null || quotedTweet != null) {
       child = _buildComposeCardWithReply(mediaQuery);
     } else {
       child = const ComposeTweetCard();
@@ -48,6 +62,7 @@ class ComposeScreen extends StatelessWidget {
     return BlocProvider<ComposeBloc>(
       create: (BuildContext context) => ComposeBloc(
         inReplyToStatus: inReplyToStatus,
+        quotedTweet: quotedTweet,
       ),
       child: HarpyScaffold(
         title: 'compose tweet',

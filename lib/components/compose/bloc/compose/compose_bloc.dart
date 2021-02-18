@@ -15,9 +15,11 @@ part 'compose_state.dart';
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc({
     this.inReplyToStatus,
+    this.quotedTweet,
   }) : super(const ComposeState());
 
   final TweetData inReplyToStatus;
+  final TweetData quotedTweet;
 
   /// Whether the user is replying to an existing tweet.
   bool get isReplying => inReplyToStatus != null;

@@ -5,14 +5,16 @@ import 'package:harpy/components/tweet/widgets/tweet/content/author_row.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 
-class ComposeReplyCard extends StatelessWidget {
-  const ComposeReplyCard({
-    @required this.inReplyToStatus,
+class ComposeParentTweetCard extends StatelessWidget {
+  const ComposeParentTweetCard({
+    @required this.parentTweet,
+    @required this.text,
   });
 
-  final TweetData inReplyToStatus;
+  final TweetData parentTweet;
+  final String text;
 
-  Widget _buildReplyingText(ThemeData theme) {
+  Widget _buildParentText(ThemeData theme) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: defaultPaddingValue,
@@ -27,7 +29,7 @@ class ComposeReplyCard extends StatelessWidget {
           defaultHorizontalSpacer,
           Expanded(
             child: Text(
-              'replying to',
+              text,
               style: theme.textTheme.subtitle1,
             ),
           ),
@@ -44,9 +46,9 @@ class ComposeReplyCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _buildReplyingText(theme),
+        _buildParentText(theme),
         defaultVerticalSpacer,
-        TweetCard(inReplyToStatus),
+        TweetCard(parentTweet),
       ],
     );
   }

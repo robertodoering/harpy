@@ -170,9 +170,11 @@ class HarpyNavigator {
 
   void pushComposeScreen({
     TweetData inReplyToStatus,
+    TweetData quotedTweet,
   }) {
     pushNamed(ComposeScreen.route, arguments: <String, dynamic>{
       'inReplyToStatus': inReplyToStatus,
+      'quotedTweet': quotedTweet,
     });
   }
 }
@@ -210,6 +212,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case ComposeScreen.route:
       screen = ComposeScreen(
         inReplyToStatus: arguments['inReplyToStatus'],
+        quotedTweet: arguments['quotedTweet'],
       );
       break;
     case FollowingScreen.route:
