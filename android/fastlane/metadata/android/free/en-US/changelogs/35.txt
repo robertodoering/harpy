@@ -1,5 +1,6 @@
 Version 0.4.3
 
+· Added retweeting with quotes
 · Added search screen for user & tweet search
 · Added worldwide trends in search screen
 · Changed search button styling in tweet search filter
