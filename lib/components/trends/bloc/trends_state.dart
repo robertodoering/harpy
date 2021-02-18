@@ -1,11 +1,64 @@
-import 'package:flutter/foundation.dart';
+part of 'trends_bloc.dart';
 
-@immutable
-abstract class TrendsState {}
+abstract class TrendsState extends Equatable {
+  const TrendsState();
+}
 
-class InitialTrendsState extends TrendsState {}
+extension TrendsExtension on TrendsState {
+  bool get isLoading => this is RequestingTrends;
 
-/// The state when trends are currently being requested.
-class RequestingTrendsState extends TrendsState {}
+  bool get loadingFailed => this is FindTrendsFailure;
 
-class UpdatedTrendsState extends TrendsState {}
+  bool get hasTrends =>
+      this is FoundTrendsState &&
+      (this as FoundTrendsState).trends != null &&
+      (this as FoundTrendsState).trends.isNotEmpty;
+
+  List<Trend> get trends => this is FoundTrendsState
+      ? (this as FoundTrendsState).trends ?? <Trend>[]
+      : <Trend>[];
+
+  List<Trend> get hashtags => this is FoundTrendsState
+      ? (this as FoundTrendsState).hashtags
+      : <Trend>[];
+}
+
+class TrendsInitial extends TrendsState {
+  const TrendsInitial();
+
+  @override
+  List<Object> get props => <Object>[];
+}
+
+class RequestingTrends extends TrendsState {
+  const RequestingTrends();
+
+  @override
+  List<Object> get props => <Object>[];
+}
+
+class FoundTrendsState extends TrendsState {
+  FoundTrendsState({
+    @required this.woeid,
+    @required this.trends,
+  }) : hashtags =
+            trends.where((Trend trend) => trend.name.startsWith('#')).toList();
+
+  final int woeid;
+  final List<Trend> trends;
+  final List<Trend> hashtags;
+
+  @override
+  List<Object> get props => <Object>[
+        woeid,
+        trends,
+        hashtags,
+      ];
+}
+
+class FindTrendsFailure extends TrendsState {
+  const FindTrendsFailure();
+
+  @override
+  List<Object> get props => <Object>[];
+}
