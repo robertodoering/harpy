@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
+import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/harpy_info.dart';
@@ -216,12 +217,13 @@ class AboutScreen extends StatelessWidget {
       title: 'about',
       actions: <Widget>[
         PopupMenuButton<void>(
+          icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
           itemBuilder: (BuildContext context) {
             return <PopupMenuEntry<void>>[
-              const PopupMenuItem<void>(
+              const HarpyPopupMenuItem<void>(
                 value: 0,
-                child: Text('show licenses'),
+                text: Text('show licenses'),
               ),
             ];
           },

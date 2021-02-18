@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -40,11 +41,12 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
   List<Widget> _buildActions() {
     return <Widget>[
       PopupMenuButton<void>(
+        icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) => setState(layoutPreferences.defaultSettings),
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[
-            const PopupMenuItem<void>(
-              child: Text('reset to default'),
+            const HarpyPopupMenuItem<void>(
+              text: Text('reset to default'),
             ),
           ];
         },
