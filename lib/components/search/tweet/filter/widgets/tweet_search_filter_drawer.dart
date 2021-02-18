@@ -203,6 +203,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   }
 
   Widget _buildSearchButton(
+    ThemeData theme,
     TweetSearchFilterModel model,
     TweetSearchBloc bloc,
     EdgeInsets padding,
@@ -220,6 +221,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
                   child: HarpyButton.raised(
                     icon: const Icon(CupertinoIcons.search),
                     text: const Text('search'),
+                    backgroundColor: theme.cardColor,
                     dense: true,
                     onTap: () {
                       bloc.add(SearchTweets(filter: model.value));
@@ -247,13 +249,14 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         // add status bar height to top padding and make it scrollable
         SizedBox(height: defaultPaddingValue + mediaQuery.padding.top),
         _buildTitleRow(theme, model),
-        _buildSearchButton(model, bloc, DefaultEdgeInsets.all()),
+        _buildSearchButton(theme, model, bloc, DefaultEdgeInsets.all()),
         _buildGeneralGroup(model, theme),
         defaultVerticalSpacer,
         _buildIncludesGroup(model),
         defaultVerticalSpacer,
         _buildExcludesGroup(model),
         _buildSearchButton(
+          theme,
           model,
           bloc,
           DefaultEdgeInsets.all().copyWith(bottom: 0),
