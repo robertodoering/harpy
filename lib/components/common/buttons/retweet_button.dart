@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/common/buttons/action_button.dart';
+import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:like_button/like_button.dart';
 
 /// The retweet button for a [TweetActionRow].
-class RetweetButton extends StatelessWidget {
+class RetweetButton extends StatefulWidget {
   const RetweetButton(
     this.bloc, {
     this.padding = const EdgeInsets.all(8),
@@ -17,20 +20,74 @@ class RetweetButton extends StatelessWidget {
   final EdgeInsets padding;
 
   @override
+  _RetweetButtonState createState() => _RetweetButtonState();
+}
+
+class _RetweetButtonState extends State<RetweetButton> {
+  Future<void> _showRetweetButtonMenu() async {
+    final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
+
+    final RenderBox button = context.findRenderObject() as RenderBox;
+
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(
+          button.size.bottomLeft(Offset.zero),
+          ancestor: overlay,
+        ),
+        button.localToGlobal(
+          button.size.bottomRight(Offset.zero),
+          ancestor: overlay,
+        ),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    final int result = await showMenu<int>(
+      context: context,
+      elevation: popupMenuTheme.elevation,
+      items: const <PopupMenuEntry<int>>[
+        HarpyPopupMenuItem<int>(
+          value: 0,
+          icon: Icon(FeatherIcons.repeat),
+          text: Text('retweet'),
+        ),
+        HarpyPopupMenuItem<int>(
+          value: 1,
+          icon: Icon(FeatherIcons.feather),
+          text: Text('quote tweet'),
+        ),
+      ],
+      position: position,
+      shape: popupMenuTheme.shape,
+      color: popupMenuTheme.color,
+    );
+
+    if (result == 0) {
+      widget.bloc.add(const RetweetTweet());
+    } else if (result == 1) {
+      app<HarpyNavigator>().pushComposeScreen(quotedTweet: widget.bloc.tweet);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: bloc.tweet.retweeted,
-      padding: padding,
+      active: widget.bloc.tweet.retweeted,
+      padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: TextStyle(
         color: harpyTheme.retweetColor,
         fontWeight: FontWeight.bold,
       ),
-      value: bloc.tweet.retweetCount,
-      activate: () => bloc.add(const RetweetTweet()),
-      deactivate: () => bloc.add(const UnretweetTweet()),
+      value: widget.bloc.tweet.retweetCount,
+      activate: _showRetweetButtonMenu,
+      deactivate: () => widget.bloc.add(const UnretweetTweet()),
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,
         dotSecondaryColor: Colors.limeAccent,
