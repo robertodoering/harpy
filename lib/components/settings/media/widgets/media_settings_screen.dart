@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/common/widgets/radio_dialog_tile.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
@@ -85,12 +86,13 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   List<Widget> _buildActions() {
     return <Widget>[
       PopupMenuButton<void>(
+        icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) => setState(mediaPreferences.defaultSettings),
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[
-            const PopupMenuItem<void>(
+            const HarpyPopupMenuItem<void>(
               value: 0,
-              child: Text('reset to default'),
+              text: Text('reset to default'),
             ),
           ];
         },

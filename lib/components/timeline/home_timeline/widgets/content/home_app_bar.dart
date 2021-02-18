@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
+import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/search/widgets/search_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
@@ -18,6 +19,7 @@ class HomeAppBar extends StatelessWidget {
         onPressed: () => app<HarpyNavigator>().pushNamed(SearchScreen.route),
       ),
       PopupMenuButton<int>(
+        icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (int selection) {
           if (selection == 0) {
             ScrollDirection.of(context).reset();
@@ -28,7 +30,7 @@ class HomeAppBar extends StatelessWidget {
         },
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<int>>[
-            const PopupMenuItem<int>(value: 0, child: Text('refresh')),
+            const HarpyPopupMenuItem<int>(value: 0, text: Text('refresh')),
           ];
         },
       ),
