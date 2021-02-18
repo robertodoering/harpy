@@ -5,3 +5,4 @@ Version 0.4.3
 · Changed search button styling in tweet search filter
 · Removed user & tweet search in home drawer
 · General layout improvements
+· Fixed showing user description translate button when no description exists

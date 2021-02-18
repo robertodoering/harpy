@@ -54,7 +54,8 @@ class UserProfileHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              UserDescriptionTranslationButton(bloc),
+              if (bloc.user.hasDescription)
+                UserDescriptionTranslationButton(bloc),
             ],
           ),
         ],
