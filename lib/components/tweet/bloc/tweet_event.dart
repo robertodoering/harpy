@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -133,27 +134,28 @@ class FavoriteTweet extends TweetEvent with Logger {
 }
 
 class DeleteTweet extends TweetEvent with Logger {
-  const DeleteTweet();
+  DeleteTweet({
+    this.onDeleted,
+  });
+
+  final VoidCallback onDeleted;
 
   @override
   Stream<TweetState> applyAsync({
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
-    bloc.tweet.favorited = true;
-    bloc.tweet.favoriteCount++;
-    yield UpdatedTweetState();
+    log.fine('deleting tweet');
 
-    try {
-      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr);
-      log.fine('favorited ${bloc.tweet.idStr}');
-    } catch (e, st) {
-      if (!actionPerformed(e)) {
-        bloc.tweet.favorited = false;
-        bloc.tweet.favoriteCount--;
-        log.warning('error favoriting ${bloc.tweet.idStr}', e, st);
-        yield UpdatedTweetState();
-      }
+    final Tweet tweet = await bloc.tweetService
+        .destroy(id: bloc.tweet.idStr, trimUser: true)
+        .catchError(silentErrorHandler);
+
+    if (tweet != null) {
+      app<MessageService>().show('tweet deleted');
+      onDeleted?.call();
+    } else {
+      app<MessageService>().show('error deleting tweet');
     }
   }
 }

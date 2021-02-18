@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
+import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
+import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -23,13 +27,37 @@ class TweetActionsButton extends StatelessWidget {
     return ModalRoute.of(context).settings?.name != ComposeScreen.route;
   }
 
+  bool _isAuthenticatedUser(TweetBloc bloc, AuthenticationBloc authBloc) {
+    return bloc.tweet.userData.idStr == authBloc.authenticatedUser.idStr;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final TweetBloc bloc = TweetBloc.of(context);
+    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+    final HomeTimelineBloc homeTimelineBloc = context.watch<HomeTimelineBloc>();
 
     return ViewMoreActionButton(
       padding: padding,
       children: <Widget>[
+        if (_isAuthenticatedUser(bloc, authBloc))
+          ListTile(
+            leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
+            title: Text(
+              'delete',
+              style: TextStyle(
+                color: theme.errorColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              bloc.add(DeleteTweet(onDeleted: () {
+                homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
+              }));
+              app<HarpyNavigator>().state.maybePop();
+            },
+          ),
         if (_shouldShowReply(context))
           ListTile(
             leading: const Icon(CupertinoIcons.reply),

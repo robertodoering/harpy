@@ -265,3 +265,58 @@ class AddToHomeTimeline extends HomeTimelineEvent {
     }
   }
 }
+
+/// Removes a single [tweet] from the home timeline tweets.
+///
+/// Only affects the list when the state is [HomeTimelineResult].
+class RemoveFromHomeTimeline extends HomeTimelineEvent {
+  const RemoveFromHomeTimeline({
+    @required this.tweet,
+  });
+
+  final TweetData tweet;
+
+  @override
+  List<Object> get props => <Object>[
+        tweet,
+      ];
+
+  bool _removeChild(List<TweetData> tweets) {
+    final TweetData parent = tweets.firstWhere(
+      (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
+      orElse: () => null,
+    );
+
+    if (parent != null) {
+      parent.replies.removeWhere(
+        (TweetData element) => element.idStr == tweet.idStr,
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Stream<HomeTimelineState> applyAsync({
+    HomeTimelineState currentState,
+    HomeTimelineBloc bloc,
+  }) async* {
+    if (currentState is HomeTimelineResult) {
+      final List<TweetData> tweets = List<TweetData>.of(currentState.tweets);
+
+      if (tweet.inReplyToStatusIdStr == null || !_removeChild(tweets)) {
+        tweets.removeWhere((TweetData element) => element.idStr == tweet.idStr);
+      }
+
+      yield HomeTimelineResult(
+        tweets: tweets,
+        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
+        newTweetsExist: currentState.newTweetsExist,
+        lastInitialTweet: currentState.lastInitialTweet,
+        initialResults: currentState.initialResults,
+        canRequestOlder: currentState.canRequestOlder,
+      );
+    }
+  }
+}
