@@ -78,6 +78,7 @@ class HarpyButton extends StatelessWidget {
     this.backgroundColor,
     this.dense = false,
     this.padding,
+    this.betweenPadding,
     this.foregroundColor,
     this.style,
   })  : materialType = MaterialType.canvas,
@@ -94,6 +95,7 @@ class HarpyButton extends StatelessWidget {
     this.iconSize,
     this.dense = false,
     this.padding,
+    this.betweenPadding,
     this.foregroundColor,
     this.style,
   })  : backgroundColor = null,
@@ -149,6 +151,13 @@ class HarpyButton extends StatelessWidget {
   /// with [dense] if a smaller padding is required.
   final EdgeInsets padding;
 
+  /// The padding between the [icon] and [text].
+  ///
+  /// Only has an affect when both [icon] and [text] is not `null`.
+  ///
+  /// Defaults to half of the vertical padding.
+  final double betweenPadding;
+
   /// The [elevation] that changes when using a [HarpyButton.flat] or
   /// [HarpyButton.raised].
   final double elevation;
@@ -197,7 +206,7 @@ class HarpyButton extends StatelessWidget {
         children: <Widget>[
           if (icon != null) icon,
           if (icon != null && text != null)
-            SizedBox(width: _padding.vertical / 4),
+            SizedBox(width: betweenPadding ?? _padding.horizontal / 2),
           if (text != null) Expanded(child: text),
         ],
       ),
