@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
@@ -8,12 +9,12 @@ import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/download_service.dart';
+import 'package:harpy/core/logger_mixin.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:http/http.dart';
-import 'package:logging/logging.dart';
 import 'package:share/share.dart';
 
 @immutable
@@ -52,10 +53,8 @@ abstract class TweetEvent {
 }
 
 /// Retweets the tweet.
-class RetweetTweet extends TweetEvent {
+class RetweetTweet extends TweetEvent with Logger {
   const RetweetTweet();
-
-  static final Logger log = Logger('RetweetTweet');
 
   @override
   Stream<TweetState> applyAsync({
@@ -81,10 +80,8 @@ class RetweetTweet extends TweetEvent {
 }
 
 /// Unretweets the tweet.
-class UnretweetTweet extends TweetEvent {
+class UnretweetTweet extends TweetEvent with Logger {
   const UnretweetTweet();
-
-  static final Logger log = Logger('UnretweetTweet');
 
   @override
   Stream<TweetState> applyAsync({
@@ -110,10 +107,8 @@ class UnretweetTweet extends TweetEvent {
 }
 
 /// Favorites the tweet.
-class FavoriteTweet extends TweetEvent {
+class FavoriteTweet extends TweetEvent with Logger {
   const FavoriteTweet();
-
-  static final Logger log = Logger('FavoriteTweet');
 
   @override
   Stream<TweetState> applyAsync({
@@ -138,11 +133,36 @@ class FavoriteTweet extends TweetEvent {
   }
 }
 
-/// Unfavorites the tweet.
-class UnfavoriteTweet extends TweetEvent {
-  const UnfavoriteTweet();
+class DeleteTweet extends TweetEvent with Logger {
+  DeleteTweet({
+    this.onDeleted,
+  });
 
-  static final Logger log = Logger('UnfavoriteTweet');
+  final VoidCallback onDeleted;
+
+  @override
+  Stream<TweetState> applyAsync({
+    TweetState currentState,
+    TweetBloc bloc,
+  }) async* {
+    log.fine('deleting tweet');
+
+    final Tweet tweet = await bloc.tweetService
+        .destroy(id: bloc.tweet.idStr, trimUser: true)
+        .catchError(silentErrorHandler);
+
+    if (tweet != null) {
+      app<MessageService>().show('tweet deleted');
+      onDeleted?.call();
+    } else {
+      app<MessageService>().show('error deleting tweet');
+    }
+  }
+}
+
+/// Unfavorites the tweet.
+class UnfavoriteTweet extends TweetEvent with Logger {
+  const UnfavoriteTweet();
 
   @override
   Stream<TweetState> applyAsync({
@@ -242,13 +262,11 @@ abstract class MediaActionEvent extends TweetEvent {
 }
 
 /// Uses the [DownloadService] to download the media of a tweet.
-class DownloadMedia extends MediaActionEvent {
+class DownloadMedia extends MediaActionEvent with Logger {
   const DownloadMedia({
     @required TweetData tweet,
     int index,
   }) : super(tweet: tweet, index: index);
-
-  static final Logger _log = Logger('DownloadMedia');
 
   @override
   Stream<TweetState> applyAsync({
@@ -264,10 +282,10 @@ class DownloadMedia extends MediaActionEvent {
       await downloadService
           .download(url: url, name: fileName)
           .catchError((dynamic error) {
-        _log.severe('error while downloading tweet media', error);
+        log.severe('error while downloading tweet media', error);
       });
     } else {
-      _log.warning('unable to get url or to parse filename from $url');
+      log.warning('unable to get url or to parse filename from $url');
     }
   }
 }

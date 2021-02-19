@@ -3,6 +3,7 @@ Version 0.4.3
 · Added retweeting with quotes
 · Added search screen for user & tweet search
 · Added worldwide trends in search screen
+· Added deleting tweets
 · Added number of new tweets since last visit
 · Changed search button styling in tweet search filter
 · Removed user & tweet search in home drawer

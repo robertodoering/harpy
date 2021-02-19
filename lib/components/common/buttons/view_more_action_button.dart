@@ -35,8 +35,8 @@ class ViewMoreActionButton extends StatelessWidget {
             topRight: kDefaultRadius,
           ),
         ),
-        // todo: use list instead of column
         builder: (BuildContext context) => SafeArea(
+          top: false,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
