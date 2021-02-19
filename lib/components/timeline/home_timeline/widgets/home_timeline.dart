@@ -44,7 +44,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
     if (state is HomeTimelineResult &&
         state.initialResults &&
         state.includesLastVisibleTweet &&
-        state.newTweetsExist) {
+        state.newTweets > 0) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.jumpTo(
@@ -60,7 +60,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const NewTweetsText(),
+          NewTweetsText(state.newTweetsAmount),
           defaultVerticalSpacer,
           TweetCard(tweet, rememberVisibility: true),
         ],
