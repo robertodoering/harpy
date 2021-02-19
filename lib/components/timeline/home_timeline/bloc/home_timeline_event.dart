@@ -60,7 +60,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
           lastInitialTweet: tweets.last.originalIdStr,
           includesLastVisibleTweet:
               '$lastVisibleTweet' == tweets.last.originalIdStr,
-          newTweetsExist: lastVisibleTweet != 0 && tweets.length != 1,
+          newTweets: lastVisibleTweet == 0 ? 0 : tweets.length - 1,
           initialResults: true,
         );
 
@@ -133,7 +133,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           tweets: state.tweets.followedBy(tweets).toList(),
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
-          newTweetsExist: state.newTweetsExist,
+          newTweets: state.newTweets,
           canRequestOlder: tweets.isNotEmpty,
         );
       } else {
@@ -142,7 +142,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           tweets: state.tweets,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
-          newTweetsExist: state.newTweetsExist,
+          newTweets: state.newTweets,
         );
       }
     }
@@ -195,7 +195,7 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
         yield HomeTimelineResult(
           tweets: tweets,
           includesLastVisibleTweet: false,
-          newTweetsExist: false,
+          newTweets: 0,
         );
       } else {
         yield const HomeTimelineNoResult();
@@ -257,7 +257,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
       yield HomeTimelineResult(
         tweets: tweets,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
-        newTweetsExist: currentState.newTweetsExist,
+        newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
         initialResults: currentState.initialResults,
         canRequestOlder: currentState.canRequestOlder,

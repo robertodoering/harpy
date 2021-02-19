@@ -3,7 +3,13 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class NewTweetsText extends StatelessWidget {
-  const NewTweetsText();
+  const NewTweetsText(this.amount);
+
+  final int amount;
+
+  String get _text => amount != null && amount > 1
+      ? '$amount new tweets since last visit'
+      : 'new tweets since last visit';
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +23,7 @@ class NewTweetsText extends StatelessWidget {
         children: <Widget>[
           const Icon(FeatherIcons.chevronsUp),
           defaultHorizontalSpacer,
-          Text(
-            'new tweets since last visit',
-            style: theme.textTheme.subtitle2,
-          ),
+          Text(_text, style: theme.textTheme.subtitle2),
         ],
       ),
     );

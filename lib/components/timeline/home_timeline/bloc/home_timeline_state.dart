@@ -34,6 +34,16 @@ abstract class HomeTimelineState extends Equatable {
     }
   }
 
+  int get newTweetsAmount {
+    if (this is HomeTimelineResult) {
+      return (this as HomeTimelineResult).newTweets;
+    } else if (this is HomeTimelineLoadingOlder) {
+      return (this as HomeTimelineLoadingOlder).oldResult.newTweets;
+    } else {
+      return 0;
+    }
+  }
+
   bool showNewTweetsExist(String originalIdStr) {
     HomeTimelineResult result;
 
@@ -44,7 +54,7 @@ abstract class HomeTimelineState extends Equatable {
     }
 
     if (result != null) {
-      return result.newTweetsExist &&
+      return result.newTweets > 1 &&
           result.includesLastVisibleTweet &&
           result.lastInitialTweet == originalIdStr;
     } else {
@@ -73,7 +83,7 @@ class HomeTimelineResult extends HomeTimelineState {
   const HomeTimelineResult({
     @required this.tweets,
     @required this.includesLastVisibleTweet,
-    @required this.newTweetsExist,
+    @required this.newTweets,
     this.lastInitialTweet = '',
     this.initialResults = false,
     this.canRequestOlder = true,
@@ -88,9 +98,9 @@ class HomeTimelineResult extends HomeTimelineState {
   /// older than the last 200 tweets in the home timeline.
   final bool includesLastVisibleTweet;
 
-  /// Whether the initial request found new tweets that were not present in a
-  /// previous session.
-  final bool newTweetsExist;
+  /// The number of new tweets if the initial request found new tweets that
+  /// were not present in a previous session.
+  final int newTweets;
 
   /// The idStr of that last tweet from the initial request.
   final String lastInitialTweet;
@@ -109,7 +119,7 @@ class HomeTimelineResult extends HomeTimelineState {
   List<Object> get props => <Object>[
         tweets,
         includesLastVisibleTweet,
-        newTweetsExist,
+        newTweets,
         lastInitialTweet,
         initialResults,
         canRequestOlder,
