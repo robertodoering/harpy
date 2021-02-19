@@ -106,6 +106,7 @@ class PostTweetEvent extends Equatable with Logger {
         .update(
           status: text,
           mediaIds: mediaIds,
+          attachmentUrl: bloc.composeBloc.quotedTweet?.tweetUrl,
           inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
           autoPopulateReplyMetadata: true,
         )

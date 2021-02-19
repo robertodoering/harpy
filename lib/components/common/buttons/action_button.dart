@@ -183,6 +183,7 @@ class _ActionButtonState extends State<ActionButton>
 
     return HarpyButton.flat(
       padding: widget.padding,
+      betweenPadding: widget.padding.horizontal / 4,
       onTap: widget.active ? widget.deactivate : widget.activate,
       icon: icon,
       style: widget.active ? widget.activeTextStyle : null,

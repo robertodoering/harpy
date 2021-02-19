@@ -37,6 +37,7 @@ class HarpyPopupMenuItemState<T, W extends HarpyPopupMenuItem<T>>
   Widget build(BuildContext context) {
     return HarpyButton.flat(
       icon: widget.icon,
+      iconSize: 20,
       text: widget.text,
       dense: true,
       onTap: widget.enabled
