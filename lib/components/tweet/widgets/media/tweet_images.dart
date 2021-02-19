@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
 import 'package:harpy/components/common/misc/harpy_image.dart';
+import 'package:harpy/components/compose/widget/compose_screen.dart';
+import 'package:harpy/components/replies/widgets/replies_screen.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
@@ -151,28 +153,35 @@ class _TweetImagesState extends State<TweetImages> {
     ));
   }
 
+  bool _buildHeroTag() {
+    final String routeName = ModalRoute.of(context).settings?.name;
+
+    return routeName != RepliesScreen.route && routeName != ComposeScreen.route;
+  }
+
   List<Widget> _buildImages() {
-    return <Widget>[
-      for (ImageData image in _images)
-        Hero(
+    final bool _buildHero = _buildHeroTag();
+
+    return _images.map((ImageData image) {
+      final Widget child = HarpyImage(
+        imageUrl: image.appropriateUrl,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
+
+      if (_buildHero) {
+        return Hero(
           tag: image,
-          placeholderBuilder: (
-            BuildContext context,
-            Size heroSize,
-            Widget child,
-          ) {
-            // keep building the image since the images can be visible in the
-            // background of the image gallery
-            return child;
-          },
-          child: HarpyImage(
-            imageUrl: image.appropriateUrl,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-    ];
+          // keep building the image since the images can be visible in the
+          // background of the image gallery
+          placeholderBuilder: (_, __, Widget child) => child,
+          child: child,
+        );
+      } else {
+        return child;
+      }
+    }).toList();
   }
 
   @override
