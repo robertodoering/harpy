@@ -312,7 +312,7 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
       yield HomeTimelineResult(
         tweets: tweets,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
-        newTweetsExist: currentState.newTweetsExist,
+        newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
         initialResults: currentState.initialResults,
         canRequestOlder: currentState.canRequestOlder,
