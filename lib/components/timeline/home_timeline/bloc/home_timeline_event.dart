@@ -66,7 +66,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
 
         bloc.add(const RequestOlderHomeTimeline());
       } else {
-        yield const HomeTimelineNoResult();
+        bloc.add(const RefreshHomeTimeline());
       }
     } else {
       yield const HomeTimelineFailure();
