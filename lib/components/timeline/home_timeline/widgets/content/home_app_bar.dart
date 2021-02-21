@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/filter/filter_check_box.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
-import 'package:harpy/components/common/misc/harpy_background.dart';
 import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/search/widgets/search_screen.dart';
@@ -50,27 +48,6 @@ class HomeAppBar extends StatelessWidget {
       showIcon: true,
       floating: true,
       actions: _buildActions(context),
-    );
-  }
-}
-
-class HomeTimelineFilterDrawer extends StatelessWidget {
-  const HomeTimelineFilterDrawer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: HarpyBackground(
-        child: ListView(
-          children: [
-            FilterCheckBox(
-              text: 'hide retweets',
-              value: false,
-              onChanged: (_) {},
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

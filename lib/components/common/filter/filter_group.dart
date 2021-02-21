@@ -1,17 +1,45 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/implicit/animated_size.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
 class FilterGroup extends StatelessWidget {
   const FilterGroup({
-    @required this.title,
     @required this.children,
+    this.title,
     this.margin,
+    this.toggleAll,
+    this.allToggled = true,
   });
 
   final String title;
   final EdgeInsets margin;
   final List<Widget> children;
+  final VoidCallback toggleAll;
+  final bool allToggled;
+
+  Widget _buildTitleRow(ThemeData theme) {
+    return Row(
+      children: <Widget>[
+        if (title != null)
+          Expanded(
+            child: Padding(
+              padding: DefaultEdgeInsets.all(),
+              child: Text(title, style: theme.textTheme.subtitle2),
+            ),
+          ),
+        if (toggleAll != null)
+          HarpyButton.flat(
+            dense: true,
+            icon: allToggled
+                ? const Icon(Icons.toggle_on_outlined)
+                : const Icon(Icons.toggle_off_outlined),
+            onTap: toggleAll,
+          ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +53,7 @@ class FilterGroup extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: DefaultEdgeInsets.all(),
-              child: Text(title, style: theme.textTheme.subtitle2),
-            ),
+            if (title != null || toggleAll != null) _buildTitleRow(theme),
             ...children,
           ],
         ),
