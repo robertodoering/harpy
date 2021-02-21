@@ -6,6 +6,7 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/will_pop_harpy.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
+import 'package:harpy/components/timeline/home_timeline/widgets/content/home_app_bar.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 
@@ -87,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       child: WillPopHarpy(
         child: HarpyScaffold(
           drawer: const HomeDrawer(),
+          endDrawer: const HomeTimelineFilterDrawer(),
           floatingActionButton: _buildFloatingActionButton(),
           body: HomeTimeline(),
         ),
