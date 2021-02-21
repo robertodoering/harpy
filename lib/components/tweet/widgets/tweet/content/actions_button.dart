@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
-import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';

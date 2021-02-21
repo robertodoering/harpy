@@ -118,6 +118,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
 
     _controller = VideoPlayerController.file(
       File(widget.bloc.state.media.first.path),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
 
     _initController();
