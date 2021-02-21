@@ -85,7 +85,10 @@ class TweetGif extends StatelessWidget {
     return ClipRRect(
       borderRadius: kDefaultBorderRadius,
       child: HarpyGifPlayer.fromController(
-        VideoPlayerController.network(tweet.gif.appropriateUrl),
+        VideoPlayerController.network(
+          tweet.gif.appropriateUrl,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        ),
         thumbnail: tweet.gif.thumbnailUrl,
         onGifTap: _openGallery,
         onGifLongPress: () => _onGifLongPress(context),

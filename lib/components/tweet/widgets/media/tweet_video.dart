@@ -75,7 +75,10 @@ class TweetVideo extends StatelessWidget {
     return ClipRRect(
       borderRadius: kDefaultBorderRadius,
       child: HarpyVideoPlayer.fromController(
-        VideoPlayerController.network(tweet.video.appropriateUrl),
+        VideoPlayerController.network(
+          tweet.video.appropriateUrl,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        ),
         thumbnail: tweet.video.thumbnailUrl,
         onVideoPlayerTap: _openGallery,
         onVideoPlayerLongPress: () => _onVideoPlayerLongPress(context),
