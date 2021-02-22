@@ -76,23 +76,16 @@ class TimelineFilterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final TimelineFilterModel model = context.watch<TimelineFilterModel>();
 
-    return WillPopScope(
-      onWillPop: () async {
-        print('wow');
-        print('will pop');
-        return true;
-      },
-      child: FilterDrawer(
-        title: title,
-        showClear: model.hasFilter,
-        showSearchButton: false,
-        onClear: model.clear,
-        onSearch: () {},
-        filterGroups: <Widget>[
-          _buildIncludesGroup(model),
-          _buildExcludesGroup(model),
-        ],
-      ),
+    return FilterDrawer(
+      title: title,
+      showClear: model.hasFilter,
+      showSearchButton: false,
+      onClear: model.clear,
+      onSearch: () {},
+      filterGroups: <Widget>[
+        _buildIncludesGroup(model),
+        _buildExcludesGroup(model),
+      ],
     );
   }
 }
