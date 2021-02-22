@@ -60,7 +60,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          NewTweetsText(state.newTweetsAmount),
+          NewTweetsText(state.newTweets),
           defaultVerticalSpacer,
           TweetCard(tweet, rememberVisibility: true),
         ],
