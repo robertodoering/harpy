@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/filter/filter_check_box.dart';
 import 'package:harpy/components/common/filter/filter_drawer.dart';
 import 'package:harpy/components/common/filter/filter_group.dart';
 import 'package:harpy/components/common/filter/filter_list_entry.dart';
+import 'package:harpy/components/common/filter/filter_switch_tile.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
+import 'package:provider/provider.dart';
 
 class TimelineFilterDrawer extends StatelessWidget {
   const TimelineFilterDrawer({
@@ -13,47 +15,84 @@ class TimelineFilterDrawer extends StatelessWidget {
 
   final String title;
 
-  @override
-  Widget build(BuildContext context) {
-    return FilterDrawer(
-      title: title,
-      filterGroups: <Widget>[
-        FilterGroup(
-          title: 'includes',
-          toggleAll: () {},
-          allToggled: false,
-          children: <Widget>[
-            FilterCheckBox(text: 'images', value: false, onChanged: (_) {}),
-            FilterCheckBox(text: 'gif', value: false, onChanged: (_) {}),
-            FilterCheckBox(text: 'video', value: false, onChanged: (_) {}),
-          ],
+  Widget _buildIncludesGroup(TimelineFilterModel model) {
+    return FilterGroup(
+      title: 'includes',
+      toggleAll: model.toggleIncludes,
+      allToggled: model.toggledAllIncludes,
+      children: <Widget>[
+        FilterSwitchTile(
+          text: 'images',
+          value: model.value.includesImages,
+          onChanged: model.setIncludesImages,
         ),
-        FilterGroup(
-          title: 'excludes',
-          children: <Widget>[
-            FilterListEntry(
-              labelText: 'hashtag',
-              activeFilters: [],
-              onSubmitted: (String value) {},
-              onDeleted: (int value) {},
-            ),
-            defaultVerticalSpacer,
-            FilterListEntry(
-              labelText: 'keyword / phrase',
-              activeFilters: [],
-              onSubmitted: (String value) {},
-              onDeleted: (int value) {},
-            ),
-            defaultVerticalSpacer,
-            FilterCheckBox(text: 'replies', value: false, onChanged: (_) {}),
-            FilterCheckBox(text: 'retweets', value: false, onChanged: (_) {}),
-          ],
+        FilterSwitchTile(
+          text: 'gif',
+          value: model.value.includesGif,
+          onChanged: model.setIncludesGif,
+        ),
+        FilterSwitchTile(
+          text: 'video',
+          value: model.value.includesVideo,
+          onChanged: model.setIncludesVideo,
         ),
       ],
-      onClear: () {},
-      onSearch: () {},
-      showClear: false,
-      showSearchButton: false,
+    );
+  }
+
+  Widget _buildExcludesGroup(TimelineFilterModel model) {
+    return FilterGroup(
+      title: 'excludes',
+      children: <Widget>[
+        FilterListEntry(
+          labelText: 'keyword / phrase',
+          activeFilters: model.value.excludesPhrases,
+          onSubmitted: model.addExcludingPhrase,
+          onDeleted: model.removeExcludingPhrase,
+        ),
+        defaultVerticalSpacer,
+        FilterListEntry(
+          labelText: 'hashtag',
+          activeFilters: model.value.excludesHashtags,
+          onSubmitted: model.addExcludingHashtag,
+          onDeleted: model.removeExcludingHashtag,
+        ),
+        defaultVerticalSpacer,
+        FilterSwitchTile(
+          text: 'replies',
+          value: model.value.excludesReplies,
+          onChanged: model.setExcludesReplies,
+        ),
+        FilterSwitchTile(
+          text: 'retweets',
+          value: model.value.excludesRetweets,
+          onChanged: model.setExcludesRetweets,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
+
+    return WillPopScope(
+      onWillPop: () async {
+        print('wow');
+        print('will pop');
+        return true;
+      },
+      child: FilterDrawer(
+        title: title,
+        showClear: model.hasFilter,
+        showSearchButton: false,
+        onClear: model.clear,
+        onSearch: () {},
+        filterGroups: <Widget>[
+          _buildIncludesGroup(model),
+          _buildExcludesGroup(model),
+        ],
+      ),
     );
   }
 }

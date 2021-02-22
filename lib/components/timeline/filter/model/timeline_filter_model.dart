@@ -70,6 +70,12 @@ class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
     );
   }
 
+  void removeExcludingHashtag(int index) {
+    value = value.copyWith(
+      excludesHashtags: removeFromList(value.excludesHashtags, index),
+    );
+  }
+
   void setExcludesReplies(bool excludesReplies) {
     value = value.copyWith(excludesReplies: excludesReplies);
   }
