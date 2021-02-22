@@ -8,13 +8,13 @@ part 'timeline_filter.g.dart';
 @JsonSerializable()
 class TimelineFilter extends Equatable {
   const TimelineFilter({
-    this.includesImages,
-    this.includesGif,
-    this.includesVideo,
-    this.excludesHashtags,
-    this.excludesPhrases,
-    this.excludesReplies,
-    this.excludesRetweets,
+    this.includesImages = false,
+    this.includesGif = false,
+    this.includesVideo = false,
+    this.excludesHashtags = const <String>[],
+    this.excludesPhrases = const <String>[],
+    this.excludesReplies = false,
+    this.excludesRetweets = false,
   });
 
   factory TimelineFilter.fromJson(Map<String, dynamic> json) =>
