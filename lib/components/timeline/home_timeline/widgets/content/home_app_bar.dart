@@ -5,17 +5,21 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/search/widgets/search_screen.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
 
-  List<Widget> _buildActions(BuildContext context) {
+  List<Widget> _buildActions(BuildContext context, ThemeData theme) {
     return <Widget>[
       IconButton(
-        icon: const Icon(Icons.filter_alt_outlined),
+        icon: context.watch<TimelineFilterModel>().hasFilter
+            ? Icon(Icons.filter_alt, color: theme.accentColor)
+            : const Icon(Icons.filter_alt_outlined),
         onPressed: Scaffold.of(context).openEndDrawer,
       ),
       IconButton(
@@ -43,11 +47,13 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return HarpySliverAppBar(
       title: 'Harpy',
       showIcon: true,
       floating: true,
-      actions: _buildActions(context),
+      actions: _buildActions(context, theme),
     );
   }
 }
