@@ -371,3 +371,12 @@ class FilterHomeTimeline extends HomeTimelineEvent with Logger {
     }
   }
 }
+
+// when filter is different than filter used in bloc:
+//   show 'filter' button in place of search button
+//   do nothing when dismissing drawer
+//   refresh home timeline with new filter
+// when requesting initial home timeline:
+//   load filter from preferences
+// when opening home timeline filter:
+//   initialize with filter from bloc
