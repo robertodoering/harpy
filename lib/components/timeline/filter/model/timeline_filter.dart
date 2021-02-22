@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -19,6 +21,19 @@ class TimelineFilter extends Equatable {
 
   factory TimelineFilter.fromJson(Map<String, dynamic> json) =>
       _$TimelineFilterFromJson(json);
+
+  factory TimelineFilter.fromJsonString(String jsonString) {
+    try {
+      if (jsonString == null || jsonString.isEmpty) {
+        return TimelineFilter.empty;
+      } else {
+        return TimelineFilter.fromJson(jsonDecode(jsonString));
+      }
+    } catch (e) {
+      // unable to decode timeline filter
+      return TimelineFilter.empty;
+    }
+  }
 
   final bool includesImages;
   final bool includesGif;

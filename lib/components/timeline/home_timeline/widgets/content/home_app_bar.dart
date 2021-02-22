@@ -5,6 +5,7 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/search/widgets/search_screen.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -22,7 +23,7 @@ class HomeAppBar extends StatelessWidget {
   ) {
     return <Widget>[
       IconButton(
-        icon: model.hasFilter
+        icon: bloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
         onPressed:

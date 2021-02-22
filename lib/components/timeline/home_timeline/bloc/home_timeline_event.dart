@@ -40,6 +40,10 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
 
     yield const HomeTimelineInitialLoading();
 
+    final TimelineFilter filter = TimelineFilter.fromJsonString(
+      bloc.timelineFilterPreferences.homeTimelineFilter,
+    );
+
     final int lastVisibleTweet =
         bloc.tweetVisibilityPreferences.lastVisibleTweet;
 
@@ -47,8 +51,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
         .homeTimeline(
           count: 200,
           sinceId: _sinceId(lastVisibleTweet),
+          excludeReplies: filter.excludesReplies,
         )
-        .then(handleTweets)
+        .then((List<Tweet> tweets) => handleTweets(tweets, filter))
         .catchError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -57,8 +62,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
-          timelineFilter: currentState.timelineFilter,
-          // todo: load filter from preferences
+          timelineFilter: filter,
           lastInitialTweet: tweets.last.originalIdStr,
           includesLastVisibleTweet:
               '$lastVisibleTweet' == tweets.last.originalIdStr,
@@ -72,7 +76,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       }
     } else {
       yield HomeTimelineFailure(
-        timelineFilter: currentState.timelineFilter,
+        timelineFilter: filter,
       );
     }
   }
@@ -127,7 +131,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
             count: 200,
             maxId: maxId,
           )
-          .then(handleTweets)
+          .then((List<Tweet> tweets) =>
+              handleTweets(tweets, currentState.timelineFilter))
           .catchError(twitterApiErrorHandler);
 
       if (tweets != null) {
@@ -167,13 +172,16 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
   const RefreshHomeTimeline({
     this.clearPrevious = false,
+    this.timelineFilter,
   });
 
   final bool clearPrevious;
+  final TimelineFilter timelineFilter;
 
   @override
   List<Object> get props => <Object>[
         clearPrevious,
+        timelineFilter,
       ];
 
   @override
@@ -191,7 +199,8 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
         .homeTimeline(
           count: 200,
         )
-        .then(handleTweets)
+        .then((List<Tweet> tweets) =>
+            handleTweets(tweets, timelineFilter ?? currentState.timelineFilter))
         .catchError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -200,18 +209,18 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
-          timelineFilter: currentState.timelineFilter,
+          timelineFilter: timelineFilter ?? currentState.timelineFilter,
           includesLastVisibleTweet: false,
           newTweets: 0,
         );
       } else {
         yield HomeTimelineNoResult(
-          timelineFilter: currentState.timelineFilter,
+          timelineFilter: timelineFilter ?? currentState.timelineFilter,
         );
       }
     } else {
       yield HomeTimelineFailure(
-        timelineFilter: currentState.timelineFilter,
+        timelineFilter: timelineFilter ?? currentState.timelineFilter,
       );
     }
 
@@ -348,6 +357,17 @@ class FilterHomeTimeline extends HomeTimelineEvent with Logger {
         timelineFilter,
       ];
 
+  void _saveTimelineFilter(HomeTimelineBloc bloc) {
+    try {
+      final String encodedFilter = jsonEncode(timelineFilter.toJson());
+      log.finer('saving filter: $encodedFilter');
+
+      bloc.timelineFilterPreferences.homeTimelineFilter = encodedFilter;
+    } catch (e, st) {
+      log.warning('unable to encode timeline filter', e, st);
+    }
+  }
+
   @override
   Stream<HomeTimelineState> applyAsync({
     HomeTimelineState currentState,
@@ -356,27 +376,14 @@ class FilterHomeTimeline extends HomeTimelineEvent with Logger {
     if (currentState is HomeTimelineResult) {
       log.fine('set home timeline filter');
 
-      yield HomeTimelineResult(
-        tweets: currentState.tweets,
-        timelineFilter: currentState.timelineFilter,
-        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
-        newTweets: currentState.newTweets,
-        lastInitialTweet: currentState.lastInitialTweet,
-        initialResults: currentState.initialResults,
-        canRequestOlder: currentState.canRequestOlder,
-      );
-      bloc.add(const RefreshHomeTimeline(clearPrevious: true));
+      _saveTimelineFilter(bloc);
+
+      bloc.add(RefreshHomeTimeline(
+        clearPrevious: true,
+        timelineFilter: timelineFilter,
+      ));
     } else {
       log.info('tried to set filter in invalid state');
     }
   }
 }
-
-// when filter is different than filter used in bloc:
-//   show 'filter' button in place of search button
-//   do nothing when dismissing drawer
-//   refresh home timeline with new filter
-// when requesting initial home timeline:
-//   load filter from preferences
-// when opening home timeline filter:
-//   initialize with filter from bloc

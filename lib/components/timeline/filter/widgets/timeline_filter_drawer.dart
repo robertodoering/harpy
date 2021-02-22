@@ -12,11 +12,13 @@ class TimelineFilterDrawer extends StatelessWidget {
   const TimelineFilterDrawer({
     @required this.title,
     @required this.onFilter,
+    @required this.onClear,
     @required this.showFilterButton,
   });
 
   final String title;
   final VoidCallback onFilter;
+  final VoidCallback onClear;
   final bool showFilterButton;
 
   Widget _buildIncludesGroup(TimelineFilterModel model) {
@@ -85,7 +87,11 @@ class TimelineFilterDrawer extends StatelessWidget {
       showClear: model.hasFilter,
       showSearchButton: showFilterButton,
       searchButtonText: 'filter',
-      onClear: model.clear,
+      onClear: () {
+        model.clear();
+        onClear();
+        Navigator.of(context).pop();
+      },
       onSearch: onFilter,
       filterGroups: <Widget>[
         _buildIncludesGroup(model),

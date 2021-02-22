@@ -80,6 +80,27 @@ class HarpyPreferences {
     _preferences.setBool(_key(key, prefix), value);
   }
 
+  String getString(
+    String key,
+    String defaultValue, {
+    bool prefix = false,
+  }) {
+    try {
+      return _preferences.getString(_key(key, prefix)) ?? defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
+  }
+
+  void setString(
+    String key,
+    String value, {
+    bool prefix = false,
+  }) {
+    _log.fine('set ${_key(key, prefix)} to $value');
+    _preferences.setString(_key(key, prefix), value);
+  }
+
   /// Gets the string list for the [key] or an empty list if it doesn't exist.
   List<String> getStringList(
     String key, {

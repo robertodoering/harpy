@@ -1,10 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
+import 'package:harpy/core/preferences/timeline_filter_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/utils/list_utils.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
+// todo: sanitize input
+
 class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
-  TimelineFilterModel(TimelineFilter value) : super(value);
+  TimelineFilterModel() : super(TimelineFilter.empty) {
+    value = TimelineFilter.fromJsonString(
+      timelineFilterPreferences.homeTimelineFilter,
+    );
+  }
+
+  final TimelineFilterPreferences timelineFilterPreferences =
+      app<TimelineFilterPreferences>();
 
   bool get hasFilter => value != TimelineFilter.empty;
 

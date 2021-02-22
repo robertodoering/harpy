@@ -5,7 +5,6 @@ import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/will_pop_harpy.dart';
-import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -91,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         onScrollDirectionChanged: _onScrollDirectionChanged,
         child: ChangeNotifierProvider<TimelineFilterModel>(
           // todo: load filter from preferences
-          create: (_) => TimelineFilterModel(const TimelineFilter()),
+          create: (_) => TimelineFilterModel(),
           child: HarpyScaffold(
             drawer: const HomeDrawer(),
             endDrawer: const HomeTimelineFilterDrawer(),
