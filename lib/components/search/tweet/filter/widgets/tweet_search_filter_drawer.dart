@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/filter/filter_check_box.dart';
 import 'package:harpy/components/common/filter/filter_drawer.dart';
 import 'package:harpy/components/common/filter/filter_group.dart';
 import 'package:harpy/components/common/filter/filter_list_entry.dart';
+import 'package:harpy/components/common/filter/filter_switch_tile.dart';
 import 'package:harpy/components/common/misc/clearable_text_field.dart';
 import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter_model.dart';
@@ -112,19 +112,19 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           onDeleted: model.removeIncludingUrls,
         ),
         defaultVerticalSpacer,
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'retweets',
           enabled: model.enableIncludesRetweets,
           value: model.value.includesRetweets,
           onChanged: model.setIncludesRetweets,
         ),
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'images',
           enabled: model.enableIncludesImages,
           value: model.value.includesImages,
           onChanged: model.setIncludesImages,
         ),
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'video',
           enabled: model.enableIncludesVideos,
           value: model.value.includesVideo,
@@ -159,19 +159,19 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           onDeleted: model.removeExcludingMention,
         ),
         defaultVerticalSpacer,
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'retweets',
           enabled: model.enableExcludesRetweets,
           value: model.value.excludesRetweets,
           onChanged: model.setExcludesRetweets,
         ),
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'images',
           enabled: model.enableExcludesImages,
           value: model.value.excludesImages,
           onChanged: model.setExcludesImages,
         ),
-        FilterCheckBox(
+        FilterSwitchTile(
           text: 'video',
           enabled: model.enableExcludesVideos,
           value: model.value.excludesVideo,
@@ -190,15 +190,15 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
     return FilterDrawer(
       title: 'advanced filter',
+      showClear: model.hasFilter,
+      showSearchButton: model.hasSearchQuery,
+      onClear: model.clear,
+      onSearch: () => bloc.add(SearchTweets(filter: model.value)),
       filterGroups: <Widget>[
         _buildGeneralGroup(model, theme),
         _buildIncludesGroup(model),
         _buildExcludesGroup(model),
       ],
-      onSearch: () => bloc.add(SearchTweets(filter: model.value)),
-      onClear: model.clear,
-      showSearchButton: model.hasSearchQuery,
-      showClear: model.hasFilter,
     );
   }
 }
