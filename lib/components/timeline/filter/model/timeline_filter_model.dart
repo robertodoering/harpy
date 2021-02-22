@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/misc/utils/list_utils.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
