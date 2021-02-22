@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           child: HarpyScaffold(
             drawer: const HomeDrawer(),
             endDrawer: const HomeTimelineFilterDrawer(),
+            endDrawerEnableOpenDragGesture: false,
             floatingActionButton: _buildFloatingActionButton(),
             body: HomeTimeline(),
           ),
