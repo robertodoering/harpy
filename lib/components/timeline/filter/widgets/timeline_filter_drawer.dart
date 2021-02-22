@@ -23,7 +23,7 @@ class TimelineFilterDrawer extends StatelessWidget {
           toggleAll: () {},
           allToggled: false,
           children: <Widget>[
-            FilterCheckBox(text: 'image', value: false, onChanged: (_) {}),
+            FilterCheckBox(text: 'images', value: false, onChanged: (_) {}),
             FilterCheckBox(text: 'gif', value: false, onChanged: (_) {}),
             FilterCheckBox(text: 'video', value: false, onChanged: (_) {}),
           ],

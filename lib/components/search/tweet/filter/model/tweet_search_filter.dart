@@ -1,4 +1,5 @@
-import 'package:equatable/equatable.dart';
+import 'p'
+    'ackage:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 /// A filter for the twitter standard tweet search api as defined here:
