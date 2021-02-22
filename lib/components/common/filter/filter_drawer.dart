@@ -16,6 +16,7 @@ class FilterDrawer extends StatelessWidget {
     @required this.onClear,
     this.showClear = true,
     this.showSearchButton = true,
+    this.searchButtonText = 'search',
   });
 
   final String title;
@@ -24,6 +25,7 @@ class FilterDrawer extends StatelessWidget {
   final VoidCallback onSearch;
   final bool showClear;
   final bool showSearchButton;
+  final String searchButtonText;
 
   Widget _buildTitleRow(ThemeData theme) {
     return Row(
@@ -54,7 +56,7 @@ class FilterDrawer extends StatelessWidget {
                   width: double.infinity,
                   child: HarpyButton.raised(
                     icon: const Icon(CupertinoIcons.search),
-                    text: const Text('search'),
+                    text: Text(searchButtonText),
                     backgroundColor: theme.cardColor,
                     dense: true,
                     onTap: () {

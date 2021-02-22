@@ -11,9 +11,12 @@ import 'package:provider/provider.dart';
 class TimelineFilterDrawer extends StatelessWidget {
   const TimelineFilterDrawer({
     @required this.title,
+    @required this.showFilterButton,
   });
 
   final String title;
+
+  final bool showFilterButton;
 
   Widget _buildIncludesGroup(TimelineFilterModel model) {
     return FilterGroup(
@@ -79,7 +82,8 @@ class TimelineFilterDrawer extends StatelessWidget {
     return FilterDrawer(
       title: title,
       showClear: model.hasFilter,
-      showSearchButton: false,
+      showSearchButton: showFilterButton,
+      searchButtonText: 'filter',
       onClear: model.clear,
       onSearch: () {},
       filterGroups: <Widget>[
