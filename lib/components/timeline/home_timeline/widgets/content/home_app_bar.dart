@@ -14,13 +14,19 @@ import 'package:provider/provider.dart';
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
 
-  List<Widget> _buildActions(BuildContext context, ThemeData theme) {
+  List<Widget> _buildActions(
+    BuildContext context,
+    ThemeData theme,
+    TimelineFilterModel model,
+    HomeTimelineBloc bloc,
+  ) {
     return <Widget>[
       IconButton(
-        icon: context.watch<TimelineFilterModel>().hasFilter
+        icon: model.hasFilter
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
-        onPressed: Scaffold.of(context).openEndDrawer,
+        onPressed:
+            bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
       ),
       IconButton(
         icon: const Icon(CupertinoIcons.search),
@@ -31,9 +37,8 @@ class HomeAppBar extends StatelessWidget {
         onSelected: (int selection) {
           if (selection == 0) {
             ScrollDirection.of(context).reset();
-            context
-                .read<HomeTimelineBloc>()
-                .add(const RefreshHomeTimeline(clearPrevious: true));
+
+            bloc.add(const RefreshHomeTimeline(clearPrevious: true));
           }
         },
         itemBuilder: (BuildContext context) {
@@ -48,12 +53,14 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
+    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
 
     return HarpySliverAppBar(
       title: 'Harpy',
       showIcon: true,
       floating: true,
-      actions: _buildActions(context, theme),
+      actions: _buildActions(context, theme, model, bloc),
     );
   }
 }
