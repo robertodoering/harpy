@@ -57,6 +57,8 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
+          timelineFilter: currentState.timelineFilter,
+          // todo: load filter from preferences
           lastInitialTweet: tweets.last.originalIdStr,
           includesLastVisibleTweet:
               '$lastVisibleTweet' == tweets.last.originalIdStr,
@@ -69,7 +71,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
         bloc.add(const RefreshHomeTimeline());
       }
     } else {
-      yield const HomeTimelineFailure();
+      yield HomeTimelineFailure(
+        timelineFilter: currentState.timelineFilter,
+      );
     }
   }
 }
@@ -131,6 +135,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
         yield HomeTimelineResult(
           tweets: state.tweets.followedBy(tweets).toList(),
+          timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
           newTweets: state.newTweets,
@@ -140,6 +145,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
         // re-yield result state with previous tweets
         yield HomeTimelineResult(
           tweets: state.tweets,
+          timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
           newTweets: state.newTweets,
@@ -194,14 +200,19 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
+          timelineFilter: currentState.timelineFilter,
           includesLastVisibleTweet: false,
           newTweets: 0,
         );
       } else {
-        yield const HomeTimelineNoResult();
+        yield HomeTimelineNoResult(
+          timelineFilter: currentState.timelineFilter,
+        );
       }
     } else {
-      yield const HomeTimelineFailure();
+      yield HomeTimelineFailure(
+        timelineFilter: currentState.timelineFilter,
+      );
     }
 
     bloc.refreshCompleter.complete();
@@ -256,6 +267,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
 
       yield HomeTimelineResult(
         tweets: tweets,
+        timelineFilter: currentState.timelineFilter,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
@@ -311,12 +323,51 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
 
       yield HomeTimelineResult(
         tweets: tweets,
+        timelineFilter: currentState.timelineFilter,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
         initialResults: currentState.initialResults,
         canRequestOlder: currentState.canRequestOlder,
       );
+    }
+  }
+}
+
+/// Sets the filter for the home timeline if the current state is
+/// [HomeTimelineResult] and refreshes the list afterwards.
+class FilterHomeTimeline extends HomeTimelineEvent with Logger {
+  const FilterHomeTimeline({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
+
+  @override
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
+
+  @override
+  Stream<HomeTimelineState> applyAsync({
+    HomeTimelineState currentState,
+    HomeTimelineBloc bloc,
+  }) async* {
+    if (currentState is HomeTimelineResult) {
+      log.fine('set home timeline filter');
+
+      yield HomeTimelineResult(
+        tweets: currentState.tweets,
+        timelineFilter: currentState.timelineFilter,
+        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
+        newTweets: currentState.newTweets,
+        lastInitialTweet: currentState.lastInitialTweet,
+        initialResults: currentState.initialResults,
+        canRequestOlder: currentState.canRequestOlder,
+      );
+      bloc.add(const RefreshHomeTimeline(clearPrevious: true));
+    } else {
+      log.info('tried to set filter in invalid state');
     }
   }
 }

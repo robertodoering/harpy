@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/request_lock_mixin.dart';
 import 'package:harpy/core/api/twitter/handle_tweets.dart';
