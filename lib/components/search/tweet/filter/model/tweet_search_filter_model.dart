@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter.dart';
+import 'package:harpy/misc/utils/list_utils.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 /// A [ValueNotifier] for a [TweetSearchFilter].
@@ -54,82 +55,56 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   }
 
   void addIncludingPhrase(String phrase) {
-    _appendToList(
-      value: phrase,
-      list: value.includesPhrases,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesPhrases: list,
-      ),
+    value = value.copyWith(
+      includesPhrases: appendToList(value.includesPhrases, phrase),
     );
   }
 
   void removeIncludingPhrase(int index) {
-    _removeFromList(
-      index: index,
-      list: value.includesPhrases,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesPhrases: list,
-      ),
+    value = value.copyWith(
+      includesPhrases: removeFromList(value.includesPhrases, index),
     );
   }
 
   void addIncludingHashtag(String hashtag) {
-    _appendToList(
-      value: prependIfMissing(hashtag, '#', <String>['#', '＃']),
-      list: value.includesHashtags,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesHashtags: list,
+    value = value.copyWith(
+      includesHashtags: appendToList(
+        value.includesHashtags,
+        prependIfMissing(hashtag, '#', <String>['#', '＃']),
       ),
     );
   }
 
   void removeIncludingHashtag(int index) {
-    _removeFromList(
-      index: index,
-      list: value.includesHashtags,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesHashtags: list,
-      ),
+    value = value.copyWith(
+      includesHashtags: removeFromList(value.includesHashtags, index),
     );
   }
 
   void addIncludingMention(String mention) {
-    _appendToList(
-      value: prependIfMissing(mention, '@', <String>['@']),
-      list: value.includesMentions,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesMentions: list,
+    value = value.copyWith(
+      includesMentions: appendToList(
+        value.includesMentions,
+        prependIfMissing(mention, '@', <String>['@']),
       ),
     );
   }
 
   void removeIncludingMention(int index) {
-    _removeFromList(
-      index: index,
-      list: value.includesMentions,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesMentions: list,
-      ),
+    value = value.copyWith(
+      includesMentions: removeFromList(value.includesMentions, index),
     );
   }
 
   void addIncludingUrl(String url) {
-    _appendToList(
-      value: url,
-      list: value.includesUrls,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesUrls: list,
-      ),
+    value = value.copyWith(
+      includesUrls: appendToList(value.includesUrls, url),
     );
   }
 
   void removeIncludingUrls(int index) {
-    _removeFromList(
-      index: index,
-      list: value.includesUrls,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        includesUrls: list,
-      ),
+    value = value.copyWith(
+      includesUrls: removeFromList(value.includesUrls, index),
     );
   }
 
@@ -146,62 +121,44 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   }
 
   void addExcludingPhrase(String phrase) {
-    _appendToList(
-      value: phrase,
-      list: value.excludesPhrases,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesPhrases: list,
-      ),
+    value = value.copyWith(
+      excludesPhrases: appendToList(value.excludesPhrases, phrase),
     );
   }
 
   void removeExcludingPhrase(int index) {
-    _removeFromList(
-      index: index,
-      list: value.excludesPhrases,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesPhrases: list,
-      ),
+    value = value.copyWith(
+      excludesPhrases: removeFromList(value.excludesPhrases, index),
     );
   }
 
   void addExcludingHashtag(String hashtag) {
-    _appendToList(
-      value: prependIfMissing(hashtag, '#', <String>['#', '＃']),
-      list: value.excludesHashtags,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesHashtags: list,
+    value = value.copyWith(
+      excludesMentions: appendToList(
+        value.excludesHashtags,
+        prependIfMissing(hashtag, '#', <String>['#', '＃']),
       ),
     );
   }
 
   void removeExcludingHashtag(int index) {
-    _removeFromList(
-      index: index,
-      list: value.excludesHashtags,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesHashtags: list,
-      ),
+    value = value.copyWith(
+      excludesHashtags: removeFromList(value.excludesHashtags, index),
     );
   }
 
   void addExcludingMention(String mention) {
-    _appendToList(
-      value: prependIfMissing(mention, '@', <String>['@']),
-      list: value.excludesMentions,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesMentions: list,
+    value = value.copyWith(
+      excludesMentions: appendToList(
+        value.excludesMentions,
+        prependIfMissing(mention, '@', <String>['@']),
       ),
     );
   }
 
   void removeExcludingMention(int index) {
-    _removeFromList(
-      index: index,
-      list: value.excludesMentions,
-      onListUpdated: (List<String> list) => value = value.copyWith(
-        excludesMentions: list,
-      ),
+    value = value.copyWith(
+      excludesMentions: removeFromList(value.excludesMentions, index),
     );
   }
 
@@ -215,30 +172,5 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void setExcludesVideo(bool excludesVideo) {
     value = value.copyWith(excludesVideo: excludesVideo);
-  }
-
-  void _appendToList({
-    @required String value,
-    @required List<String> list,
-    @required ValueChanged<List<String>> onListUpdated,
-  }) {
-    if (value != null && value.isNotEmpty) {
-      final List<String> updatedList = List<String>.of(list ?? <String>[]);
-      updatedList.add(value);
-      onListUpdated(updatedList);
-    }
-  }
-
-  void _removeFromList({
-    @required int index,
-    @required List<String> list,
-    @required ValueChanged<List<String>> onListUpdated,
-  }) {
-    final List<String> updatedList = List<String>.of(list);
-
-    if (index >= 0 && index < updatedList.length) {
-      updatedList.removeAt(index);
-      onListUpdated(updatedList);
-    }
   }
 }
