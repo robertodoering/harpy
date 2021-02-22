@@ -134,7 +134,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
 
   void addExcludingHashtag(String hashtag) {
     value = value.copyWith(
-      excludesMentions: appendToList(
+      excludesHashtags: appendToList(
         value.excludesHashtags,
         prependIfMissing(hashtag, '#', <String>['#', '＃']),
       ),
