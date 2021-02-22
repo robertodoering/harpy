@@ -86,15 +86,12 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
-
     return WillPopHarpy(
       child: ScrollDirectionListener(
         onScrollDirectionChanged: _onScrollDirectionChanged,
         child: ChangeNotifierProvider<TimelineFilterModel>(
           // todo: load filter from preferences
-          create: (_) => TimelineFilterModel(const TimelineFilter())
-            ..addListener(() => bloc.add(const FilterHomeTimeline())),
+          create: (_) => TimelineFilterModel(const TimelineFilter()),
           child: HarpyScaffold(
             drawer: const HomeDrawer(),
             endDrawer: const HomeTimelineFilterDrawer(),

@@ -16,6 +16,7 @@ class HomeTimelineFilterDrawer extends StatelessWidget {
     return TimelineFilterDrawer(
       title: 'home timeline filter',
       showFilterButton: bloc.state.timelineFilter != model.value,
+      onFilter: () => bloc.add(FilterHomeTimeline(timelineFilter: model.value)),
     );
   }
 }
