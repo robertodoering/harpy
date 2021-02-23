@@ -47,12 +47,20 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
     final int lastVisibleTweet =
         bloc.tweetVisibilityPreferences.lastVisibleTweet;
 
+    String maxId;
+
     final List<TweetData> tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
           sinceId: _sinceId(lastVisibleTweet),
           excludeReplies: filter.excludesReplies,
         )
+        .then((List<Tweet> tweets) {
+          if (tweets != null && tweets.isNotEmpty) {
+            maxId = tweets.last.idStr;
+          }
+          return tweets;
+        })
         .then((List<Tweet> tweets) => handleTweets(tweets, filter))
         .catchError(twitterApiErrorHandler);
 
@@ -62,6 +70,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
+          maxId: maxId,
           timelineFilter: filter,
           lastInitialTweet: tweets.last.originalIdStr,
           includesLastVisibleTweet:
@@ -72,7 +81,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
 
         bloc.add(const RequestOlderHomeTimeline());
       } else {
-        bloc.add(const RefreshHomeTimeline());
+        bloc.add(RefreshHomeTimeline(timelineFilter: filter));
       }
     } else {
       yield HomeTimelineFailure(
@@ -95,7 +104,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
   List<Object> get props => <Object>[];
 
   String _findMaxId(HomeTimelineResult state) {
-    final int lastId = int.tryParse(state.tweets.last.originalIdStr);
+    final int lastId = int.tryParse(state.maxId);
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -119,6 +128,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
       final String maxId = _findMaxId(state);
 
       if (maxId == null) {
+        log.info('tried to request older but max id was null');
         return;
       }
 
@@ -126,11 +136,23 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
       yield HomeTimelineLoadingOlder(oldResult: state);
 
+      String newMaxId;
+      bool canRequestOlder = false;
+
       final List<TweetData> tweets = await bloc.timelineService
           .homeTimeline(
-            count: 200,
+            count: 20,
             maxId: maxId,
           )
+          .then((List<Tweet> tweets) {
+            if (tweets != null && tweets.isNotEmpty) {
+              newMaxId = tweets.last.idStr;
+              canRequestOlder = true;
+            } else {
+              canRequestOlder = false;
+            }
+            return tweets;
+          })
           .then((List<Tweet> tweets) =>
               handleTweets(tweets, currentState.timelineFilter))
           .catchError(twitterApiErrorHandler);
@@ -140,16 +162,18 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
         yield HomeTimelineResult(
           tweets: state.tweets.followedBy(tweets).toList(),
+          maxId: newMaxId,
           timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
           newTweets: state.newTweets,
-          canRequestOlder: tweets.isNotEmpty,
+          canRequestOlder: canRequestOlder,
         );
       } else {
-        // re-yield result state with previous tweets
+        // re-yield result state with previous tweets but new max id
         yield HomeTimelineResult(
           tweets: state.tweets,
+          maxId: newMaxId,
           timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
           includesLastVisibleTweet: state.includesLastVisibleTweet,
@@ -195,10 +219,18 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
       yield const HomeTimelineInitialLoading();
     }
 
+    String maxId;
+
     final List<TweetData> tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
         )
+        .then((List<Tweet> tweets) {
+          if (tweets != null && tweets.isNotEmpty) {
+            maxId = tweets.last.idStr;
+          }
+          return tweets;
+        })
         .then((List<Tweet> tweets) =>
             handleTweets(tweets, timelineFilter ?? currentState.timelineFilter))
         .catchError(twitterApiErrorHandler);
@@ -209,6 +241,7 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield HomeTimelineResult(
           tweets: tweets,
+          maxId: maxId,
           timelineFilter: timelineFilter ?? currentState.timelineFilter,
           includesLastVisibleTweet: false,
           newTweets: 0,
@@ -276,6 +309,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
 
       yield HomeTimelineResult(
         tweets: tweets,
+        maxId: currentState.maxId,
         timelineFilter: currentState.timelineFilter,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,
@@ -332,6 +366,7 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
 
       yield HomeTimelineResult(
         tweets: tweets,
+        maxId: currentState.maxId,
         timelineFilter: currentState.timelineFilter,
         includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,

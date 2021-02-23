@@ -100,6 +100,7 @@ class HomeTimelineResult extends HomeTimelineState {
     @required this.timelineFilter,
     @required this.includesLastVisibleTweet,
     @required this.newTweets,
+    @required this.maxId,
     this.lastInitialTweet = '',
     this.initialResults = false,
     this.canRequestOlder = true,
@@ -119,6 +120,11 @@ class HomeTimelineResult extends HomeTimelineState {
   /// The number of new tweets if the initial request found new tweets that
   /// were not present in a previous session.
   final int newTweets;
+
+  /// The max id used to request older tweets.
+  ///
+  /// This is the id of the last requested tweet before the tweets got filtered.
+  final String maxId;
 
   /// The idStr of that last tweet from the initial request.
   final String lastInitialTweet;
@@ -142,6 +148,7 @@ class HomeTimelineResult extends HomeTimelineState {
         lastInitialTweet,
         initialResults,
         canRequestOlder,
+        maxId,
       ];
 }
 
