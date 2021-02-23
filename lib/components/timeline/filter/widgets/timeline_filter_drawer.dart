@@ -87,10 +87,10 @@ class TimelineFilterDrawer extends StatelessWidget {
       showClear: model.hasFilter,
       showSearchButton: showFilterButton,
       searchButtonText: model.hasFilter ? 'filter' : 'clear filter',
-      onClear: () {
+      onClear: () async {
+        await Navigator.of(context).maybePop();
         model.clear();
         onClear();
-        Navigator.of(context).pop();
       },
       onSearch: onFilter,
       filterGroups: <Widget>[
