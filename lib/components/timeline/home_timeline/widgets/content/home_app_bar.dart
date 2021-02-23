@@ -23,7 +23,8 @@ class HomeAppBar extends StatelessWidget {
   ) {
     return <Widget>[
       IconButton(
-        icon: bloc.state.timelineFilter != TimelineFilter.empty
+        icon: bloc.state.enableFilter &&
+                bloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
         onPressed:
