@@ -143,6 +143,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           .homeTimeline(
             count: 200,
             maxId: maxId,
+            excludeReplies: currentState.timelineFilter?.excludesReplies,
           )
           .then((List<Tweet> tweets) {
             if (tweets != null && tweets.isNotEmpty) {
@@ -224,6 +225,8 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
     final List<TweetData> tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
+          excludeReplies:
+              timelineFilter ?? currentState.timelineFilter?.excludesReplies,
         )
         .then((List<Tweet> tweets) {
           if (tweets != null && tweets.isNotEmpty) {
