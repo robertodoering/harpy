@@ -1,11 +1,10 @@
 part of 'home_timeline_bloc.dart';
 
-// todo: try bloc state flags as extension w/ shadowing or overriting
-//  state properties
-
 abstract class HomeTimelineState extends Equatable {
   const HomeTimelineState();
+}
 
+extension HomeTimelineExtension on HomeTimelineState {
   bool get showInitialLoading => this is HomeTimelineInitialLoading;
 
   bool get showLoadingOlder => this is HomeTimelineLoadingOlder;
@@ -24,6 +23,22 @@ abstract class HomeTimelineState extends Equatable {
 
   bool get enableScroll => timelineTweets.isNotEmpty;
 
+  bool get enableFilter => this is HomeTimelineResult;
+
+  TimelineFilter get timelineFilter {
+    if (this is HomeTimelineResult) {
+      return (this as HomeTimelineResult).timelineFilter;
+    } else if (this is HomeTimelineLoadingOlder) {
+      return (this as HomeTimelineLoadingOlder).oldResult.timelineFilter;
+    } else if (this is HomeTimelineNoResult) {
+      return (this as HomeTimelineNoResult).timelineFilter;
+    } else if (this is HomeTimelineFailure) {
+      return (this as HomeTimelineFailure).timelineFilter;
+    } else {
+      return TimelineFilter.empty;
+    }
+  }
+
   List<TweetData> get timelineTweets {
     if (this is HomeTimelineResult) {
       return (this as HomeTimelineResult).tweets;
@@ -34,7 +49,7 @@ abstract class HomeTimelineState extends Equatable {
     }
   }
 
-  int get newTweetsAmount {
+  int get newTweets {
     if (this is HomeTimelineResult) {
       return (this as HomeTimelineResult).newTweets;
     } else if (this is HomeTimelineLoadingOlder) {
@@ -82,14 +97,18 @@ class HomeTimelineInitialLoading extends HomeTimelineState {
 class HomeTimelineResult extends HomeTimelineState {
   const HomeTimelineResult({
     @required this.tweets,
+    @required this.timelineFilter,
     @required this.includesLastVisibleTweet,
     @required this.newTweets,
+    @required this.maxId,
     this.lastInitialTweet = '',
     this.initialResults = false,
     this.canRequestOlder = true,
   });
 
   final List<TweetData> tweets;
+
+  final TimelineFilter timelineFilter;
 
   /// Whether the last visible tweet from a previous sessions is included in
   /// the results.
@@ -101,6 +120,11 @@ class HomeTimelineResult extends HomeTimelineState {
   /// The number of new tweets if the initial request found new tweets that
   /// were not present in a previous session.
   final int newTweets;
+
+  /// The max id used to request older tweets.
+  ///
+  /// This is the id of the last requested tweet before the tweets got filtered.
+  final String maxId;
 
   /// The idStr of that last tweet from the initial request.
   final String lastInitialTweet;
@@ -118,11 +142,13 @@ class HomeTimelineResult extends HomeTimelineState {
   @override
   List<Object> get props => <Object>[
         tweets,
+        timelineFilter,
         includesLastVisibleTweet,
         newTweets,
         lastInitialTweet,
         initialResults,
         canRequestOlder,
+        maxId,
       ];
 }
 
@@ -131,18 +157,30 @@ class HomeTimelineResult extends HomeTimelineState {
 ///
 /// This may happen when the user is not following anyone.
 class HomeTimelineNoResult extends HomeTimelineState {
-  const HomeTimelineNoResult();
+  const HomeTimelineNoResult({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
 }
 
 /// The state when an error occurred while requesting the home timeline.
 class HomeTimelineFailure extends HomeTimelineState {
-  const HomeTimelineFailure();
+  const HomeTimelineFailure({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
 }
 
 /// The state when requesting older tweets.
@@ -154,5 +192,7 @@ class HomeTimelineLoadingOlder extends HomeTimelineState {
   final HomeTimelineResult oldResult;
 
   @override
-  List<Object> get props => <Object>[oldResult];
+  List<Object> get props => <Object>[
+        oldResult,
+      ];
 }

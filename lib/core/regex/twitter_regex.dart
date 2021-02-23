@@ -29,3 +29,7 @@ final RegExp mentionStartRegex = RegExp(
   _tagBeginGroup + r'(@{1})',
   caseSensitive: false,
 );
+
+/// Matches everything that is not a valid character in a hashtag (no
+/// numbers, unicode letters, underscores.
+final RegExp nonHashtagCharactersRegex = RegExp(r'[^0-9_\p{L}]', unicode: true);

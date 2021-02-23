@@ -5,11 +5,14 @@ import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/misc/will_pop_harpy.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:provider/provider.dart';
 
 import 'content/home_drawer.dart';
+import 'content/home_timeline_filter_drawer.dart';
 import 'home_timeline.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -82,13 +85,19 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollDirectionListener(
-      onScrollDirectionChanged: _onScrollDirectionChanged,
-      child: WillPopHarpy(
-        child: HarpyScaffold(
-          drawer: const HomeDrawer(),
-          floatingActionButton: _buildFloatingActionButton(),
-          body: HomeTimeline(),
+    return WillPopHarpy(
+      child: ScrollDirectionListener(
+        onScrollDirectionChanged: _onScrollDirectionChanged,
+        child: ChangeNotifierProvider<TimelineFilterModel>(
+          // todo: load filter from preferences
+          create: (_) => TimelineFilterModel(),
+          child: HarpyScaffold(
+            drawer: const HomeDrawer(),
+            endDrawer: const HomeTimelineFilterDrawer(),
+            endDrawerEnableOpenDragGesture: false,
+            floatingActionButton: _buildFloatingActionButton(),
+            body: HomeTimeline(),
+          ),
         ),
       ),
     );

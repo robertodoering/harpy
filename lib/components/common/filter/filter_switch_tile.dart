@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 
-class FilterCheckBox extends StatelessWidget {
-  const FilterCheckBox({
+class FilterSwitchTile extends StatelessWidget {
+  const FilterSwitchTile({
     @required this.text,
     @required this.value,
     @required this.onChanged,
@@ -20,7 +20,7 @@ class FilterCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return CheckboxListTile(
+    return SwitchListTile(
       value: value,
       contentPadding: EdgeInsets.only(
         left: defaultPaddingValue,

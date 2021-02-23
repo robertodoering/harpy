@@ -1,3 +1,4 @@
 Version 0.4.4
 
-· Fixed showing GIFs and videos pauses system audio (music / podcasts) (Thanks Daniele!)
+· Added home timeline filter
+· Fixed playing GIFs and videos pauses system audio (music / podcasts) (Thanks Daniele!)
