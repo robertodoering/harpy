@@ -73,8 +73,6 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
           maxId: maxId,
           timelineFilter: filter,
           lastInitialTweet: tweets.last.originalIdStr,
-          includesLastVisibleTweet:
-              '$lastVisibleTweet' == tweets.last.originalIdStr,
           newTweets: lastVisibleTweet == 0 ? 0 : tweets.length - 1,
           initialResults: true,
         );
@@ -166,7 +164,6 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           maxId: newMaxId,
           timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
-          includesLastVisibleTweet: state.includesLastVisibleTweet,
           newTweets: state.newTweets,
           canRequestOlder: canRequestOlder,
         );
@@ -177,7 +174,6 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
           maxId: newMaxId,
           timelineFilter: currentState.timelineFilter,
           lastInitialTweet: state.lastInitialTweet,
-          includesLastVisibleTweet: state.includesLastVisibleTweet,
           newTweets: state.newTweets,
         );
       }
@@ -246,7 +242,6 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
           tweets: tweets,
           maxId: maxId,
           timelineFilter: timelineFilter ?? currentState.timelineFilter,
-          includesLastVisibleTweet: false,
           newTweets: 0,
         );
       } else {
@@ -314,7 +309,6 @@ class AddToHomeTimeline extends HomeTimelineEvent {
         tweets: tweets,
         maxId: currentState.maxId,
         timelineFilter: currentState.timelineFilter,
-        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
         initialResults: currentState.initialResults,
@@ -371,7 +365,6 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
         tweets: tweets,
         maxId: currentState.maxId,
         timelineFilter: currentState.timelineFilter,
-        includesLastVisibleTweet: currentState.includesLastVisibleTweet,
         newTweets: currentState.newTweets,
         lastInitialTweet: currentState.lastInitialTweet,
         initialResults: currentState.initialResults,

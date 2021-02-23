@@ -69,9 +69,7 @@ extension HomeTimelineExtension on HomeTimelineState {
     }
 
     if (result != null) {
-      return result.newTweets > 1 &&
-          result.includesLastVisibleTweet &&
-          result.lastInitialTweet == originalIdStr;
+      return result.newTweets > 0 && result.lastInitialTweet == originalIdStr;
     } else {
       return false;
     }
@@ -98,7 +96,6 @@ class HomeTimelineResult extends HomeTimelineState {
   const HomeTimelineResult({
     @required this.tweets,
     @required this.timelineFilter,
-    @required this.includesLastVisibleTweet,
     @required this.newTweets,
     @required this.maxId,
     this.lastInitialTweet = '',
@@ -109,13 +106,6 @@ class HomeTimelineResult extends HomeTimelineState {
   final List<TweetData> tweets;
 
   final TimelineFilter timelineFilter;
-
-  /// Whether the last visible tweet from a previous sessions is included in
-  /// the results.
-  ///
-  /// This is `false` when the last visible tweet has been deleted or is
-  /// older than the last 200 tweets in the home timeline.
-  final bool includesLastVisibleTweet;
 
   /// The number of new tweets if the initial request found new tweets that
   /// were not present in a previous session.
@@ -143,12 +133,11 @@ class HomeTimelineResult extends HomeTimelineState {
   List<Object> get props => <Object>[
         tweets,
         timelineFilter,
-        includesLastVisibleTweet,
         newTweets,
+        maxId,
         lastInitialTweet,
         initialResults,
         canRequestOlder,
-        maxId,
       ];
 }
 

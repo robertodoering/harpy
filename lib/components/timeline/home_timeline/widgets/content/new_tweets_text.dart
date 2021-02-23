@@ -7,8 +7,8 @@ class NewTweetsText extends StatelessWidget {
 
   final int amount;
 
-  String get _text => amount != null && amount > 1
-      ? '$amount new tweets since last visit'
+  String get _text => amount != null && amount > 0
+      ? '$amount new tweet${amount > 1 ? 's' : ''} since last visit'
       : 'new tweets since last visit';
 
   @override
