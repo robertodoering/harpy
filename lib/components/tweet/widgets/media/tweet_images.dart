@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/image_gallery/image_gallery.dart';
 import 'package:harpy/components/common/misc/harpy_image.dart';
-import 'package:harpy/components/compose/widget/compose_screen.dart';
-import 'package:harpy/components/replies/widgets/replies_screen.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
@@ -47,7 +45,7 @@ class _TweetImagesState extends State<TweetImages> {
       onShare: _onShareImage,
       child: ImageGallery(
         urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
-        heroTags: _images,
+        heroTags: _images.map(_imageHeroTag).toList(),
         indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
         index: _galleryIndex,
         onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
@@ -153,15 +151,15 @@ class _TweetImagesState extends State<TweetImages> {
     ));
   }
 
-  bool _buildHeroTag() {
+  String _imageHeroTag(ImageData image) {
     final String routeName = ModalRoute.of(context).settings?.name;
 
-    return routeName != RepliesScreen.route && routeName != ComposeScreen.route;
+    return routeName != null
+        ? '$routeName-${image.hashCode}'
+        : '${image.hashCode}';
   }
 
   List<Widget> _buildImages() {
-    final bool _buildHero = _buildHeroTag();
-
     return _images.map((ImageData image) {
       final Widget child = HarpyImage(
         imageUrl: image.appropriateUrl,
@@ -170,17 +168,13 @@ class _TweetImagesState extends State<TweetImages> {
         height: double.infinity,
       );
 
-      if (_buildHero) {
-        return Hero(
-          tag: image,
-          // keep building the image since the images can be visible in the
-          // background of the image gallery
-          placeholderBuilder: (_, __, Widget child) => child,
-          child: child,
-        );
-      } else {
-        return child;
-      }
+      return Hero(
+        tag: _imageHeroTag(image),
+        // keep building the image since the images can be visible in the
+        // background of the image gallery
+        placeholderBuilder: (_, __, Widget child) => child,
+        child: child,
+      );
     }).toList();
   }
 
