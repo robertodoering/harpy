@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/core/preferences/timeline_filter_preferences.dart';
+import 'package:harpy/core/regex/twitter_regex.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/utils/list_utils.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
-
-// todo: sanitize input
 
 class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
   TimelineFilterModel() : super(TimelineFilter.empty) {
@@ -62,7 +61,10 @@ class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
 
   void addExcludingPhrase(String phrase) {
     value = value.copyWith(
-      excludesPhrases: appendToList(value.excludesPhrases, phrase),
+      excludesPhrases: appendToList(
+        value.excludesPhrases,
+        phrase,
+      ),
     );
   }
 
@@ -76,7 +78,11 @@ class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
     value = value.copyWith(
       excludesHashtags: appendToList(
         value.excludesHashtags,
-        prependIfMissing(hashtag, '#', <String>['#', '＃']),
+        prependIfMissing(
+          hashtag.replaceAll(nonHashtagCharactersRegex, ''),
+          '#',
+          <String>['#', '＃'],
+        ),
       ),
     );
   }
