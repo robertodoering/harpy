@@ -36,14 +36,12 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
   if (filter == null || filter == TimelineFilter.empty) {
     return false;
   } else {
-    if (filter.excludesRetweets) {
+    if (filter.excludesRetweets && tweet.retweetedStatus != null) {
       // filter retweets
-      if (tweet.retweetedStatus != null) {
-        return true;
-      }
-    } else if (filter.includesImages ||
-        filter.includesGif ||
-        filter.includesVideo) {
+      return true;
+    }
+
+    if (filter.includesImages || filter.includesGif || filter.includesVideo) {
       // filter non-media tweets
       if (tweet.extendedEntities?.media == null ||
           tweet.extendedEntities.media.isEmpty) {
@@ -63,7 +61,9 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
           filter.includesVideo && hasVideo)) {
         return true;
       }
-    } else if (filter.excludesHashtags.isNotEmpty) {
+    }
+
+    if (filter.excludesHashtags.isNotEmpty) {
       // filter tweets with hashtags
       final List<Hashtag> tweetHashtags =
           tweet.entities?.hashtags ?? <Hashtag>[];
@@ -74,7 +74,9 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
           .any(tweetHashtags.contains)) {
         return true;
       }
-    } else if (filter.excludesPhrases.isNotEmpty) {
+    }
+
+    if (filter.excludesPhrases.isNotEmpty) {
       // filter tweets with keywords / phrases
       final String tweetText = tweet.fullText.toLowerCase() ?? '';
 
