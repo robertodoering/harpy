@@ -59,9 +59,9 @@ class FilterDrawer extends StatelessWidget {
                     text: Text(searchButtonText),
                     backgroundColor: theme.cardColor,
                     dense: true,
-                    onTap: () {
+                    onTap: () async {
+                      await app<HarpyNavigator>().state.maybePop();
                       onSearch();
-                      app<HarpyNavigator>().state.maybePop();
                     },
                   ),
                 ),
@@ -91,7 +91,9 @@ class FilterDrawer extends StatelessWidget {
               if (group != filterGroups.last) defaultVerticalSpacer,
             ],
             _buildSearchButton(
-                theme, DefaultEdgeInsets.all().copyWith(bottom: 0)),
+              theme,
+              DefaultEdgeInsets.all().copyWith(bottom: 0),
+            ),
             // add nav bar height to bottom padding and make it scrollable
             SizedBox(height: defaultPaddingValue + mediaQuery.padding.bottom),
           ],
