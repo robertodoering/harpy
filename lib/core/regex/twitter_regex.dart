@@ -33,5 +33,3 @@ final RegExp mentionStartRegex = RegExp(
 /// Matches everything that is not a valid character in a hashtag (no
 /// numbers, unicode letters, underscores.
 final RegExp nonHashtagCharactersRegex = RegExp(r'[^0-9_\p{L}]', unicode: true);
-
-final RegExp non = RegExp(r'[^0-9_\p{L}]', unicode: true);
