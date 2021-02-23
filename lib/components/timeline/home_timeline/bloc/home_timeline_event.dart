@@ -141,7 +141,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
       final List<TweetData> tweets = await bloc.timelineService
           .homeTimeline(
-            count: 20,
+            count: 200,
             maxId: maxId,
           )
           .then((List<Tweet> tweets) {
