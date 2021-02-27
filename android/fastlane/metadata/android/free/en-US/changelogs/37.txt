@@ -1,0 +1,4 @@
+Version 0.4.5
+
+· Fixed manually refreshing home timeline
+· Changed hashtag filtering to be case insensitive
