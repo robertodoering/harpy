@@ -221,7 +221,7 @@ class RefreshHomeTimeline extends HomeTimelineEvent with Logger {
     final List<TweetData> tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
-          excludeReplies: timelineFilter.excludesReplies ??
+          excludeReplies: timelineFilter?.excludesReplies ??
               currentState.timelineFilter?.excludesReplies,
         )
         .then((List<Tweet> tweets) {
