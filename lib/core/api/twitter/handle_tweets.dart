@@ -65,12 +65,15 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
 
     if (filter.excludesHashtags.isNotEmpty) {
       // filter tweets with hashtags
-      final List<Hashtag> tweetHashtags =
-          tweet.entities?.hashtags ?? <Hashtag>[];
+
+      final List<String> tweetHashtags = tweet.entities?.hashtags
+              ?.map((Hashtag hashtag) => hashtag.text?.toLowerCase() ?? '')
+              ?.toList() ??
+          <String>[];
 
       if (filter.excludesHashtags
-          .map((String hashtag) =>
-              removePrependedSymbol(hashtag, const <String>['#', '＃']))
+          .map((String hashtag) => removePrependedSymbol(
+              hashtag.toLowerCase(), const <String>['#', '＃']))
           .any(tweetHashtags.contains)) {
         return true;
       }
