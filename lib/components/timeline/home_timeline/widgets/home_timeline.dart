@@ -7,6 +7,7 @@ import 'package:harpy/components/common/list/slivers/sliver_box_info_message.dar
 import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
+import 'package:harpy/components/common/misc/custom_refresh_indicator.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
@@ -81,7 +82,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
         child: ScrollToStart(
           controller: _controller,
           child: Builder(
-            builder: (BuildContext context) => RefreshIndicator(
+            builder: (BuildContext context) => CustomRefreshIndicator(
+              displacement:
+                  mediaQuery.padding.top + kToolbarHeight + defaultPaddingValue,
               onRefresh: () async {
                 ScrollDirection.of(context).reset();
                 bloc.add(const RefreshHomeTimeline());
