@@ -79,7 +79,9 @@ class LoadRepliesEvent extends RepliesEvent {
 
     await _loadReplies(bloc);
 
-    if (bloc.replies.isEmpty && !bloc.lastResult.lastPage) {
+    if (bloc.replies.isEmpty &&
+        bloc.lastResult != null &&
+        !bloc.lastResult.lastPage) {
       // try loading next page if first result did not yield any replies for
       // the tweet
       await _loadReplies(bloc);

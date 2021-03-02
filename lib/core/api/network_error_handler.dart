@@ -49,6 +49,7 @@ void twitterApiErrorHandler(
         break;
       default:
         _log.warning('unhandled response exception\n'
+            'request: ${error.request}\n'
             'statuscode: ${error.statusCode}\n'
             'body: ${error.body}');
         break;

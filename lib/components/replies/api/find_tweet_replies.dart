@@ -2,6 +2,7 @@ import 'package:dart_twitter_api/api/tweets/tweet_search_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:http/http.dart';
 
 extension RepliesExtension on TweetSearchService {
   /// Returns a [RepliesResult] that contains paginated replies for the [tweet].
@@ -30,12 +31,32 @@ extension RepliesExtension on TweetSearchService {
     final String maxId =
         lastResult == null ? null : '${int.tryParse(lastResult.maxId) + 1}';
 
-    final TweetSearch result = await searchTweets(
-      q: 'to:$screenName',
-      sinceId: tweet.idStr,
-      count: 100,
-      maxId: maxId,
-    );
+    TweetSearch result;
+
+    try {
+      result = await searchTweets(
+        q: 'to:$screenName',
+        sinceId: tweet.idStr,
+        count: 100,
+        maxId: maxId,
+      );
+    } catch (e) {
+      // workaround for random 403 responses when querying with a since_id
+      // https://github.com/robertodoering/harpy/issues/289
+      if (e is Response && e.statusCode == 403) {
+        result = await searchTweets(
+          q: 'to:$screenName',
+          count: 100,
+          maxId: maxId,
+        );
+      } else {
+        rethrow;
+      }
+    }
+
+    if (result == null) {
+      return null;
+    }
 
     final List<TweetData> replies = <TweetData>[];
 
