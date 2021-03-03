@@ -1,14 +1,26 @@
-import 'package:flutter/foundation.dart';
-import 'package:harpy/components/timeline/common/bloc/timeline_bloc.dart';
-import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_event.dart';
+import 'dart:async';
 
-class UserTimelineBloc extends TimelineBloc {
-  UserTimelineBloc({
-    @required this.screenName,
-  }) {
-    add(UpdateUserTimelineEvent(screenName: screenName));
+import 'package:bloc/bloc.dart';
+import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
+import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:equatable/equatable.dart';
+import 'package:harpy/core/preferences/timeline_filter_preferences.dart';
+import 'package:harpy/core/service_locator.dart';
+
+part 'user_timeline_event.dart';
+part 'user_timeline_state.dart';
+
+class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState> {
+  UserTimelineBloc() : super(const UserTimelineInitial());
+
+  final TimelineService timelineService = app<TwitterApi>().timelineService;
+  final TimelineFilterPreferences timelineFilterPreferences =
+      app<TimelineFilterPreferences>();
+
+  @override
+  Stream<UserTimelineState> mapEventToState(
+    UserTimelineEvent event,
+  ) async* {
+    yield* event.applyAsync(currentState: state, bloc: this);
   }
-
-  /// The screen name of the user that is used to load the timeline.
-  final String screenName;
 }
