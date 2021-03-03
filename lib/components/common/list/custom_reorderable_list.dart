@@ -1,19 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart' as rl;
 import 'package:harpy/components/common/animations/explicit/expand_animation.dart';
 
-/// Wraps the [ReorderableList] to allow the [children] to reorder.
+/// Wraps the [rl.ReorderableList] to allow the [children] to reorder.
 ///
-/// The [ReorderableList] is an implementation of a reorderable list from the
+/// The [rl.ReorderableList] is an implementation of a reorderable list from the
 /// [flutter_reorderable_list](https://pub.dev/packages/flutter_reorderable_list)
 /// package.
 /// This implementation looks and feels a lot better than the default flutter
-/// [ReorderableListView].
+/// [rl.ReorderableListView].
 ///
-/// The [children] must build their own [ReorderableListener] that will start a
-/// reorder on drag.
+/// The [children] must build their own [rl.ReorderableListener] that will
+/// start a reorder on drag.
 class CustomReorderableList extends StatefulWidget {
   CustomReorderableList({
     @required this.children,
@@ -28,7 +28,7 @@ class CustomReorderableList extends StatefulWidget {
           'All children of this widget must have a key.',
         );
 
-  /// The children for the [ReorderableList].
+  /// The children for the [rl.ReorderableList].
   final List<Widget> children;
 
   /// The physics for the [ListView].
@@ -181,9 +181,9 @@ class _CustomReorderableListState extends State<CustomReorderableList> {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableList(
+    return rl.ReorderableList(
       decoratePlaceholder: (Widget widget, double decorationOpacity) =>
-          DecoratedPlaceholder(offset: 0, widget: widget),
+          rl.DecoratedPlaceholder(offset: 0, widget: widget),
       onReorder: (Key draggedItem, Key newPosition) {
         final int draggingIndex = _indexOfKey(draggedItem);
         final int newPositionIndex = _indexOfKey(newPosition);
@@ -212,7 +212,7 @@ class _CustomReorderableListState extends State<CustomReorderableList> {
   }
 }
 
-/// Builds the [ReorderableItem] for a [CustomReorderableList].
+/// Builds the [rl.ReorderableItem] for a [CustomReorderableList].
 class _CustomReorderableItem extends StatelessWidget {
   const _CustomReorderableItem({
     @required Key key,
@@ -224,11 +224,11 @@ class _CustomReorderableItem extends StatelessWidget {
 
   final double reorderOpacity;
 
-  double _opacity(ReorderableItemState state) {
-    if (state == ReorderableItemState.dragProxy ||
-        state == ReorderableItemState.dragProxyFinished) {
+  double _opacity(rl.ReorderableItemState state) {
+    if (state == rl.ReorderableItemState.dragProxy ||
+        state == rl.ReorderableItemState.dragProxyFinished) {
       return reorderOpacity;
-    } else if (state == ReorderableItemState.placeholder) {
+    } else if (state == rl.ReorderableItemState.placeholder) {
       return 0;
     } else {
       return 1;
@@ -237,9 +237,9 @@ class _CustomReorderableItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableItem(
+    return rl.ReorderableItem(
       key: key,
-      childBuilder: (BuildContext context, ReorderableItemState state) {
+      childBuilder: (BuildContext context, rl.ReorderableItemState state) {
         return Opacity(
           opacity: _opacity(state),
           child: child,
