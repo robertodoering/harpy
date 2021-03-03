@@ -10,3 +10,86 @@ class UserTimelineInitial extends UserTimelineState {
   @override
   List<Object> get props => <Object>[];
 }
+
+/// The state when the initial user timeline is being requested.
+class UserTimelineInitialLoading extends UserTimelineState {
+  const UserTimelineInitialLoading();
+
+  @override
+  List<Object> get props => <Object>[];
+}
+
+/// The state when the user timeline has successfully been returned with tweets.
+class UserTimelineResult extends UserTimelineState {
+  const UserTimelineResult({
+    @required this.tweets,
+    @required this.timelineFilter,
+    @required this.maxId,
+    this.canRequestOlder = true,
+  });
+
+  final List<TweetData> tweets;
+
+  final TimelineFilter timelineFilter;
+
+  /// The max id used to request older tweets.
+  ///
+  /// This is the id of the last requested tweet before the tweets got filtered.
+  final String maxId;
+
+  /// Whether older tweets in the user timeline can be requested.
+  ///
+  /// This is `false` when the end of the user timeline has been reached.
+  /// This is the case when the last 800 tweets have been requested.
+  final bool canRequestOlder;
+
+  @override
+  List<Object> get props => <Object>[
+        tweets,
+        timelineFilter,
+        canRequestOlder,
+      ];
+}
+
+/// The state when the user timeline has successfully been returned but no
+/// tweets were found.
+class UserTimelineNoResult extends UserTimelineState {
+  const UserTimelineNoResult({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
+
+  @override
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
+}
+
+/// The state when an error occurred while requesting the user timeline.
+class UserTimelineFailure extends UserTimelineState {
+  const UserTimelineFailure({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
+
+  @override
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
+}
+
+/// The state when requesting older tweets.
+class UserTimelineLoadingOlder extends UserTimelineState {
+  const UserTimelineLoadingOlder({
+    @required this.oldResult,
+  });
+
+  final UserTimelineResult oldResult;
+
+  @override
+  List<Object> get props => <Object>[
+        oldResult,
+      ];
+}

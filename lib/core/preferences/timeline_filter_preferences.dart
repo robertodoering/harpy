@@ -9,4 +9,10 @@ class TimelineFilterPreferences {
       harpyPrefs.getString('homeTimelineFilter', '', prefix: true);
   set homeTimelineFilter(String value) =>
       harpyPrefs.setString('homeTimelineFilter', value, prefix: true);
+
+  /// The json encoded string for the user timeline filter.
+  String get userTimelineFilter =>
+      harpyPrefs.getString('userTimelineFilter', '', prefix: true);
+  set userTimelineFilter(String value) =>
+      harpyPrefs.setString('userTimelineFilter', value, prefix: true);
 }
