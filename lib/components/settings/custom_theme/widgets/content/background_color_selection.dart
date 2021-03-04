@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/list/custom_reorderable_list.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
 import 'package:harpy/components/settings/custom_theme/widgets/content/add_background_color_card.dart';
@@ -13,18 +12,12 @@ class BackgroundColorSelection extends StatelessWidget {
 
   final CustomThemeBloc bloc;
 
-  List<Widget> _buildBackgroundColors(
-    BuildContext context,
-    HarpyTheme harpyTheme,
-  ) {
-    return <Widget>[
-      for (int i = 0; i < harpyTheme.backgroundColors.length; i++)
-        BackgroundColorCard(
-          bloc: bloc,
-          index: i,
-          color: harpyTheme.backgroundColors[i],
-        ),
-    ];
+  Widget _buildBackgroundColor(BuildContext context, int index) {
+    return BackgroundColorCard(
+      bloc: bloc,
+      index: index,
+      color: bloc.harpyTheme.backgroundColors[index],
+    );
   }
 
   @override
@@ -41,12 +34,16 @@ class BackgroundColorSelection extends StatelessWidget {
           child: Text('background colors', style: textTheme.headline4),
         ),
         defaultVerticalSpacer,
-        CustomReorderableList(
+        ReorderableList(
+          itemBuilder: _buildBackgroundColor,
+          itemCount: harpyTheme.backgroundColors.length,
           shrinkWrap: true,
-          onReorder: (int oldIndex, int newIndex) => bloc.add(
-            ReorderBackgroundColor(oldIndex: oldIndex, newIndex: newIndex),
-          ),
-          children: _buildBackgroundColors(context, harpyTheme),
+          onReorder: (int oldIndex, int newIndex) {
+            bloc.add(ReorderBackgroundColor(
+              oldIndex: oldIndex,
+              newIndex: newIndex > oldIndex ? newIndex - 1 : newIndex,
+            ));
+          },
         ),
         AddBackgroundColorCard(bloc),
       ],
