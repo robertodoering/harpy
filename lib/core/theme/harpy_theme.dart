@@ -353,9 +353,6 @@ class HarpyTheme {
       buttonColor: foregroundColor,
       errorColor: errorColor,
 
-      // cursor color used by text fields
-      cursorColor: accentColor,
-
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
           : Colors.black.withOpacity(.2),
@@ -372,14 +369,18 @@ class HarpyTheme {
       // used by toggleable widgets
       toggleableActiveColor: accentColor,
 
-      // used by a text field when it has focus
-      textSelectionHandleColor: accentColor,
-
       // used when interacting with material widgets
       splashColor: accentColor.withOpacity(.1),
       highlightColor: accentColor.withOpacity(.1),
 
       cardTheme: _cardTheme,
+
+      textSelectionTheme: TextSelectionThemeData(
+        // cursor color used by text fields
+        cursorColor: accentColor,
+        // used by a text field when it has focus
+        selectionHandleColor: accentColor,
+      ),
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: foregroundColor,

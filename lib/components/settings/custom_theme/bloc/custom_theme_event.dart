@@ -127,7 +127,10 @@ class ReorderBackgroundColor extends CustomThemeEvent {
 
       bloc.themeData.backgroundColors
         ..removeAt(oldIndex)
-        ..insert(newIndex, color);
+        ..insert(
+          newIndex.clamp(0, bloc.themeData.backgroundColors.length),
+          color,
+        );
 
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
