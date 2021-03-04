@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Wraps the [child] with a [Scaffold] to show [SnackBar]s from anywhere in the
-/// app using the [globalKey].
+/// Wraps the [child] with a [Scaffold] and [ScaffoldMessenger] to show
+/// [SnackBar]s from anywhere in the app using the [globalKey].
 class HarpyMessage extends StatefulWidget {
   HarpyMessage({
     @required this.child,
@@ -17,10 +17,11 @@ class HarpyMessage extends StatefulWidget {
 }
 
 class HarpyMessageState extends State<HarpyMessage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _messengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   void show(String message, [SnackBarAction action]) {
-    _scaffoldKey.currentState.showSnackBar(
+    _messengerKey.currentState.showSnackBar(
       SnackBar(
         content: Text(message),
         action: action,
@@ -30,9 +31,11 @@ class HarpyMessageState extends State<HarpyMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: widget.child,
+    return ScaffoldMessenger(
+      key: _messengerKey,
+      child: Scaffold(
+        body: widget.child,
+      ),
     );
   }
 }

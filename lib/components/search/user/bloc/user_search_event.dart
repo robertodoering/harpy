@@ -63,9 +63,12 @@ class SearchUsers extends LoadPaginatedData {
           includeEntities: false,
         )
         .then(_transformResponse)
-        .catchError((dynamic error) => bloc.silentErrors
-            ? silentErrorHandler(error)
-            : twitterApiErrorHandler(error));
+        .catchError((dynamic error) {
+      bloc.silentErrors
+          ? silentErrorHandler(error)
+          : twitterApiErrorHandler(error);
+      return null;
+    });
 
     if (users != null) {
       users = _filterDuplicates(bloc.users, users);

@@ -28,9 +28,7 @@ class HarpyErrorHandler {
 
     FlutterError.onError = _handleFlutterError;
 
-    runZoned(() {
-      runApp(child);
-    }, onError: _handleError);
+    runZonedGuarded(() => runApp(child), _handleError);
   }
 
   static final Logger _log = Logger('HarpyErrorHandler');

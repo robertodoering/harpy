@@ -18,7 +18,7 @@ class ChangelogDialog extends StatefulWidget {
 
       showDialog<void>(
         context: context,
-        child: const ChangelogDialog(),
+        builder: (_) => const ChangelogDialog(),
       );
     }
 

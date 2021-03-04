@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
@@ -73,9 +72,10 @@ class BackgroundColorCard extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: ReorderableListener(
-                // wrap in container to have the reorderable listener catch
+              child: ReorderableDragStartListener(
+                // wrap in container to have the drag start listener catch
                 // gestures on transparency
+                index: index,
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.all(16),
