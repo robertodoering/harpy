@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/common/list/load_more_listener.dart';
@@ -8,7 +10,6 @@ import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicato
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/common/misc/custom_refresh_indicator.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_profile_app_bar.dart';
@@ -23,10 +24,11 @@ class UserTimeline extends StatelessWidget {
     final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
     final UserTimelineState state = bloc.state;
 
+    final double appBarHeight = min(200, mediaQuery.size.height * .25);
+
     return ScrollToStart(
       child: CustomRefreshIndicator(
-        displacement:
-            mediaQuery.padding.top + kToolbarHeight + defaultPaddingValue,
+        offset: mediaQuery.padding.top + appBarHeight,
         onRefresh: () async {
           ScrollDirection.of(context).reset();
           bloc.add(const RequestUserTimeline());
