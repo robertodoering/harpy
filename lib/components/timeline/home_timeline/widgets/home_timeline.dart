@@ -81,8 +81,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       child: ScrollToStart(
         controller: _controller,
         child: CustomRefreshIndicator(
-          displacement:
-              mediaQuery.padding.top + kToolbarHeight + defaultPaddingValue,
+          offset: mediaQuery.padding.top + kToolbarHeight,
           onRefresh: () async {
             ScrollDirection.of(context).reset();
             bloc.add(const RefreshHomeTimeline());
