@@ -9,7 +9,10 @@ class HarpyBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return HarpyButton.flat(
       padding: const EdgeInsets.all(16),
-      icon: const Icon(CupertinoIcons.left_chevron),
+      icon: Transform.translate(
+        offset: const Offset(-1, 0),
+        child: const Icon(CupertinoIcons.left_chevron),
+      ),
       onTap: Navigator.of(context).pop,
     );
   }
