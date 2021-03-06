@@ -1,5 +1,6 @@
 Version 0.4.6
 
 · Changed pull to refresh to trigger more easily (Thanks armandojrod)
+· Changed button styling
 · Fixed unable to load replies for some users
 
