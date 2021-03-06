@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/buttons/harpy_back_button.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/misc/background_decoration.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
@@ -23,24 +21,40 @@ class UserProfileAppBar extends StatelessWidget {
     UserTimelineBloc timelineBloc,
   ) {
     return <Widget>[
-      BackgroundDecoration(
-        child: HarpyButton.flat(
-          padding: const EdgeInsets.all(16),
-          icon: timelineBloc.state.enableFilter &&
-                  timelineBloc.state.timelineFilter != TimelineFilter.empty
-              ? Icon(Icons.filter_alt, color: theme.accentColor)
-              : const Icon(Icons.filter_alt_outlined),
-          onTap: timelineBloc.state.enableFilter
-              ? Scaffold.of(context).openEndDrawer
-              : null,
-        ),
+      _buildButton(
+        theme,
+        timelineBloc.state.enableFilter &&
+                timelineBloc.state.timelineFilter != TimelineFilter.empty
+            ? Icon(Icons.filter_alt, color: theme.accentColor)
+            : const Icon(Icons.filter_alt_outlined),
+        timelineBloc.state.enableFilter
+            ? Scaffold.of(context).openEndDrawer
+            : null,
       ),
     ];
   }
 
-  Widget _buildLeading() {
-    return const BackgroundDecoration(
-      child: HarpyBackButton(),
+  Widget _buildLeading(BuildContext context, ThemeData theme) {
+    return _buildButton(
+      theme,
+      Transform.translate(
+        offset: const Offset(-1, 0),
+        child: const Icon(CupertinoIcons.left_chevron),
+      ),
+      Navigator.of(context).pop,
+    );
+  }
+
+  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: HarpyButton.raised(
+        backgroundColor: theme.canvasColor.withOpacity(.4),
+        elevation: 0,
+        padding: const EdgeInsets.all(12),
+        icon: icon,
+        onTap: onTap,
+      ),
     );
   }
 
@@ -58,7 +72,7 @@ class UserProfileAppBar extends StatelessWidget {
       title: profileBloc.user?.name ?? '',
       stretch: true,
       pinned: true,
-      leading: _buildLeading(),
+      leading: _buildLeading(context, theme),
       actions: _buildActions(context, theme, model, timelineBloc),
       background: _hasUser ? UserBanner(profileBloc) : null,
     );
