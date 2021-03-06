@@ -4,6 +4,52 @@ abstract class UserTimelineState extends Equatable {
   const UserTimelineState();
 }
 
+extension UserTimelineExtension on UserTimelineState {
+  bool get showInitialLoading => this is UserTimelineInitialLoading;
+
+  bool get showLoadingOlder => this is UserTimelineLoadingOlder;
+
+  bool get showNoTweetsFound => this is UserTimelineNoResult;
+
+  bool get showTimelineError => this is UserTimelineFailure;
+
+  bool get showReachedEnd =>
+      this is UserTimelineResult &&
+      !(this as UserTimelineResult).canRequestOlder;
+
+  bool get enableRequestOlder =>
+      this is UserTimelineResult &&
+      (this as UserTimelineResult).canRequestOlder;
+
+  bool get enableScroll => timelineTweets.isNotEmpty;
+
+  bool get enableFilter => this is UserTimelineResult;
+
+  TimelineFilter get timelineFilter {
+    if (this is UserTimelineResult) {
+      return (this as UserTimelineResult).timelineFilter;
+    } else if (this is UserTimelineLoadingOlder) {
+      return (this as UserTimelineLoadingOlder).oldResult.timelineFilter;
+    } else if (this is UserTimelineNoResult) {
+      return (this as UserTimelineNoResult).timelineFilter;
+    } else if (this is UserTimelineFailure) {
+      return (this as UserTimelineFailure).timelineFilter;
+    } else {
+      return TimelineFilter.empty;
+    }
+  }
+
+  List<TweetData> get timelineTweets {
+    if (this is UserTimelineResult) {
+      return (this as UserTimelineResult).tweets;
+    } else if (this is UserTimelineLoadingOlder) {
+      return (this as UserTimelineLoadingOlder).oldResult.tweets;
+    } else {
+      return <TweetData>[];
+    }
+  }
+}
+
 class UserTimelineInitial extends UserTimelineState {
   const UserTimelineInitial();
 

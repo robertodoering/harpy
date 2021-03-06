@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
@@ -21,7 +22,9 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
     with RequestLock {
   UserTimelineBloc({
     @required this.screenName,
-  }) : super(const UserTimelineInitial());
+  }) : super(const UserTimelineInitial()) {
+    add(const RequestUserTimeline());
+  }
 
   final String screenName;
 

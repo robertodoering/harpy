@@ -11,10 +11,16 @@ abstract class UserTimelineEvent extends Equatable {
 
 /// Requests the user timeline tweets for the [UserTimelineBloc.screenName].
 class RequestUserTimeline extends UserTimelineEvent with Logger {
-  const RequestUserTimeline();
+  const RequestUserTimeline({
+    this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
 
   @override
   Stream<UserTimelineState> applyAsync({
@@ -25,9 +31,10 @@ class RequestUserTimeline extends UserTimelineEvent with Logger {
 
     yield const UserTimelineInitialLoading();
 
-    final TimelineFilter filter = TimelineFilter.fromJsonString(
-      bloc.timelineFilterPreferences.userTimelineFilter,
-    );
+    final TimelineFilter filter = timelineFilter ??
+        TimelineFilter.fromJsonString(
+          bloc.timelineFilterPreferences.userTimelineFilter,
+        );
 
     String maxId;
 
@@ -156,5 +163,49 @@ class RequestOlderUserTimeline extends UserTimelineEvent with Logger {
 
     bloc.requestOlderCompleter.complete();
     bloc.requestOlderCompleter = Completer<void>();
+  }
+}
+
+/// Sets the filter for the user timeline if the current state is
+/// [UserTimelineResult] and refreshes the list afterwards.
+class FilterUserTimeline extends UserTimelineEvent with Logger {
+  const FilterUserTimeline({
+    @required this.timelineFilter,
+  });
+
+  final TimelineFilter timelineFilter;
+
+  @override
+  List<Object> get props => <Object>[
+        timelineFilter,
+      ];
+
+  void _saveTimelineFilter(UserTimelineBloc bloc) {
+    try {
+      final String encodedFilter = jsonEncode(timelineFilter.toJson());
+      log.finer('saving filter: $encodedFilter');
+
+      bloc.timelineFilterPreferences.userTimelineFilter = encodedFilter;
+    } catch (e, st) {
+      log.warning('unable to encode timeline filter', e, st);
+    }
+  }
+
+  @override
+  Stream<UserTimelineState> applyAsync({
+    UserTimelineState currentState,
+    UserTimelineBloc bloc,
+  }) async* {
+    if (currentState is UserTimelineResult) {
+      log.fine('set user timeline filter');
+
+      _saveTimelineFilter(bloc);
+
+      bloc.add(RequestUserTimeline(
+        timelineFilter: timelineFilter,
+      ));
+    } else {
+      log.info('tried to set filter in invalid state');
+    }
   }
 }

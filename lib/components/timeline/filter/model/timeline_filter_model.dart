@@ -7,9 +7,15 @@ import 'package:harpy/misc/utils/list_utils.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
 
 class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
-  TimelineFilterModel() : super(TimelineFilter.empty) {
+  TimelineFilterModel.home() : super(TimelineFilter.empty) {
     value = TimelineFilter.fromJsonString(
       timelineFilterPreferences.homeTimelineFilter,
+    );
+  }
+
+  TimelineFilterModel.user() : super(TimelineFilter.empty) {
+    value = TimelineFilter.fromJsonString(
+      timelineFilterPreferences.userTimelineFilter,
     );
   }
 
