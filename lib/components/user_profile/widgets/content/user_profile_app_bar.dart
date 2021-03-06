@@ -41,8 +41,6 @@ class UserProfileAppBar extends StatelessWidget {
     final bool _hasUser = profileBloc.state is InitializedUserState ||
         profileBloc.state is TranslatingDescriptionState;
 
-    // todo: back arrow disappears with custom actions
-
     return HarpySliverAppBar(
       title: profileBloc.user?.name ?? '',
       stretch: true,
