@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
@@ -19,12 +21,13 @@ class UserProfileAppBar extends StatelessWidget {
     UserTimelineBloc timelineBloc,
   ) {
     return <Widget>[
-      IconButton(
+      HarpyButton.flat(
+        padding: const EdgeInsets.all(16),
         icon: timelineBloc.state.enableFilter &&
                 timelineBloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
-        onPressed: timelineBloc.state.enableFilter
+        onTap: timelineBloc.state.enableFilter
             ? Scaffold.of(context).openEndDrawer
             : null,
       ),
@@ -46,10 +49,6 @@ class UserProfileAppBar extends StatelessWidget {
       stretch: true,
       pinned: true,
       actions: _buildActions(context, theme, model, timelineBloc),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: Navigator.of(context).pop,
-      ),
       background: _hasUser ? UserBanner(profileBloc) : null,
     );
   }

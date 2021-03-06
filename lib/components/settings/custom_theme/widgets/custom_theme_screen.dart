@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
@@ -83,9 +84,10 @@ class CustomThemeScreen extends StatelessWidget {
   }
 
   Widget _buildSaveAction(CustomThemeBloc customThemeBloc) {
-    return IconButton(
+    return HarpyButton.flat(
+      padding: const EdgeInsets.all(16),
       icon: const Icon(FeatherIcons.check),
-      onPressed: customThemeBloc.canSaveTheme
+      onTap: customThemeBloc.canSaveTheme
           ? () => customThemeBloc.add(const SaveCustomTheme())
           : null,
     );

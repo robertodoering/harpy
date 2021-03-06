@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/filter/model/tweet_search_filter_model.dart';
+import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
 import 'package:harpy/components/search/widgets/search_text_field.dart';
 
 /// Builds a sliver app bar for the [TweetSearchScreen] with a [SearchTextField]
@@ -35,9 +37,10 @@ class TweetSearchAppBar extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        IconButton(
+        HarpyButton.flat(
+          padding: const EdgeInsets.all(16),
           icon: const Icon(Icons.filter_alt_outlined),
-          onPressed: () {
+          onTap: () {
             // unfocus search field before opening drawer
             final FocusScopeNode currentFocus = FocusScope.of(context);
 

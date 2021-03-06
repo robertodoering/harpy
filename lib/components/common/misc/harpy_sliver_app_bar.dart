@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/buttons/drawer_button.dart';
+import 'package:harpy/components/common/buttons/harpy_back_button.dart';
 import 'package:harpy/components/common/misc/custom_sliver_app_bar.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -107,6 +109,18 @@ class HarpySliverAppBar extends StatelessWidget {
     );
   }
 
+  Widget _leading(BuildContext context) {
+    if (leading != null) {
+      return leading;
+    } else if (Scaffold.of(context)?.hasDrawer ?? false) {
+      return const DrawerButton();
+    } else if (Navigator.of(context).canPop()) {
+      return const HarpyBackButton();
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
@@ -129,7 +143,8 @@ class HarpySliverAppBar extends StatelessWidget {
       pinned: pinned,
       title: hasFlexibleSpace ? null : _buildTitle(theme),
       actions: actions,
-      leading: leading,
+      leading: _leading(context),
+      automaticallyImplyLeading: false,
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
       expandedHeight: hasFlexibleSpace ? expandedHeight : null,
       bottom: bottom,

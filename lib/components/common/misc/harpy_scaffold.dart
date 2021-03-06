@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:harpy/components/common/buttons/drawer_button.dart';
+import 'package:harpy/components/common/buttons/harpy_back_button.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
 
@@ -59,12 +61,27 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(ThemeData theme, MediaQueryData mediaQuery) {
+  Widget _leading(BuildContext context) {
+    if (Scaffold.of(context)?.hasDrawer ?? false) {
+      return const DrawerButton();
+    } else if (Navigator.of(context).canPop()) {
+      return const HarpyBackButton();
+    } else {
+      return null;
+    }
+  }
+
+  Widget _buildAppBar(
+    BuildContext context,
+    ThemeData theme,
+    MediaQueryData mediaQuery,
+  ) {
     final AppBar appBar = AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
       actions: actions,
+      leading: _leading(context),
       title: title?.isNotEmpty == true ? _buildTitle(theme) : null,
       bottom: appBarBottom,
     );
@@ -110,7 +127,7 @@ class HarpyScaffold extends StatelessWidget {
         colors: backgroundColors,
         child: Column(
           children: <Widget>[
-            if (_hasAppBar) _buildAppBar(theme, mediaQuery),
+            if (_hasAppBar) _buildAppBar(context, theme, mediaQuery),
             Expanded(
               child: buildSafeArea ? SafeArea(top: false, child: body) : body,
             ),
