@@ -21,7 +21,7 @@ const double _kDragContainerExtentPercentage = 0.1;
 
 // How much the scroll's drag gesture can overshoot the RefreshIndicator's
 // displacement; max displacement = _kDragSizeFactorLimit * displacement.
-const double _kDragSizeFactorLimit = 1.5;
+const double _kDragSizeFactorLimit = 1.125;
 
 // When the scroll ends, the duration of the refresh indicator's animation
 // to the RefreshIndicator's displacement.
@@ -103,6 +103,7 @@ class CustomRefreshIndicator extends StatefulWidget {
       {Key key,
       @required this.child,
       this.displacement = 40.0,
+      this.offset = 0,
       @required this.onRefresh,
       this.color,
       this.backgroundColor,
@@ -128,6 +129,8 @@ class CustomRefreshIndicator extends StatefulWidget {
   /// indicator will settle. During the drag that exposes the refresh indicator,
   /// its actual displacement may significantly exceed this value.
   final double displacement;
+
+  final double offset;
 
   /// A function that's called when the user has dragged the refresh indicator
   /// far enough to demonstrate that they want the app to refresh. The returned
@@ -460,8 +463,8 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
         child,
         if (_mode != null)
           Positioned(
-            top: _isIndicatorAtTop ? 0.0 : null,
-            bottom: !_isIndicatorAtTop ? 0.0 : null,
+            top: _isIndicatorAtTop ? widget.offset : null,
+            bottom: !_isIndicatorAtTop ? widget.offset : null,
             left: 0.0,
             right: 0.0,
             child: SizeTransition(
