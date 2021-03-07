@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/custom_popup_menu_button.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
@@ -22,19 +24,22 @@ class HomeAppBar extends StatelessWidget {
     HomeTimelineBloc bloc,
   ) {
     return <Widget>[
-      IconButton(
+      HarpyButton.flat(
+        padding: const EdgeInsets.all(10),
         icon: bloc.state.enableFilter &&
                 bloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
-        onPressed:
+        onTap:
             bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
       ),
-      IconButton(
+      HarpyButton.flat(
+        padding: const EdgeInsets.all(10),
         icon: const Icon(CupertinoIcons.search),
-        onPressed: () => app<HarpyNavigator>().pushNamed(SearchScreen.route),
+        onTap: () => app<HarpyNavigator>().pushNamed(SearchScreen.route),
       ),
-      PopupMenuButton<int>(
+      CustomPopupMenuButton<int>(
+        padding: const EdgeInsets.all(10).copyWith(right: 16),
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (int selection) {
           if (selection == 0) {

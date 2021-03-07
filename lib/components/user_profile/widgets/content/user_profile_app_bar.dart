@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/buttons/harpy_button.dart';
 import 'package:harpy/components/common/misc/harpy_sliver_app_bar.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
@@ -19,16 +21,41 @@ class UserProfileAppBar extends StatelessWidget {
     UserTimelineBloc timelineBloc,
   ) {
     return <Widget>[
-      IconButton(
-        icon: timelineBloc.state.enableFilter &&
+      _buildButton(
+        theme,
+        timelineBloc.state.enableFilter &&
                 timelineBloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
             : const Icon(Icons.filter_alt_outlined),
-        onPressed: timelineBloc.state.enableFilter
+        timelineBloc.state.enableFilter
             ? Scaffold.of(context).openEndDrawer
             : null,
       ),
     ];
+  }
+
+  Widget _buildLeading(BuildContext context, ThemeData theme) {
+    return _buildButton(
+      theme,
+      Transform.translate(
+        offset: const Offset(-1, 0),
+        child: const Icon(CupertinoIcons.left_chevron),
+      ),
+      Navigator.of(context).pop,
+    );
+  }
+
+  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: HarpyButton.raised(
+        backgroundColor: theme.canvasColor.withOpacity(.4),
+        elevation: 0,
+        padding: const EdgeInsets.all(12),
+        icon: icon,
+        onTap: onTap,
+      ),
+    );
   }
 
   @override
@@ -45,11 +72,8 @@ class UserProfileAppBar extends StatelessWidget {
       title: profileBloc.user?.name ?? '',
       stretch: true,
       pinned: true,
+      leading: _buildLeading(context, theme),
       actions: _buildActions(context, theme, model, timelineBloc),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: Navigator.of(context).pop,
-      ),
       background: _hasUser ? UserBanner(profileBloc) : null,
     );
   }

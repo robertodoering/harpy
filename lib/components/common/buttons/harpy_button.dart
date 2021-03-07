@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/implicit/animated_scale.dart';
+import 'package:harpy/core/theme/harpy_theme.dart';
 
 /// The base for the [HarpyButton].
 ///
@@ -81,8 +82,9 @@ class HarpyButton extends StatelessWidget {
     this.betweenPadding,
     this.foregroundColor,
     this.style,
+    double elevation,
   })  : materialType = MaterialType.canvas,
-        elevation = 8,
+        elevation = elevation ?? 8,
         assert(text != null || icon != null);
 
   /// A flat button that has a transparent background and no shadow.
@@ -244,7 +246,7 @@ class HarpyButton extends StatelessWidget {
         child: Material(
           elevation: elevation,
           type: materialType,
-          borderRadius: BorderRadius.circular(64),
+          borderRadius: kDefaultBorderRadius,
           child: Padding(
             padding: _padding,
             // use a builder so the context can reference the animated theme

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/buttons/custom_popup_menu_button.dart';
 import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/core/preferences/layout_preferences.dart';
@@ -40,7 +41,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
     return <Widget>[
-      PopupMenuButton<void>(
+      CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) => setState(layoutPreferences.defaultSettings),
         itemBuilder: (BuildContext context) {
