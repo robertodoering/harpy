@@ -405,17 +405,13 @@ class FilterHomeTimeline extends HomeTimelineEvent with Logger {
     HomeTimelineState currentState,
     HomeTimelineBloc bloc,
   }) async* {
-    if (currentState is HomeTimelineResult) {
-      log.fine('set home timeline filter');
+    log.fine('set home timeline filter');
 
-      _saveTimelineFilter(bloc);
+    _saveTimelineFilter(bloc);
 
-      bloc.add(RefreshHomeTimeline(
-        clearPrevious: true,
-        timelineFilter: timelineFilter,
-      ));
-    } else {
-      log.info('tried to set filter in invalid state');
-    }
+    bloc.add(RefreshHomeTimeline(
+      clearPrevious: true,
+      timelineFilter: timelineFilter,
+    ));
   }
 }

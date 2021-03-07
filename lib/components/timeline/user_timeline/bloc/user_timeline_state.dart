@@ -23,7 +23,8 @@ extension UserTimelineExtension on UserTimelineState {
 
   bool get enableScroll => !showInitialLoading;
 
-  bool get enableFilter => this is UserTimelineResult;
+  bool get enableFilter =>
+      this is UserTimelineResult || timelineFilter != TimelineFilter.empty;
 
   TimelineFilter get timelineFilter {
     if (this is UserTimelineResult) {

@@ -23,7 +23,8 @@ extension HomeTimelineExtension on HomeTimelineState {
 
   bool get enableScroll => timelineTweets.isNotEmpty;
 
-  bool get enableFilter => this is HomeTimelineResult;
+  bool get enableFilter =>
+      this is HomeTimelineResult || timelineFilter != TimelineFilter.empty;
 
   TimelineFilter get timelineFilter {
     if (this is HomeTimelineResult) {

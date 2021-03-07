@@ -197,16 +197,12 @@ class FilterUserTimeline extends UserTimelineEvent with Logger {
     UserTimelineState currentState,
     UserTimelineBloc bloc,
   }) async* {
-    if (currentState is UserTimelineResult) {
-      log.fine('set user timeline filter');
+    log.fine('set user timeline filter');
 
-      _saveTimelineFilter(bloc);
+    _saveTimelineFilter(bloc);
 
-      bloc.add(RequestUserTimeline(
-        timelineFilter: timelineFilter,
-      ));
-    } else {
-      log.info('tried to set filter in invalid state');
-    }
+    bloc.add(RequestUserTimeline(
+      timelineFilter: timelineFilter,
+    ));
   }
 }
