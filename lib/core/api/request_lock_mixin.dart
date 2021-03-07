@@ -1,4 +1,8 @@
 /// A lock for requests to prevent successive calls for a given duration.
+///
+/// Used to prevent spamming a request when the request is triggered
+/// automatically (e.g. when scroll at the end of a list to load more
+/// paginated data).
 mixin RequestLock {
   bool _isLocked = false;
   bool get isLocked => _isLocked;
@@ -8,7 +12,7 @@ mixin RequestLock {
   /// Returns `false` if [_isLocked] was `false` before.
   /// Returns `true` if it was already locked.
   bool lock({
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 2),
   }) {
     if (!_isLocked) {
       _isLocked = true;
