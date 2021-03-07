@@ -62,8 +62,6 @@ class RequestUserTimeline extends UserTimelineEvent with Logger {
           timelineFilter: filter,
           maxId: maxId,
         );
-      } else if (maxId != null) {
-        bloc.add(const RequestOlderUserTimeline());
       } else {
         yield UserTimelineNoResult(timelineFilter: filter);
       }

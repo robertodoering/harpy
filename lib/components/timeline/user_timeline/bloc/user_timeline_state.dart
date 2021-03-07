@@ -21,7 +21,7 @@ extension UserTimelineExtension on UserTimelineState {
       this is UserTimelineResult &&
       (this as UserTimelineResult).canRequestOlder;
 
-  bool get enableScroll => timelineTweets.isNotEmpty;
+  bool get enableScroll => !showInitialLoading;
 
   bool get enableFilter => this is UserTimelineResult;
 
