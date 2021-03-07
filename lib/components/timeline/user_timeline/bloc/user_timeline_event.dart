@@ -87,7 +87,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with Logger {
   List<Object> get props => <Object>[];
 
   String _findMaxId(UserTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId);
+    final int lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -156,7 +156,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with Logger {
         // re-yield result state with previous tweets but new max id
         yield UserTimelineResult(
           tweets: currentState.tweets,
-          maxId: newMaxId,
+          maxId: currentState.maxId,
           timelineFilter: currentState.timelineFilter,
         );
       }

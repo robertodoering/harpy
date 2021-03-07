@@ -100,7 +100,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
   List<Object> get props => <Object>[];
 
   String _findMaxId(HomeTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId);
+    final int lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
