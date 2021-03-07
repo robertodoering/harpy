@@ -93,6 +93,7 @@ class UserTimelineResult extends UserTimelineState {
   List<Object> get props => <Object>[
         tweets,
         timelineFilter,
+        maxId,
         canRequestOlder,
       ];
 }
