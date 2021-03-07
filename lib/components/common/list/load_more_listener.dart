@@ -26,15 +26,19 @@ class _LoadMoreListenerState extends State<LoadMoreListener> {
       return;
     }
 
-    setState(() {
-      _loading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _loading = true;
+      });
+    }
 
     await widget.onLoadMore();
 
-    setState(() {
-      _loading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 
   bool _onNotification(ScrollNotification notification) {
