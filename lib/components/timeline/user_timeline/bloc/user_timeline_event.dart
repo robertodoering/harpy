@@ -102,6 +102,8 @@ class RequestOlderUserTimeline extends UserTimelineEvent with Logger {
     UserTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
+      bloc.requestOlderCompleter.complete();
+      bloc.requestOlderCompleter = Completer<void>();
       return;
     }
 
@@ -142,6 +144,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with Logger {
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');
+        log.finer('can request older: $canRequestOlder');
 
         yield UserTimelineResult(
           tweets: currentState.tweets.followedBy(tweets).toList(),

@@ -115,6 +115,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
     HomeTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
+      bloc.requestOlderCompleter.complete();
+      bloc.requestOlderCompleter = Completer<void>();
       return;
     }
 
@@ -156,6 +158,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with Logger {
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');
+        log.finer('can request older: $canRequestOlder');
 
         yield HomeTimelineResult(
           tweets: state.tweets.followedBy(tweets).toList(),
