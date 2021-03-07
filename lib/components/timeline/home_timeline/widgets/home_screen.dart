@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       child: ScrollDirectionListener(
         onScrollDirectionChanged: _onScrollDirectionChanged,
         child: ChangeNotifierProvider<TimelineFilterModel>(
-          create: (_) => TimelineFilterModel(),
+          create: (_) => TimelineFilterModel.home(),
           child: HarpyScaffold(
             drawer: const HomeDrawer(),
             endDrawer: const HomeTimelineFilterDrawer(),

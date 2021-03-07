@@ -14,6 +14,7 @@ class HarpySliverAppBar extends StatelessWidget {
     this.title,
     this.titleWidget,
     this.actions,
+    this.leading,
     this.showIcon = false,
     this.floating = false,
     this.stretch = false,
@@ -25,6 +26,7 @@ class HarpySliverAppBar extends StatelessWidget {
   final String title;
   final Widget titleWidget;
   final List<Widget> actions;
+  final Widget leading;
   final bool showIcon;
   final bool floating;
   final bool stretch;
@@ -127,6 +129,7 @@ class HarpySliverAppBar extends StatelessWidget {
       pinned: pinned,
       title: hasFlexibleSpace ? null : _buildTitle(theme),
       actions: actions,
+      leading: leading,
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
       expandedHeight: hasFlexibleSpace ? expandedHeight : null,
       bottom: bottom,

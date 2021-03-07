@@ -82,9 +82,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with Logger {
         bloc.add(RefreshHomeTimeline(timelineFilter: filter));
       }
     } else {
-      yield HomeTimelineFailure(
-        timelineFilter: filter,
-      );
+      yield HomeTimelineFailure(timelineFilter: filter);
     }
   }
 }
