@@ -31,7 +31,7 @@ dependencies:
   logging: ^1.0.0
   mime_type: ^0.3.2 # non null safe
   provider: ^5.0.0
-  sentry: ^4.1.0-nullsafety.0
+  sentry_flutter: ^4.1.0-nullsafety.0
   timeago: ^3.0.1
   url_launcher: ^6.0.2
   visibility_detector: ^0.2.0-nullsafety.1

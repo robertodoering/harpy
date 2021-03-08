@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/logger_mixin.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// Calls [runApp] to run the app and catches any errors thrown by the Flutter
 /// framework or dart.
@@ -29,7 +30,7 @@ class HarpyErrorHandler with Logger {
 
     runZonedGuarded(
       () async {
-        await Sentry.init(
+        await SentryFlutter.init(
           (SentryOptions options) => options.dsn = sentryDsn,
         );
 
