@@ -8,7 +8,6 @@ import 'package:harpy/components/authentication/bloc/authentication_event.dart';
 import 'package:harpy/components/authentication/widgets/login_screen.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/download_service.dart';
-import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/harpy_preferences.dart';
@@ -60,7 +59,6 @@ class InitializeEvent extends ApplicationEvent {
     bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
 
     await Future.wait<void>(<Future<void>>[
-      app<ErrorReporter>().initialize(),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
       app<DownloadService>().initialize(),

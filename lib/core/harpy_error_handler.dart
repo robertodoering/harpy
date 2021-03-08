@@ -3,21 +3,20 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/core/error_reporter.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:logging/logging.dart';
+import 'package:harpy/core/app_config.dart';
+import 'package:harpy/core/logger_mixin.dart';
+import 'package:sentry/sentry.dart';
 
 /// Calls [runApp] to run the app and catches any errors thrown by the Flutter
 /// framework or dart.
 ///
-/// Caught error are logged and when building in release mode, errors are
-/// reported to the https://sentry.io error tracking service.
-/// For sentry to report the caught errors, a DSN issued by sentry has to be
-/// added to the app config located in `assets/config/app_config.yaml`
+/// In debug mode, any caught errors will be printed to the console.
+/// In release mode, errors are reported to the https://sentry.io error
+/// tracking service.
 ///
 /// See https://flutter.dev/docs/cookbook/maintenance/error-reporting for more
 /// information about error reporting in Flutter.
-class HarpyErrorHandler {
+class HarpyErrorHandler with Logger {
   HarpyErrorHandler({
     @required Widget child,
   }) {
@@ -28,16 +27,25 @@ class HarpyErrorHandler {
 
     FlutterError.onError = _handleFlutterError;
 
-    runZonedGuarded(() => runApp(child), _handleError);
-  }
+    runZonedGuarded(
+      () async {
+        await Sentry.init(
+          (SentryOptions options) => options.dsn = sentryDsn,
+        );
 
-  static final Logger _log = Logger('HarpyErrorHandler');
+        runApp(child);
+      },
+      _handleError,
+    );
+  }
 
   /// Handles errors caught by the Flutter framework.
   ///
   /// Forwards the error to the [_handleError] handler when in release mode.
   /// Prints it to the console otherwise.
   Future<void> _handleFlutterError(FlutterErrorDetails details) async {
+    log.severe('caught flutter error');
+
     if (kReleaseMode) {
       Zone.current.handleUncaughtError(details.exception, details.stack);
     } else {
@@ -45,23 +53,27 @@ class HarpyErrorHandler {
     }
   }
 
-  /// Prints the [error] and shows a dialog asking to send the error report.
-  ///
-  /// Additional device diagnostic data will be sent along the error.
+  /// Prints the error and reports it to sentry in release mode.
   Future<void> _handleError(Object error, StackTrace stackTrace) async {
     if (error is SocketException) {
       // no internet connection, can be ignored
-      _log.warning('ignoring error $error');
+      log.warning('ignoring internet connection error $error');
       return;
     }
 
-    _log.severe('caught error', error, stackTrace);
+    log.severe('caught error', error, stackTrace);
 
     // report the error in release mode
     if (kReleaseMode) {
-      app<ErrorReporter>().reportError(error, stackTrace);
+      log.info('reporting error to sentry');
+      try {
+        await Sentry.captureException(error, stackTrace: stackTrace);
+        log.fine('error reported');
+      } catch (e) {
+        log.warning('error while reporting error');
+      }
     } else {
-      _log.info('not reporting error in debug / profile mode');
+      log.info('not reporting error in debug / profile mode');
     }
   }
 }
