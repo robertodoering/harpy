@@ -9,6 +9,7 @@ import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/message_service.dart';
@@ -56,7 +57,8 @@ abstract class AuthenticationEvent {
 
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
-        .then((User user) => UserData.fromUser(user));
+        .then((User user) => UserData.fromUser(user))
+        .catchError(silentErrorHandler);
 
     if (bloc.authenticatedUser != null) {
       // initialize the user prefix for the harpy preferences
@@ -131,6 +133,8 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
       bloc.twitterSession = await bloc.twitterLogin.currentSession;
 
       _log.fine('twitter session initialized');
+    } else {
+      _log.warning('no twitter config exists');
     }
 
     if (bloc.twitterSession != null) {
