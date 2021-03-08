@@ -4,7 +4,6 @@ import 'package:harpy/core/analytics_service.dart';
 import 'package:harpy/core/api/translate/translate_service.dart';
 import 'package:harpy/core/api/twitter/media_upload_service.dart';
 import 'package:harpy/core/api/twitter/media_video_converter.dart';
-import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
 import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/error_reporter.dart';
@@ -42,7 +41,6 @@ void setupServices() {
     ..registerLazySingleton<HarpyNavigator>(() => HarpyNavigator())
     ..registerLazySingleton<HarpyInfo>(() => HarpyInfo())
     ..registerLazySingleton<ErrorReporter>(() => ErrorReporter())
-    ..registerLazySingleton<AppConfig>(() => AppConfig())
     ..registerLazySingleton<ChangelogParser>(() => ChangelogParser())
     ..registerLazySingleton<MessageService>(() => MessageService())
     ..registerLazySingleton<TranslationService>(() => TranslationService())

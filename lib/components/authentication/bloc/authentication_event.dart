@@ -9,7 +9,6 @@ import 'package:harpy/components/authentication/widgets/setup_screen.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
 import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
 import 'package:harpy/core/analytics_service.dart';
-import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/user_data.dart';
 import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/message_service.dart';
@@ -31,11 +30,11 @@ abstract class AuthenticationEvent {
   /// automatically after initialization or after a user authenticated manually.
   ///
   /// Returns `true` when the initialization was successful.
-  Future<bool> onLogin(AuthenticationBloc bloc, AppConfigData appConfig) async {
+  Future<bool> onLogin(AuthenticationBloc bloc) async {
     // set twitter api client keys
     (bloc.twitterApi.client as TwitterClient)
-      ..consumerKey = appConfig.twitterConsumerKey
-      ..consumerSecret = appConfig.twitterConsumerSecret
+      ..consumerKey = twitterConsumerKey
+      ..consumerSecret = twitterConsumerSecret
       ..token = bloc.twitterSession?.token ?? ''
       ..secret = bloc.twitterSession?.secret ?? '';
 
@@ -57,8 +56,7 @@ abstract class AuthenticationEvent {
 
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
-        .then((User user) => UserData.fromUser(user))
-        .catchError(silentErrorHandler);
+        .then((User user) => UserData.fromUser(user));
 
     if (bloc.authenticatedUser != null) {
       // initialize the user prefix for the harpy preferences
@@ -122,13 +120,11 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     AuthenticationState currentState,
     AuthenticationBloc bloc,
   }) async* {
-    final AppConfigData appConfigData = app<AppConfig>().data;
-
-    if (appConfigData != null) {
+    if (hasTwitterConfig) {
       // init twitter login
       bloc.twitterLogin = TwitterLogin(
-        consumerKey: appConfigData.twitterConsumerKey,
-        consumerSecret: appConfigData.twitterConsumerSecret,
+        consumerKey: twitterConsumerKey,
+        consumerSecret: twitterConsumerSecret,
       );
 
       // init active twitter session
@@ -138,7 +134,7 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     }
 
     if (bloc.twitterSession != null) {
-      if (await onLogin(bloc, appConfigData)) {
+      if (await onLogin(bloc)) {
         // retrieved session and initialized login
         _log.info('authenticated');
 
@@ -180,7 +176,7 @@ class LoginEvent extends AuthenticationEvent {
         _log.fine('successfully logged in');
         bloc.twitterSession = result.session;
 
-        if (await onLogin(bloc, app<AppConfig>().data)) {
+        if (await onLogin(bloc)) {
           // successfully initialized the login
           yield AuthenticatedState();
 
