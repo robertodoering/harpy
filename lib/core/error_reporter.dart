@@ -2,13 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/dialogs/error_dialog.dart';
-import 'package:harpy/core/api/network_error_handler.dart';
-import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:logging/logging.dart';
-import 'package:sentry/sentry.dart';
 
 /// Handles reporting errors caught by the [HarpyErrorHandler] and reports
 /// them to sentry.
@@ -24,7 +21,7 @@ class ErrorReporter {
   /// service.
   ///
   /// See https://pub.dev/packages/sentry.
-  SentryClient _sentry;
+  // SentryClient _sentry;
 
   /// The last time the error dialog has been shown.
   ///
@@ -39,14 +36,14 @@ class ErrorReporter {
   /// Initializes the [SentryClient] with the DSN of the [AppConfig] to report
   /// errors in release mode.
   Future<void> initialize() async {
-    final String dsn = app<AppConfig>().data?.sentryDsn;
-
-    if (dsn?.isNotEmpty == true) {
-      _sentry = SentryClient(dsn: dsn);
-    } else {
-      _log.warning('No dsn set for sentry. \n'
-          'Errors that are thrown will not be reported to sentry.');
-    }
+    // final String dsn = app<AppConfig>().data?.sentryDsn;
+    //
+    // if (dsn?.isNotEmpty == true) {
+    //   // _sentry = SentryClient(dsn: dsn);
+    // } else {
+    //   _log.warning('No dsn set for sentry. \n'
+    //       'Errors that are thrown will not be reported to sentry.');
+    // }
   }
 
   /// Shows the [_ErrorDialog] to ask the user whether or not the error
@@ -68,7 +65,7 @@ class ErrorReporter {
       builder: (_) => const ErrorDialog(),
     );
 
-    if (result == true && _sentry != null) {
+    if (result == true) {
       // report error with sentry
 
       final HarpyInfo harpyInfo = app<HarpyInfo>();
@@ -80,21 +77,21 @@ class ErrorReporter {
         ..._appendDeviceInfo(harpyInfo),
       };
 
-      final Event event = Event(
-        exception: error,
-        stackTrace: stackTrace,
-        release: harpyInfo.packageInfo?.version,
-        tags: tags,
-      );
+      // final Event event = Event(
+      //   exception: error,
+      //   stackTrace: stackTrace,
+      //   release: harpyInfo.packageInfo?.version,
+      //   tags: tags,
+      // );
+      //
+      // final SentryResponse sentryResponse =
+      //     await _sentry.capture(event: event).catchError(silentErrorHandler);
 
-      final SentryResponse sentryResponse =
-          await _sentry.capture(event: event).catchError(silentErrorHandler);
-
-      if (sentryResponse?.isSuccessful == true) {
-        _log.fine('error reported to sentry');
-      } else {
-        _log.severe('error while reporting to sentry', sentryResponse?.error);
-      }
+      // if (sentryResponse?.isSuccessful == true) {
+      //   _log.fine('error reported to sentry');
+      // } else {
+      //   _log.severe('error while reporting to sentry', sentryResponse?.error);
+      // }
     } else {
       _log.warning('not sending the report');
     }

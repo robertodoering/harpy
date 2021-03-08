@@ -16,7 +16,7 @@ void main() {
     app.registerLazySingleton<ChangelogParser>(() => ChangelogParser());
 
     when(app<HarpyInfo>().packageInfo).thenReturn(
-      PackageInfo(buildNumber: '14'),
+      PackageInfo(buildNumber: '14', version: '', packageName: '', appName: ''),
     );
   });
 

@@ -14,53 +14,52 @@ dependencies:
     sdk: flutter
 
   # packages
-  cached_network_image: ^2.5.0
-  cupertino_icons: ^1.0.0
-  dart_twitter_api: ^0.3.5
-  downloads_path_provider: ^0.1.0
-  equatable: ^1.2.6
-  flare_flutter: ^2.0.6
-  flutter_bloc: ^6.1.2
+  cached_network_image: ^3.0.0-nullsafety
+  cupertino_icons: ^1.0.2
+  dart_twitter_api: ^0.5.1
+  downloads_path_provider: ^0.1.0 # non null safe
+  equatable: ^2.0.0
+  flare_flutter: ^2.0.6 # non null safe
+  flutter_bloc: ^7.0.0-nullsafety.4
   flutter_colorpicker: ^0.4.0-nullsafety.0
-  flutter_feather_icons: ^1.0.3
-  flutter_material_color_picker: ^1.0.5
-  get_it: ^5.0.6
-  humanize: ^0.3.0
-  intl : ^0.16.1
-  like_button: ^1.0.4
-  logging: ^0.11.4
-  mime_type: ^0.3.2
-  provider: ^4.3.3
-  sentry: ^3.0.1
-  timeago: ^2.0.29
-  url_launcher: ^5.7.8
-  visibility_detector: ^0.1.5
-  yaml: ^2.2.1
+  flutter_feather_icons: ^1.0.3 # non null safe
+  flutter_material_color_picker: ^1.0.5 # non null safe
+  get_it: ^6.0.0
+  humanize: ^0.3.0 # non null safe
+  intl: ^0.17.0
+  like_button: ^1.0.4 # non null safe
+  logging: ^1.0.0
+  mime_type: ^0.3.2 # non null safe
+  provider: ^5.0.0
+#  sentry: ^4.1.0-nullsafety.0
+  timeago: ^3.0.1
+  url_launcher: ^6.0.2
+  visibility_detector: ^0.2.0-nullsafety.1
 
   # plugins
-  connectivity: ^2.0.2
-  device_info: '>=0.4.2+4 <2.0.0'
-  file_picker: ^2.1.6
-  firebase_analytics: ^7.0.1
-  flutter_ffmpeg: ^0.3.1
-  flutter_downloader: ^1.5.2
-  flutter_twitter_login:
+  connectivity: ^3.0.2
+  device_info: ^2.0.0
+  file_picker: ^3.0.0
+  firebase_analytics: any # non null safe
+  flutter_ffmpeg: ^0.3.1 # non null safe
+  flutter_downloader: ^1.5.2 # non null safe
+  flutter_twitter_login: # non null safe
     git: git://github.com/robertodoering/flutter_twitter_login.git
-  keyboard_visibility: ^0.5.6
-  package_info: '>=0.4.1 <2.0.0'
-  path_provider: ^1.6.27
-  permission_handler: ^5.1.0+2
-  share: '>=0.6.5+4 <2.0.0'
-  shared_preferences: '>=0.5.8 <2.0.0'
-  video_player: ^1.0.1
+  keyboard_visibility: ^0.5.6 # non null safe
+  package_info: ^2.0.0
+  path_provider: ^2.0.1
+  permission_handler: ^6.0.1
+  share: ^2.0.0
+  shared_preferences: ^2.0.3
+  video_player: ^2.0.0
 
 dev_dependencies:
-  bloc_test: ^7.1.0
-  build_runner: ^1.11.1
+  bloc_test: ^8.0.0-nullsafety.2
+  build_runner: ^1.11.5
   flutter_test:
     sdk: flutter
-  json_serializable: ^3.5.1
-  mockito: ^4.1.4
+  json_serializable: ^4.0.2
+  mockito: ^5.0.0
 
 flutter:
   uses-material-design: true

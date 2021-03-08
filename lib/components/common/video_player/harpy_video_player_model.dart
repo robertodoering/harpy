@@ -38,7 +38,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   final List<OnAction> _actionListener = <OnAction>[];
 
   /// Whether the video has already been initialized.
-  bool get initialized => controller.value.initialized;
+  bool get initialized => controller.value.isInitialized;
 
   /// Whether the [controller] is currently initializing the video.
   bool _initializing = false;

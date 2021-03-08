@@ -64,7 +64,12 @@ void main() {
       );
 
       when(app<HarpyInfo>().packageInfo).thenReturn(
-        PackageInfo(buildNumber: '14'),
+        PackageInfo(
+          buildNumber: '14',
+          appName: '',
+          version: '',
+          packageName: '',
+        ),
       );
 
       await tester.pumpWidget(const MaterialApp(
@@ -91,7 +96,12 @@ void main() {
       );
 
       when(app<HarpyInfo>().packageInfo).thenReturn(
-        PackageInfo(buildNumber: '14'),
+        PackageInfo(
+          buildNumber: '14',
+          version: '',
+          packageName: '',
+          appName: '',
+        ),
       );
 
       await tester.pumpWidget(const MaterialApp(
@@ -121,7 +131,12 @@ void main() {
       );
 
       when(app<HarpyInfo>().packageInfo).thenReturn(
-        PackageInfo(buildNumber: '14'),
+        PackageInfo(
+          buildNumber: '14',
+          version: '',
+          packageName: '',
+          appName: '',
+        ),
       );
 
       await tester.pumpWidget(const MaterialApp(
@@ -149,7 +164,12 @@ void main() {
       );
 
       when(app<HarpyInfo>().packageInfo).thenReturn(
-        PackageInfo(buildNumber: '14'),
+        PackageInfo(
+          buildNumber: '14',
+          version: '',
+          packageName: '',
+          appName: '',
+        ),
       );
 
       await tester.pumpWidget(const MaterialApp(
