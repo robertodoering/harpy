@@ -1,0 +1,3 @@
+Version 0.4.7
+
+· Fixed unresponsive touch input on some devices after last update
