@@ -31,11 +31,11 @@ abstract class AuthenticationEvent {
   /// automatically after initialization or after a user authenticated manually.
   ///
   /// Returns `true` when the initialization was successful.
-  Future<bool> onLogin(AuthenticationBloc bloc, AppConfigData appConfig) async {
+  Future<bool> onLogin(AuthenticationBloc bloc) async {
     // set twitter api client keys
     (bloc.twitterApi.client as TwitterClient)
-      ..consumerKey = appConfig.twitterConsumerKey
-      ..consumerSecret = appConfig.twitterConsumerSecret
+      ..consumerKey = twitterConsumerKey
+      ..consumerSecret = twitterConsumerSecret
       ..token = bloc.twitterSession?.token ?? ''
       ..secret = bloc.twitterSession?.secret ?? '';
 
@@ -122,23 +122,23 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     AuthenticationState currentState,
     AuthenticationBloc bloc,
   }) async* {
-    final AppConfigData appConfigData = app<AppConfig>().data;
-
-    if (appConfigData != null) {
+    if (hasTwitterConfig) {
       // init twitter login
       bloc.twitterLogin = TwitterLogin(
-        consumerKey: appConfigData.twitterConsumerKey,
-        consumerSecret: appConfigData.twitterConsumerSecret,
+        consumerKey: twitterConsumerKey,
+        consumerSecret: twitterConsumerSecret,
       );
 
       // init active twitter session
       bloc.twitterSession = await bloc.twitterLogin.currentSession;
 
       _log.fine('twitter session initialized');
+    } else {
+      _log.warning('no twitter config exists');
     }
 
     if (bloc.twitterSession != null) {
-      if (await onLogin(bloc, appConfigData)) {
+      if (await onLogin(bloc)) {
         // retrieved session and initialized login
         _log.info('authenticated');
 
@@ -180,7 +180,7 @@ class LoginEvent extends AuthenticationEvent {
         _log.fine('successfully logged in');
         bloc.twitterSession = result.session;
 
-        if (await onLogin(bloc, app<AppConfig>().data)) {
+        if (await onLogin(bloc)) {
           // successfully initialized the login
           yield AuthenticatedState();
 

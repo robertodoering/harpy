@@ -6,9 +6,7 @@ import 'package:harpy/components/application/bloc/application_state.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_state.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/core/app_config.dart';
 import 'package:harpy/core/connectivity_service.dart';
-import 'package:harpy/core/error_reporter.dart';
 import 'package:harpy/core/harpy_info.dart';
 import 'package:harpy/core/preferences/changelog_preferences.dart';
 import 'package:harpy/core/preferences/general_preferences.dart';
@@ -17,11 +15,7 @@ import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAppConfig extends Mock implements AppConfig {}
-
 class MockHarpyInfo extends Mock implements HarpyInfo {}
-
-class MockErrorReporter extends Mock implements ErrorReporter {}
 
 class MockTwitterApi extends Mock implements TwitterApi {}
 
@@ -34,8 +28,6 @@ void main() {
 
   setUp(() {
     app.registerLazySingleton<TwitterApi>(() => MockTwitterApi());
-    app.registerLazySingleton<AppConfig>(() => MockAppConfig());
-    app.registerLazySingleton<ErrorReporter>(() => MockErrorReporter());
     app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
     app.registerLazySingleton<HarpyPreferences>(() => MockHarpyPreferences());
     app.registerLazySingleton<HarpyNavigator>(() => HarpyNavigator());
@@ -52,9 +44,7 @@ void main() {
   blocTest<ApplicationBloc, ApplicationState>(
     'application bloc initializes the app with empty app config data',
     build: () {
-      when(app<AppConfig>().initialize()).thenReturn(null);
       when(app<HarpyInfo>().initialize()).thenAnswer((_) async {});
-      when(app<ErrorReporter>().initialize()).thenAnswer((_) async {});
       when(app<HarpyPreferences>().initialize()).thenAnswer((_) async {});
       when(app<ConnectivityService>().initialize()).thenAnswer((_) async {});
       when(app<GeneralPreferences>().performanceMode).thenReturn(false);
@@ -67,8 +57,6 @@ void main() {
     },
     verify: (ApplicationBloc bloc) async {
       verify(app<HarpyInfo>().initialize());
-      verify(app<AppConfig>().initialize());
-      verify(app<ErrorReporter>().initialize());
       verify(app<HarpyPreferences>().initialize());
       verify(app<ConnectivityService>().initialize());
 
