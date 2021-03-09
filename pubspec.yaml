@@ -27,7 +27,7 @@ dependencies:
   get_it: ^6.0.0
   humanize: ^0.3.0 # non null safe
   intl: ^0.17.0
-  like_button: ^1.0.4 # non null safe
+  like_button: ^2.0.0
   logging: ^1.0.0
   mime_type: ^0.3.2 # non null safe
   provider: ^5.0.0
