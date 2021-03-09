@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:harpy/components/common/misc/global_bloc_provider.dart';
 import 'package:harpy/core/harpy_error_handler.dart';
 import 'package:harpy/core/service_locator.dart';
@@ -16,12 +14,6 @@ import 'package:harpy/harpy.dart';
 void main() {
   // sets up the global service locator
   setupServices();
-
-  // enable resampling to improve scrolling on devices where the input
-  // frequency does not match the display frequency
-  // this will be set to true by default in future flutter releases
-  WidgetsFlutterBinding.ensureInitialized();
-  GestureBinding.instance.resamplingEnabled = true;
 
   // HarpyErrorHandler will run the app and handle uncaught errors
   HarpyErrorHandler(
