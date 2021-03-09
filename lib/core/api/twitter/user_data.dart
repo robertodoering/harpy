@@ -116,6 +116,11 @@ class UserData {
   /// Returns `false` if [connections] is `null`.
   bool get following => connections?.contains('following') == true;
 
+  /// Whether this user follows the authenticated user.
+  ///
+  /// Returns `false` if [connections] is `null`.
+  bool get follows => connections?.contains('followed_by') == true;
+
   /// Whether this user has a description.
   bool get hasDescription => description?.isNotEmpty == true;
 

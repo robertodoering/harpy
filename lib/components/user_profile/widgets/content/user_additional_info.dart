@@ -71,6 +71,8 @@ class UserProfileAdditionalInfo extends StatelessWidget {
           text: 'joined ${_createdAtFormat.format(bloc.user.createdAt)}',
         ),
       if (bloc.user.hasUrl) _buildUrl(theme),
+      if (bloc.user.follows)
+        _buildRow(theme, CupertinoIcons.reply, text: 'follows you'),
     ];
 
     return Column(
