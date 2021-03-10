@@ -30,9 +30,11 @@ class HarpyErrorHandler with Logger {
 
     runZonedGuarded(
       () async {
-        await SentryFlutter.init(
-          (SentryOptions options) => options.dsn = sentryDsn,
-        );
+        if (kReleaseMode && hasSentryDsn) {
+          await SentryFlutter.init(
+            (SentryOptions options) => options.dsn = sentryDsn,
+          );
+        }
 
         runApp(child);
       },
@@ -65,7 +67,7 @@ class HarpyErrorHandler with Logger {
     log.severe('caught error', error, stackTrace);
 
     // report the error in release mode
-    if (kReleaseMode) {
+    if (kReleaseMode && hasSentryDsn) {
       log.info('reporting error to sentry');
       try {
         await Sentry.captureException(error, stackTrace: stackTrace);
