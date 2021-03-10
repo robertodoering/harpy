@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+
+import 'harpy_sliver_tab_bar.dart';
+
+class HarpySliverTabView extends StatelessWidget {
+  const HarpySliverTabView({
+    @required this.tabs,
+    @required this.children,
+    this.headerSlivers,
+  }) : assert(tabs.length == children.length);
+
+  final List<Widget> tabs;
+  final List<Widget> children;
+  final List<Widget> headerSlivers;
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: children.length,
+      child: NestedScrollView(
+        headerSliverBuilder: (_, __) => <Widget>[
+          ...headerSlivers,
+          HarpySliverTapBar(
+            tabs: tabs,
+          ),
+        ],
+        body: TabBarView(
+          children: children,
+        ),
+      ),
+    );
+  }
+}
