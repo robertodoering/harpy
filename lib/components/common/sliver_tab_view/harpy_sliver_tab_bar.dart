@@ -62,7 +62,6 @@ class _HarpySliverTapBarState extends State<HarpySliverTapBar> {
   }
 
   void _scrollToIndex(int index) {
-    _scrollController.isAutoScrolling;
     _scrollController.scrollToIndex(
       index,
       duration: kLongAnimationDuration,
