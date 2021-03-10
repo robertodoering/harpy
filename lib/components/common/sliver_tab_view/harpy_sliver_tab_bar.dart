@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/common/sliver_tab_view/harpy_sliver_tab.dart';
+import 'package:harpy/components/common/sliver_tab_view/harpy_tab.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
