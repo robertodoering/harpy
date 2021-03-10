@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'harpy_sliver_tab_bar.dart';
 
+/// A sliver page view that displays the widget which corresponds to the
+/// currently selected [HarpyTab].
 class HarpySliverTabView extends StatelessWidget {
   const HarpySliverTabView({
     @required this.tabs,
