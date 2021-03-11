@@ -37,6 +37,8 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     if (_controller == null) {
       _controller = widget.controller ?? PrimaryScrollController.of(context);
+
+      assert(_controller != null, 'scroll to start has no scroll controller');
       _controller?.addListener(_scrollListener);
     }
   }
