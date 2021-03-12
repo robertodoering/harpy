@@ -8,13 +8,25 @@ import 'package:harpy/components/common/list/slivers/sliver_box_info_message.dar
 import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
-import 'package:harpy/components/common/misc/custom_refresh_indicator.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/common/misc/scroll_aware_floating_action_button.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
 class UserTimeline extends StatelessWidget {
   const UserTimeline();
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    UserTimelineBloc bloc,
+  ) {
+    return FloatingActionButton(
+      onPressed: () async {
+        ScrollDirection.of(context).reset();
+        bloc.add(const RequestUserTimeline());
+      },
+      child: const Icon(CupertinoIcons.refresh),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +37,16 @@ class UserTimeline extends StatelessWidget {
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: Builder(
-          builder: (BuildContext context) => CustomRefreshIndicator(
-            offset: defaultPaddingValue,
-            onRefresh: () async {
-              ScrollDirection.of(context).reset();
-              bloc.add(const RequestUserTimeline());
-              await bloc.requestTimelineCompleter.future;
+          builder: (BuildContext context) => LoadMoreListener(
+            listen: state.enableRequestOlder,
+            onLoadMore: () async {
+              bloc.add(const RequestOlderUserTimeline());
+              await bloc.requestOlderCompleter.future;
             },
-            child: LoadMoreListener(
-              listen: state.enableRequestOlder,
-              onLoadMore: () async {
-                bloc.add(const RequestOlderUserTimeline());
-                await bloc.requestOlderCompleter.future;
-              },
+            child: ScrollAwareFloatingActionButton(
+              floatingActionButton: state is UserTimelineResult
+                  ? _buildFloatingActionButton(context, bloc)
+                  : null,
               child: TweetList(
                 state.timelineTweets,
                 enableScroll: state.enableScroll,
