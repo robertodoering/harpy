@@ -72,9 +72,9 @@ class _ScrollToStartState extends State<ScrollToStart> {
       return false;
     }
 
-    return !_hasSingleScrollPosition ||
+    return _hasSingleScrollPosition &&
         _controller.offset > mediaQuery.size.height &&
-            scrollDirection?.up == true;
+        scrollDirection?.up == true;
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
