@@ -51,10 +51,6 @@ class UserProfileContent extends StatelessWidget {
                   text: Text('media'),
                 ),
                 HarpyTab(
-                  icon: Text('@'),
-                  text: Text('mentions'),
-                ),
-                HarpyTab(
                   icon: Icon(CupertinoIcons.heart_solid),
                   text: Text('likes'),
                 ),
@@ -64,7 +60,6 @@ class UserProfileContent extends StatelessWidget {
                 UserMediaTimeline(),
                 // todo timelines
                 Center(child: Text('2')),
-                Center(child: Text('3')),
               ],
             ),
           ),

@@ -13,6 +13,7 @@ typedef IndexedHeroFlightShuttleBuilder = Widget Function(
 /// Builds the [urls] as [FullscreenImage]s.
 ///
 /// [heroTags] must be `null` or the same length as [url].
+// todo: remove
 class ImageGallery extends StatefulWidget {
   const ImageGallery({
     @required this.urls,
