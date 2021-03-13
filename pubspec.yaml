@@ -30,6 +30,7 @@ dependencies:
   like_button: ^2.0.0
   logging: ^1.0.0
   mime_type: ^0.3.2 # non null safe
+  photo_view: ^0.11.1
   provider: ^5.0.0
   scroll_to_index: ^2.0.0
   sentry_flutter: ^4.1.0-nullsafety.0
