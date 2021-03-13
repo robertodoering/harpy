@@ -20,12 +20,12 @@ class TweetMedia extends StatelessWidget {
     Widget child;
     double aspectRatio;
 
-    if (tweet.images?.isNotEmpty == true) {
+    if (tweet.hasImages) {
       child = TweetImages(
         tweet,
         tweetBloc: bloc,
       );
-    } else if (tweet.video != null) {
+    } else if (tweet.hasVideo) {
       aspectRatio =
           tweet.video.validAspectRatio ? tweet.video.aspectRatioDouble : 16 / 9;
 
@@ -33,7 +33,7 @@ class TweetMedia extends StatelessWidget {
         tweet,
         tweetBloc: bloc,
       );
-    } else if (tweet.gif != null) {
+    } else if (tweet.hasGif) {
       aspectRatio =
           tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9;
 

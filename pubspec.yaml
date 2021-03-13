@@ -44,6 +44,7 @@ dependencies:
   firebase_analytics: any # non null safe
   flutter_ffmpeg: ^0.3.1 # non null safe
   flutter_downloader: ^1.5.2 # non null safe
+  flutter_staggered_grid_view: ^0.4.0-nullsafety.3
   flutter_twitter_login: # non null safe
     git: git://github.com/robertodoering/flutter_twitter_login.git
   keyboard_visibility: ^0.5.6 # non null safe
