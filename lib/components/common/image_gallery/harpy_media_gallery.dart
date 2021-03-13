@@ -89,9 +89,11 @@ class HarpyMediaGallery extends StatelessWidget {
   }
 
   Widget _buildChild(BuildContext context, int index) {
-    if (heroTagBuilder != null) {
+    final dynamic heroTag = heroTagBuilder?.call(index);
+
+    if (heroTag != null) {
       return Hero(
-        tag: heroTagBuilder(index),
+        tag: heroTag,
         placeholderBuilder: heroPlaceholderBuilder,
         flightShuttleBuilder: (
           _,
