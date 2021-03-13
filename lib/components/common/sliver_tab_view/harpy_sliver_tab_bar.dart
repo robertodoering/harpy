@@ -48,6 +48,7 @@ class _HarpySliverTapBarState extends State<HarpySliverTapBar> {
 
   void _tabControllerListener() {
     if (mounted) {
+      // rebuild tabs with new animation value
       setState(() {});
 
       final int newIndex = _tabController.animation.value.round();

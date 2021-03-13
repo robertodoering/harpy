@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/list/scroll_to_start.dart';
 import 'package:harpy/components/timeline/media_timeline/model/media_timeline_model.dart';
 import 'package:harpy/components/timeline/media_timeline/widget/media_timeline.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
@@ -23,7 +24,9 @@ class UserMediaTimeline extends StatelessWidget {
               .read<MediaTimelineModel>()
               .updateEntries(state.timelineTweets);
         },
-        child: const MediaTimeline(),
+        child: const ScrollToStart(
+          child: MediaTimeline(),
+        ),
       ),
     );
   }

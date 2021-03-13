@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/sliver_tab_view/harpy_sliver_tab_view.dart';
 import 'package:harpy/components/common/sliver_tab_view/harpy_tab.dart';
@@ -32,38 +33,40 @@ class UserProfileContent extends StatelessWidget {
       create: (_) => TimelineFilterModel.user(),
       child: BlocProvider<UserTimelineBloc>(
         create: (_) => UserTimelineBloc(screenName: screenName),
-        child: HarpyScaffold(
-          endDrawer: const UserTimelineFilterDrawer(),
-          body: HarpySliverTabView(
-            headerSlivers: const <Widget>[
-              UserProfileAppBar(),
-              UserProfileHeader(),
-            ],
-            tabs: const <Widget>[
-              HarpyTab(
-                icon: Icon(CupertinoIcons.time),
-                text: Text('timeline'),
-              ),
-              HarpyTab(
-                icon: Icon(CupertinoIcons.photo),
-                text: Text('media'),
-              ),
-              HarpyTab(
-                icon: Text('@'),
-                text: Text('mentions'),
-              ),
-              HarpyTab(
-                icon: Icon(CupertinoIcons.heart_solid),
-                text: Text('likes'),
-              ),
-            ],
-            children: const <Widget>[
-              UserTimeline(),
-              UserMediaTimeline(),
-              // todo timelines
-              Center(child: Text('2')),
-              Center(child: Text('3')),
-            ],
+        child: ScrollDirectionListener(
+          child: HarpyScaffold(
+            endDrawer: const UserTimelineFilterDrawer(),
+            body: HarpySliverTabView(
+              headerSlivers: const <Widget>[
+                UserProfileAppBar(),
+                UserProfileHeader(),
+              ],
+              tabs: const <Widget>[
+                HarpyTab(
+                  icon: Icon(CupertinoIcons.time),
+                  text: Text('timeline'),
+                ),
+                HarpyTab(
+                  icon: Icon(CupertinoIcons.photo),
+                  text: Text('media'),
+                ),
+                HarpyTab(
+                  icon: Text('@'),
+                  text: Text('mentions'),
+                ),
+                HarpyTab(
+                  icon: Icon(CupertinoIcons.heart_solid),
+                  text: Text('likes'),
+                ),
+              ],
+              children: const <Widget>[
+                UserTimeline(),
+                UserMediaTimeline(),
+                // todo timelines
+                Center(child: Text('2')),
+                Center(child: Text('3')),
+              ],
+            ),
           ),
         ),
       ),

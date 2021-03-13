@@ -39,48 +39,44 @@ class _UserTimelineState extends State<UserTimeline> {
     final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
     final UserTimelineState state = bloc.state;
 
-    return ScrollDirectionListener(
-      child: ScrollToStart(
-        child: Builder(
-          builder: (BuildContext context) => LoadMoreListener(
-            listen: state.enableRequestOlder,
-            onLoadMore: () async {
-              bloc.add(const RequestOlderUserTimeline());
-              await bloc.requestOlderCompleter.future;
-            },
-            child: ScrollAwareFloatingActionButton(
-              floatingActionButton: state is UserTimelineResult
-                  ? _buildFloatingActionButton(context, bloc)
-                  : null,
-              child: TweetList(
-                state.timelineTweets,
-                key: const PageStorageKey<String>('user_timeline'),
-                enableScroll: state.enableScroll,
-                endSlivers: <Widget>[
-                  if (state.showInitialLoading)
-                    const SliverFillLoadingIndicator()
-                  else if (state.showNoTweetsFound)
-                    SliverFillLoadingError(
-                      message: const Text('no tweets found'),
-                      onRetry: () => bloc.add(const RequestUserTimeline()),
-                    )
-                  else if (state.showTimelineError)
-                    SliverFillLoadingError(
-                      message: const Text('error loading tweets'),
-                      onRetry: () => bloc.add(const RequestUserTimeline()),
-                    )
-                  else if (state.showLoadingOlder)
-                    const SliverBoxLoadingIndicator()
-                  else if (state.showReachedEnd)
-                    const SliverBoxInfoMessage(
-                      secondaryMessage: Text('no more tweets available'),
-                    ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: mediaQuery.padding.bottom),
-                  ),
-                ],
+    return ScrollToStart(
+      child: LoadMoreListener(
+        listen: state.enableRequestOlder,
+        onLoadMore: () async {
+          bloc.add(const RequestOlderUserTimeline());
+          await bloc.requestOlderCompleter.future;
+        },
+        child: ScrollAwareFloatingActionButton(
+          floatingActionButton: state is UserTimelineResult
+              ? _buildFloatingActionButton(context, bloc)
+              : null,
+          child: TweetList(
+            state.timelineTweets,
+            key: const PageStorageKey<String>('user_timeline'),
+            enableScroll: state.enableScroll,
+            endSlivers: <Widget>[
+              if (state.showInitialLoading)
+                const SliverFillLoadingIndicator()
+              else if (state.showNoTweetsFound)
+                SliverFillLoadingError(
+                  message: const Text('no tweets found'),
+                  onRetry: () => bloc.add(const RequestUserTimeline()),
+                )
+              else if (state.showTimelineError)
+                SliverFillLoadingError(
+                  message: const Text('error loading tweets'),
+                  onRetry: () => bloc.add(const RequestUserTimeline()),
+                )
+              else if (state.showLoadingOlder)
+                const SliverBoxLoadingIndicator()
+              else if (state.showReachedEnd)
+                const SliverBoxInfoMessage(
+                  secondaryMessage: Text('no more tweets available'),
+                ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: mediaQuery.padding.bottom),
               ),
-            ),
+            ],
           ),
         ),
       ),
