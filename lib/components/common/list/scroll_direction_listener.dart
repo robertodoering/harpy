@@ -51,12 +51,14 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
   @override
   void didPushNext() {
     if (mounted) {
-      setState(() {
-        // Assume scrolling up when a new route gets pushed onto the screen.
-        // This is a workaround for the ListCardAnimation to prevent a repeating
-        // animation when the next route gets popped and the list cards become
-        // visible again.
-        _direction = VerticalDirection.up;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          // Assume scrolling up when a new route gets pushed onto the screen.
+          // This is a workaround for the ListCardAnimation to prevent a
+          // repeating animation when the next route gets popped and the list
+          // cards become visible again.
+          _direction = VerticalDirection.up;
+        });
       });
     }
   }
