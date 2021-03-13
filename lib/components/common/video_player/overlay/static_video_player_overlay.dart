@@ -12,10 +12,12 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
   const StaticVideoPlayerOverlay(
     this.model, {
     @required this.child,
+    this.compact = false,
   });
 
   final HarpyVideoPlayerModel model;
   final Widget child;
+  final bool compact;
 
   @override
   _StaticVideoPlayerOverlayState createState() =>
@@ -75,7 +77,10 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
         Positioned.fill(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: OverlayActionRow(widget.model),
+            child: OverlayActionRow(
+              widget.model,
+              compact: widget.compact,
+            ),
           ),
         ),
         if (widget.model.finished)

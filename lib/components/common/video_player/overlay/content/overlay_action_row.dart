@@ -8,9 +8,13 @@ import 'package:video_player/video_player.dart';
 
 /// Builds the actions at the bottom of the overlay.
 class OverlayActionRow extends StatelessWidget {
-  const OverlayActionRow(this.model);
+  const OverlayActionRow(
+    this.model, {
+    this.compact = false,
+  });
 
   final HarpyVideoPlayerModel model;
+  final bool compact;
 
   BoxDecoration get _backgroundDecoration => const BoxDecoration(
         gradient: LinearGradient(
@@ -75,13 +79,16 @@ class OverlayActionRow extends StatelessWidget {
         const SizedBox(width: 8),
 
         // position text
-        OverlayPositionText(model),
-        Expanded(
-          child: Text(
-            ' / ${prettyPrintDuration(model.duration)}',
-            style: theme.textTheme.bodyText2.apply(color: Colors.white),
+        if (model.fullscreen || !compact) ...<Widget>[
+          OverlayPositionText(model),
+          Expanded(
+            child: Text(
+              ' / ${prettyPrintDuration(model.duration)}',
+              style: theme.textTheme.bodyText2.apply(color: Colors.white),
+            ),
           ),
-        ),
+        ] else
+          const Spacer(),
 
         // toggle fullscreen
         CircleButton(
@@ -105,11 +112,13 @@ class OverlayActionRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: compact
+                ? const EdgeInsets.symmetric(horizontal: 12)
+                : const EdgeInsets.symmetric(horizontal: 16),
             child: _buildProgressIndicator(model, theme),
           ),
           Padding(
-            padding: const EdgeInsets.all(4),
+            padding: compact ? EdgeInsets.zero : const EdgeInsets.all(4),
             child: _buildActions(model, theme),
           ),
         ],

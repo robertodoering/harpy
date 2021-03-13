@@ -30,6 +30,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.onVideoPlayerTap,
     this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : model = null;
 
   const HarpyVideoPlayer.fromModel(
@@ -40,6 +41,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.onVideoPlayerTap,
     this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : controller = null;
 
   final VideoPlayerController controller;
@@ -54,6 +56,7 @@ class HarpyVideoPlayer extends StatefulWidget {
   final OnVideoPlayerTap onVideoPlayerTap;
   final OnVideoPlayerLongPress onVideoPlayerLongPress;
   final bool allowVerticalOverflow;
+  final bool compact;
 
   @override
   _HarpyVideoPlayerState createState() => _HarpyVideoPlayerState();
@@ -126,6 +129,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
     return StaticVideoPlayerOverlay(
       model,
+      compact: widget.compact,
       child: child,
     );
   }
@@ -174,11 +178,13 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       );
     }
 
-    return Hero(
+    child = Hero(
       tag: model,
       flightShuttleBuilder: _flightShuttleBuilder,
       child: child,
     );
+
+    return child;
   }
 
   @override
