@@ -118,17 +118,17 @@ class HarpyMediaGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PhotoViewGallery.builder(
-      itemCount: itemCount,
-      pageController: PageController(initialPage: initialIndex),
-      backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-      builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
-        initialScale: PhotoViewComputedScale.covered,
-        minScale: PhotoViewComputedScale.contained,
-        maxScale: PhotoViewComputedScale.covered * 3,
-        gestureDetectorBehavior: HitTestBehavior.opaque,
-        child: CustomDismissible(
-          onDismissed: Navigator.of(context).pop,
+    return CustomDismissible(
+      onDismissed: Navigator.of(context).pop,
+      child: PhotoViewGallery.builder(
+        itemCount: itemCount,
+        pageController: PageController(initialPage: initialIndex),
+        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+        builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
+          initialScale: PhotoViewComputedScale.covered,
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.covered * 3,
+          gestureDetectorBehavior: HitTestBehavior.opaque,
           child: Stack(
             children: <Widget>[
               GestureDetector(
