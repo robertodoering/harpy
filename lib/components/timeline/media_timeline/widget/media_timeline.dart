@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:harpy/components/common/image_gallery/harpy_media_gallery.dart';
+import 'package:harpy/components/common/list/load_more_listener.dart';
+import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
+import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/media_timeline/model/media_timeline_model.dart';
+import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:provider/provider.dart';
@@ -87,26 +92,45 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
+    final UserTimelineState state = bloc.state;
     final MediaTimelineModel model = context.watch<MediaTimelineModel>();
     final List<MediaTimelineEntry> entries = model.value;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: _buildFloatingActionButton(),
-      body: CustomScrollView(
-        key: const PageStorageKey<String>('user_media_timeline'),
-        slivers: <Widget>[
-          SliverPadding(
-            padding: DefaultEdgeInsets.all(),
-            sliver:
+      floatingActionButton:
+          model.hasEntries ? _buildFloatingActionButton() : null,
+      body: LoadMoreListener(
+        listen: state.enableRequestOlder,
+        onLoadMore: () async {
+          bloc.add(const RequestOlderUserTimeline());
+          await bloc.requestOlderCompleter.future;
+        },
+        child: CustomScrollView(
+          key: const PageStorageKey<String>('user_media_timeline'),
+          slivers: <Widget>[
+            if (state.showInitialLoading)
+              const SliverFillLoadingIndicator()
+            else if (model.hasEntries) ...<Widget>[
+              SliverPadding(
+                padding: DefaultEdgeInsets.all(),
                 // need to rebuild the full list when switching tiling mode,
                 // otherwise the scroll controller gets confused
-                _buildTiled ? _buildTiledList(entries) : _buildList(entries),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: mediaQuery.padding.bottom),
-          ),
-        ],
+                sliver: _buildTiled
+                    ? _buildTiledList(entries)
+                    : _buildList(entries),
+              ),
+              if (state.showLoadingOlder) const SliverBoxLoadingIndicator(),
+            ] else
+              const SliverFillLoadingError(
+                message: Text('no media found'),
+              ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: mediaQuery.padding.bottom),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -159,7 +183,6 @@ void _showGallery({
             videoPlayerModel,
             thumbnail: entry.videoData.thumbnailUrl,
             thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-            compact: true,
           );
         } else {
           return HarpyVideoPlayer.fromController(
@@ -169,7 +192,6 @@ void _showGallery({
             ),
             thumbnail: entry.videoData.thumbnailUrl,
             thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-            compact: true,
           );
         }
       } else {
