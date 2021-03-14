@@ -4,6 +4,53 @@ abstract class LikesTimelineState extends Equatable {
   const LikesTimelineState();
 }
 
+extension LikesTimelineExtension on LikesTimelineState {
+  bool get showInitialLoading => this is LikesTimelineInitialLoading;
+
+  bool get showLoadingOlder => this is LikesTimelineLoadingOlder;
+
+  bool get showNoTweetsFound => this is LikesTimelineNoResult;
+
+  bool get showTimelineError => this is LikesTimelineFailure;
+
+  bool get showReachedEnd =>
+      this is LikesTimelineResult &&
+      !(this as LikesTimelineResult).canRequestOlder;
+
+  bool get enableRequestOlder =>
+      this is LikesTimelineResult &&
+      (this as LikesTimelineResult).canRequestOlder;
+
+  bool get enableScroll => !showInitialLoading;
+
+  bool get enableFilter =>
+      this is LikesTimelineResult || timelineFilter != TimelineFilter.empty;
+
+  TimelineFilter get timelineFilter {
+    if (this is LikesTimelineResult) {
+      return (this as LikesTimelineResult).timelineFilter;
+    } else if (this is LikesTimelineLoadingOlder) {
+      return (this as LikesTimelineLoadingOlder).oldResult.timelineFilter;
+    } else if (this is LikesTimelineNoResult) {
+      return (this as LikesTimelineNoResult).timelineFilter;
+    } else if (this is LikesTimelineFailure) {
+      return (this as LikesTimelineFailure).timelineFilter;
+    } else {
+      return TimelineFilter.empty;
+    }
+  }
+
+  List<TweetData> get timelineTweets {
+    if (this is LikesTimelineResult) {
+      return (this as LikesTimelineResult).tweets;
+    } else if (this is LikesTimelineLoadingOlder) {
+      return (this as LikesTimelineLoadingOlder).oldResult.tweets;
+    } else {
+      return <TweetData>[];
+    }
+  }
+}
+
 class LikesTimelineInitial extends LikesTimelineState {
   const LikesTimelineInitial();
 

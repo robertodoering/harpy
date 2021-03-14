@@ -12,14 +12,9 @@ import 'package:harpy/components/common/misc/scroll_aware_floating_action_button
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
-class UserTimeline extends StatefulWidget {
+class UserTimeline extends StatelessWidget {
   const UserTimeline();
 
-  @override
-  _UserTimelineState createState() => _UserTimelineState();
-}
-
-class _UserTimelineState extends State<UserTimeline> {
   Widget _buildFloatingActionButton(
     BuildContext context,
     UserTimelineBloc bloc,
