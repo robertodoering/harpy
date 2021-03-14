@@ -9,6 +9,7 @@ class VideoThumbnail extends StatelessWidget {
     @required this.thumbnail,
     @required this.icon,
     @required this.initializing,
+    this.compact = false,
     this.aspectRatio,
     this.onTap,
   });
@@ -16,6 +17,7 @@ class VideoThumbnail extends StatelessWidget {
   final String thumbnail;
   final double aspectRatio;
   final IconData icon;
+  final bool compact;
   final bool initializing;
   final VoidCallback onTap;
 
@@ -40,17 +42,23 @@ class VideoThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget child = initializing
-        ? const SizedBox(
-            width: kVideoPlayerCenterIconSize,
-            height: kVideoPlayerCenterIconSize,
-            child: CircularProgressIndicator(
+        ? SizedBox(
+            width: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
+            height: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
+            child: const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           )
         : Icon(
             icon,
             color: Colors.white,
-            size: kVideoPlayerCenterIconSize,
+            size: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
           );
 
     return Stack(

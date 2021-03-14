@@ -5,11 +5,16 @@ import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 
 /// Builds a play or pause icon in the center that fades out automatically.
 class OverlayPlaybackIcon extends StatelessWidget {
-  const OverlayPlaybackIcon.play() : icon = Icons.play_arrow;
+  const OverlayPlaybackIcon.play({
+    this.compact = false,
+  }) : icon = Icons.play_arrow;
 
-  const OverlayPlaybackIcon.pause() : icon = Icons.pause;
+  const OverlayPlaybackIcon.pause({
+    this.compact = false,
+  }) : icon = Icons.pause;
 
   final IconData icon;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,9 @@ class OverlayPlaybackIcon extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Icon(
               icon,
-              size: kVideoPlayerCenterIconSize,
+              size: compact
+                  ? kVideoPlayerSmallCenterIconSize
+                  : kVideoPlayerCenterIconSize,
               color: Colors.white,
             ),
           ),

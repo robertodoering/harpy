@@ -20,6 +20,7 @@ class HarpyGifPlayer extends StatefulWidget {
     this.onGifTap,
     this.onGifLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : model = null;
 
   const HarpyGifPlayer.fromModel(
@@ -30,6 +31,7 @@ class HarpyGifPlayer extends StatefulWidget {
     this.onGifTap,
     this.onGifLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : controller = null;
 
   final VideoPlayerController controller;
@@ -46,6 +48,7 @@ class HarpyGifPlayer extends StatefulWidget {
   final OnVideoPlayerTap onGifTap;
   final OnVideoPlayerLongPress onGifLongPress;
   final bool allowVerticalOverflow;
+  final bool compact;
 
   @override
   _HarpyGifPlayerState createState() => _HarpyGifPlayerState();
@@ -81,6 +84,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       thumbnail: widget.thumbnail,
       aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.gif,
+      compact: widget.compact,
       initializing: model.initializing,
       onTap: model.initialize,
     );
@@ -106,7 +110,11 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       );
     }
 
-    return GifPlayerOverlay(model, child: child);
+    return GifPlayerOverlay(
+      model,
+      compact: widget.compact,
+      child: child,
+    );
   }
 
   Widget _flightShuttleBuilder(

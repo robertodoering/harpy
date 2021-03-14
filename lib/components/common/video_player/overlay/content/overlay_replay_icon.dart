@@ -6,10 +6,12 @@ import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 class OverplayReplayIcon extends StatelessWidget {
   const OverplayReplayIcon({
     this.fadeIn = true,
+    this.compact = false,
     this.onTap,
   });
 
   final bool fadeIn;
+  final bool compact;
   final VoidCallback onTap;
 
   @override
@@ -22,9 +24,11 @@ class OverplayReplayIcon extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         padding: const EdgeInsets.all(8),
-        child: const Icon(
+        child: Icon(
           Icons.replay,
-          size: kVideoPlayerCenterIconSize,
+          size: compact
+              ? kVideoPlayerSmallCenterIconSize
+              : kVideoPlayerCenterIconSize,
           color: Colors.white,
         ),
       ),

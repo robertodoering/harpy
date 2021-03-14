@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 
 /// The size for icons appearing in the center of the video player
 const double kVideoPlayerCenterIconSize = 48;
+const double kVideoPlayerSmallCenterIconSize = 32;
 
 typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
 
@@ -104,6 +105,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       thumbnail: widget.thumbnail,
       aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.play_arrow,
+      compact: widget.compact,
       initializing: model.initializing,
       onTap: model.initialize,
     );

@@ -53,6 +53,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
           entry.videoData.appropriateUrl,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
+        compact: true,
         thumbnail: entry.videoData.thumbnailUrl,
         thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
@@ -69,8 +70,9 @@ class MediaTimelineMediaWidget extends StatelessWidget {
           entry.videoData.appropriateUrl,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        thumbnail: entry.videoData.thumbnailUrl,
         compact: true,
+        thumbnail: entry.videoData.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         onVideoPlayerTap: onVideoTap,
       ),
     );

@@ -60,9 +60,9 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     if (mounted) {
       setState(() {
         if (action == HarpyVideoPlayerAction.play) {
-          _centerIcon = const OverlayPlaybackIcon.play();
+          _centerIcon = OverlayPlaybackIcon.play(compact: widget.compact);
         } else if (action == HarpyVideoPlayerAction.pause) {
-          _centerIcon = const OverlayPlaybackIcon.pause();
+          _centerIcon = OverlayPlaybackIcon.pause(compact: widget.compact);
         }
       });
     }
@@ -87,6 +87,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
           Positioned.fill(
             child: OverplayReplayIcon(
               fadeIn: _replayFade,
+              compact: widget.compact,
               onTap: () {
                 _replayFade = true;
                 _model.replay();
