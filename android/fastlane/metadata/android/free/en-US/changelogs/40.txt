@@ -1,3 +1,4 @@
 Version 0.5.0
 
 · Added text to show whether a user is following you in the user profile screen
+· Changed 'jump to top' button styling
