@@ -9,6 +9,7 @@ import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.d
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
 import 'package:harpy/components/common/misc/custom_refresh_indicator.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet/tweet_card.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
@@ -110,6 +111,11 @@ class _HomeTimelineState extends State<HomeTimeline> {
                     onRetry: () => bloc.add(
                       const RefreshHomeTimeline(clearPrevious: true),
                     ),
+                    onClearFilter: state.hasTimelineFilter
+                        ? () => bloc.add(const FilterHomeTimeline(
+                              timelineFilter: TimelineFilter.empty,
+                            ))
+                        : null,
                   )
                 else if (state.showTimelineError)
                   SliverFillLoadingError(
