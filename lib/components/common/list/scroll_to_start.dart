@@ -122,9 +122,12 @@ class _ScrollToStartState extends State<ScrollToStart> {
                   bottom: defaultPaddingValue + mediaQuery.padding.bottom,
                 ),
                 child: HarpyButton.raised(
-                  icon: const Icon(CupertinoIcons.arrow_up, size: 20),
-                  backgroundColor: theme.cardColor,
-                  dense: true,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  icon: const Icon(CupertinoIcons.arrow_up),
+                  backgroundColor: theme.cardColor.withOpacity(.8),
                   onTap: () => _scrollToStart(mediaQuery),
                 ),
               ),
