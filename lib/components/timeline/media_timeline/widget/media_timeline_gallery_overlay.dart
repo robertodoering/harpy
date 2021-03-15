@@ -11,6 +11,9 @@ import 'package:harpy/core/api/twitter/tweet_data.dart';
 
 import 'media_timeline_gallery_widget.dart';
 
+/// Builds a [HarpyMediaGallery] with a [MediaOverlay] to access the tweet
+/// actions (like / retweet) and media actions (open externally, download,
+/// share) in the gallery.
 class MediaTimelineGalleryOverlay extends StatefulWidget {
   const MediaTimelineGalleryOverlay({
     @required this.entries,

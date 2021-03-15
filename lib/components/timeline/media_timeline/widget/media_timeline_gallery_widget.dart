@@ -9,6 +9,8 @@ import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:video_player/video_player.dart';
 
+/// Builds the widget for a [MediaTimelineEntry] in the [HarpyMediaGallery]
+/// for a [MediaTimeline].
 class MediaTimelineGalleryWidget extends StatelessWidget {
   const MediaTimelineGalleryWidget({
     @required this.entry,
@@ -20,6 +22,12 @@ class MediaTimelineGalleryWidget extends StatelessWidget {
   final MediaTimelineEntry entry;
   final int initialIndex;
   final int index;
+
+  /// Used to build the gif or video when the initial index is a playing gif
+  /// or video.
+  ///
+  /// This is used to prevent having to re initialize the video or gif when it
+  /// is already initialized.
   final HarpyVideoPlayerModel videoPlayerModel;
 
   Widget _buildImage() {
