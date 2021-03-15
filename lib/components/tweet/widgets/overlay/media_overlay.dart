@@ -5,10 +5,47 @@ import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/model/tweet_media_model.dart';
 import 'package:harpy/components/tweet/widgets/overlay/overlay_action_row.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/url_launcher.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
+import 'package:share/share.dart';
 
+/// Default behaviour to open a tweet media externally.
+void onOpenExternally(String mediaUrl) {
+  if (mediaUrl != null) {
+    launchUrl(mediaUrl);
+  }
+}
+
+/// Default behaviour to download a tweet media.
+void onDownload(String mediaUrl) {
+  if (mediaUrl != null) {
+    final DownloadService downloadService = app<DownloadService>();
+
+    final String url = mediaUrl;
+    final String fileName = fileNameFromUrl(url);
+
+    if (url != null && fileName != null) {
+      downloadService
+          .download(url: url, name: fileName)
+          .catchError(silentErrorHandler);
+    }
+  }
+}
+
+/// Default behaviour to share a tweet media.
+void onShare(String mediaUrl) {
+  if (mediaUrl != null) {
+    Share.share(mediaUrl);
+  }
+}
+
+// todo: use default functions in overlay and get media url with index from
+//  tweet and remove tweet bloc events
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
     @required this.tweet,

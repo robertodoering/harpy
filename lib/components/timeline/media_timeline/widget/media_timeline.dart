@@ -7,18 +7,14 @@ import 'package:harpy/components/common/list/load_more_listener.dart';
 import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
-import 'package:harpy/components/common/misc/harpy_image.dart';
-import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
-import 'package:harpy/components/common/video_player/harpy_video_player.dart';
+import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player_model.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/media_timeline/model/media_timeline_model.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
-import 'package:harpy/core/preferences/media_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
+import 'media_timeline_gallery_overlay.dart';
 import 'media_timeline_media_widget.dart';
 
 /// Builds the list of tweet media widgets for a [MediaTimelineModel].
@@ -146,57 +142,13 @@ void _showGallery({
   @required int initialIndex,
   HarpyVideoPlayerModel videoPlayerModel,
 }) {
-  HarpyMediaGallery.push(
-    context,
-    itemCount: entries.length,
-    initialIndex: initialIndex,
-    heroTagBuilder: (int index) => entries[index].isImage
-        ? '$index-${entries[index].media.appropriateUrl}'
-        : null,
-    builder: (_, int index) {
-      final MediaTimelineEntry entry = entries[index];
-
-      if (entry.isImage) {
-        return HarpyImage(imageUrl: entry.imageData.appropriateUrl);
-      } else if (entry.isGif) {
-        if (initialIndex == index && videoPlayerModel != null) {
-          return HarpyGifPlayer.fromModel(
-            videoPlayerModel,
-            thumbnail: entry.videoData.thumbnailUrl,
-            thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-            autoplay: app<MediaPreferences>().shouldAutoplayMedia,
-          );
-        } else {
-          return HarpyGifPlayer.fromController(
-            VideoPlayerController.network(
-              entry.videoData.appropriateUrl,
-              videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-            ),
-            thumbnail: entry.videoData.thumbnailUrl,
-            thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-            autoplay: app<MediaPreferences>().shouldAutoplayMedia,
-          );
-        }
-      } else if (entry.isVideo) {
-        if (initialIndex == index && videoPlayerModel != null) {
-          return HarpyVideoPlayer.fromModel(
-            videoPlayerModel,
-            thumbnail: entry.videoData.thumbnailUrl,
-            thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-          );
-        } else {
-          return HarpyVideoPlayer.fromController(
-            VideoPlayerController.network(
-              entry.videoData.appropriateUrl,
-              videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-            ),
-            thumbnail: entry.videoData.thumbnailUrl,
-            thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
-          );
-        }
-      } else {
-        return const SizedBox();
-      }
-    },
+  Navigator.of(context).push<void>(
+    HeroDialogRoute<void>(
+      builder: (_) => MediaTimelineGalleryOverlay(
+        entries: entries,
+        initialIndex: initialIndex,
+        videoPlayerModel: videoPlayerModel,
+      ),
+    ),
   );
 }

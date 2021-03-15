@@ -82,6 +82,15 @@ class VideoData extends MediaData {
   /// The [aspectRatio] as a double.
   double get aspectRatioDouble => aspectRatio[0] / aspectRatio[1];
 
+  /// Returns the url of the variant with the best quality.
+  String get bestUrl {
+    if (variants?.isNotEmpty == true) {
+      return variants[0].url;
+    } else {
+      return '';
+    }
+  }
+
   /// Returns the video url based on the media setting and connectivity.
   ///
   /// Returns an empty string if no video [variants] exist.

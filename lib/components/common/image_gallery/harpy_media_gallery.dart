@@ -24,6 +24,7 @@ class HarpyMediaGallery extends StatelessWidget {
     this.heroTagBuilder,
     this.heroPlaceholderBuilder,
     this.beginBorderRadiusBuilder = defaultBeginBorderRadiusBuilder,
+    this.onPageChanged,
   })  : assert(builder != null),
         assert(itemCount != null),
         assert(initialIndex != null);
@@ -34,30 +35,7 @@ class HarpyMediaGallery extends StatelessWidget {
   final HeroTagBuilder heroTagBuilder;
   final HeroPlaceholderBuilder heroPlaceholderBuilder;
   final BorderRadiusBuilder beginBorderRadiusBuilder;
-
-  static void push(
-    BuildContext context, {
-    @required IndexedWidgetBuilder builder,
-    @required int itemCount,
-    int initialIndex,
-    HeroTagBuilder heroTagBuilder,
-    HeroPlaceholderBuilder heroPlaceholderBuilder,
-    BorderRadiusBuilder beginBorderRadiusBuilder =
-        defaultBeginBorderRadiusBuilder,
-  }) {
-    Navigator.of(context).push<void>(
-      HeroDialogRoute<void>(
-        builder: (BuildContext context) => HarpyMediaGallery.builder(
-          builder: builder,
-          itemCount: itemCount,
-          initialIndex: initialIndex,
-          heroTagBuilder: heroTagBuilder,
-          heroPlaceholderBuilder: heroPlaceholderBuilder,
-          beginBorderRadiusBuilder: beginBorderRadiusBuilder,
-        ),
-      ),
-    );
-  }
+  final PhotoViewGalleryPageChangedCallback onPageChanged;
 
   static BorderRadius defaultBeginBorderRadiusBuilder(int index) {
     return kDefaultBorderRadius;
@@ -124,6 +102,7 @@ class HarpyMediaGallery extends StatelessWidget {
         itemCount: itemCount,
         pageController: PageController(initialPage: initialIndex),
         backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+        onPageChanged: onPageChanged,
         builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
           initialScale: PhotoViewComputedScale.covered,
           minScale: PhotoViewComputedScale.contained,
