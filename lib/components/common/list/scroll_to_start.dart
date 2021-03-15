@@ -123,7 +123,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                 ),
                 child: HarpyButton.raised(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
+                    horizontal: 18,
                     vertical: 12,
                   ),
                   icon: const Icon(CupertinoIcons.arrow_up),
