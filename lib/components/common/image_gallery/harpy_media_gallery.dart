@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/misc/custom_dismissible.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 import 'package:photo_view/photo_view.dart';
@@ -96,26 +95,23 @@ class HarpyMediaGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDismissible(
-      onDismissed: Navigator.of(context).pop,
-      child: PhotoViewGallery.builder(
-        itemCount: itemCount,
-        pageController: PageController(initialPage: initialIndex),
-        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-        onPageChanged: onPageChanged,
-        builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
-          initialScale: PhotoViewComputedScale.covered,
-          minScale: PhotoViewComputedScale.contained,
-          maxScale: PhotoViewComputedScale.covered * 3,
-          gestureDetectorBehavior: HitTestBehavior.opaque,
-          child: Stack(
-            children: <Widget>[
-              GestureDetector(
-                onTap: Navigator.of(context).pop,
-              ),
-              Center(child: _buildChild(context, index)),
-            ],
-          ),
+    return PhotoViewGallery.builder(
+      itemCount: itemCount,
+      pageController: PageController(initialPage: initialIndex),
+      backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+      onPageChanged: onPageChanged,
+      builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
+        initialScale: PhotoViewComputedScale.covered,
+        minScale: PhotoViewComputedScale.contained,
+        maxScale: PhotoViewComputedScale.covered * 3,
+        gestureDetectorBehavior: HitTestBehavior.opaque,
+        child: Stack(
+          children: <Widget>[
+            GestureDetector(
+              onTap: Navigator.of(context).pop,
+            ),
+            Center(child: _buildChild(context, index)),
+          ],
         ),
       ),
     );

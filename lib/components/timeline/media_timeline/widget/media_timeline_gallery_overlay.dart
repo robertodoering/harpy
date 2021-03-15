@@ -75,7 +75,6 @@ class _MediaTimelineGalleryOverlayState
       builder: (_, __) => MediaOverlay(
         tweet: _tweet,
         tweetBloc: _bloc,
-        enableDismissible: false,
         enableImmersiveMode: false,
         overlap: false,
         onOpenExternally: () => onOpenExternally(_mediaUrl),
