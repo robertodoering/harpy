@@ -83,7 +83,7 @@ class _AnimatedNumberState extends State<AnimatedNumber>
     if (_oldNumberStr != _newNumberStr) {
       int changedIndex = 0;
 
-      if (_oldNumberStr.length == _oldNumberStr.length) {
+      if (_oldNumberStr.length == _newNumberStr.length) {
         for (int i = 0; i < _oldNumberStr.length; i++) {
           if (_oldNumberStr[i] != _newNumberStr[i]) {
             changedIndex = i;
