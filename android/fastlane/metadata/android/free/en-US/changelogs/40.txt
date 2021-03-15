@@ -1,4 +1,6 @@
 Version 0.5.0
 
+· Added user media timeline
+· Added user likes timeline
 · Added text to show whether a user is following you in the user profile screen
 · Changed 'jump to top' button styling
