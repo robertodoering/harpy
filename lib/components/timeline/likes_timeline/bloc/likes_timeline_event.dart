@@ -11,16 +11,10 @@ abstract class LikesTimelineEvent extends Equatable {
 
 /// Requests the likes timeline tweets for the [LikesTimelineBloc.screenName].
 class RequestLikesTimeline extends LikesTimelineEvent with Logger {
-  const RequestLikesTimeline({
-    @required this.timelineFilter,
-  });
-
-  final TimelineFilter timelineFilter;
+  const RequestLikesTimeline();
 
   @override
-  List<Object> get props => <Object>[
-        timelineFilter,
-      ];
+  List<Object> get props => <Object>[];
 
   @override
   Stream<LikesTimelineState> applyAsync({
@@ -44,7 +38,7 @@ class RequestLikesTimeline extends LikesTimelineEvent with Logger {
           }
           return tweets;
         })
-        .then((List<Tweet> tweets) => handleTweets(tweets, timelineFilter))
+        .then(handleTweets)
         .catchError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -53,14 +47,13 @@ class RequestLikesTimeline extends LikesTimelineEvent with Logger {
       if (tweets.isNotEmpty) {
         yield LikesTimelineResult(
           tweets: tweets,
-          timelineFilter: timelineFilter,
           maxId: maxId,
         );
       } else {
-        yield LikesTimelineNoResult(timelineFilter: timelineFilter);
+        yield const LikesTimelineNoResult();
       }
     } else {
-      yield LikesTimelineFailure(timelineFilter: timelineFilter);
+      yield const LikesTimelineFailure();
     }
   }
 }
@@ -128,8 +121,7 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with Logger {
             }
             return tweets;
           })
-          .then((List<Tweet> tweets) =>
-              handleTweets(tweets, currentState.timelineFilter))
+          .then(handleTweets)
           .catchError(twitterApiErrorHandler);
 
       if (tweets != null) {
@@ -139,7 +131,6 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with Logger {
         yield LikesTimelineResult(
           tweets: currentState.tweets.followedBy(tweets).toList(),
           maxId: newMaxId,
-          timelineFilter: currentState.timelineFilter,
           canRequestOlder: canRequestOlder,
         );
       } else {
@@ -147,7 +138,6 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with Logger {
         yield LikesTimelineResult(
           tweets: currentState.tweets,
           maxId: currentState.maxId,
-          timelineFilter: currentState.timelineFilter,
         );
       }
     }

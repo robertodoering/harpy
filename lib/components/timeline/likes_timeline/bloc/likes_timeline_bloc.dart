@@ -20,9 +20,8 @@ class LikesTimelineBloc extends Bloc<LikesTimelineEvent, LikesTimelineState>
     with RequestLock {
   LikesTimelineBloc({
     @required this.screenName,
-    @required TimelineFilter timelineFilter,
   }) : super(const LikesTimelineInitial()) {
-    add(RequestLikesTimeline(timelineFilter: timelineFilter));
+    add(const RequestLikesTimeline());
   }
 
   final String screenName;

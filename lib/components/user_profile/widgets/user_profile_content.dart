@@ -6,18 +6,15 @@ import 'package:harpy/components/common/list/scroll_direction_listener.dart';
 import 'package:harpy/components/common/misc/harpy_scaffold.dart';
 import 'package:harpy/components/common/sliver_tab_view/harpy_sliver_tab_view.dart';
 import 'package:harpy/components/common/sliver_tab_view/harpy_tab.dart';
-import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/likes_timeline/bloc/likes_timeline_bloc.dart';
+import 'package:harpy/components/timeline/likes_timeline/widgets/likes_timeline.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
-import 'package:harpy/components/timeline/user_timeline/widgets/user_likes_timeline.dart';
 import 'package:harpy/components/timeline/user_timeline/widgets/user_timeline.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
 import 'package:harpy/components/user_profile/user_media_timeline/widgets/user_media_timeline.dart';
 import 'package:harpy/components/user_profile/widgets/content/user_timeline_filter_drawer.dart';
 import 'package:harpy/components/user_profile/widgets/user_profile_header.dart';
-import 'package:harpy/core/preferences/timeline_filter_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
 import 'package:provider/provider.dart';
 
 import 'content/user_profile_app_bar.dart';
@@ -39,12 +36,7 @@ class UserProfileContent extends StatelessWidget {
       child: BlocProvider<UserTimelineBloc>(
         create: (_) => UserTimelineBloc(screenName: screenName),
         child: BlocProvider<LikesTimelineBloc>(
-          create: (_) => LikesTimelineBloc(
-            screenName: screenName,
-            timelineFilter: TimelineFilter.fromJsonString(
-              app<TimelineFilterPreferences>().userTimelineFilter,
-            ),
-          ),
+          create: (_) => LikesTimelineBloc(screenName: screenName),
           child: ScrollDirectionListener(
             child: HarpyScaffold(
               endDrawer: const UserTimelineFilterDrawer(),
@@ -71,7 +63,7 @@ class UserProfileContent extends StatelessWidget {
                 children: const <Widget>[
                   UserTimeline(),
                   UserMediaTimeline(),
-                  UserLikesTimeline(),
+                  LikesTimeline(),
                 ],
               ),
             ),

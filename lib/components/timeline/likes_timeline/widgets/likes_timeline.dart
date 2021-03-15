@@ -6,16 +6,11 @@ import 'package:harpy/components/common/list/slivers/sliver_box_info_message.dar
 import 'package:harpy/components/common/list/slivers/sliver_box_loading_indicator.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_error.dart';
 import 'package:harpy/components/common/list/slivers/sliver_fill_loading_indicator.dart';
-import 'package:harpy/components/timeline/filter/model/timeline_filter.dart';
 import 'package:harpy/components/timeline/likes_timeline/bloc/likes_timeline_bloc.dart';
 import 'package:harpy/components/tweet/widgets/tweet_list.dart';
 
 class LikesTimeline extends StatelessWidget {
-  const LikesTimeline({
-    @required this.timelineFilter,
-  });
-
-  final TimelineFilter timelineFilter;
+  const LikesTimeline();
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +34,19 @@ class LikesTimeline extends StatelessWidget {
               const SliverFillLoadingIndicator()
             else if (state.showNoTweetsFound)
               SliverFillLoadingError(
-                message: const Text('no tweets found'),
-                onRetry: () => bloc.add(
-                  RequestLikesTimeline(timelineFilter: timelineFilter),
-                ),
+                message: const Text('no liked tweets found'),
+                onRetry: () => bloc.add(const RequestLikesTimeline()),
               )
             else if (state.showTimelineError)
               SliverFillLoadingError(
-                message: const Text('error loading tweets'),
-                onRetry: () => bloc.add(
-                  RequestLikesTimeline(timelineFilter: timelineFilter),
-                ),
+                message: const Text('error loading liked tweets'),
+                onRetry: () => bloc.add(const RequestLikesTimeline()),
               )
             else if (state.showLoadingOlder)
               const SliverBoxLoadingIndicator()
             else if (state.showReachedEnd)
               const SliverBoxInfoMessage(
-                secondaryMessage: Text('no more tweets available'),
+                secondaryMessage: Text('no more liked tweets available'),
               ),
             SliverToBoxAdapter(
               child: SizedBox(height: mediaQuery.padding.bottom),

@@ -23,23 +23,6 @@ extension LikesTimelineExtension on LikesTimelineState {
 
   bool get enableScroll => !showInitialLoading;
 
-  bool get enableFilter =>
-      this is LikesTimelineResult || timelineFilter != TimelineFilter.empty;
-
-  TimelineFilter get timelineFilter {
-    if (this is LikesTimelineResult) {
-      return (this as LikesTimelineResult).timelineFilter;
-    } else if (this is LikesTimelineLoadingOlder) {
-      return (this as LikesTimelineLoadingOlder).oldResult.timelineFilter;
-    } else if (this is LikesTimelineNoResult) {
-      return (this as LikesTimelineNoResult).timelineFilter;
-    } else if (this is LikesTimelineFailure) {
-      return (this as LikesTimelineFailure).timelineFilter;
-    } else {
-      return TimelineFilter.empty;
-    }
-  }
-
   List<TweetData> get timelineTweets {
     if (this is LikesTimelineResult) {
       return (this as LikesTimelineResult).tweets;
@@ -71,14 +54,11 @@ class LikesTimelineInitialLoading extends LikesTimelineState {
 class LikesTimelineResult extends LikesTimelineState {
   const LikesTimelineResult({
     @required this.tweets,
-    @required this.timelineFilter,
     @required this.maxId,
     this.canRequestOlder = true,
   });
 
   final List<TweetData> tweets;
-
-  final TimelineFilter timelineFilter;
 
   /// The max id used to request older tweets.
   ///
@@ -94,7 +74,6 @@ class LikesTimelineResult extends LikesTimelineState {
   @override
   List<Object> get props => <Object>[
         tweets,
-        timelineFilter,
         maxId,
         canRequestOlder,
       ];
@@ -103,30 +82,18 @@ class LikesTimelineResult extends LikesTimelineState {
 /// The state when the likes timeline has successfully been returned but no
 /// tweets were found.
 class LikesTimelineNoResult extends LikesTimelineState {
-  const LikesTimelineNoResult({
-    @required this.timelineFilter,
-  });
-
-  final TimelineFilter timelineFilter;
+  const LikesTimelineNoResult();
 
   @override
-  List<Object> get props => <Object>[
-        timelineFilter,
-      ];
+  List<Object> get props => <Object>[];
 }
 
 /// The state when an error occurred while requesting the likes timeline.
 class LikesTimelineFailure extends LikesTimelineState {
-  const LikesTimelineFailure({
-    @required this.timelineFilter,
-  });
-
-  final TimelineFilter timelineFilter;
+  const LikesTimelineFailure();
 
   @override
-  List<Object> get props => <Object>[
-        timelineFilter,
-      ];
+  List<Object> get props => <Object>[];
 }
 
 /// The state when requesting older tweets.
