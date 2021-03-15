@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/animations/implicit/animated_size.dart';
 import 'package:harpy/components/common/buttons/favorite_button.dart';
 import 'package:harpy/components/common/buttons/retweet_button.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
@@ -80,9 +81,21 @@ class MediaOverlayActionRow extends StatelessWidget {
         child: BlocBuilder<TweetBloc, TweetState>(
           builder: (BuildContext context, TweetState state) => Row(
             children: <Widget>[
-              RetweetButton(tweetBloc, padding: const EdgeInsets.all(16)),
+              CustomAnimatedSize(
+                alignment: Alignment.centerLeft,
+                child: RetweetButton(
+                  tweetBloc,
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
               defaultSmallHorizontalSpacer,
-              FavoriteButton(tweetBloc, padding: const EdgeInsets.all(16)),
+              CustomAnimatedSize(
+                alignment: Alignment.centerLeft,
+                child: FavoriteButton(
+                  tweetBloc,
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
               const Spacer(),
               _buildMoreActionsButton(harpyTheme, context),
             ],
