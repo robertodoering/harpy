@@ -10,10 +10,12 @@ class SliverFillLoadingError extends StatelessWidget {
   const SliverFillLoadingError({
     @required this.message,
     this.onRetry,
+    this.onClearFilter,
   });
 
   final Widget message;
   final VoidCallback onRetry;
+  final VoidCallback onClearFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class SliverFillLoadingError extends StatelessWidget {
         child: LoadingDataError(
           message: message,
           onRetry: onRetry,
+          onClearFilter: onClearFilter,
         ),
       ),
     );
