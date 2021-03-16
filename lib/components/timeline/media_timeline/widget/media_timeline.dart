@@ -58,6 +58,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
         initialIndex: index,
         videoPlayerModel: videoPlayerModel,
       ),
+      buildCompactOverlay: _buildTiled,
     );
   }
 

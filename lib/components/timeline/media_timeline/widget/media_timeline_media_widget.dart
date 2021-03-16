@@ -18,12 +18,14 @@ class MediaTimelineMediaWidget extends StatelessWidget {
     @required this.index,
     @required this.onImageTap,
     @required this.onVideoTap,
+    @required this.buildCompactOverlay,
   });
 
   final MediaTimelineEntry entry;
   final int index;
   final VoidCallback onImageTap;
   final OnVideoPlayerTap onVideoTap;
+  final bool buildCompactOverlay;
 
   Widget _buildImage() {
     return Hero(
@@ -53,7 +55,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
           entry.videoData.appropriateUrl,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        compact: true,
+        compact: buildCompactOverlay,
         thumbnail: entry.videoData.thumbnailUrl,
         thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
@@ -70,7 +72,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
           entry.videoData.appropriateUrl,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        compact: true,
+        compact: buildCompactOverlay,
         thumbnail: entry.videoData.thumbnailUrl,
         thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         onVideoPlayerTap: onVideoTap,
