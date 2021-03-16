@@ -40,6 +40,8 @@ extension HomeTimelineExtension on HomeTimelineState {
     }
   }
 
+  bool get hasTimelineFilter => timelineFilter != TimelineFilter.empty;
+
   List<TweetData> get timelineTweets {
     if (this is HomeTimelineResult) {
       return (this as HomeTimelineResult).tweets;

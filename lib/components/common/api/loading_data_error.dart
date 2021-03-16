@@ -8,10 +8,12 @@ class LoadingDataError extends StatelessWidget {
   const LoadingDataError({
     @required this.message,
     this.onRetry,
+    this.onClearFilter,
   });
 
   final Widget message;
   final VoidCallback onRetry;
+  final VoidCallback onClearFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,14 @@ class LoadingDataError extends StatelessWidget {
               dense: true,
               text: const Text('retry'),
               onTap: onRetry,
+            ),
+          ],
+          if (onClearFilter != null) ...<Widget>[
+            defaultVerticalSpacer,
+            HarpyButton.flat(
+              dense: true,
+              text: const Text('clear filter'),
+              onTap: onClearFilter,
             ),
           ],
         ],
