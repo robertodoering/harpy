@@ -9,15 +9,19 @@ class VideoThumbnail extends StatelessWidget {
     @required this.thumbnail,
     @required this.icon,
     @required this.initializing,
+    this.compact = false,
     this.aspectRatio,
     this.onTap,
+    this.onLongPress,
   });
 
   final String thumbnail;
   final double aspectRatio;
   final IconData icon;
+  final bool compact;
   final bool initializing;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   Widget _buildThumbnailImage() {
     final Widget child = HarpyImage(
@@ -40,17 +44,23 @@ class VideoThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget child = initializing
-        ? const SizedBox(
-            width: kVideoPlayerCenterIconSize,
-            height: kVideoPlayerCenterIconSize,
-            child: CircularProgressIndicator(
+        ? SizedBox(
+            width: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
+            height: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
+            child: const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           )
         : Icon(
             icon,
             color: Colors.white,
-            size: kVideoPlayerCenterIconSize,
+            size: compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
           );
 
     return Stack(
@@ -66,7 +76,11 @@ class VideoThumbnail extends StatelessWidget {
             child: child,
           ),
         ),
-        if (onTap != null) GestureDetector(onTap: onTap),
+        if (onTap != null || onLongPress != null)
+          GestureDetector(
+            onTap: onTap,
+            onLongPress: onLongPress,
+          ),
       ],
     );
   }

@@ -5,9 +5,44 @@ import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/model/tweet_media_model.dart';
 import 'package:harpy/components/tweet/widgets/overlay/overlay_action_row.dart';
+import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/url_launcher.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
+import 'package:share/share.dart';
+
+/// Default behaviour to open a tweet media externally.
+void defaultOnMediaOpenExternally(String mediaUrl) {
+  if (mediaUrl != null) {
+    launchUrl(mediaUrl);
+  }
+}
+
+/// Default behaviour to download a tweet media.
+void defaultOnMediaDownload(String mediaUrl) {
+  if (mediaUrl != null) {
+    final DownloadService downloadService = app<DownloadService>();
+
+    final String url = mediaUrl;
+    final String fileName = fileNameFromUrl(url);
+
+    if (url != null && fileName != null) {
+      downloadService
+          .download(url: url, name: fileName)
+          .catchError(silentErrorHandler);
+    }
+  }
+}
+
+/// Default behaviour to share a tweet media.
+void defaultOnMediaShare(String mediaUrl) {
+  if (mediaUrl != null) {
+    Share.share(mediaUrl);
+  }
+}
 
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
@@ -41,6 +76,9 @@ class MediaOverlay extends StatefulWidget {
   final VoidCallback onShare;
 
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
+  ///
+  /// When no [onDownload], [onOpenExternally] and [onShare] callbacks are
+  /// provided, the default implementations will be used.
   static void open({
     @required TweetData tweet,
     @required TweetBloc tweetBloc,
@@ -52,6 +90,8 @@ class MediaOverlay extends StatefulWidget {
     VoidCallback onOpenExternally,
     VoidCallback onShare,
   }) {
+    final String mediaUrl = tweetBloc.mediaUrl();
+
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
         onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
@@ -61,9 +101,10 @@ class MediaOverlay extends StatefulWidget {
           enableImmersiveMode: enableImmersiveMode,
           enableDismissible: enableDismissible,
           overlap: overlap,
-          onDownload: onDownload,
-          onOpenExternally: onOpenExternally,
-          onShare: onShare,
+          onDownload: onDownload ?? () => defaultOnMediaDownload(mediaUrl),
+          onOpenExternally:
+              onOpenExternally ?? () => defaultOnMediaOpenExternally(mediaUrl),
+          onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),
           child: child,
         ),
       ),

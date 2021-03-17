@@ -191,8 +191,11 @@ class TweetData {
   bool get hasQuote => quote != null;
 
   /// Whether this tweet has up to 4 images, a video or a gif.
-  bool get hasMedia =>
-      images?.isNotEmpty == true || video != null || gif != null;
+  bool get hasMedia => hasImages || hasVideo || hasGif;
+
+  bool get hasImages => images?.isNotEmpty == true;
+  bool get hasVideo => video != null;
+  bool get hasGif => gif != null;
 
   /// Whether this tweet has a translation (translation may have been
   /// unsuccessful).

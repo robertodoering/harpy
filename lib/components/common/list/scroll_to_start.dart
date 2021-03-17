@@ -31,12 +31,17 @@ class ScrollToStart extends StatefulWidget {
 class _ScrollToStartState extends State<ScrollToStart> {
   ScrollController _controller;
 
+  // ignore: invalid_use_of_protected_member
+  bool get _hasSingleScrollPosition => _controller.positions.length == 1;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     if (_controller == null) {
       _controller = widget.controller ?? PrimaryScrollController.of(context);
+
+      assert(_controller != null, 'scroll to start has no scroll controller');
       _controller?.addListener(_scrollListener);
     }
   }
@@ -53,7 +58,10 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
-    if (_controller.offset < mediaQuery.size.height && mounted) {
+
+    if (_hasSingleScrollPosition &&
+        _controller.offset < mediaQuery.size.height &&
+        mounted) {
       setState(() {});
     }
   }
@@ -64,14 +72,18 @@ class _ScrollToStartState extends State<ScrollToStart> {
       return false;
     }
 
-    return _controller.offset > mediaQuery.size.height &&
+    return _hasSingleScrollPosition &&
+        _controller.offset > mediaQuery.size.height &&
         scrollDirection?.up == true;
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
-    if (_controller.offset > mediaQuery.size.height * 5) {
+    // ignore: invalid_use_of_protected_member
+    if (!_hasSingleScrollPosition ||
+        _controller.offset > mediaQuery.size.height * 5) {
       // We use animateTo instead of jumpTo because jumpTo(0) will cause the
       // refresh indicator to trigger.
+      // todo: fixed in flutter:master, change to jumpTo when it hits stable
       _controller.animateTo(
         0,
         duration: const Duration(microseconds: 1),
@@ -110,10 +122,12 @@ class _ScrollToStartState extends State<ScrollToStart> {
                   bottom: defaultPaddingValue + mediaQuery.padding.bottom,
                 ),
                 child: HarpyButton.raised(
-                  text: const Text('jump to top'),
-                  icon: const Icon(CupertinoIcons.arrow_up, size: 20),
-                  backgroundColor: theme.cardColor,
-                  dense: true,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 12,
+                  ),
+                  icon: const Icon(CupertinoIcons.arrow_up),
+                  backgroundColor: theme.cardColor.withOpacity(.8),
                   onTap: () => _scrollToStart(mediaQuery),
                 ),
               ),

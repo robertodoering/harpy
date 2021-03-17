@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
 import 'package:harpy/components/common/animations/animation_constants.dart';
 import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/common/image_gallery/harpy_media_gallery.dart';
 import 'package:harpy/components/common/misc/cached_circle_avatar.dart';
 import 'package:harpy/components/common/misc/custom_animated_crossfade.dart';
+import 'package:harpy/components/common/misc/custom_dismissible.dart';
+import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/common/routes/hero_dialog_route.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
@@ -42,36 +44,6 @@ class UserProfileInfo extends StatelessWidget {
     );
   }
 
-  /// The flight shuttle builder for the avatar hero animation.
-  ///
-  /// Used to animate the border radius during the animation.
-  Widget _flightShuttleBuilder(
-    BuildContext flightContext,
-    int index,
-    Animation<double> animation,
-    HeroFlightDirection flightDirection,
-    BuildContext fromHeroContext,
-    BuildContext toHeroContext,
-  ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
-
-    // animate the border radius during the hero flight animation
-    final BorderRadiusTween tween = BorderRadiusTween(
-      begin: BorderRadius.circular(48),
-      end: BorderRadius.zero,
-    );
-
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (BuildContext context, Widget child) => ClipRRect(
-        borderRadius: tween.evaluate(animation),
-        child: hero.child,
-      ),
-    );
-  }
-
   /// Builds the user's avatar that opens it in fullscreen on tap.
   ///
   /// We use the original sized user avatar for both the circle avatar and
@@ -79,20 +51,22 @@ class UserProfileInfo extends StatelessWidget {
   /// possible if the full screen image has to be loaded first).
   Widget _buildAvatar() {
     return GestureDetector(
-      onTap: () {
-        app<HarpyNavigator>().pushRoute(
-          HeroDialogRoute<void>(
-            onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
-            builder: (BuildContext context) {
-              return ImageGallery(
-                urls: <String>[bloc.user.originalUserImageUrl],
-                heroTags: <Object>[bloc.user],
-                indexedFlightShuttleBuilder: _flightShuttleBuilder,
-              );
-            },
+      onTap: () => app<HarpyNavigator>().pushRoute(
+        HeroDialogRoute<void>(
+          onBackgroundTap: app<HarpyNavigator>().state.maybePop,
+          builder: (_) => CustomDismissible(
+            onDismissed: app<HarpyNavigator>().state.maybePop,
+            child: HarpyMediaGallery.builder(
+              itemCount: 1,
+              heroTagBuilder: (_) => bloc.user,
+              beginBorderRadiusBuilder: (_) => BorderRadius.circular(48),
+              builder: (_, int index) => HarpyImage(
+                imageUrl: bloc.user.originalUserImageUrl,
+              ),
+            ),
           ),
-        );
-      },
+        ),
+      ),
       child: CachedCircleAvatar(
         imageUrl: bloc.user.originalUserImageUrl,
         radius: 36,

@@ -19,7 +19,7 @@ class MediaSettingsScreen extends StatefulWidget {
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
-  List<Widget> get _settings {
+  List<Widget> _buildSettings(ThemeData theme) {
     return <Widget>[
       RadioDialogTile(
         leading: CupertinoIcons.wifi,
@@ -40,6 +40,21 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         onChanged: (int value) {
           setState(() => mediaPreferences.nonWifiMediaQuality = value);
         },
+      ),
+      ListTile(
+        leading: const SizedBox(),
+        title: Row(
+          children: <Widget>[
+            Icon(CupertinoIcons.info, color: theme.accentColor),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                'media is always downloaded in the best quality',
+                style: theme.textTheme.bodyText1,
+              ),
+            ),
+          ],
+        ),
       ),
       RadioDialogTile(
         leading: CupertinoIcons.play_circle,
@@ -103,13 +118,15 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return HarpyScaffold(
       title: 'media settings',
       actions: _buildActions(),
       buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,
-        children: _settings,
+        children: _buildSettings(theme),
       ),
     );
   }

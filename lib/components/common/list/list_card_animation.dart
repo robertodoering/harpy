@@ -76,14 +76,20 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
       if (scrollDirection?.direction == null || scrollDirection.down) {
         // first time building the parent list or scrolling down, animate child
-        if (mounted) {
-          _controller.forward(from: 0);
-        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            // start the controller after one frame to prevent issues when
+            // animation plays during navigation
+            _controller.forward(from: 0);
+          }
+        });
       } else {
         // scrolling up, skip animation
-        if (mounted) {
-          _controller.forward(from: 1);
-        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _controller.forward(from: 1);
+          }
+        });
       }
     }
   }

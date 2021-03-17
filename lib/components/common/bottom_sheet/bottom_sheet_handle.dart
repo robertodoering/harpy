@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
 
-class ModalSheetHandle extends StatelessWidget {
-  const ModalSheetHandle();
+class BottomSheetHandle extends StatelessWidget {
+  const BottomSheetHandle();
 
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 
 /// The size for icons appearing in the center of the video player
 const double kVideoPlayerCenterIconSize = 48;
+const double kVideoPlayerSmallCenterIconSize = 32;
 
 typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
 
@@ -30,6 +31,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.onVideoPlayerTap,
     this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : model = null;
 
   const HarpyVideoPlayer.fromModel(
@@ -40,6 +42,7 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.onVideoPlayerTap,
     this.onVideoPlayerLongPress,
     this.allowVerticalOverflow = false,
+    this.compact = false,
   }) : controller = null;
 
   final VideoPlayerController controller;
@@ -54,6 +57,7 @@ class HarpyVideoPlayer extends StatefulWidget {
   final OnVideoPlayerTap onVideoPlayerTap;
   final OnVideoPlayerLongPress onVideoPlayerLongPress;
   final bool allowVerticalOverflow;
+  final bool compact;
 
   @override
   _HarpyVideoPlayerState createState() => _HarpyVideoPlayerState();
@@ -101,8 +105,10 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       thumbnail: widget.thumbnail,
       aspectRatio: widget.thumbnailAspectRatio,
       icon: Icons.play_arrow,
+      compact: widget.compact,
       initializing: model.initializing,
       onTap: model.initialize,
+      onLongPress: widget.onVideoPlayerLongPress,
     );
   }
 
@@ -126,6 +132,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
     return StaticVideoPlayerOverlay(
       model,
+      compact: widget.compact,
       child: child,
     );
   }
@@ -174,11 +181,13 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       );
     }
 
-    return Hero(
+    child = Hero(
       tag: model,
       flightShuttleBuilder: _flightShuttleBuilder,
       child: child,
     );
+
+    return child;
   }
 
   @override

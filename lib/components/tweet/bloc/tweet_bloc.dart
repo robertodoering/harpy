@@ -23,6 +23,20 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
   static TweetBloc of(BuildContext context) => context.watch<TweetBloc>();
 
+  String mediaUrl({int index}) {
+    if (tweet.hasMedia) {
+      if (tweet.images?.isNotEmpty == true) {
+        return tweet.images[index ?? 0]?.baseUrl;
+      } else if (tweet.gif != null) {
+        return tweet.gif.variants?.first?.url;
+      } else if (tweet.video != null) {
+        return tweet.video.variants?.first?.url;
+      }
+    }
+
+    return null;
+  }
+
   @override
   Stream<TweetState> mapEventToState(
     TweetEvent event,

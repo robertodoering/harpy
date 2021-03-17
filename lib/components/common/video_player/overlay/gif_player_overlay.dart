@@ -9,10 +9,12 @@ class GifPlayerOverlay extends StatefulWidget {
   const GifPlayerOverlay(
     this.model, {
     @required this.child,
+    this.compact = false,
   });
 
   final HarpyVideoPlayerModel model;
   final Widget child;
+  final bool compact;
 
   @override
   _GifPlayerOverlayState createState() => _GifPlayerOverlayState();
@@ -60,10 +62,12 @@ class _GifPlayerOverlayState extends State<GifPlayerOverlay> {
             color: Colors.black45,
           ),
           padding: const EdgeInsets.all(8),
-          child: const Icon(
+          child: Icon(
             Icons.gif,
             color: Colors.white,
-            size: kVideoPlayerCenterIconSize,
+            size: widget.compact
+                ? kVideoPlayerSmallCenterIconSize
+                : kVideoPlayerCenterIconSize,
           ),
         ),
       ),

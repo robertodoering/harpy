@@ -8,12 +8,10 @@ import 'package:harpy/components/tweet/bloc/tweet_state.dart';
 import 'package:harpy/core/api/network_error_handler.dart';
 import 'package:harpy/core/api/translate/data/translation.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
-import 'package:harpy/core/download_service.dart';
 import 'package:harpy/core/logger_mixin.dart';
 import 'package:harpy/core/message_service.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/url_launcher.dart';
-import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:http/http.dart';
 import 'package:share/share.dart';
 
@@ -258,73 +256,6 @@ abstract class MediaActionEvent extends TweetEvent {
     }
 
     return null;
-  }
-}
-
-/// Uses the [DownloadService] to download the media of a tweet.
-class DownloadMedia extends MediaActionEvent with Logger {
-  const DownloadMedia({
-    @required TweetData tweet,
-    int index,
-  }) : super(tweet: tweet, index: index);
-
-  @override
-  Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
-  }) async* {
-    final DownloadService downloadService = app<DownloadService>();
-
-    final String url = mediaUrl;
-    final String fileName = fileNameFromUrl(url);
-
-    if (url != null && fileName != null) {
-      await downloadService
-          .download(url: url, name: fileName)
-          .catchError((dynamic error) {
-        log.severe('error while downloading tweet media', error);
-      });
-    } else {
-      log.warning('unable to get url or to parse filename from $url');
-    }
-  }
-}
-
-class OpenMediaExternally extends MediaActionEvent {
-  const OpenMediaExternally({
-    @required TweetData tweet,
-    int index,
-  }) : super(tweet: tweet, index: index);
-
-  @override
-  Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
-  }) async* {
-    final String url = mediaUrl;
-
-    if (url != null) {
-      launchUrl(url);
-    }
-  }
-}
-
-class ShareMedia extends MediaActionEvent {
-  const ShareMedia({
-    @required TweetData tweet,
-    int index,
-  }) : super(tweet: tweet, index: index);
-
-  @override
-  Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
-  }) async* {
-    final String url = mediaUrl;
-
-    if (url != null) {
-      Share.share(url);
-    }
   }
 }
 

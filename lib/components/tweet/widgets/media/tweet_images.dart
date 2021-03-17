@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/common/image_gallery/harpy_media_gallery.dart';
 import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
-import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_media.dart';
-import 'package:harpy/components/tweet/widgets/media/tweet_media_modal_content.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_bottom_sheet.dart';
 import 'package:harpy/components/tweet/widgets/overlay/media_overlay.dart';
 import 'package:harpy/core/api/twitter/media_data.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
@@ -36,47 +35,35 @@ class _TweetImagesState extends State<TweetImages> {
   void _onImageTap(int index) {
     _galleryIndex = index;
 
+    final String mediaUrl = widget.tweetBloc.mediaUrl(index: _galleryIndex);
+
     MediaOverlay.open(
       tweet: widget.tweet,
       tweetBloc: widget.tweetBloc,
       overlap: true,
-      onDownload: _onDownloadImage,
-      onOpenExternally: _onOpenImageExternally,
-      onShare: _onShareImage,
-      child: ImageGallery(
-        urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
-        heroTags: _images.map(_imageHeroTag).toList(),
-        indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
-        index: _galleryIndex,
-        onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
-        enableDismissible: false,
+      onDownload: () => defaultOnMediaDownload(mediaUrl),
+      onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
+      onShare: () => defaultOnMediaShare(mediaUrl),
+      child: HarpyMediaGallery.builder(
+        itemCount: _images.length,
+        initialIndex: index,
+        beginBorderRadiusBuilder: _borderRadiusForImage,
+        heroTagBuilder: (int index) =>
+            _images.map(_imageHeroTag).toList()[index],
+        onPageChanged: (int newIndex) => _galleryIndex = newIndex,
+        builder: (_, int index) => HarpyImage(
+          imageUrl: _images[index].appropriateUrl,
+        ),
       ),
     );
   }
 
-  Widget _indexedFlightShuttleBuilder(
-    BuildContext flightContext,
-    int index,
-    Animation<double> animation,
-    HeroFlightDirection flightDirection,
-    BuildContext fromHeroContext,
-    BuildContext toHeroContext,
-  ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
+  Future<void> _onImageLongPress(int index, BuildContext context) async {
+    _galleryIndex = index;
 
-    final BorderRadiusTween tween = BorderRadiusTween(
-      begin: _borderRadiusForImage(index),
-      end: BorderRadius.zero,
-    );
-
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (BuildContext context, Widget child) => ClipRRect(
-        borderRadius: tween.evaluate(animation),
-        child: hero.child,
-      ),
+    showTweetMediaBottomSheet(
+      context,
+      url: widget.tweetBloc.mediaUrl(index: index),
     );
   }
 
@@ -109,46 +96,6 @@ class _TweetImagesState extends State<TweetImages> {
     } else {
       return BorderRadius.zero;
     }
-  }
-
-  Future<void> _onImageLongPress(int index, BuildContext context) async {
-    _galleryIndex = index;
-
-    await showModalBottomSheet<void>(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: kDefaultRadius,
-          topRight: kDefaultRadius,
-        ),
-      ),
-      builder: (BuildContext context) => TweetMediaModalContent(
-        onDownload: _onDownloadImage,
-        onOpenExternally: _onOpenImageExternally,
-        onShare: _onShareImage,
-      ),
-    );
-  }
-
-  void _onDownloadImage() {
-    widget.tweetBloc.add(DownloadMedia(
-      tweet: widget.tweet,
-      index: _galleryIndex,
-    ));
-  }
-
-  void _onShareImage() {
-    widget.tweetBloc.add(ShareMedia(
-      tweet: widget.tweet,
-      index: _galleryIndex,
-    ));
-  }
-
-  void _onOpenImageExternally() {
-    widget.tweetBloc.add(OpenMediaExternally(
-      tweet: widget.tweet,
-      index: _galleryIndex,
-    ));
   }
 
   String _imageHeroTag(ImageData image) {

@@ -12,7 +12,7 @@ mixin RequestLock {
   /// Returns `false` if [_isLocked] was `false` before.
   /// Returns `true` if it was already locked.
   bool lock({
-    Duration duration = const Duration(seconds: 2),
+    Duration duration = const Duration(seconds: 1),
   }) {
     if (!_isLocked) {
       _isLocked = true;
