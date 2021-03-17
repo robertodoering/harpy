@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/image_gallery/image_gallery.dart';
+import 'package:harpy/components/common/image_gallery/harpy_media_gallery.dart';
 import 'package:harpy/components/common/misc/harpy_image.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/widgets/media/tweet_images_layout.dart';
@@ -38,21 +38,33 @@ class _TweetImagesState extends State<TweetImages> {
     final String mediaUrl = widget.tweetBloc.mediaUrl(index: _galleryIndex);
 
     MediaOverlay.open(
-      tweet: widget.tweet,
-      tweetBloc: widget.tweetBloc,
-      overlap: true,
-      onDownload: () => defaultOnMediaDownload(mediaUrl),
-      onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
-      onShare: () => defaultOnMediaShare(mediaUrl),
-      child: ImageGallery(
-        urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
-        heroTags: _images.map(_imageHeroTag).toList(),
-        indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
-        index: _galleryIndex,
-        onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
-        enableDismissible: false,
-      ),
-    );
+        tweet: widget.tweet,
+        tweetBloc: widget.tweetBloc,
+        overlap: true,
+        onDownload: () => defaultOnMediaDownload(mediaUrl),
+        onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
+        onShare: () => defaultOnMediaShare(mediaUrl),
+        child: HarpyMediaGallery.builder(
+          itemCount: _images.length,
+          initialIndex: index,
+          beginBorderRadiusBuilder: _borderRadiusForImage,
+          heroTagBuilder: (int index) =>
+              _images.map(_imageHeroTag).toList()[index],
+          onPageChanged: (int newIndex) => _galleryIndex = newIndex,
+          builder: (_, int index) => HarpyImage(
+            imageUrl: _images[index].appropriateUrl,
+          ),
+        )
+
+        // child: ImageGallery(
+        //   urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
+        //   heroTags: _images.map(_imageHeroTag).toList(),
+        //   indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
+        //   index: _galleryIndex,
+        //   onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
+        //   enableDismissible: false,
+        // ),
+        );
   }
 
   Future<void> _onImageLongPress(int index, BuildContext context) async {
@@ -61,32 +73,6 @@ class _TweetImagesState extends State<TweetImages> {
     showTweetMediaBottomSheet(
       context,
       url: widget.tweetBloc.mediaUrl(index: index),
-    );
-  }
-
-  Widget _indexedFlightShuttleBuilder(
-    BuildContext flightContext,
-    int index,
-    Animation<double> animation,
-    HeroFlightDirection flightDirection,
-    BuildContext fromHeroContext,
-    BuildContext toHeroContext,
-  ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
-
-    final BorderRadiusTween tween = BorderRadiusTween(
-      begin: _borderRadiusForImage(index),
-      end: BorderRadius.zero,
-    );
-
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (BuildContext context, Widget child) => ClipRRect(
-        borderRadius: tween.evaluate(animation),
-        child: hero.child,
-      ),
     );
   }
 
