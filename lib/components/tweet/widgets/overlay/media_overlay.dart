@@ -15,14 +15,14 @@ import 'package:harpy/misc/utils/string_utils.dart';
 import 'package:share/share.dart';
 
 /// Default behaviour to open a tweet media externally.
-void onOpenExternally(String mediaUrl) {
+void defaultOnMediaOpenExternally(String mediaUrl) {
   if (mediaUrl != null) {
     launchUrl(mediaUrl);
   }
 }
 
 /// Default behaviour to download a tweet media.
-void onDownload(String mediaUrl) {
+void defaultOnMediaDownload(String mediaUrl) {
   if (mediaUrl != null) {
     final DownloadService downloadService = app<DownloadService>();
 
@@ -38,14 +38,12 @@ void onDownload(String mediaUrl) {
 }
 
 /// Default behaviour to share a tweet media.
-void onShare(String mediaUrl) {
+void defaultOnMediaShare(String mediaUrl) {
   if (mediaUrl != null) {
     Share.share(mediaUrl);
   }
 }
 
-// todo: use default functions in overlay and get media url with index from
-//  tweet and remove tweet bloc events
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
     @required this.tweet,
@@ -78,6 +76,9 @@ class MediaOverlay extends StatefulWidget {
   final VoidCallback onShare;
 
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
+  ///
+  /// When no [onDownload], [onOpenExternally] and [onShare] callbacks are
+  /// provided, the default implementations will be used.
   static void open({
     @required TweetData tweet,
     @required TweetBloc tweetBloc,
@@ -89,6 +90,8 @@ class MediaOverlay extends StatefulWidget {
     VoidCallback onOpenExternally,
     VoidCallback onShare,
   }) {
+    final String mediaUrl = tweetBloc.mediaUrl();
+
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
         onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
@@ -98,9 +101,10 @@ class MediaOverlay extends StatefulWidget {
           enableImmersiveMode: enableImmersiveMode,
           enableDismissible: enableDismissible,
           overlap: overlap,
-          onDownload: onDownload,
-          onOpenExternally: onOpenExternally,
-          onShare: onShare,
+          onDownload: onDownload ?? () => defaultOnMediaDownload(mediaUrl),
+          onOpenExternally:
+              onOpenExternally ?? () => defaultOnMediaOpenExternally(mediaUrl),
+          onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),
           child: child,
         ),
       ),

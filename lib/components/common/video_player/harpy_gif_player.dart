@@ -87,6 +87,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       compact: widget.compact,
       initializing: model.initializing,
       onTap: model.initialize,
+      onLongPress: widget.onGifLongPress,
     );
   }
 

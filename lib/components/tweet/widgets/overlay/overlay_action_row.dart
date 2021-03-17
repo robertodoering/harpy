@@ -8,9 +8,8 @@ import 'package:harpy/components/common/buttons/view_more_action_button.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_state.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_bottom_sheet.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 class MediaOverlayActionRow extends StatelessWidget {
   const MediaOverlayActionRow(
@@ -27,32 +26,12 @@ class MediaOverlayActionRow extends StatelessWidget {
 
   Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
     return ViewMoreActionButton(
-      children: <Widget>[
-        ListTile(
-          leading: const Icon(CupertinoIcons.square_arrow_left),
-          title: const Text('open externally'),
-          onTap: () {
-            onOpenExternally?.call();
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.arrow_down_to_line),
-          title: const Text('download'),
-          onTap: () {
-            onDownload?.call();
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.share),
-          title: const Text('share'),
-          onTap: () {
-            onShare?.call();
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-      ],
+      onTap: () => showTweetMediaBottomSheet(
+        context,
+        onOpenExternally: onOpenExternally,
+        onDownload: onDownload,
+        onShare: onShare,
+      ),
     );
   }
 

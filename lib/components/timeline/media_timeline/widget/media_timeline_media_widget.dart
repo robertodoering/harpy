@@ -6,6 +6,7 @@ import 'package:harpy/components/common/video_player/harpy_gif_player.dart';
 import 'package:harpy/components/common/video_player/harpy_video_player.dart';
 import 'package:harpy/components/timeline/media_timeline/model/media_timeline_model.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_media_bottom_sheet.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/core/theme/harpy_theme.dart';
@@ -27,12 +28,20 @@ class MediaTimelineMediaWidget extends StatelessWidget {
   final OnVideoPlayerTap onVideoTap;
   final bool buildCompactOverlay;
 
-  Widget _buildImage() {
+  void _onLongPress(BuildContext context) {
+    showTweetMediaBottomSheet(
+      context,
+      url: entry.media.bestUrl,
+    );
+  }
+
+  Widget _buildImage(BuildContext context) {
     return Hero(
       tag: '$index-${entry.media.appropriateUrl}',
       placeholderBuilder: (_, __, Widget child) => child,
       child: GestureDetector(
         onTap: onImageTap,
+        onLongPress: () => _onLongPress(context),
         child: AspectRatio(
           // switch between 16 / 9 and 8 / 9 (twice as tall as 16 / 9)
           aspectRatio: index.isEven ? 8 / 9 : 16 / 9,
@@ -47,7 +56,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildGif() {
+  Widget _buildGif(BuildContext context) {
     return AspectRatio(
       aspectRatio: entry.videoData.aspectRatioDouble,
       child: HarpyGifPlayer.fromController(
@@ -60,11 +69,12 @@ class MediaTimelineMediaWidget extends StatelessWidget {
         thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
         onGifTap: onVideoTap,
+        onGifLongPress: () => _onLongPress(context),
       ),
     );
   }
 
-  Widget _buildVideo() {
+  Widget _buildVideo(BuildContext context) {
     return AspectRatio(
       aspectRatio: entry.videoData.aspectRatioDouble,
       child: HarpyVideoPlayer.fromController(
@@ -76,6 +86,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
         thumbnail: entry.videoData.thumbnailUrl,
         thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
         onVideoPlayerTap: onVideoTap,
+        onVideoPlayerLongPress: () => _onLongPress(context),
       ),
     );
   }
@@ -85,11 +96,11 @@ class MediaTimelineMediaWidget extends StatelessWidget {
     Widget child = const SizedBox();
 
     if (entry.isImage) {
-      child = _buildImage();
+      child = _buildImage(context);
     } else if (entry.isGif) {
-      child = _buildGif();
+      child = _buildGif(context);
     } else if (entry.isVideo) {
-      child = _buildVideo();
+      child = _buildVideo(context);
     }
 
     return BlocProvider<TweetBloc>(

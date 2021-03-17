@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/common/bottom_sheet/harpy_bottom_sheet.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
@@ -39,61 +40,65 @@ class TweetActionsButton extends StatelessWidget {
 
     return ViewMoreActionButton(
       padding: padding,
-      children: <Widget>[
-        if (_isAuthenticatedUser(bloc, authBloc))
-          ListTile(
-            leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
-            title: Text(
-              'delete',
-              style: TextStyle(
-                color: theme.errorColor,
-                fontWeight: FontWeight.bold,
+      onTap: () => showHarpyBottomSheet<void>(
+        context,
+        children: <Widget>[
+          if (_isAuthenticatedUser(bloc, authBloc))
+            ListTile(
+              leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
+              title: Text(
+                'delete',
+                style: TextStyle(
+                  color: theme.errorColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              onTap: () {
+                bloc.add(DeleteTweet(onDeleted: () {
+                  homeTimelineBloc
+                      .add(RemoveFromHomeTimeline(tweet: bloc.tweet));
+                }));
+                app<HarpyNavigator>().state.maybePop();
+              },
             ),
+          if (_shouldShowReply(context))
+            ListTile(
+              leading: const Icon(CupertinoIcons.reply),
+              title: const Text('reply'),
+              onTap: () async {
+                await app<HarpyNavigator>().state.maybePop();
+                app<HarpyNavigator>().pushComposeScreen(
+                  inReplyToStatus: tweet,
+                );
+              },
+            ),
+          ListTile(
+            leading: const Icon(CupertinoIcons.square_arrow_left),
+            title: const Text('open externally'),
             onTap: () {
-              bloc.add(DeleteTweet(onDeleted: () {
-                homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
-              }));
+              bloc.add(OpenTweetExternally(tweet: tweet));
               app<HarpyNavigator>().state.maybePop();
             },
           ),
-        if (_shouldShowReply(context))
           ListTile(
-            leading: const Icon(CupertinoIcons.reply),
-            title: const Text('reply'),
-            onTap: () async {
-              await app<HarpyNavigator>().state.maybePop();
-              app<HarpyNavigator>().pushComposeScreen(
-                inReplyToStatus: tweet,
-              );
+            leading: const Icon(CupertinoIcons.square_on_square),
+            title: const Text('copy text'),
+            enabled: bloc.tweet.hasText,
+            onTap: () {
+              bloc.add(CopyTweetText(tweet: tweet));
+              app<HarpyNavigator>().state.maybePop();
             },
           ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.square_arrow_left),
-          title: const Text('open externally'),
-          onTap: () {
-            bloc.add(OpenTweetExternally(tweet: tweet));
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.square_on_square),
-          title: const Text('copy text'),
-          enabled: bloc.tweet.hasText,
-          onTap: () {
-            bloc.add(CopyTweetText(tweet: tweet));
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.share),
-          title: const Text('share tweet'),
-          onTap: () {
-            bloc.add(ShareTweet(tweet: tweet));
-            app<HarpyNavigator>().state.maybePop();
-          },
-        ),
-      ],
+          ListTile(
+            leading: const Icon(CupertinoIcons.share),
+            title: const Text('share tweet'),
+            onTap: () {
+              bloc.add(ShareTweet(tweet: tweet));
+              app<HarpyNavigator>().state.maybePop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

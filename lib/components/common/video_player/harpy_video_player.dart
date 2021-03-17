@@ -108,6 +108,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       compact: widget.compact,
       initializing: model.initializing,
       onTap: model.initialize,
+      onLongPress: widget.onVideoPlayerLongPress,
     );
   }
 

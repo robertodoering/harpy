@@ -77,9 +77,9 @@ class _MediaTimelineGalleryOverlayState
         tweetBloc: _bloc,
         enableImmersiveMode: false,
         overlap: false,
-        onOpenExternally: () => onOpenExternally(_mediaUrl),
-        onDownload: () => onDownload(_mediaUrl),
-        onShare: () => onShare(_mediaUrl),
+        onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
+        onDownload: () => defaultOnMediaDownload(_mediaUrl),
+        onShare: () => defaultOnMediaShare(_mediaUrl),
         child: HarpyMediaGallery.builder(
           itemCount: widget.entries.length,
           initialIndex: widget.initialIndex,

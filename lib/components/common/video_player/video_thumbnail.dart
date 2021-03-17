@@ -12,6 +12,7 @@ class VideoThumbnail extends StatelessWidget {
     this.compact = false,
     this.aspectRatio,
     this.onTap,
+    this.onLongPress,
   });
 
   final String thumbnail;
@@ -20,6 +21,7 @@ class VideoThumbnail extends StatelessWidget {
   final bool compact;
   final bool initializing;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   Widget _buildThumbnailImage() {
     final Widget child = HarpyImage(
@@ -74,7 +76,11 @@ class VideoThumbnail extends StatelessWidget {
             child: child,
           ),
         ),
-        if (onTap != null) GestureDetector(onTap: onTap),
+        if (onTap != null || onLongPress != null)
+          GestureDetector(
+            onTap: onTap,
+            onLongPress: onLongPress,
+          ),
       ],
     );
   }
