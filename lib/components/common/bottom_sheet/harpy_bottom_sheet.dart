@@ -9,8 +9,6 @@ Future<T> showHarpyBottomSheet<T>(
   BuildContext context, {
   @required List<Widget> children,
 }) async {
-  final MediaQueryData mediaQuery = MediaQuery.of(context);
-
   return showModalBottomSheet<T>(
     context: context,
     shape: const RoundedRectangleBorder(
