@@ -3,8 +3,7 @@ import 'package:harpy/core/theme/harpy_theme.dart';
 
 import 'bottom_sheet_handle.dart';
 
-/// Shows a harpy styled modal modal bottom sheet with the [children] in a
-/// column.
+/// Shows a harpy styled modal bottom sheet with the [children] in a column.
 Future<T> showHarpyBottomSheet<T>(
   BuildContext context, {
   @required List<Widget> children,
