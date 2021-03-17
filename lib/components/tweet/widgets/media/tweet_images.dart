@@ -38,33 +38,24 @@ class _TweetImagesState extends State<TweetImages> {
     final String mediaUrl = widget.tweetBloc.mediaUrl(index: _galleryIndex);
 
     MediaOverlay.open(
-        tweet: widget.tweet,
-        tweetBloc: widget.tweetBloc,
-        overlap: true,
-        onDownload: () => defaultOnMediaDownload(mediaUrl),
-        onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
-        onShare: () => defaultOnMediaShare(mediaUrl),
-        child: HarpyMediaGallery.builder(
-          itemCount: _images.length,
-          initialIndex: index,
-          beginBorderRadiusBuilder: _borderRadiusForImage,
-          heroTagBuilder: (int index) =>
-              _images.map(_imageHeroTag).toList()[index],
-          onPageChanged: (int newIndex) => _galleryIndex = newIndex,
-          builder: (_, int index) => HarpyImage(
-            imageUrl: _images[index].appropriateUrl,
-          ),
-        )
-
-        // child: ImageGallery(
-        //   urls: _images.map((ImageData image) => image.appropriateUrl).toList(),
-        //   heroTags: _images.map(_imageHeroTag).toList(),
-        //   indexedFlightShuttleBuilder: _indexedFlightShuttleBuilder,
-        //   index: _galleryIndex,
-        //   onIndexChanged: (int newIndex) => _galleryIndex = newIndex,
-        //   enableDismissible: false,
-        // ),
-        );
+      tweet: widget.tweet,
+      tweetBloc: widget.tweetBloc,
+      overlap: true,
+      onDownload: () => defaultOnMediaDownload(mediaUrl),
+      onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
+      onShare: () => defaultOnMediaShare(mediaUrl),
+      child: HarpyMediaGallery.builder(
+        itemCount: _images.length,
+        initialIndex: index,
+        beginBorderRadiusBuilder: _borderRadiusForImage,
+        heroTagBuilder: (int index) =>
+            _images.map(_imageHeroTag).toList()[index],
+        onPageChanged: (int newIndex) => _galleryIndex = newIndex,
+        builder: (_, int index) => HarpyImage(
+          imageUrl: _images[index].appropriateUrl,
+        ),
+      ),
+    );
   }
 
   Future<void> _onImageLongPress(int index, BuildContext context) async {
