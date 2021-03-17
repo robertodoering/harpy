@@ -35,11 +35,11 @@ class _RetweetButtonState extends State<RetweetButton> {
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(
-          button.size.bottomLeft(Offset.zero),
+          button.size.bottomLeft(Offset.zero) - const Offset(0, 24),
           ancestor: overlay,
         ),
         button.localToGlobal(
-          button.size.bottomRight(Offset.zero),
+          button.size.bottomRight(Offset.zero) - const Offset(0, 24),
           ancestor: overlay,
         ),
       ),
