@@ -8,7 +8,6 @@ import 'package:harpy/components/common/sliver_tab_view/harpy_sliver_tab_view.da
 import 'package:harpy/components/common/sliver_tab_view/harpy_tab.dart';
 import 'package:harpy/components/timeline/filter/model/timeline_filter_model.dart';
 import 'package:harpy/components/timeline/likes_timeline/bloc/likes_timeline_bloc.dart';
-import 'package:harpy/components/timeline/likes_timeline/widgets/likes_timeline.dart';
 import 'package:harpy/components/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:harpy/components/timeline/user_timeline/widgets/user_timeline.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
@@ -17,6 +16,7 @@ import 'package:harpy/components/user_profile/widgets/content/user_timeline_filt
 import 'package:harpy/components/user_profile/widgets/user_profile_header.dart';
 import 'package:provider/provider.dart';
 
+import 'content/user_likes_timeline.dart';
 import 'content/user_profile_app_bar.dart';
 
 /// Builds the content for the [UserProfileScreen].
@@ -63,7 +63,7 @@ class UserProfileContent extends StatelessWidget {
                 children: const <Widget>[
                   UserTimeline(),
                   UserMediaTimeline(),
-                  LikesTimeline(),
+                  UserLikesTimeline(),
                 ],
               ),
             ),
