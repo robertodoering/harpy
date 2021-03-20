@@ -23,15 +23,12 @@ void silentErrorHandler(dynamic error) {
 ///
 /// If [fallbackMessage] is not `null`, it is used in place of a generic error
 /// message if the error wasn't handled.
-void twitterApiErrorHandler(
-  dynamic error, {
-  String fallbackMessage,
-}) {
+void twitterApiErrorHandler(dynamic error) {
   _log.info('handling twitter error', error);
 
   final MessageService messageService = app<MessageService>();
 
-  String message = fallbackMessage;
+  String message;
 
   if (error is Response) {
     // response error (status code != 2xx)

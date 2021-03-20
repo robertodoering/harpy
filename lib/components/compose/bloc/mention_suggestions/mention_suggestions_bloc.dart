@@ -18,8 +18,8 @@ class MentionSuggestionsBloc
     @required UserData authenticatedUser,
   })  : followingBloc = FollowingBloc(userId: authenticatedUser.idStr),
         super(const MentionSuggestionsState()) {
-    followingBloc.listen(_followingBlocListener);
-    userSearchBloc.listen(_userSearchBlocListener);
+    followingBloc.stream.listen(_followingBlocListener);
+    userSearchBloc.stream.listen(_userSearchBlocListener);
   }
 
   final UserSearchBloc userSearchBloc = UserSearchBloc(
