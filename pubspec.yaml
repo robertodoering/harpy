@@ -31,7 +31,7 @@ dependencies:
   intl: ^0.17.0
   like_button: ^2.0.0
   logging: ^1.0.0
-  mime_type: ^0.3.2 # non null safe
+  mime_type: ^1.0.0
   photo_view:
     # custom photo_view with removed double tap for a faster background tap
     #   gesture recognition
@@ -48,7 +48,7 @@ dependencies:
   device_info: ^2.0.0
   file_picker: ^3.0.0
   firebase_analytics: any # non null safe
-  flutter_ffmpeg: ^0.3.1 # non null safe
+  flutter_ffmpeg: ^0.4.0
   flutter_downloader: ^1.5.2 # non null safe
   flutter_staggered_grid_view: ^0.4.0-nullsafety.3
   flutter_twitter_login: # non null safe
