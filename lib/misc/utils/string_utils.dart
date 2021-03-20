@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 /// Pretty prints a duration difference as long as the difference is smaller
@@ -105,8 +106,11 @@ String trimOne(
 
 /// Returns a formatted String displaying the difference of the tweet creation
 /// time.
-String tweetTimeDifference(DateTime createdAt) {
-  return timeago.format(createdAt.toLocal());
+String tweetTimeDifference(BuildContext context, DateTime createdAt) {
+  return timeago.format(
+    createdAt.toLocal(),
+    locale: Localizations.localeOf(context).toString(),
+  );
 }
 
 /// Returns the file name from a string url.

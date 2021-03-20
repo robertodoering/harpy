@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:harpy/components/common/misc/harpy_message.dart';
 import 'package:harpy/components/common/screens/splash_screen.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
@@ -22,6 +23,14 @@ class Harpy extends StatelessWidget {
       builder: (BuildContext context, ThemeState state) => MaterialApp(
         title: 'Harpy',
         theme: ThemeBloc.of(context).harpyTheme.data,
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: kMaterialSupportedLanguages.map(
+          (String languageCode) => Locale(languageCode),
+        ),
         navigatorKey: app<HarpyNavigator>().key,
         onGenerateRoute: onGenerateRoute,
         navigatorObservers: <NavigatorObserver>[

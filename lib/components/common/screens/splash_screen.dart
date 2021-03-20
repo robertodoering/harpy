@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/common/misc/flare_icons.dart';
 import 'package:harpy/components/common/misc/harpy_background.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 /// The initial screen that is shown when opening the app.
 ///
@@ -14,6 +15,9 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // start caching flare icons
     FlareIcon.cacheIcons(context);
+
+    // start initializing localized date format
+    initializeDateFormatting(Localizations.localeOf(context).toString());
 
     return const HarpyBackground(
       child: FractionallySizedBox(

@@ -45,7 +45,7 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
     final ThemeData theme = Theme.of(context);
 
     return Text(
-      '${tweetTimeDifference(widget.createdAt)}',
+      '${tweetTimeDifference(context, widget.createdAt)}',
       style: theme.textTheme.bodyText1.apply(
         fontSizeDelta: widget.fontSizeDelta,
       ),

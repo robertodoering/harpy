@@ -1,0 +1,5 @@
+Version 0.5.1
+
+· Added url actions on url long press (Thanks Mikhail)
+· Added localized absolute time of tweet in tweet actions bottom sheet (3 dot button)
+·

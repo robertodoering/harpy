@@ -1,13 +1,18 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/bottom_sheet/bottom_sheet_header.dart';
+import 'package:harpy/components/common/bottom_sheet/harpy_bottom_sheet.dart';
 import 'package:harpy/components/search/tweet/bloc/tweet_search_bloc.dart';
 import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/url_launcher.dart';
 import 'package:harpy/misc/utils/string_utils.dart';
+import 'package:share/share.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
 typedef EntityTapped<T> = void Function(BuildContext context, T value);
@@ -25,6 +30,42 @@ void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
 /// The default behavior when a url inside of [TwitterText] is tapped.
 void defaultOnUrlTap(BuildContext context, Url url) {
   launchUrl(url.expandedUrl);
+}
+
+/// The default behavior when a url inside of [TwitterText] is long pressed.
+void defaultOnUrlLongPress(BuildContext context, Url url) {
+  showHarpyBottomSheet<void>(
+    context,
+    children: <Widget>[
+      BottomSheetHeader(
+        child: Text(url.expandedUrl),
+      ),
+      ListTile(
+        leading: const Icon(CupertinoIcons.square_arrow_left),
+        title: const Text('open url externally'),
+        onTap: () {
+          launchUrl(url.expandedUrl);
+          app<HarpyNavigator>().state.maybePop();
+        },
+      ),
+      ListTile(
+        leading: const Icon(CupertinoIcons.square_on_square),
+        title: const Text('copy url text'),
+        onTap: () {
+          Clipboard.setData(ClipboardData(text: url.expandedUrl));
+          app<HarpyNavigator>().state.maybePop();
+        },
+      ),
+      ListTile(
+        leading: const Icon(CupertinoIcons.share),
+        title: const Text('share url'),
+        onTap: () {
+          Share.share(url.expandedUrl);
+          app<HarpyNavigator>().state.maybePop();
+        },
+      ),
+    ],
+  );
 }
 
 /// The default behavior when a [Hashtag] inside of a [TwitterText] is tapped.
@@ -62,6 +103,7 @@ class TwitterText extends StatefulWidget {
     this.urlToIgnore,
     this.onHashtagTap = defaultOnHashtagTap,
     this.onUrlTap = defaultOnUrlTap,
+    this.onUrlLongPress = defaultOnUrlLongPress,
     this.onUserMentionTap = defaultOnUserMentionTap,
   });
 
@@ -99,6 +141,11 @@ class TwitterText extends StatefulWidget {
   ///
   /// Set to [defaultOnUrlTap] by default.
   final EntityTapped<Url> onUrlTap;
+
+  /// Called when a url is long pressed.
+  ///
+  /// Set to [defaultOnUrlLongPress] by default.
+  final EntityTapped<Url> onUrlLongPress;
 
   /// Called when a user mention is tapped.
   ///
@@ -170,36 +217,37 @@ class _TwitterTextState extends State<TwitterText> {
     }
 
     String text;
-    TapGestureRecognizer recognizer;
+    GestureRecognizer recognizer;
 
     if (value is Hashtag) {
       recognizer = TapGestureRecognizer()
         ..onTap = () => widget.onHashtagTap?.call(context, value);
-      _gestureRecognizer.add(recognizer);
 
       text = '#${value.text}';
-    }
-
-    if (value is Url) {
+    } else if (value is Url) {
       if (value.url == widget.urlToIgnore) {
         // hide the url to ignore
         // usually the quoted status link at the end of the text
         return;
       }
 
-      recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUrlTap?.call(context, value);
-      _gestureRecognizer.add(recognizer);
+      recognizer = MultiTapGestureRecognizer(longTapDelay: kLongPressTimeout)
+        ..onTap = ((_) => widget.onUrlTap?.call(context, value))
+        ..onLongTapDown = (_, __) => widget.onUrlLongPress?.call(
+              context,
+              value,
+            );
 
       text = value.displayUrl;
-    }
-
-    if (value is UserMention) {
+    } else if (value is UserMention) {
       recognizer = TapGestureRecognizer()
         ..onTap = () => widget.onUserMentionTap?.call(context, value);
-      _gestureRecognizer.add(recognizer);
 
       text = '@${value.screenName}';
+    }
+
+    if (recognizer != null) {
+      _gestureRecognizer.add(recognizer);
     }
 
     if (text != null) {

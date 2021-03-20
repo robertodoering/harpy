@@ -1,9 +1,9 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/components/common/misc/twitter_text.dart';
 import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/user_profile/bloc/user_profile_bloc.dart';
-import 'package:harpy/misc/url_launcher.dart';
 import 'package:intl/intl.dart';
 
 /// Builds additional info about a user for the [UserProfileHeader].
@@ -36,11 +36,12 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildUrl(ThemeData theme) {
+  Widget _buildUrl(BuildContext context, ThemeData theme) {
     final Url url = bloc.user.entities.url.urls.first;
 
     final Widget child = GestureDetector(
-      onTap: () => launchUrl(url.expandedUrl),
+      onTap: () => defaultOnUrlTap(context, url),
+      onLongPress: () => defaultOnUrlLongPress(context, url),
       child: Text(
         url.displayUrl,
         style: theme.textTheme.bodyText1.copyWith(
@@ -70,7 +71,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
           CupertinoIcons.calendar,
           text: 'joined ${_createdAtFormat.format(bloc.user.createdAt)}',
         ),
-      if (bloc.user.hasUrl) _buildUrl(theme),
+      if (bloc.user.hasUrl) _buildUrl(context, theme),
       if (bloc.user.follows)
         _buildRow(theme, CupertinoIcons.reply, text: 'follows you'),
     ];

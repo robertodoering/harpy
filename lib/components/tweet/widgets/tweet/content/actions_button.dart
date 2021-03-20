@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
+import 'package:harpy/components/common/bottom_sheet/bottom_sheet_header.dart';
 import 'package:harpy/components/common/bottom_sheet/harpy_bottom_sheet.dart';
 import 'package:harpy/components/common/buttons/view_more_action_button.dart';
 import 'package:harpy/components/compose/widget/compose_screen.dart';
+import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
 import 'package:harpy/components/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_bloc.dart';
 import 'package:harpy/components/tweet/bloc/tweet_event.dart';
 import 'package:harpy/core/api/twitter/tweet_data.dart';
 import 'package:harpy/core/service_locator.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:intl/intl.dart';
 
 class TweetActionsButton extends StatelessWidget {
   const TweetActionsButton(
@@ -31,6 +34,12 @@ class TweetActionsButton extends StatelessWidget {
     return bloc.tweet.userData.idStr == authBloc.authenticatedUser.idStr;
   }
 
+  String _dateFormat(BuildContext context, DateTime dateTime) {
+    return DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
+        .format(dateTime)
+        .toLowerCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -43,6 +52,18 @@ class TweetActionsButton extends StatelessWidget {
       onTap: () => showHarpyBottomSheet<void>(
         context,
         children: <Widget>[
+          BottomSheetHeader(
+            child: Column(
+              children: <Widget>[
+                Text('tweet from ${tweet.userData.name}'),
+                defaultSmallVerticalSpacer,
+                Text(
+                  'on '
+                  '${_dateFormat(context, tweet.createdAt.toLocal())}',
+                ),
+              ],
+            ),
+          ),
           if (_isAuthenticatedUser(bloc, authBloc))
             ListTile(
               leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
@@ -74,7 +95,7 @@ class TweetActionsButton extends StatelessWidget {
             ),
           ListTile(
             leading: const Icon(CupertinoIcons.square_arrow_left),
-            title: const Text('open externally'),
+            title: const Text('open tweet externally'),
             onTap: () {
               bloc.add(OpenTweetExternally(tweet: tweet));
               app<HarpyNavigator>().state.maybePop();
@@ -82,7 +103,7 @@ class TweetActionsButton extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(CupertinoIcons.square_on_square),
-            title: const Text('copy text'),
+            title: const Text('copy tweet text'),
             enabled: bloc.tweet.hasText,
             onTap: () {
               bloc.add(CopyTweetText(tweet: tweet));
