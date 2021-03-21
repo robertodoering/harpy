@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// A widget used to dismiss its [child].
 ///

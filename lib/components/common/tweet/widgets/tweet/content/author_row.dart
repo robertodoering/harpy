@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 
 /// Builds the tweet author's avatar, display name, username and the creation

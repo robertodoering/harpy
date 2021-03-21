@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds the translated description for a user in the [UserProfileHeader].
 class UserProfileDescriptionTranslation extends StatelessWidget {

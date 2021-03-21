@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 // ignore_for_file: lines_longer_than_80_chars
 // ignore_for_file: always_put_control_body_on_new_line

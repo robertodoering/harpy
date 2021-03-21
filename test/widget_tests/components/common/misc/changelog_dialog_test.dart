@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';

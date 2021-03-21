@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// An implicitly animated widget that will animate a change to [scale].
 class AnimatedScale extends ImplicitlyAnimatedWidget {

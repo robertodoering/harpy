@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a button that is intended to be used to show a harpy bottom sheet.
 class ViewMoreActionButton extends StatelessWidget {

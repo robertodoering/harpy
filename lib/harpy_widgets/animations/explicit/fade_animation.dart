@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-/// Builds its [child] translated by [offset] and slides it into position upon
-/// creation.
+/// Used by [FadeAnimation] to determine whether to fade in or fade out its
+/// child.
+enum FadeType {
+  fadeIn,
+  fadeOut,
+}
+
+/// Fades its [child] either in or out upon creation.
 ///
 /// [delay] can delay the time it takes for the [child] to start the
-/// translation.
-class SlideInAnimation extends StatefulWidget {
-  const SlideInAnimation({
+/// change in opacity.
+class FadeAnimation extends StatefulWidget {
+  const FadeAnimation({
     @required this.child,
-    @required this.offset,
+    this.fadeType = FadeType.fadeIn,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
-  });
+    Key key,
+  }) : super(key: key);
 
   final Widget child;
-  final Offset offset;
+  final FadeType fadeType;
   final Curve curve;
   final Duration duration;
   final Duration delay;
 
   @override
-  _SlideInAnimationState createState() => _SlideInAnimationState();
+  _FadeAnimationState createState() => _FadeAnimationState();
 }
 
-class _SlideInAnimationState extends State<SlideInAnimation>
+class _FadeAnimationState extends State<FadeAnimation>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
 
   bool _hidden = false;
+
+  bool get _hide =>
+      _hidden || _controller.isCompleted && widget.fadeType == FadeType.fadeOut;
 
   @override
   void initState() {
@@ -38,7 +48,9 @@ class _SlideInAnimationState extends State<SlideInAnimation>
 
     _animation = CurveTween(curve: widget.curve).animate(_controller);
 
-    _hidden = widget.delay != Duration.zero;
+    // only hide when fading in (with a delay)
+    _hidden =
+        widget.fadeType == FadeType.fadeIn && widget.delay != Duration.zero;
 
     Future<void>.delayed(widget.delay).then((_) {
       if (mounted) {
@@ -60,14 +72,13 @@ class _SlideInAnimationState extends State<SlideInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => _hidden
-          ? Container()
-          : Transform.translate(
-              offset: Offset(
-                (1 - _animation.value) * widget.offset.dx,
-                (1 - _animation.value) * widget.offset.dy,
-              ),
-              child: widget.child,
+      builder: (BuildContext context, Widget child) => _hide
+          ? const SizedBox()
+          : Opacity(
+              opacity: widget.fadeType == FadeType.fadeIn
+                  ? _animation.value
+                  : 1 - _animation.value,
+              child: child,
             ),
       child: widget.child,
     );

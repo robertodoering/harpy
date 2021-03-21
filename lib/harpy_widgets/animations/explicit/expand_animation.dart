@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Used by [ExpandAnimation] to determine whether to expand in or expand out
 /// its child.

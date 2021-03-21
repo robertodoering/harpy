@@ -7,6 +7,7 @@ Future<void> main() async {
     'lib/components',
     'lib/core',
     'lib/misc',
+    'lib/harpy_widgets',
   ];
 
   for (String path in paths) {

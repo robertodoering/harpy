@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a button at the bottom of the screen that listens to the
 /// [ScrollDirection] and animates in or out of the screen to provide a button

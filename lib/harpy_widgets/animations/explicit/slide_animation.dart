@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Slides its [child] to the [endPosition] after calling
 /// [SlideAnimationState.forward()].

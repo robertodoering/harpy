@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a play or pause icon in the center that fades out automatically.
 class OverlayPlaybackIcon extends StatelessWidget {

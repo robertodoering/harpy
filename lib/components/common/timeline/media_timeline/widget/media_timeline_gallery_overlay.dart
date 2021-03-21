@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a [HarpyMediaGallery] with a [MediaOverlay] to access the tweet
 /// actions (like / retweet) and media actions (open externally, download,

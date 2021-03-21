@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// A loading indicator for the center of a [CustomScrollView].
 class SliverFillLoadingIndicator extends StatelessWidget {

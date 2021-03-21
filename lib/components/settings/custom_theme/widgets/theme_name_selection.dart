@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds the theme name customization for the [CustomThemeScreen].
 class ThemeNameSelection extends StatefulWidget {

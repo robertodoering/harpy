@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// A theme selection carousel used in the [SetupScreen].
 ///

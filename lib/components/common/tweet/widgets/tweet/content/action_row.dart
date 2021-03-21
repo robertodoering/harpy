@@ -5,6 +5,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds the buttons with actions for the [tweet].
 class TweetActionRow extends StatelessWidget {

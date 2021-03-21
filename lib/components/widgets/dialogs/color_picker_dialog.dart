@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 
 /// Builds a [HarpyDialog] with a color picker and pops the navigator with the

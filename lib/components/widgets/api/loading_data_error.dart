@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds an error message with an optional retry button when [onRetry] is not
 /// `null`.

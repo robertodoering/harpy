@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Fades and slides the [child] when scrolling down or on the initial build if
