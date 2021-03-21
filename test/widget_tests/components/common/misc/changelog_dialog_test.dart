@@ -3,14 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/components/common/dialogs/changelog_dialog.dart';
-import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/preferences/changelog_preferences.dart';
-import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/changelog_parser.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
 

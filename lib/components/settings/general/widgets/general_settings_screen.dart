@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/core/preferences/changelog_preferences.dart';
-import 'package:harpy/core/preferences/general_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
   const GeneralSettingsScreen();

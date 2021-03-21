@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/core/regex/twitter_regex.dart';
+import 'package:harpy/core/core.dart';
 
 void main() {
   group('hashtag regex', () {

@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/buttons/custom_popup_menu_button.dart';
-import 'package:harpy/components/common/misc/harpy_popup_menu_item.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/common/widgets/radio_dialog_tile.dart';
-import 'package:harpy/core/preferences/media_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class MediaSettingsScreen extends StatefulWidget {
   const MediaSettingsScreen();

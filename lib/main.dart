@@ -1,6 +1,5 @@
-import 'package:harpy/components/common/misc/global_bloc_provider.dart';
-import 'package:harpy/core/harpy_error_handler.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
 /// The app can be built with the 'free' or 'pro' flavor by running

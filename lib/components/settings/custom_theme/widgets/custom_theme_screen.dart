@@ -1,22 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/accent_color_selection.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_selection.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/buy_pro_text.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/delete_theme_button.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/theme_name_selection.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
 /// The custom theme screen for editing existing custom themes and creating

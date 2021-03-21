@@ -1,14 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_state.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/core/preferences/theme_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
-import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
+part of 'custom_theme_bloc.dart';
 
 @immutable
 abstract class CustomThemeEvent {

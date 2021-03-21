@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/buttons/harpy_button.dart';
-import 'package:harpy/components/common/misc/flare_icons.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/core/message_service.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// Builds a button linking to the pro version of Harpy.
 class BuyProText extends StatelessWidget {

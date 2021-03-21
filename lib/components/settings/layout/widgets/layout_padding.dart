@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/preferences/layout_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/core.dart';
 
 /// The padding value based on the [LayoutPreferences].
 double get defaultPaddingValue => app<LayoutPreferences>().compactMode ? 8 : 16;

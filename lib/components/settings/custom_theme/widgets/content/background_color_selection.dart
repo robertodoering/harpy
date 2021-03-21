@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/add_background_color_card.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/content/background_color_card.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// Builds the background color customization for the [CustomThemeScreen].
 class BackgroundColorSelection extends StatelessWidget {

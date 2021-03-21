@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/core/preferences/general_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// The minimum recommended contrast ratio for the visual representation of
 /// text.

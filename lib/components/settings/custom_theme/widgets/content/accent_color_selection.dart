@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/implicit/animated_size.dart';
-import 'package:harpy/components/common/dialogs/color_picker_dialog.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// Builds the accent color customization for the [CustomThemeScreen].
 class AccentColorSelection extends StatelessWidget {

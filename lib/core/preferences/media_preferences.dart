@@ -1,6 +1,4 @@
-import 'package:harpy/core/connectivity_service.dart';
-import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/core.dart';
 
 class MediaPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();

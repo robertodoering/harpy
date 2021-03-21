@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/components/settings/theme_selection/widgets/add_custom_theme_card.dart';
-import 'package:harpy/components/settings/theme_selection/widgets/theme_card.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
-import 'package:harpy/core/theme/predefined_themes.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 
 class ThemeSelectionScreen extends StatefulWidget {
   const ThemeSelectionScreen();

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/implicit/animated_size.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
+import 'package:harpy/components/components.dart';
 
 /// Builds the theme name customization for the [CustomThemeScreen].
 class ThemeNameSelection extends StatefulWidget {

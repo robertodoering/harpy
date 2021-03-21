@@ -1,6 +1,5 @@
-import 'package:harpy/core/api/twitter/tweet_data.dart';
-import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/api/api.dart';
+import 'package:harpy/core/core.dart';
 
 class TweetVisibilityPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();

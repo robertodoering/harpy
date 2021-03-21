@@ -1,6 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/core/api/twitter/tweet_data.dart';
+import 'package:harpy/api/api.dart';
 
 void main() {
   group('replyAuthors', () {

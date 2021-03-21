@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/core/core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'harpy_theme_data.g.dart';

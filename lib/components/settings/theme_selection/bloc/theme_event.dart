@@ -1,17 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_state.dart';
-import 'package:harpy/core/analytics_service.dart';
-import 'package:harpy/core/preferences/theme_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
-import 'package:harpy/core/theme/predefined_themes.dart';
-import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
+part of 'theme_bloc.dart';
 
 @immutable
 abstract class ThemeEvent {

@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/animations/animation_constants.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_bloc.dart';
-import 'package:harpy/components/settings/custom_theme/bloc/custom_theme_event.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_padding.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// Builds a card to add a background color for the [CustomThemeBloc].
 class AddBackgroundColorCard extends StatelessWidget {

@@ -1,28 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/about/widgets/about_screen.dart';
-import 'package:harpy/components/authentication/widgets/login_screen.dart';
-import 'package:harpy/components/authentication/widgets/setup_screen.dart';
-import 'package:harpy/components/beta_info/widgets/beta_info_screen.dart';
-import 'package:harpy/components/changelog/widgets/changelog_screen.dart';
-import 'package:harpy/components/common/routes/fade_route.dart';
-import 'package:harpy/components/compose/widget/compose_screen.dart';
-import 'package:harpy/components/following_followers/followers/widgets/followers_screen.dart';
-import 'package:harpy/components/following_followers/following/widgets/following_screen.dart';
-import 'package:harpy/components/replies/widgets/replies_screen.dart';
-import 'package:harpy/components/search/tweet/widgets/tweet_search_screen.dart';
-import 'package:harpy/components/search/user/widgets/user_search_screen.dart';
-import 'package:harpy/components/search/widgets/search_screen.dart';
-import 'package:harpy/components/settings/common/widgets/settings_screen.dart';
-import 'package:harpy/components/settings/custom_theme/widgets/custom_theme_screen.dart';
-import 'package:harpy/components/settings/general/widgets/general_settings_screen.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_settings_screen.dart';
-import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
-import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
-import 'package:harpy/components/timeline/home_timeline/widgets/home_screen.dart';
-import 'package:harpy/components/user_profile/widgets/user_profile_screen.dart';
-import 'package:harpy/core/api/twitter/tweet_data.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:logging/logging.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.

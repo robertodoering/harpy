@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/components/common/misc/harpy_message.dart';
-import 'package:harpy/core/message_service.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 void main() {
   group('harpy message', () {

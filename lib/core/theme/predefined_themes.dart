@@ -1,5 +1,4 @@
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/core/core.dart';
 
 /// A list of [HarpyTheme]s that can be used as the theme for the app.
 List<HarpyTheme> get predefinedThemes => <HarpyTheme>[

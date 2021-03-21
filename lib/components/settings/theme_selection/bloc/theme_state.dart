@@ -1,3 +1,6 @@
+part of 'theme_bloc.dart';
+
+@immutable
 abstract class ThemeState {}
 
 /// The initial state of the [ThemeBloc].
