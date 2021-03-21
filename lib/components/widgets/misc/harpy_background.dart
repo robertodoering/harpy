@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a background with a gradient from top to bottom.
 ///

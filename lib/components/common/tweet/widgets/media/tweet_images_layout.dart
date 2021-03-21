@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 typedef OnImageTap = void Function(int index);
 typedef OnImageLongPress = void Function(int index, BuildContext context);

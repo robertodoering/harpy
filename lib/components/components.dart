@@ -184,7 +184,6 @@ export 'widgets/misc/harpy_sliver_app_bar.dart';
 export 'widgets/misc/headlines.dart';
 export 'widgets/misc/interactive_viewer_boundary.dart';
 export 'widgets/misc/scroll_aware_floating_action_button.dart';
-export 'widgets/misc/shifted_position.dart';
 export 'widgets/misc/translated_text.dart';
 export 'widgets/misc/twitter_text.dart';
 export 'widgets/misc/will_pop_harpy.dart';

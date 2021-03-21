@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/harpy_widgets/theme/harpy_theme.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 /// Used by [HarpySliverTabView] to build the [HarpyTab]s.

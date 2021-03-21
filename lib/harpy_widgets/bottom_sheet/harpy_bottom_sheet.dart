@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
-
-import 'bottom_sheet_handle.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Shows a harpy styled modal bottom sheet with the [children] in a column.
 Future<T> showHarpyBottomSheet<T>(

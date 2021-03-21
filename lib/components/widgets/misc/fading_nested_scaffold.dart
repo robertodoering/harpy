@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// A [NestedScrollView] within a [Scaffold] where the [title] fades in when the
 /// [FlexibleSpaceBar] in the [SliverAppBar] starts showing.
