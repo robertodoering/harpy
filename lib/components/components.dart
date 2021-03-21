@@ -1,5 +1,6 @@
 export 'common/application/bloc/application_bloc.dart';
 export 'common/authentication/bloc/authentication_bloc.dart';
+export 'common/paginated_bloc/paginated_bloc.dart';
 export 'common/timeline/filter/model/timeline_filter.dart';
 export 'common/timeline/filter/model/timeline_filter_model.dart';
 export 'common/timeline/filter/widgets/timeline_filter_drawer.dart';
@@ -187,7 +188,6 @@ export 'widgets/misc/scroll_aware_floating_action_button.dart';
 export 'widgets/misc/translated_text.dart';
 export 'widgets/misc/twitter_text.dart';
 export 'widgets/misc/will_pop_harpy.dart';
-export 'widgets/paginated_bloc/paginated_bloc.dart';
 export 'widgets/routes/fade_route.dart';
 export 'widgets/routes/hero_dialog_route.dart';
 export 'widgets/video_player/harpy_gif_player.dart';
