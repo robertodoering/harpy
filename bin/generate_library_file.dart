@@ -16,7 +16,8 @@ import 'package:args/args.dart';
 ///
 /// Example:
 /// ```sh
-/// dart generate_library_file -p lib/foo/bar --override-existing --excludes.g.dart
+/// dart generate_library_file -p lib/foo/bar --override-existing --excludes
+/// .g.dart
 /// ```
 Future<void> main(List<String> arguments) async {
   final ArgParser argParser = ArgParser()
