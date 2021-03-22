@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds the [thumbnail] as an image with a centered [icon] that changes to a
 /// [CircularProgressIndicator] when [initializing] is `true`.
