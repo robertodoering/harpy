@@ -1,7 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/core/preferences/media_preferences.dart';
-
-import 'file:///C:/Users/User/workspace/harpy/lib/core/services/service_locator.dart';
 
 abstract class MediaData {
   /// The url based on the media quality settings.
