@@ -1,14 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:harpy/components/common/misc/harpy_scaffold.dart';
-import 'package:harpy/components/settings/common/widgets/settings_list.dart';
-import 'package:harpy/components/settings/general/widgets/general_settings_screen.dart';
-import 'package:harpy/components/settings/layout/widgets/layout_settings_screen.dart';
-import 'package:harpy/components/settings/media/widgets/media_settings_screen.dart';
-import 'package:harpy/components/settings/theme_selection/widgets/theme_selection_screen.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen();

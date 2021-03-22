@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/dialogs/harpy_dialog.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// Builds a [ListTile] that opens a [HarpyDialog] and displays the [items] as
 /// [RadioListTile]s.

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/misc/utils/string_utils.dart';
+import 'package:harpy/misc/misc.dart';
 
 void main() {
   test('prettyPrintDurationDifference pretty prints a duration difference', () {

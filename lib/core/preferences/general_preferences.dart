@@ -1,6 +1,4 @@
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/core.dart';
 
 class GeneralPreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();

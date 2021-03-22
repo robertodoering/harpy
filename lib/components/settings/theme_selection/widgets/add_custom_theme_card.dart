@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/common/dialogs/pro_dialog.dart';
-import 'package:harpy/components/common/misc/flare_icons.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// A card used to add a custom theme for the [ThemeSelectionScreen].
 class AddCustomThemeCard extends StatelessWidget {

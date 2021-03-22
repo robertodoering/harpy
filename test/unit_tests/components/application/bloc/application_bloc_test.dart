@@ -1,18 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/components/application/bloc/application_bloc.dart';
-import 'package:harpy/components/application/bloc/application_state.dart';
-import 'package:harpy/components/authentication/bloc/authentication_bloc.dart';
-import 'package:harpy/components/authentication/bloc/authentication_state.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
-import 'package:harpy/core/connectivity_service.dart';
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/preferences/changelog_preferences.dart';
-import 'package:harpy/core/preferences/general_preferences.dart';
-import 'package:harpy/core/preferences/harpy_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:mockito/mockito.dart';
 
 class MockHarpyInfo extends Mock implements HarpyInfo {}

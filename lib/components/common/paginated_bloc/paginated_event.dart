@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-import 'package:harpy/components/common/paginated_bloc/paginated_bloc.dart';
-import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
-import 'package:logging/logging.dart';
+part of 'paginated_bloc.dart';
 
 @immutable
 abstract class PaginatedEvent {
@@ -16,10 +11,8 @@ abstract class PaginatedEvent {
 }
 
 /// An abstract event to load paginated data.
-abstract class LoadPaginatedData extends PaginatedEvent {
+abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
   const LoadPaginatedData();
-
-  static final Logger _log = Logger('LoadPaginatedData');
 
   /// Loads the data and returns `true` when the data was able to be loaded or
   /// `false` when an error occurred.
@@ -43,10 +36,10 @@ abstract class LoadPaginatedData extends PaginatedEvent {
       return;
     }
 
-    _log.fine('loading paginated data');
+    log.fine('loading paginated data');
 
     if (bloc.cursor == null) {
-      _log.fine('no more data can be requested');
+      log.fine('no more data can be requested');
       return;
     }
 
@@ -68,17 +61,15 @@ abstract class LoadPaginatedData extends PaginatedEvent {
 }
 
 /// An event to unlock the requests for the [PaginatedBloc].
-class UnlockRequests extends PaginatedEvent {
+class UnlockRequests extends PaginatedEvent with HarpyLogger {
   const UnlockRequests();
-
-  static final Logger _log = Logger('UnlockRequests');
 
   @override
   Stream<PaginatedState> applyAsync({
     PaginatedState currentState,
     PaginatedBloc bloc,
   }) async* {
-    _log.fine('unlocking request lock');
+    log.fine('unlocking request lock');
 
     bloc.lockRequests = false;
 

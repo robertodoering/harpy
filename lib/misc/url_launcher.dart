@@ -1,5 +1,4 @@
-import 'package:harpy/core/message_service.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/core.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -1,3 +1,6 @@
+part of 'custom_theme_bloc.dart';
+
+@immutable
 abstract class CustomThemeState {}
 
 /// The initial state where a custom theme has not yet been modified.

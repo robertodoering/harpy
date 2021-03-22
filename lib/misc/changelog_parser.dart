@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/service_locator.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
 /// Parses the [ChangelogData] from a changelog file located in

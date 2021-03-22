@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart';
+part of 'paginated_bloc.dart';
 
 @immutable
 abstract class PaginatedState {}
 
 /// The initial state of the [PaginatedBloc].
-class InitialState extends PaginatedState {}
+class InitialPaginatedState extends PaginatedState {}
 
 /// The state while loading the paginated data.
 ///

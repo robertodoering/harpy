@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/common/paginated_bloc/paginated_event.dart';
-import 'package:harpy/components/common/paginated_bloc/paginated_state.dart';
+import 'package:harpy/core/core.dart';
+
+part 'paginated_event.dart';
+part 'paginated_state.dart';
 
 /// An abstract bloc for loading data from paginated twitter requests with the
 /// [TwitterApi].
 abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
-  PaginatedBloc() : super(InitialState());
+  PaginatedBloc() : super(InitialPaginatedState());
 
   /// Whether data has been loaded.
   bool get hasData;

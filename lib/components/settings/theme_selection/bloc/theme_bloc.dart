@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_event.dart';
-import 'package:harpy/components/settings/theme_selection/bloc/theme_state.dart';
-import 'package:harpy/core/harpy_info.dart';
-import 'package:harpy/core/preferences/theme_preferences.dart';
-import 'package:harpy/core/service_locator.dart';
-import 'package:harpy/core/theme/harpy_theme.dart';
-import 'package:harpy/core/theme/harpy_theme_data.dart';
-import 'package:harpy/core/theme/predefined_themes.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:logging/logging.dart';
+
+part 'theme_event.dart';
+part 'theme_state.dart';
 
 /// The [ThemeBloc] handles initialization of the [HarpyTheme] that creates the
 /// [ThemeData] used by the root [MaterialApp].
