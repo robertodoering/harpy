@@ -4,3 +4,4 @@ Version 0.5.1
 · Added localized absolute time of tweet in tweet actions bottom sheet (3 dot button)
 · Added tap to open tweet & tweet quote
 · Fixed keyboard overlaps the compose tweet card when replying or quoting a tweet
+· Minor style improvements

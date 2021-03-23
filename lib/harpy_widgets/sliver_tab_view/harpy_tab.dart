@@ -19,6 +19,7 @@ class _HarpyTabState extends State<HarpyTab>
     with SingleTickerProviderStateMixin<HarpyTab> {
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
+  Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -26,6 +27,11 @@ class _HarpyTabState extends State<HarpyTab>
 
     _animationController = AnimationController(vsync: this)
       ..addListener(() => setState(() {}));
+
+    _opacityAnimation = Tween<double>(
+      begin: 1,
+      end: .5,
+    ).animate(_animationController);
   }
 
   @override
@@ -54,25 +60,32 @@ class _HarpyTabState extends State<HarpyTab>
     final ThemeData theme = Theme.of(context);
     final IconThemeData iconTheme = IconTheme.of(context);
 
-    return Card(
-      child: Container(
-        padding: DefaultEdgeInsets.all(),
-        child: IconTheme(
-          data: iconTheme.copyWith(color: _colorAnimation.value),
-          child: DefaultTextStyle(
-            style: theme.textTheme.subtitle1.copyWith(
-              color: _colorAnimation.value,
-            ),
-            child: Row(
-              children: <Widget>[
-                if (widget.icon != null) widget.icon,
-                if (widget.icon != null && widget.text != null)
-                  defaultSmallHorizontalSpacer,
-                if (widget.text != null) widget.text,
-              ],
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (_, Widget child) => Opacity(
+        opacity: _opacityAnimation.value,
+        child: Card(
+          child: Container(
+            padding: DefaultEdgeInsets.all(),
+            child: IconTheme(
+              data: iconTheme.copyWith(color: _colorAnimation.value),
+              child: DefaultTextStyle(
+                style: theme.textTheme.subtitle1.copyWith(
+                  color: _colorAnimation.value,
+                ),
+                child: child,
+              ),
             ),
           ),
         ),
+      ),
+      child: Row(
+        children: <Widget>[
+          if (widget.icon != null) widget.icon,
+          if (widget.icon != null && widget.text != null)
+            defaultSmallHorizontalSpacer,
+          if (widget.text != null) widget.text,
+        ],
       ),
     );
   }
