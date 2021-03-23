@@ -404,6 +404,16 @@ class HarpyTheme {
         color: foregroundColor,
         size: 20,
       ),
+
+      scrollbarTheme: ScrollbarThemeData(
+        radius: kDefaultRadius,
+        thickness: MaterialStateProperty.resolveWith((_) => 3),
+        thumbColor: MaterialStateColor.resolveWith(
+          (Set<MaterialState> state) => state.contains(MaterialState.dragged)
+              ? accentColor.withOpacity(.8)
+              : accentColor.withOpacity(.4),
+        ),
+      ),
     );
   }
 }

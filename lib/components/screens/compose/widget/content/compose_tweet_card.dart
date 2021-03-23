@@ -70,24 +70,26 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  Padding(
-                    padding: DefaultEdgeInsets.all(),
-                    child: TweetAuthorRow(
-                      authBloc.authenticatedUser,
-                      enableUserTap: false,
+              child: Scrollbar(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Padding(
+                      padding: DefaultEdgeInsets.all(),
+                      child: TweetAuthorRow(
+                        authBloc.authenticatedUser,
+                        enableUserTap: false,
+                      ),
                     ),
-                  ),
-                  ComposeTextField(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                  ),
-                  ComposeTweetMentions(controller: _controller),
-                  ComposeTweetTrends(controller: _controller),
-                  _buildMedia(bloc.state),
-                ],
+                    ComposeTextField(
+                      controller: _controller,
+                      focusNode: _focusNode,
+                    ),
+                    ComposeTweetMentions(controller: _controller),
+                    ComposeTweetTrends(controller: _controller),
+                    _buildMedia(bloc.state),
+                  ],
+                ),
               ),
             ),
             ComposeTweetActionRow(controller: _controller),

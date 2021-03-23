@@ -17,43 +17,8 @@ class ComposeScreen extends StatelessWidget {
 
   static const String route = 'compose_screen';
 
-  Widget _buildComposeCardWithReply(MediaQueryData mediaQuery) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: mediaQuery.size.height * .6,
-          ),
-          child: const ComposeTweetCard(),
-        ),
-        defaultVerticalSpacer,
-        if (inReplyToStatus != null)
-          ComposeParentTweetCard(
-            parentTweet: inReplyToStatus,
-            text: 'replying to',
-          )
-        else if (quotedTweet != null)
-          ComposeParentTweetCard(
-            parentTweet: quotedTweet,
-            text: 'quoting',
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-
-    Widget child;
-
-    if (inReplyToStatus != null || quotedTweet != null) {
-      child = _buildComposeCardWithReply(mediaQuery);
-    } else {
-      child = const ComposeTweetCard();
-    }
-
     return BlocProvider<ComposeBloc>(
       create: (BuildContext context) => ComposeBloc(
         inReplyToStatus: inReplyToStatus,
@@ -64,7 +29,12 @@ class ComposeScreen extends StatelessWidget {
         buildSafeArea: true,
         body: Padding(
           padding: DefaultEdgeInsets.all(),
-          child: child,
+          child: inReplyToStatus != null || quotedTweet != null
+              ? ComposeTweetCardWithParent(
+                  inReplyToStatus: inReplyToStatus,
+                  quotedTweet: quotedTweet,
+                )
+              : const ComposeTweetCard(),
         ),
       ),
     );
