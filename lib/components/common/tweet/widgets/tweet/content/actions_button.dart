@@ -28,7 +28,8 @@ class TweetActionsButton extends StatelessWidget {
   }
 
   String _dateFormat(BuildContext context, DateTime dateTime) {
-    return DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
+    return DateFormat.Hm(Localizations.localeOf(context).languageCode)
+        .add_yMMMd()
         .format(dateTime)
         .toLowerCase();
   }
@@ -51,7 +52,6 @@ class TweetActionsButton extends StatelessWidget {
                 Text('tweet from ${tweet.userData.name}'),
                 defaultSmallVerticalSpacer,
                 Text(
-                  'on '
                   '${_dateFormat(context, tweet.createdAt.toLocal())}',
                 ),
               ],
