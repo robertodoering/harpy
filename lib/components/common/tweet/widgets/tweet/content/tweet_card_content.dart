@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// Builds the content for a tweet.
 class TweetCardContent extends StatelessWidget {
@@ -61,27 +63,33 @@ class TweetCardContent extends StatelessWidget {
       TweetActionRow(tweet),
     ];
 
-    return BlocProvider<TweetBloc>(
-      create: (BuildContext content) => TweetBloc(tweet),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          for (Widget child in content) ...<Widget>[
-            if (child == content.first || child == content.last)
-              child
-            else
-              AnimatedPadding(
-                duration: kShortAnimationDuration,
-                padding: DefaultEdgeInsets.only(left: true, right: true),
-                child: child,
-              ),
-            if (_addBottomPadding(child, content))
-              AnimatedContainer(
-                duration: kShortAnimationDuration,
-                height: defaultSmallPaddingValue,
-              ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => app<HarpyNavigator>().pushRepliesScreen(
+        tweet: tweet,
+      ),
+      child: BlocProvider<TweetBloc>(
+        create: (BuildContext content) => TweetBloc(tweet),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (Widget child in content) ...<Widget>[
+              if (child == content.first || child == content.last)
+                child
+              else
+                AnimatedPadding(
+                  duration: kShortAnimationDuration,
+                  padding: DefaultEdgeInsets.only(left: true, right: true),
+                  child: child,
+                ),
+              if (_addBottomPadding(child, content))
+                AnimatedContainer(
+                  duration: kShortAnimationDuration,
+                  height: defaultSmallPaddingValue,
+                ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

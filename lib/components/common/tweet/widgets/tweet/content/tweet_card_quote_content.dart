@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 class TweetQuoteContent extends StatelessWidget {
   const TweetQuoteContent(this.tweet);
@@ -63,35 +65,41 @@ class TweetQuoteContent extends StatelessWidget {
       if (tweet.hasMedia) TweetMedia(tweet),
     ];
 
-    return AnimatedContainer(
-      duration: kShortAnimationDuration,
-      decoration: BoxDecoration(
-        borderRadius: kDefaultBorderRadius,
-        border: Border.all(color: theme.dividerColor),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => app<HarpyNavigator>().pushRepliesScreen(
+        tweet: tweet,
       ),
-      padding: EdgeInsets.only(bottom: defaultSmallPaddingValue),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          for (Widget child in content) ...<Widget>[
-            if (child == content.first)
-              child
-            else
-              AnimatedPadding(
-                duration: kShortAnimationDuration,
-                padding: EdgeInsets.only(
-                  left: defaultSmallPaddingValue,
-                  right: defaultSmallPaddingValue,
+      child: AnimatedContainer(
+        duration: kShortAnimationDuration,
+        decoration: BoxDecoration(
+          borderRadius: kDefaultBorderRadius,
+          border: Border.all(color: theme.dividerColor),
+        ),
+        padding: EdgeInsets.only(bottom: defaultSmallPaddingValue),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (Widget child in content) ...<Widget>[
+              if (child == content.first)
+                child
+              else
+                AnimatedPadding(
+                  duration: kShortAnimationDuration,
+                  padding: EdgeInsets.only(
+                    left: defaultSmallPaddingValue,
+                    right: defaultSmallPaddingValue,
+                  ),
+                  child: child,
                 ),
-                child: child,
-              ),
-            if (_addBottomPadding(child, content))
-              AnimatedContainer(
-                duration: kShortAnimationDuration,
-                height: defaultSmallPaddingValue / 2,
-              )
+              if (_addBottomPadding(child, content))
+                AnimatedContainer(
+                  duration: kShortAnimationDuration,
+                  height: defaultSmallPaddingValue / 2,
+                )
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
