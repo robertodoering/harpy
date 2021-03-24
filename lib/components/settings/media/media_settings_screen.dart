@@ -15,13 +15,13 @@ class MediaSettingsScreen extends StatefulWidget {
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
-  final Map<int, String> qualityValues = <int, String>{
+  final Map<int, String> _qualityValues = <int, String>{
     0: 'high',
     1: 'medium',
     2: 'small',
   };
 
-  final Map<int, String> autoplayValues = <int, String>{
+  final Map<int, String> _autoplayValues = <int, String>{
     0: 'always autoplay',
     1: 'only on wifi',
     2: 'never autoplay',
@@ -32,11 +32,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       RadioDialogTile<int>(
         leading: CupertinoIcons.wifi,
         title: 'Media quality on wifi',
-        subtitle: qualityValues[mediaPreferences.wifiMediaQuality],
+        subtitle: _qualityValues[mediaPreferences.wifiMediaQuality],
         description: 'change the media quality when using wifi',
         value: mediaPreferences.wifiMediaQuality,
-        titles: qualityValues.values.toList(),
-        values: qualityValues.keys.toList(),
+        titles: _qualityValues.values.toList(),
+        values: _qualityValues.keys.toList(),
         onChanged: (int value) {
           setState(() => mediaPreferences.wifiMediaQuality = value);
         },
@@ -44,11 +44,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       RadioDialogTile<int>(
         leading: CupertinoIcons.wifi_slash,
         title: 'Media quality on mobile data',
-        subtitle: qualityValues[mediaPreferences.nonWifiMediaQuality],
+        subtitle: _qualityValues[mediaPreferences.nonWifiMediaQuality],
         description: 'change the media quality when using mobile data',
         value: mediaPreferences.nonWifiMediaQuality,
-        titles: qualityValues.values.toList(),
-        values: qualityValues.keys.toList(),
+        titles: _qualityValues.values.toList(),
+        values: _qualityValues.keys.toList(),
         onChanged: (int value) {
           setState(() => mediaPreferences.nonWifiMediaQuality = value);
         },
@@ -71,11 +71,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',
-        subtitle: autoplayValues[mediaPreferences.autoplayMedia],
+        subtitle: _autoplayValues[mediaPreferences.autoplayMedia],
         description: 'change when gifs should automatically play',
         value: mediaPreferences.autoplayMedia,
-        titles: autoplayValues.values.toList(),
-        values: autoplayValues.keys.toList(),
+        titles: _autoplayValues.values.toList(),
+        values: _autoplayValues.keys.toList(),
         onChanged: (int value) {
           setState(() => mediaPreferences.autoplayMedia = value);
         },
@@ -83,11 +83,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay videos',
-        subtitle: autoplayValues[mediaPreferences.autoplayVideos],
+        subtitle: _autoplayValues[mediaPreferences.autoplayVideos],
         description: 'change when videos should automatically play',
         value: mediaPreferences.autoplayVideos,
-        titles: autoplayValues.values.toList(),
-        values: autoplayValues.keys.toList(),
+        titles: _autoplayValues.values.toList(),
+        values: _autoplayValues.keys.toList(),
         onChanged: (int value) {
           setState(() => mediaPreferences.autoplayVideos = value);
         },
