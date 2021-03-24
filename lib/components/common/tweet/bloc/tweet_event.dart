@@ -175,7 +175,7 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
 /// The [Translation] is saved in the [TweetData.translation].
 class TranslateTweet extends TweetEvent {
   const TranslateTweet({
-    this.locale,
+    @required this.locale,
   });
 
   final Locale locale;

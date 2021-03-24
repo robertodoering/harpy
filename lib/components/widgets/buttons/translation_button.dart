@@ -75,13 +75,15 @@ class UserDescriptionTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
+
     final bool active = bloc.user.hasDescriptionTranslation ||
         bloc.state is TranslatingDescriptionState;
 
     return TranslationButton(
       active: active,
       padding: DefaultEdgeInsets.all(),
-      activate: () => bloc.add(const TranslateUserDescriptionEvent()),
+      activate: () => bloc.add(TranslateUserDescriptionEvent(locale: locale)),
     );
   }
 }

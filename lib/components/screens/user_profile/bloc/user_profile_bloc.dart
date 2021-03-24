@@ -24,6 +24,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
   final UserService userService = app<TwitterApi>().userService;
 
+  final LanguagePreferences languagePreferences = app<LanguagePreferences>();
+
   static UserProfileBloc of(BuildContext context) =>
       context.watch<UserProfileBloc>();
 
