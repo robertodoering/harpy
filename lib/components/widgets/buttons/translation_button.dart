@@ -57,10 +57,12 @@ class TweetTranslationButton extends StatelessWidget {
     final bool active =
         bloc.tweet.hasTranslation || bloc.state is TranslatingTweetState;
 
+    final Locale locale = Localizations.localeOf(context);
+
     return TranslationButton(
       active: active,
       padding: padding,
-      activate: () => bloc.add(const TranslateTweet()),
+      activate: () => bloc.add(TranslateTweet(locale: locale)),
     );
   }
 }

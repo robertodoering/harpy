@@ -26,6 +26,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
   final TranslationService translationService = app<TranslationService>();
 
+  final LanguagePreferences languagePreferences = app<LanguagePreferences>();
+
   static TweetBloc of(BuildContext context) => context.watch<TweetBloc>();
 
   String mediaUrl({int index}) {

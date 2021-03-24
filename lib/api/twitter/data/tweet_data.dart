@@ -200,10 +200,16 @@ class TweetData {
   bool get hasTranslation => translation != null || quote?.translation != null;
 
   /// Whether this tweet can be translated.
-  bool get translatable => hasText && lang != 'en' && lang != 'und';
+  ///
+  /// Checks whether the twitter estimated tweet language is not 'und'
+  /// (undefined) and not the target translation language (as set via the
+  /// language preferences or the device language by default)
+  bool translatable(String translateLanguage) =>
+      hasText && lang != 'und' && !translateLanguage.startsWith(lang);
 
   /// Whether the quote of this tweet can be translated, if one exists.
-  bool get quoteTranslatable => quote?.translatable == true;
+  bool quoteTranslatable(String translateLanguage) =>
+      quote?.translatable?.call(translateLanguage) == true;
 
   /// Whether this tweet is a reply to another tweet.
   bool get hasParent => inReplyToStatusIdStr?.isNotEmpty == true;

@@ -26,6 +26,10 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
+    final String translateLanguage =
+        app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
+
     final List<Widget> content = <Widget>[
       TweetTopRow(
         beginPadding: DefaultEdgeInsets.only(left: true, top: true),
@@ -47,7 +51,7 @@ class TweetCardContent extends StatelessWidget {
           entities: tweet.entities,
           urlToIgnore: tweet.quotedStatusUrl,
         ),
-      if (tweet.translatable)
+      if (tweet.translatable(translateLanguage))
         TweetTranslation(
           tweet,
           padding: EdgeInsets.only(
