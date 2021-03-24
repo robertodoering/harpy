@@ -63,7 +63,7 @@ class TranslationService {
         ..original = original
         ..text = translated
         ..languageCode = body.last[0][0]
-        ..language = languages[body.last[0][0]];
+        ..language = translateLanguages[body.last[0][0]];
     } catch (e, st) {
       _log.severe(
         'error while trying to parse translate response: ${response.body}',
