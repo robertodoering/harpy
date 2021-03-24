@@ -23,6 +23,9 @@ class TweetQuoteContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final Locale locale = Localizations.localeOf(context);
+    final String translateLanguage =
+        app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
     final List<Widget> content = <Widget>[
       TweetTopRow(
@@ -53,7 +56,7 @@ class TweetQuoteContent extends StatelessWidget {
           style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
           urlToIgnore: tweet.quotedStatusUrl,
         ),
-      if (tweet.translatable)
+      if (tweet.translatable(translateLanguage))
         TweetTranslation(
           tweet,
           fontSizeDelta: -2,

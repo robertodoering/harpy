@@ -174,7 +174,11 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
 ///
 /// The [Translation] is saved in the [TweetData.translation].
 class TranslateTweet extends TweetEvent {
-  const TranslateTweet();
+  const TranslateTweet({
+    @required this.locale,
+  });
+
+  final Locale locale;
 
   @override
   Stream<TweetState> applyAsync({
@@ -183,28 +187,36 @@ class TranslateTweet extends TweetEvent {
   }) async* {
     yield TranslatingTweetState();
 
+    final String translateLanguage =
+        bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
+
+    final bool tweetTranslatable = bloc.tweet.translatable(translateLanguage);
+    final bool quoteTranslatable = bloc.tweet.quoteTranslatable(
+      translateLanguage,
+    );
+
     await Future.wait<void>(<Future<void>>[
       // tweet translation
-      if (bloc.tweet.translatable)
+      if (tweetTranslatable)
         bloc.translationService
-            .translate(text: bloc.tweet.fullText)
+            .translate(text: bloc.tweet.fullText, to: translateLanguage)
             .then((Translation translation) =>
                 bloc.tweet.translation = translation)
             .catchError(silentErrorHandler),
 
       // quote translation
-      if (bloc.tweet.quoteTranslatable)
+      if (quoteTranslatable)
         bloc.translationService
-            .translate(text: bloc.tweet.quote.fullText)
+            .translate(text: bloc.tweet.quote.fullText, to: translateLanguage)
             .then((Translation translation) =>
                 bloc.tweet.quote.translation = translation)
             .catchError(silentErrorHandler)
     ]);
 
     // show an info when the tweet or quote was unable to be translated
-    if (bloc.tweet.translatable && bloc.tweet.translation?.unchanged != false) {
+    if (tweetTranslatable && bloc.tweet.translation?.unchanged != false) {
       app<MessageService>().show('tweet not translated');
-    } else if (bloc.tweet.quoteTranslatable &&
+    } else if (quoteTranslatable &&
         bloc.tweet.quote.translation?.unchanged != false) {
       app<MessageService>().show('quoted tweet not translated');
     }

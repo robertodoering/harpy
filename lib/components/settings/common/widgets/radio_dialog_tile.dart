@@ -3,52 +3,68 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 
-/// Builds a [ListTile] that opens a [HarpyDialog] and displays the [items] as
-/// [RadioListTile]s.
-class RadioDialogTile extends StatelessWidget {
+/// Builds a [ListTile] that opens a [HarpyDialog] and displays entries in
+/// the dialog content as [RadioListTile]s.
+class RadioDialogTile<T> extends StatelessWidget {
   const RadioDialogTile({
-    @required this.title,
-    @required this.leading,
     @required this.value,
-    @required this.items,
+    @required this.leading,
+    @required this.title,
     @required this.description,
+    @required this.titles,
+    @required this.values,
     @required this.onChanged,
+    this.subtitle,
+    this.subtitles,
     this.enabled = true,
-  });
+    this.denseRadioTiles = false,
+  })  : assert(titles.length == values.length),
+        assert(subtitles == null || subtitles.length == titles.length);
 
-  /// The title for this setting used as the [ListTile.title].
-  final String title;
+  /// The current value of this setting.
+  final T value;
 
-  /// The [IconData] for the [ListTile.leading] icon.
+  /// The leading widget of this setting for the [ListTile].
   final IconData leading;
 
-  /// The value of the current settings.
-  final int value;
+  /// The title of the this setting for the [ListTile].
+  final String title;
 
-  /// The list of items that appear as [RadioListTile]s.
-  final List<String> items;
+  /// The subtitle of this setting for the [ListTile].
+  final String subtitle;
 
-  /// The text used as the title for the dialog.
+  /// The description for the dialog that shows the radio list tile entries.
   final String description;
 
-  /// The callback when a new selection has been made.
-  final ValueChanged<int> onChanged;
+  /// The titles for the radio list tile entries.
+  final List<String> titles;
 
-  /// Whether this [ListTile] is enabled.
+  /// The subtitles for the radio list tile entries.
+  final List<String> subtitles;
+
+  /// The values for the radio list tile entries.
+  final List<T> values;
+
+  final ValueChanged<T> onChanged;
   final bool enabled;
+  final bool denseRadioTiles;
 
   Widget _buildDialog() {
     return HarpyDialog(
       animationType: DialogAnimationType.slide,
       title: Text(description),
+      contentPadding: const EdgeInsets.symmetric(vertical: 24),
       content: Column(
         children: <Widget>[
-          for (int i = 0; i < items.length; i++)
-            RadioListTile<int>(
-              value: i,
+          for (int i = 0; i < values.length; i++)
+            RadioListTile<T>(
+              value: values[i],
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24),
               groupValue: value,
-              title: Text(items[i]),
-              onChanged: (int value) async {
+              title: Text(titles[i]),
+              subtitle: subtitles != null ? Text(subtitles[i]) : null,
+              dense: denseRadioTiles,
+              onChanged: (T value) async {
                 await app<HarpyNavigator>().state.maybePop();
                 onChanged?.call(value);
               },
@@ -63,14 +79,14 @@ class RadioDialogTile extends StatelessWidget {
     return ListTile(
       leading: Icon(leading),
       title: Text(title),
-      subtitle: Text(items[value]),
+      subtitle: subtitle != null ? Text(subtitle) : null,
+      enabled: enabled,
       onTap: () {
         showDialog<int>(
           context: context,
           builder: (BuildContext context) => _buildDialog(),
         );
       },
-      enabled: enabled,
     );
   }
 }

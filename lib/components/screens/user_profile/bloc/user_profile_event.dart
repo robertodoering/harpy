@@ -146,7 +146,11 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
 ///
 /// The translation is saved in the [UserData.descriptionTranslation].
 class TranslateUserDescriptionEvent extends UserProfileEvent {
-  const TranslateUserDescriptionEvent();
+  const TranslateUserDescriptionEvent({
+    @required this.locale,
+  });
+
+  final Locale locale;
 
   @override
   Stream<UserProfileState> applyAsync({
@@ -155,10 +159,13 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
   }) async* {
     final TranslationService translationService = app<TranslationService>();
 
+    final String translateLanguage =
+        bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
+
     yield TranslatingDescriptionState();
 
     await translationService
-        .translate(text: bloc.user.description)
+        .translate(text: bloc.user.description, to: translateLanguage)
         .then((Translation translation) =>
             bloc.user.descriptionTranslation = translation)
         .catchError(silentErrorHandler);

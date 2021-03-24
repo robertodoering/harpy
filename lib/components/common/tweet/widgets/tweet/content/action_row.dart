@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// Builds the buttons with actions for the [tweet].
 class TweetActionRow extends StatelessWidget {
@@ -17,6 +17,9 @@ class TweetActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
     final RouteSettings route = ModalRoute.of(context).settings;
+    final Locale locale = Localizations.localeOf(context);
+    final String translateLanguage =
+        app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
     return BlocBuilder<TweetBloc, TweetState>(
       builder: (BuildContext context, TweetState state) => Row(
@@ -42,7 +45,8 @@ class TweetActionRow extends StatelessWidget {
               padding: DefaultEdgeInsets.all(),
             ),
           const Spacer(),
-          if (tweet.translatable || tweet.quoteTranslatable)
+          if (tweet.translatable(translateLanguage) ||
+              tweet.quoteTranslatable(translateLanguage))
             TweetTranslationButton(bloc, padding: DefaultEdgeInsets.all()),
         ],
       ),

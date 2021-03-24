@@ -128,6 +128,7 @@ export 'settings/custom_theme/widgets/buy_pro_text.dart';
 export 'settings/custom_theme/widgets/delete_theme_button.dart';
 export 'settings/custom_theme/widgets/theme_name_selection.dart';
 export 'settings/general/general_settings_screen.dart';
+export 'settings/language/language_settings_screen.dart';
 export 'settings/layout/layout_settings_screen.dart';
 export 'settings/media/media_settings_screen.dart';
 export 'settings/theme_selection/bloc/theme_bloc.dart';
