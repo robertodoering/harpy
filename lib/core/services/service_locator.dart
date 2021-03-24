@@ -40,6 +40,7 @@ void setupServices() {
     ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences())
     ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences())
     ..registerLazySingleton<GeneralPreferences>(() => GeneralPreferences())
+    ..registerLazySingleton<LanguagePreferences>(() => LanguagePreferences())
     ..registerLazySingleton<TweetVisibilityPreferences>(
         () => TweetVisibilityPreferences())
     ..registerLazySingleton<TimelineFilterPreferences>(

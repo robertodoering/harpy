@@ -7,6 +7,7 @@ export 'logger/logger_mixin.dart';
 export 'preferences/changelog_preferences.dart';
 export 'preferences/general_preferences.dart';
 export 'preferences/harpy_preferences.dart';
+export 'preferences/language_preferences.dart';
 export 'preferences/layout_preferences.dart';
 export 'preferences/media_preferences.dart';
 export 'preferences/setup_preferences.dart';
