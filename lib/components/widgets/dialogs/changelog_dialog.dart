@@ -59,6 +59,7 @@ class _ChangelogDialogState extends State<ChangelogDialog> {
   Widget _buildCheckbox() {
     return CheckboxListTile(
       value: !changelogPreferences.showChangelogDialog,
+      dense: true,
       title: Text(
         "don't show this again",
         style: Theme.of(context).textTheme.subtitle2,

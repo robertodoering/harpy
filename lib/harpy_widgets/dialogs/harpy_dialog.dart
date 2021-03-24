@@ -134,19 +134,21 @@ class _HarpyDialogState extends State<HarpyDialog> {
 
   Widget _buildContent(TextTheme textTheme) {
     return Flexible(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            if (widget.content != null)
-              DefaultTextStyle(
-                style: textTheme.subtitle2,
-                textAlign: TextAlign.center,
-                child: Padding(
-                  padding: widget.contentPadding,
-                  child: widget.content,
+      child: Scrollbar(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              if (widget.content != null)
+                DefaultTextStyle(
+                  style: textTheme.subtitle2,
+                  textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: widget.contentPadding,
+                    child: widget.content,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

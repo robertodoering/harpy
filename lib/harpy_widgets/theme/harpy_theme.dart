@@ -408,6 +408,7 @@ class HarpyTheme {
       scrollbarTheme: ScrollbarThemeData(
         radius: kDefaultRadius,
         thickness: MaterialStateProperty.resolveWith((_) => 3),
+        mainAxisMargin: 16,
         thumbColor: MaterialStateColor.resolveWith(
           (Set<MaterialState> state) => state.contains(MaterialState.dragged)
               ? accentColor.withOpacity(.8)
