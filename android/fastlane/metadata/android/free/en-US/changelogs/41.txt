@@ -1,5 +1,7 @@
 Version 0.5.1
 
+· Added setting to change the target translation language
+  · By default the system language will be used
 · Added url actions on url long press (Thanks Mikhail)
 · Added localized absolute time of tweet in tweet actions bottom sheet (3 dot button)
 · Added tap to open tweet & tweet quote
