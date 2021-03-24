@@ -226,6 +226,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case GeneralSettingsScreen.route:
       screen = const GeneralSettingsScreen();
       break;
+    case LanguageSettingsScreen.route:
+      screen = const LanguageSettingsScreen();
+      break;
     case AboutScreen.route:
       screen = const AboutScreen();
       break;

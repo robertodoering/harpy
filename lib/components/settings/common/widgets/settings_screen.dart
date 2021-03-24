@@ -48,6 +48,13 @@ class SettingsScreen extends StatelessWidget {
             GeneralSettingsScreen.route,
           ),
         ),
+        ListTile(
+          leading: const Icon(Icons.translate),
+          title: const Text('Language'),
+          onTap: () => app<HarpyNavigator>().pushNamed(
+            LanguageSettingsScreen.route,
+          ),
+        ),
       ],
     };
   }
