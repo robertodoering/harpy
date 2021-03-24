@@ -165,7 +165,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     yield TranslatingDescriptionState();
 
     await translationService
-        .translate(text: bloc.user.description)
+        .translate(text: bloc.user.description, to: translateLanguage)
         .then((Translation translation) =>
             bloc.user.descriptionTranslation = translation)
         .catchError(silentErrorHandler);
