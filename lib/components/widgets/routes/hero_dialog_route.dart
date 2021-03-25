@@ -18,7 +18,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   /// The color tween used in the transition to animate the background color.
   final ColorTween _colorTween = ColorTween(
-    begin: Colors.transparent,
+    begin: Colors.black.withOpacity(0),
     end: Colors.black.withOpacity(.66),
   );
 
@@ -56,18 +56,6 @@ class HeroDialogRoute<T> extends PageRoute<T> {
             height: double.infinity,
             color: _colorTween.evaluate(animation),
           ),
-          // todo: re-add blur when using a high performance device
-          // child: BackdropFilter(
-          //   filter: ImageFilter.blur(
-          //     sigmaX: lerpDouble(0, 3, animation.value),
-          //     sigmaY: lerpDouble(0, 3, animation.value),
-          //   ),
-          //   child: Container(
-          //     width: double.infinity,
-          //     height: double.infinity,
-          //     color: _colorTween.evaluate(animation),
-          //   ),
-          // ),
         ),
         FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),

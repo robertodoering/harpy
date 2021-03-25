@@ -41,7 +41,6 @@ class OverlayActionRow extends StatelessWidget {
   }
 
   Widget _buildActions(HarpyVideoPlayerModel model, ThemeData theme) {
-    // todo: handle overflow
     return Row(
       children: <Widget>[
         if (model.finished)

@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-/// The media types for [Media.type].
-const String kMediaPhoto = 'photo';
-const String kMediaVideo = 'video';
-const String kMediaGif = 'animated_gif';
-
 /// Contains everything necessary to build a Tweet.
 ///
 /// Allows for custom data to be stored compared to the Twitter returned [Tweet]
