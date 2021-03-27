@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     }
 
     context.read<HomeTimelineBloc>().add(const RequestInitialHomeTimeline());
+    context.read<MentionsTimelineBloc>().add(const RequestMentionsTimeline());
   }
 
   @override
