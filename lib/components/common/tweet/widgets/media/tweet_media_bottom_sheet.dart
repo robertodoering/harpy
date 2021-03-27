@@ -2,14 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+
 /// Shows a harpy bottom sheet for the tweet media actions.
 ///
 /// If the [url] is provided and no callbacks, the default implementation is
 /// used with the [url].
 /// Otherwise the callback is used.
-///
-/// When [popOnAction] is `true`, the navigator will pop after the user made
-/// an action.
 void showTweetMediaBottomSheet(
   BuildContext context, {
   String url,
@@ -19,6 +17,7 @@ void showTweetMediaBottomSheet(
 }) {
   showHarpyBottomSheet<void>(
     context,
+    hapticFeedback: true,
     children: <Widget>[
       ListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),

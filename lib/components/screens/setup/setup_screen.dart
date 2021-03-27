@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -20,6 +21,8 @@ class _SetupScreenState extends State<SetupScreen> {
       GlobalKey<SlideAnimationState>();
 
   Future<void> _continue(ThemeBloc themeBloc) async {
+    HapticFeedback.lightImpact();
+
     // setup completed
     await _slideSetupKey.currentState.forward();
 

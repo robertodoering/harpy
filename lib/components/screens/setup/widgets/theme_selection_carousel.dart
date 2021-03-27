@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -74,6 +75,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
+
       _onSelectionChange(themeBloc, _currentPage - 1);
     }
   }
@@ -90,6 +92,8 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   }
 
   void _onSelectionChange(ThemeBloc themeBloc, int index) {
+    HapticFeedback.lightImpact();
+
     themeBloc.add(
       ChangeThemeEvent(id: index, saveSelection: true),
     );

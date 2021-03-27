@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -111,7 +112,10 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     return <Widget>[
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
-        onSelected: (_) => setState(mediaPreferences.defaultSettings),
+        onSelected: (_) {
+          HapticFeedback.lightImpact();
+          setState(mediaPreferences.defaultSettings);
+        },
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[
             const HarpyPopupMenuItem<void>(

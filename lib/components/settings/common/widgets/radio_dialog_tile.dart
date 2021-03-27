@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
@@ -65,6 +66,7 @@ class RadioDialogTile<T> extends StatelessWidget {
               subtitle: subtitles != null ? Text(subtitles[i]) : null,
               dense: denseRadioTiles,
               onChanged: (T value) async {
+                HapticFeedback.lightImpact();
                 await app<HarpyNavigator>().state.maybePop();
                 onChanged?.call(value);
               },

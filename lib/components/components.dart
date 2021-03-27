@@ -40,6 +40,7 @@ export 'common/tweet/widgets/tweet/content/replies.dart';
 export 'common/tweet/widgets/tweet/content/retweeted_row.dart';
 export 'common/tweet/widgets/tweet/content/top_row.dart';
 export 'common/tweet/widgets/tweet/content/translation.dart';
+export 'common/tweet/widgets/tweet/content/tweet_actions_bottom_sheet.dart';
 export 'common/tweet/widgets/tweet/content/tweet_card_content.dart';
 export 'common/tweet/widgets/tweet/content/tweet_card_quote_content.dart';
 export 'common/tweet/widgets/tweet/tweet_card.dart';
