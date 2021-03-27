@@ -16,6 +16,7 @@ export 'common/timeline/media_timeline/widget/media_timeline_gallery_overlay.dar
 export 'common/timeline/media_timeline/widget/media_timeline_gallery_widget.dart';
 export 'common/timeline/media_timeline/widget/media_timeline_media_widget.dart';
 export 'common/timeline/mentions_timeline/bloc/mentions_timeline_bloc.dart';
+export 'common/timeline/mentions_timeline/widgets/mentions_timeline.dart';
 export 'common/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 export 'common/timeline/user_timeline/widgets/user_timeline.dart';
 export 'common/trends/bloc/trends_bloc.dart';

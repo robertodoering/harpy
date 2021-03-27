@@ -4,6 +4,24 @@ abstract class MentionsTimelineState extends Equatable {
   const MentionsTimelineState();
 }
 
+extension MentionsTimelineExtension on MentionsTimelineState {
+  bool get showLoading => this is MentionsTimelineLoading;
+
+  bool get showNoMentionsFound => this is MentionsTimelineNoResults;
+
+  bool get showMentionsError => this is MentionsTimelineFailure;
+
+  bool get enableScroll => !showLoading;
+
+  List<TweetData> get timelineTweets {
+    if (this is MentionsTimelineResult) {
+      return (this as MentionsTimelineResult).tweets;
+    } else {
+      return <TweetData>[];
+    }
+  }
+}
+
 class MentionsTimelineInitial extends MentionsTimelineState {
   const MentionsTimelineInitial();
 
