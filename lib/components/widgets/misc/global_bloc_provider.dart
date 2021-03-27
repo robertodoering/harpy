@@ -39,6 +39,10 @@ class GlobalBlocProvider extends StatelessWidget {
 
         // home timeline
         BlocProvider<HomeTimelineBloc>(create: (_) => HomeTimelineBloc()),
+
+        BlocProvider<MentionsTimelineBloc>(
+          create: (_) => MentionsTimelineBloc(),
+        ),
       ],
       child: child,
     );
