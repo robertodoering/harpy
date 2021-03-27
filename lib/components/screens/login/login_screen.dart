@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -21,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
       GlobalKey<SlideAnimationState>();
 
   Future<void> _startLogin() async {
+    HapticFeedback.mediumImpact();
     await _slideLoginKey.currentState.forward();
 
     context.read<AuthenticationBloc>().add(const LoginEvent());

@@ -44,6 +44,8 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     bloc.tweet.retweeted = true;
     bloc.tweet.retweetCount++;
     yield UpdatedTweetState();
@@ -71,6 +73,8 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     bloc.tweet.retweeted = false;
     bloc.tweet.retweetCount--;
     yield UpdatedTweetState();
@@ -98,6 +102,8 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     bloc.tweet.favorited = true;
     bloc.tweet.favoriteCount++;
     yield UpdatedTweetState();
@@ -152,6 +158,8 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     bloc.tweet.favorited = false;
     bloc.tweet.favoriteCount--;
     yield UpdatedTweetState();

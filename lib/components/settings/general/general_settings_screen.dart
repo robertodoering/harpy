@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -24,6 +25,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         subtitle: const Text('when the app has been updated'),
         value: changelogPreferences.showChangelogDialog,
         onChanged: (bool value) {
+          HapticFeedback.lightImpact();
           setState(() => changelogPreferences.showChangelogDialog = value);
         },
       ),
@@ -33,6 +35,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         subtitle: const Text('reduces animations and effects'),
         value: generalPreferences.performanceMode,
         onChanged: (bool value) {
+          HapticFeedback.lightImpact();
           setState(() => generalPreferences.performanceMode = value);
           context.read<ThemeBloc>().add(const RefreshTheme());
         },

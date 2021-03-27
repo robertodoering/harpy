@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -23,6 +24,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         subtitle: const Text('use a visually dense layout'),
         value: layoutPreferences.compactMode,
         onChanged: (bool value) {
+          HapticFeedback.lightImpact();
           setState(() => layoutPreferences.compactMode = value);
         },
       ),
@@ -40,10 +42,14 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
     return <Widget>[
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
-        onSelected: (_) => setState(layoutPreferences.defaultSettings),
+        onSelected: (_) {
+          HapticFeedback.lightImpact();
+          setState(layoutPreferences.defaultSettings);
+        },
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[
             const HarpyPopupMenuItem<void>(
+              value: 0,
               text: Text('reset to default'),
             ),
           ];
