@@ -1,6 +1,7 @@
+library misc;
+
 export 'changelog_parser.dart';
 export 'harpy_navigator.dart';
-export 'misc.dart';
 export 'predefined_themes.dart';
 export 'scroll_behavior.dart';
 export 'url_launcher.dart';

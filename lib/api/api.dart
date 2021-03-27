@@ -1,4 +1,5 @@
-export 'api.dart';
+library api;
+
 export 'helper/network_error_handler.dart';
 export 'helper/request_lock_mixin.dart';
 export 'translate/data/translation.dart';

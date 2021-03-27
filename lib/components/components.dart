@@ -1,3 +1,5 @@
+library components;
+
 export 'common/application/bloc/application_bloc.dart';
 export 'common/authentication/bloc/authentication_bloc.dart';
 export 'common/paginated_bloc/paginated_bloc.dart';
@@ -13,6 +15,7 @@ export 'common/timeline/media_timeline/widget/media_timeline.dart';
 export 'common/timeline/media_timeline/widget/media_timeline_gallery_overlay.dart';
 export 'common/timeline/media_timeline/widget/media_timeline_gallery_widget.dart';
 export 'common/timeline/media_timeline/widget/media_timeline_media_widget.dart';
+export 'common/timeline/mentions_timeline/bloc/mentions_timeline_bloc.dart';
 export 'common/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 export 'common/timeline/user_timeline/widgets/user_timeline.dart';
 export 'common/trends/bloc/trends_bloc.dart';
@@ -43,7 +46,6 @@ export 'common/tweet/widgets/tweet/tweet_remember_visibility.dart';
 export 'common/tweet/widgets/tweet_list.dart';
 export 'common/user/widgets/user_card.dart';
 export 'common/user/widgets/user_list.dart';
-export 'components.dart';
 export 'screens/about/about_screen.dart';
 export 'screens/beta_info/beta_info_screen.dart';
 export 'screens/beta_info/widgets/faq.dart';

@@ -1,3 +1,5 @@
+library harpy_widgets;
+
 export 'animations/animation_constants.dart';
 export 'animations/explicit/bounce_in_animation.dart';
 export 'animations/explicit/bubble_animation.dart';
