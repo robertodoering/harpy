@@ -15,6 +15,11 @@ class UserProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationBloc authBloc = context.watch<AuthenticationBloc>();
+
+    final bool isAuthenticatedUser =
+        bloc.user.idStr == authBloc.authenticatedUser.idStr;
+
     final String screenName = bloc.user?.screenName;
 
     return ChangeNotifierProvider<TimelineFilterModel>(
@@ -32,24 +37,30 @@ class UserProfileContent extends StatelessWidget {
                   UserProfileAppBar(),
                   UserProfileHeader(),
                 ],
-                tabs: const <Widget>[
-                  HarpyTab(
+                tabs: <Widget>[
+                  const HarpyTab(
                     icon: Icon(CupertinoIcons.time),
                     text: Text('timeline'),
                   ),
-                  HarpyTab(
+                  const HarpyTab(
                     icon: Icon(CupertinoIcons.photo),
                     text: Text('media'),
                   ),
-                  HarpyTab(
+                  if (isAuthenticatedUser)
+                    const HarpyTab(
+                      icon: Text('@'),
+                      text: Text('mentions'),
+                    ),
+                  const HarpyTab(
                     icon: Icon(CupertinoIcons.heart_solid),
                     text: Text('likes'),
                   ),
                 ],
-                children: const <Widget>[
-                  UserTimeline(),
-                  UserMediaTimeline(),
-                  UserLikesTimeline(),
+                children: <Widget>[
+                  const UserTimeline(),
+                  const UserMediaTimeline(),
+                  if (isAuthenticatedUser) const MentionsTimeline(),
+                  const UserLikesTimeline(),
                 ],
               ),
             ),
