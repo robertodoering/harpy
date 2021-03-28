@@ -69,35 +69,30 @@ class TweetCardContent extends StatelessWidget {
 
     return BlocProvider<TweetBloc>(
       create: (_) => TweetBloc(tweet),
-      child: Builder(
-        // builder to access the tweet bloc with the context in the tweet
-        // actions bottom sheet
-        builder: (BuildContext context) => GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => app<HarpyNavigator>().pushRepliesScreen(
-            tweet: tweet,
-          ),
-          onLongPress: () => showTweetActionsBottomSheet(context, tweet: tweet),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              for (Widget child in content) ...<Widget>[
-                if (child == content.first || child == content.last)
-                  child
-                else
-                  AnimatedPadding(
-                    duration: kShortAnimationDuration,
-                    padding: DefaultEdgeInsets.only(left: true, right: true),
-                    child: child,
-                  ),
-                if (_addBottomPadding(child, content))
-                  AnimatedContainer(
-                    duration: kShortAnimationDuration,
-                    height: defaultSmallPaddingValue,
-                  ),
-              ],
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => app<HarpyNavigator>().pushRepliesScreen(
+          tweet: tweet,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (Widget child in content) ...<Widget>[
+              if (child == content.first || child == content.last)
+                child
+              else
+                AnimatedPadding(
+                  duration: kShortAnimationDuration,
+                  padding: DefaultEdgeInsets.only(left: true, right: true),
+                  child: child,
+                ),
+              if (_addBottomPadding(child, content))
+                AnimatedContainer(
+                  duration: kShortAnimationDuration,
+                  height: defaultSmallPaddingValue,
+                ),
             ],
-          ),
+          ],
         ),
       ),
     );
