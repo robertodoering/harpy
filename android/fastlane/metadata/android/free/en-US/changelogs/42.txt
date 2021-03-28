@@ -1,3 +1,5 @@
 Version 0.5.2
 
+· Added mentions timeline in user profile screen
+· Added haptic feedback
 · Minor style improvements
