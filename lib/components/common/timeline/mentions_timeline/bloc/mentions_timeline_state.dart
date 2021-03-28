@@ -13,6 +13,14 @@ extension MentionsTimelineExtension on MentionsTimelineState {
 
   bool get enableScroll => !showLoading;
 
+  bool get hasNewMentions {
+    if (this is MentionsTimelineResult) {
+      return (this as MentionsTimelineResult).newMentions > 0;
+    } else {
+      return false;
+    }
+  }
+
   List<TweetData> get timelineTweets {
     if (this is MentionsTimelineResult) {
       return (this as MentionsTimelineResult).tweets;

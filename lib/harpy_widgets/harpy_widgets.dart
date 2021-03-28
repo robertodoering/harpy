@@ -16,6 +16,7 @@ export 'animations/implicit/animated_size.dart';
 export 'bottom_sheet/bottom_sheet_handle.dart';
 export 'bottom_sheet/bottom_sheet_header.dart';
 export 'bottom_sheet/harpy_bottom_sheet.dart';
+export 'bubble/bubbled.dart';
 export 'buttons/harpy_button.dart';
 export 'dialogs/harpy_dialog.dart';
 export 'harpy_widgets.dart';

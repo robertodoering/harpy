@@ -13,10 +13,11 @@ class HomeTabView extends StatelessWidget {
         headerSlivers: const <Widget>[
           HomeAppBar(),
         ],
+        endTab: const AddHomeTab(),
         tabs: const <Widget>[
           HarpyTab(icon: Icon(CupertinoIcons.home)),
           HarpyTab(icon: Icon(CupertinoIcons.photo)),
-          HarpyTab(icon: Text('@')),
+          MentionsTab(),
           HarpyTab(icon: Icon(CupertinoIcons.search)),
         ],
         children: const <Widget>[

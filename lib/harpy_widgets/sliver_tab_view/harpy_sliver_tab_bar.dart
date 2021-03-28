@@ -8,9 +8,13 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 class HarpySliverTapBar extends StatefulWidget {
   const HarpySliverTapBar({
     @required this.tabs,
+    this.endTab,
   });
 
   final List<Widget> tabs;
+
+  /// An additional tab at the end of the tabs with no gesture detection.
+  final Widget endTab;
 
   @override
   _HarpySliverTapBarState createState() => _HarpySliverTapBarState();
@@ -104,6 +108,10 @@ class _HarpySliverTapBarState extends State<HarpySliverTapBar> {
                 for (int i = 0; i < widget.tabs.length; i++) ...<Widget>[
                   _buildTab(i),
                   if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
+                ],
+                if (widget.endTab != null) ...<Widget>[
+                  defaultSmallHorizontalSpacer,
+                  widget.endTab,
                 ],
               ],
             ),
