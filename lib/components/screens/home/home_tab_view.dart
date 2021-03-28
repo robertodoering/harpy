@@ -21,7 +21,7 @@ class HomeTabView extends StatelessWidget {
         ],
         children: const <Widget>[
           HomeTimeline(),
-          SizedBox(),
+          HomeMediaTimeline(),
           MentionsTimeline(),
           SizedBox(),
         ],

@@ -9,7 +9,13 @@ import 'package:provider/provider.dart';
 ///
 /// Tapping a media will open the [HarpyMediaGallery].
 class MediaTimeline extends StatefulWidget {
-  const MediaTimeline();
+  const MediaTimeline({
+    @required this.showInitialLoading,
+    @required this.showLoadingOlder,
+  });
+
+  final bool showInitialLoading;
+  final bool showLoadingOlder;
 
   @override
   _MediaTimelineState createState() => _MediaTimelineState();
@@ -77,8 +83,6 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
-    final UserTimelineState state = bloc.state;
     final MediaTimelineModel model = context.watch<MediaTimelineModel>();
     final List<MediaTimelineEntry> entries = model.value;
 
@@ -86,36 +90,28 @@ class _MediaTimelineState extends State<MediaTimeline> {
       backgroundColor: Colors.transparent,
       floatingActionButton:
           model.hasEntries ? _buildFloatingActionButton() : null,
-      body: LoadMoreListener(
-        listen: state.enableRequestOlder,
-        onLoadMore: () async {
-          bloc.add(const RequestOlderUserTimeline());
-          await bloc.requestOlderCompleter.future;
-        },
-        child: CustomScrollView(
-          key: const PageStorageKey<String>('user_media_timeline'),
-          slivers: <Widget>[
-            if (state.showInitialLoading)
-              const SliverFillLoadingIndicator()
-            else if (model.hasEntries) ...<Widget>[
-              SliverPadding(
-                padding: DefaultEdgeInsets.all(),
-                // need to rebuild the full list when switching tiling mode,
-                // otherwise the scroll controller gets confused
-                sliver: _buildTiled
-                    ? _buildTiledList(entries)
-                    : _buildList(entries),
-              ),
-              if (state.showLoadingOlder) const SliverBoxLoadingIndicator(),
-            ] else
-              const SliverFillLoadingError(
-                message: Text('no media found'),
-              ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: mediaQuery.padding.bottom),
+      body: CustomScrollView(
+        key: const PageStorageKey<String>('user_media_timeline'),
+        slivers: <Widget>[
+          if (widget.showInitialLoading)
+            const SliverFillLoadingIndicator()
+          else if (model.hasEntries) ...<Widget>[
+            SliverPadding(
+              padding: DefaultEdgeInsets.all(),
+              // need to rebuild the full list when switching tiling mode,
+              // otherwise the scroll controller gets confused
+              sliver:
+                  _buildTiled ? _buildTiledList(entries) : _buildList(entries),
             ),
-          ],
-        ),
+            if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
+          ] else
+            const SliverFillLoadingError(
+              message: Text('no media found'),
+            ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: mediaQuery.padding.bottom),
+          ),
+        ],
       ),
     );
   }

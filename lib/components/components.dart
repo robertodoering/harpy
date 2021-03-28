@@ -74,6 +74,7 @@ export 'screens/following_followers/followers/bloc/followers_bloc.dart';
 export 'screens/following_followers/followers/followers_screen.dart';
 export 'screens/following_followers/following/bloc/following_bloc.dart';
 export 'screens/following_followers/following/following_screen.dart';
+export 'screens/home/home_media_timeline/home_media_timeline.dart';
 export 'screens/home/home_screen.dart';
 export 'screens/home/home_tab_view.dart';
 export 'screens/home/widgets/home_app_bar.dart';
