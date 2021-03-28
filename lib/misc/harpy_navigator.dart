@@ -246,9 +246,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         initialSearchQuery: arguments['initialSearchQuery'],
       );
       break;
-    case SearchScreen.route:
-      screen = const SearchScreen();
-      break;
     case HomeScreen.route:
       screen = HomeScreen(
         autoLogin: arguments['autoLogin'],

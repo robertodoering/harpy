@@ -18,7 +18,7 @@ class HomeAppBar extends StatelessWidget {
   ) {
     return <Widget>[
       HarpyButton.flat(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(16),
         icon: bloc.state.enableFilter &&
                 bloc.state.timelineFilter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.accentColor)
@@ -26,14 +26,9 @@ class HomeAppBar extends StatelessWidget {
         onTap:
             bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
       ),
-      HarpyButton.flat(
-        padding: const EdgeInsets.all(10),
-        icon: const Icon(CupertinoIcons.search),
-        onTap: () => app<HarpyNavigator>().pushNamed(SearchScreen.route),
-      ),
       CustomPopupMenuButton<int>(
-        padding: const EdgeInsets.all(10).copyWith(right: 16),
-        icon: const Icon(CupertinoIcons.ellipsis_vertical),
+        padding: const EdgeInsets.all(16),
+        icon: const Icon(Icons.more_vert),
         onSelected: (int selection) {
           if (selection == 0) {
             ScrollDirection.of(context).reset();

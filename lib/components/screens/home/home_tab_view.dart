@@ -23,7 +23,7 @@ class HomeTabView extends StatelessWidget {
           HomeTimeline(),
           HomeMediaTimeline(),
           MentionsTimeline(),
-          SizedBox(),
+          SearchScreen(),
         ],
       ),
     );

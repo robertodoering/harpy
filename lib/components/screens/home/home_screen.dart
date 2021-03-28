@@ -82,12 +82,15 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         onScrollDirectionChanged: _onScrollDirectionChanged,
         child: ChangeNotifierProvider<TimelineFilterModel>(
           create: (_) => TimelineFilterModel.home(),
-          child: HarpyScaffold(
-            drawer: const HomeDrawer(),
-            endDrawer: const HomeTimelineFilterDrawer(),
-            endDrawerEnableOpenDragGesture: false,
-            floatingActionButton: _buildFloatingActionButton(),
-            body: const HomeTabView(),
+          child: BlocProvider<TrendsBloc>(
+            create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
+            child: HarpyScaffold(
+              drawer: const HomeDrawer(),
+              endDrawer: const HomeTimelineFilterDrawer(),
+              endDrawerEnableOpenDragGesture: false,
+              floatingActionButton: _buildFloatingActionButton(),
+              body: const HomeTabView(),
+            ),
           ),
         ),
       ),
