@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
@@ -82,16 +83,8 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     setState(() {});
   }
 
-  void _unfocus() {
-    final FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus.unfocus();
-    }
-  }
-
   Future<void> _showDialog(ComposeBloc bloc) async {
-    _unfocus();
+    removeFocus(context);
 
     final TweetData sentTweet = await showDialog<TweetData>(
       context: context,

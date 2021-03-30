@@ -18,6 +18,12 @@ class AddHomeTab extends StatelessWidget {
             feature: 'tab customization',
           ),
         );
+
+        if (result == true) {
+          Navigator.of(context).pushNamed<void>(
+            HomeTabCustomizationScreen.route,
+          );
+        }
       },
       child: Card(
         child: Container(
