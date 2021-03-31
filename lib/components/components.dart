@@ -81,6 +81,7 @@ export 'screens/home/widgets/add_home_tab.dart';
 export 'screens/home/widgets/home_app_bar.dart';
 export 'screens/home/widgets/home_drawer.dart';
 export 'screens/home/widgets/home_drawer_header.dart';
+export 'screens/home/widgets/home_tab_bar.dart';
 export 'screens/home/widgets/home_timeline_filter_drawer.dart';
 export 'screens/home/widgets/mentions_tab.dart';
 export 'screens/home/widgets/new_tweets_text.dart';

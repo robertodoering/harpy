@@ -1,31 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HomeTabView extends StatelessWidget {
   const HomeTabView();
 
   @override
   Widget build(BuildContext context) {
-    return ScrollDirectionListener(
-      child: HarpySliverTabView(
-        headerSlivers: const <Widget>[
-          HomeAppBar(),
+    return DefaultTabController(
+      length: 4,
+      child: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (_, __) => const <Widget>[
+          HomeAppBar(
+            bottom: HomeTabBar(),
+          ),
         ],
-        endTab: const AddHomeTab(),
-        tabs: const <Widget>[
-          HarpyTab(icon: Icon(CupertinoIcons.home)),
-          HarpyTab(icon: Icon(CupertinoIcons.photo)),
-          MentionsTab(),
-          HarpyTab(icon: Icon(CupertinoIcons.search)),
-        ],
-        children: const <Widget>[
-          HomeTimeline(),
-          HomeMediaTimeline(),
-          MentionsTimeline(),
-          SearchScreen(),
-        ],
+        body: const TabBarView(
+          children: <Widget>[
+            HomeTimeline(),
+            HomeMediaTimeline(),
+            MentionsTimeline(),
+            SearchScreen(),
+          ],
+        ),
       ),
     );
   }

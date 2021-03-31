@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {
-  const HomeAppBar();
+  const HomeAppBar({
+    this.bottom,
+  });
+
+  final Widget bottom;
 
   List<Widget> _buildActions(
     BuildContext context,
@@ -55,7 +57,9 @@ class HomeAppBar extends StatelessWidget {
       title: 'Harpy',
       showIcon: true,
       floating: true,
+      snap: true,
       actions: _buildActions(context, theme, model, bloc),
+      bottom: bottom,
     );
   }
 }

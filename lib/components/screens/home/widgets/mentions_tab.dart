@@ -5,19 +5,23 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class MentionsTab extends StatelessWidget {
-  const MentionsTab();
+  const MentionsTab({
+    this.cardColor,
+  });
+
+  final Color cardColor;
 
   @override
   Widget build(BuildContext context) {
     final MentionsTimelineBloc bloc = context.watch<MentionsTimelineBloc>();
     final MentionsTimelineState state = bloc.state;
 
-    const Widget child = HarpyTab(icon: Text('@'));
+    final Widget child = HarpyTab(icon: const Text('@'), cardColor: cardColor);
 
     if (state.hasNewMentions) {
-      return const Bubbled(
-        bubble: Bubble(),
-        bubbleOffset: Offset(2, -2),
+      return Bubbled(
+        bubble: const Bubble(),
+        bubbleOffset: const Offset(2, -2),
         child: child,
       );
     } else {

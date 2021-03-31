@@ -5,7 +5,11 @@ import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class AddHomeTab extends StatelessWidget {
-  const AddHomeTab();
+  const AddHomeTab({
+    this.cardColor,
+  });
+
+  final Color cardColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class AddHomeTab extends StatelessWidget {
         }
       },
       child: Card(
+        color: cardColor,
         child: Container(
           padding: DefaultEdgeInsets.all(),
           child: const Icon(CupertinoIcons.add),
