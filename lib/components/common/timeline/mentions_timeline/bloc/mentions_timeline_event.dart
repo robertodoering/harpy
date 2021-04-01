@@ -30,12 +30,13 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
 
   int _newMentions(List<TweetData> tweets, int lastViewedMention) {
     if (lastViewedMention == 0) {
+      // first open
       return 0;
     }
 
-    final int indexOfFirstNewestTweet = tweets.indexWhere(
+    final int indexOfFirstNewestTweet = tweets.lastIndexWhere(
       (TweetData tweet) =>
-          int.tryParse(tweet.originalIdStr) ?? 0 < lastViewedMention,
+          (int.tryParse(tweet.originalIdStr) ?? 0) > lastViewedMention,
     );
 
     return indexOfFirstNewestTweet + 1;
@@ -91,6 +92,8 @@ class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
     MentionsTimelineBloc bloc,
   }) async* {
     if (currentState is MentionsTimelineResult) {
+      log.fine('updating viewed mentions');
+
       bloc.tweetVisibilityPreferences.updateLastViewedMention(
         currentState.tweets.first,
       );

@@ -19,7 +19,7 @@ class HomeTabView extends StatelessWidget {
           children: <Widget>[
             HomeTimeline(),
             HomeMediaTimeline(),
-            MentionsTimeline(),
+            MentionsTimeline(indexInTabView: 2),
             SearchScreen(),
           ],
         ),
