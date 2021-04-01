@@ -18,8 +18,6 @@ class HarpyTab extends StatefulWidget {
   final Color cardColor;
 
   /// The height of a tab.
-  ///
-  ///
   static const double height = _tabPadding * 2 + _tabIconSize;
 
   @override
