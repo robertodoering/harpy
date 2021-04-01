@@ -9,10 +9,7 @@ class HomeTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      // todo: create custom nested scroll view with sliver stack from
-      //  sliver_tools to build the header slivers on top of the body
       child: NestedScrollView(
-        floatHeaderSlivers: true,
         headerSliverBuilder: (_, __) => const <Widget>[
           HomeAppBar(
             bottom: HomeTabBar(),
