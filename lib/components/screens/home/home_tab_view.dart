@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
 class HomeTabView extends StatelessWidget {
-  const HomeTabView();
+  // non-const to always rebuild when returning to home screen
+  // ignore: prefer_const_constructors_in_immutables
+  HomeTabView();
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +17,12 @@ class HomeTabView extends StatelessWidget {
             bottom: HomeTabBar(),
           ),
         ],
-        body: const TabBarView(
+        body: TabBarView(
           children: <Widget>[
             HomeTimeline(),
-            HomeMediaTimeline(),
-            MentionsTimeline(indexInTabView: 2),
-            SearchScreen(),
+            const HomeMediaTimeline(),
+            const MentionsTimeline(indexInTabView: 2),
+            const SearchScreen(),
           ],
         ),
       ),

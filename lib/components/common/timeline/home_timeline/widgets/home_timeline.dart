@@ -4,7 +4,9 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 class HomeTimeline extends StatefulWidget {
-  const HomeTimeline();
+  // non-const to always rebuild when returning to home screen
+  // ignore: prefer_const_constructors_in_immutables
+  HomeTimeline();
 
   @override
   _HomeTimelineState createState() => _HomeTimelineState();

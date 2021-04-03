@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
               endDrawer: const HomeTimelineFilterDrawer(),
               endDrawerEnableOpenDragGesture: false,
               floatingActionButton: _buildFloatingActionButton(),
-              body: const HomeTabView(),
+              body: HomeTabView(),
             ),
           ),
         ),
