@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the list of tweet media widgets for a [MediaTimelineModel].
@@ -22,12 +23,14 @@ class MediaTimeline extends StatefulWidget {
 }
 
 class _MediaTimelineState extends State<MediaTimeline> {
-  bool _buildTiled = true;
+  bool _buildTiled = app<LayoutPreferences>().mediaTiled;
 
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () => setState(() {
-        _buildTiled = !_buildTiled;
+        final bool value = !_buildTiled;
+        _buildTiled = value;
+        app<LayoutPreferences>().mediaTiled = value;
       }),
       child: Icon(
         _buildTiled
