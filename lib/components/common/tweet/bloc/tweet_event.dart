@@ -193,6 +193,8 @@ class TranslateTweet extends TweetEvent {
     TweetState currentState,
     TweetBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     yield TranslatingTweetState();
 
     final String translateLanguage =

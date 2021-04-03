@@ -157,6 +157,8 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     UserProfileState currentState,
     UserProfileBloc bloc,
   }) async* {
+    HapticFeedback.lightImpact();
+
     final TranslationService translationService = app<TranslationService>();
 
     final String translateLanguage =
