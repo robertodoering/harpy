@@ -108,7 +108,7 @@ class MediaOverlay extends StatefulWidget {
 }
 
 class _MediaOverlayState extends State<MediaOverlay>
-    with SingleTickerProviderStateMixin<MediaOverlay> {
+    with SingleTickerProviderStateMixin<MediaOverlay>, RouteAware {
   AnimationController _controller;
   Animation<Offset> _topAnimation;
   Animation<Offset> _bottomAnimation;
@@ -145,10 +145,22 @@ class _MediaOverlayState extends State<MediaOverlay>
     _controller.reverse(from: 1);
   }
 
-  Future<bool> _onWillPop() async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    app<HarpyNavigator>().routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPop() {
     _model.resetOverlays();
     _controller.forward();
-    return true;
   }
 
   void _onMediaTap() {
@@ -270,9 +282,6 @@ class _MediaOverlayState extends State<MediaOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: widget.overlap ? _buildOverlappingOverlay() : _buildOverlay(),
-    );
+    return widget.overlap ? _buildOverlappingOverlay() : _buildOverlay();
   }
 }

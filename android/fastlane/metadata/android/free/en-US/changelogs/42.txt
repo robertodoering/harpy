@@ -7,4 +7,5 @@ Version 0.5.2
 · Added haptic feedback on many actions
 · Added media timeline tiling mode will be saved cross-session
 · Changed navigation to the search screen
+· Fixed immersive mode not resetting when dismissing fullscreen image
 · Minor style improvements
