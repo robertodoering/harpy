@@ -18,7 +18,7 @@ dependencies:
   # packages
   cached_network_image: ^3.0.0-nullsafety
   cupertino_icons: ^1.0.2
-  dart_twitter_api: ^0.5.1
+  dart_twitter_api: ^0.5.2
   downloads_path_provider: ^0.1.0 # non null safe
   equatable: ^2.0.0
   flare_flutter: ^2.0.6 # non null safe
