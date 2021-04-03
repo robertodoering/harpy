@@ -1,5 +1,10 @@
 Version 0.5.2
 
+· Added media timeline in home screen
+· Added mentions timeline in home screen
+  · You will be notified when new mentions exist upon opening the app
 · Added mentions timeline in user profile screen
-· Added haptic feedback
+· Added haptic feedback on many actions
+· Added media timeline tiling mode will be saved cross-session
+· Changed navigation to the search screen
 · Minor style improvements
