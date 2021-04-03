@@ -4,20 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-class UserMediaTimeline extends StatelessWidget {
-  const UserMediaTimeline();
+class HomeMediaTimeline extends StatelessWidget {
+  const HomeMediaTimeline();
 
   @override
   Widget build(BuildContext context) {
-    final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
-    final UserTimelineState state = bloc.state;
+    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
+    final HomeTimelineState state = bloc.state;
 
     return ChangeNotifierProvider<MediaTimelineModel>(
       create: (_) => MediaTimelineModel(
         initialTweets: bloc.state.timelineTweets,
       ),
-      child: BlocListener<UserTimelineBloc, UserTimelineState>(
-        listener: (BuildContext context, UserTimelineState state) {
+      child: BlocListener<HomeTimelineBloc, HomeTimelineState>(
+        listener: (BuildContext context, HomeTimelineState state) {
           context
               .read<MediaTimelineModel>()
               .updateEntries(state.timelineTweets);
@@ -26,7 +26,7 @@ class UserMediaTimeline extends StatelessWidget {
           child: LoadMoreListener(
             listen: state.enableRequestOlder,
             onLoadMore: () async {
-              bloc.add(const RequestOlderUserTimeline());
+              bloc.add(const RequestOlderHomeTimeline());
               await bloc.requestOlderCompleter.future;
             },
             child: MediaTimeline(

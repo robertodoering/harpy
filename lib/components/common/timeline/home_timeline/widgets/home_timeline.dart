@@ -4,6 +4,10 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 class HomeTimeline extends StatefulWidget {
+  // non-const to always rebuild when returning to home screen
+  // ignore: prefer_const_constructors_in_immutables
+  HomeTimeline();
+
   @override
   _HomeTimelineState createState() => _HomeTimelineState();
 }
@@ -12,17 +16,10 @@ class _HomeTimelineState extends State<HomeTimeline> {
   ScrollController _controller;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _controller = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _controller.dispose();
+    _controller = PrimaryScrollController.of(context);
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
@@ -67,7 +64,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       child: ScrollToStart(
         controller: _controller,
         child: CustomRefreshIndicator(
-          offset: mediaQuery.padding.top + kToolbarHeight,
+          offset: mediaQuery.padding.top - 8,
           onRefresh: () async {
             ScrollDirection.of(context).reset();
             bloc.add(const RefreshHomeTimeline());
@@ -84,9 +81,6 @@ class _HomeTimelineState extends State<HomeTimeline> {
               controller: _controller,
               tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
               enableScroll: state.enableScroll,
-              beginSlivers: const <Widget>[
-                HomeAppBar(),
-              ],
               endSlivers: <Widget>[
                 if (state.showInitialLoading)
                   const SliverFillLoadingIndicator()

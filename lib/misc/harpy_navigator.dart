@@ -246,8 +246,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         initialSearchQuery: arguments['initialSearchQuery'],
       );
       break;
-    case SearchScreen.route:
-      screen = const SearchScreen();
+    case HomeTabCustomizationScreen.route:
+      screen = const HomeTabCustomizationScreen();
       break;
     case HomeScreen.route:
       screen = HomeScreen(

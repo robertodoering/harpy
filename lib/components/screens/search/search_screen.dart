@@ -8,8 +8,6 @@ import 'package:harpy/misc/misc.dart';
 class SearchScreen extends StatelessWidget {
   const SearchScreen();
 
-  static const String route = 'search_screen';
-
   Widget _buildUserSearchCard() {
     return Card(
       child: ListTile(
@@ -40,39 +38,31 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
-    return HarpyScaffold(
-      body: ScrollDirectionListener(
-        child: ScrollToStart(
-          child: CustomScrollView(
-            slivers: <Widget>[
-              const HarpySliverAppBar(
-                title: 'search',
-                floating: true,
-              ),
-              SliverPadding(
-                padding: DefaultEdgeInsets.all(),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    <Widget>[
-                      _buildUserSearchCard(),
-                      defaultVerticalSpacer,
-                      _buildTweetSearchCard(),
-                      defaultVerticalSpacer,
-                      const ListTile(
-                        leading: Icon(FeatherIcons.trendingUp, size: 18),
-                        title: Text('worldwide trends'),
-                      ),
-                    ],
+    return ScrollToStart(
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverPadding(
+            padding: DefaultEdgeInsets.all(),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                <Widget>[
+                  _buildUserSearchCard(),
+                  defaultVerticalSpacer,
+                  _buildTweetSearchCard(),
+                  defaultVerticalSpacer,
+                  const ListTile(
+                    leading: Icon(FeatherIcons.trendingUp, size: 18),
+                    title: Text('worldwide trends'),
                   ),
-                ),
+                ],
               ),
-              TrendsList(),
-              SliverToBoxAdapter(
-                child: SizedBox(height: mediaQuery.padding.bottom),
-              ),
-            ],
+            ),
           ),
-        ),
+          TrendsList(),
+          SliverToBoxAdapter(
+            child: SizedBox(height: mediaQuery.padding.bottom),
+          ),
+        ],
       ),
     );
   }

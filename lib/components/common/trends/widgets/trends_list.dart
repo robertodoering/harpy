@@ -43,40 +43,33 @@ class TrendsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TrendsBloc>(
-      create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
-      child: Builder(
-        builder: (BuildContext context) {
-          final TrendsBloc bloc = context.watch<TrendsBloc>();
-          final TrendsState state = bloc.state;
+    final TrendsBloc bloc = context.watch<TrendsBloc>();
+    final TrendsState state = bloc.state;
 
-          if (state.isLoading) {
-            return const SliverBoxLoadingIndicator();
-          } else if (state.loadingFailed) {
-            return const SliverBoxInfoMessage(
-              secondaryMessage: Text('error requesting trends'),
-            );
-          } else if (state.hasTrends) {
-            return SliverPadding(
-              padding: DefaultEdgeInsets.only(
-                left: true,
-                right: true,
-                bottom: true,
-              ),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (_, int index) => _itemBuilder(index, state.trends),
-                  childCount: state.trends.length * 2 - 1,
-                ),
-              ),
-            );
-          } else {
-            return const SliverBoxInfoMessage(
-              secondaryMessage: Text('no trends exist'),
-            );
-          }
-        },
-      ),
-    );
+    if (state.isLoading) {
+      return const SliverBoxLoadingIndicator();
+    } else if (state.loadingFailed) {
+      return const SliverBoxInfoMessage(
+        secondaryMessage: Text('error requesting trends'),
+      );
+    } else if (state.hasTrends) {
+      return SliverPadding(
+        padding: DefaultEdgeInsets.only(
+          left: true,
+          right: true,
+          bottom: true,
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (_, int index) => _itemBuilder(index, state.trends),
+            childCount: state.trends.length * 2 - 1,
+          ),
+        ),
+      );
+    } else {
+      return const SliverBoxInfoMessage(
+        secondaryMessage: Text('no trends exist'),
+      );
+    }
   }
 }

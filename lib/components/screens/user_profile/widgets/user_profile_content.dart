@@ -59,7 +59,10 @@ class UserProfileContent extends StatelessWidget {
                 children: <Widget>[
                   const UserTimeline(),
                   const UserMediaTimeline(),
-                  if (isAuthenticatedUser) const MentionsTimeline(),
+                  if (isAuthenticatedUser)
+                    const MentionsTimeline(
+                      indexInTabView: 2,
+                    ),
                   const UserLikesTimeline(),
                 ],
               ),
