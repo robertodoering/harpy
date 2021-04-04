@@ -13,10 +13,7 @@ class SearchScreen extends StatelessWidget {
       child: ListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('users'),
-        onTap: () async {
-          await app<HarpyNavigator>().state.maybePop();
-          app<HarpyNavigator>().pushNamed(UserSearchScreen.route);
-        },
+        onTap: () => app<HarpyNavigator>().pushNamed(UserSearchScreen.route),
       ),
     );
   }
@@ -26,10 +23,7 @@ class SearchScreen extends StatelessWidget {
       child: ListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('tweets'),
-        onTap: () async {
-          await app<HarpyNavigator>().state.maybePop();
-          app<HarpyNavigator>().pushTweetSearchScreen();
-        },
+        onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(),
       ),
     );
   }
