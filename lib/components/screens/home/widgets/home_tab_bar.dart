@@ -36,9 +36,10 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
             cardColor: cardColor,
           ),
         ],
-        endWidgets: <Widget>[
-          AddHomeTab(cardColor: cardColor),
-        ],
+        // todo: re-add when adding tab customization
+        // endWidgets: <Widget>[
+        //   AddHomeTab(cardColor: cardColor),
+        // ],
       ),
     );
   }
