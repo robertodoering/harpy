@@ -59,12 +59,13 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
         create: (_) => TimelineFilterModel.home(),
         child: BlocProvider<TrendsBloc>(
           create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
-          child: HarpyScaffold(
-            drawer: const HomeDrawer(),
-            endDrawer: const HomeTimelineFilterDrawer(),
-            endDrawerEnableOpenDragGesture: false,
-            body: ScrollDirectionListener(
-              child: HomeTabView(),
+          // scroll direction listener has to be built above the filter
+          child: ScrollDirectionListener(
+            child: HarpyScaffold(
+              drawer: const HomeDrawer(),
+              endDrawer: const HomeTimelineFilterDrawer(),
+              endDrawerEnableOpenDragGesture: false,
+              body: HomeTabView(),
             ),
           ),
         ),
