@@ -21,11 +21,7 @@ class CreatedAtTime extends StatefulWidget {
 }
 
 class _CreatedAtTimeState extends State<CreatedAtTime> {
-  void _rebuild(Timer timer) {
-    if (mounted) {
-      setState(() {});
-    }
-  }
+  Timer _timer;
 
   @override
   void initState() {
@@ -36,7 +32,20 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
 
     if (difference < const Duration(hours: 1)) {
       // update every minute
-      Timer.periodic(const Duration(minutes: 1), _rebuild);
+      _timer = Timer.periodic(const Duration(minutes: 1), _rebuild);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _timer.cancel();
+  }
+
+  void _rebuild(Timer timer) {
+    if (mounted) {
+      setState(() {});
     }
   }
 
