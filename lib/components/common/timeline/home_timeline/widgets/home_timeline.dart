@@ -86,6 +86,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
               ),
               child: TweetList(
                 state.timelineTweets,
+                key: const PageStorageKey<String>('home_timeline'),
                 controller: _controller,
                 tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
                 enableScroll: state.enableScroll,
