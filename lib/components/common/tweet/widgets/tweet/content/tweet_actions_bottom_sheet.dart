@@ -27,8 +27,8 @@ void showTweetActionsBottomSheet(
       ModalRoute.of(context).settings?.name != ComposeScreen.route;
 
   final String tweetTime =
-      DateFormat.Hm(Localizations.localeOf(context).languageCode)
-          .add_yMMMd()
+      DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
+          .add_Hm()
           .format(tweet.createdAt.toLocal())
           .toLowerCase();
 
@@ -44,6 +44,7 @@ void showTweetActionsBottomSheet(
             Text(
               '$tweetTime',
             ),
+            // todo: add source here and make bottom sheet scrollable
           ],
         ),
       ),
