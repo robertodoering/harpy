@@ -1,3 +1,4 @@
 Version 0.5.3
 
+· Changed home app bar show / hide behavior
 · Fixed home timeline scroll position resets when switching tabs
