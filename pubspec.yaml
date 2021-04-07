@@ -21,10 +21,10 @@ dependencies:
   dart_twitter_api: ^0.5.2
   downloads_path_provider: ^0.1.0 # non null safe
   equatable: ^2.0.0
-  flare_flutter: ^2.0.6 # non null safe
+  flare_flutter: ^3.0.0
   flutter_bloc: ^7.0.0-nullsafety.4
   flutter_colorpicker: ^0.4.0-nullsafety.0
-  flutter_feather_icons: ^1.0.3 # non null safe
+  flutter_feather_icons: ^2.0.0+1
   flutter_material_color_picker: ^1.0.5 # non null safe
   get_it: ^6.0.0
   humanize: ^0.3.0 # non null safe
@@ -38,16 +38,16 @@ dependencies:
     git: git://github.com/robertodoering/photo_view.git
   provider: ^5.0.0
   scroll_to_index: ^2.0.0
-  sentry_flutter: ^4.1.0-nullsafety.0
+  sentry_flutter: ^5.0.0
   timeago: ^3.0.1
   url_launcher: ^6.0.2
-  visibility_detector: ^0.2.0-nullsafety.1
+  visibility_detector: ^0.2.0
 
   # plugins
   connectivity: ^3.0.2
   device_info: ^2.0.0
   file_picker: ^3.0.0
-  firebase_analytics: any # non null safe
+  firebase_analytics: ^8.0.0-dev.1
   flutter_ffmpeg: ^0.4.0
   flutter_downloader: ^1.5.2 # non null safe
   flutter_staggered_grid_view: ^0.4.0-nullsafety.3
@@ -59,7 +59,7 @@ dependencies:
   permission_handler: ^6.0.1
   share: ^2.0.0
   shared_preferences: ^2.0.3
-  video_player: ^2.0.0
+  video_player: ^2.1.1
 
 dev_dependencies:
   bloc_test: ^8.0.0-nullsafety.2
