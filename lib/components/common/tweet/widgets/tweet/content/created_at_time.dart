@@ -40,7 +40,7 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
   void dispose() {
     super.dispose();
 
-    _timer.cancel();
+    _timer?.cancel();
   }
 
   void _rebuild(Timer timer) {
