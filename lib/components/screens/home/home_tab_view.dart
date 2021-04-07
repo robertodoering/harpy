@@ -9,22 +9,33 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return DefaultTabController(
       length: 4,
-      child: NestedScrollView(
-        headerSliverBuilder: (_, __) => const <Widget>[
-          HomeAppBar(
-            bottom: HomeTabBar(),
+      child: Stack(
+        children: <Widget>[
+          NestedScrollView(
+            headerSliverBuilder: (_, __) => <Widget>[
+              // padding for the home app bar that is built above the nested
+              // scroll view
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: HomeAppBar.height(mediaQuery.padding.top - 8),
+                ),
+              ),
+            ],
+            body: TabBarView(
+              children: <Widget>[
+                HomeTimeline(),
+                const HomeMediaTimeline(),
+                const MentionsTimeline(indexInTabView: 2),
+                const SearchScreen(),
+              ],
+            ),
           ),
+          const HomeAppBar(),
         ],
-        body: TabBarView(
-          children: <Widget>[
-            HomeTimeline(),
-            const HomeMediaTimeline(),
-            const MentionsTimeline(indexInTabView: 2),
-            const SearchScreen(),
-          ],
-        ),
       ),
     );
   }

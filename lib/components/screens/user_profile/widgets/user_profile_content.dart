@@ -29,6 +29,7 @@ class UserProfileContent extends StatelessWidget {
         child: BlocProvider<LikesTimelineBloc>(
           create: (_) => LikesTimelineBloc(screenName: screenName),
           child: ScrollDirectionListener(
+            depth: 2,
             child: HarpyScaffold(
               endDrawer: const UserTimelineFilterDrawer(),
               endDrawerEnableOpenDragGesture: false,

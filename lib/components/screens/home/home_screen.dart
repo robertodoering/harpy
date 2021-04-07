@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
           // scroll direction listener has to be built above the filter
           child: ScrollDirectionListener(
+            depth: 2,
             child: HarpyScaffold(
               drawer: const HomeDrawer(),
               endDrawer: const HomeTimelineFilterDrawer(),

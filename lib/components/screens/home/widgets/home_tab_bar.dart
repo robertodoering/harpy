@@ -7,8 +7,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
   const HomeTabBar();
 
+  static const double height = HarpyTab.height + 8;
+
   @override
-  Size get preferredSize => const Size(double.infinity, HarpyTab.height + 8);
+  Size get preferredSize => const Size(double.infinity, height);
 
   @override
   Widget build(BuildContext context) {

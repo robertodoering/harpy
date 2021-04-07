@@ -19,6 +19,7 @@ class ScrollDirectionListener extends StatefulWidget {
   const ScrollDirectionListener({
     @required this.child,
     this.onScrollDirectionChanged,
+    this.depth,
   });
 
   final Widget child;
@@ -26,13 +27,21 @@ class ScrollDirectionListener extends StatefulWidget {
   /// The callback that is invoked whenever the scroll direction changes.
   final OnScrollDirectionChanged onScrollDirectionChanged;
 
+  /// The depth of the scroll notification this listener should listen for.
+  ///
+  /// Useful when multiple scroll views are built below the listener (e.g.
+  /// when using a [NestedScrollView]).
+  ///
+  /// When `null` listens to every scroll notification regardless of depth.
+  final int depth;
+
   @override
   _ScrollDirectionListenerState createState() =>
       _ScrollDirectionListenerState();
 }
 
 class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
-    with RouteAware {
+    with RouteAware, HarpyLogger {
   double _lastPosition = 0;
   VerticalDirection _direction;
 
@@ -76,7 +85,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
   }
 
   bool _onNotification(ScrollNotification notification) {
-    if (notification.depth != 0) {
+    if (widget.depth != null && notification.depth != widget.depth) {
       return false;
     }
 

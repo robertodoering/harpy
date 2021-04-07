@@ -6,11 +6,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({
-    this.bottom,
-  });
+  const HomeAppBar();
 
-  final Widget bottom;
+  static double height(double topPadding) =>
+      topPadding + kToolbarHeight + HomeTabBar.height;
 
   List<Widget> _buildActions(
     BuildContext context,
@@ -50,16 +49,32 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ScrollDirection scrollDirection = ScrollDirection.of(context);
+
     final TimelineFilterModel model = context.watch<TimelineFilterModel>();
     final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
 
-    return HarpySliverAppBar(
-      title: 'Harpy',
-      showIcon: true,
-      floating: true,
-      snap: true,
-      actions: _buildActions(context, theme, model, bloc),
-      bottom: bottom,
+    // since the sliver app bar does not work as intended with the nested
+    // scroll view in the home tab view, we use an animated shifted position
+    // widget and animate the app bar out of the view based on the scroll
+    // position to manually hide / show the app bar
+    return AnimatedShiftedPosition(
+      shift: scrollDirection.direction == VerticalDirection.down
+          ? const Offset(0, -1)
+          : Offset.zero,
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: <Widget>[
+          HarpySliverAppBar(
+            title: 'Harpy',
+            showIcon: true,
+            floating: true,
+            snap: true,
+            actions: _buildActions(context, theme, model, bloc),
+            bottom: const HomeTabBar(),
+          ),
+        ],
+      ),
     );
   }
 }
