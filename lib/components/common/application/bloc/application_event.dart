@@ -41,6 +41,7 @@ class InitializeEvent extends ApplicationEvent {
     bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
 
     await Future.wait<void>(<Future<void>>[
+      FlutterDisplayMode.setHighRefreshRate(),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
       app<DownloadService>().initialize(),

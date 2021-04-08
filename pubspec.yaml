@@ -47,6 +47,7 @@ dependencies:
   downloads_path_provider: ^0.1.0 # non null safe
   file_picker: ^3.0.0
   firebase_analytics: ^8.0.0-dev.1
+  flutter_displaymode: ^0.3.1-nullsafety.0
   flutter_downloader: ^1.5.2 # non null safe
   flutter_ffmpeg: ^0.4.0
   flutter_twitter_login: # non null safe
