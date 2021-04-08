@@ -37,6 +37,9 @@ class ImageData extends MediaData {
   String get appropriateUrl {
     final int value = app<MediaPreferences>().appropriateMediaQuality;
 
+    // todo: have a better way of getting the right sized media and caching
+    //  the media
+
     switch (value) {
       case 1:
         return medium;
