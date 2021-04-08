@@ -1,5 +1,6 @@
 Version 0.5.3
 
 · Added fast forward / fast rewind on videos when double tapping on the left or right side of the video
+· Added navigation to tweet in media timeline
 · Changed home app bar show / hide behavior
 · Fixed home timeline scroll position resets when switching tabs

@@ -7,15 +7,17 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class MediaOverlayActionRow extends StatelessWidget {
   const MediaOverlayActionRow(
     this.tweetBloc, {
-    this.onDownload,
-    this.onOpenExternally,
-    this.onShare,
+    @required this.onDownload,
+    @required this.onOpenExternally,
+    @required this.onShare,
+    this.onShowTweet,
   });
 
   final TweetBloc tweetBloc;
   final VoidCallback onDownload;
   final VoidCallback onOpenExternally;
   final VoidCallback onShare;
+  final VoidCallback onShowTweet;
 
   Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
     return ViewMoreActionButton(
@@ -69,6 +71,18 @@ class MediaOverlayActionRow extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              if (onShowTweet != null)
+                HarpyButton.flat(
+                  padding: const EdgeInsets.all(16),
+                  text: const Text('show'),
+                  onTap: onShowTweet,
+                )
+              else
+                HarpyButton.flat(
+                  padding: const EdgeInsets.all(16),
+                  icon: const Icon(CupertinoIcons.arrow_down_to_line),
+                  onTap: onDownload,
+                ),
               _buildMoreActionsButton(harpyTheme, context),
             ],
           ),

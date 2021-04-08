@@ -36,17 +36,20 @@ void defaultOnMediaShare(String mediaUrl) {
   }
 }
 
+// todo: add method to go to parent tweet for media timeline
+
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
     @required this.tweet,
     @required this.tweetBloc,
     @required this.child,
+    @required this.onDownload,
+    @required this.onOpenExternally,
+    @required this.onShare,
     this.enableImmersiveMode = true,
     this.enableDismissible = true,
     this.overlap = false,
-    this.onDownload,
-    this.onOpenExternally,
-    this.onShare,
+    this.onShowTweet,
   });
 
   final TweetData tweet;
@@ -66,6 +69,7 @@ class MediaOverlay extends StatefulWidget {
   final VoidCallback onDownload;
   final VoidCallback onOpenExternally;
   final VoidCallback onShare;
+  final VoidCallback onShowTweet;
 
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   ///
@@ -189,6 +193,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.white),
+        leading: const HarpyBackButton(),
       ),
     );
   }
@@ -213,6 +218,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         onDownload: widget.onDownload,
         onOpenExternally: widget.onOpenExternally,
         onShare: widget.onShare,
+        onShowTweet: widget.onShowTweet,
       ),
     );
   }
@@ -243,7 +249,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         _buildMedia(),
         AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext context, Widget _) => Column(
+          builder: (_, __) => Column(
             children: <Widget>[
               SlideTransition(
                 position: _topAnimation,
@@ -264,7 +270,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   Widget _buildOverlay() {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget _) => Column(
+      builder: (_, __) => Column(
         children: <Widget>[
           SlideTransition(
             position: _topAnimation,
