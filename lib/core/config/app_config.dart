@@ -9,7 +9,7 @@ const String twitterConsumerSecret =
     String.fromEnvironment('twitter_consumer_secret');
 
 const String sentryDsn = String.fromEnvironment('sentry_dsn');
-const bool hasSentryDsn = bool.fromEnvironment('sentry_dsn');
+const bool hasSentryDsn = bool.hasEnvironment('sentry_dsn');
 
 final bool hasTwitterConfig =
     (twitterConsumerKey != null && twitterConsumerKey.isNotEmpty) &&
