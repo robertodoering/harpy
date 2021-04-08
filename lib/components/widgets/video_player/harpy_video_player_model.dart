@@ -12,6 +12,8 @@ enum HarpyVideoPlayerAction {
   pause,
   mute,
   unmute,
+  fastForward,
+  fastRewind,
 }
 
 /// Defines a callback that is called when an action is taken on a video.
@@ -80,7 +82,9 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   }
 
   /// Plays or pauses the video.
-  void togglePlayback() {
+  void togglePlayback({
+    bool notify = true,
+  }) {
     if (finished || !hasListeners) {
       // finished or if no listeners exist (already disposed)
       return;
@@ -88,10 +92,14 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
     if (playing) {
       controller.pause();
-      _onAction(HarpyVideoPlayerAction.pause);
+      if (notify) {
+        _onAction(HarpyVideoPlayerAction.pause);
+      }
     } else {
       controller.play();
-      _onAction(HarpyVideoPlayerAction.play);
+      if (notify) {
+        _onAction(HarpyVideoPlayerAction.play);
+      }
     }
 
     notifyListeners();
@@ -117,6 +125,36 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  /// Seeks the video 5 seconds forward.
+  ///
+  /// If the video is paused, it will also start playing.
+  void fastForward() {
+    if (!finished) {
+      controller.seekTo(controller.value.position + const Duration(seconds: 5));
+
+      _onAction(HarpyVideoPlayerAction.fastForward);
+
+      if (!playing) {
+        togglePlayback(notify: false);
+      }
+    }
+  }
+
+  /// Rewinds the video by 5 seconds.
+  ///
+  /// If the video is paused, it will also start playing.
+  void fastRewind() {
+    if (position > Duration.zero) {
+      controller.seekTo(controller.value.position - const Duration(seconds: 5));
+
+      _onAction(HarpyVideoPlayerAction.fastRewind);
+
+      if (!playing) {
+        togglePlayback(notify: false);
+      }
+    }
   }
 
   /// Fullscreens the video or exits the fullscreen video.

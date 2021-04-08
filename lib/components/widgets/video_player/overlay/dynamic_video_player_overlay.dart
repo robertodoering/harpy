@@ -36,6 +36,9 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
   /// fullscreen.
   Widget _centerIcon;
 
+  Widget _forwardIcon;
+  Widget _rewindIcon;
+
   /// Whether the replay icon should fade in when the video finishes.
   ///
   /// Used to prevent the fade-in animation to play when entering fullscreen
@@ -135,7 +138,9 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
           // hide overlay
           _opacityController.reverse();
 
-          _centerIcon = const OverlayPlaybackIcon.play();
+          _forwardIcon = null;
+          _rewindIcon = null;
+          _centerIcon = const OverlayIconPlay();
 
           break;
         case HarpyVideoPlayerAction.pause:
@@ -145,7 +150,9 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             _opacityController.forward();
           }
 
-          _centerIcon = const OverlayPlaybackIcon.pause();
+          _forwardIcon = null;
+          _rewindIcon = null;
+          _centerIcon = const OverlayIconPause();
 
           break;
         case HarpyVideoPlayerAction.mute:
@@ -157,6 +164,16 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
           if (_opacityController.isAnimating) {
             _opacityController.forward();
           }
+          break;
+        case HarpyVideoPlayerAction.fastForward:
+          _centerIcon = null;
+          _rewindIcon = null;
+          _forwardIcon = OverlayIconForward();
+          break;
+        case HarpyVideoPlayerAction.fastRewind:
+          _centerIcon = null;
+          _forwardIcon = null;
+          _rewindIcon = OverlayIconRewind();
           break;
       }
 
@@ -177,12 +194,37 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     }
   }
 
+  void _onRewind() {
+    _opacityController.reverse();
+    _model.fastRewind();
+  }
+
+  void _onForward() {
+    if (!_model.finished) {
+      _opacityController.reverse();
+      _model.fastForward();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        GestureDetector(
-          onTap: _onVideoTap,
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: GestureDetector(
+                onTap: _onVideoTap,
+                onDoubleTap: _onRewind,
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: _onVideoTap,
+                onDoubleTap: _onForward,
+              ),
+            ),
+          ],
         ),
         if (_show)
           Align(
@@ -198,7 +240,11 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             onTap: _onVideoTap,
           )
         else if (_centerIcon != null)
-          _centerIcon,
+          _centerIcon
+        else if (_forwardIcon != null)
+          Positioned.fill(child: _forwardIcon)
+        else if (_rewindIcon != null)
+          Positioned.fill(child: _rewindIcon),
       ],
     );
   }

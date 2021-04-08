@@ -24,6 +24,9 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
 class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   Widget _centerIcon;
 
+  Widget _forwardIcon;
+  Widget _rewindIcon;
+
   bool _replayFade = true;
 
   HarpyVideoPlayerModel get _model => widget.model;
@@ -56,10 +59,23 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   void _onVideoPlayerAction(HarpyVideoPlayerAction action) {
     if (mounted) {
       setState(() {
+        // todo: cleanup this mess
         if (action == HarpyVideoPlayerAction.play) {
-          _centerIcon = OverlayPlaybackIcon.play(compact: widget.compact);
+          _rewindIcon = null;
+          _forwardIcon = null;
+          _centerIcon = OverlayIconPlay(compact: widget.compact);
         } else if (action == HarpyVideoPlayerAction.pause) {
-          _centerIcon = OverlayPlaybackIcon.pause(compact: widget.compact);
+          _rewindIcon = null;
+          _forwardIcon = null;
+          _centerIcon = OverlayIconPause(compact: widget.compact);
+        } else if (action == HarpyVideoPlayerAction.fastForward) {
+          _centerIcon = null;
+          _rewindIcon = null;
+          _forwardIcon = OverlayIconForward(compact: widget.compact);
+        } else if (action == HarpyVideoPlayerAction.fastRewind) {
+          _centerIcon = null;
+          _forwardIcon = null;
+          _rewindIcon = OverlayIconRewind(compact: widget.compact);
         }
       });
     }
@@ -92,7 +108,11 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
             ),
           )
         else if (_centerIcon != null)
-          Positioned.fill(child: _centerIcon),
+          Positioned.fill(child: _centerIcon)
+        else if (_forwardIcon != null)
+          Positioned.fill(child: _forwardIcon)
+        else if (_rewindIcon != null)
+          Positioned.fill(child: _rewindIcon),
       ],
     );
   }

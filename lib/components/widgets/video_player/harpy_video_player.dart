@@ -110,13 +110,33 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   }
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
-    Widget child = GestureDetector(
-      onTap: () => _onVideoTap(model),
-      onLongPress: widget.onVideoPlayerLongPress,
-      child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
-      ),
+    Widget child = Stack(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: _controller.value.aspectRatio,
+          child: VideoPlayer(_controller),
+        ),
+        Positioned.fill(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => _onVideoTap(model),
+                  onDoubleTap: model.fastRewind,
+                  onLongPress: widget.onVideoPlayerLongPress,
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => _onVideoTap(model),
+                  onDoubleTap: model.fastForward,
+                  onLongPress: widget.onVideoPlayerLongPress,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
 
     if (widget.allowVerticalOverflow) {
