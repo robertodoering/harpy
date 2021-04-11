@@ -1,0 +1,3 @@
+Version 0.5.4
+
+· Added double tap to zoom image gesture

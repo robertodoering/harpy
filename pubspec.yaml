@@ -33,8 +33,7 @@ dependencies:
   logging: ^1.0.0
   mime_type: ^1.0.0
   photo_view:
-    # custom photo_view with removed double tap for a faster background tap
-    #   gesture recognition
+    # custom photo_view with better gesture recognition
     git: git://github.com/robertodoering/photo_view.git
   provider: ^5.0.0
   scroll_to_index: ^2.0.0
