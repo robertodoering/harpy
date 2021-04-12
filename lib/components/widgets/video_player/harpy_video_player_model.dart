@@ -191,8 +191,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
-    app<HarpyNavigator>().state.maybePop();
-    notifyListeners();
+    if (hasListeners) {
+      app<HarpyNavigator>().state.maybePop();
+      notifyListeners();
+    }
   }
 
   /// Adds the listener [onAction] to the [_actionListener] list.
