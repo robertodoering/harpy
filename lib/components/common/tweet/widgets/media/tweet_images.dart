@@ -92,7 +92,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   String _imageHeroTag(ImageData image) {
-    final String routeName = ModalRoute.of(context).settings?.name;
+    final String routeName = ModalRoute.of(context)?.settings?.name;
 
     return routeName != null
         ? '$routeName-${image.hashCode}'
