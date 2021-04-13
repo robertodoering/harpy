@@ -34,6 +34,7 @@ void setupServices() {
 
     // preferences
     ..registerLazySingleton<HarpyPreferences>(() => HarpyPreferences())
+    ..registerLazySingleton<AuthPreferences>(() => AuthPreferences())
     ..registerLazySingleton<MediaPreferences>(() => MediaPreferences())
     ..registerLazySingleton<ThemePreferences>(() => ThemePreferences())
     ..registerLazySingleton<SetupPreferences>(() => SetupPreferences())
