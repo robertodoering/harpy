@@ -49,44 +49,47 @@ class TwitterAuth {
         TwitterLoginWebview(token: tempCredentialsResponse.credentials.token),
       );
 
-      final bool userCancelled = authCallback == null ||
-          authCallback.queryParameters.containsKey('denied');
-
-      if (!userCancelled) {
-        final String oauthToken = authCallback.queryParameters['oauth_token'];
-        final String oauthVerifier =
-            authCallback.queryParameters['oauth_verifier'];
-
-        if (oauthToken != null && oauthVerifier != null) {
-          final AuthorizationResponse credentialsResponse =
-              await _auth.requestTokenCredentials(
-            Credentials(oauthToken, ''),
-            oauthVerifier,
-          );
-
-          final String token = credentialsResponse.credentials.token;
-          final String tokenSecret =
-              credentialsResponse.credentials.tokenSecret;
-          final String userId = token.split('-').first;
-
-          return TwitterAuthResult(
-            status: TwitterAuthStatus.success,
-            session: TwitterAuthSession(
-              token: token,
-              tokenSecret: tokenSecret,
-              userId: userId,
-            ),
-          );
-        } else {
-          // invalid auth callback
-          return TwitterAuthResult(status: TwitterAuthStatus.failure);
-        }
-      } else {
-        // user cancelled
-        return TwitterAuthResult(status: TwitterAuthStatus.userCancelled);
-      }
+      return _requestTokenCredentials(authCallback);
     } catch (e) {
       return TwitterAuthResult(status: TwitterAuthStatus.failure);
+    }
+  }
+
+  Future<TwitterAuthResult> _requestTokenCredentials(Uri authCallback) async {
+    final bool userCancelled = authCallback == null ||
+        authCallback.queryParameters.containsKey('denied');
+
+    if (!userCancelled) {
+      final String oauthToken = authCallback.queryParameters['oauth_token'];
+      final String oauthVerifier =
+          authCallback.queryParameters['oauth_verifier'];
+
+      if (oauthToken != null && oauthVerifier != null) {
+        final AuthorizationResponse credentialsResponse =
+            await _auth.requestTokenCredentials(
+          Credentials(oauthToken, ''),
+          oauthVerifier,
+        );
+
+        final String token = credentialsResponse.credentials.token;
+        final String tokenSecret = credentialsResponse.credentials.tokenSecret;
+        final String userId = token.split('-').first;
+
+        return TwitterAuthResult(
+          status: TwitterAuthStatus.success,
+          session: TwitterAuthSession(
+            token: token,
+            tokenSecret: tokenSecret,
+            userId: userId,
+          ),
+        );
+      } else {
+        // invalid auth callback
+        return TwitterAuthResult(status: TwitterAuthStatus.failure);
+      }
+    } else {
+      // user cancelled
+      return TwitterAuthResult(status: TwitterAuthStatus.userCancelled);
     }
   }
 }
