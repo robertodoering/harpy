@@ -5,8 +5,11 @@ import 'package:harpy/api/twitter/auth/twitter_auth_result.dart';
 import 'package:harpy/api/twitter/auth/twitter_login_webview.dart';
 import 'package:oauth1/oauth1.dart';
 
-typedef WebviewNavigation = Future<Uri> Function(Widget webview);
+/// Used to navigate to the [TwitterLoginWebview] and return it's result.
+typedef WebviewNavigation = Future<Uri> Function(TwitterLoginWebview webview);
 
+/// Handles web view based oauth1 authentication with Twitter using
+/// [TwitterLoginWebview].
 class TwitterAuth {
   TwitterAuth({
     @required String consumerKey,
@@ -25,6 +28,16 @@ class TwitterAuth {
 
   static const String callbackUrl = 'harpy://';
 
+  /// Starts the 3-legged oauth flow to retrieve the user access tokens.
+  ///
+  /// Returns a [TwitterAuthResult] with a [TwitterAuthStatus.success] and a
+  /// [TwitterAuthSession] when the user successfully authenticated.
+  ///
+  /// When the [TwitterAuthResult.status] is not [TwitterAuthStatus.success],
+  /// [TwitterAuthResult.session] will be `null` and an unsuccessful
+  /// authentication should be assumed.
+  ///
+  /// See https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens.
   Future<TwitterAuthResult> authenticateWithTwitter(
     WebviewNavigation webviewNavigation,
   ) async {

@@ -158,7 +158,7 @@ class LoginEvent extends AuthenticationEvent {
 
   Future<TwitterAuthResult> _authenticate(AuthenticationBloc bloc) async {
     return bloc.twitterAuth.authenticateWithTwitter(
-      (Widget webview) => app<HarpyNavigator>().state.push(
+      (TwitterLoginWebview webview) => app<HarpyNavigator>().state.push(
             FadeRoute<Uri>(
               builder: (_) => HarpyScaffold(title: 'login', body: webview),
               settings: const RouteSettings(name: 'login'),

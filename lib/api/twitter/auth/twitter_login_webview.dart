@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/auth/twitter_auth.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+/// Builds a [WebView] for the twitter authentication.
+///
+/// Upon successful authentication or user cancel, [Navigator.pop] will be
+/// called with the callback url as a [Uri] instance.
+/// The callback url contains the token and secret as query params on
+/// success, or a denied query param on user cancel.
 class TwitterLoginWebview extends StatelessWidget {
   const TwitterLoginWebview({
     @required this.token,
