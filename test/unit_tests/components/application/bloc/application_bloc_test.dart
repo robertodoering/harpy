@@ -25,6 +25,7 @@ void main() {
     app.registerLazySingleton<ChangelogPreferences>(
         () => ChangelogPreferences());
     app.registerLazySingleton<GeneralPreferences>(() => GeneralPreferences());
+    app.registerLazySingleton<AuthPreferences>(() => AuthPreferences());
     app.registerLazySingleton<ConnectivityService>(
       () => MockConnectivityService(),
     );
