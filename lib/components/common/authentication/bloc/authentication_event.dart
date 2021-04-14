@@ -60,17 +60,27 @@ abstract class AuthenticationEvent {
     return bloc.authenticatedUser != null;
   }
 
-  /// Logs out of the twitter login and resets the [AuthenticationBloc] session
+  /// Invalidates the user token and resets the [AuthenticationBloc] session
   /// data.
   Future<void> onLogout(AuthenticationBloc bloc) async {
+    // logout
+    final TwitterClient client = bloc.twitterApi.client;
+
+    if (client.token != null &&
+        client.token.isNotEmpty &&
+        client.secret != null &&
+        client.secret.isNotEmpty) {
+      client
+          .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
+          .catchError(silentErrorHandler);
+    }
+
     // wait until navigation changed to clear user information to avoid
     // rebuilding the home screen without an authenticated user and therefore
     // causing unexpected errors
     Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
       bloc.twitterAuthSession = null;
-      bloc.authPreferences.userToken = null;
-      bloc.authPreferences.userSecret = null;
-      bloc.authPreferences.userId = null;
+      bloc.authPreferences.clearAuth();
 
       bloc.authenticatedUser = null;
     });
@@ -156,14 +166,23 @@ class LoginEvent extends AuthenticationEvent {
 
   static final Logger _log = Logger('LoginEvent');
 
+  Future<Uri> _webviewNavigation(TwitterLoginWebview webview) async {
+    return app<HarpyNavigator>().state.push<Uri>(
+          CupertinoPageRoute<Uri>(
+            builder: (_) => HarpyScaffold(
+              title: 'login',
+              buildSafeArea: true,
+              body: webview,
+            ),
+            settings: const RouteSettings(name: 'login'),
+          ),
+        );
+  }
+
   Future<TwitterAuthResult> _authenticate(AuthenticationBloc bloc) async {
     return bloc.twitterAuth.authenticateWithTwitter(
-      (TwitterLoginWebview webview) => app<HarpyNavigator>().state.push(
-            FadeRoute<Uri>(
-              builder: (_) => HarpyScaffold(title: 'login', body: webview),
-              settings: const RouteSettings(name: 'login'),
-            ),
-          ),
+      webviewNavigation: _webviewNavigation,
+      onExternalNavigation: launchUrl,
     );
   }
 

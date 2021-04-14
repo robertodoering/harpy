@@ -38,15 +38,19 @@ class TwitterAuth {
   /// authentication should be assumed.
   ///
   /// See https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens.
-  Future<TwitterAuthResult> authenticateWithTwitter(
-    WebviewNavigation webviewNavigation,
-  ) async {
+  Future<TwitterAuthResult> authenticateWithTwitter({
+    @required WebviewNavigation webviewNavigation,
+    @required OnExternalNavigation onExternalNavigation,
+  }) async {
     try {
       final AuthorizationResponse tempCredentialsResponse =
           await _auth.requestTemporaryCredentials(callbackUrl);
 
       final Uri authCallback = await webviewNavigation(
-        TwitterLoginWebview(token: tempCredentialsResponse.credentials.token),
+        TwitterLoginWebview(
+          token: tempCredentialsResponse.credentials.token,
+          onExternalNavigation: onExternalNavigation,
+        ),
       );
 
       return _requestTokenCredentials(authCallback);
