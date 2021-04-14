@@ -32,8 +32,11 @@ class ShowLists extends ListsEvent with HarpyLogger {
 
     yield const ListsInitialLoading();
 
-    final List<TwitterList> lists = await bloc.listsService
+    final List<TwitterListData> lists = await bloc.listsService
         .list(userId: userId, reverse: true)
+        .then((List<TwitterList> lists) => lists
+            .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+            .toList())
         .catchError(twitterApiErrorHandler);
 
     if (lists != null) {

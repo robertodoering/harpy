@@ -11,11 +11,11 @@ extension ListsStateExtension on ListsState {
 
   bool get hasResult => this is ListsResult;
 
-  List<TwitterList> get lists {
+  List<TwitterListData> get lists {
     if (this is ListsResult) {
       return (this as ListsResult).lists;
     } else {
-      return <TwitterList>[];
+      return <TwitterListData>[];
     }
   }
 }
@@ -41,7 +41,7 @@ class ListsResult extends ListsState {
     @required this.lists,
   });
 
-  final List<TwitterList> lists;
+  final List<TwitterListData> lists;
 
   @override
   List<Object> get props => <Object>[

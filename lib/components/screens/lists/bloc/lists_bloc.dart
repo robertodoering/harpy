@@ -5,6 +5,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/core/core.dart';
 
 part 'lists_event.dart';
