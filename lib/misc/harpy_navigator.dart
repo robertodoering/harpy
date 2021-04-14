@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/screens/lists/lists_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -157,6 +158,14 @@ class HarpyNavigator {
       'quotedTweet': quotedTweet,
     });
   }
+
+  void pushListsScreen({
+    String userId,
+  }) {
+    pushNamed(ListsScreen.route, arguments: <String, dynamic>{
+      'userId': userId,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -193,6 +202,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = ComposeScreen(
         inReplyToStatus: arguments['inReplyToStatus'],
         quotedTweet: arguments['quotedTweet'],
+      );
+      break;
+    case ListsScreen.route:
+      screen = ListsScreen(
+        userId: arguments['userId'],
       );
       break;
     case FollowingScreen.route:
