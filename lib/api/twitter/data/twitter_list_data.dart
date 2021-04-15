@@ -7,6 +7,7 @@ class TwitterListData {
       return;
     }
 
+    slug = list.slug;
     name = list.name;
     createdAt = list.createdAt;
     subscriberCount = list.subscriberCount;
@@ -17,6 +18,7 @@ class TwitterListData {
     following = list.following;
   }
 
+  String slug;
   String name;
   DateTime createdAt;
   int subscriberCount;

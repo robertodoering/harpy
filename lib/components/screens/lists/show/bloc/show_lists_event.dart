@@ -161,7 +161,7 @@ class LoadMoreSubscriptions extends ShowListsEvent with HarpyLogger {
           await bloc.listsService.subscriptions(
         params: <String, String>{
           if (bloc.userId != null) 'user_id': bloc.userId,
-          'cursor': currentState.subscriptionsCursor
+          'cursor': currentState.subscriptionsCursor,
         },
       ).catchError(twitterApiErrorHandler);
 

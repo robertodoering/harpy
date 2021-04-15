@@ -5,7 +5,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class TwitterListCard extends StatelessWidget {
-  const TwitterListCard(this.list);
+  const TwitterListCard(this.list, {Key key}) : super(key: key);
 
   final TwitterListData list;
 
@@ -68,21 +68,24 @@ class TwitterListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Card(
-      child: InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: DefaultEdgeInsets.all(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildTitle(theme),
-              if (list.hasDescription) ...<Widget>[
-                _buildDescription(theme),
-                defaultSmallVerticalSpacer,
+    return ListCardAnimation(
+      key: key,
+      child: Card(
+        child: InkWell(
+          onTap: () {},
+          child: Padding(
+            padding: DefaultEdgeInsets.all(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildTitle(theme),
+                if (list.hasDescription) ...<Widget>[
+                  _buildDescription(theme),
+                  defaultSmallVerticalSpacer,
+                ],
+                _buildUserRow(theme),
               ],
-              _buildUserRow(theme),
-            ],
+            ),
           ),
         ),
       ),
