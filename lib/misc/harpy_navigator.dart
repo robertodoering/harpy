@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/lists/lists_screen.dart';
+import 'package:harpy/components/screens/lists/twitter_lists_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -162,7 +162,7 @@ class HarpyNavigator {
   void pushListsScreen({
     String userId,
   }) {
-    pushNamed(ListsScreen.route, arguments: <String, dynamic>{
+    pushNamed(TwitterListsScreen.route, arguments: <String, dynamic>{
       'userId': userId,
     });
   }
@@ -204,8 +204,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         quotedTweet: arguments['quotedTweet'],
       );
       break;
-    case ListsScreen.route:
-      screen = ListsScreen(
+    case TwitterListsScreen.route:
+      screen = TwitterListsScreen(
         userId: arguments['userId'],
       );
       break;
