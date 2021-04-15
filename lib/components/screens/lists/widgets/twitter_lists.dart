@@ -32,7 +32,7 @@ class TwitterLists extends StatelessWidget {
     return null;
   }
 
-  List<Widget> _buildOwnerships(ShowListsBloc bloc, ShowListsState state) {
+  List<Widget> _buildOwnerships(ListsShowBloc bloc, ListsShowState state) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -71,7 +71,7 @@ class TwitterLists extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildSubscriptions(ShowListsBloc bloc, ShowListsState state) {
+  List<Widget> _buildSubscriptions(ListsShowBloc bloc, ListsShowState state) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -114,8 +114,8 @@ class TwitterLists extends StatelessWidget {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
-    final ShowListsBloc bloc = context.watch<ShowListsBloc>();
-    final ShowListsState state = bloc.state;
+    final ListsShowBloc bloc = context.watch<ListsShowBloc>();
+    final ListsShowState state = bloc.state;
 
     return CustomScrollView(
       slivers: <Widget>[

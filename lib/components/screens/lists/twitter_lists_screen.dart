@@ -13,12 +13,12 @@ class TwitterListsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ShowListsBloc>(
-      create: (_) => ShowListsBloc(userId: userId),
+    return BlocProvider<ListsShowBloc>(
+      create: (_) => ListsShowBloc(userId: userId),
       child: HarpyScaffold(
         body: ScrollDirectionListener(
           child: ScrollToStart(
-            child: BlocListener<ShowListsBloc, ShowListsState>(
+            child: BlocListener<ListsShowBloc, ListsShowState>(
               listener: (BuildContext context, _) {
                 // ScrollDirection.of(context).reset();
               },
