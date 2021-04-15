@@ -12,11 +12,13 @@ class TwitterListCard extends StatelessWidget {
   Widget _buildTitle(ThemeData theme) {
     return Row(
       children: <Widget>[
-        Text(
-          list.name,
-          style: theme.textTheme.subtitle2,
-          softWrap: false,
-          overflow: TextOverflow.fade,
+        Flexible(
+          child: Text(
+            list.name,
+            style: theme.textTheme.subtitle2,
+            softWrap: false,
+            overflow: TextOverflow.fade,
+          ),
         ),
         if (list.isPrivate) ...<Widget>[
           SizedBox(width: defaultSmallPaddingValue / 2),
@@ -39,15 +41,17 @@ class TwitterListCard extends StatelessWidget {
     return Row(
       children: <Widget>[
         CachedCircleAvatar(
-          imageUrl: list.user.appropriateUserImageUrl,
+          imageUrl: list.user.profileImageUrlHttps,
           radius: 8,
         ),
         defaultSmallHorizontalSpacer,
-        Text(
-          '${list.user.name}',
-          style: theme.textTheme.bodyText1,
-          softWrap: false,
-          overflow: TextOverflow.fade,
+        Flexible(
+          child: Text(
+            '${list.user.name}',
+            style: theme.textTheme.bodyText1,
+            softWrap: false,
+            overflow: TextOverflow.fade,
+          ),
         ),
         defaultSmallHorizontalSpacer,
         Text(
@@ -64,24 +68,21 @@ class TwitterListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return ListCardAnimation(
-      key: ValueKey<int>(list.hashCode),
-      child: Card(
-        child: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: DefaultEdgeInsets.all(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildTitle(theme),
-                if (list.hasDescription) ...<Widget>[
-                  _buildDescription(theme),
-                  defaultSmallVerticalSpacer,
-                ],
-                _buildUserRow(theme),
+    return Card(
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: DefaultEdgeInsets.all(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildTitle(theme),
+              if (list.hasDescription) ...<Widget>[
+                _buildDescription(theme),
+                defaultSmallVerticalSpacer,
               ],
-            ),
+              _buildUserRow(theme),
+            ],
           ),
         ),
       ),

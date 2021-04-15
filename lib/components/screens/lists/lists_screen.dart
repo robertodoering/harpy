@@ -13,21 +13,16 @@ class ListsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-
-    return BlocProvider<ListsBloc>(
-      create: (_) => ListsBloc(userId: userId)..add(ShowLists(userId: userId)),
+    return BlocProvider<ShowListsBloc>(
+      create: (_) => ShowListsBloc(userId: userId),
       child: HarpyScaffold(
         body: ScrollDirectionListener(
           child: ScrollToStart(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                const HarpySliverAppBar(title: 'lists', floating: true),
-                const TwitterListList(),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: mediaQuery.padding.bottom),
-                ),
-              ],
+            child: BlocListener<ShowListsBloc, ShowListsState>(
+              listener: (BuildContext context, _) {
+                // ScrollDirection.of(context).reset();
+              },
+              child: const TwitterLists(),
             ),
           ),
         ),

@@ -8,21 +8,26 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/core/core.dart';
 
-part 'lists_event.dart';
-part 'lists_state.dart';
+part 'show_lists_event.dart';
+part 'show_lists_state.dart';
 
-class ListsBloc extends Bloc<ListsEvent, ListsState> {
-  ListsBloc({
+class ShowListsBloc extends Bloc<ShowListsEvent, ShowListsState> {
+  ShowListsBloc({
     @required this.userId,
-  }) : super(const ListsInitial());
+  }) : super(const ListsInitialLoading()) {
+    add(const ShowLists());
+  }
 
+  /// The id of the user whose list to show.
+  ///
+  /// When `null`, the authenticated user's lists will be returned.
   final String userId;
 
   final ListsService listsService = app<TwitterApi>().listsService;
 
   @override
-  Stream<ListsState> mapEventToState(
-    ListsEvent event,
+  Stream<ShowListsState> mapEventToState(
+    ShowListsEvent event,
   ) async* {
     yield* event.applyAsync(currentState: state, bloc: this);
   }
