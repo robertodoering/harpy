@@ -88,7 +88,7 @@ export 'screens/home/widgets/new_tweets_text.dart';
 export 'screens/home_tab_customization/home_tab_customization_screen.dart';
 export 'screens/home_tab_customization/widgets/add_list_row.dart';
 export 'screens/home_tab_customization/widgets/customization_row.dart';
-export 'screens/lists/show/bloc/show_lists_bloc.dart';
+export 'screens/lists/bloc/show/lists_show_bloc.dart';
 export 'screens/lists/widgets/twitter_list_card.dart';
 export 'screens/lists/widgets/twitter_lists.dart';
 export 'screens/login/login_screen.dart';

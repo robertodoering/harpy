@@ -1,11 +1,11 @@
-part of 'show_lists_bloc.dart';
+part of 'lists_show_bloc.dart';
 
-abstract class ShowListsEvent {
-  const ShowListsEvent();
+abstract class ListsShowEvent {
+  const ListsShowEvent();
 
-  Stream<ShowListsState> applyAsync({
-    ShowListsState currentState,
-    ShowListsBloc bloc,
+  Stream<ListsShowState> applyAsync({
+    ListsShowState currentState,
+    ListsShowBloc bloc,
   });
 }
 
@@ -13,13 +13,13 @@ abstract class ShowListsEvent {
 /// to, including their own.
 ///
 /// Their own lists are returned first, followed by subscribed lists.
-class ShowLists extends ShowListsEvent with HarpyLogger {
+class ShowLists extends ListsShowEvent with HarpyLogger {
   const ShowLists();
 
   @override
-  Stream<ShowListsState> applyAsync({
-    ShowListsState currentState,
-    ShowListsBloc bloc,
+  Stream<ListsShowState> applyAsync({
+    ListsShowState currentState,
+    ListsShowBloc bloc,
   }) async* {
     log.fine('loading lists');
 
@@ -88,13 +88,13 @@ class ShowLists extends ShowListsEvent with HarpyLogger {
 ///
 /// Does nothing if no more owned lists exist or if the current state is not
 /// [ListsResult].
-class LoadMoreOwnerships extends ShowListsEvent with HarpyLogger {
+class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
   const LoadMoreOwnerships();
 
   @override
-  Stream<ShowListsState> applyAsync({
-    ShowListsState currentState,
-    ShowListsBloc bloc,
+  Stream<ListsShowState> applyAsync({
+    ListsShowState currentState,
+    ListsShowBloc bloc,
   }) async* {
     if (currentState is ListsResult && currentState.hasMoreOwnerships) {
       yield ListsLoadingMore.loadingOwnerships(
@@ -141,13 +141,13 @@ class LoadMoreOwnerships extends ShowListsEvent with HarpyLogger {
 ///
 /// Does nothing if no more subscribed lists exist or if the current state is
 /// not [ListsResult].
-class LoadMoreSubscriptions extends ShowListsEvent with HarpyLogger {
+class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
   const LoadMoreSubscriptions();
 
   @override
-  Stream<ShowListsState> applyAsync({
-    ShowListsState currentState,
-    ShowListsBloc bloc,
+  Stream<ListsShowState> applyAsync({
+    ListsShowState currentState,
+    ListsShowBloc bloc,
   }) async* {
     if (currentState is ListsResult && currentState.hasMoreSubscriptions) {
       yield ListsLoadingMore.loadingSubscriptions(

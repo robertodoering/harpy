@@ -8,11 +8,11 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/core/core.dart';
 
-part 'show_lists_event.dart';
-part 'show_lists_state.dart';
+part 'lists_show_event.dart';
+part 'lists_show_state.dart';
 
-class ShowListsBloc extends Bloc<ShowListsEvent, ShowListsState> {
-  ShowListsBloc({
+class ListsShowBloc extends Bloc<ListsShowEvent, ListsShowState> {
+  ListsShowBloc({
     @required this.userId,
   }) : super(const ListsInitialLoading()) {
     add(const ShowLists());
@@ -26,8 +26,8 @@ class ShowListsBloc extends Bloc<ShowListsEvent, ShowListsState> {
   final ListsService listsService = app<TwitterApi>().listsService;
 
   @override
-  Stream<ShowListsState> mapEventToState(
-    ShowListsEvent event,
+  Stream<ListsShowState> mapEventToState(
+    ListsShowEvent event,
   ) async* {
     yield* event.applyAsync(currentState: state, bloc: this);
   }

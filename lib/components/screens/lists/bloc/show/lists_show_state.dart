@@ -1,10 +1,10 @@
-part of 'show_lists_bloc.dart';
+part of 'lists_show_bloc.dart';
 
-abstract class ShowListsState extends Equatable {
-  const ShowListsState();
+abstract class ListsShowState extends Equatable {
+  const ListsShowState();
 }
 
-extension ShowListsStateExtension on ShowListsState {
+extension ShowListsStateExtension on ListsShowState {
   bool get isLoading => this is ListsInitialLoading;
 
   bool get hasFailed => this is ListsFailure;
@@ -66,7 +66,7 @@ extension ShowListsStateExtension on ShowListsState {
 }
 
 /// The state when the lists are loaded initially.
-class ListsInitialLoading extends ShowListsState {
+class ListsInitialLoading extends ListsShowState {
   const ListsInitialLoading();
 
   @override
@@ -74,7 +74,7 @@ class ListsInitialLoading extends ShowListsState {
 }
 
 /// The state when the lists have successfully been requested.
-class ListsResult extends ShowListsState {
+class ListsResult extends ListsShowState {
   const ListsResult({
     @required this.ownerships,
     @required this.subscriptions,
@@ -98,7 +98,7 @@ class ListsResult extends ShowListsState {
 }
 
 /// The state when loading more ownerships or more subscriptions.
-class ListsLoadingMore extends ShowListsState {
+class ListsLoadingMore extends ListsShowState {
   const ListsLoadingMore.loadingOwnerships({
     @required this.ownerships,
     @required this.subscriptions,
@@ -133,7 +133,7 @@ class ListsLoadingMore extends ShowListsState {
 
 /// The state when the request was successful but no lists exist for the
 /// searched user.
-class ListsNoResult extends ShowListsState {
+class ListsNoResult extends ListsShowState {
   const ListsNoResult();
 
   @override
@@ -141,7 +141,7 @@ class ListsNoResult extends ShowListsState {
 }
 
 /// The state when requesting the lists failed.
-class ListsFailure extends ShowListsState {
+class ListsFailure extends ListsShowState {
   const ListsFailure();
 
   @override
