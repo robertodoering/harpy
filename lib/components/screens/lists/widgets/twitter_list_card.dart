@@ -81,8 +81,8 @@ class TwitterListCard extends StatelessWidget {
                 _buildTitle(theme),
                 if (list.hasDescription) ...<Widget>[
                   _buildDescription(theme),
-                  defaultSmallVerticalSpacer,
                 ],
+                defaultSmallVerticalSpacer,
                 _buildUserRow(theme),
               ],
             ),
