@@ -74,18 +74,14 @@ class TwitterListCard extends StatelessWidget {
       key: key,
       child: Card(
         child: InkWell(
-          onTap: () => app<HarpyNavigator>().pushListTimelineScreen(
-            list: list,
-          ),
+          onTap: () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
           child: Padding(
             padding: DefaultEdgeInsets.all(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _buildTitle(theme),
-                if (list.hasDescription) ...<Widget>[
-                  _buildDescription(theme),
-                ],
+                if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,
                 _buildUserRow(theme),
               ],
