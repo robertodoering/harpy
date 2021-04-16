@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
+    @required this.listId,
     this.beginSlivers = const <Widget>[],
   });
+
+  final String listId;
 
   final List<Widget> beginSlivers;
 
@@ -26,7 +29,7 @@ class ListTimeline extends StatelessWidget {
         },
         child: TweetList(
           state.timelineTweets,
-          key: const PageStorageKey<String>('likes_timeline'),
+          key: PageStorageKey<String>('list_timeline_$listId'),
           enableScroll: state.enableScroll,
           beginSlivers: beginSlivers,
           endSlivers: <Widget>[
@@ -34,12 +37,12 @@ class ListTimeline extends StatelessWidget {
               const SliverFillLoadingIndicator()
             else if (state.showNoResult)
               SliverFillLoadingError(
-                message: const Text('no liked tweets found'),
+                message: const Text('no list tweets found'),
                 onRetry: () => bloc.add(const RequestListTimeline()),
               )
             else if (state.showError)
               SliverFillLoadingError(
-                message: const Text('error loading liked tweets'),
+                message: const Text('error loading list tweets'),
                 onRetry: () => bloc.add(const RequestListTimeline()),
               )
             else if (state.showLoadingOlder)
