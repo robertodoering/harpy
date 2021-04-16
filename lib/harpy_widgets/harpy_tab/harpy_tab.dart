@@ -7,10 +7,10 @@ const double _tabIconSize = 20;
 /// A tab for a [HarpySliverTabView].
 class HarpyTab extends StatefulWidget {
   const HarpyTab({
-    this.icon,
+    @required this.icon,
     this.text,
     this.cardColor,
-  }) : assert(icon != null || text != null);
+  });
 
   final Widget icon;
   final Widget text;
@@ -26,9 +26,15 @@ class HarpyTab extends StatefulWidget {
 
 class _HarpyTabState extends State<HarpyTab>
     with SingleTickerProviderStateMixin<HarpyTab> {
+  /// Controls how much the tab's associated content is in view.
+  ///
+  /// 1: Tab content is fully in view and tab should appear selected.
+  /// 0: Tab content is not visible.
   AnimationController _animationController;
+
   Animation<Color> _colorAnimation;
   Animation<double> _opacityAnimation;
+  Animation<double> _textOpacityAnimation;
 
   @override
   void initState() {
@@ -41,6 +47,16 @@ class _HarpyTabState extends State<HarpyTab>
       begin: 1,
       end: .5,
     ).animate(_animationController);
+
+    _textOpacityAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0, .5),
+      ),
+    );
   }
 
   @override
@@ -64,6 +80,22 @@ class _HarpyTabState extends State<HarpyTab>
     _animationController.dispose();
   }
 
+  Widget _buildText() {
+    return Opacity(
+      opacity: _textOpacityAnimation.value,
+      child: Align(
+        widthFactor: 1 - _animationController.value,
+        alignment: Alignment.centerRight,
+        child: Row(
+          children: <Widget>[
+            defaultSmallHorizontalSpacer,
+            widget.text,
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -75,7 +107,7 @@ class _HarpyTabState extends State<HarpyTab>
         opacity: _opacityAnimation.value,
         child: Card(
           color: widget.cardColor,
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(_tabPadding),
             child: IconTheme(
               data: iconTheme.copyWith(
@@ -88,20 +120,17 @@ class _HarpyTabState extends State<HarpyTab>
                 ),
                 child: SizedBox(
                   height: _tabIconSize,
-                  child: child,
+                  child: Row(
+                    children: <Widget>[
+                      widget.icon,
+                      if (widget.text != null) _buildText(),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      child: Row(
-        children: <Widget>[
-          if (widget.icon != null) widget.icon,
-          if (widget.icon != null && widget.text != null)
-            defaultSmallHorizontalSpacer,
-          if (widget.text != null) widget.text,
-        ],
       ),
     );
   }

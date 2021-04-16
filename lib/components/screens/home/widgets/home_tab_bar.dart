@@ -26,15 +26,18 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
         tabs: <Widget>[
           HarpyTab(
             icon: const Icon(CupertinoIcons.home),
+            text: const Text('timeline'),
             cardColor: cardColor,
           ),
           HarpyTab(
             icon: const Icon(CupertinoIcons.photo),
+            text: const Text('media'),
             cardColor: cardColor,
           ),
           MentionsTab(cardColor: cardColor),
           HarpyTab(
             icon: const Icon(CupertinoIcons.search),
+            text: const Text('search'),
             cardColor: cardColor,
           ),
         ],
