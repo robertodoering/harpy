@@ -4,6 +4,24 @@ abstract class ListTimelineState extends Equatable {
   const ListTimelineState();
 }
 
+extension ListTimelineExtension on ListTimelineState {
+  bool get showLoading => this is ListTimelineLoading;
+
+  bool get showNoResult => this is ListTimelineNoResult;
+
+  bool get showError => this is ListTimelineFailure;
+
+  bool get enableScroll => !showLoading;
+
+  List<TweetData> get timelineTweets {
+    if (this is ListTimelineResult) {
+      return (this as ListTimelineResult).tweets;
+    } else {
+      return <TweetData>[];
+    }
+  }
+}
+
 /// The state when the list timeline is loading.
 class ListTimelineLoading extends ListTimelineState {
   const ListTimelineLoading();

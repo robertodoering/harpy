@@ -5,8 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
-import 'file:///C:/Users/User/workspace/harpy/lib/components/screens/lists/show/show_lists_screen.dart';
-
 /// The [RouteType] determines what [PageRoute] is used for the new route.
 ///
 /// This determines the transition animation for the new route.
@@ -167,6 +165,14 @@ class HarpyNavigator {
       'userId': userId,
     });
   }
+
+  void pushListTimelineScreen({
+    TwitterListData list,
+  }) {
+    pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
+      'list': list,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -208,6 +214,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case ShowListsScreen.route:
       screen = ShowListsScreen(
         userId: arguments['userId'],
+      );
+      break;
+    case ListTimelineScreen.route:
+      screen = ListTimelineScreen(
+        list: arguments['list'],
       );
       break;
     case FollowingScreen.route:

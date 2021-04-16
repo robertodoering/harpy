@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 class TwitterListCard extends StatelessWidget {
-  const TwitterListCard(this.list, {Key key}) : super(key: key);
+  const TwitterListCard(this.list, {@required Key key}) : super(key: key);
 
   final TwitterListData list;
 
@@ -72,7 +74,9 @@ class TwitterListCard extends StatelessWidget {
       key: key,
       child: Card(
         child: InkWell(
-          onTap: () {},
+          onTap: () => app<HarpyNavigator>().pushListTimelineScreen(
+            list: list,
+          ),
           child: Padding(
             padding: DefaultEdgeInsets.all(),
             child: Column(
