@@ -49,8 +49,6 @@ dependencies:
   flutter_displaymode: ^0.3.1-nullsafety.0
   flutter_downloader: ^1.6.0
   flutter_ffmpeg: ^0.4.0
-  flutter_twitter_login: # non null safe
-    git: git://github.com/robertodoering/flutter_twitter_login.git
   keyboard_visibility: ^0.5.6 # non null safe
   package_info: ^2.0.0
   path_provider: ^2.0.1
@@ -60,6 +58,7 @@ dependencies:
   shared_preferences: ^2.0.5
   url_launcher: ^6.0.2
   video_player: ^2.1.1
+  webview_flutter: ^2.0.4
 
 dev_dependencies:
   bloc_test: ^8.0.0

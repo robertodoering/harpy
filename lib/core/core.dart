@@ -5,6 +5,7 @@ export 'error_handler/harpy_error_handler.dart';
 export 'info/harpy_info.dart';
 export 'logger/init_logger.dart';
 export 'logger/logger_mixin.dart';
+export 'preferences/auth_preferences.dart';
 export 'preferences/changelog_preferences.dart';
 export 'preferences/general_preferences.dart';
 export 'preferences/harpy_preferences.dart';
