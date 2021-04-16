@@ -61,7 +61,7 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 /// An event to request older likes timeline tweets.
 ///
 /// This is used when the end of the likes timeline has been reached and the
-/// likes wants to load the older (previous) tweets.
+/// user wants to load the older (previous) tweets.
 ///
 /// Only the last 800 tweets in a likes timeline can be requested.
 class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {

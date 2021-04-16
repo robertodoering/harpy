@@ -44,6 +44,16 @@ class HomeDrawer extends StatelessWidget {
                 },
               ),
 
+              // lists
+              ListTile(
+                leading: const Icon(CupertinoIcons.list_bullet),
+                title: const Text('Lists'),
+                onTap: () async {
+                  await app<HarpyNavigator>().state.maybePop();
+                  app<HarpyNavigator>().pushListsScreen();
+                },
+              ),
+
               const Divider(),
 
               // settings

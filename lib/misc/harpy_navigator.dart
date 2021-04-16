@@ -157,6 +157,22 @@ class HarpyNavigator {
       'quotedTweet': quotedTweet,
     });
   }
+
+  void pushListsScreen({
+    String userId,
+  }) {
+    pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
+      'userId': userId,
+    });
+  }
+
+  void pushListTimelineScreen({
+    TwitterListData list,
+  }) {
+    pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
+      'list': list,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -193,6 +209,16 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = ComposeScreen(
         inReplyToStatus: arguments['inReplyToStatus'],
         quotedTweet: arguments['quotedTweet'],
+      );
+      break;
+    case ShowListsScreen.route:
+      screen = ShowListsScreen(
+        userId: arguments['userId'],
+      );
+      break;
+    case ListTimelineScreen.route:
+      screen = ListTimelineScreen(
+        list: arguments['list'],
       );
       break;
     case FollowingScreen.route:
