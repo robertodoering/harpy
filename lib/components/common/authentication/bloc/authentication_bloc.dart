@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -22,17 +22,19 @@ class AuthenticationBloc
 
   final TwitterApi twitterApi = app<TwitterApi>();
 
+  final AuthPreferences authPreferences = app<AuthPreferences>();
+
   /// A reference to the [ThemeBloc] to change the theme for the authenticated
   /// user and to load the custom themes of the user.
   final ThemeBloc themeBloc;
 
-  /// The [twitterLogin] is used to log in and out with the native twitter sdk.
-  TwitterLogin twitterLogin;
+  /// Used to authenticate with Twitter through a web view.
+  TwitterAuth twitterAuth;
 
-  /// The [twitterSession] contains information about the authenticated user.
+  /// Contains the user id, token & secret for the current twitter session.
   ///
-  /// If the user is not authenticated, [twitterSession] will be `null`.
-  TwitterSession twitterSession;
+  /// If the user is not authenticated, [twitterAuthSession] will be `null`.
+  TwitterAuthSession twitterAuthSession;
 
   /// Completes with either `true` or `false` whether the user has an active
   /// twitter session after initialization.

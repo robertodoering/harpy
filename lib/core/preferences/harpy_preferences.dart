@@ -121,4 +121,6 @@ class HarpyPreferences {
     _log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setStringList(_key(key, prefix), value);
   }
+
+  void remove(String key) => _preferences.remove(key);
 }
