@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/lists/twitter_lists_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
+
+import 'file:///C:/Users/User/workspace/harpy/lib/components/screens/lists/show/show_lists_screen.dart';
 
 /// The [RouteType] determines what [PageRoute] is used for the new route.
 ///
@@ -162,7 +163,7 @@ class HarpyNavigator {
   void pushListsScreen({
     String userId,
   }) {
-    pushNamed(TwitterListsScreen.route, arguments: <String, dynamic>{
+    pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
       'userId': userId,
     });
   }
@@ -204,8 +205,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         quotedTweet: arguments['quotedTweet'],
       );
       break;
-    case TwitterListsScreen.route:
-      screen = TwitterListsScreen(
+    case ShowListsScreen.route:
+      screen = ShowListsScreen(
         userId: arguments['userId'],
       );
       break;

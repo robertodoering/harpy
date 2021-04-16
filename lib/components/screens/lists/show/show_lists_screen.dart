@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 
-class TwitterListsScreen extends StatelessWidget {
-  const TwitterListsScreen({
+class ShowListsScreen extends StatelessWidget {
+  const ShowListsScreen({
     @required this.userId,
   });
 
   final String userId;
 
-  static const String route = 'twitter_lists_screen';
+  static const String route = 'show_lists_screen';
 
   @override
   Widget build(BuildContext context) {
