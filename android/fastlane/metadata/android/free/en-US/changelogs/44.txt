@@ -1,3 +1,6 @@
 Version 0.5.4
 
 · Added double tap to zoom image gesture
+· Added viewing lists & list timelines
+· Change login to a web based login (re-login required)
+· Update tab bar styling with text animation
