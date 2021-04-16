@@ -107,7 +107,7 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
       final PaginatedTwitterLists paginatedOwnerships = await bloc.listsService
           .ownerships(
             userId: bloc.userId,
-            cursor: int.tryParse(currentState.ownershipsCursor),
+            cursor: currentState.ownershipsCursor,
           )
           .catchError(twitterApiErrorHandler);
 

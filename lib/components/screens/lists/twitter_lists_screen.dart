@@ -15,15 +15,10 @@ class TwitterListsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ListsShowBloc>(
       create: (_) => ListsShowBloc(userId: userId),
-      child: HarpyScaffold(
+      child: const HarpyScaffold(
         body: ScrollDirectionListener(
           child: ScrollToStart(
-            child: BlocListener<ListsShowBloc, ListsShowState>(
-              listener: (BuildContext context, _) {
-                // ScrollDirection.of(context).reset();
-              },
-              child: const TwitterLists(),
-            ),
+            child: TwitterLists(),
           ),
         ),
       ),
