@@ -10,7 +10,8 @@ import 'package:harpy/core/core.dart';
 part 'list_timeline_event.dart';
 part 'list_timeline_state.dart';
 
-class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState> {
+class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState>
+    with RequestLock {
   ListTimelineBloc({
     @required this.listId,
   }) : super(const ListTimelineLoading()) {
@@ -20,6 +21,10 @@ class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState> {
   final String listId;
 
   final ListsService listsService = app<TwitterApi>().listsService;
+
+  /// Completes when older tweets for the timeline have been requested using
+  /// [RequestOlderListTimeline].
+  Completer<void> requestOlderCompleter = Completer<void>();
 
   @override
   Stream<ListTimelineState> mapEventToState(

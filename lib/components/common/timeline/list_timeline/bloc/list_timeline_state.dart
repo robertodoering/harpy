@@ -7,15 +7,27 @@ abstract class ListTimelineState extends Equatable {
 extension ListTimelineExtension on ListTimelineState {
   bool get showLoading => this is ListTimelineLoading;
 
+  bool get showLoadingOlder => this is ListTimelineLoadingOlder;
+
   bool get showNoResult => this is ListTimelineNoResult;
 
   bool get showError => this is ListTimelineFailure;
+
+  bool get showReachedEnd =>
+      this is ListTimelineResult &&
+      !(this as ListTimelineResult).canRequestOlder;
+
+  bool get enableRequestOlder =>
+      this is ListTimelineResult &&
+      (this as ListTimelineResult).canRequestOlder;
 
   bool get enableScroll => !showLoading;
 
   List<TweetData> get timelineTweets {
     if (this is ListTimelineResult) {
       return (this as ListTimelineResult).tweets;
+    } else if (this is ListTimelineLoadingOlder) {
+      return (this as ListTimelineLoadingOlder).oldResult.tweets;
     } else {
       return <TweetData>[];
     }
@@ -34,13 +46,23 @@ class ListTimelineLoading extends ListTimelineState {
 class ListTimelineResult extends ListTimelineState {
   const ListTimelineResult({
     @required this.tweets,
+    @required this.maxId,
+    this.canRequestOlder = true,
   });
 
   final List<TweetData> tweets;
 
+  /// The max id used to request older tweets.
+  final String maxId;
+
+  /// Whether older tweets in the likes timeline can be requested.
+  final bool canRequestOlder;
+
   @override
   List<Object> get props => <Object>[
         tweets,
+        maxId,
+        canRequestOlder,
       ];
 }
 
@@ -59,4 +81,18 @@ class ListTimelineFailure extends ListTimelineState {
 
   @override
   List<Object> get props => <Object>[];
+}
+
+/// The state when requesting older tweets.
+class ListTimelineLoadingOlder extends ListTimelineState {
+  const ListTimelineLoadingOlder({
+    @required this.oldResult,
+  });
+
+  final ListTimelineResult oldResult;
+
+  @override
+  List<Object> get props => <Object>[
+        oldResult,
+      ];
 }

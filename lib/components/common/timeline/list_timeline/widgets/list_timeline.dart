@@ -19,10 +19,10 @@ class ListTimeline extends StatelessWidget {
 
     return ScrollToStart(
       child: LoadMoreListener(
-        listen: false, // todo
+        listen: state.enableRequestOlder,
         onLoadMore: () async {
-          // bloc.add(const RequestOlderLikesTimeline());
-          // await bloc.requestOlderCompleter.future;
+          bloc.add(const RequestOlderListTimeline());
+          await bloc.requestOlderCompleter.future;
         },
         child: TweetList(
           state.timelineTweets,
@@ -41,13 +41,13 @@ class ListTimeline extends StatelessWidget {
               SliverFillLoadingError(
                 message: const Text('error loading liked tweets'),
                 onRetry: () => bloc.add(const RequestListTimeline()),
+              )
+            else if (state.showLoadingOlder)
+              const SliverBoxLoadingIndicator()
+            else if (state.showReachedEnd)
+              const SliverBoxInfoMessage(
+                secondaryMessage: Text('no more list tweets available'),
               ),
-            // else if (state.showLoadingOlder)
-            //     const SliverBoxLoadingIndicator()
-            //   else if (state.showReachedEnd)
-            //       const SliverBoxInfoMessage(
-            //         secondaryMessage: Text('no more liked tweets available'),
-            //       ),
             SliverToBoxAdapter(
               child: SizedBox(height: mediaQuery.padding.bottom),
             ),
