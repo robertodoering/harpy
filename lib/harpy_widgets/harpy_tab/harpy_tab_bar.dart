@@ -94,24 +94,26 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      child: Padding(
-        padding: DefaultEdgeInsets.symmetric(horizontal: true),
-        child: Row(
-          children: <Widget>[
-            for (int i = 0; i < widget.tabs.length; i++) ...<Widget>[
-              _buildTab(i),
-              if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
-            ],
-            if (widget.endWidgets != null) ...<Widget>[
-              for (Widget widget in widget.endWidgets) ...<Widget>[
-                defaultSmallHorizontalSpacer,
-                widget,
+    return Center(
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        child: Padding(
+          padding: DefaultEdgeInsets.symmetric(horizontal: true),
+          child: Row(
+            children: <Widget>[
+              for (int i = 0; i < widget.tabs.length; i++) ...<Widget>[
+                _buildTab(i),
+                if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
+              ],
+              if (widget.endWidgets != null) ...<Widget>[
+                for (Widget widget in widget.endWidgets) ...<Widget>[
+                  defaultSmallHorizontalSpacer,
+                  widget,
+                ],
               ],
             ],
-          ],
+          ),
         ),
       ),
     );

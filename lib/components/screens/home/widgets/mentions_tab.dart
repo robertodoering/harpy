@@ -16,7 +16,11 @@ class MentionsTab extends StatelessWidget {
     final MentionsTimelineBloc bloc = context.watch<MentionsTimelineBloc>();
     final MentionsTimelineState state = bloc.state;
 
-    final Widget child = HarpyTab(icon: const Text('@'), cardColor: cardColor);
+    final Widget child = HarpyTab(
+      icon: const Text('@'),
+      text: const Text('mentions'),
+      cardColor: cardColor,
+    );
 
     if (state.hasNewMentions) {
       return Bubbled(
