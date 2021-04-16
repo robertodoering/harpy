@@ -3,6 +3,9 @@ import 'package:harpy/components/common/timeline/list_timeline/bloc/list_timelin
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
+/// Builds the [TweetList] for the tweets in a list.
+///
+/// [listId] is used for the [PageStorageKey] of the list.
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
     @required this.listId,

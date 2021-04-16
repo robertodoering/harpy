@@ -10,6 +10,7 @@ import 'package:harpy/core/core.dart';
 part 'list_timeline_event.dart';
 part 'list_timeline_state.dart';
 
+/// Handles requesting the tweets for the twitter list specified with [listId].
 class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState>
     with RequestLock {
   ListTimelineBloc({

@@ -5,6 +5,7 @@ import 'package:harpy/components/common/timeline/list_timeline/bloc/list_timelin
 import 'package:harpy/components/common/timeline/list_timeline/widgets/list_timeline.dart';
 import 'package:harpy/components/components.dart';
 
+/// Shows a [ListTimeline] for the [list] in it's own screen.
 class ListTimelineScreen extends StatelessWidget {
   const ListTimelineScreen({
     @required this.list,
