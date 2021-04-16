@@ -31,11 +31,7 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
     final List<PaginatedTwitterLists> responses = await Future.wait<
         PaginatedTwitterLists>(<Future<PaginatedTwitterLists>>[
       bloc.listsService.ownerships(userId: bloc.userId),
-      bloc.listsService.subscriptions(
-        params: <String, String>{
-          if (bloc.userId != null) 'user_id': bloc.userId,
-        },
-      ),
+      bloc.listsService.subscriptions(userId: bloc.userId),
     ]).catchError(twitterApiErrorHandler);
 
     if (responses != null && responses.length == 2) {
@@ -158,12 +154,12 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
       );
 
       final PaginatedTwitterLists paginatedSubscriptions =
-          await bloc.listsService.subscriptions(
-        params: <String, String>{
-          if (bloc.userId != null) 'user_id': bloc.userId,
-          'cursor': currentState.subscriptionsCursor,
-        },
-      ).catchError(twitterApiErrorHandler);
+          await bloc.listsService
+              .subscriptions(
+                userId: bloc.userId,
+                cursor: currentState.subscriptionsCursor,
+              )
+              .catchError(twitterApiErrorHandler);
 
       if (paginatedSubscriptions != null) {
         final List<TwitterListData> newSubscriptions = paginatedSubscriptions

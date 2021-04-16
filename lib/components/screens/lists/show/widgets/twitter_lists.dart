@@ -12,7 +12,7 @@ class TwitterLists extends StatelessWidget {
     if (index.isEven) {
       return TwitterListCard(
         lists[index ~/ 2],
-        key: Key(lists[index ~/ 2].slug),
+        key: Key(lists[index ~/ 2].idStr),
       );
     } else {
       return defaultVerticalSpacer;
@@ -21,8 +21,9 @@ class TwitterLists extends StatelessWidget {
 
   int _indexCallback(Key key, List<TwitterListData> lists) {
     if (key is ValueKey<String>) {
-      final int index =
-          lists.indexWhere((TwitterListData list) => list.slug == key.value);
+      final int index = lists.indexWhere(
+        (TwitterListData list) => list.idStr == key.value,
+      );
 
       if (index != -1) {
         return index * 2;

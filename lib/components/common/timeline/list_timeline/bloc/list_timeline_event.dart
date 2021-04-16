@@ -80,8 +80,6 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
 
       yield ListTimelineLoadingOlder(oldResult: currentState);
 
-      await Future<void>.delayed(const Duration(seconds: 5));
-
       final List<TweetData> tweets = await bloc.listsService
           .statuses(listId: bloc.listId, count: 200, maxId: maxId)
           .then(handleTweets)
