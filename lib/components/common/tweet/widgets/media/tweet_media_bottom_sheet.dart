@@ -15,6 +15,10 @@ void showTweetMediaBottomSheet(
   VoidCallback onDownload,
   VoidCallback onShare,
 }) {
+  assert(onOpenExternally != null || url != null);
+  assert(onDownload != null || url != null);
+  assert(onShare != null || url != null);
+
   showHarpyBottomSheet<void>(
     context,
     hapticFeedback: true,

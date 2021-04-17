@@ -29,6 +29,7 @@ class _TweetImagesState extends State<TweetImages> {
     _galleryIndex = index;
 
     final String mediaUrl = widget.tweetBloc.downloadMediaUrl(
+      widget.tweet,
       index: _galleryIndex,
     );
 
@@ -58,7 +59,7 @@ class _TweetImagesState extends State<TweetImages> {
 
     showTweetMediaBottomSheet(
       context,
-      url: widget.tweetBloc.downloadMediaUrl(index: index),
+      url: widget.tweetBloc.downloadMediaUrl(widget.tweet, index: index),
     );
   }
 

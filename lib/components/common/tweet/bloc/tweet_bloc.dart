@@ -30,7 +30,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
 
   static TweetBloc of(BuildContext context) => context.watch<TweetBloc>();
 
-  String downloadMediaUrl({int index}) {
+  /// Returns the download url for the [tweet].
+  String downloadMediaUrl(TweetData tweet, {int index}) {
     if (tweet.hasMedia) {
       if (tweet.images?.isNotEmpty == true) {
         return tweet.images[index ?? 0]?.bestUrl;
