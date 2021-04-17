@@ -58,7 +58,7 @@ class UserProfileInfo extends StatelessWidget {
           ),
         ),
       ),
-      child: CachedCircleAvatar(
+      child: HarpyCircleAvatar(
         imageUrl: bloc.user.originalUserImageUrl,
         radius: 36,
         heroTag: bloc.user,

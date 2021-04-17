@@ -18,7 +18,7 @@ class HomeDrawerHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // circle avatar
-          CachedCircleAvatar(
+          HarpyCircleAvatar(
             radius: 32,
             imageUrl: user.appropriateUserImageUrl,
           ),
