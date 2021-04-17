@@ -86,9 +86,6 @@ class InitializeEvent extends ApplicationEvent {
       // navigate to home screen
       harpyNavigator.pushReplacementNamed(HomeScreen.route);
     } else {
-      // prevent showing changelog dialog for this version
-      changelogPreferences.setToCurrentShownVersion();
-
       // navigate to login screen
       harpyNavigator.pushReplacementNamed(
         LoginScreen.route,
