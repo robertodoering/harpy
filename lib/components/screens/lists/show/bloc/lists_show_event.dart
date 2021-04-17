@@ -9,10 +9,7 @@ abstract class ListsShowEvent {
   });
 }
 
-/// Returns the first 100 lists the authenticating or specified user subscribes
-/// to, including their own.
-///
-/// Their own lists are returned first, followed by subscribed lists.
+/// Returns the first 20 owned and 20 subscribed lists.
 class ShowLists extends ListsShowEvent with HarpyLogger {
   const ShowLists();
 
