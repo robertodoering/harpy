@@ -35,6 +35,7 @@ class TweetVideo extends StatelessWidget {
     final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
     return ClipRRect(
+      clipBehavior: Clip.hardEdge,
       borderRadius: kDefaultBorderRadius,
       child: HarpyVideoPlayer.fromController(
         VideoPlayerController.network(
@@ -45,7 +46,7 @@ class TweetVideo extends StatelessWidget {
         onVideoPlayerTap: _openGallery,
         onVideoPlayerLongPress: () => showTweetMediaBottomSheet(
           context,
-          url: tweetBloc.mediaUrl(),
+          url: tweetBloc.downloadMediaUrl(tweet),
         ),
         autoplay: mediaPreferences.shouldAutoplayVideos,
         allowVerticalOverflow: true,

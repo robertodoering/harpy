@@ -2,5 +2,9 @@ Version 0.5.4
 
 · Added double tap to zoom image gesture
 · Added viewing lists & list timelines
-· Change login to a web based login (re-login required)
-· Update tab bar styling with text animation
+· Improved performance & reduced scrolling jankyness
+· Changed login to a web based login (re-login required)
+· Updated tab bar styling with text animation
+· Fixed not always downloading the best media quality
+· Fixed unable to download media from quotes
+· Removed media quality settings

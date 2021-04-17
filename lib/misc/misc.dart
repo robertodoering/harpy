@@ -5,6 +5,7 @@ export 'harpy_navigator.dart';
 export 'predefined_themes.dart';
 export 'remove_focus.dart';
 export 'scroll_behavior.dart';
+export 'transparent_image.dart';
 export 'url_launcher.dart';
 export 'utils/list_utils.dart';
 export 'utils/string_utils.dart';

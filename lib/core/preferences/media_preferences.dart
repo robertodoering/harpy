@@ -5,26 +5,6 @@ class MediaPreferences {
 
   final ConnectivityService connectivityService = app<ConnectivityService>();
 
-  /// The media quality when using wifi.
-  ///
-  /// 0: large
-  /// 1: medium
-  /// 2: small
-  int get wifiMediaQuality =>
-      harpyPrefs.getInt('wifiMediaQuality', 0, lowerLimit: 0, upperLimit: 2);
-  set wifiMediaQuality(int value) =>
-      harpyPrefs.setInt('wifiMediaQuality', value);
-
-  /// The media quality when not using wifi.
-  ///
-  /// 0: large
-  /// 1: medium
-  /// 2: small
-  int get nonWifiMediaQuality =>
-      harpyPrefs.getInt('nonWifiMediaQuality', 0, lowerLimit: 0, upperLimit: 2);
-  set nonWifiMediaQuality(int value) =>
-      harpyPrefs.setInt('nonWifiMediaQuality', value);
-
   /// Whether gifs should play automatically.
   ///
   /// 0: always autoplay
@@ -59,14 +39,8 @@ class MediaPreferences {
   bool get shouldAutoplayVideos =>
       autoplayVideos == 0 || autoplayVideos == 1 && connectivityService.wifi;
 
-  /// The media quality, taking the connectivity into account.
-  int get appropriateMediaQuality =>
-      connectivityService.wifi ? wifiMediaQuality : nonWifiMediaQuality;
-
   /// Sets all media settings to the default settings.
   void defaultSettings() {
-    wifiMediaQuality = 0;
-    nonWifiMediaQuality = 0;
     autoplayMedia = 1;
     autoplayVideos = 2;
     openLinksExternally = false;

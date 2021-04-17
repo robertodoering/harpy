@@ -58,6 +58,7 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
         bloc.tweet.retweeted = false;
         bloc.tweet.retweetCount--;
         log.warning('error retweeting ${bloc.tweet.idStr}', e, st);
+        twitterApiErrorHandler(e);
         yield UpdatedTweetState();
       }
     }
@@ -87,6 +88,7 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
         bloc.tweet.retweeted = true;
         bloc.tweet.retweetCount++;
         log.warning('error unretweeting ${bloc.tweet.idStr}', e, st);
+        twitterApiErrorHandler(e);
         yield UpdatedTweetState();
       }
     }
@@ -116,6 +118,7 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
         bloc.tweet.favorited = false;
         bloc.tweet.favoriteCount--;
         log.warning('error favoriting ${bloc.tweet.idStr}', e, st);
+        twitterApiErrorHandler(e);
         yield UpdatedTweetState();
       }
     }
@@ -172,6 +175,7 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
         bloc.tweet.favorited = true;
         bloc.tweet.favoriteCount++;
         log.warning('error unfavoriting ${bloc.tweet.idStr}', e, st);
+        twitterApiErrorHandler(e);
         yield UpdatedTweetState();
       }
     }

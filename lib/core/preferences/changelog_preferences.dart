@@ -24,9 +24,15 @@ class ChangelogPreferences {
     lastShownVersion = int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
   }
 
-  /// Whether the current version code is bigger than the [lastShownVersion].
-  // todo: prevent showing dialog when no changelog file exists
+  /// Whether the changelog dialog should show.
+  ///
+  /// - [showChangelogDialog] needs to be true
+  /// - [lastShownVersion] must have been set before (not a new user opening
+  /// the app for the first time)
+  /// - the [lastShownVersion] must be smaller than the current version (user
+  /// has updated)
   bool get shouldShowChangelogDialog =>
       showChangelogDialog &&
+      lastShownVersion != 0 &&
       (int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0) > lastShownVersion;
 }

@@ -133,6 +133,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
     return AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget child) => ClipRRect(
+        clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
       ),

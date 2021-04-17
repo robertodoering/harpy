@@ -43,7 +43,9 @@ class TwitterListCard extends StatelessWidget {
   Widget _buildUserRow(ThemeData theme) {
     return Row(
       children: <Widget>[
-        CachedCircleAvatar(
+        HarpyCircleAvatar(
+          // use the normal sized profile image instead of the bigger one for
+          // the small circle avatar
           imageUrl: list.user.profileImageUrlHttps,
           radius: 8,
         ),
@@ -73,9 +75,10 @@ class TwitterListCard extends StatelessWidget {
 
     return ListCardAnimation(
       key: key,
-      child: Card(
-        child: InkWell(
-          onTap: () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
+      child: InkWell(
+        borderRadius: kDefaultBorderRadius,
+        onTap: () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
+        child: Card(
           child: Padding(
             padding: DefaultEdgeInsets.all(),
             child: Column(

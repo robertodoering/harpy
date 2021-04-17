@@ -34,7 +34,7 @@ class _MediaTimelineGalleryOverlayState
 
   String get _mediaUrl {
     if (widget.entries[_index].isImage) {
-      return widget.entries[_index].imageData.large;
+      return widget.entries[_index].imageData.bestUrl;
     } else if (widget.entries[_index].isVideo) {
       return widget.entries[_index].videoData.bestUrl;
     } else {

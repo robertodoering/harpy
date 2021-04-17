@@ -173,6 +173,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     return AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget child) => ClipRRect(
+        clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
       ),

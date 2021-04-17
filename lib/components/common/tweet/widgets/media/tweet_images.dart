@@ -28,7 +28,10 @@ class _TweetImagesState extends State<TweetImages> {
   void _onImageTap(int index) {
     _galleryIndex = index;
 
-    final String mediaUrl = widget.tweetBloc.mediaUrl(index: _galleryIndex);
+    final String mediaUrl = widget.tweetBloc.downloadMediaUrl(
+      widget.tweet,
+      index: _galleryIndex,
+    );
 
     MediaOverlay.open(
       tweet: widget.tweet,
@@ -56,7 +59,7 @@ class _TweetImagesState extends State<TweetImages> {
 
     showTweetMediaBottomSheet(
       context,
-      url: widget.tweetBloc.mediaUrl(index: index),
+      url: widget.tweetBloc.downloadMediaUrl(widget.tweet, index: index),
     );
   }
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a [CircleAvatar] with a [HarpyImage].
-class CachedCircleAvatar extends StatelessWidget {
-  const CachedCircleAvatar({
+class HarpyCircleAvatar extends StatelessWidget {
+  const HarpyCircleAvatar({
     @required this.imageUrl,
     this.backgroundColor = Colors.transparent,
     this.radius,
@@ -34,6 +34,7 @@ class CachedCircleAvatar extends StatelessWidget {
       backgroundColor: backgroundColor,
       child: SizedBox.expand(
         child: ClipOval(
+          clipBehavior: Clip.antiAlias,
           child: image,
         ),
       ),

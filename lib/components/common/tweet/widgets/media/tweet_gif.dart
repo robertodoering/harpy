@@ -44,6 +44,7 @@ class TweetGif extends StatelessWidget {
     final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
     return ClipRRect(
+      clipBehavior: Clip.hardEdge,
       borderRadius: kDefaultBorderRadius,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
@@ -54,7 +55,7 @@ class TweetGif extends StatelessWidget {
         onGifTap: _openGallery,
         onGifLongPress: () => showTweetMediaBottomSheet(
           context,
-          url: tweetBloc.mediaUrl(),
+          url: tweetBloc.downloadMediaUrl(tweet),
         ),
         autoplay: mediaPreferences.shouldAutoplayMedia,
         allowVerticalOverflow: true,

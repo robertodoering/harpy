@@ -6,13 +6,7 @@ import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    this.autoLogin = false,
-  });
-
-  /// Whether the user got automatically logged in when opening the app
-  /// (previous session got restored).
-  final bool autoLogin;
+  const HomeScreen();
 
   static const String route = 'home';
 
@@ -25,9 +19,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   void initState() {
     super.initState();
 
-    if (widget.autoLogin == true) {
-      ChangelogDialog.maybeShow(context);
-    }
+    ChangelogDialog.maybeShow(context);
 
     context.read<HomeTimelineBloc>().add(const RequestInitialHomeTimeline());
     context.read<MentionsTimelineBloc>().add(const RequestMentionsTimeline());

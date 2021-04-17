@@ -54,7 +54,7 @@ class TweetAuthorRow extends StatelessWidget {
       // todo: avatar should scale based off of the text height
       child: Row(
         children: <Widget>[
-          CachedCircleAvatar(
+          HarpyCircleAvatar(
             imageUrl: user.appropriateUserImageUrl,
             radius: avatarRadius,
           ),

@@ -55,7 +55,7 @@ class ChangelogParser {
         if (line.startsWith(' ') && entry != null) {
           // additional information for the last line
           entry?.additionalInfo?.add(line.trim());
-        } else if (line.startsWith('Added')) {
+        } else if (line.startsWith('Added') || line.startsWith('Improved')) {
           entry = _parseLine(line);
           data.additions.add(entry);
         } else if (line.startsWith('Changed')) {
