@@ -59,6 +59,7 @@ class HarpyMediaGallery extends StatelessWidget {
     return AnimatedBuilder(
       animation: animation,
       builder: (_, __) => ClipRRect(
+        clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
       ),

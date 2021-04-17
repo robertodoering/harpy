@@ -112,7 +112,6 @@ class HarpyTheme {
           );
 
     return CardTheme(
-      clipBehavior: performanceMode ? Clip.hardEdge : Clip.antiAlias,
       color: color,
       shape: kDefaultShapeBorder,
       elevation: 0,

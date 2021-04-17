@@ -27,6 +27,7 @@ class TweetImagesLayout extends StatelessWidget {
     bool bottomRight = false,
   }) {
     return ClipRRect(
+      clipBehavior: Clip.hardEdge,
       borderRadius: BorderRadius.only(
         topLeft: topLeft ? kDefaultRadius : Radius.zero,
         bottomLeft: bottomLeft ? kDefaultRadius : Radius.zero,

@@ -151,6 +151,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
       videoAspectRatio: _aspectRatio,
       child: ClipRRect(
         key: ValueKey<VideoPlayerController>(_controller),
+        clipBehavior: Clip.hardEdge,
         borderRadius: kDefaultBorderRadius,
         child: HarpyVideoPlayer.fromController(
           _controller,

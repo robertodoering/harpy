@@ -44,6 +44,7 @@ class TweetGif extends StatelessWidget {
     final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
     return ClipRRect(
+      clipBehavior: Clip.hardEdge,
       borderRadius: kDefaultBorderRadius,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
