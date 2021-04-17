@@ -34,12 +34,44 @@ abstract class AuthenticationEvent {
   Future<bool> initializeAuthenticatedUser(AuthenticationBloc bloc) async {
     final String userId = bloc.twitterAuthSession.userId;
 
+    dynamic error;
+
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
         .then((User user) => UserData.fromUser(user))
-        .catchError(silentErrorHandler);
+        .catchError((dynamic e) {
+      error = e;
+      silentErrorHandler(e);
+      return null;
+    });
 
-    if (bloc.authenticatedUser != null) {
+    if (error is TimeoutException || error is SocketException) {
+      // unable to authenticate user, allow to retry in case of temporary
+      // network error
+      final bool retry = await showDialog<bool>(
+        context: app<HarpyNavigator>().state.context,
+        builder: (_) => const HarpyDialog(
+          title: Text('login'),
+          content: Text('unable to initialize authenticated user'),
+          actions: <Widget>[
+            DialogAction<bool>(
+              result: false,
+              text: 'cancel',
+            ),
+            DialogAction<bool>(
+              result: true,
+              text: 'retry',
+            ),
+          ],
+        ),
+      );
+
+      if (retry == true) {
+        return initializeAuthenticatedUser(bloc);
+      } else {
+        return false;
+      }
+    } else if (bloc.authenticatedUser != null) {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = userId;
 
