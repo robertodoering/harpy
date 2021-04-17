@@ -63,17 +63,6 @@ class HarpyNavigator {
     );
   }
 
-  void pushReplacementHomeScreen({
-    bool autoLogin = false,
-  }) {
-    pushReplacementNamed(
-      HomeScreen.route,
-      arguments: <String, dynamic>{
-        'autoLogin': autoLogin,
-      },
-    );
-  }
-
   /// Pushes a [UserProfileScreen] for the user with the [screenName].
   void pushUserProfile({
     @required String screenName,
@@ -276,9 +265,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = const HomeTabCustomizationScreen();
       break;
     case HomeScreen.route:
-      screen = HomeScreen(
-        autoLogin: arguments['autoLogin'],
-      );
+      screen = const HomeScreen();
       break;
     case SetupScreen.route:
       screen = const SetupScreen();
