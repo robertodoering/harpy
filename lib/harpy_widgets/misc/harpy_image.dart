@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/misc/misc.dart';
 
-/// Wraps a [CachedNetworkImage] with an error builder.
+/// Builds a [FadeInImage] for a transparent placeholder and an error widget
+/// builder.
 class HarpyImage extends StatelessWidget {
   const HarpyImage({
     @required this.imageUrl,
@@ -16,7 +17,11 @@ class HarpyImage extends StatelessWidget {
   final double width;
   final double height;
 
-  Widget _buildErrorWidget(BuildContext context, String url, dynamic error) {
+  Widget _buildErrorWidget(
+    BuildContext context,
+    Object error,
+    StackTrace stackTrace,
+  ) {
     final ThemeData theme = Theme.of(context);
 
     return Container(
@@ -38,12 +43,13 @@ class HarpyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
+    return FadeInImage.memoryNetwork(
+      image: imageUrl,
+      imageErrorBuilder: _buildErrorWidget,
+      placeholder: kTransparentImage,
       fit: fit,
       width: width,
       height: height,
-      errorWidget: _buildErrorWidget,
     );
   }
 }

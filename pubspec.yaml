@@ -16,7 +16,6 @@ dependencies:
     sdk: flutter
 
   # packages
-  cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.2
   dart_twitter_api: ^0.5.3
   equatable: ^2.0.0
