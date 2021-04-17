@@ -7,6 +7,8 @@ void parseEntities(String text, Entities entities) {
   entities.userMentions ??= <UserMention>[];
 
   for (String part in text.split(whitespaceRegex)) {
+    // todo: fix remove trailing special characters in entities
+    //   (@username. => remove the .)
     if (part.startsWith('#')) {
       entities.hashtags.add(
         Hashtag()..text = part.replaceFirst('#', ''),
