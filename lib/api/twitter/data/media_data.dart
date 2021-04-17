@@ -1,6 +1,4 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/core/preferences/media_preferences.dart';
 
 abstract class MediaData {
   /// The url based on the media quality settings.
@@ -25,37 +23,18 @@ class ImageData extends MediaData {
   /// The base url for the image.
   String baseUrl;
 
-  String get thumb => '$baseUrl?name=thumb';
-  String get small => '$baseUrl?name=small';
-  String get medium => '$baseUrl?name=medium';
-  String get large => '$baseUrl?name=large';
+  String get thumb => '$baseUrl?name=thumb&format=jpg';
+  String get small => '$baseUrl?name=small&format=jpg';
+  String get medium => '$baseUrl?name=medium&format=jpg';
+  String get large => '$baseUrl?name=large&format=jpg';
 
-  /// Returns the image url based on the media setting and connectivity.
-  ///
-  /// See https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/entities-object#photo_format.
+  /// The image url used to download the image.
   @override
-  String get appropriateUrl {
-    final int value = app<MediaPreferences>().appropriateMediaQuality;
+  String get bestUrl => '$baseUrl?name=large&format=png';
 
-    // todo: have a better way of getting the right sized media and caching
-    //  the media
-
-    switch (value) {
-      case 1:
-        return medium;
-        break;
-      case 2:
-        return small;
-        break;
-      case 0:
-      default:
-        return large;
-        break;
-    }
-  }
-
+  /// The image url for images drawn in the app.
   @override
-  String get bestUrl => large;
+  String get appropriateUrl => small;
 }
 
 /// The video (and animated gif) data for a [TweetData].
@@ -97,18 +76,14 @@ class VideoData extends MediaData {
   /// Returns an empty string if no video [variants] exist.
   @override
   String get appropriateUrl {
-    final int value = app<MediaPreferences>().appropriateMediaQuality;
-
     if (variants?.isNotEmpty == true) {
-      final int index = value.clamp(0, variants.length - 1);
-
-      return variants[index].url;
+      return variants[0].url;
     } else {
       return '';
     }
   }
 
-  /// Returns the url of the variant with the best quality.
+  /// The url of the variant with the best quality.
   @override
   String get bestUrl {
     if (variants?.isNotEmpty == true) {

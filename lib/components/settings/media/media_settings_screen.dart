@@ -16,12 +16,6 @@ class MediaSettingsScreen extends StatefulWidget {
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
-  final Map<int, String> _qualityValues = <int, String>{
-    0: 'high',
-    1: 'medium',
-    2: 'small',
-  };
-
   final Map<int, String> _autoplayValues = <int, String>{
     0: 'always autoplay',
     1: 'only on wifi',
@@ -30,45 +24,6 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   List<Widget> _buildSettings(ThemeData theme) {
     return <Widget>[
-      RadioDialogTile<int>(
-        leading: CupertinoIcons.wifi,
-        title: 'Media quality on wifi',
-        subtitle: _qualityValues[mediaPreferences.wifiMediaQuality],
-        description: 'change the media quality when using wifi',
-        value: mediaPreferences.wifiMediaQuality,
-        titles: _qualityValues.values.toList(),
-        values: _qualityValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.wifiMediaQuality = value);
-        },
-      ),
-      RadioDialogTile<int>(
-        leading: CupertinoIcons.wifi_slash,
-        title: 'Media quality on mobile data',
-        subtitle: _qualityValues[mediaPreferences.nonWifiMediaQuality],
-        description: 'change the media quality when using mobile data',
-        value: mediaPreferences.nonWifiMediaQuality,
-        titles: _qualityValues.values.toList(),
-        values: _qualityValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.nonWifiMediaQuality = value);
-        },
-      ),
-      ListTile(
-        leading: const SizedBox(),
-        title: Row(
-          children: <Widget>[
-            Icon(CupertinoIcons.info, color: theme.accentColor),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'media is always downloaded in the best quality',
-                style: theme.textTheme.bodyText1,
-              ),
-            ),
-          ],
-        ),
-      ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',

@@ -1,7 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 
 /// The user data for [TweetData].
 class UserData {
@@ -129,35 +128,17 @@ class UserData {
   /// Whether this user has a location set for their profile.
   bool get hasLocation => location?.isNotEmpty == true;
 
-  /// Wether this user has a created at time.
+  /// Whether this user has a created at time.
   bool get hasCreatedAt => createdAt != null;
 
   /// Whether this user has a profile banner.
   bool get hasBanner => profileBannerUrl != null;
 
-  /// Returns the user profile image url based on the media setting and
-  /// connectivity.
+  /// The user profile image url for user images drawn in the app.
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
-  String get appropriateUserImageUrl {
-    final int value = app<MediaPreferences>().appropriateMediaQuality;
-
-    switch (value) {
-      case 1:
-        // 48x48
-        return profileImageUrlHttps;
-        break;
-      case 2:
-        // 24x24
-        return profileImageUrlHttps.replaceFirst('_normal', '_mini');
-        break;
-      case 0:
-      default:
-        // 73x73
-        return profileImageUrlHttps.replaceFirst('_normal', '_bigger');
-        break;
-    }
-  }
+  String get appropriateUserImageUrl =>
+      profileImageUrlHttps.replaceFirst('_normal', '_bigger');
 
   /// Returns the user profile image url in its original size.
   ///
@@ -165,27 +146,10 @@ class UserData {
   String get originalUserImageUrl =>
       profileImageUrlHttps.replaceAll('_normal', '');
 
-  /// Returns the user profile banner url based on the media setting and
-  /// connectivity.
+  /// The user banner url for the user banner drawn in the app.
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get appropriateUserBannerUrl {
-    final int value = app<MediaPreferences>().appropriateMediaQuality;
-
-    switch (value) {
-      case 1:
-        // 640x320
-        return '$profileBannerUrl/mobile_retina';
-        break;
-      case 2:
-        // 320x160
-        return '$profileBannerUrl/mobile';
-        break;
-      case 0:
-      default:
-        // 1040x520
-        return '$profileBannerUrl/web_retina';
-        break;
-    }
+    return '$profileBannerUrl/web_retina';
   }
 }

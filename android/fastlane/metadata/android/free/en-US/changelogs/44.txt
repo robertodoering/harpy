@@ -4,3 +4,5 @@ Version 0.5.4
 · Added viewing lists & list timelines
 · Change login to a web based login (re-login required)
 · Update tab bar styling with text animation
+· Fix not always downloading the best media quality
+· Remove media quality settings
