@@ -64,7 +64,7 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
       log.fine('found ${ownerships.length} ownerships & '
           '${subscriptions.length} subscriptions');
 
-      if (ownerships.isNotEmpty || subscriptions != null) {
+      if (ownerships.isNotEmpty || subscriptions.isNotEmpty) {
         yield ListsResult(
           ownerships: ownerships ?? <TwitterList>[],
           subscriptions: subscriptions ?? <TwitterList>[],
