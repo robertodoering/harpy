@@ -1,4 +1,4 @@
 Version 0.5.6
 
-· Fix webview login with 2 factor authentication
-· Fix keyboard in webview login doesn't allow clipboard access
+· Fixed webview login with 2 factor authentication
+· Fixed keyboard in webview login doesn't allow clipboard access
