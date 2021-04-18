@@ -21,11 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _startLogin() async {
+  Future<void> _startLogin({@required bool webview}) async {
     HapticFeedback.mediumImpact();
     await _slideLoginKey.currentState.forward();
 
-    context.read<AuthenticationBloc>().add(const LoginEvent());
+    context.read<AuthenticationBloc>().add(LoginEvent(webview: webview));
   }
 
   Widget _buildAboutButton(ThemeData theme) {
@@ -86,9 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        _LoginButton(onTap: _startLogin),
+        _LegacyLoginButton(onTap: () => _startLogin(webview: false)),
         const SizedBox(height: 8),
-        const _CreateAccountButton(),
+        _WebviewLoginButton(onTap: () => _startLogin(webview: true)),
       ],
     );
   }
@@ -141,8 +141,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({
+class _LegacyLoginButton extends StatelessWidget {
+  const _LegacyLoginButton({
     @required this.onTap,
   });
 
@@ -160,16 +160,25 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
-class _CreateAccountButton extends StatelessWidget {
-  const _CreateAccountButton();
+class _WebviewLoginButton extends StatelessWidget {
+  const _WebviewLoginButton({
+    @required this.onTap,
+  });
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return BounceInAnimation(
-      delay: const Duration(milliseconds: 3000),
+    return FadeAnimation(
+      delay: const Duration(milliseconds: 3100),
+      duration: kLongAnimationDuration,
+      shouldHide: false,
       child: HarpyButton.flat(
-        text: const Text('create an account'),
-        onTap: () => launchUrl('https://twitter.com/signup'),
+        text: const Text(
+          'trouble signing in? try webview login',
+          style: TextStyle(fontSize: 13),
+        ),
+        onTap: onTap,
       ),
     );
   }

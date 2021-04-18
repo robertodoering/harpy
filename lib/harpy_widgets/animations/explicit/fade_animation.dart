@@ -15,6 +15,7 @@ enum FadeType {
 class FadeAnimation extends StatefulWidget {
   const FadeAnimation({
     @required this.child,
+    this.shouldHide = true,
     this.fadeType = FadeType.fadeIn,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
@@ -23,6 +24,7 @@ class FadeAnimation extends StatefulWidget {
   }) : super(key: key);
 
   final Widget child;
+  final bool shouldHide;
   final FadeType fadeType;
   final Curve curve;
   final Duration duration;
@@ -40,7 +42,9 @@ class _FadeAnimationState extends State<FadeAnimation>
   bool _hidden = false;
 
   bool get _hide =>
-      _hidden || _controller.isCompleted && widget.fadeType == FadeType.fadeOut;
+      widget.shouldHide &&
+      (_hidden ||
+          _controller.isCompleted && widget.fadeType == FadeType.fadeOut);
 
   @override
   void initState() {

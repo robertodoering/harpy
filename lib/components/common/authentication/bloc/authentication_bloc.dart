@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -32,7 +33,10 @@ class AuthenticationBloc
   final ThemeBloc themeBloc;
 
   /// Used to authenticate with Twitter through a web view.
-  TwitterAuth twitterAuth;
+  TwitterAuth twitterWebviewAuth;
+
+  /// Used to authenticate with Twitter using the legacy TwitterKit SDK.
+  TwitterLogin twitterLegacyAuth;
 
   /// Contains the user id, token & secret for the current twitter session.
   ///

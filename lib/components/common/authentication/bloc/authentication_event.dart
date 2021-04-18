@@ -146,7 +146,12 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
     AuthenticationBloc bloc,
   }) async* {
     if (hasTwitterConfig) {
-      bloc.twitterAuth = TwitterAuth(
+      bloc.twitterWebviewAuth = TwitterAuth(
+        consumerKey: twitterConsumerKey,
+        consumerSecret: twitterConsumerSecret,
+      );
+
+      bloc.twitterLegacyAuth = TwitterLogin(
         consumerKey: twitterConsumerKey,
         consumerSecret: twitterConsumerSecret,
       );
@@ -194,7 +199,12 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
 
 /// Used to authenticate a user.
 class LoginEvent extends AuthenticationEvent {
-  const LoginEvent();
+  const LoginEvent({
+    @required this.webview,
+  });
+
+  /// Whether to use a webview to login.
+  final bool webview;
 
   static final Logger _log = Logger('LoginEvent');
 
@@ -211,11 +221,24 @@ class LoginEvent extends AuthenticationEvent {
         );
   }
 
-  Future<TwitterAuthResult> _authenticate(AuthenticationBloc bloc) async {
-    return bloc.twitterAuth.authenticateWithTwitter(
+  Future<TwitterAuthResult> _authenticateWithWebview(
+    AuthenticationBloc bloc,
+  ) async {
+    return bloc.twitterWebviewAuth.authenticateWithTwitter(
       webviewNavigation: _webviewNavigation,
       onExternalNavigation: launchUrl,
     );
+  }
+
+  Future<TwitterAuthResult> _authenticateWithLegacy(
+    AuthenticationBloc bloc,
+  ) async {
+    return bloc.twitterLegacyAuth
+        .authorize()
+        .then(_mapLegacyToAuthResult)
+        .catchError(
+          (dynamic e) => TwitterAuthResult(status: TwitterAuthStatus.failure),
+        );
   }
 
   @override
@@ -225,9 +248,16 @@ class LoginEvent extends AuthenticationEvent {
   }) async* {
     _log.fine('logging in');
 
+    assert(
+      bloc.twitterWebviewAuth != null && bloc.twitterLegacyAuth != null,
+      'A twitter api key is required for authentication',
+    );
+
     yield AwaitingAuthenticationState();
 
-    final TwitterAuthResult result = await _authenticate(bloc);
+    final TwitterAuthResult result = webview
+        ? await _authenticateWithWebview(bloc)
+        : await _authenticateWithLegacy(bloc);
 
     switch (result.status) {
       case TwitterAuthStatus.success:
@@ -310,4 +340,24 @@ class LogoutEvent extends AuthenticationEvent {
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }
+}
+
+TwitterAuthResult _mapLegacyToAuthResult(TwitterLoginResult legacy) {
+  switch (legacy?.status ?? TwitterLoginStatus.error) {
+    case TwitterLoginStatus.loggedIn:
+      return TwitterAuthResult(
+        status: TwitterAuthStatus.success,
+        session: TwitterAuthSession(
+          tokenSecret: legacy.session.secret,
+          token: legacy.session.token,
+          userId: legacy.session.userId,
+        ),
+      );
+    case TwitterLoginStatus.cancelledByUser:
+      return TwitterAuthResult(status: TwitterAuthStatus.userCancelled);
+    case TwitterLoginStatus.error:
+      return TwitterAuthResult(status: TwitterAuthStatus.failure);
+  }
+
+  return TwitterAuthResult(status: TwitterAuthStatus.failure);
 }
