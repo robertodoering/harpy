@@ -1,0 +1,4 @@
+Version 0.5.6
+
+· Fixed webview login with 2 factor authentication
+· Fixed keyboard in webview login doesn't allow clipboard access
