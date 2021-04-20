@@ -79,6 +79,7 @@ export 'screens/home/home_screen.dart';
 export 'screens/home/home_tab_customization/home_tab_customization.dart';
 export 'screens/home/home_tab_customization/model/home_tab_entry.dart';
 export 'screens/home/home_tab_customization/model/home_tab_model.dart';
+export 'screens/home/home_tab_customization/widgets/add_list_harpy_tab_card.dart';
 export 'screens/home/home_tab_customization/widgets/home_tab_reorder_list.dart';
 export 'screens/home/home_tab_customization/widgets/reorder_harpy_tab_card.dart';
 export 'screens/home/home_tab_view.dart';

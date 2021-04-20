@@ -147,11 +147,13 @@ class HarpyNavigator {
     });
   }
 
-  void pushListsScreen({
+  void pushShowListsScreen({
     String userId,
+    ValueChanged<TwitterListData> onListSelected,
   }) {
     pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
       'userId': userId,
+      'onListSelected': onListSelected,
     });
   }
 
@@ -203,6 +205,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case ShowListsScreen.route:
       screen = ShowListsScreen(
         userId: arguments['userId'],
+        onListSelected: arguments['onListSelected'],
       );
       break;
     case ListTimelineScreen.route:

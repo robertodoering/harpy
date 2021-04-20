@@ -9,11 +9,13 @@ class ReorderHarpyTabCard extends StatefulWidget {
     @required this.entry,
     @required this.index,
     @required this.onToggleVisibility,
+    @required this.onRemove,
   }) : super(key: ValueKey<String>(entry.id));
 
   final HomeTabEntry entry;
   final int index;
   final VoidCallback onToggleVisibility;
+  final VoidCallback onRemove;
 
   @override
   _ReorderHarpyTabCardState createState() => _ReorderHarpyTabCardState();
@@ -75,6 +77,30 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
     );
   }
 
+  Widget _buildToggleVisibilityIcon() {
+    return HarpyButton.flat(
+      padding: const EdgeInsets.all(HarpyTab.tabPadding)
+          .copyWith(right: HarpyTab.tabPadding / 2),
+      icon: Icon(
+        widget.entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+        size: HarpyTab.tabIconSize,
+      ),
+      onTap: widget.onToggleVisibility,
+    );
+  }
+
+  Widget _buildRemoveEntryIcon() {
+    return HarpyButton.flat(
+      padding: const EdgeInsets.all(HarpyTab.tabPadding)
+          .copyWith(right: HarpyTab.tabPadding / 2),
+      icon: const Icon(
+        CupertinoIcons.xmark,
+        size: HarpyTab.tabIconSize,
+      ),
+      onTap: widget.onRemove,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -99,17 +125,10 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
                 child: _buildTextField(theme),
               ),
             ),
-            HarpyButton.flat(
-              padding: const EdgeInsets.all(HarpyTab.tabPadding)
-                  .copyWith(right: HarpyTab.tabPadding / 2),
-              icon: Icon(
-                widget.entry.visible
-                    ? CupertinoIcons.eye
-                    : CupertinoIcons.eye_slash,
-                size: HarpyTab.tabIconSize,
-              ),
-              onTap: widget.onToggleVisibility,
-            ),
+            if (widget.entry.deletable)
+              _buildRemoveEntryIcon()
+            else
+              _buildToggleVisibilityIcon(),
             ReorderableDragStartListener(
               index: widget.index,
               child: Container(

@@ -8,11 +8,11 @@ part 'home_tab_entry.g.dart';
 @JsonSerializable()
 class HomeTabEntry extends Equatable {
   const HomeTabEntry({
-    this.id,
-    this.type,
-    this.icon,
-    this.name,
-    this.visible,
+    @required this.id,
+    @required this.type,
+    @required this.icon,
+    this.name = '',
+    this.visible = true,
   });
 
   factory HomeTabEntry.fromJson(Map<String, dynamic> json) =>
@@ -54,6 +54,8 @@ class HomeTabEntry extends Equatable {
 
   bool get valid => true; // todo
 
+  bool get deletable => type != HomeTabEntryType.defaultType.value;
+
   Map<String, dynamic> toJson() => _$HomeTabEntryToJson(this);
 
   HomeTabEntry copyWith({
@@ -70,5 +72,25 @@ class HomeTabEntry extends Equatable {
       name: name ?? this.name,
       visible: visible ?? this.visible,
     );
+  }
+}
+
+enum HomeTabEntryType {
+  defaultType,
+  list,
+}
+
+extension TypeExtension on HomeTabEntryType {
+  String get value {
+    switch (this) {
+      case HomeTabEntryType.defaultType:
+        return 'default';
+      case HomeTabEntryType.list:
+        return 'list';
+    }
+
+    assert(false, 'invalid type');
+
+    return 'none';
   }
 }

@@ -18,6 +18,7 @@ class HomeTabReorderList extends StatelessWidget {
         entry: model.value[index],
         index: index,
         onToggleVisibility: () => model.toggleVisible(index),
+        onRemove: () => model.remove(index),
       ),
     );
   }

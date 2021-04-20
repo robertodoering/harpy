@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/buttons/harpy_button.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
 
 class TwitterLists extends StatelessWidget {
-  const TwitterLists();
+  const TwitterLists({
+    this.onListSelected,
+  });
+
+  final ValueChanged<TwitterListData> onListSelected;
 
   Widget _itemBuilder(int index, List<TwitterListData> lists) {
     if (index.isEven) {
+      final TwitterListData list = lists[index ~/ 2];
+
       return TwitterListCard(
-        lists[index ~/ 2],
-        key: Key(lists[index ~/ 2].idStr),
+        list,
+        key: Key(list.idStr),
+        onSelected: onListSelected != null
+            ? () => onListSelected(list)
+            : () => app<HarpyNavigator>().pushListTimelineScreen(
+                  list: list,
+                ),
       );
     } else {
       return defaultVerticalSpacer;
