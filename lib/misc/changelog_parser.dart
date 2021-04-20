@@ -5,7 +5,7 @@ import 'package:harpy/harpy.dart';
 
 /// Parses the [ChangelogData] from a changelog file located in
 /// `android/fastlane/metadata/android/$flavor/en-US/changelogs/$versionCode.txt`.
-class ChangelogParser {
+class ChangelogParser with HarpyLogger {
   static const String linePrefix = '· ';
 
   /// Returns the [ChangelogData] for the current version.
@@ -35,10 +35,15 @@ class ChangelogParser {
       }
 
       final String headerString = changelogString.substring(0, entryStart);
+      final List<String> headerLines = _cleanEmptyLines(
+        headerString.split('\n'),
+      );
 
-      for (String line in headerString.split('\n')) {
-        line = line.trim();
-        if (line.isNotEmpty) {
+      for (int i = 0; i < headerLines.length; i++) {
+        final String line = headerLines[i].trim();
+
+        // only add empty lines if they are not the first or last line
+        if (line.isNotEmpty || i != 0 || i != headerLines.length - 1) {
           data.headerLines.add(line);
         }
       }
@@ -74,8 +79,10 @@ class ChangelogParser {
       }
 
       return data;
-    } catch (e) {
-      // changelog file not found
+    } on FlutterError {
+      // ignore asset not found exception (version has no changelog)
+    } catch (e, st) {
+      log.severe('error parsing changelog data', e, st);
       return null;
     }
   }
@@ -89,6 +96,29 @@ class ChangelogParser {
 
   ChangelogEntry _parseLine(String line) {
     return ChangelogEntry(line: line.trim());
+  }
+
+  List<String> _cleanEmptyLines(List<String> lines) {
+    lines = _trimLeadingLines(lines);
+    lines = _trimLeadingLines(lines.reversed.toList());
+    return lines.reversed.toList();
+  }
+
+  List<String> _trimLeadingLines(List<String> lines) {
+    final List<String> cleaned = <String>[];
+
+    bool ignore = true;
+    for (String line in lines) {
+      if (ignore && line.trim().isEmpty) {
+        continue;
+      }
+
+      ignore = false;
+
+      cleaned.add(line.trim());
+    }
+
+    return cleaned;
   }
 }
 

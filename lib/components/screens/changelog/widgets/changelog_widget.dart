@@ -22,10 +22,9 @@ class ChangelogWidget extends StatelessWidget {
   Widget _buildHeaderText() {
     return Column(
       children: <Widget>[
-        for (String headerLine in data.headerLines) ...<Widget>[
+        for (String headerLine in data.headerLines)
           Text(headerLine, textAlign: TextAlign.start),
-          const SizedBox(height: 12),
-        ],
+        const SizedBox(height: 12)
       ],
     );
   }
@@ -34,7 +33,11 @@ class ChangelogWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        icon,
+        Padding(
+          // move the icon down a bit to make up for the text's line height
+          padding: const EdgeInsets.only(top: 2),
+          child: icon,
+        ),
         const SizedBox(width: 24),
         Expanded(
           child: Column(
