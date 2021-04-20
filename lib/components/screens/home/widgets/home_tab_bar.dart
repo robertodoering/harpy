@@ -40,11 +40,8 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
             text: const Text('search'),
             cardColor: cardColor,
           ),
+          CustomizeHomeTab(cardColor: cardColor),
         ],
-        // todo: re-add when adding tab customization
-        // endWidgets: <Widget>[
-        //   AddHomeTab(cardColor: cardColor),
-        // ],
       ),
     );
   }
