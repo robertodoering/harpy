@@ -12,7 +12,7 @@ class HomeTabReorderList extends StatelessWidget {
     return ReorderableList(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: model.value.length,
+      itemCount: model.value.entries.length,
       onReorder: model.reorder,
       itemBuilder: (_, int index) => ReorderHarpyTabCard(
         index: index,

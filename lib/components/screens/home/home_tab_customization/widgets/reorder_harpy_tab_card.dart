@@ -8,7 +8,7 @@ class ReorderHarpyTabCard extends StatefulWidget {
   ReorderHarpyTabCard({
     @required this.index,
     @required this.model,
-  }) : super(key: ValueKey<HomeTabEntry>(model.value[index]));
+  }) : super(key: ValueKey<HomeTabEntry>(model.value.entries[index]));
 
   final int index;
   final HomeTabModel model;
@@ -20,7 +20,7 @@ class ReorderHarpyTabCard extends StatefulWidget {
 class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
   TextEditingController _controller;
 
-  HomeTabEntry get _entry => widget.model.value[widget.index];
+  HomeTabEntry get _entry => widget.model.value.entries[widget.index];
 
   @override
   void initState() {

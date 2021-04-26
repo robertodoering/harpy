@@ -6,32 +6,28 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
-class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
-  HomeTabModel() : super(<HomeTabEntry>[]) {
+class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
+    with HarpyLogger {
+  HomeTabModel() : super(HomeTabConfiguration.empty) {
     _initialize();
   }
 
   final HomeTabPreferences homeTabPreferences = app<HomeTabPreferences>();
 
   void _initialize() {
-    final String configurationJson = homeTabPreferences.homeTabEntries;
+    final String configurationJson = homeTabPreferences.homeTabConfiguration;
 
     if (configurationJson.isEmpty) {
       log.fine('no configuration exists');
 
-      value = defaultHomeTabEntries;
+      value = HomeTabConfiguration.defaultConfiguration;
     } else {
       try {
-        final List<dynamic> json = jsonDecode(configurationJson);
+        value = HomeTabConfiguration.fromJson(jsonDecode(configurationJson));
 
-        value = json
-            .whereType<Map<String, dynamic>>()
-            .map((Map<String, dynamic> json) => HomeTabEntry.fromJson(json))
-            .where((HomeTabEntry entry) => entry.valid)
-            .toList();
-
-        if (_defaultTabsCount != defaultHomeTabEntries.length) {
-          throw Exception('invalid default tabs count: $_defaultTabsCount, '
+        if (value.defaultTabsCount != defaultHomeTabEntries.length) {
+          throw Exception('invalid default tabs count: '
+              '${value.defaultTabsCount}, '
               'expected ${defaultHomeTabEntries.length}');
         }
 
@@ -39,7 +35,7 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
       } catch (e, st) {
         log.warning('invalid configuration: $configurationJson', e, st);
 
-        value = defaultHomeTabEntries;
+        value = HomeTabConfiguration.empty;
       }
     }
   }
@@ -50,13 +46,10 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   void reorder(int oldIndex, int newIndex) {
     log.fine('reordering from $oldIndex to $newIndex');
 
-    final HomeTabEntry entry = value[oldIndex];
-
+    final HomeTabEntry entry = value.entries[oldIndex];
     final int index = oldIndex < newIndex ? newIndex - 1 : newIndex;
 
-    value = value
-      ..removeAt(oldIndex)
-      ..insert(index, entry);
+    value = value.removeEntry(oldIndex).addEntry(entry, index);
 
     _persistValue();
   }
@@ -67,14 +60,12 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   void toggleVisible(int index) {
     log.fine('toggling visibility for $index');
 
-    final HomeTabEntry entry = value[index];
-    final List<HomeTabEntry> newValue = List<HomeTabEntry>.from(value);
+    final HomeTabEntry entry = value.entries[index];
 
-    newValue[index] = entry.copyWith(
-      visible: !entry.visible,
+    value = value.updateEntry(
+      index,
+      entry.copyWith(visible: !entry.visible),
     );
-
-    value = newValue;
 
     _persistValue();
   }
@@ -84,8 +75,8 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   /// Only has an effect if [HomeTabEntry.removable] returns `true` for the
   /// entry (e.g. when it's not a default entry that cannot be removed).
   void remove(int index) {
-    if (value[index].removable) {
-      value = List<HomeTabEntry>.from(value)..removeAt(index);
+    if (value.entries[index].removable) {
+      value = value.removeEntry(index);
     }
 
     _persistValue();
@@ -101,11 +92,11 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
     @required TwitterListData list,
     String icon,
   }) {
-    if (Harpy.isFree && _listTabsCount > 0) {
+    if (Harpy.isFree && value.listTabsCount > 0) {
       // can only add one list in harpy free (should be prevented in ui)
       assert(false, 'can only add one list in harpy free');
       return;
-    } else if (_listTabsCount > 4) {
+    } else if (value.listTabsCount > 4) {
       // can only add up to 5 lists (should be prevented in ui)
       assert(false, 'can only add up to 5 lists');
       return;
@@ -114,15 +105,14 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
     // randomize the icon if it's null
     icon ??= (HomeTabEntryIcon.iconNameMap.keys.toList()..shuffle()).first;
 
-    value = List<HomeTabEntry>.from(value)
-      ..add(
-        HomeTabEntry(
-          id: list.idStr,
-          type: HomeTabEntryType.list.value,
-          icon: icon,
-          name: list.name,
-        ),
-      );
+    value = value.addEntry(
+      HomeTabEntry(
+        id: list.idStr,
+        type: HomeTabEntryType.list.value,
+        icon: icon,
+        name: list.name,
+      ),
+    );
 
     _persistValue();
   }
@@ -136,33 +126,20 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
       return;
     }
 
-    value[index] = value[index].copyWith(icon: icon);
-    value = List<HomeTabEntry>.from(value);
+    value = value.updateEntry(
+      index,
+      value.entries[index].copyWith(icon: icon),
+    );
 
     _persistValue();
   }
 
-  /// Returns the count of entries in the configuration where the type is a
-  /// twitter list.
-  int get _listTabsCount => value
-      .where((HomeTabEntry entry) => entry.type == HomeTabEntryType.list.value)
-      .length;
-
-  /// Returns the count of entries in the configuration where the type is the
-  /// default type.
-  int get _defaultTabsCount => value
-      .where((HomeTabEntry entry) =>
-          entry.type == HomeTabEntryType.defaultType.value)
-      .length;
-
   /// Encodes the configuration saves it into the preferences.
   void _persistValue() {
     try {
-      homeTabPreferences.homeTabEntries = jsonEncode(
-        value.map((HomeTabEntry entry) => entry.toJson()).toList(),
-      );
+      homeTabPreferences.homeTabConfiguration = jsonEncode(value.toJson());
     } catch (e, st) {
-      // reset value?
+      value = HomeTabConfiguration.defaultConfiguration;
       log.severe(
         'failed saving home tab configuration into preferences',
         e,
