@@ -27,8 +27,7 @@ class AddListHomeTabCard extends StatelessWidget {
           onListSelected: (TwitterListData list) {
             Navigator.of(context).maybePop();
 
-            // todo: select icon for new entry (maybe a random one by default)
-            model.addList(list: list, icon: '');
+            model.addList(list: list);
           },
         ),
         borderRadius: kDefaultBorderRadius,

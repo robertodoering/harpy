@@ -54,7 +54,7 @@ class HomeTabEntry extends Equatable {
 
   bool get valid => true; // todo
 
-  bool get deletable => type != HomeTabEntryType.defaultType.value;
+  bool get removable => type != HomeTabEntryType.defaultType.value;
 
   Map<String, dynamic> toJson() => _$HomeTabEntryToJson(this);
 

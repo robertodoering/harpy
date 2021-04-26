@@ -7,6 +7,8 @@ import 'package:harpy/components/screens/home/home_tab_customization/model/defau
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
+// todo: instead of using a list as a value, use a custom object so that we
+//  don't have to copy the list every time it changes
 class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   HomeTabModel() : super(<HomeTabEntry>[]) {
     _initialize();
@@ -72,7 +74,7 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   }
 
   void remove(int index) {
-    if (value[index].deletable) {
+    if (value[index].removable) {
       value = List<HomeTabEntry>.from(value)..removeAt(index);
     }
 
@@ -81,7 +83,7 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
 
   void addList({
     @required TwitterListData list,
-    @required String icon,
+    String icon,
   }) {
     if (Harpy.isFree && _listTabsCount > 0) {
       // can only add one list in harpy free (should be prevented in ui)
@@ -92,6 +94,9 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
       assert(false, 'can only add up to 5 lists');
       return;
     }
+
+    // randomize the icon if it's null
+    icon ??= (HomeTabEntryIcon.iconNameMap.keys.toList()..shuffle()).first;
 
     // todo: prevent adding the same list twice
 
@@ -108,11 +113,25 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
     _persistValue();
   }
 
+  void changeIcon(int index, String icon) {
+    if (icon == null) {
+      // icon didn't change or user cancelled the icon change
+      return;
+    }
+
+    value[index] = value[index].copyWith(icon: icon);
+    value = List<HomeTabEntry>.from(value);
+
+    _persistValue();
+  }
+
   void _persistValue() {
     try {
       homeTabPreferences.homeTabEntries = jsonEncode(
-          value.map((HomeTabEntry entry) => entry.toJson()).toList());
+        value.map((HomeTabEntry entry) => entry.toJson()).toList(),
+      );
     } catch (e, st) {
+      // reset value?
       log.severe(
         'failed saving home tab configuration into preferences',
         e,

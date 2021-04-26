@@ -15,10 +15,8 @@ class HomeTabReorderList extends StatelessWidget {
       itemCount: model.value.length,
       onReorder: model.reorder,
       itemBuilder: (_, int index) => ReorderHarpyTabCard(
-        entry: model.value[index],
         index: index,
-        onToggleVisibility: () => model.toggleVisible(index),
-        onRemove: () => model.remove(index),
+        model: model,
       ),
     );
   }

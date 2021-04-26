@@ -6,16 +6,12 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class ReorderHarpyTabCard extends StatefulWidget {
   ReorderHarpyTabCard({
-    @required this.entry,
     @required this.index,
-    @required this.onToggleVisibility,
-    @required this.onRemove,
-  }) : super(key: ValueKey<String>(entry.id));
+    @required this.model,
+  }) : super(key: ValueKey<HomeTabEntry>(model.value[index]));
 
-  final HomeTabEntry entry;
   final int index;
-  final VoidCallback onToggleVisibility;
-  final VoidCallback onRemove;
+  final HomeTabModel model;
 
   @override
   _ReorderHarpyTabCardState createState() => _ReorderHarpyTabCardState();
@@ -24,11 +20,13 @@ class ReorderHarpyTabCard extends StatefulWidget {
 class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
   TextEditingController _controller;
 
+  HomeTabEntry get _entry => widget.model.value[widget.index];
+
   @override
   void initState() {
     super.initState();
 
-    _controller = TextEditingController(text: widget.entry.name);
+    _controller = TextEditingController(text: _entry.name);
   }
 
   @override
@@ -36,32 +34,6 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
     super.dispose();
 
     _controller.dispose();
-  }
-
-  Widget _buildEntryIcon(ThemeData theme) {
-    IconData iconData;
-
-    // todo: map icon name to icon data
-
-    if (widget.entry.icon == 'home') {
-      iconData = CupertinoIcons.home;
-    } else if (widget.entry.icon == 'media') {
-      iconData = CupertinoIcons.photo;
-    } else if (widget.entry.icon == 'search') {
-      iconData = CupertinoIcons.search;
-    }
-
-    if (iconData != null) {
-      return Icon(
-        iconData,
-        size: HarpyTab.tabIconSize,
-      );
-    } else {
-      return Text(
-        widget.entry.icon,
-        style: theme.textTheme.subtitle1,
-      );
-    }
   }
 
   Widget _buildTextField(ThemeData theme) {
@@ -82,10 +54,10 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
       padding: const EdgeInsets.all(HarpyTab.tabPadding)
           .copyWith(right: HarpyTab.tabPadding / 2),
       icon: Icon(
-        widget.entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+        _entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         size: HarpyTab.tabIconSize,
       ),
-      onTap: widget.onToggleVisibility,
+      onTap: () => widget.model.toggleVisible(widget.index),
     );
   }
 
@@ -97,7 +69,7 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
         CupertinoIcons.xmark,
         size: HarpyTab.tabIconSize,
       ),
-      onTap: widget.onRemove,
+      onTap: () => widget.model.remove(widget.index),
     );
   }
 
@@ -107,15 +79,31 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
-      opacity: widget.entry.visible ? 1 : .6,
+      opacity: _entry.visible ? 1 : .6,
       child: Card(
         margin: EdgeInsets.only(bottom: defaultSmallPaddingValue),
         child: Row(
           children: <Widget>[
-            HarpyButton.flat(
-              padding: const EdgeInsets.all(HarpyTab.tabPadding),
-              icon: _buildEntryIcon(theme),
-              onTap: () {}, // todo: open change icon dialog
+            Padding(
+              padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
+              child: HarpyButton.raised(
+                padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
+                icon: HomeTabEntryIcon(
+                  _entry.icon,
+                  size: HarpyTab.tabIconSize,
+                ),
+                onTap: () async {
+                  widget.model.changeIcon(
+                    widget.index,
+                    await showDialog<String>(
+                      context: context,
+                      builder: (_) => ChangeHomeTabEntryIconDialog(
+                        entry: _entry,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             Flexible(
               child: Padding(
@@ -125,7 +113,7 @@ class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
                 child: _buildTextField(theme),
               ),
             ),
-            if (widget.entry.deletable)
+            if (_entry.removable)
               _buildRemoveEntryIcon()
             else
               _buildToggleVisibilityIcon(),
