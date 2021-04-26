@@ -3,12 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/home/home_tab_customization/model/default_home_tab_entries.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 
-// todo: instead of using a list as a value, use a custom object so that we
-//  don't have to copy the list every time it changes
 class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
   HomeTabModel() : super(<HomeTabEntry>[]) {
     _initialize();
@@ -116,8 +113,6 @@ class HomeTabModel extends ValueNotifier<List<HomeTabEntry>> with HarpyLogger {
 
     // randomize the icon if it's null
     icon ??= (HomeTabEntryIcon.iconNameMap.keys.toList()..shuffle()).first;
-
-    // todo: prevent adding the same list twice
 
     value = List<HomeTabEntry>.from(value)
       ..add(

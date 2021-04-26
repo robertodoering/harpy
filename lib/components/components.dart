@@ -77,6 +77,7 @@ export 'screens/following_followers/following/following_screen.dart';
 export 'screens/home/home_media_timeline/home_media_timeline.dart';
 export 'screens/home/home_screen.dart';
 export 'screens/home/home_tab_customization/home_tab_customization.dart';
+export 'screens/home/home_tab_customization/model/default_home_tab_entries.dart';
 export 'screens/home/home_tab_customization/model/home_tab_entry.dart';
 export 'screens/home/home_tab_customization/model/home_tab_model.dart';
 export 'screens/home/home_tab_customization/widgets/add_list_home_tab_card.dart';
