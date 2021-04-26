@@ -49,7 +49,7 @@ class UserProfileContent extends StatelessWidget {
                   ),
                   if (isAuthenticatedUser)
                     const HarpyTab(
-                      icon: Text('@'),
+                      icon: Icon(CupertinoIcons.at),
                       text: Text('mentions'),
                     ),
                   const HarpyTab(

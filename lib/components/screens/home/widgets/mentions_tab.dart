@@ -17,7 +17,7 @@ class MentionsTab extends StatelessWidget {
     final MentionsTimelineState state = bloc.state;
 
     final Widget child = HarpyTab(
-      icon: const Text('@'),
+      icon: const Icon(CupertinoIcons.at),
       text: const Text('mentions'),
       cardColor: cardColor,
     );
