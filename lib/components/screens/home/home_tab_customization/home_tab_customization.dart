@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 
 class HomeTabCustomization extends StatelessWidget {
@@ -39,7 +38,7 @@ class HomeTabCustomization extends StatelessWidget {
                   _buildInfoText(theme),
                   defaultVerticalSpacer,
                   const HomeTabReorderList(),
-                  const AddListHarpyTabCard(),
+                  const AddListHomeTabCard(),
                 ],
               ),
             ),

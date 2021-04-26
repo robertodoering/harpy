@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 
 // todo: hide this when: is harpy pro and already added 5 lists
 
-class AddListHarpyTabCard extends StatelessWidget {
-  const AddListHarpyTabCard();
+class AddListHomeTabCard extends StatelessWidget {
+  const AddListHomeTabCard();
 
   @override
   Widget build(BuildContext context) {
