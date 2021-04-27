@@ -30,6 +30,21 @@ class HomeTabConfiguration extends Equatable {
         entries,
       ];
 
+  int get tabsCount => entries.length;
+
+  /// Returns the count of entries in the configuration where the type is a
+  /// twitter list.
+  int get listTabsCount => entries
+      .where((HomeTabEntry entry) => entry.type == HomeTabEntryType.list.value)
+      .length;
+
+  /// Returns the count of entries in the configuration where the type is the
+  /// default type.
+  int get defaultTabsCount => entries
+      .where((HomeTabEntry entry) =>
+          entry.type == HomeTabEntryType.defaultType.value)
+      .length;
+
   Map<String, dynamic> toJson() => _$HomeTabConfigurationToJson(this);
 
   HomeTabConfiguration addEntry(HomeTabEntry entry, [int index]) {
@@ -54,17 +69,4 @@ class HomeTabConfiguration extends Equatable {
       entries: newEntries,
     );
   }
-
-  /// Returns the count of entries in the configuration where the type is a
-  /// twitter list.
-  int get listTabsCount => entries
-      .where((HomeTabEntry entry) => entry.type == HomeTabEntryType.list.value)
-      .length;
-
-  /// Returns the count of entries in the configuration where the type is the
-  /// default type.
-  int get defaultTabsCount => entries
-      .where((HomeTabEntry entry) =>
-          entry.type == HomeTabEntryType.defaultType.value)
-      .length;
 }

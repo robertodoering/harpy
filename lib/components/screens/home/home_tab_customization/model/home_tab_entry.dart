@@ -52,9 +52,11 @@ class HomeTabEntry extends Equatable {
         visible,
       ];
 
-  bool get valid => true; // todo
+  bool get valid => true; // todo: if default, check that id matches given id
 
   bool get removable => type != HomeTabEntryType.defaultType.value;
+
+  bool get hasName => name != null && name.isNotEmpty;
 
   Map<String, dynamic> toJson() => _$HomeTabEntryToJson(this);
 
