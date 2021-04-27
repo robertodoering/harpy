@@ -4,20 +4,20 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_tab/harpy_tab.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-class ReorderHarpyTabCard extends StatefulWidget {
-  ReorderHarpyTabCard({
+class HomeTabReorderCard extends StatefulWidget {
+  HomeTabReorderCard({
     @required this.index,
     @required this.model,
-  }) : super(key: ValueKey<HomeTabEntry>(model.value.entries[index]));
+  }) : super(key: ValueKey<String>(model.value.entries[index].id));
 
   final int index;
   final HomeTabModel model;
 
   @override
-  _ReorderHarpyTabCardState createState() => _ReorderHarpyTabCardState();
+  _HomeTabReorderCardState createState() => _HomeTabReorderCardState();
 }
 
-class _ReorderHarpyTabCardState extends State<ReorderHarpyTabCard> {
+class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   TextEditingController _controller;
 
   HomeTabEntry get _entry => widget.model.value.entries[widget.index];
