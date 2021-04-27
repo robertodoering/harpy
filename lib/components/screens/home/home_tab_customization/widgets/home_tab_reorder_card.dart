@@ -46,6 +46,10 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         isDense: true,
       ),
       style: theme.textTheme.subtitle1,
+      onChanged: (String value) => widget.model.changeName(
+        widget.index,
+        value,
+      ),
       // decoration: InputDecoration(),
     );
   }

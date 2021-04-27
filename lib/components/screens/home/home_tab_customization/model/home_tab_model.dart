@@ -106,7 +106,10 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   /// Only has an effect if [HomeTabEntry.removable] returns `true` for the
   /// entry (e.g. when it's not a default entry that cannot be removed).
   void remove(int index) {
-    if (value.entries[index].removable) {
+    if (Harpy.isFree) {
+      // reset to default configuration
+      value = HomeTabConfiguration.defaultConfiguration;
+    } else if (value.entries[index].removable) {
       value = value.removeEntry(index);
     }
 
@@ -125,6 +128,11 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   }) {
     if (!canAddMoreLists) {
       return;
+    }
+
+    if (Harpy.isFree) {
+      // reset to default configuration before adding list
+      value = HomeTabConfiguration.defaultConfiguration;
     }
 
     // randomize the icon if it's null
@@ -164,7 +172,19 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     }
   }
 
-  /// Encodes the configuration saves it into the preferences.
+  /// Changes the name of an entry in the configuration.
+  void changeName(int index, String name) {
+    value = value.updateEntry(
+      index,
+      value.entries[index].copyWith(name: name),
+    );
+
+    if (Harpy.isPro) {
+      _persistValue();
+    }
+  }
+
+  /// Encodes the configuration and saves it into the preferences.
   void _persistValue() {
     try {
       homeTabPreferences.homeTabConfiguration = jsonEncode(value.toJson());
