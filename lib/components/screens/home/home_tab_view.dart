@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/material/tab_controller.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
-
 // todo: when switching tabs in the home tab view, consider scrolling the
 //  content automatically if it is otherwise covered by the tab bar
 
@@ -39,7 +39,7 @@ class HomeTabView extends StatelessWidget {
 
     return DefaultTabController(
       // custom tabs & customization tab
-      length: model.value.visibleTabsCount + 1,
+      length: model.value.visibleTabsCount,
       child: Stack(
         children: <Widget>[
           NestedScrollView(
@@ -56,7 +56,6 @@ class HomeTabView extends StatelessWidget {
               children: <Widget>[
                 for (int i = 0; i < model.value.visibleEntries.length; i++)
                   _mapEntryContent(i, model.value.visibleEntries[i]),
-                const HomeTabCustomization(),
               ],
             ),
           ),

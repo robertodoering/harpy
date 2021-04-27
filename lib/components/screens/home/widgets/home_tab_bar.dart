@@ -42,6 +42,8 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
         tabs: <Widget>[
           for (HomeTabEntry entry in model.value.visibleEntries)
             _mapEntryTabs(entry, cardColor),
+        ],
+        endWidgets: <Widget>[
           CustomizeHomeTab(cardColor: cardColor),
         ],
       ),

@@ -164,6 +164,14 @@ class HarpyNavigator {
       'list': list,
     });
   }
+
+  void pushHomeTabCustomizationScreen({
+    @required HomeTabModel model,
+  }) {
+    pushNamed(HomeTabCustomizationScreen.route, arguments: <String, dynamic>{
+      'model': model,
+    });
+  }
 }
 
 /// [onGenerateRoute] is called whenever a new named route is being pushed to
@@ -262,6 +270,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case TweetSearchScreen.route:
       screen = TweetSearchScreen(
         initialSearchQuery: arguments['initialSearchQuery'],
+      );
+      break;
+    case HomeTabCustomizationScreen.route:
+      screen = HomeTabCustomizationScreen(
+        model: arguments['model'],
       );
       break;
     case HomeScreen.route:

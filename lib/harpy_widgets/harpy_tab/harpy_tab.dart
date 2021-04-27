@@ -63,7 +63,7 @@ class _HarpyTabState extends State<HarpyTab>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _animationController.value = HarpyTabScope.of(context).animationValue;
+    _animationController.value = HarpyTabScope.of(context)?.animationValue;
 
     final ThemeData theme = Theme.of(context);
 
