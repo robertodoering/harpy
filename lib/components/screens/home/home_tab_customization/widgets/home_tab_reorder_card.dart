@@ -27,6 +27,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
     super.initState();
 
     _controller = TextEditingController(text: _entry.name);
+    // todo: rename on change
   }
 
   @override

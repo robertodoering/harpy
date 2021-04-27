@@ -9,16 +9,18 @@ class Bubbled extends StatelessWidget {
     @required this.child,
     this.bubble,
     this.bubbleOffset,
+    this.alignment = Alignment.topRight,
   });
 
   final Widget child;
   final Widget bubble;
   final Offset bubbleOffset;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.topRight,
+      alignment: alignment,
       children: <Widget>[
         child,
         if (bubble != null && bubbleOffset != null)

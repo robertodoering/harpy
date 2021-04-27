@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
@@ -39,25 +40,34 @@ class HomeTabCustomizationScreen extends StatelessWidget {
         body: GestureDetector(
           // remove focus on background tap
           onTap: () => removeFocus(context),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverPadding(
-                padding: DefaultEdgeInsets.all(),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    <Widget>[
-                      _buildInfoText(theme),
-                      defaultVerticalSpacer,
-                      const HomeTabReorderList(),
-                      const AddListHomeTabCard(),
-                    ],
+          child: Builder(
+            builder: (BuildContext context) {
+              final HomeTabModel model = context.watch<HomeTabModel>();
+
+              return CustomScrollView(
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: DefaultEdgeInsets.all(),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        <Widget>[
+                          _buildInfoText(theme),
+                          defaultVerticalSpacer,
+                          const HomeTabReorderList(),
+                          if (model.value.canAddMoreLists)
+                            const AddListHomeTabCard()
+                          else if (Harpy.isFree)
+                            const AddListHomeTabCard(proDisabled: true)
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: mediaQuery.padding.bottom),
-              ),
-            ],
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: mediaQuery.padding.bottom),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

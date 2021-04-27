@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'home_tab_configuration.g.dart';
@@ -36,6 +37,13 @@ class HomeTabConfiguration extends Equatable {
   int get visibleTabsCount => visibleEntries.length;
 
   bool get canHideMoreEntries => visibleEntries.length > 1;
+
+  /// Whether the user can add more lists.
+  ///
+  /// In the free version, only one list can be added.
+  /// In the pro version, up to 5 lists can be added.
+  bool get canAddMoreLists =>
+      Harpy.isFree && listTabsCount == 0 || Harpy.isPro && listTabsCount < 5;
 
   /// Returns the count of entries in the configuration where the type is a
   /// twitter list.

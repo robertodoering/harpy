@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy.dart';
 
 class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     with HarpyLogger {
@@ -92,13 +91,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     @required TwitterListData list,
     String icon,
   }) {
-    if (Harpy.isFree && value.listTabsCount > 0) {
-      // can only add one list in harpy free (should be prevented in ui)
-      assert(false, 'can only add one list in harpy free');
-      return;
-    } else if (value.listTabsCount > 4) {
-      // can only add up to 5 lists (should be prevented in ui)
-      assert(false, 'can only add up to 5 lists');
+    if (!value.canAddMoreLists) {
       return;
     }
 
