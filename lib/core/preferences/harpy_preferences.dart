@@ -122,5 +122,11 @@ class HarpyPreferences {
     _preferences.setStringList(_key(key, prefix), value);
   }
 
-  void remove(String key) => _preferences.remove(key);
+  void remove(
+    String key, {
+    bool prefix = false,
+  }) {
+    _log.fine('remove ${_key(key, prefix)}');
+    _preferences.remove(_key(key, prefix));
+  }
 }
