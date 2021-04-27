@@ -22,6 +22,9 @@ class DownloadService {
 
   Future<void> initialize() async {
     await FlutterDownloader.initialize(debug: !kReleaseMode);
+    // register an empty callback to fix an issue in the flutter_download
+    // package
+    FlutterDownloader.registerCallback(_emptyCallback);
   }
 
   Future<void> download({
@@ -59,3 +62,5 @@ class DownloadService {
     }
   }
 }
+
+void _emptyCallback(String id, DownloadTaskStatus status, int progress) {}

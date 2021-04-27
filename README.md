@@ -23,6 +23,11 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=F2091C"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commit-activity/m/robertodoering/harpy?color=FD0A04"/></a>
 </p>
+<p align="center">
+  <a href="https://github.com/Solido/awesome-flutter">
+   <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true"/>
+  </a>
+</p>
 
 <p align="center">
 Harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
