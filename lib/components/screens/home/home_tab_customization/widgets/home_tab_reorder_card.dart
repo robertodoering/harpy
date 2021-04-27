@@ -57,7 +57,10 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         _entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         size: HarpyTab.tabIconSize,
       ),
-      onTap: () => widget.model.toggleVisible(widget.index),
+      // prevent hiding the last entry
+      onTap: !widget.model.value.canHideMoreEntries && _entry.visible
+          ? null
+          : () => widget.model.toggleVisible(widget.index),
     );
   }
 

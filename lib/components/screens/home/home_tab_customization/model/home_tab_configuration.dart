@@ -35,6 +35,8 @@ class HomeTabConfiguration extends Equatable {
 
   int get visibleTabsCount => visibleEntries.length;
 
+  bool get canHideMoreEntries => visibleEntries.length > 1;
+
   /// Returns the count of entries in the configuration where the type is a
   /// twitter list.
   int get listTabsCount => entries
