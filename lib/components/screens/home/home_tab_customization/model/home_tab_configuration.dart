@@ -35,14 +35,14 @@ class HomeTabConfiguration extends Equatable {
   HomeTabConfiguration addEntry(HomeTabEntry entry, [int index]) {
     return HomeTabConfiguration(
       entries: index != null
-          ? (entries..insert(index, entry))
-          : (entries..add(entry)),
+          ? (List<HomeTabEntry>.of(entries)..insert(index, entry))
+          : (List<HomeTabEntry>.of(entries)..add(entry)),
     );
   }
 
   HomeTabConfiguration removeEntry(int index) {
     return HomeTabConfiguration(
-      entries: entries..removeAt(index),
+      entries: List<HomeTabEntry>.of(entries)..removeAt(index),
     );
   }
 
