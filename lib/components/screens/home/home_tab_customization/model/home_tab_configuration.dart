@@ -30,7 +30,10 @@ class HomeTabConfiguration extends Equatable {
         entries,
       ];
 
-  int get tabsCount => entries.length;
+  List<HomeTabEntry> get visibleEntries =>
+      entries.where((HomeTabEntry entry) => entry.visible).toList();
+
+  int get visibleTabsCount => visibleEntries.length;
 
   /// Returns the count of entries in the configuration where the type is a
   /// twitter list.
