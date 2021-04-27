@@ -20,7 +20,7 @@ List<HomeTabEntry> defaultHomeTabEntries = <HomeTabEntry>[
   HomeTabEntry(
     id: 'mentions',
     type: HomeTabEntryType.defaultType.value,
-    icon: '@',
+    icon: 'mentions',
     name: 'mentions',
     visible: true,
   ),

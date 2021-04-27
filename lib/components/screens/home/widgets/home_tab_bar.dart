@@ -16,7 +16,10 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
   Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
     if (entry.type == HomeTabEntryType.defaultType.value &&
         entry.id == 'mentions') {
-      return MentionsTab(cardColor: cardColor);
+      return MentionsTab(
+        entry: entry,
+        cardColor: cardColor,
+      );
     } else {
       return HarpyTab(
         icon: HomeTabEntryIcon(entry.icon),
