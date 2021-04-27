@@ -81,7 +81,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                           _buildInfoText(theme),
                           defaultVerticalSpacer,
                           const HomeTabReorderList(),
-                          if (model.value.canAddMoreLists)
+                          if (model.canAddMoreLists)
                             const AddListHomeTabCard()
                           else if (Harpy.isFree)
                             const AddListHomeTabCard(proDisabled: true)

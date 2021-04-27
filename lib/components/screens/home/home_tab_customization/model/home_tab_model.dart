@@ -14,6 +14,34 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
   final HomeTabPreferences homeTabPreferences = app<HomeTabPreferences>();
 
+  List<HomeTabEntry> get visibleEntries =>
+      value.entries.where((HomeTabEntry entry) => entry.visible).toList();
+
+  /// The amount of tabs that are not hidden.
+  int get visibleTabsCount => visibleEntries.length;
+
+  bool get canHideMoreEntries => visibleEntries.length > 1;
+
+  /// Whether the user can add more lists.
+  ///
+  /// In the free version, only one list can be added.
+  /// In the pro version, up to 10 lists can be added.
+  bool get canAddMoreLists =>
+      Harpy.isFree && listTabsCount == 0 || Harpy.isPro && listTabsCount < 10;
+
+  /// Returns the count of entries in the configuration where the type is a
+  /// twitter list.
+  int get listTabsCount => value.entries
+      .where((HomeTabEntry entry) => entry.type == HomeTabEntryType.list.value)
+      .length;
+
+  /// Returns the count of entries in the configuration where the type is the
+  /// default type.
+  int get defaultTabsCount => value.entries
+      .where((HomeTabEntry entry) =>
+          entry.type == HomeTabEntryType.defaultType.value)
+      .length;
+
   void initialize() {
     final String configurationJson = homeTabPreferences.homeTabConfiguration;
 
@@ -25,9 +53,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       try {
         value = HomeTabConfiguration.fromJson(jsonDecode(configurationJson));
 
-        if (value.defaultTabsCount != defaultHomeTabEntries.length) {
-          throw Exception('invalid default tabs count: '
-              '${value.defaultTabsCount}, '
+        if (defaultTabsCount != defaultHomeTabEntries.length) {
+          throw Exception('invalid default tabs count: $defaultTabsCount, '
               'expected ${defaultHomeTabEntries.length}');
         }
 
@@ -91,12 +118,12 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   /// When [icon] is `null`, a random icon will be selected.
   ///
   /// Users of harpy free can only have one list at a time.
-  /// Users of harpy pro can have up to 5 lists at a time.
+  /// Users of harpy pro can have up to 10 lists at a time.
   void addList({
     @required TwitterListData list,
     String icon,
   }) {
-    if (!value.canAddMoreLists) {
+    if (!canAddMoreLists) {
       return;
     }
 

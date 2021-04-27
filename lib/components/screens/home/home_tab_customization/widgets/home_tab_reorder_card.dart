@@ -59,7 +59,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         size: HarpyTab.tabIconSize,
       ),
       // prevent hiding the last entry
-      onTap: !widget.model.value.canHideMoreEntries && _entry.visible
+      onTap: !widget.model.canHideMoreEntries && _entry.visible
           ? null
           : () => widget.model.toggleVisible(widget.index),
     );

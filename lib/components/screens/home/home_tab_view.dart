@@ -38,8 +38,7 @@ class HomeTabView extends StatelessWidget {
     final HomeTabModel model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
-      // custom tabs & customization tab
-      length: model.value.visibleTabsCount,
+      length: model.visibleTabsCount,
       child: Stack(
         children: <Widget>[
           NestedScrollView(
@@ -54,8 +53,8 @@ class HomeTabView extends StatelessWidget {
             ],
             body: TabBarView(
               children: <Widget>[
-                for (int i = 0; i < model.value.visibleEntries.length; i++)
-                  _mapEntryContent(i, model.value.visibleEntries[i]),
+                for (int i = 0; i < model.visibleEntries.length; i++)
+                  _mapEntryContent(i, model.visibleEntries[i]),
               ],
             ),
           ),
