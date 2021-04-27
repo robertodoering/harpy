@@ -4,16 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 
 class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     with HarpyLogger {
   HomeTabModel() : super(HomeTabConfiguration.empty) {
-    _initialize();
+    initialize();
   }
 
   final HomeTabPreferences homeTabPreferences = app<HomeTabPreferences>();
 
-  void _initialize() {
+  void initialize() {
     final String configurationJson = homeTabPreferences.homeTabConfiguration;
 
     if (configurationJson.isEmpty) {
@@ -34,7 +35,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       } catch (e, st) {
         log.warning('invalid configuration: $configurationJson', e, st);
 
-        value = HomeTabConfiguration.empty;
+        value = HomeTabConfiguration.defaultConfiguration;
       }
     }
   }
@@ -50,7 +51,9 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     value = value.removeEntry(oldIndex).addEntry(entry, index);
 
-    _persistValue();
+    if (Harpy.isPro) {
+      _persistValue();
+    }
   }
 
   /// Toggles the visibility of an entry in the configuration.
@@ -66,7 +69,9 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       entry.copyWith(visible: !entry.visible),
     );
 
-    _persistValue();
+    if (Harpy.isPro) {
+      _persistValue();
+    }
   }
 
   /// Removes an entry from the configuration.
@@ -119,12 +124,17 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       return;
     }
 
+    final HomeTabEntry entry = value.entries[index];
+
     value = value.updateEntry(
       index,
-      value.entries[index].copyWith(icon: icon),
+      entry.copyWith(icon: icon),
     );
 
-    _persistValue();
+    if (Harpy.isPro ||
+        Harpy.isFree && entry.type == HomeTabEntryType.list.value) {
+      _persistValue();
+    }
   }
 
   /// Encodes the configuration saves it into the preferences.
