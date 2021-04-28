@@ -69,6 +69,10 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     }
   }
 
+  void setToDefault() {
+    value = HomeTabConfiguration.defaultConfiguration;
+  }
+
   /// Changes the ordering of the entries in the configuration.
   ///
   /// Only available for harpy pro.
