@@ -30,6 +30,13 @@ class HarpyProCard extends StatelessWidget {
 
     final TextStyle textStyle = theme.textTheme.subtitle2.copyWith(
       color: Colors.white,
+      shadows: <Shadow>[
+        const Shadow(
+          color: Colors.black26,
+          offset: Offset(2, 2),
+          blurRadius: 4,
+        ),
+      ],
     );
 
     return Material(
@@ -45,8 +52,9 @@ class HarpyProCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: <Color>[
-                Color(0xff40148b),
-                Color(0xff880E4F),
+                Color(0xff8B00FD),
+                Color(0xffBC0492),
+                Color(0xffFD0A04),
               ],
             ),
           ),
@@ -100,9 +108,11 @@ class _HarpyProCardPainter extends CustomPainter {
         Offset.zero,
         Offset(size.width, size.height),
         const <Color>[
-          Color(0xaa880E4F),
-          Color(0xaa40148b),
+          Color(0x77FD0A04),
+          Color(0x77BC0492),
+          Color(0x778B00FD),
         ],
+        <double>[0, .5, 1],
       );
 
     final double width1 = size.width * 1 / 3;
