@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_tab/harpy_tab.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -65,7 +66,10 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       // prevent hiding the last entry
       onTap: !widget.model.canHideMoreEntries && _entry.visible
           ? null
-          : () => widget.model.toggleVisible(widget.index),
+          : () {
+              HapticFeedback.lightImpact();
+              widget.model.toggleVisible(widget.index);
+            },
     );
   }
 
@@ -77,7 +81,10 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         CupertinoIcons.xmark,
         size: HarpyTab.tabIconSize,
       ),
-      onTap: () => widget.model.remove(widget.index),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        widget.model.remove(widget.index);
+      },
     );
   }
 
@@ -108,7 +115,13 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
                       builder: (_) => ChangeHomeTabEntryIconDialog(
                         entry: _entry,
                       ),
-                    ),
+                    ).then((String value) {
+                      if (value != null && value.isNotEmpty) {
+                        HapticFeedback.lightImpact();
+                      }
+
+                      return value;
+                    }),
                   );
                 },
               ),
