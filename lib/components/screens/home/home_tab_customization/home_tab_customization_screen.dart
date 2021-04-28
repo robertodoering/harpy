@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
@@ -74,6 +75,24 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
     );
   }
 
+  Widget _buildAction() {
+    return CustomPopupMenuButton<void>(
+      icon: const Icon(CupertinoIcons.ellipsis_vertical),
+      onSelected: (_) {
+        HapticFeedback.lightImpact();
+        widget.model.setToDefault();
+      },
+      itemBuilder: (BuildContext context) {
+        return <PopupMenuEntry<void>>[
+          const HarpyPopupMenuItem<void>(
+            value: 0,
+            text: Text('reset to default'),
+          ),
+        ];
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -83,6 +102,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       value: widget.model,
       child: HarpyScaffold(
         title: 'home customization',
+        actions: <Widget>[_buildAction()],
         body: GestureDetector(
           // remove focus on background tap
           onTap: () => removeFocus(context),
