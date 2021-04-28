@@ -17,10 +17,13 @@ class CustomizeHomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     final Widget child = HarpyButton.flat(
       padding: const EdgeInsets.all(HarpyTab.tabPadding - 2),
       icon: const Icon(FeatherIcons.settings),
       iconSize: HarpyTab.tabIconSize + 2,
+      foregroundColor: theme.iconTheme.color.withOpacity(.8),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
         model: context.read<HomeTabModel>(),
       ),
