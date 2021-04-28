@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:harpy/components/components.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'home_tab_entry.g.dart';
@@ -52,7 +53,15 @@ class HomeTabEntry extends Equatable {
         visible,
       ];
 
-  bool get valid => true; // todo: if default, check that id matches given id
+  bool get valid {
+    if (type == HomeTabEntryType.defaultType.value) {
+      return defaultHomeTabEntries
+          .where((HomeTabEntry entry) => entry.id == id)
+          .isNotEmpty;
+    } else {
+      return true;
+    }
+  }
 
   bool get removable => type != HomeTabEntryType.defaultType.value;
 

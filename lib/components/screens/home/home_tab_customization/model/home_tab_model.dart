@@ -56,6 +56,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
         if (defaultTabsCount != defaultHomeTabEntries.length) {
           throw Exception('invalid default tabs count: $defaultTabsCount, '
               'expected ${defaultHomeTabEntries.length}');
+        } else if (value.entries.any((HomeTabEntry entry) => !entry.valid)) {
+          throw Exception('invalid entry in configuration');
         }
 
         log.fine('initialized home tab configuration');
