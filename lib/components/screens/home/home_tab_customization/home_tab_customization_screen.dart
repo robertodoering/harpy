@@ -41,15 +41,34 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
     }
   }
 
+  Widget _buildProCard(ThemeData theme) {
+    return HarpyProCard(
+      children: <Widget>[
+        const Text(
+          'unlock the full potential of customizing the home screen with '
+          'harpy pro',
+        ),
+        Text(
+          '(coming soon)',
+          style: theme.textTheme.subtitle2.copyWith(
+            color: Colors.white.withOpacity(.6),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildInfoText(ThemeData theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(CupertinoIcons.info, color: theme.accentColor),
         defaultSmallHorizontalSpacer,
-        const Text(
-          'changes are not saved',
-          style: TextStyle(height: 1),
+        const Flexible(
+          child: Text(
+            'changes other than adding lists are not saved in the free version'
+            ' of harpy',
+          ),
         ),
       ],
     );
@@ -78,8 +97,12 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                     sliver: SliverList(
                       delegate: SliverChildListDelegate(
                         <Widget>[
-                          _buildInfoText(theme),
-                          defaultVerticalSpacer,
+                          if (Harpy.isFree) ...<Widget>[
+                            _buildProCard(theme),
+                            defaultVerticalSpacer,
+                            _buildInfoText(theme),
+                            defaultVerticalSpacer,
+                          ],
                           const HomeTabReorderList(),
                           if (model.canAddMoreLists)
                             const AddListHomeTabCard()

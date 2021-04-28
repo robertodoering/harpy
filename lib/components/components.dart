@@ -206,6 +206,7 @@ export 'widgets/misc/followers_count.dart';
 export 'widgets/misc/global_bloc_provider.dart';
 export 'widgets/misc/harpy_message.dart';
 export 'widgets/misc/harpy_popup_menu_item.dart';
+export 'widgets/misc/harpy_pro_card.dart';
 export 'widgets/misc/harpy_scaffold.dart';
 export 'widgets/misc/harpy_sliver_app_bar.dart';
 export 'widgets/misc/headlines.dart';
