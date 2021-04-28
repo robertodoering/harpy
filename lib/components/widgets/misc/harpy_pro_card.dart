@@ -17,6 +17,7 @@ class HarpyProCard extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     final TextStyle headline = theme.textTheme.headline6.copyWith(
+      fontWeight: FontWeight.normal,
       color: Colors.white,
       shadows: <Shadow>[
         const Shadow(
