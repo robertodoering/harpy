@@ -23,21 +23,15 @@ class AddListHomeTabCard extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final HomeTabModel model = context.watch<HomeTabModel>();
 
-    Widget icon = const Padding(
-      padding: EdgeInsets.all(HarpyTab.tabPadding),
-      child: Icon(
-        CupertinoIcons.add,
-        size: HarpyTab.tabIconSize,
-      ),
+    final Widget icon = Padding(
+      padding: const EdgeInsets.all(HarpyTab.tabPadding),
+      child: proDisabled
+          ? const FlareIcon.shiningStar(size: HarpyTab.tabIconSize)
+          : const Icon(
+              CupertinoIcons.add,
+              size: HarpyTab.tabIconSize,
+            ),
     );
-
-    if (proDisabled) {
-      icon = Bubbled(
-        bubble: const FlareIcon.shiningStar(size: 22),
-        // bubbleOffset: const Offset(4, -4),
-        child: icon,
-      );
-    }
 
     return Container(
       decoration: BoxDecoration(
