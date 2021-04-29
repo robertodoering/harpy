@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/tab_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
+
 // todo: when switching tabs in the home tab view, consider scrolling the
 //  content automatically if it is otherwise covered by the tab bar
 
@@ -11,7 +13,7 @@ class HomeTabView extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
   HomeTabView();
 
-  Widget _mapEntryContent(int index, HomeTabEntry entry) {
+  Widget _mapEntryContent(BuildContext context, int index, HomeTabEntry entry) {
     if (entry.type == HomeTabEntryType.defaultType.value) {
       switch (entry.id) {
         case 'home':
@@ -26,7 +28,7 @@ class HomeTabView extends StatelessWidget {
           return const SizedBox();
       }
     } else if (entry.type == HomeTabEntryType.list.value) {
-      return ListTimelineProvider(listId: entry.id);
+      return HomeListTimeline(listId: entry.id);
     } else {
       return const SizedBox();
     }
@@ -54,7 +56,7 @@ class HomeTabView extends StatelessWidget {
             body: TabBarView(
               children: <Widget>[
                 for (int i = 0; i < model.visibleEntries.length; i++)
-                  _mapEntryContent(i, model.visibleEntries[i]),
+                  _mapEntryContent(context, i, model.visibleEntries[i]),
               ],
             ),
           ),

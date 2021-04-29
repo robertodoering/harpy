@@ -17,6 +17,10 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   List<HomeTabEntry> get visibleEntries =>
       value.entries.where((HomeTabEntry entry) => entry.visible).toList();
 
+  List<HomeTabEntry> get listEntries => value.entries
+      .where((HomeTabEntry entry) => entry.type == HomeTabEntryType.list.value)
+      .toList();
+
   /// The amount of tabs that are not hidden.
   int get visibleTabsCount => visibleEntries.length;
 
