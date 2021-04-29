@@ -81,6 +81,7 @@ class ChangelogParser with HarpyLogger {
       return data;
     } on FlutterError {
       // ignore asset not found exception (version has no changelog)
+      return null;
     } catch (e, st) {
       log.severe('error parsing changelog data', e, st);
       return null;
