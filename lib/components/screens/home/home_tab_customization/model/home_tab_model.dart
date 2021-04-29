@@ -75,6 +75,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
   void setToDefault() {
     value = HomeTabConfiguration.defaultConfiguration;
+    _persistValue();
   }
 
   /// Changes the ordering of the entries in the configuration.
