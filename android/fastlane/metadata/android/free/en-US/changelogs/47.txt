@@ -1,0 +1,4 @@
+Version 0.6.0
+2021-05-03
+
+· Added home screen customization
