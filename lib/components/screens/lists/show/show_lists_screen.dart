@@ -11,7 +11,7 @@ class ShowListsScreen extends StatelessWidget {
 
   final String userId;
 
-  /// An optional callback that us called when a list is selected.
+  /// An optional callback that is called when a list is selected.
   ///
   /// When `null`, the list timeline screen will be navigated to.
   final ValueChanged<TwitterListData> onListSelected;

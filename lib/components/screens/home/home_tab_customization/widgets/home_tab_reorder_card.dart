@@ -50,7 +50,6 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         widget.index,
         value,
       ),
-      // decoration: InputDecoration(),
     );
   }
 

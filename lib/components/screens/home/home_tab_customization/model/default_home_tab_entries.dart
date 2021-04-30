@@ -1,34 +1,30 @@
 import 'package:harpy/components/components.dart';
 
-/// The default entries for the [HomeTabView] that is used when no
-/// customization has taken place yet.
+/// The default entries for the [HomeTabView] that determine the default
+/// views in the home screen.
 List<HomeTabEntry> defaultHomeTabEntries = <HomeTabEntry>[
   HomeTabEntry(
     id: 'home',
     type: HomeTabEntryType.defaultType.value,
     icon: 'home',
     name: 'timeline',
-    visible: true,
   ),
   HomeTabEntry(
     id: 'media',
     type: HomeTabEntryType.defaultType.value,
-    icon: 'media',
+    icon: 'photo',
     name: 'media',
-    visible: true,
   ),
   HomeTabEntry(
     id: 'mentions',
     type: HomeTabEntryType.defaultType.value,
-    icon: 'mentions',
+    icon: 'at',
     name: 'mentions',
-    visible: true,
   ),
   HomeTabEntry(
     id: 'search',
     type: HomeTabEntryType.defaultType.value,
     icon: 'search',
     name: 'search',
-    visible: true,
   ),
 ];

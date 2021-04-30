@@ -14,8 +14,7 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size(double.infinity, height);
 
   Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
-    if (entry.type == HomeTabEntryType.defaultType.value &&
-        entry.id == 'mentions') {
+    if (entry.isDefaultType && entry.id == 'mentions') {
       return MentionsTab(
         entry: entry,
         cardColor: cardColor,

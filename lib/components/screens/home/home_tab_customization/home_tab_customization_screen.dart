@@ -7,6 +7,19 @@ import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
+/// A screen that allows the user to customize the home screen content.
+///
+/// Lists can be added as tabs to the home screen and the default tabs can
+/// customized.
+///
+/// Customization includes changing the icon and name for a tab and changing
+/// the order in which they appear (and thus allowing to change what view is
+/// the initial view in the home screen).
+///
+/// Customization is limited in the free version by only allowing the user to
+/// add and customize one list.
+/// Any other customization changes will be discarded when the use leaves
+/// this screen.
 class HomeTabCustomizationScreen extends StatefulWidget {
   const HomeTabCustomizationScreen({
     @required this.model,

@@ -14,7 +14,7 @@ class HomeTabView extends StatelessWidget {
   HomeTabView();
 
   Widget _mapEntryContent(BuildContext context, int index, HomeTabEntry entry) {
-    if (entry.type == HomeTabEntryType.defaultType.value) {
+    if (entry.isDefaultType) {
       switch (entry.id) {
         case 'home':
           return HomeTimeline();
@@ -27,7 +27,7 @@ class HomeTabView extends StatelessWidget {
         default:
           return const SizedBox();
       }
-    } else if (entry.type == HomeTabEntryType.list.value) {
+    } else if (entry.isListType) {
       return HomeListTimeline(listId: entry.id);
     } else {
       return const SizedBox();
@@ -40,7 +40,7 @@ class HomeTabView extends StatelessWidget {
     final HomeTabModel model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
-      length: model.visibleTabsCount,
+      length: model.visibleEntries.length,
       child: Stack(
         children: <Widget>[
           NestedScrollView(

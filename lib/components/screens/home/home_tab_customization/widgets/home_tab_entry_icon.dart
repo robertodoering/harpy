@@ -16,8 +16,8 @@ class HomeTabEntryIcon extends StatelessWidget {
   static const Map<String, IconData> iconNameMap = <String, IconData>{
     // default
     'home': CupertinoIcons.home,
-    'media': CupertinoIcons.photo,
-    'mentions': CupertinoIcons.at, // 'at' icon
+    'photo': CupertinoIcons.photo,
+    'at': CupertinoIcons.at,
     'search': CupertinoIcons.search,
     // suit
     'suit_club': CupertinoIcons.suit_club,
@@ -30,7 +30,7 @@ class HomeTabEntryIcon extends StatelessWidget {
     'hurricane': CupertinoIcons.hurricane,
     'moon': CupertinoIcons.moon,
     'snow': CupertinoIcons.snow,
-    'sun': CupertinoIcons.sun_max,
+    'sun_max': CupertinoIcons.sun_max,
     'umbrella': CupertinoIcons.umbrella,
     'wind': CupertinoIcons.wind,
     // misc

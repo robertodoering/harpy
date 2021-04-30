@@ -53,8 +53,20 @@ class HomeTabEntry extends Equatable {
         visible,
       ];
 
+  /// Whether the entry can be removed from the configuration.
+  bool get removable => !isDefaultType;
+
+  bool get hasName => name != null && name.isNotEmpty;
+
+  bool get isDefaultType => type == HomeTabEntryType.defaultType.value;
+
+  bool get isListType => type == HomeTabEntryType.list.value;
+
+  /// Whether we can assume that the entry is correct and has not been
+  /// modified externally.
   bool get valid {
-    if (type == HomeTabEntryType.defaultType.value) {
+    if (isDefaultType) {
+      // validate that this default type exist in the default entries
       return defaultHomeTabEntries
           .where((HomeTabEntry entry) => entry.id == id)
           .isNotEmpty;
@@ -62,10 +74,6 @@ class HomeTabEntry extends Equatable {
       return true;
     }
   }
-
-  bool get removable => type != HomeTabEntryType.defaultType.value;
-
-  bool get hasName => name != null && name.isNotEmpty;
 
   Map<String, dynamic> toJson() => _$HomeTabEntryToJson(this);
 
