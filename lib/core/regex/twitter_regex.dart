@@ -33,3 +33,6 @@ final RegExp mentionStartRegex = RegExp(
 /// Matches everything that is not a valid character in a hashtag (no
 /// numbers, unicode letters, underscores.
 final RegExp nonHashtagCharactersRegex = RegExp(r'[^0-9_\p{L}]', unicode: true);
+
+// Matches any entity from e.g. a user profile description
+final RegExp entityRegex = RegExp(r'(@|#|＃)\w+');
