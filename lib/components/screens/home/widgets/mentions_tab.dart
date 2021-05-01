@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 
 class MentionsTab extends StatelessWidget {
   const MentionsTab({
+    @required this.entry,
     this.cardColor,
   });
 
+  final HomeTabEntry entry;
   final Color cardColor;
 
   @override
@@ -17,8 +19,8 @@ class MentionsTab extends StatelessWidget {
     final MentionsTimelineState state = bloc.state;
 
     final Widget child = HarpyTab(
-      icon: const Text('@'),
-      text: const Text('mentions'),
+      icon: HomeTabEntryIcon(entry.icon),
+      text: entry.hasName ? Text(entry.name) : null,
       cardColor: cardColor,
     );
 

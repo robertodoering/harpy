@@ -147,11 +147,13 @@ class HarpyNavigator {
     });
   }
 
-  void pushListsScreen({
+  void pushShowListsScreen({
     String userId,
+    ValueChanged<TwitterListData> onListSelected,
   }) {
     pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
       'userId': userId,
+      'onListSelected': onListSelected,
     });
   }
 
@@ -160,6 +162,14 @@ class HarpyNavigator {
   }) {
     pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
       'list': list,
+    });
+  }
+
+  void pushHomeTabCustomizationScreen({
+    @required HomeTabModel model,
+  }) {
+    pushNamed(HomeTabCustomizationScreen.route, arguments: <String, dynamic>{
+      'model': model,
     });
   }
 }
@@ -203,6 +213,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case ShowListsScreen.route:
       screen = ShowListsScreen(
         userId: arguments['userId'],
+        onListSelected: arguments['onListSelected'],
       );
       break;
     case ListTimelineScreen.route:
@@ -262,7 +273,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
       break;
     case HomeTabCustomizationScreen.route:
-      screen = const HomeTabCustomizationScreen();
+      screen = HomeTabCustomizationScreen(
+        model: arguments['model'],
+      );
       break;
     case HomeScreen.route:
       screen = const HomeScreen();

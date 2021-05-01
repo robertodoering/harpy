@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
-import 'package:harpy/components/common/timeline/list_timeline/bloc/list_timeline_bloc.dart';
-import 'package:harpy/components/common/timeline/list_timeline/widgets/list_timeline.dart';
 import 'package:harpy/components/components.dart';
 
 /// Shows a [ListTimeline] for the [list] in it's own screen.

@@ -50,7 +50,7 @@ class HomeDrawer extends StatelessWidget {
                 title: const Text('Lists'),
                 onTap: () async {
                   await app<HarpyNavigator>().state.maybePop();
-                  app<HarpyNavigator>().pushListsScreen();
+                  app<HarpyNavigator>().pushShowListsScreen();
                 },
               ),
 

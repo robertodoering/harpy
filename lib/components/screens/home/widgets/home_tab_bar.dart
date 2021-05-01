@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the tab bar with the tabs for the home screen.
 class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
@@ -12,9 +13,26 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => const Size(double.infinity, height);
 
+  Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
+    if (entry.isDefaultType && entry.id == 'mentions') {
+      return MentionsTab(
+        entry: entry,
+        cardColor: cardColor,
+      );
+    } else {
+      return HarpyTab(
+        icon: HomeTabEntryIcon(entry.icon),
+        text: entry.hasName ? Text(entry.name) : null,
+        cardColor: cardColor,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final HomeTabModel model = context.watch<HomeTabModel>();
+
     final Color cardColor =
         Color.lerp(theme.cardTheme.color, theme.scaffoldBackgroundColor, .9)
             .withOpacity(.8);
@@ -24,27 +42,12 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: HarpyTabBar(
         tabs: <Widget>[
-          HarpyTab(
-            icon: const Icon(CupertinoIcons.home),
-            text: const Text('timeline'),
-            cardColor: cardColor,
-          ),
-          HarpyTab(
-            icon: const Icon(CupertinoIcons.photo),
-            text: const Text('media'),
-            cardColor: cardColor,
-          ),
-          MentionsTab(cardColor: cardColor),
-          HarpyTab(
-            icon: const Icon(CupertinoIcons.search),
-            text: const Text('search'),
-            cardColor: cardColor,
-          ),
+          for (HomeTabEntry entry in model.visibleEntries)
+            _mapEntryTabs(entry, cardColor),
         ],
-        // todo: re-add when adding tab customization
-        // endWidgets: <Widget>[
-        //   AddHomeTab(cardColor: cardColor),
-        // ],
+        endWidgets: <Widget>[
+          CustomizeHomeTab(cardColor: cardColor),
+        ],
       ),
     );
   }

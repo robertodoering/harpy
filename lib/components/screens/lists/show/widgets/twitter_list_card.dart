@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
 /// Builds a card that represents a twitter list.
 class TwitterListCard extends StatelessWidget {
-  const TwitterListCard(this.list, {@required Key key}) : super(key: key);
+  const TwitterListCard(
+    this.list, {
+    @required this.onSelected,
+    @required Key key,
+  }) : super(key: key);
 
   final TwitterListData list;
+  final VoidCallback onSelected;
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
@@ -77,7 +80,7 @@ class TwitterListCard extends StatelessWidget {
       key: key,
       child: InkWell(
         borderRadius: kDefaultBorderRadius,
-        onTap: () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
+        onTap: onSelected,
         child: Card(
           child: Padding(
             padding: DefaultEdgeInsets.all(),

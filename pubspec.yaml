@@ -63,11 +63,14 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^8.0.0
-  build_runner: ^1.12.2
+  build_runner: ^1.11.5 # upgrade after null safety migration
   flutter_test:
     sdk: flutter
-  json_serializable: ^4.1.0
-  mockito: ^5.0.4
+  json_serializable: ^3.5.1 # upgrade after null safety migration
+  mockito: ^4.1.3
+
+dependency_overrides:
+  json_annotation: '>=3.1.0 <3.2.0' # remove after upgrading json_serializable
 
 flutter:
   uses-material-design: true

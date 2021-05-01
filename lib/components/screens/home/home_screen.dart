@@ -47,18 +47,26 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return WillPopHarpy(
-      child: ChangeNotifierProvider<TimelineFilterModel>(
-        create: (_) => TimelineFilterModel.home(),
-        child: BlocProvider<TrendsBloc>(
-          create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
-          // scroll direction listener has to be built above the filter
-          child: ScrollDirectionListener(
-            depth: 2,
-            child: HarpyScaffold(
-              drawer: const HomeDrawer(),
-              endDrawer: const HomeTimelineFilterDrawer(),
-              endDrawerEnableOpenDragGesture: false,
-              body: HomeTabView(),
+      child: ChangeNotifierProvider<HomeTabModel>(
+        create: (_) => HomeTabModel(),
+        child: ChangeNotifierProvider<TimelineFilterModel>(
+          create: (_) => TimelineFilterModel.home(),
+          child: BlocProvider<TrendsBloc>(
+            create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
+            child: Builder(
+              builder: (BuildContext context) => HomeListsProvider(
+                model: context.watch<HomeTabModel>(),
+                // scroll direction listener has to be built above the filter
+                child: ScrollDirectionListener(
+                  depth: 2,
+                  child: HarpyScaffold(
+                    drawer: const HomeDrawer(),
+                    endDrawer: const HomeTimelineFilterDrawer(),
+                    endDrawerEnableOpenDragGesture: false,
+                    body: HomeTabView(),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/core/preferences/home_tab_preferences.dart';
 import 'package:harpy/misc/misc.dart';
 
 /// [GetIt] is a simple service locator for accessing services from anywhere
@@ -45,5 +46,6 @@ void setupServices() {
     ..registerLazySingleton<TweetVisibilityPreferences>(
         () => TweetVisibilityPreferences())
     ..registerLazySingleton<TimelineFilterPreferences>(
-        () => TimelineFilterPreferences());
+        () => TimelineFilterPreferences())
+    ..registerLazySingleton<HomeTabPreferences>(() => HomeTabPreferences());
 }
