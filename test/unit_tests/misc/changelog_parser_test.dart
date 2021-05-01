@@ -30,7 +30,7 @@ void main() {
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current();
+      final ChangelogData data = await app<ChangelogParser>().current(null);
 
       expect(data.empty, isFalse);
       expect(
@@ -53,7 +53,7 @@ void main() {
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current();
+      final ChangelogData data = await app<ChangelogParser>().current(null);
 
       expect(data.headerLines[0], equals('First header line.'));
       expect(
@@ -82,7 +82,7 @@ void main() {
             utf8.encoder.convert(_changelog2).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current();
+      final ChangelogData data = await app<ChangelogParser>().current(null);
 
       expect(data.additions.length, equals(2));
       expect(
@@ -106,7 +106,7 @@ void main() {
             utf8.encoder.convert(_changelog3).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current();
+      final ChangelogData data = await app<ChangelogParser>().current(null);
 
       expect(data.empty, isTrue);
     });

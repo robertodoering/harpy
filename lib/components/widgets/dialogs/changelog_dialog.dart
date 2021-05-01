@@ -14,7 +14,7 @@ class ChangelogDialog extends StatelessWidget {
         app<ChangelogPreferences>();
 
     if (changelogPreferences.shouldShowChangelogDialog) {
-      final ChangelogData data = await app<ChangelogParser>().current();
+      final ChangelogData data = await app<ChangelogParser>().current(context);
 
       if (data != null) {
         showDialog<void>(

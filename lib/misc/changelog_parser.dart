@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
+import 'package:intl/intl.dart';
 
 /// Parses the [ChangelogData] from a changelog file located in
 /// `android/fastlane/metadata/android/$flavor/en-US/changelogs/$versionCode.txt`.
@@ -11,14 +12,14 @@ class ChangelogParser with HarpyLogger {
   /// Returns the [ChangelogData] for the current version.
   ///
   /// Returns `null` if the current version has no changelog file.
-  Future<ChangelogData> current() async {
-    return parse(app<HarpyInfo>().packageInfo.buildNumber);
+  Future<ChangelogData> current(BuildContext context) async {
+    return parse(context, app<HarpyInfo>().packageInfo.buildNumber);
   }
 
   /// Returns the [ChangelogData] for the [versionCode].
   ///
   /// Returns `null` if no corresponding changelog file exists.
-  Future<ChangelogData> parse(String versionCode) async {
+  Future<ChangelogData> parse(BuildContext context, String versionCode) async {
     try {
       final String changelogString = await rootBundle.loadString(
         _changelogString(versionCode),
@@ -42,8 +43,14 @@ class ChangelogParser with HarpyLogger {
       for (int i = 0; i < headerLines.length; i++) {
         final String line = headerLines[i].trim();
 
-        // only add empty lines if they are not the first or last line
-        if (line.isNotEmpty || i != 0 || i != headerLines.length - 1) {
+        if (dateRegex.hasMatch(line)) {
+          // localize date format
+          data.headerLines.add(
+            DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
+                .format(DateTime.parse(line)),
+          );
+        } else if (line.isNotEmpty || i != 0 || i != headerLines.length - 1) {
+          // only add empty lines if they are not the first or last line
           data.headerLines.add(line);
         }
       }
