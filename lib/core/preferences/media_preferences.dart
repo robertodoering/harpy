@@ -5,6 +5,11 @@ class MediaPreferences {
 
   final ConnectivityService connectivityService = app<ConnectivityService>();
 
+  /// Whether the best media quality should be used.
+  bool get bestMediaQuality => harpyPrefs.getBool('bestMediaQuality', false);
+  set bestMediaQuality(bool value) =>
+      harpyPrefs.setBool('bestMediaQuality', value);
+
   /// Whether gifs should play automatically.
   ///
   /// 0: always autoplay
@@ -41,6 +46,7 @@ class MediaPreferences {
 
   /// Sets all media settings to the default settings.
   void defaultSettings() {
+    bestMediaQuality = false;
     autoplayMedia = 1;
     autoplayVideos = 2;
     openLinksExternally = false;

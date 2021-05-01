@@ -24,6 +24,18 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   List<Widget> _buildSettings(ThemeData theme) {
     return <Widget>[
+      SwitchListTile(
+        secondary: const Icon(CupertinoIcons.photo),
+        title: const Text('Best media quality'),
+        subtitle: const Text('use the best available quality for images and '
+            'videos'),
+        isThreeLine: true,
+        value: mediaPreferences.bestMediaQuality,
+        onChanged: (bool value) {
+          HapticFeedback.lightImpact();
+          setState(() => mediaPreferences.bestMediaQuality = value);
+        },
+      ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',

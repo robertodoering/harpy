@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/core/core.dart';
 
 abstract class MediaData {
   /// The url based on the media quality settings.
@@ -33,8 +36,12 @@ class ImageData extends MediaData {
   String get bestUrl => '$baseUrl?name=large&format=png';
 
   /// The image url for images drawn in the app.
+  ///
+  /// Returns the [bestUrl] if [MediaPreferences.bestMediaQuality] is
+  /// `true`, or [small] otherwise.
   @override
-  String get appropriateUrl => small;
+  String get appropriateUrl =>
+      app<MediaPreferences>().bestMediaQuality ? bestUrl : small;
 }
 
 /// The video (and animated gif) data for a [TweetData].
@@ -71,13 +78,16 @@ class VideoData extends MediaData {
   /// The [aspectRatio] as a double.
   double get aspectRatioDouble => aspectRatio[0] / aspectRatio[1];
 
-  /// Returns the video url based on the media setting and connectivity.
+  /// The video url for videos (and gifs) shown in the app.
   ///
-  /// Returns an empty string if no video [variants] exist.
+  /// Returns the best variant if [MediaPreferences.bestMediaQuality] is
+  /// `true`, or the second best variant otherwise.
   @override
   String get appropriateUrl {
     if (variants?.isNotEmpty == true) {
-      return variants[0].url;
+      return app<MediaPreferences>().bestMediaQuality
+          ? variants.first.url
+          : variants[max(0, variants.length - 1)].url;
     } else {
       return '';
     }
