@@ -13,9 +13,9 @@ void parseEntities(String text, Entities entities) {
   // entities.hashtags or entities.userMentions accordingly
   for (Match m in entitiesFromText) {
     final String part = m.group(0);
-    if (part.startsWith('#')) {
+    if (part.startsWith('#') || part.startsWith('＃')) {
       entities.hashtags.add(
-        Hashtag()..text = part.replaceFirst('#', ''),
+        Hashtag()..text = part.replaceFirst(RegExp(r'#|＃'), ''),
       );
     } else if (part.startsWith('@')) {
       entities.userMentions.add(
