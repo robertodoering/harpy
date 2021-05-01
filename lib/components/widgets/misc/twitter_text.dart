@@ -307,11 +307,21 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   // hashtags
   int indexStart = 0;
   for (Hashtag hashtag in entities?.hashtags ?? <Hashtag>[]) {
-    final List<int> indices = _findIndices(
+    // Look for the indices of our hashtag entity
+    List<int> indices = _findIndices(
       text,
       '#${hashtag.text}',
       indexStart,
     );
+
+    // if indices is still null, we search again with the other
+    // legal hashtag start symbol, "＃" (see pr #343)
+    indices ??= _findIndices(
+      text,
+      '＃${hashtag.text}',
+      indexStart,
+    );
+
     indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, hashtag), twitterTextEntities);
