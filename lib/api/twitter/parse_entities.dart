@@ -6,21 +6,20 @@ void parseEntities(String text, Entities entities) {
   entities.hashtags ??= <Hashtag>[];
   entities.userMentions ??= <UserMention>[];
 
-  // Match against all entities in the text
-  final Iterable<Match> entitiesFromText = entityRegex.allMatches(text);
+  /// Search for hashtags in [text], ensure we correctly remove the
+  ///  start (valid characters are # and ＃)
+  for (Match m in hashtagRegex.allMatches(text)) {
+    final String hashtag = m.group(0);
 
-  // For each match, we extract the entity and populate
-  // entities.hashtags or entities.userMentions accordingly
-  for (Match m in entitiesFromText) {
-    final String part = m.group(0);
-    if (part.startsWith('#') || part.startsWith('＃')) {
-      entities.hashtags.add(
-        Hashtag()..text = part.replaceFirst(RegExp(r'#|＃'), ''),
-      );
-    } else if (part.startsWith('@')) {
-      entities.userMentions.add(
-        UserMention()..screenName = part.replaceFirst('@', ''),
-      );
-    }
+    entities.hashtags
+        .add(Hashtag()..text = hashtag.replaceFirst(RegExp(r'#|＃'), ''));
+  }
+
+  /// Search for mentions in [text]
+  for (Match m in mentionRegex.allMatches(text)) {
+    final String mention = m.group(0);
+
+    entities.userMentions
+        .add(UserMention()..screenName = mention.replaceFirst('@', ''));
   }
 }
