@@ -6,6 +6,9 @@ class MediaPreferences {
   final ConnectivityService connectivityService = app<ConnectivityService>();
 
   /// Whether the best media quality should be used.
+  ///
+  /// Right now this only affects the image quality because the second best
+  /// video / gif quality is way worse than the best video quality.
   bool get bestMediaQuality => harpyPrefs.getBool('bestMediaQuality', false);
   set bestMediaQuality(bool value) =>
       harpyPrefs.setBool('bestMediaQuality', value);

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/core/core.dart';
 
@@ -80,24 +78,18 @@ class VideoData extends MediaData {
 
   /// The video url for videos (and gifs) shown in the app.
   ///
-  /// Returns the best variant if [MediaPreferences.bestMediaQuality] is
-  /// `true`, or the second best variant otherwise.
+  /// This is the same as [bestUrl] because the quality for worse variants is
+  /// too bad.
   @override
   String get appropriateUrl {
-    if (variants?.isNotEmpty == true) {
-      return app<MediaPreferences>().bestMediaQuality
-          ? variants.first.url
-          : variants[max(0, variants.length - 1)].url;
-    } else {
-      return '';
-    }
+    return bestUrl;
   }
 
   /// The url of the variant with the best quality.
   @override
   String get bestUrl {
     if (variants?.isNotEmpty == true) {
-      return variants[0].url;
+      return variants.first.url;
     } else {
       return '';
     }

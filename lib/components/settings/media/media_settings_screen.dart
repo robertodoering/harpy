@@ -26,15 +26,31 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     return <Widget>[
       SwitchListTile(
         secondary: const Icon(CupertinoIcons.photo),
-        title: const Text('Best media quality'),
-        subtitle: const Text('use the best available quality for images and '
-            'videos'),
+        title: const Text('Best image quality'),
+        subtitle: const Text(
+          'show the best available quality for tweet images',
+        ),
         isThreeLine: true,
         value: mediaPreferences.bestMediaQuality,
         onChanged: (bool value) {
           HapticFeedback.lightImpact();
           setState(() => mediaPreferences.bestMediaQuality = value);
         },
+      ),
+      ListTile(
+        leading: const SizedBox(),
+        title: Row(
+          children: <Widget>[
+            Icon(CupertinoIcons.info, color: theme.accentColor),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                'media is always downloaded in the best quality',
+                style: theme.textTheme.bodyText1,
+              ),
+            ),
+          ],
+        ),
       ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
