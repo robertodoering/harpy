@@ -77,7 +77,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(CupertinoIcons.info, color: theme.accentColor),
-        defaultSmallHorizontalSpacer,
+        defaultHorizontalSpacer,
         const Flexible(
           child: Text(
             'changes other than adding lists are not saved in the free version'
