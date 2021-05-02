@@ -59,7 +59,7 @@ class UploadingTweetMedia extends PostTweetState {
     switch (type) {
       case MediaType.image:
         return multiple
-            ? 'uploading ${ordinal(index + 1)} image...'
+            ? 'uploading ${(index + 1).toOrdinalNumerical()} image...'
             : 'uploading image...';
       case MediaType.gif:
         return 'uploading gif...';

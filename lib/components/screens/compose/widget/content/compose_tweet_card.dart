@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class ComposeTweetCard extends StatefulWidget {
   const ComposeTweetCard();
@@ -15,16 +17,21 @@ class ComposeTweetCard extends StatefulWidget {
 class _ComposeTweetCardState extends State<ComposeTweetCard> {
   ComposeTextController _controller;
   FocusNode _focusNode;
-  int _keyboardListenerId;
+  StreamSubscription<bool> _keyboardListener;
 
   @override
   void initState() {
     super.initState();
 
     _focusNode = FocusNode();
-    _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
-      onHide: _focusNode.unfocus,
-    );
+
+    _keyboardListener = KeyboardVisibilityController().onChange.listen((
+      bool visible,
+    ) {
+      if (!visible) {
+        _focusNode.unfocus();
+      }
+    });
   }
 
   @override
@@ -43,8 +50,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
   void dispose() {
     super.dispose();
 
-    KeyboardVisibilityNotification().removeListener(_keyboardListenerId);
-
+    _keyboardListener.cancel();
     _controller.dispose();
     _focusNode.dispose();
   }

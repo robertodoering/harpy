@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:android_path_provider/android_path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:harpy/core/core.dart';
@@ -31,13 +29,13 @@ class DownloadService {
     @required String url,
     String name,
   }) async {
-    final Directory directory = await _requestDownloadDirectory();
+    final String path = await _requestDownloadDirectory();
 
-    if (directory != null) {
+    if (path != null) {
       try {
         await FlutterDownloader.enqueue(
           url: url,
-          savedDir: directory.path,
+          savedDir: path,
           fileName: name,
         );
 
@@ -48,13 +46,13 @@ class DownloadService {
     }
   }
 
-  Future<Directory> _requestDownloadDirectory() async {
+  Future<String> _requestDownloadDirectory() async {
     final MessageService messageService = app<MessageService>();
 
     final PermissionStatus status = await Permission.storage.request();
 
     if (status.isGranted) {
-      return DownloadsPathProvider.downloadsDirectory;
+      return AndroidPathProvider.downloadsPath;
     } else {
       messageService.show('storage permission not granted');
 

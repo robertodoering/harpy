@@ -10,7 +10,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:http/http.dart';
-import 'package:humanize/humanize.dart';
+import 'package:humanizer/humanizer.dart';
 import 'package:meta/meta.dart';
 
 part 'post_tweet_event.dart';
