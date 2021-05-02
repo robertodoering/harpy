@@ -38,8 +38,9 @@ class ImageData extends MediaData {
   /// Returns the [bestUrl] if [MediaPreferences.bestMediaQuality] is
   /// `true`, or [small] otherwise.
   @override
-  String get appropriateUrl =>
-      app<MediaPreferences>().bestMediaQuality ? bestUrl : small;
+  String get appropriateUrl {
+    return app<MediaPreferences>().shouldUseBestMediaQuality ? bestUrl : small;
+  }
 }
 
 /// The video (and animated gif) data for a [TweetData].

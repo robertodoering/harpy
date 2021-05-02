@@ -16,6 +16,12 @@ class MediaSettingsScreen extends StatefulWidget {
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   final MediaPreferences mediaPreferences = app<MediaPreferences>();
 
+  final Map<int, String> _mediaQualityValues = <int, String>{
+    0: 'always use best quality',
+    1: 'only use best quality on wifi',
+    2: 'never use best quality',
+  };
+
   final Map<int, String> _autoplayValues = <int, String>{
     0: 'always autoplay',
     1: 'only on wifi',
@@ -24,16 +30,15 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   List<Widget> _buildSettings(ThemeData theme) {
     return <Widget>[
-      SwitchListTile(
-        secondary: const Icon(CupertinoIcons.photo),
-        title: const Text('Best image quality'),
-        subtitle: const Text(
-          'show the best available quality for tweet images',
-        ),
-        isThreeLine: true,
+      RadioDialogTile<int>(
+        leading: CupertinoIcons.photo,
+        title: 'Tweet image quality',
+        subtitle: _mediaQualityValues[mediaPreferences.bestMediaQuality],
+        description: 'change when tweet images use the best quality',
         value: mediaPreferences.bestMediaQuality,
-        onChanged: (bool value) {
-          HapticFeedback.lightImpact();
+        titles: _mediaQualityValues.values.toList(),
+        values: _mediaQualityValues.keys.toList(),
+        onChanged: (int value) {
           setState(() => mediaPreferences.bestMediaQuality = value);
         },
       ),
