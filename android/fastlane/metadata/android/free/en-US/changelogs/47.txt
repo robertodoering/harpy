@@ -3,3 +3,4 @@ Version 0.6.0
 
 · Added home screen customization
 · Added best media quality option in media settings
+· Fixed incorrectly parsing @mentions and #hashtags in the user profile description (Thanks ADcorpo!)
