@@ -6,17 +6,20 @@ void parseEntities(String text, Entities entities) {
   entities.hashtags ??= <Hashtag>[];
   entities.userMentions ??= <UserMention>[];
 
-  for (String part in text.split(whitespaceRegex)) {
-    // todo: fix remove trailing special characters in entities
-    //   (@username. => remove the .)
-    if (part.startsWith('#')) {
-      entities.hashtags.add(
-        Hashtag()..text = part.replaceFirst('#', ''),
-      );
-    } else if (part.startsWith('@')) {
-      entities.userMentions.add(
-        UserMention()..screenName = part.replaceFirst('@', ''),
-      );
-    }
+  // Search for hashtags in text, ensure we correctly remove the
+  //  start (valid characters are # and ＃)
+  for (Match m in hashtagRegex.allMatches(text)) {
+    final String hashtag = m.group(0);
+
+    entities.hashtags
+        .add(Hashtag()..text = hashtag.replaceFirst(RegExp(r'#|＃'), ''));
+  }
+
+  // Search for mentions in text
+  for (Match m in mentionRegex.allMatches(text)) {
+    final String mention = m.group(0);
+
+    entities.userMentions
+        .add(UserMention()..screenName = mention.replaceFirst('@', ''));
   }
 }
