@@ -36,8 +36,6 @@ void defaultOnMediaShare(String mediaUrl) {
   }
 }
 
-// todo: add method to go to parent tweet for media timeline
-
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
     @required this.tweet,
