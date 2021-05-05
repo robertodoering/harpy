@@ -14,7 +14,13 @@ class MediaSettingsScreen extends StatefulWidget {
 }
 
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
-  final MediaPreferences? mediaPreferences = app<MediaPreferences>();
+  final MediaPreferences mediaPreferences = app<MediaPreferences>();
+
+  final Map<int, String> _mediaQualityValues = <int, String>{
+    0: 'always use best quality',
+    1: 'only use best quality on wifi',
+    2: 'never use best quality',
+  };
 
   final Map<int, String> _autoplayValues = <int, String>{
     0: 'always autoplay',
@@ -24,17 +30,16 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   List<Widget> _buildSettings(ThemeData theme) {
     return <Widget>[
-      SwitchListTile(
-        secondary: const Icon(CupertinoIcons.photo),
-        title: const Text('Best image quality'),
-        subtitle: const Text(
-          'show the best available quality for tweet images',
-        ),
-        isThreeLine: true,
-        value: mediaPreferences!.bestMediaQuality,
-        onChanged: (bool value) {
-          HapticFeedback.lightImpact();
-          setState(() => mediaPreferences!.bestMediaQuality = value);
+      RadioDialogTile<int>(
+        leading: CupertinoIcons.photo,
+        title: 'Tweet image quality',
+        subtitle: _mediaQualityValues[mediaPreferences.bestMediaQuality],
+        description: 'change when tweet images use the best quality',
+        value: mediaPreferences.bestMediaQuality,
+        titles: _mediaQualityValues.values.toList(),
+        values: _mediaQualityValues.keys.toList(),
+        onChanged: (int? value) {
+          setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
       ListTile(
@@ -55,32 +60,32 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',
-        subtitle: _autoplayValues[mediaPreferences!.autoplayMedia],
+        subtitle: _autoplayValues[mediaPreferences.autoplayMedia],
         description: 'change when gifs should automatically play',
-        value: mediaPreferences!.autoplayMedia,
+        value: mediaPreferences.autoplayMedia,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (int? value) {
-          setState(() => mediaPreferences!.autoplayMedia = value!);
+          setState(() => mediaPreferences.autoplayMedia = value!);
         },
       ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay videos',
-        subtitle: _autoplayValues[mediaPreferences!.autoplayVideos],
+        subtitle: _autoplayValues[mediaPreferences.autoplayVideos],
         description: 'change when videos should automatically play',
-        value: mediaPreferences!.autoplayVideos,
+        value: mediaPreferences.autoplayVideos,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (int? value) {
-          setState(() => mediaPreferences!.autoplayVideos = value!);
+          setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
       SwitchListTile(
         secondary: const Icon(CupertinoIcons.link),
         title: const Text('Always open links externally'),
         subtitle: const Text('coming soon!'),
-        value: mediaPreferences!.openLinksExternally,
+        value: mediaPreferences.openLinksExternally,
         onChanged: null,
         // todo: implement
         // onChanged: (bool value) {
@@ -97,7 +102,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {
           HapticFeedback.lightImpact();
-          setState(mediaPreferences!.defaultSettings);
+          setState(mediaPreferences.defaultSettings);
         },
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<void>>[

@@ -173,12 +173,16 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     log.fine('changing icon to $icon');
 
-    final HomeTabEntry entry = value.entries[index];
+    HomeTabEntry entry = value.entries[index];
 
     if (Harpy.isFree && entry.isListType) {
       // reload configuration to dismiss unrelated changes before
       // persisting value
       initialize();
+      // make sure the last entry gets updated after initialization (list
+      // will be last for harpy free)
+      entry = value.entries.last;
+      index = value.entries.length - 1;
     }
 
     value = value.updateEntry(

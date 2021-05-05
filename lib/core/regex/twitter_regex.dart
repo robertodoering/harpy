@@ -34,5 +34,5 @@ final RegExp mentionStartRegex = RegExp(
 /// numbers, unicode letters, underscores.
 final RegExp nonHashtagCharactersRegex = RegExp(r'[^0-9_\p{L}]', unicode: true);
 
-// Matches any entity from e.g. a user profile description
+/// Matches any entity from e.g. a user profile description.
 final RegExp entityRegex = RegExp(r'(@|#|＃)\w+');
