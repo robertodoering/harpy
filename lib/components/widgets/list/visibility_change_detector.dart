@@ -8,14 +8,14 @@ import 'package:visibility_detector/visibility_detector.dart';
 /// widget using [VisibilityChange.of(context).addOnVisibilityChanged].
 class VisibilityChangeDetector extends StatefulWidget {
   const VisibilityChangeDetector({
-    @required Key key,
-    @required this.child,
+    required Key? key,
+    required this.child,
     this.onVisibilityChanged,
   }) : super(key: key);
 
   final Widget child;
 
-  final ValueChanged<bool> onVisibilityChanged;
+  final ValueChanged<bool>? onVisibilityChanged;
 
   @override
   _VisibilityChangeDetectorState createState() =>
@@ -23,7 +23,7 @@ class VisibilityChangeDetector extends StatefulWidget {
 }
 
 class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
-  final List<ValueChanged<bool>> _onChanged = <ValueChanged<bool>>[];
+  final List<ValueChanged<bool>?> _onChanged = <ValueChanged<bool>?>[];
 
   bool visible = false;
 
@@ -47,8 +47,8 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
   void _changeVisible(bool value) {
     visible = value;
     if (mounted) {
-      for (ValueChanged<bool> callback in _onChanged) {
-        callback(value);
+      for (ValueChanged<bool>? callback in _onChanged) {
+        callback!(value);
       }
     }
   }
@@ -66,7 +66,7 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
-      key: widget.key,
+      key: widget.key!,
       onVisibilityChanged: _onVisibilityChanged,
       child: VisibilityChange(
         visibilityDetector: this,
@@ -80,15 +80,14 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
 /// [_VisibilityChangeDetectorState].
 class VisibilityChange extends InheritedWidget {
   const VisibilityChange({
-    Key key,
-    @required this.visibilityDetector,
-    @required Widget child,
-  })  : assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.visibilityDetector,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final _VisibilityChangeDetectorState visibilityDetector;
 
-  static VisibilityChange of(BuildContext context) {
+  static VisibilityChange? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<VisibilityChange>();
   }
 

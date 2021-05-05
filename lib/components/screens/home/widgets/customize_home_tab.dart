@@ -13,7 +13,7 @@ class CustomizeHomeTab extends StatelessWidget {
     this.cardColor,
   });
 
-  final Color cardColor;
+  final Color? cardColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CustomizeHomeTab extends StatelessWidget {
       padding: const EdgeInsets.all(HarpyTab.tabPadding - 2),
       icon: const Icon(FeatherIcons.settings),
       iconSize: HarpyTab.tabIconSize + 2,
-      foregroundColor: theme.iconTheme.color.withOpacity(.8),
+      foregroundColor: theme.iconTheme.color!.withOpacity(.8),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
         model: context.read<HomeTabModel>(),
       ),

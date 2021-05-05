@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -15,13 +14,13 @@ class TranslationService {
   /// Throws an error if the response is not valid or if the [Translation]
   /// object was unable to be parsed from the response.
   Future<Translation> translate({
-    @required String text,
+    required String? text,
     String from = 'auto',
     String to = 'en',
   }) async {
     _log.fine('translating from $from to $to');
 
-    final Map<String, String> params = <String, String>{
+    final Map<String, String?> params = <String, String?>{
       'client': 'gtx',
       'sl': from,
       'tl': to,
@@ -41,7 +40,7 @@ class TranslationService {
   http.Response _validateResponse(http.Response response) {
     return response.statusCode >= 200 && response.statusCode < 300
         ? response
-        : Future<dynamic>.error(response);
+        : Future<dynamic>.error(response) as http.Response;
   }
 
   Translation _transformResponse(http.Response response) {

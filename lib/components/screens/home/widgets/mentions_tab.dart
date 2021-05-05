@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 
 class MentionsTab extends StatelessWidget {
   const MentionsTab({
-    @required this.entry,
+    required this.entry,
     this.cardColor,
   });
 
   final HomeTabEntry entry;
-  final Color cardColor;
+  final Color? cardColor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class MentionsTab extends StatelessWidget {
 
     final Widget child = HarpyTab(
       icon: HomeTabEntryIcon(entry.icon),
-      text: entry.hasName ? Text(entry.name) : null,
+      text: entry.hasName ? Text(entry.name!) : null,
       cardColor: cardColor,
     );
 

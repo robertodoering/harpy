@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 /// [onLoadMore] callback when reaching the end of the list.
 class LoadMoreListener extends StatefulWidget {
   const LoadMoreListener({
-    @required this.child,
+    required this.child,
     this.listen = true,
     this.onLoadMore,
   });
 
   final Widget child;
   final bool listen;
-  final AsyncCallback onLoadMore;
+  final AsyncCallback? onLoadMore;
 
   @override
   _LoadMoreListenerState createState() => _LoadMoreListenerState();
@@ -32,7 +32,7 @@ class _LoadMoreListenerState extends State<LoadMoreListener> {
       });
     }
 
-    await widget.onLoadMore();
+    await widget.onLoadMore!();
 
     if (mounted) {
       setState(() {

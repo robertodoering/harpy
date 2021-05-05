@@ -12,7 +12,7 @@ class TrendsList extends StatelessWidget {
   final NumberFormat _numberFormat = NumberFormat.compact();
 
   Widget _buildTrendTile(Trend trend) {
-    Widget subtitle;
+    Widget? subtitle;
 
     if (trend.tweetVolume != null) {
       subtitle = Text('${_numberFormat.format(trend.tweetVolume)} tweets');
@@ -23,7 +23,7 @@ class TrendsList extends StatelessWidget {
       child: Card(
         child: ListTile(
           leading: const Icon(FeatherIcons.trendingUp, size: 18),
-          title: Text(trend.name),
+          title: Text(trend.name!),
           subtitle: subtitle,
           onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
             initialSearchQuery: trend.name,

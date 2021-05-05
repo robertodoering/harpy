@@ -10,7 +10,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [title] in the [AppBar].
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
-    @required this.body,
+    required this.body,
     this.title,
     this.showIcon = false,
     this.actions,
@@ -23,21 +23,21 @@ class HarpyScaffold extends StatelessWidget {
     this.buildSafeArea = false,
   });
 
-  final String title;
+  final String? title;
   final Widget body;
   final bool showIcon;
-  final List<Widget> actions;
-  final Widget drawer;
-  final Widget endDrawer;
+  final List<Widget>? actions;
+  final Widget? drawer;
+  final Widget? endDrawer;
   final bool endDrawerEnableOpenDragGesture;
-  final PreferredSizeWidget appBarBottom;
-  final Widget floatingActionButton;
+  final PreferredSizeWidget? appBarBottom;
+  final Widget? floatingActionButton;
   final bool buildSafeArea;
 
   /// The colors used by the [HarpyBackground].
   ///
   /// Uses the colors of the current theme if `null`.
-  final List<Color> backgroundColors;
+  final List<Color>? backgroundColors;
 
   bool get _hasAppBar => title != null || showIcon;
 
@@ -47,7 +47,7 @@ class HarpyScaffold extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            title,
+            title!,
             style: theme.textTheme.headline6,
           ),
           if (showIcon) ...<Widget>[
@@ -59,8 +59,8 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  Widget _leading(BuildContext context) {
-    if (Scaffold.of(context)?.hasDrawer ?? false) {
+  Widget? _leading(BuildContext context) {
+    if (Scaffold.of(context).hasDrawer) {
       return const DrawerButton();
     } else if (Navigator.of(context).canPop()) {
       return const HarpyBackButton();
@@ -93,7 +93,7 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  Widget _buildFloatingActionButton(MediaQueryData mediaQuery) {
+  Widget? _buildFloatingActionButton(MediaQueryData mediaQuery) {
     if (floatingActionButton == null) {
       return null;
     } else {

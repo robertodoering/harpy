@@ -17,7 +17,7 @@ class MediaVideoConverter {
   /// Returns `null` if the conversion failed.
   ///
   /// See https://developer.twitter.com/en/docs/twitter-api/v1/media/upload-media/uploading-media/media-best-practices.
-  Future<File> convertVideo(String sourcePath, String extension) async {
+  Future<File?> convertVideo(String? sourcePath, String? extension) async {
     final Directory tempDir = await getTemporaryDirectory();
     final String outputPath = '${tempDir.path}/media_video.$extension';
 

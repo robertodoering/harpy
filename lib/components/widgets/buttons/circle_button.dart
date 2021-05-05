@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Builds a simple circular button.
 class CircleButton extends StatelessWidget {
   const CircleButton({
-    @required this.child,
+    required this.child,
     this.onTap,
     this.color,
     this.padding = const EdgeInsets.all(8),
@@ -13,12 +13,12 @@ class CircleButton extends StatelessWidget {
   final Widget child;
 
   /// The callback when the button has been pressed.
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   /// The background color of the button.
   ///
   /// If `null`, this button is built transparent.
-  final Color color;
+  final Color? color;
 
   /// The padding for the [child].
   final EdgeInsets padding;

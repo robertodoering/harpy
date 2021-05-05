@@ -24,13 +24,13 @@ void main() {
   group('changelog parser', () {
     test('parses a changelog file with single line entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (ByteData? message) async =>
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final ChangelogData data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.empty, isFalse);
       expect(
@@ -47,13 +47,13 @@ void main() {
 
     test('removes prefix from single line entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (ByteData? message) async =>
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final ChangelogData data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.headerLines[0], equals('First header line.'));
       expect(
@@ -76,13 +76,13 @@ void main() {
 
     test('parses a changelog file with additional info entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (ByteData? message) async =>
             utf8.encoder.convert(_changelog2).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final ChangelogData data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.additions.length, equals(2));
       expect(
@@ -100,13 +100,13 @@ void main() {
         'returns an empty changelog data object '
         'if changelog file is empty', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (ByteData? message) async =>
             utf8.encoder.convert(_changelog3).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final ChangelogData data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.empty, isTrue);
     });

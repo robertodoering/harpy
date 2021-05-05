@@ -14,8 +14,8 @@ class ComposeTweetCardWithParent extends StatefulWidget {
     this.quotedTweet,
   }) : assert(inReplyToStatus == null || quotedTweet == null);
 
-  final TweetData inReplyToStatus;
-  final TweetData quotedTweet;
+  final TweetData? inReplyToStatus;
+  final TweetData? quotedTweet;
 
   @override
   _ComposeTweetCardWithParentState createState() =>
@@ -24,8 +24,8 @@ class ComposeTweetCardWithParent extends StatefulWidget {
 
 class _ComposeTweetCardWithParentState
     extends State<ComposeTweetCardWithParent> {
-  ScrollController _controller;
-  StreamSubscription<bool> _keyboardListener;
+  ScrollController? _controller;
+  late StreamSubscription<bool> _keyboardListener;
 
   bool _keyboardVisible = false;
 
@@ -40,7 +40,7 @@ class _ComposeTweetCardWithParentState
     ) async {
       if (visible) {
         // scroll to the start so the compose tweet card is fully visible
-        _controller.animateTo(
+        _controller!.animateTo(
           0,
           duration: kLongAnimationDuration,
           curve: Curves.easeOutCirc,
@@ -61,7 +61,7 @@ class _ComposeTweetCardWithParentState
     super.dispose();
 
     _keyboardListener.cancel();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override
@@ -89,12 +89,12 @@ class _ComposeTweetCardWithParentState
             defaultVerticalSpacer,
             if (widget.inReplyToStatus != null)
               ComposeParentTweetCard(
-                parentTweet: widget.inReplyToStatus,
+                parentTweet: widget.inReplyToStatus!,
                 text: 'replying to',
               )
             else if (widget.quotedTweet != null)
               ComposeParentTweetCard(
-                parentTweet: widget.quotedTweet,
+                parentTweet: widget.quotedTweet!,
                 text: 'quoting',
               ),
           ],

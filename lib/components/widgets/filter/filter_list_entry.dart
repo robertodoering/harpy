@@ -5,10 +5,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class FilterListEntry extends StatefulWidget {
   const FilterListEntry({
-    @required this.labelText,
-    @required this.activeFilters,
-    @required this.onSubmitted,
-    @required this.onDeleted,
+    required this.labelText,
+    required this.activeFilters,
+    required this.onSubmitted,
+    required this.onDeleted,
   });
 
   final String labelText;
@@ -45,9 +45,9 @@ class _FilterListEntryState extends State<FilterListEntry> {
   }
 
   List<Widget> _buildActiveFilters(HarpyTheme harpyTheme) {
-    if (widget.activeFilters != null && widget.activeFilters.isNotEmpty) {
-      final Color foregroundColor = harpyTheme.buttonTextColor;
-      final Color backgroundColor = harpyTheme.accentColor;
+    if (widget.activeFilters.isNotEmpty) {
+      final Color? foregroundColor = harpyTheme.buttonTextColor;
+      final Color? backgroundColor = harpyTheme.accentColor;
 
       return <Widget>[
         defaultSmallVerticalSpacer,
@@ -121,7 +121,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
                   controller: _controller,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(
-                      borderRadius: kDefaultBorderRadius,
+                      borderRadius: kDefaultBorderRadius as BorderRadius,
                     ),
                     labelText: widget.labelText,
                     labelStyle: const TextStyle(fontSize: 14),

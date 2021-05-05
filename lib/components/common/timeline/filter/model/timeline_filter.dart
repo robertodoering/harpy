@@ -24,7 +24,7 @@ class TimelineFilter extends Equatable {
 
   factory TimelineFilter.fromJsonString(String jsonString) {
     try {
-      if (jsonString == null || jsonString.isEmpty) {
+      if (jsonString.isEmpty) {
         return TimelineFilter.empty;
       } else {
         return TimelineFilter.fromJson(jsonDecode(jsonString));
@@ -60,13 +60,13 @@ class TimelineFilter extends Equatable {
   Map<String, dynamic> toJson() => _$TimelineFilterToJson(this);
 
   TimelineFilter copyWith({
-    bool includesImages,
-    bool includesGif,
-    bool includesVideo,
-    List<String> excludesHashtags,
-    List<String> excludesPhrases,
-    bool excludesReplies,
-    bool excludesRetweets,
+    bool? includesImages,
+    bool? includesGif,
+    bool? includesVideo,
+    List<String>? excludesHashtags,
+    List<String>? excludesPhrases,
+    bool? excludesReplies,
+    bool? excludesRetweets,
   }) {
     return TimelineFilter(
       includesImages: includesImages ?? this.includesImages,

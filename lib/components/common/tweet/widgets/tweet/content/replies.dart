@@ -16,7 +16,7 @@ class TweetReplies extends StatelessWidget {
   final TweetData tweet;
   final int depth;
 
-  Color _cardColor(HarpyTheme harpyTheme) {
+  Color? _cardColor(HarpyTheme harpyTheme) {
     if (depth % 2 == 0) {
       return Color.lerp(
         harpyTheme.averageBackgroundColor,

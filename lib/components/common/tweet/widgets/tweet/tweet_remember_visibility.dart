@@ -6,20 +6,20 @@ import 'package:harpy/core/core.dart';
 /// Uses the [TweetVisibilityPreferences] to save the last visible tweet id.
 class TweetRememberVisibility extends StatelessWidget {
   const TweetRememberVisibility({
-    @required Key key,
-    @required this.tweet,
-    @required this.child,
+    required Key key,
+    required this.tweet,
+    required this.child,
   }) : super(key: key);
 
-  final TweetData tweet;
+  final TweetData? tweet;
   final Widget child;
 
   void _onVisibilityChanged(bool visible) {
-    final TweetVisibilityPreferences tweetVisibilityPreferences =
+    final TweetVisibilityPreferences? tweetVisibilityPreferences =
         app<TweetVisibilityPreferences>();
 
     if (visible) {
-      tweetVisibilityPreferences.updateVisibleTweet(tweet);
+      tweetVisibilityPreferences!.updateVisibleTweet(tweet!);
     }
   }
 

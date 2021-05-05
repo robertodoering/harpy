@@ -30,7 +30,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     }
   }
 
-  final VideoPlayerController controller;
+  final VideoPlayerController? controller;
 
   static HarpyVideoPlayerModel of(BuildContext context) =>
       Provider.of<HarpyVideoPlayerModel>(context);
@@ -39,27 +39,26 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   final List<OnAction> _actionListener = <OnAction>[];
 
   /// Whether the video has already been initialized.
-  bool get initialized => controller.value.isInitialized;
+  bool get initialized => controller!.value.isInitialized;
 
   /// Whether the [controller] is currently initializing the video.
   bool _initializing = false;
   bool get initializing => _initializing;
 
   /// Whether the video is currently playing.
-  bool get playing => controller.value.isPlaying;
+  bool get playing => controller!.value.isPlaying;
 
   /// Whether the video has finished playing and has reached the end.
-  bool get finished =>
-      position != null && duration != null && position >= duration;
+  bool get finished => position >= duration;
 
   /// Whether the volume for the video is `0`.
-  bool get muted => controller.value.volume == 0;
+  bool get muted => controller!.value.volume == 0;
 
   /// The total duration of the video.
-  Duration get duration => controller.value.duration;
+  Duration get duration => controller!.value.duration;
 
   /// The current position of the video.
-  Duration get position => controller.value.position;
+  Duration get position => controller!.value.position;
 
   /// Whether the video is currently playing in fullscreen.
   bool _fullscreen = false;
@@ -71,7 +70,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await controller.initialize();
+      await controller!.initialize();
       togglePlayback();
     } catch (e) {
       // video didn't load / ignore
@@ -91,12 +90,12 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     }
 
     if (playing) {
-      controller.pause();
+      controller!.pause();
       if (notify) {
         _onAction(HarpyVideoPlayerAction.pause);
       }
     } else {
-      controller.play();
+      controller!.play();
       if (notify) {
         _onAction(HarpyVideoPlayerAction.play);
       }
@@ -107,8 +106,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   /// Seeks to the beginning and replays the video.
   void replay() {
-    controller.seekTo(Duration.zero);
-    controller.play();
+    controller!.seekTo(Duration.zero);
+    controller!.play();
     _onAction(HarpyVideoPlayerAction.play);
 
     notifyListeners();
@@ -116,11 +115,11 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   /// Changes the volume to 0 or 1 to mute or unmute the video.
   void toggleMute() {
-    if (controller.value.volume == 0) {
-      controller.setVolume(1);
+    if (controller!.value.volume == 0) {
+      controller!.setVolume(1);
       _onAction(HarpyVideoPlayerAction.unmute);
     } else {
-      controller.setVolume(0);
+      controller!.setVolume(0);
       _onAction(HarpyVideoPlayerAction.mute);
     }
 
@@ -132,7 +131,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   /// If the video is paused, it will also start playing.
   void fastForward() {
     if (!finished) {
-      controller.seekTo(controller.value.position + const Duration(seconds: 5));
+      controller!
+          .seekTo(controller!.value.position + const Duration(seconds: 5));
 
       _onAction(HarpyVideoPlayerAction.fastForward);
 
@@ -147,7 +147,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   /// If the video is paused, it will also start playing.
   void fastRewind() {
     if (position > Duration.zero) {
-      controller.seekTo(controller.value.position - const Duration(seconds: 5));
+      controller!
+          .seekTo(controller!.value.position - const Duration(seconds: 5));
 
       _onAction(HarpyVideoPlayerAction.fastRewind);
 
@@ -192,7 +193,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     if (hasListeners) {
-      app<HarpyNavigator>().state.maybePop();
+      app<HarpyNavigator>().state!.maybePop();
       notifyListeners();
     }
   }

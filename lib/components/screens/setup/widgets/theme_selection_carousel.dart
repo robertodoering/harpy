@@ -17,7 +17,7 @@ class ThemeSelectionCarousel extends StatefulWidget {
 }
 
 class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
-  PageController _controller;
+  PageController? _controller;
 
   int _currentPage = 0;
 
@@ -33,11 +33,11 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   void _listener() {
-    final int currentPage = _controller.page.round();
+    final int currentPage = _controller!.page!.round();
 
     if (_currentPage != currentPage) {
       setState(() {
@@ -71,7 +71,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
   void _previous(ThemeBloc themeBloc) {
     if (_canPrevious) {
-      _controller.previousPage(
+      _controller!.previousPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
@@ -82,7 +82,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
   void _next(ThemeBloc themeBloc) {
     if (_canNext) {
-      _controller.nextPage(
+      _controller!.nextPage(
         duration: kShortAnimationDuration,
         curve: Curves.easeOutCubic,
       );
@@ -104,7 +104,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
     final ThemeData theme = Theme.of(context);
     final ThemeBloc themeBloc = ThemeBloc.of(context);
 
-    final Color iconColor = IconTheme.of(context).color;
+    final Color iconColor = IconTheme.of(context).color!;
     final Color leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
     final Color rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
 
@@ -115,7 +115,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
           duration: kShortAnimationDuration,
           child: Text(
             predefinedThemes[_currentPage].name,
-            style: theme.textTheme.subtitle2.copyWith(
+            style: theme.textTheme.subtitle2!.copyWith(
               fontStyle: FontStyle.italic,
               letterSpacing: 2,
             ),

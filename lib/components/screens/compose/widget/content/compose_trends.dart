@@ -8,10 +8,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Displays global trends after typing `#`.
 class ComposeTweetTrends extends StatelessWidget {
   const ComposeTweetTrends({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class ComposeTweetTrends extends StatelessWidget {
           final TrendsBloc bloc = context.watch<TrendsBloc>();
           final TrendsState state = bloc.state;
 
-          Widget child;
+          Widget? child;
 
           if (state.hasTrends) {
             child = TrendSuggestions(controller: controller);
@@ -46,10 +46,10 @@ class ComposeTweetTrends extends StatelessWidget {
 
 class TrendSuggestions extends StatelessWidget {
   const TrendSuggestions({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class TrendSuggestions extends StatelessWidget {
           ),
           child: Text(
             'worldwide trends',
-            style: theme.textTheme.subtitle1.copyWith(
+            style: theme.textTheme.subtitle1!.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -82,12 +82,12 @@ class TrendSuggestions extends StatelessWidget {
                   horizontal: defaultPaddingValue,
                 ),
                 text: Text(
-                  trend.name,
-                  style: theme.textTheme.bodyText1.copyWith(
+                  trend.name!,
+                  style: theme.textTheme.bodyText1!.copyWith(
                     color: theme.accentColor,
                   ),
                 ),
-                onTap: () => controller.replaceSelection('${trend.name} '),
+                onTap: () => controller!.replaceSelection('${trend.name} '),
               ),
           ],
         )

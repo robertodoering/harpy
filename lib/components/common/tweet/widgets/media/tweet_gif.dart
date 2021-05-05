@@ -9,15 +9,15 @@ import 'package:video_player/video_player.dart';
 class TweetGif extends StatelessWidget {
   const TweetGif(
     this.tweet, {
-    @required this.tweetBloc,
+    required this.tweetBloc,
   });
 
-  final TweetData tweet;
+  final TweetData? tweet;
   final TweetBloc tweetBloc;
 
   void _openGallery(HarpyVideoPlayerModel model) {
     MediaOverlay.open(
-      tweet: tweet,
+      tweet: tweet!,
       tweetBloc: tweetBloc,
       enableImmersiveMode: false,
       overlap: true,
@@ -31,9 +31,10 @@ class TweetGif extends StatelessWidget {
         },
         child: HarpyGifPlayer.fromModel(
           model,
-          thumbnail: tweet.gif.thumbnailUrl,
-          thumbnailAspectRatio:
-              tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9,
+          thumbnail: tweet!.gif!.thumbnailUrl,
+          thumbnailAspectRatio: tweet!.gif!.validAspectRatio
+              ? tweet!.gif!.aspectRatioDouble
+              : 16 / 9,
         ),
       ),
     );
@@ -45,17 +46,17 @@ class TweetGif extends StatelessWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: kDefaultBorderRadius,
+      borderRadius: kDefaultBorderRadius as BorderRadius?,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
-          tweet.gif.appropriateUrl,
+          tweet!.gif!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        thumbnail: tweet.gif.thumbnailUrl,
+        thumbnail: tweet!.gif!.thumbnailUrl,
         onGifTap: _openGallery,
         onGifLongPress: () => showTweetMediaBottomSheet(
           context,
-          url: tweetBloc.downloadMediaUrl(tweet),
+          url: tweetBloc.downloadMediaUrl(tweet!),
         ),
         autoplay: mediaPreferences.shouldAutoplayMedia,
         allowVerticalOverflow: true,

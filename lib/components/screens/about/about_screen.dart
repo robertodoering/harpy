@@ -19,7 +19,7 @@ class AboutScreen extends StatelessWidget {
   static const String _privacyPolicy =
       'https://developer.twitter.com/en/developer-terms/policy';
 
-  List<Widget> _buildTitleWithLogo(Color textColor) {
+  List<Widget> _buildTitleWithLogo(Color? textColor) {
     return <Widget>[
       SizedBox(
         height: 100,
@@ -40,7 +40,7 @@ class AboutScreen extends StatelessWidget {
   }
 
   Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
-    final String version = app<HarpyInfo>().packageInfo.version;
+    final String version = app<HarpyInfo>().packageInfo!.version;
 
     return Card(
       child: Column(
@@ -199,7 +199,7 @@ class AboutScreen extends StatelessWidget {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
-    final Color color = textTheme.bodyText2.color;
+    final Color? color = textTheme.bodyText2!.color;
 
     final TextStyle linkStyle = TextStyle(
       color: theme.accentColor,

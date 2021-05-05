@@ -12,14 +12,15 @@ class ChangelogParser with HarpyLogger {
   /// Returns the [ChangelogData] for the current version.
   ///
   /// Returns `null` if the current version has no changelog file.
-  Future<ChangelogData> current(BuildContext context) async {
-    return parse(context, app<HarpyInfo>().packageInfo.buildNumber);
+  Future<ChangelogData?> current(BuildContext? context) async {
+    return parse(context, app<HarpyInfo>().packageInfo!.buildNumber);
   }
 
   /// Returns the [ChangelogData] for the [versionCode].
   ///
   /// Returns `null` if no corresponding changelog file exists.
-  Future<ChangelogData> parse(BuildContext context, String versionCode) async {
+  Future<ChangelogData?> parse(
+      BuildContext? context, String versionCode) async {
     try {
       final String changelogString = await rootBundle.loadString(
         _changelogString(versionCode),
@@ -28,7 +29,7 @@ class ChangelogParser with HarpyLogger {
 
       final ChangelogData data = ChangelogData(versionCode: versionCode);
 
-      ChangelogEntry entry;
+      ChangelogEntry? entry;
 
       int entryStart = changelogString.indexOf(linePrefix);
       if (entryStart == -1) {
@@ -46,7 +47,7 @@ class ChangelogParser with HarpyLogger {
         if (dateRegex.hasMatch(line)) {
           // localize date format
           data.headerLines.add(
-            DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
+            DateFormat.yMMMd(Localizations.localeOf(context!).languageCode)
                 .format(DateTime.parse(line)),
           );
         } else if (line.isNotEmpty || i != 0 || i != headerLines.length - 1) {
@@ -66,7 +67,7 @@ class ChangelogParser with HarpyLogger {
 
         if (line.startsWith(' ') && entry != null) {
           // additional information for the last line
-          entry?.additionalInfo?.add(line.trim());
+          entry.additionalInfo.add(line.trim());
         } else if (line.startsWith('Added') || line.startsWith('Improved')) {
           entry = _parseLine(line);
           data.additions.add(entry);
@@ -136,7 +137,7 @@ class ChangelogData {
     this.versionCode,
   });
 
-  final String versionCode;
+  final String? versionCode;
 
   /// Optional information at the beginning of the changelog, including the
   /// name of the version ('Version x.y.z').
@@ -168,7 +169,7 @@ class ChangelogData {
 /// lines in [additionalInfo].
 class ChangelogEntry {
   ChangelogEntry({
-    @required this.line,
+    required this.line,
   });
 
   final String line;

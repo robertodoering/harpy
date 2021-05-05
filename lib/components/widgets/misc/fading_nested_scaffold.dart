@@ -6,7 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [FlexibleSpaceBar] in the [SliverAppBar] starts showing.
 class FadingNestedScaffold extends StatefulWidget {
   const FadingNestedScaffold({
-    @required this.body,
+    required this.body,
     this.header,
     this.title,
     this.alwaysShowTitle = false,
@@ -15,20 +15,20 @@ class FadingNestedScaffold extends StatefulWidget {
   });
 
   /// The header widgets built below the [SliverAppBar].
-  final List<Widget> header;
+  final List<Widget>? header;
 
   /// The body of the [NestedScrollView].
   final Widget body;
 
   /// The title used in the [SliverAppBar] that fades in when the user scrolls
   /// down.
-  final String title;
+  final String? title;
 
   /// If `true`, always shows the title regardless of the scroll position.
   final bool alwaysShowTitle;
 
   /// The background of the [SliverAppBar].
-  final Widget background;
+  final Widget? background;
 
   /// The expanded height of the [SliverAppBar].
   final double expandedHeight;
@@ -38,7 +38,7 @@ class FadingNestedScaffold extends StatefulWidget {
 }
 
 class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
-  ScrollController _controller;
+  ScrollController? _controller;
   double _opacity = 0;
 
   @override
@@ -52,18 +52,19 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
     _controller = ScrollController();
 
     if (!widget.alwaysShowTitle) {
-      _controller.addListener(() {
-        if (_controller.offset >= fadeStart && _controller.offset <= fadeEnd) {
-          final double val = _controller.offset - fadeStart;
+      _controller!.addListener(() {
+        if (_controller!.offset >= fadeStart &&
+            _controller!.offset <= fadeEnd) {
+          final double val = _controller!.offset - fadeStart;
 
           setState(() {
             _opacity = val / difference;
           });
-        } else if (_controller.offset < fadeStart && _opacity != 0) {
+        } else if (_controller!.offset < fadeStart && _opacity != 0) {
           setState(() {
             _opacity = 0;
           });
-        } else if (_controller.offset > fadeEnd && _opacity != 1.0) {
+        } else if (_controller!.offset > fadeEnd && _opacity != 1.0) {
           setState(() {
             _opacity = 1.0;
           });
@@ -75,7 +76,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   Widget _buildTitle(ThemeData theme) {
@@ -131,7 +132,7 @@ class _FadingNestedScaffoldState extends State<FadingNestedScaffold> {
             _buildSliverAppBar(harpyTheme, theme),
             if (widget.header != null)
               SliverList(
-                delegate: SliverChildListDelegate(widget.header),
+                delegate: SliverChildListDelegate(widget.header!),
               ),
           ];
         },

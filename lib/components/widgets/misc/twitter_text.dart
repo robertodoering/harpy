@@ -17,7 +17,7 @@ typedef EntityTapped<T> = void Function(BuildContext context, T value);
 void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
   if (userMention.screenName != null) {
     app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context).settings,
+      currentRoute: ModalRoute.of(context)!.settings,
       screenName: userMention.screenName,
     );
   }
@@ -25,7 +25,7 @@ void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
 
 /// The default behavior when a url inside of [TwitterText] is tapped.
 void defaultOnUrlTap(BuildContext context, Url url) {
-  launchUrl(url.expandedUrl);
+  launchUrl(url.expandedUrl!);
 }
 
 /// The default behavior when a url inside of [TwitterText] is long pressed.
@@ -35,14 +35,14 @@ void defaultOnUrlLongPress(BuildContext context, Url url) {
     hapticFeedback: true,
     children: <Widget>[
       BottomSheetHeader(
-        child: Text(url.expandedUrl),
+        child: Text(url.expandedUrl!),
       ),
       ListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open url externally'),
         onTap: () {
-          launchUrl(url.expandedUrl);
-          app<HarpyNavigator>().state.maybePop();
+          launchUrl(url.expandedUrl!);
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
       ListTile(
@@ -50,15 +50,15 @@ void defaultOnUrlLongPress(BuildContext context, Url url) {
         title: const Text('copy url text'),
         onTap: () {
           Clipboard.setData(ClipboardData(text: url.expandedUrl));
-          app<HarpyNavigator>().state.maybePop();
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
       ListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share url'),
         onTap: () {
-          Share.share(url.expandedUrl);
-          app<HarpyNavigator>().state.maybePop();
+          Share.share(url.expandedUrl!);
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
     ],
@@ -67,16 +67,14 @@ void defaultOnUrlLongPress(BuildContext context, Url url) {
 
 /// The default behavior when a [Hashtag] inside of a [TwitterText] is tapped.
 void defaultOnHashtagTap(BuildContext context, Hashtag hashtag) {
-  if (hashtag != null &&
-      hashtag.text != null &&
-      hashtag.text.trim().isNotEmpty) {
+  if (hashtag.text != null && hashtag.text!.trim().isNotEmpty) {
     final String searchQuery = '#${hashtag.text}';
 
-    if (ModalRoute.of(context).settings?.name == TweetSearchScreen.route) {
+    if (ModalRoute.of(context)!.settings.name == TweetSearchScreen.route) {
       // already in tweet search
       context
           .read<TweetSearchBloc>()
-          ?.add(SearchTweets(customQuery: searchQuery));
+          .add(SearchTweets(customQuery: searchQuery));
     } else {
       app<HarpyNavigator>().pushTweetSearchScreen(
         initialSearchQuery: '#${hashtag.text}',
@@ -105,39 +103,39 @@ class TwitterText extends StatefulWidget {
   });
 
   /// The full twitter text.
-  final String text;
+  final String? text;
 
   /// The entities appearing in the [text].
-  final Entities entities;
+  final Entities? entities;
 
   /// The style of the entity in the text.
   ///
   /// Uses a bold font weight with the accent color if `null`.
-  final TextStyle entityStyle;
+  final TextStyle? entityStyle;
 
   /// The text style used as a base for the text.
-  final TextStyle style;
+  final TextStyle? style;
 
   /// An optional maximum number of lines for the text to span, wrapping if
   /// necessary.
-  final int maxLines;
+  final int? maxLines;
 
   /// How visual overflow should be handled.
-  final TextOverflow overflow;
+  final TextOverflow? overflow;
 
   /// A url that won't be built if it is part of [Entity.urls].
   ///
   /// Used to hide the quoted status url that appears at the end of the text
   /// when the tweet includes a quote.
-  final String urlToIgnore;
+  final String? urlToIgnore;
 
   /// Called when a hashtag is tapped.
-  final EntityTapped<Hashtag> onHashtagTap;
+  final EntityTapped<Hashtag>? onHashtagTap;
 
   /// Called when a url is tapped.
   ///
   /// Set to [defaultOnUrlTap] by default.
-  final EntityTapped<Url> onUrlTap;
+  final EntityTapped<Url>? onUrlTap;
 
   /// Called when a url is long pressed.
   ///
@@ -147,7 +145,7 @@ class TwitterText extends StatefulWidget {
   /// Called when a user mention is tapped.
   ///
   /// Set to [defaultOnUserMentionTap] by default.
-  final EntityTapped<UserMention> onUserMentionTap;
+  final EntityTapped<UserMention>? onUserMentionTap;
 
   @override
   _TwitterTextState createState() => _TwitterTextState();
@@ -178,7 +176,7 @@ class _TwitterTextState extends State<TwitterText> {
       textStart = entity.endIndex;
     }
 
-    _addTextSpan(textStart, widget.text.length, trimEnd: true);
+    _addTextSpan(textStart, widget.text!.length, trimEnd: true);
   }
 
   /// Adds the plain text with html entities parsed into the proper symbol.
@@ -187,14 +185,14 @@ class _TwitterTextState extends State<TwitterText> {
   /// span. This is used to prevent soft wraps at the end of the [TwitterText]
   /// with only one wrapped whitespace character.
   void _addTextSpan(int start, int end, {bool trimEnd = false}) {
-    if (start < end && end <= widget.text.length) {
+    if (start < end && end <= widget.text!.length) {
       final String text = parseHtmlEntities(
         trimOne(
-          widget.text.substring(start, end),
+          widget.text!.substring(start, end),
           start: false,
           end: trimEnd,
         ),
-      );
+      )!;
 
       if (text.isNotEmpty) {
         _textSpans.add(
@@ -213,8 +211,8 @@ class _TwitterTextState extends State<TwitterText> {
       return;
     }
 
-    String text;
-    GestureRecognizer recognizer;
+    String? text;
+    GestureRecognizer? recognizer;
 
     if (value is Hashtag) {
       recognizer = TapGestureRecognizer()
@@ -230,7 +228,7 @@ class _TwitterTextState extends State<TwitterText> {
 
       recognizer = MultiTapGestureRecognizer(longTapDelay: kLongPressTimeout)
         ..onTap = ((_) => widget.onUrlTap?.call(context, value))
-        ..onLongTapDown = (_, __) => widget.onUrlLongPress?.call(
+        ..onLongTapDown = (_, __) => widget.onUrlLongPress.call(
               context,
               value,
             );
@@ -301,15 +299,15 @@ class _TwitterTextState extends State<TwitterText> {
 /// since the utf8 encoded characters that are returned by Twitter are handled
 /// differently in dart.
 /// Therefore we use [_findIndices] to find the entity indices ourselves.
-List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
+List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
   final List<TwitterTextEntity> twitterTextEntities = <TwitterTextEntity>[];
 
   // hashtags
   int indexStart = 0;
   for (Hashtag hashtag in entities?.hashtags ?? <Hashtag>[]) {
     // Look for the indices of our hashtag entity
-    List<int> indices = _findIndices(
-      text,
+    List<int>? indices = _findIndices(
+      text!,
       '#${hashtag.text}',
       indexStart,
     );
@@ -330,7 +328,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   // urls
   indexStart = 0;
   for (Url url in entities?.urls ?? <Url>[]) {
-    final List<int> indices = _findIndices(text, url.url, indexStart);
+    final List<int>? indices = _findIndices(text!, url.url!, indexStart);
     indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, url), twitterTextEntities);
@@ -339,8 +337,8 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   // user mentions
   indexStart = 0;
   for (UserMention userMention in entities?.userMentions ?? <UserMention>[]) {
-    final List<int> indices = _findIndices(
-      text,
+    final List<int>? indices = _findIndices(
+      text!,
       '@${userMention.screenName}',
       indexStart,
     );
@@ -355,7 +353,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
   // media
   indexStart = 0;
   for (Media media in entities?.media ?? <Media>[]) {
-    final List<int> indices = _findIndices(text, media.url, indexStart);
+    final List<int>? indices = _findIndices(text!, media.url!, indexStart);
     indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, media), twitterTextEntities);
@@ -371,7 +369,7 @@ List<TwitterTextEntity> _initializeEntities(String text, Entities entities) {
 /// the https://pub.dev/packages/characters package for counting the characters.
 ///
 /// Returns `null` if the [entityText] has not been found in the text.
-List<int> _findIndices(String text, String entityText, int indexStart) {
+List<int>? _findIndices(String text, String entityText, int indexStart) {
   try {
     final int start = text.toLowerCase().indexOf(
           entityText.toLowerCase(),
@@ -417,7 +415,7 @@ class TwitterTextEntity {
   ///
   /// The length must always be exactly 2 to represent the start and end
   /// indices.
-  final List<int> indices;
+  final List<int>? indices;
 
   /// The entity value.
   ///
@@ -426,9 +424,9 @@ class TwitterTextEntity {
 
   bool get valid => indices?.length == 2;
 
-  int get startIndex => indices[0];
+  int get startIndex => indices![0];
 
-  int get endIndex => indices[1];
+  int get endIndex => indices![1];
 }
 
 /// A class that represents a text span for the [TwitterText].
@@ -444,7 +442,7 @@ class TwitterTextSpan {
   final String text;
 
   /// An optional gesture recognizer for this text span.
-  final GestureRecognizer recognizer;
+  final GestureRecognizer? recognizer;
 
   /// Whether this text span represents an entity and should be styled
   /// differently.

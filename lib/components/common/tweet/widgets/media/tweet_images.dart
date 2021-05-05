@@ -7,10 +7,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class TweetImages extends StatefulWidget {
   const TweetImages(
     this.tweet, {
-    @required this.tweetBloc,
+    required this.tweetBloc,
   });
 
-  final TweetData tweet;
+  final TweetData? tweet;
   final TweetBloc tweetBloc;
 
   @override
@@ -18,7 +18,7 @@ class TweetImages extends StatefulWidget {
 }
 
 class _TweetImagesState extends State<TweetImages> {
-  List<ImageData> get _images => widget.tweet.images;
+  List<ImageData>? get _images => widget.tweet!.images;
 
   /// The current index the gallery is showing.
   ///
@@ -28,27 +28,27 @@ class _TweetImagesState extends State<TweetImages> {
   void _onImageTap(int index) {
     _galleryIndex = index;
 
-    final String mediaUrl = widget.tweetBloc.downloadMediaUrl(
-      widget.tweet,
+    final String? mediaUrl = widget.tweetBloc.downloadMediaUrl(
+      widget.tweet!,
       index: _galleryIndex,
     );
 
     MediaOverlay.open(
-      tweet: widget.tweet,
+      tweet: widget.tweet!,
       tweetBloc: widget.tweetBloc,
       overlap: true,
       onDownload: () => defaultOnMediaDownload(mediaUrl),
       onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
       onShare: () => defaultOnMediaShare(mediaUrl),
       child: HarpyMediaGallery.builder(
-        itemCount: _images.length,
+        itemCount: _images!.length,
         initialIndex: index,
         beginBorderRadiusBuilder: _borderRadiusForImage,
         heroTagBuilder: (int index) =>
-            _images.map(_imageHeroTag).toList()[index],
+            _images!.map(_imageHeroTag).toList()[index],
         onPageChanged: (int newIndex) => _galleryIndex = newIndex,
         builder: (_, int index) => HarpyImage(
-          imageUrl: _images[index].appropriateUrl,
+          imageUrl: _images![index].appropriateUrl,
         ),
       ),
     );
@@ -59,12 +59,12 @@ class _TweetImagesState extends State<TweetImages> {
 
     showTweetMediaBottomSheet(
       context,
-      url: widget.tweetBloc.downloadMediaUrl(widget.tweet, index: index),
+      url: widget.tweetBloc.downloadMediaUrl(widget.tweet!, index: index),
     );
   }
 
   BorderRadius _borderRadiusForImage(int index) {
-    final int count = _images.length;
+    final int count = _images!.length;
 
     if (count == 1) {
       return const BorderRadius.all(kDefaultRadius);
@@ -95,7 +95,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   String _imageHeroTag(ImageData image) {
-    final String routeName = ModalRoute.of(context)?.settings?.name;
+    final String? routeName = ModalRoute.of(context)?.settings.name;
 
     return routeName != null
         ? '$routeName-${image.hashCode}'
@@ -103,7 +103,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   List<Widget> _buildImages() {
-    return _images.map((ImageData image) {
+    return _images!.map((ImageData image) {
       final Widget child = HarpyImage(
         imageUrl: image.appropriateUrl,
         fit: BoxFit.cover,

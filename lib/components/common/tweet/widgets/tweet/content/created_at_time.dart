@@ -9,11 +9,11 @@ import 'package:harpy/misc/misc.dart';
 /// Used by the [TweetAuthorRow].
 class CreatedAtTime extends StatefulWidget {
   const CreatedAtTime({
-    @required this.createdAt,
+    required this.createdAt,
     this.fontSizeDelta = 0,
   });
 
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final double fontSizeDelta;
 
   @override
@@ -21,13 +21,13 @@ class CreatedAtTime extends StatefulWidget {
 }
 
 class _CreatedAtTimeState extends State<CreatedAtTime> {
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
 
-    final DateTime localCreatedAt = widget.createdAt.toLocal();
+    final DateTime localCreatedAt = widget.createdAt!.toLocal();
     final Duration difference = DateTime.now().difference(localCreatedAt);
 
     if (difference < const Duration(hours: 1)) {
@@ -54,8 +54,8 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
     final ThemeData theme = Theme.of(context);
 
     return Text(
-      '${tweetTimeDifference(context, widget.createdAt)}',
-      style: theme.textTheme.bodyText1.apply(
+      '${tweetTimeDifference(context, widget.createdAt!)}',
+      style: theme.textTheme.bodyText1!.apply(
         fontSizeDelta: widget.fontSizeDelta,
       ),
       overflow: TextOverflow.ellipsis,

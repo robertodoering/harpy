@@ -4,8 +4,8 @@ abstract class UserTimelineEvent extends Equatable {
   const UserTimelineEvent();
 
   Stream<UserTimelineState> applyAsync({
-    UserTimelineState currentState,
-    UserTimelineBloc bloc,
+    required UserTimelineState currentState,
+    required UserTimelineBloc bloc,
   });
 }
 
@@ -15,17 +15,17 @@ class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
     this.timelineFilter,
   });
 
-  final TimelineFilter timelineFilter;
+  final TimelineFilter? timelineFilter;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         timelineFilter,
       ];
 
   @override
   Stream<UserTimelineState> applyAsync({
-    UserTimelineState currentState,
-    UserTimelineBloc bloc,
+    required UserTimelineState currentState,
+    required UserTimelineBloc bloc,
   }) async* {
     log.fine('requesting user timeline');
 
@@ -33,25 +33,25 @@ class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
 
     final TimelineFilter filter = timelineFilter ??
         TimelineFilter.fromJsonString(
-          bloc.timelineFilterPreferences.userTimelineFilter,
+          bloc.timelineFilterPreferences!.userTimelineFilter,
         );
 
-    String maxId;
+    String? maxId;
 
-    final List<TweetData> tweets = await bloc.timelineService
+    final List<TweetData>? tweets = await bloc.timelineService
         .userTimeline(
           screenName: bloc.screenName,
           count: 200,
           excludeReplies: filter.excludesReplies,
         )
         .then((List<Tweet> tweets) {
-          if (tweets != null && tweets.isNotEmpty) {
+          if (tweets.isNotEmpty) {
             maxId = tweets.last.idStr;
           }
           return tweets;
         })
         .then((List<Tweet> tweets) => handleTweets(tweets, filter))
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} initial tweets');
@@ -86,8 +86,8 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String _findMaxId(UserTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId ?? '');
+  String? _findMaxId(UserTimelineResult state) {
+    final int? lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -98,8 +98,8 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
 
   @override
   Stream<UserTimelineState> applyAsync({
-    UserTimelineState currentState,
-    UserTimelineBloc bloc,
+    required UserTimelineState currentState,
+    required UserTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
       bloc.requestOlderCompleter.complete();
@@ -108,7 +108,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
     }
 
     if (currentState is UserTimelineResult) {
-      final String maxId = _findMaxId(currentState);
+      final String? maxId = _findMaxId(currentState);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -119,18 +119,18 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
 
       yield UserTimelineLoadingOlder(oldResult: currentState);
 
-      String newMaxId;
+      String? newMaxId;
       bool canRequestOlder = false;
 
-      final List<TweetData> tweets = await bloc.timelineService
+      final List<TweetData>? tweets = await bloc.timelineService
           .userTimeline(
             screenName: bloc.screenName,
             count: 200,
             maxId: maxId,
-            excludeReplies: currentState.timelineFilter?.excludesReplies,
+            excludeReplies: currentState.timelineFilter.excludesReplies,
           )
           .then((List<Tweet> tweets) {
-            if (tweets != null && tweets.isNotEmpty) {
+            if (tweets.isNotEmpty) {
               newMaxId = tweets.last.idStr;
               canRequestOlder = true;
             } else {
@@ -140,7 +140,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
           })
           .then((List<Tweet> tweets) =>
               handleTweets(tweets, currentState.timelineFilter))
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');
@@ -171,7 +171,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
 /// [UserTimelineResult] and refreshes the list afterwards.
 class FilterUserTimeline extends UserTimelineEvent with HarpyLogger {
   const FilterUserTimeline({
-    @required this.timelineFilter,
+    required this.timelineFilter,
   });
 
   final TimelineFilter timelineFilter;
@@ -186,7 +186,7 @@ class FilterUserTimeline extends UserTimelineEvent with HarpyLogger {
       final String encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
-      bloc.timelineFilterPreferences.userTimelineFilter = encodedFilter;
+      bloc.timelineFilterPreferences!.userTimelineFilter = encodedFilter;
     } catch (e, st) {
       log.warning('unable to encode timeline filter', e, st);
     }
@@ -194,8 +194,8 @@ class FilterUserTimeline extends UserTimelineEvent with HarpyLogger {
 
   @override
   Stream<UserTimelineState> applyAsync({
-    UserTimelineState currentState,
-    UserTimelineBloc bloc,
+    required UserTimelineState currentState,
+    required UserTimelineBloc bloc,
   }) async* {
     log.fine('set user timeline filter');
 

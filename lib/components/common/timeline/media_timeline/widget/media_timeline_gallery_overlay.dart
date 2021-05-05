@@ -12,14 +12,14 @@ import 'package:harpy/misc/misc.dart';
 /// share) in the gallery.
 class MediaTimelineGalleryOverlay extends StatefulWidget {
   const MediaTimelineGalleryOverlay({
-    @required this.entries,
-    @required this.initialIndex,
-    @required this.videoPlayerModel,
+    required this.entries,
+    required this.initialIndex,
+    required this.videoPlayerModel,
   });
 
   final List<MediaTimelineEntry> entries;
   final int initialIndex;
-  final HarpyVideoPlayerModel videoPlayerModel;
+  final HarpyVideoPlayerModel? videoPlayerModel;
 
   @override
   _MediaTimelineGalleryOverlayState createState() =>
@@ -28,15 +28,15 @@ class MediaTimelineGalleryOverlay extends StatefulWidget {
 
 class _MediaTimelineGalleryOverlayState
     extends State<MediaTimelineGalleryOverlay> {
-  int _index;
-  TweetData _tweet;
-  TweetBloc _bloc;
+  late int _index;
+  late TweetData _tweet;
+  late TweetBloc _bloc;
 
-  String get _mediaUrl {
+  String? get _mediaUrl {
     if (widget.entries[_index].isImage) {
-      return widget.entries[_index].imageData.bestUrl;
+      return widget.entries[_index].imageData!.bestUrl;
     } else if (widget.entries[_index].isVideo) {
-      return widget.entries[_index].videoData.bestUrl;
+      return widget.entries[_index].videoData!.bestUrl;
     } else {
       return null;
     }
@@ -83,7 +83,7 @@ class _MediaTimelineGalleryOverlayState
           itemCount: widget.entries.length,
           initialIndex: widget.initialIndex,
           heroTagBuilder: (int index) => widget.entries[index].isImage
-              ? '$index-${widget.entries[index].media.appropriateUrl}'
+              ? '$index-${widget.entries[index].media!.appropriateUrl}'
               : null,
           onPageChanged: _onPageChanged,
           builder: (_, int index) => MediaTimelineGalleryWidget(

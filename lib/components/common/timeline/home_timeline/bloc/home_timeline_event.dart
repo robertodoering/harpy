@@ -4,8 +4,8 @@ abstract class HomeTimelineEvent extends Equatable {
   const HomeTimelineEvent();
 
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    required HomeTimelineState currentState,
+    required HomeTimelineBloc bloc,
   });
 }
 
@@ -23,7 +23,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String _sinceId(int lastVisibleTweet) {
+  String? _sinceId(int lastVisibleTweet) {
     if (lastVisibleTweet != 0) {
       return '${lastVisibleTweet - 1}';
     } else {
@@ -33,36 +33,36 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    required HomeTimelineState currentState,
+    required HomeTimelineBloc bloc,
   }) async* {
     log.fine('requesting initial home timeline');
 
     yield const HomeTimelineInitialLoading();
 
     final TimelineFilter filter = TimelineFilter.fromJsonString(
-      bloc.timelineFilterPreferences.homeTimelineFilter,
+      bloc.timelineFilterPreferences!.homeTimelineFilter,
     );
 
     final int lastVisibleTweet =
-        bloc.tweetVisibilityPreferences.lastVisibleTweet;
+        bloc.tweetVisibilityPreferences!.lastVisibleTweet;
 
-    String maxId;
+    String? maxId;
 
-    final List<TweetData> tweets = await bloc.timelineService
+    final List<TweetData>? tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
           sinceId: _sinceId(lastVisibleTweet),
           excludeReplies: filter.excludesReplies,
         )
         .then((List<Tweet> tweets) {
-          if (tweets != null && tweets.isNotEmpty) {
+          if (tweets.isNotEmpty) {
             maxId = tweets.last.idStr;
           }
           return tweets;
         })
         .then((List<Tweet> tweets) => handleTweets(tweets, filter))
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} initial tweets');
@@ -99,8 +99,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String _findMaxId(HomeTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId ?? '');
+  String? _findMaxId(HomeTimelineResult state) {
+    final int? lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -111,8 +111,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    required HomeTimelineState currentState,
+    required HomeTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
       bloc.requestOlderCompleter.complete();
@@ -123,7 +123,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
     final HomeTimelineState state = bloc.state;
 
     if (state is HomeTimelineResult) {
-      final String maxId = _findMaxId(state);
+      final String? maxId = _findMaxId(state);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -134,17 +134,17 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
       yield HomeTimelineLoadingOlder(oldResult: state);
 
-      String newMaxId;
+      String? newMaxId;
       bool canRequestOlder = false;
 
-      final List<TweetData> tweets = await bloc.timelineService
+      final List<TweetData>? tweets = await bloc.timelineService
           .homeTimeline(
             count: 200,
             maxId: maxId,
-            excludeReplies: currentState.timelineFilter?.excludesReplies,
+            excludeReplies: currentState.timelineFilter.excludesReplies,
           )
           .then((List<Tweet> tweets) {
-            if (tweets != null && tweets.isNotEmpty) {
+            if (tweets.isNotEmpty) {
               newMaxId = tweets.last.idStr;
               canRequestOlder = true;
             } else {
@@ -154,7 +154,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           })
           .then((List<Tweet> tweets) =>
               handleTweets(tweets, currentState.timelineFilter))
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');
@@ -198,18 +198,18 @@ class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   });
 
   final bool clearPrevious;
-  final TimelineFilter timelineFilter;
+  final TimelineFilter? timelineFilter;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         clearPrevious,
         timelineFilter,
       ];
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    required HomeTimelineState currentState,
+    required HomeTimelineBloc bloc,
   }) async* {
     log.fine('refreshing home timeline');
 
@@ -217,23 +217,23 @@ class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
       yield const HomeTimelineInitialLoading();
     }
 
-    String maxId;
+    String? maxId;
 
-    final List<TweetData> tweets = await bloc.timelineService
+    final List<TweetData>? tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
           excludeReplies: timelineFilter?.excludesReplies ??
-              currentState.timelineFilter?.excludesReplies,
+              currentState.timelineFilter.excludesReplies,
         )
         .then((List<Tweet> tweets) {
-          if (tweets != null && tweets.isNotEmpty) {
+          if (tweets.isNotEmpty) {
             maxId = tweets.last.idStr;
           }
           return tweets;
         })
         .then((List<Tweet> tweets) =>
             handleTweets(tweets, timelineFilter ?? currentState.timelineFilter))
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweets');
@@ -270,7 +270,7 @@ class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 /// Only affects the list when the state is [HomeTimelineResult].
 class AddToHomeTimeline extends HomeTimelineEvent {
   const AddToHomeTimeline({
-    @required this.tweet,
+    required this.tweet,
   });
 
   final TweetData tweet;
@@ -281,23 +281,22 @@ class AddToHomeTimeline extends HomeTimelineEvent {
       ];
 
   bool _addToParent(List<TweetData> tweets) {
-    final TweetData parent = tweets.firstWhere(
-      (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
-      orElse: () => null,
-    );
-
-    if (parent != null) {
+    try {
+      final TweetData parent = tweets.firstWhere(
+        (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
+      );
       parent.replies.add(tweet);
       return true;
-    } else {
+    } on StateError {
+      // tweet doesn't exist
       return false;
     }
   }
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    HomeTimelineState? currentState,
+    HomeTimelineBloc? bloc,
   }) async* {
     if (currentState is HomeTimelineResult) {
       final List<TweetData> tweets = List<TweetData>.of(currentState.tweets);
@@ -324,36 +323,35 @@ class AddToHomeTimeline extends HomeTimelineEvent {
 /// Only affects the list when the state is [HomeTimelineResult].
 class RemoveFromHomeTimeline extends HomeTimelineEvent {
   const RemoveFromHomeTimeline({
-    @required this.tweet,
+    required this.tweet,
   });
 
   final TweetData tweet;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         tweet,
       ];
 
   bool _removeChild(List<TweetData> tweets) {
-    final TweetData parent = tweets.firstWhere(
-      (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
-      orElse: () => null,
-    );
-
-    if (parent != null) {
+    try {
+      final TweetData parent = tweets.firstWhere(
+        (TweetData element) => element.idStr == tweet.inReplyToStatusIdStr,
+      );
       parent.replies.removeWhere(
         (TweetData element) => element.idStr == tweet.idStr,
       );
       return true;
-    } else {
+    } on StateError {
+      // tweet doesn't exist
       return false;
     }
   }
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    HomeTimelineState? currentState,
+    HomeTimelineBloc? bloc,
   }) async* {
     if (currentState is HomeTimelineResult) {
       final List<TweetData> tweets = List<TweetData>.of(currentState.tweets);
@@ -379,7 +377,7 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
 /// [HomeTimelineResult] and refreshes the list afterwards.
 class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   const FilterHomeTimeline({
-    @required this.timelineFilter,
+    required this.timelineFilter,
   });
 
   final TimelineFilter timelineFilter;
@@ -394,7 +392,7 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
       final String encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
-      bloc.timelineFilterPreferences.homeTimelineFilter = encodedFilter;
+      bloc.timelineFilterPreferences!.homeTimelineFilter = encodedFilter;
     } catch (e, st) {
       log.warning('unable to encode timeline filter', e, st);
     }
@@ -402,12 +400,12 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
   @override
   Stream<HomeTimelineState> applyAsync({
-    HomeTimelineState currentState,
-    HomeTimelineBloc bloc,
+    HomeTimelineState? currentState,
+    HomeTimelineBloc? bloc,
   }) async* {
     log.fine('set home timeline filter');
 
-    _saveTimelineFilter(bloc);
+    _saveTimelineFilter(bloc!);
 
     bloc.add(RefreshHomeTimeline(
       clearPrevious: true,

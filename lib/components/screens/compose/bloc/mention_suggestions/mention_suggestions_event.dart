@@ -4,8 +4,8 @@ abstract class MentionSuggestionsEvent extends Equatable {
   const MentionSuggestionsEvent();
 
   Stream<MentionSuggestionsState> applyAsync({
-    MentionSuggestionsState currentState,
-    MentionSuggestionsBloc bloc,
+    required MentionSuggestionsState currentState,
+    required MentionSuggestionsBloc bloc,
   });
 }
 
@@ -21,8 +21,8 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
 
   @override
   Stream<MentionSuggestionsState> applyAsync({
-    MentionSuggestionsState currentState,
-    MentionSuggestionsBloc bloc,
+    required MentionSuggestionsState currentState,
+    required MentionSuggestionsBloc bloc,
   }) async* {
     final String query =
         text.contains('@') ? text.substring(text.indexOf('@') + 1) : text;
@@ -54,23 +54,23 @@ class UpdateMentionsSuggestionsEvent extends MentionSuggestionsEvent {
     this.searchQuery,
   });
 
-  final List<UserData> followingUsers;
-  final List<UserData> searchedUsers;
-  final String searchQuery;
+  final List<UserData>? followingUsers;
+  final List<UserData>? searchedUsers;
+  final String? searchQuery;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         followingUsers,
         searchedUsers,
         searchQuery,
       ];
 
-  Map<String, List<UserData>> _searchedUsers(
+  Map<String?, List<UserData>?> _searchedUsers(
     MentionSuggestionsState currentState,
   ) {
     if (searchedUsers != null && searchQuery != null) {
-      final Map<String, List<UserData>> searchedUsersMap =
-          Map<String, List<UserData>>.from(currentState.searchedUsers);
+      final Map<String?, List<UserData>?> searchedUsersMap =
+          Map<String?, List<UserData>?>.from(currentState.searchedUsers);
 
       searchedUsersMap[searchQuery] = searchedUsers;
 
@@ -82,8 +82,8 @@ class UpdateMentionsSuggestionsEvent extends MentionSuggestionsEvent {
 
   @override
   Stream<MentionSuggestionsState> applyAsync({
-    MentionSuggestionsState currentState,
-    MentionSuggestionsBloc bloc,
+    required MentionSuggestionsState currentState,
+    required MentionSuggestionsBloc bloc,
   }) async* {
     yield MentionSuggestionsState(
       lastQuery: currentState.lastQuery,

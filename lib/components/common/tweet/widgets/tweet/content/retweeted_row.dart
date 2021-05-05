@@ -15,7 +15,7 @@ class TweetRetweetedRow extends StatelessWidget {
 
   void _onRetweeterTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context).settings,
+      currentRoute: ModalRoute.of(context)!.settings,
       screenName: tweet.retweetScreenName,
     );
   }
@@ -37,8 +37,8 @@ class TweetRetweetedRow extends StatelessWidget {
           Expanded(
             child: Text(
               '${tweet.retweetUserName} retweeted',
-              style: theme.textTheme.bodyText2.copyWith(
-                color: theme.textTheme.bodyText2.color.withOpacity(.8),
+              style: theme.textTheme.bodyText2!.copyWith(
+                color: theme.textTheme.bodyText2!.color!.withOpacity(.8),
               ),
             ),
           ),

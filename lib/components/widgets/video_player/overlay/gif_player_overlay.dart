@@ -6,7 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class GifPlayerOverlay extends StatefulWidget {
   const GifPlayerOverlay(
     this.model, {
-    @required this.child,
+    required this.child,
     this.compact = false,
   });
 
@@ -19,7 +19,7 @@ class GifPlayerOverlay extends StatefulWidget {
 }
 
 class _GifPlayerOverlayState extends State<GifPlayerOverlay> {
-  Widget _centerIcon;
+  Widget? _centerIcon;
 
   HarpyVideoPlayerModel get _model => widget.model;
 
@@ -77,8 +77,8 @@ class _GifPlayerOverlayState extends State<GifPlayerOverlay> {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        if (widget.child != null) widget.child,
-        if (_centerIcon != null) Positioned.fill(child: _centerIcon),
+        widget.child,
+        if (_centerIcon != null) Positioned.fill(child: _centerIcon!),
       ],
     );
   }

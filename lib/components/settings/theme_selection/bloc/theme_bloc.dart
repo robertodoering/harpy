@@ -45,7 +45,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     return id == -1 ? 0 : id;
   }
 
-  HarpyThemeData _decodeThemeData(String themeDataJson) {
+  HarpyThemeData? _decodeThemeData(String themeDataJson) {
     try {
       return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
     } catch (e, st) {
@@ -62,8 +62,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     customThemes = app<ThemePreferences>()
         .customThemes
         .map(_decodeThemeData)
-        .where((HarpyThemeData themeData) => themeData != null)
-        .map((HarpyThemeData themeData) => HarpyTheme.fromData(themeData))
+        .where((HarpyThemeData? themeData) => themeData != null)
+        .map((HarpyThemeData? themeData) => HarpyTheme.fromData(themeData!))
         .toList();
 
     _log.fine('found ${customThemes.length} custom themes');
@@ -71,9 +71,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   /// Updates the system ui to match the [theme].
   void updateSystemUi(HarpyTheme theme) {
-    Color navigationBarColor;
+    Color? navigationBarColor;
 
-    if ((app<HarpyInfo>().deviceInfo?.version?.sdkInt ?? 0) >= 30) {
+    if ((app<HarpyInfo>().deviceInfo?.version.sdkInt ?? 0) >= 30) {
       // android 11 and above allow for a transparent navigation bar where
       // the app can draw behind it
       navigationBarColor = Colors.transparent;

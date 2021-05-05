@@ -15,22 +15,22 @@ class ClearableTextField extends StatefulWidget {
     this.onClear,
   });
 
-  final TextEditingController controller;
-  final String text;
-  final InputDecoration decoration;
+  final TextEditingController? controller;
+  final String? text;
+  final InputDecoration? decoration;
   final bool autofocus;
   final bool removeFocusOnClear;
-  final ValueChanged<String> onSubmitted;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onClear;
+  final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onClear;
 
   @override
   _ClearableTextFieldState createState() => _ClearableTextFieldState();
 }
 
 class _ClearableTextFieldState extends State<ClearableTextField> {
-  TextEditingController _controller;
-  FocusNode _focusNode;
+  late TextEditingController _controller;
+  FocusNode? _focusNode;
 
   bool _showClear = false;
 
@@ -39,7 +39,10 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
     super.initState();
 
     _controller = widget.controller ?? TextEditingController();
-    _controller.text = widget.text;
+
+    if (widget.text != null) {
+      _controller.text = widget.text!;
+    }
 
     _controller.addListener(() {
       if (mounted && _showClear != _controller.value.text.isNotEmpty) {
@@ -49,7 +52,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
 
     _focusNode = FocusNode();
     if (widget.autofocus) {
-      _focusNode.requestFocus();
+      _focusNode!.requestFocus();
     }
   }
 
@@ -58,7 +61,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.text != null && _controller.text != widget.text) {
-      _controller.value = TextEditingValue(text: widget.text);
+      _controller.value = TextEditingValue(text: widget.text!);
     }
   }
 
@@ -69,7 +72,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
     if (widget.controller == null) {
       _controller.dispose();
     }
-    _focusNode.dispose();
+    _focusNode!.dispose();
   }
 
   Widget _buildClearIcon(ThemeData theme) {
@@ -91,7 +94,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
           if (widget.removeFocusOnClear) {
             // prevents the text field from gaining focus when previously
             // unfocused upon tapping the clear button
-            _focusNode.canRequestFocus = false;
+            _focusNode!.canRequestFocus = false;
           }
         },
       );
@@ -109,7 +112,7 @@ class _ClearableTextFieldState extends State<ClearableTextField> {
 
   InputDecoration _buildDecoration(ThemeData theme) {
     if (widget.decoration != null) {
-      return widget.decoration.copyWith(suffixIcon: _buildClearIcon(theme));
+      return widget.decoration!.copyWith(suffixIcon: _buildClearIcon(theme));
     } else {
       return InputDecoration(suffixIcon: _buildClearIcon(theme));
     }

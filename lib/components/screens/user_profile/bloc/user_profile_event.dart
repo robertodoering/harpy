@@ -5,8 +5,8 @@ abstract class UserProfileEvent {
   const UserProfileEvent();
 
   Stream<UserProfileState> applyAsync({
-    UserProfileState currentState,
-    UserProfileBloc bloc,
+    required UserProfileState currentState,
+    required UserProfileBloc bloc,
   });
 }
 
@@ -31,24 +31,24 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     this.screenName,
   }) : assert(user != null || screenName != null);
 
-  final UserData user;
+  final UserData? user;
 
-  final String screenName;
+  final String? screenName;
 
   /// The user id used to request the user or the relationship status.
-  String get _screenName => screenName ?? user?.screenName;
+  String? get _screenName => screenName ?? user?.screenName;
 
   @override
   Stream<UserProfileState> applyAsync({
-    UserProfileState currentState,
-    UserProfileBloc bloc,
+    required UserProfileState currentState,
+    required UserProfileBloc bloc,
   }) async* {
     log.fine('initialize user');
 
     yield LoadingUserState();
 
-    UserData userData = user;
-    List<String> connections = user?.connections;
+    UserData? userData = user;
+    List<String>? connections = user?.connections;
 
     if (user?.connections == null) {
       await Future.wait<void>(<Future<void>>[
@@ -58,19 +58,19 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
               .usersShow(screenName: _screenName)
               .then((User user) => UserData.fromUser(user))
               .then((UserData user) => userData = user)
-              .catchError(silentErrorHandler),
+              .handleError(silentErrorHandler),
 
         // friendship lookup for the relationship status (following /
         // followed_by)
         if (connections == null && _screenName != null)
           bloc.userService
-              .friendshipsLookup(screenNames: <String>[_screenName])
+              .friendshipsLookup(screenNames: <String>[_screenName!])
               .then(
                 (List<Friendship> response) =>
                     response.length == 1 ? response.first : null,
               )
-              .then(
-                (Friendship friendship) =>
+              .then<void>(
+                (Friendship? friendship) =>
                     connections = friendship?.connections,
               )
               .catchError(silentErrorHandler),
@@ -80,7 +80,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (userData == null) {
       yield FailedLoadingUserState();
     } else {
-      userData.connections = connections;
+      userData!.connections = connections;
       bloc.user = userData;
 
       yield InitializedUserState();
@@ -94,22 +94,22 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
 
   @override
   Stream<UserProfileState> applyAsync({
-    UserProfileState currentState,
-    UserProfileBloc bloc,
+    required UserProfileState currentState,
+    required UserProfileBloc bloc,
   }) async* {
-    log.fine('following @${bloc.user.screenName}');
+    log.fine('following @${bloc.user!.screenName}');
 
-    bloc.user.connections?.add('following');
+    bloc.user!.connections?.add('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsCreate(userId: bloc.user.idStr);
-      log.fine('successfully followed @${bloc.user.screenName}');
+      await bloc.userService.friendshipsCreate(userId: bloc.user!.idStr);
+      log.fine('successfully followed @${bloc.user!.screenName}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
       // assume still not following
-      bloc.user.connections?.remove('following');
+      bloc.user!.connections?.remove('following');
       yield InitializedUserState();
     }
   }
@@ -121,22 +121,22 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
 
   @override
   Stream<UserProfileState> applyAsync({
-    UserProfileState currentState,
-    UserProfileBloc bloc,
+    required UserProfileState currentState,
+    required UserProfileBloc bloc,
   }) async* {
-    log.fine('unfollowing @${bloc.user.screenName}');
+    log.fine('unfollowing @${bloc.user!.screenName}');
 
-    bloc.user.connections?.remove('following');
+    bloc.user!.connections?.remove('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsDestroy(userId: bloc.user.idStr);
-      log.fine('successfully unfollowed @${bloc.user.screenName}');
+      await bloc.userService.friendshipsDestroy(userId: bloc.user!.idStr);
+      log.fine('successfully unfollowed @${bloc.user!.screenName}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
       // assume still following
-      bloc.user.connections?.add('following');
+      bloc.user!.connections?.add('following');
       yield InitializedUserState();
     }
   }
@@ -147,15 +147,15 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
 /// The translation is saved in the [UserData.descriptionTranslation].
 class TranslateUserDescriptionEvent extends UserProfileEvent {
   const TranslateUserDescriptionEvent({
-    @required this.locale,
+    required this.locale,
   });
 
   final Locale locale;
 
   @override
   Stream<UserProfileState> applyAsync({
-    UserProfileState currentState,
-    UserProfileBloc bloc,
+    required UserProfileState currentState,
+    required UserProfileBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
@@ -167,13 +167,13 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     yield TranslatingDescriptionState();
 
     await translationService
-        .translate(text: bloc.user.description, to: translateLanguage)
+        .translate(text: bloc.user!.description, to: translateLanguage)
         .then((Translation translation) =>
-            bloc.user.descriptionTranslation = translation)
-        .catchError(silentErrorHandler);
+            bloc.user!.descriptionTranslation = translation)
+        .handleError<void>(silentErrorHandler);
 
-    if (!bloc.user.hasDescriptionTranslation ||
-        bloc.user.descriptionTranslation.unchanged) {
+    if (!bloc.user!.hasDescriptionTranslation ||
+        bloc.user!.descriptionTranslation!.unchanged) {
       app<MessageService>().show('description not translated');
     }
 

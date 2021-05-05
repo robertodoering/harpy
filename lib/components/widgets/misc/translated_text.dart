@@ -13,21 +13,21 @@ class TranslatedText extends StatelessWidget {
     this.fontSizeDelta = 0,
   });
 
-  final String text;
-  final String language;
-  final Entities entities;
-  final String urlToIgnore;
+  final String? text;
+  final String? language;
+  final Entities? entities;
+  final String? urlToIgnore;
   final double fontSizeDelta;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final TextStyle bodyText1 = theme.textTheme.bodyText1.apply(
+    final TextStyle bodyText1 = theme.textTheme.bodyText1!.apply(
       fontSizeDelta: fontSizeDelta,
     );
 
-    final TextStyle bodyText2 = theme.textTheme.bodyText2.apply(
+    final TextStyle bodyText2 = theme.textTheme.bodyText2!.apply(
       fontSizeDelta: fontSizeDelta,
     );
 

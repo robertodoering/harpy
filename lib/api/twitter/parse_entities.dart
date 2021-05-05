@@ -9,17 +9,17 @@ void parseEntities(String text, Entities entities) {
   // Search for hashtags in text, ensure we correctly remove the
   //  start (valid characters are # and ＃)
   for (Match m in hashtagRegex.allMatches(text)) {
-    final String hashtag = m.group(0);
+    final String hashtag = m.group(0)!;
 
-    entities.hashtags
+    entities.hashtags!
         .add(Hashtag()..text = hashtag.replaceFirst(RegExp(r'#|＃'), ''));
   }
 
   // Search for mentions in text
   for (Match m in mentionRegex.allMatches(text)) {
-    final String mention = m.group(0);
+    final String mention = m.group(0)!;
 
-    entities.userMentions
+    entities.userMentions!
         .add(UserMention()..screenName = mention.replaceFirst('@', ''));
   }
 }

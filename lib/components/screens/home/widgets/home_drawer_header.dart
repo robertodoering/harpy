@@ -31,7 +31,7 @@ class HomeDrawerHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user.name,
+                  user.name!,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),
@@ -49,7 +49,7 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserData user = AuthenticationBloc.of(context).authenticatedUser;
+    final UserData user = AuthenticationBloc.of(context).authenticatedUser!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),

@@ -9,9 +9,9 @@ import 'package:video_player/video_player.dart';
 /// for a [MediaTimeline].
 class MediaTimelineGalleryWidget extends StatelessWidget {
   const MediaTimelineGalleryWidget({
-    @required this.entry,
-    @required this.initialIndex,
-    @required this.index,
+    required this.entry,
+    required this.initialIndex,
+    required this.index,
     this.videoPlayerModel,
   });
 
@@ -24,28 +24,28 @@ class MediaTimelineGalleryWidget extends StatelessWidget {
   ///
   /// This is used to prevent having to re initialize the video or gif when it
   /// is already initialized.
-  final HarpyVideoPlayerModel videoPlayerModel;
+  final HarpyVideoPlayerModel? videoPlayerModel;
 
   Widget _buildImage() {
-    return HarpyImage(imageUrl: entry.imageData.appropriateUrl);
+    return HarpyImage(imageUrl: entry.imageData!.appropriateUrl);
   }
 
   Widget _buildGif() {
     if (initialIndex == index && videoPlayerModel != null) {
       return HarpyGifPlayer.fromModel(
         videoPlayerModel,
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
       );
     } else {
       return HarpyGifPlayer.fromController(
         VideoPlayerController.network(
-          entry.videoData.appropriateUrl,
+          entry.videoData!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
       );
     }
@@ -55,17 +55,17 @@ class MediaTimelineGalleryWidget extends StatelessWidget {
     if (initialIndex == index && videoPlayerModel != null) {
       return HarpyVideoPlayer.fromModel(
         videoPlayerModel,
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
       );
     } else {
       return HarpyVideoPlayer.fromController(
         VideoPlayerController.network(
-          entry.videoData.appropriateUrl,
+          entry.videoData!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
       );
     }
   }

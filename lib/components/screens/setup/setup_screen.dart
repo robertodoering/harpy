@@ -24,7 +24,7 @@ class _SetupScreenState extends State<SetupScreen> {
     HapticFeedback.lightImpact();
 
     // setup completed
-    await _slideSetupKey.currentState.forward();
+    await _slideSetupKey.currentState!.forward();
 
     app<SetupPreferences>().performedSetup = true;
     app<AnalyticsService>().logSetupTheme(themeBloc.harpyTheme.name);
@@ -45,7 +45,7 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget _buildUsername(AuthenticationBloc authenticationBloc) {
     return Center(
       child: PrimaryHeadline(
-        '${authenticationBloc.authenticatedUser.name}',
+        '${authenticationBloc.authenticatedUser!.name}',
         delay: const Duration(milliseconds: 800),
       ),
     );

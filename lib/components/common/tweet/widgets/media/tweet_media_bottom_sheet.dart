@@ -10,10 +10,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Otherwise the callback is used.
 void showTweetMediaBottomSheet(
   BuildContext context, {
-  String url,
-  VoidCallback onOpenExternally,
-  VoidCallback onDownload,
-  VoidCallback onShare,
+  String? url,
+  VoidCallback? onOpenExternally,
+  VoidCallback? onDownload,
+  VoidCallback? onShare,
 }) {
   assert(onOpenExternally != null || url != null);
   assert(onDownload != null || url != null);

@@ -9,7 +9,7 @@ import 'package:harpy/misc/misc.dart';
 /// [TweetData.replies].
 ///
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
-List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter filter]) {
+List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter? filter]) {
   final List<TweetData> tweetDataList = <TweetData>[];
 
   for (Tweet tweet in tweets.reversed) {
@@ -32,7 +32,7 @@ List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter filter]) {
   return tweetDataList;
 }
 
-bool _filterTweet(Tweet tweet, TimelineFilter filter) {
+bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
   if (filter == null || filter == TimelineFilter.empty) {
     return false;
   } else {
@@ -44,17 +44,18 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
     if (filter.includesImages || filter.includesGif || filter.includesVideo) {
       // filter non-media tweets
       if (tweet.extendedEntities?.media == null ||
-          tweet.extendedEntities.media.isEmpty) {
+          tweet.extendedEntities!.media!.isEmpty) {
         return true;
       }
 
       final bool hasImage =
-          tweet.extendedEntities.media.first.type == kMediaPhoto;
+          tweet.extendedEntities!.media!.first.type == kMediaPhoto;
 
-      final bool hasGif = tweet.extendedEntities.media.first.type == kMediaGif;
+      final bool hasGif =
+          tweet.extendedEntities!.media!.first.type == kMediaGif;
 
       final bool hasVideo =
-          tweet.extendedEntities.media.first.type == kMediaVideo;
+          tweet.extendedEntities!.media!.first.type == kMediaVideo;
 
       if (!(filter.includesImages && hasImage ||
           filter.includesGif && hasGif ||
@@ -68,7 +69,7 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
 
       final List<String> tweetHashtags = tweet.entities?.hashtags
               ?.map((Hashtag hashtag) => hashtag.text?.toLowerCase() ?? '')
-              ?.toList() ??
+              .toList() ??
           <String>[];
 
       if (filter.excludesHashtags
@@ -81,7 +82,7 @@ bool _filterTweet(Tweet tweet, TimelineFilter filter) {
 
     if (filter.excludesPhrases.isNotEmpty) {
       // filter tweets with keywords / phrases
-      final String tweetText = tweet.fullText.toLowerCase() ?? '';
+      final String tweetText = tweet.fullText?.toLowerCase() ?? '';
 
       if (filter.excludesPhrases
           .map((String phrase) => phrase.toLowerCase())

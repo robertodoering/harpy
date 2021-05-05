@@ -8,7 +8,7 @@ import 'package:harpy/components/components.dart';
 /// Allows for custom data to be stored compared to the Twitter returned [Tweet]
 /// object.
 class TweetData {
-  TweetData.fromTweet(Tweet tweet) {
+  TweetData.fromTweet(Tweet? tweet) {
     if (tweet == null) {
       return;
     }
@@ -16,21 +16,21 @@ class TweetData {
     originalIdStr = tweet.idStr;
 
     if (tweet.retweetedStatus != null) {
-      retweetUserName = tweet.user.name;
-      retweetScreenName = tweet.user.screenName;
+      retweetUserName = tweet.user!.name;
+      retweetScreenName = tweet.user!.screenName;
       tweet = tweet.retweetedStatus;
     }
 
-    if (tweet.quotedStatus != null) {
+    if (tweet!.quotedStatus != null) {
       quote = TweetData.fromTweet(tweet.quotedStatus);
       quotedStatusUrl = tweet.quotedStatusPermalink?.url;
     }
 
     if (tweet.extendedEntities?.media?.isNotEmpty == true) {
-      for (Media media in tweet.extendedEntities.media) {
+      for (Media media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
           images ??= <ImageData>[];
-          images.add(ImageData.fromMedia(media));
+          images!.add(ImageData.fromMedia(media));
         } else if (media.type == kMediaVideo) {
           video = VideoData.fromMedia(media);
         } else if (media.type == kMediaGif) {
@@ -54,77 +54,77 @@ class TweetData {
   }
 
   /// UTC time when this Tweet was created.
-  DateTime createdAt;
+  DateTime? createdAt;
 
   /// The string representation of the unique identifier for this Tweet.
-  String idStr;
+  String? idStr;
 
   /// The string representation of the unique identifier for this Tweet.
   ///
   /// If this tweet is a retweet, this will be the id of the retweet while
   /// [idStr] is the id of the retweeted tweet.
   /// Otherwise this will be equal to [idStr].
-  String originalIdStr;
+  String? originalIdStr;
 
   /// If the represented Tweet is a reply, this field will contain the string
   /// representation of the original Tweet’s ID.
-  String inReplyToStatusIdStr;
+  String? inReplyToStatusIdStr;
 
   /// The actual UTF-8 text of the status update.
-  String fullText;
+  String? fullText;
 
   /// The user who posted this Tweet.
-  UserData userData;
+  UserData? userData;
 
   /// Number of times this Tweet has been retweeted.
-  int retweetCount;
+  int? retweetCount;
 
   /// Indicates approximately how many times this Tweet has been liked by
   /// Twitter users.
-  int favoriteCount;
+  int? favoriteCount;
 
   /// Entities which have been parsed out of the text of the Tweet.
-  Entities entities;
+  Entities? entities;
 
   /// Whether this tweet has any display text.
   ///
   /// Display text is the user typed text. Entities such as a media link may be
   /// added to the [fullText] for this tweet.
   set hasText(bool hasText) => _hasText = hasText;
-  bool _hasText;
+  bool? _hasText;
   bool get hasText => _hasText != false;
 
   /// If this [TweetData] is a retweet, the [retweetUserName] is the name of the
   /// person that retweeted this tweet.
   ///
   /// `null` if this is not a retweet.
-  String retweetUserName;
+  String? retweetUserName;
 
   /// If this [TweetData] is a retweet, the [retweetScreenName]
   /// is the screenName of the person that retweeted this tweet.
   ///
   /// `null` if this is not a retweet.
-  String retweetScreenName;
+  String? retweetScreenName;
 
   /// This field only surfaces when the Tweet is a quote Tweet. This attribute
   /// contains the Tweet object of the original Tweet that was quoted.
-  TweetData quote;
+  TweetData? quote;
 
   /// If this [TweetData] has quoted another tweet, the [quotedStatusUrl] is a
   /// shortened url of the quoted status.
-  String quotedStatusUrl;
+  String? quotedStatusUrl;
 
   /// Indicates whether this Tweet has been liked by the authenticating user.
-  bool favorited;
+  bool? favorited;
 
   /// Indicates whether this Tweet has been Retweeted by the authenticating
   /// user.
-  bool retweeted;
+  bool? retweeted;
 
   /// Indicates a BCP 47 language identifier corresponding to the
   /// machine-detected language of the Tweet text, or `und` if no language could
   /// be detected.
-  String lang;
+  String? lang;
 
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
@@ -132,23 +132,23 @@ class TweetData {
   /// Contains up to 4 [ImageData] for the images of this tweet.
   ///
   /// When [images] is not `null`, no [video] or [gif] exists for this tweet.
-  List<ImageData> images;
+  List<ImageData>? images;
 
   /// The [VideoData] for the video of this tweet.
   ///
   /// When [video] is not `null`, no [images] or [gif] exists for this tweet.
-  VideoData video;
+  VideoData? video;
 
   /// The [VideoData] for the gif of this tweet.
   ///
   /// When [gif] is not `null`, no [images] or [video] exists for this tweet.
-  VideoData gif;
+  VideoData? gif;
 
   /// The translation for this [TweetData].
-  Translation translation;
+  Translation? translation;
 
   /// Cached [replyAuthors].
-  String _replyAuthors;
+  String? _replyAuthors;
 
   /// Finds and returns the display names of the authors that replied to this
   /// tweet.
@@ -158,19 +158,19 @@ class TweetData {
   ///
   /// After getting the reply authors once, the value is cached in
   /// [_replyAuthors].
-  String get replyAuthors {
+  String? get replyAuthors {
     if (_replyAuthors != null) {
       return _replyAuthors;
     }
 
-    final Set<String> replyNames = <String>{};
+    final Set<String?> replyNames = <String?>{};
 
     for (TweetData reply in replies) {
-      replyNames.add(reply.userData.name);
+      replyNames.add(reply.userData!.name);
     }
 
     if (replyNames.isEmpty ||
-        replyNames.length == 1 && replyNames.first == userData.name) {
+        replyNames.length == 1 && replyNames.first == userData!.name) {
       return _replyAuthors = '';
     } else {
       return _replyAuthors = replyNames.join(', ');
@@ -200,11 +200,11 @@ class TweetData {
   /// (undefined) and not the target translation language (as set via the
   /// language preferences or the device language by default)
   bool translatable(String translateLanguage) =>
-      hasText && lang != 'und' && !translateLanguage.startsWith(lang);
+      hasText && lang != 'und' && !translateLanguage.startsWith(lang!);
 
   /// Whether the quote of this tweet can be translated, if one exists.
   bool quoteTranslatable(String translateLanguage) =>
-      quote?.translatable?.call(translateLanguage) == true;
+      quote?.translatable.call(translateLanguage) == true;
 
   /// Whether this tweet is a reply to another tweet.
   bool get hasParent => inReplyToStatusIdStr?.isNotEmpty == true;
@@ -213,9 +213,9 @@ class TweetData {
   bool currentReplyParent(RouteSettings route) {
     if (route.name == RepliesScreen.route) {
       final Map<String, dynamic> arguments =
-          route.arguments as Map<String, dynamic> ?? <String, dynamic>{};
+          route.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
 
-      return (arguments['tweet'] as TweetData)?.idStr == idStr;
+      return (arguments['tweet'] as TweetData?)?.idStr == idStr;
     } else {
       return false;
     }
@@ -223,7 +223,7 @@ class TweetData {
 
   /// The twitter url for this tweet.
   String get tweetUrl =>
-      'https://twitter.com/${userData.screenName}/status/$idStr';
+      'https://twitter.com/${userData!.screenName}/status/$idStr';
 
   /// Returns the [fullText] without the url to the quoted tweet or media and
   /// updates the shortened urls to the display url.
@@ -232,17 +232,17 @@ class TweetData {
 
     // remove url of quote if it exists
     if (quotedStatusUrl != null) {
-      visibleText = visibleText.replaceAll(quotedStatusUrl, '');
+      visibleText = visibleText.replaceAll(quotedStatusUrl!, '');
     }
 
     // remove url of media if it exists
     for (Media media in entities?.media ?? <Media>[]) {
-      visibleText = visibleText.replaceAll(media.url, '');
+      visibleText = visibleText.replaceAll(media.url!, '');
     }
 
     // replace the shortened urls to the display urls
     for (Url url in entities?.urls ?? <Url>[]) {
-      visibleText = visibleText.replaceAll(url.url, url.displayUrl);
+      visibleText = visibleText.replaceAll(url.url!, url.displayUrl!);
     }
 
     return visibleText.trim();

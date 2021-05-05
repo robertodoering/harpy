@@ -36,7 +36,7 @@ class Harpy extends StatelessWidget {
           app<HarpyNavigator>().routeObserver,
         ],
         home: const SplashScreen(),
-        builder: (BuildContext widget, Widget child) => ScrollConfiguration(
+        builder: (BuildContext widget, Widget? child) => ScrollConfiguration(
           behavior: const HarpyScrollBehavior(),
           child: HarpyMessage(
             child: child,

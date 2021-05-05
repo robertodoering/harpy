@@ -26,10 +26,10 @@ class DownloadService {
   }
 
   Future<void> download({
-    @required String url,
-    String name,
+    required String url,
+    String? name,
   }) async {
-    final String path = await _requestDownloadDirectory();
+    final String? path = await _requestDownloadDirectory();
 
     if (path != null) {
       try {
@@ -46,15 +46,15 @@ class DownloadService {
     }
   }
 
-  Future<String> _requestDownloadDirectory() async {
-    final MessageService messageService = app<MessageService>();
+  Future<String?> _requestDownloadDirectory() async {
+    final MessageService? messageService = app<MessageService>();
 
     final PermissionStatus status = await Permission.storage.request();
 
     if (status.isGranted) {
       return AndroidPathProvider.downloadsPath;
     } else {
-      messageService.show('storage permission not granted');
+      messageService!.show('storage permission not granted');
 
       return null;
     }

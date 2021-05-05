@@ -4,7 +4,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Builds a [CircleAvatar] with a [HarpyImage].
 class HarpyCircleAvatar extends StatelessWidget {
   const HarpyCircleAvatar({
-    @required this.imageUrl,
+    required this.imageUrl,
     this.backgroundColor = Colors.transparent,
     this.radius,
     this.heroTag,
@@ -12,8 +12,8 @@ class HarpyCircleAvatar extends StatelessWidget {
 
   final String imageUrl;
   final Color backgroundColor;
-  final double radius;
-  final Object heroTag;
+  final double? radius;
+  final Object? heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HarpyCircleAvatar extends StatelessWidget {
 
     if (heroTag != null) {
       image = Hero(
-        tag: heroTag,
+        tag: heroTag!,
         child: image,
       );
     }

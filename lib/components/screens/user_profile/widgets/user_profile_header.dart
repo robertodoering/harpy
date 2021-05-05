@@ -22,7 +22,7 @@ class UserProfileHeader extends StatelessWidget {
               child: UserProfileInfo(bloc),
             ),
             defaultSmallVerticalSpacer,
-            if (bloc.user.hasDescription) ...<Widget>[
+            if (bloc.user!.hasDescription) ...<Widget>[
               Padding(
                 padding: DefaultEdgeInsets.symmetric(horizontal: true),
                 child: UserProfileDescription(bloc),
@@ -43,13 +43,13 @@ class UserProfileHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         UserProfileAdditionalInfo(bloc),
-                        FollowersCount(bloc.user),
+                        FollowersCount(bloc.user!),
                         defaultVerticalSpacer,
                       ],
                     ),
                   ),
                 ),
-                if (bloc.user.hasDescription)
+                if (bloc.user!.hasDescription)
                   UserDescriptionTranslationButton(bloc),
               ],
             ),

@@ -39,7 +39,7 @@ class UserProfileAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback onTap) {
+  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback? onTap) {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: HarpyButton.raised(

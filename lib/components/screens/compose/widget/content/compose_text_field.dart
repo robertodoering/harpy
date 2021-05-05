@@ -4,15 +4,15 @@ import 'package:harpy/components/components.dart';
 
 class ComposeTextField extends StatelessWidget {
   const ComposeTextField({
-    Key key,
-    @required ComposeTextController controller,
-    @required FocusNode focusNode,
-  })  : _controller = controller,
+    Key? key,
+    required ComposeTextController? controller,
+    required FocusNode? focusNode,
+  })   : _controller = controller,
         _focusNode = focusNode,
         super(key: key);
 
-  final ComposeTextController _controller;
-  final FocusNode _focusNode;
+  final ComposeTextController? _controller;
+  final FocusNode? _focusNode;
 
   @override
   Widget build(BuildContext context) {

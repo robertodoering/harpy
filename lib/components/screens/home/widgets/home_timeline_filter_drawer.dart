@@ -15,12 +15,12 @@ class HomeTimelineFilterDrawer extends StatelessWidget {
       title: 'home timeline filter',
       showFilterButton: bloc.state.timelineFilter != model.value,
       onFilter: () {
-        ScrollDirection.of(context).reset();
+        ScrollDirection.of(context)!.reset!();
         bloc.add(FilterHomeTimeline(timelineFilter: model.value));
       },
       onClear: () {
         if (bloc.state.timelineFilter != TimelineFilter.empty) {
-          ScrollDirection.of(context).reset();
+          ScrollDirection.of(context)!.reset!();
           bloc.add(const FilterHomeTimeline(
             timelineFilter: TimelineFilter.empty,
           ));

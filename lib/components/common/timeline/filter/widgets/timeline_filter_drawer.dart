@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 
 class TimelineFilterDrawer extends StatelessWidget {
   const TimelineFilterDrawer({
-    @required this.title,
-    @required this.onFilter,
-    @required this.onClear,
-    @required this.showFilterButton,
+    required this.title,
+    required this.onFilter,
+    required this.onClear,
+    required this.showFilterButton,
   });
 
   final String title;

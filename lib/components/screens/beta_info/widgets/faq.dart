@@ -8,7 +8,7 @@ class BetaFaq extends StatelessWidget {
     this.onEmailTap,
   });
 
-  final VoidCallback onEmailTap;
+  final VoidCallback? onEmailTap;
 
   VoidCallback get launchGithubProject =>
       () => launchUrl('https://github.com/robertodoering/harpy/projects/1');
@@ -106,8 +106,8 @@ class BetaFaq extends StatelessWidget {
 
 class _FaqEntry extends StatelessWidget {
   const _FaqEntry({
-    @required this.question,
-    @required this.answer,
+    required this.question,
+    required this.answer,
   });
 
   final Text question;
@@ -120,7 +120,7 @@ class _FaqEntry extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        DefaultTextStyle(style: theme.textTheme.subtitle2, child: question),
+        DefaultTextStyle(style: theme.textTheme.subtitle2!, child: question),
         defaultSmallVerticalSpacer,
         answer,
       ],

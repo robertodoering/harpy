@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 /// The [bubble] widget is typically a [Bubble].
 class Bubbled extends StatelessWidget {
   const Bubbled({
-    @required this.child,
+    required this.child,
     this.bubble,
     this.bubbleOffset,
     this.alignment = Alignment.topRight,
   });
 
   final Widget child;
-  final Widget bubble;
-  final Offset bubbleOffset;
+  final Widget? bubble;
+  final Offset? bubbleOffset;
   final AlignmentGeometry alignment;
 
   @override
@@ -25,7 +25,7 @@ class Bubbled extends StatelessWidget {
         child,
         if (bubble != null && bubbleOffset != null)
           Transform.translate(
-            offset: bubbleOffset,
+            offset: bubbleOffset!,
             child: IgnorePointer(child: bubble),
           )
         else if (bubble != null)

@@ -84,7 +84,7 @@ void main() {
     });
 
     test('returns null if the source is null', () {
-      String source;
+      String? source;
 
       expect(trimOne(source), null);
     });

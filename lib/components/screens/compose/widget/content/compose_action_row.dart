@@ -8,10 +8,10 @@ import 'package:harpy/misc/misc.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +38,13 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
-          onTap: () => controller.insertString('@'),
+          onTap: () => controller!.insertString('@'),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('#', style: TextStyle(fontSize: 20)),
-          onTap: () => controller.insertString('#'),
+          onTap: () => controller!.insertString('#'),
         ),
         const Spacer(),
         PostTweetButton(controller: controller),
@@ -55,11 +55,11 @@ class ComposeTweetActionRow extends StatelessWidget {
 
 class PostTweetButton extends StatefulWidget {
   const PostTweetButton({
-    @required this.controller,
-    Key key,
+    required this.controller,
+    Key? key,
   }) : super(key: key);
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   _PostTweetButtonState createState() => _PostTweetButtonState();
@@ -70,14 +70,14 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   void initState() {
     super.initState();
 
-    widget.controller.addListener(_listener);
+    widget.controller!.addListener(_listener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    widget.controller.removeListener(_listener);
+    widget.controller!.removeListener(_listener);
   }
 
   void _listener() {
@@ -87,7 +87,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   Future<void> _showDialog(ComposeBloc bloc) async {
     removeFocus(context);
 
-    final TweetData sentTweet = await showDialog<TweetData>(
+    final TweetData? sentTweet = await showDialog<TweetData>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => PostTweetDialog(
@@ -111,7 +111,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     final ComposeBloc bloc = context.watch<ComposeBloc>();
 
     final bool canTweet =
-        bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
+        bloc.state.hasMedia || widget.controller!.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
       padding: DefaultEdgeInsets.all(),

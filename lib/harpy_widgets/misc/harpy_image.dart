@@ -6,21 +6,21 @@ import 'package:harpy/misc/misc.dart';
 /// builder.
 class HarpyImage extends StatelessWidget {
   const HarpyImage({
-    @required this.imageUrl,
+    required this.imageUrl,
     this.fit,
     this.width,
     this.height,
   });
 
   final String imageUrl;
-  final BoxFit fit;
-  final double width;
-  final double height;
+  final BoxFit? fit;
+  final double? width;
+  final double? height;
 
   Widget _buildErrorWidget(
     BuildContext context,
     Object error,
-    StackTrace stackTrace,
+    StackTrace? stackTrace,
   ) {
     final ThemeData theme = Theme.of(context);
 

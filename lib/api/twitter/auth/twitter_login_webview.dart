@@ -12,8 +12,8 @@ typedef OnExternalNavigation = void Function(String url);
 /// success, or a denied query param on user cancel.
 class TwitterLoginWebview extends StatefulWidget {
   const TwitterLoginWebview({
-    @required this.token,
-    @required this.onExternalNavigation,
+    required this.token,
+    required this.onExternalNavigation,
   });
 
   final String token;

@@ -5,8 +5,8 @@ abstract class CustomThemeEvent {
   const CustomThemeEvent();
 
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   });
 }
 
@@ -19,13 +19,14 @@ class AddBackgroundColor extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('adding new background color');
 
     try {
-      bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
+      bloc.themeData.backgroundColors!
+          .add(bloc.themeData.backgroundColors!.last);
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -38,8 +39,8 @@ class AddBackgroundColor extends CustomThemeEvent {
 /// Changes a background color of the [CustomThemeBloc.themeData].
 class ChangeBackgroundColor extends CustomThemeEvent {
   const ChangeBackgroundColor({
-    @required this.index,
-    @required this.color,
+    required this.index,
+    required this.color,
   });
 
   final int index;
@@ -49,13 +50,13 @@ class ChangeBackgroundColor extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('changing background color: $color at index: $index');
 
     try {
-      bloc.themeData.backgroundColors[index] = color.value;
+      bloc.themeData.backgroundColors![index] = color.value;
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -68,7 +69,7 @@ class ChangeBackgroundColor extends CustomThemeEvent {
 /// Removes a background color of the [CustomThemeBloc.themeData].
 class RemoveBackgroundColor extends CustomThemeEvent {
   const RemoveBackgroundColor({
-    @required this.index,
+    required this.index,
   });
 
   final int index;
@@ -77,13 +78,13 @@ class RemoveBackgroundColor extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('removing background color at index: $index');
 
     try {
-      bloc.themeData.backgroundColors.removeAt(index);
+      bloc.themeData.backgroundColors!.removeAt(index);
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -96,8 +97,8 @@ class RemoveBackgroundColor extends CustomThemeEvent {
 /// Changes the index of a background color for the [CustomThemeBloc.themeData].
 class ReorderBackgroundColor extends CustomThemeEvent {
   const ReorderBackgroundColor({
-    @required this.oldIndex,
-    @required this.newIndex,
+    required this.oldIndex,
+    required this.newIndex,
   });
 
   final int oldIndex;
@@ -107,18 +108,18 @@ class ReorderBackgroundColor extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('reordering background color from index: $oldIndex to $newIndex');
 
     try {
-      final int color = bloc.themeData.backgroundColors[oldIndex];
+      final int color = bloc.themeData.backgroundColors![oldIndex];
 
-      bloc.themeData.backgroundColors
+      bloc.themeData.backgroundColors!
         ..removeAt(oldIndex)
         ..insert(
-          newIndex.clamp(0, bloc.themeData.backgroundColors.length),
+          newIndex.clamp(0, bloc.themeData.backgroundColors!.length),
           color,
         );
 
@@ -134,7 +135,7 @@ class ReorderBackgroundColor extends CustomThemeEvent {
 /// Changes the name of the [CustomThemeBloc.themeData].
 class RenameTheme extends CustomThemeEvent {
   const RenameTheme({
-    @required this.name,
+    required this.name,
   });
 
   final String name;
@@ -143,8 +144,8 @@ class RenameTheme extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     if (bloc.themeData.name != name) {
       _log.fine('changing name to $name');
@@ -159,7 +160,7 @@ class RenameTheme extends CustomThemeEvent {
 /// Changes the accent color of the [CustomThemeBloc.themeData].
 class ChangeAccentColor extends CustomThemeEvent {
   const ChangeAccentColor({
-    @required this.color,
+    required this.color,
   });
 
   final Color color;
@@ -168,8 +169,8 @@ class ChangeAccentColor extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('changing accent color to $color');
 
@@ -188,8 +189,8 @@ class SaveCustomTheme extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('saving the custom theme with themeId ${bloc.themeId}');
 
@@ -207,7 +208,7 @@ class SaveCustomTheme extends CustomThemeEvent {
 
     yield SavedCustomThemeState();
 
-    app<HarpyNavigator>().state.pop();
+    app<HarpyNavigator>().state!.pop();
   }
 }
 
@@ -219,8 +220,8 @@ class DeleteCustomTheme extends CustomThemeEvent {
 
   @override
   Stream<CustomThemeState> applyAsync({
-    CustomThemeState currentState,
-    CustomThemeBloc bloc,
+    required CustomThemeState currentState,
+    required CustomThemeBloc bloc,
   }) async* {
     _log.fine('deleting the custom theme with themeId ${bloc.themeId}');
 
@@ -232,7 +233,7 @@ class DeleteCustomTheme extends CustomThemeEvent {
     if (bloc.themeId == selectedThemeId) {
       // reset theme to default theme when deleting the currently selected theme
       bloc.themeBloc.add(const ChangeThemeEvent(id: 0, saveSelection: true));
-    } else if (bloc.themeId < selectedThemeId) {
+    } else if (bloc.themeId! < selectedThemeId) {
       // the index of the currently selected theme changed by -1, because we
       // deleted a theme that comes before the currently selected theme
       bloc.themeBloc.add(
@@ -246,6 +247,6 @@ class DeleteCustomTheme extends CustomThemeEvent {
 
     yield DeletedCustomThemeState();
 
-    app<HarpyNavigator>().state.pop();
+    app<HarpyNavigator>().state!.pop();
   }
 }

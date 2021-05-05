@@ -6,10 +6,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class RepliesScreen extends StatelessWidget {
   const RepliesScreen({
-    @required this.tweet,
+    required this.tweet,
   });
 
-  final TweetData tweet;
+  final TweetData? tweet;
 
   static const String route = 'replies';
 

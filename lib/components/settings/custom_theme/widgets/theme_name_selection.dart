@@ -13,14 +13,15 @@ class ThemeNameSelection extends StatefulWidget {
 }
 
 class _ThemeNameSelectionState extends State<ThemeNameSelection> {
-  TextEditingController _controller;
+  TextEditingController? _controller;
 
   @override
   void initState() {
     super.initState();
 
     _controller = TextEditingController(text: widget.bloc.harpyTheme.name)
-      ..addListener(() => widget.bloc.add(RenameTheme(name: _controller.text)));
+      ..addListener(
+          () => widget.bloc.add(RenameTheme(name: _controller!.text)));
   }
 
   Widget _buildInvalidName(ThemeData theme) {

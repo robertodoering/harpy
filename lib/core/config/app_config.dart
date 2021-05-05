@@ -12,8 +12,7 @@ const String sentryDsn = String.fromEnvironment('sentry_dsn');
 const bool hasSentryDsn = bool.hasEnvironment('sentry_dsn');
 
 final bool hasTwitterConfig =
-    (twitterConsumerKey != null && twitterConsumerKey.isNotEmpty) &&
-        (twitterConsumerSecret != null && twitterConsumerSecret.isNotEmpty);
+    (twitterConsumerKey.isNotEmpty) && (twitterConsumerSecret.isNotEmpty);
 
 /// Validates the app configuration from the environment parameters.
 ///

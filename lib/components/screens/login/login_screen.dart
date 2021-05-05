@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _startLogin() async {
     HapticFeedback.mediumImpact();
-    await _slideLoginKey.currentState.forward();
+    await _slideLoginKey.currentState!.forward();
 
     context.read<AuthenticationBloc>().add(const LoginEvent());
   }
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: HarpyButton.flat(
           icon: Icon(
             CupertinoIcons.info,
-            color: theme.textTheme.bodyText1.color.withOpacity(.8),
+            color: theme.textTheme.bodyText1!.color!.withOpacity(.8),
           ),
           padding: const EdgeInsets.all(16),
           onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildTitle(ThemeData theme) {
-    final Color color = theme.textTheme.bodyText2.color;
+    final Color? color = theme.textTheme.bodyText2!.color;
 
     return FractionallySizedBox(
       widthFactor: 2 / 3,
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 class _LoginButton extends StatelessWidget {
   const _LoginButton({
-    @required this.onTap,
+    required this.onTap,
   });
 
   final VoidCallback onTap;

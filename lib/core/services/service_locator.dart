@@ -15,10 +15,10 @@ void setupServices() {
     ..registerLazySingleton<TwitterApi>(
       () => TwitterApi(
         client: TwitterClient(
-          consumerKey: null,
-          consumerSecret: null,
-          token: null,
-          secret: null,
+          consumerKey: '',
+          consumerSecret: '',
+          token: '',
+          secret: '',
         ),
       ),
     )

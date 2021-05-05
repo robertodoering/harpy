@@ -5,12 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HarpyPreferences {
   static final Logger _log = Logger('HarpyPreferences');
 
-  SharedPreferences _preferences;
+  late SharedPreferences _preferences;
 
   /// Can be used to prefix the given key.
   ///
   /// Used to differentiate user preferences.
-  String prefix;
+  late String prefix;
 
   /// Initializes the [_preferences] instance.
   Future<void> initialize() async {
@@ -33,8 +33,8 @@ class HarpyPreferences {
     String key,
     int defaultValue, {
     bool prefix = false,
-    int lowerLimit,
-    int upperLimit,
+    int? lowerLimit,
+    int? upperLimit,
   }) {
     try {
       final int value = _preferences.getInt(_key(key, prefix)) ?? defaultValue;
@@ -80,9 +80,9 @@ class HarpyPreferences {
     _preferences.setBool(_key(key, prefix), value);
   }
 
-  String getString(
+  String? getString(
     String key,
-    String defaultValue, {
+    String? defaultValue, {
     bool prefix = false,
   }) {
     try {
@@ -115,11 +115,11 @@ class HarpyPreferences {
 
   void setStringList(
     String key,
-    List<String> value, {
+    List<String?> value, {
     bool prefix = false,
   }) {
     _log.fine('set ${_key(key, prefix)} to $value');
-    _preferences.setStringList(_key(key, prefix), value);
+    _preferences.setStringList(_key(key, prefix), value as List<String>);
   }
 
   void remove(

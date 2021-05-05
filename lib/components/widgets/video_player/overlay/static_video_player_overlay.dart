@@ -8,7 +8,7 @@ import 'package:harpy/components/components.dart';
 class StaticVideoPlayerOverlay extends StatefulWidget {
   const StaticVideoPlayerOverlay(
     this.model, {
-    @required this.child,
+    required this.child,
     this.compact = false,
   });
 
@@ -22,10 +22,10 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
 }
 
 class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
-  Widget _centerIcon;
+  Widget? _centerIcon;
 
-  Widget _forwardIcon;
-  Widget _rewindIcon;
+  Widget? _forwardIcon;
+  Widget? _rewindIcon;
 
   bool _replayFade = true;
 
@@ -36,7 +36,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     super.initState();
 
     _model.addActionListener(_onVideoPlayerAction);
-    _model.controller.addListener(_videoControllerListener);
+    _model.controller!.addListener(_videoControllerListener);
 
     _replayFade = !_model.finished;
   }
@@ -46,7 +46,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     super.dispose();
 
     _model.removeActionListener(_onVideoPlayerAction);
-    _model.controller.removeListener(_videoControllerListener);
+    _model.controller!.removeListener(_videoControllerListener);
   }
 
   void _videoControllerListener() {
@@ -86,7 +86,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        if (widget.child != null) widget.child,
+        widget.child,
         Positioned.fill(
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -108,11 +108,11 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
             ),
           )
         else if (_centerIcon != null)
-          Positioned.fill(child: _centerIcon)
+          Positioned.fill(child: _centerIcon!)
         else if (_forwardIcon != null)
-          Positioned.fill(child: _forwardIcon)
+          Positioned.fill(child: _forwardIcon!)
         else if (_rewindIcon != null)
-          Positioned.fill(child: _rewindIcon),
+          Positioned.fill(child: _rewindIcon!),
       ],
     );
   }

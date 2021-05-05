@@ -28,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override

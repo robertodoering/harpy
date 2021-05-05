@@ -35,10 +35,10 @@ Future<void> main(List<String> arguments) async {
 
   // arguments
   final String path = argResult['path'];
-  final bool override = argResult['override-existing'];
+  final bool? override = argResult['override-existing'];
   final bool noFormat = argResult['no-format'];
-  final List<String> includes = argResult['includes'];
-  final List<String> excludes = argResult['excludes'];
+  final List<String>? includes = argResult['includes'];
+  final List<String>? excludes = argResult['excludes'];
 
   if (!path.startsWith('lib')) {
     throw ArgumentError('path must be relative to the project root '
@@ -49,7 +49,7 @@ Future<void> main(List<String> arguments) async {
   final String libraryName = dir.path.split('/').last;
   final File libraryFile = File('${dir.path}/$libraryName.dart');
 
-  if (libraryFile.existsSync() && !override) {
+  if (libraryFile.existsSync() && !override!) {
     throw Exception('library file ${libraryFile.path} already exists');
   }
 
@@ -63,7 +63,7 @@ Future<void> main(List<String> arguments) async {
           .replaceAll('\\', '/')
           .replaceFirst('${dir.path}/', '');
 
-      if (includes.any(entry.endsWith) && !excludes.any(entry.endsWith)) {
+      if (includes!.any(entry.endsWith) && !excludes!.any(entry.endsWith)) {
         contentBuffer.writeln("export '$entry';");
       }
     }

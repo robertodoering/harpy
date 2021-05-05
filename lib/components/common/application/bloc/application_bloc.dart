@@ -17,8 +17,8 @@ part 'application_state.dart';
 /// The [ApplicationBloc] handles initialization of the app upon start.
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
-    @required this.authenticationBloc,
-    @required this.themeBloc,
+    required this.authenticationBloc,
+    required this.themeBloc,
   }) : super(AwaitingInitializationState()) {
     add(InitializeEvent());
   }

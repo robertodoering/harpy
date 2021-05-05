@@ -8,8 +8,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class TwitterListCard extends StatelessWidget {
   const TwitterListCard(
     this.list, {
-    @required this.onSelected,
-    @required Key key,
+    required this.onSelected,
+    required Key key,
   }) : super(key: key);
 
   final TwitterListData list;
@@ -20,7 +20,7 @@ class TwitterListCard extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Text(
-            list.name,
+            list.name!,
             style: theme.textTheme.subtitle2,
             softWrap: false,
             overflow: TextOverflow.fade,
@@ -36,7 +36,7 @@ class TwitterListCard extends StatelessWidget {
 
   Widget _buildDescription(ThemeData theme) {
     return Text(
-      list.description,
+      list.description!,
       style: theme.textTheme.bodyText1,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -49,7 +49,7 @@ class TwitterListCard extends StatelessWidget {
         HarpyCircleAvatar(
           // use the normal sized profile image instead of the bigger one for
           // the small circle avatar
-          imageUrl: list.user.profileImageUrlHttps,
+          imageUrl: list.user.profileImageUrlHttps!,
           radius: 8,
         ),
         defaultSmallHorizontalSpacer,
@@ -79,7 +79,7 @@ class TwitterListCard extends StatelessWidget {
     return ListCardAnimation(
       key: key,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kDefaultBorderRadius as BorderRadius?,
         onTap: onSelected,
         child: Card(
           child: Padding(

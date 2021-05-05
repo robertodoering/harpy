@@ -14,10 +14,10 @@ class SearchTextField extends StatelessWidget {
     this.autofocus = false,
   });
 
-  final String text;
-  final ValueChanged<String> onSubmitted;
-  final VoidCallback onClear;
-  final String hintText;
+  final String? text;
+  final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onClear;
+  final String? hintText;
   final bool autofocus;
 
   @override

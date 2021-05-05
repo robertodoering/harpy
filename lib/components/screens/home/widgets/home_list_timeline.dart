@@ -6,17 +6,17 @@ import 'package:harpy/components/components.dart';
 /// the [HomeListsProvider].
 class HomeListTimeline extends StatelessWidget {
   const HomeListTimeline({
-    @required this.listId,
+    required this.listId,
   });
 
-  final String listId;
+  final String? listId;
 
   @override
   Widget build(BuildContext context) {
-    final ListTimelineBloc bloc = HomeListsProvider.blocOf(
+    final ListTimelineBloc? bloc = HomeListsProvider.blocOf(
       context,
       listId: listId,
-    );
+    )!;
 
     assert(bloc != null, 'missing list timeline bloc for home list timeline');
 

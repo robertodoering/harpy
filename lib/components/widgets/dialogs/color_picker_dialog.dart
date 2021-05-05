@@ -8,11 +8,11 @@ import 'package:harpy/misc/misc.dart';
 /// selected [Color] or `null` if no color has been selected.
 class ColorPickerDialog extends StatefulWidget {
   const ColorPickerDialog({
-    @required this.color,
+    required this.color,
   });
 
   /// The initial picker color.
-  final Color color;
+  final Color? color;
 
   @override
   _ColorPickerDialogState createState() => _ColorPickerDialogState();
@@ -20,7 +20,7 @@ class ColorPickerDialog extends StatefulWidget {
 
 class _ColorPickerDialogState extends State<ColorPickerDialog> {
   /// The currently selected color.
-  Color _color;
+  Color? _color;
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       DialogAction<void>(
         text: 'select',
         onTap: () {
-          app<HarpyNavigator>().state.pop(_color);
+          app<HarpyNavigator>().state!.pop(_color);
         },
       ),
     ];
@@ -43,7 +43,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   /// Builds a [SlidePicker] for a customizable color selection.
   Widget _buildCustomPicker() {
     return SlidePicker(
-      pickerColor: widget.color,
+      pickerColor: widget.color!,
       // indicatorSize: Size(size?.data?.width ?? 280, 50),
       indicatorBorderRadius: BorderRadius.circular(16),
       // 2 / 3 of the width for the sliders

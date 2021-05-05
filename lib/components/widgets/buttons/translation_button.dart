@@ -5,8 +5,8 @@ import 'package:like_button/like_button.dart';
 
 class TranslationButton extends StatelessWidget {
   const TranslationButton({
-    @required this.active,
-    @required this.activate,
+    required this.active,
+    required this.activate,
     this.padding = const EdgeInsets.all(8),
   });
 
@@ -77,7 +77,7 @@ class UserDescriptionTranslationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Locale locale = Localizations.localeOf(context);
 
-    final bool active = bloc.user.hasDescriptionTranslation ||
+    final bool active = bloc.user!.hasDescriptionTranslation ||
         bloc.state is TranslatingDescriptionState;
 
     return TranslationButton(

@@ -4,8 +4,8 @@ abstract class ListTimelineEvent {
   const ListTimelineEvent();
 
   Stream<ListTimelineState> applyAsync({
-    ListTimelineState currentState,
-    ListTimelineBloc bloc,
+    required ListTimelineState currentState,
+    required ListTimelineBloc bloc,
   });
 }
 
@@ -15,17 +15,17 @@ class RequestListTimeline extends ListTimelineEvent with HarpyLogger {
 
   @override
   Stream<ListTimelineState> applyAsync({
-    ListTimelineState currentState,
-    ListTimelineBloc bloc,
+    required ListTimelineState currentState,
+    required ListTimelineBloc bloc,
   }) async* {
     log.fine('requesting list timeline');
 
     yield const ListTimelineLoading();
 
-    final List<TweetData> tweets = await bloc.listsService
+    final List<TweetData>? tweets = await bloc.listsService
         .statuses(listId: bloc.listId, count: 200)
         .then(handleTweets)
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} list tweets');
@@ -51,16 +51,16 @@ class RequestListTimeline extends ListTimelineEvent with HarpyLogger {
 class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
   const RequestOlderListTimeline();
 
-  String _findMaxId(ListTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId ?? '');
+  String? _findMaxId(ListTimelineResult state) {
+    final int? lastId = int.tryParse(state.maxId ?? '');
 
     return lastId != null ? '${lastId - 1}' : null;
   }
 
   @override
   Stream<ListTimelineState> applyAsync({
-    ListTimelineState currentState,
-    ListTimelineBloc bloc,
+    required ListTimelineState currentState,
+    required ListTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
       bloc.requestOlderCompleter.complete();
@@ -69,7 +69,7 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
     }
 
     if (currentState is ListTimelineResult) {
-      final String maxId = _findMaxId(currentState);
+      final String? maxId = _findMaxId(currentState);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -80,10 +80,10 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
 
       yield ListTimelineLoadingOlder(oldResult: currentState);
 
-      final List<TweetData> tweets = await bloc.listsService
+      final List<TweetData>? tweets = await bloc.listsService
           .statuses(listId: bloc.listId, count: 200, maxId: maxId)
           .then(handleTweets)
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older list tweets');

@@ -7,10 +7,10 @@ import 'package:harpy/misc/misc.dart';
 
 class FilterDrawer extends StatelessWidget {
   const FilterDrawer({
-    @required this.title,
-    @required this.filterGroups,
-    @required this.onSearch,
-    @required this.onClear,
+    required this.title,
+    required this.filterGroups,
+    required this.onSearch,
+    required this.onClear,
     this.showClear = true,
     this.showSearchButton = true,
     this.searchButtonText = 'search',
@@ -59,7 +59,7 @@ class FilterDrawer extends StatelessWidget {
                     backgroundColor: theme.cardColor,
                     dense: true,
                     onTap: () async {
-                      await app<HarpyNavigator>().state.maybePop();
+                      await app<HarpyNavigator>().state!.maybePop();
                       onSearch();
                     },
                   ),

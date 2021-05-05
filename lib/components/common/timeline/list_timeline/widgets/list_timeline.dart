@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 /// [listId] is used for the [PageStorageKey] of the list.
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
-    @required this.listId,
+    required this.listId,
     this.beginSlivers = const <Widget>[],
   });
 
-  final String listId;
+  final String? listId;
 
   final List<Widget> beginSlivers;
 

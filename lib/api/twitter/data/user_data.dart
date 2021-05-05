@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 
 /// The user data for [TweetData].
 class UserData {
-  UserData.fromUser(User user) {
+  UserData.fromUser(User? user) {
     if (user == null) {
       return;
     }
@@ -24,44 +24,44 @@ class UserData {
   }
 
   /// The string representation of the unique identifier for this User.
-  String idStr;
+  String? idStr;
 
   /// The name of the user, as they’ve defined it. Not necessarily a person’s
   /// name. Typically capped at 50 characters, but subject to change.
-  String name;
+  String? name;
 
   /// The screen name, handle, or alias that this user identifies themselves
   /// with. [screen_names] are unique but subject to change. Use id_str as a
   /// user identifier whenever possible. Typically a maximum of 15 characters
   /// long, but some historical accounts may exist with longer names.
-  String screenName;
+  String? screenName;
 
   /// Nullable. The user-defined location for this account’s profile. Not
   /// necessarily a location, nor machine-parseable. This field will
   /// occasionally be fuzzily interpreted by the Search service.
-  String location;
+  String? location;
 
   /// Entities for User Objects describe URLs that appear in the user defined
   /// profile URL and description fields.
-  UserEntities entities;
+  UserEntities? entities;
 
   /// Nullable. The user-defined UTF-8 string describing their account.
-  String description;
+  String? description;
 
   /// When `true`, indicates that the user has a verified account.
-  bool verified;
+  bool? verified;
 
   /// The number of followers this account currently has. Under certain
   /// conditions of duress, this field will temporarily indicate `0`.
-  int followersCount;
+  int? followersCount;
 
   /// The number of users this account is following (AKA their “followings”).
   /// Under certain conditions of duress, this field will temporarily indicate
   /// `0`.
-  int friendsCount;
+  int? friendsCount;
 
   /// The UTC datetime that the user account was created on Twitter.
-  DateTime createdAt;
+  DateTime? createdAt;
 
   /// The HTTPS-based URL pointing to the standard web representation of the
   /// user’s uploaded profile banner. By adding a final path element of the URL,
@@ -70,10 +70,10 @@ class UserData {
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
   /// for size variants.
-  String profileBannerUrl;
+  String? profileBannerUrl;
 
   /// A HTTPS-based URL pointing to the user’s profile image.
-  String profileImageUrlHttps;
+  String? profileImageUrlHttps;
 
   /// The connections for this relationship for the authenticated user.
   ///
@@ -81,11 +81,11 @@ class UserData {
   /// `blocking`, `muting`.
   ///
   /// Requested via [UserService.friendshipsLookup].
-  List<String> connections;
+  List<String>? connections;
 
   /// The [Entities] used by the [TwitterText] for the user description.
-  Entities _userDescriptionEntities;
-  Entities get userDescriptionEntities {
+  Entities? _userDescriptionEntities;
+  Entities? get userDescriptionEntities {
     if (_userDescriptionEntities != null) {
       return _userDescriptionEntities;
     }
@@ -93,14 +93,14 @@ class UserData {
     _userDescriptionEntities = Entities()..urls = entities?.description?.urls;
 
     if (description != null) {
-      parseEntities(description, _userDescriptionEntities);
+      parseEntities(description!, _userDescriptionEntities!);
     }
 
     return _userDescriptionEntities;
   }
 
   /// The translation for this [description].
-  Translation descriptionTranslation;
+  Translation? descriptionTranslation;
 
   /// Whether this user's description has been translated.
   bool get hasDescriptionTranslation => descriptionTranslation != null;
@@ -138,13 +138,13 @@ class UserData {
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get appropriateUserImageUrl =>
-      profileImageUrlHttps.replaceFirst('_normal', '_bigger');
+      profileImageUrlHttps!.replaceFirst('_normal', '_bigger');
 
   /// Returns the user profile image url in its original size.
   ///
   /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get originalUserImageUrl =>
-      profileImageUrlHttps.replaceAll('_normal', '');
+      profileImageUrlHttps!.replaceAll('_normal', '');
 
   /// The user banner url for the user banner drawn in the app.
   ///

@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 /// this screen.
 class HomeTabCustomizationScreen extends StatefulWidget {
   const HomeTabCustomizationScreen({
-    @required this.model,
+    required this.model,
   });
 
   final HomeTabModel model;
@@ -39,7 +39,9 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override
@@ -64,7 +66,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         ),
         Text(
           '(coming soon)',
-          style: theme.textTheme.subtitle2.copyWith(
+          style: theme.textTheme.subtitle2!.copyWith(
             color: Colors.white.withOpacity(.6),
           ),
         ),

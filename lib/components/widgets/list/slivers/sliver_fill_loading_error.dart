@@ -7,14 +7,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Builds an optional retry button when [onRetry] is not `null`.
 class SliverFillLoadingError extends StatelessWidget {
   const SliverFillLoadingError({
-    @required this.message,
+    required this.message,
     this.onRetry,
     this.onClearFilter,
   });
 
   final Widget message;
-  final VoidCallback onRetry;
-  final VoidCallback onClearFilter;
+  final VoidCallback? onRetry;
+  final VoidCallback? onClearFilter;
 
   @override
   Widget build(BuildContext context) {

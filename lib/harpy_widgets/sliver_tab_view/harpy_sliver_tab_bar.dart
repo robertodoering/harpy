@@ -5,7 +5,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Used by [HarpySliverTabView] to build the [HarpyTab]s.
 class HarpySliverTapBar extends StatelessWidget {
   const HarpySliverTapBar({
-    @required this.tabs,
+    required this.tabs,
   });
 
   final List<Widget> tabs;

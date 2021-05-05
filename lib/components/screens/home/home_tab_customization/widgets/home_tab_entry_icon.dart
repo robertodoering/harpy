@@ -8,9 +8,9 @@ class HomeTabEntryIcon extends StatelessWidget {
   });
 
   /// The name that matches the icon data in [iconNameMap].
-  final String iconName;
+  final String? iconName;
 
-  final double size;
+  final double? size;
 
   /// Maps the name of an icon to its [IconData].
   static const Map<String, IconData> iconNameMap = <String, IconData>{
@@ -72,7 +72,7 @@ class HomeTabEntryIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      iconNameMap[iconName] ?? CupertinoIcons.circle,
+      iconNameMap[iconName!] ?? CupertinoIcons.circle,
       size: size,
     );
   }

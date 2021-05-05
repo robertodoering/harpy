@@ -60,7 +60,7 @@ class BetaInfoScreen extends StatelessWidget {
 
 class ContentCard extends StatelessWidget {
   const ContentCard({
-    @required this.children,
+    required this.children,
   });
 
   final List<Widget> children;
@@ -81,12 +81,12 @@ class ContentCard extends StatelessWidget {
 
 class LinkText extends StatelessWidget {
   const LinkText({
-    @required this.text,
+    required this.text,
     this.onTap,
   });
 
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

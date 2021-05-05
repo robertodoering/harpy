@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 /// Tapping a media will open the [HarpyMediaGallery].
 class MediaTimeline extends StatefulWidget {
   const MediaTimeline({
-    @required this.showInitialLoading,
-    @required this.showLoadingOlder,
+    required this.showInitialLoading,
+    required this.showLoadingOlder,
   });
 
   final bool showInitialLoading;
@@ -125,10 +125,10 @@ class _MediaTimelineState extends State<MediaTimeline> {
 /// The [videoPlayerModel] is used when tapping on a gif or video to build
 /// the video or gif with the video player model.
 void _showGallery({
-  @required BuildContext context,
-  @required List<MediaTimelineEntry> entries,
-  @required int initialIndex,
-  HarpyVideoPlayerModel videoPlayerModel,
+  required BuildContext context,
+  required List<MediaTimelineEntry> entries,
+  required int initialIndex,
+  HarpyVideoPlayerModel? videoPlayerModel,
 }) {
   Navigator.of(context).push<void>(
     HeroDialogRoute<void>(

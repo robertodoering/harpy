@@ -15,6 +15,6 @@ class ThemePreferences {
   /// A list of encoded [HarpyThemeData] representing custom themes.
   List<String> get customThemes =>
       harpyPrefs.getStringList('customThemes', prefix: true);
-  set customThemes(List<String> value) =>
+  set customThemes(List<String?> value) =>
       harpyPrefs.setStringList('customThemes', value, prefix: true);
 }

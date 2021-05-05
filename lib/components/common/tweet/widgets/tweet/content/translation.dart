@@ -30,13 +30,13 @@ class TweetTranslation extends StatelessWidget {
           opacity: tweet.hasTranslation ? 1 : 0,
           duration: kShortAnimationDuration,
           curve: Curves.easeOut,
-          child: tweet.hasTranslation && !tweet.translation.unchanged
+          child: tweet.hasTranslation && !tweet.translation!.unchanged
               ? AnimatedPadding(
                   duration: kLongAnimationDuration,
                   padding: padding,
                   child: TranslatedText(
-                    tweet.translation.text,
-                    language: tweet.translation.language,
+                    tweet.translation!.text,
+                    language: tweet.translation!.language,
                     entities: tweet.entities,
                     urlToIgnore: tweet.quotedStatusUrl,
                     fontSizeDelta: fontSizeDelta,

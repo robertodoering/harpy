@@ -14,7 +14,7 @@ class ChangelogDialog extends StatelessWidget {
         app<ChangelogPreferences>();
 
     if (changelogPreferences.shouldShowChangelogDialog) {
-      final ChangelogData data = await app<ChangelogParser>().current(context);
+      final ChangelogData? data = await app<ChangelogParser>().current(context);
 
       if (data != null) {
         showDialog<void>(
@@ -38,7 +38,7 @@ class ChangelogDialog extends StatelessWidget {
       actions: <Widget>[
         DialogAction<void>(
           text: 'ok',
-          onTap: () => app<HarpyNavigator>().state.maybePop(),
+          onTap: () => app<HarpyNavigator>().state!.maybePop(),
         )
       ],
     );

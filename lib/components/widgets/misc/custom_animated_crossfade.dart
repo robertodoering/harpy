@@ -8,33 +8,24 @@ import 'package:flutter/material.dart';
 /// See [AnimatedCrossFade] for more infos.
 class CustomAnimatedCrossFade extends StatefulWidget {
   const CustomAnimatedCrossFade({
-    @required this.firstChild,
-    @required this.secondChild,
-    @required this.crossFadeState,
-    @required this.duration,
-    Key key,
+    required this.firstChild,
+    required this.secondChild,
+    required this.crossFadeState,
+    required this.duration,
+    Key? key,
     this.firstCurve = Curves.linear,
     this.secondCurve = Curves.linear,
     this.sizeCurve = Curves.linear,
     this.alignment = Alignment.topCenter,
     this.reverseDuration,
     this.layoutBuilder = AnimatedCrossFade.defaultLayoutBuilder,
-  })  : assert(firstChild != null),
-        assert(secondChild != null),
-        assert(firstCurve != null),
-        assert(secondCurve != null),
-        assert(sizeCurve != null),
-        assert(alignment != null),
-        assert(crossFadeState != null),
-        assert(duration != null),
-        assert(layoutBuilder != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Widget firstChild;
   final Widget secondChild;
   final CrossFadeState crossFadeState;
   final Duration duration;
-  final Duration reverseDuration;
+  final Duration? reverseDuration;
   final Curve firstCurve;
   final Curve secondCurve;
   final Curve sizeCurve;
@@ -48,9 +39,9 @@ class CustomAnimatedCrossFade extends StatefulWidget {
 
 class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
     with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _firstAnimation;
-  Animation<double> _secondAnimation;
+  late AnimationController _controller;
+  Animation<double>? _firstAnimation;
+  Animation<double>? _secondAnimation;
 
   @override
   void initState() {
@@ -130,10 +121,10 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
             _controller.status == AnimationStatus.forward;
     Key topKey;
     Widget topChild;
-    Animation<double> topAnimation;
+    Animation<double>? topAnimation;
     Key bottomKey;
     Widget bottomChild;
-    Animation<double> bottomAnimation;
+    Animation<double>? bottomAnimation;
     if (transitioningForwards) {
       topKey = kSecondChildKey;
       topChild = widget.secondChild;
@@ -157,7 +148,7 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
         // Always exclude the semantics of the widget that's fading out.
         excluding: true,
         child: FadeTransition(
-          opacity: bottomAnimation,
+          opacity: bottomAnimation!,
           child: bottomChild,
         ),
       ),
@@ -169,7 +160,7 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
         // Always publish semantics for the widget that's fading in.
         excluding: false,
         child: FadeTransition(
-          opacity: topAnimation,
+          opacity: topAnimation!,
           child: topChild,
         ),
       ),

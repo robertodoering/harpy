@@ -21,7 +21,7 @@ class TweetAuthorRow extends StatelessWidget {
 
   final UserData user;
 
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   final bool enableUserTap;
 
@@ -30,7 +30,7 @@ class TweetAuthorRow extends StatelessWidget {
   /// The horizontal padding between the avatar and the username.
   ///
   /// Defaults to the [defaultPaddingValue] if `null`.
-  final double avatarPadding;
+  final double? avatarPadding;
 
   final double fontSizeDelta;
 
@@ -41,7 +41,7 @@ class TweetAuthorRow extends StatelessWidget {
   void _onUserTap(BuildContext context) {
     if (enableUserTap) {
       app<HarpyNavigator>().pushUserProfile(
-        currentRoute: ModalRoute.of(context).settings,
+        currentRoute: ModalRoute.of(context)!.settings,
         screenName: user.screenName,
       );
     }
@@ -74,14 +74,14 @@ class TweetAuthorRow extends StatelessWidget {
         children: <Widget>[
           Flexible(
             child: Text(
-              user.name,
+              user.name!,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyText2.apply(
+              style: theme.textTheme.bodyText2!.apply(
                 fontSizeDelta: fontSizeDelta,
               ),
             ),
           ),
-          if (user.verified)
+          if (user.verified!)
             Padding(
               padding: const EdgeInsets.only(left: 4),
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: iconSize),
@@ -99,14 +99,14 @@ class TweetAuthorRow extends StatelessWidget {
           children: <InlineSpan>[
             TextSpan(
               text: '@${user.screenName}',
-              style: theme.textTheme.bodyText1.apply(
+              style: theme.textTheme.bodyText1!.apply(
                 fontSizeDelta: fontSizeDelta,
               ),
             ),
             if (createdAt != null) ...<InlineSpan>[
               TextSpan(
                 text: ' \u00b7 ',
-                style: theme.textTheme.bodyText1.apply(
+                style: theme.textTheme.bodyText1!.apply(
                   fontSizeDelta: fontSizeDelta,
                 ),
               ),

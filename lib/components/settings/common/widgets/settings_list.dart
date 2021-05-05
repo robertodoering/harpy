@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 /// Builds a [ListView] with [SettingsGroup]s for each entry in [settings].
 class SettingsList extends StatelessWidget {
   const SettingsList({
-    @required this.settings,
+    required this.settings,
   });
 
   final Map<String, List<Widget>> settings;

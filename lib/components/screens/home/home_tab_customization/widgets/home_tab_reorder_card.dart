@@ -7,9 +7,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HomeTabReorderCard extends StatefulWidget {
   HomeTabReorderCard({
-    @required this.index,
-    @required this.model,
-  }) : super(key: ValueKey<String>(model.value.entries[index].id));
+    required this.index,
+    required this.model,
+  }) : super(key: ValueKey<String?>(model.value.entries[index].id));
 
   final int index;
   final HomeTabModel model;
@@ -19,7 +19,7 @@ class HomeTabReorderCard extends StatefulWidget {
 }
 
 class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
-  TextEditingController _controller;
+  TextEditingController? _controller;
 
   HomeTabEntry get _entry => widget.model.value.entries[widget.index];
 
@@ -34,7 +34,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   void dispose() {
     super.dispose();
 
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   Widget _buildTextField(ThemeData theme) {
@@ -58,11 +58,11 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       padding: const EdgeInsets.all(HarpyTab.tabPadding)
           .copyWith(right: HarpyTab.tabPadding / 2),
       icon: Icon(
-        _entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+        _entry.visible! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         size: HarpyTab.tabIconSize,
       ),
       // prevent hiding the last entry
-      onTap: !widget.model.canHideMoreEntries && _entry.visible
+      onTap: !widget.model.canHideMoreEntries && _entry.visible!
           ? null
           : () {
               HapticFeedback.lightImpact();
@@ -92,7 +92,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
-      opacity: _entry.visible ? 1 : .6,
+      opacity: _entry.visible! ? 1 : .6,
       child: Card(
         margin: EdgeInsets.only(bottom: defaultSmallPaddingValue),
         child: Row(
@@ -113,7 +113,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
                       builder: (_) => ChangeHomeTabEntryIconDialog(
                         entry: _entry,
                       ),
-                    ).then((String value) {
+                    ).then((String? value) {
                       if (value != null && value.isNotEmpty) {
                         HapticFeedback.lightImpact();
                       }

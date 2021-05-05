@@ -9,7 +9,7 @@ import 'package:flutter/rendering.dart';
 /// [child]s height.
 class ShiftedPosition extends SingleChildRenderObjectWidget {
   const ShiftedPosition({
-    Widget child,
+    Widget? child,
     this.shift = Offset.zero,
   }) : super(child: child);
 
@@ -33,7 +33,7 @@ class ShiftedPosition extends SingleChildRenderObjectWidget {
 
 class _RenderShiftedPositioned extends RenderShiftedBox {
   _RenderShiftedPositioned({
-    RenderBox child,
+    RenderBox? child,
     Offset shift = Offset.zero,
   })  : _shift = shift,
         super(child);
@@ -50,8 +50,8 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
   @override
   void performLayout() {
     if (child != null) {
-      child.layout(constraints..tighten(), parentUsesSize: true);
-      size = child.size;
+      child!.layout(constraints..tighten(), parentUsesSize: true);
+      size = child!.size;
     } else {
       size = Size.zero;
     }
@@ -60,16 +60,16 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
-      final BoxParentData childParentData = child.parentData;
+      final BoxParentData childParentData = child!.parentData as BoxParentData;
 
       // the shift multiplied by the child's size
       final Offset shiftOffset = Offset(
-        _shift.dx * child.size.width,
-        _shift.dy * child.size.height,
+        _shift.dx * child!.size.width,
+        _shift.dy * child!.size.height,
       );
 
       context.paintChild(
-        child,
+        child!,
         childParentData.offset + offset + shiftOffset,
       );
     }
@@ -78,14 +78,14 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
   @override
   bool hitTestChildren(
     BoxHitTestResult result, {
-    @required Offset position,
+    required Offset position,
   }) {
     if (child != null) {
-      final BoxParentData childParentData = child.parentData as BoxParentData;
+      final BoxParentData childParentData = child!.parentData as BoxParentData;
 
       final Offset shiftOffset = Offset(
-        _shift.dx * child.size.width,
-        _shift.dy * child.size.height,
+        _shift.dx * child!.size.width,
+        _shift.dy * child!.size.height,
       );
 
       return result.addWithPaintOffset(
@@ -93,7 +93,7 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
         position: position,
         hitTest: (BoxHitTestResult result, Offset transformed) {
           assert(transformed == position - childParentData.offset);
-          return child.hitTest(result, position: transformed + shiftOffset);
+          return child!.hitTest(result, position: transformed + shiftOffset);
         },
       );
     }

@@ -1,7 +1,7 @@
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-void initLogger({String prefix}) {
+void initLogger({String? prefix}) {
   Logger.root.level = Level.ALL;
 
   const String separator = ' | ';

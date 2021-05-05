@@ -2,9 +2,9 @@
 /// returns it.
 ///
 /// Returns the [list] if [value] is `null` or empty.
-List<String> appendToList(List<String> list, String value) {
+List<String> appendToList(List<String> list, String? value) {
   if (value != null && value.isNotEmpty) {
-    return List<String>.of(list ?? <String>[])..add(value);
+    return List<String>.of(list)..add(value);
   } else {
     return list;
   }
@@ -15,7 +15,7 @@ List<String> appendToList(List<String> list, String value) {
 /// Returns the [list] if [index] is is out of bounds of the [list] or if the
 /// [list] is `null`.
 List<String> removeFromList(List<String> list, int index) {
-  final List<String> updatedList = List<String>.of(list ?? <String>[]);
+  final List<String> updatedList = List<String>.of(list);
 
   if (index >= 0 && index < updatedList.length) {
     return updatedList..removeAt(index);

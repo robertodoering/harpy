@@ -7,22 +7,22 @@ import 'package:harpy/misc/misc.dart';
 import 'package:share/share.dart';
 
 /// Default behaviour to open a tweet media externally.
-void defaultOnMediaOpenExternally(String mediaUrl) {
+void defaultOnMediaOpenExternally(String? mediaUrl) {
   if (mediaUrl != null) {
     launchUrl(mediaUrl);
   }
 }
 
 /// Default behaviour to download a tweet media.
-void defaultOnMediaDownload(String mediaUrl) {
+void defaultOnMediaDownload(String? mediaUrl) {
   if (mediaUrl != null) {
-    final DownloadService downloadService = app<DownloadService>();
+    final DownloadService? downloadService = app<DownloadService>();
 
     final String url = mediaUrl;
-    final String fileName = fileNameFromUrl(url);
+    final String? fileName = fileNameFromUrl(url);
 
-    if (url != null && fileName != null) {
-      downloadService
+    if (fileName != null) {
+      downloadService!
           .download(url: url, name: fileName)
           .catchError(silentErrorHandler);
     }
@@ -30,7 +30,7 @@ void defaultOnMediaDownload(String mediaUrl) {
 }
 
 /// Default behaviour to share a tweet media.
-void defaultOnMediaShare(String mediaUrl) {
+void defaultOnMediaShare(String? mediaUrl) {
   if (mediaUrl != null) {
     Share.share(mediaUrl);
   }
@@ -40,12 +40,12 @@ void defaultOnMediaShare(String mediaUrl) {
 
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
-    @required this.tweet,
-    @required this.tweetBloc,
-    @required this.child,
-    @required this.onDownload,
-    @required this.onOpenExternally,
-    @required this.onShare,
+    required this.tweet,
+    required this.tweetBloc,
+    required this.child,
+    required this.onDownload,
+    required this.onOpenExternally,
+    required this.onShare,
     this.enableImmersiveMode = true,
     this.enableDismissible = true,
     this.overlap = false,
@@ -69,28 +69,28 @@ class MediaOverlay extends StatefulWidget {
   final VoidCallback onDownload;
   final VoidCallback onOpenExternally;
   final VoidCallback onShare;
-  final VoidCallback onShowTweet;
+  final VoidCallback? onShowTweet;
 
   /// Pushes the [MediaOverlay] with a [HeroDialogRoute].
   ///
   /// When no [onDownload], [onOpenExternally] and [onShare] callbacks are
   /// provided, the default implementations will be used.
   static void open({
-    @required TweetData tweet,
-    @required TweetBloc tweetBloc,
-    @required Widget child,
+    required TweetData tweet,
+    required TweetBloc tweetBloc,
+    required Widget child,
     bool enableImmersiveMode = true,
     bool enableDismissible = true,
     bool overlap = false,
-    VoidCallback onDownload,
-    VoidCallback onOpenExternally,
-    VoidCallback onShare,
+    VoidCallback? onDownload,
+    VoidCallback? onOpenExternally,
+    VoidCallback? onShare,
   }) {
-    final String mediaUrl = tweetBloc.downloadMediaUrl(tweet);
+    final String? mediaUrl = tweetBloc.downloadMediaUrl(tweet);
 
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
-        onBackgroundTap: () => app<HarpyNavigator>().state.maybePop(),
+        onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
         builder: (BuildContext context) => MediaOverlay(
           tweet: tweet,
           tweetBloc: tweetBloc,
@@ -113,11 +113,11 @@ class MediaOverlay extends StatefulWidget {
 
 class _MediaOverlayState extends State<MediaOverlay>
     with SingleTickerProviderStateMixin<MediaOverlay>, RouteAware {
-  AnimationController _controller;
-  Animation<Offset> _topAnimation;
-  Animation<Offset> _bottomAnimation;
+  late AnimationController _controller;
+  late Animation<Offset> _topAnimation;
+  late Animation<Offset> _bottomAnimation;
 
-  TweetMediaModel _model;
+  late TweetMediaModel _model;
 
   @override
   void initState() {
@@ -152,7 +152,9 @@ class _MediaOverlayState extends State<MediaOverlay>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override
@@ -235,7 +237,7 @@ class _MediaOverlayState extends State<MediaOverlay>
 
     if (widget.enableDismissible) {
       child = CustomDismissible(
-        onDismissed: () => app<HarpyNavigator>().state.maybePop(),
+        onDismissed: () => app<HarpyNavigator>().state!.maybePop(),
         child: child,
       );
     }

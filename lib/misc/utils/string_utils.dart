@@ -28,7 +28,7 @@ String prettyPrintDurationDifference(Duration difference) {
 ///
 /// prettyPrintDuration(Duration(minutes: 72, seconds: 7)) == '72:07';
 /// ```
-String prettyPrintDuration(Duration duration) {
+String prettyPrintDuration(Duration? duration) {
   if (duration == null) {
     return '';
   }
@@ -47,9 +47,9 @@ const Map<String, String> _twitterHtmlEntities = <String, String>{
 };
 
 /// Parses `<`, `>` and `&` when they appear as html entities in the [source].
-String parseHtmlEntities(String source) {
+String? parseHtmlEntities(String? source) {
   _twitterHtmlEntities.forEach((String entity, String value) {
-    source = source.replaceAll(entity, value);
+    source = source!.replaceAll(entity, value);
   });
 
   return source;
@@ -84,18 +84,18 @@ const List<int> _unicodeWhitespaces = <int>[
 /// version 6.2 or later) and the BOM character, 0xFEFF.
 ///
 /// [_unicodeWhitespaces] includes a list of trimmed characters.
-String trimOne(
-  String source, {
+String? trimOne(
+  String? source, {
   bool start = true,
   bool end = true,
 }) {
   if (source?.isNotEmpty == true) {
-    if (start && _unicodeWhitespaces.contains(source.codeUnitAt(0))) {
+    if (start && _unicodeWhitespaces.contains(source!.codeUnitAt(0))) {
       source = source.substring(1, source.length);
     }
 
     if (end &&
-        source.isNotEmpty &&
+        source!.isNotEmpty &&
         _unicodeWhitespaces.contains(source.codeUnitAt(source.length - 1))) {
       source = source.substring(0, source.length - 1);
     }
@@ -118,7 +118,7 @@ String tweetTimeDifference(BuildContext context, DateTime createdAt) {
 /// Example:
 /// Url: https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4?tag=10
 /// returns 'VoCc7t0UyB_R-KvW.mp4'.
-String fileNameFromUrl(String url) {
+String? fileNameFromUrl(String? url) {
   if (url != null) {
     try {
       final int startIndex = url.lastIndexOf('/') + 1;
@@ -143,8 +143,8 @@ String fileNameFromUrl(String url) {
 ///
 /// If the value only consists of one of the symbols, `null` is returned
 /// instead.
-String prependIfMissing(
-  String value,
+String? prependIfMissing(
+  String? value,
   String prependSymbol,
   List<String> symbols,
 ) {
@@ -167,7 +167,7 @@ String prependIfMissing(
 
 /// Returns the [value] without its prepended symbol if it starts with any
 /// symbol in [symbols].
-String removePrependedSymbol(String value, List<String> symbols) {
+String? removePrependedSymbol(String? value, List<String> symbols) {
   if (value == null) {
     return null;
   }

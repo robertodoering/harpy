@@ -14,13 +14,13 @@ enum ExpandType {
 /// change in opacity.
 class ExpandAnimation extends StatefulWidget {
   const ExpandAnimation({
-    @required this.child,
+    required this.child,
     this.expandType = ExpandType.expandIn,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kShortAnimationDuration,
     this.delay = Duration.zero,
     this.onAnimated,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -28,7 +28,7 @@ class ExpandAnimation extends StatefulWidget {
   final Curve curve;
   final Duration duration;
   final Duration delay;
-  final VoidCallback onAnimated;
+  final VoidCallback? onAnimated;
 
   @override
   _ExpandAnimationState createState() => _ExpandAnimationState();
@@ -36,8 +36,8 @@ class ExpandAnimation extends StatefulWidget {
 
 class _ExpandAnimationState extends State<ExpandAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {

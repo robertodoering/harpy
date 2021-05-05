@@ -7,15 +7,15 @@ typedef OnImageLongPress = void Function(int index, BuildContext context);
 /// Builds the layout for up to four tweet images.
 class TweetImagesLayout extends StatelessWidget {
   const TweetImagesLayout({
-    @required this.children,
+    required this.children,
     this.onImageTap,
     this.onImageLongPress,
     this.padding = 2,
   });
 
   final List<Widget> children;
-  final OnImageTap onImageTap;
-  final OnImageLongPress onImageLongPress;
+  final OnImageTap? onImageTap;
+  final OnImageLongPress? onImageLongPress;
   final double padding;
 
   Widget _buildChild(

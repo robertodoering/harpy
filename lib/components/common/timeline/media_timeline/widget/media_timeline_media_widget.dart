@@ -9,11 +9,11 @@ import 'package:video_player/video_player.dart';
 /// Builds the image, gif or video for a media widget in the [MediaTimeline].
 class MediaTimelineMediaWidget extends StatelessWidget {
   const MediaTimelineMediaWidget({
-    @required this.entry,
-    @required this.index,
-    @required this.onImageTap,
-    @required this.onVideoTap,
-    @required this.buildCompactOverlay,
+    required this.entry,
+    required this.index,
+    required this.onImageTap,
+    required this.onVideoTap,
+    required this.buildCompactOverlay,
   });
 
   final MediaTimelineEntry entry;
@@ -25,13 +25,13 @@ class MediaTimelineMediaWidget extends StatelessWidget {
   void _onLongPress(BuildContext context) {
     showTweetMediaBottomSheet(
       context,
-      url: entry.media.bestUrl,
+      url: entry.media!.bestUrl,
     );
   }
 
   Widget _buildImage(BuildContext context) {
     return Hero(
-      tag: '$index-${entry.media.appropriateUrl}',
+      tag: '$index-${entry.media!.appropriateUrl}',
       placeholderBuilder: (_, __, Widget child) => child,
       child: GestureDetector(
         onTap: onImageTap,
@@ -40,7 +40,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
           // switch between 16 / 9 and 8 / 9 (twice as tall as 16 / 9)
           aspectRatio: index.isEven ? 8 / 9 : 16 / 9,
           child: HarpyImage(
-            imageUrl: entry.media.appropriateUrl,
+            imageUrl: entry.media!.appropriateUrl!,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -52,15 +52,15 @@ class MediaTimelineMediaWidget extends StatelessWidget {
 
   Widget _buildGif(BuildContext context) {
     return AspectRatio(
-      aspectRatio: entry.videoData.aspectRatioDouble,
+      aspectRatio: entry.videoData!.aspectRatioDouble,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
-          entry.videoData.appropriateUrl,
+          entry.videoData!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
         compact: buildCompactOverlay,
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
         autoplay: app<MediaPreferences>().shouldAutoplayMedia,
         onGifTap: onVideoTap,
         onGifLongPress: () => _onLongPress(context),
@@ -70,15 +70,15 @@ class MediaTimelineMediaWidget extends StatelessWidget {
 
   Widget _buildVideo(BuildContext context) {
     return AspectRatio(
-      aspectRatio: entry.videoData.aspectRatioDouble,
+      aspectRatio: entry.videoData!.aspectRatioDouble,
       child: HarpyVideoPlayer.fromController(
         VideoPlayerController.network(
-          entry.videoData.appropriateUrl,
+          entry.videoData!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
         compact: buildCompactOverlay,
-        thumbnail: entry.videoData.thumbnailUrl,
-        thumbnailAspectRatio: entry.videoData.aspectRatioDouble,
+        thumbnail: entry.videoData!.thumbnailUrl,
+        thumbnailAspectRatio: entry.videoData!.aspectRatioDouble,
         onVideoPlayerTap: onVideoTap,
         onVideoPlayerLongPress: () => _onLongPress(context),
       ),
@@ -101,7 +101,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
       create: (_) => TweetBloc(entry.tweet),
       child: ClipRRect(
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kDefaultBorderRadius as BorderRadius?,
         child: child,
       ),
     );

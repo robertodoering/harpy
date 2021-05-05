@@ -5,15 +5,15 @@ abstract class RepliesEvent with HarpyLogger {
   const RepliesEvent();
 
   Future<void> _loadReplies(RepliesBloc bloc) async {
-    final RepliesResult result = await bloc.searchService
-        .findReplies(bloc.originalTweet, bloc.lastResult)
-        .catchError(twitterApiErrorHandler);
+    final RepliesResult? result = await bloc.searchService
+        .findReplies(bloc.originalTweet!, bloc.lastResult)
+        .handleError(twitterApiErrorHandler);
 
     if (result != null) {
       bloc.lastResult = result;
 
       result.replies.sort((TweetData a, TweetData b) {
-        return b.favoriteCount - a.favoriteCount;
+        return b.favoriteCount! - a.favoriteCount!;
       });
 
       bloc.replies.addAll(result.replies);
@@ -22,8 +22,8 @@ abstract class RepliesEvent with HarpyLogger {
   }
 
   Stream<RepliesState> applyAsync({
-    RepliesState currentState,
-    RepliesBloc bloc,
+    required RepliesState currentState,
+    required RepliesBloc bloc,
   });
 }
 
@@ -39,10 +39,10 @@ class LoadRepliesEvent extends RepliesEvent with HarpyLogger {
     TweetData tweet,
   ) async {
     if (tweet.hasParent) {
-      final TweetData parent = await bloc.tweetService
-          .show(id: tweet.inReplyToStatusIdStr)
+      final TweetData? parent = await bloc.tweetService
+          .show(id: tweet.inReplyToStatusIdStr!)
           .then((Tweet tweet) => TweetData.fromTweet(tweet))
-          .catchError(silentErrorHandler);
+          .handleError(silentErrorHandler);
 
       if (parent != null) {
         parent.replies.add(tweet);
@@ -57,12 +57,12 @@ class LoadRepliesEvent extends RepliesEvent with HarpyLogger {
 
   @override
   Stream<RepliesState> applyAsync({
-    RepliesState currentState,
-    RepliesBloc bloc,
+    required RepliesState currentState,
+    required RepliesBloc bloc,
   }) async* {
     yield LoadingParentsState();
 
-    bloc.tweet = await _loadParentTweets(bloc, bloc.originalTweet);
+    bloc.tweet = await _loadParentTweets(bloc, bloc.originalTweet!);
 
     yield LoadingRepliesState();
 
@@ -70,7 +70,7 @@ class LoadRepliesEvent extends RepliesEvent with HarpyLogger {
 
     if (bloc.replies.isEmpty &&
         bloc.lastResult != null &&
-        !bloc.lastResult.lastPage) {
+        !bloc.lastResult!.lastPage) {
       // try loading next page if first result did not yield any replies for
       // the tweet
       await _loadReplies(bloc);
@@ -86,8 +86,8 @@ class LoadMoreRepliesEvent extends RepliesEvent with HarpyLogger {
 
   @override
   Stream<RepliesState> applyAsync({
-    RepliesState currentState,
-    RepliesBloc bloc,
+    required RepliesState currentState,
+    required RepliesBloc bloc,
   }) async* {
     if (bloc.allRepliesLoaded) {
       log.fine('all replies already loaded');

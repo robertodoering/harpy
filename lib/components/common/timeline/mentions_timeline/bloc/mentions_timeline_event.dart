@@ -4,8 +4,8 @@ abstract class MentionsTimelineEvent extends Equatable {
   const MentionsTimelineEvent();
 
   Stream<MentionsTimelineState> applyAsync({
-    MentionsTimelineState currentState,
-    MentionsTimelineBloc bloc,
+    required MentionsTimelineState currentState,
+    required MentionsTimelineBloc bloc,
   });
 }
 
@@ -36,7 +36,7 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
 
     final int indexOfFirstNewestTweet = tweets.lastIndexWhere(
       (TweetData tweet) =>
-          (int.tryParse(tweet.originalIdStr) ?? 0) > lastViewedMention,
+          (int.tryParse(tweet.originalIdStr!) ?? 0) > lastViewedMention,
     );
 
     return indexOfFirstNewestTweet + 1;
@@ -44,20 +44,20 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
 
   @override
   Stream<MentionsTimelineState> applyAsync({
-    MentionsTimelineState currentState,
-    MentionsTimelineBloc bloc,
+    required MentionsTimelineState currentState,
+    required MentionsTimelineBloc bloc,
   }) async* {
     log.fine('requesting initial mentions timeline');
 
     yield const MentionsTimelineLoading();
 
     final int lastViewedMention =
-        bloc.tweetVisibilityPreferences.lastViewedMention;
+        bloc.tweetVisibilityPreferences!.lastViewedMention;
 
-    final List<TweetData> tweets = await bloc.timelineService
+    final List<TweetData>? tweets = await bloc.timelineService
         .mentionsTimeline(count: 200)
         .then(handleTweets)
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweet mentions');
@@ -88,13 +88,13 @@ class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
 
   @override
   Stream<MentionsTimelineState> applyAsync({
-    MentionsTimelineState currentState,
-    MentionsTimelineBloc bloc,
+    required MentionsTimelineState currentState,
+    required MentionsTimelineBloc bloc,
   }) async* {
     if (currentState is MentionsTimelineResult) {
       log.fine('updating viewed mentions');
 
-      bloc.tweetVisibilityPreferences.updateLastViewedMention(
+      bloc.tweetVisibilityPreferences!.updateLastViewedMention(
         currentState.tweets.first,
       );
 

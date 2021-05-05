@@ -29,7 +29,7 @@ class UserProfileInfo extends StatelessWidget {
         onTap: () => bloc.add(const FollowUserEvent()),
         dense: true,
       ),
-      crossFadeState: bloc.user.following
+      crossFadeState: bloc.user!.following
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
     );
@@ -44,22 +44,22 @@ class UserProfileInfo extends StatelessWidget {
     return GestureDetector(
       onTap: () => app<HarpyNavigator>().pushRoute(
         HeroDialogRoute<void>(
-          onBackgroundTap: app<HarpyNavigator>().state.maybePop,
+          onBackgroundTap: app<HarpyNavigator>().state!.maybePop,
           builder: (_) => CustomDismissible(
-            onDismissed: app<HarpyNavigator>().state.maybePop,
+            onDismissed: app<HarpyNavigator>().state!.maybePop,
             child: HarpyMediaGallery.builder(
               itemCount: 1,
               heroTagBuilder: (_) => bloc.user,
               beginBorderRadiusBuilder: (_) => BorderRadius.circular(48),
               builder: (_, int index) => HarpyImage(
-                imageUrl: bloc.user.originalUserImageUrl,
+                imageUrl: bloc.user!.originalUserImageUrl,
               ),
             ),
           ),
         ),
       ),
       child: HarpyCircleAvatar(
-        imageUrl: bloc.user.originalUserImageUrl,
+        imageUrl: bloc.user!.originalUserImageUrl,
         radius: 36,
         heroTag: bloc.user,
       ),
@@ -72,7 +72,7 @@ class UserProfileInfo extends StatelessWidget {
       fit: BoxFit.scaleDown,
       alignment: Alignment.centerLeft,
       child: Text(
-        '@${bloc.user.screenName}',
+        '@${bloc.user!.screenName}',
         style: theme.textTheme.subtitle1,
       ),
     );
@@ -84,8 +84,8 @@ class UserProfileInfo extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: <InlineSpan>[
-          TextSpan(text: bloc.user.name),
-          if (bloc.user.verified) ...<InlineSpan>[
+          TextSpan(text: bloc.user!.name),
+          if (bloc.user!.verified!) ...<InlineSpan>[
             const TextSpan(text: ' '),
             const WidgetSpan(
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),
@@ -109,8 +109,8 @@ class UserProfileInfo extends StatelessWidget {
     // or when the connections have not been requested to determine whether the
     // authenticated user is following this user.
     final bool enableFollow =
-        authBloc.authenticatedUser.idStr != bloc.user.idStr &&
-            bloc.user.hasConnections;
+        authBloc.authenticatedUser!.idStr != bloc.user!.idStr &&
+            bloc.user!.hasConnections;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

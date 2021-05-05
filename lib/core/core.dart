@@ -1,6 +1,7 @@
 library core;
 
 export 'config/app_config.dart';
+export 'error_handler/handle_error_extension.dart';
 export 'error_handler/harpy_error_handler.dart';
 export 'info/harpy_info.dart';
 export 'logger/init_logger.dart';

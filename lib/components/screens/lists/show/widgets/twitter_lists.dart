@@ -12,7 +12,7 @@ class TwitterLists extends StatelessWidget {
     this.onListSelected,
   });
 
-  final ValueChanged<TwitterListData> onListSelected;
+  final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(int index, List<TwitterListData> lists) {
     if (index.isEven) {
@@ -20,9 +20,9 @@ class TwitterLists extends StatelessWidget {
 
       return TwitterListCard(
         list,
-        key: Key(list.idStr),
+        key: Key(list.idStr!),
         onSelected: onListSelected != null
-            ? () => onListSelected(list)
+            ? () => onListSelected!(list)
             : () => app<HarpyNavigator>().pushListTimelineScreen(
                   list: list,
                 ),
@@ -32,7 +32,7 @@ class TwitterLists extends StatelessWidget {
     }
   }
 
-  int _indexCallback(Key key, List<TwitterListData> lists) {
+  int? _indexCallback(Key key, List<TwitterListData> lists) {
     if (key is ValueKey<String>) {
       final int index = lists.indexWhere(
         (TwitterListData list) => list.idStr == key.value,

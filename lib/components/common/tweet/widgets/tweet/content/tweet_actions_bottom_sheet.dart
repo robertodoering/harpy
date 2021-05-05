@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 /// A [TweetBloc] must be accessible through the [context].
 void showTweetActionsBottomSheet(
   BuildContext context, {
-  @required TweetData tweet,
+  required TweetData tweet,
 }) {
   final ThemeData theme = Theme.of(context);
   final TweetBloc bloc = context.read<TweetBloc>();
@@ -21,15 +21,15 @@ void showTweetActionsBottomSheet(
   final HomeTimelineBloc homeTimelineBloc = context.read<HomeTimelineBloc>();
 
   final bool isAuthenticatedUser =
-      bloc.tweet.userData.idStr == authBloc.authenticatedUser.idStr;
+      bloc.tweet.userData!.idStr == authBloc.authenticatedUser!.idStr;
 
   final bool showReply =
-      ModalRoute.of(context).settings?.name != ComposeScreen.route;
+      ModalRoute.of(context)!.settings.name != ComposeScreen.route;
 
   final String tweetTime =
       DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
           .add_Hm()
-          .format(tweet.createdAt.toLocal())
+          .format(tweet.createdAt!.toLocal())
           .toLowerCase();
 
   showHarpyBottomSheet<void>(
@@ -39,7 +39,7 @@ void showTweetActionsBottomSheet(
       BottomSheetHeader(
         child: Column(
           children: <Widget>[
-            Text('tweet from ${tweet.userData.name}'),
+            Text('tweet from ${tweet.userData!.name}'),
             defaultSmallVerticalSpacer,
             Text(
               '$tweetTime',
@@ -62,7 +62,7 @@ void showTweetActionsBottomSheet(
             bloc.add(DeleteTweet(onDeleted: () {
               homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
             }));
-            app<HarpyNavigator>().state.maybePop();
+            app<HarpyNavigator>().state!.maybePop();
           },
         ),
       if (showReply)
@@ -70,7 +70,7 @@ void showTweetActionsBottomSheet(
           leading: const Icon(CupertinoIcons.reply),
           title: const Text('reply'),
           onTap: () async {
-            await app<HarpyNavigator>().state.maybePop();
+            await app<HarpyNavigator>().state!.maybePop();
             app<HarpyNavigator>().pushComposeScreen(
               inReplyToStatus: tweet,
             );
@@ -81,7 +81,7 @@ void showTweetActionsBottomSheet(
         title: const Text('open tweet externally'),
         onTap: () {
           bloc.add(OpenTweetExternally(tweet: tweet));
-          app<HarpyNavigator>().state.maybePop();
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
       ListTile(
@@ -90,7 +90,7 @@ void showTweetActionsBottomSheet(
         enabled: bloc.tweet.hasText,
         onTap: () {
           bloc.add(CopyTweetText(tweet: tweet));
-          app<HarpyNavigator>().state.maybePop();
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
       ListTile(
@@ -98,7 +98,7 @@ void showTweetActionsBottomSheet(
         title: const Text('share tweet'),
         onTap: () {
           bloc.add(ShareTweet(tweet: tweet));
-          app<HarpyNavigator>().state.maybePop();
+          app<HarpyNavigator>().state!.maybePop();
         },
       ),
     ],

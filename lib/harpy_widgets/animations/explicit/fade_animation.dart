@@ -14,13 +14,13 @@ enum FadeType {
 /// change in opacity.
 class FadeAnimation extends StatefulWidget {
   const FadeAnimation({
-    @required this.child,
+    required this.child,
     this.shouldHide = true,
     this.fadeType = FadeType.fadeIn,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -36,8 +36,8 @@ class FadeAnimation extends StatefulWidget {
 
 class _FadeAnimationState extends State<FadeAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   bool _hidden = false;
 
@@ -76,7 +76,7 @@ class _FadeAnimationState extends State<FadeAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => _hide
+      builder: (BuildContext context, Widget? child) => _hide
           ? const SizedBox()
           : Opacity(
               opacity: widget.fadeType == FadeType.fadeIn

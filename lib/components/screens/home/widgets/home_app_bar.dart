@@ -32,7 +32,7 @@ class HomeAppBar extends StatelessWidget {
         icon: const Icon(Icons.more_vert),
         onSelected: (int selection) {
           if (selection == 0) {
-            ScrollDirection.of(context).reset();
+            ScrollDirection.of(context)!.reset!();
 
             bloc.add(const RefreshHomeTimeline(clearPrevious: true));
           }
@@ -49,7 +49,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ScrollDirection scrollDirection = ScrollDirection.of(context);
+    final ScrollDirection scrollDirection = ScrollDirection.of(context)!;
 
     final TimelineFilterModel model = context.watch<TimelineFilterModel>();
     final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();

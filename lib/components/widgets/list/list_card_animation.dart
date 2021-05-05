@@ -20,8 +20,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 /// the [child] without any animation.
 class ListCardAnimation extends StatefulWidget {
   const ListCardAnimation({
-    @required this.child,
-    @required Key key,
+    required this.child,
+    required Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -32,11 +32,11 @@ class ListCardAnimation extends StatefulWidget {
 
 class _ListCardAnimationState extends State<ListCardAnimation>
     with SingleTickerProviderStateMixin<ListCardAnimation> {
-  final GeneralPreferences generalPreferences = app<GeneralPreferences>();
+  final GeneralPreferences? generalPreferences = app<GeneralPreferences>();
 
-  AnimationController _controller;
-  Animation<Offset> _slideAnimation;
-  Animation<double> _fadeAnimation;
+  late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
@@ -70,11 +70,11 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
   void _onVisibilityChanged(bool visible) {
     if (visible) {
-      final ScrollDirection scrollDirection = ScrollDirection.of(context);
+      final ScrollDirection? scrollDirection = ScrollDirection.of(context);
 
-      if (scrollDirection?.direction == null || scrollDirection.down) {
+      if (scrollDirection?.direction == null || scrollDirection!.down) {
         // first time building the parent list or scrolling down, animate child
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           if (mounted) {
             // start the controller after one frame to prevent issues when
             // animation plays during navigation
@@ -83,7 +83,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
         });
       } else {
         // scrolling up, skip animation
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           if (mounted) {
             _controller.forward(from: 1);
           }
@@ -94,7 +94,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
   @override
   Widget build(BuildContext context) {
-    if (generalPreferences.performanceMode) {
+    if (generalPreferences!.performanceMode) {
       return widget.child;
     } else {
       return VisibilityChangeDetector(
@@ -102,7 +102,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
         onVisibilityChanged: _onVisibilityChanged,
         child: AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext context, Widget child) => FadeTransition(
+          builder: (BuildContext context, Widget? child) => FadeTransition(
             opacity: _fadeAnimation,
             child: Transform.translate(
               offset: _slideAnimation.value,

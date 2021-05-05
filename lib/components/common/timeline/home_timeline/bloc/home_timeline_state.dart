@@ -4,7 +4,7 @@ abstract class HomeTimelineState extends Equatable {
   const HomeTimelineState();
 }
 
-extension HomeTimelineExtension on HomeTimelineState {
+extension HomeTimelineExtension on HomeTimelineState? {
   bool get showInitialLoading => this is HomeTimelineInitialLoading;
 
   bool get showLoadingOlder => this is HomeTimelineLoadingOlder;
@@ -62,11 +62,11 @@ extension HomeTimelineExtension on HomeTimelineState {
     }
   }
 
-  bool showNewTweetsExist(String originalIdStr) {
-    HomeTimelineResult result;
+  bool showNewTweetsExist(String? originalIdStr) {
+    HomeTimelineResult? result;
 
     if (this is HomeTimelineResult) {
-      result = this;
+      result = this as HomeTimelineResult?;
     } else if (this is HomeTimelineLoadingOlder) {
       result = (this as HomeTimelineLoadingOlder).oldResult;
     }
@@ -97,10 +97,10 @@ class HomeTimelineInitialLoading extends HomeTimelineState {
 /// The state when the home timeline has successfully been returned with tweets.
 class HomeTimelineResult extends HomeTimelineState {
   const HomeTimelineResult({
-    @required this.tweets,
-    @required this.timelineFilter,
-    @required this.newTweets,
-    @required this.maxId,
+    required this.tweets,
+    required this.timelineFilter,
+    required this.newTweets,
+    required this.maxId,
     this.lastInitialTweet = '',
     this.initialResults = false,
     this.canRequestOlder = true,
@@ -117,10 +117,10 @@ class HomeTimelineResult extends HomeTimelineState {
   /// The max id used to request older tweets.
   ///
   /// This is the id of the last requested tweet before the tweets got filtered.
-  final String maxId;
+  final String? maxId;
 
   /// The idStr of that last tweet from the initial request.
-  final String lastInitialTweet;
+  final String? lastInitialTweet;
 
   /// Whether we requested the initial home timeline with tweets that are
   /// newer than the last visible tweet from a previous session.
@@ -133,7 +133,7 @@ class HomeTimelineResult extends HomeTimelineState {
   final bool canRequestOlder;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         tweets,
         timelineFilter,
         newTweets,
@@ -150,7 +150,7 @@ class HomeTimelineResult extends HomeTimelineState {
 /// This may happen when the user is not following anyone.
 class HomeTimelineNoResult extends HomeTimelineState {
   const HomeTimelineNoResult({
-    @required this.timelineFilter,
+    required this.timelineFilter,
   });
 
   final TimelineFilter timelineFilter;
@@ -164,7 +164,7 @@ class HomeTimelineNoResult extends HomeTimelineState {
 /// The state when an error occurred while requesting the home timeline.
 class HomeTimelineFailure extends HomeTimelineState {
   const HomeTimelineFailure({
-    @required this.timelineFilter,
+    required this.timelineFilter,
   });
 
   final TimelineFilter timelineFilter;
@@ -178,7 +178,7 @@ class HomeTimelineFailure extends HomeTimelineState {
 /// The state when requesting older tweets.
 class HomeTimelineLoadingOlder extends HomeTimelineState {
   const HomeTimelineLoadingOlder({
-    @required this.oldResult,
+    required this.oldResult,
   });
 
   final HomeTimelineResult oldResult;

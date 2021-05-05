@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -8,7 +7,7 @@ import 'package:provider/provider.dart';
 /// Builds the content for the [UserProfileScreen].
 class UserProfileContent extends StatelessWidget {
   const UserProfileContent({
-    @required this.bloc,
+    required this.bloc,
   });
 
   final UserProfileBloc bloc;
@@ -18,9 +17,9 @@ class UserProfileContent extends StatelessWidget {
     final AuthenticationBloc authBloc = context.watch<AuthenticationBloc>();
 
     final bool isAuthenticatedUser =
-        bloc.user.idStr == authBloc.authenticatedUser.idStr;
+        bloc.user!.idStr == authBloc.authenticatedUser!.idStr;
 
-    final String screenName = bloc.user?.screenName;
+    final String? screenName = bloc.user?.screenName;
 
     return ChangeNotifierProvider<TimelineFilterModel>(
       create: (_) => TimelineFilterModel.user(),

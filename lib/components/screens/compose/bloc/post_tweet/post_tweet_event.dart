@@ -26,7 +26,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
 
       yield const ConvertingTweetVideo();
 
-      final File output = await app<MediaVideoConverter>().convertVideo(
+      final File? output = await app<MediaVideoConverter>().convertVideo(
         videoSource.path,
         videoSource.extension,
       );
@@ -39,7 +39,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     } else {
       mediaFiles.addAll(
         bloc.composeBloc.state.media.map(
-          (PlatformFile platformFile) => File(platformFile.path),
+          (PlatformFile platformFile) => File(platformFile.path!),
         ),
       );
     }
@@ -54,7 +54,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
           type: bloc.composeBloc.state.type,
         );
 
-        final String mediaId = await bloc.mediaUploadService.upload(
+        final String? mediaId = await bloc.mediaUploadService!.upload(
           mediaFiles[i],
           type: bloc.composeBloc.state.type,
         );
@@ -77,8 +77,8 @@ class PostTweetEvent extends Equatable with HarpyLogger {
   }
 
   Stream<PostTweetState> applyAsync({
-    PostTweetState currentState,
-    PostTweetBloc bloc,
+    required PostTweetState currentState,
+    required PostTweetBloc bloc,
   }) async* {
     if (bloc.composeBloc.state.hasMedia) {
       await for (PostTweetState state in _uploadMedia(bloc)) {
@@ -94,15 +94,15 @@ class PostTweetEvent extends Equatable with HarpyLogger {
 
     yield const PostingTweet();
 
-    List<String> mediaIds;
+    List<String>? mediaIds;
     if (bloc.state is TweetMediaSuccessfullyUploaded) {
       mediaIds = (bloc.state as TweetMediaSuccessfullyUploaded).mediaIds;
     }
 
     // additional info that will be displayed in the dialog (e.g. error message)
-    String additionalInfo;
+    String? additionalInfo;
 
-    final TweetData sentStatus = await bloc.tweetService
+    final TweetData? sentStatus = await bloc.tweetService
         .update(
           status: text,
           mediaIds: mediaIds,
@@ -113,7 +113,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
         .catchError((dynamic error) {
       if (error is Response) {
-        final String message = responseErrorMessage(error.body);
+        final String? message = responseErrorMessage(error.body);
         log.info(
           'handling error while sending status with message $message',
           error,

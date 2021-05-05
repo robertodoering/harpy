@@ -4,7 +4,7 @@ import 'package:harpy/core/core.dart';
 /// A [TextEditingController] for the [ComposeScreen].
 class ComposeTextController extends TextEditingController {
   ComposeTextController({
-    String text,
+    String? text,
     this.textStyleMap = const <RegExp, TextStyle>{},
   }) : super(text: text) {
     addListener(_listener);
@@ -21,8 +21,8 @@ class ComposeTextController extends TextEditingController {
   ///
   /// A word is selected whenever the cursor is at the start, end, or in the
   /// middle of a word separated by whitespaces.
-  final Map<RegExp, ValueChanged<String>> selectionRecognizers =
-      <RegExp, ValueChanged<String>>{};
+  final Map<RegExp, ValueChanged<String?>> selectionRecognizers =
+      <RegExp, ValueChanged<String?>>{};
 
   void replaceSelection(String replacement) {
     if (text.isNotEmpty &&
@@ -85,7 +85,7 @@ class ComposeTextController extends TextEditingController {
   void _listener() {
     if (text.isEmpty) {
       // reset selection recognizers when text got deleted
-      for (ValueChanged<String> recognizer in selectionRecognizers.values) {
+      for (ValueChanged<String?> recognizer in selectionRecognizers.values) {
         recognizer(null);
       }
     } else if (text.isNotEmpty &&
@@ -99,7 +99,7 @@ class ComposeTextController extends TextEditingController {
 
       final String word = '$start$end'.trim();
 
-      for (MapEntry<RegExp, ValueChanged<String>> entry
+      for (MapEntry<RegExp, ValueChanged<String?>> entry
           in selectionRecognizers.entries) {
         if (entry.key.hasMatch(word)) {
           entry.value(word);
@@ -111,7 +111,7 @@ class ComposeTextController extends TextEditingController {
   }
 
   @override
-  TextSpan buildTextSpan({TextStyle style, bool withComposing}) {
+  TextSpan buildTextSpan({TextStyle? style, bool? withComposing}) {
     final List<TextSpan> children = <TextSpan>[];
 
     text.splitMapJoin(
@@ -123,7 +123,7 @@ class ComposeTextController extends TextEditingController {
       onMatch: (Match match) {
         final RegExp regExp = textStyleMap.entries
             .singleWhere((MapEntry<RegExp, TextStyle> element) =>
-                element.key.allMatches(match[0]).isNotEmpty)
+                element.key.allMatches(match[0]!).isNotEmpty)
             .key;
 
         children.add(
@@ -133,7 +133,7 @@ class ComposeTextController extends TextEditingController {
           ),
         );
 
-        return match[0];
+        return match[0]!;
       },
       onNonMatch: (String nonMatch) {
         children.add(TextSpan(text: nonMatch, style: style));

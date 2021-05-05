@@ -27,7 +27,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final RenderBox button = context.findRenderObject() as RenderBox;
 
     final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+        Overlay.of(context)!.context.findRenderObject() as RenderBox;
 
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(
@@ -43,7 +43,7 @@ class _RetweetButtonState extends State<RetweetButton> {
       Offset.zero & overlay.size,
     );
 
-    final int result = await showMenu<int>(
+    final int? result = await showMenu<int>(
       context: context,
       elevation: popupMenuTheme.elevation,
       items: const <PopupMenuEntry<int>>[
@@ -75,7 +75,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: widget.bloc.tweet.retweeted,
+      active: widget.bloc.tweet.retweeted!,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: TextStyle(

@@ -12,7 +12,7 @@ class OverplayReplayIcon extends StatelessWidget {
 
   final bool fadeIn;
   final bool compact;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

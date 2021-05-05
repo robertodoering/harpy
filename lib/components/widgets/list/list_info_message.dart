@@ -10,8 +10,8 @@ class ListInfoMessage extends StatelessWidget {
     this.secondaryMessage,
   }) : assert(primaryMessage != null || secondaryMessage != null);
 
-  final Widget primaryMessage;
-  final Widget secondaryMessage;
+  final Widget? primaryMessage;
+  final Widget? secondaryMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +28,17 @@ class ListInfoMessage extends StatelessWidget {
           children: <Widget>[
             if (primaryMessage != null)
               DefaultTextStyle(
-                style: theme.textTheme.headline6,
+                style: theme.textTheme.headline6!,
                 textAlign: TextAlign.center,
-                child: primaryMessage,
+                child: primaryMessage!,
               ),
             if (primaryMessage != null && secondaryMessage != null)
               const SizedBox(height: 16),
             if (secondaryMessage != null)
               DefaultTextStyle(
-                style: theme.textTheme.subtitle2,
+                style: theme.textTheme.subtitle2!,
                 textAlign: TextAlign.center,
-                child: secondaryMessage,
+                child: secondaryMessage!,
               ),
           ],
         ),

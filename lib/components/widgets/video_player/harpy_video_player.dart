@@ -42,17 +42,17 @@ class HarpyVideoPlayer extends StatefulWidget {
     this.compact = false,
   }) : controller = null;
 
-  final VideoPlayerController controller;
+  final VideoPlayerController? controller;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
-  final String thumbnail;
-  final double thumbnailAspectRatio;
+  final String? thumbnail;
+  final double? thumbnailAspectRatio;
 
-  final HarpyVideoPlayerModel model;
+  final HarpyVideoPlayerModel? model;
   final bool autoplay;
-  final OnVideoPlayerTap onVideoPlayerTap;
-  final OnVideoPlayerLongPress onVideoPlayerLongPress;
+  final OnVideoPlayerTap? onVideoPlayerTap;
+  final OnVideoPlayerLongPress? onVideoPlayerLongPress;
   final bool allowVerticalOverflow;
   final bool compact;
 
@@ -61,7 +61,7 @@ class HarpyVideoPlayer extends StatefulWidget {
 }
 
 class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
-  VideoPlayerController _controller;
+  VideoPlayerController? _controller;
 
   @override
   void initState() {
@@ -70,14 +70,14 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     if (widget.model == null) {
       _controller = widget.controller;
     } else {
-      _controller = widget.model.controller;
+      _controller = widget.model!.controller;
     }
   }
 
   @override
   void dispose() {
     if (widget.model == null) {
-      _controller.dispose();
+      _controller!.dispose();
     }
 
     super.dispose();
@@ -91,7 +91,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
         model.togglePlayback();
       }
     } else {
-      widget.onVideoPlayerTap(model);
+      widget.onVideoPlayerTap!(model);
     }
   }
 
@@ -113,8 +113,8 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     Widget child = Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
+          aspectRatio: _controller!.value.aspectRatio,
+          child: VideoPlayer(_controller!),
         ),
         Positioned.fill(
           child: Row(
@@ -162,8 +162,8 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     BuildContext toHeroContext,
   ) {
     final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
+        ? fromHeroContext.widget as Hero
+        : toHeroContext.widget as Hero;
 
     final BorderRadiusTween tween = BorderRadiusTween(
       begin: const BorderRadius.all(kDefaultRadius),
@@ -172,7 +172,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget child) => ClipRRect(
+      builder: (BuildContext context, Widget? child) => ClipRRect(
         clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
@@ -180,7 +180,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     );
   }
 
-  Widget _builder(BuildContext context, Widget child) {
+  Widget _builder(BuildContext context, Widget? child) {
     final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
 
     Widget child =
@@ -191,7 +191,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
         key: ValueKey<HarpyVideoPlayerModel>(model),
         onVisibilityChanged: (bool visible) {
           if (visible && !model.initialized && !model.playing) {
-            _controller.setVolume(0);
+            _controller!.setVolume(0);
             model.initialize();
           }
         },
@@ -211,7 +211,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     if (widget.model != null) {
-      return ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+      return ChangeNotifierProvider<HarpyVideoPlayerModel?>.value(
         value: widget.model,
         builder: _builder,
       );

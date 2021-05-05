@@ -12,14 +12,14 @@ class ProDialog extends StatefulWidget {
   });
 
   /// The name of the pro only feature.
-  final String feature;
+  final String? feature;
 
   @override
   _ProDialogState createState() => _ProDialogState();
 }
 
 class _ProDialogState extends State<ProDialog> {
-  GestureRecognizer _recognizer;
+  GestureRecognizer? _recognizer;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _ProDialogState extends State<ProDialog> {
 
   @override
   void dispose() {
-    _recognizer.dispose();
+    _recognizer!.dispose();
 
     super.dispose();
   }
@@ -42,7 +42,7 @@ class _ProDialogState extends State<ProDialog> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final TextStyle style = theme.textTheme.subtitle2;
+    final TextStyle style = theme.textTheme.subtitle2!;
     final TextStyle linkStyle = style.copyWith(
       color: theme.accentColor,
       fontWeight: FontWeight.bold,

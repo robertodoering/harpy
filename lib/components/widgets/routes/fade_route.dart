@@ -4,8 +4,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// A [PageRoute] that fades into the new widget.
 class FadeRoute<T> extends PageRoute<T> {
   FadeRoute({
-    @required this.builder,
-    RouteSettings settings,
+    required this.builder,
+    RouteSettings? settings,
     this.duration = kLongAnimationDuration,
   }) : super(settings: settings);
 
@@ -13,10 +13,10 @@ class FadeRoute<T> extends PageRoute<T> {
   final Duration duration;
 
   @override
-  Color get barrierColor => null;
+  Color? get barrierColor => null;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   bool get maintainState => true;

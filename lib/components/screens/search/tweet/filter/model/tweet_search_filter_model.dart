@@ -30,7 +30,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   }
 
   void setTweetAuthor(String tweetAuthor) {
-    if (tweetAuthor == null || tweetAuthor.isEmpty) {
+    if (tweetAuthor.isEmpty) {
       value = value.copyWith(tweetAuthor: '');
     } else {
       value = value.copyWith(
@@ -40,7 +40,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
   }
 
   void setReplyingTo(String replyingTo) {
-    if (replyingTo == null || replyingTo.isEmpty) {
+    if (replyingTo.isEmpty) {
       value = value.copyWith(replyingTo: '');
     } else {
       value = value.copyWith(
@@ -49,8 +49,8 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     }
   }
 
-  void setResultType(int resultType) {
-    value = value.copyWith(resultType: resultType.clamp(0, 2));
+  void setResultType(int? resultType) {
+    value = value.copyWith(resultType: resultType!.clamp(0, 2));
   }
 
   void addIncludingPhrase(String phrase) {

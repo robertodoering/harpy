@@ -8,10 +8,11 @@ part of 'harpy_theme_data.dart';
 
 HarpyThemeData _$HarpyThemeDataFromJson(Map<String, dynamic> json) {
   return HarpyThemeData()
-    ..name = json['name'] as String
-    ..backgroundColors =
-        (json['backgroundColors'] as List)?.map((e) => e as int)?.toList()
-    ..accentColor = json['accentColor'] as int;
+    ..name = json['name'] as String?
+    ..backgroundColors = (json['backgroundColors'] as List<dynamic>?)
+        ?.map((e) => e as int)
+        .toList()
+    ..accentColor = json['accentColor'] as int?;
 }
 
 Map<String, dynamic> _$HarpyThemeDataToJson(HarpyThemeData instance) =>

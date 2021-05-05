@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 /// Builds a [Column] with the [title] above its [children].
 class SettingsGroup extends StatelessWidget {
   const SettingsGroup({
-    @required this.title,
-    @required this.children,
+    required this.title,
+    required this.children,
   });
 
   final String title;

@@ -12,15 +12,16 @@ class HarpyThemeData {
   /// Creates a [HarpyThemeData] from a [HarpyTheme].
   HarpyThemeData.fromHarpyTheme(HarpyTheme harpyTheme) {
     name = harpyTheme.name;
-    backgroundColors =
-        harpyTheme.backgroundColors.map((Color color) => color.value).toList();
+    backgroundColors = harpyTheme.backgroundColors
+        .map((Color? color) => color!.value)
+        .toList();
     accentColor = harpyTheme.accentColor.value;
   }
 
   /// Creates a [HarpyThemeData] from a [HarpyThemeData].
   HarpyThemeData.from(HarpyThemeData other) {
     name = other.name;
-    backgroundColors = List<int>.from(other.backgroundColors);
+    backgroundColors = List<int>.from(other.backgroundColors!);
     accentColor = other.accentColor;
   }
 
@@ -28,13 +29,13 @@ class HarpyThemeData {
       _$HarpyThemeDataFromJson(json);
 
   /// The name for the theme.
-  String name;
+  String? name;
 
   /// A list of background colors that create a background gradient.
-  List<int> backgroundColors;
+  List<int>? backgroundColors;
 
   /// The accent color for the theme.
-  int accentColor;
+  int? accentColor;
 
   @override
   bool operator ==(dynamic other) {

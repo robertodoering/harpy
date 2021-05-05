@@ -10,13 +10,10 @@ extension TrendsExtension on TrendsState {
   bool get loadingFailed => this is FindTrendsFailure;
 
   bool get hasTrends =>
-      this is FoundTrendsState &&
-      (this as FoundTrendsState).trends != null &&
-      (this as FoundTrendsState).trends.isNotEmpty;
+      this is FoundTrendsState && (this as FoundTrendsState).trends.isNotEmpty;
 
-  List<Trend> get trends => this is FoundTrendsState
-      ? (this as FoundTrendsState).trends ?? <Trend>[]
-      : <Trend>[];
+  List<Trend> get trends =>
+      this is FoundTrendsState ? (this as FoundTrendsState).trends : <Trend>[];
 
   List<Trend> get hashtags => this is FoundTrendsState
       ? (this as FoundTrendsState).hashtags
@@ -39,10 +36,10 @@ class RequestingTrends extends TrendsState {
 
 class FoundTrendsState extends TrendsState {
   FoundTrendsState({
-    @required this.woeid,
-    @required this.trends,
+    required this.woeid,
+    required this.trends,
   }) : hashtags =
-            trends.where((Trend trend) => trend.name.startsWith('#')).toList();
+            trends.where((Trend trend) => trend.name!.startsWith('#')).toList();
 
   final int woeid;
   final List<Trend> trends;

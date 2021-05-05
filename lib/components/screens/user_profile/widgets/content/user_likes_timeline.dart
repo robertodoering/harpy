@@ -12,7 +12,7 @@ class UserLikesTimeline extends StatelessWidget {
   ) {
     return FloatingActionButton(
       onPressed: () async {
-        ScrollDirection.of(context).reset();
+        ScrollDirection.of(context)!.reset!();
         bloc.add(const RequestLikesTimeline());
       },
       child: const Icon(CupertinoIcons.refresh),

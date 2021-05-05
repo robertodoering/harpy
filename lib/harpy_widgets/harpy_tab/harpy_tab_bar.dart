@@ -6,22 +6,22 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 class HarpyTabBar extends StatefulWidget {
   const HarpyTabBar({
-    @required this.tabs,
+    required this.tabs,
     this.endWidgets,
   });
 
   final List<Widget> tabs;
 
   /// A list of additional widgets that will be built at the end of the tab bar.
-  final List<Widget> endWidgets;
+  final List<Widget>? endWidgets;
 
   @override
   _HarpyTapBarState createState() => _HarpyTapBarState();
 }
 
 class _HarpyTapBarState extends State<HarpyTabBar> {
-  TabController _tabController;
-  AutoScrollController _scrollController;
+  TabController? _tabController;
+  AutoScrollController? _scrollController;
 
   int _currentIndex = 0;
 
@@ -37,15 +37,15 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
     super.didChangeDependencies();
 
     _tabController = DefaultTabController.of(context);
-    _tabController.animation.addListener(_tabControllerListener);
+    _tabController!.animation!.addListener(_tabControllerListener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    _tabController.animation.removeListener(_tabControllerListener);
-    _scrollController.dispose();
+    _tabController!.animation!.removeListener(_tabControllerListener);
+    _scrollController!.dispose();
   }
 
   void _tabControllerListener() {
@@ -53,7 +53,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
       // rebuild tabs with new animation value
       setState(() {});
 
-      final int newIndex = _tabController.animation.value.round();
+      final int newIndex = _tabController!.animation!.value.round();
 
       if (_currentIndex != newIndex) {
         // content changed, scroll tab bar to show active tab
@@ -65,7 +65,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
   }
 
   void _scrollToIndex(int index) {
-    _scrollController.scrollToIndex(
+    _scrollController!.scrollToIndex(
       index,
       duration: kLongAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
@@ -73,16 +73,16 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
   }
 
   double _animationValue(int index) =>
-      (_tabController.animation.value - index).clamp(-1, 1).abs().toDouble();
+      (_tabController!.animation!.value - index).clamp(-1, 1).abs().toDouble();
 
   Widget _buildTab(int index) {
     return AutoScrollTag(
       key: ValueKey<int>(index),
-      controller: _scrollController,
+      controller: _scrollController!,
       index: index,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius,
-        onTap: () => _tabController.animateTo(index),
+        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        onTap: () => _tabController!.animateTo(index),
         child: HarpyTabScope(
           index: index,
           animationValue: _animationValue(index),
@@ -107,7 +107,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
                 if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
               ],
               if (widget.endWidgets != null) ...<Widget>[
-                for (Widget widget in widget.endWidgets) ...<Widget>[
+                for (Widget widget in widget.endWidgets!) ...<Widget>[
                   defaultSmallHorizontalSpacer,
                   widget,
                 ],

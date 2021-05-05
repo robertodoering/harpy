@@ -12,9 +12,9 @@ class UserProfileError extends StatelessWidget {
 
   final UserProfileBloc bloc;
 
-  final UserData user;
+  final UserData? user;
 
-  final String screenName;
+  final String? screenName;
 
   @override
   Widget build(BuildContext context) {

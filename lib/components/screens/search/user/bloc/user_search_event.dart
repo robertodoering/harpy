@@ -13,7 +13,7 @@ part of 'user_search_bloc.dart';
 class SearchUsers extends LoadPaginatedData {
   const SearchUsers(this.query);
 
-  final String query;
+  final String? query;
 
   static final Logger _log = Logger('SearchUsers');
 
@@ -41,26 +41,25 @@ class SearchUsers extends LoadPaginatedData {
   }
 
   @override
-  Future<bool> loadData(PaginatedBloc paginatedBloc) async {
+  Future<bool> loadData(PaginatedBloc? paginatedBloc) async {
     final UserSearchBloc bloc = paginatedBloc as UserSearchBloc;
 
     bloc.lastQuery = query;
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
 
-    List<UserData> users = await bloc.userService
+    List<UserData>? users = await bloc.userService
         .usersSearch(
-          q: query,
+          q: query!,
           count: 20,
           page: bloc.cursor,
           includeEntities: false,
         )
         .then(_transformResponse)
-        .catchError((dynamic error) {
+        .handleError((dynamic error, StackTrace stackTrace) {
       bloc.silentErrors
-          ? silentErrorHandler(error)
-          : twitterApiErrorHandler(error);
-      return null;
+          ? silentErrorHandler(error, stackTrace)
+          : twitterApiErrorHandler(error, stackTrace);
     });
 
     if (users != null) {
@@ -72,7 +71,7 @@ class SearchUsers extends LoadPaginatedData {
         // assume last page requested
         bloc.cursor = 0;
       } else {
-        bloc.cursor++;
+        bloc.cursor = bloc.cursor! + 1;
       }
 
       bloc.users.addAll(users);
@@ -91,8 +90,8 @@ class ClearSearchedUsers extends PaginatedEvent {
 
   @override
   Stream<PaginatedState> applyAsync({
-    PaginatedState currentState,
-    PaginatedBloc bloc,
+    required PaginatedState currentState,
+    required PaginatedBloc bloc,
   }) async* {
     final UserSearchBloc userSearchBloc = bloc as UserSearchBloc;
 

@@ -26,7 +26,7 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RouteSettings route = ModalRoute.of(context).settings;
+    final RouteSettings route = ModalRoute.of(context)!.settings;
     final Locale locale = Localizations.localeOf(context);
     final String translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
@@ -42,7 +42,7 @@ class TweetCardContent extends StatelessWidget {
               height: defaultSmallPaddingValue,
             ),
           ],
-          TweetAuthorRow(tweet.userData, createdAt: tweet.createdAt),
+          TweetAuthorRow(tweet.userData!, createdAt: tweet.createdAt),
         ],
         end: TweetActionsButton(tweet, padding: DefaultEdgeInsets.all()),
       ),
@@ -64,7 +64,7 @@ class TweetCardContent extends StatelessWidget {
           ),
         ),
       if (tweet.hasMedia) TweetMedia(tweet),
-      if (tweet.hasQuote) TweetQuoteContent(tweet.quote),
+      if (tweet.hasQuote) TweetQuoteContent(tweet.quote!),
       TweetActionRow(tweet),
     ];
 

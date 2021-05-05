@@ -7,11 +7,11 @@ abstract class PostTweetState extends Equatable {
     this.additionalInfo,
   });
 
-  final String message;
-  final String additionalInfo;
+  final String? message;
+  final String? additionalInfo;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         message,
         additionalInfo,
       ];
@@ -47,15 +47,15 @@ class ConvertingTweetVideo extends PostTweetState {
 
 class UploadingTweetMedia extends PostTweetState {
   UploadingTweetMedia({
-    @required int index,
-    @required bool multiple,
-    @required MediaType type,
+    required int index,
+    required bool multiple,
+    required MediaType? type,
   }) : super(
           message: _messageFromType(type, index, multiple),
           additionalInfo: 'this may take a moment',
         );
 
-  static String _messageFromType(MediaType type, int index, bool multiple) {
+  static String _messageFromType(MediaType? type, int index, bool multiple) {
     switch (type) {
       case MediaType.image:
         return multiple
@@ -73,9 +73,9 @@ class UploadingTweetMedia extends PostTweetState {
 
 class TweetMediaSuccessfullyUploaded extends PostTweetState {
   const TweetMediaSuccessfullyUploaded({
-    @required String previousMessage,
-    @required String previousAdditionalInfo,
-    @required this.mediaIds,
+    required String? previousMessage,
+    required String? previousAdditionalInfo,
+    required this.mediaIds,
   }) : super(
           message: previousMessage,
           additionalInfo: previousAdditionalInfo,
@@ -84,7 +84,7 @@ class TweetMediaSuccessfullyUploaded extends PostTweetState {
   final List<String> mediaIds;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         ...super.props,
         mediaIds,
       ];
@@ -99,7 +99,7 @@ class PostingTweet extends PostTweetState {
 
 class TweetSuccessfullyPosted extends PostTweetState {
   const TweetSuccessfullyPosted({
-    @required this.tweet,
+    required this.tweet,
   }) : super(
           message: 'tweet successfully sent!',
         );
@@ -107,7 +107,7 @@ class TweetSuccessfullyPosted extends PostTweetState {
   final TweetData tweet;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         ...super.props,
         tweet,
       ];
@@ -115,8 +115,8 @@ class TweetSuccessfullyPosted extends PostTweetState {
 
 abstract class PostTweetErrorState extends PostTweetState {
   const PostTweetErrorState({
-    String message,
-    String additionalInfo,
+    String? message,
+    String? additionalInfo,
   }) : super(
           message: message,
           additionalInfo: additionalInfo,
@@ -140,7 +140,7 @@ class UploadingTweetMediaError extends PostTweetErrorState {
 
 class PostingTweetError extends PostTweetErrorState {
   const PostingTweetError({
-    String errorMessage,
+    String? errorMessage,
   }) : super(
           message: 'error sending tweet',
           additionalInfo: errorMessage != null

@@ -20,7 +20,7 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
-    @required this.themeBloc,
+    required this.themeBloc,
   }) : super(UnauthenticatedState());
 
   final TwitterApi twitterApi = app<TwitterApi>();
@@ -32,12 +32,12 @@ class AuthenticationBloc
   final ThemeBloc themeBloc;
 
   /// Used to authenticate with Twitter through a web view.
-  TwitterAuth twitterWebviewAuth;
+  TwitterAuth? twitterWebviewAuth;
 
   /// Contains the user id, token & secret for the current twitter session.
   ///
   /// If the user is not authenticated, [twitterAuthSession] will be `null`.
-  TwitterAuthSession twitterAuthSession;
+  TwitterAuthSession? twitterAuthSession;
 
   /// Completes with either `true` or `false` whether the user has an active
   /// twitter session after initialization.
@@ -46,7 +46,7 @@ class AuthenticationBloc
   /// The [UserData] of the authenticated user.
   ///
   /// `null` if the user is not authenticated.
-  UserData authenticatedUser;
+  UserData? authenticatedUser;
 
   static AuthenticationBloc of(BuildContext context) =>
       context.watch<AuthenticationBloc>();

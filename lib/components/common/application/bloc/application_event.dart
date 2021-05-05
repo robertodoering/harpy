@@ -5,8 +5,8 @@ abstract class ApplicationEvent {
   const ApplicationEvent();
 
   Stream<ApplicationState> applyAsync({
-    ApplicationState currentState,
-    ApplicationBloc bloc,
+    ApplicationState? currentState,
+    ApplicationBloc? bloc,
   });
 }
 
@@ -16,9 +16,10 @@ abstract class ApplicationEvent {
 class InitializeEvent extends ApplicationEvent {
   InitializeEvent();
 
-  final HarpyNavigator harpyNavigator = app<HarpyNavigator>();
-  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
-  final HarpyInfo harpyInfo = app<HarpyInfo>();
+  final HarpyNavigator? harpyNavigator = app<HarpyNavigator>();
+  final ChangelogPreferences? changelogPreferences =
+      app<ChangelogPreferences>();
+  final HarpyInfo? harpyInfo = app<HarpyInfo>();
 
   static final Logger _log = Logger('InitializeEvent');
 
@@ -53,7 +54,7 @@ class InitializeEvent extends ApplicationEvent {
   ///
   /// Returns whether the uses is authenticated.
   Future<bool> _userInitialization(
-    ApplicationBloc bloc,
+    ApplicationBloc? bloc,
     AuthenticationBloc authenticationBloc,
   ) async {
     _log.fine('start user initialization');
@@ -70,10 +71,10 @@ class InitializeEvent extends ApplicationEvent {
 
   @override
   Stream<ApplicationState> applyAsync({
-    ApplicationState currentState,
-    ApplicationBloc bloc,
+    ApplicationState? currentState,
+    ApplicationBloc? bloc,
   }) async* {
-    await _commonInitialization(bloc);
+    await _commonInitialization(bloc!);
 
     final bool authenticated =
         await _userInitialization(bloc, bloc.authenticationBloc);
@@ -84,10 +85,10 @@ class InitializeEvent extends ApplicationEvent {
 
     if (authenticated) {
       // navigate to home screen
-      harpyNavigator.pushReplacementNamed(HomeScreen.route);
+      harpyNavigator!.pushReplacementNamed(HomeScreen.route);
     } else {
       // navigate to login screen
-      harpyNavigator.pushReplacementNamed(
+      harpyNavigator!.pushReplacementNamed(
         LoginScreen.route,
         type: RouteType.fade,
       );

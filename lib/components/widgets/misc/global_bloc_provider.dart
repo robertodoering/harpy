@@ -8,7 +8,7 @@ import 'package:harpy/components/components.dart';
 /// These blocs will only be created once.
 class GlobalBlocProvider extends StatelessWidget {
   const GlobalBlocProvider({
-    @required this.child,
+    required this.child,
   });
 
   final Widget child;

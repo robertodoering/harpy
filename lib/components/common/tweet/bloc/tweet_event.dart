@@ -5,8 +5,8 @@ abstract class TweetEvent {
   const TweetEvent();
 
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   });
 
   /// Returns `true` if the error contains any of the following error codes:
@@ -41,22 +41,22 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
     bloc.tweet.retweeted = true;
-    bloc.tweet.retweetCount++;
+    bloc.tweet.retweetCount = bloc.tweet.retweetCount! + 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.retweet(id: bloc.tweet.idStr);
+      await bloc.tweetService.retweet(id: bloc.tweet.idStr!);
       log.fine('retweeted ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.retweeted = false;
-        bloc.tweet.retweetCount--;
+        bloc.tweet.retweetCount = bloc.tweet.retweetCount! - 1;
         log.warning('error retweeting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -71,22 +71,22 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
     bloc.tweet.retweeted = false;
-    bloc.tweet.retweetCount--;
+    bloc.tweet.retweetCount = bloc.tweet.retweetCount! - 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.unretweet(id: bloc.tweet.idStr);
+      await bloc.tweetService.unretweet(id: bloc.tweet.idStr!);
       log.fine('unretweeted ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.retweeted = true;
-        bloc.tweet.retweetCount++;
+        bloc.tweet.retweetCount = bloc.tweet.retweetCount! + 1;
         log.warning('error unretweeting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -101,22 +101,22 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
     bloc.tweet.favorited = true;
-    bloc.tweet.favoriteCount++;
+    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! + 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr);
+      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr!);
       log.fine('favorited ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.favorited = false;
-        bloc.tweet.favoriteCount--;
+        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! - 1;
         log.warning('error favoriting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -130,18 +130,18 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
     this.onDeleted,
   });
 
-  final VoidCallback onDeleted;
+  final VoidCallback? onDeleted;
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    TweetState? currentState,
+    TweetBloc? bloc,
   }) async* {
     log.fine('deleting tweet');
 
-    final Tweet tweet = await bloc.tweetService
-        .destroy(id: bloc.tweet.idStr, trimUser: true)
-        .catchError(silentErrorHandler);
+    final Tweet? tweet = await bloc!.tweetService
+        .destroy(id: bloc.tweet.idStr!, trimUser: true)
+        .handleError(silentErrorHandler);
 
     if (tweet != null) {
       app<MessageService>().show('tweet deleted');
@@ -158,22 +158,22 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
     bloc.tweet.favorited = false;
-    bloc.tweet.favoriteCount--;
+    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! - 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.destroyFavorite(id: bloc.tweet.idStr);
+      await bloc.tweetService.destroyFavorite(id: bloc.tweet.idStr!);
       log.fine('unfavorited ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.favorited = true;
-        bloc.tweet.favoriteCount++;
+        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! + 1;
         log.warning('error unfavoriting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -187,15 +187,15 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
 /// The [Translation] is saved in the [TweetData.translation].
 class TranslateTweet extends TweetEvent {
   const TranslateTweet({
-    @required this.locale,
+    required this.locale,
   });
 
   final Locale locale;
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     HapticFeedback.lightImpact();
 
@@ -216,22 +216,22 @@ class TranslateTweet extends TweetEvent {
             .translate(text: bloc.tweet.fullText, to: translateLanguage)
             .then((Translation translation) =>
                 bloc.tweet.translation = translation)
-            .catchError(silentErrorHandler),
+            .handleError(silentErrorHandler),
 
       // quote translation
       if (quoteTranslatable)
         bloc.translationService
-            .translate(text: bloc.tweet.quote.fullText, to: translateLanguage)
+            .translate(text: bloc.tweet.quote!.fullText, to: translateLanguage)
             .then((Translation translation) =>
-                bloc.tweet.quote.translation = translation)
-            .catchError(silentErrorHandler)
+                bloc.tweet.quote!.translation = translation)
+            .handleError(silentErrorHandler)
     ]);
 
     // show an info when the tweet or quote was unable to be translated
     if (tweetTranslatable && bloc.tweet.translation?.unchanged != false) {
       app<MessageService>().show('tweet not translated');
     } else if (quoteTranslatable &&
-        bloc.tweet.quote.translation?.unchanged != false) {
+        bloc.tweet.quote!.translation?.unchanged != false) {
       app<MessageService>().show('quoted tweet not translated');
     }
 
@@ -241,7 +241,7 @@ class TranslateTweet extends TweetEvent {
 
 abstract class MediaActionEvent extends TweetEvent {
   const MediaActionEvent({
-    @required this.tweet,
+    required this.tweet,
     this.index,
   });
 
@@ -252,17 +252,17 @@ abstract class MediaActionEvent extends TweetEvent {
 
   /// When the tweet media is of type image, the index determines which image
   /// to select.
-  final int index;
+  final int? index;
 
   /// Returns the url of the selected media or `null` if no url exist.
-  String get mediaUrl {
+  String? get mediaUrl {
     if (tweet.hasMedia) {
       if (tweet.images?.isNotEmpty == true) {
-        return tweet.images[index ?? 0]?.baseUrl;
+        return tweet.images![index ?? 0].baseUrl;
       } else if (tweet.gif != null) {
-        return tweet.gif.variants?.first?.url;
+        return tweet.gif!.variants?.first.url;
       } else if (tweet.video != null) {
-        return tweet.video.variants?.first?.url;
+        return tweet.video!.variants?.first.url;
       }
     }
 
@@ -272,7 +272,7 @@ abstract class MediaActionEvent extends TweetEvent {
 
 abstract class TweetActionEvent extends TweetEvent {
   const TweetActionEvent({
-    @required this.tweet,
+    required this.tweet,
   });
 
   /// The selected Tweet.
@@ -283,13 +283,13 @@ abstract class TweetActionEvent extends TweetEvent {
 
 class OpenTweetExternally extends TweetActionEvent {
   const OpenTweetExternally({
-    @required TweetData tweet,
+    required TweetData tweet,
   }) : super(tweet: tweet);
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     launchUrl(tweet.tweetUrl);
   }
@@ -297,13 +297,13 @@ class OpenTweetExternally extends TweetActionEvent {
 
 class CopyTweetText extends TweetActionEvent {
   const CopyTweetText({
-    @required TweetData tweet,
+    required TweetData tweet,
   }) : super(tweet: tweet);
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     Clipboard.setData(ClipboardData(text: tweet.visibleText));
     app<MessageService>().show('copied tweet text');
@@ -312,13 +312,13 @@ class CopyTweetText extends TweetActionEvent {
 
 class ShareTweet extends TweetActionEvent {
   const ShareTweet({
-    @required TweetData tweet,
+    required TweetData tweet,
   }) : super(tweet: tweet);
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState currentState,
-    TweetBloc bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     Share.share(tweet.tweetUrl);
   }

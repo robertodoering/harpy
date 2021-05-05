@@ -15,9 +15,9 @@ class ComposeTweetCard extends StatefulWidget {
 }
 
 class _ComposeTweetCardState extends State<ComposeTweetCard> {
-  ComposeTextController _controller;
-  FocusNode _focusNode;
-  StreamSubscription<bool> _keyboardListener;
+  late FocusNode _focusNode;
+  late StreamSubscription<bool> _keyboardListener;
+  ComposeTextController? _controller;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
     super.dispose();
 
     _keyboardListener.cancel();
-    _controller.dispose();
+    _controller?.dispose();
     _focusNode.dispose();
   }
 
@@ -83,7 +83,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
                     Padding(
                       padding: DefaultEdgeInsets.all(),
                       child: TweetAuthorRow(
-                        authBloc.authenticatedUser,
+                        authBloc.authenticatedUser!,
                         enableUserTap: false,
                       ),
                     ),

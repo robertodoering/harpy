@@ -13,8 +13,8 @@ final Logger _log = Logger('NetworkErrorHandler');
 /// Does nothing with the error except logging it.
 ///
 /// Used when an error can just be ignored.
-void silentErrorHandler(dynamic error) {
-  _log.info('silently ignoring error', error);
+void silentErrorHandler(dynamic error, [StackTrace? stackTrace]) {
+  _log.info('silently ignoring error', error, stackTrace);
 }
 
 /// Handles the [error] from a request.
@@ -23,12 +23,12 @@ void silentErrorHandler(dynamic error) {
 ///
 /// If [fallbackMessage] is not `null`, it is used in place of a generic error
 /// message if the error wasn't handled.
-void twitterApiErrorHandler(dynamic error) {
+void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
   _log.info('handling twitter error', error);
 
-  final MessageService messageService = app<MessageService>();
+  final MessageService? messageService = app<MessageService>();
 
-  String message;
+  String? message;
 
   if (error is Response) {
     // response error (status code != 2xx)
@@ -36,7 +36,7 @@ void twitterApiErrorHandler(dynamic error) {
     switch (error.statusCode) {
       case 429:
         // rate limit reached
-        final Duration limitReset = _limitResetDuration(error);
+        final Duration? limitReset = _limitResetDuration(error);
 
         message = 'rate limit reached\n';
         message += limitReset != null
@@ -62,21 +62,21 @@ void twitterApiErrorHandler(dynamic error) {
     message = 'unable to connect to the twitter servers\n'
         'please try again later';
   } else if (error is Error) {
-    _log.warning('twitter api error not handled', error, error.stackTrace);
+    _log.warning('twitter api error not handled', error, stackTrace);
   } else if (error is Exception) {
-    _log.warning('twitter api exception not handled', error);
+    _log.warning('twitter api exception not handled', error, stackTrace);
   }
 
   message ??= 'An unexpected error occurred';
 
-  messageService.show(message);
+  messageService!.show(message);
 }
 
 /// Gets the duration of how long the request is blocked due to being rate
 /// limited from the twitter api.
-Duration _limitResetDuration(Response response) {
+Duration? _limitResetDuration(Response response) {
   try {
-    final int limitReset = int.parse(response.headers['x-rate-limit-reset']);
+    final int limitReset = int.parse(response.headers['x-rate-limit-reset']!);
 
     return DateTime.fromMillisecondsSinceEpoch(
       limitReset * 1000,
@@ -92,7 +92,7 @@ Duration _limitResetDuration(Response response) {
 /// Example response:
 /// {"errors":[{"code":324,"message":"Duration too long, maximum:30000,
 /// actual:30528 (MediaId: snf:1338982061273714688)"}]}
-String responseErrorMessage(String body) {
+String? responseErrorMessage(String body) {
   try {
     return jsonDecode(body)['errors'][0]['message'];
   } catch (e, st) {

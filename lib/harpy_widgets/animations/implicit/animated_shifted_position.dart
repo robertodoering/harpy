@@ -5,8 +5,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [child].
 class AnimatedShiftedPosition extends ImplicitlyAnimatedWidget {
   const AnimatedShiftedPosition({
-    @required this.child,
-    @required this.shift,
+    required this.child,
+    required this.shift,
     Curve curve = Curves.easeInOut,
     Duration duration = kShortAnimationDuration,
   }) : super(curve: curve, duration: duration);
@@ -21,7 +21,7 @@ class AnimatedShiftedPosition extends ImplicitlyAnimatedWidget {
 
 class _AnimatedRelativePositionState
     extends AnimatedWidgetBaseState<AnimatedShiftedPosition> {
-  Tween<Offset> _offsetTween;
+  Tween<Offset>? _offsetTween;
 
   @override
   void forEachTween(dynamic visitor) {
@@ -34,7 +34,7 @@ class _AnimatedRelativePositionState
 
   @override
   Widget build(BuildContext context) {
-    final Offset offset = _offsetTween.evaluate(animation);
+    final Offset offset = _offsetTween!.evaluate(animation);
 
     return ShiftedPosition(
       shift: offset,

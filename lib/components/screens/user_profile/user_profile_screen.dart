@@ -8,11 +8,11 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// The [screenName] is used to load the user data upon creation.
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
-    @required this.screenName,
+    required this.screenName,
   });
 
   /// The screenName that is used to load the user data.
-  final String screenName;
+  final String? screenName;
 
   static const String route = 'user_profile';
 

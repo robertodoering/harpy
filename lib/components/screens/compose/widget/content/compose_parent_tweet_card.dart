@@ -5,8 +5,8 @@ import 'package:harpy/components/components.dart';
 
 class ComposeParentTweetCard extends StatelessWidget {
   const ComposeParentTweetCard({
-    @required this.parentTweet,
-    @required this.text,
+    required this.parentTweet,
+    required this.text,
   });
 
   final TweetData parentTweet;

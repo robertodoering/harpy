@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
@@ -17,21 +18,20 @@ import 'package:harpy/components/components.dart';
 /// way to differentiate the blocs by their list id.
 class HomeListsProvider extends StatefulWidget {
   const HomeListsProvider({
-    @required this.model,
-    @required this.child,
+    required this.model,
+    required this.child,
   });
 
   final HomeTabModel model;
   final Widget child;
 
   /// Returns the [ListTimelineBloc] for the bloc with the matching [listId].
-  static ListTimelineBloc blocOf(
+  static ListTimelineBloc? blocOf(
     BuildContext context, {
-    @required String listId,
+    required String? listId,
   }) {
-    return _HomeListsBlocsScope.of(context).blocs.firstWhere(
+    return _HomeListsBlocsScope.of(context)!.blocs.firstWhereOrNull(
           (ListTimelineBloc bloc) => bloc.listId == listId,
-          orElse: () => null,
         );
   }
 
@@ -126,15 +126,14 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
 /// Exposes the [_HomeListsBlocsScope.blocs] to the widget tree.
 class _HomeListsBlocsScope extends InheritedWidget {
   const _HomeListsBlocsScope({
-    Key key,
-    @required this.blocs,
-    @required Widget child,
-  })  : assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.blocs,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final List<ListTimelineBloc> blocs;
 
-  static _HomeListsBlocsScope of(BuildContext context) {
+  static _HomeListsBlocsScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_HomeListsBlocsScope>();
   }
 

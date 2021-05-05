@@ -5,13 +5,13 @@ class TimelineFilterPreferences {
 
   /// The json encoded string for the home timeline filter.
   String get homeTimelineFilter =>
-      harpyPrefs.getString('homeTimelineFilter', '', prefix: true);
+      harpyPrefs.getString('homeTimelineFilter', '', prefix: true)!;
   set homeTimelineFilter(String value) =>
       harpyPrefs.setString('homeTimelineFilter', value, prefix: true);
 
   /// The json encoded string for the user timeline filter.
   String get userTimelineFilter =>
-      harpyPrefs.getString('userTimelineFilter', '', prefix: true);
+      harpyPrefs.getString('userTimelineFilter', '', prefix: true)!;
   set userTimelineFilter(String value) =>
       harpyPrefs.setString('userTimelineFilter', value, prefix: true);
 }

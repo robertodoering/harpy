@@ -19,7 +19,7 @@ part 'post_tweet_state.dart';
 class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
   PostTweetBloc(
     String text, {
-    @required this.composeBloc,
+    required this.composeBloc,
   }) : super(const PostTweetInitial()) {
     add(PostTweetEvent(text));
   }
@@ -27,7 +27,7 @@ class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
   final ComposeBloc composeBloc;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
-  final MediaUploadService mediaUploadService = app<MediaUploadService>();
+  final MediaUploadService? mediaUploadService = app<MediaUploadService>();
 
   @override
   Stream<PostTweetState> mapEventToState(

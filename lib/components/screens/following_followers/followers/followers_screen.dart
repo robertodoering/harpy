@@ -5,11 +5,11 @@ import 'package:harpy/components/components.dart';
 /// [userId].
 class FollowersScreen extends StatelessWidget {
   const FollowersScreen({
-    @required this.userId,
+    required this.userId,
   });
 
   /// The [userId] of the user whom to search the followers for.
-  final String userId;
+  final String? userId;
 
   static const String route = 'followers';
 

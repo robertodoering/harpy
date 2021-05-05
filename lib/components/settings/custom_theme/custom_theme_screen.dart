@@ -9,8 +9,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// new custom themes.
 class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({
-    @required this.themeData,
-    @required this.themeId,
+    required this.themeData,
+    required this.themeId,
   });
 
   /// The [HarpyThemeData] for the theme customization.
@@ -19,14 +19,14 @@ class CustomThemeScreen extends StatelessWidget {
   /// currently active theme.
   /// When editing an existing custom theme, this will be set to the custom
   /// theme data.
-  final HarpyThemeData themeData;
+  final HarpyThemeData? themeData;
 
   /// The id of this custom theme, starting at 10 for the first custom theme.
   ///
   /// When creating a new custom theme, this will be the next available id.
   /// When editing an existing custom theme, this will be the id of the custom
   /// theme.
-  final int themeId;
+  final int? themeId;
 
   static const String route = 'custom_theme_screen';
 
@@ -40,7 +40,7 @@ class CustomThemeScreen extends StatelessWidget {
     if (customThemeBloc.canSaveTheme) {
       // ask to discard changes before exiting customization
 
-      final bool discard = await showDialog<bool>(
+      final bool? discard = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => const HarpyDialog(
           title: Text('discard changes?'),
@@ -111,7 +111,7 @@ class CustomThemeScreen extends StatelessWidget {
 
     return BlocProvider<CustomThemeBloc>(
       create: (BuildContext context) => CustomThemeBloc(
-        themeData: HarpyThemeData.from(themeData),
+        themeData: HarpyThemeData.from(themeData!),
         themeId: themeId,
         themeBloc: themeBloc,
       ),

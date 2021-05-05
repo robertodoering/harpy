@@ -7,31 +7,32 @@ typedef OnOpenMediaOverlay = void Function(Widget child);
 class TweetMedia extends StatelessWidget {
   const TweetMedia(this.tweet);
 
-  final TweetData tweet;
+  final TweetData? tweet;
 
   @override
   Widget build(BuildContext context) {
     final TweetBloc bloc = TweetBloc.of(context);
 
     Widget child;
-    double aspectRatio;
+    double? aspectRatio;
 
-    if (tweet.hasImages) {
+    if (tweet!.hasImages) {
       child = TweetImages(
         tweet,
         tweetBloc: bloc,
       );
-    } else if (tweet.hasVideo) {
-      aspectRatio =
-          tweet.video.validAspectRatio ? tweet.video.aspectRatioDouble : 16 / 9;
+    } else if (tweet!.hasVideo) {
+      aspectRatio = tweet!.video!.validAspectRatio
+          ? tweet!.video!.aspectRatioDouble
+          : 16 / 9;
 
       child = TweetVideo(
         tweet,
         tweetBloc: bloc,
       );
-    } else if (tweet.hasGif) {
+    } else if (tweet!.hasGif) {
       aspectRatio =
-          tweet.gif.validAspectRatio ? tweet.gif.aspectRatioDouble : 16 / 9;
+          tweet!.gif!.validAspectRatio ? tweet!.gif!.aspectRatioDouble : 16 / 9;
 
       child = TweetGif(
         tweet,
@@ -42,7 +43,7 @@ class TweetMedia extends StatelessWidget {
     }
 
     return TweetMediaLayout(
-      isImage: tweet.images?.isNotEmpty == true,
+      isImage: tweet!.images?.isNotEmpty == true,
       videoAspectRatio: aspectRatio,
       child: child,
     );

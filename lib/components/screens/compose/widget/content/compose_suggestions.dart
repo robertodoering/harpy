@@ -6,14 +6,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// selection.
 class ComposeTweetSuggestions extends StatefulWidget {
   const ComposeTweetSuggestions({
-    @required this.child,
-    @required this.controller,
-    @required this.selectionRegExp,
-    @required this.onSearch,
+    required this.child,
+    required this.controller,
+    required this.selectionRegExp,
+    required this.onSearch,
   });
 
-  final Widget child;
-  final ComposeTextController controller;
+  final Widget? child;
+  final ComposeTextController? controller;
   final RegExp selectionRegExp;
   final ValueChanged<String> onSearch;
 
@@ -29,8 +29,8 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
   void initState() {
     super.initState();
 
-    widget.controller.selectionRecognizers[widget.selectionRegExp] =
-        (String value) {
+    widget.controller!.selectionRecognizers[widget.selectionRegExp] =
+        (String? value) {
       if (value == null) {
         // selection does not match
         _changeShowSuggestions(false);

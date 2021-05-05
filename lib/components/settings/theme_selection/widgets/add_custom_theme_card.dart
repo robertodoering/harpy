@@ -16,7 +16,7 @@ class AddCustomThemeCard extends StatelessWidget {
     int themeId,
   ) async {
     if (Harpy.isFree) {
-      final bool result = await showDialog<bool>(
+      final bool? result = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => const ProDialog(
           feature: 'theme customization',
@@ -52,7 +52,7 @@ class AddCustomThemeCard extends StatelessWidget {
     final int nextCustomThemeId = themeBloc.customThemes.length + 10;
 
     // only build a trailing icon when using harpy free
-    const Widget trailing =
+    const Widget? trailing =
         Harpy.isFree ? FlareIcon.shiningStar(size: 28) : null;
 
     return Container(

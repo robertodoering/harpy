@@ -9,7 +9,7 @@ class AccentColorSelection extends StatelessWidget {
   final CustomThemeBloc bloc;
 
   Future<void> _changeAccentColor(BuildContext context, ThemeData theme) async {
-    final Color newColor = await showDialog<Color>(
+    final Color? newColor = await showDialog<Color>(
       context: context,
       builder: (BuildContext context) => ColorPickerDialog(
         color: theme.accentColor,

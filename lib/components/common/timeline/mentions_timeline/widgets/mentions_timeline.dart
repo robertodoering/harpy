@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class MentionsTimeline extends StatefulWidget {
   const MentionsTimeline({
-    @required this.indexInTabView,
+    required this.indexInTabView,
   });
 
   final int indexInTabView;
@@ -14,13 +14,13 @@ class MentionsTimeline extends StatefulWidget {
 }
 
 class _MentionsTimelineState extends State<MentionsTimeline> {
-  TabController _controller;
+  late TabController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller = DefaultTabController.of(context)..addListener(_listener);
+    _controller = DefaultTabController.of(context)!..addListener(_listener);
   }
 
   @override

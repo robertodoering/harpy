@@ -8,7 +8,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
 
   Widget _buildGeneralGroup(TweetSearchFilterModel model, ThemeData theme) {
-    final TextStyle style = theme.textTheme.subtitle1.copyWith(fontSize: 14);
+    final TextStyle style = theme.textTheme.subtitle1!.copyWith(fontSize: 14);
 
     return FilterGroup(
       title: 'general',
@@ -23,7 +23,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
               labelStyle: TextStyle(fontSize: 14),
               isDense: true,
               border: OutlineInputBorder(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kDefaultBorderRadius as BorderRadius,
               ),
             ),
             onChanged: model.setTweetAuthor,
@@ -40,7 +40,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
               labelStyle: TextStyle(fontSize: 14),
               isDense: true,
               border: OutlineInputBorder(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kDefaultBorderRadius as BorderRadius,
               ),
             ),
             onChanged: model.setReplyingTo,

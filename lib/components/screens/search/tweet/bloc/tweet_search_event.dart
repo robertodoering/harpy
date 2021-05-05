@@ -4,8 +4,8 @@ abstract class TweetSearchEvent extends Equatable {
   const TweetSearchEvent();
 
   Stream<TweetSearchState> applyAsync({
-    TweetSearchState currentState,
-    TweetSearchBloc bloc,
+    required TweetSearchState currentState,
+    required TweetSearchBloc bloc,
   });
 }
 
@@ -28,22 +28,22 @@ class SearchTweets extends TweetSearchEvent {
   /// The query that the user entered in the search field.
   ///
   /// `null` if the [filter] was used to search tweets.
-  final String customQuery;
+  final String? customQuery;
 
   /// The filter that builds the tweet search query.
   ///
   /// `null` if a [customQuery] was used to search tweets.
-  final TweetSearchFilter filter;
+  final TweetSearchFilter? filter;
 
   static final Logger _log = Logger('SearchTweets');
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         customQuery,
         filter,
       ];
 
-  bool _unchangedQuery(String query, TweetSearchState currentState) {
+  bool _unchangedQuery(String? query, TweetSearchState currentState) {
     if (currentState is TweetSearchResult) {
       return currentState.query == query && currentState.filter == filter;
     } else {
@@ -51,13 +51,13 @@ class SearchTweets extends TweetSearchEvent {
     }
   }
 
-  String _searchQuery() {
-    if (customQuery != null && customQuery.trim().isNotEmpty) {
+  String? _searchQuery() {
+    if (customQuery != null && customQuery!.trim().isNotEmpty) {
       return customQuery;
     } else if (filter != null) {
-      final String filterQuery = filter.buildQuery();
+      final String filterQuery = filter!.buildQuery();
 
-      if (filterQuery != null && filterQuery.trim().isNotEmpty) {
+      if (filterQuery.trim().isNotEmpty) {
         return filterQuery;
       }
     }
@@ -65,13 +65,13 @@ class SearchTweets extends TweetSearchEvent {
     return null;
   }
 
-  String _resultType() {
+  String? _resultType() {
     if (filter != null) {
-      if (filter.resultType == 0) {
+      if (filter!.resultType == 0) {
         return 'mixed';
-      } else if (filter.resultType == 1) {
+      } else if (filter!.resultType == 1) {
         return 'recent';
-      } else if (filter.resultType == 2) {
+      } else if (filter!.resultType == 2) {
         return 'popular';
       }
     }
@@ -85,10 +85,10 @@ class SearchTweets extends TweetSearchEvent {
 
   @override
   Stream<TweetSearchState> applyAsync({
-    TweetSearchState currentState,
-    TweetSearchBloc bloc,
+    required TweetSearchState currentState,
+    required TweetSearchBloc bloc,
   }) async* {
-    final String query = _searchQuery();
+    final String? query = _searchQuery();
 
     if (_unchangedQuery(query, currentState)) {
       _log.fine('search query does not differ from last query');
@@ -100,14 +100,14 @@ class SearchTweets extends TweetSearchEvent {
 
       yield TweetSearchLoading(query: query);
 
-      final List<TweetData> tweets = await bloc.searchService
+      final List<TweetData>? tweets = await bloc.searchService
           .searchTweets(
             q: query,
             count: 100,
             resultType: _resultType(),
           )
-          .then((TweetSearch result) => _transformTweets(result.statuses))
-          .catchError(twitterApiErrorHandler);
+          .then((TweetSearch result) => _transformTweets(result.statuses!))
+          .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
         _log.fine('found ${tweets.length} tweets for query: $query');
@@ -135,8 +135,8 @@ class RetryTweetSearch extends TweetSearchEvent {
 
   @override
   Stream<TweetSearchState> applyAsync({
-    TweetSearchState currentState,
-    TweetSearchBloc bloc,
+    required TweetSearchState currentState,
+    required TweetSearchBloc bloc,
   }) async* {
     if (currentState is TweetSearchFailure) {
       bloc.add(SearchTweets(
@@ -156,8 +156,8 @@ class ClearSearchResult extends TweetSearchEvent {
 
   @override
   Stream<TweetSearchState> applyAsync({
-    TweetSearchState currentState,
-    TweetSearchBloc bloc,
+    required TweetSearchState currentState,
+    required TweetSearchBloc bloc,
   }) async* {
     yield const TweetSearchInitial();
   }

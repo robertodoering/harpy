@@ -29,7 +29,10 @@ class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
     name = data.name ?? '';
 
-    backgroundColors = data.backgroundColors?.map(_colorFromValue)?.toList() ??
+    backgroundColors = data.backgroundColors
+            ?.map(_colorFromValue)
+            .whereType<Color>()
+            .toList() ??
         <Color>[Colors.black, const Color(0xff17233d)];
 
     accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
@@ -59,45 +62,45 @@ class HarpyTheme {
         (min(firstLuminance, secondLuminance) + 0.05);
   }
 
-  String name;
-  List<Color> backgroundColors;
-  Color accentColor;
+  late String name;
+  late List<Color> backgroundColors;
+  late Color accentColor;
 
   /// The average luminance of the [backgroundColors].
-  double backgroundLuminance;
+  late double backgroundLuminance;
 
   /// The average color of the [backgroundColors].
   ///
   /// Used as the background color where only a single color is desired (e.g.
   /// the dialog background or a pop up menu).
-  Color averageBackgroundColor;
+  late Color averageBackgroundColor;
 
   /// The brightness of the theme.
   ///
   /// The brightness is dependent on the [backgroundLuminance] and determines
   /// whether to use white or black foreground colors.
-  Brightness brightness;
+  late Brightness brightness;
 
   /// The error color of the theme.
   ///
   /// Is [Colors.red] if the contrast ratio on the background exceeds
   /// [kTextContrastRatio].
   /// Otherwise the [accentColor] is used as the error color.
-  Color errorColor;
+  late Color errorColor;
 
-  TextTheme textTheme;
-  Color buttonTextColor;
-  Color favoriteColor = Colors.pinkAccent;
-  Color retweetColor = Colors.lightGreenAccent;
-  Color translateColor = Colors.lightBlueAccent;
+  late TextTheme textTheme;
+  late Color buttonTextColor;
+  late Color favoriteColor = Colors.pinkAccent;
+  late Color retweetColor = Colors.lightGreenAccent;
+  late Color translateColor = Colors.lightBlueAccent;
 
   /// The [ThemeData] used by the root [MaterialApp].
-  ThemeData data;
+  late ThemeData data;
 
   CardTheme get _cardTheme {
     final bool performanceMode = app<GeneralPreferences>().performanceMode;
 
-    final Color color = performanceMode
+    final Color? color = performanceMode
         ? Color.lerp(
             averageBackgroundColor,
             accentColor,
@@ -152,8 +155,8 @@ class HarpyTheme {
   /// Reduces the [backgroundColor] to a single color by interpolating the
   /// colors.
   void _setupAverageBackgroundColor() {
-    final Color average = backgroundColors
-        .reduce((Color value, Color element) => Color.lerp(value, element, .5));
+    final Color average = backgroundColors.reduce(
+        (Color value, Color element) => Color.lerp(value, element, .5)!);
 
     averageBackgroundColor = average;
   }
@@ -163,17 +166,17 @@ class HarpyTheme {
   ///
   /// This is used to make sure the color looks good on any colored background.
   void _setupTweetActionColors() {
-    final List<Color> favoriteColors = <Color>[
+    final List<Color?> favoriteColors = <Color?>[
       Colors.pink[300],
       Colors.redAccent[700],
     ];
 
-    final List<Color> retweetColors = <Color>[
+    final List<Color?> retweetColors = <Color?>[
       Colors.lightGreen[100],
       Colors.green[800],
     ];
 
-    final List<Color> translateColors = <Color>[
+    final List<Color?> translateColors = <Color?>[
       Colors.lightBlueAccent[100],
       Colors.indigoAccent[700],
     ];
@@ -183,9 +186,9 @@ class HarpyTheme {
       backgroundLuminance,
     );
 
-    for (Color color in favoriteColors) {
+    for (Color? color in favoriteColors) {
       final double contrast = contrastRatio(
-        color.computeLuminance(),
+        color!.computeLuminance(),
         backgroundLuminance,
       );
 
@@ -200,9 +203,9 @@ class HarpyTheme {
       backgroundLuminance,
     );
 
-    for (Color color in retweetColors) {
+    for (Color? color in retweetColors) {
       final double contrast = contrastRatio(
-        color.computeLuminance(),
+        color!.computeLuminance(),
         backgroundLuminance,
       );
 
@@ -217,9 +220,9 @@ class HarpyTheme {
       backgroundLuminance,
     );
 
-    for (Color color in translateColors) {
+    for (Color? color in translateColors) {
       final double contrast = contrastRatio(
-        color.computeLuminance(),
+        color!.computeLuminance(),
         backgroundLuminance,
       );
 
@@ -418,4 +421,4 @@ class HarpyTheme {
   }
 }
 
-Color _colorFromValue(int value) => value != null ? Color(value) : null;
+Color? _colorFromValue(int? value) => value != null ? Color(value) : null;

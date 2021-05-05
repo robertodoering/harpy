@@ -11,10 +11,12 @@ TimelineFilter _$TimelineFilterFromJson(Map<String, dynamic> json) {
     includesImages: json['includesImages'] as bool,
     includesGif: json['includesGif'] as bool,
     includesVideo: json['includesVideo'] as bool,
-    excludesHashtags:
-        (json['excludesHashtags'] as List)?.map((e) => e as String)?.toList(),
-    excludesPhrases:
-        (json['excludesPhrases'] as List)?.map((e) => e as String)?.toList(),
+    excludesHashtags: (json['excludesHashtags'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
+    excludesPhrases: (json['excludesPhrases'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     excludesReplies: json['excludesReplies'] as bool,
     excludesRetweets: json['excludesRetweets'] as bool,
   );

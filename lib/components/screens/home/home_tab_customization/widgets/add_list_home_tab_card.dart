@@ -48,7 +48,7 @@ class AddListHomeTabCard extends StatelessWidget {
                     model.addList(list: list);
                   },
                 ),
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kDefaultBorderRadius as BorderRadius?,
         child: Row(
           children: <Widget>[
             icon,

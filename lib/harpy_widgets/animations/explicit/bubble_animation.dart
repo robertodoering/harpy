@@ -7,8 +7,8 @@ import 'package:like_button/src/painter/circle_painter.dart';
 /// [package:like_button](https://pub.dev/packages/like_button) package.
 class BubbleAnimation extends StatefulWidget {
   const BubbleAnimation({
-    @required this.builder,
-    @required this.controller,
+    required this.builder,
+    required this.controller,
     this.size = 20,
     this.bubblesColor,
     this.circleColor,
@@ -16,21 +16,21 @@ class BubbleAnimation extends StatefulWidget {
         circleSize = size * .8;
 
   final WidgetBuilder builder;
-  final AnimationController controller;
+  final AnimationController? controller;
   final double size;
   final double bubbleSize;
   final double circleSize;
-  final BubblesColor bubblesColor;
-  final CircleColor circleColor;
+  final BubblesColor? bubblesColor;
+  final CircleColor? circleColor;
 
   @override
   _BubbleAnimationState createState() => _BubbleAnimationState();
 }
 
 class _BubbleAnimationState extends State<BubbleAnimation> {
-  Animation<double> _outerCircleAnimation;
-  Animation<double> _innerCircleAnimation;
-  Animation<double> _bubbleAnimation;
+  late Animation<double> _outerCircleAnimation;
+  late Animation<double> _innerCircleAnimation;
+  late Animation<double> _bubbleAnimation;
 
   @override
   void initState() {
@@ -38,21 +38,21 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
 
     _outerCircleAnimation = Tween<double>(begin: .1, end: 1).animate(
       CurvedAnimation(
-        parent: widget.controller,
+        parent: widget.controller!,
         curve: const Interval(0, .3, curve: Curves.ease),
       ),
     );
 
     _innerCircleAnimation = Tween<double>(begin: .2, end: 1).animate(
       CurvedAnimation(
-        parent: widget.controller,
+        parent: widget.controller!,
         curve: const Interval(.2, .5, curve: Curves.ease),
       ),
     );
 
     _bubbleAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
-        parent: widget.controller,
+        parent: widget.controller!,
         curve: const Interval(.1, 1, curve: Curves.decelerate),
       ),
     );
@@ -61,8 +61,8 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: widget.controller,
-      builder: (BuildContext context, Widget child) => Stack(
+      animation: widget.controller!,
+      builder: (BuildContext context, Widget? child) => Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
           // bubbles
@@ -73,10 +73,10 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
               size: Size(widget.bubbleSize, widget.bubbleSize),
               painter: BubblesPainter(
                 currentProgress: _bubbleAnimation.value,
-                color1: widget.bubblesColor.dotPrimaryColor,
-                color2: widget.bubblesColor.dotSecondaryColor,
-                color3: widget.bubblesColor.dotThirdColorReal,
-                color4: widget.bubblesColor.dotLastColorReal,
+                color1: widget.bubblesColor!.dotPrimaryColor,
+                color2: widget.bubblesColor!.dotSecondaryColor,
+                color3: widget.bubblesColor!.dotThirdColorReal,
+                color4: widget.bubblesColor!.dotLastColorReal,
               ),
             ),
           ),
@@ -90,7 +90,7 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
               painter: CirclePainter(
                 innerCircleRadiusProgress: _innerCircleAnimation.value,
                 outerCircleRadiusProgress: _outerCircleAnimation.value,
-                circleColor: widget.circleColor,
+                circleColor: widget.circleColor!,
               ),
             ),
           ),

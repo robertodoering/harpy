@@ -17,13 +17,13 @@ class TweetList extends StatelessWidget {
     this.beginSlivers = const <Widget>[],
     this.endSlivers = const <Widget>[],
     this.enableScroll = true,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   /// The list of tweets to be displayed in this list.
   final List<TweetData> tweets;
 
-  final ScrollController controller;
+  final ScrollController? controller;
 
   final TweetBuilder tweetBuilder;
 

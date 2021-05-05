@@ -3,9 +3,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class TweetTopRow extends StatelessWidget {
   const TweetTopRow({
-    @required this.begin,
-    @required this.beginPadding,
-    @required this.end,
+    required this.begin,
+    required this.beginPadding,
+    required this.end,
   });
 
   final List<Widget> begin;

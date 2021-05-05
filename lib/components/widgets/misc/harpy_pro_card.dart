@@ -7,7 +7,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HarpyProCard extends StatelessWidget {
   const HarpyProCard({
-    @required this.children,
+    required this.children,
   });
 
   final List<Widget> children;
@@ -16,7 +16,7 @@ class HarpyProCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final TextStyle headline = theme.textTheme.headline6.copyWith(
+    final TextStyle headline = theme.textTheme.headline6!.copyWith(
       fontWeight: FontWeight.normal,
       color: Colors.white,
       shadows: <Shadow>[
@@ -28,7 +28,7 @@ class HarpyProCard extends StatelessWidget {
       ],
     );
 
-    final TextStyle textStyle = theme.textTheme.subtitle2.copyWith(
+    final TextStyle textStyle = theme.textTheme.subtitle2!.copyWith(
       color: Colors.white,
       shadows: <Shadow>[
         const Shadow(
@@ -45,7 +45,7 @@ class HarpyProCard extends StatelessWidget {
       color: Colors.transparent,
       // clip the container and the custom paint
       child: ClipRRect(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kDefaultBorderRadius as BorderRadius?,
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -64,7 +64,7 @@ class HarpyProCard extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kDefaultBorderRadius as BorderRadius?,
                 onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -81,10 +81,8 @@ class HarpyProCard extends StatelessWidget {
                             Text('harpy pro', style: headline),
                           ],
                         ),
-                        if (children != null) ...<Widget>[
-                          const SizedBox(height: 16),
-                          ...children,
-                        ],
+                        const SizedBox(height: 16),
+                        ...children,
                       ],
                     ),
                   ),
