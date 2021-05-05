@@ -13,7 +13,7 @@ abstract class RepliesEvent with HarpyLogger {
       bloc.lastResult = result;
 
       result.replies.sort((TweetData a, TweetData b) {
-        return b.favoriteCount! - a.favoriteCount!;
+        return b.favoriteCount - a.favoriteCount;
       });
 
       bloc.replies.addAll(result.replies);

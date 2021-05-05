@@ -74,14 +74,14 @@ class TweetAuthorRow extends StatelessWidget {
         children: <Widget>[
           Flexible(
             child: Text(
-              user.name!,
+              user.name,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyText2!.apply(
                 fontSizeDelta: fontSizeDelta,
               ),
             ),
           ),
-          if (user.verified!)
+          if (user.verified)
             Padding(
               padding: const EdgeInsets.only(left: 4),
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: iconSize),

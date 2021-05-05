@@ -47,16 +47,16 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
     HapticFeedback.lightImpact();
 
     bloc.tweet.retweeted = true;
-    bloc.tweet.retweetCount = bloc.tweet.retweetCount! + 1;
+    bloc.tweet.retweetCount = bloc.tweet.retweetCount + 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.retweet(id: bloc.tweet.idStr!);
+      await bloc.tweetService.retweet(id: bloc.tweet.idStr);
       log.fine('retweeted ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.retweeted = false;
-        bloc.tweet.retweetCount = bloc.tweet.retweetCount! - 1;
+        bloc.tweet.retweetCount = bloc.tweet.retweetCount - 1;
         log.warning('error retweeting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -77,16 +77,16 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
     HapticFeedback.lightImpact();
 
     bloc.tweet.retweeted = false;
-    bloc.tweet.retweetCount = bloc.tweet.retweetCount! - 1;
+    bloc.tweet.retweetCount = bloc.tweet.retweetCount - 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.unretweet(id: bloc.tweet.idStr!);
+      await bloc.tweetService.unretweet(id: bloc.tweet.idStr);
       log.fine('unretweeted ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.retweeted = true;
-        bloc.tweet.retweetCount = bloc.tweet.retweetCount! + 1;
+        bloc.tweet.retweetCount = bloc.tweet.retweetCount + 1;
         log.warning('error unretweeting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -107,16 +107,16 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
     HapticFeedback.lightImpact();
 
     bloc.tweet.favorited = true;
-    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! + 1;
+    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount + 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr!);
+      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr);
       log.fine('favorited ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.favorited = false;
-        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! - 1;
+        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount - 1;
         log.warning('error favoriting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -140,7 +140,7 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
     log.fine('deleting tweet');
 
     final Tweet? tweet = await bloc!.tweetService
-        .destroy(id: bloc.tweet.idStr!, trimUser: true)
+        .destroy(id: bloc.tweet.idStr, trimUser: true)
         .handleError(silentErrorHandler);
 
     if (tweet != null) {
@@ -164,16 +164,16 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
     HapticFeedback.lightImpact();
 
     bloc.tweet.favorited = false;
-    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! - 1;
+    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount - 1;
     yield UpdatedTweetState();
 
     try {
-      await bloc.tweetService.destroyFavorite(id: bloc.tweet.idStr!);
+      await bloc.tweetService.destroyFavorite(id: bloc.tweet.idStr);
       log.fine('unfavorited ${bloc.tweet.idStr}');
     } catch (e, st) {
       if (!actionPerformed(e)) {
         bloc.tweet.favorited = true;
-        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount! + 1;
+        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount + 1;
         log.warning('error unfavoriting ${bloc.tweet.idStr}', e, st);
         twitterApiErrorHandler(e);
         yield UpdatedTweetState();
@@ -260,9 +260,9 @@ abstract class MediaActionEvent extends TweetEvent {
       if (tweet.images?.isNotEmpty == true) {
         return tweet.images![index ?? 0].baseUrl;
       } else if (tweet.gif != null) {
-        return tweet.gif!.variants?.first.url;
+        return tweet.gif!.variants.first.url;
       } else if (tweet.video != null) {
-        return tweet.video!.variants?.first.url;
+        return tweet.video!.variants.first.url;
       }
     }
 

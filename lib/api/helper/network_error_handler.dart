@@ -26,7 +26,7 @@ void silentErrorHandler(dynamic error, [StackTrace? stackTrace]) {
 void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
   _log.info('handling twitter error', error);
 
-  final MessageService? messageService = app<MessageService>();
+  final MessageService messageService = app<MessageService>();
 
   String? message;
 
@@ -69,7 +69,7 @@ void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
 
   message ??= 'An unexpected error occurred';
 
-  messageService!.show(message);
+  messageService.show(message);
 }
 
 /// Gets the duration of how long the request is blocked due to being rate

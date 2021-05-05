@@ -12,13 +12,13 @@ abstract class MediaData {
 /// The image data for a [TweetData].
 class ImageData extends MediaData {
   ImageData.fromMedia(Media media) {
-    baseUrl = media.mediaUrlHttps;
+    baseUrl = media.mediaUrlHttps ?? '';
   }
 
   ImageData.fromImageUrl(this.baseUrl);
 
   /// The base url for the image.
-  String? baseUrl;
+  late String baseUrl;
 
   String get thumb => '$baseUrl?name=thumb&format=jpg';
   String get small => '$baseUrl?name=small&format=jpg';
@@ -41,7 +41,7 @@ class ImageData extends MediaData {
 /// The video (and animated gif) data for a [TweetData].
 class VideoData extends MediaData {
   VideoData.fromMedia(Media media) {
-    aspectRatio = media.videoInfo!.aspectRatio;
+    aspectRatio = media.videoInfo!.aspectRatio ?? <int>[];
 
     // removes variants that does not have a bitrate (content type:
     // 'application/x-mpegURL') and then sorts them by the bitrate descending
@@ -51,26 +51,26 @@ class VideoData extends MediaData {
         .toList()
           ..sort((Variant a, Variant b) => b.bitrate!.compareTo(a.bitrate!));
 
-    thumbnail = ImageData.fromImageUrl(media.mediaUrlHttps);
+    thumbnail = ImageData.fromImageUrl(media.mediaUrlHttps ?? '');
   }
 
   /// The aspect ratio of the video.
-  List<int>? aspectRatio;
+  late List<int> aspectRatio;
 
   /// The video variants sorted by their quality (best quality first).
-  List<Variant>? variants;
+  late List<Variant> variants;
 
   /// The url for a thumbnail image of the video.
-  ImageData? thumbnail;
+  late ImageData thumbnail;
 
   /// Returns the appropriate thumbnail url.
-  String? get thumbnailUrl => thumbnail?.appropriateUrl;
+  String? get thumbnailUrl => thumbnail.appropriateUrl;
 
   /// Whether this video has valid aspect ratio information.
-  bool get validAspectRatio => aspectRatio?.length == 2;
+  bool get validAspectRatio => aspectRatio.length == 2;
 
   /// The [aspectRatio] as a double.
-  double get aspectRatioDouble => aspectRatio![0] / aspectRatio![1];
+  double get aspectRatioDouble => aspectRatio[0] / aspectRatio[1];
 
   /// The video url for videos (and gifs) shown in the app.
   ///
@@ -84,8 +84,8 @@ class VideoData extends MediaData {
   /// The url of the variant with the best quality.
   @override
   String? get bestUrl {
-    if (variants?.isNotEmpty == true) {
-      return variants!.first.url;
+    if (variants.isNotEmpty) {
+      return variants.first.url;
     } else {
       return '';
     }

@@ -37,10 +37,12 @@ class TranslationService {
         .then(_transformResponse);
   }
 
-  http.Response _validateResponse(http.Response response) {
-    return response.statusCode >= 200 && response.statusCode < 300
-        ? response
-        : Future<dynamic>.error(response) as http.Response;
+  Future<http.Response> _validateResponse(http.Response response) async {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return response;
+    } else {
+      return Future<http.Response>.error(response);
+    }
   }
 
   Translation _transformResponse(http.Response response) {

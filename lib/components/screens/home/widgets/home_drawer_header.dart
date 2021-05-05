@@ -31,7 +31,7 @@ class HomeDrawerHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user.name!,
+                  user.name,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),

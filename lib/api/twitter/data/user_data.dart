@@ -4,37 +4,33 @@ import 'package:harpy/components/components.dart';
 
 /// The user data for [TweetData].
 class UserData {
-  UserData.fromUser(User? user) {
-    if (user == null) {
-      return;
-    }
-
-    idStr = user.idStr;
-    name = user.name;
-    screenName = user.screenName;
+  UserData.fromUser(User user) {
+    idStr = user.idStr ?? '';
+    name = user.name ?? '';
+    screenName = user.screenName ?? '';
     location = user.location;
     entities = user.entities;
     description = user.description;
-    verified = user.verified;
-    followersCount = user.followersCount;
-    friendsCount = user.friendsCount;
+    verified = user.verified ?? false;
+    followersCount = user.followersCount ?? 0;
+    friendsCount = user.friendsCount ?? 0;
     createdAt = user.createdAt;
     profileBannerUrl = user.profileBannerUrl;
     profileImageUrlHttps = user.profileImageUrlHttps;
   }
 
   /// The string representation of the unique identifier for this User.
-  String? idStr;
+  late String idStr;
 
   /// The name of the user, as they’ve defined it. Not necessarily a person’s
   /// name. Typically capped at 50 characters, but subject to change.
-  String? name;
+  late String name;
 
   /// The screen name, handle, or alias that this user identifies themselves
   /// with. [screen_names] are unique but subject to change. Use id_str as a
   /// user identifier whenever possible. Typically a maximum of 15 characters
   /// long, but some historical accounts may exist with longer names.
-  String? screenName;
+  late String screenName;
 
   /// Nullable. The user-defined location for this account’s profile. Not
   /// necessarily a location, nor machine-parseable. This field will
@@ -49,16 +45,16 @@ class UserData {
   String? description;
 
   /// When `true`, indicates that the user has a verified account.
-  bool? verified;
+  late bool verified;
 
   /// The number of followers this account currently has. Under certain
   /// conditions of duress, this field will temporarily indicate `0`.
-  int? followersCount;
+  late int followersCount;
 
   /// The number of users this account is following (AKA their “followings”).
   /// Under certain conditions of duress, this field will temporarily indicate
   /// `0`.
-  int? friendsCount;
+  late int friendsCount;
 
   /// The UTC datetime that the user account was created on Twitter.
   DateTime? createdAt;

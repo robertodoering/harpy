@@ -31,7 +31,7 @@ class UserCard extends StatelessWidget {
             imageUrl: user.profileImageUrlHttps!,
           ),
           title: Text(
-            user.name!,
+            user.name,
             softWrap: false,
             overflow: TextOverflow.fade,
           ),

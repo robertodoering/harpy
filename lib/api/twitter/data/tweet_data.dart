@@ -8,21 +8,17 @@ import 'package:harpy/components/components.dart';
 /// Allows for custom data to be stored compared to the Twitter returned [Tweet]
 /// object.
 class TweetData {
-  TweetData.fromTweet(Tweet? tweet) {
-    if (tweet == null) {
-      return;
-    }
+  TweetData.fromTweet(Tweet tweet) {
+    originalIdStr = tweet.idStr ?? '';
 
-    originalIdStr = tweet.idStr;
-
-    if (tweet.retweetedStatus != null) {
+    if (tweet.retweetedStatus != null && tweet.user != null) {
       retweetUserName = tweet.user!.name;
       retweetScreenName = tweet.user!.screenName;
-      tweet = tweet.retweetedStatus;
+      tweet = tweet.retweetedStatus!;
     }
 
-    if (tweet!.quotedStatus != null) {
-      quote = TweetData.fromTweet(tweet.quotedStatus);
+    if (tweet.quotedStatus != null) {
+      quote = TweetData.fromTweet(tweet.quotedStatus!);
       quotedStatusUrl = tweet.quotedStatusPermalink?.url;
     }
 
@@ -40,16 +36,16 @@ class TweetData {
     }
 
     createdAt = tweet.createdAt;
-    idStr = tweet.idStr;
-    inReplyToStatusIdStr = tweet.inReplyToStatusIdStr;
+    idStr = tweet.idStr ?? '';
+    inReplyToStatusIdStr = tweet.inReplyToStatusIdStr ?? '';
     fullText = tweet.fullText;
-    userData = UserData.fromUser(tweet.user);
-    retweetCount = tweet.retweetCount;
-    favoriteCount = tweet.favoriteCount;
+    userData = tweet.user != null ? UserData.fromUser(tweet.user!) : null;
+    retweetCount = tweet.retweetCount ?? 0;
+    favoriteCount = tweet.favoriteCount ?? 0;
     entities = tweet.entities;
-    retweeted = tweet.retweeted;
-    favorited = tweet.favorited;
-    lang = tweet.lang;
+    retweeted = tweet.retweeted ?? false;
+    favorited = tweet.favorited ?? false;
+    lang = tweet.lang ?? 'und';
     hasText = visibleText.isNotEmpty;
   }
 
@@ -57,14 +53,14 @@ class TweetData {
   DateTime? createdAt;
 
   /// The string representation of the unique identifier for this Tweet.
-  String? idStr;
+  late String idStr;
 
   /// The string representation of the unique identifier for this Tweet.
   ///
   /// If this tweet is a retweet, this will be the id of the retweet while
   /// [idStr] is the id of the retweeted tweet.
   /// Otherwise this will be equal to [idStr].
-  String? originalIdStr;
+  late String originalIdStr;
 
   /// If the represented Tweet is a reply, this field will contain the string
   /// representation of the original Tweet’s ID.
@@ -74,14 +70,14 @@ class TweetData {
   String? fullText;
 
   /// The user who posted this Tweet.
-  UserData? userData;
+  late UserData? userData;
 
   /// Number of times this Tweet has been retweeted.
-  int? retweetCount;
+  late int retweetCount;
 
   /// Indicates approximately how many times this Tweet has been liked by
   /// Twitter users.
-  int? favoriteCount;
+  late int favoriteCount;
 
   /// Entities which have been parsed out of the text of the Tweet.
   Entities? entities;
@@ -115,16 +111,16 @@ class TweetData {
   String? quotedStatusUrl;
 
   /// Indicates whether this Tweet has been liked by the authenticating user.
-  bool? favorited;
+  late bool favorited;
 
   /// Indicates whether this Tweet has been Retweeted by the authenticating
   /// user.
-  bool? retweeted;
+  late bool retweeted;
 
   /// Indicates a BCP 47 language identifier corresponding to the
   /// machine-detected language of the Tweet text, or `und` if no language could
   /// be detected.
-  String? lang;
+  late String lang;
 
   /// A list of replies to this tweet.
   List<TweetData> replies = <TweetData>[];
@@ -200,7 +196,7 @@ class TweetData {
   /// (undefined) and not the target translation language (as set via the
   /// language preferences or the device language by default)
   bool translatable(String translateLanguage) =>
-      hasText && lang != 'und' && !translateLanguage.startsWith(lang!);
+      hasText && lang != 'und' && !translateLanguage.startsWith(lang);
 
   /// Whether the quote of this tweet can be translated, if one exists.
   bool quoteTranslatable(String translateLanguage) =>

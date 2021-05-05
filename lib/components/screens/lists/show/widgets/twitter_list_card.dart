@@ -20,7 +20,7 @@ class TwitterListCard extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Text(
-            list.name!,
+            list.name,
             style: theme.textTheme.subtitle2,
             softWrap: false,
             overflow: TextOverflow.fade,
@@ -49,13 +49,13 @@ class TwitterListCard extends StatelessWidget {
         HarpyCircleAvatar(
           // use the normal sized profile image instead of the bigger one for
           // the small circle avatar
-          imageUrl: list.user.profileImageUrlHttps!,
+          imageUrl: list.user!.profileImageUrlHttps!,
           radius: 8,
         ),
         defaultSmallHorizontalSpacer,
         Flexible(
           child: Text(
-            '${list.user.name}',
+            '${list.user!.name}',
             style: theme.textTheme.bodyText1,
             softWrap: false,
             overflow: TextOverflow.fade,
@@ -63,7 +63,7 @@ class TwitterListCard extends StatelessWidget {
         ),
         defaultSmallHorizontalSpacer,
         Text(
-          '@${list.user.screenName}',
+          '@${list.user!.screenName}',
           style: theme.textTheme.bodyText1,
           softWrap: false,
           overflow: TextOverflow.fade,
@@ -90,7 +90,7 @@ class TwitterListCard extends StatelessWidget {
                 _buildTitle(theme),
                 if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,
-                _buildUserRow(theme),
+                if (list.user != null) _buildUserRow(theme),
               ],
             ),
           ),

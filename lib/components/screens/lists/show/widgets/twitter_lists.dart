@@ -20,7 +20,7 @@ class TwitterLists extends StatelessWidget {
 
       return TwitterListCard(
         list,
-        key: Key(list.idStr!),
+        key: Key(list.idStr),
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
             : () => app<HarpyNavigator>().pushListTimelineScreen(

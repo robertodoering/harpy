@@ -75,7 +75,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: widget.bloc.tweet.retweeted!,
+      active: widget.bloc.tweet.retweeted,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: TextStyle(

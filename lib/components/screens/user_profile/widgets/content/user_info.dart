@@ -85,7 +85,7 @@ class UserProfileInfo extends StatelessWidget {
       TextSpan(
         children: <InlineSpan>[
           TextSpan(text: bloc.user!.name),
-          if (bloc.user!.verified!) ...<InlineSpan>[
+          if (bloc.user!.verified) ...<InlineSpan>[
             const TextSpan(text: ' '),
             const WidgetSpan(
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),

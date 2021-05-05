@@ -18,7 +18,7 @@ class FavoriteButton extends StatelessWidget {
     final HarpyTheme harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: bloc.tweet.favorited!,
+      active: bloc.tweet.favorited,
       padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: TextStyle(
