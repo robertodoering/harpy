@@ -68,7 +68,7 @@ void defaultOnUrlLongPress(BuildContext context, Url url) {
 /// The default behavior when a [Hashtag] inside of a [TwitterText] is tapped.
 void defaultOnHashtagTap(BuildContext context, Hashtag hashtag) {
   if (hashtag.text != null && hashtag.text!.trim().isNotEmpty) {
-    final String searchQuery = '#${hashtag.text}';
+    final searchQuery = '#${hashtag.text}';
 
     if (ModalRoute.of(context)!.settings.name == TweetSearchScreen.route) {
       // already in tweet search
@@ -160,15 +160,15 @@ class _TwitterTextState extends State<TwitterText> {
   void initState() {
     super.initState();
 
-    final List<TwitterTextEntity> twitterTextEntities = _initializeEntities(
+    final twitterTextEntities = _initializeEntities(
       widget.text,
       widget.entities,
     );
 
-    int textStart = 0;
+    var textStart = 0;
 
-    for (TwitterTextEntity entity in twitterTextEntities) {
-      final int textEnd = entity.startIndex;
+    for (final entity in twitterTextEntities) {
+      final textEnd = entity.startIndex;
 
       _addTextSpan(textStart, textEnd);
       _addEntityTextSpan(entity);
@@ -186,7 +186,7 @@ class _TwitterTextState extends State<TwitterText> {
   /// with only one wrapped whitespace character.
   void _addTextSpan(int start, int end, {bool trimEnd = false}) {
     if (start < end && end <= widget.text!.length) {
-      final String text = parseHtmlEntities(
+      final text = parseHtmlEntities(
         trimOne(
           widget.text!.substring(start, end),
           start: false,
@@ -258,7 +258,7 @@ class _TwitterTextState extends State<TwitterText> {
 
   @override
   void dispose() {
-    for (GestureRecognizer recognizer in _gestureRecognizer) {
+    for (final recognizer in _gestureRecognizer) {
       recognizer.dispose();
     }
 
@@ -267,23 +267,25 @@ class _TwitterTextState extends State<TwitterText> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final TextStyle entityStyle = widget.entityStyle ??
+    final entityStyle = widget.entityStyle ??
         TextStyle(
           fontWeight: FontWeight.bold,
           color: theme.accentColor,
         );
 
     return Text.rich(
-      TextSpan(children: <TextSpan>[
-        for (TwitterTextSpan textSpan in _textSpans)
-          TextSpan(
-            text: textSpan.text,
-            recognizer: textSpan.recognizer,
-            style: textSpan.entity ? entityStyle : null,
-          )
-      ]),
+      TextSpan(
+        children: <TextSpan>[
+          for (TwitterTextSpan textSpan in _textSpans)
+            TextSpan(
+              text: textSpan.text,
+              recognizer: textSpan.recognizer,
+              style: textSpan.entity ? entityStyle : null,
+            )
+        ],
+      ),
       style: widget.style,
       maxLines: widget.maxLines,
       overflow: widget.overflow,
@@ -300,13 +302,13 @@ class _TwitterTextState extends State<TwitterText> {
 /// differently in dart.
 /// Therefore we use [_findIndices] to find the entity indices ourselves.
 List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
-  final List<TwitterTextEntity> twitterTextEntities = <TwitterTextEntity>[];
+  final twitterTextEntities = <TwitterTextEntity>[];
 
   // hashtags
-  int indexStart = 0;
-  for (Hashtag hashtag in entities?.hashtags ?? <Hashtag>[]) {
+  var indexStart = 0;
+  for (final hashtag in entities?.hashtags ?? <Hashtag>[]) {
     // Look for the indices of our hashtag entity
-    List<int>? indices = _findIndices(
+    var indices = _findIndices(
       text!,
       '#${hashtag.text}',
       indexStart,
@@ -327,8 +329,8 @@ List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
 
   // urls
   indexStart = 0;
-  for (Url url in entities?.urls ?? <Url>[]) {
-    final List<int>? indices = _findIndices(text!, url.url!, indexStart);
+  for (final url in entities?.urls ?? <Url>[]) {
+    final indices = _findIndices(text!, url.url!, indexStart);
     indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, url), twitterTextEntities);
@@ -336,8 +338,8 @@ List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
 
   // user mentions
   indexStart = 0;
-  for (UserMention userMention in entities?.userMentions ?? <UserMention>[]) {
-    final List<int>? indices = _findIndices(
+  for (final userMention in entities?.userMentions ?? <UserMention>[]) {
+    final indices = _findIndices(
       text!,
       '@${userMention.screenName}',
       indexStart,
@@ -352,8 +354,8 @@ List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
 
   // media
   indexStart = 0;
-  for (Media media in entities?.media ?? <Media>[]) {
-    final List<int>? indices = _findIndices(text!, media.url!, indexStart);
+  for (final media in entities?.media ?? <Media>[]) {
+    final indices = _findIndices(text!, media.url!, indexStart);
     indexStart = indices != null ? indices.last : indexStart;
 
     _addEntity(TwitterTextEntity(indices, media), twitterTextEntities);
@@ -371,13 +373,13 @@ List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
 /// Returns `null` if the [entityText] has not been found in the text.
 List<int>? _findIndices(String text, String entityText, int indexStart) {
   try {
-    final int start = text.toLowerCase().indexOf(
+    final start = text.toLowerCase().indexOf(
           entityText.toLowerCase(),
           indexStart,
         );
 
     if (start != -1) {
-      final int end = start + entityText.length;
+      final end = start + entityText.length;
       return <int>[start, end];
     }
   } catch (e) {
@@ -396,7 +398,7 @@ void _addEntity(
     return;
   }
 
-  for (int i = 0; i < twitterTextEntities.length; i++) {
+  for (var i = 0; i < twitterTextEntities.length; i++) {
     if (entity.startIndex < twitterTextEntities[i].startIndex) {
       twitterTextEntities.insert(i, entity);
       return;

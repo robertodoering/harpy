@@ -11,11 +11,10 @@ class ChangelogDialog extends StatelessWidget {
   final ChangelogData data;
 
   static Future<void> maybeShow(BuildContext context) async {
-    final ChangelogPreferences changelogPreferences =
-        app<ChangelogPreferences>();
+    final changelogPreferences = app<ChangelogPreferences>();
 
     if (changelogPreferences.shouldShowChangelogDialog) {
-      final ChangelogData? data = await app<ChangelogParser>().current(context);
+      final data = await app<ChangelogParser>().current(context);
 
       if (data != null) {
         unawaited(

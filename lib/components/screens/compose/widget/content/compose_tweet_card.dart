@@ -26,7 +26,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
     _focusNode = FocusNode();
 
     _keyboardListener = KeyboardVisibilityController().onChange.listen((
-      bool visible,
+      visible,
     ) {
       if (!visible) {
         _focusNode.unfocus();
@@ -66,8 +66,8 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final authBloc = AuthenticationBloc.of(context);
+    final bloc = context.watch<ComposeBloc>();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_focusNode),

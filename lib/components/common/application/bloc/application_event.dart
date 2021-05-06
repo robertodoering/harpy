@@ -63,8 +63,7 @@ class InitializeEvent extends ApplicationEvent {
     authenticationBloc.add(const InitializeTwitterSessionEvent());
 
     // wait for the session to initialize
-    final bool authenticated =
-        await authenticationBloc.sessionInitialization.future;
+    final authenticated = await authenticationBloc.sessionInitialization.future;
 
     return authenticated;
   }
@@ -76,7 +75,7 @@ class InitializeEvent extends ApplicationEvent {
   }) async* {
     await _commonInitialization(bloc!);
 
-    final bool authenticated =
+    final authenticated =
         await _userInitialization(bloc, bloc.authenticationBloc);
 
     _log.fine('finished app initialization');

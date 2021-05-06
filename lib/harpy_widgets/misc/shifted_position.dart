@@ -61,10 +61,10 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
-      final BoxParentData childParentData = child!.parentData as BoxParentData;
+      final childParentData = child!.parentData as BoxParentData;
 
       // the shift multiplied by the child's size
-      final Offset shiftOffset = Offset(
+      final shiftOffset = Offset(
         _shift.dx * child!.size.width,
         _shift.dy * child!.size.height,
       );
@@ -82,9 +82,9 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
     required Offset position,
   }) {
     if (child != null) {
-      final BoxParentData childParentData = child!.parentData as BoxParentData;
+      final childParentData = child!.parentData as BoxParentData;
 
-      final Offset shiftOffset = Offset(
+      final shiftOffset = Offset(
         _shift.dx * child!.size.width,
         _shift.dy * child!.size.height,
       );
@@ -92,7 +92,7 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
       return result.addWithPaintOffset(
         offset: childParentData.offset,
         position: position,
-        hitTest: (BoxHitTestResult result, Offset transformed) {
+        hitTest: (result, transformed) {
           assert(transformed == position - childParentData.offset);
           return child!.hitTest(result, position: transformed + shiftOffset);
         },

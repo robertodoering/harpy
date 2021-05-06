@@ -26,7 +26,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     if (state is HomeTimelineResult &&
         state.initialResults &&
@@ -58,9 +58,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
-    final HomeTimelineState state = bloc.state;
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = context.watch<HomeTimelineBloc>();
+    final state = bloc.state;
 
     return BlocListener<HomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
@@ -88,7 +88,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 state.timelineTweets,
                 key: const PageStorageKey<String>('home_timeline'),
                 controller: _controller,
-                tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
+                tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
                 enableScroll: state.enableScroll,
                 endSlivers: <Widget>[
                   if (state.showInitialLoading)

@@ -8,8 +8,8 @@ void parseEntities(String text, Entities entities) {
 
   // Search for hashtags in text, ensure we correctly remove the
   //  start (valid characters are # and ＃)
-  for (Match m in hashtagRegex.allMatches(text)) {
-    final String hashtag = m.group(0)!;
+  for (final Match m in hashtagRegex.allMatches(text)) {
+    final hashtag = m.group(0)!;
 
     entities.hashtags!.add(
       Hashtag()..text = hashtag.replaceFirst(RegExp('#|＃'), ''),
@@ -17,8 +17,8 @@ void parseEntities(String text, Entities entities) {
   }
 
   // Search for mentions in text
-  for (Match m in mentionRegex.allMatches(text)) {
-    final String mention = m.group(0)!;
+  for (final Match m in mentionRegex.allMatches(text)) {
+    final mention = m.group(0)!;
 
     entities.userMentions!.add(
       UserMention()..screenName = mention.replaceFirst('@', ''),

@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildTitle(ThemeData theme) {
-    final Color? color = theme.textTheme.bodyText2!.color;
+    final color = theme.textTheme.bodyText2!.color;
 
     return FractionallySizedBox(
       widthFactor: 2 / 3,
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginScreen(ThemeData theme) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return SlideAnimation(
       key: _slideLoginKey,
@@ -127,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (BuildContext context, AuthenticationState state) {
-        final ThemeData theme = Theme.of(context);
+      builder: (context, state) {
+        final theme = Theme.of(context);
 
         return HarpyBackground(
           child: state is AwaitingAuthenticationState

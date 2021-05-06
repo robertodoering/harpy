@@ -22,7 +22,7 @@ class TweetRetweetedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () => _onRetweeterTap(context),

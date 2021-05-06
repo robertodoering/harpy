@@ -36,8 +36,7 @@ void main() {
     setUp(() {
       ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData? message) async =>
-            utf8.encoder.convert(_changelog).buffer.asByteData(),
+        (message) async => utf8.encoder.convert(_changelog).buffer.asByteData(),
       );
     });
 

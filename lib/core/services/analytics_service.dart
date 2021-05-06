@@ -59,7 +59,7 @@ final Logger _log = Logger('FirebaseAnalyticsObserver');
 /// Otherwise returns `null` to prevent logging analytics when not in release
 /// mode.
 String? screenNameExtractor(RouteSettings settings) {
-  final String? name = settings.name;
+  final name = settings.name;
 
   if (name == null) {
     return null;

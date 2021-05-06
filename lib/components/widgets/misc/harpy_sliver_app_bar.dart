@@ -85,7 +85,7 @@ class HarpySliverAppBar extends StatelessWidget {
     } else {
       // min extend / mediaQuery.size * count of background colors minus the
       // first one
-      final double t = minExtend /
+      final t = minExtend /
           mediaQuery.size.height *
           (harpyTheme.backgroundColors.length - 1);
 
@@ -122,17 +122,17 @@ class HarpySliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
-    final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     // whether a flexible space widget should be built for the sliver app bar
-    final bool hasFlexibleSpace = background != null;
+    final hasFlexibleSpace = background != null;
 
-    final double expandedHeight = min(200, mediaQuery.size.height * .25);
+    final expandedHeight = min<double>(200, mediaQuery.size.height * .25);
 
     return CustomSliverAppBar(
-      decorationBuilder: (double minExtend, double maxExtend) =>
+      decorationBuilder: (minExtend, maxExtend) =>
           _buildDecoration(harpyTheme, mediaQuery, minExtend),
       elevation: 0,
       centerTitle: true,

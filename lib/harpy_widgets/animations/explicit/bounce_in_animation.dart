@@ -54,7 +54,7 @@ class _BounceInAnimationState extends State<BounceInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget? child) => Transform.scale(
+      builder: (_, __) => Transform.scale(
         scale: _animation.value,
         child: widget.child,
       ),

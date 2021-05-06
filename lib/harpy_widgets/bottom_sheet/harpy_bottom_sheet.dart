@@ -21,7 +21,7 @@ Future<T?> showHarpyBottomSheet<T>(
         topRight: kDefaultRadius,
       ),
     ),
-    builder: (BuildContext context) => SafeArea(
+    builder: (_) => SafeArea(
       top: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,

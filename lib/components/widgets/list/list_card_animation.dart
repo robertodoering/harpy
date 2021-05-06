@@ -70,7 +70,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
   void _onVisibilityChanged(bool visible) {
     if (visible) {
-      final ScrollDirection? scrollDirection = ScrollDirection.of(context);
+      final scrollDirection = ScrollDirection.of(context);
 
       if (scrollDirection?.direction == null || scrollDirection!.down) {
         // first time building the parent list or scrolling down, animate child
@@ -102,7 +102,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
         onVisibilityChanged: _onVisibilityChanged,
         child: AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext context, Widget? child) => FadeTransition(
+          builder: (_, __) => FadeTransition(
             opacity: _fadeAnimation,
             child: Transform.translate(
               offset: _slideAnimation.value,

@@ -22,27 +22,27 @@ class ChangelogParser with HarpyLogger {
   Future<ChangelogData?> parse(
       BuildContext? context, String versionCode) async {
     try {
-      final String changelogString = await rootBundle.loadString(
+      final changelogString = await rootBundle.loadString(
         _changelogString(versionCode),
         cache: false,
       );
 
-      final ChangelogData data = ChangelogData(versionCode: versionCode);
+      final data = ChangelogData(versionCode: versionCode);
 
       ChangelogEntry? entry;
 
-      int entryStart = changelogString.indexOf(linePrefix);
+      var entryStart = changelogString.indexOf(linePrefix);
       if (entryStart == -1) {
         entryStart = 0;
       }
 
-      final String headerString = changelogString.substring(0, entryStart);
-      final List<String> headerLines = _cleanEmptyLines(
+      final headerString = changelogString.substring(0, entryStart);
+      final headerLines = _cleanEmptyLines(
         headerString.split('\n'),
       );
 
-      for (int i = 0; i < headerLines.length; i++) {
-        final String line = headerLines[i].trim();
+      for (var i = 0; i < headerLines.length; i++) {
+        final line = headerLines[i].trim();
 
         if (dateRegex.hasMatch(line)) {
           // localize date format
@@ -56,9 +56,9 @@ class ChangelogParser with HarpyLogger {
         }
       }
 
-      final String entryString = changelogString.substring(entryStart);
+      final entryString = changelogString.substring(entryStart);
 
-      for (String line in entryString.split('\n')) {
+      for (var line in entryString.split('\n')) {
         line = line.replaceFirst(linePrefix, '');
 
         if (line.trim().isEmpty) {
@@ -97,7 +97,7 @@ class ChangelogParser with HarpyLogger {
   }
 
   String _changelogString(String versionCode) {
-    const String flavor = Harpy.isFree ? 'free' : 'pro';
+    const flavor = Harpy.isFree ? 'free' : 'pro';
 
     return 'android/fastlane/metadata/android'
         '/$flavor/en-US/changelogs/$versionCode.txt';
@@ -114,10 +114,10 @@ class ChangelogParser with HarpyLogger {
   }
 
   List<String> _trimLeadingLines(List<String> lines) {
-    final List<String> cleaned = <String>[];
+    final cleaned = <String>[];
 
-    bool ignore = true;
-    for (String line in lines) {
+    var ignore = true;
+    for (final line in lines) {
       if (ignore && line.trim().isEmpty) {
         continue;
       }

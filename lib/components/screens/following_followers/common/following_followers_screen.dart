@@ -67,16 +67,16 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return BlocProvider<B>(
       create: create,
       child: BlocBuilder<B, PaginatedState>(
-        builder: (BuildContext context, PaginatedState state) {
-          final B bloc = context.watch<B>();
+        builder: (context, state) {
+          final bloc = context.watch<B>();
 
           Widget child;
-          bool scaffoldTitle = true;
+          var scaffoldTitle = true;
 
           if (bloc.loadingInitialData || state is InitialState) {
             child = const Center(child: CircularProgressIndicator());

@@ -18,20 +18,20 @@ class SearchUsers extends LoadPaginatedData {
   static final Logger _log = Logger('SearchUsers');
 
   List<UserData> _transformResponse(List<User> users) {
-    return users.map((User user) => UserData.fromUser(user)).toList();
+    return users.map((user) => UserData.fromUser(user)).toList();
   }
 
   List<UserData> _filterDuplicates(
     List<UserData> oldUsers,
     List<UserData> newUsers,
   ) {
-    final List<UserData> filteredUsers = List<UserData>.of(newUsers);
+    final filteredUsers = List<UserData>.of(newUsers);
 
-    for (UserData loadedUser in oldUsers) {
-      for (UserData newUser in newUsers) {
+    for (final loadedUser in oldUsers) {
+      for (final newUser in newUsers) {
         if (loadedUser.idStr == newUser.idStr) {
           filteredUsers.removeWhere(
-            (UserData filteredUser) => filteredUser.idStr == newUser.idStr,
+            (filteredUser) => filteredUser.idStr == newUser.idStr,
           );
         }
       }
@@ -42,13 +42,13 @@ class SearchUsers extends LoadPaginatedData {
 
   @override
   Future<bool> loadData(PaginatedBloc paginatedBloc) async {
-    final UserSearchBloc bloc = paginatedBloc as UserSearchBloc;
+    final bloc = paginatedBloc as UserSearchBloc;
 
     bloc.lastQuery = query;
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
 
-    List<UserData>? users = await bloc.userService
+    var users = await bloc.userService
         .usersSearch(
           q: query!,
           count: 20,
@@ -56,7 +56,7 @@ class SearchUsers extends LoadPaginatedData {
           includeEntities: false,
         )
         .then(_transformResponse)
-        .handleError((dynamic error, StackTrace stackTrace) {
+        .handleError((dynamic error, stackTrace) {
       bloc.silentErrors
           ? silentErrorHandler(error, stackTrace)
           : twitterApiErrorHandler(error, stackTrace);
@@ -93,7 +93,7 @@ class ClearSearchedUsers extends PaginatedEvent {
     required PaginatedState currentState,
     required PaginatedBloc bloc,
   }) async* {
-    final UserSearchBloc userSearchBloc = bloc as UserSearchBloc;
+    final userSearchBloc = bloc as UserSearchBloc;
 
     _log.fine('clearing searched users');
 

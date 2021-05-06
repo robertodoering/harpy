@@ -32,8 +32,7 @@ class HarpyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> backgroundColors =
-        colors ?? HarpyTheme.of(context).backgroundColors;
+    final backgroundColors = colors ?? HarpyTheme.of(context).backgroundColors;
 
     return AnimatedContainer(
       duration: kThemeAnimationDuration,

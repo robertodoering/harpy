@@ -37,7 +37,7 @@ class _ComposeTweetCardWithParentState
     _controller = ScrollController();
 
     _keyboardListener = KeyboardVisibilityController().onChange.listen((
-      bool visible,
+      visible,
     ) async {
       if (visible) {
         // scroll to the start so the compose tweet card is fully visible
@@ -69,13 +69,13 @@ class _ComposeTweetCardWithParentState
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return LayoutBuilder(
-      builder: (_, BoxConstraints constraints) {
+      builder: (_, constraints) {
         // the available height for the content
         // differs to constraints.maxHeight when the keyboard is showing
-        final double height = mediaQuery.size.height -
+        final height = mediaQuery.size.height -
             kToolbarHeight -
             mediaQuery.padding.top -
             mediaQuery.padding.bottom;

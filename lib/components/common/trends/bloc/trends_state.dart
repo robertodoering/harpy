@@ -38,8 +38,7 @@ class FoundTrendsState extends TrendsState {
   FoundTrendsState({
     required this.woeid,
     required this.trends,
-  }) : hashtags =
-            trends.where((Trend trend) => trend.name!.startsWith('#')).toList();
+  }) : hashtags = trends.where((trend) => trend.name!.startsWith('#')).toList();
 
   final int woeid;
   final List<Trend> trends;

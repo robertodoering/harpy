@@ -22,14 +22,14 @@ class RetweetButton extends StatefulWidget {
 
 class _RetweetButtonState extends State<RetweetButton> {
   Future<void> _showRetweetButtonMenu() async {
-    final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
+    final popupMenuTheme = PopupMenuTheme.of(context);
 
-    final RenderBox button = context.findRenderObject() as RenderBox;
+    final button = context.findRenderObject() as RenderBox;
 
-    final RenderBox overlay =
+    final overlay =
         Overlay.of(context)!.context.findRenderObject() as RenderBox;
 
-    final RelativeRect position = RelativeRect.fromRect(
+    final position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(
           button.size.bottomLeft(Offset.zero) - const Offset(0, 24),
@@ -43,7 +43,7 @@ class _RetweetButtonState extends State<RetweetButton> {
       Offset.zero & overlay.size,
     );
 
-    final int? result = await showMenu<int>(
+    final result = await showMenu<int>(
       context: context,
       elevation: popupMenuTheme.elevation,
       items: const <PopupMenuEntry<int>>[
@@ -72,7 +72,7 @@ class _RetweetButtonState extends State<RetweetButton> {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
       active: widget.bloc.tweet.retweeted,
@@ -95,23 +95,15 @@ class _RetweetButtonState extends State<RetweetButton> {
         start: Colors.green,
         end: Colors.lime,
       ),
-      iconAnimationBuilder: (Animation<double> animation, Widget child) {
-        return RotationTransition(
-          turns: CurvedAnimation(
-            curve: Curves.easeOutBack,
-            parent: animation,
-          ),
-          child: child,
-        );
-      },
+      iconAnimationBuilder: (animation, child) => RotationTransition(
+        turns: CurvedAnimation(
+          curve: Curves.easeOutBack,
+          parent: animation,
+        ),
+        child: child,
+      ),
       iconSize: 20,
-      iconBuilder: (
-        BuildContext context,
-        bool active,
-        double size,
-      ) {
-        return Icon(FeatherIcons.repeat, size: size);
-      },
+      iconBuilder: (_, __, size) => Icon(FeatherIcons.repeat, size: size),
     );
   }
 }

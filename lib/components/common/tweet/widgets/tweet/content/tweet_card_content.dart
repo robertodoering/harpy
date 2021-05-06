@@ -13,9 +13,8 @@ class TweetCardContent extends StatelessWidget {
   final TweetData tweet;
 
   bool _addBottomPadding(Widget child, List<Widget> content) {
-    final List<Widget> filtered = content
-        .where((Widget element) => element is! TweetTranslation)
-        .toList();
+    final filtered =
+        content.where((element) => element is! TweetTranslation).toList();
 
     // tweet translation builds its own padding
     // don't add padding to last and second to last child
@@ -26,12 +25,12 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RouteSettings route = ModalRoute.of(context)!.settings;
-    final Locale locale = Localizations.localeOf(context);
-    final String translateLanguage =
+    final route = ModalRoute.of(context)!.settings;
+    final locale = Localizations.localeOf(context);
+    final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
-    final List<Widget> content = <Widget>[
+    final content = <Widget>[
       TweetTopRow(
         beginPadding: DefaultEdgeInsets.only(left: true, top: true),
         begin: <Widget>[

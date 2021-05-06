@@ -32,8 +32,8 @@ class MediaOverlayActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Theme(
       data: theme.copyWith(
@@ -53,7 +53,7 @@ class MediaOverlayActionRow extends StatelessWidget {
       child: BlocProvider<TweetBloc>.value(
         value: tweetBloc,
         child: BlocBuilder<TweetBloc, TweetState>(
-          builder: (BuildContext context, TweetState state) => Row(
+          builder: (context, state) => Row(
             children: <Widget>[
               CustomAnimatedSize(
                 alignment: Alignment.centerLeft,

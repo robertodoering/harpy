@@ -51,7 +51,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       paletteType: PaletteType.rgb,
       enableAlpha: false,
       showLabel: false,
-      onColorChanged: (Color color) => _color = color,
+      onColorChanged: (color) => _color = color,
     );
   }
 

@@ -201,7 +201,7 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
     _valueColor = _positionController.drive(
       ColorTween(
         begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
@@ -325,7 +325,7 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _RefreshIndicatorMode.drag ||
         _mode == _RefreshIndicatorMode.armed);
-    double newValue =
+    var newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
@@ -374,20 +374,20 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
   void _show() {
     assert(_mode != _RefreshIndicatorMode.refresh);
     assert(_mode != _RefreshIndicatorMode.snap);
-    final Completer<void> completer = Completer<void>();
+    final completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
         .animateTo(1.0 / _kDragSizeFactorLimit,
             duration: _kIndicatorSnapDuration)
-        .then<void>((void value) {
+        .then<void>((value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
         setState(() {
           // Show the indeterminate progress indicator.
           _mode = _RefreshIndicatorMode.refresh;
         });
 
-        final Future<void> refreshResult = widget.onRefresh();
+        final refreshResult = widget.onRefresh();
         assert(() {
           // ignore: unnecessary_null_comparison
           if (refreshResult == null)
@@ -457,9 +457,8 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
       return true;
     }());
 
-    final bool showIndeterminateIndicator =
-        _mode == _RefreshIndicatorMode.refresh ||
-            _mode == _RefreshIndicatorMode.done;
+    final showIndeterminateIndicator = _mode == _RefreshIndicatorMode.refresh ||
+        _mode == _RefreshIndicatorMode.done;
 
     return Stack(
       children: <Widget>[
@@ -484,7 +483,7 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
                   scale: _scaleFactor,
                   child: AnimatedBuilder(
                     animation: _positionController,
-                    builder: (BuildContext context, Widget? child) {
+                    builder: (context, child) {
                       return RefreshProgressIndicator(
                         semanticsLabel: widget.semanticsLabel ??
                             MaterialLocalizations.of(context)

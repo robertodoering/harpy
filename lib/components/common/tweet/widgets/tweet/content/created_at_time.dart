@@ -27,8 +27,8 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
   void initState() {
     super.initState();
 
-    final DateTime localCreatedAt = widget.createdAt!.toLocal();
-    final Duration difference = DateTime.now().difference(localCreatedAt);
+    final localCreatedAt = widget.createdAt!.toLocal();
+    final difference = DateTime.now().difference(localCreatedAt);
 
     if (difference < const Duration(hours: 1)) {
       // update every minute
@@ -51,7 +51,7 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Text(
       tweetTimeDifference(context, widget.createdAt!),

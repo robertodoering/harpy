@@ -88,15 +88,14 @@ class _SetupScreenState extends State<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
-    final AuthenticationBloc authenticationBloc =
-        AuthenticationBloc.of(context);
+    final themeBloc = ThemeBloc.of(context);
+    final authenticationBloc = AuthenticationBloc.of(context);
 
     // the max height constraints for the welcome text and the user name
-    final double maxTextHeight = mediaQuery.orientation == Orientation.portrait
+    final maxTextHeight = mediaQuery.orientation == Orientation.portrait
         ? mediaQuery.size.height / 4
         : mediaQuery.size.height / 6;
 

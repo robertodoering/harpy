@@ -16,8 +16,8 @@ class ComposeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final theme = Theme.of(context);
+    final bloc = context.watch<ComposeBloc>();
 
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),

@@ -46,7 +46,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         isDense: true,
       ),
       style: theme.textTheme.subtitle1,
-      onChanged: (String value) => widget.model.changeName(
+      onChanged: (value) => widget.model.changeName(
         widget.index,
         value,
       ),
@@ -88,7 +88,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
@@ -113,7 +113,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
                       builder: (_) => ChangeHomeTabEntryIconDialog(
                         entry: _entry,
                       ),
-                    ).then((String? value) {
+                    ).then((value) {
                       if (value != null && value.isNotEmpty) {
                         HapticFeedback.lightImpact();
                       }

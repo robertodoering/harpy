@@ -23,7 +23,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         title: const Text('Compact layout'),
         subtitle: const Text('use a visually dense layout'),
         value: layoutPreferences!.compactMode,
-        onChanged: (bool value) {
+        onChanged: (value) {
           HapticFeedback.lightImpact();
           setState(() => layoutPreferences!.compactMode = value);
         },
@@ -46,7 +46,7 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
           HapticFeedback.lightImpact();
           setState(layoutPreferences!.defaultSettings);
         },
-        itemBuilder: (BuildContext context) {
+        itemBuilder: (_) {
           return <PopupMenuEntry<int>>[
             const HarpyPopupMenuItem<int>(
               value: 0,

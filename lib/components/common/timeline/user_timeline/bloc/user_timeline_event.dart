@@ -31,26 +31,26 @@ class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
 
     yield const UserTimelineInitialLoading();
 
-    final TimelineFilter filter = timelineFilter ??
+    final filter = timelineFilter ??
         TimelineFilter.fromJsonString(
           bloc.timelineFilterPreferences!.userTimelineFilter,
         );
 
     String? maxId;
 
-    final List<TweetData>? tweets = await bloc.timelineService
+    final tweets = await bloc.timelineService
         .userTimeline(
           screenName: bloc.screenName,
           count: 200,
           excludeReplies: filter.excludesReplies,
         )
-        .then((List<Tweet> tweets) {
+        .then((tweets) {
           if (tweets.isNotEmpty) {
             maxId = tweets.last.idStr;
           }
           return tweets;
         })
-        .then((List<Tweet> tweets) => handleTweets(tweets, filter))
+        .then((tweets) => handleTweets(tweets, filter))
         .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -87,7 +87,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
   List<Object> get props => <Object>[];
 
   String? _findMaxId(UserTimelineResult state) {
-    final int? lastId = int.tryParse(state.maxId ?? '');
+    final lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -108,7 +108,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
     }
 
     if (currentState is UserTimelineResult) {
-      final String? maxId = _findMaxId(currentState);
+      final maxId = _findMaxId(currentState);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -120,16 +120,16 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
       yield UserTimelineLoadingOlder(oldResult: currentState);
 
       String? newMaxId;
-      bool canRequestOlder = false;
+      var canRequestOlder = false;
 
-      final List<TweetData>? tweets = await bloc.timelineService
+      final tweets = await bloc.timelineService
           .userTimeline(
             screenName: bloc.screenName,
             count: 200,
             maxId: maxId,
             excludeReplies: currentState.timelineFilter.excludesReplies,
           )
-          .then((List<Tweet> tweets) {
+          .then((tweets) {
             if (tweets.isNotEmpty) {
               newMaxId = tweets.last.idStr;
               canRequestOlder = true;
@@ -138,8 +138,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
             }
             return tweets;
           })
-          .then((List<Tweet> tweets) =>
-              handleTweets(tweets, currentState.timelineFilter))
+          .then((tweets) => handleTweets(tweets, currentState.timelineFilter))
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
@@ -183,7 +182,7 @@ class FilterUserTimeline extends UserTimelineEvent with HarpyLogger {
 
   void _saveTimelineFilter(UserTimelineBloc bloc) {
     try {
-      final String encodedFilter = jsonEncode(timelineFilter.toJson());
+      final encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
       bloc.timelineFilterPreferences!.userTimelineFilter = encodedFilter;

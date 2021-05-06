@@ -101,7 +101,7 @@ class OverlayActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       decoration: _backgroundDecoration,

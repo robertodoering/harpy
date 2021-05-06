@@ -39,7 +39,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   /// If the selected theme id is `-1` (no theme selected), `0` is returned
   /// instead.
   int get selectedThemeId {
-    final int id = app<ThemePreferences>().selectedTheme;
+    final id = app<ThemePreferences>().selectedTheme;
 
     // default to theme id 0
     return id == -1 ? 0 : id;
@@ -62,8 +62,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     customThemes = app<ThemePreferences>()
         .customThemes
         .map(_decodeThemeData)
-        .where((HarpyThemeData? themeData) => themeData != null)
-        .map((HarpyThemeData? themeData) => HarpyTheme.fromData(themeData!))
+        .where((themeData) => themeData != null)
+        .map((themeData) => HarpyTheme.fromData(themeData!))
         .toList();
 
     _log.fine('found ${customThemes.length} custom themes');

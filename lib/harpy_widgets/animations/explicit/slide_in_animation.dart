@@ -60,7 +60,7 @@ class _SlideInAnimationState extends State<SlideInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget? child) => _hidden
+      builder: (_, __) => _hidden
           ? Container()
           : Transform.translate(
               offset: Offset(
@@ -69,7 +69,6 @@ class _SlideInAnimationState extends State<SlideInAnimation>
               ),
               child: widget.child,
             ),
-      child: widget.child,
     );
   }
 }

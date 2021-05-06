@@ -97,7 +97,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         HapticFeedback.lightImpact();
         widget.model.setToDefault();
       },
-      itemBuilder: (BuildContext context) {
+      itemBuilder: (_) {
         return <PopupMenuEntry<int>>[
           const HarpyPopupMenuItem<int>(
             value: 0,
@@ -110,8 +110,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
     return ChangeNotifierProvider<HomeTabModel>.value(
       value: widget.model,
@@ -122,8 +122,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
           // remove focus on background tap
           onTap: () => removeFocus(context),
           child: Builder(
-            builder: (BuildContext context) {
-              final HomeTabModel model = context.watch<HomeTabModel>();
+            builder: (context) {
+              final model = context.watch<HomeTabModel>();
 
               return CustomScrollView(
                 slivers: <Widget>[

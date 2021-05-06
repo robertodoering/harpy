@@ -75,7 +75,7 @@ class TimelineFilterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
+    final model = context.watch<TimelineFilterModel>();
 
     return FilterDrawer(
       title: title,

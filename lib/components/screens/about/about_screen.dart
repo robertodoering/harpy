@@ -40,7 +40,7 @@ class AboutScreen extends StatelessWidget {
   }
 
   Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
-    final String version = app<HarpyInfo>().packageInfo!.version;
+    final version = app<HarpyInfo>().packageInfo!.version;
 
     return Card(
       child: Column(
@@ -196,12 +196,12 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
-    final TextTheme textTheme = theme.textTheme;
-    final Color? color = textTheme.bodyText2!.color;
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final color = textTheme.bodyText2!.color;
 
-    final TextStyle linkStyle = TextStyle(
+    final linkStyle = TextStyle(
       color: theme.accentColor,
       fontWeight: FontWeight.bold,
     );
@@ -212,7 +212,7 @@ class AboutScreen extends StatelessWidget {
         CustomPopupMenuButton<void>(
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
-          itemBuilder: (BuildContext context) {
+          itemBuilder: (context) {
             return <PopupMenuEntry<int>>[
               const HarpyPopupMenuItem<int>(
                 value: 0,

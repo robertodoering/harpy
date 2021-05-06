@@ -11,7 +11,7 @@ class RepliesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return HarpyScaffold(
       body: ScrollDirectionListener(

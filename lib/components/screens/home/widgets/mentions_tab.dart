@@ -15,8 +15,8 @@ class MentionsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MentionsTimelineBloc bloc = context.watch<MentionsTimelineBloc>();
-    final MentionsTimelineState state = bloc.state;
+    final bloc = context.watch<MentionsTimelineBloc>();
+    final state = bloc.state;
 
     final Widget child = HarpyTab(
       icon: HomeTabEntryIcon(entry.icon),

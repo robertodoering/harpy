@@ -34,8 +34,8 @@ class TweetReplies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

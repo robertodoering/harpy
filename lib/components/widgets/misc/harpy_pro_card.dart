@@ -14,9 +14,9 @@ class HarpyProCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final TextStyle headline = theme.textTheme.headline6!.copyWith(
+    final headline = theme.textTheme.headline6!.copyWith(
       fontWeight: FontWeight.normal,
       color: Colors.white,
       shadows: <Shadow>[
@@ -28,7 +28,7 @@ class HarpyProCard extends StatelessWidget {
       ],
     );
 
-    final TextStyle textStyle = theme.textTheme.subtitle2!.copyWith(
+    final textStyle = theme.textTheme.subtitle2!.copyWith(
       color: Colors.white,
       shadows: <Shadow>[
         const Shadow(
@@ -45,7 +45,7 @@ class HarpyProCard extends StatelessWidget {
       color: Colors.transparent,
       // clip the container and the custom paint
       child: ClipRRect(
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -64,7 +64,7 @@ class HarpyProCard extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                borderRadius: kDefaultBorderRadius as BorderRadius?,
+                borderRadius: kDefaultBorderRadius,
                 onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -101,7 +101,7 @@ class HarpyProCard extends StatelessWidget {
 class _HarpyProCardPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint overlayPaint = Paint()
+    final overlayPaint = Paint()
       ..shader = ui.Gradient.linear(
         Offset.zero,
         Offset(size.width, size.height),
@@ -113,10 +113,10 @@ class _HarpyProCardPainter extends CustomPainter {
         <double>[0, .5, 1],
       );
 
-    final double width1 = size.width * 1 / 3;
-    final double height1 = size.height * 1 / 3;
+    final width1 = size.width * 1 / 3;
+    final height1 = size.height * 1 / 3;
 
-    final Path path1 = Path()
+    final path1 = Path()
       ..moveTo(0, height1)
       ..quadraticBezierTo(
         width1 * 1 / 6, height1 / 2,
@@ -130,7 +130,7 @@ class _HarpyProCardPainter extends CustomPainter {
       )
       ..lineTo(0, 0);
 
-    final Path path2 = Path()
+    final path2 = Path()
       ..moveTo(size.width * 1 / 2, size.height)
       ..quadraticBezierTo(
         size.width * 1 / 2, size.height * 2 / 3,

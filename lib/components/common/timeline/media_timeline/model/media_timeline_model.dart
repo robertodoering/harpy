@@ -20,11 +20,11 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
   bool get hasEntries => value.isNotEmpty;
 
   List<MediaTimelineEntry> _entriesFromTweets(List<TweetData> tweets) {
-    final List<MediaTimelineEntry> newEntries = <MediaTimelineEntry>[];
+    final newEntries = <MediaTimelineEntry>[];
 
-    for (TweetData tweet in tweets) {
+    for (final tweet in tweets) {
       if (tweet.hasImages) {
-        for (ImageData image in tweet.images!) {
+        for (final image in tweet.images!) {
           if (!_containsMedia(newEntries, image)) {
             newEntries.add(MediaTimelineEntry(
               tweet: tweet,
@@ -48,8 +48,7 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
 
   bool _containsMedia(List<MediaTimelineEntry> entries, MediaData? media) {
     return entries.any(
-      (MediaTimelineEntry entry) =>
-          entry.media!.appropriateUrl == media!.appropriateUrl,
+      (entry) => entry.media!.appropriateUrl == media!.appropriateUrl,
     );
   }
 }

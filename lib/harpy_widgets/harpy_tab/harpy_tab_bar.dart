@@ -53,7 +53,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
       // rebuild tabs with new animation value
       setState(() {});
 
-      final int newIndex = _tabController!.animation!.value.round();
+      final newIndex = _tabController!.animation!.value.round();
 
       if (_currentIndex != newIndex) {
         // content changed, scroll tab bar to show active tab
@@ -81,7 +81,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
       controller: _scrollController!,
       index: index,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         onTap: () => _tabController!.animateTo(index),
         child: HarpyTabScope(
           index: index,

@@ -38,10 +38,10 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
-    final MentionsTimelineBloc bloc = context.watch<MentionsTimelineBloc>();
-    final MentionsTimelineState state = bloc.state;
+    final bloc = context.watch<MentionsTimelineBloc>();
+    final state = bloc.state;
 
     return ScrollToStart(
       child: TweetList(

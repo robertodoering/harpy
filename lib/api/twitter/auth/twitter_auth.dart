@@ -40,10 +40,10 @@ class TwitterAuth {
     required OnExternalNavigation onExternalNavigation,
   }) async {
     try {
-      final AuthorizationResponse tempCredentialsResponse =
+      final tempCredentialsResponse =
           await _auth.requestTemporaryCredentials(callbackUrl);
 
-      final Uri? authCallback = await webviewNavigation(
+      final authCallback = await webviewNavigation(
         TwitterLoginWebview(
           token: tempCredentialsResponse.credentials.token,
           onExternalNavigation: onExternalNavigation,
@@ -57,24 +57,22 @@ class TwitterAuth {
   }
 
   Future<TwitterAuthResult> _requestTokenCredentials(Uri? authCallback) async {
-    final bool userCancelled = authCallback == null ||
+    final userCancelled = authCallback == null ||
         authCallback.queryParameters.containsKey('denied');
 
     if (!userCancelled) {
-      final String? oauthToken = authCallback.queryParameters['oauth_token'];
-      final String? oauthVerifier =
-          authCallback.queryParameters['oauth_verifier'];
+      final oauthToken = authCallback!.queryParameters['oauth_token'];
+      final oauthVerifier = authCallback.queryParameters['oauth_verifier'];
 
       if (oauthToken != null && oauthVerifier != null) {
-        final AuthorizationResponse credentialsResponse =
-            await _auth.requestTokenCredentials(
+        final credentialsResponse = await _auth.requestTokenCredentials(
           Credentials(oauthToken, ''),
           oauthVerifier,
         );
 
-        final String token = credentialsResponse.credentials.token;
-        final String tokenSecret = credentialsResponse.credentials.tokenSecret;
-        final String userId = token.split('-').first;
+        final token = credentialsResponse.credentials.token;
+        final tokenSecret = credentialsResponse.credentials.tokenSecret;
+        final userId = token.split('-').first;
 
         return TwitterAuthResult(
           status: TwitterAuthStatus.success,

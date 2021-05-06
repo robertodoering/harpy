@@ -35,14 +35,14 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
 
     yield const RequestingTrends();
 
-    final List<Trends>? trends = await bloc.trendsService
+    final trends = await bloc.trendsService
         .place(id: woeid)
         .handleError(silentErrorHandler);
 
     if (trends != null && trends.isNotEmpty) {
-      final List<Trend> sortedTrends = trends.first.trends!;
+      final sortedTrends = trends.first.trends!;
       sortedTrends.sort(
-        (Trend o1, Trend o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
+        (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
       );
 
       yield FoundTrendsState(

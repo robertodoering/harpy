@@ -180,7 +180,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
         onBackgroundTap: toggleFullscreen,
-        builder: (BuildContext context) => VideoFullscreen(this),
+        builder: (_) => VideoFullscreen(this),
       ),
     );
   }
@@ -214,7 +214,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   /// Calls the action listeners with the [action].
   void _onAction(HarpyVideoPlayerAction action) {
-    for (OnAction onAction in _actionListener) {
+    for (final onAction in _actionListener) {
       onAction(action);
     }
   }

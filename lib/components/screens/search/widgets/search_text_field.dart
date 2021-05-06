@@ -22,10 +22,10 @@ class SearchTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
-    final Color fillColor = theme.brightness == Brightness.light
+    final fillColor = theme.brightness == Brightness.light
         ? Colors.black.withOpacity(.05)
         : Colors.white.withOpacity(.05);
 

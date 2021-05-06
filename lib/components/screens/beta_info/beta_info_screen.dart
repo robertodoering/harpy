@@ -38,8 +38,8 @@ class BetaInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       title: 'beta info',
@@ -90,7 +90,7 @@ class LinkText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: onTap,

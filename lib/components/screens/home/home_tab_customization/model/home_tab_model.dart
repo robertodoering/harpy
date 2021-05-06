@@ -16,11 +16,11 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
   /// The entries that are visible in the home screen.
   List<HomeTabEntry> get visibleEntries =>
-      value.entries.where((HomeTabEntry entry) => entry.visible!).toList();
+      value.entries.where((entry) => entry.visible!).toList();
 
   /// The entries that represent twitter lists in the home screen.
   List<HomeTabEntry> get listEntries =>
-      value.entries.where((HomeTabEntry entry) => entry.isListType).toList();
+      value.entries.where((entry) => entry.isListType).toList();
 
   bool get canHideMoreEntries => visibleEntries.length > 1;
 
@@ -33,7 +33,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       Harpy.isPro && listEntries.length < 10;
 
   void initialize() {
-    final String configurationJson = homeTabPreferences!.homeTabConfiguration;
+    final configurationJson = homeTabPreferences!.homeTabConfiguration;
 
     if (configurationJson.isEmpty) {
       log.fine('no configuration exists');
@@ -43,14 +43,13 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       try {
         value = HomeTabConfiguration.fromJson(jsonDecode(configurationJson));
 
-        final int defaultTabsCount = value.entries
-            .where((HomeTabEntry entry) => entry.isDefaultType)
-            .length;
+        final defaultTabsCount =
+            value.entries.where((entry) => entry.isDefaultType).length;
 
         if (defaultTabsCount != defaultHomeTabEntries.length) {
           throw Exception('invalid default tabs count: $defaultTabsCount, '
               'expected ${defaultHomeTabEntries.length}');
-        } else if (value.entries.any((HomeTabEntry entry) => !entry.valid)) {
+        } else if (value.entries.any((entry) => !entry.valid)) {
           throw Exception('invalid entry in configuration');
         } else if (Harpy.isFree && listEntries.length > 1 ||
             Harpy.isPro && listEntries.length > 10) {
@@ -78,8 +77,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   void reorder(int oldIndex, int newIndex) {
     log.fine('reordering from $oldIndex to $newIndex');
 
-    final HomeTabEntry entry = value.entries[oldIndex];
-    final int index = oldIndex < newIndex ? newIndex - 1 : newIndex;
+    final entry = value.entries[oldIndex];
+    final index = oldIndex < newIndex ? newIndex - 1 : newIndex;
 
     value = value.removeEntry(oldIndex).addEntry(entry, index);
 
@@ -94,7 +93,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   void toggleVisible(int index) {
     log.fine('toggling visibility for $index');
 
-    final HomeTabEntry entry = value.entries[index];
+    final entry = value.entries[index];
 
     value = value.updateEntry(
       index,
@@ -173,7 +172,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     log.fine('changing icon to $icon');
 
-    HomeTabEntry entry = value.entries[index];
+    var entry = value.entries[index];
 
     if (Harpy.isFree && entry.isListType) {
       // reload configuration to dismiss unrelated changes before

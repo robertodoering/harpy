@@ -88,9 +88,9 @@ class BetaFaq extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final List<_FaqEntry> entries = _faqEntries(theme);
+    final entries = _faqEntries(theme);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -115,7 +115,7 @@ class _FaqEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

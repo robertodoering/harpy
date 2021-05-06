@@ -8,7 +8,7 @@ class ConnectivityService {
   ConnectivityService() {
     _log.fine('listening to connectivity status changes');
 
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    Connectivity().onConnectivityChanged.listen((result) {
       _log.fine('connectivity state changed to $result');
       _lastResult = result;
     });

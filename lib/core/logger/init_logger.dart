@@ -6,11 +6,11 @@ import 'package:logging/logging.dart';
 void initLogger({String? prefix}) {
   Logger.root.level = Level.ALL;
 
-  const String separator = ' | ';
-  const String horizontalSeparator = '--------------------------------';
+  const separator = ' | ';
+  const horizontalSeparator = '--------------------------------';
 
-  Logger.root.onRecord.listen((LogRecord rec) {
-    final List<String> content = <String>[
+  Logger.root.onRecord.listen((rec) {
+    final content = <String>[
       if (prefix != null) ...<String>[
         prefix,
         separator,

@@ -11,7 +11,7 @@ class TweetVisibilityPreferences {
       harpyPrefs.setInt('lastVisibleTweet', value, prefix: true);
 
   void updateVisibleTweet(TweetData tweet) {
-    final int? id = int.tryParse(tweet.originalIdStr);
+    final id = int.tryParse(tweet.originalIdStr);
 
     if (id != null && id > lastVisibleTweet) {
       lastVisibleTweet = id;
@@ -25,7 +25,7 @@ class TweetVisibilityPreferences {
       harpyPrefs.setInt('lastViewedMention', value, prefix: true);
 
   void updateLastViewedMention(TweetData tweet) {
-    final int? id = int.tryParse(tweet.originalIdStr);
+    final id = int.tryParse(tweet.originalIdStr);
 
     if (id != null) {
       lastViewedMention = id;

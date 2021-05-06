@@ -20,9 +20,9 @@ class MediaUploadService {
     File media, {
     MediaType? type,
   }) async {
-    final List<int> mediaBytes = media.readAsBytesSync();
-    final int totalBytes = mediaBytes.length;
-    final String? mediaType = mime(media.path);
+    final mediaBytes = media.readAsBytesSync();
+    final totalBytes = mediaBytes.length;
+    final mediaType = mime(media.path);
 
     if (totalBytes == 0 || mediaType == null) {
       // unknown type or empty file
@@ -30,24 +30,24 @@ class MediaUploadService {
     }
 
     // initialize the upload
-    final UploadInit uploadInit = await twitterApi!.mediaService.uploadInit(
+    final uploadInit = await twitterApi!.mediaService.uploadInit(
       totalBytes: totalBytes,
       mediaType: mediaType,
       mediaCategory: mediaCategoryFromType(type),
     );
 
-    final String mediaId = uploadInit.mediaIdString!;
+    final mediaId = uploadInit.mediaIdString!;
 
     // `splitList` splits the media bytes into lists with the max length of
     // 500000 (the max chunk size in bytes)
-    final List<List<int>> mediaChunks = splitList<int>(
+    final mediaChunks = splitList<int>(
       mediaBytes,
       _maxChunkSize,
     );
 
     // upload each chunk
-    for (int i = 0; i < mediaChunks.length; i++) {
-      final List<int> chunk = mediaChunks[i];
+    for (var i = 0; i < mediaChunks.length; i++) {
+      final chunk = mediaChunks[i];
 
       await twitterApi!.mediaService.uploadAppend(
         mediaId: mediaId,
@@ -57,13 +57,13 @@ class MediaUploadService {
     }
 
     // finalize the upload
-    final UploadFinalize uploadFinalize =
+    final uploadFinalize =
         await twitterApi!.mediaService.uploadFinalize(mediaId: mediaId);
 
     if (uploadFinalize.processingInfo?.pending ?? false) {
       // asynchronous upload of media
       // we have to wait until twitter has processed the upload
-      final UploadStatus? finishedStatus = await _waitForUploadCompletion(
+      final finishedStatus = await _waitForUploadCompletion(
         mediaId: mediaId,
         sleep: uploadFinalize.processingInfo!.checkAfterSecs!,
       );
@@ -86,7 +86,7 @@ class MediaUploadService {
   }) async {
     await Future<void>.delayed(Duration(seconds: sleep));
 
-    final UploadStatus uploadStatus =
+    final uploadStatus =
         await twitterApi!.mediaService.uploadStatus(mediaId: mediaId);
 
     if (uploadStatus.processingInfo?.succeeded == true) {
@@ -118,11 +118,11 @@ class MediaUploadService {
 
   /// Splits the [list] into smaller lists with a max [length].
   List<List<T>> splitList<T>(List<T> list, int length) {
-    final List<List<T>> chunks = <List<T>>[];
+    final chunks = <List<T>>[];
     Iterable<T> chunk;
 
     do {
-      final List<T> remainingEntries = list.sublist(
+      final remainingEntries = list.sublist(
         chunks.length * length,
       );
 

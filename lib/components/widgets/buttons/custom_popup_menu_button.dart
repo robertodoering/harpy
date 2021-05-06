@@ -142,11 +142,11 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
   /// You would access your [PopupMenuButtonState] using a [GlobalKey] and
   /// show the menu of the button with `globalKey.currentState.showButtonMenu`.
   void showButtonMenu() {
-    final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
-    final RenderBox button = context.findRenderObject() as RenderBox;
-    final RenderBox overlay =
+    final popupMenuTheme = PopupMenuTheme.of(context);
+    final button = context.findRenderObject() as RenderBox;
+    final overlay =
         Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
-    final RelativeRect position = RelativeRect.fromRect(
+    final position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(widget.offset, ancestor: overlay),
         button.localToGlobal(
@@ -155,7 +155,7 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
       ),
       Offset.zero & overlay.size,
     );
-    final List<PopupMenuEntry<T>> items = widget.itemBuilder(context);
+    final items = widget.itemBuilder(context);
     // Only show the menu if there is something to show
     if (items.isNotEmpty) {
       showMenu<T>(
@@ -166,7 +166,7 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
         position: position,
         shape: widget.shape ?? popupMenuTheme.shape,
         color: widget.color ?? popupMenuTheme.color,
-      ).then<void>((T? newValue) {
+      ).then<void>((newValue) {
         if (!mounted) return null;
         if (newValue == null) {
           if (widget.onCanceled != null) widget.onCanceled!();
@@ -178,7 +178,7 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
   }
 
   bool get _canRequestFocus {
-    final NavigationMode mode = MediaQuery.maybeOf(context)?.navigationMode ??
+    final mode = MediaQuery.maybeOf(context)?.navigationMode ??
         NavigationMode.traditional;
     switch (mode) {
       case NavigationMode.traditional:
@@ -190,7 +190,7 @@ class CustomPopupMenuButtonState<T> extends State<CustomPopupMenuButton<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final bool enableFeedback = widget.enableFeedback ??
+    final enableFeedback = widget.enableFeedback ??
         PopupMenuTheme.of(context).enableFeedback ??
         true;
 

@@ -7,14 +7,14 @@ class HomeTabReorderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeTabModel model = context.watch<HomeTabModel>();
+    final model = context.watch<HomeTabModel>();
 
     return ReorderableList(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: model.value.entries.length,
       onReorder: model.reorder,
-      itemBuilder: (_, int index) => HomeTabReorderCard(
+      itemBuilder: (_, index) => HomeTabReorderCard(
         index: index,
         model: model,
       ),

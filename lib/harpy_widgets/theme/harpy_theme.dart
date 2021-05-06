@@ -21,8 +21,7 @@ const double kLargeTextContrastRatio = 3;
 const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
   borderRadius: kDefaultBorderRadius,
 );
-const BorderRadiusGeometry kDefaultBorderRadius =
-    BorderRadius.all(kDefaultRadius);
+const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
 const Radius kDefaultRadius = Radius.circular(16);
 
 class HarpyTheme {
@@ -95,9 +94,9 @@ class HarpyTheme {
   late ThemeData data;
 
   CardTheme get _cardTheme {
-    final bool performanceMode = app<GeneralPreferences>().performanceMode;
+    final performanceMode = app<GeneralPreferences>().performanceMode;
 
-    final Color? color = performanceMode
+    final color = performanceMode
         ? Color.lerp(
             averageBackgroundColor,
             accentColor,
@@ -136,12 +135,12 @@ class HarpyTheme {
   /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
   void _calculateBrightness() {
     backgroundLuminance = backgroundColors
-            .map((Color color) => color.computeLuminance())
-            .reduce((double a, double b) => a + b) /
+            .map((color) => color.computeLuminance())
+            .reduce((a, b) => a + b) /
         backgroundColors.length;
 
     // the Material Design color brightness threshold
-    const double kThreshold = 0.15;
+    const kThreshold = 0.15;
 
     brightness =
         (backgroundLuminance + 0.05) * (backgroundLuminance + 0.05) > kThreshold
@@ -152,8 +151,9 @@ class HarpyTheme {
   /// Reduces the [backgroundColors] to a single color by interpolating the
   /// colors.
   void _setupAverageBackgroundColor() {
-    final Color average = backgroundColors.reduce(
-        (Color value, Color element) => Color.lerp(value, element, .5)!);
+    final average = backgroundColors.reduce(
+      (value, element) => Color.lerp(value, element, .5)!,
+    );
 
     averageBackgroundColor = average;
   }
@@ -163,28 +163,28 @@ class HarpyTheme {
   ///
   /// This is used to make sure the color looks good on any colored background.
   void _setupTweetActionColors() {
-    final List<Color?> favoriteColors = <Color?>[
+    final favoriteColors = <Color?>[
       Colors.pink[300],
       Colors.redAccent[700],
     ];
 
-    final List<Color?> retweetColors = <Color?>[
+    final retweetColors = <Color?>[
       Colors.lightGreen[100],
       Colors.green[800],
     ];
 
-    final List<Color?> translateColors = <Color?>[
+    final translateColors = <Color?>[
       Colors.lightBlueAccent[100],
       Colors.indigoAccent[700],
     ];
 
-    double favoriteContrast = contrastRatio(
+    var favoriteContrast = contrastRatio(
       favoriteColor.computeLuminance(),
       backgroundLuminance,
     );
 
-    for (Color? color in favoriteColors) {
-      final double contrast = contrastRatio(
+    for (final color in favoriteColors) {
+      final contrast = contrastRatio(
         color!.computeLuminance(),
         backgroundLuminance,
       );
@@ -195,13 +195,13 @@ class HarpyTheme {
       }
     }
 
-    double retweetContrast = contrastRatio(
+    var retweetContrast = contrastRatio(
       retweetColor.computeLuminance(),
       backgroundLuminance,
     );
 
-    for (Color? color in retweetColors) {
-      final double contrast = contrastRatio(
+    for (final color in retweetColors) {
+      final contrast = contrastRatio(
         color!.computeLuminance(),
         backgroundLuminance,
       );
@@ -212,13 +212,13 @@ class HarpyTheme {
       }
     }
 
-    double translateContrast = contrastRatio(
+    var translateContrast = contrastRatio(
       translateColor.computeLuminance(),
       backgroundLuminance,
     );
 
-    for (Color? color in translateColors) {
-      final double contrast = contrastRatio(
+    for (final color in translateColors) {
+      final contrast = contrastRatio(
         color!.computeLuminance(),
         backgroundLuminance,
       );
@@ -234,7 +234,7 @@ class HarpyTheme {
   /// the contrast ratio is at least [kTextContrastRatio], or white / black
   /// depending on the [brightness].
   void _calculateButtonTextColor() {
-    final double ratio = contrastRatio(
+    final ratio = contrastRatio(
       averageBackgroundColor.computeLuminance(),
       foregroundColor.computeLuminance(),
     );
@@ -249,7 +249,7 @@ class HarpyTheme {
   /// Calculates the error color, which is [Colors.red] if the contrast ratio is
   /// at least [kTextContrastRatio], or the [accentColor].
   void _calculateErrorColor() {
-    final double ratio = contrastRatio(
+    final ratio = contrastRatio(
       Colors.red.computeLuminance(),
       backgroundLuminance,
     );
@@ -258,10 +258,10 @@ class HarpyTheme {
   }
 
   void _setupTextTheme() {
-    const String displayFont = 'Comfortaa';
-    const String bodyFont = 'OpenSans';
+    const displayFont = 'Comfortaa';
+    const bodyFont = 'OpenSans';
 
-    final Color textColor = foregroundColor;
+    final textColor = foregroundColor;
 
     textTheme = Typography.englishLike2018.apply(fontFamily: bodyFont).copyWith(
           // headline
@@ -409,7 +409,7 @@ class HarpyTheme {
         thickness: MaterialStateProperty.resolveWith((_) => 3),
         mainAxisMargin: 16,
         thumbColor: MaterialStateColor.resolveWith(
-          (Set<MaterialState> state) => state.contains(MaterialState.dragged)
+          (state) => state.contains(MaterialState.dragged)
               ? accentColor.withOpacity(.8)
               : accentColor.withOpacity(.4),
         ),

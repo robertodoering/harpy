@@ -13,7 +13,7 @@ class UserBanner extends StatelessWidget {
   /// Builds the profile banner for a [HeroDialogRoute] when the user taps on
   /// the banner.
   Widget _buildDialogImage() {
-    final String url = bloc.user!.appropriateUserBannerUrl;
+    final url = bloc.user!.appropriateUserBannerUrl;
 
     return CustomDismissible(
       onDismissed: () => app<HarpyNavigator>().state!.maybePop(),
@@ -32,19 +32,20 @@ class UserBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (bloc.user?.hasBanner == true) {
-      final String url = bloc.user!.appropriateUserBannerUrl;
+      final url = bloc.user!.appropriateUserBannerUrl;
 
       return GestureDetector(
         onTap: () {
-          app<HarpyNavigator>().pushRoute(HeroDialogRoute<void>(
-            onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
-            builder: (BuildContext context) => _buildDialogImage(),
-          ));
+          app<HarpyNavigator>().pushRoute(
+            HeroDialogRoute<void>(
+              onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
+              builder: (_) => _buildDialogImage(),
+            ),
+          );
         },
         child: Hero(
           tag: url,
-          placeholderBuilder:
-              (BuildContext context, Size heroSize, Widget child) => child,
+          placeholderBuilder: (_, __, child) => child,
           child: HarpyImage(
             imageUrl: url,
             fit: BoxFit.cover,

@@ -24,7 +24,7 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
     required MentionSuggestionsState currentState,
     required MentionSuggestionsBloc bloc,
   }) async* {
-    final String query =
+    final query =
         text.contains('@') ? text.substring(text.indexOf('@') + 1) : text;
 
     if (query.isNotEmpty && currentState.searchedUsers[query] == null) {
@@ -67,14 +67,15 @@ class UpdateMentionsSuggestionsEvent extends MentionSuggestionsEvent {
         searchQuery,
       ];
 
-  Map<String?, List<UserData>?> _searchedUsers(
+  Map<String, List<UserData>?> _searchedUsers(
     MentionSuggestionsState currentState,
   ) {
     if (searchedUsers != null && searchQuery != null) {
-      final Map<String?, List<UserData>?> searchedUsersMap =
-          Map<String?, List<UserData>?>.from(currentState.searchedUsers);
+      final searchedUsersMap = Map<String, List<UserData>?>.from(
+        currentState.searchedUsers,
+      );
 
-      searchedUsersMap[searchQuery] = searchedUsers;
+      searchedUsersMap[searchQuery!] = searchedUsers;
 
       return searchedUsersMap;
     } else {

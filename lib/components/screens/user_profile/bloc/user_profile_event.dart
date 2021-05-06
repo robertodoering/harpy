@@ -47,8 +47,8 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
 
     yield LoadingUserState();
 
-    UserData? userData = user;
-    List<String>? connections = user?.connections;
+    var userData = user;
+    var connections = user?.connections;
 
     if (user?.connections == null) {
       await Future.wait<void>(<Future<void>>[
@@ -56,8 +56,8 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
         if (userData == null && _screenName != null)
           bloc.userService
               .usersShow(screenName: _screenName)
-              .then((User user) => UserData.fromUser(user))
-              .then((UserData user) => userData = user)
+              .then((user) => UserData.fromUser(user))
+              .then((user) => userData = user)
               .handleError(silentErrorHandler),
 
         // friendship lookup for the relationship status (following /
@@ -65,14 +65,8 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
         if (connections == null && _screenName != null)
           bloc.userService
               .friendshipsLookup(screenNames: <String>[_screenName!])
-              .then(
-                (List<Friendship> response) =>
-                    response.length == 1 ? response.first : null,
-              )
-              .then<void>(
-                (Friendship? friendship) =>
-                    connections = friendship?.connections,
-              )
+              .then((response) => response.length == 1 ? response.first : null)
+              .then<void>((friendship) => connections = friendship?.connections)
               .catchError(silentErrorHandler),
       ]);
     }
@@ -157,18 +151,17 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
   }) async* {
     unawaited(HapticFeedback.lightImpact());
 
-    final TranslationService translationService = app<TranslationService>();
+    final translationService = app<TranslationService>();
 
-    final String translateLanguage =
+    final translateLanguage =
         bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
 
     yield TranslatingDescriptionState();
 
     await translationService
         .translate(text: bloc.user!.description, to: translateLanguage)
-        .then((Translation translation) =>
-            bloc.user!.descriptionTranslation = translation)
-        .handleError<void>(silentErrorHandler);
+        .then((translation) => bloc.user!.descriptionTranslation = translation)
+        .handleError(silentErrorHandler);
 
     if (!bloc.user!.hasDescriptionTranslation ||
         bloc.user!.descriptionTranslation!.unchanged) {

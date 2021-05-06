@@ -32,7 +32,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
   Widget _buildImage(BuildContext context) {
     return Hero(
       tag: '$index-${entry.media!.appropriateUrl}',
-      placeholderBuilder: (_, __, Widget child) => child,
+      placeholderBuilder: (_, __, child) => child,
       child: GestureDetector(
         onTap: onImageTap,
         onLongPress: () => _onLongPress(context),
@@ -101,7 +101,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
       create: (_) => TweetBloc(entry.tweet),
       child: ClipRRect(
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         child: child,
       ),
     );

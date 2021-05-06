@@ -76,12 +76,11 @@ class _TransformInAnimationState extends State<TransformInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget? child) => Transform(
+      builder: (_, __) => Transform(
         transform: _animation.value,
         alignment: widget.alignment,
         child: widget.child,
       ),
-      child: widget.child,
     );
   }
 }

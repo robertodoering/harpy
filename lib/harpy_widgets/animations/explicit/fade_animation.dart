@@ -76,7 +76,7 @@ class _FadeAnimationState extends State<FadeAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget? child) => _hide
+      builder: (_, child) => _hide
           ? const SizedBox()
           : Opacity(
               opacity: widget.fadeType == FadeType.fadeIn

@@ -17,7 +17,7 @@ class CustomizeHomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     final Widget child = HarpyButton.flat(
       padding: const EdgeInsets.all(HarpyTab.tabPadding - 2),

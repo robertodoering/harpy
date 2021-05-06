@@ -74,7 +74,7 @@ class HarpyScaffold extends StatelessWidget {
     ThemeData theme,
     MediaQueryData mediaQuery,
   ) {
-    final AppBar appBar = AppBar(
+    final appBar = AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -84,8 +84,8 @@ class HarpyScaffold extends StatelessWidget {
       bottom: appBarBottom,
     );
 
-    final double topPadding = mediaQuery.padding.top;
-    final double extent = appBar.preferredSize.height + topPadding;
+    final topPadding = mediaQuery.padding.top;
+    final extent = appBar.preferredSize.height + topPadding;
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: extent),
@@ -113,8 +113,8 @@ class HarpyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       drawer: drawer,

@@ -40,10 +40,10 @@ class _ProDialogState extends State<ProDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final TextStyle style = theme.textTheme.subtitle2!;
-    final TextStyle linkStyle = style.copyWith(
+    final style = theme.textTheme.subtitle2!;
+    final linkStyle = style.copyWith(
       color: theme.accentColor,
       fontWeight: FontWeight.bold,
     );

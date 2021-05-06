@@ -17,9 +17,8 @@ class HarpyThemeData {
   /// Creates a [HarpyThemeData] from a [HarpyTheme].
   HarpyThemeData.fromHarpyTheme(HarpyTheme harpyTheme)
       : name = harpyTheme.name,
-        backgroundColors = harpyTheme.backgroundColors
-            .map((Color? color) => color!.value)
-            .toList(),
+        backgroundColors =
+            harpyTheme.backgroundColors.map((color) => color.value).toList(),
         accentColor = harpyTheme.accentColor.value;
 
   /// Creates a [HarpyThemeData] from a [HarpyThemeData].

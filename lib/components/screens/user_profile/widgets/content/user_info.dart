@@ -51,7 +51,7 @@ class UserProfileInfo extends StatelessWidget {
               itemCount: 1,
               heroTagBuilder: (_) => bloc.user,
               beginBorderRadiusBuilder: (_) => BorderRadius.circular(48),
-              builder: (_, int index) => HarpyImage(
+              builder: (_, __) => HarpyImage(
                 imageUrl: bloc.user!.originalUserImageUrl,
               ),
             ),
@@ -101,14 +101,14 @@ class UserProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+    final authBloc = AuthenticationBloc.of(context);
 
     // hide follow button when the profile of the authenticated user is showing
     // or when the connections have not been requested to determine whether the
     // authenticated user is following this user.
-    final bool enableFollow =
+    final enableFollow =
         authBloc.authenticatedUser!.idStr != bloc.user!.idStr &&
             bloc.user!.hasConnections;
 

@@ -16,11 +16,11 @@ class FollowingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FollowingFollowersScreen<FollowingBloc>(
-      create: (BuildContext context) => FollowingBloc(userId: userId),
+      create: (_) => FollowingBloc(userId: userId),
       userId: userId,
       title: 'following',
       errorMessage: 'error loading following users',
-      loadUsers: (FollowingBloc bloc) => bloc.add(const LoadFollowingUsers()),
+      loadUsers: (bloc) => bloc.add(const LoadFollowingUsers()),
     );
   }
 }

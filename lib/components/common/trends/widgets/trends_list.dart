@@ -43,8 +43,8 @@ class TrendsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TrendsBloc bloc = context.watch<TrendsBloc>();
-    final TrendsState state = bloc.state;
+    final bloc = context.watch<TrendsBloc>();
+    final state = bloc.state;
 
     if (state.isLoading) {
       return const SliverBoxLoadingIndicator();
@@ -61,7 +61,7 @@ class TrendsList extends StatelessWidget {
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, int index) => _itemBuilder(index, state.trends),
+            (_, index) => _itemBuilder(index, state.trends),
             childCount: state.trends.length * 2 - 1,
           ),
         ),

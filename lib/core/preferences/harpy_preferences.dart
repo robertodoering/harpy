@@ -37,7 +37,7 @@ class HarpyPreferences {
     int? upperLimit,
   }) {
     try {
-      final int value = _preferences.getInt(_key(key, prefix)) ?? defaultValue;
+      final value = _preferences.getInt(_key(key, prefix)) ?? defaultValue;
 
       if (lowerLimit != null && upperLimit != null) {
         return value.clamp(lowerLimit, upperLimit);

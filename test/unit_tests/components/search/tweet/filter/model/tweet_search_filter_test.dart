@@ -4,13 +4,13 @@ import 'package:harpy/components/components.dart';
 void main() {
   group('tweet search filter', () {
     test('builds an empty query with an empty filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter();
+      const filter = TweetSearchFilter();
 
       expect(filter.buildQuery(), equals(''));
     });
 
     test('builds query with tweet author filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         tweetAuthor: 'harpy_app',
       );
 
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('builds query with replying to filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         replyingTo: 'harpy_app',
       );
 
@@ -26,15 +26,15 @@ void main() {
     });
 
     test('builds query with includesPhrases filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         includesPhrases: <String>['cat'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         includesPhrases: <String>['cute', 'cat'],
       );
 
-      const TweetSearchFilter filter3 = TweetSearchFilter(
+      const filter3 = TweetSearchFilter(
         includesPhrases: <String>['cute cat', 'petting'],
       );
 
@@ -44,11 +44,11 @@ void main() {
     });
 
     test('builds query with includesHashtags filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         includesHashtags: <String>['#cute'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         includesHashtags: <String>['#cute', '#cat'],
       );
 
@@ -57,11 +57,11 @@ void main() {
     });
 
     test('builds query with includesMentions filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         includesMentions: <String>['@harpy_app'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         includesHashtags: <String>['@harpy_app', '@NASA'],
       );
 
@@ -70,11 +70,11 @@ void main() {
     });
 
     test('builds query with includesUrls filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         includesUrls: <String>['google'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         includesUrls: <String>['google', 'github'],
       );
 
@@ -83,7 +83,7 @@ void main() {
     });
 
     test('builds query with includesRetweets filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         includesRetweets: true,
       );
 
@@ -91,7 +91,7 @@ void main() {
     });
 
     test('builds query with includesImages filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         includesImages: true,
       );
 
@@ -99,7 +99,7 @@ void main() {
     });
 
     test('builds query with includesVideo filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         includesVideo: true,
       );
 
@@ -107,7 +107,7 @@ void main() {
     });
 
     test('builds query with includesImages & includesVideo filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         includesImages: true,
         includesVideo: true,
       );
@@ -116,15 +116,15 @@ void main() {
     });
 
     test('builds query with excludesPhrases filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         excludesPhrases: <String>['cat'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         excludesPhrases: <String>['cute', 'cat'],
       );
 
-      const TweetSearchFilter filter3 = TweetSearchFilter(
+      const filter3 = TweetSearchFilter(
         excludesPhrases: <String>['cute cat', 'petting'],
       );
 
@@ -134,11 +134,11 @@ void main() {
     });
 
     test('builds query with excludesHashtags filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         excludesHashtags: <String>['-#cute'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         excludesHashtags: <String>['-#cute', '-#cat'],
       );
 
@@ -147,11 +147,11 @@ void main() {
     });
 
     test('builds query with excludesMentions filter', () {
-      const TweetSearchFilter filter1 = TweetSearchFilter(
+      const filter1 = TweetSearchFilter(
         excludesMentions: <String>['-@harpy_app'],
       );
 
-      const TweetSearchFilter filter2 = TweetSearchFilter(
+      const filter2 = TweetSearchFilter(
         excludesMentions: <String>['-@harpy_app', '-@NASA'],
       );
 
@@ -160,7 +160,7 @@ void main() {
     });
 
     test('builds query with excludesRetweets filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         excludesRetweets: true,
       );
 
@@ -168,7 +168,7 @@ void main() {
     });
 
     test('builds query with excludesImages filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         excludesImages: true,
       );
 
@@ -176,7 +176,7 @@ void main() {
     });
 
     test('builds query with excludesVideo filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         excludesVideo: true,
       );
 
@@ -184,7 +184,7 @@ void main() {
     });
 
     test('builds query with excludesImages & excludesVideo filter', () {
-      const TweetSearchFilter filter = TweetSearchFilter(
+      const filter = TweetSearchFilter(
         excludesImages: true,
         excludesVideo: true,
       );

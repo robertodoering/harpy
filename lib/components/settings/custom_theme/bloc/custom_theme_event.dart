@@ -113,7 +113,7 @@ class ReorderBackgroundColor extends CustomThemeEvent {
     _log.fine('reordering background color from index: $oldIndex to $newIndex');
 
     try {
-      final int color = bloc.themeData.backgroundColors[oldIndex];
+      final color = bloc.themeData.backgroundColors[oldIndex];
 
       bloc.themeData.backgroundColors
         ..removeAt(oldIndex)
@@ -229,7 +229,7 @@ class DeleteCustomTheme extends CustomThemeEvent {
     bloc.themeBloc.customThemes.removeAt(bloc.customThemeIndex);
     bloc.themeBloc.add(const SaveCustomThemes());
 
-    final int selectedThemeId = app<ThemePreferences>().selectedTheme;
+    final selectedThemeId = app<ThemePreferences>().selectedTheme;
 
     if (bloc.themeId == selectedThemeId) {
       // reset theme to default theme when deleting the currently selected theme

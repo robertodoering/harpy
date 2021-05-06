@@ -68,7 +68,7 @@ class _HarpyTabState extends State<HarpyTab>
       _animationController.value = HarpyTabScope.of(context)!.animationValue;
     }
 
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     _colorAnimation = ColorTween(
       begin: theme.accentColor,
@@ -101,12 +101,12 @@ class _HarpyTabState extends State<HarpyTab>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final IconThemeData iconTheme = IconTheme.of(context);
+    final theme = Theme.of(context);
+    final iconTheme = IconTheme.of(context);
 
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (_, Widget? child) => Opacity(
+      builder: (_, __) => Opacity(
         opacity: _opacityAnimation.value,
         child: Card(
           color: widget.cardColor,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,7 @@ class ComposeTweetMedia extends StatelessWidget {
     return TweetMediaLayout(
       child: TweetImagesLayout(
         children: state.media
-            .map((PlatformFile imageFile) => Image.file(
+            .map((imageFile) => Image.file(
                   File(imageFile.path!),
                   fit: BoxFit.cover,
                   width: double.infinity,
@@ -45,8 +44,8 @@ class ComposeTweetMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
-    final ComposeState state = bloc.state;
+    final bloc = context.watch<ComposeBloc>();
+    final state = bloc.state;
 
     Widget child;
 
@@ -152,7 +151,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
       child: ClipRRect(
         key: ValueKey<VideoPlayerController?>(_controller),
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         child: HarpyVideoPlayer.fromController(
           _controller,
           allowVerticalOverflow: true,

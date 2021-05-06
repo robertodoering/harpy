@@ -200,7 +200,6 @@ export 'widgets/misc/custom_animated_crossfade.dart';
 export 'widgets/misc/custom_dismissible.dart';
 export 'widgets/misc/custom_refresh_indicator.dart';
 export 'widgets/misc/custom_sliver_app_bar.dart';
-export 'widgets/misc/fading_nested_scaffold.dart';
 export 'widgets/misc/flare_icons.dart';
 export 'widgets/misc/followers_count.dart';
 export 'widgets/misc/global_bloc_provider.dart';

@@ -414,10 +414,10 @@ class _SliverAppBarState extends State<CustomSliverAppBar>
   @override
   Widget build(BuildContext context) {
     assert(!widget.primary || debugCheckHasMediaQuery(context));
-    final double bottomHeight = widget.bottom?.preferredSize.height ?? 0.0;
-    final double topPadding =
+    final bottomHeight = widget.bottom?.preferredSize.height ?? 0.0;
+    final topPadding =
         widget.primary ? MediaQuery.of(context).padding.top : 0.0;
-    final double collapsedHeight =
+    final collapsedHeight =
         (widget.pinned && widget.floating && widget.bottom != null)
             ? (widget.collapsedHeight ?? 0.0) + bottomHeight + topPadding
             : (widget.collapsedHeight ?? widget.toolbarHeight) +
@@ -552,19 +552,19 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    final double visibleMainHeight = maxExtent - shrinkOffset - topPadding;
-    final double extraToolbarHeight =
+    final visibleMainHeight = maxExtent - shrinkOffset - topPadding;
+    final extraToolbarHeight =
         math.max(minExtent - _bottomHeight - topPadding - toolbarHeight, 0);
-    final double visibleToolbarHeight =
+    final visibleToolbarHeight =
         visibleMainHeight - _bottomHeight - extraToolbarHeight;
 
-    final bool isPinnedWithOpacityFade =
+    final isPinnedWithOpacityFade =
         pinned && floating && bottom != null && extraToolbarHeight == 0.0;
-    final double toolbarOpacity = !pinned || isPinnedWithOpacityFade
+    final toolbarOpacity = !pinned || isPinnedWithOpacityFade
         ? (visibleToolbarHeight / toolbarHeight).clamp(0.0, 1.0)
         : 1.0;
 
-    final Widget flexibleSpaceBar = FlexibleSpaceBar.createSettings(
+    final flexibleSpaceBar = FlexibleSpaceBar.createSettings(
       minExtent: minExtent,
       maxExtent: maxExtent,
       currentExtent: math.max(minExtent, maxExtent - shrinkOffset),
@@ -687,7 +687,7 @@ class _FloatingAppBarState extends State<_FloatingAppBar> {
 
     // When a scroll stops, then maybe snap the appbar into view.
     // Similarly, when a scroll starts, then maybe stop the snap animation.
-    final RenderSliverFloatingPersistentHeader? header = _headerRenderer();
+    final header = _headerRenderer();
     if (_position!.isScrollingNotifier.value) {
       header?.maybeStopSnapAnimation(_position!.userScrollDirection);
     } else {

@@ -20,7 +20,7 @@ class ComposeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ComposeBloc>(
-      create: (BuildContext context) => ComposeBloc(
+      create: (context) => ComposeBloc(
         inReplyToStatus: inReplyToStatus,
         quotedTweet: quotedTweet,
       ),

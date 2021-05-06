@@ -29,7 +29,7 @@ class DownloadService {
     required String url,
     String? name,
   }) async {
-    final String? path = await _requestDownloadDirectory();
+    final path = await _requestDownloadDirectory();
 
     if (path != null) {
       try {
@@ -47,9 +47,9 @@ class DownloadService {
   }
 
   Future<String?> _requestDownloadDirectory() async {
-    final MessageService messageService = app<MessageService>();
+    final messageService = app<MessageService>();
 
-    final PermissionStatus status = await Permission.storage.request();
+    final status = await Permission.storage.request();
 
     if (status.isGranted) {
       return AndroidPathProvider.downloadsPath;

@@ -45,7 +45,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return CustomAnimatedSize(
       alignment: Alignment.topCenter,

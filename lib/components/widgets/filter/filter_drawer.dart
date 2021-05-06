@@ -72,8 +72,8 @@ class FilterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Drawer(
       child: HarpyBackground(

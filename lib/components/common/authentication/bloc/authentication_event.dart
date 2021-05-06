@@ -18,7 +18,7 @@ abstract class AuthenticationEvent {
       ..token = bloc.twitterAuthSession!.token
       ..secret = bloc.twitterAuthSession!.tokenSecret;
 
-    final bool initialized = await initializeAuthenticatedUser(bloc);
+    final initialized = await initializeAuthenticatedUser(bloc);
 
     if (initialized) {
       app<AnalyticsService>().logLogin();
@@ -32,14 +32,14 @@ abstract class AuthenticationEvent {
   ///
   /// Returns `true` if the user was able to be initialized.
   Future<bool> initializeAuthenticatedUser(AuthenticationBloc bloc) async {
-    final String userId = bloc.twitterAuthSession!.userId;
+    final userId = bloc.twitterAuthSession!.userId;
 
     dynamic error;
 
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
-        .then((User user) => UserData.fromUser(user))
-        .handleError((dynamic e, StackTrace st) {
+        .then((user) => UserData.fromUser(user))
+        .handleError((dynamic e, st) {
       error = e;
       silentErrorHandler(e, st);
     });
@@ -47,7 +47,7 @@ abstract class AuthenticationEvent {
     if (error is TimeoutException || error is SocketException) {
       // unable to authenticate user, allow to retry in case of temporary
       // network error
-      final bool? retry = await showDialog<bool>(
+      final retry = await showDialog<bool>(
         context: app<HarpyNavigator>().state!.context,
         builder: (_) => const HarpyDialog(
           title: Text('login'),
@@ -74,7 +74,7 @@ abstract class AuthenticationEvent {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = userId;
 
-      final int selectedThemeId = app<ThemePreferences>().selectedTheme;
+      final selectedThemeId = app<ThemePreferences>().selectedTheme;
 
       // initialize the custom themes for this user
       bloc.themeBloc.loadCustomThemes();
@@ -95,13 +95,13 @@ abstract class AuthenticationEvent {
   /// data.
   Future<void> onLogout(AuthenticationBloc bloc) async {
     // logout
-    final TwitterClient client = bloc.twitterApi.client as TwitterClient;
+    final client = bloc.twitterApi.client as TwitterClient;
 
     if (client.token.isNotEmpty && client.secret.isNotEmpty) {
       unawaited(
         client
             .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
-            .handleError<void>(silentErrorHandler),
+            .handleError(silentErrorHandler),
       );
     }
 
@@ -150,9 +150,9 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
       );
 
       // init active twitter session
-      final String token = bloc.authPreferences.userToken;
-      final String secret = bloc.authPreferences.userSecret;
-      final String userId = bloc.authPreferences.userId;
+      final token = bloc.authPreferences.userToken;
+      final secret = bloc.authPreferences.userSecret;
+      final userId = bloc.authPreferences.userId;
 
       if (token.isNotEmpty || secret.isNotEmpty || userId.isNotEmpty) {
         bloc.twitterAuthSession = TwitterAuthSession(
@@ -234,7 +234,7 @@ class LoginEvent extends AuthenticationEvent {
 
     yield AwaitingAuthenticationState();
 
-    final TwitterAuthResult result = await _authenticateWithWebview(bloc);
+    final result = await _authenticateWithWebview(bloc);
 
     switch (result.status) {
       case TwitterAuthStatus.success:

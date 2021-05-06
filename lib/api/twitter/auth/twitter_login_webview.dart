@@ -59,7 +59,7 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
 
   @override
   Widget build(BuildContext context) {
-    final Uri initialUrl = Uri.https(
+    final initialUrl = Uri.https(
       'api.twitter.com',
       'oauth/authorize',
       <String, String>{
@@ -71,7 +71,7 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
     return WebView(
       initialUrl: initialUrl.toString(),
       javascriptMode: JavascriptMode.unrestricted,
-      navigationDelegate: (NavigationRequest navigation) =>
+      navigationDelegate: (navigation) =>
           _navigationDelegate(context, navigation),
     );
   }

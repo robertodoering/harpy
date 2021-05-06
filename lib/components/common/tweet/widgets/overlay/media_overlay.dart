@@ -16,10 +16,10 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 /// Default behaviour to download a tweet media.
 void defaultOnMediaDownload(String? mediaUrl) {
   if (mediaUrl != null) {
-    final DownloadService downloadService = app<DownloadService>();
+    final downloadService = app<DownloadService>();
 
-    final String url = mediaUrl;
-    final String? fileName = fileNameFromUrl(url);
+    final url = mediaUrl;
+    final fileName = fileNameFromUrl(url);
 
     if (fileName != null) {
       downloadService
@@ -84,12 +84,12 @@ class MediaOverlay extends StatefulWidget {
     VoidCallback? onOpenExternally,
     VoidCallback? onShare,
   }) {
-    final String? mediaUrl = tweetBloc.downloadMediaUrl(tweet);
+    final mediaUrl = tweetBloc.downloadMediaUrl(tweet);
 
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
         onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
-        builder: (BuildContext context) => MediaOverlay(
+        builder: (context) => MediaOverlay(
           tweet: tweet,
           tweetBloc: tweetBloc,
           enableImmersiveMode: enableImmersiveMode,
@@ -199,7 +199,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildActions() {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Container(
       decoration: const BoxDecoration(

@@ -10,9 +10,9 @@ import 'package:harpy/misc/misc.dart';
 ///
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
 List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter? filter]) {
-  final List<TweetData> tweetDataList = <TweetData>[];
+  final tweetDataList = <TweetData>[];
 
-  for (Tweet tweet in tweets.reversed) {
+  for (final tweet in tweets.reversed) {
     if (_filterTweet(tweet, filter)) {
       continue;
     }
@@ -48,14 +48,11 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
         return true;
       }
 
-      final bool hasImage =
-          tweet.extendedEntities!.media!.first.type == kMediaPhoto;
+      final hasImage = tweet.extendedEntities!.media!.first.type == kMediaPhoto;
 
-      final bool hasGif =
-          tweet.extendedEntities!.media!.first.type == kMediaGif;
+      final hasGif = tweet.extendedEntities!.media!.first.type == kMediaGif;
 
-      final bool hasVideo =
-          tweet.extendedEntities!.media!.first.type == kMediaVideo;
+      final hasVideo = tweet.extendedEntities!.media!.first.type == kMediaVideo;
 
       if (!(filter.includesImages && hasImage ||
           filter.includesGif && hasGif ||
@@ -67,13 +64,13 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
     if (filter.excludesHashtags.isNotEmpty) {
       // filter tweets with hashtags
 
-      final List<String> tweetHashtags = tweet.entities?.hashtags
-              ?.map((Hashtag hashtag) => hashtag.text?.toLowerCase() ?? '')
+      final tweetHashtags = tweet.entities?.hashtags
+              ?.map((hashtag) => hashtag.text?.toLowerCase() ?? '')
               .toList() ??
           <String>[];
 
       if (filter.excludesHashtags
-          .map((String hashtag) => removePrependedSymbol(
+          .map((hashtag) => removePrependedSymbol(
               hashtag.toLowerCase(), const <String>['#', '＃']))
           .any(tweetHashtags.contains)) {
         return true;
@@ -82,10 +79,10 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
 
     if (filter.excludesPhrases.isNotEmpty) {
       // filter tweets with keywords / phrases
-      final String tweetText = tweet.fullText?.toLowerCase() ?? '';
+      final tweetText = tweet.fullText?.toLowerCase() ?? '';
 
       if (filter.excludesPhrases
-          .map((String phrase) => phrase.toLowerCase())
+          .map((phrase) => phrase.toLowerCase())
           .any(tweetText.contains)) {
         return true;
       }
@@ -96,7 +93,7 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
 }
 
 bool _addReplyChild(List<TweetData> tweetDataList, Tweet tweet) {
-  for (TweetData tweetData in tweetDataList) {
+  for (final tweetData in tweetDataList) {
     if (tweetData.idStr == tweet.inReplyToStatusIdStr) {
       // found parent tweet
       tweetData.replies.add(TweetData.fromTweet(tweet));

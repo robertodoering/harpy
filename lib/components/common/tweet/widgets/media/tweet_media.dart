@@ -11,7 +11,7 @@ class TweetMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TweetBloc bloc = TweetBloc.of(context);
+    final bloc = TweetBloc.of(context);
 
     Widget child;
     double? aspectRatio;

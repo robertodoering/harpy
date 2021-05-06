@@ -1,7 +1,7 @@
 typedef ErrorCallback = Function(dynamic error, StackTrace stackTrace);
 
-extension HandleFutureError on Future<dynamic> {
-  Future<R?> handleError<R>([ErrorCallback? onError]) async {
+extension HandleFutureError<R> on Future<R> {
+  Future<R?> handleError([ErrorCallback? onError]) async {
     try {
       return await this;
     } catch (e, st) {

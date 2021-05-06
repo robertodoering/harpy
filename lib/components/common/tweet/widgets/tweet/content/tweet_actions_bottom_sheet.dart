@@ -15,18 +15,18 @@ void showTweetActionsBottomSheet(
   BuildContext context, {
   required TweetData tweet,
 }) {
-  final ThemeData theme = Theme.of(context);
-  final TweetBloc bloc = context.read<TweetBloc>();
-  final AuthenticationBloc authBloc = context.read<AuthenticationBloc>();
-  final HomeTimelineBloc homeTimelineBloc = context.read<HomeTimelineBloc>();
+  final theme = Theme.of(context);
+  final bloc = context.read<TweetBloc>();
+  final authBloc = context.read<AuthenticationBloc>();
+  final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
-  final bool isAuthenticatedUser =
+  final isAuthenticatedUser =
       bloc.tweet.userData!.idStr == authBloc.authenticatedUser!.idStr;
 
-  final bool showReply =
+  final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
 
-  final String tweetTime =
+  final tweetTime =
       DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
           .add_Hm()
           .format(tweet.createdAt!.toLocal())

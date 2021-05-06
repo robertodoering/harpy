@@ -8,7 +8,7 @@ class UserProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProfileBloc bloc = context.watch<UserProfileBloc>();
+    final bloc = context.watch<UserProfileBloc>();
 
     return SliverToBoxAdapter(
       child: Card(

@@ -22,7 +22,7 @@ class RequestListTimeline extends ListTimelineEvent with HarpyLogger {
 
     yield const ListTimelineLoading();
 
-    final List<TweetData>? tweets = await bloc.listsService
+    final tweets = await bloc.listsService
         .statuses(listId: bloc.listId, count: 200)
         .then(handleTweets)
         .handleError(twitterApiErrorHandler);
@@ -52,7 +52,7 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
   const RequestOlderListTimeline();
 
   String? _findMaxId(ListTimelineResult state) {
-    final int? lastId = int.tryParse(state.maxId ?? '');
+    final lastId = int.tryParse(state.maxId ?? '');
 
     return lastId != null ? '${lastId - 1}' : null;
   }
@@ -69,7 +69,7 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
     }
 
     if (currentState is ListTimelineResult) {
-      final String? maxId = _findMaxId(currentState);
+      final maxId = _findMaxId(currentState);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -80,7 +80,7 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
 
       yield ListTimelineLoadingOlder(oldResult: currentState);
 
-      final List<TweetData>? tweets = await bloc.listsService
+      final tweets = await bloc.listsService
           .statuses(listId: bloc.listId, count: 200, maxId: maxId)
           .then(handleTweets)
           .handleError(twitterApiErrorHandler);

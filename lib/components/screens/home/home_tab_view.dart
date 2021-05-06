@@ -35,8 +35,8 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final HomeTabModel model = context.watch<HomeTabModel>();
+    final mediaQuery = MediaQuery.of(context);
+    final model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
       length: model.visibleEntries.length,

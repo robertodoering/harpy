@@ -13,7 +13,7 @@ class NewTweetsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),

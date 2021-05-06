@@ -161,18 +161,18 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
     BuildContext fromHeroContext,
     BuildContext toHeroContext,
   ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
+    final hero = flightDirection == HeroFlightDirection.push
         ? fromHeroContext.widget as Hero
         : toHeroContext.widget as Hero;
 
-    final BorderRadiusTween tween = BorderRadiusTween(
+    final tween = BorderRadiusTween(
       begin: const BorderRadius.all(kDefaultRadius),
       end: BorderRadius.zero,
     );
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget? child) => ClipRRect(
+      builder: (_, __) => ClipRRect(
         clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
@@ -181,15 +181,15 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
+    final model = HarpyVideoPlayerModel.of(context);
 
-    Widget child =
+    var child =
         !model.initialized ? _buildUninitialized(model) : _buildVideo(model);
 
     if (widget.autoplay) {
       child = VisibilityChangeDetector(
         key: ValueKey<HarpyVideoPlayerModel>(model),
-        onVisibilityChanged: (bool visible) {
+        onVisibilityChanged: (visible) {
           if (visible && !model.initialized && !model.playing) {
             _controller!.setVolume(0);
             model.initialize();
@@ -215,7 +215,7 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       );
     } else {
       return ChangeNotifierProvider<HarpyVideoPlayerModel>(
-        create: (BuildContext context) => HarpyVideoPlayerModel(_controller),
+        create: (_) => HarpyVideoPlayerModel(_controller),
         builder: _builder,
       );
     }

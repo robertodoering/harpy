@@ -19,13 +19,13 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   bool _pickedImages(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.image,
+      (file) => findMediaType(file.path) == MediaType.image,
     );
   }
 
   bool _pickedGif(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.gif,
+      (file) => findMediaType(file.path) == MediaType.gif,
     );
   }
 
@@ -47,7 +47,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   bool _pickedVideo(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.video,
+      (file) => findMediaType(file.path) == MediaType.video,
     );
   }
 
@@ -56,13 +56,13 @@ class PickTweetMediaEvent extends ComposeEvent {
     ComposeState? currentState,
     ComposeBloc? bloc,
   }) async* {
-    final FilePickerResult? result = await FilePicker.platform
+    final result = await FilePicker.platform
         .pickFiles(
           type: FileType.media,
           allowMultiple: true,
         )
         // ignore exception
-        .catchError((dynamic e) {});
+        .handleError((dynamic e, st) {});
 
     if (result != null && result.files.isNotEmpty) {
       if (_pickedImages(result)) {
@@ -92,13 +92,13 @@ class AddImagesEvent extends ComposeEvent {
       ];
 
   void _removeDuplicates(List<PlatformFile> newFiles, ComposeState? state) {
-    for (PlatformFile image in List<PlatformFile>.from(newFiles)) {
+    for (final image in List<PlatformFile>.from(newFiles)) {
       if (state!.media.any(
-        (PlatformFile existingImage) => existingImage.path == image.path,
+        (existingImage) => existingImage.path == image.path,
       )) {
         // remove the duplicate image
         newFiles.removeWhere(
-          (PlatformFile duplicate) => duplicate.path == image.path,
+          (duplicate) => duplicate.path == image.path,
         );
       }
     }
@@ -109,7 +109,7 @@ class AddImagesEvent extends ComposeEvent {
     ComposeState? currentState,
     ComposeBloc? bloc,
   }) async* {
-    List<PlatformFile> newFiles = List<PlatformFile>.from(files);
+    var newFiles = List<PlatformFile>.from(files);
 
     if (currentState!.hasImages) {
       _removeDuplicates(newFiles, currentState);

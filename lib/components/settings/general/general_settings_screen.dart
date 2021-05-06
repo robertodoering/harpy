@@ -25,7 +25,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         title: const Text('Show changelog dialog'),
         subtitle: const Text('when the app has been updated'),
         value: changelogPreferences!.showChangelogDialog,
-        onChanged: (bool value) {
+        onChanged: (value) {
           HapticFeedback.lightImpact();
           setState(() => changelogPreferences!.showChangelogDialog = value);
         },
@@ -35,7 +35,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         title: const Text('Performance mode'),
         subtitle: const Text('reduces animations and effects'),
         value: generalPreferences!.performanceMode,
-        onChanged: (bool value) {
+        onChanged: (value) {
           HapticFeedback.lightImpact();
           setState(() => generalPreferences!.performanceMode = value);
           context.read<ThemeBloc>().add(const RefreshTheme());

@@ -69,9 +69,8 @@ class HarpyNavigator {
     RouteSettings? currentRoute,
   }) {
     if (currentRoute?.name == UserProfileScreen.route) {
-      final Map<String, dynamic> arguments =
-          currentRoute!.arguments as Map<String, dynamic>? ??
-              <String, dynamic>{};
+      final arguments = currentRoute!.arguments as Map<String, dynamic>? ??
+          <String, dynamic>{};
 
       if (arguments['screenName'] == screenName) {
         _log.fine('preventing navigation to current user');
@@ -182,14 +181,14 @@ class HarpyNavigator {
 /// needs to be a `Map<String, dynamic>` and can be used to pass along
 /// arguments for the screen.
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
-  final String? routeName = settings.name;
+  final routeName = settings.name;
 
   _log.fine('navigating to $routeName');
 
-  final Map<String, dynamic> arguments =
+  final arguments =
       settings.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
 
-  final RouteType routeType =
+  final routeType =
       arguments['routeType'] as RouteType? ?? RouteType.defaultRoute;
 
   Widget screen;

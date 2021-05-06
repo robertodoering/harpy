@@ -35,14 +35,14 @@ class CustomThemeScreen extends StatelessWidget {
     ThemeBloc themeBloc,
     CustomThemeBloc customThemeBloc,
   ) async {
-    bool pop = true;
+    var pop = true;
 
     if (customThemeBloc.canSaveTheme) {
       // ask to discard changes before exiting customization
 
-      final bool? discard = await showDialog<bool>(
+      final discard = await showDialog<bool>(
         context: context,
-        builder: (BuildContext context) => const HarpyDialog(
+        builder: (context) => const HarpyDialog(
           title: Text('discard changes?'),
           actions: <DialogAction<bool>>[
             DialogAction<bool>(
@@ -107,23 +107,23 @@ class CustomThemeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
+    final themeBloc = ThemeBloc.of(context);
 
     return BlocProvider<CustomThemeBloc>(
-      create: (BuildContext context) => CustomThemeBloc(
+      create: (_) => CustomThemeBloc(
         themeData: HarpyThemeData.from(themeData!),
         themeId: themeId,
         themeBloc: themeBloc,
       ),
       child: BlocBuilder<CustomThemeBloc, CustomThemeState>(
-        builder: (BuildContext context, CustomThemeState state) {
-          final CustomThemeBloc customThemeBloc = CustomThemeBloc.of(context);
-          final HarpyTheme harpyTheme = customThemeBloc.harpyTheme;
+        builder: (context, state) {
+          final customThemeBloc = CustomThemeBloc.of(context);
+          final harpyTheme = customThemeBloc.harpyTheme;
 
           return Theme(
             data: harpyTheme.data,
             child: Builder(
-              builder: (BuildContext context) => WillPopScope(
+              builder: (context) => WillPopScope(
                 onWillPop: () => _onWillPop(
                   context,
                   themeBloc,

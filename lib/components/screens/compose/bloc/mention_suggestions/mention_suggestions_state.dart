@@ -10,7 +10,7 @@ class MentionSuggestionsState extends Equatable {
   final String lastQuery;
 
   /// Searched users mapped by their query.
-  final Map<String?, List<UserData>?> searchedUsers;
+  final Map<String, List<UserData>?> searchedUsers;
 
   final List<UserData> followingUsers;
 
@@ -18,7 +18,7 @@ class MentionSuggestionsState extends Equatable {
   List<UserData> get filteredFollowing => followingUsers.isNotEmpty
       ? followingUsers
           .where(
-            (UserData user) =>
+            (user) =>
                 user.name.toLowerCase().contains(lastQuery.toLowerCase()) ||
                 user.screenName
                     .toLowerCase()

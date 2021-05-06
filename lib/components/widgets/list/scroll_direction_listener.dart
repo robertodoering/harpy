@@ -91,7 +91,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
       return false;
     }
 
-    final double scrollPosition = notification.metrics.pixels;
+    final scrollPosition = notification.metrics.pixels;
 
     if (_lastPosition < scrollPosition) {
       // scrolling down

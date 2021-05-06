@@ -29,14 +29,14 @@ class HomeAppBar extends StatelessWidget {
       ),
       CustomPopupMenuButton<int>(
         icon: const Icon(Icons.more_vert),
-        onSelected: (int selection) {
+        onSelected: (selection) {
           if (selection == 0) {
             ScrollDirection.of(context)!.reset!();
 
             bloc.add(const RefreshHomeTimeline(clearPrevious: true));
           }
         },
-        itemBuilder: (BuildContext context) {
+        itemBuilder: (context) {
           return <PopupMenuEntry<int>>[
             const HarpyPopupMenuItem<int>(
               value: 0,
@@ -50,11 +50,11 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ScrollDirection scrollDirection = ScrollDirection.of(context)!;
+    final theme = Theme.of(context);
+    final scrollDirection = ScrollDirection.of(context)!;
 
-    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
-    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
+    final model = context.watch<TimelineFilterModel>();
+    final bloc = context.watch<HomeTimelineBloc>();
 
     // since the sliver app bar does not work as intended with the nested
     // scroll view in the home tab view, we use an animated shifted position

@@ -7,10 +7,10 @@ class UserSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final UserSearchBloc bloc = UserSearchBloc.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = UserSearchBloc.of(context);
 
-    final bool enableScroll =
+    final enableScroll =
         !bloc.loadingInitialData && !bloc.showError && !bloc.showNoDataExists;
 
     return ScrollDirectionListener(

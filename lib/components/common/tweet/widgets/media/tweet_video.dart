@@ -32,11 +32,11 @@ class TweetVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaPreferences mediaPreferences = app<MediaPreferences>();
+    final mediaPreferences = app<MediaPreferences>();
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: kDefaultBorderRadius as BorderRadius?,
+      borderRadius: kDefaultBorderRadius,
       child: HarpyVideoPlayer.fromController(
         VideoPlayerController.network(
           tweet!.video!.appropriateUrl!,

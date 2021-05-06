@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           child: BlocProvider<TrendsBloc>(
             create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
             child: Builder(
-              builder: (BuildContext context) => HomeListsProvider(
+              builder: (context) => HomeListsProvider(
                 model: context.watch<HomeTabModel>(),
                 // scroll direction listener has to be built above the filter
                 child: ScrollDirectionListener(

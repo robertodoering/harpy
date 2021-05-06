@@ -26,7 +26,7 @@ class TweetTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomAnimatedSize(
       child: BlocBuilder<TweetBloc, TweetState>(
-        builder: (BuildContext context, TweetState state) => AnimatedOpacity(
+        builder: (context, state) => AnimatedOpacity(
           opacity: tweet.hasTranslation ? 1 : 0,
           duration: kShortAnimationDuration,
           curve: Curves.easeOut,

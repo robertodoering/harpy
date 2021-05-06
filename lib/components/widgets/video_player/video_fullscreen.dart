@@ -35,7 +35,7 @@ class VideoFullscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     // rotate the video depending on its aspect ratio and the current
     // orientation

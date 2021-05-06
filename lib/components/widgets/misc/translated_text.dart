@@ -21,13 +21,13 @@ class TranslatedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final TextStyle bodyText1 = theme.textTheme.bodyText1!.apply(
+    final bodyText1 = theme.textTheme.bodyText1!.apply(
       fontSizeDelta: fontSizeDelta,
     );
 
-    final TextStyle bodyText2 = theme.textTheme.bodyText2!.apply(
+    final bodyText2 = theme.textTheme.bodyText2!.apply(
       fontSizeDelta: fontSizeDelta,
     );
 

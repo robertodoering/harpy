@@ -55,7 +55,7 @@ class SearchTweets extends TweetSearchEvent {
     if (customQuery != null && customQuery!.trim().isNotEmpty) {
       return customQuery;
     } else if (filter != null) {
-      final String filterQuery = filter!.buildQuery();
+      final filterQuery = filter!.buildQuery();
 
       if (filterQuery.trim().isNotEmpty) {
         return filterQuery;
@@ -80,7 +80,7 @@ class SearchTweets extends TweetSearchEvent {
   }
 
   List<TweetData> _transformTweets(List<Tweet> tweets) {
-    return tweets.map((Tweet tweet) => TweetData.fromTweet(tweet)).toList();
+    return tweets.map((tweet) => TweetData.fromTweet(tweet)).toList();
   }
 
   @override
@@ -88,7 +88,7 @@ class SearchTweets extends TweetSearchEvent {
     required TweetSearchState currentState,
     required TweetSearchBloc bloc,
   }) async* {
-    final String? query = _searchQuery();
+    final query = _searchQuery();
 
     if (_unchangedQuery(query, currentState)) {
       _log.fine('search query does not differ from last query');
@@ -100,13 +100,13 @@ class SearchTweets extends TweetSearchEvent {
 
       yield TweetSearchLoading(query: query);
 
-      final List<TweetData>? tweets = await bloc.searchService
+      final tweets = await bloc.searchService
           .searchTweets(
             q: query,
             count: 100,
             resultType: _resultType(),
           )
-          .then((TweetSearch result) => _transformTweets(result.statuses!))
+          .then((result) => _transformTweets(result.statuses!))
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {

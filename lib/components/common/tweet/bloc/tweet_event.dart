@@ -139,7 +139,7 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
   }) async* {
     log.fine('deleting tweet');
 
-    final Tweet? tweet = await bloc!.tweetService
+    final tweet = await bloc!.tweetService
         .destroy(id: bloc.tweet.idStr, trimUser: true)
         .handleError(silentErrorHandler);
 
@@ -201,11 +201,11 @@ class TranslateTweet extends TweetEvent {
 
     yield TranslatingTweetState();
 
-    final String translateLanguage =
+    final translateLanguage =
         bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
 
-    final bool tweetTranslatable = bloc.tweet.translatable(translateLanguage);
-    final bool quoteTranslatable = bloc.tweet.quoteTranslatable(
+    final tweetTranslatable = bloc.tweet.translatable(translateLanguage);
+    final quoteTranslatable = bloc.tweet.quoteTranslatable(
       translateLanguage,
     );
 
@@ -214,16 +214,14 @@ class TranslateTweet extends TweetEvent {
       if (tweetTranslatable)
         bloc.translationService
             .translate(text: bloc.tweet.fullText, to: translateLanguage)
-            .then((Translation translation) =>
-                bloc.tweet.translation = translation)
+            .then((translation) => bloc.tweet.translation = translation)
             .handleError(silentErrorHandler),
 
       // quote translation
       if (quoteTranslatable)
         bloc.translationService
             .translate(text: bloc.tweet.quote!.fullText, to: translateLanguage)
-            .then((Translation translation) =>
-                bloc.tweet.quote!.translation = translation)
+            .then((translation) => bloc.tweet.quote!.translation = translation)
             .handleError(silentErrorHandler)
     ]);
 

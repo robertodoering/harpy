@@ -15,8 +15,7 @@ class TweetRememberVisibility extends StatelessWidget {
   final Widget child;
 
   void _onVisibilityChanged(bool visible) {
-    final TweetVisibilityPreferences tweetVisibilityPreferences =
-        app<TweetVisibilityPreferences>();
+    final tweetVisibilityPreferences = app<TweetVisibilityPreferences>();
 
     if (visible) {
       tweetVisibilityPreferences.updateVisibleTweet(tweet!);

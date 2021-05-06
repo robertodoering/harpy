@@ -74,12 +74,12 @@ class TwitterListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return ListCardAnimation(
       key: key,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         onTap: onSelected,
         child: Card(
           child: Padding(

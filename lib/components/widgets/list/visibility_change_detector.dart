@@ -47,7 +47,7 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
   void _changeVisible(bool value) {
     visible = value;
     if (mounted) {
-      for (ValueChanged<bool>? callback in _onChanged) {
+      for (final callback in _onChanged) {
         callback!(value);
       }
     }

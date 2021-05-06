@@ -31,7 +31,7 @@ class HomeListsProvider extends StatefulWidget {
     required String? listId,
   }) {
     return _HomeListsBlocsScope.of(context)!.blocs.firstWhereOrNull(
-          (ListTimelineBloc bloc) => bloc.listId == listId,
+          (bloc) => bloc.listId == listId,
         );
   }
 
@@ -63,7 +63,7 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
   void didUpdateWidget(covariant HomeListsProvider oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    for (ListTimelineBloc bloc in _unusedBlocs) {
+    for (final bloc in _unusedBlocs) {
       bloc.close();
     }
 
@@ -72,13 +72,13 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
   }
 
   void _createBlocs(List<HomeTabEntry> entries) {
-    for (HomeTabEntry entry in entries) {
+    for (final entry in entries) {
       blocs.add(ListTimelineBloc(listId: entry.id));
     }
   }
 
   bool _hasEntry(ListTimelineBloc bloc) {
-    for (HomeTabEntry entry in widget.model.listEntries) {
+    for (final entry in widget.model.listEntries) {
       if (entry.id == bloc.listId) {
         return true;
       }
@@ -92,7 +92,7 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
   }
 
   bool _hasNoBloc(HomeTabEntry entry) {
-    for (ListTimelineBloc bloc in blocs) {
+    for (final bloc in blocs) {
       if (bloc.listId == entry.id) {
         return false;
       }
@@ -105,7 +105,7 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
   void dispose() {
     super.dispose();
 
-    for (ListTimelineBloc bloc in blocs) {
+    for (final bloc in blocs) {
       bloc.close();
     }
   }

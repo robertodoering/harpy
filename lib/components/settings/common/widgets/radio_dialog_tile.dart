@@ -66,7 +66,7 @@ class RadioDialogTile<T> extends StatelessWidget {
               title: Text(titles[i]),
               subtitle: subtitles != null ? Text(subtitles![i]) : null,
               dense: denseRadioTiles,
-              onChanged: (T? value) async {
+              onChanged: (value) async {
                 unawaited(HapticFeedback.lightImpact());
                 await app<HarpyNavigator>().state!.maybePop();
                 onChanged.call(value);
@@ -87,7 +87,7 @@ class RadioDialogTile<T> extends StatelessWidget {
       onTap: () {
         showDialog<int>(
           context: context,
-          builder: (BuildContext context) => _buildDialog(),
+          builder: (_) => _buildDialog(),
         );
       },
     );

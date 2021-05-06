@@ -19,10 +19,10 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UserProfileBloc>(
-      create: (BuildContext context) => UserProfileBloc(screenName: screenName),
+      create: (context) => UserProfileBloc(screenName: screenName),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
-        builder: (BuildContext context, UserProfileState state) {
-          final UserProfileBloc bloc = UserProfileBloc.of(context);
+        builder: (context, state) {
+          final bloc = UserProfileBloc.of(context);
 
           Widget child;
 

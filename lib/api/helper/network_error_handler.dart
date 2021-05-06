@@ -23,7 +23,7 @@ void silentErrorHandler(dynamic error, [StackTrace? stackTrace]) {
 void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
   _log.info('handling twitter error', error);
 
-  final MessageService messageService = app<MessageService>();
+  final messageService = app<MessageService>();
 
   String? message;
 
@@ -33,7 +33,7 @@ void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
     switch (error.statusCode) {
       case 429:
         // rate limit reached
-        final Duration? limitReset = _limitResetDuration(error);
+        final limitReset = _limitResetDuration(error);
 
         message = 'rate limit reached\n';
         message += limitReset != null
@@ -73,7 +73,7 @@ void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
 /// limited from the twitter api.
 Duration? _limitResetDuration(Response response) {
   try {
-    final int limitReset = int.parse(response.headers['x-rate-limit-reset']!);
+    final limitReset = int.parse(response.headers['x-rate-limit-reset']!);
 
     return DateTime.fromMillisecondsSinceEpoch(
       limitReset * 1000,

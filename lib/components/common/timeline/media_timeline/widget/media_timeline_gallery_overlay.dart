@@ -54,7 +54,7 @@ class _MediaTimelineGalleryOverlayState
   void _onPageChanged(int newIndex) {
     _index = newIndex;
 
-    final TweetData newTweet = widget.entries[newIndex].tweet;
+    final newTweet = widget.entries[newIndex].tweet;
 
     if (mounted && newTweet.idStr != _tweet.idStr) {
       setState(() {
@@ -81,11 +81,11 @@ class _MediaTimelineGalleryOverlayState
         child: HarpyMediaGallery.builder(
           itemCount: widget.entries.length,
           initialIndex: widget.initialIndex,
-          heroTagBuilder: (int index) => widget.entries[index].isImage
+          heroTagBuilder: (index) => widget.entries[index].isImage
               ? '$index-${widget.entries[index].media!.appropriateUrl}'
               : null,
           onPageChanged: _onPageChanged,
-          builder: (_, int index) => MediaTimelineGalleryWidget(
+          builder: (_, index) => MediaTimelineGalleryWidget(
             entry: widget.entries[index],
             initialIndex: widget.initialIndex,
             index: index,

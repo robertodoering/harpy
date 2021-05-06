@@ -13,7 +13,7 @@ class HomeListTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ListTimelineBloc? bloc = HomeListsProvider.blocOf(
+    final bloc = HomeListsProvider.blocOf(
       context,
       listId: listId,
     );

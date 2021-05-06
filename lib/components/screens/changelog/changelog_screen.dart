@@ -29,16 +29,15 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
   }
 
   Future<void> _initChangelogData() async {
-    final List<Future<ChangelogData?>> dataFutures =
-        List<int>.generate(_currentVersion + 1, (int index) => index)
-            .map((int versionCode) => changelogParser!.parse(
+    final dataFutures =
+        List<int>.generate(_currentVersion + 1, (index) => index)
+            .map((versionCode) => changelogParser!.parse(
                   context,
                   '$versionCode',
                 ))
             .toList();
 
-    List<ChangelogData?> dataList =
-        await Future.wait<ChangelogData?>(dataFutures);
+    var dataList = await Future.wait<ChangelogData?>(dataFutures);
 
     dataList = dataList.whereType<ChangelogData>().toList().reversed.toList();
 
@@ -51,7 +50,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     return ListView.separated(
       padding: DefaultEdgeInsets.only(top: true, bottom: true),
       itemCount: _dataList!.length,
-      itemBuilder: (BuildContext context, int index) => Padding(
+      itemBuilder: (context, index) => Padding(
         padding: DefaultEdgeInsets.only(left: true, right: true),
         child: Card(
           child: Padding(

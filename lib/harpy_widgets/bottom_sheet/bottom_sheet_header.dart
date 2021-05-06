@@ -11,7 +11,7 @@ class BottomSheetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Padding(
       padding: DefaultEdgeInsets.all(),

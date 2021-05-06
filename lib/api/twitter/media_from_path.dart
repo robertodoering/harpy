@@ -3,7 +3,7 @@ import 'package:mime_type/mime_type.dart';
 
 /// Uses [mime] to find the [MediaType] from a file path.
 MediaType? findMediaType(String? path) {
-  final String? mimeType = mime(path);
+  final mimeType = mime(path);
 
   if (mimeType == null) {
     return null;

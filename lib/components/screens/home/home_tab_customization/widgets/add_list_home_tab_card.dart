@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -20,8 +19,8 @@ class AddListHomeTabCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HomeTabModel model = context.watch<HomeTabModel>();
+    final theme = Theme.of(context);
+    final model = context.watch<HomeTabModel>();
 
     final Widget icon = Padding(
       padding: const EdgeInsets.all(HarpyTab.tabPadding),
@@ -42,13 +41,13 @@ class AddListHomeTabCard extends StatelessWidget {
         onTap: proDisabled
             ? null
             : () => app<HarpyNavigator>().pushShowListsScreen(
-                  onListSelected: (TwitterListData list) {
+                  onListSelected: (list) {
                     Navigator.of(context).maybePop();
 
                     model.addList(list: list);
                   },
                 ),
-        borderRadius: kDefaultBorderRadius as BorderRadius?,
+        borderRadius: kDefaultBorderRadius,
         child: Row(
           children: <Widget>[
             icon,

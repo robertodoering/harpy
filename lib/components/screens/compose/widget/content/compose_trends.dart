@@ -16,11 +16,11 @@ class ComposeTweetTrends extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TrendsBloc>(
-      create: (BuildContext context) => TrendsBloc(),
+      create: (context) => TrendsBloc(),
       child: Builder(
-        builder: (BuildContext context) {
-          final TrendsBloc bloc = context.watch<TrendsBloc>();
-          final TrendsState state = bloc.state;
+        builder: (context) {
+          final bloc = context.watch<TrendsBloc>();
+          final state = bloc.state;
 
           Widget? child;
 
@@ -31,7 +31,7 @@ class ComposeTweetTrends extends StatelessWidget {
           return ComposeTweetSuggestions(
             controller: controller,
             selectionRegExp: hashtagStartRegex,
-            onSearch: (String hashtag) {
+            onSearch: (hashtag) {
               if (state is TrendsInitial) {
                 bloc.add(const FindTrendsEvent.global());
               }
@@ -53,9 +53,9 @@ class TrendSuggestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TrendsBloc bloc = context.watch<TrendsBloc>();
-    final TrendsState state = bloc.state;
+    final theme = Theme.of(context);
+    final bloc = context.watch<TrendsBloc>();
+    final state = bloc.state;
 
     return ListView(
       padding: EdgeInsets.zero,

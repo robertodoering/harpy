@@ -21,9 +21,9 @@ class UserTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
-    final UserTimelineState state = bloc.state;
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = context.watch<UserTimelineBloc>();
+    final state = bloc.state;
 
     return ScrollToStart(
       child: LoadMoreListener(

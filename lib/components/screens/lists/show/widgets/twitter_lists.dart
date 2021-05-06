@@ -16,7 +16,7 @@ class TwitterLists extends StatelessWidget {
 
   Widget _itemBuilder(int index, List<TwitterListData> lists) {
     if (index.isEven) {
-      final TwitterListData list = lists[index ~/ 2];
+      final list = lists[index ~/ 2];
 
       return TwitterListCard(
         list,
@@ -34,8 +34,8 @@ class TwitterLists extends StatelessWidget {
 
   int? _indexCallback(Key key, List<TwitterListData> lists) {
     if (key is ValueKey<String>) {
-      final int index = lists.indexWhere(
-        (TwitterListData list) => list.idStr == key.value,
+      final index = lists.indexWhere(
+        (list) => list.idStr == key.value,
       );
 
       if (index != -1) {
@@ -58,8 +58,8 @@ class TwitterLists extends StatelessWidget {
         padding: DefaultEdgeInsets.all(),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, int index) => _itemBuilder(index, state.ownerships),
-            findChildIndexCallback: (Key key) =>
+            (_, index) => _itemBuilder(index, state.ownerships),
+            findChildIndexCallback: (key) =>
                 _indexCallback(key, state.ownerships),
             childCount: state.ownerships.length * 2 - 1,
           ),
@@ -97,8 +97,8 @@ class TwitterLists extends StatelessWidget {
         padding: DefaultEdgeInsets.all(),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, int index) => _itemBuilder(index, state.subscriptions),
-            findChildIndexCallback: (Key key) =>
+            (_, index) => _itemBuilder(index, state.subscriptions),
+            findChildIndexCallback: (key) =>
                 _indexCallback(key, state.subscriptions),
             childCount: state.subscriptions.length * 2 - 1,
           ),
@@ -126,10 +126,10 @@ class TwitterLists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
-    final ListsShowBloc bloc = context.watch<ListsShowBloc>();
-    final ListsShowState state = bloc.state;
+    final bloc = context.watch<ListsShowBloc>();
+    final state = bloc.state;
 
     return CustomScrollView(
       slivers: <Widget>[

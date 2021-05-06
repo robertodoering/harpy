@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
@@ -35,7 +34,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   }
 
   Widget _buildUrl(BuildContext context, ThemeData theme) {
-    final Url url = bloc.user!.entities!.url!.urls!.first;
+    final url = bloc.user!.entities!.url!.urls!.first;
 
     final Widget child = GestureDetector(
       onTap: () => defaultOnUrlTap(context, url),
@@ -54,9 +53,9 @@ class UserProfileAdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final List<Widget> children = <Widget>[
+    final children = <Widget>[
       if (bloc.user!.hasLocation)
         _buildRow(
           theme,

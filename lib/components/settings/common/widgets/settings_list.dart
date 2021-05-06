@@ -14,12 +14,11 @@ class SettingsList extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 16),
       itemCount: settings.length,
-      itemBuilder: (BuildContext context, int index) => SettingsGroup(
+      itemBuilder: (_, index) => SettingsGroup(
         title: settings.keys.elementAt(index),
         children: settings.values.elementAt(index),
       ),
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 16),
+      separatorBuilder: (_, __) => const SizedBox(height: 16),
     );
   }
 }

@@ -48,7 +48,7 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserData user = AuthenticationBloc.of(context).authenticatedUser!;
+    final user = AuthenticationBloc.of(context).authenticatedUser!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),

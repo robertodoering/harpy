@@ -21,7 +21,7 @@ class PostTweetDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PostTweetBloc>(
-      create: (BuildContext context) => PostTweetBloc(
+      create: (_) => PostTweetBloc(
         controller!.text,
         composeBloc: composeBloc,
       ),
@@ -74,9 +74,9 @@ class PostTweetDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final PostTweetBloc postTweetBloc = context.watch<PostTweetBloc>();
-    final PostTweetState state = postTweetBloc.state;
+    final theme = Theme.of(context);
+    final postTweetBloc = context.watch<PostTweetBloc>();
+    final state = postTweetBloc.state;
 
     return WillPopPostTweetDialog(
       child: HarpyDialog(
@@ -123,8 +123,8 @@ class WillPopPostTweetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PostTweetBloc postTweetBloc = context.watch<PostTweetBloc>();
-    final PostTweetState state = postTweetBloc.state;
+    final postTweetBloc = context.watch<PostTweetBloc>();
+    final state = postTweetBloc.state;
 
     return WillPopScope(
       onWillPop: () => _onWillPop(context, state),

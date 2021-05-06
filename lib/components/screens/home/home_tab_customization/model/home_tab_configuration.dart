@@ -47,7 +47,7 @@ class HomeTabConfiguration extends Equatable {
   }
 
   HomeTabConfiguration updateEntry(int index, HomeTabEntry entry) {
-    final List<HomeTabEntry> newEntries = List<HomeTabEntry>.from(entries);
+    final newEntries = List<HomeTabEntry>.from(entries);
     newEntries[index] = entry;
 
     return HomeTabConfiguration(

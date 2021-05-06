@@ -31,7 +31,7 @@ class _ScrollAwareFloatingActionButtonState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final ScrollDirection scrollDirection = ScrollDirection.of(context)!;
+    final scrollDirection = ScrollDirection.of(context)!;
 
     _show = scrollDirection.direction == widget.direction;
   }

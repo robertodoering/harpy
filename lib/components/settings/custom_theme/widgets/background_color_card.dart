@@ -17,11 +17,9 @@ class BackgroundColorCard extends StatelessWidget {
   final int index;
 
   Future<void> _changeBackgroundColor(BuildContext context) async {
-    final Color? newColor = await showDialog<Color>(
+    final newColor = await showDialog<Color>(
       context: context,
-      builder: (BuildContext context) => ColorPickerDialog(
-        color: color,
-      ),
+      builder: (_) => ColorPickerDialog(color: color),
     );
 
     if (newColor != null) {
@@ -31,9 +29,9 @@ class BackgroundColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final Color textColor =
+    final textColor =
         ThemeData.estimateBrightnessForColor(color!) == Brightness.light
             ? Colors.black
             : Colors.white;

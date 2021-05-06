@@ -77,17 +77,15 @@ class ChangelogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> additions = data!.additions
-        .map(
-          (ChangelogEntry entry) => _buildEntry(
-            entry,
-            const Icon(CupertinoIcons.plus_circled, color: Colors.green),
-          ),
-        )
+    final additions = data!.additions
+        .map((entry) => _buildEntry(
+              entry,
+              const Icon(CupertinoIcons.plus_circled, color: Colors.green),
+            ))
         .toList();
 
-    final List<Widget> changes = data!.changes
-        .map((ChangelogEntry entry) => _buildEntry(
+    final changes = data!.changes
+        .map((entry) => _buildEntry(
               entry,
               const Icon(
                 CupertinoIcons.smallcircle_fill_circle,
@@ -96,8 +94,8 @@ class ChangelogWidget extends StatelessWidget {
             ))
         .toList();
 
-    final List<Widget> fixes = data!.fixes
-        .map((ChangelogEntry entry) => _buildEntry(
+    final fixes = data!.fixes
+        .map((entry) => _buildEntry(
               entry,
               const Icon(
                 CupertinoIcons.smallcircle_fill_circle,
@@ -106,15 +104,15 @@ class ChangelogWidget extends StatelessWidget {
             ))
         .toList();
 
-    final List<Widget> removals = data!.removals
-        .map((ChangelogEntry entry) => _buildEntry(
+    final removals = data!.removals
+        .map((entry) => _buildEntry(
               entry,
               const Icon(CupertinoIcons.minus_circled, color: Colors.red),
             ))
         .toList();
 
-    final List<Widget> others = data!.others
-        .map((ChangelogEntry entry) => _buildEntry(
+    final others = data!.others
+        .map((entry) => _buildEntry(
               entry,
               const Icon(
                 CupertinoIcons.smallcircle_fill_circle,

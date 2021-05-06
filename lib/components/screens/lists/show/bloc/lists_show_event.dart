@@ -25,8 +25,7 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
     PaginatedTwitterLists? paginatedOwnerships;
     PaginatedTwitterLists? paginatedSubscriptions;
 
-    final List<PaginatedTwitterLists>? responses = await Future.wait<
-        PaginatedTwitterLists>(<Future<PaginatedTwitterLists>>[
+    final responses = await Future.wait<PaginatedTwitterLists>([
       bloc.listsService.ownerships(userId: bloc.userId),
       bloc.listsService.subscriptions(userId: bloc.userId),
     ]).handleError(twitterApiErrorHandler);
@@ -43,7 +42,7 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
 
     if (paginatedOwnerships != null) {
       ownerships = paginatedOwnerships.lists!
-          .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+          .map((list) => TwitterListData.fromTwitterList(list))
           .toList();
 
       ownershipsCursor = paginatedOwnerships.nextCursorStr;
@@ -51,7 +50,7 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
 
     if (paginatedSubscriptions != null) {
       subscriptions = paginatedSubscriptions.lists!
-          .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+          .map((list) => TwitterListData.fromTwitterList(list))
           .toList();
 
       subscriptionsCursor = paginatedSubscriptions.nextCursorStr;
@@ -97,7 +96,7 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final PaginatedTwitterLists? paginatedOwnerships = await bloc.listsService
+      final paginatedOwnerships = await bloc.listsService
           .ownerships(
             userId: bloc.userId,
             cursor: currentState.ownershipsCursor,
@@ -105,12 +104,13 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
           .handleError(twitterApiErrorHandler);
 
       if (paginatedOwnerships != null) {
-        final List<TwitterListData> newOwnerships = paginatedOwnerships.lists!
-            .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+        final newOwnerships = paginatedOwnerships.lists!
+            .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final List<TwitterListData> ownerships = List<TwitterListData>.of(
-            currentState.ownerships.followedBy(newOwnerships));
+        final ownerships = List<TwitterListData>.of(
+          currentState.ownerships.followedBy(newOwnerships),
+        );
 
         yield ListsResult(
           ownerships: ownerships,
@@ -150,22 +150,21 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final PaginatedTwitterLists? paginatedSubscriptions =
-          await bloc.listsService
-              .subscriptions(
-                userId: bloc.userId,
-                cursor: currentState.subscriptionsCursor,
-              )
-              .handleError(twitterApiErrorHandler);
+      final paginatedSubscriptions = await bloc.listsService
+          .subscriptions(
+            userId: bloc.userId,
+            cursor: currentState.subscriptionsCursor,
+          )
+          .handleError(twitterApiErrorHandler);
 
       if (paginatedSubscriptions != null) {
-        final List<TwitterListData> newSubscriptions = paginatedSubscriptions
-            .lists!
-            .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+        final newSubscriptions = paginatedSubscriptions.lists!
+            .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final List<TwitterListData> subscriptions = List<TwitterListData>.of(
-            currentState.subscriptions.followedBy(newSubscriptions));
+        final subscriptions = List<TwitterListData>.of(
+          currentState.subscriptions.followedBy(newSubscriptions),
+        );
 
         yield ListsResult(
           ownerships: currentState.ownerships,

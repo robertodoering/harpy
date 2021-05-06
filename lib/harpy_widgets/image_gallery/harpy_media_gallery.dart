@@ -35,7 +35,7 @@ class HarpyMediaGallery extends StatelessWidget {
   final PhotoViewGalleryPageChangedCallback? onPageChanged;
 
   static BorderRadius defaultBeginBorderRadiusBuilder(int index) {
-    return kDefaultBorderRadius as BorderRadius;
+    return kDefaultBorderRadius;
   }
 
   Widget _flightShuttleBuilder(
@@ -45,11 +45,11 @@ class HarpyMediaGallery extends StatelessWidget {
     BuildContext fromHeroContext,
     BuildContext toHeroContext,
   ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
+    final hero = flightDirection == HeroFlightDirection.push
         ? fromHeroContext.widget as Hero
         : toHeroContext.widget as Hero;
 
-    final BorderRadiusTween tween = BorderRadiusTween(
+    final tween = BorderRadiusTween(
       begin: beginBorderRadiusBuilder(index),
       end: BorderRadius.zero,
     );
@@ -73,10 +73,10 @@ class HarpyMediaGallery extends StatelessWidget {
         placeholderBuilder: heroPlaceholderBuilder,
         flightShuttleBuilder: (
           _,
-          Animation<double> animation,
-          HeroFlightDirection flightDirection,
-          BuildContext fromHeroContext,
-          BuildContext toHeroContext,
+          animation,
+          flightDirection,
+          fromHeroContext,
+          toHeroContext,
         ) =>
             _flightShuttleBuilder(
           index,
@@ -99,7 +99,7 @@ class HarpyMediaGallery extends StatelessWidget {
       pageController: PageController(initialPage: initialIndex),
       backgroundDecoration: const BoxDecoration(color: Colors.transparent),
       onPageChanged: onPageChanged,
-      builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
+      builder: (_, index) => PhotoViewGalleryPageOptions.customChild(
         initialScale: PhotoViewComputedScale.covered,
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 3,

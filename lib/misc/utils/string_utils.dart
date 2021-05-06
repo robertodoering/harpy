@@ -4,12 +4,12 @@ import 'package:timeago/timeago.dart' as timeago;
 /// Pretty prints a duration difference as long as the difference is smaller
 /// than an hour.
 String prettyPrintDurationDifference(Duration difference) {
-  final int minutes = difference.inMinutes;
-  final int seconds = difference.inSeconds;
+  final minutes = difference.inMinutes;
+  final seconds = difference.inSeconds;
 
   if (minutes > 0) {
-    final int remainingSeconds = seconds - minutes * 60;
-    final String secondsString =
+    final remainingSeconds = seconds - minutes * 60;
+    final secondsString =
         remainingSeconds > 9 ? '$remainingSeconds' : '0$remainingSeconds';
 
     return '$minutes:$secondsString minutes';
@@ -33,7 +33,7 @@ String prettyPrintDuration(Duration? duration) {
     return '';
   }
 
-  final String seconds = (duration.inSeconds % 60).toString();
+  final seconds = (duration.inSeconds % 60).toString();
 
   return '${duration.inMinutes}:${seconds.length < 2 ? "0$seconds" : seconds}';
 }
@@ -48,7 +48,7 @@ const Map<String, String> _twitterHtmlEntities = <String, String>{
 
 /// Parses `<`, `>` and `&` when they appear as html entities in the [source].
 String? parseHtmlEntities(String? source) {
-  _twitterHtmlEntities.forEach((String entity, String value) {
+  _twitterHtmlEntities.forEach((entity, value) {
     source = source!.replaceAll(entity, value);
   });
 
@@ -121,9 +121,9 @@ String tweetTimeDifference(BuildContext context, DateTime createdAt) {
 String? fileNameFromUrl(String? url) {
   if (url != null) {
     try {
-      final int startIndex = url.lastIndexOf('/') + 1;
+      final startIndex = url.lastIndexOf('/') + 1;
 
-      int endIndex = url.lastIndexOf('?');
+      var endIndex = url.lastIndexOf('?');
       if (endIndex == -1) {
         endIndex = url.length;
       }
@@ -151,7 +151,7 @@ String? prependIfMissing(
   if (value == null || value.isEmpty) {
     return value;
   } else {
-    for (String symbol in symbols) {
+    for (final symbol in symbols) {
       if (value.startsWith(symbol)) {
         if (value.length == symbol.length) {
           return null;
@@ -172,7 +172,7 @@ String? removePrependedSymbol(String? value, List<String> symbols) {
     return null;
   }
 
-  for (String symbol in symbols) {
+  for (final symbol in symbols) {
     if (value.startsWith(symbol)) {
       return value.substring(symbol.length);
     }

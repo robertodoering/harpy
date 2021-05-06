@@ -43,7 +43,7 @@ class VideoThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = initializing
+    final child = initializing
         ? SizedBox(
             width: compact
                 ? kVideoPlayerSmallCenterIconSize

@@ -34,9 +34,8 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
       return 0;
     }
 
-    final int indexOfFirstNewestTweet = tweets.lastIndexWhere(
-      (TweetData tweet) =>
-          (int.tryParse(tweet.originalIdStr) ?? 0) > lastViewedMention,
+    final indexOfFirstNewestTweet = tweets.lastIndexWhere(
+      (tweet) => (int.tryParse(tweet.originalIdStr) ?? 0) > lastViewedMention,
     );
 
     return indexOfFirstNewestTweet + 1;
@@ -51,10 +50,10 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
 
     yield const MentionsTimelineLoading();
 
-    final int lastViewedMention =
+    final lastViewedMention =
         bloc.tweetVisibilityPreferences!.lastViewedMention;
 
-    final List<TweetData>? tweets = await bloc.timelineService
+    final tweets = await bloc.timelineService
         .mentionsTimeline(count: 200)
         .then(handleTweets)
         .handleError(twitterApiErrorHandler);

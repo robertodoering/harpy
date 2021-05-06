@@ -48,9 +48,9 @@ class VideoData extends MediaData {
     // 'application/x-mpegURL') and then sorts them by the bitrate descending
     // (highest quality first)
     variants = media.videoInfo!.variants!
-        .where((Variant variant) => variant.bitrate != null)
+        .where((variant) => variant.bitrate != null)
         .toList()
-          ..sort((Variant a, Variant b) => b.bitrate!.compareTo(a.bitrate!));
+          ..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
 
     thumbnail = ImageData.fromImageUrl(media.mediaUrlHttps ?? '');
   }

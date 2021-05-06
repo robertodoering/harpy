@@ -28,7 +28,7 @@ class _TweetImagesState extends State<TweetImages> {
   void _onImageTap(int index) {
     _galleryIndex = index;
 
-    final String? mediaUrl = widget.tweetBloc.downloadMediaUrl(
+    final mediaUrl = widget.tweetBloc.downloadMediaUrl(
       widget.tweet!,
       index: _galleryIndex,
     );
@@ -44,10 +44,9 @@ class _TweetImagesState extends State<TweetImages> {
         itemCount: _images!.length,
         initialIndex: index,
         beginBorderRadiusBuilder: _borderRadiusForImage,
-        heroTagBuilder: (int index) =>
-            _images!.map(_imageHeroTag).toList()[index],
-        onPageChanged: (int newIndex) => _galleryIndex = newIndex,
-        builder: (_, int index) => HarpyImage(
+        heroTagBuilder: (index) => _images!.map(_imageHeroTag).toList()[index],
+        onPageChanged: (newIndex) => _galleryIndex = newIndex,
+        builder: (_, index) => HarpyImage(
           imageUrl: _images![index].appropriateUrl,
         ),
       ),
@@ -64,7 +63,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   BorderRadius _borderRadiusForImage(int index) {
-    final int count = _images!.length;
+    final count = _images!.length;
 
     if (count == 1) {
       return const BorderRadius.all(kDefaultRadius);
@@ -95,7 +94,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   String _imageHeroTag(ImageData image) {
-    final String? routeName = ModalRoute.of(context)?.settings.name;
+    final routeName = ModalRoute.of(context)?.settings.name;
 
     return routeName != null
         ? '$routeName-${image.hashCode}'
@@ -103,7 +102,7 @@ class _TweetImagesState extends State<TweetImages> {
   }
 
   List<Widget> _buildImages() {
-    return _images!.map((ImageData image) {
+    return _images!.map((image) {
       final Widget child = HarpyImage(
         imageUrl: image.appropriateUrl,
         fit: BoxFit.cover,
@@ -115,7 +114,7 @@ class _TweetImagesState extends State<TweetImages> {
         tag: _imageHeroTag(image),
         // keep building the image since the images can be visible in the
         // background of the image gallery
-        placeholderBuilder: (_, __, Widget child) => child,
+        placeholderBuilder: (_, __, child) => child,
         child: child,
       );
     }).toList();

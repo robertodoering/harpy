@@ -37,8 +37,8 @@ class TweetMediaLayout extends StatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: maxHeight),
       child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final double constraintsAspectRatio = constraints.biggest.aspectRatio;
+        builder: (context, constraints) {
+          final constraintsAspectRatio = constraints.biggest.aspectRatio;
 
           if (videoAspectRatio! > constraintsAspectRatio) {
             // video does not take up the constrained height
@@ -61,8 +61,8 @@ class TweetMediaLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double maxHeight = mediaQuery.size.height / 2;
+    final mediaQuery = MediaQuery.of(context);
+    final maxHeight = mediaQuery.size.height / 2;
 
     if (isImage) {
       return _buildImage(maxHeight);

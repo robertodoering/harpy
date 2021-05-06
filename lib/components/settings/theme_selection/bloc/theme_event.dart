@@ -34,7 +34,7 @@ class ChangeThemeEvent extends ThemeEvent {
         return predefinedThemes[id!];
       } else {
         // selected theme id = 10 -> index = 0
-        final int index = id! - 10;
+        final index = id! - 10;
 
         _log.fine('using custom theme with index $index');
 
@@ -51,7 +51,7 @@ class ChangeThemeEvent extends ThemeEvent {
     required ThemeState currentState,
     required ThemeBloc bloc,
   }) async* {
-    final HarpyTheme? harpyTheme = _findTheme(bloc);
+    final harpyTheme = _findTheme(bloc);
 
     if (harpyTheme != null) {
       _log.fine('changing theme to ${harpyTheme.name} with id $id');
@@ -109,10 +109,10 @@ class SaveCustomThemes extends ThemeEvent {
     required ThemeState currentState,
     required ThemeBloc bloc,
   }) async* {
-    final List<String?> encodedCustomThemes = bloc.customThemes
-        .map((HarpyTheme theme) => HarpyThemeData.fromHarpyTheme(theme))
+    final encodedCustomThemes = bloc.customThemes
+        .map((theme) => HarpyThemeData.fromHarpyTheme(theme))
         .map(_encodeThemeData)
-        .where((String? themeDataJson) => themeDataJson != null)
+        .where((themeDataJson) => themeDataJson != null)
         .toList();
 
     _log.fine('saving ${encodedCustomThemes.length} custom themes');

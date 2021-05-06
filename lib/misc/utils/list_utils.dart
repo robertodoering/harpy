@@ -15,7 +15,7 @@ List<String> appendToList(List<String> list, String? value) {
 /// Returns the [list] if [index] is is out of bounds of the [list] or if the
 /// [list] is `null`.
 List<String> removeFromList(List<String> list, int index) {
-  final List<String> updatedList = List<String>.of(list);
+  final updatedList = List<String>.of(list);
 
   if (index >= 0 && index < updatedList.length) {
     return updatedList..removeAt(index);

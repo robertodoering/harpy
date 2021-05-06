@@ -94,7 +94,7 @@ class ActionButton extends StatefulWidget {
     Animation<double> animation,
     Widget child,
   ) {
-    final Animation<double> scale = Tween<double>(begin: .2, end: 1).animate(
+    final scale = Tween<double>(begin: .2, end: 1).animate(
       CurvedAnimation(
         parent: animation,
         curve: const Interval(.35, .7, curve: Curves.easeOutBack),
@@ -143,8 +143,8 @@ class _ActionButtonState extends State<ActionButton>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final double iconSize = widget.iconSize ?? IconTheme.of(context).size!;
+    final theme = Theme.of(context);
+    final iconSize = widget.iconSize ?? IconTheme.of(context).size!;
 
     final Widget icon = AnimatedTheme(
       data: theme.copyWith(
@@ -157,24 +157,16 @@ class _ActionButtonState extends State<ActionButton>
         size: iconSize,
         bubblesColor: widget.bubblesColor,
         circleColor: widget.circleColor,
-        builder: (BuildContext context) => Container(
+        builder: (context) => Container(
           width: iconSize,
           height: iconSize,
           alignment: Alignment.center,
           child: _controller.isAnimating || widget.active
               ? widget.iconAnimationBuilder(
                   _controller,
-                  widget.iconBuilder(
-                    context,
-                    widget.active,
-                    iconSize,
-                  ),
+                  widget.iconBuilder(context, widget.active, iconSize),
                 )
-              : widget.iconBuilder(
-                  context,
-                  widget.active,
-                  iconSize,
-                ),
+              : widget.iconBuilder(context, widget.active, iconSize),
         ),
       ),
     );

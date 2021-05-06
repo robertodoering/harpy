@@ -23,7 +23,7 @@ class TweetData {
     }
 
     if (tweet.extendedEntities?.media?.isNotEmpty == true) {
-      for (Media media in tweet.extendedEntities!.media!) {
+      for (final media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
           images ??= <ImageData>[];
           images!.add(ImageData.fromMedia(media));
@@ -159,9 +159,9 @@ class TweetData {
       return _replyAuthors;
     }
 
-    final Set<String?> replyNames = <String?>{};
+    final replyNames = <String?>{};
 
-    for (TweetData reply in replies) {
+    for (final reply in replies) {
       replyNames.add(reply.userData!.name);
     }
 
@@ -208,7 +208,7 @@ class TweetData {
   /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(RouteSettings route) {
     if (route.name == RepliesScreen.route) {
-      final Map<String, dynamic> arguments =
+      final arguments =
           route.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
 
       return (arguments['tweet'] as TweetData?)?.idStr == idStr;
@@ -224,7 +224,7 @@ class TweetData {
   /// Returns the [fullText] without the url to the quoted tweet or media and
   /// updates the shortened urls to the display url.
   String get visibleText {
-    String visibleText = fullText ?? '';
+    var visibleText = fullText ?? '';
 
     // remove url of quote if it exists
     if (quotedStatusUrl != null) {
@@ -232,12 +232,12 @@ class TweetData {
     }
 
     // remove url of media if it exists
-    for (Media media in entities?.media ?? <Media>[]) {
+    for (final media in entities?.media ?? <Media>[]) {
       visibleText = visibleText.replaceAll(media.url!, '');
     }
 
     // replace the shortened urls to the display urls
-    for (Url url in entities?.urls ?? <Url>[]) {
+    for (final url in entities?.urls ?? <Url>[]) {
       visibleText = visibleText.replaceAll(url.url!, url.displayUrl!);
     }
 

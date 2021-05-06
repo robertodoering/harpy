@@ -17,10 +17,10 @@ class ListTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
-    final ListTimelineBloc bloc = context.watch<ListTimelineBloc>();
-    final ListTimelineState state = bloc.state;
+    final bloc = context.watch<ListTimelineBloc>();
+    final state = bloc.state;
 
     return ScrollToStart(
       child: LoadMoreListener(

@@ -46,8 +46,8 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   List<Widget> _buildActiveFilters(HarpyTheme harpyTheme) {
     if (widget.activeFilters.isNotEmpty) {
-      final Color foregroundColor = harpyTheme.buttonTextColor;
-      final Color backgroundColor = harpyTheme.accentColor;
+      final foregroundColor = harpyTheme.buttonTextColor;
+      final backgroundColor = harpyTheme.accentColor;
 
       return <Widget>[
         defaultSmallVerticalSpacer,
@@ -106,7 +106,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -121,14 +121,14 @@ class _FilterListEntryState extends State<FilterListEntry> {
                   controller: _controller,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(
-                      borderRadius: kDefaultBorderRadius as BorderRadius,
+                      borderRadius: kDefaultBorderRadius,
                     ),
                     labelText: widget.labelText,
                     labelStyle: const TextStyle(fontSize: 14),
                     isDense: true,
                     suffixIcon: _buildSuffixButton(),
                   ),
-                  onSubmitted: (String text) {
+                  onSubmitted: (text) {
                     widget.onSubmitted(text);
                     _controller.clear();
                   },

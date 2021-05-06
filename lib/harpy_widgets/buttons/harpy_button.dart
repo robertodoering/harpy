@@ -174,18 +174,18 @@ class HarpyButton extends StatelessWidget {
       );
 
   /// Returns the color for the [icon] and [text].
-  Color? _calculateForegroundColor(ThemeData theme) {
+  Color _calculateForegroundColor(ThemeData theme) {
     if (foregroundColor != null) {
-      return foregroundColor;
+      return foregroundColor!;
     } else if (materialType == MaterialType.transparency) {
       // the text color since the button is transparent, therefore directly
       // on the background
 
-      return theme.textTheme.bodyText2!.color;
+      return theme.textTheme.bodyText2!.color!;
     } else if (backgroundColor == null) {
       // don't override the button color
 
-      return theme.textTheme.button!.color;
+      return theme.textTheme.button!.color!;
     } else {
       // black or white depending on the background color
 
@@ -213,15 +213,15 @@ class HarpyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    Color bgColor = backgroundColor ?? theme.buttonColor;
-    Color? fgColor = _calculateForegroundColor(theme);
+    var bgColor = backgroundColor ?? theme.buttonColor;
+    var fgColor = _calculateForegroundColor(theme);
 
     if (onTap == null) {
       // reduce the opacity by 50% when disabled
       bgColor = bgColor.withOpacity(max(0, bgColor.opacity - .5));
-      fgColor = fgColor!.withOpacity(max(0, fgColor.opacity - .5));
+      fgColor = fgColor.withOpacity(max(0, fgColor.opacity - .5));
     }
 
     return _HarpyButtonBase(
@@ -247,7 +247,7 @@ class HarpyButton extends StatelessWidget {
             padding: _padding,
             // use a builder so the context can reference the animated theme
             child: Builder(
-              builder: (BuildContext context) => DefaultTextStyle(
+              builder: (context) => DefaultTextStyle(
                 style: Theme.of(context).textTheme.button!.merge(style),
                 overflow: TextOverflow.fade,
                 softWrap: false,

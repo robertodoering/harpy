@@ -64,7 +64,7 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: widget.controller!,
-      builder: (BuildContext context, Widget? child) => Stack(
+      builder: (context, child) => Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
           // bubbles

@@ -15,7 +15,7 @@ class ComposeTweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final bloc = context.watch<ComposeBloc>();
 
     return Row(
       children: <Widget>[
@@ -87,10 +87,10 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   Future<void> _showDialog(ComposeBloc bloc) async {
     removeFocus(context);
 
-    final TweetData? sentTweet = await showDialog<TweetData>(
+    final sentTweet = await showDialog<TweetData>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => PostTweetDialog(
+      builder: (context) => PostTweetDialog(
         composeBloc: bloc,
         controller: widget.controller,
       ),
@@ -101,16 +101,16 @@ class _PostTweetButtonState extends State<PostTweetButton> {
 
       Navigator.popUntil(
         context,
-        (Route<dynamic> route) => route.settings.name == HomeScreen.route,
+        (route) => route.settings.name == HomeScreen.route,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final bloc = context.watch<ComposeBloc>();
 
-    final bool canTweet =
+    final canTweet =
         bloc.state.hasMedia || widget.controller!.text.trim().isNotEmpty;
 
     return HarpyButton.flat(

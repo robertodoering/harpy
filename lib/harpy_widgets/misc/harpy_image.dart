@@ -22,7 +22,7 @@ class HarpyImage extends StatelessWidget {
     Object error,
     StackTrace? stackTrace,
   ) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       color: theme.cardColor,

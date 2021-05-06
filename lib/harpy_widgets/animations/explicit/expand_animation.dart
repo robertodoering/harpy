@@ -44,7 +44,7 @@ class _ExpandAnimationState extends State<ExpandAnimation>
     _controller = AnimationController(vsync: this, duration: widget.duration)
       ..addStatusListener(_animationListener);
 
-    final Tween<double> tween = widget.expandType == ExpandType.expandIn
+    final tween = widget.expandType == ExpandType.expandIn
         ? Tween<double>(begin: 0, end: 1)
         : Tween<double>(begin: 1, end: 0);
 

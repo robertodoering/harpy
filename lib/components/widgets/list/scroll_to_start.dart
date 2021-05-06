@@ -51,7 +51,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
   }
 
   void _scrollListener() {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
@@ -97,11 +97,11 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ScrollDirection? scrollDirection = ScrollDirection.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final scrollDirection = ScrollDirection.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
-    final bool show = _show(mediaQuery, scrollDirection);
+    final show = _show(mediaQuery, scrollDirection);
 
     return Stack(
       children: <Widget>[

@@ -67,9 +67,7 @@ class HomeTabEntry extends Equatable {
   bool get valid {
     if (isDefaultType) {
       // validate that this default type exist in the default entries
-      return defaultHomeTabEntries
-          .where((HomeTabEntry entry) => entry.id == id)
-          .isNotEmpty;
+      return defaultHomeTabEntries.where((entry) => entry.id == id).isNotEmpty;
     } else {
       return true;
     }

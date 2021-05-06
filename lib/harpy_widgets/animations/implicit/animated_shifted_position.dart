@@ -25,7 +25,7 @@ class _AnimatedRelativePositionState
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    final Tween<dynamic>? newTween = visitor(
+    final newTween = visitor(
       _offsetTween,
       widget.shift,
       (dynamic value) => Tween<Offset>(begin: value),
@@ -38,7 +38,7 @@ class _AnimatedRelativePositionState
 
   @override
   Widget build(BuildContext context) {
-    final Offset offset = _offsetTween!.evaluate(animation);
+    final offset = _offsetTween!.evaluate(animation);
 
     return ShiftedPosition(
       shift: offset,

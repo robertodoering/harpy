@@ -96,8 +96,8 @@ class _HarpyDialogState extends State<HarpyDialog> {
   }
 
   Future<void> _configureDialogSize() async {
-    SchedulerBinding.instance!.addPostFrameCallback((Duration timeStamp) {
-      final RenderBox? box =
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      final box =
           _dialogSizeKey.currentContext?.findRenderObject() as RenderBox?;
       _dialogSizeCompleter.complete(box?.size);
     });
@@ -168,7 +168,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
     if (widget.constrainActionSize) {
       return FutureBuilder<Size>(
         future: _dialogSizeCompleter.future,
-        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+        builder: (context, snapshot) {
           return ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: snapshot.data?.width ?? 0,
@@ -184,8 +184,8 @@ class _HarpyDialogState extends State<HarpyDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TextTheme textTheme = theme.textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return _buildAnimation(
       child: Dialog(

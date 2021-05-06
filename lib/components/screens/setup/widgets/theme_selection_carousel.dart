@@ -37,7 +37,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   }
 
   void _listener() {
-    final int currentPage = _controller!.page!.round();
+    final currentPage = _controller!.page!.round();
 
     if (_currentPage != currentPage) {
       setState(() {
@@ -101,12 +101,12 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
+    final theme = Theme.of(context);
+    final themeBloc = ThemeBloc.of(context);
 
-    final Color iconColor = IconTheme.of(context).color!;
-    final Color leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
-    final Color rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
+    final iconColor = IconTheme.of(context).color!;
+    final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
+    final rightIconColor = iconColor.withOpacity(_canNext ? 0.8 : 0.2);
 
     return Column(
       mainAxisSize: MainAxisSize.min,

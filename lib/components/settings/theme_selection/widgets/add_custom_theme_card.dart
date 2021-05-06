@@ -16,11 +16,9 @@ class AddCustomThemeCard extends StatelessWidget {
     int themeId,
   ) async {
     if (Harpy.isFree) {
-      final bool? result = await showDialog<bool>(
+      final result = await showDialog<bool>(
         context: context,
-        builder: (BuildContext context) => const ProDialog(
-          feature: 'theme customization',
-        ),
+        builder: (_) => const ProDialog(feature: 'theme customization'),
       );
 
       if (result == true) {
@@ -40,16 +38,16 @@ class AddCustomThemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
+    final theme = Theme.of(context);
+    final themeBloc = ThemeBloc.of(context);
 
     // the initial custom theme data uses the currently selected theme
-    final HarpyThemeData initialCustomThemeData =
+    final initialCustomThemeData =
         HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context))
             .copyWith(name: 'new theme');
 
     // use the next available custom theme id
-    final int nextCustomThemeId = themeBloc.customThemes.length + 10;
+    final nextCustomThemeId = themeBloc.customThemes.length + 10;
 
     // only build a trailing icon when using harpy free
     const Widget? trailing =

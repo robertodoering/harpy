@@ -56,7 +56,7 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
     }
     _firstAnimation = _initAnimation(widget.firstCurve, true);
     _secondAnimation = _initAnimation(widget.secondCurve, false);
-    _controller.addStatusListener((AnimationStatus status) {
+    _controller.addStatusListener((status) {
       setState(() {
         // Trigger a rebuild because it depends on _isTransitioning, which
         // changes its value together with animation status.
@@ -65,10 +65,12 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
   }
 
   Animation<double> _initAnimation(Curve curve, bool inverted) {
-    Animation<double> result = _controller.drive(CurveTween(curve: curve));
+    var result = _controller.drive(CurveTween(curve: curve));
+
     if (inverted) {
       result = result.drive(Tween<double>(begin: 1, end: 0));
     }
+
     return result;
   }
 
@@ -116,7 +118,7 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
         ValueKey<CrossFadeState>(CrossFadeState.showFirst);
     const Key kSecondChildKey =
         ValueKey<CrossFadeState>(CrossFadeState.showSecond);
-    final bool transitioningForwards =
+    final transitioningForwards =
         _controller.status == AnimationStatus.completed ||
             _controller.status == AnimationStatus.forward;
     Key topKey;

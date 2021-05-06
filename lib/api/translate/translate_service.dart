@@ -20,7 +20,7 @@ class TranslationService {
   }) async {
     _log.fine('translating from $from to $to');
 
-    final Map<String, String?> params = <String, String?>{
+    final params = <String, String?>{
       'client': 'gtx',
       'sl': from,
       'tl': to,
@@ -50,10 +50,10 @@ class TranslationService {
       // try to parse translation from response
       final List<dynamic> body = jsonDecode(response.body);
 
-      final StringBuffer original = StringBuffer();
-      final StringBuffer translated = StringBuffer();
+      final original = StringBuffer();
+      final translated = StringBuffer();
 
-      for (List<dynamic> translationText in body[0]) {
+      for (final List<dynamic> translationText in body[0]) {
         original.write(translationText[1]);
         translated.write(translationText[0]);
       }

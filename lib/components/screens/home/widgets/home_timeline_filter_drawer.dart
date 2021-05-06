@@ -8,8 +8,8 @@ class HomeTimelineFilterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
-    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
+    final bloc = context.watch<HomeTimelineBloc>();
+    final model = context.watch<TimelineFilterModel>();
 
     return TimelineFilterDrawer(
       title: 'home timeline filter',

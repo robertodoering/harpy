@@ -28,7 +28,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () => setState(() {
-        final bool value = !_buildTiled;
+        final value = !_buildTiled;
         _buildTiled = value;
         app<LayoutPreferences>().mediaTiled = value;
       }),
@@ -49,7 +49,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
         entries: entries,
         initialIndex: index,
       ),
-      onVideoTap: (HarpyVideoPlayerModel videoPlayerModel) => _showGallery(
+      onVideoTap: (videoPlayerModel) => _showGallery(
         context: context,
         entries: entries,
         initialIndex: index,
@@ -67,7 +67,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
       mainAxisSpacing: defaultSmallPaddingValue,
       crossAxisSpacing: defaultSmallPaddingValue,
       staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-      itemBuilder: (_, int index) => _itemBuilder(entries, index),
+      itemBuilder: (_, index) => _itemBuilder(entries, index),
     );
   }
 
@@ -79,15 +79,15 @@ class _MediaTimelineState extends State<MediaTimeline> {
       mainAxisSpacing: defaultSmallPaddingValue,
       crossAxisSpacing: defaultSmallPaddingValue,
       staggeredTileBuilder: (_) => const StaggeredTile.fit(2),
-      itemBuilder: (_, int index) => _itemBuilder(entries, index),
+      itemBuilder: (_, index) => _itemBuilder(entries, index),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final MediaTimelineModel model = context.watch<MediaTimelineModel>();
-    final List<MediaTimelineEntry> entries = model.value;
+    final mediaQuery = MediaQuery.of(context);
+    final model = context.watch<MediaTimelineModel>();
+    final entries = model.value;
 
     return Scaffold(
       backgroundColor: Colors.transparent,

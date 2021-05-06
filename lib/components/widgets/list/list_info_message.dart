@@ -15,7 +15,7 @@ class ListInfoMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return FadeAnimation(
       duration: kShortAnimationDuration,
