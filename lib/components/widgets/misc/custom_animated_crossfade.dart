@@ -146,7 +146,6 @@ class _CustomAnimatedCrossFadeState extends State<CustomAnimatedCrossFade>
       enabled: _isTransitioning,
       child: ExcludeSemantics(
         // Always exclude the semantics of the widget that's fading out.
-        excluding: true,
         child: FadeTransition(
           opacity: bottomAnimation!,
           child: bottomChild,

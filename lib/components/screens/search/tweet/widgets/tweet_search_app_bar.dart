@@ -21,17 +21,14 @@ class TweetSearchAppBar extends StatelessWidget {
         context.watch<TweetSearchFilterModel>();
 
     return HarpySliverAppBar(
-      titleWidget: Container(
-        child: SearchTextField(
-          text: text,
-          hintText: 'search tweets',
-          onSubmitted: (String text) =>
-              bloc.add(SearchTweets(customQuery: text)),
-          onClear: () {
-            bloc.add(const ClearSearchResult());
-            model.clear();
-          },
-        ),
+      titleWidget: SearchTextField(
+        text: text,
+        hintText: 'search tweets',
+        onSubmitted: (String text) => bloc.add(SearchTweets(customQuery: text)),
+        onClear: () {
+          bloc.add(const ClearSearchResult());
+          model.clear();
+        },
       ),
       actions: <Widget>[
         HarpyButton.flat(

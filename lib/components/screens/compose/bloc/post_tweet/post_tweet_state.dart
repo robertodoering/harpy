@@ -65,7 +65,7 @@ class UploadingTweetMedia extends PostTweetState {
         return 'uploading gif...';
       case MediaType.video:
         return 'uploading video...';
-      default:
+      case null:
         return 'uploading media...';
     }
   }

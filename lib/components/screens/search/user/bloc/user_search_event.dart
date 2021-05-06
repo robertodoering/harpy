@@ -41,7 +41,7 @@ class SearchUsers extends LoadPaginatedData {
   }
 
   @override
-  Future<bool> loadData(PaginatedBloc? paginatedBloc) async {
+  Future<bool> loadData(PaginatedBloc paginatedBloc) async {
     final UserSearchBloc bloc = paginatedBloc as UserSearchBloc;
 
     bloc.lastQuery = query;

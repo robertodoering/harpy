@@ -50,6 +50,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.0.1
   package_info: ^2.0.0
   path_provider: ^2.0.1
+  pedantic: ^1.11.0
   permission_handler: ^6.1.3
   sentry_flutter: ^5.0.0
   share: ^2.0.1

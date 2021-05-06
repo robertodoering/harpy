@@ -11,8 +11,8 @@ class CustomPopupMenuButton<T> extends StatefulWidget {
   ///
   /// The [itemBuilder] argument must not be null.
   const CustomPopupMenuButton({
-    Key? key,
     required this.itemBuilder,
+    Key? key,
     this.initialValue,
     this.onSelected,
     this.onCanceled,

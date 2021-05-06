@@ -17,7 +17,7 @@ abstract class UserProfileEvent {
 /// If [user] is `null`, requests the user data for the [screenName] and the
 /// relationship status (following / followed_by).
 ///
-/// Otherwise if the [user.connections] is `null`, only requests the
+/// Otherwise if the [UserData.connections] is `null`, only requests the
 /// relationship status (connections).
 ///
 /// Yields a [InitializedUserState] if [user] is not `null`, or when a user
@@ -88,7 +88,6 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
   }
 }
 
-/// Follows the [bloc.user].
 class FollowUserEvent extends UserProfileEvent with HarpyLogger {
   const FollowUserEvent();
 
@@ -115,7 +114,6 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
   }
 }
 
-/// Unfollows the [bloc.user].
 class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
   const UnfollowUserEvent();
 
@@ -157,7 +155,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     required UserProfileState currentState,
     required UserProfileBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     final TranslationService translationService = app<TranslationService>();
 

@@ -98,20 +98,22 @@ abstract class AuthenticationEvent {
     final TwitterClient client = bloc.twitterApi.client as TwitterClient;
 
     if (client.token.isNotEmpty && client.secret.isNotEmpty) {
-      client
-          .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
-          .handleError<void>(silentErrorHandler);
+      unawaited(
+        client
+            .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
+            .handleError<void>(silentErrorHandler),
+      );
     }
 
     // wait until navigation changed to clear user information to avoid
     // rebuilding the home screen without an authenticated user and therefore
     // causing unexpected errors
-    Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
+    unawaited(Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
       bloc.twitterAuthSession = null;
       bloc.authPreferences.clearAuth();
 
       bloc.authenticatedUser = null;
-    });
+    }));
 
     // reset the theme to the default theme
     bloc.themeBloc.add(const ChangeThemeEvent(id: 0));

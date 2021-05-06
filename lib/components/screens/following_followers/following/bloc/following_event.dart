@@ -1,6 +1,5 @@
 part of 'following_bloc.dart';
 
-/// Loads the following users and sets it to the [FollowingBloc.users];
 class LoadFollowingUsers extends LoadUsers {
   const LoadFollowingUsers();
 

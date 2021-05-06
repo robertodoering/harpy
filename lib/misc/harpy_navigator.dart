@@ -299,7 +299,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: RouteSettings(name: routeName, arguments: arguments),
       );
     case RouteType.defaultRoute:
-    default:
       return CupertinoPageRoute<void>(
         builder: (_) => screen,
         settings: RouteSettings(name: routeName, arguments: arguments),

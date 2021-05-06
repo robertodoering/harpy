@@ -12,7 +12,7 @@ typedef OnVideoPlayerTap = void Function(HarpyVideoPlayerModel model);
 
 typedef OnVideoPlayerLongPress = void Function();
 
-/// Builds a [VideoPlayer] with a [VideoPlayerOverlay] to control the video.
+/// Builds a [VideoPlayer] with a overlay to control the video.
 ///
 /// When built initially, the video will not be initialized and instead the
 /// [thumbnail] url is used to build an image in place of the video. After being
@@ -199,13 +199,11 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
       );
     }
 
-    child = Hero(
+    return Hero(
       tag: model,
       flightShuttleBuilder: _flightShuttleBuilder,
       child: child,
     );
-
-    return child;
   }
 
   @override

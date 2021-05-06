@@ -205,7 +205,7 @@ class TweetData {
   /// Whether this tweet is a reply to another tweet.
   bool get hasParent => inReplyToStatusIdStr?.isNotEmpty == true;
 
-  /// Whether this tweet is the current reply parent in the [ReplyScreen].
+  /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(RouteSettings route) {
     if (route.name == RepliesScreen.route) {
       final Map<String, dynamic> arguments =

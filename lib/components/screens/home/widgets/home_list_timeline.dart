@@ -16,7 +16,7 @@ class HomeListTimeline extends StatelessWidget {
     final ListTimelineBloc? bloc = HomeListsProvider.blocOf(
       context,
       listId: listId,
-    )!;
+    );
 
     assert(bloc != null, 'missing list timeline bloc for home list timeline');
 

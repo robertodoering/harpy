@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -54,7 +55,7 @@ final Logger _log = Logger('FirebaseAnalyticsObserver');
 /// The [ScreenNameExtractor] used by the [FirebaseAnalyticsObserver] to log the
 /// current screen with the [FirebaseAnalytics].
 ///
-/// Only returns the [settings.name] when in release mode.
+/// Only returns the [RouteSettings.name] when in release mode.
 /// Otherwise returns `null` to prevent logging analytics when not in release
 /// mode.
 String? screenNameExtractor(RouteSettings settings) {

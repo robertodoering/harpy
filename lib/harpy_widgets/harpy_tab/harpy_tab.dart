@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-/// A tab for a [HarpySliverTabView].
+/// A tab for a [HarpyTabBar].
 class HarpyTab extends StatefulWidget {
   const HarpyTab({
     required this.icon,
@@ -141,10 +142,10 @@ class _HarpyTabState extends State<HarpyTab>
 /// Exposes values for the [HarpyTab].
 class HarpyTabScope extends InheritedWidget {
   const HarpyTabScope({
-    Key? key,
     required this.index,
     required this.animationValue,
     required Widget child,
+    Key? key,
   }) : super(key: key, child: child);
 
   final int index;

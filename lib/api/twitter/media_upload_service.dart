@@ -111,7 +111,7 @@ class MediaUploadService {
         return 'TWEET_GIF';
       case MediaType.video:
         return 'TWEET_VIDEO';
-      default:
+      case null:
         return null;
     }
   }

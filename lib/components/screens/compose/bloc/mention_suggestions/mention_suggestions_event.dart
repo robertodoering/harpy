@@ -28,15 +28,17 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
         text.contains('@') ? text.substring(text.indexOf('@') + 1) : text;
 
     if (query.isNotEmpty && currentState.searchedUsers[query] == null) {
-      Future<void>.delayed(const Duration(milliseconds: 300)).then((_) {
-        // only start searching if no new query has been fired for 300ms
-        // to prevent spamming requests when quickly typing
-        if (bloc.state.lastQuery == query) {
-          bloc.userSearchBloc
-            ..add(const ClearSearchedUsers())
-            ..add(SearchUsers(query));
-        }
-      });
+      unawaited(
+        Future<void>.delayed(const Duration(milliseconds: 300)).then((_) {
+          // only start searching if no new query has been fired for 300ms
+          // to prevent spamming requests when quickly typing
+          if (bloc.state.lastQuery == query) {
+            bloc.userSearchBloc
+              ..add(const ClearSearchedUsers())
+              ..add(SearchUsers(query));
+          }
+        }),
+      );
     }
 
     yield MentionSuggestionsState(

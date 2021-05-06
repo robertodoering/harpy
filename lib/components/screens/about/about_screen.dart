@@ -213,8 +213,8 @@ class AboutScreen extends StatelessWidget {
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
           itemBuilder: (BuildContext context) {
-            return <PopupMenuEntry<void>>[
-              const HarpyPopupMenuItem<void>(
+            return <PopupMenuEntry<int>>[
+              const HarpyPopupMenuItem<int>(
                 value: 0,
                 text: Text('show licenses'),
               ),

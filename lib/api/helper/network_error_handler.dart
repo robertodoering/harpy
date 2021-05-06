@@ -20,9 +20,6 @@ void silentErrorHandler(dynamic error, [StackTrace? stackTrace]) {
 /// Handles the [error] from a request.
 ///
 /// An error message is shown in a [HarpyMessage].
-///
-/// If [fallbackMessage] is not `null`, it is used in place of a generic error
-/// message if the error wasn't handled.
 void twitterApiErrorHandler(dynamic error, [StackTrace? stackTrace]) {
   _log.info('handling twitter error', error);
 
@@ -94,6 +91,7 @@ Duration? _limitResetDuration(Response response) {
 /// actual:30528 (MediaId: snf:1338982061273714688)"}]}
 String? responseErrorMessage(String body) {
   try {
+    // ignore: avoid_dynamic_calls
     return jsonDecode(body)['errors'][0]['message'];
   } catch (e, st) {
     _log.warning(

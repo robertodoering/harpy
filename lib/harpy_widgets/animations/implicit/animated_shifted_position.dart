@@ -24,12 +24,16 @@ class _AnimatedRelativePositionState
   Tween<Offset>? _offsetTween;
 
   @override
-  void forEachTween(dynamic visitor) {
-    _offsetTween = visitor(
+  void forEachTween(TweenVisitor<dynamic> visitor) {
+    final Tween<dynamic>? newTween = visitor(
       _offsetTween,
       widget.shift,
       (dynamic value) => Tween<Offset>(begin: value),
     );
+
+    if (newTween is Tween<Offset>) {
+      _offsetTween = newTween;
+    }
   }
 
   @override

@@ -39,9 +39,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   void _addVideo(ComposeBloc? bloc, FilePickerResult result) {
     if (result.files.length > 1) {
-      if (result.files.length > 1) {
-        app<MessageService>().show('only one video can be attached');
-      }
+      app<MessageService>().show('only one video can be attached');
     } else {
       bloc!.add(AddVideoEvent(file: result.files.first));
     }

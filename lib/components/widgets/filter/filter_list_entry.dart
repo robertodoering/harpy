@@ -46,8 +46,8 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   List<Widget> _buildActiveFilters(HarpyTheme harpyTheme) {
     if (widget.activeFilters.isNotEmpty) {
-      final Color? foregroundColor = harpyTheme.buttonTextColor;
-      final Color? backgroundColor = harpyTheme.accentColor;
+      final Color foregroundColor = harpyTheme.buttonTextColor;
+      final Color backgroundColor = harpyTheme.accentColor;
 
       return <Widget>[
         defaultSmallVerticalSpacer,
@@ -61,7 +61,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
                   backgroundColor: backgroundColor,
                   deleteIconColor: foregroundColor,
                   label: Text(
-                    '${widget.activeFilters[i]}',
+                    widget.activeFilters[i],
                     style: TextStyle(color: foregroundColor),
                   ),
                   deleteIcon: const Icon(CupertinoIcons.xmark, size: 14),

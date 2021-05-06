@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Builds a sliver for the end of a [CustomListView] indicating that loading
+/// Builds a sliver for the end of a [CustomScrollView] indicating that loading
 /// more data is currently not possible.
 class LoadingMoreLocked extends StatelessWidget {
   const LoadingMoreLocked({

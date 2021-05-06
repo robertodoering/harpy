@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/core/core.dart';
 
-/// A [TextEditingController] for the [ComposeScreen].
+/// A [TextEditingController] for the compose screen.
 class ComposeTextController extends TextEditingController {
   ComposeTextController({
     String? text,

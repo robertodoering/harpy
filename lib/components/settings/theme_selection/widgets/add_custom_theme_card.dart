@@ -46,7 +46,7 @@ class AddCustomThemeCard extends StatelessWidget {
     // the initial custom theme data uses the currently selected theme
     final HarpyThemeData initialCustomThemeData =
         HarpyThemeData.fromHarpyTheme(HarpyTheme.of(context))
-          ..name = 'new theme';
+            .copyWith(name: 'new theme');
 
     // use the next available custom theme id
     final int nextCustomThemeId = themeBloc.customThemes.length + 10;

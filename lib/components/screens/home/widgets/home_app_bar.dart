@@ -28,7 +28,6 @@ class HomeAppBar extends StatelessWidget {
             bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
       ),
       CustomPopupMenuButton<int>(
-        padding: const EdgeInsets.all(16),
         icon: const Icon(Icons.more_vert),
         onSelected: (int selection) {
           if (selection == 0) {
@@ -39,7 +38,10 @@ class HomeAppBar extends StatelessWidget {
         },
         itemBuilder: (BuildContext context) {
           return <PopupMenuEntry<int>>[
-            const HarpyPopupMenuItem<int>(value: 0, text: Text('refresh')),
+            const HarpyPopupMenuItem<int>(
+              value: 0,
+              text: Text('refresh'),
+            ),
           ];
         },
       ),

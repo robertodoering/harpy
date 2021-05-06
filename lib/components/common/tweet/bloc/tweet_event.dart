@@ -44,7 +44,7 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     bloc.tweet.retweeted = true;
     bloc.tweet.retweetCount = bloc.tweet.retweetCount + 1;
@@ -74,7 +74,7 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     bloc.tweet.retweeted = false;
     bloc.tweet.retweetCount = bloc.tweet.retweetCount - 1;
@@ -104,7 +104,7 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     bloc.tweet.favorited = true;
     bloc.tweet.favoriteCount = bloc.tweet.favoriteCount + 1;
@@ -161,7 +161,7 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     bloc.tweet.favorited = false;
     bloc.tweet.favoriteCount = bloc.tweet.favoriteCount - 1;
@@ -197,7 +197,7 @@ class TranslateTweet extends TweetEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     yield TranslatingTweetState();
 
@@ -291,7 +291,7 @@ class OpenTweetExternally extends TweetActionEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    launchUrl(tweet.tweetUrl);
+    unawaited(launchUrl(tweet.tweetUrl));
   }
 }
 
@@ -305,7 +305,7 @@ class CopyTweetText extends TweetActionEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    Clipboard.setData(ClipboardData(text: tweet.visibleText));
+    unawaited(Clipboard.setData(ClipboardData(text: tweet.visibleText)));
     app<MessageService>().show('copied tweet text');
   }
 }
@@ -320,6 +320,6 @@ class ShareTweet extends TweetActionEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    Share.share(tweet.tweetUrl);
+    unawaited(Share.share(tweet.tweetUrl));
   }
 }

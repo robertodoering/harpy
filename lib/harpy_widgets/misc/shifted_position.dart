@@ -46,6 +46,7 @@ class _RenderShiftedPositioned extends RenderShiftedBox {
   }
 
   Offset _shift;
+  Offset get shift => _shift;
 
   @override
   void performLayout() {

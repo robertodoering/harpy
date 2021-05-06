@@ -111,7 +111,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
           autoPopulateReplyMetadata: true,
         )
         .then((Tweet tweet) => TweetData.fromTweet(tweet))
-        .catchError((dynamic error) {
+        .handleError((dynamic error, StackTrace stackTrace) {
       if (error is Response) {
         final String? message = responseErrorMessage(error.body);
         log.info(

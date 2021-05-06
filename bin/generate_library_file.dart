@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 
+// ignore_for_file: avoid_print
+
 /// Creates a library file that exports all files in the directory and any
 /// sub directories.
 ///
@@ -60,7 +62,7 @@ Future<void> main(List<String> arguments) async {
   for (FileSystemEntity systemEntry in dir.listSync(recursive: true)) {
     if (systemEntry is File) {
       final String entry = systemEntry.path
-          .replaceAll('\\', '/')
+          .replaceAll(r'\', '/')
           .replaceFirst('${dir.path}/', '');
 
       if (includes!.any(entry.endsWith) && !excludes!.any(entry.endsWith)) {

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 /// Builds the list of tweet media widgets for a [MediaTimelineModel].
 ///
-/// Tapping a media will open the [HarpyMediaGallery].
+/// Tapping a media will open the media gallery.
 class MediaTimeline extends StatefulWidget {
   const MediaTimeline({
     required this.showInitialLoading,
@@ -120,7 +120,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
   }
 }
 
-/// Show the [HarpyMediaGallery] for the media timeline [entries].
+/// Show the media gallery for the media timeline [entries].
 ///
 /// The [videoPlayerModel] is used when tapping on a gif or video to build
 /// the video or gif with the video player model.

@@ -16,13 +16,13 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 /// Default behaviour to download a tweet media.
 void defaultOnMediaDownload(String? mediaUrl) {
   if (mediaUrl != null) {
-    final DownloadService? downloadService = app<DownloadService>();
+    final DownloadService downloadService = app<DownloadService>();
 
     final String url = mediaUrl;
     final String? fileName = fileNameFromUrl(url);
 
     if (fileName != null) {
-      downloadService!
+      downloadService
           .download(url: url, name: fileName)
           .catchError(silentErrorHandler);
     }

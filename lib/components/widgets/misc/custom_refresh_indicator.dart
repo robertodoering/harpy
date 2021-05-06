@@ -82,7 +82,7 @@ enum _RefreshIndicatorMode {
 ///  * [CustomRefreshIndicatorState], can be used to programmatically show the refresh indicator.
 ///  * [RefreshProgressIndicator], widget used by [CustomRefreshIndicator] to show
 ///    the inner circular progress spinner during refreshes.
-///  * [CupertinoSliverRefreshControl], an iOS equivalent of the pull-to-refresh pattern.
+///  * CupertinoSliverRefreshControl, an iOS equivalent of the pull-to-refresh pattern.
 ///    Must be used as a sliver inside a [CustomScrollView] instead of wrapping
 ///    around a [ScrollView] because it's a part of the scrollable instead of
 ///    being overlaid on top of it.
@@ -97,19 +97,19 @@ class CustomRefreshIndicator extends StatefulWidget {
   /// If it is null, it will be defaulted to [MaterialLocalizations.refreshIndicatorSemanticLabel].
   /// An empty string may be passed to avoid having anything read by screen reading software.
   /// The [semanticsValue] may be used to specify progress on the widget.
-  const CustomRefreshIndicator(
-      {Key? key,
-      required this.child,
-      this.displacement = 40.0,
-      this.offset = 0,
-      required this.onRefresh,
-      this.color,
-      this.backgroundColor,
-      this.notificationPredicate = defaultScrollNotificationPredicate,
-      this.semanticsLabel,
-      this.semanticsValue,
-      this.strokeWidth = 2.0})
-      : super(key: key);
+  const CustomRefreshIndicator({
+    required this.child,
+    required this.onRefresh,
+    Key? key,
+    this.displacement = 40.0,
+    this.offset = 0,
+    this.color,
+    this.backgroundColor,
+    this.notificationPredicate = defaultScrollNotificationPredicate,
+    this.semanticsLabel,
+    this.semanticsValue,
+    this.strokeWidth = 2.0,
+  }) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -278,7 +278,11 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
         case _RefreshIndicatorMode.drag:
           _dismiss(_RefreshIndicatorMode.canceled);
           break;
-        default:
+        case _RefreshIndicatorMode.snap:
+        case _RefreshIndicatorMode.refresh:
+        case _RefreshIndicatorMode.done:
+        case _RefreshIndicatorMode.canceled:
+        case null:
           // do nothing
           break;
       }
@@ -351,7 +355,11 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
         await _positionController.animateTo(0.0,
             duration: _kIndicatorScaleDuration);
         break;
-      default:
+      case _RefreshIndicatorMode.drag:
+      case _RefreshIndicatorMode.armed:
+      case _RefreshIndicatorMode.snap:
+      case _RefreshIndicatorMode.refresh:
+      case null:
         assert(false);
     }
     if (mounted && _mode == newMode) {

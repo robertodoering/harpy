@@ -115,7 +115,6 @@ class _HarpyDialogState extends State<HarpyDialog> {
       case DialogAnimationType.bounce:
         return BounceInAnimation(child: child);
       case DialogAnimationType.material:
-      default:
         return child;
     }
   }

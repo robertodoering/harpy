@@ -176,7 +176,6 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
       return ChangeNotifierProvider<HarpyVideoPlayerModel>(
         create: (BuildContext context) => HarpyVideoPlayerModel(
           _controller,
-          autoplay: false,
         ),
         builder: _builder,
       );

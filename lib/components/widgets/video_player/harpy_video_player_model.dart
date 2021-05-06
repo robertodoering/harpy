@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -174,7 +175,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   Future<void> _pushFullscreen() async {
     _fullscreen = true;
 
-    SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
+    unawaited(SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]));
 
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(
@@ -190,10 +191,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   Future<void> _popFullscreen() async {
     _fullscreen = false;
 
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    unawaited(SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values));
 
     if (hasListeners) {
-      app<HarpyNavigator>().state!.maybePop();
+      unawaited(app<HarpyNavigator>().state!.maybePop());
       notifyListeners();
     }
   }

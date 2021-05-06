@@ -85,7 +85,7 @@ void defaultOnHashtagTap(BuildContext context, Hashtag hashtag) {
 
 /// Builds a [Text] widget with the [entities] parsed in the [text].
 ///
-/// The entity texts are styled with [entityColor] and the relevant callback
+/// The entity texts are styled with [entityStyle] and the relevant callback
 /// is fired when the entity is tapped.
 class TwitterText extends StatefulWidget {
   const TwitterText(
@@ -123,7 +123,7 @@ class TwitterText extends StatefulWidget {
   /// How visual overflow should be handled.
   final TextOverflow? overflow;
 
-  /// A url that won't be built if it is part of [Entity.urls].
+  /// A url that won't be built if it is part of [Entities.urls].
   ///
   /// Used to hide the quoted status url that appears at the end of the text
   /// when the tweet includes a quote.
@@ -362,7 +362,7 @@ List<TwitterTextEntity> _initializeEntities(String? text, Entities? entities) {
   return twitterTextEntities;
 }
 
-/// Finds and returns the start and end index for the [entity] in the [text].
+/// Finds and returns the start and end index for the entity in the [text].
 ///
 /// We can't rely on the Twitter returned indices as they are counted
 /// differently in dart when unicode characters are involved, even when using

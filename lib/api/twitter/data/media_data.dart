@@ -9,7 +9,7 @@ abstract class MediaData {
   String? get bestUrl;
 }
 
-/// The image data for a [TweetData].
+/// The image data for a tweet.
 class ImageData extends MediaData {
   ImageData.fromMedia(Media media) {
     baseUrl = media.mediaUrlHttps ?? '';
@@ -39,7 +39,7 @@ class ImageData extends MediaData {
   }
 }
 
-/// The video (and animated gif) data for a [TweetData].
+/// The video (and animated gif) data for a tweet.
 class VideoData extends MediaData {
   VideoData.fromMedia(Media media) {
     aspectRatio = media.videoInfo!.aspectRatio ?? <int>[];

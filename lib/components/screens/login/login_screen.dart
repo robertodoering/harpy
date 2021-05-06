@@ -7,6 +7,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
@@ -22,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       GlobalKey<SlideAnimationState>();
 
   Future<void> _startLogin() async {
-    HapticFeedback.mediumImpact();
+    unawaited(HapticFeedback.mediumImpact());
     await _slideLoginKey.currentState!.forward();
 
     context.read<AuthenticationBloc>().add(const LoginEvent());

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-/// Used with the [MediaOverlay] for [TweetMedia] controls.
+/// Used with the media overlay for tweet media controls.
 class TweetMediaModel {
   bool _showingOverlays = true;
   bool get showingOverlays => _showingOverlays;

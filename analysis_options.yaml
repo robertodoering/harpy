@@ -4,8 +4,6 @@ analyzer:
     # when it can't determine a static type.
     implicit-dynamic: false
   errors:
-    # treat missing required parameters as a warning (not a hint)
-    missing_required_param: warning
     # treat missing returns as a warning (not a hint)
     missing_return: warning
   exclude: [
@@ -17,64 +15,119 @@ linter:
   rules:
     # these rules are documented on and in the same order as
     # the Dart Lint rules page to make maintenance easier
+    # https://dart-lang.github.io/linter/lints/
 
     # error rules
+    - always_use_package_imports
+    - avoid_dynamic_calls
     - avoid_empty_else
+    - avoid_print
     - avoid_relative_lib_imports
     - avoid_returning_null_for_future
     - avoid_slow_async_io
+    - avoid_type_to_string
     - avoid_types_as_parameter_names
+    - avoid_web_libraries_in_flutter
     - cancel_subscriptions
-    # - close_sinks # unreliable with flutter_bloc
+    - close_sinks
+    - comment_references
     - control_flow_in_finally
+#    - diagnostic_describe_all_properties # we don't use the debugFillProperties method
     - empty_statements
     - hash_and_equals
+    - invariant_booleans
     - iterable_contains_unrelated_type
     - list_remove_unrelated_type
+    - literal_only_boolean_expressions
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
+    - no_logic_in_create_state
+#    - prefer_relative_imports # we avoid relative imports
     - prefer_void_to_null
     - test_types_in_equals
     - throw_in_finally
     - unnecessary_statements
     - unrelated_type_equality_checks
+    - unsafe_html
+#    - use_build_context_synchronously # todo: add when available in stable
+#    - use_key_in_widget_constructors # we don't add keys to every widget
     - valid_regexps
 
     # style rules
     - always_declare_return_types
     - always_put_control_body_on_new_line
+    - always_put_required_named_parameters_first
+    - always_require_non_null_named_parameters
     - always_specify_types
     - annotate_overrides
+#    - avoid_annotating_with_dynamic
     - avoid_bool_literals_in_conditional_expressions
+#    - avoid_catches_without_on_clauses # we don't always specify an on clause
+#    - avoid_catching_errors # we sometimes catch error types (and not only exceptions)
     - avoid_classes_with_only_static_members
+#    - avoid_double_and_int_checks # only makes sense when targeting web
+    - avoid_equals_and_hash_code_on_mutable_classes
+    - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
     - avoid_function_literals_in_foreach_calls
+    - avoid_implementing_value_types
     - avoid_init_to_null
+#    - avoid_js_rounded_ints # only makes sense when targeting web
+#    - avoid_multiple_declarations_per_line # todo: add when available in stable
     - avoid_null_checks_in_equality_operators
+#    - avoid_positional_boolean_parameters # we use boolean parameters
+    - avoid_private_typedef_functions
+    - avoid_redundant_argument_values
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
+#    - avoid_returning_null # we sometimes return null
     - avoid_returning_null_for_void
     - avoid_returning_this
+    - avoid_setters_without_getters
+    - avoid_shadowing_type_parameters
     - avoid_single_cascade_in_expression_statements
+#    - avoid_types_on_closure_parameters # todo: re-add when not specifying types
+    - avoid_unnecessary_containers
     - avoid_unused_constructor_parameters
     - avoid_void_async
     - await_only_futures
+    - camel_case_extensions
     - camel_case_types
-    # - cascade_invocations
+#    - cascade_invocations # sometimes not cascading makes the code more readable
+#    - cast_nullable_to_non_nullable # makes sense after checking the type
     - constant_identifier_names
     - curly_braces_in_flow_control_structures
+#    - deprecated_consistency # todo: add when available in stable
     - directives_ordering
+#    - do_not_use_environment # we use environment variables
     - empty_catches
     - empty_constructor_bodies
+    - exhaustive_cases
     - file_names
+#    - flutter_style_todos # we don't need to have the same style
+    - implementation_imports
+    - join_return_with_assignment
+    - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
+#    - library_private_types_in_public_api # todo: add when available in stable
     - lines_longer_than_80_chars
+    - missing_whitespace_between_adjacent_strings
+    - no_default_cases
+    - no_runtimeType_toString
     - non_constant_identifier_names
+    - null_check_on_nullable_type_parameter
+    - null_closures
+#    - omit_local_variable_types # todo: re-add when not specifying types
+    - one_member_abstracts
+    - only_throw_errors
     - overridden_fields
+    - package_api_docs
     - package_prefixed_library_names
+#    - parameter_assignments # we sometimes reassign parameters
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
+#    - prefer_asserts_with_message # we don't always have a message
     - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors
@@ -83,9 +136,13 @@ linter:
     - prefer_const_literals_to_create_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
+#    - prefer_double_quotes # we prefer single quotes
     - prefer_equal_for_default_values
+#    - prefer_expression_function_bodies # makes it less readable when the expression exceeds 1
     - prefer_final_fields
+#    - prefer_final_in_for_each # todo: re-add
     - prefer_final_locals
+    - prefer_for_elements_to_map_fromIterable
     - prefer_foreach
     - prefer_function_declarations_over_variables
     - prefer_generic_function_type_aliases
@@ -97,31 +154,56 @@ linter:
     - prefer_interpolation_to_compose_strings
     - prefer_is_empty
     - prefer_is_not_empty
+    - prefer_is_not_operator
     - prefer_iterable_whereType
+#    - prefer_mixin # conflicts with some flutter classes (PreferredSizeWidget, RouteAware, etc.)
+#    - prefer_null_aware_method_calls # todo: add when available in stable
     - prefer_null_aware_operators
     - prefer_single_quotes
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
+    - provide_deprecation_message
+#    - public_member_api_docs # we don't provide documentation for every public facing api
     - recursive_getters
+#    - require_trailing_commas # todo: add when available in stable
+    - sized_box_for_whitespace
     - slash_for_doc_comments
     - sort_child_properties_last
     - sort_constructors_first
     - sort_unnamed_constructors_first
+    - tighten_type_of_initializing_formals
+    - type_annotate_public_apis
     - type_init_formals
+    - unawaited_futures
     - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_const
+#    - unnecessary_final # we prefer final locals
     - unnecessary_getters_setters
     - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
+    - unnecessary_null_checks
     - unnecessary_null_in_if_null_operators
+    - unnecessary_nullable_for_final_variable_declarations
     - unnecessary_overrides
     - unnecessary_parenthesis
+    - unnecessary_raw_strings
+    - unnecessary_string_escapes
+    - unnecessary_string_interpolations
     - unnecessary_this
     - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
+#    - use_if_null_to_convert_nulls_to_bools # todo: add when available in stable
+    - use_is_even_rather_than_modulo
+    - use_late_for_private_fields_and_variables
+#    - use_named_constants # todo: add when available in stable
+    - use_raw_strings
     - use_rethrow_when_possible
     - use_setters_to_change_properties
+    - use_string_buffers
+    - use_to_and_as_if_applicable
+    - void_checks
 
     # pub
     - package_names

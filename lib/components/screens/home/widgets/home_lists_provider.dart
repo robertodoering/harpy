@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
-/// Builds all the [ListTimelineBloc]s for the [model.listEntries].
+/// Builds all the [ListTimelineBloc]s for the [HomeTabModel.listEntries].
 ///
 /// The blocs are exposed via the [blocOf] method to get the bloc
 /// corresponding to the list's id.
@@ -126,9 +126,9 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
 /// Exposes the [_HomeListsBlocsScope.blocs] to the widget tree.
 class _HomeListsBlocsScope extends InheritedWidget {
   const _HomeListsBlocsScope({
-    Key? key,
     required this.blocs,
     required Widget child,
+    Key? key,
   }) : super(key: key, child: child);
 
   final List<ListTimelineBloc> blocs;

@@ -27,13 +27,10 @@ const Radius kDefaultRadius = Radius.circular(16);
 
 class HarpyTheme {
   HarpyTheme.fromData(HarpyThemeData data) {
-    name = data.name ?? '';
+    name = data.name;
 
-    backgroundColors = data.backgroundColors
-            ?.map(_colorFromValue)
-            .whereType<Color>()
-            .toList() ??
-        <Color>[Colors.black, const Color(0xff17233d)];
+    backgroundColors =
+        data.backgroundColors.map(_colorFromValue).whereType<Color>().toList();
 
     accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
 
@@ -152,7 +149,7 @@ class HarpyTheme {
             : Brightness.dark;
   }
 
-  /// Reduces the [backgroundColor] to a single color by interpolating the
+  /// Reduces the [backgroundColors] to a single color by interpolating the
   /// colors.
   void _setupAverageBackgroundColor() {
     final Color average = backgroundColors.reduce(

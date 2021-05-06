@@ -72,7 +72,6 @@ class _MediaTimelineGalleryOverlayState
         tweet: _tweet,
         tweetBloc: _bloc,
         enableImmersiveMode: false,
-        overlap: false,
         onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
         onDownload: () => defaultOnMediaDownload(_mediaUrl),
         onShare: () => defaultOnMediaShare(_mediaUrl),

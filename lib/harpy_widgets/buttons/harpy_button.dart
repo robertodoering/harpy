@@ -59,13 +59,10 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 /// icon is built to the left of the text with a padding in between that is
 /// half of its vertical padding.
 ///
-/// Alternatively to [icon], an [iconBuilder] can be used to build the icon
-/// widget with more control.
-///
 /// When [onTap] is `null`, the button will appear disabled by reducing the
 /// foreground and background opacity.
 ///
-/// Either [icon], [iconBuilder] or [text] must not be `null`.
+/// Either [icon] or [text] must not be `null`.
 class HarpyButton extends StatelessWidget {
   /// A button that appears raised with a shadow.
   ///

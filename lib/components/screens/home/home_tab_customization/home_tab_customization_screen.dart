@@ -98,8 +98,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         widget.model.setToDefault();
       },
       itemBuilder: (BuildContext context) {
-        return <PopupMenuEntry<void>>[
-          const HarpyPopupMenuItem<void>(
+        return <PopupMenuEntry<int>>[
+          const HarpyPopupMenuItem<int>(
             value: 0,
             text: Text('reset to default'),
           ),

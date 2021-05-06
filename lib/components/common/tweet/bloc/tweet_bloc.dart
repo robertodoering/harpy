@@ -10,6 +10,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:share/share.dart';
 
 part 'tweet_event.dart';

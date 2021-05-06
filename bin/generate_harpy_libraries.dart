@@ -1,5 +1,7 @@
 import 'dart:io';
 
+// ignore_for_file: avoid_print
+
 /// Generates the library files for harpy.
 Future<void> main() async {
   final List<String> paths = <String>[

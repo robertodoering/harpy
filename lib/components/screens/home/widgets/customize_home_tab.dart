@@ -31,7 +31,7 @@ class CustomizeHomeTab extends StatelessWidget {
 
     if (Harpy.isFree) {
       return Bubbled(
-        bubble: const FlareIcon.shiningStar(size: 18),
+        bubble: const FlareIcon.shiningStar(),
         bubbleOffset: const Offset(4, -4),
         child: child,
       );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/bubbles_painter.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/circle_painter.dart';
 
 /// An animation modified from the

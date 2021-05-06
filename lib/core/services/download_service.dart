@@ -8,7 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 /// status notification.
 ///
 /// Files are downloaded into the download directory using
-/// [DownloadsPathProvider].
+/// [AndroidPathProvider].
 ///
 /// To write into the download directory, additional permissions have to be
 /// granted at runtime.
@@ -47,14 +47,14 @@ class DownloadService {
   }
 
   Future<String?> _requestDownloadDirectory() async {
-    final MessageService? messageService = app<MessageService>();
+    final MessageService messageService = app<MessageService>();
 
     final PermissionStatus status = await Permission.storage.request();
 
     if (status.isGranted) {
       return AndroidPathProvider.downloadsPath;
     } else {
-      messageService!.show('storage permission not granted');
+      messageService.show('storage permission not granted');
 
       return null;
     }

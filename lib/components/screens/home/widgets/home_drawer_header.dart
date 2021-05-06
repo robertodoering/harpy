@@ -15,7 +15,6 @@ class HomeDrawerHeader extends StatelessWidget {
         screenName: user.screenName,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // circle avatar
           HarpyCircleAvatar(

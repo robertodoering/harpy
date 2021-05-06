@@ -39,16 +39,16 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
       context.watch<CustomThemeBloc>();
 
   /// Whether more background colors can be added.
-  bool get canAddMoreBackgroundColors => themeData.backgroundColors!.length < 5;
+  bool get canAddMoreBackgroundColors => themeData.backgroundColors.length < 5;
 
   /// Whether background colors can be removed.
-  bool get canRemoveBackgroundColor => themeData.backgroundColors!.length > 1;
+  bool get canRemoveBackgroundColor => themeData.backgroundColors.length > 1;
 
   /// Whether the name only contains alphanumeric characters, '-', '_' and
   /// spaces.
   bool get validName =>
-      themeData.name!.isNotEmpty &&
-      themeData.name!.contains(RegExp(r'^[-_ a-zA-Z0-9]+$'));
+      themeData.name.isNotEmpty &&
+      themeData.name.contains(RegExp(r'^[-_ a-zA-Z0-9]+$'));
 
   /// Whether the accent color provides enough contrast for text on the
   /// background.

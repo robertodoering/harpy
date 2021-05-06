@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
@@ -21,7 +22,7 @@ class _SetupScreenState extends State<SetupScreen> {
       GlobalKey<SlideAnimationState>();
 
   Future<void> _continue(ThemeBloc themeBloc) async {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     // setup completed
     await _slideSetupKey.currentState!.forward();
@@ -45,7 +46,7 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget _buildUsername(AuthenticationBloc authenticationBloc) {
     return Center(
       child: PrimaryHeadline(
-        '${authenticationBloc.authenticatedUser!.name}',
+        authenticationBloc.authenticatedUser!.name,
         delay: const Duration(milliseconds: 800),
       ),
     );
@@ -109,7 +110,6 @@ class _SetupScreenState extends State<SetupScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: mediaQuery.padding.top),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ConstrainedBox(

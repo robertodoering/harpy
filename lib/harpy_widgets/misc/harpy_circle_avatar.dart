@@ -34,7 +34,6 @@ class HarpyCircleAvatar extends StatelessWidget {
       backgroundColor: backgroundColor,
       child: SizedBox.expand(
         child: ClipOval(
-          clipBehavior: Clip.antiAlias,
           child: image,
         ),
       ),

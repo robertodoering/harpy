@@ -112,7 +112,6 @@ class _AnimatedNumberState extends State<AnimatedNumber>
           animation: _controller,
           builder: (BuildContext context, Widget? child) => Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(unchanged),
               Stack(

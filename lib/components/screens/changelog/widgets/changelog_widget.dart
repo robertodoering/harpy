@@ -66,7 +66,7 @@ class ChangelogWidget extends StatelessWidget {
             children: <Widget>[
               const Text('·'),
               const SizedBox(width: 12),
-              Expanded(child: Text('$line', textAlign: TextAlign.left)),
+              Expanded(child: Text(line, textAlign: TextAlign.left)),
             ],
           ),
           if (line != additionalInformation.last) const SizedBox(height: 6),

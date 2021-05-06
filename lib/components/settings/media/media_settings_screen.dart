@@ -105,8 +105,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(mediaPreferences.defaultSettings);
         },
         itemBuilder: (BuildContext context) {
-          return <PopupMenuEntry<void>>[
-            const HarpyPopupMenuItem<void>(
+          return <PopupMenuEntry<int>>[
+            const HarpyPopupMenuItem<int>(
               value: 0,
               text: Text('reset to default'),
             ),

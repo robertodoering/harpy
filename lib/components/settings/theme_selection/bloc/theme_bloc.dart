@@ -87,7 +87,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         statusBarBrightness: theme.brightness,
         statusBarIconBrightness: theme.complementaryBrightness,
         systemNavigationBarColor: navigationBarColor,
-        systemNavigationBarDividerColor: null,
         systemNavigationBarIconBrightness: theme.complementaryBrightness,
       ),
     );

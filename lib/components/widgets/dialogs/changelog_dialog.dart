@@ -3,6 +3,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 class ChangelogDialog extends StatelessWidget {
   const ChangelogDialog(this.data);
@@ -17,9 +18,11 @@ class ChangelogDialog extends StatelessWidget {
       final ChangelogData? data = await app<ChangelogParser>().current(context);
 
       if (data != null) {
-        showDialog<void>(
-          context: context,
-          builder: (_) => ChangelogDialog(data),
+        unawaited(
+          showDialog<void>(
+            context: context,
+            builder: (_) => ChangelogDialog(data),
+          ),
         );
       }
     }

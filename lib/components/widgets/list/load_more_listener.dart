@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Listens to [ScrollNotifications] that bubble up the tree to call the
+/// Listens to scroll notifications that bubble up the tree to call the
 /// [onLoadMore] callback when reaching the end of the list.
 class LoadMoreListener extends StatefulWidget {
   const LoadMoreListener({

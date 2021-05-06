@@ -80,9 +80,9 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
 /// [_VisibilityChangeDetectorState].
 class VisibilityChange extends InheritedWidget {
   const VisibilityChange({
-    Key? key,
     required this.visibilityDetector,
     required Widget child,
+    Key? key,
   }) : super(key: key, child: child);
 
   final _VisibilityChangeDetectorState visibilityDetector;

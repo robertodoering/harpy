@@ -41,9 +41,7 @@ void showTweetActionsBottomSheet(
           children: <Widget>[
             Text('tweet from ${tweet.userData!.name}'),
             defaultSmallVerticalSpacer,
-            Text(
-              '$tweetTime',
-            ),
+            Text(tweetTime),
             // todo: add source here and make bottom sheet scrollable
           ],
         ),

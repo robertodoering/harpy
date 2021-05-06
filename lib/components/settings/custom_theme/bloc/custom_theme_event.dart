@@ -25,8 +25,7 @@ class AddBackgroundColor extends CustomThemeEvent {
     _log.fine('adding new background color');
 
     try {
-      bloc.themeData.backgroundColors!
-          .add(bloc.themeData.backgroundColors!.last);
+      bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -56,7 +55,7 @@ class ChangeBackgroundColor extends CustomThemeEvent {
     _log.fine('changing background color: $color at index: $index');
 
     try {
-      bloc.themeData.backgroundColors![index] = color.value;
+      bloc.themeData.backgroundColors[index] = color.value;
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -84,7 +83,7 @@ class RemoveBackgroundColor extends CustomThemeEvent {
     _log.fine('removing background color at index: $index');
 
     try {
-      bloc.themeData.backgroundColors!.removeAt(index);
+      bloc.themeData.backgroundColors.removeAt(index);
       bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
@@ -114,12 +113,12 @@ class ReorderBackgroundColor extends CustomThemeEvent {
     _log.fine('reordering background color from index: $oldIndex to $newIndex');
 
     try {
-      final int color = bloc.themeData.backgroundColors![oldIndex];
+      final int color = bloc.themeData.backgroundColors[oldIndex];
 
-      bloc.themeData.backgroundColors!
+      bloc.themeData.backgroundColors
         ..removeAt(oldIndex)
         ..insert(
-          newIndex.clamp(0, bloc.themeData.backgroundColors!.length),
+          newIndex.clamp(0, bloc.themeData.backgroundColors.length),
           color,
         );
 
@@ -150,7 +149,7 @@ class RenameTheme extends CustomThemeEvent {
     if (bloc.themeData.name != name) {
       _log.fine('changing name to $name');
 
-      bloc.themeData.name = name;
+      bloc.themeData = bloc.themeData.copyWith(name: name);
 
       yield ModifiedCustomThemeState();
     }
@@ -174,7 +173,9 @@ class ChangeAccentColor extends CustomThemeEvent {
   }) async* {
     _log.fine('changing accent color to $color');
 
-    bloc.themeData.accentColor = color.value;
+    bloc.themeData = bloc.themeData.copyWith(
+      accentColor: color.value,
+    );
 
     yield ModifiedCustomThemeState();
   }

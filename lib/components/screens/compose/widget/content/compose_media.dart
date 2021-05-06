@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:file_picker/src/platform_file.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +63,7 @@ class ComposeTweetMedia extends StatelessWidget {
           key: Key(state.media.first.path!),
         );
         break;
-      default:
+      case null:
         child = const SizedBox();
         break;
     }

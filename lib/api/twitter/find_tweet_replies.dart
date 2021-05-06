@@ -25,7 +25,7 @@ extension RepliesExtension on TweetSearchService {
     TweetData tweet,
     RepliesResult? lastResult,
   ) async {
-    final String? screenName = tweet.userData!.screenName;
+    final String screenName = tweet.userData!.screenName;
 
     final String? maxId =
         lastResult == null ? null : '${int.tryParse(lastResult.maxId!)! + 1}';

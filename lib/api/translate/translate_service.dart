@@ -50,20 +50,22 @@ class TranslationService {
       // try to parse translation from response
       final List<dynamic> body = jsonDecode(response.body);
 
-      String original = '';
-      String translated = '';
+      final StringBuffer original = StringBuffer();
+      final StringBuffer translated = StringBuffer();
 
       for (List<dynamic> translationText in body[0]) {
-        original += translationText[1];
-        translated += translationText[0];
+        original.write(translationText[1]);
+        translated.write(translationText[0]);
       }
 
       _log.fine('translated from:\n$original\nto:\n$translated');
 
       return Translation()
-        ..original = original
-        ..text = translated
+        ..original = original.toString()
+        ..text = translated.toString()
+        // ignore: avoid_dynamic_calls
         ..languageCode = body.last[0][0]
+        // ignore: avoid_dynamic_calls
         ..language = translateLanguages[body.last[0][0]];
     } catch (e, st) {
       _log.severe(

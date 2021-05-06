@@ -5,7 +5,7 @@ abstract class AuthenticationState {}
 
 /// The state when the user has been authenticated.
 ///
-/// [AuthenticationBloc.twitterSession] must not be `null` when the user is
+/// [AuthenticationBloc.twitterAuthSession] must not be `null` when the user is
 /// authenticated.
 class AuthenticatedState extends AuthenticationState {}
 

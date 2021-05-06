@@ -176,7 +176,6 @@ export 'widgets/buttons/view_more_action_button.dart';
 export 'widgets/default_padding/layout_padding.dart';
 export 'widgets/dialogs/changelog_dialog.dart';
 export 'widgets/dialogs/color_picker_dialog.dart';
-export 'widgets/dialogs/error_dialog.dart';
 export 'widgets/dialogs/pro_dialog.dart';
 export 'widgets/filter/filter_drawer.dart';
 export 'widgets/filter/filter_group.dart';

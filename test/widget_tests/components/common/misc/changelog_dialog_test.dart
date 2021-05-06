@@ -199,7 +199,8 @@ class _MockHomeScreenState extends State<MockHomeScreen> {
   }
 }
 
-const String _changelog = '''· Added Tweet media download
+const String _changelog = '''
+· Added Tweet media download
 · Added additional home timeline refresh button
 · Changed full-screen media overlay
 · Disabled gif autoplay (temporarily)

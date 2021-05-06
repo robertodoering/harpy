@@ -27,7 +27,7 @@ class UserData {
   late String name;
 
   /// The screen name, handle, or alias that this user identifies themselves
-  /// with. [screen_names] are unique but subject to change. Use id_str as a
+  /// with. [screenName]s are unique but subject to change. Use id_str as a
   /// user identifier whenever possible. Typically a maximum of 15 characters
   /// long, but some historical accounts may exist with longer names.
   late String screenName;

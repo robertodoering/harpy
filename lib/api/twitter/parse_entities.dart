@@ -11,15 +11,17 @@ void parseEntities(String text, Entities entities) {
   for (Match m in hashtagRegex.allMatches(text)) {
     final String hashtag = m.group(0)!;
 
-    entities.hashtags!
-        .add(Hashtag()..text = hashtag.replaceFirst(RegExp(r'#|＃'), ''));
+    entities.hashtags!.add(
+      Hashtag()..text = hashtag.replaceFirst(RegExp('#|＃'), ''),
+    );
   }
 
   // Search for mentions in text
   for (Match m in mentionRegex.allMatches(text)) {
     final String mention = m.group(0)!;
 
-    entities.userMentions!
-        .add(UserMention()..screenName = mention.replaceFirst('@', ''));
+    entities.userMentions!.add(
+      UserMention()..screenName = mention.replaceFirst('@', ''),
+    );
   }
 }

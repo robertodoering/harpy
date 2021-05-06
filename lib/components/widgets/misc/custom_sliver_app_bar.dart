@@ -11,7 +11,7 @@ typedef DecorationBuilder = Decoration Function(
 /// and provides a [decorationBuilder] to build its decoration.
 ///
 /// This is used to add a background gradient to the app bar in
-/// [HarpySliverAppBar].
+/// harpy sliver app bar.
 ///
 /// See [SliverAppBar] for more information.
 class CustomSliverAppBar extends StatefulWidget {

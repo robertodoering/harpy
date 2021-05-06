@@ -5,6 +5,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Builds the [ComposeTweetCard] with the [ComposeParentTweetCard] when
 /// replying or quoting a tweet.
@@ -40,10 +41,12 @@ class _ComposeTweetCardWithParentState
     ) async {
       if (visible) {
         // scroll to the start so the compose tweet card is fully visible
-        _controller!.animateTo(
-          0,
-          duration: kLongAnimationDuration,
-          curve: Curves.easeOutCirc,
+        unawaited(
+          _controller!.animateTo(
+            0,
+            duration: kLongAnimationDuration,
+            curve: Curves.easeOutCirc,
+          ),
         );
 
         // wait for the show animation until the height changes to avoid it

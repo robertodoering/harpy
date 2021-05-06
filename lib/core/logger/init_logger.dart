@@ -1,6 +1,8 @@
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
+// ignore_for_file: avoid_print
+
 void initLogger({String? prefix}) {
   Logger.root.level = Level.ALL;
 

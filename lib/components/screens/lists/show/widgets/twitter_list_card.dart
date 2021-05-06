@@ -55,7 +55,7 @@ class TwitterListCard extends StatelessWidget {
         defaultSmallHorizontalSpacer,
         Flexible(
           child: Text(
-            '${list.user!.name}',
+            list.user!.name,
             style: theme.textTheme.bodyText1,
             softWrap: false,
             overflow: TextOverflow.fade,

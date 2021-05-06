@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Builds a [ListTile] that opens a [HarpyDialog] and displays entries in
 /// the dialog content as [RadioListTile]s.
@@ -66,7 +67,7 @@ class RadioDialogTile<T> extends StatelessWidget {
               subtitle: subtitles != null ? Text(subtitles![i]) : null,
               dense: denseRadioTiles,
               onChanged: (T? value) async {
-                HapticFeedback.lightImpact();
+                unawaited(HapticFeedback.lightImpact());
                 await app<HarpyNavigator>().state!.maybePop();
                 onChanged.call(value);
               },
