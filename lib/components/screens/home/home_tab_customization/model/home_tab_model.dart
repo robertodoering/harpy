@@ -124,7 +124,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
   /// Adds a twitter list as a home tab entry to the configuration.
   ///
-  /// When [icon] is `null`, a random icon will be selected.
+  /// When [icon] is `null`, the first letter of the name will be used as the
+  /// icon. If the name is `null`, a random icon will be used instead.
   ///
   /// Users of harpy free can only have one list at a time.
   /// Users of harpy pro can have up to 10 lists at a time.
@@ -144,10 +145,12 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     }
 
     // randomize the icon if it's null (but skip the default icons)
-    icon ??= (HomeTabEntryIcon.iconNameMap.keys.toList()
-          ..skip(4)
-          ..shuffle())
-        .first;
+    icon ??= list.name.isNotEmpty
+        ? list.name[0]
+        : (HomeTabEntryIcon.iconNameMap.keys.toList()
+              ..skip(4)
+              ..shuffle())
+            .first;
 
     value = value.addEntry(
       HomeTabEntry(

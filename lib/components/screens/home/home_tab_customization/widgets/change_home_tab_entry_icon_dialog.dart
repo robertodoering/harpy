@@ -10,6 +10,22 @@ class ChangeHomeTabEntryIconDialog extends StatelessWidget {
 
   final HomeTabEntry entry;
 
+  Widget _buildButton(BuildContext context, String iconName) {
+    if (iconName == entry.icon) {
+      return HarpyButton.raised(
+        padding: const EdgeInsets.all(8),
+        icon: HomeTabEntryIcon(iconName),
+        onTap: () => Navigator.of(context).pop(),
+      );
+    } else {
+      return HarpyButton.flat(
+        padding: const EdgeInsets.all(8),
+        icon: HomeTabEntryIcon(iconName),
+        onTap: () => Navigator.of(context).pop<String>(iconName),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return HarpyDialog(
@@ -18,19 +34,9 @@ class ChangeHomeTabEntryIconDialog extends StatelessWidget {
         spacing: 4,
         runSpacing: 4,
         children: <Widget>[
+          if (entry.hasName) _buildButton(context, entry.name![0]),
           for (String iconName in HomeTabEntryIcon.iconNameMap.keys)
-            if (iconName == entry.icon)
-              HarpyButton.raised(
-                padding: const EdgeInsets.all(8),
-                icon: HomeTabEntryIcon(iconName),
-                onTap: () => Navigator.of(context).pop(),
-              )
-            else
-              HarpyButton.flat(
-                padding: const EdgeInsets.all(8),
-                icon: HomeTabEntryIcon(iconName),
-                onTap: () => Navigator.of(context).pop<String>(iconName),
-              ),
+            _buildButton(context, iconName)
         ],
       ),
     );
