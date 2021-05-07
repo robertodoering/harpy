@@ -23,6 +23,7 @@ export 'common/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 export 'common/timeline/user_timeline/widgets/user_timeline.dart';
 export 'common/trends/bloc/trends_bloc.dart';
 export 'common/trends/widgets/trends_list.dart';
+export 'common/trends_location/bloc/trends_location_bloc.dart';
 export 'common/tweet/bloc/tweet_bloc.dart';
 export 'common/tweet/model/tweet_media_model.dart';
 export 'common/tweet/widgets/media/tweet_gif.dart';
