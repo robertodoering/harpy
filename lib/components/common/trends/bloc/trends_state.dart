@@ -15,6 +15,9 @@ extension TrendsExtension on TrendsState {
   List<Trend> get trends =>
       this is FoundTrendsState ? (this as FoundTrendsState).trends : <Trend>[];
 
+  int get trendsCount =>
+      this is FoundTrendsState ? (this as FoundTrendsState).trends.length : 0;
+
   List<Trend> get hashtags => this is FoundTrendsState
       ? (this as FoundTrendsState).hashtags
       : <Trend>[];

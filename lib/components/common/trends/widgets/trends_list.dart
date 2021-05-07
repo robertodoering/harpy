@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,7 @@ class TrendsList extends StatelessWidget {
       key: ValueKey<int>(trend.hashCode),
       child: Card(
         child: ListTile(
+          shape: kDefaultShapeBorder,
           leading: const Icon(FeatherIcons.trendingUp, size: 18),
           title: Text(trend.name!),
           subtitle: subtitle,
@@ -37,7 +39,7 @@ class TrendsList extends StatelessWidget {
     if (index.isEven) {
       return _buildTrendTile(trends[index ~/ 2]);
     } else {
-      return defaultSmallVerticalSpacer;
+      return defaultVerticalSpacer;
     }
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -11,6 +11,7 @@ class SearchScreen extends StatelessWidget {
   Widget _buildUserSearchCard() {
     return Card(
       child: ListTile(
+        shape: kDefaultShapeBorder,
         leading: const Icon(CupertinoIcons.search),
         title: const Text('users'),
         onTap: () => app<HarpyNavigator>().pushNamed(UserSearchScreen.route),
@@ -21,6 +22,7 @@ class SearchScreen extends StatelessWidget {
   Widget _buildTweetSearchCard() {
     return Card(
       child: ListTile(
+        shape: kDefaultShapeBorder,
         leading: const Icon(CupertinoIcons.search),
         title: const Text('tweets'),
         onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(),
@@ -36,21 +38,25 @@ class SearchScreen extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: DefaultEdgeInsets.all(),
+            padding: DefaultEdgeInsets.all().copyWith(bottom: 0),
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
                   _buildUserSearchCard(),
                   defaultVerticalSpacer,
                   _buildTweetSearchCard(),
-                  defaultVerticalSpacer,
-                  const ListTile(
-                    leading: Icon(FeatherIcons.trendingUp, size: 18),
-                    title: Text('worldwide trends'),
-                  ),
                 ],
               ),
             ),
+          ),
+          const SliverToBoxAdapter(
+            child: Divider(height: 32),
+          ),
+          const SliverToBoxAdapter(
+            child: TrendsHeader(),
+          ),
+          SliverToBoxAdapter(
+            child: defaultVerticalSpacer,
           ),
           TrendsList(),
           SliverToBoxAdapter(
