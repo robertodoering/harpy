@@ -101,10 +101,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
               padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
               child: HarpyButton.raised(
                 padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
-                icon: HomeTabEntryIcon(
-                  _entry.icon,
-                  size: HarpyTab.tabIconSize,
-                ),
+                icon: HomeTabEntryIcon(_entry.icon),
                 onTap: () async {
                   widget.model.changeIcon(
                     widget.index,

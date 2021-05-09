@@ -10,47 +10,85 @@ abstract class TrendsEvent extends Equatable {
 }
 
 class FindTrendsEvent extends TrendsEvent with HarpyLogger {
-  const FindTrendsEvent({
-    required this.woeid,
-  });
-
-  const FindTrendsEvent.global() : this(woeid: 1);
-
-  /// The Yahoo! Where On Earth ID of the location to return trending
-  /// information for. Global information is available by using 1 as the
-  /// `WOEID`.
-  final int woeid;
+  const FindTrendsEvent();
 
   @override
-  List<Object> get props => <Object>[
-        woeid,
-      ];
+  List<Object> get props => <Object>[];
+
+  TrendsLocationData? _locationData(TrendsBloc bloc) {
+    final trendsJson = bloc.trendsPreferences.trendsLocation;
+
+    if (trendsJson.isNotEmpty) {
+      try {
+        return TrendsLocationData.fromJson(jsonDecode(trendsJson));
+      } catch (e, st) {
+        log.severe('unable to decode location from preferences', e, st);
+      }
+    }
+
+    return null;
+  }
 
   @override
   Stream<TrendsState> applyAsync({
     required TrendsState currentState,
     required TrendsBloc bloc,
   }) async* {
-    log.fine('finding trends for woeid: $woeid');
+    log.fine('finding trends');
 
     yield const RequestingTrends();
 
-    final trends = await bloc.trendsService
-        .place(id: woeid)
-        .handleError(silentErrorHandler);
+    final location = _locationData(bloc);
 
-    if (trends != null && trends.isNotEmpty) {
+    Future<List<Trends>?>? request;
+
+    if (location == null) {
+      // default to worldwide trends (woeid 1)
+      request = bloc.trendsService.place(id: 1);
+    } else {
+      request = bloc.trendsService.place(id: 1);
+    }
+
+    final trends = await request.handleError(silentErrorHandler);
+
+    if (trends != null && trends.isNotEmpty && trends.first.trends != null) {
       final sortedTrends = trends.first.trends!;
       sortedTrends.sort(
         (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
       );
 
       yield FoundTrendsState(
-        woeid: woeid,
+        woeid: 1,
         trends: sortedTrends,
       );
     } else {
       yield const FindTrendsFailure();
+    }
+  }
+}
+
+class UpdateTrendsLocation extends TrendsEvent with HarpyLogger {
+  const UpdateTrendsLocation({
+    required this.location,
+  });
+
+  final TrendsLocationData location;
+
+  @override
+  List<Object> get props => <Object>[];
+
+  @override
+  Stream<TrendsState> applyAsync({
+    required TrendsState currentState,
+    required TrendsBloc bloc,
+  }) async* {
+    log.fine('updating trends location');
+
+    try {
+      bloc.trendsPreferences.trendsLocation = jsonEncode(location.toJson());
+      bloc.add(const FindTrendsEvent());
+    } catch (e, st) {
+      log.severe('unable to update trends location', e, st);
     }
   }
 }

@@ -21,7 +21,7 @@ class HomeProvider extends StatelessWidget {
         child: BlocProvider<TrendsLocationBloc>(
           create: (_) => TrendsLocationBloc()..add(const LoadTrendsLocations()),
           child: BlocProvider<TrendsBloc>(
-            create: (_) => TrendsBloc()..add(const FindTrendsEvent.global()),
+            create: (_) => TrendsBloc()..add(const FindTrendsEvent()),
             child: Builder(
               builder: (context) => HomeListsProvider(
                 model: context.watch<HomeTabModel>(),

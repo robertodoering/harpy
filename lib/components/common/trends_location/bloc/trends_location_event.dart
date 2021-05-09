@@ -13,7 +13,7 @@ abstract class TrendsLocationEvent {
 /// trends.
 ///
 /// Only countries are saved in the state.
-class LoadTrendsLocations extends TrendsLocationEvent {
+class LoadTrendsLocations extends TrendsLocationEvent with HarpyLogger {
   const LoadTrendsLocations();
 
   @override
@@ -21,6 +21,10 @@ class LoadTrendsLocations extends TrendsLocationEvent {
     required TrendsLocationState currentState,
     required TrendsLocationBloc bloc,
   }) async* {
+    log.fine('loading trends locations');
+
+    yield const LoadingTrendsLocation();
+
     final trendsLocation =
         await bloc.trendsService.available().handleError(silentErrorHandler);
 
@@ -32,37 +36,30 @@ class LoadTrendsLocations extends TrendsLocationEvent {
           .where((location) => location.placeType?.code == 12)) {
         if (location.woeid != null &&
             location.name != null &&
-            location.placeType != null) {
+            location.placeType?.name != null) {
           locations.add(
             TrendsLocationData(
-              id: location.woeid!,
+              woeid: location.woeid!,
               name: location.name!,
-              placeType: location.placeType!,
+              placeType: location.placeType!.name!,
             ),
           );
         }
       }
 
       if (locations.isNotEmpty) {
+        log.fine('found ${locations.length} trends locations');
+
         yield TrendsLocationLoaded(locations: locations);
       } else {
+        log.fine('found no trends locations');
+
         yield const TrendsLocationEmpty();
       }
     } else {
+      log.info('error finding trends locations');
+
       yield const TrendsLocationLoadingFailure();
     }
   }
-}
-
-@immutable
-class TrendsLocationData {
-  const TrendsLocationData({
-    required this.id,
-    required this.name,
-    required this.placeType,
-  });
-
-  final int id;
-  final String name;
-  final PlaceType placeType;
 }

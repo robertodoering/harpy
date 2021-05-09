@@ -53,7 +53,7 @@ class SearchScreen extends StatelessWidget {
             child: Divider(height: 32),
           ),
           const SliverToBoxAdapter(
-            child: TrendsHeader(),
+            child: TrendsCard(),
           ),
           SliverToBoxAdapter(
             child: defaultVerticalSpacer,
