@@ -60,8 +60,13 @@ class SelectLocationListTile extends StatelessWidget {
       trailing: _buildTrailing(locationBloc, locationState),
       description: 'change the trends location',
       denseRadioTiles: true,
-      titles: locationState.locations.map((e) => e.name).toList(),
-      values: locationState.locations,
+      titles: [TrendsLocationData.worldwide]
+          .followedBy(locationState.locations)
+          .map((e) => e.name)
+          .toList(),
+      values: [TrendsLocationData.worldwide]
+          .followedBy(locationState.locations)
+          .toList(),
       enabled: locationState.hasLocations,
       popOnOpen: true,
       onChanged: (location) {

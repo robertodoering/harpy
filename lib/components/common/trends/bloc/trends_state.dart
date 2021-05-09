@@ -34,8 +34,17 @@ extension TrendsExtension on TrendsState {
     }
   }
 
-  String get trendLocationName =>
-      location != null ? 'trends in ${location!.name}' : 'trends';
+  String get trendLocationName {
+    if (location != null) {
+      if (location == TrendsLocationData.worldwide) {
+        return 'worldwide trends';
+      } else {
+        return 'trends in ${location!.name}';
+      }
+    } else {
+      return 'trends';
+    }
+  }
 }
 
 class TrendsInitial extends TrendsState {

@@ -21,9 +21,11 @@ class FoundLocationsContent extends StatelessWidget {
     } else if (state.hasLocations) {
       return Column(
         children: [
-          for (final location in state.locations)
+          for (final location
+              in [TrendsLocationData.worldwide].followedBy(state.locations))
             ListTile(
               leading: const Icon(CupertinoIcons.location),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24),
               title: Text(location.name),
               subtitle: Text(location.placeType.toLowerCase()),
               onTap: () {

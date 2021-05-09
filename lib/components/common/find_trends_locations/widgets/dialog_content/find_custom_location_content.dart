@@ -11,6 +11,7 @@ class FindCustomLocationContent extends StatelessWidget {
     required this.onFormChanged,
     required this.onLongitudeChanged,
     required this.onLatitudeChanged,
+    required this.onConfirm,
     Key? key,
   }) : super(key: key);
 
@@ -18,6 +19,7 @@ class FindCustomLocationContent extends StatelessWidget {
   final VoidCallback onFormChanged;
   final ValueChanged<String> onLongitudeChanged;
   final ValueChanged<String> onLatitudeChanged;
+  final VoidCallback? onConfirm;
 
   InputDecoration _decoration(String label) {
     return InputDecoration(
@@ -51,39 +53,46 @@ class FindCustomLocationContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      child: Form(
-        key: formKey,
-        onChanged: onFormChanged,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+    return Form(
+      key: formKey,
+      onChanged: onFormChanged,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Scrollbar(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Column(
+              children: [
+                TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  maxLength: 8,
+                  decoration: _decoration('latitude'),
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: node.nextFocus,
+                  validator: _validator,
+                  onChanged: onLatitudeChanged,
                 ),
-                maxLength: 8,
-                decoration: _decoration('latitude'),
-                textInputAction: TextInputAction.next,
-                onEditingComplete: node.nextFocus,
-                validator: _validator,
-                onChanged: onLatitudeChanged,
-              ),
-              defaultVerticalSpacer,
-              TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+                defaultVerticalSpacer,
+                TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  maxLength: 8,
+                  decoration: _decoration('longitude'),
+                  textInputAction: TextInputAction.done,
+                  onEditingComplete: node.unfocus,
+                  validator: _validator,
+                  onChanged: onLongitudeChanged,
                 ),
-                maxLength: 8,
-                decoration: _decoration('longitude'),
-                textInputAction: TextInputAction.done,
-                onEditingComplete: node.unfocus,
-                validator: _validator,
-                onChanged: onLongitudeChanged,
-              ),
-            ],
+                defaultVerticalSpacer,
+                HarpyButton.flat(
+                  text: const Text('confirm'),
+                  onTap: onConfirm,
+                ),
+              ],
+            ),
           ),
         ),
       ),

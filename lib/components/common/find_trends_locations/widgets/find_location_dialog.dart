@@ -54,24 +54,20 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
           }
         },
       ),
-      DialogAction<void>(
-        text: 'confirm',
-        onTap: _enableConfirm && !bloc.state.hasLoadedData
-            ? () {
-                removeFocus(context);
-
-                tabController.animateTo(3);
-
-                bloc.add(
-                  FindTrendsLocations(
-                    latitude: _latitude!,
-                    longitude: _longitude!,
-                  ),
-                );
-              }
-            : null,
-      ),
     ];
+  }
+
+  void _onConfirm(FindTrendsLocationsBloc bloc, TabController tabController) {
+    removeFocus(context);
+
+    tabController.animateTo(3);
+
+    bloc.add(
+      FindTrendsLocations(
+        latitude: _latitude!,
+        longitude: _longitude!,
+      ),
+    );
   }
 
   void _onFormChanged() {
@@ -101,6 +97,9 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
           onFormChanged: _onFormChanged,
           onLatitudeChanged: (latitude) => _latitude = latitude,
           onLongitudeChanged: (longitude) => _longitude = longitude,
+          onConfirm: _enableConfirm && !bloc.state.hasLoadedData
+              ? () => _onConfirm(bloc, tabController)
+              : null,
         ),
         const FoundLocationsContent(),
       ],
