@@ -1,11 +1,11 @@
-part of 'trends_location_bloc.dart';
+part of 'trends_locations_bloc.dart';
 
-abstract class TrendsLocationEvent {
-  const TrendsLocationEvent();
+abstract class TrendsLocationsEvent {
+  const TrendsLocationsEvent();
 
-  Stream<TrendsLocationState> applyAsync({
-    required TrendsLocationState currentState,
-    required TrendsLocationBloc bloc,
+  Stream<TrendsLocationsState> applyAsync({
+    required TrendsLocationsState currentState,
+    required TrendsLocationsBloc bloc,
   });
 }
 
@@ -13,17 +13,17 @@ abstract class TrendsLocationEvent {
 /// trends.
 ///
 /// Only countries are saved in the state.
-class LoadTrendsLocations extends TrendsLocationEvent with HarpyLogger {
+class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
   const LoadTrendsLocations();
 
   @override
-  Stream<TrendsLocationState> applyAsync({
-    required TrendsLocationState currentState,
-    required TrendsLocationBloc bloc,
+  Stream<TrendsLocationsState> applyAsync({
+    required TrendsLocationsState currentState,
+    required TrendsLocationsBloc bloc,
   }) async* {
     log.fine('loading trends locations');
 
-    yield const LoadingTrendsLocation();
+    yield const LoadingTrendsLocations();
 
     final trendsLocation =
         await bloc.trendsService.available().handleError(silentErrorHandler);
@@ -50,16 +50,16 @@ class LoadTrendsLocations extends TrendsLocationEvent with HarpyLogger {
       if (locations.isNotEmpty) {
         log.fine('found ${locations.length} trends locations');
 
-        yield TrendsLocationLoaded(locations: locations);
+        yield TrendsLocationsLoaded(locations: locations);
       } else {
         log.fine('found no trends locations');
 
-        yield const TrendsLocationEmpty();
+        yield const TrendsLocationsEmpty();
       }
     } else {
       log.info('error finding trends locations');
 
-      yield const TrendsLocationLoadingFailure();
+      yield const TrendsLocationsLoadingFailure();
     }
   }
 }

@@ -18,8 +18,9 @@ class HomeProvider extends StatelessWidget {
       create: (_) => HomeTabModel(),
       child: ChangeNotifierProvider<TimelineFilterModel>(
         create: (_) => TimelineFilterModel.home(),
-        child: BlocProvider<TrendsLocationBloc>(
-          create: (_) => TrendsLocationBloc()..add(const LoadTrendsLocations()),
+        child: BlocProvider<TrendsLocationsBloc>(
+          create: (_) =>
+              TrendsLocationsBloc()..add(const LoadTrendsLocations()),
           child: BlocProvider<TrendsBloc>(
             create: (_) => TrendsBloc()..add(const FindTrendsEvent()),
             child: Builder(

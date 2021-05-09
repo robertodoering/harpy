@@ -52,7 +52,7 @@ void _showTrendsConfiguration(BuildContext context) {
         child: Text('worldwide trends'),
       ),
       BlocProvider.value(
-        value: context.read<TrendsLocationBloc>(),
+        value: context.read<TrendsLocationsBloc>(),
         child: const SelectLocationListTile(),
       ),
       ListTile(

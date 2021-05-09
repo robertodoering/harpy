@@ -7,19 +7,19 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-part 'trends_location_event.dart';
-part 'trends_location_state.dart';
+part 'trends_locations_event.dart';
+part 'trends_locations_state.dart';
 
 /// Handles loading locations that can be used to request local trends.
-class TrendsLocationBloc extends Bloc<TrendsLocationEvent, TrendsLocationState>
-    with HarpyLogger {
-  TrendsLocationBloc() : super(const TrendsLocationNotLoaded());
+class TrendsLocationsBloc
+    extends Bloc<TrendsLocationsEvent, TrendsLocationsState> with HarpyLogger {
+  TrendsLocationsBloc() : super(const TrendsLocationsNotLoaded());
 
   final TrendsService trendsService = app<TwitterApi>().trendsService;
 
   @override
-  Stream<TrendsLocationState> mapEventToState(
-    TrendsLocationEvent event,
+  Stream<TrendsLocationsState> mapEventToState(
+    TrendsLocationsEvent event,
   ) async* {
     yield* event.applyAsync(currentState: state, bloc: this);
   }

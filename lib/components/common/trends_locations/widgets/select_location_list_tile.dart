@@ -15,7 +15,7 @@ class SelectLocationListTile extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Widget _buildTrailing(TrendsLocationBloc bloc, TrendsLocationState state) {
+  Widget _buildTrailing(TrendsLocationsBloc bloc, TrendsLocationsState state) {
     Widget child;
 
     if (state.isLoading) {
@@ -45,7 +45,7 @@ class SelectLocationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TrendsLocationBloc>();
+    final bloc = context.watch<TrendsLocationsBloc>();
     final state = bloc.state;
 
     return RadioDialogTile<TrendsLocationData>(
