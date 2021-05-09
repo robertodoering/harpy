@@ -31,7 +31,7 @@ class TrendsCard extends StatelessWidget {
               color: theme.accentColor,
             ),
             title: Text(
-              'worldwide trends',
+              state.trendLocationName,
               style: TextStyle(color: theme.accentColor),
             ),
             subtitle:
@@ -45,14 +45,19 @@ class TrendsCard extends StatelessWidget {
 }
 
 void _showTrendsConfiguration(BuildContext context) {
+  final trendsBloc = context.read<TrendsBloc>();
+
   showHarpyBottomSheet<void>(
     context,
     children: [
-      const BottomSheetHeader(
-        child: Text('worldwide trends'),
+      BottomSheetHeader(
+        child: Text(trendsBloc.state.trendLocationName),
       ),
-      BlocProvider.value(
-        value: context.read<TrendsLocationsBloc>(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<TrendsLocationsBloc>()),
+          BlocProvider.value(value: trendsBloc),
+        ],
         child: const SelectLocationListTile(),
       ),
       ListTile(

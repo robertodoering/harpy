@@ -45,26 +45,28 @@ class SelectLocationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TrendsLocationsBloc>();
-    final state = bloc.state;
+    final trendsBloc = context.watch<TrendsBloc>();
+    final trendsState = trendsBloc.state;
+
+    final locationBloc = context.watch<TrendsLocationsBloc>();
+    final locationState = locationBloc.state;
 
     return RadioDialogTile<TrendsLocationData>(
-      // todo: value from prefs
-      value: const TrendsLocationData(
-        woeid: 0,
-        name: 'worldwide',
-        placeType: 'world',
-      ),
+      value: trendsState.location ?? TrendsLocationData.worldwide,
       leading: CupertinoIcons.list_bullet,
       title: 'select location',
-      trailing: _buildTrailing(bloc, state),
+      trailing: _buildTrailing(locationBloc, locationState),
       description: 'change the trends location',
       denseRadioTiles: true,
-      titles: state.locations.map((e) => e.name).toList(),
-      values: state.locations,
-      enabled: state.hasLocations,
+      titles: locationState.locations.map((e) => e.name).toList(),
+      values: locationState.locations,
+      enabled: locationState.hasLocations,
       popOnOpen: true,
-      onChanged: (_) {}, // todo: confirm selection
+      onChanged: (location) {
+        if (location != null) {
+          trendsBloc.add(UpdateTrendsLocation(location: location));
+        }
+      },
     );
   }
 }

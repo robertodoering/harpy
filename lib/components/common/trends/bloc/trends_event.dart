@@ -15,20 +15,6 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  TrendsLocationData? _locationData(TrendsBloc bloc) {
-    final trendsJson = bloc.trendsPreferences.trendsLocation;
-
-    if (trendsJson.isNotEmpty) {
-      try {
-        return TrendsLocationData.fromJson(jsonDecode(trendsJson));
-      } catch (e, st) {
-        log.severe('unable to decode location from preferences', e, st);
-      }
-    }
-
-    return null;
-  }
-
   @override
   Stream<TrendsState> applyAsync({
     required TrendsState currentState,
@@ -36,20 +22,13 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
   }) async* {
     log.fine('finding trends');
 
-    yield const RequestingTrends();
+    final location = TrendsLocationData.fromPreferences();
 
-    final location = _locationData(bloc);
+    yield RequestingTrends(location: location);
 
-    Future<List<Trends>?>? request;
-
-    if (location == null) {
-      // default to worldwide trends (woeid 1)
-      request = bloc.trendsService.place(id: 1);
-    } else {
-      request = bloc.trendsService.place(id: 1);
-    }
-
-    final trends = await request.handleError(silentErrorHandler);
+    final trends = await bloc.trendsService
+        .place(id: location.woeid)
+        .handleError(silentErrorHandler);
 
     if (trends != null && trends.isNotEmpty && trends.first.trends != null) {
       final sortedTrends = trends.first.trends!;
@@ -60,9 +39,10 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
       yield FoundTrendsState(
         woeid: 1,
         trends: sortedTrends,
+        location: location,
       );
     } else {
-      yield const FindTrendsFailure();
+      yield FindTrendsFailure(location: location);
     }
   }
 }
@@ -75,7 +55,7 @@ class UpdateTrendsLocation extends TrendsEvent with HarpyLogger {
   final TrendsLocationData location;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[location];
 
   @override
   Stream<TrendsState> applyAsync({

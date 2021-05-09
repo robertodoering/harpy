@@ -1,11 +1,15 @@
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:harpy/core/core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'trends_location_data.g.dart';
 
 @immutable
 @JsonSerializable()
-class TrendsLocationData {
+class TrendsLocationData extends Equatable {
   const TrendsLocationData({
     required this.name,
     required this.woeid,
@@ -14,6 +18,28 @@ class TrendsLocationData {
 
   factory TrendsLocationData.fromJson(Map<String, dynamic> json) =>
       _$TrendsLocationDataFromJson(json);
+
+  /// Returns the [TrendsLocationData] from the preferences or [worldwide] if
+  /// none is set.
+  factory TrendsLocationData.fromPreferences() {
+    final jsonString = app<TrendsPreferences>().trendsLocation;
+
+    if (jsonString.isNotEmpty) {
+      try {
+        return TrendsLocationData.fromJson(jsonDecode(jsonString));
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    return worldwide;
+  }
+
+  static const worldwide = TrendsLocationData(
+    name: 'worldwide',
+    woeid: 1,
+    placeType: 'world',
+  );
 
   /// The Yahoo! Where On Earth ID of the location to return trending
   /// information for. Global information is available by using 1 as the
@@ -25,6 +51,13 @@ class TrendsLocationData {
 
   /// The name of the place type (e.g. 'Country', 'Town').
   final String placeType;
+
+  @override
+  List<Object?> get props => [
+        woeid,
+        name,
+        placeType,
+      ];
 
   Map<String, dynamic> toJson() => _$TrendsLocationDataToJson(this);
 }
