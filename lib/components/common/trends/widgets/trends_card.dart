@@ -34,8 +34,6 @@ class TrendsCard extends StatelessWidget {
               state.trendLocationName,
               style: TextStyle(color: theme.accentColor),
             ),
-            subtitle:
-                state.hasTrends ? Text('${state.trendsCount} trends') : null,
             onTap: () => _showTrendsConfiguration(context),
           ),
         ),
@@ -67,8 +65,11 @@ void _showTrendsConfiguration(BuildContext context) {
           Navigator.of(context).pop();
           showDialog<void>(
             context: context,
-            builder: (_) => BlocProvider(
-              create: (_) => FindTrendsLocationsBloc(),
+            builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => FindTrendsLocationsBloc()),
+                BlocProvider.value(value: trendsBloc),
+              ],
               child: const FindLocationDialog(),
             ),
           );

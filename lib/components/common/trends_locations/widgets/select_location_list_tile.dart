@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 /// Used to select the location that is used by the [TrendsBloc] to show
@@ -64,6 +66,7 @@ class SelectLocationListTile extends StatelessWidget {
       popOnOpen: true,
       onChanged: (location) {
         if (location != null) {
+          unawaited(HapticFeedback.lightImpact());
           trendsBloc.add(UpdateTrendsLocation(location: location));
         }
       },
