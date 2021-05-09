@@ -26,6 +26,9 @@ class TwitterLists extends StatelessWidget {
             : () => app<HarpyNavigator>().pushListTimelineScreen(
                   list: list,
                 ),
+        onLongPress: () => app<HarpyNavigator>().pushListMemberScreen(
+          list: list,
+        ),
       );
     } else {
       return defaultVerticalSpacer;

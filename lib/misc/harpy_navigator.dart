@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/screens/lists/members/list_members_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -165,6 +166,14 @@ class HarpyNavigator {
     });
   }
 
+  void pushListMemberScreen({
+    TwitterListData? list,
+  }) {
+    pushNamed(ListMembersScreen.route, arguments: <String, dynamic>{
+      'list': list,
+    });
+  }
+
   void pushHomeTabCustomizationScreen({
     required HomeTabModel model,
   }) {
@@ -218,6 +227,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case ListTimelineScreen.route:
       screen = ListTimelineScreen(
+        list: arguments['list'],
+      );
+      break;
+    case ListMembersScreen.route:
+      screen = ListMembersScreen(
         list: arguments['list'],
       );
       break;
