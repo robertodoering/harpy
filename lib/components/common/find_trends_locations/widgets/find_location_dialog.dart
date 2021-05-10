@@ -60,7 +60,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
   void _onConfirm(FindTrendsLocationsBloc bloc, TabController tabController) {
     removeFocus(context);
 
-    tabController.animateTo(3);
+    tabController.animateTo(2);
 
     bloc.add(
       FindTrendsLocations(
@@ -85,21 +85,21 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
       children: [
         SelectFindMethodContent(
           onSelectNearLocation: () {
-            setState(() => tabController.animateTo(1));
+            bloc.add(const FindNearbyLocations());
+            setState(() => tabController.animateTo(2));
+            // setState(() => tabController.animateTo(1));
           },
           onSelectCustomLocation: () {
-            setState(() => tabController.animateTo(2));
+            setState(() => tabController.animateTo(1));
           },
         ),
-        const FindNearbyLocations(),
         FindCustomLocationContent(
           formKey: _form,
           onFormChanged: _onFormChanged,
           onLatitudeChanged: (latitude) => _latitude = latitude,
           onLongitudeChanged: (longitude) => _longitude = longitude,
-          onConfirm: _enableConfirm && !bloc.state.hasLoadedData
-              ? () => _onConfirm(bloc, tabController)
-              : null,
+          onConfirm:
+              _enableConfirm ? () => _onConfirm(bloc, tabController) : null,
         ),
         const FoundLocationsContent(),
       ],
@@ -111,7 +111,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
     final bloc = context.watch<FindTrendsLocationsBloc>();
 
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Builder(
         builder: (context) {
           final tabController = DefaultTabController.of(context)!;

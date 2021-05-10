@@ -11,6 +11,7 @@ TrendsLocationData _$TrendsLocationDataFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     woeid: json['woeid'] as int,
     placeType: json['placeType'] as String,
+    country: json['country'] as String,
   );
 }
 
@@ -19,4 +20,5 @@ Map<String, dynamic> _$TrendsLocationDataToJson(TrendsLocationData instance) =>
       'woeid': instance.woeid,
       'name': instance.name,
       'placeType': instance.placeType,
+      'country': instance.country,
     };

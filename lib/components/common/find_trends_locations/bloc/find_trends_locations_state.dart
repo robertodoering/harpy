@@ -11,6 +11,12 @@ extension FindTrendsLocationsExtension on FindTrendsLocationsState {
 
   bool get hasLocations => this is FindTrendsLocationsLoaded;
 
+  bool get hasServiceDisabled =>
+      this is FindTrendsLocationsLocationServiceDisabled;
+
+  bool get hasPermissionsDenied =>
+      this is FindTrendsLocationsLocationPermissionsDenied;
+
   List<TrendsLocationData> get locations => this is FindTrendsLocationsLoaded
       ? (this as FindTrendsLocationsLoaded).locations
       : [];
@@ -56,6 +62,24 @@ class FindTrendsLocationsEmpty extends FindTrendsLocationsState {
 /// The state when trends locations were unable to be requested.
 class FindTrendsLocationsLoadingFailure extends FindTrendsLocationsState {
   const FindTrendsLocationsLoadingFailure();
+
+  @override
+  List<Object> get props => [];
+}
+
+/// The state when the geolocation service is not enabled.
+class FindTrendsLocationsLocationServiceDisabled
+    extends FindTrendsLocationsState {
+  const FindTrendsLocationsLocationServiceDisabled();
+
+  @override
+  List<Object> get props => [];
+}
+
+/// The state when the location permissions have been denied.
+class FindTrendsLocationsLocationPermissionsDenied
+    extends FindTrendsLocationsState {
+  const FindTrendsLocationsLocationPermissionsDenied();
 
   @override
   List<Object> get props => [];

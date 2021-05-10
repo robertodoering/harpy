@@ -14,6 +14,7 @@ class TrendsLocationData extends Equatable {
     required this.name,
     required this.woeid,
     required this.placeType,
+    required this.country,
   });
 
   factory TrendsLocationData.fromJson(Map<String, dynamic> json) =>
@@ -39,6 +40,7 @@ class TrendsLocationData extends Equatable {
     name: 'worldwide',
     woeid: 1,
     placeType: 'world',
+    country: '',
   );
 
   /// The Yahoo! Where On Earth ID of the location to return trending
@@ -52,12 +54,17 @@ class TrendsLocationData extends Equatable {
   /// The name of the place type (e.g. 'Country', 'Town').
   final String placeType;
 
+  /// The name of the country this place belongs to.
+  final String country;
+
+  bool get isCountry => placeType == 'Country';
+
+  bool get isTown => placeType == 'Town';
+
+  bool get hasCountry => country.isNotEmpty;
+
   @override
-  List<Object?> get props => [
-        woeid,
-        name,
-        placeType,
-      ];
+  List<Object?> get props => [woeid, name, placeType, country];
 
   Map<String, dynamic> toJson() => _$TrendsLocationDataToJson(this);
 }

@@ -42,6 +42,7 @@ class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
               woeid: location.woeid!,
               name: location.name!,
               placeType: location.placeType!.name!,
+              country: location.country ?? '',
             ),
           );
         }

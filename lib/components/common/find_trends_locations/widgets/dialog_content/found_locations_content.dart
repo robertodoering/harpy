@@ -27,7 +27,9 @@ class FoundLocationsContent extends StatelessWidget {
               leading: const Icon(CupertinoIcons.location),
               contentPadding: const EdgeInsets.symmetric(horizontal: 24),
               title: Text(location.name),
-              subtitle: Text(location.placeType.toLowerCase()),
+              subtitle: location.isTown && location.hasCountry
+                  ? Text(location.country)
+                  : null,
               onTap: () {
                 Navigator.of(context).pop();
                 unawaited(HapticFeedback.lightImpact());
@@ -36,6 +38,10 @@ class FoundLocationsContent extends StatelessWidget {
             ),
         ],
       );
+    } else if (state.hasServiceDisabled) {
+      return const Text('location service is unavailable');
+    } else if (state.hasPermissionsDenied) {
+      return const Text('location permissions have been denied');
     } else {
       return const Text('no locations found');
     }
