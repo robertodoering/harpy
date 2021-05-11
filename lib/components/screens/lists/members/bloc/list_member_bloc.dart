@@ -20,6 +20,10 @@ class ListMemberBloc extends Bloc<ListMemberEvent, ListMemberState> {
 
   final ListsService listsService = app<TwitterApi>().listsService;
 
+  Completer<void> requestMoreCompleter = Completer<void>();
+
+  Future<void> get requestMoreFuture => requestMoreCompleter.future;
+
   @override
   Stream<ListMemberState> mapEventToState(
     ListMemberEvent event,

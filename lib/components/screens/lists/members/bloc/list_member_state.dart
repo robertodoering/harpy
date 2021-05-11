@@ -49,10 +49,10 @@ class ListMembersResult extends ListMemberState {
 
   final List<UserData> members;
 
-  final String membersCursor;
+  final String? membersCursor;
 
   @override
-  List<Object?> get props => <Object>[
+  List<Object?> get props => <Object?>[
         members,
         membersCursor,
       ];
@@ -83,5 +83,8 @@ class MembersLoadingMore extends ListMemberState {
   final String? membersCursor;
 
   @override
-  List<Object?> get props => <Object>[];
+  List<Object?> get props => <Object?>[
+        members,
+        membersCursor,
+      ];
 }

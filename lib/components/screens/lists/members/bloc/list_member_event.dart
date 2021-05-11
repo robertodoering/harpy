@@ -59,20 +59,30 @@ class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
 
       final paginatedMembers = await bloc.listsService
           .members(listId: bloc.list.idStr, cursor: currentState.membersCursor)
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
-      final members = List<UserData>.of(
-        currentState.members.followedBy(
-          paginatedMembers.users!
-              .map((user) => UserData.fromUser(user))
-              .toList(),
-        ),
-      );
+      if (paginatedMembers != null) {
+        final members = List<UserData>.of(
+          currentState.members.followedBy(
+            paginatedMembers.users!
+                .map((user) => UserData.fromUser(user))
+                .toList(),
+          ),
+        );
 
-      yield ListMembersResult(
-        members: members,
-        membersCursor: paginatedMembers.nextCursorStr!,
-      );
+        yield ListMembersResult(
+          members: members,
+          membersCursor: paginatedMembers.nextCursorStr!,
+        );
+
+        bloc.requestMoreCompleter.complete();
+        bloc.requestMoreCompleter = Completer<void>();
+      } else {
+        yield ListMembersResult(
+          members: currentState.members,
+          membersCursor: null,
+        );
+      }
     }
   }
 }

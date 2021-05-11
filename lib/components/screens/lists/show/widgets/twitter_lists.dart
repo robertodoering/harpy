@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/components/components.dart';
@@ -14,7 +15,8 @@ class TwitterLists extends StatelessWidget {
 
   final ValueChanged<TwitterListData>? onListSelected;
 
-  Widget _itemBuilder(int index, List<TwitterListData> lists) {
+  Widget _itemBuilder(
+      int index, List<TwitterListData> lists, BuildContext context) {
     if (index.isEven) {
       final list = lists[index ~/ 2];
 
@@ -26,9 +28,8 @@ class TwitterLists extends StatelessWidget {
             : () => app<HarpyNavigator>().pushListTimelineScreen(
                   list: list,
                 ),
-        onLongPress: () => app<HarpyNavigator>().pushListMemberScreen(
-          list: list,
-        ),
+        onLongPress: () =>
+            _showListActionBottomSheet(list: list, context: context),
       );
     } else {
       return defaultVerticalSpacer;
@@ -49,7 +50,8 @@ class TwitterLists extends StatelessWidget {
     return null;
   }
 
-  List<Widget> _buildOwnerships(ListsShowBloc bloc, ListsShowState state) {
+  List<Widget> _buildOwnerships(
+      ListsShowBloc bloc, ListsShowState state, BuildContext context) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -61,7 +63,7 @@ class TwitterLists extends StatelessWidget {
         padding: DefaultEdgeInsets.all(),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => _itemBuilder(index, state.ownerships),
+            (_, index) => _itemBuilder(index, state.ownerships, context),
             findChildIndexCallback: (key) =>
                 _indexCallback(key, state.ownerships),
             childCount: state.ownerships.length * 2 - 1,
@@ -88,7 +90,8 @@ class TwitterLists extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildSubscriptions(ListsShowBloc bloc, ListsShowState state) {
+  List<Widget> _buildSubscriptions(
+      ListsShowBloc bloc, ListsShowState state, BuildContext context) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -100,7 +103,7 @@ class TwitterLists extends StatelessWidget {
         padding: DefaultEdgeInsets.all(),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => _itemBuilder(index, state.subscriptions),
+            (_, index) => _itemBuilder(index, state.subscriptions, context),
             findChildIndexCallback: (key) =>
                 _indexCallback(key, state.subscriptions),
             childCount: state.subscriptions.length * 2 - 1,
@@ -127,6 +130,21 @@ class TwitterLists extends StatelessWidget {
     ];
   }
 
+  void _showListActionBottomSheet({
+    required TwitterListData list,
+    required BuildContext context,
+  }) {
+    showHarpyBottomSheet<void>(context, children: <Widget>[
+      ListTile(
+        leading: const Icon(CupertinoIcons.person_3),
+        title: const Text('show members'),
+        onTap: () {
+          app<HarpyNavigator>().pushListMemberScreen(list: list);
+        },
+      )
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -145,8 +163,18 @@ class TwitterLists extends StatelessWidget {
             onRetry: () => bloc.add(const ShowLists()),
           )
         else if (state.hasResult) ...<Widget>[
-          if (state.hasOwnerships) ..._buildOwnerships(bloc, state),
-          if (state.hasSubscriptions) ..._buildSubscriptions(bloc, state),
+          if (state.hasOwnerships)
+            ..._buildOwnerships(
+              bloc,
+              state,
+              context,
+            ),
+          if (state.hasSubscriptions)
+            ..._buildSubscriptions(
+              bloc,
+              state,
+              context,
+            ),
         ] else
           const SliverFillInfoMessage(
             secondaryMessage: Text('no lists exist'),

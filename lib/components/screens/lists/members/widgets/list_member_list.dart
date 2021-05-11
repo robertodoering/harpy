@@ -14,12 +14,16 @@ class ListMemberList extends StatelessWidget {
     final bloc = context.watch<ListMemberBloc>();
     final state = bloc.state;
 
+    final mediaQuery = MediaQuery.of(context);
     final members = state.members;
 
     return ScrollToStart(
       child: LoadMoreListener(
-        listen: state.loadingMore,
-        onLoadMore: () async => bloc.add(LoadMoreMembers()),
+        listen: state.hasMoreData,
+        onLoadMore: () async {
+          bloc.add(LoadMoreMembers());
+          await bloc.requestMoreFuture;
+        },
         child: UserList(
           members,
           beginSlivers: <Widget>[
@@ -30,6 +34,8 @@ class ListMemberList extends StatelessWidget {
           ],
           endSlivers: <Widget>[
             if (state.isLoading) const SliverFillLoadingIndicator(),
+            SliverToBoxAdapter(
+                child: SizedBox(height: mediaQuery.padding.bottom)),
           ],
         ),
       ),
