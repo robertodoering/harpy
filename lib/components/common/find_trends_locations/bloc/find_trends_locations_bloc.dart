@@ -11,7 +11,7 @@ import 'package:location/location.dart' as location;
 part 'find_trends_locations_event.dart';
 part 'find_trends_locations_state.dart';
 
-/// Handles finding trends locations that are available close to provided
+/// Handles finding trends locations that are available close to the provided
 /// coordinates.
 class FindTrendsLocationsBloc
     extends Bloc<FindTrendsLocationsEvent, FindTrendsLocationsState> {
