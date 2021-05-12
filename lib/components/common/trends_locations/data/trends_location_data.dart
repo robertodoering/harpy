@@ -36,10 +36,11 @@ class TrendsLocationData extends Equatable {
     return worldwide;
   }
 
+  /// The data for the worldwide location (as returned from twitter).
   static const worldwide = TrendsLocationData(
-    name: 'worldwide',
+    name: 'Worldwide',
     woeid: 1,
-    placeType: 'world',
+    placeType: 'Supername',
     country: '',
   );
 

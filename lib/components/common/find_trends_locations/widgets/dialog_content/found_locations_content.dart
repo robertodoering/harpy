@@ -19,10 +19,15 @@ class FoundLocationsContent extends StatelessWidget {
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state.hasLocations) {
+      final locations = state.locations;
+
+      if (!locations.contains(TrendsLocationData.worldwide)) {
+        locations.insert(0, TrendsLocationData.worldwide);
+      }
+
       return Column(
         children: [
-          for (final location
-              in [TrendsLocationData.worldwide].followedBy(state.locations))
+          for (final location in locations)
             ListTile(
               leading: const Icon(CupertinoIcons.location),
               contentPadding: const EdgeInsets.symmetric(horizontal: 24),
