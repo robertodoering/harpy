@@ -16,7 +16,10 @@ class TwitterLists extends StatelessWidget {
   final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(
-      int index, List<TwitterListData> lists, BuildContext context) {
+    int index,
+    List<TwitterListData> lists,
+    BuildContext context,
+  ) {
     if (index.isEven) {
       final list = lists[index ~/ 2];
 
@@ -28,8 +31,10 @@ class TwitterLists extends StatelessWidget {
             : () => app<HarpyNavigator>().pushListTimelineScreen(
                   list: list,
                 ),
-        onLongPress: () =>
-            _showListActionBottomSheet(list: list, context: context),
+        onLongPress: () => _showListActionBottomSheet(
+          list: list,
+          context: context,
+        ),
       );
     } else {
       return defaultVerticalSpacer;
@@ -51,7 +56,10 @@ class TwitterLists extends StatelessWidget {
   }
 
   List<Widget> _buildOwnerships(
-      ListsShowBloc bloc, ListsShowState state, BuildContext context) {
+    ListsShowBloc bloc,
+    ListsShowState state,
+    BuildContext context,
+  ) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -91,7 +99,10 @@ class TwitterLists extends StatelessWidget {
   }
 
   List<Widget> _buildSubscriptions(
-      ListsShowBloc bloc, ListsShowState state, BuildContext context) {
+    ListsShowBloc bloc,
+    ListsShowState state,
+    BuildContext context,
+  ) {
     return <Widget>[
       SliverPadding(
         padding: DefaultEdgeInsets.symmetric(horizontal: true),
@@ -134,15 +145,18 @@ class TwitterLists extends StatelessWidget {
     required TwitterListData list,
     required BuildContext context,
   }) {
-    showHarpyBottomSheet<void>(context, children: <Widget>[
-      ListTile(
-        leading: const Icon(CupertinoIcons.person_3),
-        title: const Text('show members'),
-        onTap: () {
-          app<HarpyNavigator>().pushListMemberScreen(list: list);
-        },
-      )
-    ]);
+    showHarpyBottomSheet<void>(
+      context,
+      children: <Widget>[
+        ListTile(
+          leading: const Icon(CupertinoIcons.person_3),
+          title: const Text('show members'),
+          onTap: () {
+            app<HarpyNavigator>().pushListMemberScreen(list: list);
+          },
+        )
+      ],
+    );
   }
 
   @override

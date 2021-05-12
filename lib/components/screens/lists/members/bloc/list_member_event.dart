@@ -32,7 +32,7 @@ class ShowListMembers extends ListMemberEvent with HarpyLogger {
       if (members.isNotEmpty) {
         yield ListMembersResult(
           members: members,
-          membersCursor: paginatedUsers.nextCursorStr!,
+          membersCursor: paginatedUsers.nextCursorStr,
         );
       } else {
         yield const NoListMembersResult();
@@ -44,6 +44,8 @@ class ShowListMembers extends ListMemberEvent with HarpyLogger {
 }
 
 class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
+  const LoadMoreMembers();
+
   @override
   Stream<ListMemberState> applyAsync({
     required ListMemberState currentState,
@@ -72,7 +74,7 @@ class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
 
         yield ListMembersResult(
           members: members,
-          membersCursor: paginatedMembers.nextCursorStr!,
+          membersCursor: paginatedMembers.nextCursorStr,
         );
 
         bloc.requestMoreCompleter.complete();

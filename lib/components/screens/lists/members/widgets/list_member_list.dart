@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/lists/members/bloc/list_member_bloc.dart';
 import 'package:provider/provider.dart';
 
 class ListMemberList extends StatelessWidget {
-  const ListMemberList({required this.list});
+  const ListMemberList({
+    required this.list,
+  });
 
   final TwitterListData list;
 
@@ -21,7 +22,7 @@ class ListMemberList extends StatelessWidget {
       child: LoadMoreListener(
         listen: state.hasMoreData,
         onLoadMore: () async {
-          bloc.add(LoadMoreMembers());
+          bloc.add(const LoadMoreMembers());
           await bloc.requestMoreFuture;
         },
         child: UserList(
@@ -34,8 +35,20 @@ class ListMemberList extends StatelessWidget {
           ],
           endSlivers: <Widget>[
             if (state.isLoading) const SliverFillLoadingIndicator(),
+            if (state.loadingMore) const SliverBoxLoadingIndicator(),
+            if (state.isFailure)
+              SliverFillLoadingError(
+                message: const Text('error loading list members'),
+                onRetry: () => bloc.add(const ShowListMembers()),
+              ),
+            if (state.hasNoMembers)
+              SliverFillLoadingError(
+                message: const Text('no members found'),
+                onRetry: () => bloc.add(const ShowListMembers()),
+              ),
             SliverToBoxAdapter(
-                child: SizedBox(height: mediaQuery.padding.bottom)),
+              child: SizedBox(height: mediaQuery.padding.bottom),
+            ),
           ],
         ),
       ),

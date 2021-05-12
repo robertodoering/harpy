@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/lists/members/bloc/list_member_bloc.dart';
-import 'package:harpy/components/screens/lists/members/widgets/list_member_list.dart';
 
 class ListMembersScreen extends StatelessWidget {
   const ListMembersScreen({

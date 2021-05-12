@@ -13,6 +13,10 @@ extension ListMemberStateExtension on ListMemberState {
 
   bool get loadingMore => this is MembersLoadingMore;
 
+  bool get isFailure => this is ListMemberFailure;
+
+  bool get hasNoMembers => this is NoListMembersResult;
+
   String? get membersCursor {
     if (this is ListMembersResult) {
       return (this as ListMembersResult).membersCursor;
