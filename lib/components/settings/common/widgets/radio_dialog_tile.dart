@@ -55,12 +55,17 @@ class RadioDialogTile<T> extends StatelessWidget {
   final Widget? trailing;
   final bool popOnOpen;
 
-  Widget _buildDialog() {
-    // todo: add cancel action
+  Widget _buildDialog(BuildContext context) {
     return HarpyDialog(
       animationType: DialogAnimationType.slide,
       title: Text(description),
       contentPadding: const EdgeInsets.symmetric(vertical: 24),
+      actions: [
+        DialogAction<void>(
+          text: 'back',
+          onTap: Navigator.of(context).pop,
+        ),
+      ],
       content: Column(
         children: <Widget>[
           for (int i = 0; i < values.length; i++)
@@ -96,7 +101,7 @@ class RadioDialogTile<T> extends StatelessWidget {
         }
         showDialog<int>(
           context: context,
-          builder: (_) => _buildDialog(),
+          builder: _buildDialog,
         );
       },
     );
