@@ -122,11 +122,11 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
             child: HarpyDialog(
               title: const Text('find location'),
               contentPadding: const EdgeInsets.symmetric(vertical: 24),
+              actions: _buildActions(bloc, tabController),
               content: SizedBox(
                 height: 200,
                 child: _buildTabView(bloc, tabController),
               ),
-              actions: _buildActions(bloc, tabController),
             ),
           );
         },

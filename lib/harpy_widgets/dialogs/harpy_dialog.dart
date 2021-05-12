@@ -186,6 +186,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
       child: Dialog(
         insetAnimationDuration: kShortAnimationDuration,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.hardEdge,
         child: SizedBox(
           key: _dialogSizeKey,
           child: Column(
