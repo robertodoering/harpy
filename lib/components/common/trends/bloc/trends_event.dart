@@ -1,6 +1,6 @@
 part of 'trends_bloc.dart';
 
-abstract class TrendsEvent extends Equatable {
+abstract class TrendsEvent {
   const TrendsEvent();
 
   Stream<TrendsState> applyAsync({
@@ -11,9 +11,6 @@ abstract class TrendsEvent extends Equatable {
 
 class FindTrendsEvent extends TrendsEvent with HarpyLogger {
   const FindTrendsEvent();
-
-  @override
-  List<Object> get props => <Object>[];
 
   @override
   Stream<TrendsState> applyAsync({
@@ -53,9 +50,6 @@ class UpdateTrendsLocation extends TrendsEvent with HarpyLogger {
   });
 
   final TrendsLocationData location;
-
-  @override
-  List<Object> get props => <Object>[location];
 
   @override
   Stream<TrendsState> applyAsync({

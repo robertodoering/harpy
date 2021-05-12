@@ -87,7 +87,6 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
           onSelectNearLocation: () {
             bloc.add(const FindNearbyLocations());
             setState(() => tabController.animateTo(2));
-            // setState(() => tabController.animateTo(1));
           },
           onSelectCustomLocation: () {
             setState(() => tabController.animateTo(1));

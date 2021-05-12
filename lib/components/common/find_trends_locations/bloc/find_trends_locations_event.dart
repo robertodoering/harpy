@@ -68,7 +68,7 @@ class FindTrendsLocations extends FindTrendsLocationsEvent with HarpyLogger {
   }
 }
 
-/// Get's the current location data and adds the [FindTrendsLocations] event
+/// Gets the current location data and adds the [FindTrendsLocations] event
 /// if successful.
 ///
 /// Requires the user to accept access to the geolocation service.
