@@ -49,6 +49,8 @@ class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
       }
 
       if (locations.isNotEmpty) {
+        locations.sort((a, b) => a.name.compareTo(b.name));
+
         log.fine('found ${locations.length} trends locations');
 
         yield TrendsLocationsLoaded(locations: locations);
