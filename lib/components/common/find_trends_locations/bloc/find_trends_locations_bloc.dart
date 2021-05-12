@@ -19,6 +19,60 @@ class FindTrendsLocationsBloc
 
   final TrendsService trendsService = app<TwitterApi>().trendsService;
 
+  /// Validator for a text field that verifies the [value] is a valid
+  /// latitude value.
+  ///
+  /// (0 to 90 deg)
+  static String? latitudeValidator(String? value) {
+    if (value != null && value.isNotEmpty) {
+      return _verifyRange(
+        double.tryParse(value),
+        low: 0,
+        high: 90,
+        errorMessage: 'invalid latitude',
+      );
+    } else {
+      return null;
+    }
+  }
+
+  /// Validator for a text field that verifies the [value] is a valid
+  /// longitude value.
+  ///
+  /// (-180 to 180 deg)
+  static String? longitudeValidator(String? value) {
+    if (value != null && value.isNotEmpty) {
+      return _verifyRange(
+        double.tryParse(value),
+        low: -180,
+        high: 180,
+        errorMessage: 'invalid longitude',
+      );
+    } else {
+      return null;
+    }
+  }
+
+  static String? _verifyRange(
+    double? value, {
+    required double low,
+    required double high,
+    required String errorMessage,
+  }) {
+    if (value != null) {
+      if (value < low || value > high) {
+        // out of range
+        return errorMessage;
+      } else {
+        // valid
+        return null;
+      }
+    } else {
+      // invalid value
+      return errorMessage;
+    }
+  }
+
   @override
   Stream<FindTrendsLocationsState> mapEventToState(
     FindTrendsLocationsEvent event,

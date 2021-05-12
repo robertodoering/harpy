@@ -31,24 +31,6 @@ class FindCustomLocationContent extends StatelessWidget {
     );
   }
 
-  String? _validator(String? value) {
-    if (value != null && value.isNotEmpty) {
-      final coord = double.tryParse(value);
-
-      if (coord != null) {
-        if (coord > 180 || coord < -180) {
-          return 'invalid';
-        } else {
-          return null;
-        }
-      } else {
-        return 'invalid';
-      }
-    }
-
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
@@ -71,7 +53,7 @@ class FindCustomLocationContent extends StatelessWidget {
                   decoration: _decoration('latitude'),
                   textInputAction: TextInputAction.next,
                   onEditingComplete: node.nextFocus,
-                  validator: _validator,
+                  validator: FindTrendsLocationsBloc.latitudeValidator,
                   onChanged: onLatitudeChanged,
                 ),
                 defaultVerticalSpacer,
@@ -83,7 +65,7 @@ class FindCustomLocationContent extends StatelessWidget {
                   decoration: _decoration('longitude'),
                   textInputAction: TextInputAction.done,
                   onEditingComplete: node.unfocus,
-                  validator: _validator,
+                  validator: FindTrendsLocationsBloc.longitudeValidator,
                   onChanged: onLongitudeChanged,
                 ),
                 defaultVerticalSpacer,
