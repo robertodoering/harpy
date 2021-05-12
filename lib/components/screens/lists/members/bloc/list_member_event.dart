@@ -76,9 +76,6 @@ class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
           members: members,
           membersCursor: paginatedMembers.nextCursorStr,
         );
-
-        bloc.requestMoreCompleter.complete();
-        bloc.requestMoreCompleter = Completer<void>();
       } else {
         yield ListMembersResult(
           members: currentState.members,
@@ -86,5 +83,8 @@ class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
         );
       }
     }
+
+    bloc.requestMoreCompleter.complete();
+    bloc.requestMoreCompleter = Completer<void>();
   }
 }
