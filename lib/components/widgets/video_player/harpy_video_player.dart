@@ -129,6 +129,11 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
               Expanded(
                 child: GestureDetector(
                   onTap: () => _onVideoTap(model),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => _onVideoTap(model),
                   onDoubleTap: model.fastForward,
                   onLongPress: widget.onVideoPlayerLongPress,
                 ),
