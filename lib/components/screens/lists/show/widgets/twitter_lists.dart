@@ -31,10 +31,7 @@ class TwitterLists extends StatelessWidget {
             : () => app<HarpyNavigator>().pushListTimelineScreen(
                   list: list,
                 ),
-        onLongPress: () => _showListActionBottomSheet(
-          list: list,
-          context: context,
-        ),
+        onLongPress: () => _showListActionBottomSheet(context, list),
       );
     } else {
       return defaultVerticalSpacer;
@@ -141,10 +138,7 @@ class TwitterLists extends StatelessWidget {
     ];
   }
 
-  void _showListActionBottomSheet({
-    required TwitterListData list,
-    required BuildContext context,
-  }) {
+  void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
     showHarpyBottomSheet<void>(
       context,
       children: <Widget>[
@@ -152,6 +146,7 @@ class TwitterLists extends StatelessWidget {
           leading: const Icon(CupertinoIcons.person_3),
           title: const Text('show members'),
           onTap: () {
+            Navigator.of(context).pop();
             app<HarpyNavigator>().pushListMemberScreen(list: list);
           },
         )
