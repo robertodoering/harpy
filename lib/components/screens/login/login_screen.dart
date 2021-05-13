@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 16),
               Expanded(child: _buildButtons()),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
               SizedBox(height: mediaQuery.padding.bottom),
             ],
           ),
