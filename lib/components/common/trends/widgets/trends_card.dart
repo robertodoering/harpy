@@ -21,22 +21,36 @@ class TrendsCard extends StatelessWidget {
 
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
-      child: Card(
-        child: CustomAnimatedSize(
-          alignment: Alignment.topCenter,
-          child: ListTile(
-            shape: kDefaultShapeBorder,
-            leading: Icon(
-              CupertinoIcons.location,
-              color: theme.accentColor,
+      child: Row(
+        children: [
+          Expanded(
+            child: Card(
+              child: CustomAnimatedSize(
+                alignment: Alignment.topCenter,
+                child: ListTile(
+                  shape: kDefaultShapeBorder,
+                  leading: Icon(
+                    CupertinoIcons.location,
+                    color: theme.accentColor,
+                  ),
+                  title: Text(
+                    state.trendLocationName,
+                    style: TextStyle(color: theme.accentColor),
+                  ),
+                  onTap: () => _showTrendsConfiguration(context),
+                ),
+              ),
             ),
-            title: Text(
-              state.trendLocationName,
-              style: TextStyle(color: theme.accentColor),
-            ),
-            onTap: () => _showTrendsConfiguration(context),
           ),
-        ),
+          defaultHorizontalSpacer,
+          HarpyButton.flat(
+            padding: const EdgeInsets.all(16),
+            icon: const Icon(CupertinoIcons.refresh),
+            onTap: state.isLoading
+                ? null
+                : () => bloc.add(const FindTrendsEvent()),
+          )
+        ],
       ),
     );
   }
