@@ -3,8 +3,8 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-class ListMemberList extends StatelessWidget {
-  const ListMemberList({
+class TwitterListMembers extends StatelessWidget {
+  const TwitterListMembers({
     required this.list,
   });
 
@@ -23,7 +23,7 @@ class ListMemberList extends StatelessWidget {
           listen: state.hasMoreData,
           onLoadMore: () async {
             bloc.add(const LoadMoreMembers());
-            await bloc.requestMoreFuture;
+            await bloc.requestMoreCompleter.future;
           },
           child: UserList(
             state.members,

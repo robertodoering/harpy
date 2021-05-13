@@ -52,7 +52,6 @@ class ListMembersResult extends ListMemberState {
   });
 
   final List<UserData> members;
-
   final String? membersCursor;
 
   @override
@@ -83,7 +82,6 @@ class MembersLoadingMore extends ListMemberState {
   });
 
   final List<UserData> members;
-
   final String? membersCursor;
 
   @override

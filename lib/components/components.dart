@@ -111,7 +111,7 @@ export 'screens/home/widgets/mentions_tab.dart';
 export 'screens/home/widgets/new_tweets_text.dart';
 export 'screens/lists/members/bloc/list_member_bloc.dart';
 export 'screens/lists/members/list_members_screen.dart';
-export 'screens/lists/members/widgets/list_member_list.dart';
+export 'screens/lists/members/widgets/twitter_list_members.dart';
 export 'screens/lists/show/bloc/lists_show_bloc.dart';
 export 'screens/lists/show/show_lists_screen.dart';
 export 'screens/lists/show/widgets/twitter_list_card.dart';

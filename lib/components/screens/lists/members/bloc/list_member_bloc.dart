@@ -22,8 +22,6 @@ class ListMemberBloc extends Bloc<ListMemberEvent, ListMemberState> {
 
   Completer<void> requestMoreCompleter = Completer<void>();
 
-  Future<void> get requestMoreFuture => requestMoreCompleter.future;
-
   @override
   Stream<ListMemberState> mapEventToState(
     ListMemberEvent event,

@@ -25,7 +25,7 @@ class ShowListMembers extends ListMemberEvent with HarpyLogger {
         .members(listId: bloc.list.idStr)
         .handleError(twitterApiErrorHandler);
 
-    if (paginatedUsers != null) {
+    if (paginatedUsers != null && paginatedUsers.users != null) {
       final members =
           paginatedUsers.users!.map((user) => UserData.fromUser(user)).toList();
 
