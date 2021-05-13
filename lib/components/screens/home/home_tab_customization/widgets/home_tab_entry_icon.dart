@@ -75,8 +75,6 @@ class HomeTabEntryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (iconName?.length == 1) {
       return Container(
         width: size,
@@ -84,11 +82,9 @@ class HomeTabEntryIcon extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           iconName!,
-          style: theme.textTheme.subtitle1!.copyWith(
+          style: TextStyle(
             fontSize: size,
-            color: theme.iconTheme.color,
             height: 1,
-            // textBaseline: TextBaseline.ideographic,
           ),
           overflow: TextOverflow.clip,
         ),
