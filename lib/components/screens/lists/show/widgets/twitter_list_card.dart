@@ -10,10 +10,12 @@ class TwitterListCard extends StatelessWidget {
     this.list, {
     required this.onSelected,
     required Key key,
+    this.onLongPress,
   }) : super(key: key);
 
   final TwitterListData list;
   final VoidCallback onSelected;
+  final VoidCallback? onLongPress;
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
@@ -80,6 +82,7 @@ class TwitterListCard extends StatelessWidget {
       key: key,
       child: InkWell(
         borderRadius: kDefaultBorderRadius,
+        onLongPress: onLongPress,
         onTap: onSelected,
         child: Card(
           child: Padding(

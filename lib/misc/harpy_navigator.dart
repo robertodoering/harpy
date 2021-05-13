@@ -165,6 +165,14 @@ class HarpyNavigator {
     });
   }
 
+  void pushListMemberScreen({
+    TwitterListData? list,
+  }) {
+    pushNamed(ListMembersScreen.route, arguments: <String, dynamic>{
+      'list': list,
+    });
+  }
+
   void pushHomeTabCustomizationScreen({
     required HomeTabModel model,
   }) {
@@ -218,6 +226,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case ListTimelineScreen.route:
       screen = ListTimelineScreen(
+        list: arguments['list'],
+      );
+      break;
+    case ListMembersScreen.route:
+      screen = ListMembersScreen(
         list: arguments['list'],
       );
       break;
