@@ -7,7 +7,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// stateful.
 class CustomAnimatedSize extends StatefulWidget {
   const CustomAnimatedSize({
-    @required this.child,
+    required this.child,
     this.duration = kShortAnimationDuration,
     this.curve = Curves.easeOutCubic,
     this.alignment = Alignment.center,

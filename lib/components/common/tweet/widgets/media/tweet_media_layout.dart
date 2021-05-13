@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 /// conserved if it does not take up more than the constrained height.
 class TweetMediaLayout extends StatelessWidget {
   const TweetMediaLayout({
-    @required this.child,
+    required this.child,
     this.isImage = true,
     this.videoAspectRatio,
   }) : assert(isImage && videoAspectRatio == null ||
@@ -21,7 +21,7 @@ class TweetMediaLayout extends StatelessWidget {
 
   final Widget child;
   final bool isImage;
-  final double videoAspectRatio;
+  final double? videoAspectRatio;
 
   Widget _buildImage(double maxHeight) {
     return ConstrainedBox(
@@ -37,13 +37,13 @@ class TweetMediaLayout extends StatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: maxHeight),
       child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final double constraintsAspectRatio = constraints.biggest.aspectRatio;
+        builder: (context, constraints) {
+          final constraintsAspectRatio = constraints.biggest.aspectRatio;
 
-          if (videoAspectRatio > constraintsAspectRatio) {
+          if (videoAspectRatio! > constraintsAspectRatio) {
             // video does not take up the constrained height
             return AspectRatio(
-              aspectRatio: videoAspectRatio,
+              aspectRatio: videoAspectRatio!,
               child: child,
             );
           } else {
@@ -61,8 +61,8 @@ class TweetMediaLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double maxHeight = mediaQuery.size.height / 2;
+    final mediaQuery = MediaQuery.of(context);
+    final maxHeight = mediaQuery.size.height / 2;
 
     if (isImage) {
       return _buildImage(maxHeight);

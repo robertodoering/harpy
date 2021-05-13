@@ -9,9 +9,9 @@ part 'home_tab_entry.g.dart';
 @JsonSerializable()
 class HomeTabEntry extends Equatable {
   const HomeTabEntry({
-    @required this.id,
-    @required this.type,
-    @required this.icon,
+    required this.id,
+    required this.type,
+    required this.icon,
     this.name = '',
     this.visible = true,
   });
@@ -23,29 +23,29 @@ class HomeTabEntry extends Equatable {
   ///
   /// Represent a default view (e.g. 'home', 'search') or the id of a list
   /// when [type] is `list`.
-  final String id;
+  final String? id;
 
   /// The type of this entry.
   ///
   /// Can be `default` for default views (e.g. 'home', 'search') or `list`
   /// when this entry is a list.
-  final String type;
+  final String? type;
 
   /// The name of the icon that is used for the associated tab.
-  final String icon;
+  final String? icon;
 
   /// The name of this tab.
   ///
   /// Can be empty if the tab should not built text with the icon.
-  final String name;
+  final String? name;
 
   /// Whether this tab should be visible or hidden.
   ///
   /// Only `default` tabs can be hidden. Lists can only be removed.
-  final bool visible;
+  final bool? visible;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         id,
         type,
         icon,
@@ -56,7 +56,7 @@ class HomeTabEntry extends Equatable {
   /// Whether the entry can be removed from the configuration.
   bool get removable => !isDefaultType;
 
-  bool get hasName => name != null && name.isNotEmpty;
+  bool get hasName => name != null && name!.isNotEmpty;
 
   bool get isDefaultType => type == HomeTabEntryType.defaultType.value;
 
@@ -67,9 +67,7 @@ class HomeTabEntry extends Equatable {
   bool get valid {
     if (isDefaultType) {
       // validate that this default type exist in the default entries
-      return defaultHomeTabEntries
-          .where((HomeTabEntry entry) => entry.id == id)
-          .isNotEmpty;
+      return defaultHomeTabEntries.where((entry) => entry.id == id).isNotEmpty;
     } else {
       return true;
     }
@@ -78,11 +76,11 @@ class HomeTabEntry extends Equatable {
   Map<String, dynamic> toJson() => _$HomeTabEntryToJson(this);
 
   HomeTabEntry copyWith({
-    String id,
-    String type,
-    String icon,
-    String name,
-    bool visible,
+    String? id,
+    String? type,
+    String? icon,
+    String? name,
+    bool? visible,
   }) {
     return HomeTabEntry(
       id: id ?? this.id,
@@ -107,9 +105,5 @@ extension TypeExtension on HomeTabEntryType {
       case HomeTabEntryType.list:
         return 'list';
     }
-
-    assert(false, 'invalid type');
-
-    return 'none';
   }
 }

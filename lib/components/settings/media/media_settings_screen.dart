@@ -38,8 +38,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.bestMediaQuality,
         titles: _mediaQualityValues.values.toList(),
         values: _mediaQualityValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.bestMediaQuality = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
       ListTile(
@@ -65,8 +65,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.autoplayMedia,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.autoplayMedia = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.autoplayMedia = value!);
         },
       ),
       RadioDialogTile<int>(
@@ -77,8 +77,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.autoplayVideos,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.autoplayVideos = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
       SwitchListTile(
@@ -104,9 +104,9 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           HapticFeedback.lightImpact();
           setState(mediaPreferences.defaultSettings);
         },
-        itemBuilder: (BuildContext context) {
-          return <PopupMenuEntry<void>>[
-            const HarpyPopupMenuItem<void>(
+        itemBuilder: (_) {
+          return <PopupMenuEntry<int>>[
+            const HarpyPopupMenuItem<int>(
               value: 0,
               text: Text('reset to default'),
             ),
@@ -118,7 +118,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       title: 'media settings',

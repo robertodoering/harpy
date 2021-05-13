@@ -6,34 +6,34 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [CircularProgressIndicator] when [initializing] is `true`.
 class VideoThumbnail extends StatelessWidget {
   const VideoThumbnail({
-    @required this.thumbnail,
-    @required this.icon,
-    @required this.initializing,
+    required this.thumbnail,
+    required this.icon,
+    required this.initializing,
     this.compact = false,
     this.aspectRatio,
     this.onTap,
     this.onLongPress,
   });
 
-  final String thumbnail;
-  final double aspectRatio;
+  final String? thumbnail;
+  final double? aspectRatio;
   final IconData icon;
   final bool compact;
   final bool initializing;
-  final VoidCallback onTap;
-  final VoidCallback onLongPress;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   Widget _buildThumbnailImage() {
     final Widget child = HarpyImage(
       fit: BoxFit.cover,
-      imageUrl: thumbnail,
+      imageUrl: thumbnail!,
       height: double.infinity,
       width: double.infinity,
     );
 
     if (aspectRatio != null) {
       return AspectRatio(
-        aspectRatio: aspectRatio,
+        aspectRatio: aspectRatio!,
         child: child,
       );
     } else {
@@ -43,7 +43,7 @@ class VideoThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = initializing
+    final child = initializing
         ? SizedBox(
             width: compact
                 ? kVideoPlayerSmallCenterIconSize

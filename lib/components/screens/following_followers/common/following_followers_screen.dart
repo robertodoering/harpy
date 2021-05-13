@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
@@ -14,15 +13,15 @@ typedef BlocAction<T> = void Function(T);
 class FollowingFollowersScreen<B extends FollowingFollowersBloc>
     extends StatelessWidget {
   const FollowingFollowersScreen({
-    @required this.userId,
-    @required this.create,
-    @required this.title,
-    @required this.errorMessage,
-    @required this.loadUsers,
+    required this.userId,
+    required this.create,
+    required this.title,
+    required this.errorMessage,
+    required this.loadUsers,
   });
 
   /// The [userId] of the user whom to search the users for.
-  final String userId;
+  final String? userId;
 
   /// Builds the bloc for the [BlocProvider].
   final Create<B> create;
@@ -68,16 +67,16 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return BlocProvider<B>(
       create: create,
       child: BlocBuilder<B, PaginatedState>(
-        builder: (BuildContext context, PaginatedState state) {
-          final B bloc = context.watch<B>();
+        builder: (context, state) {
+          final bloc = context.watch<B>();
 
           Widget child;
-          bool scaffoldTitle = true;
+          var scaffoldTitle = true;
 
           if (bloc.loadingInitialData || state is InitialState) {
             child = const Center(child: CircularProgressIndicator());

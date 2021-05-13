@@ -11,7 +11,7 @@ class AddBackgroundColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = bloc.harpyTheme;
+    final harpyTheme = bloc.harpyTheme;
 
     return AnimatedCrossFade(
       duration: kShortAnimationDuration,

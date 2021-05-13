@@ -5,7 +5,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Builds a button that is intended to be used to show a harpy bottom sheet.
 class ViewMoreActionButton extends StatelessWidget {
   const ViewMoreActionButton({
-    @required this.onTap,
+    required this.onTap,
     this.padding = const EdgeInsets.all(16),
     this.sizeDelta = 0,
   });
@@ -16,12 +16,12 @@ class ViewMoreActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return HarpyButton.flat(
       icon: Icon(
         CupertinoIcons.ellipsis_vertical,
-        size: theme.iconTheme.size + sizeDelta,
+        size: theme.iconTheme.size! + sizeDelta,
       ),
       padding: padding,
       onTap: onTap,

@@ -7,7 +7,7 @@ import 'package:harpy/api/api.dart';
 /// [TweetData].
 class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
   MediaTimelineModel({
-    @required List<TweetData> initialTweets,
+    required List<TweetData> initialTweets,
   }) : super(<MediaTimelineEntry>[]) {
     updateEntries(initialTweets);
   }
@@ -20,11 +20,11 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
   bool get hasEntries => value.isNotEmpty;
 
   List<MediaTimelineEntry> _entriesFromTweets(List<TweetData> tweets) {
-    final List<MediaTimelineEntry> newEntries = <MediaTimelineEntry>[];
+    final newEntries = <MediaTimelineEntry>[];
 
-    for (TweetData tweet in tweets) {
+    for (final tweet in tweets) {
       if (tweet.hasImages) {
-        for (ImageData image in tweet.images) {
+        for (final image in tweet.images!) {
           if (!_containsMedia(newEntries, image)) {
             newEntries.add(MediaTimelineEntry(
               tweet: tweet,
@@ -46,10 +46,9 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
     return newEntries;
   }
 
-  bool _containsMedia(List<MediaTimelineEntry> entries, MediaData media) {
+  bool _containsMedia(List<MediaTimelineEntry> entries, MediaData? media) {
     return entries.any(
-      (MediaTimelineEntry entry) =>
-          entry.media.appropriateUrl == media.appropriateUrl,
+      (entry) => entry.media!.appropriateUrl == media!.appropriateUrl,
     );
   }
 }
@@ -60,17 +59,17 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
 @immutable
 class MediaTimelineEntry {
   const MediaTimelineEntry({
-    @required this.tweet,
-    @required this.media,
+    required this.tweet,
+    required this.media,
   });
 
   final TweetData tweet;
-  final MediaData media;
+  final MediaData? media;
 
   bool get isImage => tweet.hasImages;
   bool get isGif => tweet.hasGif;
   bool get isVideo => tweet.hasVideo;
 
-  ImageData get imageData => media is ImageData ? media : null;
-  VideoData get videoData => media is VideoData ? media : null;
+  ImageData? get imageData => media is ImageData ? media as ImageData? : null;
+  VideoData? get videoData => media is VideoData ? media as VideoData? : null;
 }

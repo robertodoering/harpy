@@ -8,21 +8,21 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// The [screenName] is used to load the user data upon creation.
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
-    @required this.screenName,
+    required this.screenName,
   });
 
   /// The screenName that is used to load the user data.
-  final String screenName;
+  final String? screenName;
 
   static const String route = 'user_profile';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UserProfileBloc>(
-      create: (BuildContext context) => UserProfileBloc(screenName: screenName),
+      create: (context) => UserProfileBloc(screenName: screenName),
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
-        builder: (BuildContext context, UserProfileState state) {
-          final UserProfileBloc bloc = UserProfileBloc.of(context);
+        builder: (context, state) {
+          final bloc = UserProfileBloc.of(context);
 
           Widget child;
 

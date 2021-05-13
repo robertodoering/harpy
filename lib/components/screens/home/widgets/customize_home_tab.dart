@@ -13,17 +13,17 @@ class CustomizeHomeTab extends StatelessWidget {
     this.cardColor,
   });
 
-  final Color cardColor;
+  final Color? cardColor;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     final Widget child = HarpyButton.flat(
       padding: const EdgeInsets.all(HarpyTab.tabPadding - 2),
       icon: const Icon(FeatherIcons.settings),
       iconSize: HarpyTab.tabIconSize + 2,
-      foregroundColor: theme.iconTheme.color.withOpacity(.8),
+      foregroundColor: theme.iconTheme.color!.withOpacity(.8),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
         model: context.read<HomeTabModel>(),
       ),
@@ -31,7 +31,7 @@ class CustomizeHomeTab extends StatelessWidget {
 
     if (Harpy.isFree) {
       return Bubbled(
-        bubble: const FlareIcon.shiningStar(size: 18),
+        bubble: const FlareIcon.shiningStar(),
         bubbleOffset: const Offset(4, -4),
         child: child,
       );

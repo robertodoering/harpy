@@ -11,10 +11,10 @@ class Translation {
   factory Translation.fromJson(Map<String, dynamic> json) =>
       _$TranslationFromJson(json);
 
-  String original;
-  String text;
-  String languageCode;
-  String language;
+  String? original;
+  String? text;
+  String? languageCode;
+  String? language;
 
   bool get unchanged => original == text;
 

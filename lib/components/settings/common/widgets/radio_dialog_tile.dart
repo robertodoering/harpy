@@ -3,18 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Builds a [ListTile] that opens a [HarpyDialog] and displays entries in
 /// the dialog content as [RadioListTile]s.
 class RadioDialogTile<T> extends StatelessWidget {
   const RadioDialogTile({
-    @required this.value,
-    @required this.leading,
-    @required this.title,
-    @required this.description,
-    @required this.titles,
-    @required this.values,
-    @required this.onChanged,
+    required this.value,
+    required this.leading,
+    required this.title,
+    required this.description,
+    required this.titles,
+    required this.values,
+    required this.onChanged,
     this.subtitle,
     this.subtitles,
     this.enabled = true,
@@ -32,7 +33,7 @@ class RadioDialogTile<T> extends StatelessWidget {
   final String title;
 
   /// The subtitle of this setting for the [ListTile].
-  final String subtitle;
+  final String? subtitle;
 
   /// The description for the dialog that shows the radio list tile entries.
   final String description;
@@ -41,12 +42,12 @@ class RadioDialogTile<T> extends StatelessWidget {
   final List<String> titles;
 
   /// The subtitles for the radio list tile entries.
-  final List<String> subtitles;
+  final List<String>? subtitles;
 
   /// The values for the radio list tile entries.
   final List<T> values;
 
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T?> onChanged;
   final bool enabled;
   final bool denseRadioTiles;
 
@@ -63,12 +64,12 @@ class RadioDialogTile<T> extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(horizontal: 24),
               groupValue: value,
               title: Text(titles[i]),
-              subtitle: subtitles != null ? Text(subtitles[i]) : null,
+              subtitle: subtitles != null ? Text(subtitles![i]) : null,
               dense: denseRadioTiles,
-              onChanged: (T value) async {
-                HapticFeedback.lightImpact();
-                await app<HarpyNavigator>().state.maybePop();
-                onChanged?.call(value);
+              onChanged: (value) async {
+                unawaited(HapticFeedback.lightImpact());
+                await app<HarpyNavigator>().state!.maybePop();
+                onChanged.call(value);
               },
             )
         ],
@@ -81,12 +82,12 @@ class RadioDialogTile<T> extends StatelessWidget {
     return ListTile(
       leading: Icon(leading),
       title: Text(title),
-      subtitle: subtitle != null ? Text(subtitle) : null,
+      subtitle: subtitle != null ? Text(subtitle!) : null,
       enabled: enabled,
       onTap: () {
         showDialog<int>(
           context: context,
-          builder: (BuildContext context) => _buildDialog(),
+          builder: (_) => _buildDialog(),
         );
       },
     );

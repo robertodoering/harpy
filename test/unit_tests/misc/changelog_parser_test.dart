@@ -24,13 +24,13 @@ void main() {
   group('changelog parser', () {
     test('parses a changelog file with single line entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (message) async =>
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.empty, isFalse);
       expect(
@@ -47,13 +47,13 @@ void main() {
 
     test('removes prefix from single line entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (message) async =>
             utf8.encoder.convert(_changelog1).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.headerLines[0], equals('First header line.'));
       expect(
@@ -76,13 +76,13 @@ void main() {
 
     test('parses a changelog file with additional info entries', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (message) async =>
             utf8.encoder.convert(_changelog2).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.additions.length, equals(2));
       expect(
@@ -100,20 +100,21 @@ void main() {
         'returns an empty changelog data object '
         'if changelog file is empty', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      ServicesBinding.instance.defaultBinaryMessenger.setMockMessageHandler(
+      ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
         'flutter/assets',
-        (ByteData message) async =>
+        (message) async =>
             utf8.encoder.convert(_changelog3).buffer.asByteData(),
       );
 
-      final ChangelogData data = await app<ChangelogParser>().current(null);
+      final data = (await app<ChangelogParser>().current(null))!;
 
       expect(data.empty, isTrue);
     });
   });
 }
 
-const String _changelog1 = '''First header line.
+const String _changelog1 = '''
+First header line.
 Second header line. This is a long one.
 
 · Added about screen
@@ -124,7 +125,8 @@ Second header line. This is a long one.
 · Removed my sanity
 · Unrelated changelog entry''';
 
-const String _changelog2 = '''· Added Twitter Media settings:
+const String _changelog2 = '''
+· Added Twitter Media settings:
     · Set the quality when using WiFi
     · Set the quality when using mobile data
     · Autoplay gifs

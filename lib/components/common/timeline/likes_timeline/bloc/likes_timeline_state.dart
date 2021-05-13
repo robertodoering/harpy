@@ -53,8 +53,8 @@ class LikesTimelineInitialLoading extends LikesTimelineState {
 /// tweets.
 class LikesTimelineResult extends LikesTimelineState {
   const LikesTimelineResult({
-    @required this.tweets,
-    @required this.maxId,
+    required this.tweets,
+    required this.maxId,
     this.canRequestOlder = true,
   });
 
@@ -63,7 +63,7 @@ class LikesTimelineResult extends LikesTimelineState {
   /// The max id used to request older tweets.
   ///
   /// This is the id of the last requested tweet before the tweets got filtered.
-  final String maxId;
+  final String? maxId;
 
   /// Whether older tweets in the likes timeline can be requested.
   ///
@@ -72,7 +72,7 @@ class LikesTimelineResult extends LikesTimelineState {
   final bool canRequestOlder;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         tweets,
         maxId,
         canRequestOlder,
@@ -99,7 +99,7 @@ class LikesTimelineFailure extends LikesTimelineState {
 /// The state when requesting older tweets.
 class LikesTimelineLoadingOlder extends LikesTimelineState {
   const LikesTimelineLoadingOlder({
-    @required this.oldResult,
+    required this.oldResult,
   });
 
   final LikesTimelineResult oldResult;

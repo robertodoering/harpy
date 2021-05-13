@@ -4,14 +4,14 @@ import 'package:harpy/components/components.dart';
 /// Builds the content for the [RepliesScreen].
 class RepliesContent extends StatelessWidget {
   const RepliesContent({
-    @required this.bloc,
+    required this.bloc,
   });
 
   final RepliesBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return HarpyScaffold(
       body: ScrollDirectionListener(
@@ -25,7 +25,7 @@ class RepliesContent extends StatelessWidget {
             SliverPadding(
               padding: DefaultEdgeInsets.all(),
               sliver: SliverToBoxAdapter(
-                child: TweetCard(bloc.tweet),
+                child: TweetCard(bloc.tweet!),
               ),
             ),
             if (bloc.state is LoadingRepliesState)

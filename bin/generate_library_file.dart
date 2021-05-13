@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 
+// ignore_for_file: avoid_print
+
 /// Creates a library file that exports all files in the directory and any
 /// sub directories.
 ///
@@ -20,14 +22,14 @@ import 'package:args/args.dart';
 /// .g.dart
 /// ```
 Future<void> main(List<String> arguments) async {
-  final ArgParser argParser = ArgParser()
+  final argParser = ArgParser()
     ..addOption('path', abbr: 'p')
     ..addFlag('override-existing')
     ..addFlag('no-format')
     ..addMultiOption('includes', defaultsTo: <String>['.dart'])
     ..addMultiOption('excludes', defaultsTo: <String>[]);
 
-  final ArgResults argResult = argParser.parse(arguments);
+  final argResult = argParser.parse(arguments);
 
   if (!argResult.wasParsed('path')) {
     throw ArgumentError('must provide a path');
@@ -35,35 +37,35 @@ Future<void> main(List<String> arguments) async {
 
   // arguments
   final String path = argResult['path'];
-  final bool override = argResult['override-existing'];
+  final bool? override = argResult['override-existing'];
   final bool noFormat = argResult['no-format'];
-  final List<String> includes = argResult['includes'];
-  final List<String> excludes = argResult['excludes'];
+  final List<String>? includes = argResult['includes'];
+  final List<String>? excludes = argResult['excludes'];
 
   if (!path.startsWith('lib')) {
     throw ArgumentError('path must be relative to the project root '
         '(e.g. lib/foo/bar/)');
   }
 
-  final Directory dir = Directory(path);
-  final String libraryName = dir.path.split('/').last;
-  final File libraryFile = File('${dir.path}/$libraryName.dart');
+  final dir = Directory(path);
+  final libraryName = dir.path.split('/').last;
+  final libraryFile = File('${dir.path}/$libraryName.dart');
 
-  if (libraryFile.existsSync() && !override) {
+  if (libraryFile.existsSync() && !override!) {
     throw Exception('library file ${libraryFile.path} already exists');
   }
 
   print('generating library file...');
 
-  final StringBuffer contentBuffer = StringBuffer();
+  final contentBuffer = StringBuffer();
 
-  for (FileSystemEntity systemEntry in dir.listSync(recursive: true)) {
+  for (final systemEntry in dir.listSync(recursive: true)) {
     if (systemEntry is File) {
-      final String entry = systemEntry.path
-          .replaceAll('\\', '/')
+      final entry = systemEntry.path
+          .replaceAll(r'\', '/')
           .replaceFirst('${dir.path}/', '');
 
-      if (includes.any(entry.endsWith) && !excludes.any(entry.endsWith)) {
+      if (includes!.any(entry.endsWith) && !excludes!.any(entry.endsWith)) {
         contentBuffer.writeln("export '$entry';");
       }
     }
@@ -79,7 +81,7 @@ Future<void> main(List<String> arguments) async {
   if (!noFormat) {
     print('formatting...');
 
-    final ProcessResult result = await Process.run(
+    final result = await Process.run(
       'dartfmt',
       <String>[
         '-w',

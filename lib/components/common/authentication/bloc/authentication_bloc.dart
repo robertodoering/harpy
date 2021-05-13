@@ -7,13 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/dialogs/harpy_dialog.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -21,7 +21,7 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
-    @required this.themeBloc,
+    required this.themeBloc,
   }) : super(UnauthenticatedState());
 
   final TwitterApi twitterApi = app<TwitterApi>();
@@ -33,15 +33,12 @@ class AuthenticationBloc
   final ThemeBloc themeBloc;
 
   /// Used to authenticate with Twitter through a web view.
-  TwitterAuth twitterWebviewAuth;
-
-  /// Used to authenticate with Twitter using the legacy TwitterKit SDK.
-  TwitterLogin twitterLegacyAuth;
+  TwitterAuth? twitterWebviewAuth;
 
   /// Contains the user id, token & secret for the current twitter session.
   ///
   /// If the user is not authenticated, [twitterAuthSession] will be `null`.
-  TwitterAuthSession twitterAuthSession;
+  TwitterAuthSession? twitterAuthSession;
 
   /// Completes with either `true` or `false` whether the user has an active
   /// twitter session after initialization.
@@ -50,7 +47,7 @@ class AuthenticationBloc
   /// The [UserData] of the authenticated user.
   ///
   /// `null` if the user is not authenticated.
-  UserData authenticatedUser;
+  UserData? authenticatedUser;
 
   static AuthenticationBloc of(BuildContext context) =>
       context.watch<AuthenticationBloc>();

@@ -8,7 +8,7 @@ part 'paginated_event.dart';
 part 'paginated_state.dart';
 
 /// An abstract bloc for loading data from paginated twitter requests with the
-/// [TwitterApi].
+/// twitter api.
 abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
   PaginatedBloc() : super(InitialPaginatedState());
 
@@ -22,7 +22,7 @@ abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
   ///
   /// When `-1`, the first page will be requested.
   /// When `0`, all pages have been requested.
-  int cursor = -1;
+  int? cursor = -1;
 
   /// Whether requests are locked.
   bool lockRequests = false;

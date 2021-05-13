@@ -14,22 +14,22 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// screen size and the current scroll direction is [ScrollDirection.up].
 class ScrollToStart extends StatefulWidget {
   const ScrollToStart({
-    @required this.child,
+    required this.child,
     this.controller,
   });
 
   final Widget child;
-  final ScrollController controller;
+  final ScrollController? controller;
 
   @override
   _ScrollToStartState createState() => _ScrollToStartState();
 }
 
 class _ScrollToStartState extends State<ScrollToStart> {
-  ScrollController _controller;
+  ScrollController? _controller;
 
   // ignore: invalid_use_of_protected_member
-  bool get _hasSingleScrollPosition => _controller.positions.length == 1;
+  bool get _hasSingleScrollPosition => _controller!.positions.length == 1;
 
   @override
   void didChangeDependencies() {
@@ -51,43 +51,43 @@ class _ScrollToStartState extends State<ScrollToStart> {
   }
 
   void _scrollListener() {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     // rebuild the button when scroll position is lower than the screen size
     // to hide the button when scrolling all the way up
 
     if (_hasSingleScrollPosition &&
-        _controller.offset < mediaQuery.size.height &&
+        _controller!.offset < mediaQuery.size.height &&
         mounted) {
       setState(() {});
     }
   }
 
   /// Determines if the button should show.
-  bool _show(MediaQueryData mediaQuery, ScrollDirection scrollDirection) {
-    if (_controller == null || !_controller.hasClients) {
+  bool _show(MediaQueryData mediaQuery, ScrollDirection? scrollDirection) {
+    if (_controller == null || !_controller!.hasClients) {
       return false;
     }
 
     return _hasSingleScrollPosition &&
-        _controller.offset > mediaQuery.size.height &&
+        _controller!.offset > mediaQuery.size.height &&
         scrollDirection?.up == true;
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
     // ignore: invalid_use_of_protected_member
     if (!_hasSingleScrollPosition ||
-        _controller.offset > mediaQuery.size.height * 5) {
+        _controller!.offset > mediaQuery.size.height * 5) {
       // We use animateTo instead of jumpTo because jumpTo(0) will cause the
       // refresh indicator to trigger.
       // todo: fixed in flutter:master, change to jumpTo when it hits stable
-      _controller.animateTo(
+      _controller!.animateTo(
         0,
         duration: const Duration(microseconds: 1),
         curve: Curves.linear,
       );
     } else {
-      _controller.animateTo(
+      _controller!.animateTo(
         0,
         duration: const Duration(seconds: 1),
         curve: Curves.easeOut,
@@ -97,11 +97,11 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ScrollDirection scrollDirection = ScrollDirection.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final scrollDirection = ScrollDirection.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
-    final bool show = _show(mediaQuery, scrollDirection);
+    final show = _show(mediaQuery, scrollDirection);
 
     return Stack(
       children: <Widget>[

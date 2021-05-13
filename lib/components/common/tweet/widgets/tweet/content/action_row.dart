@@ -15,14 +15,14 @@ class TweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TweetBloc bloc = TweetBloc.of(context);
-    final RouteSettings route = ModalRoute.of(context).settings;
-    final Locale locale = Localizations.localeOf(context);
-    final String translateLanguage =
+    final bloc = TweetBloc.of(context);
+    final route = ModalRoute.of(context)!.settings;
+    final locale = Localizations.localeOf(context);
+    final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
     return BlocBuilder<TweetBloc, TweetState>(
-      builder: (BuildContext context, TweetState state) => Row(
+      builder: (context, state) => Row(
         children: <Widget>[
           RetweetButton(bloc, padding: DefaultEdgeInsets.all()),
           FavoriteButton(bloc, padding: DefaultEdgeInsets.all()),

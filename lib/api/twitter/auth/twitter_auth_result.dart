@@ -9,13 +9,13 @@ enum TwitterAuthStatus {
 @immutable
 class TwitterAuthResult {
   const TwitterAuthResult({
-    @required this.status,
+    required this.status,
     this.session,
   }) : assert(status == TwitterAuthStatus.success && session != null ||
             status != TwitterAuthStatus.success);
 
   final TwitterAuthStatus status;
-  final TwitterAuthSession session;
+  final TwitterAuthSession? session;
 
   @override
   String toString() {
@@ -28,9 +28,9 @@ class TwitterAuthResult {
 @immutable
 class TwitterAuthSession {
   const TwitterAuthSession({
-    @required this.token,
-    @required this.tokenSecret,
-    @required this.userId,
+    required this.token,
+    required this.tokenSecret,
+    required this.userId,
   });
 
   final String token;

@@ -27,7 +27,7 @@ class UserSearchBloc extends PaginatedBloc {
   /// The result of the last user search request.
   List<UserData> users = <UserData>[];
 
-  String lastQuery;
+  String? lastQuery;
 
   @override
   bool get hasData => users.isNotEmpty;

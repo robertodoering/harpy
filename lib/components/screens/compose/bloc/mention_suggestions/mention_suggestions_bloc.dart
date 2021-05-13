@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:pedantic/pedantic.dart';
 
 part 'mention_suggestions_event.dart';
 part 'mention_suggestions_state.dart';
@@ -12,8 +12,8 @@ part 'mention_suggestions_state.dart';
 class MentionSuggestionsBloc
     extends Bloc<MentionSuggestionsEvent, MentionSuggestionsState> {
   MentionSuggestionsBloc({
-    @required UserData authenticatedUser,
-  })  : followingBloc = FollowingBloc(userId: authenticatedUser.idStr),
+    required UserData authenticatedUser,
+  })   : followingBloc = FollowingBloc(userId: authenticatedUser.idStr),
         super(const MentionSuggestionsState()) {
     followingBloc.stream.listen(_followingBlocListener);
     userSearchBloc.stream.listen(_userSearchBlocListener);

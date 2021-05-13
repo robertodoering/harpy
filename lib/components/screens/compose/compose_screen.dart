@@ -10,17 +10,17 @@ class ComposeScreen extends StatelessWidget {
   }) : assert(inReplyToStatus == null || quotedTweet == null);
 
   /// The tweet that the user is replying to.
-  final TweetData inReplyToStatus;
+  final TweetData? inReplyToStatus;
 
   /// The tweet that the user is quoting (aka retweeting with quote).
-  final TweetData quotedTweet;
+  final TweetData? quotedTweet;
 
   static const String route = 'compose_screen';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ComposeBloc>(
-      create: (BuildContext context) => ComposeBloc(
+      create: (context) => ComposeBloc(
         inReplyToStatus: inReplyToStatus,
         quotedTweet: quotedTweet,
       ),

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
@@ -16,8 +15,8 @@ class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
     this.quotedTweet,
   }) : super(const ComposeState());
 
-  final TweetData inReplyToStatus;
-  final TweetData quotedTweet;
+  final TweetData? inReplyToStatus;
+  final TweetData? quotedTweet;
 
   /// Whether the user is replying to an existing tweet.
   bool get isReplying => inReplyToStatus != null;

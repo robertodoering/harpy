@@ -8,7 +8,7 @@ class TweetSearchScreen extends StatelessWidget {
     this.initialSearchQuery,
   });
 
-  final String initialSearchQuery;
+  final String? initialSearchQuery;
 
   static const String route = 'tweet_search_screen';
 

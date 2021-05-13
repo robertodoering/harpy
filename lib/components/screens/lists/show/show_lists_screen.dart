@@ -5,16 +5,16 @@ import 'package:harpy/components/components.dart';
 
 class ShowListsScreen extends StatelessWidget {
   const ShowListsScreen({
-    @required this.userId,
+    required this.userId,
     this.onListSelected,
   });
 
-  final String userId;
+  final String? userId;
 
   /// An optional callback that is called when a list is selected.
   ///
   /// When `null`, the list timeline screen will be navigated to.
-  final ValueChanged<TwitterListData> onListSelected;
+  final ValueChanged<TwitterListData>? onListSelected;
 
   static const String route = 'show_lists_screen';
 

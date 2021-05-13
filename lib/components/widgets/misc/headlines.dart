@@ -58,7 +58,7 @@ class PrimaryHeadline extends StatelessWidget {
         offset: const Offset(0, 75),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.headline2.copyWith(
+          style: Theme.of(context).textTheme.headline2!.copyWith(
             shadows: <Shadow>[
               Shadow(
                 color: Colors.black.withOpacity(.6),

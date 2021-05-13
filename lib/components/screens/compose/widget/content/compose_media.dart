@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:file_picker/src/platform_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +16,8 @@ class ComposeTweetMedia extends StatelessWidget {
     return TweetMediaLayout(
       child: TweetImagesLayout(
         children: state.media
-            .map((PlatformFile imageFile) => Image.file(
-                  File(imageFile.path),
+            .map((imageFile) => Image.file(
+                  File(imageFile.path!),
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
@@ -33,7 +32,7 @@ class ComposeTweetMedia extends StatelessWidget {
       child: TweetImagesLayout(
         children: <Widget>[
           Image.file(
-            File(state.media.first.path),
+            File(state.media.first.path!),
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -45,8 +44,8 @@ class ComposeTweetMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
-    final ComposeState state = bloc.state;
+    final bloc = context.watch<ComposeBloc>();
+    final state = bloc.state;
 
     Widget child;
 
@@ -60,10 +59,10 @@ class ComposeTweetMedia extends StatelessWidget {
       case MediaType.video:
         child = ComposeMediaVideo(
           bloc: bloc,
-          key: Key(state.media.first.path),
+          key: Key(state.media.first.path!),
         );
         break;
-      default:
+      case null:
         child = const SizedBox();
         break;
     }
@@ -92,8 +91,8 @@ class ComposeTweetMedia extends StatelessWidget {
 
 class ComposeMediaVideo extends StatefulWidget {
   const ComposeMediaVideo({
-    @required this.bloc,
-    Key key,
+    required this.bloc,
+    Key? key,
   }) : super(key: key);
 
   final ComposeBloc bloc;
@@ -103,16 +102,16 @@ class ComposeMediaVideo extends StatefulWidget {
 }
 
 class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
-  VideoPlayerController _controller;
+  VideoPlayerController? _controller;
 
-  double get _aspectRatio => _controller?.value?.aspectRatio ?? 16 / 9;
+  double get _aspectRatio => _controller?.value.aspectRatio ?? 16 / 9;
 
   @override
   void initState() {
     super.initState();
 
     _controller = VideoPlayerController.file(
-      File(widget.bloc.state.media.first.path),
+      File(widget.bloc.state.media.first.path!),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
 
@@ -121,15 +120,15 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
 
   Future<void> _initController() async {
     try {
-      await _controller.initialize();
+      await _controller!.initialize();
 
-      if (_controller.value.duration > const Duration(seconds: 140)) {
+      if (_controller!.value.duration > const Duration(seconds: 140)) {
         // video too long
         widget.bloc.add(const ClearComposedTweet());
         app<MessageService>().show(
           'video must be shorter than 140 seconds',
         );
-      } else if (_controller.value.duration <
+      } else if (_controller!.value.duration <
           const Duration(milliseconds: 500)) {
         // video too short
         widget.bloc.add(const ClearComposedTweet());
@@ -150,7 +149,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
       isImage: false,
       videoAspectRatio: _aspectRatio,
       child: ClipRRect(
-        key: ValueKey<VideoPlayerController>(_controller),
+        key: ValueKey<VideoPlayerController?>(_controller),
         clipBehavior: Clip.hardEdge,
         borderRadius: kDefaultBorderRadius,
         child: HarpyVideoPlayer.fromController(

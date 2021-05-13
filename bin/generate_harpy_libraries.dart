@@ -1,8 +1,10 @@
 import 'dart:io';
 
+// ignore_for_file: avoid_print
+
 /// Generates the library files for harpy.
 Future<void> main() async {
-  final List<String> paths = <String>[
+  final paths = <String>[
     'lib/api',
     'lib/components',
     'lib/core',
@@ -10,8 +12,8 @@ Future<void> main() async {
     'lib/harpy_widgets',
   ];
 
-  for (String path in paths) {
-    final ProcessResult result = await Process.run('dart', <String>[
+  for (final path in paths) {
+    final result = await Process.run('dart', <String>[
       'bin/generate_library_file.dart',
       '-p',
       path,

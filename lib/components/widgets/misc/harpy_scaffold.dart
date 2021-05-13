@@ -10,7 +10,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [title] in the [AppBar].
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
-    @required this.body,
+    required this.body,
     this.title,
     this.showIcon = false,
     this.actions,
@@ -23,21 +23,21 @@ class HarpyScaffold extends StatelessWidget {
     this.buildSafeArea = false,
   });
 
-  final String title;
+  final String? title;
   final Widget body;
   final bool showIcon;
-  final List<Widget> actions;
-  final Widget drawer;
-  final Widget endDrawer;
+  final List<Widget>? actions;
+  final Widget? drawer;
+  final Widget? endDrawer;
   final bool endDrawerEnableOpenDragGesture;
-  final PreferredSizeWidget appBarBottom;
-  final Widget floatingActionButton;
+  final PreferredSizeWidget? appBarBottom;
+  final Widget? floatingActionButton;
   final bool buildSafeArea;
 
   /// The colors used by the [HarpyBackground].
   ///
   /// Uses the colors of the current theme if `null`.
-  final List<Color> backgroundColors;
+  final List<Color>? backgroundColors;
 
   bool get _hasAppBar => title != null || showIcon;
 
@@ -47,7 +47,7 @@ class HarpyScaffold extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            title,
+            title!,
             style: theme.textTheme.headline6,
           ),
           if (showIcon) ...<Widget>[
@@ -59,8 +59,8 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  Widget _leading(BuildContext context) {
-    if (Scaffold.of(context)?.hasDrawer ?? false) {
+  Widget? _leading(BuildContext context) {
+    if (Scaffold.of(context).hasDrawer) {
       return const DrawerButton();
     } else if (Navigator.of(context).canPop()) {
       return const HarpyBackButton();
@@ -74,7 +74,7 @@ class HarpyScaffold extends StatelessWidget {
     ThemeData theme,
     MediaQueryData mediaQuery,
   ) {
-    final AppBar appBar = AppBar(
+    final appBar = AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -84,8 +84,8 @@ class HarpyScaffold extends StatelessWidget {
       bottom: appBarBottom,
     );
 
-    final double topPadding = mediaQuery.padding.top;
-    final double extent = appBar.preferredSize.height + topPadding;
+    final topPadding = mediaQuery.padding.top;
+    final extent = appBar.preferredSize.height + topPadding;
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: extent),
@@ -93,7 +93,7 @@ class HarpyScaffold extends StatelessWidget {
     );
   }
 
-  Widget _buildFloatingActionButton(MediaQueryData mediaQuery) {
+  Widget? _buildFloatingActionButton(MediaQueryData mediaQuery) {
     if (floatingActionButton == null) {
       return null;
     } else {
@@ -113,8 +113,8 @@ class HarpyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       drawer: drawer,

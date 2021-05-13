@@ -17,16 +17,17 @@ class ThemeCard extends StatelessWidget {
   final HarpyTheme harpyTheme;
   final bool selected;
   final bool canEdit;
-  final VoidCallback onTap;
-  final VoidCallback onEdit;
+  final VoidCallback? onTap;
+  final VoidCallback? onEdit;
 
   LinearGradient get gradient => LinearGradient(
-      colors: harpyTheme.backgroundColors.length > 1
-          ? harpyTheme.backgroundColors
-          : <Color>[
-              harpyTheme.backgroundColors.first,
-              harpyTheme.backgroundColors.first
-            ]);
+        colors: harpyTheme.backgroundColors.length > 1
+            ? harpyTheme.backgroundColors
+            : <Color>[
+                harpyTheme.backgroundColors.first,
+                harpyTheme.backgroundColors.first
+              ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class ThemeCard extends StatelessWidget {
               child: Material(
                 type: MaterialType.transparency,
                 child: ListTile(
-                  title: Text(harpyTheme.name ?? ''),
+                  title: Text(harpyTheme.name),
                   leading: canEdit ? const SizedBox() : null,
                   trailing: selected ? const Icon(FeatherIcons.check) : null,
                   onTap: onTap,

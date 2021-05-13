@@ -5,15 +5,14 @@ import 'package:harpy/core/core.dart';
 
 void main() {
   group('harpy message', () {
-    testWidgets('display a snack bar when show is called',
-        (WidgetTester tester) async {
+    testWidgets('display a snack bar when show is called', (tester) async {
       await tester.pumpWidget(MaterialApp(
         home: HarpyMessage(
           child: Container(),
         ),
       ));
 
-      final HarpyMessageState state = tester.state(find.byType(HarpyMessage));
+      final state = tester.state<HarpyMessageState>(find.byType(HarpyMessage));
 
       state.show('hello');
 
@@ -25,8 +24,8 @@ void main() {
 
   group('message service', () {
     testWidgets('uses the harpy message global key to show message',
-        (WidgetTester tester) async {
-      final MessageService messageService = MessageService();
+        (tester) async {
+      final messageService = MessageService();
 
       await tester.pumpWidget(MaterialApp(
         home: HarpyMessage(

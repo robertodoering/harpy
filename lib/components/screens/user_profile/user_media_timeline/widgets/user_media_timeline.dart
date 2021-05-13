@@ -9,15 +9,15 @@ class UserMediaTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserTimelineBloc bloc = context.watch<UserTimelineBloc>();
-    final UserTimelineState state = bloc.state;
+    final bloc = context.watch<UserTimelineBloc>();
+    final state = bloc.state;
 
     return ChangeNotifierProvider<MediaTimelineModel>(
       create: (_) => MediaTimelineModel(
         initialTweets: bloc.state.timelineTweets,
       ),
       child: BlocListener<UserTimelineBloc, UserTimelineState>(
-        listener: (BuildContext context, UserTimelineState state) {
+        listener: (context, state) {
           context
               .read<MediaTimelineModel>()
               .updateEntries(state.timelineTweets);

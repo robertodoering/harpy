@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -15,13 +14,13 @@ class TranslationService {
   /// Throws an error if the response is not valid or if the [Translation]
   /// object was unable to be parsed from the response.
   Future<Translation> translate({
-    @required String text,
+    required String? text,
     String from = 'auto',
     String to = 'en',
   }) async {
     _log.fine('translating from $from to $to');
 
-    final Map<String, String> params = <String, String>{
+    final params = <String, String?>{
       'client': 'gtx',
       'sl': from,
       'tl': to,
@@ -38,10 +37,12 @@ class TranslationService {
         .then(_transformResponse);
   }
 
-  http.Response _validateResponse(http.Response response) {
-    return response.statusCode >= 200 && response.statusCode < 300
-        ? response
-        : Future<dynamic>.error(response);
+  Future<http.Response> _validateResponse(http.Response response) async {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return response;
+    } else {
+      return Future<http.Response>.error(response);
+    }
   }
 
   Translation _transformResponse(http.Response response) {
@@ -49,20 +50,22 @@ class TranslationService {
       // try to parse translation from response
       final List<dynamic> body = jsonDecode(response.body);
 
-      String original = '';
-      String translated = '';
+      final original = StringBuffer();
+      final translated = StringBuffer();
 
-      for (List<dynamic> translationText in body[0]) {
-        original += translationText[1];
-        translated += translationText[0];
+      for (final List<dynamic> translationText in body[0]) {
+        original.write(translationText[1]);
+        translated.write(translationText[0]);
       }
 
       _log.fine('translated from:\n$original\nto:\n$translated');
 
       return Translation()
-        ..original = original
-        ..text = translated
+        ..original = original.toString()
+        ..text = translated.toString()
+        // ignore: avoid_dynamic_calls
         ..languageCode = body.last[0][0]
+        // ignore: avoid_dynamic_calls
         ..language = translateLanguages[body.last[0][0]];
     } catch (e, st) {
       _log.severe(

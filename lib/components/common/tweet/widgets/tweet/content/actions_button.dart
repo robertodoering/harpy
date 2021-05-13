@@ -10,7 +10,7 @@ class TweetActionsButton extends StatelessWidget {
     this.sizeDelta = 0,
   });
 
-  final TweetData tweet;
+  final TweetData? tweet;
   final EdgeInsets padding;
   final double sizeDelta;
 
@@ -18,7 +18,7 @@ class TweetActionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewMoreActionButton(
       padding: padding,
-      onTap: () => showTweetActionsBottomSheet(context, tweet: tweet),
+      onTap: () => showTweetActionsBottomSheet(context, tweet: tweet!),
     );
   }
 }

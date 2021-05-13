@@ -14,7 +14,7 @@ class UserCard extends StatelessWidget {
 
   void _onUserTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context).settings,
+      currentRoute: ModalRoute.of(context)!.settings,
       screenName: user.screenName,
     );
   }
@@ -28,7 +28,7 @@ class UserCard extends StatelessWidget {
           shape: kDefaultShapeBorder,
           isThreeLine: user.hasDescription,
           leading: HarpyCircleAvatar(
-            imageUrl: user.profileImageUrlHttps,
+            imageUrl: user.profileImageUrlHttps!,
           ),
           title: Text(
             user.name,

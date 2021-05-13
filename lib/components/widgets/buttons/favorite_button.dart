@@ -15,7 +15,7 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
       active: bloc.tweet.favorited,
@@ -29,16 +29,10 @@ class FavoriteButton extends StatelessWidget {
       activate: () => bloc.add(const FavoriteTweet()),
       deactivate: () => bloc.add(const UnfavoriteTweet()),
       iconSize: 22,
-      iconBuilder: (
-        BuildContext context,
-        bool active,
-        double size,
-      ) {
-        return Icon(
-          active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
-          size: size,
-        );
-      },
+      iconBuilder: (_, active, size) => Icon(
+        active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
+        size: size,
+      ),
     );
   }
 }

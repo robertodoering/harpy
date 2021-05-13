@@ -12,8 +12,8 @@ typedef OnExternalNavigation = void Function(String url);
 /// success, or a denied query param on user cancel.
 class TwitterLoginWebview extends StatefulWidget {
   const TwitterLoginWebview({
-    @required this.token,
-    @required this.onExternalNavigation,
+    required this.token,
+    required this.onExternalNavigation,
   });
 
   final String token;
@@ -59,7 +59,7 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
 
   @override
   Widget build(BuildContext context) {
-    final Uri initialUrl = Uri.https(
+    final initialUrl = Uri.https(
       'api.twitter.com',
       'oauth/authorize',
       <String, String>{
@@ -71,7 +71,7 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
     return WebView(
       initialUrl: initialUrl.toString(),
       javascriptMode: JavascriptMode.unrestricted,
-      navigationDelegate: (NavigationRequest navigation) =>
+      navigationDelegate: (navigation) =>
           _navigationDelegate(context, navigation),
     );
   }

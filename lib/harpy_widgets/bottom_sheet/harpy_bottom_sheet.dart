@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Shows a harpy styled modal bottom sheet with the [children] in a column.
-Future<T> showHarpyBottomSheet<T>(
+Future<T?> showHarpyBottomSheet<T>(
   BuildContext context, {
+  required List<Widget> children,
   bool hapticFeedback = false,
-  @required List<Widget> children,
 }) async {
   if (hapticFeedback) {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
   }
 
   return showModalBottomSheet<T>(
@@ -20,7 +21,7 @@ Future<T> showHarpyBottomSheet<T>(
         topRight: kDefaultRadius,
       ),
     ),
-    builder: (BuildContext context) => SafeArea(
+    builder: (_) => SafeArea(
       top: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,

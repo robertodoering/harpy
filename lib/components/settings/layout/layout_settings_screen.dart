@@ -14,7 +14,7 @@ class LayoutSettingsScreen extends StatefulWidget {
 }
 
 class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
-  final LayoutPreferences layoutPreferences = app<LayoutPreferences>();
+  final LayoutPreferences? layoutPreferences = app<LayoutPreferences>();
 
   List<Widget> get _settings {
     return <Widget>[
@@ -22,10 +22,10 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         secondary: const Icon(CupertinoIcons.rectangle_compress_vertical),
         title: const Text('Compact layout'),
         subtitle: const Text('use a visually dense layout'),
-        value: layoutPreferences.compactMode,
-        onChanged: (bool value) {
+        value: layoutPreferences!.compactMode,
+        onChanged: (value) {
           HapticFeedback.lightImpact();
-          setState(() => layoutPreferences.compactMode = value);
+          setState(() => layoutPreferences!.compactMode = value);
         },
       ),
       const ListTile(
@@ -44,11 +44,11 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {
           HapticFeedback.lightImpact();
-          setState(layoutPreferences.defaultSettings);
+          setState(layoutPreferences!.defaultSettings);
         },
-        itemBuilder: (BuildContext context) {
-          return <PopupMenuEntry<void>>[
-            const HarpyPopupMenuItem<void>(
+        itemBuilder: (_) {
+          return <PopupMenuEntry<int>>[
+            const HarpyPopupMenuItem<int>(
               value: 0,
               text: Text('reset to default'),
             ),

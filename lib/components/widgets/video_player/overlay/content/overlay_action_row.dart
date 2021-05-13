@@ -31,7 +31,7 @@ class OverlayActionRow extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       transformHitTests: false,
       child: VideoProgressIndicator(
-        model.controller,
+        model.controller!,
         allowScrubbing: true,
         colors: VideoProgressColors(
           playedColor: theme.accentColor.withOpacity(.7),
@@ -81,7 +81,7 @@ class OverlayActionRow extends StatelessWidget {
           Expanded(
             child: Text(
               ' / ${prettyPrintDuration(model.duration)}',
-              style: theme.textTheme.bodyText2.apply(color: Colors.white),
+              style: theme.textTheme.bodyText2!.apply(color: Colors.white),
             ),
           ),
         ] else
@@ -101,7 +101,7 @@ class OverlayActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       decoration: _backgroundDecoration,

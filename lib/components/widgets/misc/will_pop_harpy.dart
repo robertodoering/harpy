@@ -4,7 +4,7 @@ import 'package:harpy/core/core.dart';
 /// Prevents exiting harpy when pressing the back button once.
 class WillPopHarpy extends StatefulWidget {
   const WillPopHarpy({
-    @required this.child,
+    required this.child,
   });
 
   final Widget child;

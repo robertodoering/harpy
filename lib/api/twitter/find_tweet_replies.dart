@@ -1,6 +1,5 @@
 import 'package:dart_twitter_api/api/tweets/tweet_search_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:http/http.dart';
 
@@ -24,14 +23,14 @@ extension RepliesExtension on TweetSearchService {
   /// Throws an exception when the [searchTweets] did not return a 200 response.
   Future<RepliesResult> findReplies(
     TweetData tweet,
-    RepliesResult lastResult,
+    RepliesResult? lastResult,
   ) async {
-    final String screenName = tweet.userData.screenName;
+    final screenName = tweet.userData!.screenName;
 
-    final String maxId =
-        lastResult == null ? null : '${int.tryParse(lastResult.maxId) + 1}';
+    final maxId =
+        lastResult == null ? null : '${int.tryParse(lastResult.maxId!)! + 1}';
 
-    TweetSearch result;
+    TweetSearch? result;
 
     try {
       result = await searchTweets(
@@ -54,14 +53,10 @@ extension RepliesExtension on TweetSearchService {
       }
     }
 
-    if (result == null) {
-      return null;
-    }
-
-    final List<TweetData> replies = <TweetData>[];
+    final replies = <TweetData>[];
 
     // filter found tweets by replies
-    for (Tweet reply in result.statuses) {
+    for (final reply in result.statuses!) {
       if (reply.inReplyToStatusIdStr == tweet.idStr) {
         replies.add(TweetData.fromTweet(reply));
       }
@@ -69,12 +64,12 @@ extension RepliesExtension on TweetSearchService {
 
     // expect no more replies exists if no replies in the last 2 requests have
     // been found
-    final bool lastPage = result.statuses.length < 100 ||
-        (lastResult?.replies?.isEmpty == true && replies.isEmpty);
+    final lastPage = result.statuses!.length < 100 ||
+        (lastResult?.replies.isEmpty == true && replies.isEmpty);
 
     return RepliesResult(
       replies: replies,
-      maxId: result.statuses.isEmpty ? '0' : result.statuses.last.idStr,
+      maxId: result.statuses!.isEmpty ? '0' : result.statuses!.last.idStr,
       lastPage: lastPage,
     );
   }
@@ -83,16 +78,16 @@ extension RepliesExtension on TweetSearchService {
 /// Paginated results for replies to a tweet.
 class RepliesResult {
   const RepliesResult({
-    @required this.replies,
-    @required this.maxId,
-    @required this.lastPage,
+    required this.replies,
+    required this.maxId,
+    required this.lastPage,
   });
 
   /// The list of replies to a tweet.
   final List<TweetData> replies;
 
   /// The id of the last reply.
-  final String maxId;
+  final String? maxId;
 
   /// `true` when we assume that we can't receive more replies.
   final bool lastPage;

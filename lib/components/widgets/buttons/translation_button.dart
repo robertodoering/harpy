@@ -5,8 +5,8 @@ import 'package:like_button/like_button.dart';
 
 class TranslationButton extends StatelessWidget {
   const TranslationButton({
-    @required this.active,
-    @required this.activate,
+    required this.active,
+    required this.activate,
     this.padding = const EdgeInsets.all(8),
   });
 
@@ -16,7 +16,7 @@ class TranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
       active: active,
@@ -33,7 +33,7 @@ class TranslationButton extends StatelessWidget {
         end: Colors.lightBlueAccent,
       ),
       iconSize: 22,
-      iconBuilder: (BuildContext context, bool active, double size) => Icon(
+      iconBuilder: (_, active, size) => Icon(
         Icons.translate,
         size: size,
         color: active ? harpyTheme.translateColor : null,
@@ -54,10 +54,10 @@ class TweetTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool active =
+    final active =
         bloc.tweet.hasTranslation || bloc.state is TranslatingTweetState;
 
-    final Locale locale = Localizations.localeOf(context);
+    final locale = Localizations.localeOf(context);
 
     return TranslationButton(
       active: active,
@@ -75,9 +75,9 @@ class UserDescriptionTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Locale locale = Localizations.localeOf(context);
+    final locale = Localizations.localeOf(context);
 
-    final bool active = bloc.user.hasDescriptionTranslation ||
+    final active = bloc.user!.hasDescriptionTranslation ||
         bloc.state is TranslatingDescriptionState;
 
     return TranslationButton(

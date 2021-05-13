@@ -15,7 +15,7 @@ class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (BuildContext context, ThemeState state) => MaterialApp(
+      builder: (context, state) => MaterialApp(
         title: 'Harpy',
         theme: ThemeBloc.of(context).harpyTheme.data,
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
@@ -24,7 +24,7 @@ class Harpy extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: kMaterialSupportedLanguages.map(
-          (String languageCode) => Locale(languageCode),
+          (languageCode) => Locale(languageCode),
         ),
         navigatorKey: app<HarpyNavigator>().key,
         onGenerateRoute: onGenerateRoute,
@@ -36,7 +36,7 @@ class Harpy extends StatelessWidget {
           app<HarpyNavigator>().routeObserver,
         ],
         home: const SplashScreen(),
-        builder: (BuildContext widget, Widget child) => ScrollConfiguration(
+        builder: (_, child) => ScrollConfiguration(
           behavior: const HarpyScrollBehavior(),
           child: HarpyMessage(
             child: child,

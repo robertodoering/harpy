@@ -4,14 +4,14 @@ abstract class TrendsEvent extends Equatable {
   const TrendsEvent();
 
   Stream<TrendsState> applyAsync({
-    TrendsState currentState,
-    TrendsBloc bloc,
+    required TrendsState currentState,
+    required TrendsBloc bloc,
   });
 }
 
 class FindTrendsEvent extends TrendsEvent with HarpyLogger {
   const FindTrendsEvent({
-    @required this.woeid,
+    required this.woeid,
   });
 
   const FindTrendsEvent.global() : this(woeid: 1);
@@ -28,21 +28,21 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
 
   @override
   Stream<TrendsState> applyAsync({
-    TrendsState currentState,
-    TrendsBloc bloc,
+    required TrendsState currentState,
+    required TrendsBloc bloc,
   }) async* {
     log.fine('finding trends for woeid: $woeid');
 
     yield const RequestingTrends();
 
-    final List<Trends> trends = await bloc.trendsService
+    final trends = await bloc.trendsService
         .place(id: woeid)
-        .catchError(silentErrorHandler);
+        .handleError(silentErrorHandler);
 
     if (trends != null && trends.isNotEmpty) {
-      final List<Trend> sortedTrends = trends.first.trends;
+      final sortedTrends = trends.first.trends!;
       sortedTrends.sort(
-        (Trend o1, Trend o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
+        (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
       );
 
       yield FoundTrendsState(

@@ -11,9 +11,8 @@ class TweetQuoteContent extends StatelessWidget {
   final TweetData tweet;
 
   bool _addBottomPadding(Widget child, List<Widget> content) {
-    final List<Widget> filtered = content
-        .where((Widget element) => element is! TweetTranslation)
-        .toList();
+    final filtered =
+        content.where((element) => element is! TweetTranslation).toList();
 
     // tweet translation builds its own padding
     // don't add padding to last child
@@ -22,12 +21,12 @@ class TweetQuoteContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final Locale locale = Localizations.localeOf(context);
-    final String translateLanguage =
+    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context);
+    final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
-    final List<Widget> content = <Widget>[
+    final content = <Widget>[
       TweetTopRow(
         beginPadding: EdgeInsets.only(
           left: defaultSmallPaddingValue,
@@ -35,7 +34,7 @@ class TweetQuoteContent extends StatelessWidget {
         ),
         begin: <Widget>[
           TweetAuthorRow(
-            tweet.userData,
+            tweet.userData!,
             createdAt: tweet.createdAt,
             avatarPadding: defaultSmallPaddingValue,
             avatarRadius: 18,
@@ -53,7 +52,7 @@ class TweetQuoteContent extends StatelessWidget {
         TwitterText(
           tweet.fullText,
           entities: tweet.entities,
-          style: theme.textTheme.bodyText2.apply(fontSizeDelta: -2),
+          style: theme.textTheme.bodyText2!.apply(fontSizeDelta: -2),
           urlToIgnore: tweet.quotedStatusUrl,
         ),
       if (tweet.translatable(translateLanguage))

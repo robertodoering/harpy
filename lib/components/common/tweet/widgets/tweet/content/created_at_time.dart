@@ -6,14 +6,14 @@ import 'package:harpy/misc/misc.dart';
 /// Builds a formatted creation time text that updates automatically when the
 /// time changes.
 ///
-/// Used by the [TweetAuthorRow].
+/// Used by the tweet author row.
 class CreatedAtTime extends StatefulWidget {
   const CreatedAtTime({
-    @required this.createdAt,
+    required this.createdAt,
     this.fontSizeDelta = 0,
   });
 
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final double fontSizeDelta;
 
   @override
@@ -21,14 +21,14 @@ class CreatedAtTime extends StatefulWidget {
 }
 
 class _CreatedAtTimeState extends State<CreatedAtTime> {
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
 
-    final DateTime localCreatedAt = widget.createdAt.toLocal();
-    final Duration difference = DateTime.now().difference(localCreatedAt);
+    final localCreatedAt = widget.createdAt!.toLocal();
+    final difference = DateTime.now().difference(localCreatedAt);
 
     if (difference < const Duration(hours: 1)) {
       // update every minute
@@ -51,11 +51,11 @@ class _CreatedAtTimeState extends State<CreatedAtTime> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Text(
-      '${tweetTimeDifference(context, widget.createdAt)}',
-      style: theme.textTheme.bodyText1.apply(
+      tweetTimeDifference(context, widget.createdAt!),
+      style: theme.textTheme.bodyText1!.apply(
         fontSizeDelta: widget.fontSizeDelta,
       ),
       overflow: TextOverflow.ellipsis,

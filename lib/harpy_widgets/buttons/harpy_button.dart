@@ -9,12 +9,12 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// tapped.
 class _HarpyButtonBase extends StatefulWidget {
   const _HarpyButtonBase({
-    @required this.child,
+    required this.child,
     this.onTap,
   });
 
   final Widget child;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   _HarpyButtonBaseState createState() => _HarpyButtonBaseState();
@@ -59,19 +59,16 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 /// icon is built to the left of the text with a padding in between that is
 /// half of its vertical padding.
 ///
-/// Alternatively to [icon], an [iconBuilder] can be used to build the icon
-/// widget with more control.
-///
 /// When [onTap] is `null`, the button will appear disabled by reducing the
 /// foreground and background opacity.
 ///
-/// Either [icon], [iconBuilder] or [text] must not be `null`.
+/// Either [icon] or [text] must not be `null`.
 class HarpyButton extends StatelessWidget {
   /// A button that appears raised with a shadow.
   ///
   /// Uses the [ThemeData.buttonColor] as the [backgroundColor] by default.
   const HarpyButton.raised({
-    @required this.onTap,
+    required this.onTap,
     this.text,
     this.icon,
     this.iconSize,
@@ -81,7 +78,7 @@ class HarpyButton extends StatelessWidget {
     this.betweenPadding,
     this.foregroundColor,
     this.style,
-    double elevation,
+    double? elevation,
   })  : materialType = MaterialType.canvas,
         elevation = elevation ?? 8,
         assert(text != null || icon != null);
@@ -90,7 +87,7 @@ class HarpyButton extends StatelessWidget {
   ///
   /// Should only be used when the context makes it clear it can be tapped.
   const HarpyButton.flat({
-    @required this.onTap,
+    required this.onTap,
     this.text,
     this.icon,
     this.iconSize,
@@ -107,39 +104,39 @@ class HarpyButton extends StatelessWidget {
   /// The text widget of the button.
   ///
   /// Can be `null` if the button has no text.
-  final Widget text;
+  final Widget? text;
 
   /// The icon widget of the button.
   ///
   /// Can be `null` if the button has no icon.
-  final Widget icon;
+  final Widget? icon;
 
   /// The size of the [icon].
   ///
   /// Defaults to the current icon theme's size (22).
-  final double iconSize;
+  final double? iconSize;
 
   /// The callback when the button is tapped.
   ///
   /// If `null`, the button has reduced transparency to appear disabled and can
   /// note tapped.
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   /// The color of the button.
   ///
   /// Uses the [ThemeData.buttonColor] if `null`.
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// The color of the [icon] and [text] of the button.
   ///
   /// Defaults to [TextTheme.button] if the [backgroundColor] is `null`,
   /// to the text foreground color if the [backgroundColor] is transparent or to
   /// white or black when [backgroundColor] is set.
-  final Color foregroundColor;
+  final Color? foregroundColor;
 
   /// Merges the [TextTheme.button] style with this [style] to use as the text
   /// style.
-  final TextStyle style;
+  final TextStyle? style;
 
   /// Whether the button should have less padding.
   ///
@@ -150,14 +147,14 @@ class HarpyButton extends StatelessWidget {
   ///
   /// Should usually be `null` to use the default padding that is controlled
   /// with [dense] if a smaller padding is required.
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// The padding between the [icon] and [text].
   ///
   /// Only has an affect when both [icon] and [text] is not `null`.
   ///
   /// Defaults to half of the vertical padding.
-  final double betweenPadding;
+  final double? betweenPadding;
 
   /// The [elevation] that changes when using a [HarpyButton.flat] or
   /// [HarpyButton.raised].
@@ -179,20 +176,20 @@ class HarpyButton extends StatelessWidget {
   /// Returns the color for the [icon] and [text].
   Color _calculateForegroundColor(ThemeData theme) {
     if (foregroundColor != null) {
-      return foregroundColor;
+      return foregroundColor!;
     } else if (materialType == MaterialType.transparency) {
       // the text color since the button is transparent, therefore directly
       // on the background
 
-      return theme.textTheme.bodyText2.color;
+      return theme.textTheme.bodyText2!.color!;
     } else if (backgroundColor == null) {
       // don't override the button color
 
-      return theme.textTheme.button.color;
+      return theme.textTheme.button!.color!;
     } else {
       // black or white depending on the background color
 
-      return ThemeData.estimateBrightnessForColor(backgroundColor) ==
+      return ThemeData.estimateBrightnessForColor(backgroundColor!) ==
               Brightness.light
           ? Colors.black
           : Colors.white;
@@ -205,10 +202,10 @@ class HarpyButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          if (icon != null) icon,
+          if (icon != null) icon!,
           if (icon != null && text != null)
             SizedBox(width: betweenPadding ?? _padding.horizontal / 2),
-          if (text != null) Expanded(child: text),
+          if (text != null) Expanded(child: text!),
         ],
       ),
     );
@@ -216,10 +213,10 @@ class HarpyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    Color bgColor = backgroundColor ?? theme.buttonColor;
-    Color fgColor = _calculateForegroundColor(theme);
+    var bgColor = backgroundColor ?? theme.buttonColor;
+    var fgColor = _calculateForegroundColor(theme);
 
     if (onTap == null) {
       // reduce the opacity by 50% when disabled
@@ -236,7 +233,7 @@ class HarpyButton extends StatelessWidget {
 
           // text color
           textTheme: TextTheme(
-            button: theme.textTheme.button.copyWith(color: fgColor),
+            button: theme.textTheme.button!.copyWith(color: fgColor),
           ),
 
           // icon color
@@ -250,8 +247,8 @@ class HarpyButton extends StatelessWidget {
             padding: _padding,
             // use a builder so the context can reference the animated theme
             child: Builder(
-              builder: (BuildContext context) => DefaultTextStyle(
-                style: Theme.of(context).textTheme.button.merge(style),
+              builder: (context) => DefaultTextStyle(
+                style: Theme.of(context).textTheme.button!.merge(style),
                 overflow: TextOverflow.fade,
                 softWrap: false,
                 child: _buildContent(),

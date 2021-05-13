@@ -7,9 +7,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class MediaOverlayActionRow extends StatelessWidget {
   const MediaOverlayActionRow(
     this.tweetBloc, {
-    @required this.onDownload,
-    @required this.onOpenExternally,
-    @required this.onShare,
+    required this.onDownload,
+    required this.onOpenExternally,
+    required this.onShare,
     this.onShowTweet,
   });
 
@@ -17,7 +17,7 @@ class MediaOverlayActionRow extends StatelessWidget {
   final VoidCallback onDownload;
   final VoidCallback onOpenExternally;
   final VoidCallback onShare;
-  final VoidCallback onShowTweet;
+  final VoidCallback? onShowTweet;
 
   Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
     return ViewMoreActionButton(
@@ -32,8 +32,8 @@ class MediaOverlayActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Theme(
       data: theme.copyWith(
@@ -41,11 +41,11 @@ class MediaOverlayActionRow extends StatelessWidget {
         // dark background (independent of the theme)
         iconTheme: theme.iconTheme.copyWith(size: 24, color: Colors.white),
         textTheme: theme.textTheme.copyWith(
-          button: theme.textTheme.button.copyWith(
+          button: theme.textTheme.button!.copyWith(
             fontSize: 18,
             color: Colors.white,
           ),
-          bodyText2: theme.textTheme.bodyText2.copyWith(
+          bodyText2: theme.textTheme.bodyText2!.copyWith(
             color: Colors.white,
           ),
         ),
@@ -53,7 +53,7 @@ class MediaOverlayActionRow extends StatelessWidget {
       child: BlocProvider<TweetBloc>.value(
         value: tweetBloc,
         child: BlocBuilder<TweetBloc, TweetState>(
-          builder: (BuildContext context, TweetState state) => Row(
+          builder: (context, state) => Row(
             children: <Widget>[
               CustomAnimatedSize(
                 alignment: Alignment.centerLeft,

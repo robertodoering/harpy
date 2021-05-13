@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
@@ -15,8 +14,8 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   Widget _buildRow(
     ThemeData theme,
     IconData icon, {
-    String text,
-    Widget child,
+    String? text,
+    Widget? child,
   }) {
     return Row(
       children: <Widget>[
@@ -28,21 +27,21 @@ class UserProfileAdditionalInfo extends StatelessWidget {
                   text,
                   style: theme.textTheme.bodyText1,
                 )
-              : child,
+              : child!,
         ),
       ],
     );
   }
 
   Widget _buildUrl(BuildContext context, ThemeData theme) {
-    final Url url = bloc.user.entities.url.urls.first;
+    final url = bloc.user!.entities!.url!.urls!.first;
 
     final Widget child = GestureDetector(
       onTap: () => defaultOnUrlTap(context, url),
       onLongPress: () => defaultOnUrlLongPress(context, url),
       child: Text(
-        url.displayUrl,
-        style: theme.textTheme.bodyText1.copyWith(
+        url.displayUrl!,
+        style: theme.textTheme.bodyText1!.copyWith(
           color: theme.accentColor,
           fontWeight: FontWeight.bold,
         ),
@@ -54,23 +53,23 @@ class UserProfileAdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final List<Widget> children = <Widget>[
-      if (bloc.user.hasLocation)
+    final children = <Widget>[
+      if (bloc.user!.hasLocation)
         _buildRow(
           theme,
           CupertinoIcons.map_pin_ellipse,
-          text: bloc.user.location,
+          text: bloc.user!.location,
         ),
-      if (bloc.user.hasCreatedAt)
+      if (bloc.user!.hasCreatedAt)
         _buildRow(
           theme,
           CupertinoIcons.calendar,
-          text: 'joined ${_createdAtFormat.format(bloc.user.createdAt)}',
+          text: 'joined ${_createdAtFormat.format(bloc.user!.createdAt!)}',
         ),
-      if (bloc.user.hasUrl) _buildUrl(context, theme),
-      if (bloc.user.follows)
+      if (bloc.user!.hasUrl) _buildUrl(context, theme),
+      if (bloc.user!.follows)
         _buildRow(theme, CupertinoIcons.reply, text: 'follows you'),
     ];
 

@@ -16,8 +16,8 @@ class TweetReplies extends StatelessWidget {
   final TweetData tweet;
   final int depth;
 
-  Color _cardColor(HarpyTheme harpyTheme) {
-    if (depth % 2 == 0) {
+  Color? _cardColor(HarpyTheme harpyTheme) {
+    if (depth.isEven) {
       return Color.lerp(
         harpyTheme.averageBackgroundColor,
         harpyTheme.accentColor,
@@ -34,8 +34,8 @@ class TweetReplies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

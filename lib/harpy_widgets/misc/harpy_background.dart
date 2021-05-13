@@ -11,11 +11,11 @@ class HarpyBackground extends StatelessWidget {
     this.borderRadius,
   });
 
-  final Widget child;
-  final List<Color> colors;
+  final Widget? child;
+  final List<Color>? colors;
 
   /// The [borderRadius] of the [BoxDecoration].
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   LinearGradient _buildGradient(List<Color> backgroundColors) {
     return LinearGradient(
@@ -32,8 +32,7 @@ class HarpyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> backgroundColors =
-        colors ?? HarpyTheme.of(context).backgroundColors;
+    final backgroundColors = colors ?? HarpyTheme.of(context).backgroundColors;
 
     return AnimatedContainer(
       duration: kThemeAnimationDuration,

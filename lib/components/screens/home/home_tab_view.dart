@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/tab_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +35,8 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final HomeTabModel model = context.watch<HomeTabModel>();
+    final mediaQuery = MediaQuery.of(context);
+    final model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
       length: model.visibleEntries.length,

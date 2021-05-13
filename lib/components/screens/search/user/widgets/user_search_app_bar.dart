@@ -9,20 +9,18 @@ class UserSearchAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserSearchBloc bloc = context.watch<UserSearchBloc>();
+    final bloc = context.watch<UserSearchBloc>();
 
     return HarpySliverAppBar(
-      titleWidget: Container(
-        child: SearchTextField(
-          autofocus: true,
-          hintText: 'search users',
-          onSubmitted: (String text) {
-            if (text.trim().isNotEmpty) {
-              bloc..add(const ClearSearchedUsers())..add(SearchUsers(text));
-            }
-          },
-          onClear: () => bloc.add(const ClearSearchedUsers()),
-        ),
+      titleWidget: SearchTextField(
+        autofocus: true,
+        hintText: 'search users',
+        onSubmitted: (text) {
+          if (text.trim().isNotEmpty) {
+            bloc..add(const ClearSearchedUsers())..add(SearchUsers(text));
+          }
+        },
+        onClear: () => bloc.add(const ClearSearchedUsers()),
       ),
       floating: true,
     );

@@ -8,15 +8,14 @@ part of 'home_tab_configuration.dart';
 
 HomeTabConfiguration _$HomeTabConfigurationFromJson(Map<String, dynamic> json) {
   return HomeTabConfiguration(
-    entries: (json['entries'] as List)
-        ?.map((e) =>
-            e == null ? null : HomeTabEntry.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    entries: (json['entries'] as List<dynamic>)
+        .map((e) => HomeTabEntry.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
 Map<String, dynamic> _$HomeTabConfigurationToJson(
         HomeTabConfiguration instance) =>
     <String, dynamic>{
-      'entries': instance.entries?.map((e) => e?.toJson())?.toList(),
+      'entries': instance.entries.map((e) => e.toJson()).toList(),
     };

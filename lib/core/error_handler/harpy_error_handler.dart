@@ -18,11 +18,11 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 /// information about error reporting in Flutter.
 class HarpyErrorHandler with HarpyLogger {
   HarpyErrorHandler({
-    @required Widget child,
+    required Widget child,
   }) {
     if (kReleaseMode) {
       // override the error widget in release mode (the red error screen)
-      ErrorWidget.builder = (FlutterErrorDetails details) => const SizedBox();
+      ErrorWidget.builder = (details) => const SizedBox();
     }
 
     FlutterError.onError = _handleFlutterError;
@@ -31,7 +31,7 @@ class HarpyErrorHandler with HarpyLogger {
       () async {
         if (kReleaseMode && hasSentryDsn) {
           await SentryFlutter.init(
-            (SentryOptions options) => options.dsn = sentryDsn,
+            (options) => options.dsn = sentryDsn,
           );
         }
 
@@ -49,7 +49,7 @@ class HarpyErrorHandler with HarpyLogger {
     log.severe('caught flutter error');
 
     if (kReleaseMode) {
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      Zone.current.handleUncaughtError(details.exception, details.stack!);
     } else {
       FlutterError.dumpErrorToConsole(details);
     }

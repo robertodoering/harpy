@@ -7,21 +7,19 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// [CustomThemeBloc].
 class BackgroundColorCard extends StatelessWidget {
   BackgroundColorCard({
-    @required this.bloc,
-    @required this.color,
-    @required this.index,
+    required this.bloc,
+    required this.color,
+    required this.index,
   }) : super(key: ValueKey<int>(hashValues(color, index)));
 
   final CustomThemeBloc bloc;
-  final Color color;
+  final Color? color;
   final int index;
 
   Future<void> _changeBackgroundColor(BuildContext context) async {
-    final Color newColor = await showDialog<Color>(
+    final newColor = await showDialog<Color>(
       context: context,
-      builder: (BuildContext context) => ColorPickerDialog(
-        color: color,
-      ),
+      builder: (_) => ColorPickerDialog(color: color),
     );
 
     if (newColor != null) {
@@ -31,10 +29,10 @@ class BackgroundColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    final Color textColor =
-        ThemeData.estimateBrightnessForColor(color) == Brightness.light
+    final textColor =
+        ThemeData.estimateBrightnessForColor(color!) == Brightness.light
             ? Colors.black
             : Colors.white;
 

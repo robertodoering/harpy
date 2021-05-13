@@ -30,19 +30,19 @@ class HarpyGifPlayer extends StatefulWidget {
     this.compact = false,
   }) : controller = null;
 
-  final VideoPlayerController controller;
+  final VideoPlayerController? controller;
 
   /// An optional url to a thumbnail that is built when the video is not
   /// initialized.
-  final String thumbnail;
-  final double thumbnailAspectRatio;
+  final String? thumbnail;
+  final double? thumbnailAspectRatio;
 
   /// Whether the gif should start playing automatically.
   final bool autoplay;
 
-  final HarpyVideoPlayerModel model;
-  final OnVideoPlayerTap onGifTap;
-  final OnVideoPlayerLongPress onGifLongPress;
+  final HarpyVideoPlayerModel? model;
+  final OnVideoPlayerTap? onGifTap;
+  final OnVideoPlayerLongPress? onGifLongPress;
   final bool allowVerticalOverflow;
   final bool compact;
 
@@ -51,23 +51,23 @@ class HarpyGifPlayer extends StatefulWidget {
 }
 
 class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
-  VideoPlayerController _controller;
+  VideoPlayerController? _controller;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.model == null) {
-      _controller = widget.controller..setLooping(true);
+      _controller = widget.controller?..setLooping(true);
     } else {
-      _controller = widget.model.controller;
+      _controller = widget.model!.controller;
     }
   }
 
   @override
   void dispose() {
     if (widget.model == null) {
-      _controller.dispose();
+      _controller!.dispose();
     }
 
     super.dispose();
@@ -91,11 +91,11 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
     Widget child = GestureDetector(
       onTap: widget.onGifTap == null
           ? model.togglePlayback
-          : () => widget.onGifTap(model),
+          : () => widget.onGifTap!(model),
       onLongPress: widget.onGifLongPress,
       child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
+        aspectRatio: _controller!.value.aspectRatio,
+        child: VideoPlayer(_controller!),
       ),
     );
 
@@ -121,18 +121,18 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
     BuildContext fromHeroContext,
     BuildContext toHeroContext,
   ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
+    final hero = flightDirection == HeroFlightDirection.push
+        ? fromHeroContext.widget as Hero
+        : toHeroContext.widget as Hero;
 
-    final BorderRadiusTween tween = BorderRadiusTween(
+    final tween = BorderRadiusTween(
       begin: const BorderRadius.all(kDefaultRadius),
       end: BorderRadius.zero,
     );
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget child) => ClipRRect(
+      builder: (_, __) => ClipRRect(
         clipBehavior: Clip.hardEdge,
         borderRadius: tween.evaluate(animation),
         child: hero.child,
@@ -140,16 +140,16 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
     );
   }
 
-  Widget _builder(BuildContext context, Widget child) {
-    final HarpyVideoPlayerModel model = HarpyVideoPlayerModel.of(context);
+  Widget _builder(BuildContext context, Widget? child) {
+    final model = HarpyVideoPlayerModel.of(context);
 
-    Widget child =
+    var child =
         !model.initialized ? _buildUninitialized(model) : _buildGif(model);
 
     if (widget.autoplay) {
       child = VisibilityChangeDetector(
         key: ValueKey<HarpyVideoPlayerModel>(model),
-        onVisibilityChanged: (bool visible) {
+        onVisibilityChanged: (visible) {
           if (visible && !model.initialized && !model.playing) {
             model.initialize();
           }
@@ -168,16 +168,13 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   @override
   Widget build(BuildContext context) {
     if (widget.model != null) {
-      return ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+      return ChangeNotifierProvider<HarpyVideoPlayerModel?>.value(
         value: widget.model,
         builder: _builder,
       );
     } else {
       return ChangeNotifierProvider<HarpyVideoPlayerModel>(
-        create: (BuildContext context) => HarpyVideoPlayerModel(
-          _controller,
-          autoplay: false,
-        ),
+        create: (_) => HarpyVideoPlayerModel(_controller),
         builder: _builder,
       );
     }

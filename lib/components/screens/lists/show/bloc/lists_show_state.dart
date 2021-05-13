@@ -48,7 +48,7 @@ extension ShowListsStateExtension on ListsShowState {
     }
   }
 
-  String get ownershipsCursor {
+  String? get ownershipsCursor {
     if (this is ListsResult) {
       return (this as ListsResult).ownershipsCursor;
     } else {
@@ -56,7 +56,7 @@ extension ShowListsStateExtension on ListsShowState {
     }
   }
 
-  String get subscriptionsCursor {
+  String? get subscriptionsCursor {
     if (this is ListsResult) {
       return (this as ListsResult).subscriptionsCursor;
     } else {
@@ -76,20 +76,20 @@ class ListsInitialLoading extends ListsShowState {
 /// The state when the lists have successfully been requested.
 class ListsResult extends ListsShowState {
   const ListsResult({
-    @required this.ownerships,
-    @required this.subscriptions,
-    @required this.ownershipsCursor,
-    @required this.subscriptionsCursor,
+    required this.ownerships,
+    required this.subscriptions,
+    required this.ownershipsCursor,
+    required this.subscriptionsCursor,
   });
 
   final List<TwitterListData> ownerships;
   final List<TwitterListData> subscriptions;
 
-  final String ownershipsCursor;
-  final String subscriptionsCursor;
+  final String? ownershipsCursor;
+  final String? subscriptionsCursor;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         ownerships,
         subscriptions,
         ownershipsCursor,
@@ -100,19 +100,19 @@ class ListsResult extends ListsShowState {
 /// The state when loading more ownerships or more subscriptions.
 class ListsLoadingMore extends ListsShowState {
   const ListsLoadingMore.loadingOwnerships({
-    @required this.ownerships,
-    @required this.subscriptions,
-    @required this.ownershipsCursor,
-    @required this.subscriptionsCursor,
-  })  : loadingOwnerships = true,
+    required this.ownerships,
+    required this.subscriptions,
+    required this.ownershipsCursor,
+    required this.subscriptionsCursor,
+  })   : loadingOwnerships = true,
         loadingSubscriptions = false;
 
   const ListsLoadingMore.loadingSubscriptions({
-    @required this.ownerships,
-    @required this.subscriptions,
-    @required this.ownershipsCursor,
-    @required this.subscriptionsCursor,
-  })  : loadingOwnerships = false,
+    required this.ownerships,
+    required this.subscriptions,
+    required this.ownershipsCursor,
+    required this.subscriptionsCursor,
+  })   : loadingOwnerships = false,
         loadingSubscriptions = true;
 
   final bool loadingOwnerships;
@@ -121,8 +121,8 @@ class ListsLoadingMore extends ListsShowState {
   final List<TwitterListData> ownerships;
   final List<TwitterListData> subscriptions;
 
-  final String ownershipsCursor;
-  final String subscriptionsCursor;
+  final String? ownershipsCursor;
+  final String? subscriptionsCursor;
 
   @override
   List<Object> get props => <Object>[

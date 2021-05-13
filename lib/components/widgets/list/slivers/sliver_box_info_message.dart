@@ -8,8 +8,8 @@ class SliverBoxInfoMessage extends StatelessWidget {
     this.secondaryMessage,
   });
 
-  final Widget primaryMessage;
-  final Widget secondaryMessage;
+  final Widget? primaryMessage;
+  final Widget? secondaryMessage;
 
   @override
   Widget build(BuildContext context) {

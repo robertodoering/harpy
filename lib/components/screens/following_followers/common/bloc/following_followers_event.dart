@@ -6,20 +6,20 @@ abstract class LoadUsers extends LoadPaginatedData {
 
   /// Used to request the [PaginatedUsers] for the [FollowersBloc] or
   /// [FollowingBloc].
-  Future<PaginatedUsers> requestUsers(FollowingFollowersBloc bloc);
+  Future<PaginatedUsers?> requestUsers(FollowingFollowersBloc? bloc);
 
   @override
-  Future<bool> loadData(PaginatedBloc paginatedBloc) async {
-    final FollowingFollowersBloc bloc = paginatedBloc as FollowingFollowersBloc;
+  Future<bool> loadData(PaginatedBloc? paginatedBloc) async {
+    final bloc = paginatedBloc as FollowingFollowersBloc?;
 
-    final PaginatedUsers paginatedUsers = await requestUsers(bloc);
+    final paginatedUsers = await requestUsers(bloc);
 
     if (paginatedUsers == null) {
       return false;
     } else {
-      bloc.cursor = int.tryParse(paginatedUsers.nextCursorStr);
+      bloc!.cursor = int.tryParse(paginatedUsers.nextCursorStr!);
       bloc.users.addAll(
-        paginatedUsers.users.map((User user) => UserData.fromUser(user)),
+        paginatedUsers.users!.map((user) => UserData.fromUser(user)),
       );
 
       return true;

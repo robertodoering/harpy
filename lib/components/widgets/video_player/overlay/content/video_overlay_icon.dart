@@ -6,7 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// automatically.
 class VideoOverlayIcon extends StatelessWidget {
   const VideoOverlayIcon({
-    @required this.icon,
+    required this.icon,
     this.compact = false,
   });
 

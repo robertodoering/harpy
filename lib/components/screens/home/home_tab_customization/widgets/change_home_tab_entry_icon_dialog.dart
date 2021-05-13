@@ -5,7 +5,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class ChangeHomeTabEntryIconDialog extends StatelessWidget {
   const ChangeHomeTabEntryIconDialog({
-    @required this.entry,
+    required this.entry,
   });
 
   final HomeTabEntry entry;

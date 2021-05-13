@@ -4,8 +4,8 @@ abstract class LikesTimelineEvent extends Equatable {
   const LikesTimelineEvent();
 
   Stream<LikesTimelineState> applyAsync({
-    LikesTimelineState currentState,
-    LikesTimelineBloc bloc,
+    required LikesTimelineState currentState,
+    required LikesTimelineBloc bloc,
   });
 }
 
@@ -18,28 +18,28 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 
   @override
   Stream<LikesTimelineState> applyAsync({
-    LikesTimelineState currentState,
-    LikesTimelineBloc bloc,
+    required LikesTimelineState currentState,
+    required LikesTimelineBloc bloc,
   }) async* {
     log.fine('requesting likes timeline');
 
     yield const LikesTimelineInitialLoading();
 
-    String maxId;
+    String? maxId;
 
-    final List<TweetData> tweets = await bloc.tweetService
+    final tweets = await bloc.tweetService
         .listFavorites(
           screenName: bloc.screenName,
           count: 200,
         )
-        .then((List<Tweet> tweets) {
-          if (tweets != null && tweets.isNotEmpty) {
+        .then((tweets) {
+          if (tweets.isNotEmpty) {
             maxId = tweets.last.idStr;
           }
           return tweets;
         })
         .then(handleTweets)
-        .catchError(twitterApiErrorHandler);
+        .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} initial tweets');
@@ -70,8 +70,8 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String _findMaxId(LikesTimelineResult state) {
-    final int lastId = int.tryParse(state.maxId ?? '');
+  String? _findMaxId(LikesTimelineResult state) {
+    final lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
       return '${lastId - 1}';
@@ -82,8 +82,8 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 
   @override
   Stream<LikesTimelineState> applyAsync({
-    LikesTimelineState currentState,
-    LikesTimelineBloc bloc,
+    required LikesTimelineState currentState,
+    required LikesTimelineBloc bloc,
   }) async* {
     if (bloc.lock()) {
       bloc.requestOlderCompleter.complete();
@@ -92,7 +92,7 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
     }
 
     if (currentState is LikesTimelineResult) {
-      final String maxId = _findMaxId(currentState);
+      final maxId = _findMaxId(currentState);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -103,17 +103,17 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 
       yield LikesTimelineLoadingOlder(oldResult: currentState);
 
-      String newMaxId;
-      bool canRequestOlder = false;
+      String? newMaxId;
+      var canRequestOlder = false;
 
-      final List<TweetData> tweets = await bloc.tweetService
+      final tweets = await bloc.tweetService
           .listFavorites(
             screenName: bloc.screenName,
             count: 200,
             maxId: maxId,
           )
-          .then((List<Tweet> tweets) {
-            if (tweets != null && tweets.isNotEmpty) {
+          .then((tweets) {
+            if (tweets.isNotEmpty) {
               newMaxId = tweets.last.idStr;
               canRequestOlder = true;
             } else {
@@ -122,7 +122,7 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
             return tweets;
           })
           .then(handleTweets)
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');

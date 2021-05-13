@@ -14,8 +14,9 @@ class GeneralSettingsScreen extends StatefulWidget {
 }
 
 class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
-  final ChangelogPreferences changelogPreferences = app<ChangelogPreferences>();
-  final GeneralPreferences generalPreferences = app<GeneralPreferences>();
+  final ChangelogPreferences? changelogPreferences =
+      app<ChangelogPreferences>();
+  final GeneralPreferences? generalPreferences = app<GeneralPreferences>();
 
   List<Widget> get _settings {
     return <Widget>[
@@ -23,20 +24,20 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         secondary: const Icon(Icons.update),
         title: const Text('Show changelog dialog'),
         subtitle: const Text('when the app has been updated'),
-        value: changelogPreferences.showChangelogDialog,
-        onChanged: (bool value) {
+        value: changelogPreferences!.showChangelogDialog,
+        onChanged: (value) {
           HapticFeedback.lightImpact();
-          setState(() => changelogPreferences.showChangelogDialog = value);
+          setState(() => changelogPreferences!.showChangelogDialog = value);
         },
       ),
       SwitchListTile(
         secondary: const Icon(Icons.speed),
         title: const Text('Performance mode'),
         subtitle: const Text('reduces animations and effects'),
-        value: generalPreferences.performanceMode,
-        onChanged: (bool value) {
+        value: generalPreferences!.performanceMode,
+        onChanged: (value) {
           HapticFeedback.lightImpact();
-          setState(() => generalPreferences.performanceMode = value);
+          setState(() => generalPreferences!.performanceMode = value);
           context.read<ThemeBloc>().add(const RefreshTheme());
         },
       ),

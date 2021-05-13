@@ -8,7 +8,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
 
   Widget _buildGeneralGroup(TweetSearchFilterModel model, ThemeData theme) {
-    final TextStyle style = theme.textTheme.subtitle1.copyWith(fontSize: 14);
+    final style = theme.textTheme.subtitle1!.copyWith(fontSize: 14);
 
     return FilterGroup(
       title: 'general',
@@ -176,10 +176,9 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TweetSearchBloc bloc = context.watch<TweetSearchBloc>();
-    final TweetSearchFilterModel model =
-        context.watch<TweetSearchFilterModel>();
+    final theme = Theme.of(context);
+    final bloc = context.watch<TweetSearchBloc>();
+    final model = context.watch<TweetSearchFilterModel>();
 
     return FilterDrawer(
       title: 'advanced filter',

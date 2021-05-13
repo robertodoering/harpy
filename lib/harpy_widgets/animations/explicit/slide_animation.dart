@@ -8,9 +8,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// triggering the animation.
 class SlideAnimation extends StatefulWidget {
   const SlideAnimation({
-    @required this.child,
-    @required this.endPosition,
-    Key key,
+    required this.child,
+    required this.endPosition,
+    Key? key,
     this.duration = kLongAnimationDuration,
   }) : super(key: key);
 
@@ -24,8 +24,8 @@ class SlideAnimation extends StatefulWidget {
 
 class SlideAnimationState extends State<SlideAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _animation;
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class SlideAnimationState extends State<SlideAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => Transform.translate(
+      builder: (_, child) => Transform.translate(
         offset: _animation.value,
         child: child,
       ),

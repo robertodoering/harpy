@@ -17,7 +17,7 @@ typedef OnScrollDirectionChanged = void Function(VerticalDirection direction);
 /// direction to its children.
 class ScrollDirectionListener extends StatefulWidget {
   const ScrollDirectionListener({
-    @required this.child,
+    required this.child,
     this.onScrollDirectionChanged,
     this.depth,
   });
@@ -25,7 +25,7 @@ class ScrollDirectionListener extends StatefulWidget {
   final Widget child;
 
   /// The callback that is invoked whenever the scroll direction changes.
-  final OnScrollDirectionChanged onScrollDirectionChanged;
+  final OnScrollDirectionChanged? onScrollDirectionChanged;
 
   /// The depth of the scroll notification this listener should listen for.
   ///
@@ -33,7 +33,7 @@ class ScrollDirectionListener extends StatefulWidget {
   /// when using a [NestedScrollView]).
   ///
   /// When `null` listens to every scroll notification regardless of depth.
-  final int depth;
+  final int? depth;
 
   @override
   _ScrollDirectionListenerState createState() =>
@@ -43,12 +43,14 @@ class ScrollDirectionListener extends StatefulWidget {
 class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
     with RouteAware, HarpyLogger {
   double _lastPosition = 0;
-  VerticalDirection _direction;
+  VerticalDirection? _direction;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override
@@ -60,7 +62,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
   @override
   void didPushNext() {
     if (mounted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           // Assume scrolling up when a new route gets pushed onto the screen.
           // This is a workaround for the ListCardAnimation to prevent a
@@ -74,7 +76,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
 
   void _changeDirection(VerticalDirection direction) {
     if (mounted && _direction != direction) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           _direction = direction;
         });
@@ -89,7 +91,7 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
       return false;
     }
 
-    final double scrollPosition = notification.metrics.pixels;
+    final scrollPosition = notification.metrics.pixels;
 
     if (_lastPosition < scrollPosition) {
       // scrolling down
@@ -132,15 +134,14 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener>
 /// received.
 class ScrollDirection extends InheritedWidget {
   const ScrollDirection({
-    @required this.direction,
-    @required Widget child,
+    required this.direction,
+    required Widget child,
     this.reset,
-    Key key,
-  })  : assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+  }) : super(key: key, child: child);
 
-  final VerticalDirection direction;
-  final VoidCallback reset;
+  final VerticalDirection? direction;
+  final VoidCallback? reset;
 
   /// `true` when the user is scrolling up (or left if the axis is horizontal).
   bool get up => direction == VerticalDirection.up;
@@ -151,7 +152,7 @@ class ScrollDirection extends InheritedWidget {
   bool get down => direction == VerticalDirection.down;
   bool get right => down;
 
-  static ScrollDirection of(BuildContext context) {
+  static ScrollDirection? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<ScrollDirection>();
   }
 

@@ -7,13 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
+import 'package:pedantic/pedantic.dart';
 
 part 'user_profile_event.dart';
 part 'user_profile_state.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
-    @required String screenName,
+    required String? screenName,
   }) : super(LoadingUserState()) {
     add(InitializeUserEvent(user: user, screenName: screenName));
   }
@@ -21,7 +22,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   /// The [UserData] for the user to display.
   ///
   /// Set with an [InitializeUserEvent].
-  UserData user;
+  UserData? user;
 
   final UserService userService = app<TwitterApi>().userService;
 
