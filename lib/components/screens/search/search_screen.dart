@@ -49,8 +49,8 @@ class SearchScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: Divider(height: 32),
+          SliverToBoxAdapter(
+            child: Divider(height: defaultPaddingValue * 2),
           ),
           const SliverToBoxAdapter(
             child: TrendsCard(),
