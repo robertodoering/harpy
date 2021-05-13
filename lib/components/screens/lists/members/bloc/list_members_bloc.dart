@@ -6,13 +6,13 @@ import 'package:equatable/equatable.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
-part 'list_member_event.dart';
-part 'list_member_state.dart';
+part 'list_members_event.dart';
+part 'list_members_state.dart';
 
-class ListMemberBloc extends Bloc<ListMemberEvent, ListMemberState> {
-  ListMemberBloc({
+class ListMembersBloc extends Bloc<ListMembersEvent, ListMembersState> {
+  ListMembersBloc({
     required this.list,
-  }) : super(const ListMemberInitialLoading()) {
+  }) : super(const ListMembersInitialLoading()) {
     add(const ShowListMembers());
   }
 
@@ -23,8 +23,8 @@ class ListMemberBloc extends Bloc<ListMemberEvent, ListMemberState> {
   Completer<void> requestMoreCompleter = Completer<void>();
 
   @override
-  Stream<ListMemberState> mapEventToState(
-    ListMemberEvent event,
+  Stream<ListMembersState> mapEventToState(
+    ListMembersEvent event,
   ) async* {
     yield* event.applyAsync(currentState: state, bloc: this);
   }

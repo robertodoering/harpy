@@ -15,7 +15,7 @@ class ListMembersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ListMemberBloc(list: list),
+      create: (_) => ListMembersBloc(list: list),
       child: HarpyScaffold(
         body: TwitterListMembers(
           list: list,

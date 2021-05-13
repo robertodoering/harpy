@@ -1,11 +1,11 @@
-part of 'list_member_bloc.dart';
+part of 'list_members_bloc.dart';
 
-abstract class ListMemberState extends Equatable {
-  const ListMemberState();
+abstract class ListMembersState extends Equatable {
+  const ListMembersState();
 }
 
-extension ListMemberStateExtension on ListMemberState {
-  bool get isLoading => this is ListMemberInitialLoading;
+extension ListMembersStateExtension on ListMembersState {
+  bool get isLoading => this is ListMembersInitialLoading;
 
   bool get hasResult => this is ListMembersResult || this is MembersLoadingMore;
 
@@ -13,7 +13,7 @@ extension ListMemberStateExtension on ListMemberState {
 
   bool get loadingMore => this is MembersLoadingMore;
 
-  bool get isFailure => this is ListMemberFailure;
+  bool get isFailure => this is ListMembersFailure;
 
   bool get hasNoMembers => this is NoListMembersResult;
 
@@ -38,14 +38,14 @@ extension ListMemberStateExtension on ListMemberState {
   }
 }
 
-class ListMemberInitialLoading extends ListMemberState {
-  const ListMemberInitialLoading();
+class ListMembersInitialLoading extends ListMembersState {
+  const ListMembersInitialLoading();
 
   @override
   List<Object> get props => <Object>[];
 }
 
-class ListMembersResult extends ListMemberState {
+class ListMembersResult extends ListMembersState {
   const ListMembersResult({
     required this.members,
     required this.membersCursor,
@@ -61,21 +61,21 @@ class ListMembersResult extends ListMemberState {
       ];
 }
 
-class NoListMembersResult extends ListMemberState {
+class NoListMembersResult extends ListMembersState {
   const NoListMembersResult();
 
   @override
   List<Object?> get props => <Object>[];
 }
 
-class ListMemberFailure extends ListMemberState {
-  const ListMemberFailure();
+class ListMembersFailure extends ListMembersState {
+  const ListMembersFailure();
 
   @override
   List<Object?> get props => <Object>[];
 }
 
-class MembersLoadingMore extends ListMemberState {
+class MembersLoadingMore extends ListMembersState {
   const MembersLoadingMore({
     required this.members,
     required this.membersCursor,

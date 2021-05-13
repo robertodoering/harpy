@@ -1,25 +1,25 @@
-part of 'list_member_bloc.dart';
+part of 'list_members_bloc.dart';
 
-abstract class ListMemberEvent {
-  const ListMemberEvent();
+abstract class ListMembersEvent {
+  const ListMembersEvent();
 
-  Stream<ListMemberState> applyAsync({
-    required ListMemberState currentState,
-    required ListMemberBloc bloc,
+  Stream<ListMembersState> applyAsync({
+    required ListMembersState currentState,
+    required ListMembersBloc bloc,
   });
 }
 
-class ShowListMembers extends ListMemberEvent with HarpyLogger {
+class ShowListMembers extends ListMembersEvent with HarpyLogger {
   const ShowListMembers();
 
   @override
-  Stream<ListMemberState> applyAsync({
-    required ListMemberState currentState,
-    required ListMemberBloc bloc,
+  Stream<ListMembersState> applyAsync({
+    required ListMembersState currentState,
+    required ListMembersBloc bloc,
   }) async* {
     log.fine('load list members');
 
-    yield const ListMemberInitialLoading();
+    yield const ListMembersInitialLoading();
 
     final paginatedUsers = await bloc.listsService
         .members(listId: bloc.list.idStr)
@@ -38,18 +38,18 @@ class ShowListMembers extends ListMemberEvent with HarpyLogger {
         yield const NoListMembersResult();
       }
     } else {
-      yield const ListMemberFailure();
+      yield const ListMembersFailure();
     }
   }
 }
 
-class LoadMoreMembers extends ListMemberEvent with HarpyLogger {
+class LoadMoreMembers extends ListMembersEvent with HarpyLogger {
   const LoadMoreMembers();
 
   @override
-  Stream<ListMemberState> applyAsync({
-    required ListMemberState currentState,
-    required ListMemberBloc bloc,
+  Stream<ListMembersState> applyAsync({
+    required ListMembersState currentState,
+    required ListMembersBloc bloc,
   }) async* {
     if (currentState is ListMembersResult && currentState.hasMoreData) {
       log.fine('load more members');

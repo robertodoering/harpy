@@ -14,7 +14,7 @@ class TwitterListMembers extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    final bloc = context.watch<ListMemberBloc>();
+    final bloc = context.watch<ListMembersBloc>();
     final state = bloc.state;
 
     return ScrollDirectionListener(

@@ -28,9 +28,7 @@ class TwitterLists extends StatelessWidget {
         key: Key(list.idStr),
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
-            : () => app<HarpyNavigator>().pushListTimelineScreen(
-                  list: list,
-                ),
+            : () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
         onLongPress: () => _showListActionBottomSheet(context, list),
       );
     } else {
@@ -53,9 +51,9 @@ class TwitterLists extends StatelessWidget {
   }
 
   List<Widget> _buildOwnerships(
+    BuildContext context,
     ListsShowBloc bloc,
     ListsShowState state,
-    BuildContext context,
   ) {
     return <Widget>[
       SliverPadding(
@@ -96,9 +94,9 @@ class TwitterLists extends StatelessWidget {
   }
 
   List<Widget> _buildSubscriptions(
+    BuildContext context,
     ListsShowBloc bloc,
     ListsShowState state,
-    BuildContext context,
   ) {
     return <Widget>[
       SliverPadding(
@@ -174,15 +172,15 @@ class TwitterLists extends StatelessWidget {
         else if (state.hasResult) ...<Widget>[
           if (state.hasOwnerships)
             ..._buildOwnerships(
+              context,
               bloc,
               state,
-              context,
             ),
           if (state.hasSubscriptions)
             ..._buildSubscriptions(
+              context,
               bloc,
               state,
-              context,
             ),
         ] else
           const SliverFillInfoMessage(
