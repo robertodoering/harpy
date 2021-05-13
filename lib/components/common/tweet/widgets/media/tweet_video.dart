@@ -34,22 +34,26 @@ class TweetVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaPreferences = app<MediaPreferences>();
 
-    return ClipRRect(
-      clipBehavior: Clip.hardEdge,
-      borderRadius: kDefaultBorderRadius,
-      child: HarpyVideoPlayer.fromController(
-        VideoPlayerController.network(
-          tweet!.video!.appropriateUrl!,
-          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    return GestureDetector(
+      // eat all tap gestures (e.g. tapping on the overlay)
+      onTap: () {},
+      child: ClipRRect(
+        clipBehavior: Clip.hardEdge,
+        borderRadius: kDefaultBorderRadius,
+        child: HarpyVideoPlayer.fromController(
+          VideoPlayerController.network(
+            tweet!.video!.appropriateUrl!,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          ),
+          thumbnail: tweet!.video!.thumbnailUrl,
+          onVideoPlayerTap: _openGallery,
+          onVideoPlayerLongPress: () => showTweetMediaBottomSheet(
+            context,
+            url: tweetBloc.downloadMediaUrl(tweet!),
+          ),
+          autoplay: mediaPreferences.shouldAutoplayVideos,
+          allowVerticalOverflow: true,
         ),
-        thumbnail: tweet!.video!.thumbnailUrl,
-        onVideoPlayerTap: _openGallery,
-        onVideoPlayerLongPress: () => showTweetMediaBottomSheet(
-          context,
-          url: tweetBloc.downloadMediaUrl(tweet!),
-        ),
-        autoplay: mediaPreferences.shouldAutoplayVideos,
-        allowVerticalOverflow: true,
       ),
     );
   }
