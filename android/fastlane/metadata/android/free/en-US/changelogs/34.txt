@@ -1,4 +1,5 @@
 Version 0.4.2
+2021-02-17
 
 · Added replying to tweets
 · Added support for attaching videos when composing tweets

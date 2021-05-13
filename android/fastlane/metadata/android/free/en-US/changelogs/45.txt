@@ -1,3 +1,4 @@
 Version 0.5.5
+2021-04-18
 
 · Re-added legacy login for compatibility reasons

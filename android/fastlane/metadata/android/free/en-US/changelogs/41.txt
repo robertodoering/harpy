@@ -1,4 +1,5 @@
 Version 0.5.1
+2021-03-24
 
 · Added setting to change the target translation language
   · By default the system language will be used

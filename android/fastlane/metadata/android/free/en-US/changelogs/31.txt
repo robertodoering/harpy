@@ -1,4 +1,5 @@
 Version 0.4.0
+2021-02-01
 
 · Added tweet search
 · Moved user search to home drawer
