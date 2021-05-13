@@ -168,8 +168,8 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   @override
   Widget build(BuildContext context) {
     if (widget.model != null) {
-      return ChangeNotifierProvider<HarpyVideoPlayerModel?>.value(
-        value: widget.model,
+      return ChangeNotifierProvider<HarpyVideoPlayerModel>.value(
+        value: widget.model!,
         builder: _builder,
       );
     } else {
