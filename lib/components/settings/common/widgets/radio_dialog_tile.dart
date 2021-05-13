@@ -16,10 +16,12 @@ class RadioDialogTile<T> extends StatelessWidget {
     required this.titles,
     required this.values,
     required this.onChanged,
+    this.trailing,
     this.subtitle,
     this.subtitles,
     this.enabled = true,
     this.denseRadioTiles = false,
+    this.popOnOpen = false,
   })  : assert(titles.length == values.length),
         assert(subtitles == null || subtitles.length == titles.length);
 
@@ -47,15 +49,23 @@ class RadioDialogTile<T> extends StatelessWidget {
   /// The values for the radio list tile entries.
   final List<T> values;
 
-  final ValueChanged<T?> onChanged;
+  final ValueChanged<T?>? onChanged;
   final bool enabled;
   final bool denseRadioTiles;
+  final Widget? trailing;
+  final bool popOnOpen;
 
-  Widget _buildDialog() {
+  Widget _buildDialog(BuildContext context) {
     return HarpyDialog(
       animationType: DialogAnimationType.slide,
       title: Text(description),
       contentPadding: const EdgeInsets.symmetric(vertical: 24),
+      actions: [
+        DialogAction<void>(
+          text: 'back',
+          onTap: Navigator.of(context).pop,
+        ),
+      ],
       content: Column(
         children: <Widget>[
           for (int i = 0; i < values.length; i++)
@@ -69,7 +79,7 @@ class RadioDialogTile<T> extends StatelessWidget {
               onChanged: (value) async {
                 unawaited(HapticFeedback.lightImpact());
                 await app<HarpyNavigator>().state!.maybePop();
-                onChanged.call(value);
+                onChanged?.call(value);
               },
             )
         ],
@@ -84,10 +94,14 @@ class RadioDialogTile<T> extends StatelessWidget {
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle!) : null,
       enabled: enabled,
+      trailing: trailing,
       onTap: () {
+        if (popOnOpen) {
+          Navigator.of(context).pop();
+        }
         showDialog<int>(
           context: context,
-          builder: (_) => _buildDialog(),
+          builder: _buildDialog,
         );
       },
     );

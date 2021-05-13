@@ -33,7 +33,7 @@ class ComposeTweetTrends extends StatelessWidget {
             selectionRegExp: hashtagStartRegex,
             onSearch: (hashtag) {
               if (state is TrendsInitial) {
-                bloc.add(const FindTrendsEvent.global());
+                bloc.add(const FindTrendsEvent());
               }
             },
             child: child,

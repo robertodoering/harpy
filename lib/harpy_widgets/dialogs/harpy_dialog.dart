@@ -134,18 +134,13 @@ class _HarpyDialogState extends State<HarpyDialog> {
     return Flexible(
       child: Scrollbar(
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              if (widget.content != null)
-                DefaultTextStyle(
-                  style: textTheme.subtitle2!,
-                  textAlign: TextAlign.center,
-                  child: Padding(
-                    padding: widget.contentPadding,
-                    child: widget.content,
-                  ),
-                ),
-            ],
+          child: DefaultTextStyle(
+            style: textTheme.subtitle2!,
+            textAlign: TextAlign.center,
+            child: Padding(
+              padding: widget.contentPadding,
+              child: widget.content,
+            ),
           ),
         ),
       ),
@@ -191,6 +186,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
       child: Dialog(
         insetAnimationDuration: kShortAnimationDuration,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.hardEdge,
         child: SizedBox(
           key: _dialogSizeKey,
           child: Column(
@@ -219,12 +215,14 @@ class _HarpyDialogState extends State<HarpyDialog> {
 /// Either [text] or [icon] must not be `null`.
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
+    Key? key,
     this.result,
     this.onTap,
     this.text,
     this.icon,
     this.padding = const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-  }) : assert(text != null || icon != null);
+  })  : assert(text != null || icon != null),
+        super(key: key);
 
   final T? result;
   final VoidCallback? onTap;

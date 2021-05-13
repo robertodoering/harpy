@@ -1,6 +1,6 @@
 part of 'trends_bloc.dart';
 
-abstract class TrendsEvent extends Equatable {
+abstract class TrendsEvent {
   const TrendsEvent();
 
   Stream<TrendsState> applyAsync({
@@ -10,47 +10,59 @@ abstract class TrendsEvent extends Equatable {
 }
 
 class FindTrendsEvent extends TrendsEvent with HarpyLogger {
-  const FindTrendsEvent({
-    required this.woeid,
-  });
-
-  const FindTrendsEvent.global() : this(woeid: 1);
-
-  /// The Yahoo! Where On Earth ID of the location to return trending
-  /// information for. Global information is available by using 1 as the
-  /// `WOEID`.
-  final int woeid;
-
-  @override
-  List<Object> get props => <Object>[
-        woeid,
-      ];
+  const FindTrendsEvent();
 
   @override
   Stream<TrendsState> applyAsync({
     required TrendsState currentState,
     required TrendsBloc bloc,
   }) async* {
-    log.fine('finding trends for woeid: $woeid');
+    log.fine('finding trends');
 
-    yield const RequestingTrends();
+    final location = TrendsLocationData.fromPreferences();
+
+    yield RequestingTrends(location: location);
 
     final trends = await bloc.trendsService
-        .place(id: woeid)
+        .place(id: location.woeid)
         .handleError(silentErrorHandler);
 
-    if (trends != null && trends.isNotEmpty) {
+    if (trends != null && trends.isNotEmpty && trends.first.trends != null) {
       final sortedTrends = trends.first.trends!;
       sortedTrends.sort(
         (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
       );
 
       yield FoundTrendsState(
-        woeid: woeid,
+        woeid: 1,
         trends: sortedTrends,
+        location: location,
       );
     } else {
-      yield const FindTrendsFailure();
+      yield FindTrendsFailure(location: location);
+    }
+  }
+}
+
+class UpdateTrendsLocation extends TrendsEvent with HarpyLogger {
+  const UpdateTrendsLocation({
+    required this.location,
+  });
+
+  final TrendsLocationData location;
+
+  @override
+  Stream<TrendsState> applyAsync({
+    required TrendsState currentState,
+    required TrendsBloc bloc,
+  }) async* {
+    log.fine('updating trends location');
+
+    try {
+      bloc.trendsPreferences.trendsLocation = jsonEncode(location.toJson());
+      bloc.add(const FindTrendsEvent());
+    } catch (e, st) {
+      log.severe('unable to update trends location', e, st);
     }
   }
 }
