@@ -18,7 +18,7 @@ void defaultOnUserMentionTap(BuildContext context, UserMention userMention) {
   if (userMention.screenName != null) {
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: ModalRoute.of(context)!.settings,
-      screenName: userMention.screenName,
+      screenName: userMention.screenName!,
     );
   }
 }

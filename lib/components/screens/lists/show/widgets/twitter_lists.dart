@@ -147,7 +147,7 @@ class TwitterLists extends StatelessWidget {
           title: const Text('show members'),
           onTap: () {
             Navigator.of(context).pop();
-            app<HarpyNavigator>().pushListMemberScreen(list: list);
+            app<HarpyNavigator>().pushListMembersScreen(list: list);
           },
         )
       ],

@@ -65,7 +65,7 @@ class HarpyNavigator {
 
   /// Pushes a [UserProfileScreen] for the user with the [screenName].
   void pushUserProfile({
-    required String? screenName,
+    required String screenName,
     RouteSettings? currentRoute,
   }) {
     if (currentRoute?.name == UserProfileScreen.route) {
@@ -103,7 +103,7 @@ class HarpyNavigator {
   /// Pushes a [FollowingScreen] with the following users for the user with the
   /// [userId].
   void pushFollowingScreen({
-    required String? userId,
+    required String userId,
   }) {
     pushNamed(FollowingScreen.route, arguments: <String, dynamic>{
       'userId': userId,
@@ -113,7 +113,7 @@ class HarpyNavigator {
   /// Pushes a [FollowersScreen] with the followers for the user with the
   /// [userId].
   void pushFollowersScreen({
-    required String? userId,
+    required String userId,
   }) {
     pushNamed(FollowersScreen.route, arguments: <String, dynamic>{
       'userId': userId,
@@ -122,13 +122,14 @@ class HarpyNavigator {
 
   /// Pushes a [RepliesScreen] with the replies to the [tweet].
   void pushRepliesScreen({
-    required TweetData? tweet,
+    required TweetData tweet,
   }) {
     pushNamed(RepliesScreen.route, arguments: <String, dynamic>{
       'tweet': tweet,
     });
   }
 
+  /// Pushes a [TweetSearchScreen] with an optional [initialSearchQuery].
   void pushTweetSearchScreen({
     String? initialSearchQuery,
   }) {
@@ -137,6 +138,7 @@ class HarpyNavigator {
     });
   }
 
+  /// Pushes a [ComposeScreen] with an optional reply status or quoted tweet.
   void pushComposeScreen({
     TweetData? inReplyToStatus,
     TweetData? quotedTweet,
@@ -147,6 +149,13 @@ class HarpyNavigator {
     });
   }
 
+  /// Pushes a [ShowListsScreen].
+  ///
+  /// [userId] can be used to show the lists of a specified user. If `null`
+  /// the lists of the authenticated user will be shown.
+  ///
+  /// [onListSelected] is an optional callback that will be invoked on the
+  /// list tap. When `null` the list timeline screen will be navigated to.
   void pushShowListsScreen({
     String? userId,
     ValueChanged<TwitterListData>? onListSelected,
@@ -157,22 +166,25 @@ class HarpyNavigator {
     });
   }
 
+  /// Pushes a [ListTimelineScreen] that shows the tweets for the [list].
   void pushListTimelineScreen({
-    TwitterListData? list,
+    required TwitterListData list,
   }) {
     pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
       'list': list,
     });
   }
 
-  void pushListMemberScreen({
-    TwitterListData? list,
+  /// Pushes a [ListMembersScreen] that shows the members for the [list].
+  void pushListMembersScreen({
+    required TwitterListData list,
   }) {
     pushNamed(ListMembersScreen.route, arguments: <String, dynamic>{
       'list': list,
     });
   }
 
+  /// Pushes a [HomeTabCustomizationScreen].
   void pushHomeTabCustomizationScreen({
     required HomeTabModel model,
   }) {

@@ -12,14 +12,15 @@ class ListTimelineScreen extends StatelessWidget {
     required this.list,
   });
 
-  final TwitterListData? list;
+  final TwitterListData list;
 
   static const String route = 'list_timeline_screen';
 
   Widget _buildActionsButton(BuildContext context) {
     return CustomPopupMenuButton<void>(
       icon: const Icon(CupertinoIcons.ellipsis_vertical),
-      onSelected: (_) => app<HarpyNavigator>().pushListMemberScreen(list: list),
+      onSelected: (_) =>
+          app<HarpyNavigator>().pushListMembersScreen(list: list),
       itemBuilder: (context) {
         return <PopupMenuEntry<int>>[
           const HarpyPopupMenuItem<int>(
@@ -34,15 +35,15 @@ class ListTimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ListTimelineBloc>(
-      create: (_) => ListTimelineBloc(listId: list!.idStr),
+      create: (_) => ListTimelineBloc(listId: list.idStr),
       child: HarpyScaffold(
         body: ScrollDirectionListener(
           child: ScrollToStart(
             child: ListTimeline(
-              listId: list!.idStr,
+              listId: list.idStr,
               beginSlivers: <Widget>[
                 HarpySliverAppBar(
-                  title: list!.name,
+                  title: list.name,
                   floating: true,
                   actions: [
                     _buildActionsButton(context),
