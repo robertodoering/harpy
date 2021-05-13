@@ -1,0 +1,11 @@
+Version 0.6.1
+2021-05-16
+
+This update introduces more customization options for Harpy in the form of home screen customization.
+
+Most of the customization is only accessible in the pro version, which will become available with the 1.0 release in the near future!
+
+· Added location option for trends
+· Added member list for twitter lists (Thanks Nino :D)
+· Added first letter of list name as home tab icon (Thanks Mike!)
+· Minor style improvements
