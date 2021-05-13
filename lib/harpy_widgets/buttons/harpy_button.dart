@@ -34,7 +34,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   @override
   Widget build(BuildContext context) {
     return AnimatedScale(
-      scale: _tapDown ? .9 : 1,
+      scale: _tapDown ? .8 : 1,
       curve: Curves.easeOutCirc,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
