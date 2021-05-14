@@ -23,7 +23,6 @@ class SelectFindMethodContent extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 24),
             leading: const Icon(CupertinoIcons.location),
             title: const Text('locations near me'),
-            subtitle: const Text('requires location permissions'),
             onTap: onSelectNearLocation,
           ),
           ListTile(
