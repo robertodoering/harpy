@@ -1,5 +1,5 @@
 Version 0.6.1
-2021-05-16
+2021-05-15
 
 · Added location option for trends
 · Added member list for twitter lists (Thanks Nino :D)
