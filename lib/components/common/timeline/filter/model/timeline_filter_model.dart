@@ -6,17 +6,17 @@ import 'package:harpy/misc/misc.dart';
 class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
   TimelineFilterModel.home() : super(TimelineFilter.empty) {
     value = TimelineFilter.fromJsonString(
-      timelineFilterPreferences!.homeTimelineFilter,
+      timelineFilterPreferences.homeTimelineFilter,
     );
   }
 
   TimelineFilterModel.user() : super(TimelineFilter.empty) {
     value = TimelineFilter.fromJsonString(
-      timelineFilterPreferences!.userTimelineFilter,
+      timelineFilterPreferences.userTimelineFilter,
     );
   }
 
-  final TimelineFilterPreferences? timelineFilterPreferences =
+  final TimelineFilterPreferences timelineFilterPreferences =
       app<TimelineFilterPreferences>();
 
   bool get hasFilter => value != TimelineFilter.empty;
