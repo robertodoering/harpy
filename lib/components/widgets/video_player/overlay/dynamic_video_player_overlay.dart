@@ -218,6 +218,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                 onDoubleTap: _onRewind,
               ),
             ),
+            Expanded(child: GestureDetector(onTap: _onVideoTap)),
             Expanded(
               child: GestureDetector(
                 onTap: _onVideoTap,
