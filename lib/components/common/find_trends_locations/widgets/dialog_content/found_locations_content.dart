@@ -44,11 +44,26 @@ class FoundLocationsContent extends StatelessWidget {
         ],
       );
     } else if (state.hasServiceDisabled) {
-      return const Text('location service is unavailable');
+      return Padding(
+        padding: DefaultEdgeInsets.all(),
+        child: const Center(
+          child: Text('location service is unavailable'),
+        ),
+      );
     } else if (state.hasPermissionsDenied) {
-      return const Text('location permissions have been denied');
+      return Padding(
+        padding: DefaultEdgeInsets.all(),
+        child: const Center(
+          child: Text('location permissions have been denied'),
+        ),
+      );
     } else {
-      return const Text('no locations found');
+      return Padding(
+        padding: DefaultEdgeInsets.all(),
+        child: const Center(
+          child: Text('no locations found'),
+        ),
+      );
     }
   }
 }
