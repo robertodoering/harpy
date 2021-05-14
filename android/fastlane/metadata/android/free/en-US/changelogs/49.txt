@@ -4,5 +4,7 @@ Version 0.6.1
 · Added location option for trends
 · Added member list for twitter lists (Thanks Nino :D)
 · Added first letter of list name as home tab icon (Thanks Mike!)
-· Fix tapping on the video overlay opens tweets
+· Added option to crop tweet images
+  · By default tweets with single images won't be cropped anymore
+· Fixed tapping on the video overlay opens tweets
 · Minor style improvements
