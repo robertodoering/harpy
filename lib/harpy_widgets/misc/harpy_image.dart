@@ -47,6 +47,7 @@ class HarpyImage extends StatelessWidget {
       image: imageUrl,
       imageErrorBuilder: _buildErrorWidget,
       placeholder: kTransparentImage,
+      fadeInDuration: const Duration(milliseconds: 400),
       fit: fit,
       width: width,
       height: height,
