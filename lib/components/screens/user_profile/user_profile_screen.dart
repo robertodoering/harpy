@@ -6,6 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Builds the screen for a user profile.
 ///
 /// The [screenName] is used to load the user data upon creation.
+// todo: refactor user profile screen & bloc
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     required this.screenName,
@@ -24,23 +25,22 @@ class UserProfileScreen extends StatelessWidget {
         builder: (context, state) {
           final bloc = UserProfileBloc.of(context);
 
-          Widget child;
-
           if (state is LoadingUserState) {
-            child = const UserProfileLoading();
+            return const UserProfileLoading();
           } else if (state is InitializedUserState ||
               state is TranslatingDescriptionState) {
-            child = UserProfileContent(bloc: bloc);
+            return FadeAnimation(
+              duration: kShortAnimationDuration,
+              curve: Curves.easeInOut,
+              child: UserProfileContent(bloc: bloc),
+            );
           } else {
-            child = UserProfileError(bloc, screenName: screenName);
+            return FadeAnimation(
+              duration: kShortAnimationDuration,
+              curve: Curves.easeInOut,
+              child: UserProfileError(bloc, screenName: screenName),
+            );
           }
-
-          return AnimatedSwitcher(
-            duration: kShortAnimationDuration,
-            switchInCurve: Curves.easeInOut,
-            switchOutCurve: Curves.easeInOut,
-            child: child,
-          );
         },
       ),
     );
