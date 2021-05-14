@@ -46,6 +46,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         leading: const SizedBox(),
         title: Row(
           children: <Widget>[
+            const SizedBox(width: 16),
             Icon(CupertinoIcons.info, color: theme.accentColor),
             const SizedBox(width: 16),
             Expanded(
@@ -56,6 +57,15 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
             ),
           ],
         ),
+      ),
+      SwitchListTile(
+        secondary: const Icon(CupertinoIcons.crop),
+        title: const Text('Crop tweet image'),
+        subtitle: const Text('reduces height'),
+        value: mediaPreferences.cropImage,
+        onChanged: (value) {
+          setState(() => mediaPreferences.cropImage = value);
+        },
       ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,

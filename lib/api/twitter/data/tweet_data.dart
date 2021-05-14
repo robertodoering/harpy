@@ -183,6 +183,7 @@ class TweetData {
   bool get hasMedia => hasImages || hasVideo || hasGif;
 
   bool get hasImages => images?.isNotEmpty == true;
+  bool get hasSingleImage => hasImages && images!.length == 1;
   bool get hasVideo => video != null;
   bool get hasGif => gif != null;
 

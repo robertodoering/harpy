@@ -15,15 +15,29 @@ class TweetMediaLayout extends StatelessWidget {
   const TweetMediaLayout({
     required this.child,
     this.isImage = true,
+    this.uncroppedImage = false,
     this.videoAspectRatio,
   }) : assert(isImage && videoAspectRatio == null ||
             !isImage && videoAspectRatio != null);
 
   final Widget child;
   final bool isImage;
+  final bool uncroppedImage;
   final double? videoAspectRatio;
 
-  Widget _buildImage(double maxHeight) {
+  /// Constrains the height of the child to be 80% of the viewport.
+  ///
+  /// This is used to prevent cropping the image in the timeline.
+  Widget _buildMaxHeightImage(double maxHeight) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: child,
+    );
+  }
+
+  /// Constrains the height of the child to be 50% of the viewport in a 16 /
+  /// 9 aspect ratio.
+  Widget _buildImages(double maxHeight) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: maxHeight),
       child: AspectRatio(
@@ -65,7 +79,11 @@ class TweetMediaLayout extends StatelessWidget {
     final maxHeight = mediaQuery.size.height / 2;
 
     if (isImage) {
-      return _buildImage(maxHeight);
+      if (uncroppedImage) {
+        return _buildMaxHeightImage(mediaQuery.size.height * .8);
+      } else {
+        return _buildImages(maxHeight);
+      }
     } else {
       return _buildVideo(maxHeight);
     }
