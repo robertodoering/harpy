@@ -14,7 +14,7 @@ class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
   }
 
   /// The tweet to load the replies for.
-  final TweetData originalTweet;
+  final TweetData? originalTweet;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
   final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
@@ -25,13 +25,13 @@ class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
   ///
   /// If the original tweet is a reply itself, this will be the first tweet that
   /// is not a reply and has its replies as the [TweetData.replies].
-  TweetData tweet;
+  TweetData? tweet;
 
   /// The list of replies for this [tweet].
   List<TweetData> replies = <TweetData>[];
 
   /// The last tweet search response.
-  RepliesResult lastResult;
+  RepliesResult? lastResult;
 
   /// Whether all replies have been loaded.
   bool get allRepliesLoaded => lastResult?.lastPage ?? true;

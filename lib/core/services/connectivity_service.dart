@@ -8,7 +8,7 @@ class ConnectivityService {
   ConnectivityService() {
     _log.fine('listening to connectivity status changes');
 
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    Connectivity().onConnectivityChanged.listen((result) {
       _log.fine('connectivity state changed to $result');
       _lastResult = result;
     });
@@ -18,7 +18,7 @@ class ConnectivityService {
 
   /// The last [ConnectivityResult] that is updated automatically whenever the
   /// state changes.
-  ConnectivityResult _lastResult;
+  ConnectivityResult? _lastResult;
 
   /// `true` if the device is currently connected to a cellular network.
   bool get mobile => _lastResult == ConnectivityResult.mobile;

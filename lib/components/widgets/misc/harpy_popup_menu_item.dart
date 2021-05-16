@@ -12,19 +12,19 @@ class HarpyPopupMenuItem<T> extends PopupMenuEntry<T> {
   });
 
   /// The value that will be returned by [showMenu] if this entry is selected.
-  final T value;
+  final T? value;
 
   /// Whether the user is permitted to select this item.
   final bool enabled;
 
-  final Widget icon;
-  final Widget text;
+  final Widget? icon;
+  final Widget? text;
 
   @override
   double get height => kMinInteractiveDimension;
 
   @override
-  bool represents(T value) => value == this.value;
+  bool represents(T? value) => value == this.value;
 
   @override
   HarpyPopupMenuItemState<T, HarpyPopupMenuItem<T>> createState() =>

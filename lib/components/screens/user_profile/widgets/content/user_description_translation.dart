@@ -12,17 +12,17 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomAnimatedSize(
       child: AnimatedOpacity(
-        opacity: bloc.user.hasDescriptionTranslation ? 1 : 0,
+        opacity: bloc.user!.hasDescriptionTranslation ? 1 : 0,
         duration: kShortAnimationDuration,
         curve: Curves.easeOut,
-        child: bloc.user.hasDescriptionTranslation &&
-                !bloc.user.descriptionTranslation.unchanged
+        child: bloc.user!.hasDescriptionTranslation &&
+                !bloc.user!.descriptionTranslation!.unchanged
             ? Padding(
                 padding: EdgeInsets.only(top: defaultSmallPaddingValue),
                 child: TranslatedText(
-                  bloc.user.descriptionTranslation.text,
-                  language: bloc.user.descriptionTranslation.language,
-                  entities: bloc.user.userDescriptionEntities,
+                  bloc.user!.descriptionTranslation!.text,
+                  language: bloc.user!.descriptionTranslation!.language,
+                  entities: bloc.user!.userDescriptionEntities,
                 ),
               )
             : const SizedBox(width: double.infinity),

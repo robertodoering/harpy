@@ -10,17 +10,38 @@ extension TrendsExtension on TrendsState {
   bool get loadingFailed => this is FindTrendsFailure;
 
   bool get hasTrends =>
-      this is FoundTrendsState &&
-      (this as FoundTrendsState).trends != null &&
-      (this as FoundTrendsState).trends.isNotEmpty;
+      this is FoundTrendsState && (this as FoundTrendsState).trends.isNotEmpty;
 
-  List<Trend> get trends => this is FoundTrendsState
-      ? (this as FoundTrendsState).trends ?? <Trend>[]
-      : <Trend>[];
+  List<Trend> get trends =>
+      this is FoundTrendsState ? (this as FoundTrendsState).trends : <Trend>[];
 
   List<Trend> get hashtags => this is FoundTrendsState
       ? (this as FoundTrendsState).hashtags
       : <Trend>[];
+
+  TrendsLocationData? get location {
+    if (this is RequestingTrends) {
+      return (this as RequestingTrends).location;
+    } else if (this is FoundTrendsState) {
+      return (this as FoundTrendsState).location;
+    } else if (this is FindTrendsFailure) {
+      return (this as FindTrendsFailure).location;
+    } else {
+      return null;
+    }
+  }
+
+  String get trendLocationName {
+    if (location != null) {
+      if (location == TrendsLocationData.worldwide) {
+        return 'worldwide trends';
+      } else {
+        return 'trends in ${location!.name}';
+      }
+    } else {
+      return 'trends';
+    }
+  }
 }
 
 class TrendsInitial extends TrendsState {
@@ -31,34 +52,52 @@ class TrendsInitial extends TrendsState {
 }
 
 class RequestingTrends extends TrendsState {
-  const RequestingTrends();
+  const RequestingTrends({
+    required this.location,
+  });
+
+  /// The location used to request trends with.
+  final TrendsLocationData location;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        location,
+      ];
 }
 
 class FoundTrendsState extends TrendsState {
   FoundTrendsState({
-    @required this.woeid,
-    @required this.trends,
-  }) : hashtags =
-            trends.where((Trend trend) => trend.name.startsWith('#')).toList();
+    required this.woeid,
+    required this.trends,
+    required this.location,
+  }) : hashtags = trends.where((trend) => trend.name!.startsWith('#')).toList();
 
   final int woeid;
   final List<Trend> trends;
   final List<Trend> hashtags;
+
+  /// The location used to request trends with.
+  final TrendsLocationData location;
 
   @override
   List<Object> get props => <Object>[
         woeid,
         trends,
         hashtags,
+        location,
       ];
 }
 
 class FindTrendsFailure extends TrendsState {
-  const FindTrendsFailure();
+  const FindTrendsFailure({
+    required this.location,
+  });
+
+  /// The location used to request trends with.
+  final TrendsLocationData location;
 
   @override
-  List<Object> get props => <Object>[];
+  List<Object> get props => <Object>[
+        location,
+      ];
 }

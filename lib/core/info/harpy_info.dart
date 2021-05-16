@@ -11,12 +11,12 @@ class HarpyInfo {
   static final Logger _log = Logger('HarpyInfo');
 
   /// Application metadata.
-  PackageInfo packageInfo;
+  PackageInfo? packageInfo;
 
   /// Information about the device this app is running on.
   ///
   /// Since only android is supported, [IosDeviceInfo] is not used.
-  AndroidDeviceInfo deviceInfo;
+  AndroidDeviceInfo? deviceInfo;
 
   Future<void> initialize() async {
     await Future.wait<void>(<Future<void>>[

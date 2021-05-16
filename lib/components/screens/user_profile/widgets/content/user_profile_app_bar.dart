@@ -39,7 +39,7 @@ class UserProfileAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback onTap) {
+  Widget _buildButton(ThemeData theme, Widget icon, VoidCallback? onTap) {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: HarpyButton.raised(
@@ -54,12 +54,12 @@ class UserProfileAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final UserProfileBloc profileBloc = context.watch<UserProfileBloc>();
-    final TimelineFilterModel model = context.watch<TimelineFilterModel>();
-    final UserTimelineBloc timelineBloc = context.watch<UserTimelineBloc>();
+    final theme = Theme.of(context);
+    final profileBloc = context.watch<UserProfileBloc>();
+    final model = context.watch<TimelineFilterModel>();
+    final timelineBloc = context.watch<UserTimelineBloc>();
 
-    final bool _hasUser = profileBloc.state is InitializedUserState ||
+    final _hasUser = profileBloc.state is InitializedUserState ||
         profileBloc.state is TranslatingDescriptionState;
 
     return HarpySliverAppBar(

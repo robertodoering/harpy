@@ -9,9 +9,9 @@ class TweetSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final TweetSearchBloc bloc = context.watch<TweetSearchBloc>();
-    final TweetSearchState state = bloc.state;
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = context.watch<TweetSearchBloc>();
+    final state = bloc.state;
 
     return ScrollDirectionListener(
       child: ScrollToStart(

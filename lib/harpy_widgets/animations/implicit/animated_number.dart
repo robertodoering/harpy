@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 /// displays when the formatted number changes.
 class AnimatedNumber extends StatefulWidget {
   AnimatedNumber({
-    @required this.number,
-    NumberFormat numberFormat,
+    required this.number,
+    NumberFormat? numberFormat,
   }) : numberFormat = numberFormat ?? NumberFormat.compact();
 
-  final int number;
+  final int? number;
   final NumberFormat numberFormat;
 
   @override
@@ -21,14 +21,14 @@ class AnimatedNumber extends StatefulWidget {
 
 class _AnimatedNumberState extends State<AnimatedNumber>
     with SingleTickerProviderStateMixin<AnimatedNumber> {
-  AnimationController _controller;
-  Animation<Offset> _oldSlideAnimation;
-  Animation<Offset> _newSlideAnimation;
-  Animation<double> _opacityAnimation;
+  late AnimationController _controller;
+  late Animation<Offset> _oldSlideAnimation;
+  late Animation<Offset> _newSlideAnimation;
+  late Animation<double> _opacityAnimation;
 
-  int _oldNumber;
-  String _oldNumberStr;
-  String _newNumberStr;
+  int? _oldNumber;
+  String? _oldNumberStr;
+  String? _newNumberStr;
 
   @override
   void initState() {
@@ -81,11 +81,11 @@ class _AnimatedNumberState extends State<AnimatedNumber>
   @override
   Widget build(BuildContext context) {
     if (_oldNumberStr != _newNumberStr) {
-      int changedIndex = 0;
+      var changedIndex = 0;
 
-      if (_oldNumberStr.length == _newNumberStr.length) {
-        for (int i = 0; i < _oldNumberStr.length; i++) {
-          if (_oldNumberStr[i] != _newNumberStr[i]) {
+      if (_oldNumberStr!.length == _newNumberStr!.length) {
+        for (var i = 0; i < _oldNumberStr!.length; i++) {
+          if (_oldNumberStr![i] != _newNumberStr![i]) {
             changedIndex = i;
             break;
           }
@@ -93,33 +93,32 @@ class _AnimatedNumberState extends State<AnimatedNumber>
       }
 
       // the unchanged part of the text
-      final String unchanged = _newNumberStr.substring(0, changedIndex);
+      final unchanged = _newNumberStr!.substring(0, changedIndex);
 
       // the old text that should animate out
-      final String oldText = _oldNumberStr.substring(
+      final oldText = _oldNumberStr!.substring(
         changedIndex,
-        _oldNumberStr.length,
+        _oldNumberStr!.length,
       );
 
       // the new text that should animate in
-      final String newText = _newNumberStr.substring(
+      final newText = _newNumberStr!.substring(
         changedIndex,
-        _newNumberStr.length,
+        _newNumberStr!.length,
       );
 
       return ClipRect(
         child: AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext context, Widget child) => Row(
+          builder: (_, __) => Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(unchanged),
               Stack(
                 fit: StackFit.passthrough,
                 children: <Widget>[
                   FractionalTranslation(
-                    translation: _oldNumber > widget.number
+                    translation: _oldNumber! > widget.number!
                         ? _newSlideAnimation.value
                         : -_newSlideAnimation.value,
                     child: Text(newText),
@@ -127,7 +126,7 @@ class _AnimatedNumberState extends State<AnimatedNumber>
                   Opacity(
                     opacity: _opacityAnimation.value,
                     child: FractionalTranslation(
-                      translation: _oldNumber > widget.number
+                      translation: _oldNumber! > widget.number!
                           ? _oldSlideAnimation.value
                           : -_oldSlideAnimation.value,
                       child: Text(oldText),
@@ -140,7 +139,7 @@ class _AnimatedNumberState extends State<AnimatedNumber>
         ),
       );
     } else {
-      return Text(_newNumberStr);
+      return Text(_newNumberStr!);
     }
   }
 }

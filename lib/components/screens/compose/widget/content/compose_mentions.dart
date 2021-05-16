@@ -9,30 +9,31 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 // todo: should not show exact match in suggestions list
 class ComposeTweetMentions extends StatelessWidget {
   const ComposeTweetMentions({
-    @required this.controller,
+    required this.controller,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
+    final authBloc = AuthenticationBloc.of(context);
 
     return BlocProvider<MentionSuggestionsBloc>(
-      create: (BuildContext context) => MentionSuggestionsBloc(
-        authenticatedUser: authBloc.authenticatedUser,
+      create: (context) => MentionSuggestionsBloc(
+        authenticatedUser: authBloc.authenticatedUser!,
       ),
-      child: MentionSuggestions(controller: controller),
+      child:
+          MentionSuggestions(controller: controller as ComposeTextController?),
     );
   }
 }
 
 class MentionSuggestions extends StatelessWidget {
   const MentionSuggestions({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   Widget _buildHeader(ThemeData theme, String text) {
     return Padding(
@@ -41,7 +42,7 @@ class MentionSuggestions extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: theme.textTheme.subtitle1.copyWith(
+        style: theme.textTheme.subtitle1!.copyWith(
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -61,11 +62,11 @@ class MentionSuggestions extends StatelessWidget {
             TextSpan(text: '@${user.screenName}'),
           ],
         ),
-        style: theme.textTheme.bodyText1.copyWith(
+        style: theme.textTheme.bodyText1!.copyWith(
           color: theme.accentColor,
         ),
       ),
-      onTap: () => controller.replaceSelection(
+      onTap: () => controller!.replaceSelection(
         '@${user.screenName} ',
       ),
     );
@@ -94,11 +95,11 @@ class MentionSuggestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final MentionSuggestionsBloc bloc = context.watch<MentionSuggestionsBloc>();
-    final MentionSuggestionsState state = bloc.state;
+    final theme = Theme.of(context);
+    final bloc = context.watch<MentionSuggestionsBloc>();
+    final state = bloc.state;
 
-    Widget child;
+    Widget? child;
 
     if (state.hasSuggestions || bloc.loadingSearchedUsers) {
       child = ListView(
@@ -116,7 +117,7 @@ class MentionSuggestions extends StatelessWidget {
     return ComposeTweetSuggestions(
       controller: controller,
       selectionRegExp: mentionStartRegex,
-      onSearch: (String query) => bloc.add(FindMentionsEvent(query)),
+      onSearch: (query) => bloc.add(FindMentionsEvent(query)),
       child: child,
     );
   }

@@ -5,9 +5,9 @@ import 'package:harpy/components/components.dart';
 
 class FilterSwitchTile extends StatelessWidget {
   const FilterSwitchTile({
-    @required this.text,
-    @required this.value,
-    @required this.onChanged,
+    required this.text,
+    required this.value,
+    required this.onChanged,
     this.enabled = true,
   });
 
@@ -18,7 +18,7 @@ class FilterSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return SwitchListTile(
       value: value,
@@ -29,9 +29,9 @@ class FilterSwitchTile extends StatelessWidget {
       ),
       title: Text(
         text,
-        style: theme.textTheme.subtitle1.copyWith(
+        style: theme.textTheme.subtitle1!.copyWith(
           fontSize: 14,
-          color: enabled && onChanged != null ? null : theme.disabledColor,
+          color: enabled ? null : theme.disabledColor,
         ),
       ),
       onChanged: enabled ? onChanged : null,

@@ -9,9 +9,9 @@ class AccentColorSelection extends StatelessWidget {
   final CustomThemeBloc bloc;
 
   Future<void> _changeAccentColor(BuildContext context, ThemeData theme) async {
-    final Color newColor = await showDialog<Color>(
+    final newColor = await showDialog<Color>(
       context: context,
-      builder: (BuildContext context) => ColorPickerDialog(
+      builder: (_) => ColorPickerDialog(
         color: theme.accentColor,
       ),
     );
@@ -40,8 +40,8 @@ class AccentColorSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TextTheme textTheme = theme.textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return CustomAnimatedSize(
       alignment: Alignment.topCenter,

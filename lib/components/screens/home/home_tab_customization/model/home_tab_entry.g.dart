@@ -8,11 +8,11 @@ part of 'home_tab_entry.dart';
 
 HomeTabEntry _$HomeTabEntryFromJson(Map<String, dynamic> json) {
   return HomeTabEntry(
-    id: json['id'] as String,
-    type: json['type'] as String,
-    icon: json['icon'] as String,
-    name: json['name'] as String,
-    visible: json['visible'] as bool,
+    id: json['id'] as String?,
+    type: json['type'] as String?,
+    icon: json['icon'] as String?,
+    name: json['name'] as String?,
+    visible: json['visible'] as bool?,
   );
 }
 

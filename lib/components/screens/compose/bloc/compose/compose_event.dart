@@ -4,8 +4,8 @@ abstract class ComposeEvent extends Equatable {
   const ComposeEvent();
 
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   });
 }
 
@@ -19,56 +19,54 @@ class PickTweetMediaEvent extends ComposeEvent {
 
   bool _pickedImages(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.image,
+      (file) => findMediaType(file.path) == MediaType.image,
     );
   }
 
   bool _pickedGif(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.gif,
+      (file) => findMediaType(file.path) == MediaType.gif,
     );
   }
 
-  void _addGif(ComposeBloc bloc, FilePickerResult result) {
+  void _addGif(ComposeBloc? bloc, FilePickerResult result) {
     if (result.files.length > 1) {
       app<MessageService>().show('only one gif can be attached');
     } else {
-      bloc.add(AddGifEvent(file: result.files.first));
+      bloc!.add(AddGifEvent(file: result.files.first));
     }
   }
 
-  void _addVideo(ComposeBloc bloc, FilePickerResult result) {
+  void _addVideo(ComposeBloc? bloc, FilePickerResult result) {
     if (result.files.length > 1) {
-      if (result.files.length > 1) {
-        app<MessageService>().show('only one video can be attached');
-      }
+      app<MessageService>().show('only one video can be attached');
     } else {
-      bloc.add(AddVideoEvent(file: result.files.first));
+      bloc!.add(AddVideoEvent(file: result.files.first));
     }
   }
 
   bool _pickedVideo(FilePickerResult result) {
     return result.files.every(
-      (PlatformFile file) => findMediaType(file.path) == MediaType.video,
+      (file) => findMediaType(file.path) == MediaType.video,
     );
   }
 
   @override
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   }) async* {
-    final FilePickerResult result = await FilePicker.platform
+    final result = await FilePicker.platform
         .pickFiles(
           type: FileType.media,
           allowMultiple: true,
         )
         // ignore exception
-        .catchError((dynamic e) {});
+        .handleError((dynamic e, st) {});
 
     if (result != null && result.files.isNotEmpty) {
       if (_pickedImages(result)) {
-        bloc.add(AddImagesEvent(files: result.files));
+        bloc!.add(AddImagesEvent(files: result.files));
       } else if (_pickedGif(result)) {
         _addGif(bloc, result);
       } else if (_pickedVideo(result)) {
@@ -83,7 +81,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
 class AddImagesEvent extends ComposeEvent {
   const AddImagesEvent({
-    @required this.files,
+    required this.files,
   });
 
   final List<PlatformFile> files;
@@ -93,14 +91,14 @@ class AddImagesEvent extends ComposeEvent {
         files,
       ];
 
-  void _removeDuplicates(List<PlatformFile> newFiles, ComposeState state) {
-    for (PlatformFile image in List<PlatformFile>.from(newFiles)) {
-      if (state.media.any(
-        (PlatformFile existingImage) => existingImage.path == image.path,
+  void _removeDuplicates(List<PlatformFile> newFiles, ComposeState? state) {
+    for (final image in List<PlatformFile>.from(newFiles)) {
+      if (state!.media.any(
+        (existingImage) => existingImage.path == image.path,
       )) {
         // remove the duplicate image
         newFiles.removeWhere(
-          (PlatformFile duplicate) => duplicate.path == image.path,
+          (duplicate) => duplicate.path == image.path,
         );
       }
     }
@@ -108,12 +106,12 @@ class AddImagesEvent extends ComposeEvent {
 
   @override
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   }) async* {
-    List<PlatformFile> newFiles = List<PlatformFile>.from(files);
+    var newFiles = List<PlatformFile>.from(files);
 
-    if (currentState.hasImages) {
+    if (currentState!.hasImages) {
       _removeDuplicates(newFiles, currentState);
 
       newFiles = List<PlatformFile>.from(currentState.media)..addAll(newFiles);
@@ -133,7 +131,7 @@ class AddImagesEvent extends ComposeEvent {
 
 class AddGifEvent extends ComposeEvent {
   const AddGifEvent({
-    @required this.file,
+    required this.file,
   });
 
   final PlatformFile file;
@@ -145,8 +143,8 @@ class AddGifEvent extends ComposeEvent {
 
   @override
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   }) async* {
     yield ComposeState(
       media: <PlatformFile>[file],
@@ -157,7 +155,7 @@ class AddGifEvent extends ComposeEvent {
 
 class AddVideoEvent extends ComposeEvent {
   const AddVideoEvent({
-    @required this.file,
+    required this.file,
   });
 
   final PlatformFile file;
@@ -169,8 +167,8 @@ class AddVideoEvent extends ComposeEvent {
 
   @override
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   }) async* {
     yield ComposeState(
       media: <PlatformFile>[file],
@@ -187,8 +185,8 @@ class ClearComposedTweet extends ComposeEvent {
 
   @override
   Stream<ComposeState> applyAsync({
-    ComposeState currentState,
-    ComposeBloc bloc,
+    ComposeState? currentState,
+    ComposeBloc? bloc,
   }) async* {
     yield const ComposeState();
   }

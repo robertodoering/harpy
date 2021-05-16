@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HomeTabEntryIcon extends StatelessWidget {
   const HomeTabEntryIcon(
     this.iconName, {
-    this.size,
+    this.size = HarpyTab.tabIconSize,
   });
 
   /// The name that matches the icon data in [iconNameMap].
-  final String iconName;
+  ///
+  /// If the [iconName] is one character long, the text is used as the icon
+  /// instead.
+  final String? iconName;
 
   final double size;
 
@@ -71,9 +75,25 @@ class HomeTabEntryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      iconNameMap[iconName] ?? CupertinoIcons.circle,
-      size: size,
-    );
+    if (iconName?.length == 1) {
+      return Container(
+        width: size,
+        height: size,
+        alignment: Alignment.center,
+        child: Text(
+          iconName!,
+          style: TextStyle(
+            fontSize: size,
+            height: 1,
+          ),
+          overflow: TextOverflow.clip,
+        ),
+      );
+    } else {
+      return Icon(
+        iconNameMap[iconName] ?? CupertinoIcons.circle,
+        size: size,
+      );
+    }
   }
 }

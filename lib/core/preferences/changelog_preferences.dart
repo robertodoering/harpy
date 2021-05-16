@@ -21,7 +21,7 @@ class ChangelogPreferences {
 
   /// Sets the [lastShownVersion] to the current version.
   void setToCurrentShownVersion() {
-    lastShownVersion = int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0;
+    lastShownVersion = int.tryParse(harpyInfo.packageInfo!.buildNumber) ?? 0;
   }
 
   /// Whether the changelog dialog should show.
@@ -34,5 +34,6 @@ class ChangelogPreferences {
   bool get shouldShowChangelogDialog =>
       showChangelogDialog &&
       lastShownVersion != 0 &&
-      (int.tryParse(harpyInfo.packageInfo.buildNumber) ?? 0) > lastShownVersion;
+      (int.tryParse(harpyInfo.packageInfo!.buildNumber) ?? 0) >
+          lastShownVersion;
 }

@@ -23,23 +23,23 @@ class HarpySliverAppBar extends StatelessWidget {
     this.bottom,
   });
 
-  final String title;
-  final Widget titleWidget;
-  final List<Widget> actions;
-  final Widget leading;
+  final String? title;
+  final Widget? titleWidget;
+  final List<Widget>? actions;
+  final Widget? leading;
   final bool showIcon;
   final bool floating;
   final bool stretch;
   final bool pinned;
   final bool snap;
-  final Widget background;
-  final PreferredSizeWidget bottom;
+  final Widget? background;
+  final PreferredSizeWidget? bottom;
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (titleWidget != null) Expanded(child: titleWidget),
+        if (titleWidget != null) Expanded(child: titleWidget!),
         if (title != null)
           Flexible(
             child: Text(
@@ -78,14 +78,14 @@ class HarpySliverAppBar extends StatelessWidget {
     MediaQueryData mediaQuery,
     double minExtend,
   ) {
-    Color end;
+    Color? end;
 
     if (harpyTheme.backgroundColors.length == 1) {
       end = harpyTheme.backgroundColors.first;
     } else {
       // min extend / mediaQuery.size * count of background colors minus the
       // first one
-      final double t = minExtend /
+      final t = minExtend /
           mediaQuery.size.height *
           (harpyTheme.backgroundColors.length - 1);
 
@@ -100,7 +100,7 @@ class HarpySliverAppBar extends StatelessWidget {
       gradient: LinearGradient(
         colors: <Color>[
           harpyTheme.backgroundColors.first.withOpacity(.8),
-          end.withOpacity(.8),
+          end!.withOpacity(.8),
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -108,10 +108,10 @@ class HarpySliverAppBar extends StatelessWidget {
     );
   }
 
-  Widget _leading(BuildContext context) {
+  Widget? _leading(BuildContext context) {
     if (leading != null) {
       return leading;
-    } else if (Scaffold.of(context)?.hasDrawer ?? false) {
+    } else if (Scaffold.of(context).hasDrawer) {
       return const DrawerButton();
     } else if (Navigator.of(context).canPop()) {
       return const HarpyBackButton();
@@ -122,17 +122,17 @@ class HarpySliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
-    final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     // whether a flexible space widget should be built for the sliver app bar
-    final bool hasFlexibleSpace = background != null;
+    final hasFlexibleSpace = background != null;
 
-    final double expandedHeight = min(200, mediaQuery.size.height * .25);
+    final expandedHeight = min<double>(200, mediaQuery.size.height * .25);
 
     return CustomSliverAppBar(
-      decorationBuilder: (double minExtend, double maxExtend) =>
+      decorationBuilder: (minExtend, maxExtend) =>
           _buildDecoration(harpyTheme, mediaQuery, minExtend),
       elevation: 0,
       centerTitle: true,

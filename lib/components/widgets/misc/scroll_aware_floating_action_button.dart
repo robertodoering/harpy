@@ -7,12 +7,12 @@ import 'package:harpy/components/components.dart';
 /// A [ScrollDirection] needs to be built above this widget.
 class ScrollAwareFloatingActionButton extends StatefulWidget {
   const ScrollAwareFloatingActionButton({
-    @required this.floatingActionButton,
-    @required this.child,
+    required this.floatingActionButton,
+    required this.child,
     this.direction = VerticalDirection.up,
-  }) : assert(direction != null);
+  });
 
-  final Widget floatingActionButton;
+  final Widget? floatingActionButton;
   final Widget child;
 
   /// The scroll direction the floating action button should appear on.
@@ -31,10 +31,9 @@ class _ScrollAwareFloatingActionButtonState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final ScrollDirection scrollDirection = ScrollDirection.of(context);
-    assert(scrollDirection != null);
+    final scrollDirection = ScrollDirection.of(context)!;
 
-    _show = ScrollDirection.of(context)?.direction == widget.direction;
+    _show = scrollDirection.direction == widget.direction;
   }
 
   @override

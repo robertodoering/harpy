@@ -5,14 +5,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// currently selected [HarpyTab].
 class HarpySliverTabView extends StatelessWidget {
   const HarpySliverTabView({
-    @required this.tabs,
-    @required this.children,
+    required this.tabs,
+    required this.children,
     this.headerSlivers,
   }) : assert(tabs.length == children.length);
 
   final List<Widget> tabs;
   final List<Widget> children;
-  final List<Widget> headerSlivers;
+  final List<Widget>? headerSlivers;
 
   @override
   Widget build(BuildContext context) {

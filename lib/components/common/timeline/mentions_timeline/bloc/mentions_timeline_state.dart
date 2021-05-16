@@ -48,8 +48,8 @@ class MentionsTimelineLoading extends MentionsTimelineState {
 /// The state when the mentions were successfully requested.
 class MentionsTimelineResult extends MentionsTimelineState {
   const MentionsTimelineResult({
-    @required this.tweets,
-    @required this.newMentions,
+    required this.tweets,
+    required this.newMentions,
   });
 
   final List<TweetData> tweets;

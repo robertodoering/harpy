@@ -19,7 +19,9 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override
@@ -52,7 +54,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   }
 
   void _editCustomTheme(ThemeBloc themeBloc, int themeId, int index) {
-    final HarpyTheme editingHarpyTheme = themeBloc.customThemes[index];
+    final editingHarpyTheme = themeBloc.customThemes[index];
 
     // update system ui when editing theme
     themeBloc.add(UpdateSystemUi(theme: editingHarpyTheme));
@@ -97,10 +99,10 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
-    final int selectedThemeId = themeBloc.selectedThemeId;
+    final themeBloc = ThemeBloc.of(context);
+    final selectedThemeId = themeBloc.selectedThemeId;
 
-    final List<Widget> children = <Widget>[
+    final children = <Widget>[
       ..._buildPredefinedThemes(themeBloc, selectedThemeId),
       ..._buildCustomThemes(
         themeBloc,
@@ -115,9 +117,8 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
       body: ListView.separated(
         padding: DefaultEdgeInsets.all(),
         itemCount: children.length,
-        itemBuilder: (BuildContext context, int index) => children[index],
-        separatorBuilder: (BuildContext context, int index) =>
-            defaultSmallVerticalSpacer,
+        itemBuilder: (_, index) => children[index],
+        separatorBuilder: (_, __) => defaultSmallVerticalSpacer,
       ),
     );
   }

@@ -67,22 +67,22 @@ class TweetSearchFilter extends Equatable {
       ];
 
   TweetSearchFilter copyWith({
-    String tweetAuthor,
-    String replyingTo,
-    int resultType,
-    List<String> includesPhrases,
-    List<String> includesHashtags,
-    List<String> includesMentions,
-    List<String> includesUrls,
-    bool includesRetweets,
-    bool includesImages,
-    bool includesVideo,
-    List<String> excludesPhrases,
-    List<String> excludesHashtags,
-    List<String> excludesMentions,
-    bool excludesRetweets,
-    bool excludesImages,
-    bool excludesVideo,
+    String? tweetAuthor,
+    String? replyingTo,
+    int? resultType,
+    List<String>? includesPhrases,
+    List<String>? includesHashtags,
+    List<String>? includesMentions,
+    List<String>? includesUrls,
+    bool? includesRetweets,
+    bool? includesImages,
+    bool? includesVideo,
+    List<String>? excludesPhrases,
+    List<String>? excludesHashtags,
+    List<String>? excludesMentions,
+    bool? excludesRetweets,
+    bool? excludesImages,
+    bool? excludesVideo,
   }) {
     return TweetSearchFilter(
       tweetAuthor: tweetAuthor ?? this.tweetAuthor,
@@ -105,7 +105,7 @@ class TweetSearchFilter extends Equatable {
   }
 
   String buildQuery() {
-    final List<String> filters = <String>[];
+    final filters = <String>[];
 
     if (tweetAuthor.isNotEmpty) {
       filters.add('from:$tweetAuthor');
@@ -116,7 +116,7 @@ class TweetSearchFilter extends Equatable {
     }
 
     // phrases & keywords
-    for (String phrase in includesPhrases) {
+    for (final phrase in includesPhrases) {
       if (phrase.contains(' ')) {
         // multi word phrase
         filters.add('"$phrase"');
@@ -126,7 +126,7 @@ class TweetSearchFilter extends Equatable {
       }
     }
 
-    for (String phrase in excludesPhrases) {
+    for (final phrase in excludesPhrases) {
       if (phrase.contains(' ')) {
         // multi word phrase
         filters.add('-"$phrase"');
@@ -143,7 +143,7 @@ class TweetSearchFilter extends Equatable {
     excludesMentions.forEach(filters.add);
 
     // urls
-    for (String url in includesUrls) {
+    for (final url in includesUrls) {
       filters.add('url:$url');
     }
 

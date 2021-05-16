@@ -9,8 +9,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// new custom themes.
 class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({
-    @required this.themeData,
-    @required this.themeId,
+    required this.themeData,
+    required this.themeId,
   });
 
   /// The [HarpyThemeData] for the theme customization.
@@ -19,14 +19,14 @@ class CustomThemeScreen extends StatelessWidget {
   /// currently active theme.
   /// When editing an existing custom theme, this will be set to the custom
   /// theme data.
-  final HarpyThemeData themeData;
+  final HarpyThemeData? themeData;
 
   /// The id of this custom theme, starting at 10 for the first custom theme.
   ///
   /// When creating a new custom theme, this will be the next available id.
   /// When editing an existing custom theme, this will be the id of the custom
   /// theme.
-  final int themeId;
+  final int? themeId;
 
   static const String route = 'custom_theme_screen';
 
@@ -35,14 +35,14 @@ class CustomThemeScreen extends StatelessWidget {
     ThemeBloc themeBloc,
     CustomThemeBloc customThemeBloc,
   ) async {
-    bool pop = true;
+    var pop = true;
 
     if (customThemeBloc.canSaveTheme) {
       // ask to discard changes before exiting customization
 
-      final bool discard = await showDialog<bool>(
+      final discard = await showDialog<bool>(
         context: context,
-        builder: (BuildContext context) => const HarpyDialog(
+        builder: (context) => const HarpyDialog(
           title: Text('discard changes?'),
           actions: <DialogAction<bool>>[
             DialogAction<bool>(
@@ -107,23 +107,23 @@ class CustomThemeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
+    final themeBloc = ThemeBloc.of(context);
 
     return BlocProvider<CustomThemeBloc>(
-      create: (BuildContext context) => CustomThemeBloc(
-        themeData: HarpyThemeData.from(themeData),
+      create: (_) => CustomThemeBloc(
+        themeData: HarpyThemeData.from(themeData!),
         themeId: themeId,
         themeBloc: themeBloc,
       ),
       child: BlocBuilder<CustomThemeBloc, CustomThemeState>(
-        builder: (BuildContext context, CustomThemeState state) {
-          final CustomThemeBloc customThemeBloc = CustomThemeBloc.of(context);
-          final HarpyTheme harpyTheme = customThemeBloc.harpyTheme;
+        builder: (context, state) {
+          final customThemeBloc = CustomThemeBloc.of(context);
+          final harpyTheme = customThemeBloc.harpyTheme;
 
           return Theme(
             data: harpyTheme.data,
             child: Builder(
-              builder: (BuildContext context) => WillPopScope(
+              builder: (context) => WillPopScope(
                 onWillPop: () => _onWillPop(
                   context,
                   themeBloc,

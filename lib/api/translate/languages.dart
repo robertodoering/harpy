@@ -4,7 +4,6 @@ Map<String, String> translateLanguages = <String, String>{
 /* Amharic */ 'am': 'Amharic',
 /* Arabic */ 'ar': 'Arabic',
 /* Armenian */ 'hy': 'Armenian',
-/* Automatic */ 'auto': 'Automatic',
 /* Azerbaijani */ 'az': 'Azerbaijani',
 /* Basque */ 'eu': 'Basque',
 /* Belarusian */ 'be': 'Belarusian',

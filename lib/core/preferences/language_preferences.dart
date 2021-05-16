@@ -10,7 +10,8 @@ class LanguagePreferences {
   /// Returns an empty string when the default value should be used.
   /// By default the translate language code will derive from the locale of the
   /// app.
-  String get translateLanguage => harpyPrefs.getString('translateLanguage', '');
+  String get translateLanguage =>
+      harpyPrefs.getString('translateLanguage', '')!;
   set translateLanguage(String value) =>
       harpyPrefs.setString('translateLanguage', value);
 

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
 
@@ -12,7 +13,7 @@ class TrendsList extends StatelessWidget {
   final NumberFormat _numberFormat = NumberFormat.compact();
 
   Widget _buildTrendTile(Trend trend) {
-    Widget subtitle;
+    Widget? subtitle;
 
     if (trend.tweetVolume != null) {
       subtitle = Text('${_numberFormat.format(trend.tweetVolume)} tweets');
@@ -22,8 +23,9 @@ class TrendsList extends StatelessWidget {
       key: ValueKey<int>(trend.hashCode),
       child: Card(
         child: ListTile(
+          shape: kDefaultShapeBorder,
           leading: const Icon(FeatherIcons.trendingUp, size: 18),
-          title: Text(trend.name),
+          title: Text(trend.name!),
           subtitle: subtitle,
           onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
             initialSearchQuery: trend.name,
@@ -37,14 +39,14 @@ class TrendsList extends StatelessWidget {
     if (index.isEven) {
       return _buildTrendTile(trends[index ~/ 2]);
     } else {
-      return defaultSmallVerticalSpacer;
+      return defaultVerticalSpacer;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final TrendsBloc bloc = context.watch<TrendsBloc>();
-    final TrendsState state = bloc.state;
+    final bloc = context.watch<TrendsBloc>();
+    final state = bloc.state;
 
     if (state.isLoading) {
       return const SliverBoxLoadingIndicator();
@@ -61,7 +63,7 @@ class TrendsList extends StatelessWidget {
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, int index) => _itemBuilder(index, state.trends),
+            (_, index) => _itemBuilder(index, state.trends),
             childCount: state.trends.length * 2 - 1,
           ),
         ),

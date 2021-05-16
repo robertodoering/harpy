@@ -6,7 +6,7 @@ const Duration kDefaultBounceInDuration = Duration(seconds: 1);
 /// A simple animation that 'bounces in' its [child].
 class BounceInAnimation extends StatefulWidget {
   const BounceInAnimation({
-    @required this.child,
+    required this.child,
     this.duration = kDefaultBounceInDuration,
     this.delay = Duration.zero,
   });
@@ -21,8 +21,8 @@ class BounceInAnimation extends StatefulWidget {
 
 class _BounceInAnimationState extends State<BounceInAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _BounceInAnimationState extends State<BounceInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => Transform.scale(
+      builder: (_, __) => Transform.scale(
         scale: _animation.value,
         child: widget.child,
       ),

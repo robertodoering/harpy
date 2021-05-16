@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 
 class FlareIcon extends StatelessWidget {
   const FlareIcon({
-    @required this.fileName,
+    required this.fileName,
     this.size = 18,
     this.sizeDifference = 0,
     this.offset = Offset.zero,
     this.animation,
     this.color,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   /// An animated favorite icon.
   const FlareIcon.favorite({
-    @required String animation,
+    required String animation,
     double size = 18,
-    Color color,
-    Key key,
+    Color? color,
+    Key? key,
   }) : this(
           fileName: '$_path/favorite.flr',
           size: size,
@@ -70,10 +70,10 @@ class FlareIcon extends StatelessWidget {
   final Offset offset;
 
   /// The name of the animation that should play.
-  final String animation;
+  final String? animation;
 
   /// Overrides the icon color when set.
-  final Color color;
+  final Color? color;
 
   double get _calculatedSize => size + sizeDifference;
 

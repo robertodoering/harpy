@@ -6,20 +6,20 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class RepliesScreen extends StatelessWidget {
   const RepliesScreen({
-    @required this.tweet,
+    required this.tweet,
   });
 
-  final TweetData tweet;
+  final TweetData? tweet;
 
   static const String route = 'replies';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RepliesBloc>(
-      create: (BuildContext context) => RepliesBloc(tweet),
+      create: (context) => RepliesBloc(tweet),
       child: BlocBuilder<RepliesBloc, RepliesState>(
-        builder: (BuildContext context, RepliesState state) {
-          final RepliesBloc bloc = RepliesBloc.of(context);
+        builder: (context, state) {
+          final bloc = RepliesBloc.of(context);
 
           Widget child;
 

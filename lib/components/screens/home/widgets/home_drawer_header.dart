@@ -15,7 +15,6 @@ class HomeDrawerHeader extends StatelessWidget {
         screenName: user.screenName,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // circle avatar
           HarpyCircleAvatar(
@@ -49,7 +48,7 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserData user = AuthenticationBloc.of(context).authenticatedUser;
+    final user = AuthenticationBloc.of(context).authenticatedUser!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),

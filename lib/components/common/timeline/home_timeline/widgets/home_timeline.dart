@@ -16,7 +16,7 @@ class HomeTimeline extends StatefulWidget {
 }
 
 class _HomeTimelineState extends State<HomeTimeline> {
-  ScrollController _controller;
+  ScrollController? _controller;
 
   @override
   void didChangeDependencies() {
@@ -26,16 +26,16 @@ class _HomeTimelineState extends State<HomeTimeline> {
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     if (state is HomeTimelineResult &&
         state.initialResults &&
         state.newTweets > 0) {
       // scroll to the end after the list has been built
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller.jumpTo(
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        _controller!.jumpTo(
           // + height to make sure we reach the end
-          _controller.position.maxScrollExtent + mediaQuery.size.height / 2,
+          _controller!.position.maxScrollExtent + mediaQuery.size.height / 2,
         );
       });
     }
@@ -58,9 +58,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final HomeTimelineBloc bloc = context.watch<HomeTimelineBloc>();
-    final HomeTimelineState state = bloc.state;
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = context.watch<HomeTimelineBloc>();
+    final state = bloc.state;
 
     return BlocListener<HomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
@@ -69,7 +69,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
         child: CustomRefreshIndicator(
           offset: mediaQuery.padding.top - 8,
           onRefresh: () async {
-            ScrollDirection.of(context).reset();
+            ScrollDirection.of(context)!.reset!();
             bloc.add(const RefreshHomeTimeline());
             await bloc.refreshCompleter.future;
           },
@@ -88,7 +88,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 state.timelineTweets,
                 key: const PageStorageKey<String>('home_timeline'),
                 controller: _controller,
-                tweetBuilder: (TweetData tweet) => _tweetBuilder(state, tweet),
+                tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
                 enableScroll: state.enableScroll,
                 endSlivers: <Widget>[
                   if (state.showInitialLoading)

@@ -5,8 +5,8 @@ import 'package:harpy/components/components.dart';
 
 class ComposeParentTweetCard extends StatelessWidget {
   const ComposeParentTweetCard({
-    @required this.parentTweet,
-    @required this.text,
+    required this.parentTweet,
+    required this.text,
   });
 
   final TweetData parentTweet;
@@ -38,7 +38,7 @@ class ComposeParentTweetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,

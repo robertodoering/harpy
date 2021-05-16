@@ -22,7 +22,7 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
     } else {
       return HarpyTab(
         icon: HomeTabEntryIcon(entry.icon),
-        text: entry.hasName ? Text(entry.name) : null,
+        text: entry.hasName ? Text(entry.name!) : null,
         cardColor: cardColor,
       );
     }
@@ -30,11 +30,11 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HomeTabModel model = context.watch<HomeTabModel>();
+    final theme = Theme.of(context);
+    final model = context.watch<HomeTabModel>();
 
-    final Color cardColor =
-        Color.lerp(theme.cardTheme.color, theme.scaffoldBackgroundColor, .9)
+    final cardColor =
+        Color.lerp(theme.cardTheme.color, theme.scaffoldBackgroundColor, .9)!
             .withOpacity(.8);
 
     return Container(

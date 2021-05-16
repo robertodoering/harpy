@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class ComposeTweetCard extends StatefulWidget {
   const ComposeTweetCard();
@@ -13,18 +15,23 @@ class ComposeTweetCard extends StatefulWidget {
 }
 
 class _ComposeTweetCardState extends State<ComposeTweetCard> {
-  ComposeTextController _controller;
-  FocusNode _focusNode;
-  int _keyboardListenerId;
+  late FocusNode _focusNode;
+  late StreamSubscription<bool> _keyboardListener;
+  ComposeTextController? _controller;
 
   @override
   void initState() {
     super.initState();
 
     _focusNode = FocusNode();
-    _keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
-      onHide: _focusNode.unfocus,
-    );
+
+    _keyboardListener = KeyboardVisibilityController().onChange.listen((
+      visible,
+    ) {
+      if (!visible) {
+        _focusNode.unfocus();
+      }
+    });
   }
 
   @override
@@ -43,9 +50,8 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
   void dispose() {
     super.dispose();
 
-    KeyboardVisibilityNotification().removeListener(_keyboardListenerId);
-
-    _controller.dispose();
+    _keyboardListener.cancel();
+    _controller?.dispose();
     _focusNode.dispose();
   }
 
@@ -60,8 +66,8 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authBloc = AuthenticationBloc.of(context);
-    final ComposeBloc bloc = context.watch<ComposeBloc>();
+    final authBloc = AuthenticationBloc.of(context);
+    final bloc = context.watch<ComposeBloc>();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_focusNode),
@@ -77,7 +83,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
                     Padding(
                       padding: DefaultEdgeInsets.all(),
                       child: TweetAuthorRow(
-                        authBloc.authenticatedUser,
+                        authBloc.authenticatedUser!,
                         enableUserTap: false,
                       ),
                     ),

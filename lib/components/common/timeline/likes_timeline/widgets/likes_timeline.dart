@@ -7,9 +7,9 @@ class LikesTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final LikesTimelineBloc bloc = context.watch<LikesTimelineBloc>();
-    final LikesTimelineState state = bloc.state;
+    final mediaQuery = MediaQuery.of(context);
+    final bloc = context.watch<LikesTimelineBloc>();
+    final state = bloc.state;
 
     return ScrollToStart(
       child: LoadMoreListener(

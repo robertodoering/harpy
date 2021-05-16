@@ -15,10 +15,10 @@ abstract class AuthenticationEvent {
     (bloc.twitterApi.client as TwitterClient)
       ..consumerKey = twitterConsumerKey
       ..consumerSecret = twitterConsumerSecret
-      ..token = bloc.twitterAuthSession.token ?? ''
-      ..secret = bloc.twitterAuthSession.tokenSecret ?? '';
+      ..token = bloc.twitterAuthSession!.token
+      ..secret = bloc.twitterAuthSession!.tokenSecret;
 
-    final bool initialized = await initializeAuthenticatedUser(bloc);
+    final initialized = await initializeAuthenticatedUser(bloc);
 
     if (initialized) {
       app<AnalyticsService>().logLogin();
@@ -32,24 +32,23 @@ abstract class AuthenticationEvent {
   ///
   /// Returns `true` if the user was able to be initialized.
   Future<bool> initializeAuthenticatedUser(AuthenticationBloc bloc) async {
-    final String userId = bloc.twitterAuthSession.userId;
+    final userId = bloc.twitterAuthSession!.userId;
 
     dynamic error;
 
     bloc.authenticatedUser = await bloc.twitterApi.userService
         .usersShow(userId: userId)
-        .then((User user) => UserData.fromUser(user))
-        .catchError((dynamic e) {
+        .then((user) => UserData.fromUser(user))
+        .handleError((dynamic e, st) {
       error = e;
-      silentErrorHandler(e);
-      return null;
+      silentErrorHandler(e, st);
     });
 
     if (error is TimeoutException || error is SocketException) {
       // unable to authenticate user, allow to retry in case of temporary
       // network error
-      final bool retry = await showDialog<bool>(
-        context: app<HarpyNavigator>().state.context,
+      final retry = await showDialog<bool>(
+        context: app<HarpyNavigator>().state!.context,
         builder: (_) => const HarpyDialog(
           title: Text('login'),
           content: Text('unable to initialize authenticated user'),
@@ -75,7 +74,7 @@ abstract class AuthenticationEvent {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = userId;
 
-      final int selectedThemeId = app<ThemePreferences>().selectedTheme;
+      final selectedThemeId = app<ThemePreferences>().selectedTheme;
 
       // initialize the custom themes for this user
       bloc.themeBloc.loadCustomThemes();
@@ -96,34 +95,33 @@ abstract class AuthenticationEvent {
   /// data.
   Future<void> onLogout(AuthenticationBloc bloc) async {
     // logout
-    final TwitterClient client = bloc.twitterApi.client;
+    final client = bloc.twitterApi.client as TwitterClient;
 
-    if (client.token != null &&
-        client.token.isNotEmpty &&
-        client.secret != null &&
-        client.secret.isNotEmpty) {
-      client
-          .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
-          .catchError(silentErrorHandler);
+    if (client.token.isNotEmpty && client.secret.isNotEmpty) {
+      unawaited(
+        client
+            .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
+            .handleError(silentErrorHandler),
+      );
     }
 
     // wait until navigation changed to clear user information to avoid
     // rebuilding the home screen without an authenticated user and therefore
     // causing unexpected errors
-    Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
+    unawaited(Future<void>.delayed(const Duration(milliseconds: 400)).then((_) {
       bloc.twitterAuthSession = null;
       bloc.authPreferences.clearAuth();
 
       bloc.authenticatedUser = null;
-    });
+    }));
 
     // reset the theme to the default theme
     bloc.themeBloc.add(const ChangeThemeEvent(id: 0));
   }
 
   Stream<AuthenticationState> applyAsync({
-    AuthenticationState currentState,
-    AuthenticationBloc bloc,
+    required AuthenticationState currentState,
+    required AuthenticationBloc bloc,
   });
 }
 
@@ -142,8 +140,8 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
 
   @override
   Stream<AuthenticationState> applyAsync({
-    AuthenticationState currentState,
-    AuthenticationBloc bloc,
+    required AuthenticationState currentState,
+    required AuthenticationBloc bloc,
   }) async* {
     if (hasTwitterConfig) {
       bloc.twitterWebviewAuth = TwitterAuth(
@@ -151,17 +149,12 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
         consumerSecret: twitterConsumerSecret,
       );
 
-      bloc.twitterLegacyAuth = TwitterLogin(
-        consumerKey: twitterConsumerKey,
-        consumerSecret: twitterConsumerSecret,
-      );
-
       // init active twitter session
-      final String token = bloc.authPreferences.userToken;
-      final String secret = bloc.authPreferences.userSecret;
-      final String userId = bloc.authPreferences.userId;
+      final token = bloc.authPreferences.userToken;
+      final secret = bloc.authPreferences.userSecret;
+      final userId = bloc.authPreferences.userId;
 
-      if (token != null && secret != null && userId != null) {
+      if (token.isNotEmpty || secret.isNotEmpty || userId.isNotEmpty) {
         bloc.twitterAuthSession = TwitterAuthSession(
           token: token,
           tokenSecret: secret,
@@ -199,17 +192,14 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
 
 /// Used to authenticate a user.
 class LoginEvent extends AuthenticationEvent {
-  const LoginEvent({
-    @required this.webview,
-  });
+  const LoginEvent();
 
   /// Whether to use a webview to login.
-  final bool webview;
 
   static final Logger _log = Logger('LoginEvent');
 
-  Future<Uri> _webviewNavigation(TwitterLoginWebview webview) async {
-    return app<HarpyNavigator>().state.push<Uri>(
+  Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
+    return app<HarpyNavigator>().state!.push<Uri>(
           CupertinoPageRoute<Uri>(
             builder: (_) => HarpyScaffold(
               title: 'login',
@@ -224,48 +214,35 @@ class LoginEvent extends AuthenticationEvent {
   Future<TwitterAuthResult> _authenticateWithWebview(
     AuthenticationBloc bloc,
   ) async {
-    return bloc.twitterWebviewAuth.authenticateWithTwitter(
+    return bloc.twitterWebviewAuth!.authenticateWithTwitter(
       webviewNavigation: _webviewNavigation,
       onExternalNavigation: launchUrl,
     );
   }
 
-  Future<TwitterAuthResult> _authenticateWithLegacy(
-    AuthenticationBloc bloc,
-  ) async {
-    return bloc.twitterLegacyAuth
-        .authorize()
-        .then(_mapLegacyToAuthResult)
-        .catchError(
-          (dynamic e) => TwitterAuthResult(status: TwitterAuthStatus.failure),
-        );
-  }
-
   @override
   Stream<AuthenticationState> applyAsync({
-    AuthenticationState currentState,
-    AuthenticationBloc bloc,
+    required AuthenticationState currentState,
+    required AuthenticationBloc bloc,
   }) async* {
     _log.fine('logging in');
 
     assert(
-      bloc.twitterWebviewAuth != null && bloc.twitterLegacyAuth != null,
+      bloc.twitterWebviewAuth != null,
       'A twitter api key is required for authentication',
     );
 
     yield AwaitingAuthenticationState();
 
-    final TwitterAuthResult result = webview
-        ? await _authenticateWithWebview(bloc)
-        : await _authenticateWithLegacy(bloc);
+    final result = await _authenticateWithWebview(bloc);
 
     switch (result.status) {
       case TwitterAuthStatus.success:
         _log.fine('successfully logged in');
         bloc.twitterAuthSession = result.session;
-        bloc.authPreferences.userToken = result.session.token;
-        bloc.authPreferences.userSecret = result.session.tokenSecret;
-        bloc.authPreferences.userId = result.session.userId;
+        bloc.authPreferences.userToken = result.session!.token;
+        bloc.authPreferences.userSecret = result.session!.tokenSecret;
+        bloc.authPreferences.userId = result.session!.userId;
 
         if (await onLogin(bloc)) {
           // successfully initialized the login
@@ -327,8 +304,8 @@ class LogoutEvent extends AuthenticationEvent {
 
   @override
   Stream<AuthenticationState> applyAsync({
-    AuthenticationState currentState,
-    AuthenticationBloc bloc,
+    required AuthenticationState currentState,
+    required AuthenticationBloc bloc,
   }) async* {
     _log.fine('logging out');
 
@@ -340,24 +317,4 @@ class LogoutEvent extends AuthenticationEvent {
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
   }
-}
-
-TwitterAuthResult _mapLegacyToAuthResult(TwitterLoginResult legacy) {
-  switch (legacy?.status ?? TwitterLoginStatus.error) {
-    case TwitterLoginStatus.loggedIn:
-      return TwitterAuthResult(
-        status: TwitterAuthStatus.success,
-        session: TwitterAuthSession(
-          tokenSecret: legacy.session.secret,
-          token: legacy.session.token,
-          userId: legacy.session.userId,
-        ),
-      );
-    case TwitterLoginStatus.cancelledByUser:
-      return TwitterAuthResult(status: TwitterAuthStatus.userCancelled);
-    case TwitterLoginStatus.error:
-      return TwitterAuthResult(status: TwitterAuthStatus.failure);
-  }
-
-  return TwitterAuthResult(status: TwitterAuthStatus.failure);
 }

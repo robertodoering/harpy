@@ -19,14 +19,14 @@ class PostTweetEvent extends Equatable with HarpyLogger {
   Stream<PostTweetState> _uploadMedia(PostTweetBloc bloc) async* {
     log.fine('uploading media');
 
-    final List<File> mediaFiles = <File>[];
+    final mediaFiles = <File>[];
 
     if (bloc.composeBloc.state.hasVideo) {
-      final PlatformFile videoSource = bloc.composeBloc.state.media.first;
+      final videoSource = bloc.composeBloc.state.media.first;
 
       yield const ConvertingTweetVideo();
 
-      final File output = await app<MediaVideoConverter>().convertVideo(
+      final output = await app<MediaVideoConverter>().convertVideo(
         videoSource.path,
         videoSource.extension,
       );
@@ -39,22 +39,22 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     } else {
       mediaFiles.addAll(
         bloc.composeBloc.state.media.map(
-          (PlatformFile platformFile) => File(platformFile.path),
+          (platformFile) => File(platformFile.path!),
         ),
       );
     }
 
-    final List<String> mediaIds = <String>[];
+    final mediaIds = <String>[];
 
     try {
-      for (int i = 0; i < mediaFiles.length; i++) {
+      for (var i = 0; i < mediaFiles.length; i++) {
         yield UploadingTweetMedia(
           index: i,
           multiple: mediaFiles.length > 1,
           type: bloc.composeBloc.state.type,
         );
 
-        final String mediaId = await bloc.mediaUploadService.upload(
+        final mediaId = await bloc.mediaUploadService!.upload(
           mediaFiles[i],
           type: bloc.composeBloc.state.type,
         );
@@ -77,11 +77,11 @@ class PostTweetEvent extends Equatable with HarpyLogger {
   }
 
   Stream<PostTweetState> applyAsync({
-    PostTweetState currentState,
-    PostTweetBloc bloc,
+    required PostTweetState currentState,
+    required PostTweetBloc bloc,
   }) async* {
     if (bloc.composeBloc.state.hasMedia) {
-      await for (PostTweetState state in _uploadMedia(bloc)) {
+      await for (final state in _uploadMedia(bloc)) {
         yield state;
       }
     }
@@ -94,15 +94,15 @@ class PostTweetEvent extends Equatable with HarpyLogger {
 
     yield const PostingTweet();
 
-    List<String> mediaIds;
+    List<String>? mediaIds;
     if (bloc.state is TweetMediaSuccessfullyUploaded) {
       mediaIds = (bloc.state as TweetMediaSuccessfullyUploaded).mediaIds;
     }
 
     // additional info that will be displayed in the dialog (e.g. error message)
-    String additionalInfo;
+    String? additionalInfo;
 
-    final TweetData sentStatus = await bloc.tweetService
+    final sentStatus = await bloc.tweetService
         .update(
           status: text,
           mediaIds: mediaIds,
@@ -110,10 +110,10 @@ class PostTweetEvent extends Equatable with HarpyLogger {
           inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
           autoPopulateReplyMetadata: true,
         )
-        .then((Tweet tweet) => TweetData.fromTweet(tweet))
-        .catchError((dynamic error) {
+        .then((tweet) => TweetData.fromTweet(tweet))
+        .handleError((dynamic error, stackTrace) {
       if (error is Response) {
-        final String message = responseErrorMessage(error.body);
+        final message = responseErrorMessage(error.body);
         log.info(
           'handling error while sending status with message $message',
           error,

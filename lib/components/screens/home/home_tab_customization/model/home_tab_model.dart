@@ -12,15 +12,15 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     initialize();
   }
 
-  final HomeTabPreferences homeTabPreferences = app<HomeTabPreferences>();
+  final HomeTabPreferences? homeTabPreferences = app<HomeTabPreferences>();
 
   /// The entries that are visible in the home screen.
   List<HomeTabEntry> get visibleEntries =>
-      value.entries.where((HomeTabEntry entry) => entry.visible).toList();
+      value.entries.where((entry) => entry.visible!).toList();
 
   /// The entries that represent twitter lists in the home screen.
   List<HomeTabEntry> get listEntries =>
-      value.entries.where((HomeTabEntry entry) => entry.isListType).toList();
+      value.entries.where((entry) => entry.isListType).toList();
 
   bool get canHideMoreEntries => visibleEntries.length > 1;
 
@@ -33,7 +33,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       Harpy.isPro && listEntries.length < 10;
 
   void initialize() {
-    final String configurationJson = homeTabPreferences.homeTabConfiguration;
+    final configurationJson = homeTabPreferences!.homeTabConfiguration;
 
     if (configurationJson.isEmpty) {
       log.fine('no configuration exists');
@@ -43,14 +43,13 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       try {
         value = HomeTabConfiguration.fromJson(jsonDecode(configurationJson));
 
-        final int defaultTabsCount = value.entries
-            .where((HomeTabEntry entry) => entry.isDefaultType)
-            .length;
+        final defaultTabsCount =
+            value.entries.where((entry) => entry.isDefaultType).length;
 
         if (defaultTabsCount != defaultHomeTabEntries.length) {
           throw Exception('invalid default tabs count: $defaultTabsCount, '
               'expected ${defaultHomeTabEntries.length}');
-        } else if (value.entries.any((HomeTabEntry entry) => !entry.valid)) {
+        } else if (value.entries.any((entry) => !entry.valid)) {
           throw Exception('invalid entry in configuration');
         } else if (Harpy.isFree && listEntries.length > 1 ||
             Harpy.isPro && listEntries.length > 10) {
@@ -78,8 +77,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   void reorder(int oldIndex, int newIndex) {
     log.fine('reordering from $oldIndex to $newIndex');
 
-    final HomeTabEntry entry = value.entries[oldIndex];
-    final int index = oldIndex < newIndex ? newIndex - 1 : newIndex;
+    final entry = value.entries[oldIndex];
+    final index = oldIndex < newIndex ? newIndex - 1 : newIndex;
 
     value = value.removeEntry(oldIndex).addEntry(entry, index);
 
@@ -94,11 +93,11 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   void toggleVisible(int index) {
     log.fine('toggling visibility for $index');
 
-    final HomeTabEntry entry = value.entries[index];
+    final entry = value.entries[index];
 
     value = value.updateEntry(
       index,
-      entry.copyWith(visible: !entry.visible),
+      entry.copyWith(visible: !entry.visible!),
     );
 
     if (Harpy.isPro) {
@@ -125,13 +124,14 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
   /// Adds a twitter list as a home tab entry to the configuration.
   ///
-  /// When [icon] is `null`, a random icon will be selected.
+  /// When [icon] is `null`, the first letter of the name will be used as the
+  /// icon. If the name is `null`, a random icon will be used instead.
   ///
   /// Users of harpy free can only have one list at a time.
   /// Users of harpy pro can have up to 10 lists at a time.
   void addList({
-    @required TwitterListData list,
-    String icon,
+    required TwitterListData list,
+    String? icon,
   }) {
     if (!canAddMoreLists) {
       return;
@@ -145,10 +145,12 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     }
 
     // randomize the icon if it's null (but skip the default icons)
-    icon ??= (HomeTabEntryIcon.iconNameMap.keys.toList()
-          ..skip(4)
-          ..shuffle())
-        .first;
+    icon ??= list.name.isNotEmpty
+        ? list.name[0]
+        : (HomeTabEntryIcon.iconNameMap.keys.toList()
+              ..skip(4)
+              ..shuffle())
+            .first;
 
     value = value.addEntry(
       HomeTabEntry(
@@ -165,7 +167,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   /// Changes the icon of an entry in the configuration.
   ///
   /// Does nothing if [icon] is `null` or empty.
-  void changeIcon(int index, String icon) {
+  void changeIcon(int index, String? icon) {
     if (icon == null || icon.isEmpty) {
       // icon didn't change or user cancelled the icon change
       return;
@@ -173,7 +175,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     log.fine('changing icon to $icon');
 
-    HomeTabEntry entry = value.entries[index];
+    var entry = value.entries[index];
 
     if (Harpy.isFree && entry.isListType) {
       // reload configuration to dismiss unrelated changes before
@@ -212,7 +214,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   /// Encodes the configuration and saves it into the preferences.
   void _persistValue() {
     try {
-      homeTabPreferences.homeTabConfiguration = jsonEncode(value.toJson());
+      homeTabPreferences!.homeTabConfiguration = jsonEncode(value.toJson());
     } catch (e, st) {
       value = HomeTabConfiguration.defaultConfiguration;
       log.severe(

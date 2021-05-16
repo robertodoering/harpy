@@ -5,22 +5,22 @@ import 'package:harpy/components/components.dart';
 /// [userId].
 class FollowingScreen extends StatelessWidget {
   const FollowingScreen({
-    @required this.userId,
+    required this.userId,
   });
 
   /// The [userId] of the user whom to search the following users for.
-  final String userId;
+  final String? userId;
 
   static const String route = 'following';
 
   @override
   Widget build(BuildContext context) {
     return FollowingFollowersScreen<FollowingBloc>(
-      create: (BuildContext context) => FollowingBloc(userId: userId),
+      create: (_) => FollowingBloc(userId: userId),
       userId: userId,
       title: 'following',
       errorMessage: 'error loading following users',
-      loadUsers: (FollowingBloc bloc) => bloc.add(const LoadFollowingUsers()),
+      loadUsers: (bloc) => bloc.add(const LoadFollowingUsers()),
     );
   }
 }

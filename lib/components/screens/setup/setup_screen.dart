@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
@@ -21,10 +22,10 @@ class _SetupScreenState extends State<SetupScreen> {
       GlobalKey<SlideAnimationState>();
 
   Future<void> _continue(ThemeBloc themeBloc) async {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     // setup completed
-    await _slideSetupKey.currentState.forward();
+    await _slideSetupKey.currentState!.forward();
 
     app<SetupPreferences>().performedSetup = true;
     app<AnalyticsService>().logSetupTheme(themeBloc.harpyTheme.name);
@@ -45,7 +46,7 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget _buildUsername(AuthenticationBloc authenticationBloc) {
     return Center(
       child: PrimaryHeadline(
-        '${authenticationBloc.authenticatedUser.name}',
+        authenticationBloc.authenticatedUser!.name,
         delay: const Duration(milliseconds: 800),
       ),
     );
@@ -87,15 +88,14 @@ class _SetupScreenState extends State<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
-    final ThemeBloc themeBloc = ThemeBloc.of(context);
-    final AuthenticationBloc authenticationBloc =
-        AuthenticationBloc.of(context);
+    final themeBloc = ThemeBloc.of(context);
+    final authenticationBloc = AuthenticationBloc.of(context);
 
     // the max height constraints for the welcome text and the user name
-    final double maxTextHeight = mediaQuery.orientation == Orientation.portrait
+    final maxTextHeight = mediaQuery.orientation == Orientation.portrait
         ? mediaQuery.size.height / 4
         : mediaQuery.size.height / 6;
 
@@ -109,7 +109,6 @@ class _SetupScreenState extends State<SetupScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: mediaQuery.padding.top),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ConstrainedBox(

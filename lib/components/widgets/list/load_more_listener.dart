@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Listens to [ScrollNotifications] that bubble up the tree to call the
+/// Listens to scroll notifications that bubble up the tree to call the
 /// [onLoadMore] callback when reaching the end of the list.
 class LoadMoreListener extends StatefulWidget {
   const LoadMoreListener({
-    @required this.child,
+    required this.child,
     this.listen = true,
     this.onLoadMore,
   });
 
   final Widget child;
   final bool listen;
-  final AsyncCallback onLoadMore;
+  final AsyncCallback? onLoadMore;
 
   @override
   _LoadMoreListenerState createState() => _LoadMoreListenerState();
@@ -32,7 +32,7 @@ class _LoadMoreListenerState extends State<LoadMoreListener> {
       });
     }
 
-    await widget.onLoadMore();
+    await widget.onLoadMore!();
 
     if (mounted) {
       setState(() {

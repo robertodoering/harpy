@@ -12,41 +12,42 @@ class ChangelogParser with HarpyLogger {
   /// Returns the [ChangelogData] for the current version.
   ///
   /// Returns `null` if the current version has no changelog file.
-  Future<ChangelogData> current(BuildContext context) async {
-    return parse(context, app<HarpyInfo>().packageInfo.buildNumber);
+  Future<ChangelogData?> current(BuildContext? context) async {
+    return parse(context, app<HarpyInfo>().packageInfo!.buildNumber);
   }
 
   /// Returns the [ChangelogData] for the [versionCode].
   ///
   /// Returns `null` if no corresponding changelog file exists.
-  Future<ChangelogData> parse(BuildContext context, String versionCode) async {
+  Future<ChangelogData?> parse(
+      BuildContext? context, String versionCode) async {
     try {
-      final String changelogString = await rootBundle.loadString(
+      final changelogString = await rootBundle.loadString(
         _changelogString(versionCode),
         cache: false,
       );
 
-      final ChangelogData data = ChangelogData(versionCode: versionCode);
+      final data = ChangelogData(versionCode: versionCode);
 
-      ChangelogEntry entry;
+      ChangelogEntry? entry;
 
-      int entryStart = changelogString.indexOf(linePrefix);
+      var entryStart = changelogString.indexOf(linePrefix);
       if (entryStart == -1) {
         entryStart = 0;
       }
 
-      final String headerString = changelogString.substring(0, entryStart);
-      final List<String> headerLines = _cleanEmptyLines(
+      final headerString = changelogString.substring(0, entryStart);
+      final headerLines = _cleanEmptyLines(
         headerString.split('\n'),
       );
 
-      for (int i = 0; i < headerLines.length; i++) {
-        final String line = headerLines[i].trim();
+      for (var i = 0; i < headerLines.length; i++) {
+        final line = headerLines[i].trim();
 
         if (dateRegex.hasMatch(line)) {
           // localize date format
           data.headerLines.add(
-            DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
+            DateFormat.yMMMd(Localizations.localeOf(context!).languageCode)
                 .format(DateTime.parse(line)),
           );
         } else if (line.isNotEmpty || i != 0 || i != headerLines.length - 1) {
@@ -55,9 +56,9 @@ class ChangelogParser with HarpyLogger {
         }
       }
 
-      final String entryString = changelogString.substring(entryStart);
+      final entryString = changelogString.substring(entryStart);
 
-      for (String line in entryString.split('\n')) {
+      for (var line in entryString.split('\n')) {
         line = line.replaceFirst(linePrefix, '');
 
         if (line.trim().isEmpty) {
@@ -66,7 +67,7 @@ class ChangelogParser with HarpyLogger {
 
         if (line.startsWith(' ') && entry != null) {
           // additional information for the last line
-          entry?.additionalInfo?.add(line.trim());
+          entry.additionalInfo.add(line.trim());
         } else if (line.startsWith('Added') || line.startsWith('Improved')) {
           entry = _parseLine(line);
           data.additions.add(entry);
@@ -96,7 +97,7 @@ class ChangelogParser with HarpyLogger {
   }
 
   String _changelogString(String versionCode) {
-    const String flavor = Harpy.isFree ? 'free' : 'pro';
+    const flavor = Harpy.isFree ? 'free' : 'pro';
 
     return 'android/fastlane/metadata/android'
         '/$flavor/en-US/changelogs/$versionCode.txt';
@@ -113,10 +114,10 @@ class ChangelogParser with HarpyLogger {
   }
 
   List<String> _trimLeadingLines(List<String> lines) {
-    final List<String> cleaned = <String>[];
+    final cleaned = <String>[];
 
-    bool ignore = true;
-    for (String line in lines) {
+    var ignore = true;
+    for (final line in lines) {
       if (ignore && line.trim().isEmpty) {
         continue;
       }
@@ -136,7 +137,7 @@ class ChangelogData {
     this.versionCode,
   });
 
-  final String versionCode;
+  final String? versionCode;
 
   /// Optional information at the beginning of the changelog, including the
   /// name of the version ('Version x.y.z').
@@ -168,7 +169,7 @@ class ChangelogData {
 /// lines in [additionalInfo].
 class ChangelogEntry {
   ChangelogEntry({
-    @required this.line,
+    required this.line,
   });
 
   final String line;

@@ -15,37 +15,36 @@ void setupServices() {
     ..registerLazySingleton<TwitterApi>(
       () => TwitterApi(
         client: TwitterClient(
-          consumerKey: null,
-          consumerSecret: null,
-          token: null,
-          secret: null,
+          consumerKey: '',
+          consumerSecret: '',
+          token: '',
+          secret: '',
         ),
       ),
     )
-    ..registerLazySingleton<HarpyNavigator>(() => HarpyNavigator())
-    ..registerLazySingleton<HarpyInfo>(() => HarpyInfo())
-    ..registerLazySingleton<ChangelogParser>(() => ChangelogParser())
-    ..registerLazySingleton<MessageService>(() => MessageService())
-    ..registerLazySingleton<TranslationService>(() => TranslationService())
-    ..registerLazySingleton<ConnectivityService>(() => ConnectivityService())
-    ..registerLazySingleton<AnalyticsService>(() => AnalyticsService())
-    ..registerLazySingleton<DownloadService>(() => DownloadService())
-    ..registerLazySingleton<MediaUploadService>(() => MediaUploadService())
-    ..registerLazySingleton<MediaVideoConverter>(() => MediaVideoConverter())
+    ..registerLazySingleton(() => HarpyNavigator())
+    ..registerLazySingleton(() => HarpyInfo())
+    ..registerLazySingleton(() => ChangelogParser())
+    ..registerLazySingleton(() => MessageService())
+    ..registerLazySingleton(() => TranslationService())
+    ..registerLazySingleton(() => ConnectivityService())
+    ..registerLazySingleton(() => AnalyticsService())
+    ..registerLazySingleton(() => DownloadService())
+    ..registerLazySingleton(() => MediaUploadService())
+    ..registerLazySingleton(() => MediaVideoConverter())
 
     // preferences
-    ..registerLazySingleton<HarpyPreferences>(() => HarpyPreferences())
-    ..registerLazySingleton<AuthPreferences>(() => AuthPreferences())
-    ..registerLazySingleton<MediaPreferences>(() => MediaPreferences())
-    ..registerLazySingleton<ThemePreferences>(() => ThemePreferences())
-    ..registerLazySingleton<SetupPreferences>(() => SetupPreferences())
-    ..registerLazySingleton<LayoutPreferences>(() => LayoutPreferences())
-    ..registerLazySingleton<ChangelogPreferences>(() => ChangelogPreferences())
-    ..registerLazySingleton<GeneralPreferences>(() => GeneralPreferences())
-    ..registerLazySingleton<LanguagePreferences>(() => LanguagePreferences())
-    ..registerLazySingleton<TweetVisibilityPreferences>(
-        () => TweetVisibilityPreferences())
-    ..registerLazySingleton<TimelineFilterPreferences>(
-        () => TimelineFilterPreferences())
-    ..registerLazySingleton<HomeTabPreferences>(() => HomeTabPreferences());
+    ..registerLazySingleton(() => HarpyPreferences())
+    ..registerLazySingleton(() => AuthPreferences())
+    ..registerLazySingleton(() => MediaPreferences())
+    ..registerLazySingleton(() => ThemePreferences())
+    ..registerLazySingleton(() => SetupPreferences())
+    ..registerLazySingleton(() => LayoutPreferences())
+    ..registerLazySingleton(() => ChangelogPreferences())
+    ..registerLazySingleton(() => GeneralPreferences())
+    ..registerLazySingleton(() => LanguagePreferences())
+    ..registerLazySingleton(() => TweetVisibilityPreferences())
+    ..registerLazySingleton(() => TimelineFilterPreferences())
+    ..registerLazySingleton(() => HomeTabPreferences())
+    ..registerLazySingleton(() => TrendsPreferences());
 }

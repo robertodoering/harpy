@@ -3,27 +3,22 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 /// Builds the layout for a tweet media child and constrains it's height.
-///
-/// The max height of the tweet media is always constrained to half of the
-/// screen size.
-///
-/// The aspect ratio of the available space for images is always set to 16:9.
-///
-/// The aspect ratio of the available space for videos and gifs will be
-/// conserved if it does not take up more than the constrained height.
 class TweetMediaLayout extends StatelessWidget {
   const TweetMediaLayout({
-    @required this.child,
+    required this.child,
     this.isImage = true,
-    this.videoAspectRatio,
-  }) : assert(isImage && videoAspectRatio == null ||
-            !isImage && videoAspectRatio != null);
+    this.uncroppedImage = false,
+    this.aspectRatio,
+  });
 
   final Widget child;
   final bool isImage;
-  final double videoAspectRatio;
+  final bool uncroppedImage;
+  final double? aspectRatio;
 
-  Widget _buildImage(double maxHeight) {
+  /// Constrains the height of the child to be 50% of the viewport in a 16 /
+  /// 9 aspect ratio.
+  Widget _buildImages(double maxHeight) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: maxHeight),
       child: AspectRatio(
@@ -33,21 +28,22 @@ class TweetMediaLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildVideo(double maxHeight) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: maxHeight),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final double constraintsAspectRatio = constraints.biggest.aspectRatio;
+  Widget _constrainHeight(double maxHeight) {
+    var mediaWidget = child;
 
-          if (videoAspectRatio > constraintsAspectRatio) {
-            // video does not take up the constrained height
+    if (aspectRatio != null) {
+      mediaWidget = LayoutBuilder(
+        builder: (_, constraints) {
+          final constraintsAspectRatio = constraints.biggest.aspectRatio;
+
+          if (aspectRatio! > constraintsAspectRatio) {
+            // child does not take up the constrained height
             return AspectRatio(
-              aspectRatio: videoAspectRatio,
+              aspectRatio: aspectRatio!,
               child: child,
             );
           } else {
-            // video takes up all of the constrained height and overflows.
+            // child takes up all of the constrained height and overflows.
             // the width of the child gets reduced to match a 16:9 aspect ratio
             return AspectRatio(
               aspectRatio: min(constraintsAspectRatio, 16 / 9),
@@ -55,19 +51,27 @@ class TweetMediaLayout extends StatelessWidget {
             );
           }
         },
-      ),
+      );
+    }
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: mediaWidget,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double maxHeight = mediaQuery.size.height / 2;
+    final mediaQuery = MediaQuery.of(context);
 
     if (isImage) {
-      return _buildImage(maxHeight);
+      if (uncroppedImage) {
+        return _constrainHeight(mediaQuery.size.height * .8);
+      } else {
+        return _buildImages(mediaQuery.size.height / 2);
+      }
     } else {
-      return _buildVideo(maxHeight);
+      return _constrainHeight(mediaQuery.size.height / 2);
     }
   }
 }

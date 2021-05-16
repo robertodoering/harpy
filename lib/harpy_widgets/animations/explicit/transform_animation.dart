@@ -8,9 +8,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// transformation.
 class TransformInAnimation extends StatefulWidget {
   const TransformInAnimation({
-    @required this.child,
-    @required this.begin,
-    @required this.end,
+    required this.child,
+    required this.begin,
+    required this.end,
     this.curve = Curves.easeInOut,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
@@ -19,9 +19,9 @@ class TransformInAnimation extends StatefulWidget {
 
   /// Scales the [child] from a [beginScale] to an [endScale].
   TransformInAnimation.scale({
-    @required this.child,
-    @required double beginScale,
-    @required double endScale,
+    required this.child,
+    required double beginScale,
+    required double endScale,
     this.curve = Curves.easeInOut,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
@@ -43,8 +43,8 @@ class TransformInAnimation extends StatefulWidget {
 
 class _TransformInAnimationState extends State<TransformInAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Matrix4> _animation;
+  late AnimationController _controller;
+  late Animation<Matrix4> _animation;
 
   @override
   void initState() {
@@ -76,12 +76,11 @@ class _TransformInAnimationState extends State<TransformInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => Transform(
+      builder: (_, __) => Transform(
         transform: _animation.value,
         alignment: widget.alignment,
         child: widget.child,
       ),
-      child: widget.child,
     );
   }
 }

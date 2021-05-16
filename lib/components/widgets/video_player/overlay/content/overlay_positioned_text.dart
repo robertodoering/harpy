@@ -17,12 +17,12 @@ class _OverlayPositionTextState extends State<OverlayPositionText> {
   void initState() {
     super.initState();
 
-    widget.model.controller.addListener(_listener);
+    widget.model.controller!.addListener(_listener);
   }
 
   @override
   void dispose() {
-    widget.model.controller.removeListener(_listener);
+    widget.model.controller!.removeListener(_listener);
 
     super.dispose();
   }
@@ -37,7 +37,7 @@ class _OverlayPositionTextState extends State<OverlayPositionText> {
   Widget build(BuildContext context) {
     return Text(
       prettyPrintDuration(widget.model.position),
-      style: Theme.of(context).textTheme.bodyText2.apply(color: Colors.white),
+      style: Theme.of(context).textTheme.bodyText2!.apply(color: Colors.white),
     );
   }
 }

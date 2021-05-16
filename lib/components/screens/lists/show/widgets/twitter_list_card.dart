@@ -8,12 +8,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class TwitterListCard extends StatelessWidget {
   const TwitterListCard(
     this.list, {
-    @required this.onSelected,
-    @required Key key,
+    required this.onSelected,
+    required Key key,
+    this.onLongPress,
   }) : super(key: key);
 
   final TwitterListData list;
   final VoidCallback onSelected;
+  final VoidCallback? onLongPress;
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
@@ -36,7 +38,7 @@ class TwitterListCard extends StatelessWidget {
 
   Widget _buildDescription(ThemeData theme) {
     return Text(
-      list.description,
+      list.description!,
       style: theme.textTheme.bodyText1,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -49,13 +51,13 @@ class TwitterListCard extends StatelessWidget {
         HarpyCircleAvatar(
           // use the normal sized profile image instead of the bigger one for
           // the small circle avatar
-          imageUrl: list.user.profileImageUrlHttps,
+          imageUrl: list.user!.profileImageUrlHttps!,
           radius: 8,
         ),
         defaultSmallHorizontalSpacer,
         Flexible(
           child: Text(
-            '${list.user.name}',
+            list.user!.name,
             style: theme.textTheme.bodyText1,
             softWrap: false,
             overflow: TextOverflow.fade,
@@ -63,7 +65,7 @@ class TwitterListCard extends StatelessWidget {
         ),
         defaultSmallHorizontalSpacer,
         Text(
-          '@${list.user.screenName}',
+          '@${list.user!.screenName}',
           style: theme.textTheme.bodyText1,
           softWrap: false,
           overflow: TextOverflow.fade,
@@ -74,12 +76,13 @@ class TwitterListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return ListCardAnimation(
       key: key,
       child: InkWell(
         borderRadius: kDefaultBorderRadius,
+        onLongPress: onLongPress,
         onTap: onSelected,
         child: Card(
           child: Padding(
@@ -90,7 +93,7 @@ class TwitterListCard extends StatelessWidget {
                 _buildTitle(theme),
                 if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,
-                _buildUserRow(theme),
+                if (list.user != null) _buildUserRow(theme),
               ],
             ),
           ),

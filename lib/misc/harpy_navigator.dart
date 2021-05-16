@@ -26,20 +26,20 @@ class HarpyNavigator {
   final RouteObserver<PageRoute<dynamic>> routeObserver =
       RouteObserver<PageRoute<dynamic>>();
 
-  NavigatorState get state => key.currentState;
+  NavigatorState? get state => key.currentState;
 
   /// A convenience method to push a new [route] to the [Navigator].
   void pushRoute(Route<void> route) {
-    key.currentState.push<void>(route);
+    key.currentState!.push<void>(route);
   }
 
   /// A convenience method to push a named replacement route.
   void pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
-    Map<String, dynamic> arguments,
+    Map<String, dynamic>? arguments,
   }) {
-    key.currentState.pushReplacementNamed<void, void>(
+    key.currentState!.pushReplacementNamed<void, void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
@@ -52,9 +52,9 @@ class HarpyNavigator {
   void pushNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
-    Map<String, dynamic> arguments,
+    Map<String, dynamic>? arguments,
   }) {
-    key.currentState.pushNamed<void>(
+    key.currentState!.pushNamed<void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
@@ -65,12 +65,12 @@ class HarpyNavigator {
 
   /// Pushes a [UserProfileScreen] for the user with the [screenName].
   void pushUserProfile({
-    @required String screenName,
-    RouteSettings currentRoute,
+    required String screenName,
+    RouteSettings? currentRoute,
   }) {
     if (currentRoute?.name == UserProfileScreen.route) {
-      final Map<String, dynamic> arguments =
-          currentRoute.arguments as Map<String, dynamic> ?? <String, dynamic>{};
+      final arguments = currentRoute!.arguments as Map<String, dynamic>? ??
+          <String, dynamic>{};
 
       if (arguments['screenName'] == screenName) {
         _log.fine('preventing navigation to current user');
@@ -88,8 +88,8 @@ class HarpyNavigator {
 
   /// Pushes a [CustomThemeScreen] with the [themeData] for [themeId].
   void pushCustomTheme({
-    @required HarpyThemeData themeData,
-    @required int themeId,
+    required HarpyThemeData themeData,
+    required int themeId,
   }) {
     pushNamed(
       CustomThemeScreen.route,
@@ -103,7 +103,7 @@ class HarpyNavigator {
   /// Pushes a [FollowingScreen] with the following users for the user with the
   /// [userId].
   void pushFollowingScreen({
-    @required String userId,
+    required String userId,
   }) {
     pushNamed(FollowingScreen.route, arguments: <String, dynamic>{
       'userId': userId,
@@ -113,7 +113,7 @@ class HarpyNavigator {
   /// Pushes a [FollowersScreen] with the followers for the user with the
   /// [userId].
   void pushFollowersScreen({
-    @required String userId,
+    required String userId,
   }) {
     pushNamed(FollowersScreen.route, arguments: <String, dynamic>{
       'userId': userId,
@@ -122,24 +122,26 @@ class HarpyNavigator {
 
   /// Pushes a [RepliesScreen] with the replies to the [tweet].
   void pushRepliesScreen({
-    @required TweetData tweet,
+    required TweetData tweet,
   }) {
     pushNamed(RepliesScreen.route, arguments: <String, dynamic>{
       'tweet': tweet,
     });
   }
 
+  /// Pushes a [TweetSearchScreen] with an optional [initialSearchQuery].
   void pushTweetSearchScreen({
-    String initialSearchQuery,
+    String? initialSearchQuery,
   }) {
     pushNamed(TweetSearchScreen.route, arguments: <String, dynamic>{
       'initialSearchQuery': initialSearchQuery,
     });
   }
 
+  /// Pushes a [ComposeScreen] with an optional reply status or quoted tweet.
   void pushComposeScreen({
-    TweetData inReplyToStatus,
-    TweetData quotedTweet,
+    TweetData? inReplyToStatus,
+    TweetData? quotedTweet,
   }) {
     pushNamed(ComposeScreen.route, arguments: <String, dynamic>{
       'inReplyToStatus': inReplyToStatus,
@@ -147,9 +149,16 @@ class HarpyNavigator {
     });
   }
 
+  /// Pushes a [ShowListsScreen].
+  ///
+  /// [userId] can be used to show the lists of a specified user. If `null`
+  /// the lists of the authenticated user will be shown.
+  ///
+  /// [onListSelected] is an optional callback that will be invoked on the
+  /// list tap. When `null` the list timeline screen will be navigated to.
   void pushShowListsScreen({
-    String userId,
-    ValueChanged<TwitterListData> onListSelected,
+    String? userId,
+    ValueChanged<TwitterListData>? onListSelected,
   }) {
     pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
       'userId': userId,
@@ -157,16 +166,27 @@ class HarpyNavigator {
     });
   }
 
+  /// Pushes a [ListTimelineScreen] that shows the tweets for the [list].
   void pushListTimelineScreen({
-    TwitterListData list,
+    required TwitterListData list,
   }) {
     pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
       'list': list,
     });
   }
 
+  /// Pushes a [ListMembersScreen] that shows the members for the [list].
+  void pushListMembersScreen({
+    required TwitterListData list,
+  }) {
+    pushNamed(ListMembersScreen.route, arguments: <String, dynamic>{
+      'list': list,
+    });
+  }
+
+  /// Pushes a [HomeTabCustomizationScreen].
   void pushHomeTabCustomizationScreen({
-    @required HomeTabModel model,
+    required HomeTabModel model,
   }) {
     pushNamed(HomeTabCustomizationScreen.route, arguments: <String, dynamic>{
       'model': model,
@@ -181,15 +201,15 @@ class HarpyNavigator {
 /// needs to be a `Map<String, dynamic>` and can be used to pass along
 /// arguments for the screen.
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
-  final String routeName = settings.name;
+  final routeName = settings.name;
 
   _log.fine('navigating to $routeName');
 
-  final Map<String, dynamic> arguments =
-      settings.arguments as Map<String, dynamic> ?? <String, dynamic>{};
+  final arguments =
+      settings.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
 
-  final RouteType routeType =
-      arguments['routeType'] as RouteType ?? RouteType.defaultRoute;
+  final routeType =
+      arguments['routeType'] as RouteType? ?? RouteType.defaultRoute;
 
   Widget screen;
 
@@ -218,6 +238,11 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case ListTimelineScreen.route:
       screen = ListTimelineScreen(
+        list: arguments['list'],
+      );
+      break;
+    case ListMembersScreen.route:
+      screen = ListMembersScreen(
         list: arguments['list'],
       );
       break;
@@ -298,7 +323,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: RouteSettings(name: routeName, arguments: arguments),
       );
     case RouteType.defaultRoute:
-    default:
       return CupertinoPageRoute<void>(
         builder: (_) => screen,
         settings: RouteSettings(name: routeName, arguments: arguments),

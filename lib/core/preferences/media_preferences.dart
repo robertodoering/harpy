@@ -17,6 +17,11 @@ class MediaPreferences {
   set bestMediaQuality(int value) =>
       harpyPrefs.setInt('bestMediaQuality', value);
 
+  /// Whether the image height of a tweet with a single image should be
+  /// constrained to a 16 / 9 aspect ratio.
+  bool get cropImage => harpyPrefs.getBool('cropImage', false);
+  set cropImage(bool value) => harpyPrefs.setBool('cropImage', value);
+
   /// Whether gifs should play automatically.
   ///
   /// 0: always autoplay

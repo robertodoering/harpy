@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 /// show a [Hero] animation.
 class HeroDialogRoute<T> extends PageRoute<T> {
   HeroDialogRoute({
-    @required this.builder,
+    required this.builder,
     this.onBackgroundTap,
   }) : super();
 
   final WidgetBuilder builder;
 
-  final VoidCallback onBackgroundTap;
+  final VoidCallback? onBackgroundTap;
 
   /// The color tween used in the transition to animate the background color.
   final ColorTween _colorTween = ColorTween(
@@ -29,7 +29,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 300);
@@ -38,7 +38,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => null;
+  Color? get barrierColor => null;
 
   @override
   Widget buildTransitions(

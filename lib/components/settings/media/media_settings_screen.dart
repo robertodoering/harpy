@@ -38,14 +38,15 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.bestMediaQuality,
         titles: _mediaQualityValues.values.toList(),
         values: _mediaQualityValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.bestMediaQuality = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
       ListTile(
         leading: const SizedBox(),
         title: Row(
           children: <Widget>[
+            const SizedBox(width: 16),
             Icon(CupertinoIcons.info, color: theme.accentColor),
             const SizedBox(width: 16),
             Expanded(
@@ -57,6 +58,15 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           ],
         ),
       ),
+      SwitchListTile(
+        secondary: const Icon(CupertinoIcons.crop),
+        title: const Text('Crop tweet image'),
+        subtitle: const Text('reduces height'),
+        value: mediaPreferences.cropImage,
+        onChanged: (value) {
+          setState(() => mediaPreferences.cropImage = value);
+        },
+      ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
         title: 'Autoplay gifs',
@@ -65,8 +75,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.autoplayMedia,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.autoplayMedia = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.autoplayMedia = value!);
         },
       ),
       RadioDialogTile<int>(
@@ -77,8 +87,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         value: mediaPreferences.autoplayVideos,
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
-        onChanged: (int value) {
-          setState(() => mediaPreferences.autoplayVideos = value);
+        onChanged: (value) {
+          setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
       SwitchListTile(
@@ -104,9 +114,9 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           HapticFeedback.lightImpact();
           setState(mediaPreferences.defaultSettings);
         },
-        itemBuilder: (BuildContext context) {
-          return <PopupMenuEntry<void>>[
-            const HarpyPopupMenuItem<void>(
+        itemBuilder: (_) {
+          return <PopupMenuEntry<int>>[
+            const HarpyPopupMenuItem<int>(
               value: 0,
               text: Text('reset to default'),
             ),
@@ -118,7 +128,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       title: 'media settings',

@@ -6,7 +6,7 @@ class BottomSheetHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
     return Container(
       width: 40,

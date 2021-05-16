@@ -12,7 +12,7 @@ class UserLikesTimeline extends StatelessWidget {
   ) {
     return FloatingActionButton(
       onPressed: () async {
-        ScrollDirection.of(context).reset();
+        ScrollDirection.of(context)!.reset!();
         bloc.add(const RequestLikesTimeline());
       },
       child: const Icon(CupertinoIcons.refresh),
@@ -21,8 +21,8 @@ class UserLikesTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LikesTimelineBloc bloc = context.watch<LikesTimelineBloc>();
-    final LikesTimelineState state = bloc.state;
+    final bloc = context.watch<LikesTimelineBloc>();
+    final state = bloc.state;
 
     return ScrollAwareFloatingActionButton(
       floatingActionButton: state is LikesTimelineResult

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
@@ -13,12 +12,12 @@ part 'likes_timeline_state.dart';
 class LikesTimelineBloc extends Bloc<LikesTimelineEvent, LikesTimelineState>
     with RequestLock {
   LikesTimelineBloc({
-    @required this.screenName,
+    required this.screenName,
   }) : super(const LikesTimelineInitial()) {
     add(const RequestLikesTimeline());
   }
 
-  final String screenName;
+  final String? screenName;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
 

@@ -6,18 +6,18 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// `null`.
 class LoadingDataError extends StatelessWidget {
   const LoadingDataError({
-    @required this.message,
+    required this.message,
     this.onRetry,
     this.onClearFilter,
   });
 
   final Widget message;
-  final VoidCallback onRetry;
-  final VoidCallback onClearFilter;
+  final VoidCallback? onRetry;
+  final VoidCallback? onClearFilter;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       padding: DefaultEdgeInsets.all(),
@@ -26,7 +26,7 @@ class LoadingDataError extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           DefaultTextStyle(
-            style: theme.textTheme.headline6,
+            style: theme.textTheme.headline6!,
             textAlign: TextAlign.center,
             child: message,
           ),

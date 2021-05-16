@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 /// this screen.
 class HomeTabCustomizationScreen extends StatefulWidget {
   const HomeTabCustomizationScreen({
-    @required this.model,
+    required this.model,
   });
 
   final HomeTabModel model;
@@ -39,7 +39,9 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>().routeObserver.subscribe(this, ModalRoute.of(context));
+    app<HarpyNavigator>()
+        .routeObserver
+        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
   }
 
   @override
@@ -64,7 +66,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         ),
         Text(
           '(coming soon)',
-          style: theme.textTheme.subtitle2.copyWith(
+          style: theme.textTheme.subtitle2!.copyWith(
             color: Colors.white.withOpacity(.6),
           ),
         ),
@@ -95,9 +97,9 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         HapticFeedback.lightImpact();
         widget.model.setToDefault();
       },
-      itemBuilder: (BuildContext context) {
-        return <PopupMenuEntry<void>>[
-          const HarpyPopupMenuItem<void>(
+      itemBuilder: (_) {
+        return <PopupMenuEntry<int>>[
+          const HarpyPopupMenuItem<int>(
             value: 0,
             text: Text('reset to default'),
           ),
@@ -108,8 +110,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
     return ChangeNotifierProvider<HomeTabModel>.value(
       value: widget.model,
@@ -120,8 +122,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
           // remove focus on background tap
           onTap: () => removeFocus(context),
           child: Builder(
-            builder: (BuildContext context) {
-              final HomeTabModel model = context.watch<HomeTabModel>();
+            builder: (context) {
+              final model = context.watch<HomeTabModel>();
 
               return CustomScrollView(
                 slivers: <Widget>[

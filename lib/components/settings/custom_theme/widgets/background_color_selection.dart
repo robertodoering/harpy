@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds the background color customization for the [CustomThemeScreen].
 class BackgroundColorSelection extends StatelessWidget {
@@ -18,8 +17,8 @@ class BackgroundColorSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HarpyTheme harpyTheme = bloc.harpyTheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final harpyTheme = bloc.harpyTheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,7 +33,7 @@ class BackgroundColorSelection extends StatelessWidget {
           itemBuilder: _buildBackgroundColor,
           itemCount: harpyTheme.backgroundColors.length,
           shrinkWrap: true,
-          onReorder: (int oldIndex, int newIndex) {
+          onReorder: (oldIndex, newIndex) {
             bloc.add(ReorderBackgroundColor(
               oldIndex: oldIndex,
               newIndex: newIndex > oldIndex ? newIndex - 1 : newIndex,

@@ -5,15 +5,15 @@ abstract class ThemeEvent {
   const ThemeEvent();
 
   Stream<ThemeState> applyAsync({
-    ThemeState currentState,
-    ThemeBloc bloc,
+    required ThemeState currentState,
+    required ThemeBloc bloc,
   });
 }
 
 /// The event to change the app wide theme.
 class ChangeThemeEvent extends ThemeEvent {
   const ChangeThemeEvent({
-    @required this.id,
+    required this.id,
     this.saveSelection = false,
   });
 
@@ -21,20 +21,20 @@ class ChangeThemeEvent extends ThemeEvent {
   ///
   /// 0..9: index of predefined theme (unused indices are reserved)
   /// 10+: index of custom theme (pro only)
-  final int id;
+  final int? id;
 
   /// Whether the selection should be saved using the [ThemePreferences].
   final bool saveSelection;
 
   static final Logger _log = Logger('ChangeThemeEvent');
 
-  HarpyTheme _findTheme(ThemeBloc bloc) {
+  HarpyTheme? _findTheme(ThemeBloc bloc) {
     try {
-      if (id < 10) {
-        return predefinedThemes[id];
+      if (id! < 10) {
+        return predefinedThemes[id!];
       } else {
         // selected theme id = 10 -> index = 0
-        final int index = id - 10;
+        final index = id! - 10;
 
         _log.fine('using custom theme with index $index');
 
@@ -48,17 +48,17 @@ class ChangeThemeEvent extends ThemeEvent {
 
   @override
   Stream<ThemeState> applyAsync({
-    ThemeState currentState,
-    ThemeBloc bloc,
+    required ThemeState currentState,
+    required ThemeBloc bloc,
   }) async* {
-    final HarpyTheme harpyTheme = _findTheme(bloc);
+    final harpyTheme = _findTheme(bloc);
 
     if (harpyTheme != null) {
       _log.fine('changing theme to ${harpyTheme.name} with id $id');
       bloc.harpyTheme = harpyTheme;
 
       if (saveSelection) {
-        app<ThemePreferences>().selectedTheme = id;
+        app<ThemePreferences>().selectedTheme = id!;
         app<AnalyticsService>().logThemeId(id);
       }
     }
@@ -74,15 +74,15 @@ class ChangeThemeEvent extends ThemeEvent {
 /// Does not yield anything.
 class UpdateSystemUi extends ThemeEvent {
   const UpdateSystemUi({
-    @required this.theme,
+    required this.theme,
   });
 
   final HarpyTheme theme;
 
   @override
   Stream<ThemeState> applyAsync({
-    ThemeState currentState,
-    ThemeBloc bloc,
+    required ThemeState currentState,
+    required ThemeBloc bloc,
   }) async* {
     bloc.updateSystemUi(theme);
   }
@@ -95,7 +95,7 @@ class SaveCustomThemes extends ThemeEvent {
 
   static final Logger _log = Logger('SaveCustomThemes');
 
-  String _encodeThemeData(HarpyThemeData themeData) {
+  String? _encodeThemeData(HarpyThemeData themeData) {
     try {
       return jsonEncode(themeData.toJson());
     } catch (e, st) {
@@ -106,13 +106,13 @@ class SaveCustomThemes extends ThemeEvent {
 
   @override
   Stream<ThemeState> applyAsync({
-    ThemeState currentState,
-    ThemeBloc bloc,
+    required ThemeState currentState,
+    required ThemeBloc bloc,
   }) async* {
-    final List<String> encodedCustomThemes = bloc.customThemes
-        .map((HarpyTheme theme) => HarpyThemeData.fromHarpyTheme(theme))
+    final encodedCustomThemes = bloc.customThemes
+        .map((theme) => HarpyThemeData.fromHarpyTheme(theme))
         .map(_encodeThemeData)
-        .where((String themeDataJson) => themeDataJson != null)
+        .where((themeDataJson) => themeDataJson != null)
         .toList();
 
     _log.fine('saving ${encodedCustomThemes.length} custom themes');
@@ -126,8 +126,8 @@ class RefreshTheme extends ThemeEvent {
 
   @override
   Stream<ThemeState> applyAsync({
-    ThemeState currentState,
-    ThemeBloc bloc,
+    required ThemeState currentState,
+    required ThemeBloc bloc,
   }) async* {
     bloc.add(ChangeThemeEvent(id: app<ThemePreferences>().selectedTheme));
   }

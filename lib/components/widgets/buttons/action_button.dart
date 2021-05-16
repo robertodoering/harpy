@@ -26,8 +26,8 @@ typedef IconAnimationBuilder = Widget Function(
 /// The [value] is formatted using the [NumberFormat.compact].
 class ActionButton extends StatefulWidget {
   const ActionButton({
-    @required this.iconBuilder,
-    @required this.active,
+    required this.iconBuilder,
+    required this.active,
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.activeIconColor,
     this.value,
@@ -56,33 +56,33 @@ class ActionButton extends StatefulWidget {
   final IconAnimationBuilder iconAnimationBuilder;
 
   /// The color for icon when [active] is `true`.
-  final Color activeIconColor;
+  final Color? activeIconColor;
 
   /// Whether the button should appear active.
   final bool active;
 
   /// An optional value displayed next to the icon.
-  final int value;
+  final int? value;
 
   /// The padding for the [HarpyButton].
   final EdgeInsets padding;
 
   /// The style for the text when [active] is `true`.
-  final TextStyle activeTextStyle;
+  final TextStyle? activeTextStyle;
 
   /// The size of the icon.
   ///
   /// Defaults to the [IconThemeData]'s icon size if `null`. Also determines the
   /// sizes of the [BubbleAnimation].
-  final double iconSize;
+  final double? iconSize;
 
   /// The callback that is fired when the button is tapped and [active] is
   /// `false`.
-  final VoidCallback activate;
+  final VoidCallback? activate;
 
   /// The callback that is fired when the button is tapped and [active] is
   /// `true`.
-  final VoidCallback deactivate;
+  final VoidCallback? deactivate;
 
   /// The colors used by the [BubbleAnimation] that starts when [active] changes
   /// from `false` to `true`.
@@ -94,7 +94,7 @@ class ActionButton extends StatefulWidget {
     Animation<double> animation,
     Widget child,
   ) {
-    final Animation<double> scale = Tween<double>(begin: .2, end: 1).animate(
+    final scale = Tween<double>(begin: .2, end: 1).animate(
       CurvedAnimation(
         parent: animation,
         curve: const Interval(.35, .7, curve: Curves.easeOutBack),
@@ -110,7 +110,7 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton>
     with SingleTickerProviderStateMixin<ActionButton> {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -143,8 +143,8 @@ class _ActionButtonState extends State<ActionButton>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final double iconSize = widget.iconSize ?? IconTheme.of(context).size;
+    final theme = Theme.of(context);
+    final iconSize = widget.iconSize ?? IconTheme.of(context).size!;
 
     final Widget icon = AnimatedTheme(
       data: theme.copyWith(
@@ -157,24 +157,16 @@ class _ActionButtonState extends State<ActionButton>
         size: iconSize,
         bubblesColor: widget.bubblesColor,
         circleColor: widget.circleColor,
-        builder: (BuildContext context) => Container(
+        builder: (context) => Container(
           width: iconSize,
           height: iconSize,
           alignment: Alignment.center,
           child: _controller.isAnimating || widget.active
               ? widget.iconAnimationBuilder(
                   _controller,
-                  widget.iconBuilder(
-                    context,
-                    widget.active,
-                    iconSize,
-                  ),
+                  widget.iconBuilder(context, widget.active, iconSize),
                 )
-              : widget.iconBuilder(
-                  context,
-                  widget.active,
-                  iconSize,
-                ),
+              : widget.iconBuilder(context, widget.active, iconSize),
         ),
       ),
     );

@@ -10,8 +10,8 @@ enum AnimatedIconState {
 /// Animates the [icon] whenever the [animatedIconState] changes.
 class ImplicitlyAnimatedIcon extends StatefulWidget {
   const ImplicitlyAnimatedIcon({
-    @required this.icon,
-    @required this.animatedIconState,
+    required this.icon,
+    required this.animatedIconState,
     this.color,
     this.size,
     this.curve = Curves.easeInOut,
@@ -26,10 +26,10 @@ class ImplicitlyAnimatedIcon extends StatefulWidget {
   final AnimatedIconState animatedIconState;
 
   /// The color of the [icon].
-  final Color color;
+  final Color? color;
 
   /// The size of the [icon].
-  final double size;
+  final double? size;
 
   final Curve curve;
   final Duration duration;
@@ -40,7 +40,7 @@ class ImplicitlyAnimatedIcon extends StatefulWidget {
 
 class _ImplicitlyAnimatedIconState extends State<ImplicitlyAnimatedIcon>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   bool get _showFirst =>
       widget.animatedIconState == AnimatedIconState.showFirst;

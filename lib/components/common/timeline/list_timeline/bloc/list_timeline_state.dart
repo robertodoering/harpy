@@ -45,21 +45,21 @@ class ListTimelineLoading extends ListTimelineState {
 /// The state when the list tweets were successfully requested.
 class ListTimelineResult extends ListTimelineState {
   const ListTimelineResult({
-    @required this.tweets,
-    @required this.maxId,
+    required this.tweets,
+    required this.maxId,
     this.canRequestOlder = true,
   });
 
   final List<TweetData> tweets;
 
   /// The max id used to request older tweets.
-  final String maxId;
+  final String? maxId;
 
   /// Whether older tweets in the likes timeline can be requested.
   final bool canRequestOlder;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         tweets,
         maxId,
         canRequestOlder,
@@ -86,7 +86,7 @@ class ListTimelineFailure extends ListTimelineState {
 /// The state when requesting older tweets.
 class ListTimelineLoadingOlder extends ListTimelineState {
   const ListTimelineLoadingOlder({
-    @required this.oldResult,
+    required this.oldResult,
   });
 
   final ListTimelineResult oldResult;

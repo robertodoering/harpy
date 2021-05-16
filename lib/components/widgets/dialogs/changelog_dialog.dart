@@ -3,6 +3,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 class ChangelogDialog extends StatelessWidget {
   const ChangelogDialog(this.data);
@@ -10,16 +11,17 @@ class ChangelogDialog extends StatelessWidget {
   final ChangelogData data;
 
   static Future<void> maybeShow(BuildContext context) async {
-    final ChangelogPreferences changelogPreferences =
-        app<ChangelogPreferences>();
+    final changelogPreferences = app<ChangelogPreferences>();
 
     if (changelogPreferences.shouldShowChangelogDialog) {
-      final ChangelogData data = await app<ChangelogParser>().current(context);
+      final data = await app<ChangelogParser>().current(context);
 
       if (data != null) {
-        showDialog<void>(
-          context: context,
-          builder: (_) => ChangelogDialog(data),
+        unawaited(
+          showDialog<void>(
+            context: context,
+            builder: (_) => ChangelogDialog(data),
+          ),
         );
       }
     }
@@ -38,7 +40,7 @@ class ChangelogDialog extends StatelessWidget {
       actions: <Widget>[
         DialogAction<void>(
           text: 'ok',
-          onTap: () => app<HarpyNavigator>().state.maybePop(),
+          onTap: () => app<HarpyNavigator>().state!.maybePop(),
         )
       ],
     );

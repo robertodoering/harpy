@@ -6,7 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Similar to [Dismissible] with some adjustments.
 class CustomDismissible extends StatefulWidget {
   const CustomDismissible({
-    @required this.child,
+    required this.child,
     this.onDismissed,
     this.dismissThreshold = 0.05,
     this.enabled = true,
@@ -14,7 +14,7 @@ class CustomDismissible extends StatefulWidget {
 
   final Widget child;
   final double dismissThreshold;
-  final VoidCallback onDismissed;
+  final VoidCallback? onDismissed;
   final bool enabled;
 
   @override
@@ -23,8 +23,8 @@ class CustomDismissible extends StatefulWidget {
 
 class _CustomDismissibleState extends State<CustomDismissible>
     with SingleTickerProviderStateMixin {
-  AnimationController _moveController;
-  Animation<Offset> _moveAnimation;
+  late AnimationController _moveController;
+  late Animation<Offset> _moveAnimation;
 
   double _dragExtent = 0;
   bool _dragUnderway = false;
@@ -51,7 +51,7 @@ class _CustomDismissibleState extends State<CustomDismissible>
   }
 
   void _updateMoveAnimation() {
-    final double end = _dragExtent.sign;
+    final end = _dragExtent.sign;
 
     _moveAnimation = _moveController.drive(
       Tween<Offset>(
@@ -66,7 +66,7 @@ class _CustomDismissibleState extends State<CustomDismissible>
 
     if (_moveController.isAnimating) {
       _dragExtent =
-          _moveController.value * context.size.height * _dragExtent.sign;
+          _moveController.value * context.size!.height * _dragExtent.sign;
       _moveController.stop();
     } else {
       _dragExtent = 0.0;
@@ -80,8 +80,8 @@ class _CustomDismissibleState extends State<CustomDismissible>
       return;
     }
 
-    final double delta = details.primaryDelta;
-    final double oldDragExtent = _dragExtent;
+    final delta = details.primaryDelta!;
+    final oldDragExtent = _dragExtent;
 
     if (_dragExtent + delta < 0) {
       _dragExtent += delta;
@@ -94,7 +94,7 @@ class _CustomDismissibleState extends State<CustomDismissible>
     }
 
     if (!_moveController.isAnimating) {
-      _moveController.value = _dragExtent.abs() / context.size.height;
+      _moveController.value = _dragExtent.abs() / context.size!.height;
     }
   }
 

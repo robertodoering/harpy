@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 /// [SnackBar]s from anywhere in the app using the [globalKey].
 class HarpyMessage extends StatefulWidget {
   HarpyMessage({
-    @required this.child,
+    required this.child,
   }) : super(key: globalKey);
 
-  final Widget child;
+  final Widget? child;
 
   static final GlobalKey<HarpyMessageState> globalKey =
       GlobalKey<HarpyMessageState>();
@@ -20,8 +20,8 @@ class HarpyMessageState extends State<HarpyMessage> {
   final GlobalKey<ScaffoldMessengerState> _messengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  void show(String message, [SnackBarAction action]) {
-    _messengerKey.currentState.showSnackBar(
+  void show(String message, [SnackBarAction? action]) {
+    _messengerKey.currentState!.showSnackBar(
       SnackBar(
         content: Text(message),
         action: action,

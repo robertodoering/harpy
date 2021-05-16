@@ -9,7 +9,7 @@ part 'home_tab_configuration.g.dart';
 @JsonSerializable(explicitToJson: true)
 class HomeTabConfiguration extends Equatable {
   const HomeTabConfiguration({
-    @required this.entries,
+    required this.entries,
   });
 
   factory HomeTabConfiguration.fromJson(Map<String, dynamic> json) =>
@@ -32,7 +32,7 @@ class HomeTabConfiguration extends Equatable {
 
   Map<String, dynamic> toJson() => _$HomeTabConfigurationToJson(this);
 
-  HomeTabConfiguration addEntry(HomeTabEntry entry, [int index]) {
+  HomeTabConfiguration addEntry(HomeTabEntry entry, [int? index]) {
     return HomeTabConfiguration(
       entries: index != null
           ? (List<HomeTabEntry>.of(entries)..insert(index, entry))
@@ -47,7 +47,7 @@ class HomeTabConfiguration extends Equatable {
   }
 
   HomeTabConfiguration updateEntry(int index, HomeTabEntry entry) {
-    final List<HomeTabEntry> newEntries = List<HomeTabEntry>.from(entries);
+    final newEntries = List<HomeTabEntry>.from(entries);
     newEntries[index] = entry;
 
     return HomeTabConfiguration(

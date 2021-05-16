@@ -35,16 +35,16 @@ class HarpyDialog extends StatefulWidget {
   /// of the dialog.
   ///
   /// Typically a [Text] widget.
-  final Widget title;
+  final Widget? title;
 
   /// Padding around the title.
   ///
   /// If there is no title, no padding will be provided.
-  final EdgeInsetsGeometry titlePadding;
+  final EdgeInsetsGeometry? titlePadding;
 
   /// The (optional) content of the dialog is displayed in the center of the
   /// dialog.
-  final Widget content;
+  final Widget? content;
 
   /// Padding around the content.
   ///
@@ -55,7 +55,7 @@ class HarpyDialog extends StatefulWidget {
   /// dialog.
   ///
   /// Typically this is a list of [DialogAction] widgets.
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   /// Whether the size of the actions should be constrained to the intrinsic
   /// width of the dialog.
@@ -80,7 +80,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
   final Completer<Size> _dialogSizeCompleter = Completer<Size>();
 
   EdgeInsets get _titlePadding =>
-      widget.titlePadding ??
+      widget.titlePadding as EdgeInsets? ??
       EdgeInsets.only(
         top: 24,
         left: 24,
@@ -96,13 +96,14 @@ class _HarpyDialogState extends State<HarpyDialog> {
   }
 
   Future<void> _configureDialogSize() async {
-    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      final RenderBox box = _dialogSizeKey?.currentContext?.findRenderObject();
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      final box =
+          _dialogSizeKey.currentContext?.findRenderObject() as RenderBox?;
       _dialogSizeCompleter.complete(box?.size);
     });
   }
 
-  Widget _buildAnimation({@required Widget child}) {
+  Widget _buildAnimation({required Widget child}) {
     switch (widget.animationType) {
       case DialogAnimationType.slide:
         return SlideInAnimation(
@@ -113,17 +114,14 @@ class _HarpyDialogState extends State<HarpyDialog> {
         );
       case DialogAnimationType.bounce:
         return BounceInAnimation(child: child);
-        break;
       case DialogAnimationType.material:
-      default:
         return child;
-        break;
     }
   }
 
   Widget _buildTitle(TextTheme textTheme) {
     return DefaultTextStyle(
-      style: textTheme.headline6.copyWith(height: 1.2),
+      style: textTheme.headline6!.copyWith(height: 1.2),
       textAlign: TextAlign.center,
       child: Padding(
         padding: _titlePadding,
@@ -136,18 +134,13 @@ class _HarpyDialogState extends State<HarpyDialog> {
     return Flexible(
       child: Scrollbar(
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              if (widget.content != null)
-                DefaultTextStyle(
-                  style: textTheme.subtitle2,
-                  textAlign: TextAlign.center,
-                  child: Padding(
-                    padding: widget.contentPadding,
-                    child: widget.content,
-                  ),
-                ),
-            ],
+          child: DefaultTextStyle(
+            style: textTheme.subtitle2!,
+            textAlign: TextAlign.center,
+            child: Padding(
+              padding: widget.contentPadding,
+              child: widget.content,
+            ),
           ),
         ),
       ),
@@ -155,25 +148,25 @@ class _HarpyDialogState extends State<HarpyDialog> {
   }
 
   Widget _buildActions() {
-    final Widget actions = widget.actions.length == 2
+    final Widget actions = widget.actions!.length == 2
         ? Row(
             children: <Widget>[
-              for (Widget action in widget.actions)
+              for (Widget action in widget.actions!)
                 Expanded(child: Center(child: action)),
             ],
           )
         : Wrap(
             alignment: WrapAlignment.spaceAround,
-            children: widget.actions,
+            children: widget.actions!,
           );
 
     if (widget.constrainActionSize) {
       return FutureBuilder<Size>(
         future: _dialogSizeCompleter.future,
-        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+        builder: (context, snapshot) {
           return ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: snapshot?.data?.width ?? 0,
+              maxWidth: snapshot.data?.width ?? 0,
             ),
             child: actions,
           );
@@ -186,13 +179,14 @@ class _HarpyDialogState extends State<HarpyDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TextTheme textTheme = theme.textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return _buildAnimation(
       child: Dialog(
         insetAnimationDuration: kShortAnimationDuration,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.hardEdge,
         child: SizedBox(
           key: _dialogSizeKey,
           child: Column(
@@ -221,17 +215,19 @@ class _HarpyDialogState extends State<HarpyDialog> {
 /// Either [text] or [icon] must not be `null`.
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
+    Key? key,
     this.result,
     this.onTap,
     this.text,
     this.icon,
     this.padding = const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-  }) : assert(text != null || icon != null);
+  })  : assert(text != null || icon != null),
+        super(key: key);
 
-  final T result;
-  final VoidCallback onTap;
-  final String text;
-  final IconData icon;
+  final T? result;
+  final VoidCallback? onTap;
+  final String? text;
+  final IconData? icon;
   final EdgeInsets padding;
 
   void _onTap(BuildContext context) {
@@ -245,7 +241,7 @@ class DialogAction<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HarpyButton.flat(
-      text: text != null ? Text(text) : null,
+      text: text != null ? Text(text!) : null,
       icon: icon != null ? Icon(icon) : null,
       padding: padding,
       onTap: result == null && onTap == null ? null : () => _onTap(context),

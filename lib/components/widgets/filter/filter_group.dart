@@ -5,17 +5,17 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class FilterGroup extends StatelessWidget {
   const FilterGroup({
-    @required this.children,
+    required this.children,
     this.title,
     this.margin,
     this.toggleAll,
     this.allToggled = true,
   });
 
-  final String title;
-  final EdgeInsets margin;
+  final String? title;
+  final EdgeInsets? margin;
   final List<Widget> children;
-  final VoidCallback toggleAll;
+  final VoidCallback? toggleAll;
   final bool allToggled;
 
   Widget _buildTitleRow(ThemeData theme) {
@@ -25,7 +25,7 @@ class FilterGroup extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: DefaultEdgeInsets.all(),
-              child: Text(title, style: theme.textTheme.subtitle2),
+              child: Text(title!, style: theme.textTheme.subtitle2),
             ),
           ),
         if (toggleAll != null)
@@ -42,7 +42,7 @@ class FilterGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Card(
       margin: margin ?? DefaultEdgeInsets.symmetric(horizontal: true),

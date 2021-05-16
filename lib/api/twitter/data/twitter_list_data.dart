@@ -3,36 +3,32 @@ import 'package:harpy/api/api.dart';
 
 class TwitterListData {
   TwitterListData.fromTwitterList(TwitterList list) {
-    if (list == null) {
-      return;
-    }
-
-    name = list.name;
+    name = list.name ?? '';
     createdAt = list.createdAt;
     subscriberCount = list.subscriberCount;
-    idStr = list.idStr;
+    idStr = list.idStr ?? '';
     memberCount = list.memberCount;
-    mode = list.mode;
+    mode = list.mode ?? 'public';
     description = list.description;
-    user = UserData.fromUser(list.user);
-    following = list.following;
+    user = list.user != null ? UserData.fromUser(list.user!) : null;
+    following = list.following ?? false;
   }
 
-  String name;
-  DateTime createdAt;
-  int subscriberCount;
-  String idStr;
-  int memberCount;
+  late String name;
+  DateTime? createdAt;
+  int? subscriberCount;
+  late String idStr;
+  int? memberCount;
 
   /// Can be 'private' or 'public'.
-  String mode;
+  late String mode;
 
-  String description;
-  UserData user;
-  bool following;
+  String? description;
+  UserData? user;
+  late bool following;
 
   /// Whether a description for this list exist.
-  bool get hasDescription => description != null && description.isNotEmpty;
+  bool get hasDescription => description != null && description!.isNotEmpty;
 
   /// Whether is is a private list.
   bool get isPrivate => mode == 'private';

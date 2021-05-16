@@ -1,19 +1,16 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/auth/twitter_auth_result.dart';
 import 'package:harpy/api/twitter/auth/twitter_login_webview.dart';
 import 'package:oauth1/oauth1.dart';
 
 /// Used to navigate to the [TwitterLoginWebview] and return it's result.
-typedef WebviewNavigation = Future<Uri> Function(TwitterLoginWebview webview);
+typedef WebviewNavigation = Future<Uri?> Function(TwitterLoginWebview webview);
 
 /// Handles web view based oauth1 authentication with Twitter using
 /// [TwitterLoginWebview].
 class TwitterAuth {
   TwitterAuth({
-    @required String consumerKey,
-    @required String consumerSecret,
+    required String consumerKey,
+    required String consumerSecret,
   }) : _auth = Authorization(
           ClientCredentials(consumerKey, consumerSecret),
           Platform(
@@ -39,14 +36,14 @@ class TwitterAuth {
   ///
   /// See https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens.
   Future<TwitterAuthResult> authenticateWithTwitter({
-    @required WebviewNavigation webviewNavigation,
-    @required OnExternalNavigation onExternalNavigation,
+    required WebviewNavigation webviewNavigation,
+    required OnExternalNavigation onExternalNavigation,
   }) async {
     try {
-      final AuthorizationResponse tempCredentialsResponse =
+      final tempCredentialsResponse =
           await _auth.requestTemporaryCredentials(callbackUrl);
 
-      final Uri authCallback = await webviewNavigation(
+      final authCallback = await webviewNavigation(
         TwitterLoginWebview(
           token: tempCredentialsResponse.credentials.token,
           onExternalNavigation: onExternalNavigation,
@@ -59,25 +56,23 @@ class TwitterAuth {
     }
   }
 
-  Future<TwitterAuthResult> _requestTokenCredentials(Uri authCallback) async {
-    final bool userCancelled = authCallback == null ||
+  Future<TwitterAuthResult> _requestTokenCredentials(Uri? authCallback) async {
+    final userCancelled = authCallback == null ||
         authCallback.queryParameters.containsKey('denied');
 
     if (!userCancelled) {
-      final String oauthToken = authCallback.queryParameters['oauth_token'];
-      final String oauthVerifier =
-          authCallback.queryParameters['oauth_verifier'];
+      final oauthToken = authCallback!.queryParameters['oauth_token'];
+      final oauthVerifier = authCallback.queryParameters['oauth_verifier'];
 
       if (oauthToken != null && oauthVerifier != null) {
-        final AuthorizationResponse credentialsResponse =
-            await _auth.requestTokenCredentials(
+        final credentialsResponse = await _auth.requestTokenCredentials(
           Credentials(oauthToken, ''),
           oauthVerifier,
         );
 
-        final String token = credentialsResponse.credentials.token;
-        final String tokenSecret = credentialsResponse.credentials.tokenSecret;
-        final String userId = token.split('-').first;
+        final token = credentialsResponse.credentials.token;
+        final tokenSecret = credentialsResponse.credentials.tokenSecret;
+        final userId = token.split('-').first;
 
         return TwitterAuthResult(
           status: TwitterAuthStatus.success,

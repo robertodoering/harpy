@@ -4,8 +4,8 @@ abstract class ListsShowEvent {
   const ListsShowEvent();
 
   Stream<ListsShowState> applyAsync({
-    ListsShowState currentState,
-    ListsShowBloc bloc,
+    required ListsShowState currentState,
+    required ListsShowBloc bloc,
   });
 }
 
@@ -15,43 +15,42 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
 
   @override
   Stream<ListsShowState> applyAsync({
-    ListsShowState currentState,
-    ListsShowBloc bloc,
+    required ListsShowState currentState,
+    required ListsShowBloc bloc,
   }) async* {
     log.fine('loading lists');
 
     yield const ListsInitialLoading();
 
-    PaginatedTwitterLists paginatedOwnerships;
-    PaginatedTwitterLists paginatedSubscriptions;
+    PaginatedTwitterLists? paginatedOwnerships;
+    PaginatedTwitterLists? paginatedSubscriptions;
 
-    final List<PaginatedTwitterLists> responses = await Future.wait<
-        PaginatedTwitterLists>(<Future<PaginatedTwitterLists>>[
+    final responses = await Future.wait<PaginatedTwitterLists>([
       bloc.listsService.ownerships(userId: bloc.userId),
       bloc.listsService.subscriptions(userId: bloc.userId),
-    ]).catchError(twitterApiErrorHandler);
+    ]).handleError(twitterApiErrorHandler);
 
     if (responses != null && responses.length == 2) {
       paginatedOwnerships = responses[0];
       paginatedSubscriptions = responses[1];
     }
 
-    List<TwitterListData> ownerships;
-    List<TwitterListData> subscriptions;
-    String ownershipsCursor;
-    String subscriptionsCursor;
+    List<TwitterListData>? ownerships;
+    List<TwitterListData>? subscriptions;
+    String? ownershipsCursor;
+    String? subscriptionsCursor;
 
     if (paginatedOwnerships != null) {
-      ownerships = paginatedOwnerships.lists
-          .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+      ownerships = paginatedOwnerships.lists!
+          .map((list) => TwitterListData.fromTwitterList(list))
           .toList();
 
       ownershipsCursor = paginatedOwnerships.nextCursorStr;
     }
 
     if (paginatedSubscriptions != null) {
-      subscriptions = paginatedSubscriptions.lists
-          .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+      subscriptions = paginatedSubscriptions.lists!
+          .map((list) => TwitterListData.fromTwitterList(list))
           .toList();
 
       subscriptionsCursor = paginatedSubscriptions.nextCursorStr;
@@ -63,8 +62,8 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
 
       if (ownerships.isNotEmpty || subscriptions.isNotEmpty) {
         yield ListsResult(
-          ownerships: ownerships ?? <TwitterList>[],
-          subscriptions: subscriptions ?? <TwitterList>[],
+          ownerships: ownerships,
+          subscriptions: subscriptions,
           ownershipsCursor: ownershipsCursor,
           subscriptionsCursor: subscriptionsCursor,
         );
@@ -86,8 +85,8 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
 
   @override
   Stream<ListsShowState> applyAsync({
-    ListsShowState currentState,
-    ListsShowBloc bloc,
+    required ListsShowState currentState,
+    required ListsShowBloc bloc,
   }) async* {
     if (currentState is ListsResult && currentState.hasMoreOwnerships) {
       yield ListsLoadingMore.loadingOwnerships(
@@ -97,20 +96,21 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final PaginatedTwitterLists paginatedOwnerships = await bloc.listsService
+      final paginatedOwnerships = await bloc.listsService
           .ownerships(
             userId: bloc.userId,
             cursor: currentState.ownershipsCursor,
           )
-          .catchError(twitterApiErrorHandler);
+          .handleError(twitterApiErrorHandler);
 
       if (paginatedOwnerships != null) {
-        final List<TwitterListData> newOwnerships = paginatedOwnerships.lists
-            .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+        final newOwnerships = paginatedOwnerships.lists!
+            .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final List<TwitterListData> ownerships = List<TwitterListData>.of(
-            currentState.ownerships.followedBy(newOwnerships));
+        final ownerships = List<TwitterListData>.of(
+          currentState.ownerships.followedBy(newOwnerships),
+        );
 
         yield ListsResult(
           ownerships: ownerships,
@@ -139,8 +139,8 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
 
   @override
   Stream<ListsShowState> applyAsync({
-    ListsShowState currentState,
-    ListsShowBloc bloc,
+    required ListsShowState currentState,
+    required ListsShowBloc bloc,
   }) async* {
     if (currentState is ListsResult && currentState.hasMoreSubscriptions) {
       yield ListsLoadingMore.loadingSubscriptions(
@@ -150,22 +150,21 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final PaginatedTwitterLists paginatedSubscriptions =
-          await bloc.listsService
-              .subscriptions(
-                userId: bloc.userId,
-                cursor: currentState.subscriptionsCursor,
-              )
-              .catchError(twitterApiErrorHandler);
+      final paginatedSubscriptions = await bloc.listsService
+          .subscriptions(
+            userId: bloc.userId,
+            cursor: currentState.subscriptionsCursor,
+          )
+          .handleError(twitterApiErrorHandler);
 
       if (paginatedSubscriptions != null) {
-        final List<TwitterListData> newSubscriptions = paginatedSubscriptions
-            .lists
-            .map((TwitterList list) => TwitterListData.fromTwitterList(list))
+        final newSubscriptions = paginatedSubscriptions.lists!
+            .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final List<TwitterListData> subscriptions = List<TwitterListData>.of(
-            currentState.subscriptions.followedBy(newSubscriptions));
+        final subscriptions = List<TwitterListData>.of(
+          currentState.subscriptions.followedBy(newSubscriptions),
+        );
 
         yield ListsResult(
           ownerships: currentState.ownerships,

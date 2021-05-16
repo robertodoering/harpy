@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 import 'package:mime_type/mime_type.dart';
 
 class MediaUploadService {
-  final TwitterApi twitterApi = app<TwitterApi>();
+  final TwitterApi? twitterApi = app<TwitterApi>();
 
   static const int _maxChunkSize = 500000;
 
@@ -17,13 +16,13 @@ class MediaUploadService {
   /// Returns `null` if the [media] file is invalid.
   ///
   /// Throws an exception when a request returns an error or times out.
-  Future<String> upload(
+  Future<String?> upload(
     File media, {
-    MediaType type,
+    MediaType? type,
   }) async {
-    final List<int> mediaBytes = media.readAsBytesSync();
-    final int totalBytes = mediaBytes.length;
-    final String mediaType = mime(media.path);
+    final mediaBytes = media.readAsBytesSync();
+    final totalBytes = mediaBytes.length;
+    final mediaType = mime(media.path);
 
     if (totalBytes == 0 || mediaType == null) {
       // unknown type or empty file
@@ -31,26 +30,26 @@ class MediaUploadService {
     }
 
     // initialize the upload
-    final UploadInit uploadInit = await twitterApi.mediaService.uploadInit(
+    final uploadInit = await twitterApi!.mediaService.uploadInit(
       totalBytes: totalBytes,
       mediaType: mediaType,
       mediaCategory: mediaCategoryFromType(type),
     );
 
-    final String mediaId = uploadInit.mediaIdString;
+    final mediaId = uploadInit.mediaIdString!;
 
     // `splitList` splits the media bytes into lists with the max length of
     // 500000 (the max chunk size in bytes)
-    final List<List<int>> mediaChunks = splitList<int>(
+    final mediaChunks = splitList<int>(
       mediaBytes,
       _maxChunkSize,
     );
 
     // upload each chunk
-    for (int i = 0; i < mediaChunks.length; i++) {
-      final List<int> chunk = mediaChunks[i];
+    for (var i = 0; i < mediaChunks.length; i++) {
+      final chunk = mediaChunks[i];
 
-      await twitterApi.mediaService.uploadAppend(
+      await twitterApi!.mediaService.uploadAppend(
         mediaId: mediaId,
         media: chunk,
         segmentIndex: i,
@@ -58,15 +57,15 @@ class MediaUploadService {
     }
 
     // finalize the upload
-    final UploadFinalize uploadFinalize =
-        await twitterApi.mediaService.uploadFinalize(mediaId: mediaId);
+    final uploadFinalize =
+        await twitterApi!.mediaService.uploadFinalize(mediaId: mediaId);
 
     if (uploadFinalize.processingInfo?.pending ?? false) {
       // asynchronous upload of media
       // we have to wait until twitter has processed the upload
-      final UploadStatus finishedStatus = await _waitForUploadCompletion(
+      final finishedStatus = await _waitForUploadCompletion(
         mediaId: mediaId,
-        sleep: uploadFinalize.processingInfo.checkAfterSecs,
+        sleep: uploadFinalize.processingInfo!.checkAfterSecs!,
       );
 
       return finishedStatus?.mediaIdString;
@@ -81,53 +80,49 @@ class MediaUploadService {
   /// succeeded and waits the suggested time between each call.
   ///
   /// Returns `null` if the upload failed.
-  Future<UploadStatus> _waitForUploadCompletion({
-    @required String mediaId,
-    @required int sleep,
+  Future<UploadStatus?> _waitForUploadCompletion({
+    required String mediaId,
+    required int sleep,
   }) async {
     await Future<void>.delayed(Duration(seconds: sleep));
 
-    final UploadStatus uploadStatus =
-        await twitterApi.mediaService.uploadStatus(mediaId: mediaId);
+    final uploadStatus =
+        await twitterApi!.mediaService.uploadStatus(mediaId: mediaId);
 
-    if (uploadStatus?.processingInfo?.succeeded == true) {
+    if (uploadStatus.processingInfo?.succeeded == true) {
       // upload processing has succeeded
       return uploadStatus;
-    } else if (uploadStatus?.processingInfo?.inProgress == true) {
+    } else if (uploadStatus.processingInfo?.inProgress == true) {
       // upload is still processing, need to wait longer
       return _waitForUploadCompletion(
         mediaId: mediaId,
-        sleep: uploadStatus.processingInfo.checkAfterSecs,
+        sleep: uploadStatus.processingInfo!.checkAfterSecs!,
       );
     } else {
       return null;
     }
   }
 
-  String mediaCategoryFromType(MediaType type) {
+  String? mediaCategoryFromType(MediaType? type) {
     switch (type) {
       case MediaType.image:
         return 'TWEET_IMAGE';
-        break;
       case MediaType.gif:
         return 'TWEET_GIF';
-        break;
       case MediaType.video:
         return 'TWEET_VIDEO';
-        break;
-      default:
+      case null:
         return null;
-        break;
     }
   }
 
   /// Splits the [list] into smaller lists with a max [length].
   List<List<T>> splitList<T>(List<T> list, int length) {
-    final List<List<T>> chunks = <List<T>>[];
+    final chunks = <List<T>>[];
     Iterable<T> chunk;
 
     do {
-      final List<T> remainingEntries = list.sublist(
+      final remainingEntries = list.sublist(
         chunks.length * length,
       );
 

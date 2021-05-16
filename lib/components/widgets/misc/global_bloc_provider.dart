@@ -8,7 +8,7 @@ import 'package:harpy/components/components.dart';
 /// These blocs will only be created once.
 class GlobalBlocProvider extends StatelessWidget {
   const GlobalBlocProvider({
-    @required this.child,
+    required this.child,
   });
 
   final Widget child;
@@ -22,7 +22,7 @@ class GlobalBlocProvider extends StatelessWidget {
 
         // authentication
         BlocProvider<AuthenticationBloc>(
-          create: (BuildContext context) => AuthenticationBloc(
+          create: (context) => AuthenticationBloc(
             themeBloc: context.read<ThemeBloc>(),
           ),
         ),
@@ -31,7 +31,7 @@ class GlobalBlocProvider extends StatelessWidget {
         // can't be lazy since initialization starts upon bloc creation
         BlocProvider<ApplicationBloc>(
           lazy: false,
-          create: (BuildContext context) => ApplicationBloc(
+          create: (context) => ApplicationBloc(
             authenticationBloc: context.read<AuthenticationBloc>(),
             themeBloc: context.read<ThemeBloc>(),
           ),

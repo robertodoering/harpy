@@ -8,21 +8,21 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Displays global trends after typing `#`.
 class ComposeTweetTrends extends StatelessWidget {
   const ComposeTweetTrends({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TrendsBloc>(
-      create: (BuildContext context) => TrendsBloc(),
+      create: (context) => TrendsBloc(),
       child: Builder(
-        builder: (BuildContext context) {
-          final TrendsBloc bloc = context.watch<TrendsBloc>();
-          final TrendsState state = bloc.state;
+        builder: (context) {
+          final bloc = context.watch<TrendsBloc>();
+          final state = bloc.state;
 
-          Widget child;
+          Widget? child;
 
           if (state.hasTrends) {
             child = TrendSuggestions(controller: controller);
@@ -31,9 +31,9 @@ class ComposeTweetTrends extends StatelessWidget {
           return ComposeTweetSuggestions(
             controller: controller,
             selectionRegExp: hashtagStartRegex,
-            onSearch: (String hashtag) {
+            onSearch: (hashtag) {
               if (state is TrendsInitial) {
-                bloc.add(const FindTrendsEvent.global());
+                bloc.add(const FindTrendsEvent());
               }
             },
             child: child,
@@ -46,16 +46,16 @@ class ComposeTweetTrends extends StatelessWidget {
 
 class TrendSuggestions extends StatelessWidget {
   const TrendSuggestions({
-    @required this.controller,
+    required this.controller,
   });
 
-  final ComposeTextController controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TrendsBloc bloc = context.watch<TrendsBloc>();
-    final TrendsState state = bloc.state;
+    final theme = Theme.of(context);
+    final bloc = context.watch<TrendsBloc>();
+    final state = bloc.state;
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -67,7 +67,7 @@ class TrendSuggestions extends StatelessWidget {
           ),
           child: Text(
             'worldwide trends',
-            style: theme.textTheme.subtitle1.copyWith(
+            style: theme.textTheme.subtitle1!.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -82,12 +82,12 @@ class TrendSuggestions extends StatelessWidget {
                   horizontal: defaultPaddingValue,
                 ),
                 text: Text(
-                  trend.name,
-                  style: theme.textTheme.bodyText1.copyWith(
+                  trend.name!,
+                  style: theme.textTheme.bodyText1!.copyWith(
                     color: theme.accentColor,
                   ),
                 ),
-                onTap: () => controller.replaceSelection('${trend.name} '),
+                onTap: () => controller!.replaceSelection('${trend.name} '),
               ),
           ],
         )

@@ -38,8 +38,8 @@ class BetaInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final ThemeData theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       title: 'beta info',
@@ -60,7 +60,7 @@ class BetaInfoScreen extends StatelessWidget {
 
 class ContentCard extends StatelessWidget {
   const ContentCard({
-    @required this.children,
+    required this.children,
   });
 
   final List<Widget> children;
@@ -81,16 +81,16 @@ class ContentCard extends StatelessWidget {
 
 class LinkText extends StatelessWidget {
   const LinkText({
-    @required this.text,
+    required this.text,
     this.onTap,
   });
 
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: onTap,

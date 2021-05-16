@@ -21,23 +21,23 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
   ///
   /// When the controller completes, it resets and starts reversing the
   /// [_opacityController] assuming it is completed.
-  AnimationController _hideOverlayController;
+  late AnimationController _hideOverlayController;
 
   /// Handles the opacity animation for the overlay.
   ///
   /// When the controller completes, it starts the [_hideOverlayController] that
   /// will eventually reverse this controller.
-  AnimationController _opacityController;
-  Animation<double> _opacityAnimation;
+  late AnimationController _opacityController;
+  late Animation<double> _opacityAnimation;
 
   /// The center play / pause icon.
   ///
   /// Stored in the instance to prevent the fade animation to play when entering
   /// fullscreen.
-  Widget _centerIcon;
+  Widget? _centerIcon;
 
-  Widget _forwardIcon;
-  Widget _rewindIcon;
+  Widget? _forwardIcon;
+  Widget? _rewindIcon;
 
   /// Whether the replay icon should fade in when the video finishes.
   ///
@@ -71,7 +71,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     ).animate(_opacityController);
 
     _model.addActionListener(_onVideoPlayerAction);
-    _model.controller.addListener(_videoControllerListener);
+    _model.controller!.addListener(_videoControllerListener);
 
     if (!_model.playing) {
       // show overlay when building overlay with the player paused (e.g. when
@@ -90,7 +90,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     _hideOverlayController.dispose();
     _opacityController.dispose();
     _model.removeActionListener(_onVideoPlayerAction);
-    _model.controller.removeListener(_videoControllerListener);
+    _model.controller!.removeListener(_videoControllerListener);
 
     super.dispose();
   }
@@ -218,6 +218,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                 onDoubleTap: _onRewind,
               ),
             ),
+            Expanded(child: GestureDetector(onTap: _onVideoTap)),
             Expanded(
               child: GestureDetector(
                 onTap: _onVideoTap,
@@ -240,11 +241,11 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             onTap: _onVideoTap,
           )
         else if (_centerIcon != null)
-          _centerIcon
+          _centerIcon!
         else if (_forwardIcon != null)
-          Positioned.fill(child: _forwardIcon)
+          Positioned.fill(child: _forwardIcon!)
         else if (_rewindIcon != null)
-          Positioned.fill(child: _rewindIcon),
+          Positioned.fill(child: _rewindIcon!),
       ],
     );
   }

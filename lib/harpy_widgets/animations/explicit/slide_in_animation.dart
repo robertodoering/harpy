@@ -8,8 +8,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// translation.
 class SlideInAnimation extends StatefulWidget {
   const SlideInAnimation({
-    @required this.child,
-    @required this.offset,
+    required this.child,
+    required this.offset,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
@@ -27,8 +27,8 @@ class SlideInAnimation extends StatefulWidget {
 
 class _SlideInAnimationState extends State<SlideInAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   bool _hidden = false;
 
@@ -60,7 +60,7 @@ class _SlideInAnimationState extends State<SlideInAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget child) => _hidden
+      builder: (_, __) => _hidden
           ? Container()
           : Transform.translate(
               offset: Offset(
@@ -69,7 +69,6 @@ class _SlideInAnimationState extends State<SlideInAnimation>
               ),
               child: widget.child,
             ),
-      child: widget.child,
     );
   }
 }

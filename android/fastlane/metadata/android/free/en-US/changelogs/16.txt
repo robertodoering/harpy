@@ -1,4 +1,6 @@
 Version 0.2.4
+2020-09-24
+
 · Added Tweet replies screen
 · Added Tweet action button animations
 · Added compact layout settings

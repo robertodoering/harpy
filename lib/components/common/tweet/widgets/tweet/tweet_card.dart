@@ -13,7 +13,7 @@ class TweetCard extends StatelessWidget {
   }) : super(key: ValueKey<int>(tweet.hashCode));
 
   final TweetData tweet;
-  final Color color;
+  final Color? color;
   final int depth;
   final bool rememberVisibility;
 

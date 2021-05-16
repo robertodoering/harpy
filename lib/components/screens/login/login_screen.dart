@@ -7,6 +7,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
@@ -21,11 +22,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _startLogin({@required bool webview}) async {
-    HapticFeedback.mediumImpact();
-    await _slideLoginKey.currentState.forward();
+  Future<void> _startLogin() async {
+    unawaited(HapticFeedback.mediumImpact());
+    await _slideLoginKey.currentState!.forward();
 
-    context.read<AuthenticationBloc>().add(LoginEvent(webview: webview));
+    context.read<AuthenticationBloc>().add(const LoginEvent());
   }
 
   Widget _buildAboutButton(ThemeData theme) {
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: HarpyButton.flat(
           icon: Icon(
             CupertinoIcons.info,
-            color: theme.textTheme.bodyText1.color.withOpacity(.8),
+            color: theme.textTheme.bodyText1!.color!.withOpacity(.8),
           ),
           padding: const EdgeInsets.all(16),
           onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildTitle(ThemeData theme) {
-    final Color color = theme.textTheme.bodyText2.color;
+    final color = theme.textTheme.bodyText2!.color;
 
     return FractionallySizedBox(
       widthFactor: 2 / 3,
@@ -86,15 +87,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        _LegacyLoginButton(onTap: () => _startLogin(webview: false)),
-        const SizedBox(height: 8),
-        _WebviewLoginButton(onTap: () => _startLogin(webview: true)),
+        _LoginButton(onTap: _startLogin),
       ],
     );
   }
 
   Widget _buildLoginScreen(ThemeData theme) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
 
     return SlideAnimation(
       key: _slideLoginKey,
@@ -116,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 16),
               Expanded(child: _buildButtons()),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
               SizedBox(height: mediaQuery.padding.bottom),
             ],
           ),
@@ -128,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (BuildContext context, AuthenticationState state) {
-        final ThemeData theme = Theme.of(context);
+      builder: (context, state) {
+        final theme = Theme.of(context);
 
         return HarpyBackground(
           child: state is AwaitingAuthenticationState
@@ -141,9 +140,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _LegacyLoginButton extends StatelessWidget {
-  const _LegacyLoginButton({
-    @required this.onTap,
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
+    required this.onTap,
   });
 
   final VoidCallback onTap;
@@ -154,30 +153,6 @@ class _LegacyLoginButton extends StatelessWidget {
       delay: const Duration(milliseconds: 2800),
       child: HarpyButton.raised(
         text: const Text('login with twitter'),
-        onTap: onTap,
-      ),
-    );
-  }
-}
-
-class _WebviewLoginButton extends StatelessWidget {
-  const _WebviewLoginButton({
-    @required this.onTap,
-  });
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeAnimation(
-      delay: const Duration(milliseconds: 3100),
-      duration: kLongAnimationDuration,
-      shouldHide: false,
-      child: HarpyButton.flat(
-        text: const Text(
-          'trouble signing in? try webview login',
-          style: TextStyle(fontSize: 13),
-        ),
         onTap: onTap,
       ),
     );

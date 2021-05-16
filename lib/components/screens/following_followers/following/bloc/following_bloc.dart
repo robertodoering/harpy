@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 part 'following_event.dart';
 
 class FollowingBloc extends FollowingFollowersBloc {
   FollowingBloc({
-    @required String userId,
+    required String? userId,
   }) : super(userId: userId) {
     add(const LoadFollowingUsers());
   }

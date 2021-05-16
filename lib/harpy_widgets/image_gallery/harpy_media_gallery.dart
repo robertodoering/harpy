@@ -6,7 +6,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 /// Signature for a function that returns a hero tag based on the [index].
-typedef HeroTagBuilder = Object Function(int index);
+typedef HeroTagBuilder = Object? Function(int index);
 
 /// Signature for a function that returns the border radius for the flight
 /// shuttle builder in the hero animation.
@@ -17,24 +17,22 @@ typedef BorderRadiusBuilder = BorderRadius Function(int index);
 /// Builds a [PhotoViewGallery] to show media widgets in a [HeroDialogRoute].
 class HarpyMediaGallery extends StatelessWidget {
   const HarpyMediaGallery.builder({
-    @required this.builder,
-    @required this.itemCount,
+    required this.builder,
+    required this.itemCount,
     this.initialIndex = 0,
     this.heroTagBuilder,
     this.heroPlaceholderBuilder,
     this.beginBorderRadiusBuilder = defaultBeginBorderRadiusBuilder,
     this.onPageChanged,
-  })  : assert(builder != null),
-        assert(itemCount != null),
-        assert(initialIndex != null);
+  });
 
   final IndexedWidgetBuilder builder;
   final int itemCount;
   final int initialIndex;
-  final HeroTagBuilder heroTagBuilder;
-  final HeroPlaceholderBuilder heroPlaceholderBuilder;
+  final HeroTagBuilder? heroTagBuilder;
+  final HeroPlaceholderBuilder? heroPlaceholderBuilder;
   final BorderRadiusBuilder beginBorderRadiusBuilder;
-  final PhotoViewGalleryPageChangedCallback onPageChanged;
+  final PhotoViewGalleryPageChangedCallback? onPageChanged;
 
   static BorderRadius defaultBeginBorderRadiusBuilder(int index) {
     return kDefaultBorderRadius;
@@ -47,11 +45,11 @@ class HarpyMediaGallery extends StatelessWidget {
     BuildContext fromHeroContext,
     BuildContext toHeroContext,
   ) {
-    final Hero hero = flightDirection == HeroFlightDirection.push
-        ? fromHeroContext.widget
-        : toHeroContext.widget;
+    final hero = flightDirection == HeroFlightDirection.push
+        ? fromHeroContext.widget as Hero
+        : toHeroContext.widget as Hero;
 
-    final BorderRadiusTween tween = BorderRadiusTween(
+    final tween = BorderRadiusTween(
       begin: beginBorderRadiusBuilder(index),
       end: BorderRadius.zero,
     );
@@ -75,10 +73,10 @@ class HarpyMediaGallery extends StatelessWidget {
         placeholderBuilder: heroPlaceholderBuilder,
         flightShuttleBuilder: (
           _,
-          Animation<double> animation,
-          HeroFlightDirection flightDirection,
-          BuildContext fromHeroContext,
-          BuildContext toHeroContext,
+          animation,
+          flightDirection,
+          fromHeroContext,
+          toHeroContext,
         ) =>
             _flightShuttleBuilder(
           index,
@@ -101,7 +99,7 @@ class HarpyMediaGallery extends StatelessWidget {
       pageController: PageController(initialPage: initialIndex),
       backgroundDecoration: const BoxDecoration(color: Colors.transparent),
       onPageChanged: onPageChanged,
-      builder: (_, int index) => PhotoViewGalleryPageOptions.customChild(
+      builder: (_, index) => PhotoViewGalleryPageOptions.customChild(
         initialScale: PhotoViewComputedScale.covered,
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 3,

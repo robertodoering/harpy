@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-/// A tab for a [HarpySliverTabView].
+/// A tab for a [HarpyTabBar].
 class HarpyTab extends StatefulWidget {
   const HarpyTab({
-    @required this.icon,
+    required this.icon,
     this.text,
     this.cardColor,
   });
 
   final Widget icon;
-  final Widget text;
+  final Widget? text;
 
-  final Color cardColor;
+  final Color? cardColor;
 
   /// The height of a tab.
   static const double height = tabPadding * 2 + tabIconSize;
@@ -30,11 +31,11 @@ class _HarpyTabState extends State<HarpyTab>
   ///
   /// 1: Tab content is fully in view and tab should appear selected.
   /// 0: Tab content is not visible.
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
-  Animation<Color> _colorAnimation;
-  Animation<double> _opacityAnimation;
-  Animation<double> _textOpacityAnimation;
+  late Animation<Color?> _colorAnimation;
+  late Animation<double> _opacityAnimation;
+  late Animation<double> _textOpacityAnimation;
 
   @override
   void initState() {
@@ -63,13 +64,15 @@ class _HarpyTabState extends State<HarpyTab>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _animationController.value = HarpyTabScope.of(context)?.animationValue;
+    if (HarpyTabScope.of(context) != null) {
+      _animationController.value = HarpyTabScope.of(context)!.animationValue;
+    }
 
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     _colorAnimation = ColorTween(
       begin: theme.accentColor,
-      end: theme.textTheme.subtitle1.color,
+      end: theme.textTheme.subtitle1!.color,
     ).animate(_animationController);
   }
 
@@ -89,7 +92,7 @@ class _HarpyTabState extends State<HarpyTab>
         child: Row(
           children: <Widget>[
             defaultSmallHorizontalSpacer,
-            widget.text,
+            widget.text!,
           ],
         ),
       ),
@@ -98,12 +101,12 @@ class _HarpyTabState extends State<HarpyTab>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final IconThemeData iconTheme = IconTheme.of(context);
+    final theme = Theme.of(context);
+    final iconTheme = IconTheme.of(context);
 
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (_, Widget child) => Opacity(
+      builder: (_, __) => Opacity(
         opacity: _opacityAnimation.value,
         child: Card(
           color: widget.cardColor,
@@ -115,7 +118,7 @@ class _HarpyTabState extends State<HarpyTab>
                 size: HarpyTab.tabIconSize,
               ),
               child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1.copyWith(
+                style: theme.textTheme.subtitle1!.copyWith(
                   color: _colorAnimation.value,
                 ),
                 child: SizedBox(
@@ -139,12 +142,11 @@ class _HarpyTabState extends State<HarpyTab>
 /// Exposes values for the [HarpyTab].
 class HarpyTabScope extends InheritedWidget {
   const HarpyTabScope({
-    Key key,
-    @required this.index,
-    @required this.animationValue,
-    @required Widget child,
-  })  : assert(child != null),
-        super(key: key, child: child);
+    required this.index,
+    required this.animationValue,
+    required Widget child,
+    Key? key,
+  }) : super(key: key, child: child);
 
   final int index;
 
@@ -152,7 +154,7 @@ class HarpyTabScope extends InheritedWidget {
   /// for [index] is in view.
   final double animationValue;
 
-  static HarpyTabScope of(BuildContext context) {
+  static HarpyTabScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<HarpyTabScope>();
   }
 

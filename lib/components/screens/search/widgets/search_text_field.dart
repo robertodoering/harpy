@@ -14,18 +14,18 @@ class SearchTextField extends StatelessWidget {
     this.autofocus = false,
   });
 
-  final String text;
-  final ValueChanged<String> onSubmitted;
-  final VoidCallback onClear;
-  final String hintText;
+  final String? text;
+  final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onClear;
+  final String? hintText;
   final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final HarpyTheme harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final harpyTheme = HarpyTheme.of(context);
 
-    final Color fillColor = theme.brightness == Brightness.light
+    final fillColor = theme.brightness == Brightness.light
         ? Colors.black.withOpacity(.05)
         : Colors.white.withOpacity(.05);
 

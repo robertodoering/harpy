@@ -7,13 +7,13 @@ class NewTweetsText extends StatelessWidget {
 
   final int amount;
 
-  String get _text => amount != null && amount > 0
+  String get _text => amount > 0
       ? '$amount new tweet${amount > 1 ? 's' : ''} since last visit'
       : 'new tweets since last visit';
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),

@@ -13,22 +13,22 @@ class LanguageSettingsScreen extends StatefulWidget {
 }
 
 class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
-  final LanguagePreferences languagePreferences = app<LanguagePreferences>();
+  final LanguagePreferences? languagePreferences = app<LanguagePreferences>();
 
   Widget _buildTranslateSetting(Locale locale) {
-    final Map<String, String> translateValues = Map<String, String>.of(
+    final translateValues = Map<String, String>.of(
       translateLanguages,
     );
 
-    final String systemDefault = mapLanguageCodeToTranslateLanguage(
+    final systemDefault = mapLanguageCodeToTranslateLanguage(
       locale.languageCode,
     );
 
     translateValues[systemDefault] = '${translateValues[systemDefault]} '
         '(default)';
 
-    final String languageCode = languagePreferences.hasSetTranslateLanguage
-        ? languagePreferences.translateLanguage
+    final languageCode = languagePreferences!.hasSetTranslateLanguage
+        ? languagePreferences!.translateLanguage
         : systemDefault;
 
     return RadioDialogTile<String>(
@@ -40,8 +40,8 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
       denseRadioTiles: true,
       titles: translateValues.values.toList(),
       values: translateLanguages.keys.toList(),
-      onChanged: (String value) {
-        setState(() => languagePreferences.translateLanguage = value);
+      onChanged: (value) {
+        setState(() => languagePreferences!.translateLanguage = value!);
       },
     );
   }
@@ -60,7 +60,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Locale locale = Localizations.localeOf(context);
+    final locale = Localizations.localeOf(context);
 
     return HarpyScaffold(
       title: 'language',
