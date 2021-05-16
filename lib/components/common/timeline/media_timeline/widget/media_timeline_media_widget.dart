@@ -37,8 +37,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
         onTap: onImageTap,
         onLongPress: () => _onLongPress(context),
         child: AspectRatio(
-          // switch between 16 / 9 and 8 / 9 (twice as tall as 16 / 9)
-          aspectRatio: index.isEven ? 8 / 9 : 16 / 9,
+          aspectRatio: entry.media!.aspectRatioDouble,
           child: HarpyImage(
             imageUrl: entry.media!.appropriateUrl!,
             fit: BoxFit.cover,
@@ -52,7 +51,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
 
   Widget _buildGif(BuildContext context) {
     return AspectRatio(
-      aspectRatio: entry.videoData!.aspectRatioDouble,
+      aspectRatio: entry.media!.aspectRatioDouble,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
           entry.videoData!.appropriateUrl!,

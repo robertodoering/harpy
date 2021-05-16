@@ -7,6 +7,9 @@ abstract class MediaData {
 
   /// The url with the best quality available.
   String? get bestUrl;
+
+  /// The aspect ratio of the image or video.
+  double get aspectRatioDouble;
 }
 
 /// The image data for a tweet.
@@ -38,6 +41,9 @@ class ImageData extends MediaData {
   String get small => '$baseUrl?name=small&format=jpg';
   String get medium => '$baseUrl?name=medium&format=jpg';
   String get large => '$baseUrl?name=large&format=jpg';
+
+  @override
+  double get aspectRatioDouble => aspectRatio;
 
   /// The image url used to download the image.
   @override
@@ -85,7 +91,9 @@ class VideoData extends MediaData {
   bool get validAspectRatio => aspectRatio.length == 2;
 
   /// The [aspectRatio] as a double.
-  double get aspectRatioDouble => aspectRatio[0] / aspectRatio[1];
+  @override
+  double get aspectRatioDouble =>
+      aspectRatio.length == 2 ? aspectRatio[0] / aspectRatio[1] : 16 / 9;
 
   /// The video url for videos (and gifs) shown in the app.
   ///

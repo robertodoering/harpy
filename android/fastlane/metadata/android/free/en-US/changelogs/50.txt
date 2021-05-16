@@ -1,3 +1,4 @@
 Version 0.6.2
 
+· Removed cropping images in the media timeline
 · Fixed timeline jumping when loading images
