@@ -29,16 +29,20 @@ class UserProfileScreen extends StatelessWidget {
             return const UserProfileLoading();
           } else if (state is InitializedUserState ||
               state is TranslatingDescriptionState) {
-            return FadeAnimation(
-              duration: kShortAnimationDuration,
-              curve: Curves.easeInOut,
-              child: UserProfileContent(bloc: bloc),
+            return HarpyBackground(
+              child: FadeAnimation(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeInOut,
+                child: UserProfileContent(bloc: bloc),
+              ),
             );
           } else {
-            return FadeAnimation(
-              duration: kShortAnimationDuration,
-              curve: Curves.easeInOut,
-              child: UserProfileError(bloc, screenName: screenName),
+            return HarpyBackground(
+              child: FadeAnimation(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeInOut,
+                child: UserProfileError(bloc, screenName: screenName),
+              ),
             );
           }
         },
