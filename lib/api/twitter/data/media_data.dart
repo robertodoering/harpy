@@ -13,12 +13,26 @@ abstract class MediaData {
 class ImageData extends MediaData {
   ImageData.fromMedia(Media media) {
     baseUrl = media.mediaUrlHttps ?? '';
+
+    if (media.sizes?.large?.w != null && media.sizes?.large?.h != null) {
+      aspectRatio = media.sizes!.large!.w! / media.sizes!.large!.h!;
+    } else {
+      aspectRatio = 16 / 9;
+    }
   }
 
   ImageData.fromImageUrl(this.baseUrl);
 
   /// The base url for the image.
   late String baseUrl;
+
+  /// The aspect ratio of the image.
+  ///
+  /// The [large] size is used to calculate the aspect ratio but should be the
+  /// same as [small] and [medium].
+  ///
+  /// [thumb] sized images are always in a 1:1 aspect ratio.
+  late double aspectRatio;
 
   String get thumb => '$baseUrl?name=thumb&format=jpg';
   String get small => '$baseUrl?name=small&format=jpg';

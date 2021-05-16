@@ -23,6 +23,10 @@ class TweetMedia extends StatelessWidget {
     double? aspectRatio;
 
     if (tweet.hasImages) {
+      if (tweet.hasSingleImage) {
+        aspectRatio = tweet.images!.first.aspectRatio;
+      }
+
       child = TweetImages(
         tweet,
         tweetBloc: bloc,
@@ -45,7 +49,7 @@ class TweetMedia extends StatelessWidget {
 
     return TweetMediaLayout(
       isImage: tweet.hasImages,
-      videoAspectRatio: aspectRatio,
+      aspectRatio: aspectRatio,
       uncroppedImage: uncroppedImage,
       child: child,
     );

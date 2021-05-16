@@ -147,7 +147,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
   Widget build(BuildContext context) {
     return TweetMediaLayout(
       isImage: false,
-      videoAspectRatio: _aspectRatio,
+      aspectRatio: _aspectRatio,
       child: ClipRRect(
         key: ValueKey<VideoPlayerController?>(_controller),
         clipBehavior: Clip.hardEdge,

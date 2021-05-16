@@ -107,21 +107,12 @@ class _TweetImagesState extends State<TweetImages> {
 
   List<Widget> _buildImages() {
     return _images!.map((image) {
-      Widget child = HarpyImage(
+      final child = HarpyImage(
         imageUrl: image.appropriateUrl,
         fit: BoxFit.cover,
         width: double.infinity,
-        height: widget.uncroppedImage ? null : double.infinity,
+        height: double.infinity,
       );
-
-      if (widget.uncroppedImage) {
-        // after the image loads the height might change, so we want to
-        // animate the change
-        child = CustomAnimatedSize(
-          duration: kLongAnimationDuration,
-          child: child,
-        );
-      }
 
       return Hero(
         tag: _imageHeroTag(image),
