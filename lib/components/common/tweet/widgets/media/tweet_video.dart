@@ -50,6 +50,7 @@ class TweetVideo extends StatelessWidget {
           onVideoPlayerLongPress: () => showTweetMediaBottomSheet(
             context,
             url: tweetBloc.downloadMediaUrl(tweet!),
+            mediaType: MediaType.video,
           ),
           autoplay: mediaPreferences.shouldAutoplayVideos,
           allowVerticalOverflow: true,

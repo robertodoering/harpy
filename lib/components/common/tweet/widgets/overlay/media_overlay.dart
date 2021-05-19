@@ -14,8 +14,8 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 }
 
 /// Default behaviour to download a tweet media.
-void defaultOnMediaDownload(String? mediaUrl) {
-  if (mediaUrl != null) {
+void defaultOnMediaDownload(MediaType? type, String? mediaUrl) {
+  if (type != null && mediaUrl != null) {
     final downloadService = app<DownloadService>();
 
     final url = mediaUrl;
@@ -23,7 +23,7 @@ void defaultOnMediaDownload(String? mediaUrl) {
 
     if (fileName != null) {
       downloadService
-          .download(url: url, name: fileName)
+          .download(url: url, name: fileName, mediaType: type)
           .catchError(silentErrorHandler);
     }
   }
@@ -95,7 +95,8 @@ class MediaOverlay extends StatefulWidget {
           enableImmersiveMode: enableImmersiveMode,
           enableDismissible: enableDismissible,
           overlap: overlap,
-          onDownload: onDownload ?? () => defaultOnMediaDownload(mediaUrl),
+          onDownload: onDownload ??
+              () => defaultOnMediaDownload(tweet.mediaType, mediaUrl),
           onOpenExternally:
               onOpenExternally ?? () => defaultOnMediaOpenExternally(mediaUrl),
           onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),

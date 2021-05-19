@@ -45,7 +45,6 @@ class InitializeEvent extends ApplicationEvent {
       FlutterDisplayMode.setHighRefreshRate(),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
-      app<DownloadService>().initialize(),
     ]);
   }
 
