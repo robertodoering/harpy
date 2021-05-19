@@ -80,7 +80,7 @@ class HarpyScaffold extends StatelessWidget {
       elevation: 0,
       actions: actions,
       leading: _leading(context),
-      title: title?.isNotEmpty == true ? _buildTitle(theme) : null,
+      title: title != null && title!.isNotEmpty ? _buildTitle(theme) : null,
       bottom: appBarBottom,
     );
 

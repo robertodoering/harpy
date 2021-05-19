@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 void main() {
   group('tweet search filter', () {
     test('builds an empty query with an empty filter', () {
-      const filter = TweetSearchFilter();
+      const filter = TweetSearchFilter.empty;
 
       expect(filter.buildQuery(), equals(''));
     });

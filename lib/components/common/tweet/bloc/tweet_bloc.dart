@@ -34,7 +34,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   /// Returns the download url for the [tweet].
   String? downloadMediaUrl(TweetData tweet, {int? index}) {
     if (tweet.hasMedia) {
-      if (tweet.images?.isNotEmpty == true) {
+      if (tweet.hasImages) {
         return tweet.images![index ?? 0].bestUrl;
       } else if (tweet.gif != null) {
         return tweet.gif!.bestUrl;

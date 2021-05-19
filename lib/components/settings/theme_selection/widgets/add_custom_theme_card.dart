@@ -21,7 +21,7 @@ class AddCustomThemeCard extends StatelessWidget {
         builder: (_) => const ProDialog(feature: 'theme customization'),
       );
 
-      if (result == true) {
+      if (result != null && result) {
         // todo: add try pro feature analytics
         app<HarpyNavigator>().pushCustomTheme(
           themeData: themeData,

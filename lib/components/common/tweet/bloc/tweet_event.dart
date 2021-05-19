@@ -226,10 +226,13 @@ class TranslateTweet extends TweetEvent {
     ]);
 
     // show an info when the tweet or quote was unable to be translated
-    if (tweetTranslatable && bloc.tweet.translation?.unchanged != false) {
+    if (tweetTranslatable &&
+        bloc.tweet.translation != null &&
+        bloc.tweet.translation!.unchanged) {
       app<MessageService>().show('tweet not translated');
     } else if (quoteTranslatable &&
-        bloc.tweet.quote!.translation?.unchanged != false) {
+        bloc.tweet.quote?.translation != null &&
+        bloc.tweet.quote!.translation!.unchanged) {
       app<MessageService>().show('quoted tweet not translated');
     }
 
@@ -255,7 +258,7 @@ abstract class MediaActionEvent extends TweetEvent {
   /// Returns the url of the selected media or `null` if no url exist.
   String? get mediaUrl {
     if (tweet.hasMedia) {
-      if (tweet.images?.isNotEmpty == true) {
+      if (tweet.hasImages) {
         return tweet.images![index ?? 0].baseUrl;
       } else if (tweet.gif != null) {
         return tweet.gif!.variants.first.url;

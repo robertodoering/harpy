@@ -57,7 +57,7 @@ class CustomThemeScreen extends StatelessWidget {
         ),
       );
 
-      pop = discard == true;
+      pop = discard != null && discard;
     }
 
     if (pop) {

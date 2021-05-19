@@ -15,7 +15,7 @@ class TweetSearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TweetSearchFilterModel>(
-      create: (_) => TweetSearchFilterModel(const TweetSearchFilter()),
+      create: (_) => TweetSearchFilterModel(TweetSearchFilter.empty),
       child: BlocProvider<TweetSearchBloc>(
         create: (_) => TweetSearchBloc(initialSearchQuery: initialSearchQuery),
         child: const HarpyScaffold(

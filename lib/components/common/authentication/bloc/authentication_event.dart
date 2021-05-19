@@ -65,7 +65,7 @@ abstract class AuthenticationEvent {
         ),
       );
 
-      if (retry == true) {
+      if (retry != null && retry) {
         return initializeAuthenticatedUser(bloc);
       } else {
         return false;

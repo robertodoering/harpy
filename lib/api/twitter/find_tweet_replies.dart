@@ -65,7 +65,9 @@ extension RepliesExtension on TweetSearchService {
     // expect no more replies exists if no replies in the last 2 requests have
     // been found
     final lastPage = result.statuses!.length < 100 ||
-        (lastResult?.replies.isEmpty == true && replies.isEmpty);
+        (lastResult?.replies != null &&
+            lastResult!.replies.isEmpty == true &&
+            replies.isEmpty);
 
     return RepliesResult(
       replies: replies,

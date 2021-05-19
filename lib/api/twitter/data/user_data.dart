@@ -108,21 +108,24 @@ class UserData {
   /// Whether the authenticated user is following this user.
   ///
   /// Returns `false` if [connections] is `null`.
-  bool get following => connections?.contains('following') == true;
+  bool get following =>
+      connections != null && connections!.contains('following');
 
   /// Whether this user follows the authenticated user.
   ///
   /// Returns `false` if [connections] is `null`.
-  bool get follows => connections?.contains('followed_by') == true;
+  bool get follows =>
+      connections != null && connections!.contains('followed_by');
 
   /// Whether this user has a description.
-  bool get hasDescription => description?.isNotEmpty == true;
+  bool get hasDescription => description != null && description!.isNotEmpty;
 
   /// Whether this user has a url for their profile.
-  bool get hasUrl => entities?.url?.urls?.isNotEmpty == true;
+  bool get hasUrl =>
+      entities?.url?.urls != null && entities!.url!.urls!.isNotEmpty;
 
   /// Whether this user has a location set for their profile.
-  bool get hasLocation => location?.isNotEmpty == true;
+  bool get hasLocation => location != null && location!.isNotEmpty;
 
   /// Whether this user has a created at time.
   bool get hasCreatedAt => createdAt != null;

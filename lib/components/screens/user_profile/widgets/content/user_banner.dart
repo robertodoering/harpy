@@ -31,7 +31,7 @@ class UserBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (bloc.user?.hasBanner == true) {
+    if (bloc.user != null && bloc.user!.hasBanner) {
       final url = bloc.user!.appropriateUserBannerUrl;
 
       return GestureDetector(

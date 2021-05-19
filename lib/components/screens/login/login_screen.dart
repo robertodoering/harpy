@@ -22,11 +22,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _startLogin() async {
+  Future<void> _startLogin(AuthenticationBloc bloc) async {
     unawaited(HapticFeedback.mediumImpact());
     await _slideLoginKey.currentState!.forward();
 
-    context.read<AuthenticationBloc>().add(const LoginEvent());
+    bloc.add(const LoginEvent());
   }
 
   Widget _buildAboutButton(ThemeData theme) {
@@ -87,7 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        _LoginButton(onTap: _startLogin),
+        _LoginButton(
+          onTap: () => _startLogin(context.read<AuthenticationBloc>()),
+        ),
       ],
     );
   }

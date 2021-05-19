@@ -22,7 +22,8 @@ class TweetData {
       quotedStatusUrl = tweet.quotedStatusPermalink?.url;
     }
 
-    if (tweet.extendedEntities?.media?.isNotEmpty == true) {
+    if (tweet.extendedEntities?.media != null &&
+        tweet.extendedEntities!.media!.isNotEmpty) {
       for (final media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
           images ??= <ImageData>[];
@@ -88,7 +89,7 @@ class TweetData {
   /// added to the [fullText] for this tweet.
   set hasText(bool hasText) => _hasText = hasText;
   bool? _hasText;
-  bool get hasText => _hasText != false;
+  bool get hasText => _hasText != null && _hasText!;
 
   /// If this [TweetData] is a retweet, the [retweetUserName] is the name of the
   /// person that retweeted this tweet.
@@ -182,7 +183,7 @@ class TweetData {
   /// Whether this tweet has up to 4 images, a video or a gif.
   bool get hasMedia => hasImages || hasVideo || hasGif;
 
-  bool get hasImages => images?.isNotEmpty == true;
+  bool get hasImages => images != null && images!.isNotEmpty == true;
   bool get hasSingleImage => hasImages && images!.length == 1;
   bool get hasVideo => video != null;
   bool get hasGif => gif != null;
@@ -201,10 +202,11 @@ class TweetData {
 
   /// Whether the quote of this tweet can be translated, if one exists.
   bool quoteTranslatable(String translateLanguage) =>
-      quote?.translatable.call(translateLanguage) == true;
+      quote != null && quote!.translatable(translateLanguage);
 
   /// Whether this tweet is a reply to another tweet.
-  bool get hasParent => inReplyToStatusIdStr?.isNotEmpty == true;
+  bool get hasParent =>
+      inReplyToStatusIdStr != null && inReplyToStatusIdStr!.isNotEmpty;
 
   /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(RouteSettings route) {

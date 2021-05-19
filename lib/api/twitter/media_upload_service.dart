@@ -89,10 +89,12 @@ class MediaUploadService {
     final uploadStatus =
         await twitterApi!.mediaService.uploadStatus(mediaId: mediaId);
 
-    if (uploadStatus.processingInfo?.succeeded == true) {
+    if (uploadStatus.processingInfo != null &&
+        uploadStatus.processingInfo!.succeeded) {
       // upload processing has succeeded
       return uploadStatus;
-    } else if (uploadStatus.processingInfo?.inProgress == true) {
+    } else if (uploadStatus.processingInfo != null &&
+        uploadStatus.processingInfo!.inProgress) {
       // upload is still processing, need to wait longer
       return _waitForUploadCompletion(
         mediaId: mediaId,

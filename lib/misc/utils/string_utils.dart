@@ -89,13 +89,13 @@ String? trimOne(
   bool start = true,
   bool end = true,
 }) {
-  if (source?.isNotEmpty == true) {
-    if (start && _unicodeWhitespaces.contains(source!.codeUnitAt(0))) {
+  if (source != null && source.isNotEmpty == true) {
+    if (start && _unicodeWhitespaces.contains(source.codeUnitAt(0))) {
       source = source.substring(1, source.length);
     }
 
     if (end &&
-        source!.isNotEmpty &&
+        source.isNotEmpty &&
         _unicodeWhitespaces.contains(source.codeUnitAt(source.length - 1))) {
       source = source.substring(0, source.length - 1);
     }
