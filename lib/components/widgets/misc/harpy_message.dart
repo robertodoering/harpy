@@ -20,6 +20,8 @@ class HarpyMessageState extends State<HarpyMessage> {
   final GlobalKey<ScaffoldMessengerState> _messengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
+  ScaffoldMessengerState get state => _messengerKey.currentState!;
+
   void show(String message, [SnackBarAction? action]) {
     _messengerKey.currentState!.showSnackBar(
       SnackBar(
@@ -27,6 +29,10 @@ class HarpyMessageState extends State<HarpyMessage> {
         action: action,
       ),
     );
+  }
+
+  void showCustom(SnackBar snackBar) {
+    _messengerKey.currentState!.showSnackBar(snackBar);
   }
 
   @override
