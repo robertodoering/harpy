@@ -39,7 +39,7 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
             name: fileName,
             tryCache: type == MediaType.image,
             onSuccess: () => notifier.value = DownloadStatus(
-              message: 'saved ${type.name}',
+              message: '${type.name} saved',
               state: DownloadState.successful,
             ),
             onFailure: () => notifier.value = const DownloadStatus(
