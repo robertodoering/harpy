@@ -3,6 +3,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
 
+/// Builds a status message based on the [DownloadStatus] of the [notifier].
 class DownloadStatusMessage extends StatefulWidget {
   const DownloadStatusMessage({
     required this.notifier,

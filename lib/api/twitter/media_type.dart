@@ -9,3 +9,17 @@ enum MediaType {
   gif,
   video,
 }
+
+extension MediaTypeExtension on MediaType {
+  /// The human readable name of the type.
+  String get name {
+    switch (this) {
+      case MediaType.gif:
+        return 'gif';
+      case MediaType.video:
+        return 'video';
+      case MediaType.image:
+        return 'image';
+    }
+  }
+}
