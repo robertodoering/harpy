@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/settings/layout/font/font_settings_screen.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 
 class LayoutSettingsScreen extends StatefulWidget {
   const LayoutSettingsScreen();
@@ -28,11 +30,14 @@ class _LayoutSettingsScreenState extends State<LayoutSettingsScreen> {
           setState(() => layoutPreferences!.compactMode = value);
         },
       ),
-      const ListTile(
-        leading: Icon(CupertinoIcons.textformat),
-        title: Text('Font'),
-        subtitle: Text('coming soon!'),
-        enabled: false,
+      ListTile(
+        leading: const Icon(CupertinoIcons.textformat),
+        title: const Text('Font'),
+        onTap: () {
+          app<HarpyNavigator>().pushNamed(
+            FontSettingsScreen.route,
+          );
+        },
       ),
     ];
   }

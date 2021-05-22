@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/settings/layout/font/font_settings_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -270,6 +271,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case LayoutSettingsScreen.route:
       screen = const LayoutSettingsScreen();
+      break;
+    case FontSettingsScreen.route:
+      screen = const FontSettingsScreen();
       break;
     case MediaSettingsScreen.route:
       screen = const MediaSettingsScreen();
