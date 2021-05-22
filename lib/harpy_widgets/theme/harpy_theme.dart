@@ -263,11 +263,12 @@ class HarpyTheme {
 
     final textColor = foregroundColor;
 
+    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+
     textTheme = Typography.englishLike2018
         .apply(
           fontFamily: bodyFont,
-          fontSizeDelta:
-              app<LayoutPreferences>().fontSizeDelta, //TODO make this work
+          fontSizeDelta: fontSizeDelta, //TODO make this work
         )
         .copyWith(
           // headline
