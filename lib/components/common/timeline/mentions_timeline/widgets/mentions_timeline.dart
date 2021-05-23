@@ -49,7 +49,7 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
         key: const PageStorageKey<String>('mentions_timeline'),
         endSlivers: <Widget>[
           if (state.showLoading)
-            const SliverFillLoadingIndicator()
+            const TweetListLoadingSliver()
           else if (state.showNoMentionsFound)
             const SliverFillLoadingError(
               message: Text('no mentions found'),

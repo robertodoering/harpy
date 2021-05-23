@@ -49,7 +49,7 @@ class TrendsList extends StatelessWidget {
     final state = bloc.state;
 
     if (state.isLoading) {
-      return const SliverBoxLoadingIndicator();
+      return const TrendsListLoadingSliver();
     } else if (state.loadingFailed) {
       return const SliverBoxInfoMessage(
         secondaryMessage: Text('error requesting trends'),

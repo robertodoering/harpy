@@ -26,7 +26,7 @@ class UserSearchList extends StatelessWidget {
             ],
             endSlivers: <Widget>[
               if (bloc.loadingInitialData)
-                const SliverFillLoadingIndicator()
+                const UserListLoadingSliver()
               else if (bloc.state is LoadingPaginatedData)
                 const SliverBoxLoadingIndicator(),
               if (bloc.showError)

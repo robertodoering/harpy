@@ -62,6 +62,8 @@ class _HomeTimelineState extends State<HomeTimeline> {
     final bloc = context.watch<HomeTimelineBloc>();
     final state = bloc.state;
 
+    final theme = Theme.of(context);
+
     return BlocListener<HomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
       child: ScrollToStart(
@@ -92,7 +94,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 enableScroll: state.enableScroll,
                 endSlivers: <Widget>[
                   if (state.showInitialLoading)
-                    const SliverFillLoadingIndicator()
+                    const TweetListLoadingSliver()
                   else if (state.showNoTweetsFound)
                     SliverFillLoadingError(
                       message: const Text('no tweets found'),

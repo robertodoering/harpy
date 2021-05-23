@@ -42,7 +42,7 @@ class UserTimeline extends StatelessWidget {
             enableScroll: state.enableScroll,
             endSlivers: <Widget>[
               if (state.showInitialLoading)
-                const SliverFillLoadingIndicator()
+                const TweetListLoadingSliver()
               else if (state.showNoTweetsFound)
                 SliverFillLoadingError(
                   message: const Text('no tweets found'),
