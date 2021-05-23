@@ -21,7 +21,7 @@ class ChangeThemeEvent extends ThemeEvent {
   ///
   /// 0..9: index of predefined theme (unused indices are reserved)
   /// 10+: index of custom theme (pro only)
-  final int? id;
+  final int id;
 
   /// Whether the selection should be saved using the [ThemePreferences].
   final bool saveSelection;
@@ -30,11 +30,11 @@ class ChangeThemeEvent extends ThemeEvent {
 
   HarpyTheme? _findTheme(ThemeBloc bloc) {
     try {
-      if (id! < 10) {
-        return predefinedThemes[id!];
+      if (id < 10) {
+        return id > 0 ? predefinedThemes[id] : predefinedThemes[0];
       } else {
         // selected theme id = 10 -> index = 0
-        final index = id! - 10;
+        final index = id - 10;
 
         _log.fine('using custom theme with index $index');
 
@@ -58,7 +58,7 @@ class ChangeThemeEvent extends ThemeEvent {
       bloc.harpyTheme = harpyTheme;
 
       if (saveSelection) {
-        app<ThemePreferences>().selectedTheme = id!;
+        app<ThemePreferences>().selectedTheme = id;
         app<AnalyticsService>().logThemeId(id);
       }
     }
