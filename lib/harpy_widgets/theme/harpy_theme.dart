@@ -268,7 +268,6 @@ class HarpyTheme {
     textTheme = Typography.englishLike2018
         .apply(
           fontFamily: bodyFont,
-          fontSizeDelta: fontSizeDelta, //TODO make this work
         )
         .copyWith(
           // headline
@@ -289,6 +288,7 @@ class HarpyTheme {
             fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline3: TextStyle(
+            fontSize: 48,
             fontFamily: displayFont,
             color: textColor,
             fontFamilyFallback: const <String>['NotoSans'],
@@ -302,6 +302,7 @@ class HarpyTheme {
             fontFamilyFallback: const <String>['NotoSans'],
           ),
           headline6: TextStyle(
+            fontSize: 20,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
@@ -311,6 +312,7 @@ class HarpyTheme {
 
           // subtitle
           subtitle1: TextStyle(
+            fontSize: 16,
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
@@ -346,7 +348,8 @@ class HarpyTheme {
             color: buttonTextColor,
             fontFamilyFallback: const <String>['NotoSans'],
           ),
-        );
+        )
+        .apply(fontSizeDelta: fontSizeDelta);
   }
 
   void _setupThemeData() {
