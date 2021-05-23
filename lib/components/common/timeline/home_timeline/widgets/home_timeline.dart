@@ -62,8 +62,6 @@ class _HomeTimelineState extends State<HomeTimeline> {
     final bloc = context.watch<HomeTimelineBloc>();
     final state = bloc.state;
 
-    final theme = Theme.of(context);
-
     return BlocListener<HomeTimelineBloc, HomeTimelineState>(
       listener: _blocListener,
       child: ScrollToStart(
