@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/misc/misc.dart';
+import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
+import 'package:shimmer/shimmer.dart';
 
-/// Builds a [FadeInImage] for a transparent placeholder and an error widget
-/// builder.
+/// Builds a network [Image] with a shimmer loading animation that fades into
+/// the loaded image.
 class HarpyImage extends StatelessWidget {
   const HarpyImage({
     required this.imageUrl,
@@ -17,37 +18,56 @@ class HarpyImage extends StatelessWidget {
   final double? width;
   final double? height;
 
-  Widget _buildErrorWidget(
+  Widget _errorBuilder(
     BuildContext context,
     Object error,
     StackTrace? stackTrace,
   ) {
     final theme = Theme.of(context);
 
-    return Container(
-      color: theme.cardColor,
-      width: double.infinity,
-      height: double.infinity,
-      child: FractionallySizedBox(
-        widthFactor: .5,
-        heightFactor: .5,
-        child: FittedBox(
-          child: Icon(
-            Icons.broken_image_outlined,
-            color: theme.iconTheme.color,
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Container(
+        color: theme.cardColor,
+        child: FractionallySizedBox(
+          widthFactor: .5,
+          heightFactor: .5,
+          child: FittedBox(
+            child: Icon(
+              Icons.broken_image_outlined,
+              color: theme.iconTheme.color,
+            ),
           ),
         ),
       ),
     );
   }
 
+  Widget _loadingBuilder(
+    BuildContext context,
+    Widget child,
+    ImageChunkEvent? loadingProgress,
+  ) {
+    final theme = Theme.of(context);
+
+    return AnimatedSwitcher(
+      duration: kShortAnimationDuration,
+      child: loadingProgress == null
+          ? child
+          : Shimmer.fromColors(
+              baseColor: theme.cardTheme.color!.withOpacity(.3),
+              highlightColor: theme.accentColor,
+              child: Container(color: theme.cardTheme.color),
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FadeInImage.memoryNetwork(
-      image: imageUrl,
-      imageErrorBuilder: _buildErrorWidget,
-      placeholder: kTransparentImage,
-      fadeInDuration: const Duration(milliseconds: 400),
+    return Image.network(
+      imageUrl,
+      errorBuilder: _errorBuilder,
+      loadingBuilder: _loadingBuilder,
       fit: fit,
       width: width,
       height: height,
