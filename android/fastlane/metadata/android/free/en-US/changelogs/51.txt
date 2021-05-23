@@ -1,5 +1,6 @@
 Version 0.6.3
 2021-05-24
 
+· Added unique loading animations
 · Fixed downloading images & videos failed for some users
-· Changed images are saved from cache when possible
+  · Images are now saved directly from the cache when possible
