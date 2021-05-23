@@ -73,7 +73,7 @@ class _MediaTimelineGalleryOverlayState
         tweetBloc: _bloc,
         enableImmersiveMode: false,
         onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
-        onDownload: () => defaultOnMediaDownload(_mediaUrl),
+        onDownload: () => defaultOnMediaDownload(_tweet.mediaType, _mediaUrl),
         onShare: () => defaultOnMediaShare(_mediaUrl),
         onShowTweet: () => app<HarpyNavigator>().pushRepliesScreen(
           tweet: _tweet,

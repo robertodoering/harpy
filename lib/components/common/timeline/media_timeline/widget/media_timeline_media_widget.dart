@@ -26,6 +26,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
     showTweetMediaBottomSheet(
       context,
       url: entry.media!.bestUrl,
+      mediaType: entry.tweet.mediaType,
     );
   }
 

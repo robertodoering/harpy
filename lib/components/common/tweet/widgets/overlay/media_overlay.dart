@@ -14,17 +14,45 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 }
 
 /// Default behaviour to download a tweet media.
-void defaultOnMediaDownload(String? mediaUrl) {
-  if (mediaUrl != null) {
-    final downloadService = app<DownloadService>();
-
-    final url = mediaUrl;
-    final fileName = fileNameFromUrl(url);
+Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
+  if (type != null && mediaUrl != null) {
+    final fileName = fileNameFromUrl(mediaUrl);
 
     if (fileName != null) {
-      downloadService
-          .download(url: url, name: fileName)
-          .catchError(silentErrorHandler);
+      final notifier = ValueNotifier<DownloadStatus>(
+        DownloadStatus(
+          message: 'downloading ${type.name}...',
+          state: DownloadState.inProgress,
+        ),
+      );
+
+      final snackBar = SnackBar(
+        content: DownloadStatusMessage(notifier: notifier),
+        duration: const Duration(seconds: 10),
+      );
+
+      app<MessageService>().showCustom(snackBar);
+
+      await app<DownloadService>()
+          .download(
+            url: mediaUrl,
+            name: fileName,
+            tryCache: type == MediaType.image,
+            onSuccess: () => notifier.value = DownloadStatus(
+              message: '${type.name} saved',
+              state: DownloadState.successful,
+            ),
+            onFailure: () => notifier.value = const DownloadStatus(
+              message: 'download failed',
+              state: DownloadState.failed,
+            ),
+          )
+          .handleError(silentErrorHandler);
+
+      // hide snack bar 3 seconds after download finished (assuming it's
+      // still showing)
+      await Future<void>.delayed(const Duration(seconds: 3));
+      app<MessageService>().messageState.state.hideCurrentSnackBar();
     }
   }
 }
@@ -95,7 +123,8 @@ class MediaOverlay extends StatefulWidget {
           enableImmersiveMode: enableImmersiveMode,
           enableDismissible: enableDismissible,
           overlap: overlap,
-          onDownload: onDownload ?? () => defaultOnMediaDownload(mediaUrl),
+          onDownload: onDownload ??
+              () => defaultOnMediaDownload(tweet.mediaType, mediaUrl),
           onOpenExternally:
               onOpenExternally ?? () => defaultOnMediaOpenExternally(mediaUrl),
           onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),

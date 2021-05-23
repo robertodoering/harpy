@@ -1,0 +1,5 @@
+Version 0.6.3
+2021-05-24
+
+· Fixed downloading images & videos failed for some users
+· Changed images are saved from cache when possible

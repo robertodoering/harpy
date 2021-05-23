@@ -246,4 +246,18 @@ class TweetData {
 
     return visibleText.trim();
   }
+
+  /// Returns the [MediaType] for the media of this tweet or `null` if this
+  /// tweet has no media.
+  MediaType? get mediaType {
+    if (hasImages) {
+      return MediaType.image;
+    } else if (hasGif) {
+      return MediaType.gif;
+    } else if (hasVideo) {
+      return MediaType.video;
+    } else {
+      return null;
+    }
+  }
 }

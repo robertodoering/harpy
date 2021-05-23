@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
@@ -11,13 +12,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 void showTweetMediaBottomSheet(
   BuildContext context, {
   String? url,
+  MediaType? mediaType,
   VoidCallback? onOpenExternally,
   VoidCallback? onDownload,
   VoidCallback? onShare,
 }) {
-  assert(onOpenExternally != null || url != null);
-  assert(onDownload != null || url != null);
-  assert(onShare != null || url != null);
+  assert(onOpenExternally != null || (url != null && mediaType != null));
+  assert(onDownload != null || (url != null && mediaType != null));
+  assert(onShare != null || (url != null && mediaType != null));
 
   showHarpyBottomSheet<void>(
     context,
@@ -43,7 +45,7 @@ void showTweetMediaBottomSheet(
           if (onDownload != null) {
             onDownload();
           } else {
-            defaultOnMediaDownload(url);
+            defaultOnMediaDownload(mediaType, url);
           }
 
           Navigator.of(context).maybePop();
