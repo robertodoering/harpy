@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 class TrendsList extends StatelessWidget {
   final NumberFormat _numberFormat = NumberFormat.compact();
 
-  Widget _buildTrendTile(Trend trend) {
+  Widget _buildTrendCard(Trend trend) {
     Widget? subtitle;
 
     if (trend.tweetVolume != null) {
@@ -37,7 +37,7 @@ class TrendsList extends StatelessWidget {
 
   Widget _itemBuilder(int index, List<Trend> trends) {
     if (index.isEven) {
-      return _buildTrendTile(trends[index ~/ 2]);
+      return _buildTrendCard(trends[index ~/ 2]);
     } else {
       return defaultVerticalSpacer;
     }

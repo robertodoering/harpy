@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
-/// A loading shimmer for a user list with placeholder user cards.
+/// A loading shimmer for a trends list with placeholder trend cards.
 class TrendsListLoadingSliver extends StatelessWidget {
   const TrendsListLoadingSliver({
     Key? key,
