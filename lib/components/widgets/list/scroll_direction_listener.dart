@@ -136,12 +136,12 @@ class ScrollDirection extends InheritedWidget {
   const ScrollDirection({
     required this.direction,
     required Widget child,
-    this.reset,
+    required this.reset,
     Key? key,
   }) : super(key: key, child: child);
 
   final VerticalDirection? direction;
-  final VoidCallback? reset;
+  final VoidCallback reset;
 
   /// `true` when the user is scrolling up (or left if the axis is horizontal).
   bool get up => direction == VerticalDirection.up;

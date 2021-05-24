@@ -31,7 +31,7 @@ class HomeAppBar extends StatelessWidget {
         icon: const Icon(Icons.more_vert),
         onSelected: (selection) {
           if (selection == 0) {
-            ScrollDirection.of(context)!.reset!();
+            ScrollDirection.of(context)!.reset();
 
             bloc.add(const RefreshHomeTimeline(clearPrevious: true));
           }

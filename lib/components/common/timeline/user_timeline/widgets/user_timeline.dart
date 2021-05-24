@@ -12,7 +12,7 @@ class UserTimeline extends StatelessWidget {
   ) {
     return FloatingActionButton(
       onPressed: () async {
-        ScrollDirection.of(context)!.reset!();
+        ScrollDirection.of(context)!.reset();
         bloc.add(const RequestUserTimeline());
       },
       child: const Icon(CupertinoIcons.refresh),

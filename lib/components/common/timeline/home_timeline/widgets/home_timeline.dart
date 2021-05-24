@@ -69,7 +69,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
         child: CustomRefreshIndicator(
           offset: mediaQuery.padding.top - 8,
           onRefresh: () async {
-            ScrollDirection.of(context)!.reset!();
+            ScrollDirection.of(context)!.reset();
             bloc.add(const RefreshHomeTimeline());
             await bloc.refreshCompleter.future;
           },
