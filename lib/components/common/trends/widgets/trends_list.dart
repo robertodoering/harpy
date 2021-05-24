@@ -10,9 +10,11 @@ import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
 
 class TrendsList extends StatelessWidget {
-  final NumberFormat _numberFormat = NumberFormat.compact();
+  const TrendsList();
 
   Widget _buildTrendCard(Trend trend) {
+    final _numberFormat = NumberFormat.compact();
+
     Widget? subtitle;
 
     if (trend.tweetVolume != null) {
