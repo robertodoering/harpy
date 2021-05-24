@@ -18,6 +18,7 @@ class DownloadService with HarpyLogger {
     required String url,
     required String name,
     required bool tryCache,
+    VoidCallback? onStart,
     VoidCallback? onSuccess,
     VoidCallback? onFailure,
   }) async {
@@ -25,6 +26,8 @@ class DownloadService with HarpyLogger {
 
     if (path != null) {
       try {
+        onStart?.call();
+
         // create directory in case it doesn't exist already
         final directory = Directory(path);
         directory.createSync(recursive: true);

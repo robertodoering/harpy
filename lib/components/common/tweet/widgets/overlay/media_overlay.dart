@@ -31,13 +31,12 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
         duration: const Duration(seconds: 10),
       );
 
-      app<MessageService>().showCustom(snackBar);
-
       await app<DownloadService>()
           .download(
             url: mediaUrl,
             name: fileName,
             tryCache: type == MediaType.image,
+            onStart: () => app<MessageService>().showCustom(snackBar),
             onSuccess: () => notifier.value = DownloadStatus(
               message: '${type.name} saved',
               state: DownloadState.successful,
