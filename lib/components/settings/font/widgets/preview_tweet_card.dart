@@ -4,6 +4,8 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 class PreviewTweetCard extends StatelessWidget {
+  const PreviewTweetCard();
+
   @override
   Widget build(BuildContext context) {
     return TweetCard(

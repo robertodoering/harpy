@@ -14,40 +14,36 @@ class LayoutPreferences {
   bool get mediaTiled => harpyPrefs.getBool('mediaTiled', true);
   set mediaTiled(bool value) => harpyPrefs.setBool('mediaTiled', value);
 
-  double get fontSizeDelta {
-    final delta = harpyPrefs.getInt('fontSizeDelta', 0);
+  final Map<int, double> _fontSizeDeltaIdMapping = <int, double>{
+    0: 0,
+    -1: -2,
+    -2: -4,
+    1: 2,
+    2: 4,
+  };
 
-    //TODO create and use general mapping
-    switch (delta) {
-      case -1:
-        return -2;
-      case -2:
-        return -4;
-      case 1:
-        return 2;
-      case 2:
-        return 4;
-      case 0:
-      default:
-        return 0;
-    }
+  double get fontSizeDelta {
+    final deltaId = harpyPrefs.getInt('fontSizeDelta', 0);
+
+    var delta = _fontSizeDeltaIdMapping[deltaId];
+
+    return delta ??= 0;
   }
 
   set fontSizeDelta(double fontSizeDelta) {
-    var fontSizeDetaid = 0;
+    var fontSizeDeltaId = 0;
 
-    //TODO create and use general mapping
-    if (fontSizeDelta == -2) {
-      fontSizeDetaid = -1;
-    } else if (fontSizeDelta == -4) {
-      fontSizeDetaid = -2;
-    } else if (fontSizeDelta == 2) {
-      fontSizeDetaid = 1;
-    } else if (fontSizeDelta == 4) {
-      fontSizeDetaid = 2;
+    final isPresentDelta =
+        _fontSizeDeltaIdMapping.containsValue(fontSizeDeltaId);
+
+    if (isPresentDelta) {
+      final entry = _fontSizeDeltaIdMapping.entries
+          .firstWhere((element) => element.value == fontSizeDelta);
+
+      fontSizeDeltaId = entry.key;
     }
 
-    harpyPrefs.setInt('fontSizeDelta', fontSizeDetaid);
+    harpyPrefs.setInt('fontSizeDelta', fontSizeDeltaId);
   }
 
   /// Sets all layout settings to the default settings.
