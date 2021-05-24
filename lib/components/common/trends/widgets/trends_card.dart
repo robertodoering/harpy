@@ -48,7 +48,10 @@ class TrendsCard extends StatelessWidget {
             icon: const Icon(CupertinoIcons.refresh),
             onTap: state.isLoading
                 ? null
-                : () => bloc.add(const FindTrendsEvent()),
+                : () {
+                    ScrollDirection.of(context)!.reset();
+                    bloc.add(const FindTrendsEvent());
+                  },
           )
         ],
       ),

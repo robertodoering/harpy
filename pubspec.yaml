@@ -35,6 +35,7 @@ dependencies:
     git: git://github.com/robertodoering/photo_view.git
   provider: ^5.0.0
   scroll_to_index: ^2.0.0
+  shimmer: ^2.0.0
   timeago: ^3.0.2
   visibility_detector: ^0.2.0
 

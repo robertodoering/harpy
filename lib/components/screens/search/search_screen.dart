@@ -58,7 +58,7 @@ class SearchScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: defaultVerticalSpacer,
           ),
-          TrendsList(),
+          const TrendsList(),
           SliverToBoxAdapter(
             child: SizedBox(height: mediaQuery.padding.bottom),
           ),

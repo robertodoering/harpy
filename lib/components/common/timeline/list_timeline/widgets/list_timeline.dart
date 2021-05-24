@@ -36,7 +36,7 @@ class ListTimeline extends StatelessWidget {
           beginSlivers: beginSlivers,
           endSlivers: <Widget>[
             if (state.showLoading)
-              const SliverFillLoadingIndicator()
+              const TweetListLoadingSliver()
             else if (state.showNoResult)
               SliverFillLoadingError(
                 message: const Text('no list tweets found'),

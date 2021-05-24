@@ -60,7 +60,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
                     ],
                     endSlivers: <Widget>[
                       if (bloc.loadingInitialData || state is InitialState)
-                        const SliverFillLoadingIndicator()
+                        const UserListLoadingSliver()
                       else if (bloc.showNoDataExists || bloc.showError)
                         SliverFillLoadingError(
                           message: Text(errorMessage),
