@@ -35,7 +35,6 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
           .download(
             url: mediaUrl,
             name: fileName,
-            tryCache: type == MediaType.image,
             onStart: () => app<MessageService>().showCustom(snackBar),
             onSuccess: () => notifier.value = DownloadStatus(
               message: '${type.name} saved',

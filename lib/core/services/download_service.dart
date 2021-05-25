@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:android_path_provider/android_path_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -17,7 +17,6 @@ class DownloadService with HarpyLogger {
   Future<void> download({
     required String url,
     required String name,
-    required bool tryCache,
     VoidCallback? onStart,
     VoidCallback? onSuccess,
     VoidCallback? onFailure,
@@ -34,26 +33,15 @@ class DownloadService with HarpyLogger {
 
         final file = File('${directory.path}/$name');
 
-        Uint8List? cachedImageData;
+        log.fine('downloading media');
 
-        if (tryCache) {
-          cachedImageData = await imageDataFromCache(
-            NetworkImage(url, scale: 1),
-          );
-        }
+        final response =
+            await http.get(Uri.parse(url)).timeout(const Duration(seconds: 30));
 
-        if (cachedImageData != null) {
-          log.fine('saving image from cache');
-          file.writeAsBytesSync(cachedImageData);
-        } else {
-          log.fine('downloading media');
-
-          final response = await http
-              .get(Uri.parse(url))
-              .timeout(const Duration(seconds: 30));
-
-          file.writeAsBytesSync(response.bodyBytes);
-        }
+        await compute<List<dynamic>, void>(_writeFile, <dynamic>[
+          file,
+          response.bodyBytes,
+        ]);
 
         log.fine('download successful');
 
@@ -79,6 +67,13 @@ class DownloadService with HarpyLogger {
       return null;
     }
   }
+}
+
+void _writeFile(List<dynamic> args) {
+  final File file = args[0];
+  final Uint8List bytes = args[1];
+
+  file.writeAsBytesSync(bytes);
 }
 
 /// The current status of a download.

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:logging/logging.dart';
 
@@ -13,6 +14,7 @@ final _log = Logger('imageFromCache');
 ///
 /// If the cached image has multiple frames (i.e. a gif), only the first
 /// frame will be returned.
+// todo: saved cached images seem to be invalid - needs investigation
 Future<Uint8List?> imageDataFromCache(Object key) async {
   try {
     if (imageCache!.containsKey(key)) {
@@ -24,7 +26,12 @@ Future<Uint8List?> imageDataFromCache(Object key) async {
       );
 
       if (imageStreamCompleter != null) {
-        return await _imageStreamHandler(imageStreamCompleter);
+        return await compute<ImageStreamCompleter, Uint8List?>(
+          _imageStreamHandler,
+          imageStreamCompleter,
+        );
+
+        // return await _imageStreamHandler(imageStreamCompleter);
       } else {
         return null;
       }
