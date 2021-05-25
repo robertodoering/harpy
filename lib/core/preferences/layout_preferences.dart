@@ -22,6 +22,22 @@ class LayoutPreferences {
     2: 4,
   };
 
+  final Map<int, String> _fontSizeDeltaIdNameMapping = <int, String>{
+    0: 'normal',
+    -1: 'small',
+    -2: 'smallest',
+    1: 'big',
+    2: 'biggest',
+  };
+
+  double get minFontSizeDelta => -4;
+  double get maxFontSizeDelta => 4;
+
+  String get currentFontSizeDeltaName {
+    final deltaId = harpyPrefs.getInt('fontSizeDelta', 0);
+    return _fontSizeDeltaIdNameMapping[deltaId] ?? 'normal';
+  }
+
   double get fontSizeDelta {
     final deltaId = harpyPrefs.getInt('fontSizeDelta', 0);
 
@@ -49,5 +65,6 @@ class LayoutPreferences {
   /// Sets all layout settings to the default settings.
   void defaultSettings() {
     compactMode = false;
+    fontSizeDelta = 0;
   }
 }

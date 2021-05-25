@@ -33,21 +33,11 @@ class SettingsScreen extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(FeatherIcons.layout),
-          title: const Text('Layout'),
+          title: const Text('Display'),
           subtitle: const Text('change the layout of the app'),
           onTap: () => app<HarpyNavigator>().pushNamed(
-            LayoutSettingsScreen.route,
+            DisplaySettingsScreen.route,
           ),
-        ),
-        ListTile(
-          leading: const Icon(CupertinoIcons.textformat),
-          title: const Text('Font'),
-          subtitle: const Text('change the font of your app'),
-          onTap: () {
-            app<HarpyNavigator>().pushNamed(
-              FontSettingsScreen.route,
-            );
-          },
         ),
       ],
       'other': <Widget>[

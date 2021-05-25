@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-class FontSettingsScreen extends StatefulWidget {
-  const FontSettingsScreen();
+class DisplaySettingsScreen extends StatefulWidget {
+  const DisplaySettingsScreen();
 
-  static const String route = 'font_settings';
+  static const String route = 'display_settings';
 
   @override
-  _FontSettingsScreenState createState() => _FontSettingsScreenState();
+  _DisplaySettingsScreenState createState() => _DisplaySettingsScreenState();
 }
 
-class _FontSettingsScreenState extends State<FontSettingsScreen> {
+class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
   final LayoutPreferences layoutPreferences = app<LayoutPreferences>();
 
   Widget _buildSettings(ThemeBloc themeBloc, MediaQueryData mediaQuery) {
@@ -34,6 +34,10 @@ class _FontSettingsScreenState extends State<FontSettingsScreen> {
               title: const Text('font size'),
               subtitle: Slider(
                 value: layoutPreferences.fontSizeDelta,
+                label: layoutPreferences.currentFontSizeDeltaName,
+                min: layoutPreferences.minFontSizeDelta,
+                max: layoutPreferences.maxFontSizeDelta,
+                divisions: 4,
                 onChanged: (newValue) {
                   if (newValue != layoutPreferences.fontSizeDelta) {
                     HapticFeedback.lightImpact();
@@ -43,9 +47,6 @@ class _FontSettingsScreenState extends State<FontSettingsScreen> {
                     });
                   }
                 },
-                min: -4,
-                max: 4,
-                divisions: 4,
               ),
             ),
             const ListTile(
@@ -53,6 +54,16 @@ class _FontSettingsScreenState extends State<FontSettingsScreen> {
               title: Text('font type'),
               subtitle: Text('coming soon!'),
               enabled: false,
+            ),
+            SwitchListTile(
+              secondary: const Icon(CupertinoIcons.rectangle_compress_vertical),
+              title: const Text('Compact layout'),
+              subtitle: const Text('use a visually dense layout'),
+              value: layoutPreferences.compactMode,
+              onChanged: (value) {
+                HapticFeedback.lightImpact();
+                setState(() => layoutPreferences.compactMode = value);
+              },
             ),
             SizedBox(
               height: mediaQuery.padding.bottom,
@@ -63,13 +74,35 @@ class _FontSettingsScreenState extends State<FontSettingsScreen> {
     );
   }
 
+  /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
+  List<Widget> _buildActions() {
+    return <Widget>[
+      CustomPopupMenuButton<void>(
+        icon: const Icon(CupertinoIcons.ellipsis_vertical),
+        onSelected: (_) {
+          HapticFeedback.lightImpact();
+          setState(layoutPreferences.defaultSettings);
+        },
+        itemBuilder: (_) {
+          return <PopupMenuEntry<int>>[
+            const HarpyPopupMenuItem<int>(
+              value: 0,
+              text: Text('reset to default'),
+            ),
+          ];
+        },
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeBloc = ThemeBloc.of(context);
     final mediaQuery = MediaQuery.of(context);
 
     return HarpyScaffold(
-      title: 'font settings',
+      title: 'display settings',
+      actions: _buildActions(),
       body: _buildSettings(themeBloc, mediaQuery),
     );
   }

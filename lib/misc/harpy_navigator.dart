@@ -268,11 +268,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         themeId: arguments['themeId'],
       );
       break;
-    case LayoutSettingsScreen.route:
-      screen = const LayoutSettingsScreen();
-      break;
-    case FontSettingsScreen.route:
-      screen = const FontSettingsScreen();
+    case DisplaySettingsScreen.route:
+      screen = const DisplaySettingsScreen();
       break;
     case MediaSettingsScreen.route:
       screen = const MediaSettingsScreen();

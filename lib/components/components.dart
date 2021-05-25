@@ -172,7 +172,6 @@ export 'settings/font/font_settings_screen.dart';
 export 'settings/font/widgets/preview_tweet_card.dart';
 export 'settings/general/general_settings_screen.dart';
 export 'settings/language/language_settings_screen.dart';
-export 'settings/layout/layout_settings_screen.dart';
 export 'settings/media/media_settings_screen.dart';
 export 'settings/theme_selection/bloc/theme_bloc.dart';
 export 'settings/theme_selection/theme_selection_screen.dart';
