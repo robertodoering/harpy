@@ -3,4 +3,3 @@ Version 0.6.4
 
 · Improved performance when downloading media
 · Fixed issues with saving cached images
-
