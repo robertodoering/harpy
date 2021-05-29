@@ -115,7 +115,7 @@ class UrlData extends Equatable {
     );
   }
 
-  /// Url pasted/typed into Tweet.
+  /// Url pasted/typed into the tweet.
   ///
   /// Example: 'bit.ly/2so49n2'
   final String displayUrl;
