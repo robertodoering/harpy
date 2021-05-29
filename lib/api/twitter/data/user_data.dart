@@ -13,22 +13,28 @@ class UserData extends Equatable {
     required this.followersCount,
     required this.friendsCount,
     required this.userDescriptionEntities,
+    required this.userDescriptionUrls,
     this.profileBannerUrl,
     this.profileImageUrl,
     this.createdAt,
     this.location,
-    this.entities,
     this.description,
     this.descriptionTranslation,
+    this.userUrl,
     this.connections,
   });
 
   /// Parses the [UserData] from the [TwitterApi] returned [User] object.
   factory UserData.fromUser(User? user) {
-    final userDescriptionEntities = _userDescriptionEntities(
-      user?.entities,
-      user?.description,
-    );
+    final userUrl = user?.entities?.url?.urls != null &&
+            user!.entities!.url!.urls!.isNotEmpty
+        ? UrlData.fromUrl(user.entities!.url!.urls!.first)
+        : null;
+
+    final userDescriptionUrls = user?.entities?.description?.urls
+            ?.map((url) => UrlData.fromUrl(url))
+            .toList() ??
+        [];
 
     return UserData(
       // required
@@ -43,11 +49,17 @@ class UserData extends Equatable {
       profileImageUrl: user?.profileImageUrlHttps,
       createdAt: user?.createdAt,
       location: user?.location,
-      entities: user?.entities,
       description: user?.description,
       // custom
+      userUrl: userUrl,
+      userDescriptionUrls: userDescriptionUrls,
       connections: const [],
-      userDescriptionEntities: userDescriptionEntities,
+      userDescriptionEntities: const EntitiesData(
+        hashtags: [],
+        urls: [],
+        userMentions: [],
+        media: [],
+      ),
     );
   }
 
@@ -67,10 +79,13 @@ class UserData extends Equatable {
 
   final DateTime? createdAt;
   final String? location;
-  final UserEntities? entities;
   final String? description;
 
   // custom fields
+
+  final UrlData? userUrl;
+
+  final List<UrlData> userDescriptionUrls;
 
   final Translation? descriptionTranslation;
 
@@ -89,8 +104,9 @@ class UserData extends Equatable {
     String? profileImageUrl,
     DateTime? createdAt,
     String? location,
-    UserEntities? entities,
     String? description,
+    UrlData? userUrl,
+    List<UrlData>? userDescriptionUrls,
     Translation? descriptionTranslation,
     List<String>? connections,
     EntitiesData? userDescriptionEntities,
@@ -106,8 +122,9 @@ class UserData extends Equatable {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       createdAt: createdAt ?? this.createdAt,
       location: location ?? this.location,
-      entities: entities ?? this.entities,
       description: description ?? this.description,
+      userUrl: userUrl ?? this.userUrl,
+      userDescriptionUrls: userDescriptionUrls ?? this.userDescriptionUrls,
       descriptionTranslation:
           descriptionTranslation ?? this.descriptionTranslation,
       connections: connections ?? this.connections,
@@ -128,8 +145,9 @@ class UserData extends Equatable {
         profileImageUrl,
         createdAt,
         location,
-        entities,
         description,
+        userUrl,
+        userDescriptionUrls,
         descriptionTranslation,
         connections,
         userDescriptionEntities,
@@ -149,8 +167,7 @@ extension UserDataExtension on UserData {
 
   bool get hasDescription => description != null && description!.isNotEmpty;
 
-  bool get hasUrl =>
-      entities?.url?.urls != null && entities!.url!.urls!.isNotEmpty;
+  bool get hasUrl => userUrl != null;
 
   bool get hasLocation => location != null && location!.isNotEmpty;
 
@@ -168,23 +185,21 @@ extension UserDataExtension on UserData {
   }
 }
 
-EntitiesData _userDescriptionEntities(
-  UserEntities? entities,
+EntitiesData userDescriptionEntities(
+  List<UrlData> userDescriptionUrls,
   String? description,
 ) {
-  final urls = entities?.description?.urls ?? [];
-
   if (description != null) {
     final descriptionEntities = parseEntities(description);
 
     return descriptionEntities.copyWith(
-      urls: urls.map((url) => UrlData.fromUrl(url)).toList(),
+      urls: userDescriptionUrls,
     );
   } else {
     return EntitiesData(
       hashtags: const [],
       media: const [],
-      urls: urls.map((url) => UrlData.fromUrl(url)).toList(),
+      urls: userDescriptionUrls,
       userMentions: const [],
     );
   }

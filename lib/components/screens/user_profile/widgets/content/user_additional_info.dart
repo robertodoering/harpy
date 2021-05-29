@@ -35,7 +35,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   }
 
   Widget _buildUrl(BuildContext context, ThemeData theme) {
-    final url = UrlData.fromUrl(bloc.user!.entities!.url!.urls!.first);
+    final url = bloc.user!.userUrl!;
 
     final Widget child = GestureDetector(
       onTap: () => defaultOnUrlTap(context, url),

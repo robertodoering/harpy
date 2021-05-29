@@ -12,9 +12,9 @@ abstract class UserProfileEvent {
 
 /// Initializes the data for the [UserProfileBloc.user].
 ///
-/// Either [user] or [screenName] must not be `null`.
+/// Either [user] or [handle] must not be `null`.
 ///
-/// If [user] is `null`, requests the user data for the [screenName] and the
+/// If [user] is `null`, requests the user data for the [handle] and the
 /// relationship status (following / followed_by).
 ///
 /// Otherwise if the [UserData.connections] is `null`, only requests the
@@ -28,15 +28,15 @@ abstract class UserProfileEvent {
 class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
   const InitializeUserEvent({
     this.user,
-    this.screenName,
-  }) : assert(user != null || screenName != null);
+    this.handle,
+  }) : assert(user != null || handle != null);
 
   final UserData? user;
 
-  final String? screenName;
+  final String? handle;
 
   /// The user id used to request the user or the relationship status.
-  String? get _screenName => screenName ?? user?.handle;
+  String? get _handle => handle ?? user?.handle;
 
   @override
   Stream<UserProfileState> applyAsync({
@@ -53,18 +53,18 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (user?.connections == null) {
       await Future.wait<void>(<Future<void>>[
         // user data
-        if (userData == null && _screenName != null)
+        if (userData == null && _handle != null)
           bloc.userService
-              .usersShow(screenName: _screenName)
+              .usersShow(screenName: _handle)
               .then((user) => UserData.fromUser(user))
               .then((user) => userData = user)
               .handleError(silentErrorHandler),
 
         // friendship lookup for the relationship status (following /
         // followed_by)
-        if (connections == null && _screenName != null)
+        if (connections == null && _handle != null)
           bloc.userService
-              .friendshipsLookup(screenNames: <String>[_screenName!])
+              .friendshipsLookup(screenNames: <String>[_handle!])
               .then((response) => response.length == 1 ? response.first : null)
               .then<void>((friendship) => connections = friendship?.connections)
               .catchError(silentErrorHandler),
@@ -76,6 +76,10 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     } else {
       bloc.user = userData!.copyWith(
         connections: connections,
+        userDescriptionEntities: userDescriptionEntities(
+          userData!.userDescriptionUrls,
+          userData!.description,
+        ),
       );
 
       yield InitializedUserState();

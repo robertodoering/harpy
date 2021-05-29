@@ -16,7 +16,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
     required String? screenName,
   }) : super(LoadingUserState()) {
-    add(InitializeUserEvent(user: user, screenName: screenName));
+    add(InitializeUserEvent(user: user, handle: screenName));
   }
 
   /// The [UserData] for the user to display.
