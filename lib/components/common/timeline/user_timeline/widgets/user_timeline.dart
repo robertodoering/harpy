@@ -12,7 +12,7 @@ class UserTimeline extends StatelessWidget {
   ) {
     return FloatingActionButton(
       onPressed: () async {
-        ScrollDirection.of(context)!.reset!();
+        ScrollDirection.of(context)!.reset();
         bloc.add(const RequestUserTimeline());
       },
       child: const Icon(CupertinoIcons.refresh),
@@ -42,7 +42,7 @@ class UserTimeline extends StatelessWidget {
             enableScroll: state.enableScroll,
             endSlivers: <Widget>[
               if (state.showInitialLoading)
-                const SliverFillLoadingIndicator()
+                const TweetListLoadingSliver()
               else if (state.showNoTweetsFound)
                 SliverFillLoadingError(
                   message: const Text('no tweets found'),

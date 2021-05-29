@@ -352,6 +352,22 @@ class HarpyTheme {
         .apply(fontSizeDelta: fontSizeDelta);
   }
 
+  ColorScheme get _colorScheme => ColorScheme(
+        background: averageBackgroundColor,
+        brightness: brightness,
+        error: errorColor,
+        onBackground: foregroundColor,
+        onError: foregroundColor,
+        onPrimary: foregroundColor,
+        onSecondary: foregroundColor,
+        onSurface: foregroundColor,
+        primary: accentColor,
+        primaryVariant: accentColor,
+        secondary: accentColor,
+        secondaryVariant: accentColor,
+        surface: averageBackgroundColor,
+      );
+
   void _setupThemeData() {
     data = ThemeData(
       brightness: brightness,
@@ -360,6 +376,8 @@ class HarpyTheme {
       accentColor: accentColor,
       buttonColor: foregroundColor,
       errorColor: errorColor,
+
+      colorScheme: _colorScheme,
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)

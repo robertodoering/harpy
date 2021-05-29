@@ -55,13 +55,13 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
                   },
                   child: UserList(
                     bloc.users,
-                    beginSlivers: <Widget>[
+                    beginSlivers: [
                       HarpySliverAppBar(title: title, floating: true),
                     ],
-                    endSlivers: <Widget>[
+                    endSlivers: [
                       if (bloc.loadingInitialData ||
                           state is InitialPaginatedState)
-                        const SliverFillLoadingIndicator()
+                        const UserListLoadingSliver()
                       else if (bloc.showNoDataExists || bloc.showError)
                         SliverFillLoadingError(
                           message: Text(errorMessage),

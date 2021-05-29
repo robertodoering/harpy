@@ -38,7 +38,10 @@ class _TweetImagesState extends State<TweetImages> {
       tweet: widget.tweet!,
       tweetBloc: widget.tweetBloc,
       overlap: true,
-      onDownload: () => defaultOnMediaDownload(mediaUrl),
+      onDownload: () => defaultOnMediaDownload(
+        widget.tweet!.mediaType,
+        mediaUrl,
+      ),
       onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
       onShare: () => defaultOnMediaShare(mediaUrl),
       child: HarpyMediaGallery.builder(
@@ -60,6 +63,7 @@ class _TweetImagesState extends State<TweetImages> {
     showTweetMediaBottomSheet(
       context,
       url: widget.tweet!.downloadMediaUrl(index),
+      mediaType: MediaType.image,
     );
   }
 

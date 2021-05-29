@@ -35,7 +35,7 @@ class TwitterListMembers extends StatelessWidget {
             ],
             endSlivers: <Widget>[
               if (state.isLoading)
-                const SliverFillLoadingIndicator()
+                const UserListLoadingSliver()
               else if (state.isFailure)
                 SliverFillLoadingError(
                   message: const Text('error loading list members'),

@@ -69,7 +69,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
         child: CustomRefreshIndicator(
           offset: mediaQuery.padding.top - 8,
           onRefresh: () async {
-            ScrollDirection.of(context)!.reset!();
+            ScrollDirection.of(context)!.reset();
             bloc.add(const RefreshHomeTimeline());
             await bloc.refreshCompleter.future;
           },
@@ -92,7 +92,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 enableScroll: state.enableScroll,
                 endSlivers: <Widget>[
                   if (state.showInitialLoading)
-                    const SliverFillLoadingIndicator()
+                    const TweetListLoadingSliver()
                   else if (state.showNoTweetsFound)
                     SliverFillLoadingError(
                       message: const Text('no tweets found'),

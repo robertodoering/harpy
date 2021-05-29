@@ -10,9 +10,11 @@ import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
 
 class TrendsList extends StatelessWidget {
-  final NumberFormat _numberFormat = NumberFormat.compact();
+  const TrendsList();
 
-  Widget _buildTrendTile(Trend trend) {
+  Widget _buildTrendCard(Trend trend) {
+    final _numberFormat = NumberFormat.compact();
+
     Widget? subtitle;
 
     if (trend.tweetVolume != null) {
@@ -37,7 +39,7 @@ class TrendsList extends StatelessWidget {
 
   Widget _itemBuilder(int index, List<Trend> trends) {
     if (index.isEven) {
-      return _buildTrendTile(trends[index ~/ 2]);
+      return _buildTrendCard(trends[index ~/ 2]);
     } else {
       return defaultVerticalSpacer;
     }
@@ -49,7 +51,7 @@ class TrendsList extends StatelessWidget {
     final state = bloc.state;
 
     if (state.isLoading) {
-      return const SliverBoxLoadingIndicator();
+      return const TrendsListLoadingSliver();
     } else if (state.loadingFailed) {
       return const SliverBoxInfoMessage(
         secondaryMessage: Text('error requesting trends'),

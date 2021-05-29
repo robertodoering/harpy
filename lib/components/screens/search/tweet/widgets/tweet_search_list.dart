@@ -23,7 +23,7 @@ class TweetSearchList extends StatelessWidget {
           ],
           endSlivers: <Widget>[
             if (state.showLoading)
-              const SliverFillLoadingIndicator()
+              const TweetListLoadingSliver()
             else if (state.showNoResults)
               const SliverFillInfoMessage(
                 primaryMessage: Text('no tweets found'),
