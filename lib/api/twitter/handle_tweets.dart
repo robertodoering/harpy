@@ -1,15 +1,29 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/misc/misc.dart';
 
-/// Handles a tweet list response.
+/// Handles a tweet list response in an isolate.
 ///
 /// Every [Tweet] is turned into a [TweetData] and their replies are added to
 /// [TweetData.replies].
 ///
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
-List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter? filter]) {
+Future<List<TweetData>> handleTweets(
+  List<Tweet> tweets, [
+  TimelineFilter? filter,
+]) {
+  return compute<List<dynamic>, List<TweetData>>(
+    _isolateHandleTweets,
+    <dynamic>[tweets, filter],
+  );
+}
+
+List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
+  final List<Tweet> tweets = arguments[0];
+  final TimelineFilter? filter = arguments[1];
+
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
       .map((tweet) => TweetData.fromTweet(tweet))
