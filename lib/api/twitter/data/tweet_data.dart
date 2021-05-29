@@ -269,6 +269,18 @@ extension TweetDataExtension on TweetData {
   }
 
   String get tweetUrl => 'https://twitter.com/${user.handle}/status/$id';
+
+  String? downloadMediaUrl([int index = 0]) {
+    if (hasImages) {
+      return images![index].bestUrl;
+    } else if (hasGif) {
+      return gif!.bestUrl;
+    } else if (hasVideo) {
+      return video!.bestUrl;
+    }
+
+    return null;
+  }
 }
 
 /// Returns the text that the user sees in a tweet card.
