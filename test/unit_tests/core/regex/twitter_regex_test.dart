@@ -23,9 +23,9 @@ void main() {
       expect(hashtagRegex.hasMatch('これはOK #ハッシュタグ'), isTrue);
       expect(hashtagRegex.hasMatch('これもOK。#ハッシュタグ'), isTrue);
       expect(hashtagRegex.hasMatch('これはダメ#ハッシュタグ'), isFalse);
-      expect(mentionRegex.hasMatch('_#hashtage'), isTrue);
-      expect(mentionRegex.hasMatch(' #hashtag'), isTrue);
-      expect(mentionRegex.hasMatch('(#hashtag)'), isTrue);
+      expect(hashtagRegex.hasMatch('_#hashtage'), isTrue);
+      expect(hashtagRegex.hasMatch(' #hashtag'), isTrue);
+      expect(hashtagRegex.hasMatch('(#hashtag)'), isTrue);
 
       expect(hashtagRegex.hasMatch('#'), isFalse);
       expect(hashtagRegex.hasMatch('.#'), isFalse);
