@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
@@ -28,6 +29,43 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   final TranslationService translationService = app<TranslationService>();
 
   final LanguagePreferences languagePreferences = app<LanguagePreferences>();
+
+  void onCardTap(TweetData tweet) {
+    app<HarpyNavigator>().pushRepliesScreen(tweet: tweet);
+  }
+
+  void onViewMoreActions(BuildContext context, TweetData tweet) {
+    showTweetActionsBottomSheet(context, tweet: tweet);
+  }
+
+  void onRetweet() {
+    unawaited(HapticFeedback.lightImpact());
+    add(const RetweetTweet());
+  }
+
+  void onUnretweet() {
+    unawaited(HapticFeedback.lightImpact());
+    add(const UnretweetTweet());
+  }
+
+  void onComposeQuote() {
+    app<HarpyNavigator>().pushComposeScreen(quotedTweet: state.tweet);
+  }
+
+  void onFavorite() {
+    unawaited(HapticFeedback.lightImpact());
+    add(const FavoriteTweet());
+  }
+
+  void onUnfavorite() {
+    unawaited(HapticFeedback.lightImpact());
+    add(const UnfavoriteTweet());
+  }
+
+  void onTranslate(Locale locale) {
+    unawaited(HapticFeedback.lightImpact());
+    add(TranslateTweet(locale: locale));
+  }
 
   @override
   Stream<TweetState> mapEventToState(

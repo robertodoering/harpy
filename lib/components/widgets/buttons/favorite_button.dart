@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:pedantic/pedantic.dart';
 
 /// The favorite button for the [TweetActionRow].
 class FavoriteButton extends StatelessWidget {
@@ -28,14 +26,8 @@ class FavoriteButton extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
       value: bloc.state.tweet.favoriteCount,
-      activate: () {
-        unawaited(HapticFeedback.lightImpact());
-        bloc.add(const FavoriteTweet());
-      },
-      deactivate: () {
-        unawaited(HapticFeedback.lightImpact());
-        bloc.add(const UnfavoriteTweet());
-      },
+      activate: bloc.onFavorite,
+      deactivate: bloc.onUnfavorite,
       iconSize: 22,
       iconBuilder: (_, active, size) => Icon(
         active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,

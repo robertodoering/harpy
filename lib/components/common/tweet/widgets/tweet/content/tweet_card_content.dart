@@ -4,7 +4,6 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
 class TweetCardContent extends StatelessWidget {
   const TweetCardContent();
@@ -69,9 +68,8 @@ class TweetCardContent extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: !tweet.currentReplyParent(route)
-          ? () => app<HarpyNavigator>().pushRepliesScreen(tweet: tweet)
-          : null,
+      onTap:
+          !tweet.currentReplyParent(route) ? () => bloc.onCardTap(tweet) : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

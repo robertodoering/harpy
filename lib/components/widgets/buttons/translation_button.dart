@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:like_button/like_button.dart';
-import 'package:pedantic/pedantic.dart';
 
 class TranslationButton extends StatelessWidget {
   const TranslationButton({
@@ -64,10 +62,7 @@ class TweetTranslationButton extends StatelessWidget {
     return TranslationButton(
       active: active,
       padding: padding,
-      activate: () {
-        unawaited(HapticFeedback.lightImpact());
-        bloc.add(TranslateTweet(locale: locale));
-      },
+      activate: () => bloc.onTranslate(locale),
     );
   }
 }
