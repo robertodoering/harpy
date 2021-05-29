@@ -66,17 +66,29 @@ class UserData extends Equatable {
   // required user fields
 
   final String id;
+
+  /// The display name of the user .
   final String name;
+
+  /// The screen name, handle or alias that this user identifies themselves
+  /// with.
+  ///
+  /// Handles are unique but subject to change.
+  ///
+  /// Typically a maximum of 15 characters long, but some historical accounts
+  /// may exist with longer names.
   final String handle;
+
   final bool verified;
   final int followersCount;
+
+  /// The number of users this user is following.
   final int friendsCount;
 
   // optional user fields
 
   final String? profileBannerUrl;
   final String? profileImageUrl;
-
   final DateTime? createdAt;
   final String? location;
   final String? description;
@@ -84,11 +96,13 @@ class UserData extends Equatable {
   // custom fields
 
   final UrlData? userUrl;
-
   final List<UrlData> userDescriptionUrls;
-
   final Translation? descriptionTranslation;
 
+  /// The connections for this relationship for the authenticated user.
+  ///
+  /// Can be: `following`, `following_requested`, `followed_by`, `none`,
+  /// `blocking`, `muting`.
   final List<String>? connections;
 
   final EntitiesData userDescriptionEntities;
@@ -180,9 +194,7 @@ extension UserDataExtension on UserData {
 
   String get originalUserImageUrl => profileImageUrl!.replaceAll('_normal', '');
 
-  String get appropriateUserBannerUrl {
-    return '$profileBannerUrl/web_retina';
-  }
+  String get appropriateUserBannerUrl => '$profileBannerUrl/web_retina';
 }
 
 EntitiesData userDescriptionEntities(

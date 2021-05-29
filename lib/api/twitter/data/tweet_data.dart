@@ -134,7 +134,6 @@ class TweetData extends Equatable {
   /// `null` when this tweet is not a retweet.
   final String? retweetUserName;
   final String? retweetUserHandle;
-
   final TweetData? quote;
   final String? quoteUrl;
 
@@ -269,7 +268,6 @@ extension TweetDataExtension on TweetData {
     }
   }
 
-  /// The twitter url for this tweet.
   String get tweetUrl => 'https://twitter.com/${user.handle}/status/$id';
 }
 
