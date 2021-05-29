@@ -35,7 +35,7 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
     }
 
     final indexOfFirstNewestTweet = tweets.lastIndexWhere(
-      (tweet) => (int.tryParse(tweet.originalIdStr) ?? 0) > lastViewedMention,
+      (tweet) => (int.tryParse(tweet.originalId) ?? 0) > lastViewedMention,
     );
 
     return indexOfFirstNewestTweet + 1;

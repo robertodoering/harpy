@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 
 /// The retweet button for a [TweetActionRow].
 class RetweetButton extends StatefulWidget {
@@ -64,27 +63,28 @@ class _RetweetButtonState extends State<RetweetButton> {
     );
 
     if (result == 0) {
-      widget.bloc.add(const RetweetTweet());
+      widget.bloc.onRetweet();
     } else if (result == 1) {
-      app<HarpyNavigator>().pushComposeScreen(quotedTweet: widget.bloc.tweet);
+      widget.bloc.onComposeQuote();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.watch<TweetBloc>();
     final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: widget.bloc.tweet.retweeted,
+      active: widget.bloc.state.tweet.retweeted,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: TextStyle(
         color: harpyTheme.retweetColor,
         fontWeight: FontWeight.bold,
       ),
-      value: widget.bloc.tweet.retweetCount,
+      value: widget.bloc.state.tweet.retweetCount,
       activate: _showRetweetButtonMenu,
-      deactivate: () => widget.bloc.add(const UnretweetTweet()),
+      deactivate: bloc.onUnretweet,
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,
         dotSecondaryColor: Colors.limeAccent,

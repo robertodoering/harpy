@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:intl/intl.dart';
 
@@ -34,13 +35,13 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   }
 
   Widget _buildUrl(BuildContext context, ThemeData theme) {
-    final url = bloc.user!.entities!.url!.urls!.first;
+    final url = bloc.user!.userUrl!;
 
     final Widget child = GestureDetector(
       onTap: () => defaultOnUrlTap(context, url),
       onLongPress: () => defaultOnUrlLongPress(context, url),
       child: Text(
-        url.displayUrl!,
+        url.displayUrl,
         style: theme.textTheme.bodyText1!.copyWith(
           color: theme.accentColor,
           fontWeight: FontWeight.bold,

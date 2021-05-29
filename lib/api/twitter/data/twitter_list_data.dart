@@ -10,7 +10,7 @@ class TwitterListData {
     memberCount = list.memberCount;
     mode = list.mode ?? 'public';
     description = list.description;
-    user = list.user != null ? UserData.fromUser(list.user!) : null;
+    user = list.user != null ? UserData.fromUser(list.user) : null;
     following = list.following ?? false;
   }
 

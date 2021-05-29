@@ -8,34 +8,8 @@ abstract class TweetEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   });
-
-  /// Returns `true` if the error contains any of the following error codes:
-  ///
-  /// 139: already favorited (trying to favorite a tweet twice)
-  /// 327: already retweeted
-  /// 144: tweet with id not found (trying to unfavorite a tweet twice) or
-  /// trying to delete a tweet that has already been deleted before.
-  bool actionPerformed(dynamic error) {
-    if (error is Response) {
-      try {
-        final Map<String, dynamic> body = jsonDecode(error.body);
-        final List<dynamic> errors = body['errors'] ?? <Map<String, dynamic>>[];
-
-        return errors.any((dynamic error) =>
-            error is Map<String, dynamic> &&
-            (error['code'] == 139 ||
-                error['code'] == 327 ||
-                error['code'] == 144));
-      } catch (e) {
-        // unexpected error format
-      }
-    }
-
-    return false;
-  }
 }
 
-/// Retweets the tweet.
 class RetweetTweet extends TweetEvent with HarpyLogger {
   const RetweetTweet();
 
@@ -44,28 +18,53 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    unawaited(HapticFeedback.lightImpact());
+    if (bloc.state.isRetweeting) {
+      log.fine('currently un-retweeting');
+      yield bloc.state.copyWith(
+        tweet: bloc.state.tweet.copyWith(retweeted: true),
+      );
+      return;
+    }
 
-    bloc.tweet.retweeted = true;
-    bloc.tweet.retweetCount = bloc.tweet.retweetCount + 1;
-    yield UpdatedTweetState();
+    yield bloc.state.copyWith(
+      tweet: bloc.state.tweet.copyWith(
+        retweetCount: bloc.state.tweet.retweetCount + 1,
+        retweeted: true,
+      ),
+      isRetweeting: true,
+    );
 
     try {
-      await bloc.tweetService.retweet(id: bloc.tweet.idStr);
-      log.fine('retweeted ${bloc.tweet.idStr}');
+      await bloc.tweetService.retweet(id: bloc.state.tweet.id);
+
+      log.fine('retweeted ${bloc.state.tweet.id}');
+
+      yield bloc.state.copyWith(isRetweeting: false);
+
+      if (!bloc.state.tweet.retweeted) {
+        // the user has un-retweeted the tweet while we were making the request
+        bloc.add(const UnretweetTweet());
+      }
     } catch (e, st) {
-      if (!actionPerformed(e)) {
-        bloc.tweet.retweeted = false;
-        bloc.tweet.retweetCount = bloc.tweet.retweetCount - 1;
-        log.warning('error retweeting ${bloc.tweet.idStr}', e, st);
+      if (!_actionPerformed(e)) {
+        yield bloc.state.copyWith(
+          tweet: bloc.state.tweet.copyWith(
+            retweetCount: math.max(0, bloc.state.tweet.retweetCount - 1),
+            retweeted: false,
+          ),
+          isRetweeting: false,
+        );
+
+        log.warning('error retweeting ${bloc.state.tweet.id}', e, st);
+
         twitterApiErrorHandler(e);
-        yield UpdatedTweetState();
+      } else {
+        yield bloc.state.copyWith(isRetweeting: false);
       }
     }
   }
 }
 
-/// Unretweets the tweet.
 class UnretweetTweet extends TweetEvent with HarpyLogger {
   const UnretweetTweet();
 
@@ -74,28 +73,53 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    unawaited(HapticFeedback.lightImpact());
+    if (bloc.state.isRetweeting) {
+      log.fine('currently retweeting');
+      yield bloc.state.copyWith(
+        tweet: bloc.state.tweet.copyWith(retweeted: false),
+      );
+      return;
+    }
 
-    bloc.tweet.retweeted = false;
-    bloc.tweet.retweetCount = bloc.tweet.retweetCount - 1;
-    yield UpdatedTweetState();
+    yield bloc.state.copyWith(
+      tweet: bloc.state.tweet.copyWith(
+        retweetCount: math.max(0, bloc.state.tweet.retweetCount - 1),
+        retweeted: false,
+      ),
+      isRetweeting: true,
+    );
 
     try {
-      await bloc.tweetService.unretweet(id: bloc.tweet.idStr);
-      log.fine('unretweeted ${bloc.tweet.idStr}');
+      await bloc.tweetService.unretweet(id: bloc.state.tweet.id);
+
+      log.fine('un-retweeted ${bloc.state.tweet.id}');
+
+      yield bloc.state.copyWith(isRetweeting: false);
+
+      if (bloc.state.tweet.retweeted) {
+        // the user has retweeted the tweet while we were making the request
+        bloc.add(const RetweetTweet());
+      }
     } catch (e, st) {
-      if (!actionPerformed(e)) {
-        bloc.tweet.retweeted = true;
-        bloc.tweet.retweetCount = bloc.tweet.retweetCount + 1;
-        log.warning('error unretweeting ${bloc.tweet.idStr}', e, st);
+      if (!_actionPerformed(e)) {
+        yield bloc.state.copyWith(
+          tweet: bloc.state.tweet.copyWith(
+            retweetCount: bloc.state.tweet.retweetCount + 1,
+            retweeted: true,
+          ),
+          isRetweeting: false,
+        );
+
+        log.warning('error un-retweeting ${bloc.state.tweet.id}', e, st);
+
         twitterApiErrorHandler(e);
-        yield UpdatedTweetState();
+      } else {
+        yield bloc.state.copyWith(isRetweeting: false);
       }
     }
   }
 }
 
-/// Favorites the tweet.
 class FavoriteTweet extends TweetEvent with HarpyLogger {
   const FavoriteTweet();
 
@@ -104,22 +128,103 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    unawaited(HapticFeedback.lightImpact());
+    if (bloc.state.isFavoriting) {
+      log.fine('currently un-favoriting');
+      yield bloc.state.copyWith(
+        tweet: bloc.state.tweet.copyWith(favorited: true),
+      );
+      return;
+    }
 
-    bloc.tweet.favorited = true;
-    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount + 1;
-    yield UpdatedTweetState();
+    yield bloc.state.copyWith(
+      tweet: bloc.state.tweet.copyWith(
+        favoriteCount: bloc.state.tweet.favoriteCount + 1,
+        favorited: true,
+      ),
+      isFavoriting: true,
+    );
 
     try {
-      await bloc.tweetService.createFavorite(id: bloc.tweet.idStr);
-      log.fine('favorited ${bloc.tweet.idStr}');
+      await bloc.tweetService.createFavorite(id: bloc.state.tweet.id);
+
+      log.fine('favorited ${bloc.state.tweet.id}');
+
+      yield bloc.state.copyWith(isFavoriting: false);
+
+      if (!bloc.state.tweet.favorited) {
+        // the user has un-favorited the tweet while we were making the request
+        bloc.add(const UnfavoriteTweet());
+      }
     } catch (e, st) {
-      if (!actionPerformed(e)) {
-        bloc.tweet.favorited = false;
-        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount - 1;
-        log.warning('error favoriting ${bloc.tweet.idStr}', e, st);
+      if (!_actionPerformed(e)) {
+        yield bloc.state.copyWith(
+          tweet: bloc.state.tweet.copyWith(
+            favoriteCount: math.max(0, bloc.state.tweet.favoriteCount - 1),
+            favorited: false,
+          ),
+          isFavoriting: false,
+        );
+
+        log.warning('error favoriting ${bloc.state.tweet.id}', e, st);
+
         twitterApiErrorHandler(e);
-        yield UpdatedTweetState();
+      } else {
+        yield bloc.state.copyWith(isFavoriting: false);
+      }
+    }
+  }
+}
+
+class UnfavoriteTweet extends TweetEvent with HarpyLogger {
+  const UnfavoriteTweet();
+
+  @override
+  Stream<TweetState> applyAsync({
+    required TweetState currentState,
+    required TweetBloc bloc,
+  }) async* {
+    if (bloc.state.isFavoriting) {
+      log.fine('currently favoriting');
+      yield bloc.state.copyWith(
+        tweet: bloc.state.tweet.copyWith(favorited: false),
+      );
+      return;
+    }
+
+    yield bloc.state.copyWith(
+      tweet: bloc.state.tweet.copyWith(
+        favoriteCount: math.max(0, bloc.state.tweet.favoriteCount - 1),
+        favorited: false,
+      ),
+      isFavoriting: true,
+    );
+
+    try {
+      await bloc.tweetService.destroyFavorite(id: bloc.state.tweet.id);
+
+      log.fine('un-favorited ${bloc.state.tweet.id}');
+
+      yield bloc.state.copyWith(isFavoriting: false);
+
+      if (bloc.state.tweet.favorited) {
+        // the user has favorited the tweet while we were making the request
+        bloc.add(const FavoriteTweet());
+      }
+    } catch (e, st) {
+      if (!_actionPerformed(e)) {
+        yield bloc.state.copyWith(
+          tweet: bloc.state.tweet.copyWith(
+            favoriteCount: bloc.state.tweet.favoriteCount + 1,
+            favorited: true,
+          ),
+          isFavoriting: false,
+        );
+
+        log.warning('error favoriting ${bloc.state.tweet.id}', e, st);
+
+        twitterApiErrorHandler(e);
+      } else {
+        yield bloc.state.copyWith(isFavoriting: false);
       }
     }
   }
@@ -140,7 +245,7 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
     log.fine('deleting tweet');
 
     final tweet = await bloc!.tweetService
-        .destroy(id: bloc.tweet.idStr, trimUser: true)
+        .destroy(id: bloc.state.tweet.id, trimUser: true)
         .handleError(silentErrorHandler);
 
     if (tweet != null) {
@@ -152,39 +257,6 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
   }
 }
 
-/// Unfavorites the tweet.
-class UnfavoriteTweet extends TweetEvent with HarpyLogger {
-  const UnfavoriteTweet();
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(HapticFeedback.lightImpact());
-
-    bloc.tweet.favorited = false;
-    bloc.tweet.favoriteCount = bloc.tweet.favoriteCount - 1;
-    yield UpdatedTweetState();
-
-    try {
-      await bloc.tweetService.destroyFavorite(id: bloc.tweet.idStr);
-      log.fine('unfavorited ${bloc.tweet.idStr}');
-    } catch (e, st) {
-      if (!actionPerformed(e)) {
-        bloc.tweet.favorited = true;
-        bloc.tweet.favoriteCount = bloc.tweet.favoriteCount + 1;
-        log.warning('error unfavoriting ${bloc.tweet.idStr}', e, st);
-        twitterApiErrorHandler(e);
-        yield UpdatedTweetState();
-      }
-    }
-  }
-}
-
-/// Translates the tweet.
-///
-/// The [Translation] is saved in the [TweetData.translation].
 class TranslateTweet extends TweetEvent {
   const TranslateTweet({
     required this.locale,
@@ -197,46 +269,61 @@ class TranslateTweet extends TweetEvent {
     required TweetState currentState,
     required TweetBloc bloc,
   }) async* {
-    unawaited(HapticFeedback.lightImpact());
+    yield bloc.state.copyWith(isTranslating: true);
 
-    yield TranslatingTweetState();
+    final translateLanguage = bloc.languagePreferences.activeTranslateLanguage(
+      locale.languageCode,
+    );
 
-    final translateLanguage =
-        bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
-
-    final tweetTranslatable = bloc.tweet.translatable(translateLanguage);
-    final quoteTranslatable = bloc.tweet.quoteTranslatable(
+    final tweetTranslatable = bloc.state.tweet.translatable(translateLanguage);
+    final quoteTranslatable = bloc.state.tweet.quoteTranslatable(
       translateLanguage,
     );
 
-    await Future.wait<void>(<Future<void>>[
+    Translation? tweetTranslation;
+    Translation? quoteTranslation;
+
+    await Future.wait<void>([
       // tweet translation
       if (tweetTranslatable)
         bloc.translationService
-            .translate(text: bloc.tweet.fullText, to: translateLanguage)
-            .then((translation) => bloc.tweet.translation = translation)
+            .translate(
+              text: bloc.state.tweet.visibleText,
+              to: translateLanguage,
+            )
+            .then((translation) => tweetTranslation = translation)
             .handleError(silentErrorHandler),
 
       // quote translation
       if (quoteTranslatable)
         bloc.translationService
-            .translate(text: bloc.tweet.quote!.fullText, to: translateLanguage)
-            .then((translation) => bloc.tweet.quote!.translation = translation)
+            .translate(
+              text: bloc.state.tweet.quote!.visibleText,
+              to: translateLanguage,
+            )
+            .then((translation) => quoteTranslation = translation)
             .handleError(silentErrorHandler)
     ]);
 
     // show an info when the tweet or quote was unable to be translated
     if (tweetTranslatable &&
-        bloc.tweet.translation != null &&
-        bloc.tweet.translation!.unchanged) {
+        tweetTranslation != null &&
+        tweetTranslation!.unchanged) {
       app<MessageService>().show('tweet not translated');
     } else if (quoteTranslatable &&
-        bloc.tweet.quote?.translation != null &&
-        bloc.tweet.quote!.translation!.unchanged) {
+        quoteTranslation != null &&
+        quoteTranslation!.unchanged) {
       app<MessageService>().show('quoted tweet not translated');
     }
 
-    yield UpdatedTweetState();
+    yield bloc.state.copyWith(
+      tweet: bloc.state.tweet.copyWith(
+        translation: tweetTranslation,
+        quote: bloc.state.tweet.quote?.copyWith(
+          translation: quoteTranslation,
+        ),
+      ),
+    );
   }
 }
 
@@ -248,7 +335,7 @@ abstract class MediaActionEvent extends TweetEvent {
 
   /// The tweet that has the action for the media.
   ///
-  /// Can differ from [TweetBloc.tweet] when using media from quotes.
+  /// Can differ from [TweetState.tweet] when using media from quotes.
   final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image
@@ -278,7 +365,7 @@ abstract class TweetActionEvent extends TweetEvent {
 
   /// The selected Tweet.
   ///
-  /// Can differ from [TweetBloc.tweet] when selecting quotes.
+  /// Can differ from [TweetState.tweet] when selecting quotes.
   final TweetData tweet;
 }
 
@@ -323,4 +410,29 @@ class ShareTweet extends TweetActionEvent {
   }) async* {
     unawaited(Share.share(tweet.tweetUrl));
   }
+}
+
+/// Returns `true` if the error contains any of the following error codes:
+///
+/// 139: already favorited (trying to favorite a tweet twice)
+/// 327: already retweeted
+/// 144: tweet with id not found (trying to unfavorite a tweet twice) or
+/// trying to delete a tweet that has already been deleted before.
+bool _actionPerformed(dynamic error) {
+  if (error is Response) {
+    try {
+      final Map<String, dynamic> body = jsonDecode(error.body);
+      final List<dynamic> errors = body['errors'] ?? <Map<String, dynamic>>[];
+
+      return errors.any((dynamic error) =>
+          error is Map<String, dynamic> &&
+          (error['code'] == 139 ||
+              error['code'] == 327 ||
+              error['code'] == 144));
+    } catch (e) {
+      // unexpected error format
+    }
+  }
+
+  return false;
 }

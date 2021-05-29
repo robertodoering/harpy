@@ -34,7 +34,7 @@ class TweetQuoteContent extends StatelessWidget {
         ),
         begin: <Widget>[
           TweetAuthorRow(
-            tweet.userData!,
+            tweet.user,
             createdAt: tweet.createdAt,
             avatarPadding: defaultSmallPaddingValue,
             avatarRadius: 18,
@@ -50,10 +50,10 @@ class TweetQuoteContent extends StatelessWidget {
       ),
       if (tweet.hasText)
         TwitterText(
-          tweet.fullText,
+          tweet.text,
           entities: tweet.entities,
           style: theme.textTheme.bodyText2!.apply(fontSizeDelta: -2),
-          urlToIgnore: tweet.quotedStatusUrl,
+          urlToIgnore: tweet.quoteUrl,
         ),
       if (tweet.translatable(translateLanguage))
         TweetTranslation(

@@ -29,9 +29,9 @@ class SearchUsers extends LoadPaginatedData {
 
     for (final loadedUser in oldUsers) {
       for (final newUser in newUsers) {
-        if (loadedUser.idStr == newUser.idStr) {
+        if (loadedUser.id == newUser.id) {
           filteredUsers.removeWhere(
-            (filteredUser) => filteredUser.idStr == newUser.idStr,
+            (filteredUser) => filteredUser.id == newUser.id,
           );
         }
       }

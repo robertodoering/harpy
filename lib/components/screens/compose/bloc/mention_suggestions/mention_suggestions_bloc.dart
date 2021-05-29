@@ -13,7 +13,7 @@ class MentionSuggestionsBloc
     extends Bloc<MentionSuggestionsEvent, MentionSuggestionsState> {
   MentionSuggestionsBloc({
     required UserData authenticatedUser,
-  })   : followingBloc = FollowingBloc(userId: authenticatedUser.idStr),
+  })  : followingBloc = FollowingBloc(userId: authenticatedUser.id),
         super(const MentionSuggestionsState()) {
     followingBloc.stream.listen(_followingBlocListener);
     userSearchBloc.stream.listen(_userSearchBlocListener);

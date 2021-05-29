@@ -18,16 +18,16 @@ class FavoriteButton extends StatelessWidget {
     final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: bloc.tweet.favorited,
+      active: bloc.state.tweet.favorited,
       padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: TextStyle(
         color: harpyTheme.favoriteColor,
         fontWeight: FontWeight.bold,
       ),
-      value: bloc.tweet.favoriteCount,
-      activate: () => bloc.add(const FavoriteTweet()),
-      deactivate: () => bloc.add(const UnfavoriteTweet()),
+      value: bloc.state.tweet.favoriteCount,
+      activate: bloc.onFavorite,
+      deactivate: bloc.onUnfavorite,
       iconSize: 22,
       iconBuilder: (_, active, size) => Icon(
         active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,

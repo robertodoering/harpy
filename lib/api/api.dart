@@ -8,6 +8,7 @@ export 'translate/translate_service.dart';
 export 'twitter/auth/twitter_auth.dart';
 export 'twitter/auth/twitter_auth_result.dart';
 export 'twitter/auth/twitter_login_webview.dart';
+export 'twitter/data/entities_data.dart';
 export 'twitter/data/media_data.dart';
 export 'twitter/data/tweet_data.dart';
 export 'twitter/data/twitter_list_data.dart';

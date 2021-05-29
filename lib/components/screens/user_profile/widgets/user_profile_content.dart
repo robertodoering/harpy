@@ -16,10 +16,9 @@ class UserProfileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = context.watch<AuthenticationBloc>();
 
-    final isAuthenticatedUser =
-        bloc.user!.idStr == authBloc.authenticatedUser!.idStr;
+    final isAuthenticatedUser = bloc.user!.id == authBloc.authenticatedUser!.id;
 
-    final screenName = bloc.user?.screenName;
+    final screenName = bloc.user?.handle;
 
     return ChangeNotifierProvider<TimelineFilterModel>(
       create: (_) => TimelineFilterModel.user(),
