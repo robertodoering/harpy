@@ -38,7 +38,7 @@ class LoadRepliesEvent extends RepliesEvent with HarpyLogger {
   ) async {
     if (tweet.hasParent) {
       final parent = await bloc.tweetService
-          .show(id: tweet.inReplyToStatusId!)
+          .show(id: tweet.parentTweetId!)
           .then((tweet) => TweetData.fromTweet(tweet))
           .then((parent) => parent.copyWith(replies: [tweet]))
           .handleError(silentErrorHandler);

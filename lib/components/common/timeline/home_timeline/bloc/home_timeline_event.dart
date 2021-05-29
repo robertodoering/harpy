@@ -286,7 +286,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
     if (currentState is HomeTimelineResult) {
       final tweets = List<TweetData>.of(currentState.tweets);
 
-      if (tweet.inReplyToStatusId == null) {
+      if (tweet.parentTweetId == null) {
         tweets.insert(0, tweet);
       }
 
@@ -326,7 +326,7 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
     if (currentState is HomeTimelineResult) {
       final tweets = List<TweetData>.of(currentState.tweets);
 
-      if (tweet.inReplyToStatusId == null) {
+      if (tweet.parentTweetId == null) {
         tweets.removeWhere((element) => element.id == tweet.id);
       }
 

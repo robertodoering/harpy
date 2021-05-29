@@ -32,12 +32,12 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   for (var i = 0; i < tweetDataList.length; i++) {
     final tweet = tweetDataList[i];
 
-    if (tweet.inReplyToStatusId != null) {
+    if (tweet.parentTweetId != null) {
       // look for parent in older tweets
       for (var j = i; j < tweetDataList.length; j++) {
         final olderTweet = tweetDataList[j];
 
-        if (olderTweet.id == tweet.inReplyToStatusId) {
+        if (olderTweet.id == tweet.parentTweetId) {
           // found parent tweet, remove child tweet from list and add it to
           //   the replies of the parent tweet
           tweetDataList[j] = olderTweet.copyWith(

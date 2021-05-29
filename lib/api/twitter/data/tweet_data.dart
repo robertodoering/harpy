@@ -21,7 +21,7 @@ class TweetData extends Equatable {
     required this.visibleText,
     required this.replies,
     required this.replyAuthors,
-    this.inReplyToStatusId,
+    this.parentTweetId,
     this.retweetUserName,
     this.retweetUserHandle,
     this.quote,
@@ -85,7 +85,7 @@ class TweetData extends Equatable {
       entities: EntitiesData.fromEntities(tweet.entities),
       // optional
       user: UserData.fromUser(tweet.user),
-      inReplyToStatusId: tweet.inReplyToStatusIdStr,
+      parentTweetId: tweet.inReplyToStatusIdStr,
       retweetUserName: retweetUserName,
       retweetUserHandle: retweetUserHandle,
       quote: quote,
@@ -102,22 +102,36 @@ class TweetData extends Equatable {
 
   // required tweet fields
 
+  /// The original id of this tweet.
+  ///
+  /// Differs from [id] when this tweet is a retweet.
   final String originalId;
+
+  /// The id of this tweet.
   final String id;
+
   final DateTime createdAt;
   final String text;
   final int retweetCount;
   final int favoriteCount;
   final bool retweeted;
   final bool favorited;
+
+  /// The BCP 47 language identifier corresponding to the machine-detected
+  /// language of the Tweet text, or `und` if no language could be detected.
   final String lang;
+
   final UserData user;
   final EntitiesData entities;
 
   // optional tweet fields
 
-  final String? inReplyToStatusId;
+  /// The id of the tweet that this tweet is replying to.
+  final String? parentTweetId;
 
+  /// The name and handle of the user that retweeted this tweet.
+  ///
+  /// `null` when this tweet is not a retweet.
   final String? retweetUserName;
   final String? retweetUserHandle;
 
@@ -129,6 +143,10 @@ class TweetData extends Equatable {
   final List<TweetData> replies;
   final String replyAuthors;
 
+  /// The text of this tweet that the user can see.
+  ///
+  /// Does not contain optional media and quote links and the shortened urls are
+  /// replaced with their display urls.
   final String visibleText;
 
   // todo: should just be one field 'media'
@@ -150,7 +168,7 @@ class TweetData extends Equatable {
     String? lang,
     UserData? user,
     EntitiesData? entities,
-    String? inReplyToStatusId,
+    String? parentTweetId,
     String? retweetUserName,
     String? retweetUserHandle,
     TweetData? quote,
@@ -174,7 +192,7 @@ class TweetData extends Equatable {
       lang: lang ?? this.lang,
       user: user ?? this.user,
       entities: entities ?? this.entities,
-      inReplyToStatusId: inReplyToStatusId ?? this.inReplyToStatusId,
+      parentTweetId: parentTweetId ?? this.parentTweetId,
       retweetUserName: retweetUserName ?? this.retweetUserName,
       retweetUserHandle: retweetUserHandle ?? this.retweetUserHandle,
       quote: quote ?? this.quote,
@@ -202,7 +220,7 @@ class TweetData extends Equatable {
         lang,
         user,
         entities,
-        inReplyToStatusId,
+        parentTweetId,
         retweetUserName,
         retweetUserHandle,
         quote,
@@ -237,8 +255,7 @@ extension TweetDataExtension on TweetData {
   bool quoteTranslatable(String translateLanguage) =>
       quote != null && quote!.translatable(translateLanguage);
 
-  bool get hasParent =>
-      inReplyToStatusId != null && inReplyToStatusId!.isNotEmpty;
+  bool get hasParent => parentTweetId != null && parentTweetId!.isNotEmpty;
 
   /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(RouteSettings route) {
