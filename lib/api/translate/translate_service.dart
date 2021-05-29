@@ -60,13 +60,14 @@ class TranslationService {
 
       _log.fine('translated from:\n$original\nto:\n$translated');
 
-      return Translation()
-        ..original = original.toString()
-        ..text = translated.toString()
+      return Translation(
+        original: original.toString(),
+        text: translated.toString(),
         // ignore: avoid_dynamic_calls
-        ..languageCode = body.last[0][0]
+        languageCode: body.last[0][0],
         // ignore: avoid_dynamic_calls
-        ..language = translateLanguages[body.last[0][0]];
+        language: translateLanguages[body.last[0][0]],
+      );
     } catch (e, st) {
       _log.severe(
         'error while trying to parse translate response: ${response.body}',
