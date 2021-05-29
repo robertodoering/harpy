@@ -33,7 +33,7 @@ class RequestListTimeline extends ListTimelineEvent with HarpyLogger {
       if (tweets.isNotEmpty) {
         yield ListTimelineResult(
           tweets: tweets,
-          maxId: tweets.last.idStr,
+          maxId: tweets.last.id,
         );
       } else {
         yield const ListTimelineNoResult();
@@ -90,7 +90,7 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
 
         yield ListTimelineResult(
           tweets: currentState.tweets.followedBy(tweets).toList(),
-          maxId: tweets.last.idStr,
+          maxId: tweets.last.id,
           canRequestOlder: tweets.isNotEmpty,
         );
       } else {

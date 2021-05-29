@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
@@ -25,7 +26,10 @@ class TweetCard extends StatelessWidget {
         color: color,
         child: Column(
           children: <Widget>[
-            TweetCardContent(tweet),
+            BlocProvider<TweetBloc>(
+              create: (_) => TweetBloc(tweet),
+              child: const TweetCardContent(),
+            ),
             if (tweet.replies.isNotEmpty) TweetReplies(tweet, depth: depth),
           ],
         ),

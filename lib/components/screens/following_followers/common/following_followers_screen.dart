@@ -59,7 +59,8 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
                       HarpySliverAppBar(title: title, floating: true),
                     ],
                     endSlivers: <Widget>[
-                      if (bloc.loadingInitialData || state is InitialState)
+                      if (bloc.loadingInitialData ||
+                          state is InitialPaginatedState)
                         const SliverFillLoadingIndicator()
                       else if (bloc.showNoDataExists || bloc.showError)
                         SliverFillLoadingError(

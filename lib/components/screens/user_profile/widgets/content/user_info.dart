@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -72,7 +73,7 @@ class UserProfileInfo extends StatelessWidget {
       fit: BoxFit.scaleDown,
       alignment: Alignment.centerLeft,
       child: Text(
-        '@${bloc.user!.screenName}',
+        '@${bloc.user!.handle}',
         style: theme.textTheme.subtitle1,
       ),
     );
@@ -108,9 +109,8 @@ class UserProfileInfo extends StatelessWidget {
     // hide follow button when the profile of the authenticated user is showing
     // or when the connections have not been requested to determine whether the
     // authenticated user is following this user.
-    final enableFollow =
-        authBloc.authenticatedUser!.idStr != bloc.user!.idStr &&
-            bloc.user!.hasConnections;
+    final enableFollow = authBloc.authenticatedUser!.id != bloc.user!.id &&
+        bloc.user!.hasConnections;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

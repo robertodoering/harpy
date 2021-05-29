@@ -107,7 +107,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
           status: text,
           mediaIds: mediaIds,
           attachmentUrl: bloc.composeBloc.quotedTweet?.tweetUrl,
-          inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.idStr,
+          inReplyToStatusId: bloc.composeBloc.inReplyToStatus?.id,
           autoPopulateReplyMetadata: true,
         )
         .then((tweet) => TweetData.fromTweet(tweet))

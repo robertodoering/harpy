@@ -25,7 +25,7 @@ extension RepliesExtension on TweetSearchService {
     TweetData tweet,
     RepliesResult? lastResult,
   ) async {
-    final screenName = tweet.userData!.screenName;
+    final screenName = tweet.user.handle;
 
     final maxId =
         lastResult == null ? null : '${int.tryParse(lastResult.maxId!)! + 1}';
@@ -35,7 +35,7 @@ extension RepliesExtension on TweetSearchService {
     try {
       result = await searchTweets(
         q: 'to:$screenName',
-        sinceId: tweet.idStr,
+        sinceId: tweet.id,
         count: 100,
         maxId: maxId,
       );
@@ -57,7 +57,7 @@ extension RepliesExtension on TweetSearchService {
 
     // filter found tweets by replies
     for (final reply in result.statuses!) {
-      if (reply.inReplyToStatusIdStr == tweet.idStr) {
+      if (reply.inReplyToStatusIdStr == tweet.id) {
         replies.add(TweetData.fromTweet(reply));
       }
     }

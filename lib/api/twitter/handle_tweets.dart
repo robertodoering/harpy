@@ -10,24 +10,44 @@ import 'package:harpy/misc/misc.dart';
 ///
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
 List<TweetData> handleTweets(List<Tweet> tweets, [TimelineFilter? filter]) {
-  final tweetDataList = <TweetData>[];
+  final tweetDataList = tweets
+      .where((tweet) => !_filterTweet(tweet, filter))
+      .map((tweet) => TweetData.fromTweet(tweet))
+      .toList();
 
-  for (final tweet in tweets.reversed) {
-    if (_filterTweet(tweet, filter)) {
-      continue;
-    }
+  for (var i = 0; i < tweetDataList.length; i++) {
+    final tweet = tweetDataList[i];
 
-    if (tweet.inReplyToStatusIdStr != null) {
-      // add child as reply to a parent tweet in the list
-      if (!_addReplyChild(tweetDataList, tweet)) {
-        // if parent not in list, add normally
-        tweetDataList.insert(0, TweetData.fromTweet(tweet));
+    if (tweet.inReplyToStatusId != null) {
+      // look for parent in older tweets
+      for (var j = i; j < tweetDataList.length; j++) {
+        final olderTweet = tweetDataList[j];
+
+        if (olderTweet.id == tweet.inReplyToStatusId) {
+          // found parent tweet, remove child tweet from list and add it to
+          //   the replies of the parent tweet
+          tweetDataList[j] = olderTweet.copyWith(
+            replies: [
+              ...olderTweet.replies,
+              tweet,
+            ],
+          );
+          tweetDataList.removeAt(i);
+
+          break;
+        }
       }
-    } else {
-      // add tweet normally
-      tweetDataList.insert(0, TweetData.fromTweet(tweet));
     }
   }
+
+  // sort to make sure the tweets are in chronological order with the newest
+  //   reply to a tweet pushing the parent tweet to the front
+  tweetDataList.sort((a, b) {
+    final targetA = a.replies.isNotEmpty ? a.replies.first : a;
+    final targetB = b.replies.isNotEmpty ? b.replies.first : b;
+
+    return targetB.createdAt.compareTo(targetA.createdAt);
+  });
 
   return tweetDataList;
 }
@@ -49,9 +69,7 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
       }
 
       final hasImage = tweet.extendedEntities!.media!.first.type == kMediaPhoto;
-
       final hasGif = tweet.extendedEntities!.media!.first.type == kMediaGif;
-
       final hasVideo = tweet.extendedEntities!.media!.first.type == kMediaVideo;
 
       if (!(filter.includesImages && hasImage ||
@@ -90,21 +108,4 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
 
     return false;
   }
-}
-
-bool _addReplyChild(List<TweetData> tweetDataList, Tweet tweet) {
-  for (final tweetData in tweetDataList) {
-    if (tweetData.idStr == tweet.inReplyToStatusIdStr) {
-      // found parent tweet
-      tweetData.replies.add(TweetData.fromTweet(tweet));
-      return true;
-    }
-    // search for parent tweet in replies recursively
-    if (tweetData.replies.isNotEmpty &&
-        _addReplyChild(tweetData.replies, tweet)) {
-      return true;
-    }
-  }
-
-  return false;
 }

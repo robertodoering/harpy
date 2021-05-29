@@ -15,7 +15,7 @@ class TweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = TweetBloc.of(context);
+    final bloc = context.watch<TweetBloc>();
     final route = ModalRoute.of(context)!.settings;
     final locale = Localizations.localeOf(context);
     final translateLanguage =

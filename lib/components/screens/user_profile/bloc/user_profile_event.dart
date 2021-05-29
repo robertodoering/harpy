@@ -36,7 +36,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
   final String? screenName;
 
   /// The user id used to request the user or the relationship status.
-  String? get _screenName => screenName ?? user?.screenName;
+  String? get _screenName => screenName ?? user?.handle;
 
   @override
   Stream<UserProfileState> applyAsync({
@@ -74,8 +74,9 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (userData == null) {
       yield FailedLoadingUserState();
     } else {
-      userData!.connections = connections;
-      bloc.user = userData;
+      bloc.user = userData!.copyWith(
+        connections: connections,
+      );
 
       yield InitializedUserState();
     }
@@ -90,14 +91,14 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
     required UserProfileState currentState,
     required UserProfileBloc bloc,
   }) async* {
-    log.fine('following @${bloc.user!.screenName}');
+    log.fine('following @${bloc.user!.handle}');
 
     bloc.user!.connections?.add('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsCreate(userId: bloc.user!.idStr);
-      log.fine('successfully followed @${bloc.user!.screenName}');
+      await bloc.userService.friendshipsCreate(userId: bloc.user!.id);
+      log.fine('successfully followed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
@@ -116,14 +117,14 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
     required UserProfileState currentState,
     required UserProfileBloc bloc,
   }) async* {
-    log.fine('unfollowing @${bloc.user!.screenName}');
+    log.fine('unfollowing @${bloc.user!.handle}');
 
     bloc.user!.connections?.remove('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsDestroy(userId: bloc.user!.idStr);
-      log.fine('successfully unfollowed @${bloc.user!.screenName}');
+      await bloc.userService.friendshipsDestroy(userId: bloc.user!.id);
+      log.fine('successfully unfollowed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
@@ -160,7 +161,11 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
 
     await translationService
         .translate(text: bloc.user!.description, to: translateLanguage)
-        .then((translation) => bloc.user!.descriptionTranslation = translation)
+        .then(
+          (translation) => bloc.user = bloc.user!.copyWith(
+            descriptionTranslation: translation,
+          ),
+        )
         .handleError(silentErrorHandler);
 
     if (!bloc.user!.hasDescriptionTranslation ||

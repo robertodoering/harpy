@@ -20,9 +20,7 @@ class MentionSuggestionsState extends Equatable {
           .where(
             (user) =>
                 user.name.toLowerCase().contains(lastQuery.toLowerCase()) ||
-                user.screenName
-                    .toLowerCase()
-                    .startsWith(lastQuery.toLowerCase()),
+                user.handle.toLowerCase().startsWith(lastQuery.toLowerCase()),
           )
           .toList()
       : <UserData>[];

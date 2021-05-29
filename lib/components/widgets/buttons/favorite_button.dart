@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// The favorite button for the [TweetActionRow].
 class FavoriteButton extends StatelessWidget {
@@ -18,16 +20,22 @@ class FavoriteButton extends StatelessWidget {
     final harpyTheme = HarpyTheme.of(context);
 
     return ActionButton(
-      active: bloc.tweet.favorited,
+      active: bloc.state.tweet.favorited,
       padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: TextStyle(
         color: harpyTheme.favoriteColor,
         fontWeight: FontWeight.bold,
       ),
-      value: bloc.tweet.favoriteCount,
-      activate: () => bloc.add(const FavoriteTweet()),
-      deactivate: () => bloc.add(const UnfavoriteTweet()),
+      value: bloc.state.tweet.favoriteCount,
+      activate: () {
+        unawaited(HapticFeedback.lightImpact());
+        bloc.add(const FavoriteTweet());
+      },
+      deactivate: () {
+        unawaited(HapticFeedback.lightImpact());
+        bloc.add(const UnfavoriteTweet());
+      },
       iconSize: 22,
       iconBuilder: (_, active, size) => Icon(
         active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,

@@ -40,7 +40,7 @@ class TweetReplies extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (tweet.replyAuthors != null && tweet.replyAuthors!.isNotEmpty)
+        if (tweet.replyAuthors.isNotEmpty)
           AnimatedPadding(
             duration: kShortAnimationDuration,
             padding: DefaultEdgeInsets.only(
