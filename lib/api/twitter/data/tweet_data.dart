@@ -270,6 +270,19 @@ extension TweetDataExtension on TweetData {
 
   String get tweetUrl => 'https://twitter.com/${user.handle}/status/$id';
 
+  /// Returns the [MediaType] for the media of this tweet or `null` if this
+  /// tweet has no media.
+  MediaType? get mediaType {
+    if (hasImages) {
+    } else if (hasGif) {
+      return MediaType.gif;
+    } else if (hasVideo) {
+      return MediaType.video;
+    } else {
+      return null;
+    }
+  }
+
   String? downloadMediaUrl([int index = 0]) {
     if (hasImages) {
       return images![index].bestUrl;
@@ -328,19 +341,5 @@ String _replyAuthors(UserData user, List<TweetData> replies) {
     return '';
   } else {
     return replyNames.join(', ');
-  }
-
-  /// Returns the [MediaType] for the media of this tweet or `null` if this
-  /// tweet has no media.
-  MediaType? get mediaType {
-    if (hasImages) {
-      return MediaType.image;
-    } else if (hasGif) {
-      return MediaType.gif;
-    } else if (hasVideo) {
-      return MediaType.video;
-    } else {
-      return null;
-    }
   }
 }
