@@ -33,7 +33,7 @@ class TweetTranslation extends StatelessWidget {
                 duration: kLongAnimationDuration,
                 padding: padding,
                 child: TranslatedText(
-                  tweet.translation!.text,
+                  tweet.translation!.text!,
                   language: tweet.translation!.language,
                   entities: tweet.entities,
                   urlToIgnore: tweet.quoteUrl,

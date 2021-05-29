@@ -335,7 +335,7 @@ abstract class MediaActionEvent extends TweetEvent {
 
   /// The tweet that has the action for the media.
   ///
-  /// Can differ from [TweetBloc.tweet] when using media from quotes.
+  /// Can differ from [TweetState.tweet] when using media from quotes.
   final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image
@@ -365,7 +365,7 @@ abstract class TweetActionEvent extends TweetEvent {
 
   /// The selected Tweet.
   ///
-  /// Can differ from [TweetBloc.tweet] when selecting quotes.
+  /// Can differ from [TweetState.tweet] when selecting quotes.
   final TweetData tweet;
 }
 

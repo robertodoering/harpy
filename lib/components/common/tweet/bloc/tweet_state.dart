@@ -13,7 +13,6 @@ class TweetState extends Equatable {
 
   final bool isFavoriting;
   final bool isRetweeting;
-
   final bool isTranslating;
 
   @override

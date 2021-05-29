@@ -35,13 +35,13 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   }
 
   Widget _buildUrl(BuildContext context, ThemeData theme) {
-    final url = bloc.user!.entities!.url!.urls!.first;
+    final url = UrlData.fromUrl(bloc.user!.entities!.url!.urls!.first);
 
     final Widget child = GestureDetector(
       onTap: () => defaultOnUrlTap(context, url),
       onLongPress: () => defaultOnUrlLongPress(context, url),
       child: Text(
-        url.displayUrl!,
+        url.displayUrl,
         style: theme.textTheme.bodyText1!.copyWith(
           color: theme.accentColor,
           fontWeight: FontWeight.bold,

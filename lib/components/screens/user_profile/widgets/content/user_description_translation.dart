@@ -21,7 +21,7 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
             ? Padding(
                 padding: EdgeInsets.only(top: defaultSmallPaddingValue),
                 child: TranslatedText(
-                  bloc.user!.descriptionTranslation!.text,
+                  bloc.user!.descriptionTranslation!.text!,
                   language: bloc.user!.descriptionTranslation!.language,
                   entities: bloc.user!.userDescriptionEntities,
                 ),

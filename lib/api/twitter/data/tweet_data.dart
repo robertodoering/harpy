@@ -17,10 +17,10 @@ class TweetData extends Equatable {
     required this.favorited,
     required this.lang,
     required this.user,
+    required this.entities,
     required this.visibleText,
     required this.replies,
     required this.replyAuthors,
-    this.entities,
     this.inReplyToStatusId,
     this.retweetUserName,
     this.retweetUserHandle,
@@ -32,7 +32,7 @@ class TweetData extends Equatable {
     this.translation,
   });
 
-  /// Parses the [TweetData] from the [TwitterApi] returned object [Tweet].
+  /// Parses the [TweetData] from the [TwitterApi] returned [Tweet] object.
   factory TweetData.fromTweet(Tweet tweet) {
     final originalId = tweet.idStr ?? '';
 
@@ -82,8 +82,8 @@ class TweetData extends Equatable {
       retweeted: tweet.retweeted ?? false,
       favorited: tweet.favorited ?? false,
       lang: tweet.lang ?? 'und',
+      entities: EntitiesData.fromEntities(tweet.entities),
       // optional
-      entities: tweet.entities,
       user: UserData.fromUser(tweet.user),
       inReplyToStatusId: tweet.inReplyToStatusIdStr,
       retweetUserName: retweetUserName,
@@ -112,10 +112,9 @@ class TweetData extends Equatable {
   final bool favorited;
   final String lang;
   final UserData user;
+  final EntitiesData entities;
 
   // optional tweet fields
-
-  final Entities? entities;
 
   final String? inReplyToStatusId;
 
@@ -150,7 +149,7 @@ class TweetData extends Equatable {
     bool? favorited,
     String? lang,
     UserData? user,
-    Entities? entities,
+    EntitiesData? entities,
     String? inReplyToStatusId,
     String? retweetUserName,
     String? retweetUserHandle,

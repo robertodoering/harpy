@@ -45,7 +45,7 @@ class UserCard extends StatelessWidget {
               ),
               if (user.hasDescription)
                 TwitterText(
-                  user.description,
+                  user.description!,
                   entities: user.userDescriptionEntities,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

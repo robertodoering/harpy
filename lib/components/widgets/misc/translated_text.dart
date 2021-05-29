@@ -1,5 +1,5 @@
-import 'package:dart_twitter_api/api/common/data/entities.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 /// Builds text for translated [TwitterText] with the original [language] above
@@ -13,9 +13,9 @@ class TranslatedText extends StatelessWidget {
     this.fontSizeDelta = 0,
   });
 
-  final String? text;
+  final String text;
   final String? language;
-  final Entities? entities;
+  final EntitiesData? entities;
   final String? urlToIgnore;
   final double fontSizeDelta;
 
