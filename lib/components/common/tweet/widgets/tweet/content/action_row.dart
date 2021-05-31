@@ -28,9 +28,7 @@ class TweetActionRow extends StatelessWidget {
           FavoriteButton(bloc, padding: DefaultEdgeInsets.all()),
           if (!tweet.currentReplyParent(route))
             HarpyButton.flat(
-              onTap: () => app<HarpyNavigator>().pushRepliesScreen(
-                tweet: tweet,
-              ),
+              onTap: () => bloc.onRepliesTap(tweet),
               icon: const Icon(CupertinoIcons.bubble_left),
               iconSize: 22,
               padding: DefaultEdgeInsets.all(),

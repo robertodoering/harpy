@@ -34,6 +34,10 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
     app<HarpyNavigator>().pushRepliesScreen(tweet: tweet);
   }
 
+  void onRepliesTap(TweetData tweet) {
+    onCardTap(tweet);
+  }
+
   void onViewMoreActions(BuildContext context, TweetData tweet) {
     showTweetActionsBottomSheet(context, tweet: tweet);
   }
