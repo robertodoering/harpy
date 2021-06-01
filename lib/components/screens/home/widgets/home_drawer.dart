@@ -34,16 +34,6 @@ class HomeDrawer extends StatelessWidget {
                 },
               ),
 
-              // compose tweet
-              ListTile(
-                leading: const Icon(FeatherIcons.feather),
-                title: const Text('Compose tweet'),
-                onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
-                  app<HarpyNavigator>().pushComposeScreen();
-                },
-              ),
-
               // lists
               ListTile(
                 leading: const Icon(CupertinoIcons.list_bullet),
