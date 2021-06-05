@@ -110,7 +110,7 @@ class MediaOverlay extends StatefulWidget {
     VoidCallback? onOpenExternally,
     VoidCallback? onShare,
   }) {
-    final mediaUrl = tweetBloc.downloadMediaUrl(tweet);
+    final mediaUrl = tweet.downloadMediaUrl();
 
     app<HarpyNavigator>().pushRoute(
       HeroDialogRoute<void>(

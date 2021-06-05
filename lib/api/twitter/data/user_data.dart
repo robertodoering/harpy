@@ -1,154 +1,209 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
 
-/// The user data for [TweetData].
-class UserData {
-  UserData.fromUser(User user) {
-    idStr = user.idStr ?? '';
-    name = user.name ?? '';
-    screenName = user.screenName ?? '';
-    location = user.location;
-    entities = user.entities;
-    description = user.description;
-    verified = user.verified ?? false;
-    followersCount = user.followersCount ?? 0;
-    friendsCount = user.friendsCount ?? 0;
-    createdAt = user.createdAt;
-    profileBannerUrl = user.profileBannerUrl;
-    profileImageUrlHttps = user.profileImageUrlHttps;
+@immutable
+class UserData extends Equatable {
+  const UserData({
+    this.id = '',
+    this.name = '',
+    this.handle = '',
+    this.verified = false,
+    this.followersCount = 0,
+    this.friendsCount = 0,
+    this.profileImageUrl = '',
+    this.profileBannerUrl,
+    this.createdAt,
+    this.location,
+    this.description,
+    this.descriptionTranslation,
+    this.userUrl,
+    this.userDescriptionUrls = const [],
+    this.connections,
+    this.userDescriptionEntities = const EntitiesData(),
+  });
+
+  /// Parses the [UserData] from the [TwitterApi] returned [User] object.
+  factory UserData.fromUser(User? user) {
+    final userUrl = user?.entities?.url?.urls != null &&
+            user!.entities!.url!.urls!.isNotEmpty
+        ? UrlData.fromUrl(user.entities!.url!.urls!.first)
+        : null;
+
+    final userDescriptionUrls = user?.entities?.description?.urls
+            ?.map((url) => UrlData.fromUrl(url))
+            .toList() ??
+        [];
+
+    return UserData(
+      // required
+      id: user?.idStr ?? '',
+      name: user?.name ?? '',
+      handle: user?.screenName ?? '',
+      verified: user?.verified ?? false,
+      followersCount: user?.followersCount ?? 0,
+      friendsCount: user?.friendsCount ?? 0,
+      profileImageUrl: user?.profileImageUrlHttps ?? '',
+      // optional
+      profileBannerUrl: user?.profileBannerUrl,
+      createdAt: user?.createdAt,
+      location: user?.location,
+      description: user?.description,
+      // custom
+      userUrl: userUrl,
+      userDescriptionUrls: userDescriptionUrls,
+    );
   }
 
-  /// The string representation of the unique identifier for this User.
-  late String idStr;
+  // required user fields
 
-  /// The name of the user, as they’ve defined it. Not necessarily a person’s
-  /// name. Typically capped at 50 characters, but subject to change.
-  late String name;
+  final String id;
 
-  /// The screen name, handle, or alias that this user identifies themselves
-  /// with. [screenName]s are unique but subject to change. Use id_str as a
-  /// user identifier whenever possible. Typically a maximum of 15 characters
-  /// long, but some historical accounts may exist with longer names.
-  late String screenName;
+  /// The display name of the user .
+  final String name;
 
-  /// Nullable. The user-defined location for this account’s profile. Not
-  /// necessarily a location, nor machine-parseable. This field will
-  /// occasionally be fuzzily interpreted by the Search service.
-  String? location;
-
-  /// Entities for User Objects describe URLs that appear in the user defined
-  /// profile URL and description fields.
-  UserEntities? entities;
-
-  /// Nullable. The user-defined UTF-8 string describing their account.
-  String? description;
-
-  /// When `true`, indicates that the user has a verified account.
-  late bool verified;
-
-  /// The number of followers this account currently has. Under certain
-  /// conditions of duress, this field will temporarily indicate `0`.
-  late int followersCount;
-
-  /// The number of users this account is following (AKA their “followings”).
-  /// Under certain conditions of duress, this field will temporarily indicate
-  /// `0`.
-  late int friendsCount;
-
-  /// The UTC datetime that the user account was created on Twitter.
-  DateTime? createdAt;
-
-  /// The HTTPS-based URL pointing to the standard web representation of the
-  /// user’s uploaded profile banner. By adding a final path element of the URL,
-  /// it is possible to obtain different image sizes optimized for specific
-  /// displays.
+  /// The screen name, handle or alias that this user identifies themselves
+  /// with.
   ///
-  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
-  /// for size variants.
-  String? profileBannerUrl;
+  /// Handles are unique but subject to change.
+  ///
+  /// Typically a maximum of 15 characters long, but some historical accounts
+  /// may exist with longer names.
+  final String handle;
 
-  /// A HTTPS-based URL pointing to the user’s profile image.
-  String? profileImageUrlHttps;
+  final bool verified;
+  final int followersCount;
+
+  /// The number of users this user is following.
+  final int friendsCount;
+
+  final String profileImageUrl;
+
+  // optional user fields
+
+  final String? profileBannerUrl;
+  final DateTime? createdAt;
+  final String? location;
+  final String? description;
+
+  // custom fields
+
+  final UrlData? userUrl;
+  final List<UrlData> userDescriptionUrls;
+  final Translation? descriptionTranslation;
 
   /// The connections for this relationship for the authenticated user.
   ///
   /// Can be: `following`, `following_requested`, `followed_by`, `none`,
   /// `blocking`, `muting`.
-  ///
-  /// Requested via [UserService.friendshipsLookup].
-  List<String>? connections;
+  final List<String>? connections;
 
-  /// The [Entities] used by the [TwitterText] for the user description.
-  Entities? _userDescriptionEntities;
-  Entities? get userDescriptionEntities {
-    if (_userDescriptionEntities != null) {
-      return _userDescriptionEntities;
-    }
+  final EntitiesData userDescriptionEntities;
 
-    _userDescriptionEntities = Entities()..urls = entities?.description?.urls;
-
-    if (description != null) {
-      parseEntities(description!, _userDescriptionEntities!);
-    }
-
-    return _userDescriptionEntities;
+  UserData copyWith({
+    String? id,
+    String? name,
+    String? handle,
+    bool? verified,
+    int? followersCount,
+    int? friendsCount,
+    String? profileBannerUrl,
+    String? profileImageUrl,
+    DateTime? createdAt,
+    String? location,
+    String? description,
+    UrlData? userUrl,
+    List<UrlData>? userDescriptionUrls,
+    Translation? descriptionTranslation,
+    List<String>? connections,
+    EntitiesData? userDescriptionEntities,
+  }) {
+    return UserData(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      handle: handle ?? this.handle,
+      verified: verified ?? this.verified,
+      followersCount: followersCount ?? this.followersCount,
+      friendsCount: friendsCount ?? this.friendsCount,
+      profileBannerUrl: profileBannerUrl ?? this.profileBannerUrl,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      createdAt: createdAt ?? this.createdAt,
+      location: location ?? this.location,
+      description: description ?? this.description,
+      userUrl: userUrl ?? this.userUrl,
+      userDescriptionUrls: userDescriptionUrls ?? this.userDescriptionUrls,
+      descriptionTranslation:
+          descriptionTranslation ?? this.descriptionTranslation,
+      connections: connections ?? this.connections,
+      userDescriptionEntities:
+          userDescriptionEntities ?? this.userDescriptionEntities,
+    );
   }
 
-  /// The translation for this [description].
-  Translation? descriptionTranslation;
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        handle,
+        verified,
+        followersCount,
+        friendsCount,
+        profileBannerUrl,
+        profileImageUrl,
+        createdAt,
+        location,
+        description,
+        userUrl,
+        userDescriptionUrls,
+        descriptionTranslation,
+        connections,
+        userDescriptionEntities,
+      ];
+}
 
-  /// Whether this user's description has been translated.
+extension UserDataExtension on UserData {
   bool get hasDescriptionTranslation => descriptionTranslation != null;
 
-  /// Whether the relationship status for this user has been requested and the
-  /// [Friendship.connections] set to [connections].
   bool get hasConnections => connections != null;
 
-  /// Whether the authenticated user is following this user.
-  ///
-  /// Returns `false` if [connections] is `null`.
   bool get following =>
       connections != null && connections!.contains('following');
 
-  /// Whether this user follows the authenticated user.
-  ///
-  /// Returns `false` if [connections] is `null`.
   bool get follows =>
       connections != null && connections!.contains('followed_by');
 
-  /// Whether this user has a description.
   bool get hasDescription => description != null && description!.isNotEmpty;
 
-  /// Whether this user has a url for their profile.
-  bool get hasUrl =>
-      entities?.url?.urls != null && entities!.url!.urls!.isNotEmpty;
+  bool get hasUrl => userUrl != null;
 
-  /// Whether this user has a location set for their profile.
   bool get hasLocation => location != null && location!.isNotEmpty;
 
-  /// Whether this user has a created at time.
   bool get hasCreatedAt => createdAt != null;
 
-  /// Whether this user has a profile banner.
   bool get hasBanner => profileBannerUrl != null;
 
-  /// The user profile image url for user images drawn in the app.
-  ///
-  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
   String get appropriateUserImageUrl =>
-      profileImageUrlHttps!.replaceFirst('_normal', '_bigger');
+      profileImageUrl.replaceFirst('_normal', '_bigger');
 
-  /// Returns the user profile image url in its original size.
-  ///
-  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
-  String get originalUserImageUrl =>
-      profileImageUrlHttps!.replaceAll('_normal', '');
+  String get originalUserImageUrl => profileImageUrl.replaceAll('_normal', '');
 
-  /// The user banner url for the user banner drawn in the app.
-  ///
-  /// See https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners.
-  String get appropriateUserBannerUrl {
-    return '$profileBannerUrl/web_retina';
+  String get appropriateUserBannerUrl => '$profileBannerUrl/web_retina';
+}
+
+EntitiesData userDescriptionEntities(
+  List<UrlData> userDescriptionUrls,
+  String? description,
+) {
+  if (description != null) {
+    final descriptionEntities = parseEntities(description);
+
+    return descriptionEntities.copyWith(
+      urls: userDescriptionUrls,
+    );
+  } else {
+    return EntitiesData(
+      urls: userDescriptionUrls,
+    );
   }
 }

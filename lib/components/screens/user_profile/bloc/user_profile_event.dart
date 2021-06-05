@@ -12,9 +12,9 @@ abstract class UserProfileEvent {
 
 /// Initializes the data for the [UserProfileBloc.user].
 ///
-/// Either [user] or [screenName] must not be `null`.
+/// Either [user] or [handle] must not be `null`.
 ///
-/// If [user] is `null`, requests the user data for the [screenName] and the
+/// If [user] is `null`, requests the user data for the [handle] and the
 /// relationship status (following / followed_by).
 ///
 /// Otherwise if the [UserData.connections] is `null`, only requests the
@@ -28,15 +28,15 @@ abstract class UserProfileEvent {
 class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
   const InitializeUserEvent({
     this.user,
-    this.screenName,
-  }) : assert(user != null || screenName != null);
+    this.handle,
+  }) : assert(user != null || handle != null);
 
   final UserData? user;
 
-  final String? screenName;
+  final String? handle;
 
   /// The user id used to request the user or the relationship status.
-  String? get _screenName => screenName ?? user?.screenName;
+  String? get _handle => handle ?? user?.handle;
 
   @override
   Stream<UserProfileState> applyAsync({
@@ -53,18 +53,18 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (user?.connections == null) {
       await Future.wait<void>(<Future<void>>[
         // user data
-        if (userData == null && _screenName != null)
+        if (userData == null && _handle != null)
           bloc.userService
-              .usersShow(screenName: _screenName)
+              .usersShow(screenName: _handle)
               .then((user) => UserData.fromUser(user))
               .then((user) => userData = user)
               .handleError(silentErrorHandler),
 
         // friendship lookup for the relationship status (following /
         // followed_by)
-        if (connections == null && _screenName != null)
+        if (connections == null && _handle != null)
           bloc.userService
-              .friendshipsLookup(screenNames: <String>[_screenName!])
+              .friendshipsLookup(screenNames: <String>[_handle!])
               .then((response) => response.length == 1 ? response.first : null)
               .then<void>((friendship) => connections = friendship?.connections)
               .catchError(silentErrorHandler),
@@ -74,8 +74,13 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (userData == null) {
       yield FailedLoadingUserState();
     } else {
-      userData!.connections = connections;
-      bloc.user = userData;
+      bloc.user = userData!.copyWith(
+        connections: connections,
+        userDescriptionEntities: userDescriptionEntities(
+          userData!.userDescriptionUrls,
+          userData!.description,
+        ),
+      );
 
       yield InitializedUserState();
     }
@@ -90,14 +95,14 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
     required UserProfileState currentState,
     required UserProfileBloc bloc,
   }) async* {
-    log.fine('following @${bloc.user!.screenName}');
+    log.fine('following @${bloc.user!.handle}');
 
     bloc.user!.connections?.add('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsCreate(userId: bloc.user!.idStr);
-      log.fine('successfully followed @${bloc.user!.screenName}');
+      await bloc.userService.friendshipsCreate(userId: bloc.user!.id);
+      log.fine('successfully followed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
@@ -116,14 +121,14 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
     required UserProfileState currentState,
     required UserProfileBloc bloc,
   }) async* {
-    log.fine('unfollowing @${bloc.user!.screenName}');
+    log.fine('unfollowing @${bloc.user!.handle}');
 
     bloc.user!.connections?.remove('following');
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsDestroy(userId: bloc.user!.idStr);
-      log.fine('successfully unfollowed @${bloc.user!.screenName}');
+      await bloc.userService.friendshipsDestroy(userId: bloc.user!.id);
+      log.fine('successfully unfollowed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
 
@@ -160,7 +165,11 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
 
     await translationService
         .translate(text: bloc.user!.description, to: translateLanguage)
-        .then((translation) => bloc.user!.descriptionTranslation = translation)
+        .then(
+          (translation) => bloc.user = bloc.user!.copyWith(
+            descriptionTranslation: translation,
+          ),
+        )
         .handleError(silentErrorHandler);
 
     if (!bloc.user!.hasDescriptionTranslation ||

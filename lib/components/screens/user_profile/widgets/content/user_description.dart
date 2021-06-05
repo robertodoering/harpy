@@ -10,7 +10,7 @@ class UserProfileDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TwitterText(
-      bloc.user!.description,
+      bloc.user!.description!,
       entities: bloc.user!.userDescriptionEntities,
     );
   }

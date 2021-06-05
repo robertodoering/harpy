@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
@@ -20,7 +21,7 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
             ? Padding(
                 padding: EdgeInsets.only(top: defaultSmallPaddingValue),
                 child: TranslatedText(
-                  bloc.user!.descriptionTranslation!.text,
+                  bloc.user!.descriptionTranslation!.text!,
                   language: bloc.user!.descriptionTranslation!.language,
                   entities: bloc.user!.userDescriptionEntities,
                 ),

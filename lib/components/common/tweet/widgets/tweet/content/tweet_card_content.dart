@@ -4,13 +4,9 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
-/// Builds the content for a tweet.
 class TweetCardContent extends StatelessWidget {
-  const TweetCardContent(this.tweet);
-
-  final TweetData tweet;
+  const TweetCardContent();
 
   bool _addBottomPadding(Widget child, List<Widget> content) {
     final filtered =
@@ -25,12 +21,15 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.watch<TweetBloc>();
+    final tweet = bloc.state.tweet;
+
     final route = ModalRoute.of(context)!.settings;
     final locale = Localizations.localeOf(context);
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
-    final content = <Widget>[
+    final content = [
       TweetTopRow(
         beginPadding: DefaultEdgeInsets.only(left: true, top: true),
         begin: <Widget>[
@@ -41,15 +40,15 @@ class TweetCardContent extends StatelessWidget {
               height: defaultSmallPaddingValue,
             ),
           ],
-          TweetAuthorRow(tweet.userData!, createdAt: tweet.createdAt),
+          TweetAuthorRow(tweet.user, createdAt: tweet.createdAt),
         ],
         end: TweetActionsButton(tweet, padding: DefaultEdgeInsets.all()),
       ),
       if (tweet.hasText)
         TwitterText(
-          tweet.fullText,
+          tweet.text,
           entities: tweet.entities,
-          urlToIgnore: tweet.quotedStatusUrl,
+          urlToIgnore: tweet.quoteUrl,
         ),
       if (tweet.translatable(translateLanguage))
         TweetTranslation(
@@ -67,33 +66,29 @@ class TweetCardContent extends StatelessWidget {
       TweetActionRow(tweet),
     ];
 
-    return BlocProvider<TweetBloc>(
-      create: (_) => TweetBloc(tweet),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: !tweet.currentReplyParent(route)
-            ? () => app<HarpyNavigator>().pushRepliesScreen(tweet: tweet)
-            : null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            for (Widget child in content) ...<Widget>[
-              if (child == content.first || child == content.last)
-                child
-              else
-                AnimatedPadding(
-                  duration: kShortAnimationDuration,
-                  padding: DefaultEdgeInsets.only(left: true, right: true),
-                  child: child,
-                ),
-              if (_addBottomPadding(child, content))
-                AnimatedContainer(
-                  duration: kShortAnimationDuration,
-                  height: defaultSmallPaddingValue,
-                ),
-            ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap:
+          !tweet.currentReplyParent(route) ? () => bloc.onCardTap(tweet) : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final child in content) ...[
+            if (child == content.first || child == content.last)
+              child
+            else
+              AnimatedPadding(
+                duration: kShortAnimationDuration,
+                padding: DefaultEdgeInsets.only(left: true, right: true),
+                child: child,
+              ),
+            if (_addBottomPadding(child, content))
+              AnimatedContainer(
+                duration: kShortAnimationDuration,
+                height: defaultSmallPaddingValue,
+              ),
           ],
-        ),
+        ],
       ),
     );
   }

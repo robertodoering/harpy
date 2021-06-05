@@ -59,7 +59,7 @@ class MentionSuggestions extends StatelessWidget {
         TextSpan(
           children: <InlineSpan>[
             TextSpan(text: '${user.name}\n'),
-            TextSpan(text: '@${user.screenName}'),
+            TextSpan(text: '@${user.handle}'),
           ],
         ),
         style: theme.textTheme.bodyText1!.copyWith(
@@ -67,7 +67,7 @@ class MentionSuggestions extends StatelessWidget {
         ),
       ),
       onTap: () => controller!.replaceSelection(
-        '@${user.screenName} ',
+        '@${user.handle} ',
       ),
     );
   }

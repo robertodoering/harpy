@@ -1,0 +1,4 @@
+Version 0.6.4
+2021-06-05
+
+· Added font size customization

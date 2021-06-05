@@ -42,7 +42,7 @@ class TweetAuthorRow extends StatelessWidget {
     if (enableUserTap) {
       app<HarpyNavigator>().pushUserProfile(
         currentRoute: ModalRoute.of(context)!.settings,
-        screenName: user.screenName,
+        screenName: user.handle,
       );
     }
   }
@@ -98,7 +98,7 @@ class TweetAuthorRow extends StatelessWidget {
         TextSpan(
           children: <InlineSpan>[
             TextSpan(
-              text: '@${user.screenName}',
+              text: '@${user.handle}',
               style: theme.textTheme.bodyText1!.apply(
                 fontSizeDelta: fontSizeDelta,
               ),

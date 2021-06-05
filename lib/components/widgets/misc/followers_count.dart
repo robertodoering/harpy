@@ -25,14 +25,14 @@ class FollowersCount extends StatelessWidget {
           text: Text('${_numberFormat.format(user.friendsCount)} following'),
           padding: EdgeInsets.zero,
           onTap: () => app<HarpyNavigator>().pushFollowingScreen(
-            userId: user.idStr,
+            userId: user.id,
           ),
         ),
         HarpyButton.flat(
           text: Text('${_numberFormat.format(user.followersCount)} followers'),
           padding: EdgeInsets.zero,
           onTap: () => app<HarpyNavigator>().pushFollowersScreen(
-            userId: user.idStr,
+            userId: user.id,
           ),
         ),
       ],

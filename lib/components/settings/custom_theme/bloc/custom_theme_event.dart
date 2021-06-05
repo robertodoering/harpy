@@ -205,7 +205,7 @@ class SaveCustomTheme extends CustomThemeEvent {
 
     bloc.themeBloc
       ..add(const SaveCustomThemes())
-      ..add(ChangeThemeEvent(id: bloc.themeId, saveSelection: true));
+      ..add(ChangeThemeEvent(id: bloc.themeId!, saveSelection: true));
 
     yield SavedCustomThemeState();
 

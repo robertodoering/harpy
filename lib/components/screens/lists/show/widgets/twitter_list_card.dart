@@ -51,7 +51,7 @@ class TwitterListCard extends StatelessWidget {
         HarpyCircleAvatar(
           // use the normal sized profile image instead of the bigger one for
           // the small circle avatar
-          imageUrl: list.user!.profileImageUrlHttps!,
+          imageUrl: list.user!.profileImageUrl,
           radius: 8,
         ),
         defaultSmallHorizontalSpacer,
@@ -65,7 +65,7 @@ class TwitterListCard extends StatelessWidget {
         ),
         defaultSmallHorizontalSpacer,
         Text(
-          '@${list.user!.screenName}',
+          '@${list.user!.handle}',
           style: theme.textTheme.bodyText1,
           softWrap: false,
           overflow: TextOverflow.fade,

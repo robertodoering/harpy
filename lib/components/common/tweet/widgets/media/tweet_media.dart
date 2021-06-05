@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:provider/provider.dart';
 
 typedef OnOpenMediaOverlay = void Function(Widget child);
 
@@ -13,7 +14,7 @@ class TweetMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final bloc = TweetBloc.of(context);
+    final bloc = context.watch<TweetBloc>();
 
     final uncroppedImage = tweet.hasSingleImage &&
         mediaQuery.orientation == Orientation.portrait &&

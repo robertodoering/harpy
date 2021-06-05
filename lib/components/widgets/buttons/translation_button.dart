@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:like_button/like_button.dart';
@@ -54,15 +55,14 @@ class TweetTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final active =
-        bloc.tweet.hasTranslation || bloc.state is TranslatingTweetState;
+    final active = bloc.state.tweet.hasTranslation || bloc.state.isTranslating;
 
     final locale = Localizations.localeOf(context);
 
     return TranslationButton(
       active: active,
       padding: padding,
-      activate: () => bloc.add(TranslateTweet(locale: locale)),
+      activate: () => bloc.onTranslate(locale),
     );
   }
 }

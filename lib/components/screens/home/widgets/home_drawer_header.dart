@@ -12,7 +12,7 @@ class HomeDrawerHeader extends StatelessWidget {
   Widget _buildAvatarRow(BuildContext context, UserData user) {
     return GestureDetector(
       onTap: () => app<HarpyNavigator>().pushUserProfile(
-        screenName: user.screenName,
+        screenName: user.handle,
       ),
       child: Row(
         children: <Widget>[
@@ -35,7 +35,7 @@ class HomeDrawerHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '@${user.screenName}',
+                  '@${user.handle}',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ],

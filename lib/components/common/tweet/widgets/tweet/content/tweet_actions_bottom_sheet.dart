@@ -21,7 +21,7 @@ void showTweetActionsBottomSheet(
   final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
   final isAuthenticatedUser =
-      bloc.tweet.userData!.idStr == authBloc.authenticatedUser!.idStr;
+      bloc.state.tweet.user.id == authBloc.authenticatedUser!.id;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
@@ -29,7 +29,7 @@ void showTweetActionsBottomSheet(
   final tweetTime =
       DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
           .add_Hm()
-          .format(tweet.createdAt!.toLocal())
+          .format(tweet.createdAt.toLocal())
           .toLowerCase();
 
   showHarpyBottomSheet<void>(
@@ -39,7 +39,7 @@ void showTweetActionsBottomSheet(
       BottomSheetHeader(
         child: Column(
           children: <Widget>[
-            Text('tweet from ${tweet.userData!.name}'),
+            Text('tweet from ${tweet.user.name}'),
             defaultSmallVerticalSpacer,
             Text(tweetTime),
             // todo: add source here and make bottom sheet scrollable
@@ -58,7 +58,9 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             bloc.add(DeleteTweet(onDeleted: () {
-              homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
+              homeTimelineBloc.add(
+                RemoveFromHomeTimeline(tweet: bloc.state.tweet),
+              );
             }));
             app<HarpyNavigator>().state!.maybePop();
           },
@@ -85,7 +87,7 @@ void showTweetActionsBottomSheet(
       ListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy tweet text'),
-        enabled: bloc.tweet.hasText,
+        enabled: bloc.state.tweet.hasText,
         onTap: () {
           bloc.add(CopyTweetText(tweet: tweet));
           app<HarpyNavigator>().state!.maybePop();

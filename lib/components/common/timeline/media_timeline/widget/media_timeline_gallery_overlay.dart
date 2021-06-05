@@ -56,7 +56,7 @@ class _MediaTimelineGalleryOverlayState
 
     final newTweet = widget.entries[newIndex].tweet;
 
-    if (mounted && newTweet.idStr != _tweet.idStr) {
+    if (mounted && newTweet.id != _tweet.id) {
       setState(() {
         _tweet = newTweet;
         _bloc = TweetBloc(_tweet);

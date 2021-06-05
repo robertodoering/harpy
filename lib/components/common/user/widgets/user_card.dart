@@ -15,7 +15,7 @@ class UserCard extends StatelessWidget {
   void _onUserTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: ModalRoute.of(context)!.settings,
-      screenName: user.screenName,
+      screenName: user.handle,
     );
   }
 
@@ -28,7 +28,7 @@ class UserCard extends StatelessWidget {
           shape: kDefaultShapeBorder,
           isThreeLine: user.hasDescription,
           leading: HarpyCircleAvatar(
-            imageUrl: user.profileImageUrlHttps!,
+            imageUrl: user.profileImageUrl,
           ),
           title: Text(
             user.name,
@@ -39,13 +39,13 @@ class UserCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '@${user.screenName}',
+                '@${user.handle}',
                 softWrap: false,
                 overflow: TextOverflow.fade,
               ),
               if (user.hasDescription)
                 TwitterText(
-                  user.description,
+                  user.description!,
                   entities: user.userDescriptionEntities,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

@@ -23,6 +23,9 @@ void main() {
       expect(hashtagRegex.hasMatch('これはOK #ハッシュタグ'), isTrue);
       expect(hashtagRegex.hasMatch('これもOK。#ハッシュタグ'), isTrue);
       expect(hashtagRegex.hasMatch('これはダメ#ハッシュタグ'), isFalse);
+      expect(hashtagRegex.hasMatch('_#hashtage'), isTrue);
+      expect(hashtagRegex.hasMatch(' #hashtag'), isTrue);
+      expect(hashtagRegex.hasMatch('(#hashtag)'), isTrue);
 
       expect(hashtagRegex.hasMatch('#'), isFalse);
       expect(hashtagRegex.hasMatch('.#'), isFalse);
@@ -47,6 +50,9 @@ void main() {
       expect(mentionRegex.hasMatch('@user_name123'), isTrue);
       expect(mentionRegex.hasMatch('bad@username'), isFalse);
       expect(mentionRegex.hasMatch('。@username'), isTrue);
+      expect(mentionRegex.hasMatch('_@username'), isTrue);
+      expect(mentionRegex.hasMatch(' @username'), isTrue);
+      expect(mentionRegex.hasMatch('(@username)'), isTrue);
       expect(mentionRegex.hasMatch('これはOK @username'), isTrue);
       expect(mentionRegex.hasMatch('これもOK。@username'), isTrue);
       expect(mentionRegex.hasMatch('これはダメ@username'), isFalse);

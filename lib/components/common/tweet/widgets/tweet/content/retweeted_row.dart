@@ -16,7 +16,7 @@ class TweetRetweetedRow extends StatelessWidget {
   void _onRetweeterTap(BuildContext context) {
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: ModalRoute.of(context)!.settings,
-      screenName: tweet.retweetScreenName!,
+      screenName: tweet.retweetUserHandle!,
     );
   }
 

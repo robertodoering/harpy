@@ -56,7 +56,7 @@ class TweetGif extends StatelessWidget {
         onGifTap: _openGallery,
         onGifLongPress: () => showTweetMediaBottomSheet(
           context,
-          url: tweetBloc.downloadMediaUrl(tweet!),
+          url: tweet!.downloadMediaUrl(),
           mediaType: MediaType.gif,
         ),
         autoplay: mediaPreferences.shouldAutoplayMedia,

@@ -11,30 +11,30 @@ void main() {
     });
 
     test('finds and returns the display names of reply authors', () {
-      final tweetData = TweetData.fromTweet(Tweet());
-
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      tweetData.replies.addAll(<TweetData>[
-        TweetData.fromTweet(Tweet()..user = firstUser),
-        TweetData.fromTweet(Tweet()..user = secondUser),
-      ]);
+      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+        replies: [
+          TweetData.fromTweet(Tweet()..user = firstUser),
+          TweetData.fromTweet(Tweet()..user = secondUser),
+        ],
+      );
 
       expect(tweetData.replyAuthors, 'First replier, Second replier');
     });
 
     test('does not include duplicate reply authors names', () {
-      final tweetData = TweetData.fromTweet(Tweet());
-
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      tweetData.replies.addAll(<TweetData>[
-        TweetData.fromTweet(Tweet()..user = firstUser),
-        TweetData.fromTweet(Tweet()..user = secondUser),
-        TweetData.fromTweet(Tweet()..user = firstUser),
-      ]);
+      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+        replies: [
+          TweetData.fromTweet(Tweet()..user = firstUser),
+          TweetData.fromTweet(Tweet()..user = secondUser),
+          TweetData.fromTweet(Tweet()..user = firstUser),
+        ],
+      );
 
       expect(tweetData.replyAuthors, 'First replier, Second replier');
     });
@@ -43,31 +43,33 @@ void main() {
         'ignores the name of the original tweets author if they are the only '
         'replier', () {
       final originalUser = User()..name = 'Original author';
+
       final tweetData = TweetData.fromTweet(
         Tweet()..user = originalUser,
+      ).copyWith(
+        replies: [
+          TweetData.fromTweet(Tweet()..user = originalUser),
+        ],
       );
-
-      tweetData.replies.addAll(<TweetData>[
-        TweetData.fromTweet(Tweet()..user = originalUser),
-      ]);
 
       expect(tweetData.replyAuthors, '');
     });
 
     test('includes the original user if they are not the only replier', () {
       final originalUser = User()..name = 'Original author';
-      final tweetData = TweetData.fromTweet(
-        Tweet()..user = originalUser,
-      );
 
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      tweetData.replies.addAll(<TweetData>[
-        TweetData.fromTweet(Tweet()..user = originalUser),
-        TweetData.fromTweet(Tweet()..user = firstUser),
-        TweetData.fromTweet(Tweet()..user = secondUser),
-      ]);
+      final tweetData = TweetData.fromTweet(
+        Tweet()..user = originalUser,
+      ).copyWith(
+        replies: [
+          TweetData.fromTweet(Tweet()..user = originalUser),
+          TweetData.fromTweet(Tweet()..user = firstUser),
+          TweetData.fromTweet(Tweet()..user = secondUser),
+        ],
+      );
 
       expect(
         tweetData.replyAuthors,

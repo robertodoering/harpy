@@ -71,7 +71,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           tweets: tweets,
           maxId: maxId,
           timelineFilter: filter,
-          lastInitialTweet: tweets.last.originalIdStr,
+          lastInitialTweet: tweets.last.originalId,
           newTweets: lastVisibleTweet == 0 ? 0 : tweets.length - 1,
           initialResults: true,
         );
@@ -278,19 +278,6 @@ class AddToHomeTimeline extends HomeTimelineEvent {
         tweet,
       ];
 
-  bool _addToParent(List<TweetData> tweets) {
-    try {
-      final parent = tweets.firstWhere(
-        (element) => element.idStr == tweet.inReplyToStatusIdStr,
-      );
-      parent.replies.add(tweet);
-      return true;
-    } on StateError {
-      // tweet doesn't exist
-      return false;
-    }
-  }
-
   @override
   Stream<HomeTimelineState> applyAsync({
     HomeTimelineState? currentState,
@@ -299,7 +286,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
     if (currentState is HomeTimelineResult) {
       final tweets = List<TweetData>.of(currentState.tweets);
 
-      if (tweet.inReplyToStatusIdStr == null || !_addToParent(tweets)) {
+      if (tweet.parentTweetId == null) {
         tweets.insert(0, tweet);
       }
 
@@ -331,21 +318,6 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
         tweet,
       ];
 
-  bool _removeChild(List<TweetData> tweets) {
-    try {
-      final parent = tweets.firstWhere(
-        (element) => element.idStr == tweet.inReplyToStatusIdStr,
-      );
-      parent.replies.removeWhere(
-        (element) => element.idStr == tweet.idStr,
-      );
-      return true;
-    } on StateError {
-      // tweet doesn't exist
-      return false;
-    }
-  }
-
   @override
   Stream<HomeTimelineState> applyAsync({
     HomeTimelineState? currentState,
@@ -354,8 +326,8 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
     if (currentState is HomeTimelineResult) {
       final tweets = List<TweetData>.of(currentState.tweets);
 
-      if (tweet.inReplyToStatusIdStr == null || !_removeChild(tweets)) {
-        tweets.removeWhere((element) => element.idStr == tweet.idStr);
+      if (tweet.parentTweetId == null) {
+        tweets.removeWhere((element) => element.id == tweet.id);
       }
 
       yield HomeTimelineResult(

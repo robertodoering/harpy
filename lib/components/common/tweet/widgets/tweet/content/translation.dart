@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -25,25 +24,23 @@ class TweetTranslation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomAnimatedSize(
-      child: BlocBuilder<TweetBloc, TweetState>(
-        builder: (context, state) => AnimatedOpacity(
-          opacity: tweet.hasTranslation ? 1 : 0,
-          duration: kShortAnimationDuration,
-          curve: Curves.easeOut,
-          child: tweet.hasTranslation && !tweet.translation!.unchanged
-              ? AnimatedPadding(
-                  duration: kLongAnimationDuration,
-                  padding: padding,
-                  child: TranslatedText(
-                    tweet.translation!.text,
-                    language: tweet.translation!.language,
-                    entities: tweet.entities,
-                    urlToIgnore: tweet.quotedStatusUrl,
-                    fontSizeDelta: fontSizeDelta,
-                  ),
-                )
-              : const SizedBox(width: double.infinity),
-        ),
+      child: AnimatedOpacity(
+        opacity: tweet.hasTranslation ? 1 : 0,
+        duration: kShortAnimationDuration,
+        curve: Curves.easeOut,
+        child: tweet.hasTranslation && !tweet.translation!.unchanged
+            ? AnimatedPadding(
+                duration: kLongAnimationDuration,
+                padding: padding,
+                child: TranslatedText(
+                  tweet.translation!.text!,
+                  language: tweet.translation!.language,
+                  entities: tweet.entities,
+                  urlToIgnore: tweet.quoteUrl,
+                  fontSizeDelta: fontSizeDelta,
+                ),
+              )
+            : const SizedBox(width: double.infinity),
       ),
     );
   }
