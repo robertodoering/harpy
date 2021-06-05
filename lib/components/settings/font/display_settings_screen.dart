@@ -44,7 +44,6 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
                 onChanged: (newValue) {
                   if (newValue != layoutPreferences.fontSizeDelta) {
                     HapticFeedback.lightImpact();
-                    WidgetsBinding.instance.window.devicePixelRatio
 
                     setState(() {
                       layoutPreferences.fontSizeDelta = newValue;
