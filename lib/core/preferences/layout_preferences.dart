@@ -41,9 +41,7 @@ class LayoutPreferences {
   double get fontSizeDelta {
     final deltaId = harpyPrefs.getInt('fontSizeDelta', 0);
 
-    var delta = _fontSizeDeltaIdMapping[deltaId];
-
-    return delta ??= 0;
+    return _fontSizeDeltaIdMapping[deltaId] ?? 0;
   }
 
   set fontSizeDelta(double fontSizeDelta) {

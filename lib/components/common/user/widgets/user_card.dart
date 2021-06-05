@@ -28,7 +28,7 @@ class UserCard extends StatelessWidget {
           shape: kDefaultShapeBorder,
           isThreeLine: user.hasDescription,
           leading: HarpyCircleAvatar(
-            imageUrl: user.profileImageUrl!,
+            imageUrl: user.profileImageUrl,
           ),
           title: Text(
             user.name,

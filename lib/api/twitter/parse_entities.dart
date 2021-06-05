@@ -27,8 +27,6 @@ EntitiesData parseEntities(String text) {
     if (mention != null) {
       userMentions.add(
         UserMentionData(
-          id: '',
-          name: '',
           handle: mention.replaceFirst('@', ''),
         ),
       );
@@ -37,8 +35,6 @@ EntitiesData parseEntities(String text) {
 
   return EntitiesData(
     hashtags: hashtags,
-    media: const [],
-    urls: const [],
     userMentions: userMentions,
   );
 }

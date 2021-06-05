@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 @immutable
 class EntitiesData extends Equatable {
   const EntitiesData({
-    required this.hashtags,
-    required this.media,
-    required this.urls,
-    required this.userMentions,
+    this.hashtags = const [],
+    this.media = const [],
+    this.urls = const [],
+    this.userMentions = const [],
   });
 
   factory EntitiesData.fromEntities(Entities? entities) {
@@ -140,32 +140,20 @@ class UrlData extends Equatable {
 @immutable
 class UserMentionData extends Equatable {
   const UserMentionData({
-    required this.id,
-    required this.name,
     required this.handle,
   });
 
   factory UserMentionData.fromUserMention(UserMention userMention) {
     return UserMentionData(
-      id: userMention.idStr ?? '',
-      name: userMention.name ?? '',
       handle: userMention.screenName ?? '',
     );
   }
-
-  /// The id of the mentioned user.
-  final String id;
-
-  /// The display name of the mentioned user.
-  final String name;
 
   /// The handle of the user, minus the leading `@` character.
   final String handle;
 
   @override
   List<Object?> get props => [
-        id,
-        name,
         handle,
       ];
 }

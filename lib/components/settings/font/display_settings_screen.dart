@@ -22,6 +22,9 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
         Expanded(
           child: SingleChildScrollView(
             child: Padding(
+              // workaround to rebuild the tweet card with new compact layout
+              // settings
+              key: Key(layoutPreferences.compactMode.toString()),
               padding: DefaultEdgeInsets.all(),
               child: const PreviewTweetCard(),
             ),
@@ -41,6 +44,8 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
                 onChanged: (newValue) {
                   if (newValue != layoutPreferences.fontSizeDelta) {
                     HapticFeedback.lightImpact();
+                    WidgetsBinding.instance.window.devicePixelRatio
+
                     setState(() {
                       layoutPreferences.fontSizeDelta = newValue;
                       themeBloc.add(const RefreshTheme());

@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
         ListTile(
           leading: const Icon(FeatherIcons.layout),
           title: const Text('Display'),
-          subtitle: const Text('change the layout of the app'),
+          subtitle: const Text('change the look of the app'),
           onTap: () => app<HarpyNavigator>().pushNamed(
             DisplaySettingsScreen.route,
           ),

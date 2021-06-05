@@ -6,22 +6,22 @@ import 'package:harpy/api/api.dart';
 @immutable
 class UserData extends Equatable {
   const UserData({
-    required this.id,
-    required this.name,
-    required this.handle,
-    required this.verified,
-    required this.followersCount,
-    required this.friendsCount,
-    required this.userDescriptionEntities,
-    required this.userDescriptionUrls,
+    this.id = '',
+    this.name = '',
+    this.handle = '',
+    this.verified = false,
+    this.followersCount = 0,
+    this.friendsCount = 0,
+    this.profileImageUrl = '',
     this.profileBannerUrl,
-    this.profileImageUrl,
     this.createdAt,
     this.location,
     this.description,
     this.descriptionTranslation,
     this.userUrl,
+    this.userDescriptionUrls = const [],
     this.connections,
+    this.userDescriptionEntities = const EntitiesData(),
   });
 
   /// Parses the [UserData] from the [TwitterApi] returned [User] object.
@@ -44,22 +44,15 @@ class UserData extends Equatable {
       verified: user?.verified ?? false,
       followersCount: user?.followersCount ?? 0,
       friendsCount: user?.friendsCount ?? 0,
+      profileImageUrl: user?.profileImageUrlHttps ?? '',
       // optional
       profileBannerUrl: user?.profileBannerUrl,
-      profileImageUrl: user?.profileImageUrlHttps,
       createdAt: user?.createdAt,
       location: user?.location,
       description: user?.description,
       // custom
       userUrl: userUrl,
       userDescriptionUrls: userDescriptionUrls,
-      connections: const [],
-      userDescriptionEntities: const EntitiesData(
-        hashtags: [],
-        urls: [],
-        userMentions: [],
-        media: [],
-      ),
     );
   }
 
@@ -85,10 +78,11 @@ class UserData extends Equatable {
   /// The number of users this user is following.
   final int friendsCount;
 
+  final String profileImageUrl;
+
   // optional user fields
 
   final String? profileBannerUrl;
-  final String? profileImageUrl;
   final DateTime? createdAt;
   final String? location;
   final String? description;
@@ -190,9 +184,9 @@ extension UserDataExtension on UserData {
   bool get hasBanner => profileBannerUrl != null;
 
   String get appropriateUserImageUrl =>
-      profileImageUrl!.replaceFirst('_normal', '_bigger');
+      profileImageUrl.replaceFirst('_normal', '_bigger');
 
-  String get originalUserImageUrl => profileImageUrl!.replaceAll('_normal', '');
+  String get originalUserImageUrl => profileImageUrl.replaceAll('_normal', '');
 
   String get appropriateUserBannerUrl => '$profileBannerUrl/web_retina';
 }
@@ -209,10 +203,7 @@ EntitiesData userDescriptionEntities(
     );
   } else {
     return EntitiesData(
-      hashtags: const [],
-      media: const [],
       urls: userDescriptionUrls,
-      userMentions: const [],
     );
   }
 }
