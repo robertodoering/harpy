@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
+import 'package:waterfall_flow/waterfall_flow.dart';
 
 /// Builds the list of tweet media widgets for a [MediaTimelineModel].
 ///
@@ -59,27 +60,17 @@ class _MediaTimelineState extends State<MediaTimeline> {
     );
   }
 
-  Widget _buildTiledList(List<MediaTimelineEntry> entries) {
-    return SliverStaggeredGrid.countBuilder(
-      key: const Key('media_timeline_tiled_list'),
-      itemCount: entries.length,
-      crossAxisCount: 2,
-      mainAxisSpacing: defaultSmallPaddingValue,
-      crossAxisSpacing: defaultSmallPaddingValue,
-      staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-      itemBuilder: (_, index) => _itemBuilder(entries, index),
-    );
-  }
-
   Widget _buildList(List<MediaTimelineEntry> entries) {
-    return SliverStaggeredGrid.countBuilder(
-      key: const Key('media_timeline_list'),
-      itemCount: entries.length,
-      crossAxisCount: 2,
-      mainAxisSpacing: defaultSmallPaddingValue,
-      crossAxisSpacing: defaultSmallPaddingValue,
-      staggeredTileBuilder: (_) => const StaggeredTile.fit(2),
-      itemBuilder: (_, index) => _itemBuilder(entries, index),
+    return SliverWaterfallFlow(
+      gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _buildTiled ? 2 : 1,
+        mainAxisSpacing: defaultSmallPaddingValue,
+        crossAxisSpacing: defaultSmallPaddingValue,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (_, index) => _itemBuilder(entries, index),
+        childCount: entries.length,
+      ),
     );
   }
 
@@ -101,10 +92,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
           else if (model.hasEntries) ...<Widget>[
             SliverPadding(
               padding: DefaultEdgeInsets.all(),
-              // need to rebuild the full list when switching tiling mode,
-              // otherwise the scroll controller gets confused
-              sliver:
-                  _buildTiled ? _buildTiledList(entries) : _buildList(entries),
+              sliver: _buildList(entries),
             ),
             if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
           ] else
