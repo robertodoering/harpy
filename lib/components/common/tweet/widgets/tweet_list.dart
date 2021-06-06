@@ -58,7 +58,7 @@ class TweetList extends StatelessWidget {
       physics: enableScroll
           ? const AlwaysScrollableScrollPhysics()
           : const NeverScrollableScrollPhysics(),
-      cacheExtent: 800,
+      cacheExtent: 0,
       slivers: <Widget>[
         ...beginSlivers,
         SliverPadding(
