@@ -17,9 +17,9 @@ class HomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState>
   HomeTimelineBloc() : super(const HomeTimelineInitial());
 
   final TimelineService timelineService = app<TwitterApi>().timelineService;
-  final TweetVisibilityPreferences? tweetVisibilityPreferences =
+  final TweetVisibilityPreferences tweetVisibilityPreferences =
       app<TweetVisibilityPreferences>();
-  final TimelineFilterPreferences? timelineFilterPreferences =
+  final TimelineFilterPreferences timelineFilterPreferences =
       app<TimelineFilterPreferences>();
 
   /// Completes when the home timeline has been refreshed using the

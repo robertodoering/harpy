@@ -41,10 +41,10 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
     yield const HomeTimelineInitialLoading();
 
     final filter = TimelineFilter.fromJsonString(
-      bloc.timelineFilterPreferences!.homeTimelineFilter,
+      bloc.timelineFilterPreferences.homeTimelineFilter,
     );
 
-    final lastVisibleTweet = bloc.tweetVisibilityPreferences!.lastVisibleTweet;
+    final lastVisibleTweet = bloc.tweetVisibilityPreferences.lastVisibleTweet;
 
     String? maxId;
 
@@ -362,7 +362,7 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
       final encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
-      bloc.timelineFilterPreferences!.homeTimelineFilter = encodedFilter;
+      bloc.timelineFilterPreferences.homeTimelineFilter = encodedFilter;
     } catch (e, st) {
       log.warning('unable to encode timeline filter', e, st);
     }
