@@ -246,5 +246,6 @@ export 'widgets/video_player/overlay/content/video_overlay_icon.dart';
 export 'widgets/video_player/overlay/dynamic_video_player_overlay.dart';
 export 'widgets/video_player/overlay/gif_player_overlay.dart';
 export 'widgets/video_player/overlay/static_video_player_overlay.dart';
+export 'widgets/video_player/video_autoplay.dart';
 export 'widgets/video_player/video_fullscreen.dart';
 export 'widgets/video_player/video_thumbnail.dart';

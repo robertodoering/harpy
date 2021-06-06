@@ -23,30 +23,33 @@ class TweetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = ListCardAnimation(
-      key: Key('${tweet.hashCode}_animation'),
-      child: Card(
-        color: color,
-        child: Column(
-          children: <Widget>[
-            BlocProvider<TweetBloc>(
-              create: create ?? (_) => TweetBloc(tweet),
-              child: const TweetCardContent(),
-            ),
-            if (tweet.replies.isNotEmpty) TweetReplies(tweet, depth: depth),
-          ],
-        ),
+    Widget child = Card(
+      color: color,
+      child: Column(
+        children: <Widget>[
+          BlocProvider<TweetBloc>(
+            create: create ?? (_) => TweetBloc(tweet),
+            child: const TweetCardContent(),
+          ),
+          if (tweet.replies.isNotEmpty) TweetReplies(tweet, depth: depth),
+        ],
       ),
     );
 
     if (rememberVisibility) {
-      return TweetRememberVisibility(
+      child = TweetRememberVisibility(
         key: Key('${tweet.hashCode}_visibility'),
         tweet: tweet,
         child: child,
       );
-    } else {
-      return child;
     }
+
+    return VisibilityChangeDetector(
+      key: Key('${tweet.hashCode}_visibility'),
+      child: ListCardAnimation(
+        buildVisibilityChangeDetector: false,
+        child: child,
+      ),
+    );
   }
 }

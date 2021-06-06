@@ -141,19 +141,13 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    final model = HarpyVideoPlayerModel.of(context);
+    final model = context.watch<HarpyVideoPlayerModel>();
 
     var child =
         !model.initialized ? _buildUninitialized(model) : _buildGif(model);
 
     if (widget.autoplay) {
-      child = VisibilityChangeDetector(
-        key: ValueKey<HarpyVideoPlayerModel>(model),
-        onVisibilityChanged: (visible) {
-          if (visible && !model.initialized && !model.playing) {
-            model.initialize();
-          }
-        },
+      child = VideoAutoplay(
         child: child,
       );
     }

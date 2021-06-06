@@ -4,7 +4,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 /// Actions that a user can take on a video.
@@ -32,9 +31,6 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   }
 
   final VideoPlayerController? controller;
-
-  static HarpyVideoPlayerModel of(BuildContext context) =>
-      Provider.of<HarpyVideoPlayerModel>(context);
 
   /// Lists of listeners called whenever an action on the video has been taken.
   final List<OnAction> _actionListener = <OnAction>[];

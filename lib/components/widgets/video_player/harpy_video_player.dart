@@ -186,20 +186,14 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
   }
 
   Widget _builder(BuildContext context, Widget? child) {
-    final model = HarpyVideoPlayerModel.of(context);
+    final model = context.watch<HarpyVideoPlayerModel>();
 
     var child =
         !model.initialized ? _buildUninitialized(model) : _buildVideo(model);
 
     if (widget.autoplay) {
-      child = VisibilityChangeDetector(
-        key: ValueKey<HarpyVideoPlayerModel>(model),
-        onVisibilityChanged: (visible) {
-          if (visible && !model.initialized && !model.playing) {
-            _controller!.setVolume(0);
-            model.initialize();
-          }
-        },
+      child = VideoAutoplay(
+        onAutoplay: () => _controller?.setVolume(0),
         child: child,
       );
     }

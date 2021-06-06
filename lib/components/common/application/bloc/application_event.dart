@@ -30,10 +30,12 @@ class InitializeEvent extends ApplicationEvent {
 
     initLogger();
 
-    // sets the visibility detector controller update interval to zero to fire
-    // every frame
+    // sets the visibility detector controller update interval to fire more
+    // frequently
     // this is used by the VisibilityDetector for the ListCardAnimation
-    VisibilityDetectorController.instance.updateInterval = Duration.zero;
+    VisibilityDetectorController.instance.updateInterval = const Duration(
+      milliseconds: 50,
+    );
 
     // need the device info before we continue with updating the system ui
     await app<HarpyInfo>().initialize();
