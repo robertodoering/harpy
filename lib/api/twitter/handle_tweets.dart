@@ -59,8 +59,10 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   tweetDataList.sort((a, b) {
     final targetA = a.replies.isNotEmpty ? a.replies.first : a;
     final targetB = b.replies.isNotEmpty ? b.replies.first : b;
+    final originalIdA = int.tryParse(targetA.originalId) ?? 0;
+    final originalIdB = int.tryParse(targetB.originalId) ?? 0;
 
-    return targetB.createdAt.compareTo(targetA.createdAt);
+    return originalIdB.compareTo(originalIdA);
   });
 
   return tweetDataList;
