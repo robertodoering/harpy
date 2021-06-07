@@ -35,7 +35,11 @@ class _HomeTimelineState extends State<HomeTimeline> {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         _controller!.jumpTo(
           // + height to make sure we reach the end
-          _controller!.position.maxScrollExtent + mediaQuery.size.height / 2,
+          // using `positions` in case the controller is attached to multiple
+          //   positions
+          // ignore: invalid_use_of_protected_member
+          _controller!.positions.first.maxScrollExtent +
+              mediaQuery.size.height / 2,
         );
       });
     }
