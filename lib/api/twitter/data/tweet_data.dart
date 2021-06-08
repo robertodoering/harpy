@@ -272,6 +272,7 @@ extension TweetDataExtension on TweetData {
   /// tweet has no media.
   MediaType? get mediaType {
     if (hasImages) {
+      return MediaType.image;
     } else if (hasGif) {
       return MediaType.gif;
     } else if (hasVideo) {
