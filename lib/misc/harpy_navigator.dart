@@ -120,11 +120,10 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [RepliesScreen] with the replies to the [tweet].
-  void pushRepliesScreen({
+  void pushTweetDetailScreen({
     required TweetData tweet,
   }) {
-    pushNamed(RepliesScreen.route, arguments: <String, dynamic>{
+    pushNamed(TweetDetailScreen.route, arguments: <String, dynamic>{
       'tweet': tweet,
     });
   }
@@ -214,8 +213,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget screen;
 
   switch (routeName) {
-    case RepliesScreen.route:
-      screen = RepliesScreen(
+    case TweetDetailScreen.route:
+      screen = TweetDetailScreen(
         tweet: arguments['tweet'],
       );
       break;

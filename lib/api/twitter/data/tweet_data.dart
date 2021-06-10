@@ -256,7 +256,7 @@ extension TweetDataExtension on TweetData {
 
   /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(RouteSettings route) {
-    if (route.name == RepliesScreen.route) {
+    if (route.name == TweetDetailScreen.route) {
       final arguments =
           route.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
 

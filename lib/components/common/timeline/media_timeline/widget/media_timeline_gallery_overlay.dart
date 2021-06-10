@@ -75,7 +75,7 @@ class _MediaTimelineGalleryOverlayState
         onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
         onDownload: () => defaultOnMediaDownload(_tweet.mediaType, _mediaUrl),
         onShare: () => defaultOnMediaShare(_mediaUrl),
-        onShowTweet: () => app<HarpyNavigator>().pushRepliesScreen(
+        onShowTweet: () => app<HarpyNavigator>().pushTweetDetailScreen(
           tweet: _tweet,
         ),
         child: HarpyMediaGallery.builder(

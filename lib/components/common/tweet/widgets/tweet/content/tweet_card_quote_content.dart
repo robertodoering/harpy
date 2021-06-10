@@ -69,9 +69,7 @@ class TweetQuoteContent extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => app<HarpyNavigator>().pushRepliesScreen(
-        tweet: tweet,
-      ),
+      onTap: () => app<HarpyNavigator>().pushTweetDetailScreen(tweet: tweet),
       child: AnimatedContainer(
         duration: kShortAnimationDuration,
         decoration: BoxDecoration(

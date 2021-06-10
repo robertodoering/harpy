@@ -1,0 +1,41 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+
+/// Builds the parent tweet for the [TweetDetailScreen].
+///
+/// When the parent is loaded, the tweet card will animate into view.
+/// If now parent tweet exist, only a [defaultVerticalSpacer] is built.
+class TweetDetailParentTweet extends StatelessWidget {
+  const TweetDetailParentTweet();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.watch<RepliesBloc>();
+    final state = bloc.state;
+
+    return SliverToBoxAdapter(
+      child: CustomAnimatedSize(
+        alignment: Alignment.topCenter,
+        child: state.hasParent
+            ? Column(
+                children: [
+                  Padding(
+                    padding: DefaultEdgeInsets.all().copyWith(bottom: 0),
+                    child: TweetCard(state.parent!),
+                  ),
+                  defaultVerticalSpacer,
+                  TweetListInfoRow(
+                    icon: const Icon(CupertinoIcons.reply),
+                    text: Text('${bloc.tweet.user.name} replied'),
+                  ),
+                  defaultVerticalSpacer,
+                ],
+              )
+            : defaultVerticalSpacer,
+      ),
+    );
+  }
+}

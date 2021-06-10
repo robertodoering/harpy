@@ -31,7 +31,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   final LanguagePreferences languagePreferences = app<LanguagePreferences>();
 
   void onCardTap(TweetData tweet) {
-    app<HarpyNavigator>().pushRepliesScreen(tweet: tweet);
+    app<HarpyNavigator>().pushTweetDetailScreen(tweet: tweet);
   }
 
   void onRepliesTap(TweetData tweet) {
