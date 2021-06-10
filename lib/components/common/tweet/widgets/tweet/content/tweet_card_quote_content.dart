@@ -22,6 +22,7 @@ class TweetQuoteContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     final locale = Localizations.localeOf(context);
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);

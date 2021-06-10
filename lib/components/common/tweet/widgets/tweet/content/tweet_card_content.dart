@@ -24,7 +24,6 @@ class TweetCardContent extends StatelessWidget {
     final bloc = context.watch<TweetBloc>();
     final tweet = bloc.state.tweet;
 
-    final route = ModalRoute.of(context)!.settings;
     final locale = Localizations.localeOf(context);
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
@@ -68,8 +67,9 @@ class TweetCardContent extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap:
-          !tweet.currentReplyParent(route) ? () => bloc.onCardTap(tweet) : null,
+      onTap: !tweet.currentReplyParent(context)
+          ? () => bloc.onCardTap(tweet)
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

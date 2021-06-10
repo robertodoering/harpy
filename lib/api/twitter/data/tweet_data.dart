@@ -12,6 +12,7 @@ class TweetData extends Equatable {
     this.originalId = '',
     this.id = '',
     this.text = '',
+    this.source = '',
     this.retweetCount = 0,
     this.favoriteCount = 0,
     this.retweeted = false,
@@ -77,6 +78,7 @@ class TweetData extends Equatable {
       id: tweet.idStr ?? '',
       createdAt: tweet.createdAt ?? DateTime.now(),
       text: tweet.fullText ?? '',
+      source: tweet.source ?? '',
       retweetCount: tweet.retweetCount ?? 0,
       favoriteCount: tweet.favoriteCount ?? 0,
       retweeted: tweet.retweeted ?? false,
@@ -110,6 +112,7 @@ class TweetData extends Equatable {
 
   final DateTime createdAt;
   final String text;
+  final String source;
   final int retweetCount;
   final int favoriteCount;
   final bool retweeted;
@@ -255,15 +258,22 @@ extension TweetDataExtension on TweetData {
   bool get hasParent => parentTweetId != null && parentTweetId!.isNotEmpty;
 
   /// Whether this tweet is the current reply parent in the reply screen.
-  bool currentReplyParent(RouteSettings route) {
-    if (route.name == TweetDetailScreen.route) {
-      final arguments =
-          route.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
+  bool currentReplyParent(BuildContext context) {
+    final route = ModalRoute.of(context)?.settings;
 
-      return (arguments['tweet'] as TweetData?)?.id == id;
-    } else {
-      return false;
+    if (route != null && route.name == TweetDetailScreen.route) {
+      if (route.arguments is Map<String, dynamic>) {
+        final arguments = route.arguments as Map<String, dynamic>;
+
+        if (arguments['tweet'] is TweetData) {
+          return (arguments['tweet'] as TweetData).id == id;
+        }
+      }
+
+      assert(false, 'tweet inside an invalid route');
     }
+
+    return false;
   }
 
   String get tweetUrl => 'https://twitter.com/${user.handle}/status/$id';

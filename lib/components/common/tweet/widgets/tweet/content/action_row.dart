@@ -16,7 +16,7 @@ class TweetActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<TweetBloc>();
-    final route = ModalRoute.of(context)!.settings;
+
     final locale = Localizations.localeOf(context);
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
@@ -26,7 +26,7 @@ class TweetActionRow extends StatelessWidget {
         children: <Widget>[
           RetweetButton(bloc, padding: DefaultEdgeInsets.all()),
           FavoriteButton(bloc, padding: DefaultEdgeInsets.all()),
-          if (!tweet.currentReplyParent(route))
+          if (!tweet.currentReplyParent(context))
             HarpyButton.flat(
               onTap: () => bloc.onRepliesTap(tweet),
               icon: const Icon(CupertinoIcons.bubble_left),
