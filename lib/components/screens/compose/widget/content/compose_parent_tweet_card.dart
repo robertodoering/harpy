@@ -20,9 +20,9 @@ class ComposeParentTweetCard extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          const SizedBox(
-            width: TweetAuthorRow.defaultAvatarRadius * 2,
-            child: Icon(CupertinoIcons.reply, size: 18),
+          SizedBox(
+            width: TweetCardAvatar.defaultRadius * 2,
+            child: const Icon(CupertinoIcons.reply, size: 18),
           ),
           defaultHorizontalSpacer,
           Expanded(

@@ -36,7 +36,7 @@ class TweetListInfoRow extends StatelessWidget {
             IconTheme(
               data: theme.iconTheme.copyWith(size: 18),
               child: SizedBox(
-                width: TweetAuthorRow.defaultAvatarRadius * 2,
+                width: TweetCardAvatar.defaultRadius * 2,
                 child: icon,
               ),
             ),

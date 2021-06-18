@@ -2,51 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet_data.dart';
 import 'package:harpy/components/common/tweet/bloc/tweet_bloc.dart';
 
+/// Overrides actions in the [TweetBloc] to prevent them in a case where we want
+/// to use a preview / mock tweet card.
 class PreviewTweetBloc extends TweetBloc {
-  PreviewTweetBloc(TweetData tweet) : super(tweet);
+  PreviewTweetBloc(
+    TweetData tweet, {
+    this.enableUserTap = false,
+  }) : super(tweet);
+
+  final bool enableUserTap;
 
   @override
-  void onCardTap(TweetData tweet) {
-    // do nothing
+  void onTweetTap() {}
+
+  @override
+  void onUserTap(BuildContext context) {
+    if (enableUserTap) {
+      super.onUserTap(context);
+    }
   }
 
   @override
-  void onRepliesTap(TweetData tweet) {
-    // do nothing
-  }
+  void onRetweeterTap(BuildContext context) {}
 
   @override
-  void onViewMoreActions(BuildContext context, TweetData tweet) {
-    // do nothing
-  }
+  void onViewMoreActions(BuildContext context) {}
 
   @override
-  void onRetweet() {
-    // do nothing
-  }
+  void onRetweet() {}
 
   @override
-  void onUnretweet() {
-    // do nothing
-  }
+  void onUnretweet() {}
 
   @override
-  void onComposeQuote() {
-    // do nothing
-  }
+  void onComposeQuote() {}
 
   @override
-  void onFavorite() {
-    // do nothing
-  }
+  void onFavorite() {}
 
   @override
-  void onUnfavorite() {
-    // do nothing
-  }
+  void onUnfavorite() {}
 
   @override
-  void onTranslate(Locale locale) {
-    // do nothing
-  }
+  void onTranslate(Locale locale) {}
+
+  @override
+  void onReplyToTweet() {}
 }

@@ -16,30 +16,51 @@ import 'package:http/http.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:share/share.dart';
 
+part 'tweet_bloc_action_mixin.dart';
 part 'tweet_event.dart';
 part 'tweet_state.dart';
 
 /// Handles actions done on a single tweet, such as retweeting, favoriting,
 /// translating, etc.
-class TweetBloc extends Bloc<TweetEvent, TweetState> {
+class TweetBloc extends Bloc<TweetEvent, TweetState>
+    with TweetBlocActionCallback {
   TweetBloc(TweetData tweet) : super(TweetState(tweet: tweet));
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
-
   final TranslationService translationService = app<TranslationService>();
-
   final LanguagePreferences languagePreferences = app<LanguagePreferences>();
 
-  void onCardTap(TweetData tweet) {
-    app<HarpyNavigator>().pushTweetDetailScreen(tweet: tweet);
+  void onTweetTap() {
+    app<HarpyNavigator>().pushTweetDetailScreen(tweet: state.tweet);
   }
 
-  void onRepliesTap(TweetData tweet) {
-    onCardTap(tweet);
+  void onUserTap(BuildContext context) {
+    final route = ModalRoute.of(context);
+
+    assert(route != null);
+
+    app<HarpyNavigator>().pushUserProfile(
+      currentRoute: route?.settings,
+      screenName: state.tweet.user.handle,
+    );
   }
 
-  void onViewMoreActions(BuildContext context, TweetData tweet) {
-    showTweetActionsBottomSheet(context, tweet: tweet);
+  void onRetweeterTap(BuildContext context) {
+    final route = ModalRoute.of(context);
+
+    assert(route != null);
+    assert(state.tweet.retweetUserHandle != null);
+
+    if (state.tweet.retweetUserHandle != null) {
+      app<HarpyNavigator>().pushUserProfile(
+        currentRoute: route?.settings,
+        screenName: state.tweet.retweetUserHandle!,
+      );
+    }
+  }
+
+  void onViewMoreActions(BuildContext context) {
+    showTweetActionsBottomSheet(context, tweet: state.tweet);
   }
 
   void onRetweet() {
@@ -69,6 +90,12 @@ class TweetBloc extends Bloc<TweetEvent, TweetState> {
   void onTranslate(Locale locale) {
     unawaited(HapticFeedback.lightImpact());
     add(TranslateTweet(locale: locale));
+
+    _invoke(TweetAction.translate);
+  }
+
+  void onReplyToTweet() {
+    app<HarpyNavigator>().pushComposeScreen(inReplyToStatus: state.tweet);
   }
 
   @override

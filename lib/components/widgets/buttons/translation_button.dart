@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/preferences/layout_preferences.dart';
+import 'package:harpy/core/services/service_locator.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:like_button/like_button.dart';
 
@@ -9,11 +11,13 @@ class TranslationButton extends StatelessWidget {
     required this.active,
     required this.activate,
     this.padding = const EdgeInsets.all(8),
+    this.iconSize = 22,
   });
 
   final bool active;
   final VoidCallback activate;
   final EdgeInsets padding;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class TranslationButton extends StatelessWidget {
         start: Colors.tealAccent,
         end: Colors.lightBlueAccent,
       ),
-      iconSize: 22,
+      iconSize: iconSize,
       iconBuilder: (_, active, size) => Icon(
         Icons.translate,
         size: size,
@@ -43,15 +47,19 @@ class TranslationButton extends StatelessWidget {
   }
 }
 
-/// The translation button for the [TweetActionRow].
+/// The translation button for the [TweetCardActionsRow].
 class TweetTranslationButton extends StatelessWidget {
   const TweetTranslationButton(
     this.bloc, {
     this.padding = const EdgeInsets.all(8),
+    this.iconSize = 22,
+    this.sizeDelta = 0,
   });
 
   final TweetBloc bloc;
   final EdgeInsets padding;
+  final double iconSize;
+  final double sizeDelta;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +67,12 @@ class TweetTranslationButton extends StatelessWidget {
 
     final locale = Localizations.localeOf(context);
 
+    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+
     return TranslationButton(
       active: active,
       padding: padding,
+      iconSize: iconSize + sizeDelta + fontSizeDelta,
       activate: () => bloc.onTranslate(locale),
     );
   }

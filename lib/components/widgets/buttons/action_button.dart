@@ -33,6 +33,7 @@ class ActionButton extends StatefulWidget {
     this.value,
     this.padding = const EdgeInsets.all(8),
     this.activeTextStyle,
+    this.inactiveTextStyle,
     this.iconSize,
     this.activate,
     this.deactivate,
@@ -69,6 +70,9 @@ class ActionButton extends StatefulWidget {
 
   /// The style for the text when [active] is `true`.
   final TextStyle? activeTextStyle;
+
+  /// The style for the text when [active] is `false`.
+  final TextStyle? inactiveTextStyle;
 
   /// The size of the icon.
   ///
@@ -176,7 +180,7 @@ class _ActionButtonState extends State<ActionButton>
       betweenPadding: widget.padding.horizontal / 4,
       onTap: widget.active ? widget.deactivate : widget.activate,
       icon: icon,
-      style: widget.active ? widget.activeTextStyle : null,
+      style: widget.active ? widget.activeTextStyle : widget.inactiveTextStyle,
       text: widget.value != null ? AnimatedNumber(number: widget.value) : null,
     );
   }

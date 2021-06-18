@@ -16,13 +16,13 @@ class HomeTimeline extends StatefulWidget {
 }
 
 class _HomeTimelineState extends State<HomeTimeline> {
-  ScrollController? _controller;
+  late ScrollController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller = PrimaryScrollController.of(context);
+    _controller = PrimaryScrollController.of(context)!;
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
@@ -33,12 +33,12 @@ class _HomeTimelineState extends State<HomeTimeline> {
         state.newTweets > 0) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        _controller!.jumpTo(
+        _controller.jumpTo(
           // + height to make sure we reach the end
           // using `positions` in case the controller is attached to multiple
           //   positions
           // ignore: invalid_use_of_protected_member
-          _controller!.positions.first.maxScrollExtent +
+          _controller.positions.first.maxScrollExtent +
               mediaQuery.size.height / 2,
         );
       });
@@ -52,11 +52,11 @@ class _HomeTimelineState extends State<HomeTimeline> {
         children: <Widget>[
           NewTweetsText(state.newTweets),
           defaultVerticalSpacer,
-          TweetCard(tweet, rememberVisibility: true),
+          HomeTimelineTweetCard(tweet),
         ],
       );
     } else {
-      return TweetCard(tweet, rememberVisibility: true);
+      return HomeTimelineTweetCard(tweet);
     }
   }
 

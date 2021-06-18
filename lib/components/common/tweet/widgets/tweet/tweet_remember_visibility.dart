@@ -8,10 +8,9 @@ import 'package:harpy/core/core.dart';
 /// A [VisibilityChangeDetector] is required to be built above this widget.
 class TweetRememberVisibility extends StatefulWidget {
   const TweetRememberVisibility({
-    required Key key,
     required this.tweet,
     required this.child,
-  }) : super(key: key);
+  });
 
   final TweetData tweet;
   final Widget child;
