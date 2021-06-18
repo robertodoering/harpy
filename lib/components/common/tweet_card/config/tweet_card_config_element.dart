@@ -13,6 +13,7 @@ enum TweetCardElement {
   media,
   actionsButton,
   actionsRow,
+  details,
 }
 
 extension TweetCardElementExtension on TweetCardElement {
@@ -34,6 +35,7 @@ extension TweetCardElementExtension on TweetCardElement {
         case TweetCardElement.avatar:
         case TweetCardElement.name:
         case TweetCardElement.handle:
+        case TweetCardElement.details:
           return true;
       }
     } else {
@@ -50,6 +52,7 @@ extension TweetCardElementExtension on TweetCardElement {
       case TweetCardElement.text:
       case TweetCardElement.quote:
       case TweetCardElement.media:
+      case TweetCardElement.details:
         return true;
       case TweetCardElement.translation:
       case TweetCardElement.topRow:

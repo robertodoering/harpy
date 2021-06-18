@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/components/common/tweet_card/content/elements/tweet_card_details.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class TweetCardContent extends StatelessWidget {
     final translation = TweetCardElement.translation.shouldBuild(tweet, config);
     final media = TweetCardElement.media.shouldBuild(tweet, config);
     final quote = TweetCardElement.quote.shouldBuild(tweet, config);
+    final details = TweetCardElement.details.shouldBuild(tweet, config);
     final actionsRow = TweetCardElement.actionsRow.shouldBuild(tweet, config);
 
     final content = {
@@ -50,12 +52,16 @@ class TweetCardContent extends StatelessWidget {
         TweetCardElement.translation: TweetCardTranslation(
           outerPadding: outerPadding,
           innerPadding: innerPadding,
-          requireBottomInnerPadding: media || quote,
-          requireBottomOuterPadding: !(media || quote || actionsRow),
+          requireBottomInnerPadding: media || quote || details,
+          requireBottomOuterPadding: !(media || quote || actionsRow || details),
           style: TweetCardElement.translation.style(config),
         ),
       if (media) TweetCardElement.media: const TweetCardMedia(),
       if (quote) TweetCardElement.quote: const TweetCardQuote(),
+      if (details)
+        TweetCardElement.details: TweetCardDetails(
+          style: TweetCardElement.details.style(config),
+        ),
       if (actionsRow)
         TweetCardElement.actionsRow: TweetCardActionsRow(
           padding: EdgeInsets.all(outerPadding),

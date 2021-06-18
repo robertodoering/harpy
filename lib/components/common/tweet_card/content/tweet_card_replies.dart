@@ -70,12 +70,12 @@ class TweetCardReplies extends StatelessWidget {
               ],
             ),
           ),
-        for (final tweet in tweet.replies) ...[
+        for (final reply in tweet.replies) ...[
           TweetCard(
-            tweet,
+            reply,
             color: _cardColor(theme),
           ),
-          if (tweet != tweet.replies.last) defaultVerticalSpacer,
+          if (reply != tweet.replies.last) defaultVerticalSpacer,
         ],
       ],
     );

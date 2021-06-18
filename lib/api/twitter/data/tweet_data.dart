@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 @immutable
 class TweetData extends Equatable {
@@ -78,7 +79,7 @@ class TweetData extends Equatable {
       id: tweet.idStr ?? '',
       createdAt: tweet.createdAt ?? DateTime.now(),
       text: tweet.fullText ?? '',
-      source: tweet.source ?? '',
+      source: _source(tweet.source),
       retweetCount: tweet.retweetCount ?? 0,
       favoriteCount: tweet.favoriteCount ?? 0,
       retweeted: tweet.retweeted ?? false,
@@ -351,4 +352,17 @@ String _replyAuthors(UserData user, List<TweetData> replies) {
   } else {
     return replyNames.join(', ');
   }
+}
+
+String _source(String? source) {
+  if (source != null) {
+    final match = htmlTagRegex.firstMatch(source);
+    final group = match?.group(0);
+
+    if (group != null) {
+      return group;
+    }
+  }
+
+  return '';
 }
