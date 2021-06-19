@@ -32,9 +32,9 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   for (var i = 0; i < tweetDataList.length; i++) {
     final tweet = tweetDataList[i];
 
-    if (tweet.parentTweetId != null) {
+    if (tweet.parentTweetId != null && i != tweetDataList.length - 1) {
       // look for parent in older tweets
-      for (var j = i; j < tweetDataList.length; j++) {
+      for (var j = i + 1; j < tweetDataList.length; j++) {
         final olderTweet = tweetDataList[j];
 
         if (olderTweet.id == tweet.parentTweetId) {
@@ -47,6 +47,7 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
             ],
           );
           tweetDataList.removeAt(i);
+          i--;
 
           break;
         }
