@@ -18,7 +18,6 @@ class TweetCardTranslation extends StatelessWidget {
   final double innerPadding;
   final bool requireBottomInnerPadding;
   final bool requireBottomOuterPadding;
-
   final TweetCardElementStyle style;
 
   @override

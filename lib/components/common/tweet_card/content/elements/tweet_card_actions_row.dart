@@ -13,7 +13,6 @@ class TweetCardActionsRow extends StatelessWidget {
   });
 
   final EdgeInsets padding;
-
   final TweetCardElementStyle style;
 
   @override

@@ -43,6 +43,7 @@ extension TweetCardElementExtension on TweetCardElement {
     }
   }
 
+  /// Whether the element requires padding to be builds around it.
   bool get requiresPadding {
     switch (this) {
       case TweetCardElement.retweeter:
