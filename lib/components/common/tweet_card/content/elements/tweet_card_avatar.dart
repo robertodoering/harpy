@@ -17,7 +17,7 @@ class TweetCardAvatar extends StatelessWidget {
   static double get defaultRadius {
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 
-    return _defaultRadius + fontSizeDelta;
+    return _defaultRadius + fontSizeDelta * 2;
   }
 
   @override
