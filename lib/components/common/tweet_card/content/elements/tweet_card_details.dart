@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:intl/intl.dart';
@@ -41,8 +42,10 @@ class TweetCardDetails extends StatelessWidget {
             Text(time, style: textStyle),
             Text(' \u00b7 ', style: textStyle),
             Text(date, style: textStyle),
-            Text(' \u00b7 ', style: textStyle),
-            Text(tweet.source, style: textStyle),
+            if (tweet.hasSource) ...[
+              Text(' \u00b7 ', style: textStyle),
+              Text(tweet.source, style: textStyle),
+            ],
           ],
         ),
       ],

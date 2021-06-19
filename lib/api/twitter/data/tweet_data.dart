@@ -258,6 +258,8 @@ extension TweetDataExtension on TweetData {
 
   bool get hasParent => parentTweetId != null && parentTweetId!.isNotEmpty;
 
+  bool get hasSource => source.isNotEmpty;
+
   /// Whether this tweet is the current reply parent in the reply screen.
   bool currentReplyParent(BuildContext context) {
     final route = ModalRoute.of(context)?.settings;
