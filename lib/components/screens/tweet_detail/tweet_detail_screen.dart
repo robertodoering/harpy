@@ -47,7 +47,6 @@ class _TweetDetailScreenContent extends StatelessWidget {
           if (state.isLoading)
             const TweetListLoadingSliver()
           else if (state.hasResult)
-            // todo: consider other states
             const SliverBoxTweetListInfoRow(
               icon: Icon(CupertinoIcons.reply_all),
               text: Text('replies'),
@@ -56,6 +55,10 @@ class _TweetDetailScreenContent extends StatelessWidget {
             SliverFillLoadingError(
               message: const Text('error requesting replies'),
               onRetry: () => bloc.add(const LoadReplies()),
+            )
+          else if (state.hasNoResult)
+            const SliverBoxInfoMessage(
+              secondaryMessage: Text('no replies exist'),
             ),
         ],
         endSlivers: [
