@@ -22,9 +22,8 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
         Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              // workaround to rebuild the tweet card with new compact layout
-              // settings
-              key: Key(layoutPreferences.compactMode.toString()),
+              // force rebuild when settings change
+              key: UniqueKey(),
               padding: DefaultEdgeInsets.all(),
               child: const PreviewTweetCard(),
             ),
