@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 typedef TweetBuilder = Widget Function(TweetData tweet);
 
@@ -44,10 +43,7 @@ class TweetList extends StatelessWidget {
     if (index.isEven) {
       return tweetBuilder(tweets[index ~/ 2]);
     } else {
-      return AnimatedContainer(
-        duration: kShortAnimationDuration,
-        height: defaultPaddingValue,
-      );
+      return SizedBox(height: defaultPaddingValue);
     }
   }
 

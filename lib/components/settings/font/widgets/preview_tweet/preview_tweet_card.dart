@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
@@ -10,15 +11,14 @@ class PreviewTweetCard extends StatelessWidget {
     const text = '''
 Thank you for using Harpy!
 
-Make sure to follow @harpy_app for news and updates about the app.''';
+Make sure to follow @harpy_app for news and updates about the app''';
 
     final tweet = TweetData(
       user: const UserData(
         name: 'Harpy',
         handle: 'harpy_app',
-        profileImageUrl:
-            'https://pbs.twimg.com/profile_images/1356691241140957190/'
-            'N03_GPid_400x400.jpg',
+        profileImageUrl: 'https://pbs.twimg.com/profile_images/'
+            '1356691241140957190/N03_GPid_400x400.jpg',
       ),
       text: text,
       visibleText: text,
@@ -28,9 +28,9 @@ Make sure to follow @harpy_app for news and updates about the app.''';
       createdAt: DateTime.now(),
     );
 
-    return TweetCard(
-      tweet,
+    return BlocProvider<TweetBloc>(
       create: (_) => PreviewTweetBloc(tweet),
+      child: const TweetCardBase(),
     );
   }
 }

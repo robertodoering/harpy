@@ -22,9 +22,9 @@ extension RepliesExtension on TweetSearchService {
   ///
   /// Throws an exception when the [searchTweets] did not return a 200 response.
   Future<RepliesResult> findReplies(
-    TweetData tweet,
+    TweetData tweet, [
     RepliesResult? lastResult,
-  ) async {
+  ]) async {
     final screenName = tweet.user.handle;
 
     final maxId =

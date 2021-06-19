@@ -275,53 +275,23 @@ class TranslateTweet extends TweetEvent {
       locale.languageCode,
     );
 
-    final tweetTranslatable = bloc.state.tweet.translatable(translateLanguage);
-    final quoteTranslatable = bloc.state.tweet.quoteTranslatable(
-      translateLanguage,
-    );
+    final translatable = bloc.state.tweet.translatable(translateLanguage);
 
-    Translation? tweetTranslation;
-    Translation? quoteTranslation;
+    Translation? translation;
 
-    await Future.wait<void>([
-      // tweet translation
-      if (tweetTranslatable)
-        bloc.translationService
-            .translate(
-              text: bloc.state.tweet.visibleText,
-              to: translateLanguage,
-            )
-            .then((translation) => tweetTranslation = translation)
-            .handleError(silentErrorHandler),
+    if (translatable) {
+      translation = await bloc.translationService
+          .translate(text: bloc.state.tweet.visibleText, to: translateLanguage)
+          .handleError(silentErrorHandler);
+    }
 
-      // quote translation
-      if (quoteTranslatable)
-        bloc.translationService
-            .translate(
-              text: bloc.state.tweet.quote!.visibleText,
-              to: translateLanguage,
-            )
-            .then((translation) => quoteTranslation = translation)
-            .handleError(silentErrorHandler)
-    ]);
-
-    // show an info when the tweet or quote was unable to be translated
-    if (tweetTranslatable &&
-        tweetTranslation != null &&
-        tweetTranslation!.unchanged) {
+    if (translatable && translation != null && translation.unchanged) {
       app<MessageService>().show('tweet not translated');
-    } else if (quoteTranslatable &&
-        quoteTranslation != null &&
-        quoteTranslation!.unchanged) {
-      app<MessageService>().show('quoted tweet not translated');
     }
 
     yield bloc.state.copyWith(
       tweet: bloc.state.tweet.copyWith(
-        translation: tweetTranslation,
-        quote: bloc.state.tweet.quote?.copyWith(
-          translation: quoteTranslation,
-        ),
+        translation: translation,
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -66,7 +67,6 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthenticationBloc.of(context);
     final bloc = context.watch<ComposeBloc>();
 
     return GestureDetector(
@@ -80,13 +80,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Padding(
-                      padding: DefaultEdgeInsets.all(),
-                      child: TweetAuthorRow(
-                        authBloc.authenticatedUser!,
-                        enableUserTap: false,
-                      ),
-                    ),
+                    const _TopRow(),
                     ComposeTextField(
                       controller: _controller,
                       focusNode: _focusNode,
@@ -99,6 +93,35 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
               ),
             ),
             ComposeTweetActionRow(controller: _controller),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TopRow extends StatelessWidget {
+  const _TopRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final authBloc = AuthenticationBloc.of(context);
+
+    return BlocProvider<TweetBloc>(
+      create: (_) => PreviewTweetBloc(
+        TweetData(
+          user: authBloc.authenticatedUser!,
+          createdAt: DateTime.now(),
+        ),
+      ),
+      child: TweetCardTopRow(
+        innerPadding: defaultSmallPaddingValue,
+        outerPadding: defaultPaddingValue,
+        config: const TweetCardConfig(
+          elements: [
+            TweetCardElement.avatar,
+            TweetCardElement.name,
+            TweetCardElement.handle,
           ],
         ),
       ),
