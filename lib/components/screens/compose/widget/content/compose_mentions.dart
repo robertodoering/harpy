@@ -12,7 +12,7 @@ class ComposeTweetMentions extends StatelessWidget {
     required this.controller,
   });
 
-  final TextEditingController? controller;
+  final ComposeTextController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,7 @@ class ComposeTweetMentions extends StatelessWidget {
       create: (context) => MentionSuggestionsBloc(
         authenticatedUser: authBloc.authenticatedUser!,
       ),
-      child:
-          MentionSuggestions(controller: controller as ComposeTextController?),
+      child: MentionSuggestions(controller: controller),
     );
   }
 }

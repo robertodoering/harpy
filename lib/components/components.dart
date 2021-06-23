@@ -85,6 +85,7 @@ export 'screens/compose/widget/content/compose_text_field.dart';
 export 'screens/compose/widget/content/compose_trends.dart';
 export 'screens/compose/widget/content/compose_tweet_card.dart';
 export 'screens/compose/widget/content/compose_tweet_card_with_parent.dart';
+export 'screens/compose/widget/content/compose_tweet_max_length.dart';
 export 'screens/compose/widget/post_tweet/post_tweet_dialog.dart';
 export 'screens/following_followers/common/bloc/following_followers_bloc.dart';
 export 'screens/following_followers/common/following_followers_screen.dart';

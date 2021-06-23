@@ -11,7 +11,7 @@ class ComposeTweetActionRow extends StatelessWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +38,16 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: DefaultEdgeInsets.all(),
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
-          onTap: () => controller!.insertString('@'),
+          onTap: () => controller.insertString('@'),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: DefaultEdgeInsets.all(),
           text: const Text('#', style: TextStyle(fontSize: 20)),
-          onTap: () => controller!.insertString('#'),
+          onTap: () => controller.insertString('#'),
         ),
         const Spacer(),
+        ComposeTweetMaxLenght(controller: controller),
         PostTweetButton(controller: controller),
       ],
     );
