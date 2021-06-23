@@ -49,11 +49,11 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _keyboardListener.cancel();
     _controller?.dispose();
     _focusNode.dispose();
+
+    super.dispose();
   }
 
   Widget _buildMedia(ComposeState state) {
@@ -92,7 +92,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
                 ),
               ),
             ),
-            ComposeTweetActionRow(controller: _controller),
+            ComposeTweetActionRow(controller: _controller!),
           ],
         ),
       ),
