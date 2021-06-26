@@ -9,6 +9,7 @@ class PlaceholderBox extends StatelessWidget {
     this.widthFactor,
     this.heightFactor,
     this.shape = BoxShape.rectangle,
+    this.alignment = Alignment.center,
     Key? key,
   }) : super(key: key);
 
@@ -17,6 +18,7 @@ class PlaceholderBox extends StatelessWidget {
   final double? widthFactor;
   final double? heightFactor;
   final BoxShape shape;
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class PlaceholderBox extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: widthFactor,
       heightFactor: heightFactor,
+      alignment: alignment,
       child: Container(
         width: width,
         height: height,
