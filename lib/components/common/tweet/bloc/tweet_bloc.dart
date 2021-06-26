@@ -14,7 +14,6 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:share/share.dart';
 
 part 'tweet_bloc_action_mixin.dart';
 part 'tweet_event.dart';
@@ -26,7 +25,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     with TweetBlocActionCallback {
   TweetBloc(this.tweet) : super(const TweetState());
 
-  /// Reference to the tweet that is used in the list to display a tweet card.
+  /// Reference to the tweet that is used to display a tweet card.
   ///
   /// The [TweetData] is mutable and changes from actions that are done on the
   /// tweet will affect the source data.
