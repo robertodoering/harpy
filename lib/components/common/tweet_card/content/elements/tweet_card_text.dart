@@ -17,14 +17,15 @@ class TweetCardText extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     return TwitterText(
       tweet.text,
       entities: tweet.entities,
       urlToIgnore: tweet.quoteUrl,
       style: theme.textTheme.bodyText2!.apply(
-        fontSizeDelta: fontSizeDelta + style.sizeDelta,
+        fontSizeDelta: fontSizeDelta,
       ),
     );
   }

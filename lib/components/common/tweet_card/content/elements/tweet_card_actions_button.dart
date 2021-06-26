@@ -17,10 +17,11 @@ class TweetCardActionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.watch<TweetBloc>();
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     return ViewMoreActionButton(
-      sizeDelta: fontSizeDelta + style.sizeDelta,
+      sizeDelta: fontSizeDelta,
       padding: padding,
       onTap: () => bloc.onViewMoreActions(context),
     );

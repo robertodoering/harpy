@@ -25,7 +25,8 @@ class TweetCardTranslation extends StatelessWidget {
     final bloc = context.watch<TweetBloc>();
     final tweet = bloc.tweet;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     final buildTranslation = tweet.hasTranslation &&
         !tweet.translation!.unchanged &&
@@ -52,7 +53,7 @@ class TweetCardTranslation extends StatelessWidget {
                   language: tweet.translation!.language,
                   entities: tweet.entities,
                   urlToIgnore: tweet.quoteUrl,
-                  fontSizeDelta: fontSizeDelta + style.sizeDelta,
+                  fontSizeDelta: fontSizeDelta,
                 ),
               )
             : SizedBox(

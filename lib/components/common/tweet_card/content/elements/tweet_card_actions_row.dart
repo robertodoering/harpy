@@ -20,8 +20,9 @@ class TweetCardActionsRow extends StatelessWidget {
     final bloc = context.watch<TweetBloc>();
     final tweet = bloc.tweet;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
-    final iconSize = 22 + fontSizeDelta + style.sizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
+    final iconSize = 22 + fontSizeDelta;
 
     final locale = Localizations.localeOf(context);
     final translateLanguage =
@@ -45,14 +46,14 @@ class TweetCardActionsRow extends StatelessWidget {
           HarpyButton.flat(
             onTap: bloc.onTweetTap,
             icon: const Icon(CupertinoIcons.bubble_left),
-            iconSize: iconSize + fontSizeDelta + style.sizeDelta,
+            iconSize: iconSize + fontSizeDelta,
             padding: padding,
           )
         else
           HarpyButton.flat(
             onTap: bloc.onReplyToTweet,
             icon: const Icon(CupertinoIcons.reply),
-            iconSize: iconSize + fontSizeDelta + style.sizeDelta,
+            iconSize: iconSize + fontSizeDelta,
             padding: padding,
           ),
         const Spacer(),

@@ -18,7 +18,8 @@ class TweetCardRetweeter extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onRetweeterTap(context),
@@ -27,15 +28,21 @@ class TweetCardRetweeter extends StatelessWidget {
           children: [
             SizedBox(
               width: TweetCardAvatar.defaultRadius * 2,
-              child: Icon(FeatherIcons.repeat, size: 16 + fontSizeDelta),
+              child: Icon(
+                FeatherIcons.repeat,
+                size: 16 + fontSizeDelta,
+              ),
             ),
             // defaultHorizontalSpacer, // todo
             Flexible(
               child: Text(
                 '${tweet.retweetUserName} retweeted',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyText2!
                     .copyWith(
                       color: theme.textTheme.bodyText2!.color!.withOpacity(.8),
+                      height: 1,
                     )
                     .apply(fontSizeDelta: fontSizeDelta),
               ),
