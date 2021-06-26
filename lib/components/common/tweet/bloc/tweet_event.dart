@@ -303,59 +303,6 @@ abstract class MediaActionEvent extends TweetEvent {
   }
 }
 
-abstract class TweetActionEvent extends TweetEvent {
-  const TweetActionEvent({
-    required this.tweet,
-  });
-
-  /// The selected Tweet.
-  // todo: remove
-  final TweetData tweet;
-}
-
-class OpenTweetExternally extends TweetActionEvent {
-  const OpenTweetExternally({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(launchUrl(tweet.tweetUrl));
-  }
-}
-
-class CopyTweetText extends TweetActionEvent {
-  const CopyTweetText({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(Clipboard.setData(ClipboardData(text: tweet.visibleText)));
-    app<MessageService>().show('copied tweet text');
-  }
-}
-
-class ShareTweet extends TweetActionEvent {
-  const ShareTweet({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(Share.share(tweet.tweetUrl));
-  }
-}
-
 /// Returns `true` if the error contains any of the following error codes:
 ///
 /// 139: already favorited (trying to favorite a tweet twice)
