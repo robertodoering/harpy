@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -67,14 +68,20 @@ class UserProfileInfo extends StatelessWidget {
     );
   }
 
-  /// Builds the `@screenName` for the user.
-  Widget _buildScreenName(ThemeData theme) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      alignment: Alignment.centerLeft,
-      child: Text(
-        '@${bloc.user!.handle}',
-        style: theme.textTheme.subtitle1,
+  /// Builds the `@handle` for the user.
+  Widget _buildHandle(ThemeData theme) {
+    final handle = '@${bloc.user!.handle}';
+
+    return GestureDetector(
+      onLongPress: () {
+        HapticFeedback.lightImpact();
+        Clipboard.setData(ClipboardData(text: handle));
+        app<MessageService>().show('copied $handle');
+      },
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Text(handle, style: theme.textTheme.subtitle1),
       ),
     );
   }
@@ -123,7 +130,7 @@ class UserProfileInfo extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(child: _buildScreenName(theme)),
+                  Expanded(child: _buildHandle(theme)),
                   if (enableFollow) ...<Widget>[
                     defaultHorizontalSpacer,
                     _buildFollowButton(theme),
