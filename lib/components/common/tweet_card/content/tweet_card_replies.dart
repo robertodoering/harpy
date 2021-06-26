@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -43,15 +44,15 @@ class TweetCardReplies extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
+    final authors = tweet.replyAuthors;
 
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (tweet.replyAuthors.isNotEmpty)
+        if (authors.isNotEmpty)
           Padding(
             padding: DefaultEdgeInsets.all().copyWith(top: 0),
             child: Row(
@@ -63,7 +64,7 @@ class TweetCardReplies extends StatelessWidget {
                 defaultHorizontalSpacer,
                 Expanded(
                   child: Text(
-                    '${tweet.replyAuthors} replied',
+                    '$authors replied',
                     style: theme.textTheme.bodyText1,
                   ),
                 ),

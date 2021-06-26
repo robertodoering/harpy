@@ -22,11 +22,10 @@ class TweetCardAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     return GestureDetector(
-      onTap: () => bloc.onUserTap(context),
+      onTap: () => context.read<TweetBloc>().onUserTap(context),
       child: HarpyCircleAvatar(
         imageUrl: tweet.user.appropriateUserImageUrl,
         radius: defaultRadius + style.sizeDelta,

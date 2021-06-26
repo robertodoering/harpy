@@ -63,7 +63,7 @@ class TweetTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final active = bloc.state.tweet.hasTranslation || bloc.state.isTranslating;
+    final active = bloc.tweet.hasTranslation || bloc.state.isTranslating;
 
     final locale = Localizations.localeOf(context);
 

@@ -24,14 +24,20 @@ part 'tweet_state.dart';
 /// translating, etc.
 class TweetBloc extends Bloc<TweetEvent, TweetState>
     with TweetBlocActionCallback {
-  TweetBloc(TweetData tweet) : super(TweetState(tweet: tweet));
+  TweetBloc(this.tweet) : super(const TweetState());
+
+  /// Reference to the tweet that is used in the list to display a tweet card.
+  ///
+  /// The [TweetData] is mutable and changes from actions that are done on the
+  /// tweet will affect the source data.
+  final TweetData tweet;
 
   final TweetService tweetService = app<TwitterApi>().tweetService;
   final TranslationService translationService = app<TranslationService>();
   final LanguagePreferences languagePreferences = app<LanguagePreferences>();
 
   void onTweetTap() {
-    app<HarpyNavigator>().pushTweetDetailScreen(tweet: state.tweet);
+    app<HarpyNavigator>().pushTweetDetailScreen(tweet: tweet);
   }
 
   void onUserTap(BuildContext context) {
@@ -41,7 +47,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: route?.settings,
-      screenName: state.tweet.user.handle,
+      screenName: tweet.user.handle,
     );
   }
 
@@ -49,18 +55,18 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     final route = ModalRoute.of(context);
 
     assert(route != null);
-    assert(state.tweet.retweetUserHandle != null);
+    assert(tweet.retweetUserHandle != null);
 
-    if (state.tweet.retweetUserHandle != null) {
+    if (tweet.retweetUserHandle != null) {
       app<HarpyNavigator>().pushUserProfile(
         currentRoute: route?.settings,
-        screenName: state.tweet.retweetUserHandle!,
+        screenName: tweet.retweetUserHandle!,
       );
     }
   }
 
   void onViewMoreActions(BuildContext context) {
-    showTweetActionsBottomSheet(context, tweet: state.tweet);
+    showTweetActionsBottomSheet(context, tweet: tweet);
   }
 
   void onRetweet() {
@@ -74,7 +80,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   }
 
   void onComposeQuote() {
-    app<HarpyNavigator>().pushComposeScreen(quotedTweet: state.tweet);
+    app<HarpyNavigator>().pushComposeScreen(quotedTweet: tweet);
   }
 
   void onFavorite() {
@@ -95,7 +101,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   }
 
   void onReplyToTweet() {
-    app<HarpyNavigator>().pushComposeScreen(inReplyToStatus: state.tweet);
+    app<HarpyNavigator>().pushComposeScreen(inReplyToStatus: tweet);
   }
 
   @override

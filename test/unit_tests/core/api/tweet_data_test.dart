@@ -14,12 +14,11 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
-        replies: [
+      final tweetData = TweetData.fromTweet(Tweet())
+        ..replies = [
           TweetData.fromTweet(Tweet()..user = firstUser),
           TweetData.fromTweet(Tweet()..user = secondUser),
-        ],
-      );
+        ];
 
       expect(tweetData.replyAuthors, 'First replier, Second replier');
     });
@@ -28,13 +27,12 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
-        replies: [
+      final tweetData = TweetData.fromTweet(Tweet())
+        ..replies = [
           TweetData.fromTweet(Tweet()..user = firstUser),
           TweetData.fromTweet(Tweet()..user = secondUser),
           TweetData.fromTweet(Tweet()..user = firstUser),
-        ],
-      );
+        ];
 
       expect(tweetData.replyAuthors, 'First replier, Second replier');
     });
@@ -46,11 +44,9 @@ void main() {
 
       final tweetData = TweetData.fromTweet(
         Tweet()..user = originalUser,
-      ).copyWith(
-        replies: [
+      )..replies = [
           TweetData.fromTweet(Tweet()..user = originalUser),
-        ],
-      );
+        ];
 
       expect(tweetData.replyAuthors, '');
     });
@@ -63,13 +59,11 @@ void main() {
 
       final tweetData = TweetData.fromTweet(
         Tweet()..user = originalUser,
-      ).copyWith(
-        replies: [
+      )..replies = [
           TweetData.fromTweet(Tweet()..user = originalUser),
           TweetData.fromTweet(Tweet()..user = firstUser),
           TweetData.fromTweet(Tweet()..user = secondUser),
-        ],
-      );
+        ];
 
       expect(
         tweetData.replyAuthors,

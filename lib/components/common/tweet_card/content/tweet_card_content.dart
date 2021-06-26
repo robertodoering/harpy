@@ -24,8 +24,7 @@ class TweetCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     final locale = Localizations.localeOf(context);
     final translateLanguage =

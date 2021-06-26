@@ -40,12 +40,11 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
         if (olderTweet.id == tweet.parentTweetId) {
           // found parent tweet, remove child tweet from list and add it to
           //   the replies of the parent tweet
-          tweetDataList[j] = olderTweet.copyWith(
-            replies: [
-              ...olderTweet.replies,
-              tweet,
-            ],
-          );
+          olderTweet.replies = [
+            ...olderTweet.replies,
+            tweet,
+          ];
+
           tweetDataList.removeAt(i);
           i--;
 

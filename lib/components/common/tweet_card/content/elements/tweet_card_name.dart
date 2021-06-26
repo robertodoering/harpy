@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +16,12 @@ class TweetCardName extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 
     return GestureDetector(
-      onTap: () => bloc.onUserTap(context),
+      onTap: () => context.read<TweetBloc>().onUserTap(context),
       child: IntrinsicWidth(
         child: Row(
           children: <Widget>[

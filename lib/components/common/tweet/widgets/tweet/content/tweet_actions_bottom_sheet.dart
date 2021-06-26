@@ -21,7 +21,7 @@ void showTweetActionsBottomSheet(
   final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
   final isAuthenticatedUser =
-      bloc.state.tweet.user.id == authBloc.authenticatedUser!.id;
+      bloc.tweet.user.id == authBloc.authenticatedUser!.id;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
@@ -58,9 +58,7 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             bloc.add(DeleteTweet(onDeleted: () {
-              homeTimelineBloc.add(
-                RemoveFromHomeTimeline(tweet: bloc.state.tweet),
-              );
+              homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
             }));
             app<HarpyNavigator>().state!.maybePop();
           },
@@ -87,7 +85,7 @@ void showTweetActionsBottomSheet(
       ListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy tweet text'),
-        enabled: bloc.state.tweet.hasText,
+        enabled: bloc.tweet.hasText,
         onTap: () {
           bloc.add(CopyTweetText(tweet: tweet));
           app<HarpyNavigator>().state!.maybePop();
