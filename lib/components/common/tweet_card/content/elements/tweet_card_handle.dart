@@ -21,24 +21,25 @@ class TweetCardHandle extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta =
+        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onUserTap(context),
       child: Text.rich(
         TextSpan(
-          children: <InlineSpan>[
+          children: [
             TextSpan(
               text: '@${tweet.user.handle}',
               style: theme.textTheme.bodyText1!
                   .copyWith(height: 1)
-                  .apply(fontSizeDelta: fontSizeDelta + style.sizeDelta),
+                  .apply(fontSizeDelta: fontSizeDelta),
             ),
             TextSpan(
               text: ' \u00b7 ',
               style: theme.textTheme.bodyText1!
                   .copyWith(height: 1)
-                  .apply(fontSizeDelta: fontSizeDelta + style.sizeDelta),
+                  .apply(fontSizeDelta: fontSizeDelta),
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.baseline,
@@ -51,7 +52,7 @@ class TweetCardHandle extends StatelessWidget {
           ],
         ),
         maxLines: 1,
-        overflow: TextOverflow.fade,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
