@@ -16,8 +16,7 @@ class TweetCardDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
@@ -7,8 +8,7 @@ class TweetCardMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     return TweetMedia(tweet);
   }

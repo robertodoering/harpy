@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -7,6 +8,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 /// Shows a harpy bottom sheet for the tweet actions.
 ///
@@ -21,7 +23,7 @@ void showTweetActionsBottomSheet(
   final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
   final isAuthenticatedUser =
-      bloc.state.tweet.user.id == authBloc.authenticatedUser!.id;
+      bloc.tweet.user.id == authBloc.authenticatedUser!.id;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
@@ -58,9 +60,7 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             bloc.add(DeleteTweet(onDeleted: () {
-              homeTimelineBloc.add(
-                RemoveFromHomeTimeline(tweet: bloc.state.tweet),
-              );
+              homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
             }));
             app<HarpyNavigator>().state!.maybePop();
           },
@@ -80,16 +80,17 @@ void showTweetActionsBottomSheet(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),
         onTap: () {
-          bloc.add(OpenTweetExternally(tweet: tweet));
+          launchUrl(tweet.tweetUrl);
           app<HarpyNavigator>().state!.maybePop();
         },
       ),
       ListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy tweet text'),
-        enabled: bloc.state.tweet.hasText,
+        enabled: bloc.tweet.hasText,
         onTap: () {
-          bloc.add(CopyTweetText(tweet: tweet));
+          Clipboard.setData(ClipboardData(text: tweet.visibleText));
+          app<MessageService>().show('copied tweet text');
           app<HarpyNavigator>().state!.maybePop();
         },
       ),
@@ -97,7 +98,7 @@ void showTweetActionsBottomSheet(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share tweet'),
         onTap: () {
-          bloc.add(ShareTweet(tweet: tweet));
+          Share.share(tweet.tweetUrl);
           app<HarpyNavigator>().state!.maybePop();
         },
       ),

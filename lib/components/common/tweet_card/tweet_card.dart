@@ -42,12 +42,13 @@ class TweetCardBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
     final child = GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: !tweet.currentReplyParent(context) ? bloc.onTweetTap : null,
+      onTap: !tweet.currentReplyParent(context)
+          ? context.read<TweetBloc>().onTweetTap
+          : null,
       child: TweetCardContent(
         outerPadding: defaultPaddingValue,
         innerPadding: defaultSmallPaddingValue,

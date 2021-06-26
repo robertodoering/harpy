@@ -23,7 +23,7 @@ class TweetCardTranslation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<TweetBloc>();
-    final tweet = bloc.state.tweet;
+    final tweet = bloc.tweet;
 
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 

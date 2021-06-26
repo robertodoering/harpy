@@ -22,9 +22,9 @@ class _TweetCardQuoteState extends State<TweetCardQuote> {
     super.initState();
 
     _parentBloc = context.read<TweetBloc>();
-    assert(_parentBloc.state.tweet.quote != null);
+    assert(_parentBloc.tweet.quote != null);
 
-    _bloc = TweetBloc(_parentBloc.state.tweet.quote!);
+    _bloc = TweetBloc(_parentBloc.tweet.quote!);
 
     _parentBloc.addCallback(_onParentTweetAction);
   }

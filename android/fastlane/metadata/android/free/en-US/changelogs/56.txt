@@ -1,0 +1,5 @@
+Version 0.6.8
+2021-xx-xx
+
+· Fixed tweets not updating correctly when rebuilt on screen after favoriting / retweeting a tweet
+· Minor style improvements

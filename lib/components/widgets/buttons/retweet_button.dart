@@ -37,11 +37,11 @@ class _RetweetButtonState extends State<RetweetButton> {
     final position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(
-          button.size.bottomLeft(Offset.zero) - const Offset(0, 24),
+          button.size.bottomLeft(Offset.zero),
           ancestor: overlay,
         ),
         button.localToGlobal(
-          button.size.bottomRight(Offset.zero) - const Offset(0, 24),
+          button.size.bottomRight(Offset.zero),
           ancestor: overlay,
         ),
       ),
@@ -84,7 +84,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 
     return ActionButton(
-      active: widget.bloc.state.tweet.retweeted,
+      active: widget.bloc.tweet.retweeted,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: theme.textTheme.button!
@@ -96,7 +96,7 @@ class _RetweetButtonState extends State<RetweetButton> {
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
           .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
-      value: widget.bloc.state.tweet.retweetCount,
+      value: widget.bloc.tweet.retweetCount,
       activate: _showRetweetButtonMenu,
       deactivate: bloc.onUnretweet,
       bubblesColor: BubblesColor(

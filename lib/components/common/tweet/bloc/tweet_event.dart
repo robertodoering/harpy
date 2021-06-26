@@ -20,42 +20,38 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
   }) async* {
     if (bloc.state.isRetweeting) {
       log.fine('currently un-retweeting');
-      yield bloc.state.copyWith(
-        tweet: bloc.state.tweet.copyWith(retweeted: true),
-      );
+      bloc.tweet.retweeted = true;
       return;
     }
 
-    yield bloc.state.copyWith(
-      tweet: bloc.state.tweet.copyWith(
-        retweetCount: bloc.state.tweet.retweetCount + 1,
-        retweeted: true,
-      ),
-      isRetweeting: true,
-    );
+    bloc.tweet
+      ..retweetCount += 1
+      ..retweeted = true;
+
+    yield bloc.state.copyWith(isRetweeting: true);
 
     try {
-      await bloc.tweetService.retweet(id: bloc.state.tweet.id);
+      await bloc.tweetService.retweet(id: bloc.tweet.id);
 
-      log.fine('retweeted ${bloc.state.tweet.id}');
+      log.fine('retweeted ${bloc.tweet.id}');
 
       yield bloc.state.copyWith(isRetweeting: false);
 
-      if (!bloc.state.tweet.retweeted) {
+      if (!bloc.tweet.retweeted) {
         // the user has un-retweeted the tweet while we were making the request
         bloc.add(const UnretweetTweet());
       }
     } catch (e, st) {
       if (!_actionPerformed(e)) {
+        bloc.tweet
+          ..retweetCount = math.max(0, bloc.tweet.retweetCount - 1)
+          ..retweeted = false;
+
         yield bloc.state.copyWith(
-          tweet: bloc.state.tweet.copyWith(
-            retweetCount: math.max(0, bloc.state.tweet.retweetCount - 1),
-            retweeted: false,
-          ),
           isRetweeting: false,
         );
 
-        log.warning('error retweeting ${bloc.state.tweet.id}', e, st);
+        log.warning('error retweeting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
@@ -75,42 +71,36 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
   }) async* {
     if (bloc.state.isRetweeting) {
       log.fine('currently retweeting');
-      yield bloc.state.copyWith(
-        tweet: bloc.state.tweet.copyWith(retweeted: false),
-      );
+      bloc.tweet.retweeted = false;
       return;
     }
 
-    yield bloc.state.copyWith(
-      tweet: bloc.state.tweet.copyWith(
-        retweetCount: math.max(0, bloc.state.tweet.retweetCount - 1),
-        retweeted: false,
-      ),
-      isRetweeting: true,
-    );
+    bloc.tweet
+      ..retweetCount = math.max(0, bloc.tweet.retweetCount - 1)
+      ..retweeted = false;
+
+    yield bloc.state.copyWith(isRetweeting: true);
 
     try {
-      await bloc.tweetService.unretweet(id: bloc.state.tweet.id);
+      await bloc.tweetService.unretweet(id: bloc.tweet.id);
 
-      log.fine('un-retweeted ${bloc.state.tweet.id}');
+      log.fine('un-retweeted ${bloc.tweet.id}');
 
       yield bloc.state.copyWith(isRetweeting: false);
 
-      if (bloc.state.tweet.retweeted) {
+      if (bloc.tweet.retweeted) {
         // the user has retweeted the tweet while we were making the request
         bloc.add(const RetweetTweet());
       }
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        yield bloc.state.copyWith(
-          tweet: bloc.state.tweet.copyWith(
-            retweetCount: bloc.state.tweet.retweetCount + 1,
-            retweeted: true,
-          ),
-          isRetweeting: false,
-        );
+        bloc.tweet
+          ..retweetCount += 1
+          ..retweeted = true;
 
-        log.warning('error un-retweeting ${bloc.state.tweet.id}', e, st);
+        yield bloc.state.copyWith(isRetweeting: false);
+
+        log.warning('error un-retweeting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
@@ -130,42 +120,36 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
   }) async* {
     if (bloc.state.isFavoriting) {
       log.fine('currently un-favoriting');
-      yield bloc.state.copyWith(
-        tweet: bloc.state.tweet.copyWith(favorited: true),
-      );
+      bloc.tweet.favorited = true;
       return;
     }
 
-    yield bloc.state.copyWith(
-      tweet: bloc.state.tweet.copyWith(
-        favoriteCount: bloc.state.tweet.favoriteCount + 1,
-        favorited: true,
-      ),
-      isFavoriting: true,
-    );
+    bloc.tweet
+      ..favoriteCount += 1
+      ..favorited = true;
+
+    yield bloc.state.copyWith(isFavoriting: true);
 
     try {
-      await bloc.tweetService.createFavorite(id: bloc.state.tweet.id);
+      await bloc.tweetService.createFavorite(id: bloc.tweet.id);
 
-      log.fine('favorited ${bloc.state.tweet.id}');
+      log.fine('favorited ${bloc.tweet.id}');
 
       yield bloc.state.copyWith(isFavoriting: false);
 
-      if (!bloc.state.tweet.favorited) {
+      if (!bloc.tweet.favorited) {
         // the user has un-favorited the tweet while we were making the request
         bloc.add(const UnfavoriteTweet());
       }
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        yield bloc.state.copyWith(
-          tweet: bloc.state.tweet.copyWith(
-            favoriteCount: math.max(0, bloc.state.tweet.favoriteCount - 1),
-            favorited: false,
-          ),
-          isFavoriting: false,
-        );
+        bloc.tweet
+          ..favoriteCount = math.max(0, bloc.tweet.favoriteCount - 1)
+          ..favorited = false;
 
-        log.warning('error favoriting ${bloc.state.tweet.id}', e, st);
+        yield bloc.state.copyWith(isFavoriting: false);
+
+        log.warning('error favoriting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
@@ -185,42 +169,36 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
   }) async* {
     if (bloc.state.isFavoriting) {
       log.fine('currently favoriting');
-      yield bloc.state.copyWith(
-        tweet: bloc.state.tweet.copyWith(favorited: false),
-      );
+      bloc.tweet.favorited = false;
       return;
     }
 
-    yield bloc.state.copyWith(
-      tweet: bloc.state.tweet.copyWith(
-        favoriteCount: math.max(0, bloc.state.tweet.favoriteCount - 1),
-        favorited: false,
-      ),
-      isFavoriting: true,
-    );
+    bloc.tweet
+      ..favoriteCount = math.max(0, bloc.tweet.favoriteCount - 1)
+      ..favorited = false;
+
+    yield bloc.state.copyWith(isFavoriting: true);
 
     try {
-      await bloc.tweetService.destroyFavorite(id: bloc.state.tweet.id);
+      await bloc.tweetService.destroyFavorite(id: bloc.tweet.id);
 
-      log.fine('un-favorited ${bloc.state.tweet.id}');
+      log.fine('un-favorited ${bloc.tweet.id}');
 
       yield bloc.state.copyWith(isFavoriting: false);
 
-      if (bloc.state.tweet.favorited) {
+      if (bloc.tweet.favorited) {
         // the user has favorited the tweet while we were making the request
         bloc.add(const FavoriteTweet());
       }
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        yield bloc.state.copyWith(
-          tweet: bloc.state.tweet.copyWith(
-            favoriteCount: bloc.state.tweet.favoriteCount + 1,
-            favorited: true,
-          ),
-          isFavoriting: false,
-        );
+        bloc.tweet
+          ..favoriteCount += 1
+          ..favorited = true;
 
-        log.warning('error favoriting ${bloc.state.tweet.id}', e, st);
+        yield bloc.state.copyWith(isFavoriting: false);
+
+        log.warning('error favoriting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
@@ -245,7 +223,7 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
     log.fine('deleting tweet');
 
     final tweet = await bloc!.tweetService
-        .destroy(id: bloc.state.tweet.id, trimUser: true)
+        .destroy(id: bloc.tweet.id, trimUser: true)
         .handleError(silentErrorHandler);
 
     if (tweet != null) {
@@ -275,13 +253,13 @@ class TranslateTweet extends TweetEvent {
       locale.languageCode,
     );
 
-    final translatable = bloc.state.tweet.translatable(translateLanguage);
+    final translatable = bloc.tweet.translatable(translateLanguage);
 
     Translation? translation;
 
     if (translatable) {
       translation = await bloc.translationService
-          .translate(text: bloc.state.tweet.visibleText, to: translateLanguage)
+          .translate(text: bloc.tweet.visibleText, to: translateLanguage)
           .handleError(silentErrorHandler);
     }
 
@@ -289,11 +267,9 @@ class TranslateTweet extends TweetEvent {
       app<MessageService>().show('tweet not translated');
     }
 
-    yield bloc.state.copyWith(
-      tweet: bloc.state.tweet.copyWith(
-        translation: translation,
-      ),
-    );
+    bloc.tweet.translation = translation;
+
+    yield bloc.state.copyWith(isTranslating: false);
   }
 }
 
@@ -304,8 +280,7 @@ abstract class MediaActionEvent extends TweetEvent {
   });
 
   /// The tweet that has the action for the media.
-  ///
-  /// Can differ from [TweetState.tweet] when using media from quotes.
+  // todo: remove
   final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image
@@ -325,60 +300,6 @@ abstract class MediaActionEvent extends TweetEvent {
     }
 
     return null;
-  }
-}
-
-abstract class TweetActionEvent extends TweetEvent {
-  const TweetActionEvent({
-    required this.tweet,
-  });
-
-  /// The selected Tweet.
-  ///
-  /// Can differ from [TweetState.tweet] when selecting quotes.
-  final TweetData tweet;
-}
-
-class OpenTweetExternally extends TweetActionEvent {
-  const OpenTweetExternally({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(launchUrl(tweet.tweetUrl));
-  }
-}
-
-class CopyTweetText extends TweetActionEvent {
-  const CopyTweetText({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(Clipboard.setData(ClipboardData(text: tweet.visibleText)));
-    app<MessageService>().show('copied tweet text');
-  }
-}
-
-class ShareTweet extends TweetActionEvent {
-  const ShareTweet({
-    required TweetData tweet,
-  }) : super(tweet: tweet);
-
-  @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    unawaited(Share.share(tweet.tweetUrl));
   }
 }
 

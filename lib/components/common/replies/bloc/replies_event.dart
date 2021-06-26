@@ -97,7 +97,7 @@ Future<TweetData> _loadReplyChain(TweetData tweet) async {
   final parent = await _loadParent(tweet);
 
   if (parent != null) {
-    return _loadReplyChain(parent.copyWith(replies: [tweet]));
+    return _loadReplyChain(parent..replies = [tweet]);
   } else {
     return tweet;
   }

@@ -27,7 +27,7 @@ class FavoriteButton extends StatelessWidget {
     final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
 
     return ActionButton(
-      active: bloc.state.tweet.favorited,
+      active: bloc.tweet.favorited,
       padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: theme.textTheme.button!
@@ -39,7 +39,7 @@ class FavoriteButton extends StatelessWidget {
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
           .apply(fontSizeDelta: fontSizeDelta + sizeDelta),
-      value: bloc.state.tweet.favoriteCount,
+      value: bloc.tweet.favoriteCount,
       activate: bloc.onFavorite,
       deactivate: bloc.onUnfavorite,
       iconSize: iconSize + fontSizeDelta + sizeDelta,
