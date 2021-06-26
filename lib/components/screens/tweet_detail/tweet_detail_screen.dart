@@ -44,9 +44,11 @@ class _TweetDetailScreenContent extends StatelessWidget {
           const HarpySliverAppBar(title: 'tweet', floating: true),
           const TweetDetailParentTweet(),
           const TweetDetailCard(),
-          if (state.isLoading)
-            const TweetListLoadingSliver()
-          else if (state.hasResult)
+          if (state.isLoading) ...[
+            const InfoRowLoadingShimmer(),
+            SliverToBoxAdapter(child: defaultVerticalSpacer),
+            const TweetListLoadingSliver(),
+          ] else if (state.hasResult)
             const SliverBoxTweetListInfoRow(
               icon: Icon(CupertinoIcons.reply_all),
               text: Text('replies'),
