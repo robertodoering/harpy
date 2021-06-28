@@ -33,7 +33,7 @@ class TweetCardRetweeter extends StatelessWidget {
                 size: 16 + fontSizeDelta,
               ),
             ),
-            // defaultHorizontalSpacer, // todo
+            defaultHorizontalSpacer,
             Flexible(
               child: Text(
                 '${tweet.retweetUserName} retweeted',
