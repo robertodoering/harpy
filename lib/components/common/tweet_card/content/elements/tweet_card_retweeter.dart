@@ -28,10 +28,7 @@ class TweetCardRetweeter extends StatelessWidget {
           children: [
             SizedBox(
               width: TweetCardAvatar.defaultRadius * 2,
-              child: Icon(
-                FeatherIcons.repeat,
-                size: 16 + fontSizeDelta,
-              ),
+              child: Icon(FeatherIcons.repeat, size: 16 + fontSizeDelta),
             ),
             defaultHorizontalSpacer,
             Flexible(
