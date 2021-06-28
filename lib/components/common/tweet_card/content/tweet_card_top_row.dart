@@ -51,31 +51,38 @@ class TweetCardTopRow extends StatelessWidget {
                 ),
                 if (avatar && name && handle) SizedBox(height: innerPadding),
               ],
-              Row(
-                children: [
-                  if (avatar) ...[
-                    TweetCardAvatar(
-                      style: TweetCardElement.avatar.style(config),
-                    ),
-                    SizedBox(width: outerPadding),
+              GestureDetector(
+                // treat the whitespace between the avatar and name as a on user
+                //  tap gesture
+                behavior: HitTestBehavior.translucent,
+                onTap: () => context.read<TweetBloc>().onUserTap(context),
+                child: Row(
+                  children: [
+                    if (avatar) ...[
+                      TweetCardAvatar(
+                        style: TweetCardElement.avatar.style(config),
+                      ),
+                      SizedBox(width: outerPadding),
+                    ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (name)
+                            TweetCardName(
+                              style: TweetCardElement.name.style(config),
+                            ),
+                          if (name && handle)
+                            SizedBox(height: innerPadding / 2),
+                          if (handle)
+                            TweetCardHandle(
+                              style: TweetCardElement.handle.style(config),
+                            ),
+                        ],
+                      ),
+                    )
                   ],
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (name)
-                          TweetCardName(
-                            style: TweetCardElement.name.style(config),
-                          ),
-                        if (name && handle) SizedBox(height: innerPadding / 2),
-                        if (handle)
-                          TweetCardHandle(
-                            style: TweetCardElement.handle.style(config),
-                          ),
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
               SizedBox(height: innerPadding),
             ],
