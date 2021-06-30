@@ -44,7 +44,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
         title: const Text('open url externally'),
         onTap: () {
           launchUrl(url.expandedUrl);
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
       ListTile(
@@ -52,7 +52,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
         title: const Text('copy url text'),
         onTap: () {
           Clipboard.setData(ClipboardData(text: url.expandedUrl));
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
       ListTile(
@@ -60,7 +60,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
         title: const Text('share url'),
         onTap: () {
           Share.share(url.expandedUrl);
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
     ],

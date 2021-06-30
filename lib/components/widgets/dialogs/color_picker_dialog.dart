@@ -34,7 +34,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
       DialogAction<void>(
         text: 'select',
         onTap: () {
-          app<HarpyNavigator>().state!.pop(_color);
+          app<HarpyNavigator>().pop(_color);
         },
       ),
     ];

@@ -59,7 +59,7 @@ class FilterDrawer extends StatelessWidget {
                     backgroundColor: theme.cardColor,
                     dense: true,
                     onTap: () async {
-                      await app<HarpyNavigator>().state!.maybePop();
+                      await app<HarpyNavigator>().maybePop();
                       onSearch();
                     },
                   ),

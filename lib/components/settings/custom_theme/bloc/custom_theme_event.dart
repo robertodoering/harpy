@@ -209,7 +209,7 @@ class SaveCustomTheme extends CustomThemeEvent {
 
     yield SavedCustomThemeState();
 
-    app<HarpyNavigator>().state!.pop();
+    app<HarpyNavigator>().pop();
   }
 }
 
@@ -248,6 +248,6 @@ class DeleteCustomTheme extends CustomThemeEvent {
 
     yield DeletedCustomThemeState();
 
-    app<HarpyNavigator>().state!.pop();
+    app<HarpyNavigator>().pop();
   }
 }

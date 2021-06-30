@@ -62,7 +62,7 @@ void showTweetActionsBottomSheet(
             bloc.add(DeleteTweet(onDeleted: () {
               homeTimelineBloc.add(RemoveFromHomeTimeline(tweet: bloc.tweet));
             }));
-            app<HarpyNavigator>().state!.maybePop();
+            app<HarpyNavigator>().maybePop();
           },
         ),
       if (showReply)
@@ -70,7 +70,7 @@ void showTweetActionsBottomSheet(
           leading: const Icon(CupertinoIcons.reply),
           title: const Text('reply'),
           onTap: () async {
-            await app<HarpyNavigator>().state!.maybePop();
+            await app<HarpyNavigator>().maybePop();
             app<HarpyNavigator>().pushComposeScreen(
               inReplyToStatus: tweet,
             );
@@ -81,7 +81,7 @@ void showTweetActionsBottomSheet(
         title: const Text('open tweet externally'),
         onTap: () {
           launchUrl(tweet.tweetUrl);
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
       ListTile(
@@ -91,7 +91,7 @@ void showTweetActionsBottomSheet(
         onTap: () {
           Clipboard.setData(ClipboardData(text: tweet.visibleText));
           app<MessageService>().show('copied tweet text');
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
       ListTile(
@@ -99,7 +99,7 @@ void showTweetActionsBottomSheet(
         title: const Text('share tweet'),
         onTap: () {
           Share.share(tweet.tweetUrl);
-          app<HarpyNavigator>().state!.maybePop();
+          app<HarpyNavigator>().maybePop();
         },
       ),
     ],

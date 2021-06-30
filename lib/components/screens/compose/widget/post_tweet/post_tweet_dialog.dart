@@ -92,9 +92,7 @@ class PostTweetDialogContent extends StatelessWidget {
         actions: <Widget>[
           DialogAction<void>(
             text: 'ok',
-            onTap: state.inProgress
-                ? null
-                : () => app<HarpyNavigator>().state!.maybePop(),
+            onTap: state.inProgress ? null : app<HarpyNavigator>().maybePop,
           )
         ],
       ),

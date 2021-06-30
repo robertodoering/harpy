@@ -33,7 +33,7 @@ class Harpy extends StatelessWidget {
             analytics: app<AnalyticsService>().analytics,
             nameExtractor: screenNameExtractor,
           ),
-          app<HarpyNavigator>().routeObserver,
+          harpyRouteObserver,
         ],
         home: const SplashScreen(),
         builder: (_, child) => ScrollConfiguration(

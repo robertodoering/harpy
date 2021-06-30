@@ -27,7 +27,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const Icon(CupertinoIcons.person),
                 title: const Text('Profile'),
                 onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
+                  await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushUserProfile(
                     screenName: authBloc.authenticatedUser!.handle,
                   );
@@ -39,7 +39,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const Icon(CupertinoIcons.list_bullet),
                 title: const Text('Lists'),
                 onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
+                  await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushShowListsScreen();
                 },
               ),
@@ -51,7 +51,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const Icon(FeatherIcons.settings),
                 title: const Text('Settings'),
                 onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
+                  await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(SettingsScreen.route);
                 },
               ),
@@ -73,7 +73,7 @@ class HomeDrawer extends StatelessWidget {
                 leading: const FlareIcon.harpyLogo(offset: Offset(-4, 0)),
                 title: const Text('About'),
                 onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
+                  await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
                 },
               ),
@@ -89,7 +89,7 @@ class HomeDrawer extends StatelessWidget {
                   ),
                 ),
                 onTap: () async {
-                  await app<HarpyNavigator>().state!.maybePop();
+                  await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(BetaInfoScreen.route);
                 },
               ),

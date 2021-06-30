@@ -244,6 +244,7 @@ export 'widgets/misc/translated_text.dart';
 export 'widgets/misc/twitter_text.dart';
 export 'widgets/misc/will_pop_harpy.dart';
 export 'widgets/routes/fade_route.dart';
+export 'widgets/routes/harpy_page_route.dart';
 export 'widgets/routes/hero_dialog_route.dart';
 export 'widgets/video_player/harpy_gif_player.dart';
 export 'widgets/video_player/harpy_video_player.dart';

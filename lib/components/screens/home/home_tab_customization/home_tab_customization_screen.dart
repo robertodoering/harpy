@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
@@ -39,15 +38,13 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>()
-        .routeObserver
-        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
   void dispose() {
+    harpyRouteObserver.unsubscribe(this);
     super.dispose();
-    app<HarpyNavigator>().routeObserver.unsubscribe(this);
   }
 
   @override

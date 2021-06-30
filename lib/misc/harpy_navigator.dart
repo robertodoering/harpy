@@ -5,7 +5,9 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
-/// The [RouteType] determines what [PageRoute] is used for the new route.
+final Logger _log = Logger('HarpyNavigator');
+
+///Determines what [PageRoute] is used for the new route.
 ///
 /// This determines the transition animation for the new route.
 enum RouteType {
@@ -13,33 +15,32 @@ enum RouteType {
   fade,
 }
 
-final Logger _log = Logger('HarpyNavigator');
+/// A [Navigator] observer that is used to notify [RouteAware]s of changes to
+/// the state of their [Route].
+final harpyRouteObserver = RouteObserver<ModalRoute<dynamic>>();
 
 /// The [HarpyNavigator] contains the [Navigator] key used by the root
-/// [MaterialApp]. This allows for navigation without access to the
-/// [BuildContext].
+/// [MaterialApp].
+///
+/// This allows for navigation without access to the [BuildContext].
 class HarpyNavigator {
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
-  /// A [Navigator] observer that is used to notify [RouteAware]s of changes to
-  /// the state of their [Route].
-  final RouteObserver<PageRoute<dynamic>> routeObserver =
-      RouteObserver<PageRoute<dynamic>>();
+  NavigatorState get state => key.currentState!;
 
-  NavigatorState? get state => key.currentState;
+  void pop<T extends Object>([T? result]) => state.pop<T>(result);
 
-  /// A convenience method to push a new [route] to the [Navigator].
-  void pushRoute(Route<void> route) {
-    key.currentState!.push<void>(route);
-  }
+  Future<bool> maybePop<T extends Object>([T? result]) =>
+      state.maybePop(result);
 
-  /// A convenience method to push a named replacement route.
+  Future<T?> push<T>(Route<T> route) => state.push<T>(route);
+
   void pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
     Map<String, dynamic>? arguments,
   }) {
-    key.currentState!.pushReplacementNamed<void, void>(
+    state.pushReplacementNamed<void, void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
@@ -48,13 +49,12 @@ class HarpyNavigator {
     );
   }
 
-  /// A convenience method to push a named route.
   void pushNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
     Map<String, dynamic>? arguments,
   }) {
-    key.currentState!.pushNamed<void>(
+    state.pushNamed<void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,
@@ -63,7 +63,6 @@ class HarpyNavigator {
     );
   }
 
-  /// Pushes a [UserProfileScreen] for the user with the [screenName].
   void pushUserProfile({
     required String screenName,
     RouteSettings? currentRoute,
@@ -86,7 +85,6 @@ class HarpyNavigator {
     );
   }
 
-  /// Pushes a [CustomThemeScreen] with the [themeData] for [themeId].
   void pushCustomTheme({
     required HarpyThemeData themeData,
     required int themeId,
@@ -100,8 +98,6 @@ class HarpyNavigator {
     );
   }
 
-  /// Pushes a [FollowingScreen] with the following users for the user with the
-  /// [userId].
   void pushFollowingScreen({
     required String userId,
   }) {
@@ -110,8 +106,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [FollowersScreen] with the followers for the user with the
-  /// [userId].
   void pushFollowersScreen({
     required String userId,
   }) {
@@ -128,7 +122,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [TweetSearchScreen] with an optional [initialSearchQuery].
   void pushTweetSearchScreen({
     String? initialSearchQuery,
   }) {
@@ -137,7 +130,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [ComposeScreen] with an optional reply status or quoted tweet.
   void pushComposeScreen({
     TweetData? inReplyToStatus,
     TweetData? quotedTweet,
@@ -165,7 +157,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [ListTimelineScreen] that shows the tweets for the [list].
   void pushListTimelineScreen({
     required TwitterListData list,
   }) {
@@ -174,7 +165,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [ListMembersScreen] that shows the members for the [list].
   void pushListMembersScreen({
     required TwitterListData list,
   }) {
@@ -183,7 +173,6 @@ class HarpyNavigator {
     });
   }
 
-  /// Pushes a [HomeTabCustomizationScreen].
   void pushHomeTabCustomizationScreen({
     required HomeTabModel model,
   }) {
@@ -322,7 +311,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         settings: RouteSettings(name: routeName, arguments: arguments),
       );
     case RouteType.defaultRoute:
-      return CupertinoPageRoute<void>(
+      return HarpyPageRoute<void>(
         builder: (_) => screen,
         settings: RouteSettings(name: routeName, arguments: arguments),
       );

@@ -17,7 +17,7 @@ class UserBanner extends StatelessWidget {
     final url = bloc.user!.appropriateUserBannerUrl;
 
     return CustomDismissible(
-      onDismissed: () => app<HarpyNavigator>().state!.maybePop(),
+      onDismissed: app<HarpyNavigator>().maybePop,
       child: Center(
         child: Hero(
           tag: url,
@@ -37,9 +37,9 @@ class UserBanner extends StatelessWidget {
 
       return GestureDetector(
         onTap: () {
-          app<HarpyNavigator>().pushRoute(
+          app<HarpyNavigator>().push(
             HeroDialogRoute<void>(
-              onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
+              onBackgroundTap: app<HarpyNavigator>().maybePop,
               builder: (_) => _buildDialogImage(),
             ),
           );
