@@ -48,19 +48,16 @@ abstract class AuthenticationEvent {
       // unable to authenticate user, allow to retry in case of temporary
       // network error
       final retry = await showDialog<bool>(
-        context: app<HarpyNavigator>().state!.context,
+        context: app<HarpyNavigator>().state.context,
         builder: (_) => const HarpyDialog(
           title: Text('login'),
-          content: Text('unable to initialize authenticated user'),
+          content: Text(
+            'unable to initialize authenticated user\n\n'
+            'check your connection and try again',
+          ),
           actions: <Widget>[
-            DialogAction<bool>(
-              result: false,
-              text: 'cancel',
-            ),
-            DialogAction<bool>(
-              result: true,
-              text: 'retry',
-            ),
+            DialogAction<bool>(result: false, text: 'cancel'),
+            DialogAction<bool>(result: true, text: 'retry'),
           ],
         ),
       );
@@ -199,16 +196,16 @@ class LoginEvent extends AuthenticationEvent {
   static final Logger _log = Logger('LoginEvent');
 
   Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
-    return app<HarpyNavigator>().state!.push<Uri>(
-          CupertinoPageRoute<Uri>(
-            builder: (_) => HarpyScaffold(
-              title: 'login',
-              buildSafeArea: true,
-              body: webview,
-            ),
-            settings: const RouteSettings(name: 'login'),
-          ),
-        );
+    return app<HarpyNavigator>().push<Uri>(
+      CupertinoPageRoute<Uri>(
+        builder: (_) => HarpyScaffold(
+          title: 'login',
+          buildSafeArea: true,
+          body: webview,
+        ),
+        settings: const RouteSettings(name: 'login'),
+      ),
+    );
   }
 
   Future<TwitterAuthResult> _authenticateWithWebview(

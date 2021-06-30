@@ -112,9 +112,9 @@ class MediaOverlay extends StatefulWidget {
   }) {
     final mediaUrl = tweet.downloadMediaUrl();
 
-    app<HarpyNavigator>().pushRoute(
+    app<HarpyNavigator>().push(
       HeroDialogRoute<void>(
-        onBackgroundTap: () => app<HarpyNavigator>().state!.maybePop(),
+        onBackgroundTap: app<HarpyNavigator>().maybePop,
         builder: (context) => MediaOverlay(
           tweet: tweet,
           tweetBloc: tweetBloc,
@@ -177,15 +177,13 @@ class _MediaOverlayState extends State<MediaOverlay>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>()
-        .routeObserver
-        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
   void dispose() {
     super.dispose();
-    app<HarpyNavigator>().routeObserver.unsubscribe(this);
+    harpyRouteObserver.unsubscribe(this);
   }
 
   @override
@@ -262,7 +260,7 @@ class _MediaOverlayState extends State<MediaOverlay>
 
     if (widget.enableDismissible) {
       child = CustomDismissible(
-        onDismissed: () => app<HarpyNavigator>().state!.maybePop(),
+        onDismissed: app<HarpyNavigator>().maybePop,
         child: child,
       );
     }

@@ -40,7 +40,7 @@ class ChangelogDialog extends StatelessWidget {
       actions: <Widget>[
         DialogAction<void>(
           text: 'ok',
-          onTap: () => app<HarpyNavigator>().state!.maybePop(),
+          onTap: () => app<HarpyNavigator>().maybePop(),
         )
       ],
     );

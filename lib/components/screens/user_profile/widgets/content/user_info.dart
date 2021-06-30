@@ -44,11 +44,11 @@ class UserProfileInfo extends StatelessWidget {
   /// possible if the full screen image has to be loaded first).
   Widget _buildAvatar() {
     return GestureDetector(
-      onTap: () => app<HarpyNavigator>().pushRoute(
+      onTap: () => app<HarpyNavigator>().push(
         HeroDialogRoute<void>(
-          onBackgroundTap: app<HarpyNavigator>().state!.maybePop,
+          onBackgroundTap: app<HarpyNavigator>().maybePop,
           builder: (_) => CustomDismissible(
-            onDismissed: app<HarpyNavigator>().state!.maybePop,
+            onDismissed: app<HarpyNavigator>().maybePop,
             child: HarpyMediaGallery.builder(
               itemCount: 1,
               heroTagBuilder: (_) => bloc.user,

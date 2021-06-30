@@ -19,15 +19,13 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    app<HarpyNavigator>()
-        .routeObserver
-        .subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
   void dispose() {
+    harpyRouteObserver.unsubscribe(this);
     super.dispose();
-    app<HarpyNavigator>().routeObserver.unsubscribe(this);
   }
 
   @override

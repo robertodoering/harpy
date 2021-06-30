@@ -27,7 +27,7 @@ void main() {
     );
     app.registerLazySingleton<ChangelogParser>(() => ChangelogParser());
 
-    when(app<HarpyNavigator>().routeObserver).thenReturn(MockRouteObserver());
+    when(harpyRouteObserver).thenReturn(MockRouteObserver());
   });
 
   tearDown(app.reset);

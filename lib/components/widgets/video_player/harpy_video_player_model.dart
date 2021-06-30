@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:video_player/video_player.dart';
 
 /// Actions that a user can take on a video.
@@ -168,12 +167,12 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   ///
   /// The system ui overlay will be hidden while the video is played in
   /// fullscreen.
-  Future<void> _pushFullscreen() async {
+  void _pushFullscreen() {
     _fullscreen = true;
 
-    unawaited(SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]));
+    SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
 
-    app<HarpyNavigator>().pushRoute(
+    app<HarpyNavigator>().push(
       HeroDialogRoute<void>(
         onBackgroundTap: toggleFullscreen,
         builder: (_) => VideoFullscreen(this),
@@ -184,13 +183,13 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   /// Exits the fullscreen video.
   ///
   /// The system ui overlays will be shown again.
-  Future<void> _popFullscreen() async {
+  void _popFullscreen() {
     _fullscreen = false;
 
-    unawaited(SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values));
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     if (hasListeners) {
-      unawaited(app<HarpyNavigator>().state!.maybePop());
+      app<HarpyNavigator>().maybePop();
       notifyListeners();
     }
   }
