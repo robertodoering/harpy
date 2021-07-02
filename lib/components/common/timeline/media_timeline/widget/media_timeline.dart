@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
@@ -60,12 +59,12 @@ class _MediaTimelineState extends State<MediaTimeline> {
     );
   }
 
-  Widget _buildList(List<MediaTimelineEntry> entries) {
+  Widget _buildList(ConfigState config, List<MediaTimelineEntry> entries) {
     return SliverWaterfallFlow(
       gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
         crossAxisCount: _buildTiled ? 2 : 1,
-        mainAxisSpacing: defaultSmallPaddingValue,
-        crossAxisSpacing: defaultSmallPaddingValue,
+        mainAxisSpacing: config.smallPaddingValue,
+        crossAxisSpacing: config.smallPaddingValue,
       ),
       delegate: SliverChildBuilderDelegate(
         (_, index) => _itemBuilder(entries, index),
@@ -77,6 +76,8 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigBloc>().state;
+
     final model = context.watch<MediaTimelineModel>();
     final entries = model.value;
 
@@ -91,8 +92,8 @@ class _MediaTimelineState extends State<MediaTimeline> {
             const SliverFillLoadingIndicator()
           else if (model.hasEntries) ...<Widget>[
             SliverPadding(
-              padding: DefaultEdgeInsets.all(),
-              sliver: _buildList(entries),
+              padding: config.edgeInsets,
+              sliver: _buildList(config, entries),
             ),
             if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
           ] else

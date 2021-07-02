@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds an error message with an optional retry button when [onRetry] is not
 /// `null`.
@@ -18,9 +19,10 @@ class LoadingDataError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return Container(
-      padding: DefaultEdgeInsets.all(),
+      padding: config.edgeInsets,
       alignment: Alignment.center,
       child: Column(
         mainAxisSize: MainAxisSize.min,

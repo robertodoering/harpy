@@ -263,7 +263,8 @@ class HarpyTheme {
 
     final textColor = foregroundColor;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    // final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta = 0.0; // todo
 
     textTheme = Typography.englishLike2018
         .apply(

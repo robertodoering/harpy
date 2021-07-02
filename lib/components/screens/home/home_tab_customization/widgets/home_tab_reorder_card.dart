@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_tab/harpy_tab.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomeTabReorderCard extends StatefulWidget {
   HomeTabReorderCard({
@@ -89,12 +90,13 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
       opacity: _entry.visible! ? 1 : .6,
       child: Card(
-        margin: EdgeInsets.only(bottom: defaultSmallPaddingValue),
+        margin: EdgeInsets.only(bottom: config.smallPaddingValue),
         child: Row(
           children: <Widget>[
             Padding(

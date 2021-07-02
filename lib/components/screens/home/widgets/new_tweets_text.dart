@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 class NewTweetsText extends StatelessWidget {
   const NewTweetsText(this.amount);
@@ -14,9 +15,10 @@ class NewTweetsText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return Container(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

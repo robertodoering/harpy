@@ -14,33 +14,33 @@ class Harpy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) => MaterialApp(
-        title: 'Harpy',
-        theme: ThemeBloc.of(context).harpyTheme.data,
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: kMaterialSupportedLanguages.map(
-          (languageCode) => Locale(languageCode),
+    final themeBloc = context.watch<ThemeBloc>();
+
+    return MaterialApp(
+      title: 'Harpy',
+      theme: themeBloc.harpyTheme.data,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: kMaterialSupportedLanguages.map(
+        (languageCode) => Locale(languageCode),
+      ),
+      navigatorKey: app<HarpyNavigator>().key,
+      onGenerateRoute: onGenerateRoute,
+      navigatorObservers: <NavigatorObserver>[
+        FirebaseAnalyticsObserver(
+          analytics: app<AnalyticsService>().analytics,
+          nameExtractor: screenNameExtractor,
         ),
-        navigatorKey: app<HarpyNavigator>().key,
-        onGenerateRoute: onGenerateRoute,
-        navigatorObservers: <NavigatorObserver>[
-          FirebaseAnalyticsObserver(
-            analytics: app<AnalyticsService>().analytics,
-            nameExtractor: screenNameExtractor,
-          ),
-          harpyRouteObserver,
-        ],
-        home: const SplashScreen(),
-        builder: (_, child) => ScrollConfiguration(
-          behavior: const HarpyScrollBehavior(),
-          child: HarpyMessage(
-            child: child,
-          ),
+        harpyRouteObserver,
+      ],
+      home: const SplashScreen(),
+      builder: (_, child) => ScrollConfiguration(
+        behavior: const HarpyScrollBehavior(),
+        child: HarpyMessage(
+          child: child,
         ),
       ),
     );

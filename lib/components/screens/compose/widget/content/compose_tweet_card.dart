@@ -105,6 +105,8 @@ class _TopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final authBloc = AuthenticationBloc.of(context);
 
     return BlocProvider<TweetBloc>(
@@ -115,8 +117,8 @@ class _TopRow extends StatelessWidget {
         ),
       ),
       child: TweetCardTopRow(
-        innerPadding: defaultSmallPaddingValue,
-        outerPadding: defaultPaddingValue,
+        innerPadding: config.smallPaddingValue,
+        outerPadding: config.paddingValue,
         config: const TweetCardConfig(
           elements: [
             TweetCardElement.avatar,

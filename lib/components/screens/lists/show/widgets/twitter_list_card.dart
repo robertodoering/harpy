@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a card that represents a twitter list.
 class TwitterListCard extends StatelessWidget {
@@ -17,7 +18,7 @@ class TwitterListCard extends StatelessWidget {
   final VoidCallback onSelected;
   final VoidCallback? onLongPress;
 
-  Widget _buildTitle(ThemeData theme) {
+  Widget _buildTitle(ConfigState config, ThemeData theme) {
     return Row(
       children: <Widget>[
         Flexible(
@@ -29,7 +30,7 @@ class TwitterListCard extends StatelessWidget {
           ),
         ),
         if (list.isPrivate) ...<Widget>[
-          SizedBox(width: defaultSmallPaddingValue / 2),
+          SizedBox(width: config.smallPaddingValue / 2),
           const Icon(CupertinoIcons.padlock),
         ],
       ],
@@ -77,6 +78,7 @@ class TwitterListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return ListCardAnimation(
       key: key,
@@ -86,11 +88,11 @@ class TwitterListCard extends StatelessWidget {
         onTap: onSelected,
         child: Card(
           child: Padding(
-            padding: DefaultEdgeInsets.all(),
+            padding: config.edgeInsets,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildTitle(theme),
+                _buildTitle(config, theme),
                 if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,
                 if (list.user != null) _buildUserRow(theme),

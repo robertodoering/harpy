@@ -17,10 +17,12 @@ class ComposeTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
+
     final bloc = context.watch<ComposeBloc>();
 
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: TextField(
         controller: _controller,
         focusNode: _focusNode,

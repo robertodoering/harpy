@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a card to add a background color for the [CustomThemeBloc].
 class AddBackgroundColorCard extends StatelessWidget {
@@ -11,13 +12,14 @@ class AddBackgroundColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
     final harpyTheme = bloc.harpyTheme;
 
     return AnimatedCrossFade(
       duration: kShortAnimationDuration,
       sizeCurve: Curves.fastOutSlowIn,
       firstChild: Container(
-        margin: DefaultEdgeInsets.symmetric(horizontal: true),
+        margin: config.edgeInsetsSymmetric(horizontal: true),
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: harpyTheme.data.dividerColor),

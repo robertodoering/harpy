@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/core/services/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class TweetCardActionsButton extends StatelessWidget {
@@ -15,10 +13,11 @@ class TweetCardActionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final bloc = context.watch<TweetBloc>();
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
+    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return ViewMoreActionButton(
       sizeDelta: fontSizeDelta,

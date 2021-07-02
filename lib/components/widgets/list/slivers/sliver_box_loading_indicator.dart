@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// A loading indicator for the beginning or end of a [CustomScrollView].
 class SliverBoxLoadingIndicator extends StatelessWidget {
@@ -8,12 +9,14 @@ class SliverBoxLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     return SliverToBoxAdapter(
       child: FadeAnimation(
         duration: kShortAnimationDuration,
         curve: Curves.easeInOut,
         child: Container(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           alignment: Alignment.center,
           child: const CircularProgressIndicator(),
         ),

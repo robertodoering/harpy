@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// A loading shimmer for a trends list with placeholder trend cards.
 class TrendsListLoadingSliver extends StatelessWidget {
@@ -9,11 +10,13 @@ class TrendsListLoadingSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     return SliverBoxLoadingShimmer(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: defaultPaddingValue * 2,
-          vertical: defaultPaddingValue,
+          horizontal: config.paddingValue * 2,
+          vertical: config.paddingValue,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -21,7 +24,7 @@ class TrendsListLoadingSliver extends StatelessWidget {
           children: List.filled(
             15,
             Padding(
-              padding: EdgeInsets.only(bottom: defaultPaddingValue * 2),
+              padding: EdgeInsets.only(bottom: config.paddingValue * 2),
               child: const TrendsPlaceholder(),
             ),
           ),
@@ -47,10 +50,10 @@ class TrendsPlaceholder extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const PlaceholderBox(widthFactor: .75, height: 15),
+            children: const [
+              PlaceholderBox(widthFactor: .75, height: 15),
               defaultSmallVerticalSpacer,
-              const PlaceholderBox(widthFactor: .3, height: 15),
+              PlaceholderBox(widthFactor: .3, height: 15),
             ],
           ),
         ),

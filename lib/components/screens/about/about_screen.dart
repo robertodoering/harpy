@@ -7,6 +7,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen();
@@ -147,7 +148,11 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDeveloperText(TextStyle linkStyle, TextTheme textTheme) {
+  Widget _buildDeveloperText(
+    ConfigState config,
+    TextStyle linkStyle,
+    TextTheme textTheme,
+  ) {
     return Card(
       child: Column(
         children: <Widget>[
@@ -155,7 +160,7 @@ class AboutScreen extends StatelessWidget {
             leading: const Icon(FeatherIcons.mail),
             isThreeLine: true,
             title: Padding(
-              padding: EdgeInsets.only(top: defaultPaddingValue),
+              padding: EdgeInsets.only(top: config.paddingValue),
               child: Text.rich(
                 TextSpan(
                   children: <InlineSpan>[
@@ -198,6 +203,8 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
+
     final textTheme = theme.textTheme;
     final color = textTheme.bodyText2!.color;
 
@@ -223,7 +230,7 @@ class AboutScreen extends StatelessWidget {
         ),
       ],
       body: ListView(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         children: <Widget>[
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
@@ -235,7 +242,7 @@ class AboutScreen extends StatelessWidget {
           defaultVerticalSpacer,
           _buildRateAppText(theme),
           defaultVerticalSpacer,
-          _buildDeveloperText(linkStyle, textTheme),
+          _buildDeveloperText(config, linkStyle, textTheme),
           defaultVerticalSpacer,
           _buildPrivacyPolicy(),
           SizedBox(height: mediaQuery.padding.bottom),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the accent color customization for the [CustomThemeScreen].
 class AccentColorSelection extends StatelessWidget {
@@ -21,14 +22,14 @@ class AccentColorSelection extends StatelessWidget {
     }
   }
 
-  Widget _buildColorWarning(ThemeData theme) {
+  Widget _buildColorWarning(ConfigState config, ThemeData theme) {
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: Row(
-        children: <Widget>[
-          const Icon(Icons.error_outline),
+        children: const [
+          Icon(Icons.error_outline),
           defaultHorizontalSpacer,
-          const Expanded(
+          Expanded(
             child: Text(
               'accent color should provide more contrast on the background',
             ),
@@ -41,6 +42,7 @@ class AccentColorSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
     final textTheme = theme.textTheme;
 
     return CustomAnimatedSize(
@@ -50,12 +52,12 @@ class AccentColorSelection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: DefaultEdgeInsets.symmetric(horizontal: true),
+            padding: config.edgeInsetsSymmetric(horizontal: true),
             child: Text('accent color', style: textTheme.headline4),
           ),
           defaultVerticalSpacer,
           Card(
-            margin: DefaultEdgeInsets.symmetric(horizontal: true),
+            margin: config.edgeInsetsSymmetric(horizontal: true),
             color: theme.accentColor,
             clipBehavior: Clip.antiAlias,
             child: ListTile(
@@ -67,7 +69,7 @@ class AccentColorSelection extends StatelessWidget {
           ),
           if (!bloc.accentColorContrasts) ...<Widget>[
             defaultVerticalSpacer,
-            _buildColorWarning(theme),
+            _buildColorWarning(config, theme),
           ],
         ],
       ),

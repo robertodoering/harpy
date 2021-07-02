@@ -8,17 +8,18 @@ class TweetDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
     final bloc = context.watch<RepliesBloc>();
 
     return SliverPadding(
-      padding: DefaultEdgeInsets.all().copyWith(top: 0),
+      padding: config.edgeInsets.copyWith(top: 0),
       sliver: SliverToBoxAdapter(
         child: BlocProvider(
           create: (_) => TweetBloc(bloc.tweet),
           child: Card(
             child: TweetCardContent(
-              outerPadding: defaultPaddingValue,
-              innerPadding: defaultSmallPaddingValue,
+              outerPadding: config.paddingValue,
+              innerPadding: config.smallPaddingValue,
               config: _detailTweetCardConfig,
             ),
           ),

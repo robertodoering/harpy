@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the theme name customization for the [CustomThemeScreen].
 class ThemeNameSelection extends StatefulWidget {
@@ -24,9 +25,9 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
           () => widget.bloc.add(RenameTheme(name: _controller!.text)));
   }
 
-  Widget _buildInvalidName(ThemeData theme) {
+  Widget _buildInvalidName(ConfigState config, ThemeData theme) {
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: Row(
         children: <Widget>[
           Icon(
@@ -46,6 +47,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return CustomAnimatedSize(
       alignment: Alignment.topCenter,
@@ -54,7 +56,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: DefaultEdgeInsets.symmetric(horizontal: true),
+            padding: config.edgeInsetsSymmetric(horizontal: true),
             child: TextField(
               controller: _controller,
               maxLength: 20,
@@ -62,7 +64,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
           ),
           if (!widget.bloc.validName) ...<Widget>[
             defaultSmallVerticalSpacer,
-            _buildInvalidName(theme),
+            _buildInvalidName(config, theme),
           ],
         ],
       ),

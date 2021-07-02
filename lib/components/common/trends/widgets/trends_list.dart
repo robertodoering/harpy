@@ -47,6 +47,8 @@ class TrendsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final bloc = context.watch<TrendsBloc>();
     final state = bloc.state;
 
@@ -58,7 +60,7 @@ class TrendsList extends StatelessWidget {
       );
     } else if (state.hasTrends) {
       return SliverPadding(
-        padding: DefaultEdgeInsets.only(
+        padding: config.edgeInsetsOnly(
           left: true,
           right: true,
           bottom: true,

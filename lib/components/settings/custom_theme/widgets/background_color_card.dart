@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a colored card for the background color selection of the
 /// [CustomThemeBloc].
@@ -30,6 +31,7 @@ class BackgroundColorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     final textColor =
         ThemeData.estimateBrightnessForColor(color!) == Brightness.light
@@ -42,10 +44,9 @@ class BackgroundColorCard extends StatelessWidget {
         iconTheme: theme.iconTheme.copyWith(color: textColor),
       ),
       child: Card(
-        margin: EdgeInsets.only(
-          left: defaultPaddingValue,
-          right: defaultPaddingValue,
-          bottom: defaultPaddingValue / 2,
+        margin: config.edgeInsets.copyWith(
+          top: 0,
+          bottom: config.smallPaddingValue,
         ),
         color: color,
         clipBehavior: Clip.antiAlias,

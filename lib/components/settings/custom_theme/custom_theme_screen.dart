@@ -79,23 +79,23 @@ class CustomThemeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(CustomThemeBloc customThemeBloc) {
+  Widget _buildBody(ConfigState config, CustomThemeBloc customThemeBloc) {
     return Column(
       children: <Widget>[
         Expanded(
           child: ListView(
-            padding: DefaultEdgeInsets.symmetric(vertical: true),
+            padding: config.edgeInsetsSymmetric(vertical: true),
             children: <Widget>[
               if (Harpy.isFree) ...<Widget>[
                 const BuyProText(),
                 defaultVerticalSpacer,
               ],
               ThemeNameSelection(customThemeBloc),
-              SizedBox(height: defaultPaddingValue * 2),
+              SizedBox(height: config.paddingValue * 2),
               AccentColorSelection(customThemeBloc),
-              SizedBox(height: defaultPaddingValue * 2),
+              SizedBox(height: config.paddingValue * 2),
               BackgroundColorSelection(customThemeBloc),
-              SizedBox(height: defaultPaddingValue * 2),
+              SizedBox(height: config.paddingValue * 2),
             ],
           ),
         ),
@@ -117,6 +117,7 @@ class CustomThemeScreen extends StatelessWidget {
       ),
       child: BlocBuilder<CustomThemeBloc, CustomThemeState>(
         builder: (context, state) {
+          final config = context.watch<ConfigBloc>().state;
           final customThemeBloc = CustomThemeBloc.of(context);
           final harpyTheme = customThemeBloc.harpyTheme;
 
@@ -136,7 +137,7 @@ class CustomThemeScreen extends StatelessWidget {
                   ],
                   title: 'theme customization',
                   buildSafeArea: true,
-                  body: _buildBody(customThemeBloc),
+                  body: _buildBody(config, customThemeBloc),
                 ),
               ),
             ),

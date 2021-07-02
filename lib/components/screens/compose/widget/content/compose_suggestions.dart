@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the [child] as suggestions when the [selectionRegExp] matches the
 /// selection.
@@ -51,6 +52,8 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final mediaQuery = MediaQuery.of(context);
     final maxHeight = mediaQuery.size.height / 4;
 
@@ -58,7 +61,7 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
 
     if (widget.child != null && _showSuggestions) {
       child = Padding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         child: Card(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxHeight: maxHeight),

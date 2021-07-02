@@ -17,11 +17,12 @@ class TweetCardActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final bloc = context.watch<TweetBloc>();
     final tweet = bloc.tweet;
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
+    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
     final iconSize = 22 + fontSizeDelta;
 
     final locale = Localizations.localeOf(context);

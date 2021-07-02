@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 class FilterGroup extends StatelessWidget {
   const FilterGroup({
@@ -18,13 +19,13 @@ class FilterGroup extends StatelessWidget {
   final VoidCallback? toggleAll;
   final bool allToggled;
 
-  Widget _buildTitleRow(ThemeData theme) {
+  Widget _buildTitleRow(ConfigState config, ThemeData theme) {
     return Row(
       children: <Widget>[
         if (title != null)
           Expanded(
             child: Padding(
-              padding: DefaultEdgeInsets.all(),
+              padding: config.edgeInsets,
               child: Text(title!, style: theme.textTheme.subtitle2),
             ),
           ),
@@ -43,16 +44,18 @@ class FilterGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return Card(
-      margin: margin ?? DefaultEdgeInsets.symmetric(horizontal: true),
+      margin: margin ?? config.edgeInsetsSymmetric(horizontal: true),
       child: CustomAnimatedSize(
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (title != null || toggleAll != null) _buildTitleRow(theme),
+            if (title != null || toggleAll != null)
+              _buildTitleRow(config, theme),
             ...children,
           ],
         ),

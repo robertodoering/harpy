@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class BetaInfoScreen extends StatelessWidget {
   const BetaInfoScreen();
@@ -40,11 +41,12 @@ class BetaInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return HarpyScaffold(
       title: 'beta info',
       body: ListView(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         children: <Widget>[
           _buildIntroText(theme),
           defaultVerticalSpacer,
@@ -67,9 +69,11 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     return Card(
       child: Padding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: children,

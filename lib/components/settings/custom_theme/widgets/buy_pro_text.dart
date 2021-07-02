@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a button linking to the pro version of Harpy.
 class BuyProText extends StatelessWidget {
@@ -9,8 +10,10 @@ class BuyProText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: Center(
         child: HarpyButton.flat(
           padding: const EdgeInsets.symmetric(horizontal: 8),

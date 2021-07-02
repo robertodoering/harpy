@@ -109,6 +109,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return ChangeNotifierProvider<HomeTabModel>.value(
       value: widget.model,
@@ -125,7 +126,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
               return CustomScrollView(
                 slivers: <Widget>[
                   SliverPadding(
-                    padding: DefaultEdgeInsets.all(),
+                    padding: config.edgeInsets,
                     sliver: SliverList(
                       delegate: SliverChildListDelegate(
                         <Widget>[

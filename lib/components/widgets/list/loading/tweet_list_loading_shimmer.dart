@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// A loading shimmer for a tweet list with placeholder tweet cards.
 class TweetListLoadingSliver extends StatelessWidget {
@@ -9,16 +10,18 @@ class TweetListLoadingSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     return SliverBoxLoadingShimmer(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: defaultPaddingValue * 2),
+        padding: EdgeInsets.symmetric(horizontal: config.paddingValue * 2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.filled(
             5,
             Padding(
-              padding: EdgeInsets.only(bottom: defaultPaddingValue * 2),
+              padding: EdgeInsets.only(bottom: config.paddingValue * 2),
               child: const TweetPlaceholder(),
             ),
           ),
@@ -46,10 +49,10 @@ class TweetPlaceholder extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const PlaceholderBox(widthFactor: .75, height: 15),
+                children: const [
+                  PlaceholderBox(widthFactor: .75, height: 15),
                   defaultSmallVerticalSpacer,
-                  const PlaceholderBox(widthFactor: .5, height: 15),
+                  PlaceholderBox(widthFactor: .5, height: 15),
                 ],
               ),
             )

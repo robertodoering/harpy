@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
@@ -18,11 +17,11 @@ class TweetCardHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
+    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onUserTap(context),
@@ -103,14 +102,15 @@ class _CreatedAtTimeState extends State<_CreatedAtTime> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta = config.fontSizeDelta + widget.sizeDelta;
 
     return Text(
       tweetTimeDifference(context, widget.createdAt),
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
-          .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
+          .apply(fontSizeDelta: fontSizeDelta),
       overflow: TextOverflow.fade,
       maxLines: 1,
     );

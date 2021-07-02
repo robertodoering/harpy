@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 class FilterSwitchTile extends StatelessWidget {
   const FilterSwitchTile({
@@ -19,13 +20,14 @@ class FilterSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return SwitchListTile(
       value: value,
       contentPadding: EdgeInsets.only(
-        left: defaultPaddingValue,
+        left: config.paddingValue,
         // - 8 since the check box icon has a padding of 8
-        right: max(defaultPaddingValue - 8, 0),
+        right: max(config.paddingValue - 8, 0),
       ),
       title: Text(
         text,

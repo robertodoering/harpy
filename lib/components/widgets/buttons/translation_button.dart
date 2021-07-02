@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/preferences/layout_preferences.dart';
-import 'package:harpy/core/services/service_locator.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 
 class TranslationButton extends StatelessWidget {
   const TranslationButton({
@@ -63,16 +62,15 @@ class TweetTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final active = bloc.tweet.hasTranslation || bloc.state.isTranslating;
-
     final locale = Localizations.localeOf(context);
+    final config = context.watch<ConfigBloc>().state;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final active = bloc.tweet.hasTranslation || bloc.state.isTranslating;
 
     return TranslationButton(
       active: active,
       padding: padding,
-      iconSize: iconSize + sizeDelta + fontSizeDelta,
+      iconSize: iconSize + sizeDelta + config.fontSizeDelta,
       activate: () => bloc.onTranslate(locale),
     );
   }
@@ -86,6 +84,8 @@ class UserDescriptionTranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
     final locale = Localizations.localeOf(context);
 
     final active = bloc.user!.hasDescriptionTranslation ||
@@ -93,7 +93,7 @@ class UserDescriptionTranslationButton extends StatelessWidget {
 
     return TranslationButton(
       active: active,
-      padding: DefaultEdgeInsets.all(),
+      padding: config.edgeInsets,
       activate: () => bloc.add(TranslateUserDescriptionEvent(locale: locale)),
     );
   }

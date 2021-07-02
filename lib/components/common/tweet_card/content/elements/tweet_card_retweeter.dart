@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
 
 class TweetCardRetweeter extends StatelessWidget {
@@ -15,11 +14,11 @@ class TweetCardRetweeter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
+    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onRetweeterTap(context),
@@ -27,7 +26,7 @@ class TweetCardRetweeter extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: TweetCardAvatar.defaultRadius * 2,
+              width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
               child: Icon(FeatherIcons.repeat, size: 16 + fontSizeDelta),
             ),
             defaultHorizontalSpacer,

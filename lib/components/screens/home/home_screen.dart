@@ -40,19 +40,19 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
   void didPopNext() {
     // force a rebuild when the home screen shows again
     // e.g. to rebuild after changing default padding to animate padding changes
-    setState(() {});
+    // setState(() {}); // todo: remove
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopHarpy(
+    return const WillPopHarpy(
       child: HomeProvider(
         // scroll direction listener has to be built above the filter
         child: ScrollDirectionListener(
           depth: 2,
           child: HarpyScaffold(
-            drawer: const HomeDrawer(),
-            endDrawer: const HomeTimelineFilterDrawer(),
+            drawer: HomeDrawer(),
+            endDrawer: HomeTimelineFilterDrawer(),
             endDrawerEnableOpenDragGesture: false,
             body: HomeTabView(),
           ),

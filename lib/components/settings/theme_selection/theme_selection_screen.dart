@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class ThemeSelectionScreen extends StatefulWidget {
   const ThemeSelectionScreen();
@@ -98,6 +99,8 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   @override
   Widget build(BuildContext context) {
     final themeBloc = ThemeBloc.of(context);
+    final config = context.watch<ConfigBloc>().state;
+
     final selectedThemeId = themeBloc.selectedThemeId;
 
     final children = <Widget>[
@@ -113,7 +116,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
       title: 'theme selection',
       buildSafeArea: true,
       body: ListView.separated(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         itemCount: children.length,
         itemBuilder: (_, index) => children[index],
         separatorBuilder: (_, __) => defaultSmallVerticalSpacer,

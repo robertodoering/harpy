@@ -69,6 +69,7 @@ class _TweetCardQuoteBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     final bloc = context.watch<TweetBloc>();
 
@@ -81,8 +82,8 @@ class _TweetCardQuoteBase extends StatelessWidget {
           border: Border.all(color: theme.dividerColor),
         ),
         child: TweetCardContent(
-          outerPadding: defaultSmallPaddingValue,
-          innerPadding: defaultSmallPaddingValue / 2,
+          outerPadding: config.smallPaddingValue,
+          innerPadding: config.smallPaddingValue / 2,
           config: kDefaultTweetCardQuoteConfig,
         ),
       ),

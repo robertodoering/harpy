@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a column of [TweetCard]s for each reply in a tweet.
 ///
@@ -43,22 +42,23 @@ class TweetCardReplies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
     final authors = tweet.replyAuthors;
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final fontSizeDelta = config.fontSizeDelta;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (authors.isNotEmpty)
           Padding(
-            padding: DefaultEdgeInsets.all().copyWith(top: 0),
+            padding: config.edgeInsets.copyWith(top: 0),
             child: Row(
               children: <Widget>[
                 SizedBox(
-                  width: TweetCardAvatar.defaultRadius * 2,
+                  width: TweetCardAvatar.defaultRadius(fontSizeDelta) * 2,
                   child: Icon(CupertinoIcons.reply, size: 18 + fontSizeDelta),
                 ),
                 defaultHorizontalSpacer,

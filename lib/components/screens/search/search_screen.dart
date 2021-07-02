@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen();
@@ -33,12 +34,13 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigBloc>().state;
 
     return ScrollToStart(
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: DefaultEdgeInsets.all().copyWith(bottom: 0),
+            padding: config.edgeInsets.copyWith(bottom: 0),
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
@@ -50,12 +52,12 @@ class SearchScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Divider(height: defaultPaddingValue * 2),
+            child: Divider(height: config.paddingValue * 2),
           ),
           const SliverToBoxAdapter(
             child: TrendsCard(),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: defaultVerticalSpacer,
           ),
           const TrendsList(),
