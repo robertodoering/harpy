@@ -16,7 +16,8 @@
 .idea/
 
 # vscode related
-.vscode/
+# ignore lauch.json since it contains the api keys
+.vscode/launch.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
