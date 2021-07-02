@@ -11,7 +11,9 @@ part 'config_state.dart';
 ///
 /// The configuration is persisted in the preferences.
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
-  ConfigBloc() : super(ConfigState.defaultConfig);
+  ConfigBloc() : super(ConfigState.defaultConfig) {
+    add(const InitializeConfig());
+  }
 
   @override
   Stream<ConfigState> mapEventToState(ConfigEvent event) async* {
