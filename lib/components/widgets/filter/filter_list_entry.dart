@@ -47,8 +47,8 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   List<Widget> _buildActiveFilters(ConfigState config, HarpyTheme harpyTheme) {
     if (widget.activeFilters.isNotEmpty) {
-      final foregroundColor = harpyTheme.buttonTextColor;
-      final backgroundColor = harpyTheme.accentColor;
+      final foregroundColor = harpyTheme.foregroundColor;
+      final backgroundColor = harpyTheme.secondaryColor;
 
       return <Widget>[
         defaultSmallVerticalSpacer,

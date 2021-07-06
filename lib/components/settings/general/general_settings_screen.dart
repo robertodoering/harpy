@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -38,7 +37,6 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         onChanged: (value) {
           HapticFeedback.lightImpact();
           setState(() => generalPreferences!.performanceMode = value);
-          context.read<ThemeBloc>().add(const RefreshTheme());
         },
       ),
     ];

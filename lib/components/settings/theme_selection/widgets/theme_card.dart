@@ -32,7 +32,7 @@ class ThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: harpyTheme.data,
+      data: harpyTheme.themeData,
       child: Card(
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,

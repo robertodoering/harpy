@@ -26,7 +26,7 @@ class AddBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors.add(bloc.themeData.backgroundColors.last);
-      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
+      updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -56,7 +56,7 @@ class ChangeBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors[index] = color.value;
-      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
+      updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -84,7 +84,7 @@ class RemoveBackgroundColor extends CustomThemeEvent {
 
     try {
       bloc.themeData.backgroundColors.removeAt(index);
-      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
+      updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -122,7 +122,7 @@ class ReorderBackgroundColor extends CustomThemeEvent {
           color,
         );
 
-      bloc.themeBloc.updateSystemUi(bloc.harpyTheme);
+      updateSystemUi(bloc.harpyTheme);
 
       yield ModifiedCustomThemeState();
     } catch (e, st) {
@@ -173,9 +173,9 @@ class ChangeAccentColor extends CustomThemeEvent {
   }) async* {
     _log.fine('changing accent color to $color');
 
-    bloc.themeData = bloc.themeData.copyWith(
-      accentColor: color.value,
-    );
+    // bloc.themeData = bloc.themeData.copyWith(
+    //   accentColor: color.value,
+    // );
 
     yield ModifiedCustomThemeState();
   }
@@ -243,7 +243,7 @@ class DeleteCustomTheme extends CustomThemeEvent {
     } else {
       // just reset the system ui after deleting the theme; the selected theme
       // did not change
-      bloc.themeBloc.add(UpdateSystemUi(theme: bloc.themeBloc.harpyTheme));
+      updateSystemUi(bloc.themeBloc.harpyTheme);
     }
 
     yield DeletedCustomThemeState();

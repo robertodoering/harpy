@@ -4,6 +4,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// The custom theme screen for editing existing custom themes and creating
 /// new custom themes.
@@ -62,7 +63,7 @@ class CustomThemeScreen extends StatelessWidget {
 
     if (pop) {
       // reset the system ui
-      themeBloc.add(UpdateSystemUi(theme: themeBloc.harpyTheme));
+      updateSystemUi(themeBloc.harpyTheme);
       return true;
     } else {
       return false;
@@ -111,7 +112,7 @@ class CustomThemeScreen extends StatelessWidget {
 
     return BlocProvider<CustomThemeBloc>(
       create: (_) => CustomThemeBloc(
-        themeData: HarpyThemeData.from(themeData!),
+        themeData: crow, // todo
         themeId: themeId,
         themeBloc: themeBloc,
       ),
@@ -122,7 +123,7 @@ class CustomThemeScreen extends StatelessWidget {
           final harpyTheme = customThemeBloc.harpyTheme;
 
           return Theme(
-            data: harpyTheme.data,
+            data: harpyTheme.themeData,
             child: Builder(
               builder: (context) => WillPopScope(
                 onWillPop: () => _onWillPop(

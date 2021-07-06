@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
 
 /// The minimum recommended contrast ratio for the visual representation of
@@ -25,116 +24,88 @@ const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
 const Radius kDefaultRadius = Radius.circular(16);
 
 class HarpyTheme {
-  HarpyTheme.fromData(HarpyThemeData data) {
+  HarpyTheme.fromData({
+    required HarpyThemeData data,
+    required this.config,
+  }) {
     name = data.name;
-
     backgroundColors =
-        data.backgroundColors.map(_colorFromValue).whereType<Color>().toList();
-
-    accentColor = _colorFromValue(data.accentColor) ?? const Color(0xff6b99ff);
+        data.backgroundColors.map((color) => Color(color)).toList();
+    primaryColor = Color(data.primaryColor);
+    secondaryColor = Color(data.secondaryColor ?? data.primaryColor);
+    // cardColor = Color(data.cardColor);
+    statusBarColor = Color(data.statusBarColor ?? 0);
+    navBarColor = Color(data.navBarColor ?? 0);
 
     _setupAverageBackgroundColor();
-    _calculateBrightness();
-    _calculateButtonTextColor();
-    _calculateErrorColor();
+    _setupBrightness();
+    _setupCardColor(data.cardColor);
+    _setupButtonTextColor();
+    _setupErrorColor();
+    _setupForegroundColors();
     _setupTweetActionColors();
+    _setupSystemUiColors();
     _setupTextTheme();
     _setupThemeData();
   }
 
-  /// Returns the currently selected [HarpyTheme].
+  final ConfigState config;
+
+  // custom harpy theme values
+  late String name;
+  late List<Color> backgroundColors;
+  late Color primaryColor;
+  late Color secondaryColor;
+  late Color cardColor;
+  late Color statusBarColor;
+  late Color navBarColor;
+
+  // colors chosen based on their background contrast
+  late Color buttonTextColor;
+  late Color errorColor;
+  late Color favoriteColor;
+  late Color retweetColor;
+  late Color translateColor;
+
+  // calculated values
+  late Color averageBackgroundColor;
+  late Brightness brightness;
+  late Color onPrimary;
+  late Color onSecondary;
+  late Color onBackground;
+  late Color onError;
+  late Brightness statusBarBrightness;
+  late Brightness statusBarIconBrightness;
+  late Brightness systemNavBarIconBrightness;
+
+  late ThemeData themeData;
+
+  late TextTheme _textTheme;
+  late double _backgroundLuminance;
+
+  static const List<String> _fontFamilyFallback = ['NotoSans'];
+
+  // todo: remove
   static HarpyTheme of(BuildContext context) {
     return ThemeBloc.of(context).harpyTheme;
   }
 
-  /// Calculates the contrast ratio of two colors using the W3C accessibility
-  /// guidelines.
-  ///
-  /// Values range from 1 (no contrast) to 21 (max contrast).
-  ///
-  /// See https://www.w3.org/TR/WCAG20/#contrast-ratiodef.
-  static double contrastRatio(double firstLuminance, double secondLuminance) {
-    return (max(firstLuminance, secondLuminance) + 0.05) /
-        (min(firstLuminance, secondLuminance) + 0.05);
-  }
-
-  late String name;
-  late List<Color> backgroundColors;
-  late Color accentColor;
-
-  /// The average luminance of the [backgroundColors].
-  late double backgroundLuminance;
-
-  /// The average color of the [backgroundColors].
-  ///
-  /// Used as the background color where only a single color is desired (e.g.
-  /// the dialog background or a pop up menu).
-  late Color averageBackgroundColor;
-
-  /// The brightness of the theme.
-  ///
-  /// The brightness is dependent on the [backgroundLuminance] and determines
-  /// whether to use white or black foreground colors.
-  late Brightness brightness;
-
-  /// The error color of the theme.
-  ///
-  /// Is [Colors.red] if the contrast ratio on the background exceeds
-  /// [kTextContrastRatio].
-  /// Otherwise the [accentColor] is used as the error color.
-  late Color errorColor;
-
-  late TextTheme textTheme;
-  late Color buttonTextColor;
-  late Color favoriteColor = Colors.pinkAccent;
-  late Color retweetColor = Colors.lightGreenAccent;
-  late Color translateColor = Colors.lightBlueAccent;
-
-  /// The [ThemeData] used by the root [MaterialApp].
-  late ThemeData data;
-
-  CardTheme get _cardTheme {
-    final performanceMode = app<GeneralPreferences>().performanceMode;
-
-    final color = performanceMode
-        ? Color.lerp(
-            averageBackgroundColor,
-            accentColor,
-            .1,
-          )
-        : Color.lerp(
-            accentColor.withOpacity(.1),
-            brightness == Brightness.dark
-                ? Colors.white.withOpacity(.2)
-                : Colors.black.withOpacity(.2),
-            .1,
-          );
-
-    return CardTheme(
-      color: color,
-      shape: kDefaultShapeBorder,
-      elevation: 0,
-      margin: EdgeInsets.zero,
-    );
-  }
-
-  /// The opposite of [brightness].
-  Brightness get complementaryBrightness =>
-      brightness == Brightness.light ? Brightness.dark : Brightness.light;
-
-  /// Either [Colors.black] or [Colors.white] depending on the theme brightness.
-  ///
-  /// This is the color that the text that is written on the background should
-  /// have.
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
+
+  /// Reduces the [backgroundColors] to a single interpolated color.
+  void _setupAverageBackgroundColor() {
+    averageBackgroundColor = backgroundColors.reduce(
+      (value, element) => Color.lerp(value, element, .5)!,
+    );
+  }
 
   /// Calculates the background brightness by averaging the relative luminance
   /// of each background color.
   ///
   /// Similar to [ThemeData.estimateBrightnessForColor] for multiple colors.
-  void _calculateBrightness() {
-    backgroundLuminance = backgroundColors
+  void _setupBrightness() {
+    _backgroundLuminance = backgroundColors
             .map((color) => color.computeLuminance())
             .reduce((a, b) => a + b) /
         backgroundColors.length;
@@ -142,103 +113,29 @@ class HarpyTheme {
     // the Material Design color brightness threshold
     const kThreshold = 0.15;
 
-    brightness =
-        (backgroundLuminance + 0.05) * (backgroundLuminance + 0.05) > kThreshold
-            ? Brightness.light
-            : Brightness.dark;
+    brightness = (_backgroundLuminance + 0.05) * (_backgroundLuminance + 0.05) >
+            kThreshold
+        ? Brightness.light
+        : Brightness.dark;
   }
 
-  /// Reduces the [backgroundColors] to a single color by interpolating the
-  /// colors.
-  void _setupAverageBackgroundColor() {
-    final average = backgroundColors.reduce(
-      (value, element) => Color.lerp(value, element, .5)!,
-    );
-
-    averageBackgroundColor = average;
+  void _setupCardColor(int? cardColorData) {
+    cardColor = cardColorData != null
+        ? Color(cardColorData)
+        : Color.lerp(
+            secondaryColor.withOpacity(.1),
+            brightness == Brightness.dark
+                ? Colors.white.withOpacity(.2)
+                : Colors.black.withOpacity(.2),
+            .1,
+          )!;
   }
 
-  /// Contains lighter and darker color variants for the tweet actions and
-  /// changes the corresponding color depending on the background contrast.
-  ///
-  /// This is used to make sure the color looks good on any colored background.
-  void _setupTweetActionColors() {
-    final favoriteColors = <Color?>[
-      Colors.pink[300],
-      Colors.redAccent[700],
-    ];
-
-    final retweetColors = <Color?>[
-      Colors.lightGreen[100],
-      Colors.green[800],
-    ];
-
-    final translateColors = <Color?>[
-      Colors.lightBlueAccent[100],
-      Colors.indigoAccent[700],
-    ];
-
-    var favoriteContrast = contrastRatio(
-      favoriteColor.computeLuminance(),
-      backgroundLuminance,
-    );
-
-    for (final color in favoriteColors) {
-      final contrast = contrastRatio(
-        color!.computeLuminance(),
-        backgroundLuminance,
-      );
-
-      if (contrast > favoriteContrast) {
-        favoriteColor = color;
-        favoriteContrast = contrast;
-      }
-    }
-
-    var retweetContrast = contrastRatio(
-      retweetColor.computeLuminance(),
-      backgroundLuminance,
-    );
-
-    for (final color in retweetColors) {
-      final contrast = contrastRatio(
-        color!.computeLuminance(),
-        backgroundLuminance,
-      );
-
-      if (contrast > retweetContrast) {
-        retweetColor = color;
-        retweetContrast = contrast;
-      }
-    }
-
-    var translateContrast = contrastRatio(
-      translateColor.computeLuminance(),
-      backgroundLuminance,
-    );
-
-    for (final color in translateColors) {
-      final contrast = contrastRatio(
-        color!.computeLuminance(),
-        backgroundLuminance,
-      );
-
-      if (contrast > translateContrast) {
-        translateColor = color;
-        translateContrast = contrast;
-      }
-    }
-  }
-
-  /// Calculates the button text color, which is the [averageBackgroundColor] if
-  /// the contrast ratio is at least [kTextContrastRatio], or white / black
-  /// depending on the [brightness].
-  void _calculateButtonTextColor() {
+  void _setupButtonTextColor() {
     final ratio = contrastRatio(
-      averageBackgroundColor.computeLuminance(),
+      _backgroundLuminance,
       foregroundColor.computeLuminance(),
     );
-
     buttonTextColor = ratio >= kTextContrastRatio
         ? averageBackgroundColor
         : brightness == Brightness.dark
@@ -246,15 +143,90 @@ class HarpyTheme {
             : Colors.white;
   }
 
-  /// Calculates the error color, which is [Colors.red] if the contrast ratio is
-  /// at least [kTextContrastRatio], or the [accentColor].
-  void _calculateErrorColor() {
-    final ratio = contrastRatio(
-      Colors.red.computeLuminance(),
-      backgroundLuminance,
+  void _setupErrorColor() {
+    errorColor = _calculateBestContrastColor(
+      colors: [
+        Colors.red,
+        Colors.redAccent,
+        Colors.deepOrange,
+        Colors.orangeAccent,
+      ],
+      baseLuminance: _backgroundLuminance,
+    );
+  }
+
+  void _setupForegroundColors() {
+    onPrimary = _calculateBestContrastColor(
+      colors: [Colors.white, Colors.black],
+      baseLuminance: primaryColor.computeLuminance(),
     );
 
-    errorColor = ratio >= kTextContrastRatio ? Colors.red : accentColor;
+    onSecondary = _calculateBestContrastColor(
+      colors: [Colors.white, Colors.black],
+      baseLuminance: secondaryColor.computeLuminance(),
+    );
+
+    onBackground = _calculateBestContrastColor(
+      colors: [Colors.white, Colors.black],
+      baseLuminance: _backgroundLuminance,
+    );
+
+    onError = _calculateBestContrastColor(
+      colors: [Colors.white, Colors.black],
+      baseLuminance: errorColor.computeLuminance(),
+    );
+  }
+
+  /// Contains lighter and darker color variants for the tweet actions and
+  /// changes the corresponding color depending on the background contrast.
+  void _setupTweetActionColors() {
+    favoriteColor = _calculateBestContrastColor(
+      colors: [
+        Colors.pink[300]!,
+        Colors.redAccent[700]!,
+      ],
+      baseLuminance: _backgroundLuminance,
+    );
+
+    retweetColor = _calculateBestContrastColor(
+      colors: [
+        Colors.lightGreen[100]!,
+        Colors.green[800]!,
+      ],
+      baseLuminance: _backgroundLuminance,
+    );
+
+    translateColor = _calculateBestContrastColor(
+      colors: [
+        Colors.lightBlueAccent[100]!,
+        Colors.indigoAccent[700]!,
+      ],
+      baseLuminance: _backgroundLuminance,
+    );
+  }
+
+  /// Sets the system ui colors and brightness values based on their color and
+  /// transparency.
+  void _setupSystemUiColors() {
+    statusBarBrightness = ThemeData.estimateBrightnessForColor(
+      Color.lerp(
+        statusBarColor,
+        backgroundColors.first,
+        1 - statusBarColor.opacity,
+      )!,
+    );
+
+    statusBarIconBrightness = _complementaryBrightness(statusBarBrightness);
+
+    systemNavBarIconBrightness = _complementaryBrightness(
+      ThemeData.estimateBrightnessForColor(
+        Color.lerp(
+          navBarColor,
+          backgroundColors.last,
+          1 - statusBarColor.opacity,
+        )!,
+      ),
+    );
   }
 
   void _setupTextTheme() {
@@ -263,150 +235,152 @@ class HarpyTheme {
 
     final textColor = foregroundColor;
 
-    // final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
-    final fontSizeDelta = 0.0; // todo
+    final fontSizeDelta = config.fontSizeDelta;
 
-    textTheme = Typography.englishLike2018
-        .apply(
-          fontFamily: bodyFont,
-        )
+    _textTheme = brightness == Brightness.light
+        ? Typography.blackMountainView
+        : Typography.whiteMountainView;
+
+    _textTheme = _textTheme
+        .apply(fontFamily: bodyFont)
         .copyWith(
           // headline
-          headline1: TextStyle(
+          headline1: const TextStyle(
             fontSize: 64,
             letterSpacing: 6,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-          headline2: TextStyle(
+          headline2: const TextStyle(
             fontSize: 48,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-          headline3: TextStyle(
+          headline3: const TextStyle(
             fontSize: 48,
+            letterSpacing: 0,
             fontFamily: displayFont,
-            color: textColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-          headline4: TextStyle(
+          headline4: const TextStyle(
             fontSize: 18,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor.withOpacity(0.8),
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-          headline6: TextStyle(
+          headline5: const TextStyle(
             fontSize: 20,
             letterSpacing: 2,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
+          ),
+          headline6: const TextStyle(
+            fontSize: 20,
+            letterSpacing: 2,
+            fontFamily: displayFont,
+            fontWeight: FontWeight.w300,
+            fontFamilyFallback: _fontFamilyFallback,
           ),
 
           // subtitle
-          subtitle1: TextStyle(
+          subtitle1: const TextStyle(
             fontSize: 16,
             letterSpacing: 1,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor.withOpacity(0.9),
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-          subtitle2: TextStyle(
+          subtitle2: const TextStyle(
             height: 1.1,
             fontSize: 16,
             fontFamily: displayFont,
             fontWeight: FontWeight.w300,
-            color: textColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
 
           // body
           bodyText2: const TextStyle(
             fontSize: 16,
-            fontFamily: bodyFont,
-            fontFamilyFallback: <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
           ),
           bodyText1: TextStyle(
             fontSize: 14,
-            fontFamily: bodyFont,
-            color: textColor.withOpacity(0.7),
-            fontFamilyFallback: const <String>['NotoSans'],
+            color: textColor.withOpacity(.7),
+            fontFamilyFallback: _fontFamilyFallback,
           ),
-
           button: TextStyle(
             fontSize: 16,
             letterSpacing: 1.2,
-            fontFamily: bodyFont,
+            fontFamily: displayFont,
             color: buttonTextColor,
-            fontFamilyFallback: const <String>['NotoSans'],
+            fontFamilyFallback: _fontFamilyFallback,
+          ),
+          caption: const TextStyle(
+            fontSize: 12,
+            letterSpacing: .4,
+            fontFamilyFallback: _fontFamilyFallback,
+          ),
+          overline: const TextStyle(
+            fontSize: 10,
+            letterSpacing: 1.5,
+            fontFamilyFallback: _fontFamilyFallback,
           ),
         )
         .apply(fontSizeDelta: fontSizeDelta);
   }
 
-  ColorScheme get _colorScheme => ColorScheme(
-        background: averageBackgroundColor,
-        brightness: brightness,
-        error: errorColor,
-        onBackground: foregroundColor,
-        onError: foregroundColor,
-        onPrimary: foregroundColor,
-        onSecondary: foregroundColor,
-        onSurface: foregroundColor,
-        primary: accentColor,
-        primaryVariant: accentColor,
-        secondary: accentColor,
-        secondaryVariant: accentColor,
-        surface: averageBackgroundColor,
-      );
-
   void _setupThemeData() {
-    data = ThemeData(
-      brightness: brightness,
-      textTheme: textTheme,
-      primaryColor: accentColor,
-      accentColor: accentColor,
+    themeData = ThemeData.from(
+      colorScheme: ColorScheme(
+        primary: primaryColor,
+        primaryVariant: primaryColor,
+        secondary: secondaryColor,
+        secondaryVariant: secondaryColor,
+        surface: averageBackgroundColor,
+        background: averageBackgroundColor,
+        error: errorColor,
+        onPrimary: onPrimary,
+        onSecondary: onSecondary,
+        onSurface: foregroundColor,
+        onBackground: onBackground,
+        onError: onError,
+        brightness: brightness,
+      ),
+      textTheme: _textTheme,
+    ).copyWith(
       buttonColor: foregroundColor,
-      errorColor: errorColor,
 
-      colorScheme: _colorScheme,
+      // determines the status bar icon color
+      primaryColorBrightness: brightness,
+
+      // used by toggleable widgets
+      toggleableActiveColor: secondaryColor,
+
+      // used when interacting with material widgets
+      splashColor: secondaryColor.withOpacity(.1),
+      highlightColor: secondaryColor.withOpacity(.1),
 
       dividerColor: brightness == Brightness.dark
           ? Colors.white.withOpacity(.2)
           : Colors.black.withOpacity(.2),
 
-      // determines the status bar icon color
-      primaryColorBrightness: brightness,
-
-      // used for the background color of material widgets
-      cardColor: averageBackgroundColor,
-      canvasColor: averageBackgroundColor,
-      dialogBackgroundColor: averageBackgroundColor,
-      scaffoldBackgroundColor: averageBackgroundColor,
-
-      // used by toggleable widgets
-      toggleableActiveColor: accentColor,
-
-      // used when interacting with material widgets
-      splashColor: accentColor.withOpacity(.1),
-      highlightColor: accentColor.withOpacity(.1),
-
-      cardTheme: _cardTheme,
+      cardTheme: CardTheme(
+        color: cardColor,
+        shape: kDefaultShapeBorder,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+      ),
 
       textSelectionTheme: TextSelectionThemeData(
         // cursor color used by text fields
-        cursorColor: accentColor,
+        cursorColor: secondaryColor,
         // used by a text field when it has focus
-        selectionHandleColor: accentColor,
+        selectionHandleColor: secondaryColor,
       ),
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -416,9 +390,9 @@ class HarpyTheme {
 
       snackBarTheme: SnackBarThemeData(
         backgroundColor: averageBackgroundColor,
-        contentTextStyle: textTheme.subtitle2,
-        actionTextColor: accentColor,
-        disabledActionTextColor: accentColor.withOpacity(.5),
+        contentTextStyle: _textTheme.subtitle2,
+        actionTextColor: primaryColor,
+        disabledActionTextColor: primaryColor.withOpacity(.5),
         shape: kDefaultShapeBorder,
         behavior: SnackBarBehavior.floating,
       ),
@@ -430,21 +404,55 @@ class HarpyTheme {
 
       iconTheme: const IconThemeData.fallback().copyWith(
         color: foregroundColor,
-        size: 20,
+        size: 20 + config.fontSizeDelta,
       ),
 
       scrollbarTheme: ScrollbarThemeData(
         radius: kDefaultRadius,
         thickness: MaterialStateProperty.resolveWith((_) => 3),
-        mainAxisMargin: 16,
+        mainAxisMargin: config.paddingValue * 2,
         thumbColor: MaterialStateColor.resolveWith(
           (state) => state.contains(MaterialState.dragged)
-              ? accentColor.withOpacity(.8)
-              : accentColor.withOpacity(.4),
+              ? secondaryColor.withOpacity(.8)
+              : secondaryColor.withOpacity(.4),
         ),
       ),
     );
   }
 }
 
-Color? _colorFromValue(int? value) => value != null ? Color(value) : null;
+Color _calculateBestContrastColor({
+  required List<Color> colors,
+  required double baseLuminance,
+}) {
+  Color? bestColor;
+  double? errorColorLuminance;
+
+  for (final color in colors) {
+    final luminance = contrastRatio(
+      color.computeLuminance(),
+      baseLuminance,
+    );
+
+    if (errorColorLuminance == null || luminance < errorColorLuminance) {
+      bestColor = color;
+    }
+  }
+
+  return bestColor!;
+}
+
+Brightness _complementaryBrightness(Brightness brightness) {
+  return brightness == Brightness.dark ? Brightness.light : Brightness.dark;
+}
+
+/// Calculates the contrast ratio of two colors using the W3C accessibility
+/// guidelines.
+///
+/// Values range from 1 (no contrast) to 21 (max contrast).
+///
+/// See https://www.w3.org/TR/WCAG20/#contrast-ratiodef.
+double contrastRatio(double firstLuminance, double secondLuminance) {
+  return (max(firstLuminance, secondLuminance) + 0.05) /
+      (min(firstLuminance, secondLuminance) + 0.05);
+}

@@ -48,24 +48,24 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
   List<Widget> _buildItems() {
     return <Widget>[
-      for (HarpyTheme harpyTheme in predefinedThemes)
-        Container(
-          margin: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            border: Border.all(color: harpyTheme.foregroundColor),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: harpyTheme.backgroundColors.length == 1
-                  ? <Color>[
-                      harpyTheme.backgroundColors.first,
-                      harpyTheme.backgroundColors.first,
-                    ]
-                  : harpyTheme.backgroundColors,
-            ),
-            shape: BoxShape.circle,
-          ),
-        ),
+      // for (HarpyTheme harpyTheme in predefinedThemes)
+      //   Container(
+      //     margin: const EdgeInsets.all(32),
+      //     decoration: BoxDecoration(
+      //       border: Border.all(color: harpyTheme.foregroundColor),
+      //       gradient: LinearGradient(
+      //         begin: Alignment.topCenter,
+      //         end: Alignment.bottomCenter,
+      //         colors: harpyTheme.backgroundColors.length == 1
+      //             ? <Color>[
+      //                 harpyTheme.backgroundColors.first,
+      //                 harpyTheme.backgroundColors.first,
+      //               ]
+      //             : harpyTheme.backgroundColors,
+      //       ),
+      //       shape: BoxShape.circle,
+      //     ),
+      //   ),
     ];
   }
 

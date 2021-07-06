@@ -22,7 +22,7 @@ class AddBackgroundColorCard extends StatelessWidget {
         margin: config.edgeInsetsSymmetric(horizontal: true),
         width: double.infinity,
         decoration: BoxDecoration(
-          border: Border.all(color: harpyTheme.data.dividerColor),
+          border: Border.all(color: harpyTheme.themeData.dividerColor),
           borderRadius: kDefaultBorderRadius,
         ),
         child: Material(

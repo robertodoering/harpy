@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
@@ -12,20 +14,31 @@ import 'package:logging/logging.dart';
 part 'theme_event.dart';
 part 'theme_state.dart';
 
-/// The [ThemeBloc] handles initialization of the [HarpyTheme] that creates the
-/// [ThemeData] used by the root [MaterialApp].
-///
-/// When a user is authenticated, their selected theme and their custom themes
-/// are loaded using the [ThemePreferences].
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(UninitializedState());
+  ThemeBloc({
+    required this.configBloc,
+  }) : super(ThemeState(
+          lightThemeData: swan,
+          darkThemeData: crow,
+          config: configBloc.state,
+          customThemes: const [],
+        )) {
+    configBloc.stream.listen((config) {
+      add(UpdateConfigEvent(config: config));
+    });
+  }
+
+  final ConfigBloc configBloc;
 
   static ThemeBloc of(BuildContext context) => context.watch<ThemeBloc>();
 
   static final Logger _log = Logger('ThemeBloc');
 
   /// The [HarpyTheme] used in the root [MaterialApp].
-  HarpyTheme harpyTheme = predefinedThemes.first;
+  HarpyTheme get harpyTheme => HarpyTheme.fromData(
+        data: state.darkThemeData,
+        config: state.config,
+      );
 
   /// The list of custom themes for the currently authenticated user.
   ///
@@ -59,41 +72,44 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   void loadCustomThemes() {
     _log.fine('loading custom themes');
 
-    customThemes = app<ThemePreferences>()
-        .customThemes
-        .map(_decodeThemeData)
-        .where((themeData) => themeData != null)
-        .map((themeData) => HarpyTheme.fromData(themeData!))
-        .toList();
+    // customThemes = app<ThemePreferences>()
+    //     .customThemes
+    //     .map(_decodeThemeData)
+    //     .where((themeData) => themeData != null)
+    //     .map((themeData) => HarpyTheme.fromData(themeData!))
+    //     .toList();
 
     _log.fine('found ${customThemes.length} custom themes');
   }
 
-  /// Updates the system ui to match the [theme].
-  void updateSystemUi(HarpyTheme theme) {
-    Color? navigationBarColor;
-
-    if ((app<HarpyInfo>().deviceInfo?.version.sdkInt ?? 0) >= 30) {
-      // android 11 and above allow for a transparent navigation bar where
-      // the app can draw behind it
-      navigationBarColor = Colors.transparent;
-    } else {
-      navigationBarColor = theme.backgroundColors.last;
-    }
-
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: theme.backgroundColors.first.withOpacity(0),
-        statusBarBrightness: theme.brightness,
-        statusBarIconBrightness: theme.complementaryBrightness,
-        systemNavigationBarColor: navigationBarColor,
-        systemNavigationBarIconBrightness: theme.complementaryBrightness,
-      ),
-    );
-  }
-
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
+    yield* event.applyAsync(state: state, bloc: this);
   }
+}
+
+/// Updates the system ui to match the [theme].
+void updateSystemUi(HarpyTheme theme) {
+  Color navBarColor;
+
+  final isAndroid11plus =
+      (app<HarpyInfo>().deviceInfo?.version.sdkInt ?? 0) >= 30;
+
+  if (theme.navBarColor.opacity != 1 && !isAndroid11plus) {
+    // only android 11 and above allow for a transparent navigation bar where
+    // the app can draw behind it
+    navBarColor = theme.backgroundColors.last;
+  } else {
+    navBarColor = theme.navBarColor;
+  }
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: theme.statusBarColor,
+      statusBarBrightness: theme.brightness,
+      statusBarIconBrightness: theme.statusBarIconBrightness,
+      systemNavigationBarColor: navBarColor,
+      systemNavigationBarIconBrightness: theme.systemNavBarIconBrightness,
+    ),
+  );
 }

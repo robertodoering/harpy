@@ -1,10 +1,38 @@
 part of 'theme_bloc.dart';
 
 @immutable
-abstract class ThemeState {}
+class ThemeState extends Equatable {
+  const ThemeState({
+    required this.lightThemeData,
+    required this.darkThemeData,
+    required this.customThemes,
+    required this.config,
+  });
 
-/// The initial state of the [ThemeBloc].
-class UninitializedState extends ThemeState {}
+  final HarpyThemeData lightThemeData;
+  final HarpyThemeData darkThemeData;
+  final List<HarpyThemeData> customThemes;
+  final ConfigState config;
 
-/// The state when a theme has been selected.
-class ThemeSetState extends ThemeState {}
+  @override
+  List<Object?> get props => [
+        lightThemeData,
+        darkThemeData,
+        customThemes,
+        config,
+      ];
+
+  ThemeState copyWith({
+    HarpyThemeData? lightThemeData,
+    HarpyThemeData? darkThemeData,
+    List<HarpyThemeData>? customThemes,
+    ConfigState? config,
+  }) {
+    return ThemeState(
+      lightThemeData: lightThemeData ?? this.lightThemeData,
+      darkThemeData: darkThemeData ?? this.darkThemeData,
+      customThemes: customThemes ?? this.customThemes,
+      config: config ?? this.config,
+    );
+  }
+}

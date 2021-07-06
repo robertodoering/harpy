@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
@@ -56,26 +55,12 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     final editingHarpyTheme = themeBloc.customThemes[index];
 
     // update system ui when editing theme
-    themeBloc.add(UpdateSystemUi(theme: editingHarpyTheme));
+    updateSystemUi(editingHarpyTheme);
 
-    app<HarpyNavigator>().pushCustomTheme(
-      themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
-      themeId: themeId,
-    );
-  }
-
-  List<Widget> _buildPredefinedThemes(
-    ThemeBloc themeBloc,
-    int selectedThemeId,
-  ) {
-    return <Widget>[
-      for (int i = 0; i < predefinedThemes.length; i++)
-        ThemeCard(
-          predefinedThemes[i],
-          selected: i == selectedThemeId,
-          onTap: () => _changeTheme(themeBloc, selectedThemeId, i),
-        ),
-    ];
+    // app<HarpyNavigator>().pushCustomTheme(
+    //   themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
+    //   themeId: themeId,
+    // );
   }
 
   List<Widget> _buildCustomThemes(
@@ -104,7 +89,12 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     final selectedThemeId = themeBloc.selectedThemeId;
 
     final children = <Widget>[
-      ..._buildPredefinedThemes(themeBloc, selectedThemeId),
+      for (int i = 0; i < predefinedThemes.length; i++)
+        ThemeCard(
+          HarpyTheme.fromData(data: predefinedThemes[i], config: config),
+          selected: i == selectedThemeId,
+          onTap: () => _changeTheme(themeBloc, selectedThemeId, i),
+        ),
       ..._buildCustomThemes(
         themeBloc,
         selectedThemeId,

@@ -18,7 +18,8 @@ class Harpy extends StatelessWidget {
 
     return MaterialApp(
       title: 'Harpy',
-      theme: themeBloc.harpyTheme.data,
+      theme: themeBloc.harpyTheme.themeData,
+      color: Colors.black,
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

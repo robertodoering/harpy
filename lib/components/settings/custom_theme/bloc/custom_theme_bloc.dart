@@ -33,7 +33,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   int get customThemeIndex => themeId! - 10;
 
   /// Returns the [themeData] as a [HarpyTheme].
-  HarpyTheme get harpyTheme => HarpyTheme.fromData(themeData);
+  HarpyTheme get harpyTheme => themeBloc.harpyTheme; // todo
 
   static CustomThemeBloc of(BuildContext context) =>
       context.watch<CustomThemeBloc>();
@@ -52,12 +52,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
 
   /// Whether the accent color provides enough contrast for text on the
   /// background.
-  bool get accentColorContrasts =>
-      HarpyTheme.contrastRatio(
-        harpyTheme.accentColor.computeLuminance(),
-        harpyTheme.backgroundLuminance,
-      ) >=
-      kTextContrastRatio;
+  bool get accentColorContrasts => false; // todo
 
   /// Whether the custom theme can be saved.
   bool get canSaveTheme => state is ModifiedCustomThemeState && Harpy.isPro;
