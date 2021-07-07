@@ -74,7 +74,7 @@ abstract class AuthenticationEvent {
       final selectedThemeId = app<ThemePreferences>().selectedTheme;
 
       // initialize the custom themes for this user
-      bloc.themeBloc.loadCustomThemes();
+      bloc.themeBloc.add(const LoadCustomThemes());
 
       if (selectedThemeId != -1) {
         _log.fine('initializing selected theme with id $selectedThemeId');

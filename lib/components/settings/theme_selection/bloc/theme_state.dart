@@ -5,7 +5,7 @@ class ThemeState extends Equatable {
   ThemeState({
     required this.lightThemeData,
     required this.darkThemeData,
-    required this.customThemes,
+    required this.customThemesData,
     required this.config,
   })  : lightHarpyTheme = HarpyTheme.fromData(
           data: lightThemeData,
@@ -16,11 +16,21 @@ class ThemeState extends Equatable {
           config: config,
         );
 
+  /// The selected light theme which will be used when the device is using the
+  /// system light theme.
   final HarpyThemeData lightThemeData;
+
+  /// The selected dark theme which will be used when the device is using the
+  /// system dark theme.
   final HarpyThemeData darkThemeData;
-  final List<HarpyThemeData> customThemes;
+
+  /// The list of custom themes for the currently authenticated user.
+  final List<HarpyThemeData> customThemesData;
+
   final ConfigState config;
 
+  // created during construction but independent from the immutability of the
+  // state
   final HarpyTheme lightHarpyTheme;
   final HarpyTheme darkHarpyTheme;
 
@@ -28,20 +38,20 @@ class ThemeState extends Equatable {
   List<Object?> get props => [
         lightThemeData,
         darkThemeData,
-        customThemes,
+        customThemesData,
         config,
       ];
 
   ThemeState copyWith({
     HarpyThemeData? lightThemeData,
     HarpyThemeData? darkThemeData,
-    List<HarpyThemeData>? customThemes,
+    List<HarpyThemeData>? customThemesData,
     ConfigState? config,
   }) {
     return ThemeState(
       lightThemeData: lightThemeData ?? this.lightThemeData,
       darkThemeData: darkThemeData ?? this.darkThemeData,
-      customThemes: customThemes ?? this.customThemes,
+      customThemesData: customThemesData ?? this.customThemesData,
       config: config ?? this.config,
     );
   }

@@ -21,7 +21,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           lightThemeData: crow,
           darkThemeData: crow,
           config: configBloc.state,
-          customThemes: const [],
+          customThemesData: const [],
         )) {
     configBloc.stream.listen((config) {
       add(UpdateConfigEvent(config: config));
@@ -30,13 +30,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   final ConfigBloc configBloc;
 
-  static final Logger _log = Logger('ThemeBloc');
-
-  /// The list of custom themes for the currently authenticated user.
-  ///
-  /// Is empty when no user is authenticated, or when the user has no custom
-  /// themes.
-  /// Custom themes can only be created when using Harpy Pro.
   List<HarpyTheme> customThemes = <HarpyTheme>[];
 
   /// Returns the selected theme id based off of the [ThemePreferences].
@@ -48,30 +41,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
     // default to theme id 0
     return id == -1 ? 0 : id;
-  }
-
-  HarpyThemeData? _decodeThemeData(String themeDataJson) {
-    try {
-      return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
-    } catch (e, st) {
-      _log.warning('unable to decode custom theme data', e, st);
-      return null;
-    }
-  }
-
-  /// Loads the custom themes from the [ThemePreferences] for the currently
-  /// authenticated user.
-  void loadCustomThemes() {
-    _log.fine('loading custom themes');
-
-    // customThemes = app<ThemePreferences>()
-    //     .customThemes
-    //     .map(_decodeThemeData)
-    //     .where((themeData) => themeData != null)
-    //     .map((themeData) => HarpyTheme.fromData(themeData!))
-    //     .toList();
-
-    _log.fine('found ${customThemes.length} custom themes');
   }
 
   @override

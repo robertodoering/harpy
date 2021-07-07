@@ -71,6 +71,37 @@ class ChangeThemeEvent extends ThemeEvent with HarpyLogger {
   }
 }
 
+class LoadCustomThemes extends ThemeEvent with HarpyLogger {
+  const LoadCustomThemes();
+
+  HarpyThemeData? _decodeThemeData(String themeDataJson) {
+    try {
+      return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
+    } catch (e, st) {
+      log.warning('unable to decode custom theme data', e, st);
+      return null;
+    }
+  }
+
+  @override
+  Stream<ThemeState> applyAsync({
+    required ThemeState state,
+    required ThemeBloc bloc,
+  }) async* {
+    log.fine('loading custom themes');
+
+    final customThemesData = app<ThemePreferences>()
+        .customThemes
+        .map(_decodeThemeData)
+        .whereType<HarpyThemeData>()
+        .toList();
+
+    log.fine('loaded ${customThemesData.length} custom themes');
+
+    yield state.copyWith(customThemesData: customThemesData);
+  }
+}
+
 // class ChangeThemeEvent extends ThemeEvent {
 //   const ChangeThemeEvent({
 //     required this.id,
