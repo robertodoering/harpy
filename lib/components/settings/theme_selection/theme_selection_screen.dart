@@ -5,34 +5,10 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
-class ThemeSelectionScreen extends StatefulWidget {
+class ThemeSelectionScreen extends StatelessWidget {
   const ThemeSelectionScreen();
 
   static const String route = 'theme_selection';
-
-  @override
-  _ThemeSelectionScreenState createState() => _ThemeSelectionScreenState();
-}
-
-class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
-    with RouteAware {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    harpyRouteObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
-    // rebuild in case custom themes changes
-    setState(() {});
-  }
 
   void _changeTheme(
     ThemeBloc themeBloc,
@@ -41,13 +17,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
   ) {
     if (selectedThemeId != newThemeId) {
       HapticFeedback.lightImpact();
-
-      setState(() {
-        themeBloc.add(ChangeThemeEvent(
-          id: newThemeId,
-          saveSelection: true,
-        ));
-      });
+      themeBloc.add(ChangeThemeEvent(id: newThemeId, saveSelection: true));
     }
   }
 
@@ -63,24 +33,6 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     // );
   }
 
-  List<Widget> _buildCustomThemes(
-    ThemeBloc themeBloc,
-    int selectedThemeId,
-  ) {
-    return <Widget>[
-      for (int i = 0; i < themeBloc.customThemes.length; i++)
-        ThemeCard(
-          themeBloc.customThemes[i],
-          selected: i + 10 == selectedThemeId,
-          canEdit: true,
-          onTap: () => selectedThemeId == i + 10
-              ? _editCustomTheme(themeBloc, i + 10, i)
-              : _changeTheme(themeBloc, selectedThemeId, i + 10),
-          onEdit: () => _editCustomTheme(themeBloc, i + 10, i),
-        ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeBloc = context.watch<ThemeBloc>();
@@ -88,17 +40,26 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
 
     final selectedThemeId = themeBloc.selectedThemeId;
 
-    final children = <Widget>[
-      for (int i = 0; i < predefinedThemes.length; i++)
+    final children = [
+      for (var i = 0; i < predefinedThemes.length; i++)
         ThemeCard(
           HarpyTheme.fromData(data: predefinedThemes[i], config: config),
-          selected: i == selectedThemeId,
+          selectedLightTheme: i == selectedThemeId,
+          selectedDarkTheme: i == selectedThemeId,
           onTap: () => _changeTheme(themeBloc, selectedThemeId, i),
         ),
-      ..._buildCustomThemes(
-        themeBloc,
-        selectedThemeId,
-      ),
+      for (var i = 0; i < themeBloc.customThemes.length; i++)
+        ThemeCard(
+          themeBloc.customThemes[i],
+          selectedLightTheme: i + 10 == selectedThemeId,
+          selectedDarkTheme: i + 10 == selectedThemeId,
+          editable: true,
+          deletable: true,
+          onTap: () => selectedThemeId == i + 10
+              ? _editCustomTheme(themeBloc, i + 10, i)
+              : _changeTheme(themeBloc, selectedThemeId, i + 10),
+          onEdit: () => _editCustomTheme(themeBloc, i + 10, i),
+        ),
       const AddCustomThemeCard(),
     ];
 
