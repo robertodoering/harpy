@@ -5,6 +5,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// The custom theme screen for editing existing custom themes and creating
 /// new custom themes.
@@ -33,7 +34,7 @@ class CustomThemeScreen extends StatelessWidget {
 
   Future<bool> _onWillPop(
     BuildContext context,
-    ThemeBloc themeBloc,
+    HarpyTheme harpyTheme,
     CustomThemeBloc customThemeBloc,
   ) async {
     var pop = true;
@@ -63,7 +64,7 @@ class CustomThemeScreen extends StatelessWidget {
 
     if (pop) {
       // reset the system ui
-      updateSystemUi(themeBloc.harpyTheme);
+      updateSystemUi(harpyTheme);
       return true;
     } else {
       return false;
@@ -108,7 +109,8 @@ class CustomThemeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeBloc = ThemeBloc.of(context);
+    final themeBloc = context.watch<ThemeBloc>();
+    final harpyTheme = context.watch<HarpyTheme>();
 
     return BlocProvider<CustomThemeBloc>(
       create: (_) => CustomThemeBloc(
@@ -120,19 +122,19 @@ class CustomThemeScreen extends StatelessWidget {
         builder: (context, state) {
           final config = context.watch<ConfigBloc>().state;
           final customThemeBloc = CustomThemeBloc.of(context);
-          final harpyTheme = customThemeBloc.harpyTheme;
+          final customHarpyTheme = customThemeBloc.harpyTheme;
 
           return Theme(
-            data: harpyTheme.themeData,
+            data: customHarpyTheme.themeData,
             child: Builder(
               builder: (context) => WillPopScope(
                 onWillPop: () => _onWillPop(
                   context,
-                  themeBloc,
+                  harpyTheme,
                   customThemeBloc,
                 ),
                 child: HarpyScaffold(
-                  backgroundColors: harpyTheme.backgroundColors,
+                  backgroundColors: customHarpyTheme.backgroundColors,
                   actions: <Widget>[
                     _buildSaveAction(customThemeBloc),
                   ],

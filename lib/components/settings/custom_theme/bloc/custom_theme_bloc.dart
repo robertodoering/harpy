@@ -33,7 +33,7 @@ class CustomThemeBloc extends Bloc<CustomThemeEvent, CustomThemeState> {
   int get customThemeIndex => themeId! - 10;
 
   /// Returns the [themeData] as a [HarpyTheme].
-  HarpyTheme get harpyTheme => themeBloc.harpyTheme; // todo
+  HarpyTheme get harpyTheme => themeBloc.state.darkHarpyTheme; // todo
 
   static CustomThemeBloc of(BuildContext context) =>
       context.watch<CustomThemeBloc>();

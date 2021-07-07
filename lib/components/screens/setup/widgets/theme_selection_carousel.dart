@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// A theme selection carousel used in the [SetupScreen].
 ///
@@ -102,7 +103,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeBloc = ThemeBloc.of(context);
+    final themeBloc = context.watch<ThemeBloc>();
 
     final iconColor = IconTheme.of(context).color!;
     final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);

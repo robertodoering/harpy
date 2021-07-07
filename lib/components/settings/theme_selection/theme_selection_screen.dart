@@ -83,7 +83,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final themeBloc = ThemeBloc.of(context);
+    final themeBloc = context.watch<ThemeBloc>();
     final config = context.watch<ConfigBloc>().state;
 
     final selectedThemeId = themeBloc.selectedThemeId;

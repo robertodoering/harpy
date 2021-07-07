@@ -243,7 +243,7 @@ class DeleteCustomTheme extends CustomThemeEvent {
     } else {
       // just reset the system ui after deleting the theme; the selected theme
       // did not change
-      updateSystemUi(bloc.themeBloc.harpyTheme);
+      // updateSystemUi(bloc.themeBloc.harpyTheme); // todo
     }
 
     yield DeletedCustomThemeState();

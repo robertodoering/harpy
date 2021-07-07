@@ -18,7 +18,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc({
     required this.configBloc,
   }) : super(ThemeState(
-          lightThemeData: swan,
+          lightThemeData: crow,
           darkThemeData: crow,
           config: configBloc.state,
           customThemes: const [],
@@ -30,15 +30,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   final ConfigBloc configBloc;
 
-  static ThemeBloc of(BuildContext context) => context.watch<ThemeBloc>();
-
   static final Logger _log = Logger('ThemeBloc');
-
-  /// The [HarpyTheme] used in the root [MaterialApp].
-  HarpyTheme get harpyTheme => HarpyTheme.fromData(
-        data: state.darkThemeData,
-        config: state.config,
-      );
 
   /// The list of custom themes for the currently authenticated user.
   ///

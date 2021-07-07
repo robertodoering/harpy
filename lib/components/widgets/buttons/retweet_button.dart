@@ -76,7 +76,7 @@ class _RetweetButtonState extends State<RetweetButton> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigBloc>().state;
 
     final bloc = context.watch<TweetBloc>();

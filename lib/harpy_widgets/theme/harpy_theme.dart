@@ -33,7 +33,6 @@ class HarpyTheme {
         data.backgroundColors.map((color) => Color(color)).toList();
     primaryColor = Color(data.primaryColor);
     secondaryColor = Color(data.secondaryColor ?? data.primaryColor);
-    // cardColor = Color(data.cardColor);
     statusBarColor = Color(data.statusBarColor ?? 0);
     navBarColor = Color(data.navBarColor ?? 0);
 
@@ -84,11 +83,6 @@ class HarpyTheme {
   late double _backgroundLuminance;
 
   static const List<String> _fontFamilyFallback = ['NotoSans'];
-
-  // todo: remove
-  static HarpyTheme of(BuildContext context) {
-    return ThemeBloc.of(context).harpyTheme;
-  }
 
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;

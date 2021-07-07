@@ -20,7 +20,7 @@ class TranslationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
     return ActionButton(
       active: active,

@@ -5,6 +5,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// A card used to add a custom theme for the [ThemeSelectionScreen].
 class AddCustomThemeCard extends StatelessWidget {
@@ -39,7 +40,7 @@ class AddCustomThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeBloc = ThemeBloc.of(context);
+    final themeBloc = context.watch<ThemeBloc>();
 
     // the initial custom theme data uses the currently selected theme
     // final initialCustomThemeData =
