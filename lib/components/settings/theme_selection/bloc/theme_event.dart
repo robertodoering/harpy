@@ -10,8 +10,8 @@ abstract class ThemeEvent {
   });
 }
 
-class UpdateConfigEvent extends ThemeEvent with HarpyLogger {
-  const UpdateConfigEvent({
+class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
+  const UpdateThemeConfig({
     required this.config,
   });
 
@@ -28,46 +28,63 @@ class UpdateConfigEvent extends ThemeEvent with HarpyLogger {
   }
 }
 
-class ChangeThemeEvent extends ThemeEvent with HarpyLogger {
-  const ChangeThemeEvent({
-    required this.id,
+class ChangeTheme extends ThemeEvent with HarpyLogger {
+  const ChangeTheme({
+    this.lightThemeId,
+    this.darkThemeId,
     this.saveSelection = false,
-  });
+  }) : assert(lightThemeId != null || darkThemeId != null);
 
-  /// The `id` used to save the selection to.
+  /// The id of the light and / or dark theme to select.
   ///
   /// 0..9: index of predefined theme (unused indices are reserved)
-  /// 10+: index of custom theme (pro only)
-  final int id;
+  /// 10+: index of custom theme
+  final int? lightThemeId;
+  final int? darkThemeId;
 
   final bool saveSelection;
+
+  HarpyThemeData? _themeDataFromId(int? id, ThemeState state) {
+    if (id == null) {
+      return null;
+    }
+
+    if (id >= 0 && id < predefinedThemes.length) {
+      return predefinedThemes[id];
+    } else if (id >= 10) {
+      if (id - 10 < state.customThemesData.length) {
+        return state.customThemesData[id - 10];
+      }
+    }
+
+    return null;
+  }
 
   @override
   Stream<ThemeState> applyAsync({
     required ThemeState state,
     required ThemeBloc bloc,
   }) async* {
-    log.fine('updating theme to id $id');
+    if (lightThemeId != null) {
+      log.fine('updating light theme to id $lightThemeId');
 
-    HarpyThemeData? themeData;
-
-    if (id >= 0 && id < predefinedThemes.length) {
-      // use predefined theme
-      themeData = predefinedThemes[id];
-    } else {
-      // todo: use custom theme
-    }
-
-    if (themeData != null) {
       if (saveSelection) {
-        app<ThemePreferences>().selectedTheme = id;
+        app<ThemePreferences>().lightThemeId = lightThemeId!;
       }
-
-      yield state.copyWith(
-        lightThemeData: themeData,
-        darkThemeData: themeData,
-      );
     }
+
+    if (darkThemeId != null) {
+      log.fine('updating dark theme to id $darkThemeId');
+
+      if (saveSelection) {
+        app<ThemePreferences>().darkThemeId = darkThemeId!;
+      }
+    }
+
+    yield state.copyWith(
+      lightThemeData: _themeDataFromId(lightThemeId, state),
+      darkThemeData: _themeDataFromId(darkThemeId, state),
+    );
   }
 }
 
@@ -102,93 +119,49 @@ class LoadCustomThemes extends ThemeEvent with HarpyLogger {
   }
 }
 
-// class ChangeThemeEvent extends ThemeEvent {
-//   const ChangeThemeEvent({
-//     required this.id,
-//     this.saveSelection = false,
-//   });
+class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
+  const DeleteCustomTheme({
+    required this.themeId,
+  });
 
-//   /// The `id` used to save the selection to.
-//   ///
-//   /// 0..9: index of predefined theme (unused indices are reserved)
-//   /// 10+: index of custom theme (pro only)
-//   final int id;
-
-//   /// Whether the selection should be saved using the [ThemePreferences].
-//   final bool saveSelection;
-
-//   static final Logger _log = Logger('ChangeThemeEvent');
-
-//   HarpyTheme? _findTheme(ThemeBloc bloc) {
-//     try {
-//       if (id < 10) {
-//         return id > 0 ? predefinedThemes[id] : predefinedThemes[0];
-//       } else {
-//         // selected theme id = 10 -> index = 0
-//         final index = id - 10;
-
-//         _log.fine('using custom theme with index $index');
-
-//         return bloc.customThemes[index];
-//       }
-//     } catch (e, st) {
-//       _log.severe('theme id does not correspond to a theme', e, st);
-//       return null;
-//     }
-//   }
-
-//   @override
-//   Stream<ThemeState> applyAsync({
-//     required ThemeState state,
-//     required ThemeBloc bloc,
-//   }) async* {
-//     final harpyTheme = _findTheme(bloc);
-
-//     if (harpyTheme != null) {
-//       _log.fine('changing theme to ${harpyTheme.name} with id $id');
-//       bloc.harpyTheme = harpyTheme;
-
-//       if (saveSelection) {
-//         app<ThemePreferences>().selectedTheme = id;
-//         app<AnalyticsService>().logThemeId(id);
-//       }
-//     }
-
-//     bloc.updateSystemUi(bloc.harpyTheme);
-
-//     // yield ThemeSetState();
-//   }
-// }
-
-/// Saves the custom themes in [ThemeBloc.customThemes] using the
-/// [ThemePreferences].
-class SaveCustomThemes extends ThemeEvent {
-  const SaveCustomThemes();
-
-  static final Logger _log = Logger('SaveCustomThemes');
-
-  String? _encodeThemeData(HarpyThemeData themeData) {
-    try {
-      return jsonEncode(themeData.toJson());
-    } catch (e, st) {
-      _log.warning('unable to encode custom theme data', e, st);
-      return null;
-    }
-  }
+  final int themeId;
 
   @override
   Stream<ThemeState> applyAsync({
     required ThemeState state,
     required ThemeBloc bloc,
   }) async* {
-    // final encodedCustomThemes = bloc.customThemes
-    //     .map((theme) => HarpyThemeData.fromHarpyTheme(theme))
-    //     .map(_encodeThemeData)
-    //     .where((themeDataJson) => themeDataJson != null)
-    //     .toList();
+    log.fine('deleting custom theme $themeId');
 
-    // _log.fine('saving ${encodedCustomThemes.length} custom themes');
+    final index = themeId - 10;
 
-    // app<ThemePreferences>().customThemes = encodedCustomThemes;
+    final customThemesData = List.of(state.customThemesData);
+
+    if (index >= 0 && index < customThemesData.length) {
+      customThemesData.removeAt(index);
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+    }
   }
+}
+
+void _persistCustomThemes(List<HarpyThemeData> customThemesData) {
+  final log = Logger('$_persistCustomThemes');
+
+  log.fine('saving custom themes');
+
+  final encodedCustomThemes = customThemesData
+      .map((data) {
+        try {
+          return jsonEncode(data.toJson());
+        } catch (e, st) {
+          log.warning('unable to encode custom theme data', e, st);
+          return null;
+        }
+      })
+      .whereType<String>()
+      .toList();
+
+  app<ThemePreferences>().customThemes = encodedCustomThemes;
 }

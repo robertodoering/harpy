@@ -195,59 +195,59 @@ class SaveCustomTheme extends CustomThemeEvent {
   }) async* {
     _log.fine('saving the custom theme with themeId ${bloc.themeId}');
 
-    if (bloc.editingCustomTheme) {
-      _log.fine('updating existing custom theme');
-      bloc.themeBloc.customThemes[bloc.customThemeIndex] = bloc.harpyTheme;
-    } else {
-      _log.fine('adding new custom theme');
-      bloc.themeBloc.customThemes.add(bloc.harpyTheme);
-    }
+    // if (bloc.editingCustomTheme) {
+    //   _log.fine('updating existing custom theme');
+    //   bloc.themeBloc.customThemes[bloc.customThemeIndex] = bloc.harpyTheme;
+    // } else {
+    //   _log.fine('adding new custom theme');
+    //   bloc.themeBloc.customThemes.add(bloc.harpyTheme);
+    // }
 
-    bloc.themeBloc
-      ..add(const SaveCustomThemes())
-      ..add(ChangeThemeEvent(id: bloc.themeId!, saveSelection: true));
+    // bloc.themeBloc
+    //   ..add(const SaveCustomThemes())
+    //   ..add(ChangeTheme(id: bloc.themeId!, saveSelection: true));
 
-    yield SavedCustomThemeState();
+    // yield SavedCustomThemeState();
 
-    app<HarpyNavigator>().pop();
+    // app<HarpyNavigator>().pop();
   }
 }
 
 /// Deletes the custom theme for the [CustomThemeBloc].
-class DeleteCustomTheme extends CustomThemeEvent {
-  const DeleteCustomTheme();
+// class DeleteCustomTheme extends CustomThemeEvent {
+//   const DeleteCustomTheme();
 
-  static final Logger _log = Logger('DeleteCustomTheme');
+//   static final Logger _log = Logger('DeleteCustomTheme');
 
-  @override
-  Stream<CustomThemeState> applyAsync({
-    required CustomThemeState currentState,
-    required CustomThemeBloc bloc,
-  }) async* {
-    _log.fine('deleting the custom theme with themeId ${bloc.themeId}');
+//   @override
+//   Stream<CustomThemeState> applyAsync({
+//     required CustomThemeState currentState,
+//     required CustomThemeBloc bloc,
+//   }) async* {
+//     _log.fine('deleting the custom theme with themeId ${bloc.themeId}');
 
-    bloc.themeBloc.customThemes.removeAt(bloc.customThemeIndex);
-    bloc.themeBloc.add(const SaveCustomThemes());
+//     // bloc.themeBloc.customThemes.removeAt(bloc.customThemeIndex);
+//     // bloc.themeBloc.add(const SaveCustomThemes());
 
-    final selectedThemeId = app<ThemePreferences>().selectedTheme;
+//     // final selectedThemeId = app<ThemePreferences>().selectedTheme;
 
-    if (bloc.themeId == selectedThemeId) {
-      // reset theme to default theme when deleting the currently selected theme
-      bloc.themeBloc.add(const ChangeThemeEvent(id: 0, saveSelection: true));
-    } else if (bloc.themeId! < selectedThemeId) {
-      // the index of the currently selected theme changed by -1, because we
-      // deleted a theme that comes before the currently selected theme
-      bloc.themeBloc.add(
-        ChangeThemeEvent(id: selectedThemeId - 1, saveSelection: true),
-      );
-    } else {
-      // just reset the system ui after deleting the theme; the selected theme
-      // did not change
-      // updateSystemUi(bloc.themeBloc.harpyTheme); // todo
-    }
+//     // if (bloc.themeId == selectedThemeId) {
+//     //   // reset theme to default theme when deleting the currently selected theme
+//     //   bloc.themeBloc.add(const ChangeTheme(id: 0, saveSelection: true));
+//     // } else if (bloc.themeId! < selectedThemeId) {
+//     //   // the index of the currently selected theme changed by -1, because we
+//     //   // deleted a theme that comes before the currently selected theme
+//     //   bloc.themeBloc.add(
+//     //     ChangeTheme(id: selectedThemeId - 1, saveSelection: true),
+//     //   );
+//     // } else {
+//     //   // just reset the system ui after deleting the theme; the selected theme
+//     //   // did not change
+//     //   // updateSystemUi(bloc.themeBloc.harpyTheme); // todo
+//     // }
 
-    yield DeletedCustomThemeState();
+//     // yield DeletedCustomThemeState();
 
-    app<HarpyNavigator>().pop();
-  }
-}
+//     // app<HarpyNavigator>().pop();
+//   }
+// }

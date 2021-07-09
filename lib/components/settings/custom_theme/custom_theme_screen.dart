@@ -101,8 +101,6 @@ class CustomThemeScreen extends StatelessWidget {
             ],
           ),
         ),
-        if (customThemeBloc.editingCustomTheme)
-          DeleteThemeButton(customThemeBloc),
       ],
     );
   }

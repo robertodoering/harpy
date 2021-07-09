@@ -24,24 +24,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           customThemesData: const [],
         )) {
     configBloc.stream.listen((config) {
-      add(UpdateConfigEvent(config: config));
+      add(UpdateThemeConfig(config: config));
     });
   }
 
   final ConfigBloc configBloc;
 
   List<HarpyTheme> customThemes = <HarpyTheme>[];
-
-  /// Returns the selected theme id based off of the [ThemePreferences].
-  ///
-  /// If the selected theme id is `-1` (no theme selected), `0` is returned
-  /// instead.
-  int get selectedThemeId {
-    final id = app<ThemePreferences>().selectedTheme;
-
-    // default to theme id 0
-    return id == -1 ? 0 : id;
-  }
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {

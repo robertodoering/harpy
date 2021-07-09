@@ -172,7 +172,6 @@ export 'settings/custom_theme/widgets/add_background_color_card.dart';
 export 'settings/custom_theme/widgets/background_color_card.dart';
 export 'settings/custom_theme/widgets/background_color_selection.dart';
 export 'settings/custom_theme/widgets/buy_pro_text.dart';
-export 'settings/custom_theme/widgets/delete_theme_button.dart';
 export 'settings/custom_theme/widgets/theme_name_selection.dart';
 export 'settings/display/display_settings_screen.dart';
 export 'settings/display/widgets/preview_tweet/bloc/preview_tweet_bloc.dart';

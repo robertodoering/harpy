@@ -95,9 +95,9 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   void _onSelectionChange(ThemeBloc themeBloc, int index) {
     HapticFeedback.lightImpact();
 
-    themeBloc.add(
-      ChangeThemeEvent(id: index, saveSelection: true),
-    );
+    // themeBloc.add(
+    //   ChangeTheme(id: index, saveSelection: true), // todo
+    // );
   }
 
   @override
