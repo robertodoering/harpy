@@ -176,8 +176,8 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
                 padding: config.edgeInsetsSymmetric(horizontal: true),
                 child: AlphaPicker(
                   alpha: _color.alpha,
-                  onChanged: (alpha) => _onColorChanged(
-                    _color.withAlpha(alpha),
+                  onChanged: (alpha) => _onHsvColorChanged(
+                    _hsvColor.withAlpha(alpha / 255),
                   ),
                 ),
               ),
