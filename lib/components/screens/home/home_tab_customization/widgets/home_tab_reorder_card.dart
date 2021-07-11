@@ -45,6 +45,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.zero,
         isDense: true,
+        border: InputBorder.none,
       ),
       style: theme.textTheme.subtitle1,
       onChanged: (value) => widget.model.changeName(
