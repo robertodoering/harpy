@@ -46,9 +46,9 @@ class SearchTextField extends StatelessWidget {
           filled: true,
           fillColor: fillColor,
           isDense: true,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(128),
+            borderRadius: kDefaultBorderRadius,
           ),
         ),
       ),

@@ -25,9 +25,6 @@ class FindCustomLocationContent extends StatelessWidget {
     return InputDecoration(
       labelText: label,
       counterText: '',
-      border: const OutlineInputBorder(
-        borderRadius: kDefaultBorderRadius,
-      ),
     );
   }
 

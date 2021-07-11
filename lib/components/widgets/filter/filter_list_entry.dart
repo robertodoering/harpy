@@ -115,16 +115,13 @@ class _FilterListEntryState extends State<FilterListEntry> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Row(
-            children: <Widget>[
+            children: [
               Expanded(
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(
-                      borderRadius: kDefaultBorderRadius,
-                    ),
                     labelText: widget.labelText,
                     labelStyle: const TextStyle(fontSize: 14),
                     isDense: true,

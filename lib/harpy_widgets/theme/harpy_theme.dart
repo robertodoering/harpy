@@ -411,6 +411,10 @@ class HarpyTheme {
               : secondaryColor.withOpacity(.4),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: const OutlineInputBorder(borderRadius: kDefaultBorderRadius),
+        contentPadding: config.edgeInsets,
+      ),
     );
   }
 }
