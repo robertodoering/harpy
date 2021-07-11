@@ -85,11 +85,11 @@ class HomeDrawer extends StatelessWidget {
 
               // beta info
               ListTile(
-                leading: Icon(CupertinoIcons.info, color: theme.accentColor),
+                leading: Icon(CupertinoIcons.info, color: theme.primaryColor),
                 title: Text(
                   'Beta info',
                   style: style.copyWith(
-                    color: theme.accentColor,
+                    color: theme.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
