@@ -99,15 +99,15 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = ScrollDirection.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigBloc>().state;
 
     final show = _show(mediaQuery, scrollDirection);
 
     return Stack(
-      children: <Widget>[
+      children: [
         widget.child,
         Align(
           alignment: Alignment.bottomCenter,
@@ -126,8 +126,11 @@ class _ScrollToStartState extends State<ScrollToStart> {
                     horizontal: 18,
                     vertical: 12,
                   ),
-                  icon: const Icon(CupertinoIcons.arrow_up),
-                  backgroundColor: theme.cardColor.withOpacity(.8),
+                  icon: Icon(
+                    CupertinoIcons.arrow_up,
+                    color: harpyTheme.foregroundColor,
+                  ),
+                  backgroundColor: harpyTheme.alternateCardColor,
                   onTap: () => _scrollToStart(mediaQuery),
                 ),
               ),

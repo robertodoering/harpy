@@ -1,6 +1,6 @@
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-const List<HarpyThemeData> predefinedThemes = [
+const predefinedThemes = [
   crow,
   swan,
   harpy,
@@ -8,21 +8,23 @@ const List<HarpyThemeData> predefinedThemes = [
 
 const HarpyThemeData crow = HarpyThemeData(
   name: 'crow',
-  backgroundColors: <int>[0xff000000, 0xff17233d],
-  primaryColor: 0xff2196f3,
-  secondaryColor: 0xff2196f3,
+  backgroundColors: [0xff00030F, 0xff12254A],
+  primaryColor: 0xfff3aa2f,
+  secondaryColor: 0xff4689ff,
+  cardColor: 0x161c85df,
 );
 
 const HarpyThemeData swan = HarpyThemeData(
   name: 'swan',
-  backgroundColors: <int>[0xffffffff],
-  primaryColor: 0xff444444,
-  secondaryColor: 0xff444444,
+  backgroundColors: [0xffffffff],
+  primaryColor: 0xff216eee,
+  secondaryColor: 0xff4b8bfd,
+  cardColor: 0x14618de3,
 );
 
 const HarpyThemeData harpy = HarpyThemeData(
   name: 'harpy',
-  backgroundColors: <int>[0xff40148b, 0xff880E4F],
+  backgroundColors: [0xff40148b, 0xff880E4F],
   primaryColor: 0xffff6ffe,
   secondaryColor: 0xffff6ffe,
 );

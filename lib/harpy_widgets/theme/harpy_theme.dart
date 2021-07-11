@@ -68,6 +68,7 @@ class HarpyTheme {
 
   // calculated values
   late Color averageBackgroundColor;
+  late Color alternateCardColor;
   late Brightness brightness;
   late Color onPrimary;
   late Color onSecondary;
@@ -123,6 +124,9 @@ class HarpyTheme {
                 : Colors.black.withOpacity(.2),
             .1,
           )!;
+
+    alternateCardColor =
+        Color.lerp(cardColor, averageBackgroundColor, .9)!.withOpacity(.8);
   }
 
   void _setupButtonTextColor() {
@@ -329,6 +333,10 @@ class HarpyTheme {
   }
 
   void _setupThemeData() {
+    final dividerColor = brightness == Brightness.dark
+        ? Colors.white.withOpacity(.2)
+        : Colors.black.withOpacity(.2);
+
     themeData = ThemeData.from(
       colorScheme: ColorScheme(
         primary: primaryColor,
@@ -359,9 +367,7 @@ class HarpyTheme {
       splashColor: secondaryColor.withOpacity(.1),
       highlightColor: secondaryColor.withOpacity(.1),
 
-      dividerColor: brightness == Brightness.dark
-          ? Colors.white.withOpacity(.2)
-          : Colors.black.withOpacity(.2),
+      dividerColor: dividerColor,
 
       cardTheme: CardTheme(
         color: cardColor,
@@ -379,7 +385,7 @@ class HarpyTheme {
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         foregroundColor: foregroundColor,
-        backgroundColor: averageBackgroundColor,
+        backgroundColor: alternateCardColor,
       ),
 
       snackBarTheme: SnackBarThemeData(
@@ -392,7 +398,7 @@ class HarpyTheme {
       ),
 
       popupMenuTheme: PopupMenuThemeData(
-        color: averageBackgroundColor,
+        color: alternateCardColor,
         shape: kDefaultShapeBorder,
       ),
 
@@ -411,8 +417,13 @@ class HarpyTheme {
               : secondaryColor.withOpacity(.4),
         ),
       ),
+
       inputDecorationTheme: InputDecorationTheme(
         border: const OutlineInputBorder(borderRadius: kDefaultBorderRadius),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: dividerColor),
+          borderRadius: kDefaultBorderRadius,
+        ),
         contentPadding: config.edgeInsets,
       ),
     );

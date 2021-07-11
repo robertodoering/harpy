@@ -112,7 +112,7 @@ class TwitterText extends StatefulWidget {
 
   /// The style of the entity in the text.
   ///
-  /// Uses a bold font weight with the primary color if `null`.
+  /// Uses a bold font weight with the accent color if `null`.
   final TextStyle? entityStyle;
 
   /// The text style used as a base for the text.
@@ -273,7 +273,7 @@ class _TwitterTextState extends State<TwitterText> {
     final entityStyle = widget.entityStyle ??
         TextStyle(
           fontWeight: FontWeight.bold,
-          color: theme.primaryColor,
+          color: theme.accentColor,
         );
 
     return Text.rich(

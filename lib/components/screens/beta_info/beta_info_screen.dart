@@ -101,7 +101,7 @@ class LinkText extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: theme.accentColor,
+          color: theme.primaryColor,
           fontWeight: FontWeight.bold,
         ),
       ),

@@ -216,9 +216,14 @@ class _ColorPickerHex extends StatelessWidget {
         ),
         defaultHorizontalSpacer,
         Expanded(
-          child: HexPicker(
-            color: color,
-            onChanged: onColorChanged,
+          child: Theme(
+            data: theme.copyWith(
+              inputDecorationTheme: const InputDecorationTheme(),
+            ),
+            child: HexPicker(
+              color: color,
+              onChanged: onColorChanged,
+            ),
           ),
         ),
       ],

@@ -33,6 +33,7 @@ class ComposeTextField extends StatelessWidget {
           isDense: true,
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
+          enabledBorder: InputBorder.none,
         ),
       ),
     );

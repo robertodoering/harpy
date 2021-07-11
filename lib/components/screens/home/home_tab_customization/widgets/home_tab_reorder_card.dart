@@ -46,6 +46,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         contentPadding: EdgeInsets.zero,
         isDense: true,
         border: InputBorder.none,
+        enabledBorder: InputBorder.none,
       ),
       style: theme.textTheme.subtitle1,
       onChanged: (value) => widget.model.changeName(
@@ -126,8 +127,9 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: HarpyTab.tabPadding,
+                  horizontal: config.smallPaddingValue,
                 ),
                 child: _buildTextField(theme),
               ),
