@@ -165,7 +165,7 @@ export 'settings/common/widgets/settings_group.dart';
 export 'settings/common/widgets/settings_list.dart';
 export 'settings/common/widgets/settings_screen.dart';
 export 'settings/config/bloc/config_bloc.dart';
-export 'settings/custom_theme/bloc/custom_theme_cubit.dart';
+export 'settings/custom_theme/cubit/custom_theme_cubit.dart';
 export 'settings/custom_theme/custom_theme_screen.dart';
 export 'settings/custom_theme/widgets/custom_theme_background_colors.dart';
 export 'settings/custom_theme/widgets/custom_theme_card_color.dart';
