@@ -8,7 +8,7 @@ const List<HarpyThemeData> predefinedThemes = [
 
 const HarpyThemeData crow = HarpyThemeData(
   name: 'crow',
-  backgroundColors: <int>[0xff000005, 0xff17233d],
+  backgroundColors: <int>[0xff000000, 0xff17233d],
   primaryColor: 0xff2196f3,
   secondaryColor: 0xff2196f3,
 );

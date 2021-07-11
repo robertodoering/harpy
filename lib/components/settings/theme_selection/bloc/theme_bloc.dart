@@ -30,8 +30,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   final ConfigBloc configBloc;
 
-  List<HarpyTheme> customThemes = <HarpyTheme>[];
-
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
     yield* event.applyAsync(state: state, bloc: this);

@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
-/// Builds a [HarpyDialog] with a color picker and pops the navigator with the
-/// selected [Color] or `null` if no color has been selected.
 class ColorPickerDialog extends StatefulWidget {
   const ColorPickerDialog({
     required this.color,
+    this.allowTransparency = false,
+    this.onColorChanged,
   });
 
   /// The initial picker color.
-  final Color? color;
+  final Color color;
+
+  final bool allowTransparency;
+
+  /// An optional callback which is invoked when the color picker changes its
+  /// color.
+  final ValueChanged<Color>? onColorChanged;
 
   @override
   _ColorPickerDialogState createState() => _ColorPickerDialogState();
 }
 
 class _ColorPickerDialogState extends State<ColorPickerDialog> {
-  /// The currently selected color.
-  Color? _color;
+  late Color _color;
 
   @override
   void initState() {
@@ -29,45 +36,192 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
     _color = widget.color;
   }
 
-  List<DialogAction<void>> _buildActions() {
-    return <DialogAction<void>>[
-      DialogAction<void>(
-        text: 'select',
-        onTap: () {
-          app<HarpyNavigator>().pop(_color);
-        },
-      ),
-    ];
-  }
-
-  /// Builds a [SlidePicker] for a customizable color selection.
-  Widget _buildCustomPicker() {
-    return SlidePicker(
-      pickerColor: widget.color!,
-      // indicatorSize: Size(size?.data?.width ?? 280, 50),
-      indicatorBorderRadius: BorderRadius.circular(16),
-      // 2 / 3 of the width for the sliders
-      // sliderSize: Size((size?.data?.width ?? 280) * (2 / 3), 40),
-      paletteType: PaletteType.rgb,
-      enableAlpha: false,
-      showLabel: false,
-      onColorChanged: (color) => _color = color,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return HarpyDialog(
       animationType: DialogAnimationType.slide,
       contentPadding: EdgeInsets.zero,
       constrainActionSize: true,
+      actions: [
+        DialogAction<void>(
+          text: 'discard',
+          onTap: () => app<HarpyNavigator>().pop(widget.color),
+        ),
+        DialogAction<void>(
+          text: 'select',
+          onTap: () => app<HarpyNavigator>().pop(_color),
+        ),
+      ],
       content: CustomAnimatedSize(
         child: AnimatedSwitcher(
           duration: kShortAnimationDuration,
-          child: _buildCustomPicker(),
+          child: HarpyColorPicker(
+            color: _color,
+            allowTransparency: widget.allowTransparency,
+            onColorChanged: (color) {
+              _color = color;
+              widget.onColorChanged?.call(color);
+            },
+          ),
         ),
       ),
-      actions: _buildActions(),
+    );
+  }
+}
+
+class HarpyColorPicker extends StatefulWidget {
+  const HarpyColorPicker({
+    required this.color,
+    required this.onColorChanged,
+    this.allowTransparency = false,
+  });
+
+  final Color color;
+  final ValueChanged<Color> onColorChanged;
+  final bool allowTransparency;
+
+  @override
+  _HarpyColorPickerState createState() => _HarpyColorPickerState();
+}
+
+class _HarpyColorPickerState extends State<HarpyColorPicker> {
+  late Color _color;
+  late HSVColor _hsvColor;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _color = widget.color;
+    _hsvColor = HSVColor.fromColor(widget.color);
+  }
+
+  void _onColorChanged(Color color) {
+    removeFocus(context);
+
+    setState(() => _color = color);
+
+    widget.onColorChanged(color);
+  }
+
+  void _onHsvColorChanged(HSVColor hsvColor) {
+    setState(() => _hsvColor = hsvColor);
+    _onColorChanged(hsvColor.toColor());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
+    final children = {
+      const HarpyTab(icon: Text('hue')): Padding(
+        padding: config.edgeInsetsSymmetric(horizontal: true),
+        child: PaletteHuePicker(
+          color: _hsvColor,
+          onChanged: _onHsvColorChanged,
+        ),
+      ),
+      const HarpyTab(icon: Text('wheel')): Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: config.paddingValue * 2,
+        ),
+        child: WheelPicker(
+          color: _hsvColor,
+          onChanged: _onHsvColorChanged,
+        ),
+      ),
+      const HarpyTab(icon: Text('rgb')): Padding(
+        padding: config.edgeInsetsSymmetric(horizontal: true),
+        child: RGBPicker(
+          color: _color,
+          onChanged: _onColorChanged,
+        ),
+      ),
+      const HarpyTab(icon: Text('hsv')): Padding(
+        padding: config.edgeInsetsSymmetric(horizontal: true),
+        child: HSVPicker(
+          color: _hsvColor,
+          onChanged: _onHsvColorChanged,
+        ),
+      ),
+    };
+
+    return GestureDetector(
+      onTap: () => removeFocus(context),
+      child: DefaultTabController(
+        initialIndex: 0, // todo: remember index in preferences
+        length: children.length,
+        child: Column(
+          children: [
+            defaultVerticalSpacer,
+            HarpyTabBar(
+              tabs: children.keys.toList(),
+            ),
+            defaultVerticalSpacer,
+            _ColorPickerHex(
+              color: _color,
+              onColorChanged: _onColorChanged,
+            ),
+            defaultVerticalSpacer,
+            SizedBox(
+              height: 340,
+              child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: children.values.toList(),
+              ),
+            ),
+            defaultVerticalSpacer,
+            if (widget.allowTransparency)
+              Padding(
+                padding: config.edgeInsetsSymmetric(horizontal: true),
+                child: AlphaPicker(
+                  alpha: _color.alpha,
+                  onChanged: (alpha) => _onColorChanged(
+                    _color.withAlpha(alpha),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ColorPickerHex extends StatelessWidget {
+  const _ColorPickerHex({
+    required this.color,
+    required this.onColorChanged,
+  });
+
+  final Color color;
+  final ValueChanged<Color> onColorChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        defaultHorizontalSpacer,
+        defaultHorizontalSpacer,
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            border: Border.all(color: theme.dividerColor),
+          ),
+        ),
+        defaultHorizontalSpacer,
+        Expanded(
+          child: HexPicker(
+            color: color,
+            onChanged: onColorChanged,
+          ),
+        ),
+      ],
     );
   }
 }

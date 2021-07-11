@@ -13,7 +13,7 @@ class HarpyBackButton extends StatelessWidget {
         offset: const Offset(-1, 0),
         child: const Icon(CupertinoIcons.left_chevron),
       ),
-      onTap: Navigator.of(context).pop,
+      onTap: Navigator.of(context).maybePop,
     );
   }
 }

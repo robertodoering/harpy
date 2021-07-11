@@ -37,7 +37,7 @@ class ThemeCard extends StatelessWidget {
       onSelectLightTheme: onSelectLightTheme,
       onSelectDarkTheme: onSelectDarkTheme,
       onDelete: onDelete,
-      onEdit: onDelete,
+      onEdit: onEdit,
     );
   }
 
@@ -48,6 +48,7 @@ class ThemeCard extends StatelessWidget {
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
+      selected: selectedLightTheme || selectedDarkTheme,
       child: InkWell(
         onTap: onTap,
         onLongPress: () => _showBottomSheet(context),
@@ -65,14 +66,7 @@ class ThemeCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (Harpy.isFree) ...[
-              // show a checkmark for the selected theme in the free version
-              if (selectedLightTheme || selectedDarkTheme)
-                Padding(
-                  padding: config.edgeInsets,
-                  child: const Icon(FeatherIcons.check),
-                ),
-            ] else ...[
+            if (Harpy.isPro) ...[
               // show an indicator for the selected light / dark theme in the
               // pro version
               if (selectedLightTheme)
@@ -111,10 +105,12 @@ class ThemeCard extends StatelessWidget {
 class _ThemeCardBase extends StatelessWidget {
   const _ThemeCardBase({
     required this.harpyTheme,
+    required this.selected,
     required this.child,
   });
 
   final HarpyTheme harpyTheme;
+  final bool selected;
   final Widget child;
 
   @override
@@ -134,6 +130,9 @@ class _ThemeCardBase extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: gradient,
           borderRadius: kDefaultBorderRadius,
+          border: selected
+              ? Border.all(color: harpyTheme.primaryColor)
+              : Border.all(color: Colors.transparent),
         ),
         child: Material(
           type: MaterialType.transparency,

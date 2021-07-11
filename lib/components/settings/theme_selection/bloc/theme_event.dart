@@ -81,10 +81,17 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
       }
     }
 
-    yield state.copyWith(
-      lightThemeData: _themeDataFromId(lightThemeId, state),
-      darkThemeData: _themeDataFromId(darkThemeId, state),
-    );
+    final lightThemeData = _themeDataFromId(lightThemeId, state);
+    final darkThemeData = _themeDataFromId(darkThemeId, state);
+
+    if (lightThemeData != null || darkThemeData != null) {
+      yield state.copyWith(
+        lightThemeData: lightThemeData,
+        darkThemeData: darkThemeData,
+      );
+    } else {
+      log.warning('no matching theme found');
+    }
   }
 }
 
@@ -142,12 +149,80 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
 
       _persistCustomThemes(customThemesData);
       yield state.copyWith(customThemesData: customThemesData);
+
+      final lightThemeId = app<ThemePreferences>().lightThemeId;
+      final darkThemeId = app<ThemePreferences>().darkThemeId;
+
+      // reset selection when deleting a selected theme
+      if (themeId == lightThemeId || themeId == darkThemeId) {
+        bloc.add(ChangeTheme(
+          lightThemeId: themeId == lightThemeId ? 0 : null,
+          darkThemeId: themeId == darkThemeId ? 0 : null,
+          saveSelection: true,
+        ));
+      }
+    }
+  }
+}
+
+/// Adds a custom theme at [themeId].
+///
+/// If [themeId] points to an existing custom theme, it will be modified
+/// instead.
+///
+/// The light or dark theme selection will automatically be updated.
+class AddCustomTheme extends ThemeEvent with HarpyLogger {
+  const AddCustomTheme({
+    required this.themeData,
+    required this.themeId,
+    this.changeLightThemeSelection = false,
+    this.changeDarkThemeSelection = false,
+  });
+
+  final HarpyThemeData themeData;
+  final int themeId;
+  final bool changeLightThemeSelection;
+  final bool changeDarkThemeSelection;
+
+  @override
+  Stream<ThemeState> applyAsync({
+    required ThemeState state,
+    required ThemeBloc bloc,
+  }) async* {
+    log.fine('adding custom theme at $themeId');
+
+    final index = themeId - 10;
+
+    final customThemesData = List.of(state.customThemesData);
+
+    // add or modify theme
+    if (index >= 0 && index < customThemesData.length) {
+      customThemesData[index] = themeData;
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+    } else if (index >= customThemesData.length) {
+      customThemesData.add(themeData);
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+    } else {
+      log.warning('unexpected custom themes state');
+    }
+
+    // change selection to new theme
+    if (changeLightThemeSelection || changeDarkThemeSelection) {
+      bloc.add(ChangeTheme(
+        lightThemeId: changeLightThemeSelection ? themeId : null,
+        darkThemeId: changeDarkThemeSelection ? themeId : null,
+        saveSelection: true,
+      ));
     }
   }
 }
 
 void _persistCustomThemes(List<HarpyThemeData> customThemesData) {
-  final log = Logger('$_persistCustomThemes');
+  final log = Logger('_persistCustomThemes');
 
   log.fine('saving custom themes');
 

@@ -12,20 +12,21 @@ class ThemeSelectionScreen extends StatelessWidget {
   static const String route = 'theme_selection';
 
   void _editCustomTheme(ThemeBloc themeBloc, int themeId, int index) {
-    final editingHarpyTheme = themeBloc.customThemes[index];
+    //   final editingHarpyTheme = themeBloc.customThemes[index];
 
-    // update system ui when editing theme
-    updateSystemUi(editingHarpyTheme);
+    //   // update system ui when editing theme
+    //   updateSystemUi(editingHarpyTheme);
 
-    // app<HarpyNavigator>().pushCustomTheme(
-    //   themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
-    //   themeId: themeId,
-    // );
+    //   // app<HarpyNavigator>().pushCustomTheme(
+    //   //   themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
+    //   //   themeId: themeId,
+    //   // );
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeBloc = context.watch<ThemeBloc>();
+    final bloc = context.watch<ThemeBloc>();
+    final state = bloc.state;
     final config = context.watch<ConfigBloc>().state;
 
     final lightThemeId = app<ThemePreferences>().lightThemeId;
@@ -38,51 +39,54 @@ class ThemeSelectionScreen extends StatelessWidget {
           selectedLightTheme: i == lightThemeId,
           selectedDarkTheme: i == darkThemeId,
           onTap: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i,
             newDarkThemeId: i,
           ),
           onSelectLightTheme: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i,
           ),
           onSelectDarkTheme: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newDarkThemeId: i,
           ),
         ),
-      for (var i = 0; i < themeBloc.customThemes.length; i++)
+      for (var i = 0; i < state.customThemesData.length; i++)
         ThemeCard(
-          themeBloc.customThemes[i],
+          HarpyTheme.fromData(
+            data: state.customThemesData[i],
+            config: config,
+          ),
           selectedLightTheme: i + 10 == lightThemeId,
           selectedDarkTheme: i + 10 == darkThemeId,
           onTap: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i + 10,
             newDarkThemeId: i + 10,
           ),
           onSelectLightTheme: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i + 10,
           ),
           onSelectDarkTheme: () => _selectTheme(
-            themeBloc: themeBloc,
+            themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newDarkThemeId: i + 10,
           ),
-          onEdit: () => _editCustomTheme(themeBloc, i + 10, i),
-          onDelete: () => themeBloc.add(DeleteCustomTheme(themeId: i + 10)),
+          onEdit: () => _editCustomTheme(bloc, i + 10, i),
+          onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
         ),
       const AddCustomThemeCard(),
     ];
