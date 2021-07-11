@@ -118,7 +118,7 @@ class _WillPopCustomTheme extends StatelessWidget {
   }) async {
     var pop = true;
 
-    if (cubit.canSaveTheme) {
+    if (cubit.modifiedTheme) {
       // ask to discard changes before exiting customization
 
       final discard = await showDialog<bool>(
