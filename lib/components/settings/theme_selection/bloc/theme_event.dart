@@ -85,10 +85,19 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
     final darkThemeData = _themeDataFromId(darkThemeId, state);
 
     if (lightThemeData != null || darkThemeData != null) {
-      yield state.copyWith(
+      final newState = state.copyWith(
         lightThemeData: lightThemeData,
         darkThemeData: darkThemeData,
       );
+
+      if (bloc.systemBrightness == Brightness.light && lightThemeData != null) {
+        updateSystemUi(newState.lightHarpyTheme);
+      } else if (bloc.systemBrightness == Brightness.dark &&
+          darkThemeData != null) {
+        updateSystemUi(newState.darkHarpyTheme);
+      }
+
+      yield newState;
     } else {
       log.warning('no matching theme found');
     }

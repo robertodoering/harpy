@@ -31,7 +31,7 @@ class AddCustomThemeCard extends StatelessWidget {
           trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null,
           onTap: () => _pushCustomTheme(
             context,
-            bloc: bloc,
+            state: bloc.state,
           ),
         ),
       ),
@@ -41,18 +41,18 @@ class AddCustomThemeCard extends StatelessWidget {
 
 Future<void> _pushCustomTheme(
   BuildContext context, {
-  required ThemeBloc bloc,
+  required ThemeState state,
 }) async {
   final systemBrightness = MediaQuery.platformBrightnessOf(context);
 
   // use the currently selected theme as a starting point for the custom theme
   final themeData = (systemBrightness == Brightness.light
-          ? bloc.state.lightThemeData
-          : bloc.state.darkThemeData)
+          ? state.lightThemeData
+          : state.darkThemeData)
       .copyWith(name: 'new theme');
 
   // use the next available custom theme id
-  final themeId = bloc.state.customThemesData.length + 10;
+  final themeId = state.customThemesData.length + 10;
 
   app<HarpyNavigator>().pushCustomTheme(
     themeData: themeData,

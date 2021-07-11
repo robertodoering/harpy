@@ -11,18 +11,6 @@ class ThemeSelectionScreen extends StatelessWidget {
 
   static const String route = 'theme_selection';
 
-  void _editCustomTheme(ThemeBloc themeBloc, int themeId, int index) {
-    //   final editingHarpyTheme = themeBloc.customThemes[index];
-
-    //   // update system ui when editing theme
-    //   updateSystemUi(editingHarpyTheme);
-
-    //   // app<HarpyNavigator>().pushCustomTheme(
-    //   //   themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
-    //   //   themeId: themeId,
-    //   // );
-  }
-
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<ThemeBloc>();
@@ -85,7 +73,12 @@ class ThemeSelectionScreen extends StatelessWidget {
             darkThemeId: darkThemeId,
             newDarkThemeId: i + 10,
           ),
-          onEdit: () => _editCustomTheme(bloc, i + 10, i),
+          onEdit: () => _editCustomTheme(
+            context,
+            config: config,
+            state: state,
+            themeId: i + 10,
+          ),
           onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
         ),
       const AddCustomThemeCard(),
@@ -102,6 +95,23 @@ class ThemeSelectionScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _editCustomTheme(
+  BuildContext context, {
+  required ConfigState config,
+  required ThemeState state,
+  required int themeId,
+}) async {
+  final index = themeId - 10;
+  final themeData = state.customThemesData[index];
+
+  updateSystemUi(HarpyTheme.fromData(data: themeData, config: config));
+
+  app<HarpyNavigator>().pushCustomTheme(
+    themeData: themeData,
+    themeId: themeId,
+  );
 }
 
 void _selectTheme({

@@ -171,8 +171,8 @@ void showThemeSelectionBottomSheet(
           ),
           onTap: () {
             HapticFeedback.lightImpact();
-            onDelete();
             Navigator.of(context).pop();
+            onDelete();
           },
         ),
       if (onEdit != null)
@@ -181,8 +181,8 @@ void showThemeSelectionBottomSheet(
           title: const Text('edit'),
           onTap: () {
             HapticFeedback.lightImpact();
-            onEdit();
             Navigator.of(context).pop();
+            onEdit();
           },
         ),
       ListTile(
@@ -197,8 +197,8 @@ void showThemeSelectionBottomSheet(
             ? null
             : () {
                 HapticFeedback.lightImpact();
-                onSelectLightTheme();
                 Navigator.of(context).pop();
+                onSelectLightTheme();
               },
       ),
       ListTile(
@@ -213,8 +213,8 @@ void showThemeSelectionBottomSheet(
             ? null
             : () {
                 HapticFeedback.lightImpact();
-                onSelectDarkTheme();
                 Navigator.of(context).pop();
+                onSelectDarkTheme();
               },
       ),
     ],

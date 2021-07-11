@@ -120,7 +120,6 @@ class _WillPopCustomTheme extends StatelessWidget {
 
     if (cubit.modifiedTheme) {
       // ask to discard changes before exiting customization
-
       final discard = await showDialog<bool>(
         context: context,
         builder: (_) => const HarpyDialog(

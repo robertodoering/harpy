@@ -23,6 +23,7 @@ class GlobalBlocProvider extends StatelessWidget {
         BlocProvider<ThemeBloc>(
           create: (context) => ThemeBloc(
             configBloc: context.read<ConfigBloc>(),
+            systemBrightness: MediaQuery.platformBrightnessOf(context),
           ),
         ),
         BlocProvider<AuthenticationBloc>(
