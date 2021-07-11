@@ -54,13 +54,26 @@ class ThemeSelectionScreen extends StatelessWidget {
           ),
           selectedLightTheme: i + 10 == lightThemeId,
           selectedDarkTheme: i + 10 == darkThemeId,
-          onTap: () => _selectTheme(
-            themeBloc: bloc,
-            lightThemeId: lightThemeId,
-            darkThemeId: darkThemeId,
-            newLightThemeId: i + 10,
-            newDarkThemeId: i + 10,
-          ),
+          onTap: () {
+            if (lightThemeId == i + 10 && darkThemeId == i + 10) {
+              // already selected as light a dark theme, edit selected theme
+              // instead
+              _editCustomTheme(
+                context,
+                config: config,
+                state: state,
+                themeId: i + 10,
+              );
+            } else {
+              _selectTheme(
+                themeBloc: bloc,
+                lightThemeId: lightThemeId,
+                darkThemeId: darkThemeId,
+                newLightThemeId: i + 10,
+                newDarkThemeId: i + 10,
+              );
+            }
+          },
           onSelectLightTheme: () => _selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
