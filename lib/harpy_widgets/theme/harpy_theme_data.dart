@@ -12,22 +12,11 @@ class HarpyThemeData extends Equatable {
     required this.name,
     required this.backgroundColors,
     required this.primaryColor,
-    this.secondaryColor,
-    this.cardColor,
-    this.statusBarColor,
-    this.navBarColor,
+    required this.secondaryColor,
+    required this.cardColor,
+    required this.statusBarColor,
+    required this.navBarColor,
   });
-
-  // HarpyThemeData.fromHarpyTheme(HarpyTheme harpyTheme)
-  //     : name = harpyTheme.name,
-  //       backgroundColors =
-  //           harpyTheme.backgroundColors.map((color) => color.value).toList(),
-  //       accentColor = harpyTheme.accentColor.value;
-
-  // HarpyThemeData.from(HarpyThemeData other)
-  //     : name = other.name,
-  //       backgroundColors = List<int>.of(other.backgroundColors),
-  //       accentColor = other.accentColor;
 
   factory HarpyThemeData.fromJson(Map<String, dynamic> json) =>
       _$HarpyThemeDataFromJson(json);
@@ -35,10 +24,10 @@ class HarpyThemeData extends Equatable {
   final String name;
   final List<int> backgroundColors;
   final int primaryColor;
-  final int? secondaryColor;
-  final int? cardColor;
-  final int? statusBarColor;
-  final int? navBarColor;
+  final int secondaryColor;
+  final int cardColor;
+  final int statusBarColor;
+  final int navBarColor;
 
   @override
   List<Object?> get props => [

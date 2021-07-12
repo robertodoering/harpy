@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Builds a column of [TweetCard]s for each reply in a tweet.
@@ -21,27 +22,18 @@ class TweetCardReplies extends StatelessWidget {
   /// The color alternated depending on the parent cards color.
   final Color? color;
 
-  Color? _cardColor(ThemeData theme) {
-    final color1 = Color.lerp(
-      theme.scaffoldBackgroundColor,
-      theme.accentColor,
-      .225,
-    );
-
-    if (color != color1) {
-      return color1;
+  Color _cardColor(HarpyTheme harpyTheme) {
+    if (color != harpyTheme.solidCardColor1) {
+      return harpyTheme.solidCardColor1;
     } else {
-      return Color.lerp(
-        theme.scaffoldBackgroundColor,
-        theme.accentColor,
-        .15,
-      );
+      return harpyTheme.solidCardColor2;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
@@ -56,7 +48,7 @@ class TweetCardReplies extends StatelessWidget {
           Padding(
             padding: config.edgeInsets.copyWith(top: 0),
             child: Row(
-              children: <Widget>[
+              children: [
                 SizedBox(
                   width: TweetCardAvatar.defaultRadius(fontSizeDelta) * 2,
                   child: Icon(CupertinoIcons.reply, size: 18 + fontSizeDelta),
@@ -74,7 +66,7 @@ class TweetCardReplies extends StatelessWidget {
         for (final reply in tweet.replies) ...[
           TweetCard(
             reply,
-            color: _cardColor(theme),
+            color: _cardColor(harpyTheme),
           ),
           if (reply != tweet.replies.last) defaultVerticalSpacer,
         ],

@@ -12,6 +12,8 @@ const HarpyThemeData crow = HarpyThemeData(
   primaryColor: 0xfff3aa2f,
   secondaryColor: 0xff4689ff,
   cardColor: 0x161c85df,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
 );
 
 const HarpyThemeData swan = HarpyThemeData(
@@ -20,11 +22,16 @@ const HarpyThemeData swan = HarpyThemeData(
   primaryColor: 0xff216eee,
   secondaryColor: 0xff4b8bfd,
   cardColor: 0x14618de3,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
 );
 
 const HarpyThemeData harpy = HarpyThemeData(
   name: 'harpy',
-  backgroundColors: [0xff40148b, 0xff880E4F],
+  backgroundColors: [0xff4f148b, 0xff880E4F],
   primaryColor: 0xffff6ffe,
-  secondaryColor: 0xffff6ffe,
+  secondaryColor: 0xffd570ff,
+  cardColor: 0x16ff75ed,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
 );

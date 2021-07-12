@@ -31,10 +31,13 @@ class HarpyTheme {
     name = data.name;
     backgroundColors =
         data.backgroundColors.map((color) => Color(color)).toList();
+    if (backgroundColors.isEmpty) {
+      backgroundColors = [Colors.black];
+    }
     primaryColor = Color(data.primaryColor);
-    secondaryColor = Color(data.secondaryColor ?? data.primaryColor);
-    statusBarColor = Color(data.statusBarColor ?? 0);
-    navBarColor = Color(data.navBarColor ?? 0);
+    secondaryColor = Color(data.secondaryColor);
+    statusBarColor = Color(data.statusBarColor);
+    navBarColor = Color(data.navBarColor);
 
     _setupAverageBackgroundColor();
     _setupBrightness();
@@ -69,6 +72,8 @@ class HarpyTheme {
   // calculated values
   late Color averageBackgroundColor;
   late Color alternateCardColor;
+  late Color solidCardColor1;
+  late Color solidCardColor2;
   late Brightness brightness;
   late Color onPrimary;
   late Color onSecondary;
@@ -127,10 +132,16 @@ class HarpyTheme {
 
     alternateCardColor =
         Color.lerp(cardColor, averageBackgroundColor, .9)!.withOpacity(.8);
+
+    solidCardColor1 =
+        Color.lerp(cardColor, averageBackgroundColor, .775)!.withOpacity(1);
+
+    solidCardColor2 =
+        Color.lerp(cardColor, averageBackgroundColor, .85)!.withOpacity(1);
   }
 
   void _setupButtonTextColor() {
-    final ratio = contrastRatio(
+    final ratio = _contrastRatio(
       _backgroundLuminance,
       foregroundColor.computeLuminance(),
     );
@@ -398,7 +409,7 @@ class HarpyTheme {
       ),
 
       popupMenuTheme: PopupMenuThemeData(
-        color: alternateCardColor,
+        color: averageBackgroundColor,
         shape: kDefaultShapeBorder,
       ),
 
@@ -434,16 +445,19 @@ Color _calculateBestContrastColor({
   required List<Color> colors,
   required double baseLuminance,
 }) {
+  assert(colors.isNotEmpty);
+
   Color? bestColor;
   double? errorColorLuminance;
 
   for (final color in colors) {
-    final luminance = contrastRatio(
+    final luminance = _contrastRatio(
       color.computeLuminance(),
       baseLuminance,
     );
 
-    if (errorColorLuminance == null || luminance < errorColorLuminance) {
+    if (errorColorLuminance == null || luminance > errorColorLuminance) {
+      errorColorLuminance = luminance;
       bestColor = color;
     }
   }
@@ -461,7 +475,7 @@ Brightness _complementaryBrightness(Brightness brightness) {
 /// Values range from 1 (no contrast) to 21 (max contrast).
 ///
 /// See https://www.w3.org/TR/WCAG20/#contrast-ratiodef.
-double contrastRatio(double firstLuminance, double secondLuminance) {
+double _contrastRatio(double firstLuminance, double secondLuminance) {
   return (max(firstLuminance, secondLuminance) + 0.05) /
       (min(firstLuminance, secondLuminance) + 0.05);
 }
