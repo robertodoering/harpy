@@ -45,12 +45,12 @@ class HarpyScaffold extends StatelessWidget {
     return FittedBox(
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           Text(
             title!,
             style: theme.textTheme.headline6,
           ),
-          if (showIcon) ...<Widget>[
+          if (showIcon) ...[
             const SizedBox(width: 4),
             const FlareIcon.harpyLogo(size: 24),
           ],
@@ -124,7 +124,7 @@ class HarpyScaffold extends StatelessWidget {
       body: HarpyBackground(
         colors: backgroundColors,
         child: Column(
-          children: <Widget>[
+          children: [
             if (_hasAppBar) _buildAppBar(context, theme, mediaQuery),
             Expanded(
               child: buildSafeArea ? SafeArea(top: false, child: body) : body,

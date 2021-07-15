@@ -67,7 +67,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     ThemeBloc themeBloc,
     int selectedThemeId,
   ) {
-    return <Widget>[
+    return [
       for (int i = 0; i < predefinedThemes.length; i++)
         ThemeCard(
           predefinedThemes[i],
@@ -81,7 +81,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     ThemeBloc themeBloc,
     int selectedThemeId,
   ) {
-    return <Widget>[
+    return [
       for (int i = 0; i < themeBloc.customThemes.length; i++)
         ThemeCard(
           themeBloc.customThemes[i],
@@ -100,7 +100,7 @@ class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
     final themeBloc = ThemeBloc.of(context);
     final selectedThemeId = themeBloc.selectedThemeId;
 
-    final children = <Widget>[
+    final children = [
       ..._buildPredefinedThemes(themeBloc, selectedThemeId),
       ..._buildCustomThemes(
         themeBloc,

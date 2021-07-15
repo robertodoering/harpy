@@ -48,7 +48,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
     Widget child,
   ) {
     return Stack(
-      children: <Widget>[
+      children: [
         GestureDetector(
           onTap: onBackgroundTap,
           child: Container(

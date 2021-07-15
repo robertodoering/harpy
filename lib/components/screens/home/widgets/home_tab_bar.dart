@@ -41,11 +41,11 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
       width: double.infinity,
       padding: const EdgeInsets.only(bottom: 8),
       child: HarpyTabBar(
-        tabs: <Widget>[
+        tabs: [
           for (HomeTabEntry entry in model.visibleEntries)
             _mapEntryTabs(entry, cardColor),
         ],
-        endWidgets: <Widget>[
+        endWidgets: [
           CustomizeHomeTab(cardColor: cardColor),
         ],
       ),

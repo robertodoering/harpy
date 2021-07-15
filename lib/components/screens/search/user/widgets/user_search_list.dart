@@ -21,10 +21,10 @@ class UserSearchList extends StatelessWidget {
           child: UserList(
             bloc.users,
             enableScroll: enableScroll,
-            beginSlivers: const <Widget>[
+            beginSlivers: const [
               UserSearchAppBar(),
             ],
-            endSlivers: <Widget>[
+            endSlivers: [
               if (bloc.loadingInitialData)
                 const UserListLoadingSliver()
               else if (bloc.state is LoadingPaginatedData)

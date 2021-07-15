@@ -209,9 +209,9 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[
+      children: [
         Row(
-          children: <Widget>[
+          children: [
             Expanded(
               child: GestureDetector(
                 onTap: _onVideoTap,

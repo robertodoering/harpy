@@ -270,12 +270,12 @@ class _MediaOverlayState extends State<MediaOverlay>
 
   Widget _buildOverlappingOverlay() {
     return Stack(
-      children: <Widget>[
+      children: [
         _buildMedia(),
         AnimatedBuilder(
           animation: _controller,
           builder: (_, __) => Column(
-            children: <Widget>[
+            children: [
               SlideTransition(
                 position: _topAnimation,
                 child: _buildAppBar(),
@@ -296,7 +296,7 @@ class _MediaOverlayState extends State<MediaOverlay>
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, __) => Column(
-        children: <Widget>[
+        children: [
           SlideTransition(
             position: _topAnimation,
             child: _buildAppBar(),

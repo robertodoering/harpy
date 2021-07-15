@@ -74,7 +74,7 @@ class MentionSuggestions extends StatelessWidget {
   Widget _buildFollowingUsers(ThemeData theme, MentionSuggestionsState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(theme, 'following users'),
         for (UserData user in state.filteredFollowing) _buildUser(theme, user),
       ],
@@ -84,7 +84,7 @@ class MentionSuggestions extends StatelessWidget {
   Widget _buildSearchedUsers(ThemeData theme, MentionSuggestionsState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(theme, 'other users'),
         for (UserData user in state.filteredSearchedUsers)
           _buildUser(theme, user),
@@ -104,7 +104,7 @@ class MentionSuggestions extends StatelessWidget {
       child = ListView(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
-        children: <Widget>[
+        children: [
           if (state.filteredFollowing.isNotEmpty)
             _buildFollowingUsers(theme, state),
           if (state.filteredSearchedUsers.isNotEmpty)

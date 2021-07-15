@@ -42,7 +42,7 @@ class OverlayActionRow extends StatelessWidget {
 
   Widget _buildActions(HarpyVideoPlayerModel model, ThemeData theme) {
     return Row(
-      children: <Widget>[
+      children: [
         if (model.finished)
           // replay button
           CircleButton(
@@ -76,7 +76,7 @@ class OverlayActionRow extends StatelessWidget {
         const SizedBox(width: 8),
 
         // position text
-        if (model.fullscreen || !compact) ...<Widget>[
+        if (model.fullscreen || !compact) ...[
           OverlayPositionText(model),
           Expanded(
             child: Text(
@@ -107,7 +107,7 @@ class OverlayActionRow extends StatelessWidget {
       decoration: _backgroundDecoration,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           Padding(
             padding: compact
                 ? const EdgeInsets.symmetric(horizontal: 12)

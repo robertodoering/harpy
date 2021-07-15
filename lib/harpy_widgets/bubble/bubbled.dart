@@ -21,7 +21,7 @@ class Bubbled extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       alignment: alignment,
-      children: <Widget>[
+      children: [
         child,
         if (bubble != null && bubbleOffset != null)
           Transform.translate(

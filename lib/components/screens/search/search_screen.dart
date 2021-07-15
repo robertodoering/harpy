@@ -36,12 +36,12 @@ class SearchScreen extends StatelessWidget {
 
     return ScrollToStart(
       child: CustomScrollView(
-        slivers: <Widget>[
+        slivers: [
           SliverPadding(
             padding: DefaultEdgeInsets.all().copyWith(bottom: 0),
             sliver: SliverList(
               delegate: SliverChildListDelegate(
-                <Widget>[
+                [
                   _buildUserSearchCard(),
                   defaultVerticalSpacer,
                   _buildTweetSearchCard(),

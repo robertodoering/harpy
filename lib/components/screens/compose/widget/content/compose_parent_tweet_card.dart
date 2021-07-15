@@ -19,7 +19,7 @@ class ComposeParentTweetCard extends StatelessWidget {
         vertical: defaultSmallPaddingValue,
       ),
       child: Row(
-        children: <Widget>[
+        children: [
           SizedBox(
             width: TweetCardAvatar.defaultRadius * 2,
             child: const Icon(CupertinoIcons.reply, size: 18),
@@ -43,7 +43,7 @@ class ComposeParentTweetCard extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
+      children: [
         _buildParentText(theme),
         defaultVerticalSpacer,
         TweetCard(parentTweet),

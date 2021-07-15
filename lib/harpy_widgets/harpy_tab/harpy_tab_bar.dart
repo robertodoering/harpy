@@ -101,13 +101,13 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
         child: Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: Row(
-            children: <Widget>[
-              for (int i = 0; i < widget.tabs.length; i++) ...<Widget>[
+            children: [
+              for (int i = 0; i < widget.tabs.length; i++) ...[
                 _buildTab(i),
                 if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
               ],
-              if (widget.endWidgets != null) ...<Widget>[
-                for (Widget widget in widget.endWidgets!) ...<Widget>[
+              if (widget.endWidgets != null) ...[
+                for (Widget widget in widget.endWidgets!) ...[
                   defaultSmallHorizontalSpacer,
                   widget,
                 ],

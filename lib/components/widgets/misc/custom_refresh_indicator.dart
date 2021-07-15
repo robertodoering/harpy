@@ -461,7 +461,7 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
         _mode == _RefreshIndicatorMode.done;
 
     return Stack(
-      children: <Widget>[
+      children: [
         child,
         if (_mode != null)
           Positioned(

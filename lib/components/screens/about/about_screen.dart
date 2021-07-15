@@ -20,7 +20,7 @@ class AboutScreen extends StatelessWidget {
       'https://developer.twitter.com/en/developer-terms/policy';
 
   List<Widget> _buildTitleWithLogo(Color? textColor) {
-    return <Widget>[
+    return [
       SizedBox(
         height: 100,
         child: FlareActor(
@@ -44,7 +44,7 @@ class AboutScreen extends StatelessWidget {
 
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           ListTile(
             leading: const Icon(Icons.history),
             title: Text(
@@ -80,7 +80,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text.rich(
@@ -120,7 +120,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
@@ -150,7 +150,7 @@ class AboutScreen extends StatelessWidget {
   Widget _buildDeveloperText(TextStyle linkStyle, TextTheme textTheme) {
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           ListTile(
             leading: const Icon(FeatherIcons.mail),
             isThreeLine: true,
@@ -208,7 +208,7 @@ class AboutScreen extends StatelessWidget {
 
     return HarpyScaffold(
       title: 'about',
-      actions: <Widget>[
+      actions: [
         CustomPopupMenuButton<void>(
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
@@ -224,11 +224,11 @@ class AboutScreen extends StatelessWidget {
       ],
       body: ListView(
         padding: DefaultEdgeInsets.all(),
-        children: <Widget>[
+        children: [
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
           _buildIntroductionText(theme, linkStyle),
-          if (Harpy.isFree) ...<Widget>[
+          if (Harpy.isFree) ...[
             defaultVerticalSpacer,
             _buildProText(theme, linkStyle),
           ],

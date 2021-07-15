@@ -25,7 +25,7 @@ class AccentColorSelection extends StatelessWidget {
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
       child: Row(
-        children: <Widget>[
+        children: [
           const Icon(Icons.error_outline),
           defaultHorizontalSpacer,
           const Expanded(
@@ -48,7 +48,7 @@ class AccentColorSelection extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: DefaultEdgeInsets.symmetric(horizontal: true),
             child: Text('accent color', style: textTheme.headline4),
@@ -65,7 +65,7 @@ class AccentColorSelection extends StatelessWidget {
               onTap: () => _changeAccentColor(context, theme),
             ),
           ),
-          if (!bloc.accentColorContrasts) ...<Widget>[
+          if (!bloc.accentColorContrasts) ...[
             defaultVerticalSpacer,
             _buildColorWarning(theme),
           ],

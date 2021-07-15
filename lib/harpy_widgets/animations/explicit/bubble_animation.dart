@@ -66,7 +66,7 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
       animation: widget.controller!,
       builder: (context, child) => Stack(
         clipBehavior: Clip.none,
-        children: <Widget>[
+        children: [
           // bubbles
           Positioned(
             top: (widget.size - widget.bubbleSize) / 2.0,

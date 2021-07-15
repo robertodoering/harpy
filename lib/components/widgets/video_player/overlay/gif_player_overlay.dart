@@ -76,7 +76,7 @@ class _GifPlayerOverlayState extends State<GifPlayerOverlay> {
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
-      children: <Widget>[
+      children: [
         widget.child,
         if (_centerIcon != null) Positioned.fill(child: _centerIcon!),
       ],

@@ -20,7 +20,7 @@ class FollowersCount extends StatelessWidget {
       spacing: 16,
       runSpacing: 8,
       alignment: WrapAlignment.spaceBetween,
-      children: <Widget>[
+      children: [
         HarpyButton.flat(
           text: Text('${_numberFormat.format(user.friendsCount)} following'),
           padding: EdgeInsets.zero,

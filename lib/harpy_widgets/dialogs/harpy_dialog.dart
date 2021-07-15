@@ -150,7 +150,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
   Widget _buildActions() {
     final Widget actions = widget.actions!.length == 2
         ? Row(
-            children: <Widget>[
+            children: [
               for (Widget action in widget.actions!)
                 Expanded(child: Center(child: action)),
             ],
@@ -191,7 +191,7 @@ class _HarpyDialogState extends State<HarpyDialog> {
           key: _dialogSizeKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               if (widget.title != null) _buildTitle(textTheme),
               if (widget.content != null) _buildContent(textTheme),
               if (widget.actions != null) _buildActions(),

@@ -37,7 +37,7 @@ class ThemeCard extends StatelessWidget {
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,
         child: Stack(
-          children: <Widget>[
+          children: [
             Container(
               width: double.infinity,
               decoration: BoxDecoration(gradient: gradient),

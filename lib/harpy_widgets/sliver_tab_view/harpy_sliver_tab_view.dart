@@ -19,7 +19,7 @@ class HarpySliverTabView extends StatelessWidget {
     return DefaultTabController(
       length: children.length,
       child: NestedScrollView(
-        headerSliverBuilder: (_, __) => <Widget>[
+        headerSliverBuilder: (_, __) => [
           ...?headerSlivers,
           HarpySliverTapBar(
             tabs: tabs,

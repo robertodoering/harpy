@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
     required this.listId,
-    this.beginSlivers = const <Widget>[],
+    this.beginSlivers = const [],
   });
 
   final String? listId;
@@ -34,7 +34,7 @@ class ListTimeline extends StatelessWidget {
           key: PageStorageKey<String>('list_timeline_$listId'),
           enableScroll: state.enableScroll,
           beginSlivers: beginSlivers,
-          endSlivers: <Widget>[
+          endSlivers: [
             if (state.showLoading)
               const TweetListLoadingSliver()
             else if (state.showNoResult)

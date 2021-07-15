@@ -37,7 +37,7 @@ class ChangelogDialog extends StatelessWidget {
       title: const Text('whats new?'),
       contentPadding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       content: ChangelogWidget(data),
-      actions: <Widget>[
+      actions: [
         DialogAction<void>(
           text: 'ok',
           onTap: () => app<HarpyNavigator>().maybePop(),

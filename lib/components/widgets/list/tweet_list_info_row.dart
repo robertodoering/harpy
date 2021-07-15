@@ -32,7 +32,7 @@ class TweetListInfoRow extends StatelessWidget {
               vertical: defaultSmallPaddingValue,
             ),
         child: Row(
-          children: <Widget>[
+          children: [
             IconTheme(
               data: theme.iconTheme.copyWith(size: 18),
               child: SizedBox(

@@ -38,7 +38,7 @@ class HarpySliverAppBar extends StatelessWidget {
   Widget _buildTitle(ThemeData theme) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+      children: [
         if (titleWidget != null) Expanded(child: titleWidget!),
         if (title != null)
           Flexible(
@@ -49,7 +49,7 @@ class HarpySliverAppBar extends StatelessWidget {
               softWrap: false,
             ),
           ),
-        if (showIcon) ...<Widget>[
+        if (showIcon) ...[
           const SizedBox(width: 4),
           const FlareIcon.harpyLogo(size: 24),
         ],

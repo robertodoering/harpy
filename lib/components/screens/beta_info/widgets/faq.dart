@@ -94,9 +94,9 @@ class BetaFaq extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        for (_FaqEntry entry in entries) ...<Widget>[
-          ContentCard(children: <Widget>[entry]),
+      children: [
+        for (_FaqEntry entry in entries) ...[
+          ContentCard(children: [entry]),
           if (entry != entries.last) defaultVerticalSpacer,
         ]
       ],
@@ -119,7 +119,7 @@ class _FaqEntry extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         DefaultTextStyle(style: theme.textTheme.subtitle2!, child: question),
         defaultSmallVerticalSpacer,
         answer,

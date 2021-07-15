@@ -33,7 +33,7 @@ class TranslatedText extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
+      children: [
         // 'translated from' original language text
         Text.rich(
           TextSpan(

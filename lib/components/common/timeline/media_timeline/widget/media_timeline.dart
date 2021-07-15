@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
@@ -86,10 +85,10 @@ class _MediaTimelineState extends State<MediaTimeline> {
           model.hasEntries ? _buildFloatingActionButton() : null,
       body: CustomScrollView(
         key: const PageStorageKey<String>('user_media_timeline'),
-        slivers: <Widget>[
+        slivers: [
           if (widget.showInitialLoading)
             const SliverFillLoadingIndicator()
-          else if (model.hasEntries) ...<Widget>[
+          else if (model.hasEntries) ...[
             SliverPadding(
               padding: DefaultEdgeInsets.all(),
               sliver: _buildList(entries),

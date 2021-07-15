@@ -18,10 +18,10 @@ class TweetSearchList extends StatelessWidget {
         child: TweetList(
           state is TweetSearchResult ? state.tweets : <TweetData>[],
           enableScroll: state.hasResults,
-          beginSlivers: <Widget>[
+          beginSlivers: [
             TweetSearchAppBar(text: state.searchQuery),
           ],
-          endSlivers: <Widget>[
+          endSlivers: [
             if (state.showLoading)
               const TweetListLoadingSliver()
             else if (state.showNoResults)

@@ -14,7 +14,7 @@ class BetaInfoScreen extends StatelessWidget {
 
   Widget _buildIntroText(ThemeData theme) {
     return ContentCard(
-      children: <Widget>[
+      children: [
         Text.rich(
           TextSpan(
             children: <InlineSpan>[
@@ -45,7 +45,7 @@ class BetaInfoScreen extends StatelessWidget {
       title: 'beta info',
       body: ListView(
         padding: DefaultEdgeInsets.all(),
-        children: <Widget>[
+        children: [
           _buildIntroText(theme),
           defaultVerticalSpacer,
           Center(child: Text('faq', style: theme.textTheme.subtitle1)),

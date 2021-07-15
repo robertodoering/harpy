@@ -37,7 +37,7 @@ class UserCard extends StatelessWidget {
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Text(
                 '@${user.handle}',
                 softWrap: false,

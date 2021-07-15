@@ -32,11 +32,11 @@ class UserProfileContent extends StatelessWidget {
               endDrawer: const UserTimelineFilterDrawer(),
               endDrawerEnableOpenDragGesture: false,
               body: HarpySliverTabView(
-                headerSlivers: const <Widget>[
+                headerSlivers: const [
                   UserProfileAppBar(),
                   UserProfileHeader(),
                 ],
-                tabs: <Widget>[
+                tabs: [
                   const HarpyTab(
                     icon: Icon(CupertinoIcons.time),
                     text: Text('timeline'),
@@ -55,7 +55,7 @@ class UserProfileContent extends StatelessWidget {
                     text: Text('likes'),
                   ),
                 ],
-                children: <Widget>[
+                children: [
                   const UserTimeline(),
                   const UserMediaTimeline(),
                   if (isAuthenticatedUser)

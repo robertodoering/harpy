@@ -35,7 +35,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
   showHarpyBottomSheet<void>(
     context,
     hapticFeedback: true,
-    children: <Widget>[
+    children: [
       BottomSheetHeader(
         child: Text(url.expandedUrl),
       ),

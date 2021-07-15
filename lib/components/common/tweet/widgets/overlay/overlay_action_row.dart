@@ -54,7 +54,7 @@ class MediaOverlayActionRow extends StatelessWidget {
         value: tweetBloc,
         child: BlocBuilder<TweetBloc, TweetState>(
           builder: (context, state) => Row(
-            children: <Widget>[
+            children: [
               CustomAnimatedSize(
                 alignment: Alignment.centerLeft,
                 child: RetweetButton(

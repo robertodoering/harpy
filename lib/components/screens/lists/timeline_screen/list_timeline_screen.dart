@@ -41,7 +41,7 @@ class ListTimelineScreen extends StatelessWidget {
           child: ScrollToStart(
             child: ListTimeline(
               listId: list.idStr,
-              beginSlivers: <Widget>[
+              beginSlivers: [
                 HarpySliverAppBar(
                   title: list.name,
                   floating: true,

@@ -49,17 +49,7 @@ abstract class AuthenticationEvent {
       // network error
       final retry = await showDialog<bool>(
         context: app<HarpyNavigator>().state.context,
-        builder: (_) => const HarpyDialog(
-          title: Text('login'),
-          content: Text(
-            'unable to initialize authenticated user\n\n'
-            'check your connection and try again',
-          ),
-          actions: <Widget>[
-            DialogAction<bool>(result: false, text: 'cancel'),
-            DialogAction<bool>(result: true, text: 'retry'),
-          ],
-        ),
+        builder: (_) => const RetryAuthenticationDialog(),
       );
 
       if (retry != null && retry) {

@@ -47,7 +47,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
   }
 
   List<Widget> _buildSettings(Locale locale) {
-    return <Widget>[
+    return [
       const ListTile(
         leading: Icon(Icons.translate),
         title: Text('App language'),

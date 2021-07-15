@@ -90,7 +90,7 @@ class _HarpyTabState extends State<HarpyTab>
         widthFactor: 1 - _animationController.value,
         alignment: Alignment.centerRight,
         child: Row(
-          children: <Widget>[
+          children: [
             defaultSmallHorizontalSpacer,
             widget.text!,
           ],
@@ -124,7 +124,7 @@ class _HarpyTabState extends State<HarpyTab>
                 child: SizedBox(
                   height: HarpyTab.tabIconSize,
                   child: Row(
-                    children: <Widget>[
+                    children: [
                       widget.icon,
                       if (widget.text != null) _buildText(),
                     ],

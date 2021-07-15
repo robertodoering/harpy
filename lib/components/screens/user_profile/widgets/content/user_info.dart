@@ -121,17 +121,17 @@ class UserProfileInfo extends StatelessWidget {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildAvatar(),
         defaultHorizontalSpacer,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Row(
-                children: <Widget>[
+                children: [
                   Expanded(child: _buildHandle(theme)),
-                  if (enableFollow) ...<Widget>[
+                  if (enableFollow) ...[
                     defaultHorizontalSpacer,
                     _buildFollowButton(theme),
                   ],

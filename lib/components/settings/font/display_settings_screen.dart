@@ -18,7 +18,7 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
 
   Widget _buildSettings(ThemeBloc themeBloc, MediaQueryData mediaQuery) {
     return Column(
-      children: <Widget>[
+      children: [
         Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -30,7 +30,7 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
           ),
         ),
         Column(
-          children: <Widget>[
+          children: [
             ListTile(
               leading: const Icon(CupertinoIcons.textformat_size),
               title: const Text('font size'),
@@ -79,7 +79,7 @@ class _DisplaySettingsScreenState extends State<DisplaySettingsScreen> {
 
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
-    return <Widget>[
+    return [
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {

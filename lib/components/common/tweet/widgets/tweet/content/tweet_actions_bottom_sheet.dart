@@ -37,10 +37,10 @@ void showTweetActionsBottomSheet(
   showHarpyBottomSheet<void>(
     context,
     hapticFeedback: true,
-    children: <Widget>[
+    children: [
       BottomSheetHeader(
         child: Column(
-          children: <Widget>[
+          children: [
             Text('tweet from ${tweet.user.name}'),
             defaultSmallVerticalSpacer,
             Text(tweetTime),

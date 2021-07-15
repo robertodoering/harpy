@@ -25,7 +25,7 @@ class ListInfoMessage extends StatelessWidget {
         alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             if (primaryMessage != null)
               DefaultTextStyle(
                 style: theme.textTheme.headline6!,

@@ -56,7 +56,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   Widget _buildProCard(ThemeData theme) {
     return HarpyProCard(
-      children: <Widget>[
+      children: [
         const Text(
           'unlock the full potential of customizing the home screen with '
           'harpy pro',
@@ -74,7 +74,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   Widget _buildInfoText(ThemeData theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+      children: [
         Icon(CupertinoIcons.info, color: theme.accentColor),
         defaultHorizontalSpacer,
         const Flexible(
@@ -114,7 +114,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       value: widget.model,
       child: HarpyScaffold(
         title: 'home customization',
-        actions: <Widget>[_buildAction()],
+        actions: [_buildAction()],
         body: GestureDetector(
           // remove focus on background tap
           onTap: () => removeFocus(context),
@@ -123,13 +123,13 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
               final model = context.watch<HomeTabModel>();
 
               return CustomScrollView(
-                slivers: <Widget>[
+                slivers: [
                   SliverPadding(
                     padding: DefaultEdgeInsets.all(),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate(
-                        <Widget>[
-                          if (Harpy.isFree) ...<Widget>[
+                        [
+                          if (Harpy.isFree) ...[
                             _buildProCard(theme),
                             defaultVerticalSpacer,
                             _buildInfoText(theme),

@@ -105,7 +105,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
     final show = _show(mediaQuery, scrollDirection);
 
     return Stack(
-      children: <Widget>[
+      children: [
         widget.child,
         Align(
           alignment: Alignment.bottomCenter,

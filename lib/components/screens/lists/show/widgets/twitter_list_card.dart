@@ -19,7 +19,7 @@ class TwitterListCard extends StatelessWidget {
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
-      children: <Widget>[
+      children: [
         Flexible(
           child: Text(
             list.name,
@@ -28,7 +28,7 @@ class TwitterListCard extends StatelessWidget {
             overflow: TextOverflow.fade,
           ),
         ),
-        if (list.isPrivate) ...<Widget>[
+        if (list.isPrivate) ...[
           SizedBox(width: defaultSmallPaddingValue / 2),
           const Icon(CupertinoIcons.padlock),
         ],
@@ -47,7 +47,7 @@ class TwitterListCard extends StatelessWidget {
 
   Widget _buildUserRow(ThemeData theme) {
     return Row(
-      children: <Widget>[
+      children: [
         HarpyCircleAvatar(
           // use the normal sized profile image instead of the bigger one for
           // the small circle avatar
@@ -89,7 +89,7 @@ class TwitterListCard extends StatelessWidget {
             padding: DefaultEdgeInsets.all(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 _buildTitle(theme),
                 if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,

@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildButtons() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
+      children: [
         _LoginButton(
           onTap: () => _startLogin(context.read<AuthenticationBloc>()),
         ),
@@ -101,15 +101,15 @@ class _LoginScreenState extends State<LoginScreen> {
       key: _slideLoginKey,
       endPosition: Offset(0, -mediaQuery.size.height),
       child: Stack(
-        children: <Widget>[
+        children: [
           _buildAboutButton(theme),
           Column(
-            children: <Widget>[
+            children: [
               Expanded(child: _buildText()),
               Expanded(
                 flex: 2,
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     Expanded(child: _buildTitle(theme)),
                     Expanded(child: _buildLogo()),
                   ],

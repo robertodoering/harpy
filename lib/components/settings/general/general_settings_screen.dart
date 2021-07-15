@@ -19,7 +19,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   final GeneralPreferences? generalPreferences = app<GeneralPreferences>();
 
   List<Widget> get _settings {
-    return <Widget>[
+    return [
       SwitchListTile(
         secondary: const Icon(Icons.update),
         title: const Text('Show changelog dialog'),

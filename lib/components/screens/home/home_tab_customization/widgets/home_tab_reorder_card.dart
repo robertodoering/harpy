@@ -96,7 +96,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       child: Card(
         margin: EdgeInsets.only(bottom: defaultSmallPaddingValue),
         child: Row(
-          children: <Widget>[
+          children: [
             Padding(
               padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
               child: HarpyButton.raised(

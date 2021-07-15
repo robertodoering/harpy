@@ -111,14 +111,14 @@ class _HarpyVideoPlayerState extends State<HarpyVideoPlayer> {
 
   Widget _buildVideo(HarpyVideoPlayerModel model) {
     Widget child = Stack(
-      children: <Widget>[
+      children: [
         AspectRatio(
           aspectRatio: _controller!.value.aspectRatio,
           child: VideoPlayer(_controller!),
         ),
         Positioned.fill(
           child: Row(
-            children: <Widget>[
+            children: [
               Expanded(
                 child: GestureDetector(
                   onTap: () => _onVideoTap(model),

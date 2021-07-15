@@ -74,12 +74,12 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
       child: Card(
         elevation: 0,
         child: Column(
-          children: <Widget>[
+          children: [
             Expanded(
               child: Scrollbar(
                 child: ListView(
                   padding: EdgeInsets.zero,
-                  children: <Widget>[
+                  children: [
                     const _TopRow(),
                     ComposeTextField(
                       controller: _controller,

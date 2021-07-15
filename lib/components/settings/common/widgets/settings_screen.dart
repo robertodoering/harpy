@@ -12,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
 
   Map<String, List<Widget>> get _settings {
     return <String, List<Widget>>{
-      'tweet': <Widget>[
+      'tweet': [
         ListTile(
           leading: const Icon(CupertinoIcons.photo),
           title: const Text('Media'),
@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
-      'appearance': <Widget>[
+      'appearance': [
         ListTile(
           leading: const Icon(Icons.color_lens),
           title: const Text('Theme'),
@@ -40,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
-      'other': <Widget>[
+      'other': [
         ListTile(
           leading: const Icon(FeatherIcons.sliders),
           title: const Text('General'),

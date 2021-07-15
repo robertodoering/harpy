@@ -51,10 +51,10 @@ class _ProDialogState extends State<ProDialog> {
     return HarpyDialog(
       title: const Text('harpy pro'),
       content: Column(
-        children: <Widget>[
+        children: [
           const FlareIcon.shiningStar(size: 64),
           const SizedBox(height: 16),
-          if (widget.feature != null) ...<Widget>[
+          if (widget.feature != null) ...[
             Text(
               '${widget.feature} is only available in the '
               'pro version for harpy',

@@ -28,7 +28,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
     return Padding(
       padding: DefaultEdgeInsets.symmetric(horizontal: true),
       child: Row(
-        children: <Widget>[
+        children: [
           Icon(
             Icons.error_outline,
             color: theme.errorColor,
@@ -52,7 +52,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: DefaultEdgeInsets.symmetric(horizontal: true),
             child: TextField(
@@ -60,7 +60,7 @@ class _ThemeNameSelectionState extends State<ThemeNameSelection> {
               maxLength: 20,
             ),
           ),
-          if (!widget.bloc.validName) ...<Widget>[
+          if (!widget.bloc.validName) ...[
             defaultSmallVerticalSpacer,
             _buildInvalidName(theme),
           ],

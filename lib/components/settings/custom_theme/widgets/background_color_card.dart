@@ -50,7 +50,7 @@ class BackgroundColorCard extends StatelessWidget {
         color: color,
         clipBehavior: Clip.antiAlias,
         child: Stack(
-          children: <Widget>[
+          children: [
             ListTile(
               leading: const SizedBox(),
               trailing: const SizedBox(),

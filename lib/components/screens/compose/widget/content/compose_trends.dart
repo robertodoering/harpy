@@ -60,7 +60,7 @@ class TrendSuggestions extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      children: <Widget>[
+      children: [
         Padding(
           padding: DefaultEdgeInsets.all().copyWith(
             bottom: defaultSmallPaddingValue / 2,
@@ -74,7 +74,7 @@ class TrendSuggestions extends StatelessWidget {
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             for (Trend trend in state.hashtags)
               HarpyButton.flat(
                 padding: EdgeInsets.symmetric(

@@ -20,7 +20,7 @@ class FilterGroup extends StatelessWidget {
 
   Widget _buildTitleRow(ThemeData theme) {
     return Row(
-      children: <Widget>[
+      children: [
         if (title != null)
           Expanded(
             child: Padding(
@@ -51,7 +51,7 @@ class FilterGroup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             if (title != null || toggleAll != null) _buildTitleRow(theme),
             ...children,
           ],

@@ -56,7 +56,7 @@ class TweetCardReplies extends StatelessWidget {
           Padding(
             padding: DefaultEdgeInsets.all().copyWith(top: 0),
             child: Row(
-              children: <Widget>[
+              children: [
                 SizedBox(
                   width: TweetCardAvatar.defaultRadius * 2,
                   child: Icon(CupertinoIcons.reply, size: 18 + fontSizeDelta),

@@ -49,12 +49,12 @@ class _FilterListEntryState extends State<FilterListEntry> {
       final foregroundColor = harpyTheme.buttonTextColor;
       final backgroundColor = harpyTheme.accentColor;
 
-      return <Widget>[
+      return [
         defaultSmallVerticalSpacer,
         Wrap(
           spacing: defaultSmallPaddingValue,
           runSpacing: defaultSmallPaddingValue,
-          children: <Widget>[
+          children: [
             for (int i = 0; i < widget.activeFilters.length; i++)
               FadeAnimation(
                 child: Chip(
@@ -74,7 +74,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
         )
       ];
     } else {
-      return <Widget>[];
+      return [];
     }
   }
 
@@ -113,9 +113,9 @@ class _FilterListEntryState extends State<FilterListEntry> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Row(
-            children: <Widget>[
+            children: [
               Expanded(
                 child: TextField(
                   controller: _controller,

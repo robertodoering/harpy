@@ -85,7 +85,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
-      children: <Widget>[
+      children: [
         widget.child,
         Positioned.fill(
           child: Align(

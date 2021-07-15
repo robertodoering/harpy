@@ -47,7 +47,7 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
       child: TweetList(
         state.timelineTweets,
         key: const PageStorageKey<String>('mentions_timeline'),
-        endSlivers: <Widget>[
+        endSlivers: [
           if (state.showLoading)
             const TweetListLoadingSliver()
           else if (state.showNoMentionsFound)

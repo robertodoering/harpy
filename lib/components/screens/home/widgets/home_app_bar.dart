@@ -17,7 +17,7 @@ class HomeAppBar extends StatelessWidget {
     TimelineFilterModel model,
     HomeTimelineBloc bloc,
   ) {
-    return <Widget>[
+    return [
       HarpyButton.flat(
         padding: const EdgeInsets.all(16),
         icon: bloc.state.enableFilter &&
@@ -66,7 +66,7 @@ class HomeAppBar extends StatelessWidget {
           : Offset.zero,
       child: CustomScrollView(
         shrinkWrap: true,
-        slivers: <Widget>[
+        slivers: [
           HarpySliverAppBar(
             title: 'Harpy',
             showIcon: true,

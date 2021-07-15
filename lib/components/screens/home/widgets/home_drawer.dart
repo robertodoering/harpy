@@ -16,12 +16,12 @@ class HomeDrawer extends StatelessWidget {
     final authBloc = AuthenticationBloc.of(context);
 
     return Column(
-      children: <Widget>[
+      children: [
         Expanded(
           child: ListView(
             primary: false,
             padding: EdgeInsets.zero,
-            children: <Widget>[
+            children: [
               // profile
               ListTile(
                 leading: const Icon(CupertinoIcons.person),
@@ -113,7 +113,7 @@ class HomeDrawer extends StatelessWidget {
     return Drawer(
       child: HarpyBackground(
         child: Column(
-          children: <Widget>[
+          children: [
             const HomeDrawerHeader(),
             Expanded(
               child: SafeArea(

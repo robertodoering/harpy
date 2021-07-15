@@ -25,7 +25,7 @@ class TweetCardName extends StatelessWidget {
       onTap: () => context.read<TweetBloc>().onUserTap(context),
       child: IntrinsicWidth(
         child: Row(
-          children: <Widget>[
+          children: [
             Flexible(
               child: Text(
                 tweet.user.name,

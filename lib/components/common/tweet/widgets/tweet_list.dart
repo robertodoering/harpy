@@ -13,8 +13,8 @@ class TweetList extends StatelessWidget {
     this.tweets, {
     this.controller,
     this.tweetBuilder = defaultTweetBuilder,
-    this.beginSlivers = const <Widget>[],
-    this.endSlivers = const <Widget>[],
+    this.beginSlivers = const [],
+    this.endSlivers = const [],
     this.enableScroll = true,
     Key? key,
   }) : super(key: key);
@@ -55,7 +55,7 @@ class TweetList extends StatelessWidget {
           ? const AlwaysScrollableScrollPhysics()
           : const NeverScrollableScrollPhysics(),
       cacheExtent: 0,
-      slivers: <Widget>[
+      slivers: [
         ...beginSlivers,
         SliverPadding(
           padding: DefaultEdgeInsets.all(),

@@ -15,7 +15,7 @@ class HomeDrawerHeader extends StatelessWidget {
         screenName: user.handle,
       ),
       child: Row(
-        children: <Widget>[
+        children: [
           // circle avatar
           HarpyCircleAvatar(
             radius: 32,
@@ -28,7 +28,7 @@ class HomeDrawerHeader extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Text(
                   user.name,
                   style: Theme.of(context).textTheme.headline6,
@@ -65,7 +65,7 @@ class HomeDrawerHeader extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           _buildAvatarRow(context, user),
           const SizedBox(height: 16),
           SizedBox(

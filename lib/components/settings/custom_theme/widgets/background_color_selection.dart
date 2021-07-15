@@ -23,7 +23,7 @@ class BackgroundColorSelection extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Padding(
           padding: DefaultEdgeInsets.symmetric(horizontal: true),
           child: Text('background colors', style: textTheme.headline4),

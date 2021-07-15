@@ -81,12 +81,12 @@ class CustomThemeScreen extends StatelessWidget {
 
   Widget _buildBody(CustomThemeBloc customThemeBloc) {
     return Column(
-      children: <Widget>[
+      children: [
         Expanded(
           child: ListView(
             padding: DefaultEdgeInsets.symmetric(vertical: true),
-            children: <Widget>[
-              if (Harpy.isFree) ...<Widget>[
+            children: [
+              if (Harpy.isFree) ...[
                 const BuyProText(),
                 defaultVerticalSpacer,
               ],
@@ -131,7 +131,7 @@ class CustomThemeScreen extends StatelessWidget {
                 ),
                 child: HarpyScaffold(
                   backgroundColors: harpyTheme.backgroundColors,
-                  actions: <Widget>[
+                  actions: [
                     _buildSaveAction(customThemeBloc),
                   ],
                   title: 'theme customization',

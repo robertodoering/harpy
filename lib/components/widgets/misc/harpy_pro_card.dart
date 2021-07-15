@@ -72,10 +72,10 @@ class HarpyProCard extends StatelessWidget {
                     style: textStyle,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: [
                             const FlareIcon.shiningStar(size: 32),
                             const SizedBox(width: 8),
                             Text('harpy pro', style: headline),
