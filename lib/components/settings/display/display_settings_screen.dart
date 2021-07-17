@@ -13,6 +13,7 @@ class DisplaySettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
 
     final configBloc = context.watch<ConfigBloc>();
     final config = configBloc.state;
@@ -52,19 +53,32 @@ class DisplaySettingsScreen extends StatelessWidget {
               ListTile(
                 leading: const Icon(CupertinoIcons.textformat_size),
                 title: const Text('font size'),
-                subtitle: Slider(
-                  value: config.fontSizeDelta,
-                  label: config.fontSizeDeltaName,
-                  min: -4,
-                  max: 4,
-                  divisions: 4,
-                  onChanged: (value) {
-                    if (value != config.fontSizeDelta) {
-                      HapticFeedback.lightImpact();
+                subtitle: SliderTheme(
+                  data: theme.sliderTheme.copyWith(
+                    valueIndicatorColor:
+                        theme.colorScheme.primary.withOpacity(.8),
+                    valueIndicatorTextStyle:
+                        theme.textTheme.subtitle1!.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 13,
+                    ),
+                  ),
+                  child: Slider(
+                    value: config.fontSizeDelta,
+                    label: config.fontSizeDeltaName,
+                    min: -4,
+                    max: 4,
+                    divisions: 4,
+                    onChanged: (value) {
+                      if (value != config.fontSizeDelta) {
+                        HapticFeedback.lightImpact();
 
-                      configBloc.add(UpdateFontSizeDelta(fontSizeDelta: value));
-                    }
-                  },
+                        configBloc.add(
+                          UpdateFontSizeDelta(fontSizeDelta: value),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
               const ListTile(

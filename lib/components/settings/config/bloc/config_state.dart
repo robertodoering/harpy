@@ -63,7 +63,7 @@ extension ConfigStateExtension on ConfigState {
   }
 
   String get fontSizeDeltaName {
-    final deltaId = app<HarpyPreferences>().getInt('fontSizeDelta', 0);
+    final deltaId = app<HarpyPreferences>().getInt('fontSizeDeltaId', 0);
 
     return _fontSizeDeltaIdNameMap[deltaId] ?? 'normal';
   }
