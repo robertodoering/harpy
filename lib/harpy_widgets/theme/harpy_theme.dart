@@ -155,10 +155,10 @@ class HarpyTheme {
   void _setupErrorColor() {
     errorColor = _calculateBestContrastColor(
       colors: [
+        const Color(0xFFD21404),
         Colors.red,
         Colors.redAccent,
         Colors.deepOrange,
-        Colors.orangeAccent,
       ],
       baseLuminance: _backgroundLuminance,
     );
@@ -216,6 +216,9 @@ class HarpyTheme {
 
   /// Sets the system ui colors and brightness values based on their color and
   /// transparency.
+  ///
+  /// If the status bar color has transparency, the estimated color on the
+  /// background will be used to determine the brightness.
   void _setupSystemUiColors() {
     statusBarBrightness = ThemeData.estimateBrightnessForColor(
       Color.lerp(
@@ -441,6 +444,8 @@ class HarpyTheme {
   }
 }
 
+/// Returns the color in [colors] that has the best contrast on the
+/// [baseLuminance].
 Color _calculateBestContrastColor({
   required List<Color> colors,
   required double baseLuminance,

@@ -49,18 +49,13 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
           onTap: () => app<HarpyNavigator>().pop(_color),
         ),
       ],
-      content: CustomAnimatedSize(
-        child: AnimatedSwitcher(
-          duration: kShortAnimationDuration,
-          child: HarpyColorPicker(
-            color: _color,
-            allowTransparency: widget.allowTransparency,
-            onColorChanged: (color) {
-              _color = color;
-              widget.onColorChanged?.call(color);
-            },
-          ),
-        ),
+      content: HarpyColorPicker(
+        color: _color,
+        allowTransparency: widget.allowTransparency,
+        onColorChanged: (color) {
+          _color = color;
+          widget.onColorChanged?.call(color);
+        },
       ),
     );
   }
