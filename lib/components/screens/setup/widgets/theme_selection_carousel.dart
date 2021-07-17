@@ -47,26 +47,30 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
     }
   }
 
-  List<Widget> _buildItems() {
-    return <Widget>[
-      // for (HarpyTheme harpyTheme in predefinedThemes)
-      //   Container(
-      //     margin: const EdgeInsets.all(32),
-      //     decoration: BoxDecoration(
-      //       border: Border.all(color: harpyTheme.foregroundColor),
-      //       gradient: LinearGradient(
-      //         begin: Alignment.topCenter,
-      //         end: Alignment.bottomCenter,
-      //         colors: harpyTheme.backgroundColors.length == 1
-      //             ? <Color>[
-      //                 harpyTheme.backgroundColors.first,
-      //                 harpyTheme.backgroundColors.first,
-      //               ]
-      //             : harpyTheme.backgroundColors,
-      //       ),
-      //       shape: BoxShape.circle,
-      //     ),
-      //   ),
+  List<Widget> _buildItems(ConfigState config) {
+    final harpyThemes = predefinedThemes.map(
+      (data) => HarpyTheme.fromData(data: data, config: config),
+    );
+
+    return [
+      for (final harpyTheme in harpyThemes)
+        Container(
+          margin: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            border: Border.all(color: harpyTheme.foregroundColor),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: harpyTheme.backgroundColors.length == 1
+                  ? [
+                      harpyTheme.backgroundColors.first,
+                      harpyTheme.backgroundColors.first,
+                    ]
+                  : harpyTheme.backgroundColors,
+            ),
+            shape: BoxShape.circle,
+          ),
+        ),
     ];
   }
 
@@ -95,15 +99,18 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   void _onSelectionChange(ThemeBloc themeBloc, int index) {
     HapticFeedback.lightImpact();
 
-    // themeBloc.add(
-    //   ChangeTheme(id: index, saveSelection: true), // todo
-    // );
+    themeBloc.add(ChangeTheme(
+      lightThemeId: index,
+      darkThemeId: index,
+      saveSelection: true,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeBloc = context.watch<ThemeBloc>();
+    final config = context.watch<ConfigBloc>().state;
 
     final iconColor = IconTheme.of(context).color!;
     final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
@@ -130,7 +137,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
               PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _controller,
-                children: _buildItems(),
+                children: _buildItems(config),
               ),
 
               // left button
