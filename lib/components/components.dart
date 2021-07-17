@@ -233,7 +233,7 @@ export 'widgets/misc/custom_sliver_app_bar.dart';
 export 'widgets/misc/download_status_message.dart';
 export 'widgets/misc/flare_icons.dart';
 export 'widgets/misc/followers_count.dart';
-export 'widgets/misc/global_bloc_provider.dart';
+export 'widgets/misc/global_provider.dart';
 export 'widgets/misc/harpy_message.dart';
 export 'widgets/misc/harpy_popup_menu_item.dart';
 export 'widgets/misc/harpy_pro_card.dart';

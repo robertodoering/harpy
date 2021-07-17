@@ -43,7 +43,7 @@ Future<void> _pushCustomTheme(
   BuildContext context, {
   required ThemeState state,
 }) async {
-  final systemBrightness = MediaQuery.platformBrightnessOf(context);
+  final systemBrightness = context.read<Brightness>();
 
   // use the currently selected theme as a starting point for the custom theme
   final themeData = (systemBrightness == Brightness.light

@@ -17,7 +17,6 @@ part 'theme_state.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc({
     required this.configBloc,
-    required this.systemBrightness,
   }) : super(ThemeState(
           lightThemeData: crow,
           darkThemeData: crow,
@@ -30,7 +29,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   }
 
   final ConfigBloc configBloc;
-  final Brightness systemBrightness;
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
@@ -56,10 +54,11 @@ void updateSystemUi(HarpyTheme theme) {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: theme.statusBarColor,
-      statusBarBrightness: theme.brightness,
+      statusBarBrightness: theme.statusBarBrightness,
       statusBarIconBrightness: theme.statusBarIconBrightness,
       systemNavigationBarColor: navBarColor,
-      systemNavigationBarIconBrightness: theme.systemNavBarIconBrightness,
+      systemNavigationBarDividerColor: navBarColor,
+      systemNavigationBarIconBrightness: theme.navBarIconBrightness,
     ),
   );
 }

@@ -43,7 +43,7 @@ class ThemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemBrightness = MediaQuery.platformBrightnessOf(context);
+    final systemBrightness = context.watch<Brightness>();
     final config = context.watch<ConfigBloc>().state;
 
     return _ThemeCardBase(

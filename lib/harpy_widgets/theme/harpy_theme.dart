@@ -81,7 +81,7 @@ class HarpyTheme {
   late Color onError;
   late Brightness statusBarBrightness;
   late Brightness statusBarIconBrightness;
-  late Brightness systemNavBarIconBrightness;
+  late Brightness navBarIconBrightness;
 
   late ThemeData themeData;
 
@@ -230,12 +230,12 @@ class HarpyTheme {
 
     statusBarIconBrightness = _complementaryBrightness(statusBarBrightness);
 
-    systemNavBarIconBrightness = _complementaryBrightness(
+    navBarIconBrightness = _complementaryBrightness(
       ThemeData.estimateBrightnessForColor(
         Color.lerp(
           navBarColor,
           backgroundColors.last,
-          1 - statusBarColor.opacity,
+          1 - navBarColor.opacity,
         )!,
       ),
     );
@@ -439,6 +439,11 @@ class HarpyTheme {
           borderRadius: kDefaultBorderRadius,
         ),
         contentPadding: config.edgeInsets,
+      ),
+
+      appBarTheme: AppBarTheme(
+        // overrides the system ui overlay style
+        brightness: statusBarBrightness,
       ),
     );
   }

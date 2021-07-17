@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:harpy/components/components.dart';
@@ -17,13 +18,17 @@ class Harpy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeBloc = context.watch<ThemeBloc>();
+    final systemBrightness = context.watch<Brightness>();
 
     return MaterialApp(
       title: 'Harpy',
       theme: themeBloc.state.lightHarpyTheme.themeData,
       darkTheme: themeBloc.state.darkHarpyTheme.themeData,
+      themeMode: systemBrightness == Brightness.light
+          ? ThemeMode.light
+          : ThemeMode.dark,
       color: Colors.black,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -33,7 +38,7 @@ class Harpy extends StatelessWidget {
       ),
       navigatorKey: app<HarpyNavigator>().key,
       onGenerateRoute: onGenerateRoute,
-      navigatorObservers: <NavigatorObserver>[
+      navigatorObservers: [
         FirebaseAnalyticsObserver(
           analytics: app<AnalyticsService>().analytics,
           nameExtractor: screenNameExtractor,
@@ -41,7 +46,7 @@ class Harpy extends StatelessWidget {
         harpyRouteObserver,
       ],
       home: const SplashScreen(),
-      builder: (context, child) => _ContentBuilder(child: child!),
+      builder: (_, child) => _ContentBuilder(child: child),
     );
   }
 }
@@ -51,16 +56,11 @@ class _ContentBuilder extends StatelessWidget {
     required this.child,
   });
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    final systemBrightness = MediaQuery.platformBrightnessOf(context);
-
-    return ProxyProvider<ThemeBloc, HarpyTheme>(
-      update: (_, themeBloc, __) => systemBrightness == Brightness.light
-          ? themeBloc.state.lightHarpyTheme
-          : themeBloc.state.darkHarpyTheme,
+    return HarpyThemeProvider(
       child: ScrollConfiguration(
         behavior: const HarpyScrollBehavior(),
         child: HarpyMessage(

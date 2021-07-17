@@ -32,3 +32,4 @@ export 'sliver_tab_view/harpy_sliver_tab_bar.dart';
 export 'sliver_tab_view/harpy_sliver_tab_view.dart';
 export 'theme/harpy_theme.dart';
 export 'theme/harpy_theme_data.dart';
+export 'theme/harpy_theme_provider.dart';

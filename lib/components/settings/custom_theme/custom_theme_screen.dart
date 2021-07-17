@@ -169,7 +169,7 @@ class _SaveThemeAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemBrightness = MediaQuery.platformBrightnessOf(context);
+    final systemBrightness = context.watch<Brightness>();
     final themeBloc = context.watch<ThemeBloc>();
     final cubit = context.watch<CustomThemeCubit>();
 
