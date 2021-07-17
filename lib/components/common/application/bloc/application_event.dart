@@ -41,7 +41,8 @@ class InitializeEvent extends ApplicationEvent {
     await app<HarpyInfo>().initialize();
 
     // update the system ui to match the initial theme
-    updateSystemUi(bloc.themeBloc.state.darkHarpyTheme); // todo
+    // (the initial light and dark theme are the same)
+    updateSystemUi(bloc.themeBloc.state.darkHarpyTheme);
 
     await Future.wait<void>(<Future<void>>[
       FlutterDisplayMode.setHighRefreshRate(),
