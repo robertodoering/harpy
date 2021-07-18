@@ -43,10 +43,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
+      defaultSmallVerticalSpacer,
       Row(
         children: [
           // align with the text in the list tile
-          SizedBox(width: config.paddingValue * 6),
+          SizedBox(width: config.paddingValue * 4),
           Icon(CupertinoIcons.info, color: theme.accentColor),
           defaultHorizontalSpacer,
           Expanded(
@@ -60,6 +61,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           ),
         ],
       ),
+      defaultVerticalSpacer,
       HarpySwitchTile(
         leading: const Icon(CupertinoIcons.crop),
         title: const Text('crop tweet image'),

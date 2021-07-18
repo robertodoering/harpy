@@ -15,6 +15,7 @@ class HarpyListTile extends StatelessWidget {
     this.contentPadding,
     this.leadingPadding,
     this.trailingPadding,
+    this.verticalAlignment,
     this.multilineTitle = false,
     this.multilineSubtitle = true,
   });
@@ -32,6 +33,7 @@ class HarpyListTile extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final EdgeInsets? leadingPadding;
   final EdgeInsets? trailingPadding;
+  final CrossAxisAlignment? verticalAlignment;
   final bool multilineTitle;
   final bool multilineSubtitle;
 
@@ -55,30 +57,20 @@ class HarpyListTile extends StatelessWidget {
             color: enabled ? fgColor : fgColor.withOpacity(.4),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: verticalAlignment ??
+                (title != null && subtitle != null
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center),
             children: [
               if (leading != null)
                 Padding(
-                  padding: leadingPadding ??
-                      EdgeInsets.all(config.paddingValue).copyWith(
-                        left: config.paddingValue * 2,
-                      ),
+                  padding: leadingPadding ?? config.edgeInsets,
                   child: leading,
                 ),
               if (title != null || subtitle != null)
                 Expanded(
                   child: Padding(
-                    padding: contentPadding ??
-                        EdgeInsets.only(
-                          top: config.paddingValue,
-                          bottom: config.paddingValue,
-                          left: leading == null
-                              ? config.paddingValue * 2
-                              : config.paddingValue,
-                          right: trailing == null
-                              ? config.paddingValue * 2
-                              : config.paddingValue,
-                        ),
+                    padding: contentPadding ?? config.edgeInsets,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -118,10 +110,7 @@ class HarpyListTile extends StatelessWidget {
                 const Spacer(),
               if (trailing != null)
                 Padding(
-                  padding: trailingPadding ??
-                      EdgeInsets.all(config.paddingValue).copyWith(
-                        right: config.paddingValue * 2,
-                      ),
+                  padding: trailingPadding ?? config.edgeInsets,
                   child: trailing,
                 ),
             ],
