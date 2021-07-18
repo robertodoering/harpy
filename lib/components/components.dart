@@ -160,6 +160,7 @@ export 'screens/user_profile/widgets/user_profile_content.dart';
 export 'screens/user_profile/widgets/user_profile_error.dart';
 export 'screens/user_profile/widgets/user_profile_header.dart';
 export 'screens/user_profile/widgets/user_profile_loading.dart';
+export 'settings/common/widgets/harpy_switch_tile.dart';
 export 'settings/common/widgets/radio_dialog_tile.dart';
 export 'settings/common/widgets/settings_group.dart';
 export 'settings/common/widgets/settings_list.dart';

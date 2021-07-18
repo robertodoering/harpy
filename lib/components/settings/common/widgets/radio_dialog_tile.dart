@@ -89,7 +89,7 @@ class RadioDialogTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return HarpyListTile(
       leading: Icon(leading),
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle!) : null,
