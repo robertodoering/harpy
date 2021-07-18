@@ -22,7 +22,7 @@ class SliverBoxLoadingShimmer extends StatelessWidget {
         curve: Curves.easeInOut,
         child: Shimmer.fromColors(
           baseColor: theme.cardTheme.color!.withOpacity(.3),
-          highlightColor: theme.accentColor,
+          highlightColor: theme.colorScheme.secondary,
           child: child,
         ),
       ),

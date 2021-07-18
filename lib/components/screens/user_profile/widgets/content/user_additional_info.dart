@@ -44,7 +44,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
       child: Text(
         url.displayUrl,
         style: theme.textTheme.bodyText1!.copyWith(
-          color: theme.accentColor,
+          color: theme.colorScheme.secondary,
           fontWeight: FontWeight.bold,
         ),
       ),

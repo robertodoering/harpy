@@ -75,7 +75,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(CupertinoIcons.info, color: theme.primaryColor),
+        Icon(CupertinoIcons.info, color: theme.colorScheme.primary),
         defaultHorizontalSpacer,
         const Flexible(
           child: Text(

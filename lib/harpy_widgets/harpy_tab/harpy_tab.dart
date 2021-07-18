@@ -71,7 +71,7 @@ class _HarpyTabState extends State<HarpyTab>
     final theme = Theme.of(context);
 
     _colorAnimation = ColorTween(
-      begin: theme.primaryColor,
+      begin: theme.colorScheme.primary,
       end: theme.textTheme.subtitle1!.color,
     ).animate(_animationController);
   }

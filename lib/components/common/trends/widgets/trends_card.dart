@@ -32,11 +32,11 @@ class TrendsCard extends StatelessWidget {
                   shape: kDefaultShapeBorder,
                   leading: Icon(
                     CupertinoIcons.location,
-                    color: theme.primaryColor,
+                    color: theme.colorScheme.primary,
                   ),
                   title: Text(
                     state.trendLocationName,
-                    style: TextStyle(color: theme.primaryColor),
+                    style: TextStyle(color: theme.colorScheme.primary),
                   ),
                   onTap: () => _showTrendsConfiguration(context),
                 ),

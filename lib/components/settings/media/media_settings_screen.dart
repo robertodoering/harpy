@@ -48,7 +48,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         children: [
           // align with the text in the list tile
           SizedBox(width: config.paddingValue * 4),
-          Icon(CupertinoIcons.info, color: theme.accentColor),
+          Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
           defaultHorizontalSpacer,
           Expanded(
             child: Text(

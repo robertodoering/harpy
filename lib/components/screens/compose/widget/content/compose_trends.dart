@@ -86,7 +86,7 @@ class TrendSuggestions extends StatelessWidget {
                 text: Text(
                   trend.name!,
                   style: theme.textTheme.bodyText1!.copyWith(
-                    color: theme.accentColor,
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
                 onTap: () => controller!.replaceSelection('${trend.name} '),

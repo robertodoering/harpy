@@ -273,7 +273,7 @@ class _TwitterTextState extends State<TwitterText> {
     final entityStyle = widget.entityStyle ??
         TextStyle(
           fontWeight: FontWeight.bold,
-          color: theme.accentColor,
+          color: theme.colorScheme.secondary,
         );
 
     return Text.rich(

@@ -44,7 +44,7 @@ class _ProDialogState extends State<ProDialog> {
 
     final style = theme.textTheme.subtitle2!;
     final linkStyle = style.copyWith(
-      color: theme.primaryColor,
+      color: theme.colorScheme.primary,
       fontWeight: FontWeight.bold,
     );
 

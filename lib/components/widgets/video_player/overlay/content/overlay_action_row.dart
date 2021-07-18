@@ -34,7 +34,7 @@ class OverlayActionRow extends StatelessWidget {
         model.controller!,
         allowScrubbing: true,
         colors: VideoProgressColors(
-          playedColor: theme.primaryColor.withOpacity(.7),
+          playedColor: theme.colorScheme.primary.withOpacity(.7),
         ),
       ),
     );

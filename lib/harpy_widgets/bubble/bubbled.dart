@@ -46,7 +46,7 @@ class Bubble extends StatelessWidget {
       width: 12,
       height: 12,
       decoration: BoxDecoration(
-        color: theme.primaryColor,
+        color: theme.colorScheme.primary,
         shape: BoxShape.circle,
       ),
     );

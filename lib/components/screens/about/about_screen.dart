@@ -209,7 +209,7 @@ class AboutScreen extends StatelessWidget {
     final color = textTheme.bodyText2!.color;
 
     final linkStyle = TextStyle(
-      color: theme.primaryColor,
+      color: theme.colorScheme.primary,
       fontWeight: FontWeight.bold,
     );
 
