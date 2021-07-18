@@ -70,7 +70,7 @@ class CustomThemeColor extends StatelessWidget {
         ),
         iconTheme: theme.iconTheme.copyWith(color: textColor),
       ),
-      child: HarpyListTile(
+      child: HarpyCard(
         title: title,
         subtitle: subtitle,
         leading: leading,
