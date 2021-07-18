@@ -16,24 +16,14 @@ class AddCustomThemeCard extends StatelessWidget {
     final theme = Theme.of(context);
     final bloc = context.watch<ThemeBloc>();
 
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor),
-        borderRadius: kDefaultBorderRadius,
-      ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: ListTile(
-          shape: kDefaultShapeBorder,
-          leading: const Icon(CupertinoIcons.add),
-          title: const Text('add custom theme'),
-          trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null,
-          onTap: () => _pushCustomTheme(
-            context,
-            state: bloc.state,
-          ),
-        ),
+    return HarpyListTile(
+      leading: const Icon(CupertinoIcons.add),
+      title: const Text('add custom theme'),
+      trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null,
+      border: Border.all(color: theme.dividerColor),
+      onTap: () => _pushCustomTheme(
+        context,
+        state: bloc.state,
       ),
     );
   }

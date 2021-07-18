@@ -49,13 +49,13 @@ class _ReorderableBackgroundColors extends StatelessWidget {
                 index: index,
                 child: Container(
                   color: Colors.transparent,
-                  padding: const EdgeInsets.all(16),
+                  padding: config.edgeInsets,
                   child: const Icon(CupertinoIcons.bars),
                 ),
               )
             : Container(
                 color: Colors.transparent,
-                padding: const EdgeInsets.all(16),
+                padding: config.edgeInsets,
                 child: Icon(
                   CupertinoIcons.bars,
                   color: theme.iconTheme.color!.withOpacity(.5),
@@ -73,10 +73,10 @@ class _ReorderableBackgroundColors extends StatelessWidget {
             value: cubit,
             child: CustomThemeColor(
               color: Color(color),
-              contentPadding: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
               leading: HarpyButton.flat(
                 icon: const Icon(CupertinoIcons.xmark, size: 20),
-                padding: const EdgeInsets.all(16),
+                padding: config.edgeInsets,
                 onTap: cubit.canRemoveBackgroundColor
                     ? () => cubit.removeBackgroundColor(index)
                     : null,
@@ -118,14 +118,10 @@ class _AddBackgroundColor extends StatelessWidget {
           border: Border.all(color: theme.dividerColor),
           borderRadius: kDefaultBorderRadius,
         ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: ListTile(
-            shape: kDefaultShapeBorder,
-            leading: const Icon(CupertinoIcons.add),
-            title: const Text('add background color'),
-            onTap: cubit.addBackgroundColor,
-          ),
+        child: HarpyListTile(
+          leading: const Icon(CupertinoIcons.add),
+          title: const Text('add background color'),
+          onTap: cubit.addBackgroundColor,
         ),
       ),
       secondChild: const SizedBox(width: double.infinity),

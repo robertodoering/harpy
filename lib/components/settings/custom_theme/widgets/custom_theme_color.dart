@@ -13,7 +13,7 @@ class CustomThemeColor extends StatelessWidget {
     this.subtitle,
     this.leading,
     this.trailing,
-    this.contentPadding,
+    this.padding,
   });
 
   final Color color;
@@ -23,7 +23,7 @@ class CustomThemeColor extends StatelessWidget {
   final Widget? subtitle;
   final Widget? leading;
   final Widget? trailing;
-  final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsets? padding;
 
   Future<void> _changeColor(BuildContext context) async {
     removeFocus(context);
@@ -64,38 +64,22 @@ class CustomThemeColor extends StatelessWidget {
 
     return Theme(
       data: theme.copyWith(
-        textTheme: theme.textTheme
-            .apply(
-              bodyColor: textColor,
-              displayColor: textColor,
-            )
-            .copyWith(
-              // override the body text which is used as the sub title
-              bodyText2: theme.textTheme.subtitle2!.copyWith(fontSize: 14),
-            ),
+        textTheme: theme.textTheme.apply(
+          bodyColor: textColor,
+          displayColor: textColor,
+        ),
         iconTheme: theme.iconTheme.copyWith(color: textColor),
       ),
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          borderRadius: kDefaultBorderRadius,
-          border: Border.all(
-            color: theme.dividerColor,
-          ),
-        ),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          color: color,
-          child: ListTile(
-            contentPadding: contentPadding,
-            shape: kDefaultShapeBorder,
-            title: title,
-            subtitle: subtitle,
-            leading: leading,
-            trailing: trailing,
-            onTap: () => _changeColor(context),
-          ),
-        ),
+      child: HarpyListTile(
+        title: title,
+        subtitle: subtitle,
+        leading: leading,
+        trailing: trailing,
+        leadingPadding: padding,
+        trailingPadding: padding,
+        onTap: () => _changeColor(context),
+        border: Border.all(color: theme.dividerColor),
+        color: color,
       ),
     );
   }
