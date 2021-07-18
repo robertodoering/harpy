@@ -14,7 +14,6 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
   Widget _buildActions(BuildContext context) {
-    final theme = Theme.of(context);
     final config = context.watch<ConfigBloc>().state;
     final authBloc = AuthenticationBloc.of(context);
 
