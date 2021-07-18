@@ -1,9 +1,17 @@
+import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 const predefinedThemes = [
   crow,
   swan,
   harpy,
+  if (Harpy.isPro) ...predefinedProThemes,
+];
+
+const predefinedProThemes = [
+  nord,
+  dracula,
+  monokai,
 ];
 
 const HarpyThemeData crow = HarpyThemeData(
@@ -32,6 +40,36 @@ const HarpyThemeData harpy = HarpyThemeData(
   primaryColor: 0xffff6ffe,
   secondaryColor: 0xffd570ff,
   cardColor: 0x16ff75ed,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
+);
+
+const HarpyThemeData nord = HarpyThemeData(
+  name: 'nord',
+  backgroundColors: [0xff2E3440],
+  primaryColor: 0xff5E81AC,
+  secondaryColor: 0xff88C0D0,
+  cardColor: 0x385e81ac,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
+);
+
+const HarpyThemeData dracula = HarpyThemeData(
+  name: 'dracula',
+  backgroundColors: [0xff282A36],
+  primaryColor: 0xffBD93F9,
+  secondaryColor: 0xffCAA9FA,
+  cardColor: 0x28BD93F9,
+  statusBarColor: 0x0,
+  navBarColor: 0x0,
+);
+
+const HarpyThemeData monokai = HarpyThemeData(
+  name: 'monokai',
+  backgroundColors: [0xff101010],
+  primaryColor: 0xff66aa11,
+  secondaryColor: 0xffff0090,
+  cardColor: 0x283579a8,
   statusBarColor: 0x0,
   navBarColor: 0x0,
 );

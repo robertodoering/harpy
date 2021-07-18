@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,8 @@ class ThemeSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final bloc = context.watch<ThemeBloc>();
     final state = bloc.state;
     final config = context.watch<ConfigBloc>().state;
@@ -46,55 +49,67 @@ class ThemeSelectionScreen extends StatelessWidget {
             newDarkThemeId: i,
           ),
         ),
-      for (var i = 0; i < state.customThemesData.length; i++)
-        ThemeCard(
-          HarpyTheme.fromData(
-            data: state.customThemesData[i],
-            config: config,
+      if (Harpy.isPro)
+        for (var i = 0; i < state.customThemesData.length; i++)
+          ThemeCard(
+            HarpyTheme.fromData(
+              data: state.customThemesData[i],
+              config: config,
+            ),
+            selectedLightTheme: i + 10 == lightThemeId,
+            selectedDarkTheme: i + 10 == darkThemeId,
+            onTap: () {
+              if (lightThemeId == i + 10 && darkThemeId == i + 10) {
+                // already selected as light a dark theme, edit selected theme
+                // instead
+                _editCustomTheme(
+                  context,
+                  config: config,
+                  state: state,
+                  themeId: i + 10,
+                );
+              } else {
+                _selectTheme(
+                  themeBloc: bloc,
+                  lightThemeId: lightThemeId,
+                  darkThemeId: darkThemeId,
+                  newLightThemeId: i + 10,
+                  newDarkThemeId: i + 10,
+                );
+              }
+            },
+            onSelectLightTheme: () => _selectTheme(
+              themeBloc: bloc,
+              lightThemeId: lightThemeId,
+              darkThemeId: darkThemeId,
+              newLightThemeId: i + 10,
+            ),
+            onSelectDarkTheme: () => _selectTheme(
+              themeBloc: bloc,
+              lightThemeId: lightThemeId,
+              darkThemeId: darkThemeId,
+              newDarkThemeId: i + 10,
+            ),
+            onEdit: () => _editCustomTheme(
+              context,
+              config: config,
+              state: state,
+              themeId: i + 10,
+            ),
+            onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
           ),
-          selectedLightTheme: i + 10 == lightThemeId,
-          selectedDarkTheme: i + 10 == darkThemeId,
-          onTap: () {
-            if (lightThemeId == i + 10 && darkThemeId == i + 10) {
-              // already selected as light a dark theme, edit selected theme
-              // instead
-              _editCustomTheme(
-                context,
-                config: config,
-                state: state,
-                themeId: i + 10,
-              );
-            } else {
-              _selectTheme(
-                themeBloc: bloc,
-                lightThemeId: lightThemeId,
-                darkThemeId: darkThemeId,
-                newLightThemeId: i + 10,
-                newDarkThemeId: i + 10,
-              );
-            }
-          },
-          onSelectLightTheme: () => _selectTheme(
-            themeBloc: bloc,
-            lightThemeId: lightThemeId,
-            darkThemeId: darkThemeId,
-            newLightThemeId: i + 10,
-          ),
-          onSelectDarkTheme: () => _selectTheme(
-            themeBloc: bloc,
-            lightThemeId: lightThemeId,
-            darkThemeId: darkThemeId,
-            newDarkThemeId: i + 10,
-          ),
-          onEdit: () => _editCustomTheme(
-            context,
-            config: config,
-            state: state,
-            themeId: i + 10,
-          ),
-          onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
-        ),
       const AddCustomThemeCard(),
+      if (Harpy.isFree) ...[
+        Padding(
+          padding: config.edgeInsets,
+          child: Text(
+            'only available for harpy pro',
+            style: theme.textTheme.subtitle2,
+          ),
+        ),
+        for (final proTheme in predefinedProThemes)
+          ProThemeCard(HarpyTheme.fromData(data: proTheme, config: config)),
+      ],
     ];
 
     return HarpyScaffold(

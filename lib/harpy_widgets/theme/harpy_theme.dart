@@ -134,10 +134,10 @@ class HarpyTheme {
         Color.lerp(cardColor, averageBackgroundColor, .9)!.withOpacity(.8);
 
     solidCardColor1 =
-        Color.lerp(cardColor, averageBackgroundColor, .775)!.withOpacity(1);
+        Color.lerp(cardColor, averageBackgroundColor, .85)!.withOpacity(1);
 
     solidCardColor2 =
-        Color.lerp(cardColor, averageBackgroundColor, .85)!.withOpacity(1);
+        Color.lerp(cardColor, averageBackgroundColor, .775)!.withOpacity(1);
   }
 
   void _setupButtonTextColor() {

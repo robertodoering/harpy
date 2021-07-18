@@ -102,6 +102,38 @@ class ThemeCard extends StatelessWidget {
   }
 }
 
+class ProThemeCard extends StatelessWidget {
+  const ProThemeCard(this.harpyTheme);
+
+  final HarpyTheme harpyTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    final config = context.watch<ConfigBloc>().state;
+
+    return _ThemeCardBase(
+      harpyTheme: harpyTheme,
+      selected: false,
+      child: Padding(
+        padding: config.edgeInsets,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                harpyTheme.name,
+                style: harpyTheme.themeData.textTheme.subtitle2,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const FlareIcon.shiningStar(size: 22),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _ThemeCardBase extends StatelessWidget {
   const _ThemeCardBase({
     required this.harpyTheme,

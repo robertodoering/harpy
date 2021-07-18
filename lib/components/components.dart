@@ -185,6 +185,7 @@ export 'settings/media/media_settings_screen.dart';
 export 'settings/theme_selection/bloc/theme_bloc.dart';
 export 'settings/theme_selection/theme_selection_screen.dart';
 export 'settings/theme_selection/widgets/add_custom_theme_card.dart';
+export 'settings/theme_selection/widgets/pro_themes_text.dart';
 export 'settings/theme_selection/widgets/theme_card.dart';
 export 'widgets/api/loading_data_error.dart';
 export 'widgets/buttons/action_button.dart';
