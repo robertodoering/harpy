@@ -55,6 +55,7 @@ class HarpyListTile extends StatelessWidget {
             color: enabled ? fgColor : fgColor.withOpacity(.4),
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (leading != null)
                 Padding(
