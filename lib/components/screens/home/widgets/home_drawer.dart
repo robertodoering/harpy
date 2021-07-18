@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,12 +15,8 @@ class HomeDrawer extends StatelessWidget {
 
   Widget _buildActions(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigBloc>().state;
     final authBloc = AuthenticationBloc.of(context);
-
-    final style = theme.textTheme.subtitle2!.copyWith(
-      height: 1,
-      fontSize: 14,
-    );
 
     return Column(
       children: <Widget>[
@@ -28,9 +26,9 @@ class HomeDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               // profile
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(CupertinoIcons.person),
-                title: Text('Profile', style: style),
+                title: const Text('profile'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushUserProfile(
@@ -40,9 +38,9 @@ class HomeDrawer extends StatelessWidget {
               ),
 
               // lists
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(CupertinoIcons.list_bullet),
-                title: Text('Lists', style: style),
+                title: const Text('lists'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushShowListsScreen();
@@ -52,9 +50,9 @@ class HomeDrawer extends StatelessWidget {
               const Divider(),
 
               // settings
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(FeatherIcons.settings),
-                title: Text('Settings', style: style),
+                title: const Text('settings'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(SettingsScreen.route);
@@ -63,20 +61,24 @@ class HomeDrawer extends StatelessWidget {
 
               // harpy pro
               if (Harpy.isFree)
-                ListTile(
+                HarpyListTile(
                   leading: const FlareIcon.shiningStar(
                     size: 30,
                     offset: Offset(-4, 0),
                   ),
-                  title: Text('Harpy pro', style: style),
+                  title: const Text('harpy pro'),
                   // todo: add harpy pro analytics
                   onTap: () => app<MessageService>().show('coming soon!'),
                 ),
 
               // about
-              ListTile(
-                leading: const FlareIcon.harpyLogo(offset: Offset(-4, 0)),
-                title: Text('About', style: style),
+              HarpyListTile(
+                leading: const FlareIcon.harpyLogo(),
+                leadingPadding: config.edgeInsets.copyWith(
+                  left: max(config.paddingValue - 6, 0),
+                  right: max(config.paddingValue - 6, 0),
+                ),
+                title: const Text('about'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
@@ -84,11 +86,11 @@ class HomeDrawer extends StatelessWidget {
               ),
 
               // beta info
-              ListTile(
+              HarpyListTile(
                 leading: Icon(CupertinoIcons.info, color: theme.primaryColor),
                 title: Text(
-                  'Beta info',
-                  style: style.copyWith(
+                  'beta info',
+                  style: TextStyle(
                     color: theme.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
@@ -103,9 +105,9 @@ class HomeDrawer extends StatelessWidget {
         ),
 
         // logout
-        ListTile(
+        HarpyListTile(
           leading: const Icon(CupertinoIcons.square_arrow_left),
-          title: Text('Logout', style: style),
+          title: const Text('logout'),
           onTap: () =>
               context.read<AuthenticationBloc>().add(const LogoutEvent()),
         ),
