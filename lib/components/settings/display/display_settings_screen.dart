@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class DisplaySettingsScreen extends StatelessWidget {
@@ -50,48 +51,47 @@ class DisplaySettingsScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              ListTile(
-                leading: const Icon(CupertinoIcons.textformat_size),
-                title: const Text('font size'),
-                subtitle: SliderTheme(
-                  data: theme.sliderTheme.copyWith(
-                    valueIndicatorColor:
-                        theme.colorScheme.primary.withOpacity(.8),
-                    valueIndicatorTextStyle:
-                        theme.textTheme.subtitle1!.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontSize: 13,
-                    ),
-                  ),
-                  child: Slider(
-                    value: config.fontSizeDelta,
-                    label: config.fontSizeDeltaName,
-                    min: -4,
-                    max: 4,
-                    divisions: 4,
-                    onChanged: (value) {
-                      if (value != config.fontSizeDelta) {
-                        HapticFeedback.lightImpact();
-
-                        configBloc.add(
-                          UpdateFontSizeDelta(fontSizeDelta: value),
-                        );
-                      }
-                    },
+              const HarpyListTile(
+                leading: Icon(CupertinoIcons.textformat_size),
+                title: Text('font size'),
+              ),
+              SliderTheme(
+                data: theme.sliderTheme.copyWith(
+                  activeTrackColor: theme.colorScheme.secondary,
+                  thumbColor: theme.colorScheme.secondary,
+                  valueIndicatorColor:
+                      theme.colorScheme.secondary.withOpacity(.8),
+                  valueIndicatorTextStyle: theme.textTheme.subtitle1!.copyWith(
+                    color: theme.colorScheme.onSecondary,
+                    fontSize: 13,
                   ),
                 ),
+                child: Slider(
+                  value: config.fontSizeDelta,
+                  label: config.fontSizeDeltaName,
+                  min: -4,
+                  max: 4,
+                  divisions: 4,
+                  onChanged: (value) {
+                    if (value != config.fontSizeDelta) {
+                      HapticFeedback.lightImpact();
+
+                      configBloc.add(
+                        UpdateFontSizeDelta(fontSizeDelta: value),
+                      );
+                    }
+                  },
+                ),
               ),
-              const ListTile(
+              const HarpyListTile(
                 leading: Icon(CupertinoIcons.textformat),
                 title: Text('font type'),
                 subtitle: Text('coming soon!'),
                 enabled: false,
               ),
-              SwitchListTile(
-                secondary: const Icon(
-                  CupertinoIcons.rectangle_compress_vertical,
-                ),
-                title: const Text('Compact layout'),
+              HarpySwitchTile(
+                leading: const Icon(CupertinoIcons.rectangle_compress_vertical),
+                title: const Text('compact layout'),
                 subtitle: const Text('use a visually dense layout'),
                 value: config.compactMode,
                 onChanged: (value) {
