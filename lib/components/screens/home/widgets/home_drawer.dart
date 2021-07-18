@@ -84,22 +84,6 @@ class HomeDrawer extends StatelessWidget {
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
                 },
               ),
-
-              // beta info
-              HarpyListTile(
-                leading: Icon(CupertinoIcons.info, color: theme.primaryColor),
-                title: Text(
-                  'beta info',
-                  style: TextStyle(
-                    color: theme.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushNamed(BetaInfoScreen.route);
-                },
-              ),
             ],
           ),
         ),

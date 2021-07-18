@@ -67,8 +67,6 @@ export 'common/tweet_card/tweet_card.dart';
 export 'common/user/widgets/user_card.dart';
 export 'common/user/widgets/user_list.dart';
 export 'screens/about/about_screen.dart';
-export 'screens/beta_info/beta_info_screen.dart';
-export 'screens/beta_info/widgets/faq.dart';
 export 'screens/changelog/changelog_screen.dart';
 export 'screens/changelog/widgets/changelog_widget.dart';
 export 'screens/compose/bloc/compose/compose_bloc.dart';
