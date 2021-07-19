@@ -458,7 +458,7 @@ Color _calculateBestContrastColor({
   assert(colors.isNotEmpty);
 
   Color? bestColor;
-  double? errorColorLuminance;
+  double? bestLuminance;
 
   for (final color in colors) {
     final luminance = _contrastRatio(
@@ -466,8 +466,8 @@ Color _calculateBestContrastColor({
       baseLuminance,
     );
 
-    if (errorColorLuminance == null || luminance > errorColorLuminance) {
-      errorColorLuminance = luminance;
+    if (bestLuminance == null || luminance > bestLuminance) {
+      bestLuminance = luminance;
       bestColor = color;
     }
   }
