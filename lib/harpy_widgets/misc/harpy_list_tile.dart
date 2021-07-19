@@ -90,11 +90,11 @@ class HarpyListTile extends StatelessWidget {
                           defaultSmallVerticalSpacer,
                         if (subtitle != null)
                           DefaultTextStyle(
-                            maxLines: multilineTitle ? null : 1,
+                            maxLines: multilineSubtitle ? null : 1,
                             overflow: TextOverflow.ellipsis,
                             style: textStyle
                                 .copyWith(
-                                  height: multilineTitle ? null : 1,
+                                  height: multilineSubtitle ? null : 1,
                                   color: textStyle.color!.withOpacity(
                                     enabled ? .8 : .3,
                                   ),
