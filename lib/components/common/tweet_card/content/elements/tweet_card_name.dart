@@ -14,11 +14,8 @@ class TweetCardName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
-
-    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onUserTap(context),
@@ -31,14 +28,14 @@ class TweetCardName extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyText2!
                     .copyWith(height: 1)
-                    .apply(fontSizeDelta: fontSizeDelta),
+                    .apply(fontSizeDelta: style.sizeDelta),
               ),
             ),
             if (tweet.user.verified) ...[
               const SizedBox(width: 4),
               Icon(
                 CupertinoIcons.checkmark_seal_fill,
-                size: 16 + fontSizeDelta,
+                size: 16 + style.sizeDelta,
               ),
             ]
           ],
