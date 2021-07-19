@@ -192,7 +192,7 @@ void showThemeSelectionBottomSheet(
         child: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       if (onDelete != null)
-        ListTile(
+        HarpyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
             'delete',
@@ -208,7 +208,7 @@ void showThemeSelectionBottomSheet(
           },
         ),
       if (onEdit != null)
-        ListTile(
+        HarpyListTile(
           leading: const Icon(FeatherIcons.edit2),
           title: const Text('edit'),
           onTap: () {
@@ -217,7 +217,7 @@ void showThemeSelectionBottomSheet(
             onEdit();
           },
         ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.sun_max),
         title: const Text('use as system light theme'),
         subtitle:
@@ -233,7 +233,7 @@ void showThemeSelectionBottomSheet(
                 onSelectLightTheme();
               },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.moon),
         title: const Text('use as system dark theme'),
         subtitle:

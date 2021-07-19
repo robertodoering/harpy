@@ -17,6 +17,7 @@ class RadioDialogTile<T> extends StatelessWidget {
     required this.values,
     required this.onChanged,
     this.trailing,
+    this.trailingPadding,
     this.subtitle,
     this.subtitles,
     this.enabled = true,
@@ -53,6 +54,7 @@ class RadioDialogTile<T> extends StatelessWidget {
   final bool enabled;
   final bool denseRadioTiles;
   final Widget? trailing;
+  final EdgeInsets? trailingPadding;
   final bool popOnOpen;
 
   Widget _buildDialog(BuildContext context) {
@@ -95,6 +97,7 @@ class RadioDialogTile<T> extends StatelessWidget {
       subtitle: subtitle != null ? Text(subtitle!) : null,
       enabled: enabled,
       trailing: trailing,
+      trailingPadding: trailingPadding,
       onTap: () {
         if (popOnOpen) {
           Navigator.of(context).pop();

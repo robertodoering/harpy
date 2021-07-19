@@ -10,24 +10,18 @@ class SearchScreen extends StatelessWidget {
   const SearchScreen();
 
   Widget _buildUserSearchCard() {
-    return Card(
-      child: ListTile(
-        shape: kDefaultShapeBorder,
-        leading: const Icon(CupertinoIcons.search),
-        title: const Text('users'),
-        onTap: () => app<HarpyNavigator>().pushNamed(UserSearchScreen.route),
-      ),
+    return HarpyListCard(
+      leading: const Icon(CupertinoIcons.search),
+      title: const Text('users'),
+      onTap: () => app<HarpyNavigator>().pushNamed(UserSearchScreen.route),
     );
   }
 
   Widget _buildTweetSearchCard() {
-    return Card(
-      child: ListTile(
-        shape: kDefaultShapeBorder,
-        leading: const Icon(CupertinoIcons.search),
-        title: const Text('tweets'),
-        onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(),
-      ),
+    return HarpyListCard(
+      leading: const Icon(CupertinoIcons.search),
+      title: const Text('tweets'),
+      onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(),
     );
   }
 

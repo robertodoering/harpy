@@ -39,7 +39,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
       BottomSheetHeader(
         child: Text(url.expandedUrl),
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open url externally'),
         onTap: () {
@@ -47,7 +47,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
           app<HarpyNavigator>().maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy url text'),
         onTap: () {
@@ -55,7 +55,7 @@ void defaultOnUrlLongPress(BuildContext context, UrlData url) {
           app<HarpyNavigator>().maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share url'),
         onTap: () {

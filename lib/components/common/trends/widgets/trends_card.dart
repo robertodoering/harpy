@@ -25,27 +25,21 @@ class TrendsCard extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Card(
-              child: CustomAnimatedSize(
-                alignment: Alignment.topCenter,
-                child: ListTile(
-                  shape: kDefaultShapeBorder,
-                  leading: Icon(
-                    CupertinoIcons.location,
-                    color: theme.colorScheme.primary,
-                  ),
-                  title: Text(
-                    state.trendLocationName,
-                    style: TextStyle(color: theme.colorScheme.primary),
-                  ),
-                  onTap: () => _showTrendsConfiguration(context),
-                ),
+            child: HarpyListCard(
+              leading: Icon(
+                CupertinoIcons.location,
+                color: theme.colorScheme.primary,
               ),
+              title: Text(
+                state.trendLocationName,
+                style: TextStyle(color: theme.colorScheme.primary),
+              ),
+              onTap: () => _showTrendsConfiguration(context),
             ),
           ),
           defaultHorizontalSpacer,
           HarpyButton.flat(
-            padding: const EdgeInsets.all(16),
+            padding: config.edgeInsets,
             icon: const Icon(CupertinoIcons.refresh),
             onTap: state.isLoading
                 ? null
@@ -76,7 +70,7 @@ void _showTrendsConfiguration(BuildContext context) {
         ],
         child: const SelectLocationListTile(),
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('find location'),
         onTap: () {

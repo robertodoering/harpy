@@ -23,15 +23,12 @@ class TrendsList extends StatelessWidget {
 
     return ListCardAnimation(
       key: ValueKey<int>(trend.hashCode),
-      child: Card(
-        child: ListTile(
-          shape: kDefaultShapeBorder,
-          leading: const Icon(FeatherIcons.trendingUp, size: 18),
-          title: Text(trend.name!),
-          subtitle: subtitle,
-          onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
-            initialSearchQuery: trend.name,
-          ),
+      child: HarpyListCard(
+        leading: const Icon(FeatherIcons.trendingUp, size: 18),
+        title: Text(trend.name!),
+        subtitle: subtitle,
+        onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
+          initialSearchQuery: trend.name,
         ),
       ),
     );
