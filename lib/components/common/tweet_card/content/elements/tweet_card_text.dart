@@ -13,18 +13,15 @@ class TweetCardText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
-
-    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return TwitterText(
       tweet.text,
       entities: tweet.entities,
       urlToIgnore: tweet.quoteUrl,
       style: theme.textTheme.bodyText2!.apply(
-        fontSizeDelta: fontSizeDelta,
+        fontSizeDelta: style.sizeDelta,
       ),
     );
   }

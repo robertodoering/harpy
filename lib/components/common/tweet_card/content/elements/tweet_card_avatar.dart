@@ -14,7 +14,7 @@ class TweetCardAvatar extends StatelessWidget {
   static const double _defaultRadius = 20;
 
   static double defaultRadius(double fontSizeDelta) {
-    return _defaultRadius + fontSizeDelta * 2;
+    return _defaultRadius + fontSizeDelta;
   }
 
   @override

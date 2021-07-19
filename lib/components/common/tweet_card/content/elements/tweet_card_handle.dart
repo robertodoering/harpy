@@ -17,11 +17,8 @@ class TweetCardHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
-
-    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onUserTap(context),
@@ -32,13 +29,13 @@ class TweetCardHandle extends StatelessWidget {
               text: '@${tweet.user.handle}',
               style: theme.textTheme.bodyText1!
                   .copyWith(height: 1)
-                  .apply(fontSizeDelta: fontSizeDelta),
+                  .apply(fontSizeDelta: style.sizeDelta),
             ),
             TextSpan(
               text: ' \u00b7 ',
               style: theme.textTheme.bodyText1!
                   .copyWith(height: 1)
-                  .apply(fontSizeDelta: fontSizeDelta),
+                  .apply(fontSizeDelta: style.sizeDelta),
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.baseline,
@@ -102,15 +99,12 @@ class _CreatedAtTimeState extends State<_CreatedAtTime> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
-
-    final fontSizeDelta = config.fontSizeDelta + widget.sizeDelta;
 
     return Text(
       tweetTimeDifference(context, widget.createdAt),
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
-          .apply(fontSizeDelta: fontSizeDelta),
+          .apply(fontSizeDelta: widget.sizeDelta),
       overflow: TextOverflow.fade,
       maxLines: 1,
     );

@@ -22,9 +22,6 @@ class FavoriteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
-    final config = context.watch<ConfigBloc>().state;
-
-    final fontSizeDelta = config.fontSizeDelta;
 
     return ActionButton(
       active: bloc.tweet.favorited,
@@ -35,14 +32,14 @@ class FavoriteButton extends StatelessWidget {
             color: harpyTheme.favoriteColor,
             fontWeight: FontWeight.bold,
           )
-          .apply(fontSizeDelta: fontSizeDelta + sizeDelta),
+          .apply(fontSizeDelta: sizeDelta),
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
-          .apply(fontSizeDelta: fontSizeDelta + sizeDelta),
+          .apply(fontSizeDelta: sizeDelta),
       value: bloc.tweet.favoriteCount,
       activate: bloc.onFavorite,
       deactivate: bloc.onUnfavorite,
-      iconSize: iconSize + fontSizeDelta + sizeDelta,
+      iconSize: iconSize,
       iconBuilder: (_, active, size) => Icon(
         active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
         size: size,

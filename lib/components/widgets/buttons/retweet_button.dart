@@ -77,11 +77,8 @@ class _RetweetButtonState extends State<RetweetButton> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
-    final config = context.watch<ConfigBloc>().state;
 
     final bloc = context.watch<TweetBloc>();
-
-    final fontSizeDelta = config.fontSizeDelta;
 
     return ActionButton(
       active: widget.bloc.tweet.retweeted,
@@ -92,10 +89,10 @@ class _RetweetButtonState extends State<RetweetButton> {
             color: harpyTheme.retweetColor,
             fontWeight: FontWeight.bold,
           )
-          .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
+          .apply(fontSizeDelta: widget.sizeDelta),
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
-          .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
+          .apply(fontSizeDelta: widget.sizeDelta),
       value: widget.bloc.tweet.retweetCount,
       activate: _showRetweetButtonMenu,
       deactivate: bloc.onUnretweet,
@@ -116,7 +113,7 @@ class _RetweetButtonState extends State<RetweetButton> {
         ),
         child: child,
       ),
-      iconSize: widget.iconSize + fontSizeDelta + widget.sizeDelta,
+      iconSize: widget.iconSize,
       iconBuilder: (_, __, size) => Icon(FeatherIcons.repeat, size: size),
     );
   }

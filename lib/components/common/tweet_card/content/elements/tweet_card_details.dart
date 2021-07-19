@@ -14,11 +14,8 @@ class TweetCardDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
-
-    final fontSizeDelta = config.fontSizeDelta + style.sizeDelta;
 
     final date = DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
         .format(tweet.createdAt.toLocal())
@@ -30,7 +27,7 @@ class TweetCardDetails extends StatelessWidget {
 
     final textStyle = theme.textTheme.bodyText2!.apply(
       color: theme.textTheme.bodyText1!.color,
-      fontSizeDelta: fontSizeDelta,
+      fontSizeDelta: style.sizeDelta,
     );
 
     return Column(
