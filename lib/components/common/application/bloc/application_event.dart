@@ -49,6 +49,9 @@ class InitializeEvent extends ApplicationEvent {
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
     ]);
+
+    // initialize config after harpy preferences initialized
+    bloc.configBloc.add(const InitializeConfig());
   }
 
   /// Waits for the [AuthenticationBloc] to complete the twitter session

@@ -22,8 +22,10 @@ class InitializeConfig extends ConfigEvent {
       0,
     );
 
+    final compactMode = app<HarpyPreferences>().getBool('compactMode', false);
+
     yield state.copyWith(
-      compactMode: app<HarpyPreferences>().getBool('compactMode', false),
+      compactMode: compactMode,
       fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
     );
   }

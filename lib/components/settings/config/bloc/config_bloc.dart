@@ -10,10 +10,9 @@ part 'config_state.dart';
 /// rebuild.
 ///
 /// The configuration is persisted in the preferences.
+// todo: refactor to a cubit to simplify the events
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
-  ConfigBloc() : super(ConfigState.defaultConfig) {
-    add(const InitializeConfig());
-  }
+  ConfigBloc() : super(ConfigState.defaultConfig);
 
   @override
   Stream<ConfigState> mapEventToState(ConfigEvent event) async* {

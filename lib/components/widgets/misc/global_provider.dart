@@ -36,6 +36,7 @@ class GlobalProvider extends StatelessWidget {
             create: (context) => ApplicationBloc(
               authenticationBloc: context.read<AuthenticationBloc>(),
               themeBloc: context.read<ThemeBloc>(),
+              configBloc: context.read<ConfigBloc>(),
             ),
           ),
           BlocProvider(create: (_) => HomeTimelineBloc()),
