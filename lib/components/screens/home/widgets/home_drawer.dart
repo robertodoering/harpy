@@ -14,6 +14,7 @@ class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
   Widget _buildActions(BuildContext context) {
+    final theme = Theme.of(context);
     final config = context.watch<ConfigBloc>().state;
     final authBloc = AuthenticationBloc.of(context);
 
@@ -61,9 +62,14 @@ class HomeDrawer extends StatelessWidget {
               // harpy pro
               if (Harpy.isFree)
                 HarpyListTile(
-                  leading: const FlareIcon.shiningStar(
-                    size: 30,
-                    offset: Offset(-4, 0),
+                  leading: FlareIcon.shiningStar(
+                    size: theme.iconTheme.size! + 8,
+                  ),
+                  leadingPadding: config.edgeInsets.copyWith(
+                    left: max(config.paddingValue - 4, 0),
+                    right: max(config.paddingValue - 4, 0),
+                    top: max(config.paddingValue - 4, 0),
+                    bottom: max(config.paddingValue - 4, 0),
                   ),
                   title: const Text('harpy pro'),
                   // todo: add harpy pro analytics
@@ -72,10 +78,14 @@ class HomeDrawer extends StatelessWidget {
 
               // about
               HarpyListTile(
-                leading: const FlareIcon.harpyLogo(),
+                leading: FlareIcon.harpyLogo(
+                  size: theme.iconTheme.size!,
+                ),
                 leadingPadding: config.edgeInsets.copyWith(
                   left: max(config.paddingValue - 6, 0),
                   right: max(config.paddingValue - 6, 0),
+                  top: max(config.paddingValue - 6, 0),
+                  bottom: max(config.paddingValue - 6, 0),
                 ),
                 title: const Text('about'),
                 onTap: () async {
