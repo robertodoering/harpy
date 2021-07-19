@@ -95,7 +95,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return Center(
       child: SingleChildScrollView(

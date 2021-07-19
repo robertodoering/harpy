@@ -12,7 +12,7 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return CustomAnimatedSize(
       child: AnimatedOpacity(

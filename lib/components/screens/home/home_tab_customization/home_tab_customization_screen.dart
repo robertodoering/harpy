@@ -109,7 +109,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return ChangeNotifierProvider<HomeTabModel>.value(
       value: widget.model,

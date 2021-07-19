@@ -19,7 +19,7 @@ class FilterGroup extends StatelessWidget {
   final VoidCallback? toggleAll;
   final bool allToggled;
 
-  Widget _buildTitleRow(ConfigState config, ThemeData theme) {
+  Widget _buildTitleRow(Config config, ThemeData theme) {
     return Row(
       children: <Widget>[
         if (title != null)
@@ -44,7 +44,7 @@ class FilterGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return Card(
       margin: margin ?? config.edgeInsetsSymmetric(horizontal: true),

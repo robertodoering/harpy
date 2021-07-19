@@ -51,7 +51,7 @@ class InitializeEvent extends ApplicationEvent {
     ]);
 
     // initialize config after harpy preferences initialized
-    bloc.configBloc.add(const InitializeConfig());
+    bloc.configCubit.initialize();
   }
 
   /// Waits for the [AuthenticationBloc] to complete the twitter session

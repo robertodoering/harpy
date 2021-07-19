@@ -102,7 +102,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = ScrollDirection.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final show = _show(mediaQuery, scrollDirection);
 

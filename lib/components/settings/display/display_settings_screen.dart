@@ -16,8 +16,8 @@ class DisplaySettingsScreen extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
 
-    final configBloc = context.watch<ConfigBloc>();
-    final config = configBloc.state;
+    final configCubit = context.watch<ConfigCubit>();
+    final config = configCubit.state;
 
     return HarpyScaffold(
       title: 'display settings',
@@ -27,7 +27,7 @@ class DisplaySettingsScreen extends StatelessWidget {
           onSelected: (_) {
             HapticFeedback.lightImpact();
 
-            configBloc.add(const ResetToDefaultConfig());
+            configCubit.resetToDefault();
           },
           itemBuilder: (_) => [
             const HarpyPopupMenuItem<int>(
@@ -76,9 +76,7 @@ class DisplaySettingsScreen extends StatelessWidget {
                     if (value != config.fontSizeDelta) {
                       HapticFeedback.lightImpact();
 
-                      configBloc.add(
-                        UpdateFontSizeDelta(fontSizeDelta: value),
-                      );
+                      configCubit.updateFontSizeDelta(value);
                     }
                   },
                 ),
@@ -97,7 +95,7 @@ class DisplaySettingsScreen extends StatelessWidget {
                 onChanged: (value) {
                   HapticFeedback.lightImpact();
 
-                  configBloc.add(UpdateCompactMode(compactMode: value));
+                  configCubit.updateCompactMode(value);
                 },
               ),
               SizedBox(

@@ -52,7 +52,7 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final mediaQuery = MediaQuery.of(context);
     final maxHeight = mediaQuery.size.height / 4;

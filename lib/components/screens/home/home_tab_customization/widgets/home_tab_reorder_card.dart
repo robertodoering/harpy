@@ -92,7 +92,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,

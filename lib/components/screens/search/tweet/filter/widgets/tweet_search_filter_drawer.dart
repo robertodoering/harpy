@@ -8,7 +8,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
 
   Widget _buildGeneralGroup(
-    ConfigState config,
+    Config config,
     TweetSearchFilterModel model,
     ThemeData theme,
   ) {
@@ -181,7 +181,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<TweetSearchBloc>();
     final model = context.watch<TweetSearchFilterModel>();
 

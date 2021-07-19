@@ -11,7 +11,7 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
   CustomThemeCubit({
     required this.initialThemeData,
     required this.themeId,
-    required ConfigState config,
+    required Config config,
   }) : super(initialThemeData) {
     harpyTheme = HarpyTheme.fromData(data: state, config: config);
 

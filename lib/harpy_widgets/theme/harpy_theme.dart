@@ -51,7 +51,7 @@ class HarpyTheme {
     _setupThemeData();
   }
 
-  final ConfigState config;
+  final Config config;
 
   // custom harpy theme values
   late String name;

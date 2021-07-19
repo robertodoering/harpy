@@ -149,7 +149,7 @@ class AboutScreen extends StatelessWidget {
   }
 
   Widget _buildDeveloperText(
-    ConfigState config,
+    Config config,
     TextStyle linkStyle,
     TextTheme textTheme,
   ) {
@@ -203,7 +203,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final textTheme = theme.textTheme;
     final color = textTheme.bodyText2!.color;

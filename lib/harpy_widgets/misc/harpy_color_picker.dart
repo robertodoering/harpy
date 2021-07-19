@@ -48,7 +48,7 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final children = {
       const HarpyTab(icon: Text('hue')): Padding(

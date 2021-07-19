@@ -14,7 +14,7 @@ class TweetCardRetweeter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 

@@ -16,19 +16,19 @@ part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc({
-    required this.configBloc,
+    required this.configCubit,
   }) : super(ThemeState(
           lightThemeData: crow,
           darkThemeData: crow,
-          config: configBloc.state,
+          config: configCubit.state,
           customThemesData: const [],
         )) {
-    configBloc.stream.listen((config) {
+    configCubit.stream.listen((config) {
       add(UpdateThemeConfig(config: config));
     });
   }
 
-  final ConfigBloc configBloc;
+  final ConfigCubit configCubit;
 
   @override
   Stream<ThemeState> mapEventToState(ThemeEvent event) async* {

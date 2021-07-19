@@ -18,7 +18,7 @@ class TwitterListCard extends StatelessWidget {
   final VoidCallback onSelected;
   final VoidCallback? onLongPress;
 
-  Widget _buildTitle(ConfigState config, ThemeData theme) {
+  Widget _buildTitle(Config config, ThemeData theme) {
     return Row(
       children: <Widget>[
         Flexible(
@@ -78,7 +78,7 @@ class TwitterListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return ListCardAnimation(
       key: key,

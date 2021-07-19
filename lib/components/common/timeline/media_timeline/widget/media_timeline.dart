@@ -59,7 +59,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
     );
   }
 
-  Widget _buildList(ConfigState config, List<MediaTimelineEntry> entries) {
+  Widget _buildList(Config config, List<MediaTimelineEntry> entries) {
     return SliverWaterfallFlow(
       gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
         crossAxisCount: _buildTiled ? 2 : 1,
@@ -76,7 +76,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final model = context.watch<MediaTimelineModel>();
     final entries = model.value;

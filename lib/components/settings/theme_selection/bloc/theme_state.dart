@@ -27,7 +27,7 @@ class ThemeState extends Equatable {
   /// The list of custom themes for the currently authenticated user.
   final List<HarpyThemeData> customThemesData;
 
-  final ConfigState config;
+  final Config config;
 
   // created during construction but independent from the immutability of the
   // state
@@ -46,7 +46,7 @@ class ThemeState extends Equatable {
     HarpyThemeData? lightThemeData,
     HarpyThemeData? darkThemeData,
     List<HarpyThemeData>? customThemesData,
-    ConfigState? config,
+    Config? config,
   }) {
     return ThemeState(
       lightThemeData: lightThemeData ?? this.lightThemeData,

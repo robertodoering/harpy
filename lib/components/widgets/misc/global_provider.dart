@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/settings/config/bloc/config_bloc.dart';
 import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +18,10 @@ class GlobalProvider extends StatelessWidget {
     return SystemBrightnessObserver(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => ConfigBloc()),
+          BlocProvider(create: (_) => ConfigCubit()),
           BlocProvider(
             create: (context) => ThemeBloc(
-              configBloc: context.read<ConfigBloc>(),
+              configCubit: context.read<ConfigCubit>(),
             ),
           ),
           BlocProvider(
@@ -36,7 +35,7 @@ class GlobalProvider extends StatelessWidget {
             create: (context) => ApplicationBloc(
               authenticationBloc: context.read<AuthenticationBloc>(),
               themeBloc: context.read<ThemeBloc>(),
-              configBloc: context.read<ConfigBloc>(),
+              configCubit: context.read<ConfigCubit>(),
             ),
           ),
           BlocProvider(create: (_) => HomeTimelineBloc()),

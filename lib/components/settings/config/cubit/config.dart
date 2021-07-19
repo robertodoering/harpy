@@ -1,8 +1,8 @@
-part of 'config_bloc.dart';
+part of 'config_cubit.dart';
 
 /// Configuration for ui components of the app.
-class ConfigState extends Equatable {
-  const ConfigState({
+class Config extends Equatable {
+  const Config({
     required this.fontSizeDelta,
     required this.compactMode,
   });
@@ -10,7 +10,7 @@ class ConfigState extends Equatable {
   final double fontSizeDelta;
   final bool compactMode;
 
-  static const defaultConfig = ConfigState(
+  static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
   );
@@ -21,18 +21,18 @@ class ConfigState extends Equatable {
         compactMode,
       ];
 
-  ConfigState copyWith({
+  Config copyWith({
     double? fontSizeDelta,
     bool? compactMode,
   }) {
-    return ConfigState(
+    return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
     );
   }
 }
 
-extension ConfigStateExtension on ConfigState {
+extension ConfigStateExtension on Config {
   double get paddingValue => compactMode ? 10 : 16;
   double get smallPaddingValue => paddingValue / 2;
 

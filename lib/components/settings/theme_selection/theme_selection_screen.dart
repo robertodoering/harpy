@@ -18,7 +18,7 @@ class ThemeSelectionScreen extends StatelessWidget {
 
     final bloc = context.watch<ThemeBloc>();
     final state = bloc.state;
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final lightThemeId = app<ThemePreferences>().lightThemeId;
     final darkThemeId = app<ThemePreferences>().darkThemeId;
@@ -127,7 +127,7 @@ class ThemeSelectionScreen extends StatelessWidget {
 
 Future<void> _editCustomTheme(
   BuildContext context, {
-  required ConfigState config,
+  required Config config,
   required ThemeState state,
   required int themeId,
 }) async {

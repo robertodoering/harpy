@@ -34,7 +34,7 @@ class TweetCardReplies extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
     final authors = tweet.replyAuthors;

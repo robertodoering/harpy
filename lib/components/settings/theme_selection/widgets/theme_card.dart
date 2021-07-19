@@ -44,7 +44,7 @@ class ThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final systemBrightness = context.watch<Brightness>();
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
@@ -109,7 +109,7 @@ class ProThemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,

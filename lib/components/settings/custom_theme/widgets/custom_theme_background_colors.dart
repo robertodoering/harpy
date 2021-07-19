@@ -11,7 +11,7 @@ class CustomThemeBackgroundColors extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -35,7 +35,7 @@ class _ReorderableBackgroundColors extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<CustomThemeCubit>();
 
     return ReorderableList(
@@ -105,7 +105,7 @@ class _AddBackgroundColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<CustomThemeCubit>();
 
     return AnimatedCrossFade(

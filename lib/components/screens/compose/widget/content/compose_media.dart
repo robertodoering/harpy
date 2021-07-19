@@ -44,7 +44,7 @@ class ComposeTweetMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<ComposeBloc>();
     final state = bloc.state;

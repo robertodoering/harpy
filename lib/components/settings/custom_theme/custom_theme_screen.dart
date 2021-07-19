@@ -35,7 +35,7 @@ class CustomThemeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return BlocProvider<CustomThemeCubit>(
       create: (_) => CustomThemeCubit(
@@ -56,7 +56,7 @@ class _CustomThemeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<CustomThemeCubit>();
 
     return GestureDetector(

@@ -45,7 +45,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
     _controller.dispose();
   }
 
-  List<Widget> _buildActiveFilters(ConfigState config, ThemeData theme) {
+  List<Widget> _buildActiveFilters(Config config, ThemeData theme) {
     if (widget.activeFilters.isNotEmpty) {
       final foregroundColor = theme.colorScheme.onSecondary;
       final backgroundColor = theme.colorScheme.secondary;
@@ -108,7 +108,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return Padding(
       padding: config.edgeInsetsSymmetric(horizontal: true),

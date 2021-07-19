@@ -47,7 +47,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
     }
   }
 
-  List<Widget> _buildItems(ConfigState config) {
+  List<Widget> _buildItems(Config config) {
     final harpyThemes = predefinedThemes.map(
       (data) => HarpyTheme.fromData(data: data, config: config),
     );
@@ -110,7 +110,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeBloc = context.watch<ThemeBloc>();
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final iconColor = IconTheme.of(context).color!;
     final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);

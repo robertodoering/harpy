@@ -15,7 +15,7 @@ class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
     required this.config,
   });
 
-  final ConfigState config;
+  final Config config;
 
   @override
   Stream<ThemeState> applyAsync({

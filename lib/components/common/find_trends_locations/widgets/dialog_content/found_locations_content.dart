@@ -11,7 +11,7 @@ class FoundLocationsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final trendsBloc = context.watch<TrendsBloc>();
 
     final bloc = context.watch<FindTrendsLocationsBloc>();

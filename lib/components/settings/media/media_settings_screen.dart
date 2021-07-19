@@ -29,7 +29,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     2: 'never autoplay',
   };
 
-  List<Widget> _buildSettings(ThemeData theme, ConfigState config) {
+  List<Widget> _buildSettings(ThemeData theme, Config config) {
     return <Widget>[
       RadioDialogTile<int>(
         leading: CupertinoIcons.photo,
@@ -129,7 +129,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return HarpyScaffold(
       title: 'media settings',

@@ -35,7 +35,7 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return CustomScrollView(
       physics: enableScroll ? null : const NeverScrollableScrollPhysics(),

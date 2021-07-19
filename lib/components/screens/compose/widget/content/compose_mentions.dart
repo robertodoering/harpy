@@ -34,7 +34,7 @@ class MentionSuggestions extends StatelessWidget {
 
   final ComposeTextController? controller;
 
-  Widget _buildHeader(ConfigState config, ThemeData theme, String text) {
+  Widget _buildHeader(Config config, ThemeData theme, String text) {
     return Padding(
       padding: config.edgeInsets.copyWith(
         bottom: config.smallPaddingValue / 2,
@@ -48,7 +48,7 @@ class MentionSuggestions extends StatelessWidget {
     );
   }
 
-  Widget _buildUser(ConfigState config, ThemeData theme, UserData user) {
+  Widget _buildUser(Config config, ThemeData theme, UserData user) {
     return HarpyButton.flat(
       padding: EdgeInsets.symmetric(
         vertical: config.smallPaddingValue / 2,
@@ -72,7 +72,7 @@ class MentionSuggestions extends StatelessWidget {
   }
 
   Widget _buildFollowingUsers(
-    ConfigState config,
+    Config config,
     ThemeData theme,
     MentionSuggestionsState state,
   ) {
@@ -87,7 +87,7 @@ class MentionSuggestions extends StatelessWidget {
   }
 
   Widget _buildSearchedUsers(
-    ConfigState config,
+    Config config,
     ThemeData theme,
     MentionSuggestionsState state,
   ) {
@@ -104,7 +104,7 @@ class MentionSuggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<MentionSuggestionsBloc>();
     final state = bloc.state;

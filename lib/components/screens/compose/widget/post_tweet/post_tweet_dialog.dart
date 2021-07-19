@@ -63,7 +63,7 @@ class PostTweetDialogContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLoading(ConfigState config, PostTweetBloc bloc) {
+  Widget _buildLoading(Config config, PostTweetBloc bloc) {
     return Column(
       children: <Widget>[
         SizedBox(height: config.paddingValue * 2),
@@ -75,7 +75,7 @@ class PostTweetDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
     final postTweetBloc = context.watch<PostTweetBloc>();
     final state = postTweetBloc.state;
 

@@ -19,7 +19,7 @@ class LoadingDataError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return Container(
       padding: config.edgeInsets,

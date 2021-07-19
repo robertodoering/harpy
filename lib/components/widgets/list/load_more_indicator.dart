@@ -9,7 +9,7 @@ class LoadMoreIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     return SliverToBoxAdapter(
       child: Container(

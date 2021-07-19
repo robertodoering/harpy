@@ -52,7 +52,7 @@ class TwitterLists extends StatelessWidget {
 
   List<Widget> _buildOwnerships(
     BuildContext context,
-    ConfigState config,
+    Config config,
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
@@ -96,7 +96,7 @@ class TwitterLists extends StatelessWidget {
 
   List<Widget> _buildSubscriptions(
     BuildContext context,
-    ConfigState config,
+    Config config,
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
@@ -157,7 +157,7 @@ class TwitterLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final config = context.watch<ConfigBloc>().state;
+    final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<ListsShowBloc>();
     final state = bloc.state;
