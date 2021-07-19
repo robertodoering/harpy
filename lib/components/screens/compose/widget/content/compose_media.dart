@@ -44,6 +44,8 @@ class ComposeTweetMedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<ComposeBloc>();
     final state = bloc.state;
 
@@ -68,14 +70,14 @@ class ComposeTweetMedia extends StatelessWidget {
     }
 
     return Padding(
-      padding: DefaultEdgeInsets.all(),
+      padding: config.edgeInsets,
       child: Stack(
         children: <Widget>[
           child,
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: EdgeInsets.all(defaultSmallPaddingValue),
+              padding: EdgeInsets.all(config.smallPaddingValue),
               child: CircleButton(
                 color: Colors.black45,
                 onTap: () => bloc.add(const ClearComposedTweet()),

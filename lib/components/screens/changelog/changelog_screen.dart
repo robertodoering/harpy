@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class ChangelogScreen extends StatefulWidget {
   const ChangelogScreen();
@@ -46,25 +47,10 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     });
   }
 
-  Widget _buildChangelogWidgets() {
-    return ListView.separated(
-      padding: DefaultEdgeInsets.only(top: true, bottom: true),
-      itemCount: _dataList!.length,
-      itemBuilder: (context, index) => Padding(
-        padding: DefaultEdgeInsets.only(left: true, right: true),
-        child: Card(
-          child: Padding(
-            padding: DefaultEdgeInsets.all(),
-            child: ChangelogWidget(_dataList![index]),
-          ),
-        ),
-      ),
-      separatorBuilder: (_, __) => defaultVerticalSpacer,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     Widget child;
 
     if (_dataList == null) {
@@ -72,7 +58,20 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
     } else if (_dataList!.isEmpty) {
       child = const Center(child: Text('no changelog data found'));
     } else {
-      child = _buildChangelogWidgets();
+      child = ListView.separated(
+        padding: config.edgeInsetsOnly(top: true, bottom: true),
+        itemCount: _dataList!.length,
+        itemBuilder: (context, index) => Padding(
+          padding: config.edgeInsetsOnly(left: true, right: true),
+          child: Card(
+            child: Padding(
+              padding: config.edgeInsets,
+              child: ChangelogWidget(_dataList![index]),
+            ),
+          ),
+        ),
+        separatorBuilder: (_, __) => defaultVerticalSpacer,
+      );
     }
 
     return HarpyScaffold(

@@ -15,36 +15,31 @@ class TrendsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<TrendsBloc>();
     final state = bloc.state;
 
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: Row(
         children: [
           Expanded(
-            child: Card(
-              child: CustomAnimatedSize(
-                alignment: Alignment.topCenter,
-                child: ListTile(
-                  shape: kDefaultShapeBorder,
-                  leading: Icon(
-                    CupertinoIcons.location,
-                    color: theme.accentColor,
-                  ),
-                  title: Text(
-                    state.trendLocationName,
-                    style: TextStyle(color: theme.accentColor),
-                  ),
-                  onTap: () => _showTrendsConfiguration(context),
-                ),
+            child: HarpyListCard(
+              leading: Icon(
+                CupertinoIcons.location,
+                color: theme.colorScheme.primary,
               ),
+              title: Text(
+                state.trendLocationName,
+                style: TextStyle(color: theme.colorScheme.primary),
+              ),
+              onTap: () => _showTrendsConfiguration(context),
             ),
           ),
           defaultHorizontalSpacer,
           HarpyButton.flat(
-            padding: const EdgeInsets.all(16),
+            padding: config.edgeInsets,
             icon: const Icon(CupertinoIcons.refresh),
             onTap: state.isLoading
                 ? null
@@ -75,7 +70,7 @@ void _showTrendsConfiguration(BuildContext context) {
         ],
         child: const SelectLocationListTile(),
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('find location'),
         onTap: () {

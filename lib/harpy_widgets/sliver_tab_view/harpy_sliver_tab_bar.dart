@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Used by [HarpySliverTabView] to build the [HarpyTab]s.
 class HarpySliverTapBar extends StatelessWidget {
@@ -12,9 +13,11 @@ class HarpySliverTapBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return SliverToBoxAdapter(
       child: Padding(
-        padding: DefaultEdgeInsets.only(top: true),
+        padding: config.edgeInsetsOnly(top: true),
         child: HarpyTabBar(
           tabs: tabs,
         ),

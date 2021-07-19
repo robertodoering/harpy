@@ -19,21 +19,9 @@ class MediaOverlayActionRow extends StatelessWidget {
   final VoidCallback onShare;
   final VoidCallback? onShowTweet;
 
-  Widget _buildMoreActionsButton(HarpyTheme harpyTheme, BuildContext context) {
-    return ViewMoreActionButton(
-      onTap: () => showTweetMediaBottomSheet(
-        context,
-        onOpenExternally: onOpenExternally,
-        onDownload: onDownload,
-        onShare: onShare,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = HarpyTheme.of(context);
 
     return Theme(
       data: theme.copyWith(
@@ -83,7 +71,14 @@ class MediaOverlayActionRow extends StatelessWidget {
                   icon: const Icon(CupertinoIcons.arrow_down_to_line),
                   onTap: onDownload,
                 ),
-              _buildMoreActionsButton(harpyTheme, context),
+              ViewMoreActionButton(
+                onTap: () => showTweetMediaBottomSheet(
+                  context,
+                  onOpenExternally: onOpenExternally,
+                  onDownload: onDownload,
+                  onShare: onShare,
+                ),
+              ),
             ],
           ),
         ),

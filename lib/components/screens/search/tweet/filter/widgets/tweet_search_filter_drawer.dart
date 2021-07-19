@@ -7,14 +7,18 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class TweetSearchFilterDrawer extends StatelessWidget {
   const TweetSearchFilterDrawer();
 
-  Widget _buildGeneralGroup(TweetSearchFilterModel model, ThemeData theme) {
+  Widget _buildGeneralGroup(
+    Config config,
+    TweetSearchFilterModel model,
+    ThemeData theme,
+  ) {
     final style = theme.textTheme.subtitle1!.copyWith(fontSize: 14);
 
     return FilterGroup(
       title: 'general',
       children: <Widget>[
         Padding(
-          padding: DefaultEdgeInsets.symmetric(horizontal: true),
+          padding: config.edgeInsetsSymmetric(horizontal: true),
           child: ClearableTextField(
             text: model.value.tweetAuthor,
             removeFocusOnClear: true,
@@ -31,7 +35,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
         ),
         defaultVerticalSpacer,
         Padding(
-          padding: DefaultEdgeInsets.symmetric(horizontal: true),
+          padding: config.edgeInsetsSymmetric(horizontal: true),
           child: ClearableTextField(
             text: model.value.replyingTo,
             removeFocusOnClear: true,
@@ -177,6 +181,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<TweetSearchBloc>();
     final model = context.watch<TweetSearchFilterModel>();
 
@@ -187,7 +192,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       onClear: model.clear,
       onSearch: () => bloc.add(SearchTweets(filter: model.value)),
       filterGroups: <Widget>[
-        _buildGeneralGroup(model, theme),
+        _buildGeneralGroup(config, model, theme),
         _buildIncludesGroup(model),
         _buildExcludesGroup(model),
       ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:provider/provider.dart';
 
 class TweetCardText extends StatelessWidget {
@@ -17,15 +16,12 @@ class TweetCardText extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
-
     return TwitterText(
       tweet.text,
       entities: tweet.entities,
       urlToIgnore: tweet.quoteUrl,
       style: theme.textTheme.bodyText2!.apply(
-        fontSizeDelta: fontSizeDelta,
+        fontSizeDelta: style.sizeDelta,
       ),
     );
   }

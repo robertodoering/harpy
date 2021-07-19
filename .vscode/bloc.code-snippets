@@ -1,0 +1,65 @@
+{
+	"Bloc base": {
+		"prefix": "bloc",
+		"scope": "dart",
+		"description": "Create a new bloc",
+		"body": [
+			"import 'package:equatable/equatable.dart';",
+			"import 'package:flutter_bloc/flutter_bloc.dart';",
+			"",
+			"part '${1/(.*)/${1:/downcase}/}_event.dart';",
+			"part '${1/(.*)/${1:/downcase}/}_state.dart';",
+			"",
+			"class ${1/(.*)/${1:/capitalize}/}Bloc extends Bloc<${1/(.*)/${1:/capitalize}/}Event, ${1/(.*)/${1:/capitalize}/}State> {",
+			"  ${1/(.*)/${1:/capitalize}/}Bloc() : super(const Initial${1/(.*)/${1:/capitalize}/}State());",
+			"",
+			"  @override",
+			"  Stream<${1/(.*)/${1:/capitalize}/}State> mapEventToState(${1/(.*)/${1:/capitalize}/}Event event) async* {",
+			"    yield* event.applyAsync(state: state, bloc: this);",
+			"  }",
+			"}",
+			"$0",
+		]
+	},
+	"Event base": {
+		"prefix": "event",
+		"scope": "dart",
+		"description": "Create the base for a new bloc event class",
+		"body": [
+			"part of '${1/(.*)/${1:/downcase}/}_bloc.dart';",
+			"",
+			"abstract class ${1/(.*)/${1:/capitalize}/}Event {",
+			"  const ${1/(.*)/${1:/capitalize}/}Event();",
+			"",
+			"  Stream<${1/(.*)/${1:/capitalize}/}State> applyAsync({",
+			"    required ${1/(.*)/${1:/capitalize}/}State state,",
+			"    required ${1/(.*)/${1:/capitalize}/}Bloc bloc,",
+			"  });",
+			"}",
+			"$0",
+		]
+	},
+	"State base": {
+		"prefix": "state",
+		"scope": "dart",
+		"description": "Create the base for a bloc state class",
+		"body": [
+			"part of '${1/(.*)/${1:/downcase}/}_bloc.dart';",
+			"",
+			"abstract class ${1/(.*)/${1:/capitalize}/}State extends Equatable {",
+			"  const ${1/(.*)/${1:/capitalize}/}State();",
+			"}",
+			"",
+			"extension ${1/(.*)/${1:/capitalize}/}StateExtension on ${1/(.*)/${1:/capitalize}/}State {}",
+			"",
+			"class Initial${1/(.*)/${1:/capitalize}/}State extends ${1/(.*)/${1:/capitalize}/}State {",
+			"  const Initial${1/(.*)/${1:/capitalize}/}State();",
+			"",
+			"  @override",
+			"  List<Object?> get props => [];",
+			"}",
+			"$0"
+		]
+	}
+
+}

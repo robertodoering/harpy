@@ -167,4 +167,48 @@ void main() {
       expect(removePrependedSymbol(null, <String>['#', '＃']), isNull);
     });
   });
+
+  group('colorValueToHex', () {
+    test('displays the color value without transparency', () {
+      expect(
+        colorValueToHex(0xffff0000, displayOpacity: false),
+        equals('#ff0000'),
+      );
+      expect(
+        colorValueToHex(0xff000000, displayOpacity: false),
+        equals('#000000'),
+      );
+      expect(
+        colorValueToHex(0x00c0ffee, displayOpacity: false),
+        equals('#c0ffee'),
+      );
+      expect(
+        colorValueToHex(0xffc0ffee, displayOpacity: false),
+        equals('#c0ffee'),
+      );
+    });
+
+    test('displays the color value with transparency', () {
+      expect(colorValueToHex(0xffff0000), equals('#ff0000 \u00b7 100%'));
+      expect(colorValueToHex(0xaaff00ff), equals('#ff00ff \u00b7 66%'));
+      expect(colorValueToHex(0xff000000), equals('#000000 \u00b7 100%'));
+      expect(colorValueToHex(0x00c0ffee), equals('transparent'));
+      expect(colorValueToHex(0xffc0ffee), equals('#c0ffee \u00b7 100%'));
+    });
+
+    test('displays an invalid color value', () {
+      expect(
+        colorValueToHex(0xaabbccddeeff, displayOpacity: false),
+        equals('#ddeeff'),
+      );
+      expect(
+        colorValueToHex(0, displayOpacity: false),
+        equals('#000000'),
+      );
+      expect(
+        colorValueToHex(0xa, displayOpacity: false),
+        equals('#00000a'),
+      );
+    });
+  });
 }

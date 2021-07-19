@@ -19,6 +19,8 @@ class ComposeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return BlocProvider<ComposeBloc>(
       create: (context) => ComposeBloc(
         inReplyToStatus: inReplyToStatus,
@@ -28,7 +30,7 @@ class ComposeScreen extends StatelessWidget {
         title: 'compose tweet',
         buildSafeArea: true,
         body: Padding(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           child: inReplyToStatus != null || quotedTweet != null
               ? ComposeTweetCardWithParent(
                   inReplyToStatus: inReplyToStatus,

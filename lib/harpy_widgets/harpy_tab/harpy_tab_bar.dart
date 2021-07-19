@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class HarpyTabBar extends StatefulWidget {
@@ -94,12 +95,14 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return Center(
       child: SingleChildScrollView(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         child: Padding(
-          padding: DefaultEdgeInsets.symmetric(horizontal: true),
+          padding: config.edgeInsetsSymmetric(horizontal: true),
           child: Row(
             children: <Widget>[
               for (int i = 0; i < widget.tabs.length; i++) ...<Widget>[

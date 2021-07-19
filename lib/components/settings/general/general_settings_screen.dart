@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -20,9 +19,9 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
 
   List<Widget> get _settings {
     return <Widget>[
-      SwitchListTile(
-        secondary: const Icon(Icons.update),
-        title: const Text('Show changelog dialog'),
+      HarpySwitchTile(
+        leading: const Icon(Icons.update),
+        title: const Text('show changelog dialog'),
         subtitle: const Text('when the app has been updated'),
         value: changelogPreferences!.showChangelogDialog,
         onChanged: (value) {
@@ -30,15 +29,14 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
           setState(() => changelogPreferences!.showChangelogDialog = value);
         },
       ),
-      SwitchListTile(
-        secondary: const Icon(Icons.speed),
-        title: const Text('Performance mode'),
+      HarpySwitchTile(
+        leading: const Icon(Icons.speed),
+        title: const Text('performance mode'),
         subtitle: const Text('reduces animations and effects'),
         value: generalPreferences!.performanceMode,
         onChanged: (value) {
           HapticFeedback.lightImpact();
           setState(() => generalPreferences!.performanceMode = value);
-          context.read<ThemeBloc>().add(const RefreshTheme());
         },
       ),
     ];

@@ -63,10 +63,10 @@ class PostTweetDialogContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLoading(PostTweetBloc bloc) {
+  Widget _buildLoading(Config config, PostTweetBloc bloc) {
     return Column(
       children: <Widget>[
-        SizedBox(height: defaultPaddingValue * 2),
+        SizedBox(height: config.paddingValue * 2),
         const Center(child: CircularProgressIndicator()),
       ],
     );
@@ -75,6 +75,7 @@ class PostTweetDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final postTweetBloc = context.watch<PostTweetBloc>();
     final state = postTweetBloc.state;
 
@@ -85,7 +86,7 @@ class PostTweetDialogContent extends StatelessWidget {
           child: Column(
             children: <Widget>[
               if (state.hasMessage) _buildStateMessage(theme, state),
-              if (state.inProgress) _buildLoading(postTweetBloc),
+              if (state.inProgress) _buildLoading(config, postTweetBloc),
             ],
           ),
         ),

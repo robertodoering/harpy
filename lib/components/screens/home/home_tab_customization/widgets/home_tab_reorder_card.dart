@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_tab/harpy_tab.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomeTabReorderCard extends StatefulWidget {
   HomeTabReorderCard({
@@ -44,6 +45,8 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.zero,
         isDense: true,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
       ),
       style: theme.textTheme.subtitle1,
       onChanged: (value) => widget.model.changeName(
@@ -89,12 +92,13 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
       opacity: _entry.visible! ? 1 : .6,
       child: Card(
-        margin: EdgeInsets.only(bottom: defaultSmallPaddingValue),
+        margin: EdgeInsets.only(bottom: config.smallPaddingValue),
         child: Row(
           children: <Widget>[
             Padding(
@@ -123,8 +127,9 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: HarpyTab.tabPadding,
+                  horizontal: config.smallPaddingValue,
                 ),
                 child: _buildTextField(theme),
               ),

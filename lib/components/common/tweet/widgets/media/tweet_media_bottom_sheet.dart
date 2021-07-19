@@ -25,7 +25,7 @@ void showTweetMediaBottomSheet(
     context,
     hapticFeedback: true,
     children: <Widget>[
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open externally'),
         onTap: () {
@@ -38,7 +38,7 @@ void showTweetMediaBottomSheet(
           Navigator.of(context).maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.arrow_down_to_line),
         title: const Text('download'),
         onTap: () {
@@ -51,7 +51,7 @@ void showTweetMediaBottomSheet(
           Navigator.of(context).maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share'),
         onTap: () {

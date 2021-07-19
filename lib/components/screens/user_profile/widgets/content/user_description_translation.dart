@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the translated description for a user in the [UserProfileHeader].
 class UserProfileDescriptionTranslation extends StatelessWidget {
@@ -11,6 +12,8 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return CustomAnimatedSize(
       child: AnimatedOpacity(
         opacity: bloc.user!.hasDescriptionTranslation ? 1 : 0,
@@ -19,7 +22,7 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
         child: bloc.user!.hasDescriptionTranslation &&
                 !bloc.user!.descriptionTranslation!.unchanged
             ? Padding(
-                padding: EdgeInsets.only(top: defaultSmallPaddingValue),
+                padding: EdgeInsets.only(top: config.smallPaddingValue),
                 child: TranslatedText(
                   bloc.user!.descriptionTranslation!.text!,
                   language: bloc.user!.descriptionTranslation!.language,

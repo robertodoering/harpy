@@ -19,7 +19,7 @@ class UserProfileAppBar extends StatelessWidget {
         theme,
         timelineBloc.state.enableFilter &&
                 timelineBloc.state.timelineFilter != TimelineFilter.empty
-            ? Icon(Icons.filter_alt, color: theme.accentColor)
+            ? Icon(Icons.filter_alt, color: theme.colorScheme.secondary)
             : const Icon(Icons.filter_alt_outlined),
         timelineBloc.state.enableFilter
             ? Scaffold.of(context).openEndDrawer

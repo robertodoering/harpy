@@ -22,7 +22,7 @@ class HomeAppBar extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         icon: bloc.state.enableFilter &&
                 bloc.state.timelineFilter != TimelineFilter.empty
-            ? Icon(Icons.filter_alt, color: theme.accentColor)
+            ? Icon(Icons.filter_alt, color: theme.colorScheme.secondary)
             : const Icon(Icons.filter_alt_outlined),
         onTap:
             bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,

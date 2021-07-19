@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// Loading shimmer representing a [TweetListInfoRow].
 class InfoRowLoadingShimmer extends StatelessWidget {
@@ -9,11 +10,13 @@ class InfoRowLoadingShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return SliverBoxLoadingShimmer(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: defaultPaddingValue * 2,
-          vertical: defaultSmallPaddingValue,
+          horizontal: config.paddingValue * 2,
+          vertical: config.smallPaddingValue,
         ),
         child: const InfoRowPlaceholder(),
       ),
@@ -28,10 +31,12 @@ class InfoRowPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return Row(
       children: [
         SizedBox(
-          width: TweetCardAvatar.defaultRadius * 2,
+          width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
           child: const PlaceholderBox(
               width: 28, height: 28, shape: BoxShape.circle),
         ),

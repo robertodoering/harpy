@@ -21,14 +21,13 @@ class _SetupScreenState extends State<SetupScreen> {
   final GlobalKey<SlideAnimationState> _slideSetupKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _continue(ThemeBloc themeBloc) async {
+  Future<void> _continue() async {
     unawaited(HapticFeedback.lightImpact());
 
     // setup completed
     await _slideSetupKey.currentState!.forward();
 
     app<SetupPreferences>().performedSetup = true;
-    app<AnalyticsService>().logSetupTheme(themeBloc.harpyTheme.name);
 
     app<HarpyNavigator>().pushReplacementNamed(
       HomeScreen.route,
@@ -73,14 +72,14 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
-  Widget _buildContinueButton(ThemeBloc themeBloc) {
+  Widget _buildContinueButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: BounceInAnimation(
         delay: const Duration(milliseconds: 4000),
         child: HarpyButton.flat(
           text: const Text('continue'),
-          onTap: () => _continue(themeBloc),
+          onTap: _continue,
         ),
       ),
     );
@@ -91,7 +90,6 @@ class _SetupScreenState extends State<SetupScreen> {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
 
-    final themeBloc = ThemeBloc.of(context);
     final authenticationBloc = AuthenticationBloc.of(context);
 
     // the max height constraints for the welcome text and the user name
@@ -125,7 +123,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
               ),
             ),
-            _buildContinueButton(themeBloc),
+            _buildContinueButton(),
             SizedBox(height: mediaQuery.padding.bottom),
           ],
         ),

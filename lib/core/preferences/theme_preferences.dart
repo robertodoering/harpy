@@ -3,14 +3,19 @@ import 'package:harpy/core/core.dart';
 class ThemePreferences {
   final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
 
-  /// The id of the selected theme.
+  /// The id of the selected light and dark themes.
   ///
-  /// -1: no theme selected (use default)
-  /// 0..9: index of predefined theme (unused indices are reserved)
-  /// 10+: index of custom theme (pro only)
-  int get selectedTheme => harpyPrefs.getInt('selectedTheme', -1, prefix: true);
-  set selectedTheme(int value) =>
-      harpyPrefs.setInt('selectedTheme', value, prefix: true);
+  /// - 0..9: index of predefined theme (unused indices are reserved)
+  /// - 10+:  index of custom theme
+  ///
+  /// Defaults to 0.
+  int get lightThemeId => harpyPrefs.getInt('lightThemeId', 0, prefix: true);
+  set lightThemeId(int value) =>
+      harpyPrefs.setInt('lightThemeId', value, prefix: true);
+
+  int get darkThemeId => harpyPrefs.getInt('darkThemeId', 0, prefix: true);
+  set darkThemeId(int value) =>
+      harpyPrefs.setInt('darkThemeId', value, prefix: true);
 
   /// A list of encoded harpy theme data representing custom themes.
   List<String> get customThemes =>

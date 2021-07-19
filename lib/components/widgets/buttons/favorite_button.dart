@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/preferences/layout_preferences.dart';
-import 'package:harpy/core/services/service_locator.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// The favorite button for the [TweetCardActionsRow].
 class FavoriteButton extends StatelessWidget {
@@ -22,9 +21,7 @@ class FavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = HarpyTheme.of(context);
-
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final harpyTheme = context.watch<HarpyTheme>();
 
     return ActionButton(
       active: bloc.tweet.favorited,
@@ -35,14 +32,14 @@ class FavoriteButton extends StatelessWidget {
             color: harpyTheme.favoriteColor,
             fontWeight: FontWeight.bold,
           )
-          .apply(fontSizeDelta: fontSizeDelta + sizeDelta),
+          .apply(fontSizeDelta: sizeDelta),
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
-          .apply(fontSizeDelta: fontSizeDelta + sizeDelta),
+          .apply(fontSizeDelta: sizeDelta),
       value: bloc.tweet.favoriteCount,
       activate: bloc.onFavorite,
       deactivate: bloc.onUnfavorite,
-      iconSize: iconSize + fontSizeDelta + sizeDelta,
+      iconSize: iconSize,
       iconBuilder: (_, active, size) => Icon(
         active ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
         size: size,
