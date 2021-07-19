@@ -16,7 +16,7 @@ class AddCustomThemeCard extends StatelessWidget {
     final theme = Theme.of(context);
     final bloc = context.watch<ThemeBloc>();
 
-    return HarpyCard(
+    return HarpyListCard(
       leading: const Icon(CupertinoIcons.add),
       title: const Text('add custom theme'),
       trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null,

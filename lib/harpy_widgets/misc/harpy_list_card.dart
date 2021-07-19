@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
-class HarpyCard extends StatelessWidget {
-  const HarpyCard({
+class HarpyListCard extends StatelessWidget {
+  const HarpyListCard({
     this.title,
     this.subtitle,
     this.leading,
@@ -38,7 +38,7 @@ class HarpyCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: kDefaultBorderRadius,
         border: border,
-        color: color,
+        color: color ?? Theme.of(context).cardTheme.color,
       ),
       child: HarpyListTile(
         title: title,
