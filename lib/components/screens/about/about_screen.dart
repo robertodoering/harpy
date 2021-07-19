@@ -46,29 +46,25 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          ListTile(
+          HarpyListTile(
             leading: const Icon(Icons.history),
             title: Text(
               'version $version',
               style: theme.textTheme.subtitle1,
             ),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: kDefaultRadius,
-                topRight: kDefaultRadius,
-              ),
+            borderRadius: const BorderRadius.only(
+              topLeft: kDefaultRadius,
+              topRight: kDefaultRadius,
             ),
             onTap: () => app<HarpyNavigator>().pushNamed(ChangelogScreen.route),
           ),
-          ListTile(
+          HarpyListTile(
             leading: const Icon(FeatherIcons.github),
             title: const Text('harpy is open source'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: kDefaultRadius,
-                bottomRight: kDefaultRadius,
-              ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: kDefaultRadius,
+              bottomRight: kDefaultRadius,
             ),
             onTap: () => launchUrl('https://github.com/robertodoering/harpy'),
           ),
@@ -77,13 +73,13 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProText(ThemeData theme, TextStyle linkStyle) {
+  Widget _buildProText(ThemeData theme, Config config, TextStyle linkStyle) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: config.edgeInsets,
             child: Text.rich(
               TextSpan(
                 children: <TextSpan>[
@@ -98,17 +94,15 @@ class AboutScreen extends StatelessWidget {
               style: theme.textTheme.subtitle2,
             ),
           ),
-          ListTile(
+          HarpyListTile(
             leading: const FlareIcon.shiningStar(
               size: 28,
               offset: Offset(-4, 0),
             ),
             title: const Text('harpy pro'),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: kDefaultRadius,
-                bottomRight: kDefaultRadius,
-              ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: kDefaultRadius,
+              bottomRight: kDefaultRadius,
             ),
             onTap: () => app<MessageService>().show('coming soon!'),
           ),
@@ -117,29 +111,27 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRateAppText(ThemeData theme) {
+  Widget _buildRateAppText(ThemeData theme, Config config) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: config.edgeInsets,
             child: Text(
               'please rate harpy in the play store!',
               style: theme.textTheme.subtitle2,
             ),
           ),
-          ListTile(
+          HarpyListTile(
             leading: const FlareIcon.shiningStar(
               size: 28,
               offset: Offset(-4, 0),
             ),
             title: const Text('rate harpy'),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: kDefaultRadius,
-                bottomRight: kDefaultRadius,
-              ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: kDefaultRadius,
+              bottomRight: kDefaultRadius,
             ),
             onTap: () => app<MessageService>().show('coming soon!'),
           ),
@@ -153,49 +145,29 @@ class AboutScreen extends StatelessWidget {
     TextStyle linkStyle,
     TextTheme textTheme,
   ) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: const Icon(FeatherIcons.mail),
-            isThreeLine: true,
-            title: Padding(
-              padding: EdgeInsets.only(top: config.paddingValue),
-              child: Text.rich(
-                TextSpan(
-                  children: <InlineSpan>[
-                    const TextSpan(text: 'developed by '),
-                    TextSpan(text: 'roberto doering\n', style: linkStyle),
-                    TextSpan(text: 'rbydoering@gmail.com', style: linkStyle),
-                  ],
-                ),
-              ),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 16),
-              child: Text(
-                'thank you for your feedback and bug reports!',
-                style: textTheme.subtitle2,
-              ),
-            ),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(kDefaultRadius),
-            ),
-            onTap: () => launchUrl(mailto),
-          ),
-        ],
+    return HarpyListCard(
+      leading: const Icon(FeatherIcons.mail),
+      title: Text.rich(
+        TextSpan(
+          children: <InlineSpan>[
+            const TextSpan(text: 'developed by '),
+            TextSpan(text: 'roberto doering\n', style: linkStyle),
+            TextSpan(text: 'rbydoering@gmail.com', style: linkStyle),
+          ],
+        ),
       ),
+      subtitle: const Text(
+        'thank you for your feedback and bug reports asdasdsadsa!',
+      ),
+      onTap: () => launchUrl(mailto),
     );
   }
 
   Widget _buildPrivacyPolicy() {
-    return Card(
-      child: ListTile(
-        leading: const Icon(CupertinoIcons.exclamationmark_shield),
-        title: const Text('privacy policy'),
-        shape: kDefaultShapeBorder,
-        onTap: () => launchUrl(_privacyPolicy),
-      ),
+    return HarpyListCard(
+      leading: const Icon(CupertinoIcons.exclamationmark_shield),
+      title: const Text('privacy policy'),
+      onTap: () => launchUrl(_privacyPolicy),
     );
   }
 
@@ -237,10 +209,10 @@ class AboutScreen extends StatelessWidget {
           _buildIntroductionText(theme, linkStyle),
           if (Harpy.isFree) ...<Widget>[
             defaultVerticalSpacer,
-            _buildProText(theme, linkStyle),
+            _buildProText(theme, config, linkStyle),
           ],
           defaultVerticalSpacer,
-          _buildRateAppText(theme),
+          _buildRateAppText(theme, config),
           defaultVerticalSpacer,
           _buildDeveloperText(config, linkStyle, textTheme),
           defaultVerticalSpacer,
