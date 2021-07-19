@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: HarpyScaffold(
             drawer: HomeDrawer(),
             endDrawer: HomeTimelineFilterDrawer(),
-            endDrawerEnableOpenDragGesture: false,
             body: HomeTabView(),
           ),
         ),

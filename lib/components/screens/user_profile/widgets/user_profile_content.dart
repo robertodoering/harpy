@@ -30,7 +30,6 @@ class UserProfileContent extends StatelessWidget {
             depth: 2,
             child: HarpyScaffold(
               endDrawer: const UserTimelineFilterDrawer(),
-              endDrawerEnableOpenDragGesture: false,
               body: HarpySliverTabView(
                 headerSlivers: const <Widget>[
                   UserProfileAppBar(),
