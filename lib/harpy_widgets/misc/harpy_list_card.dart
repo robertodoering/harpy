@@ -38,7 +38,7 @@ class HarpyListCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: kDefaultBorderRadius,
         border: border,
-        color: color ?? Theme.of(context).cardTheme.color,
+        color: color,
       ),
       child: HarpyListTile(
         title: title,
