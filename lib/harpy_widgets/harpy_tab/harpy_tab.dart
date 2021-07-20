@@ -71,7 +71,7 @@ class _HarpyTabState extends State<HarpyTab>
     final theme = Theme.of(context);
 
     _colorAnimation = ColorTween(
-      begin: theme.accentColor,
+      begin: theme.colorScheme.primary,
       end: theme.textTheme.subtitle1!.color,
     ).animate(_animationController);
   }
@@ -90,7 +90,7 @@ class _HarpyTabState extends State<HarpyTab>
         widthFactor: 1 - _animationController.value,
         alignment: Alignment.centerRight,
         child: Row(
-          children: <Widget>[
+          children: [
             defaultSmallHorizontalSpacer,
             widget.text!,
           ],
@@ -124,7 +124,7 @@ class _HarpyTabState extends State<HarpyTab>
                 child: SizedBox(
                   height: HarpyTab.tabIconSize,
                   child: Row(
-                    children: <Widget>[
+                    children: [
                       widget.icon,
                       if (widget.text != null) _buildText(),
                     ],

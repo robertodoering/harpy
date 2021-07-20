@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 class FilterListEntry extends StatefulWidget {
   const FilterListEntry({
@@ -44,16 +45,16 @@ class _FilterListEntryState extends State<FilterListEntry> {
     _controller.dispose();
   }
 
-  List<Widget> _buildActiveFilters(HarpyTheme harpyTheme) {
+  List<Widget> _buildActiveFilters(Config config, ThemeData theme) {
     if (widget.activeFilters.isNotEmpty) {
-      final foregroundColor = harpyTheme.buttonTextColor;
-      final backgroundColor = harpyTheme.accentColor;
+      final foregroundColor = theme.colorScheme.onSecondary;
+      final backgroundColor = theme.colorScheme.secondary;
 
       return <Widget>[
         defaultSmallVerticalSpacer,
         Wrap(
-          spacing: defaultSmallPaddingValue,
-          runSpacing: defaultSmallPaddingValue,
+          spacing: config.smallPaddingValue,
+          runSpacing: config.smallPaddingValue,
           children: <Widget>[
             for (int i = 0; i < widget.activeFilters.length; i++)
               FadeAnimation(
@@ -106,23 +107,21 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return Padding(
-      padding: DefaultEdgeInsets.symmetric(horizontal: true),
+      padding: config.edgeInsetsSymmetric(horizontal: true),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Row(
-            children: <Widget>[
+            children: [
               Expanded(
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(
-                      borderRadius: kDefaultBorderRadius,
-                    ),
                     labelText: widget.labelText,
                     labelStyle: const TextStyle(fontSize: 14),
                     isDense: true,
@@ -136,7 +135,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
               ),
             ],
           ),
-          ..._buildActiveFilters(harpyTheme),
+          ..._buildActiveFilters(config, theme),
         ],
       ),
     );

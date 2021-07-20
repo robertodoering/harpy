@@ -54,6 +54,8 @@ class TrendSuggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<TrendsBloc>();
     final state = bloc.state;
 
@@ -62,8 +64,8 @@ class TrendSuggestions extends StatelessWidget {
       shrinkWrap: true,
       children: <Widget>[
         Padding(
-          padding: DefaultEdgeInsets.all().copyWith(
-            bottom: defaultSmallPaddingValue / 2,
+          padding: config.edgeInsets.copyWith(
+            bottom: config.smallPaddingValue / 2,
           ),
           child: Text(
             'worldwide trends',
@@ -78,13 +80,13 @@ class TrendSuggestions extends StatelessWidget {
             for (Trend trend in state.hashtags)
               HarpyButton.flat(
                 padding: EdgeInsets.symmetric(
-                  vertical: defaultSmallPaddingValue / 2,
-                  horizontal: defaultPaddingValue,
+                  vertical: config.smallPaddingValue / 2,
+                  horizontal: config.paddingValue,
                 ),
                 text: Text(
                   trend.name!,
                   style: theme.textTheme.bodyText1!.copyWith(
-                    color: theme.accentColor,
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
                 onTap: () => controller!.replaceSelection('${trend.name} '),

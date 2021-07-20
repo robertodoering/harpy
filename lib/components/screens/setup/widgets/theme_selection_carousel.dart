@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// A theme selection carousel used in the [SetupScreen].
 ///
@@ -46,9 +47,13 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
     }
   }
 
-  List<Widget> _buildItems() {
-    return <Widget>[
-      for (HarpyTheme harpyTheme in predefinedThemes)
+  List<Widget> _buildItems(Config config) {
+    final harpyThemes = predefinedThemes.map(
+      (data) => HarpyTheme.fromData(data: data, config: config),
+    );
+
+    return [
+      for (final harpyTheme in harpyThemes)
         Container(
           margin: const EdgeInsets.all(32),
           decoration: BoxDecoration(
@@ -57,7 +62,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: harpyTheme.backgroundColors.length == 1
-                  ? <Color>[
+                  ? [
                       harpyTheme.backgroundColors.first,
                       harpyTheme.backgroundColors.first,
                     ]
@@ -94,15 +99,18 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
   void _onSelectionChange(ThemeBloc themeBloc, int index) {
     HapticFeedback.lightImpact();
 
-    themeBloc.add(
-      ChangeThemeEvent(id: index, saveSelection: true),
-    );
+    themeBloc.add(ChangeTheme(
+      lightThemeId: index,
+      darkThemeId: index,
+      saveSelection: true,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeBloc = ThemeBloc.of(context);
+    final themeBloc = context.watch<ThemeBloc>();
+    final config = context.watch<ConfigCubit>().state;
 
     final iconColor = IconTheme.of(context).color!;
     final leftIconColor = iconColor.withOpacity(_canPrevious ? 0.8 : 0.2);
@@ -129,7 +137,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
               PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _controller,
-                children: _buildItems(),
+                children: _buildItems(config),
               ),
 
               // left button

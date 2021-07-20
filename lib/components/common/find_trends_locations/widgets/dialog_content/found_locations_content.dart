@@ -11,6 +11,7 @@ class FoundLocationsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
     final trendsBloc = context.watch<TrendsBloc>();
 
     final bloc = context.watch<FindTrendsLocationsBloc>();
@@ -45,21 +46,21 @@ class FoundLocationsContent extends StatelessWidget {
       );
     } else if (state.hasServiceDisabled) {
       return Padding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         child: const Center(
           child: Text('location service is unavailable'),
         ),
       );
     } else if (state.hasPermissionsDenied) {
       return Padding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         child: const Center(
           child: Text('location permissions have been denied'),
         ),
       );
     } else {
       return Padding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         child: const Center(
           child: Text('no locations found'),
         ),

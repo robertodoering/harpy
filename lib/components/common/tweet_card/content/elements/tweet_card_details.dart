@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +17,6 @@ class TweetCardDetails extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
-
     final date = DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
         .format(tweet.createdAt.toLocal())
         .toLowerCase();
@@ -31,7 +27,7 @@ class TweetCardDetails extends StatelessWidget {
 
     final textStyle = theme.textTheme.bodyText2!.apply(
       color: theme.textTheme.bodyText1!.color,
-      fontSizeDelta: fontSizeDelta,
+      fontSizeDelta: style.sizeDelta,
     );
 
     return Column(

@@ -41,13 +41,17 @@ class InitializeEvent extends ApplicationEvent {
     await app<HarpyInfo>().initialize();
 
     // update the system ui to match the initial theme
-    bloc.themeBloc.updateSystemUi(bloc.themeBloc.harpyTheme);
+    // (the initial light and dark theme are the same)
+    updateSystemUi(bloc.themeBloc.state.darkHarpyTheme);
 
     await Future.wait<void>(<Future<void>>[
       FlutterDisplayMode.setHighRefreshRate(),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
     ]);
+
+    // initialize config after harpy preferences initialized
+    bloc.configCubit.initialize();
   }
 
   /// Waits for the [AuthenticationBloc] to complete the twitter session

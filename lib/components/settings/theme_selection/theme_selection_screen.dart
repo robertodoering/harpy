@@ -2,121 +2,160 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
-class ThemeSelectionScreen extends StatefulWidget {
+class ThemeSelectionScreen extends StatelessWidget {
   const ThemeSelectionScreen();
 
   static const String route = 'theme_selection';
 
   @override
-  _ThemeSelectionScreenState createState() => _ThemeSelectionScreenState();
-}
-
-class _ThemeSelectionScreenState extends State<ThemeSelectionScreen>
-    with RouteAware {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    harpyRouteObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPopNext() {
-    // rebuild in case custom themes changes
-    setState(() {});
-  }
-
-  void _changeTheme(
-    ThemeBloc themeBloc,
-    int selectedThemeId,
-    int newThemeId,
-  ) {
-    if (selectedThemeId != newThemeId) {
-      HapticFeedback.lightImpact();
-
-      setState(() {
-        themeBloc.add(ChangeThemeEvent(
-          id: newThemeId,
-          saveSelection: true,
-        ));
-      });
-    }
-  }
-
-  void _editCustomTheme(ThemeBloc themeBloc, int themeId, int index) {
-    final editingHarpyTheme = themeBloc.customThemes[index];
-
-    // update system ui when editing theme
-    themeBloc.add(UpdateSystemUi(theme: editingHarpyTheme));
-
-    app<HarpyNavigator>().pushCustomTheme(
-      themeData: HarpyThemeData.fromHarpyTheme(editingHarpyTheme),
-      themeId: themeId,
-    );
-  }
-
-  List<Widget> _buildPredefinedThemes(
-    ThemeBloc themeBloc,
-    int selectedThemeId,
-  ) {
-    return <Widget>[
-      for (int i = 0; i < predefinedThemes.length; i++)
-        ThemeCard(
-          predefinedThemes[i],
-          selected: i == selectedThemeId,
-          onTap: () => _changeTheme(themeBloc, selectedThemeId, i),
-        ),
-    ];
-  }
-
-  List<Widget> _buildCustomThemes(
-    ThemeBloc themeBloc,
-    int selectedThemeId,
-  ) {
-    return <Widget>[
-      for (int i = 0; i < themeBloc.customThemes.length; i++)
-        ThemeCard(
-          themeBloc.customThemes[i],
-          selected: i + 10 == selectedThemeId,
-          canEdit: true,
-          onTap: () => selectedThemeId == i + 10
-              ? _editCustomTheme(themeBloc, i + 10, i)
-              : _changeTheme(themeBloc, selectedThemeId, i + 10),
-          onEdit: () => _editCustomTheme(themeBloc, i + 10, i),
-        ),
-    ];
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final themeBloc = ThemeBloc.of(context);
-    final selectedThemeId = themeBloc.selectedThemeId;
+    final theme = Theme.of(context);
 
-    final children = <Widget>[
-      ..._buildPredefinedThemes(themeBloc, selectedThemeId),
-      ..._buildCustomThemes(
-        themeBloc,
-        selectedThemeId,
-      ),
+    final bloc = context.watch<ThemeBloc>();
+    final state = bloc.state;
+    final config = context.watch<ConfigCubit>().state;
+
+    final lightThemeId = app<ThemePreferences>().lightThemeId;
+    final darkThemeId = app<ThemePreferences>().darkThemeId;
+
+    final children = [
+      for (var i = 0; i < predefinedThemes.length; i++)
+        ThemeCard(
+          HarpyTheme.fromData(data: predefinedThemes[i], config: config),
+          selectedLightTheme: i == lightThemeId,
+          selectedDarkTheme: i == darkThemeId,
+          onTap: () => _selectTheme(
+            themeBloc: bloc,
+            lightThemeId: lightThemeId,
+            darkThemeId: darkThemeId,
+            newLightThemeId: i,
+            newDarkThemeId: i,
+          ),
+          onSelectLightTheme: () => _selectTheme(
+            themeBloc: bloc,
+            lightThemeId: lightThemeId,
+            darkThemeId: darkThemeId,
+            newLightThemeId: i,
+          ),
+          onSelectDarkTheme: () => _selectTheme(
+            themeBloc: bloc,
+            lightThemeId: lightThemeId,
+            darkThemeId: darkThemeId,
+            newDarkThemeId: i,
+          ),
+        ),
+      if (Harpy.isPro)
+        for (var i = 0; i < state.customThemesData.length; i++)
+          ThemeCard(
+            HarpyTheme.fromData(
+              data: state.customThemesData[i],
+              config: config,
+            ),
+            selectedLightTheme: i + 10 == lightThemeId,
+            selectedDarkTheme: i + 10 == darkThemeId,
+            onTap: () {
+              if (lightThemeId == i + 10 && darkThemeId == i + 10) {
+                // already selected as light a dark theme, edit selected theme
+                // instead
+                _editCustomTheme(
+                  context,
+                  config: config,
+                  state: state,
+                  themeId: i + 10,
+                );
+              } else {
+                _selectTheme(
+                  themeBloc: bloc,
+                  lightThemeId: lightThemeId,
+                  darkThemeId: darkThemeId,
+                  newLightThemeId: i + 10,
+                  newDarkThemeId: i + 10,
+                );
+              }
+            },
+            onSelectLightTheme: () => _selectTheme(
+              themeBloc: bloc,
+              lightThemeId: lightThemeId,
+              darkThemeId: darkThemeId,
+              newLightThemeId: i + 10,
+            ),
+            onSelectDarkTheme: () => _selectTheme(
+              themeBloc: bloc,
+              lightThemeId: lightThemeId,
+              darkThemeId: darkThemeId,
+              newDarkThemeId: i + 10,
+            ),
+            onEdit: () => _editCustomTheme(
+              context,
+              config: config,
+              state: state,
+              themeId: i + 10,
+            ),
+            onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
+          ),
       const AddCustomThemeCard(),
+      if (Harpy.isFree) ...[
+        Padding(
+          padding: config.edgeInsets,
+          child: Text(
+            'only available for harpy pro',
+            style: theme.textTheme.subtitle2,
+          ),
+        ),
+        for (final proTheme in predefinedProThemes)
+          ProThemeCard(HarpyTheme.fromData(data: proTheme, config: config)),
+      ],
     ];
 
     return HarpyScaffold(
       title: 'theme selection',
       buildSafeArea: true,
       body: ListView.separated(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         itemCount: children.length,
         itemBuilder: (_, index) => children[index],
         separatorBuilder: (_, __) => defaultSmallVerticalSpacer,
+      ),
+    );
+  }
+}
+
+Future<void> _editCustomTheme(
+  BuildContext context, {
+  required Config config,
+  required ThemeState state,
+  required int themeId,
+}) async {
+  final index = themeId - 10;
+  final themeData = state.customThemesData[index];
+
+  updateSystemUi(HarpyTheme.fromData(data: themeData, config: config));
+
+  app<HarpyNavigator>().pushCustomTheme(
+    themeData: themeData,
+    themeId: themeId,
+  );
+}
+
+void _selectTheme({
+  required ThemeBloc themeBloc,
+  required int lightThemeId,
+  required int darkThemeId,
+  int? newLightThemeId,
+  int? newDarkThemeId,
+}) {
+  if (lightThemeId != newLightThemeId || darkThemeId != newDarkThemeId) {
+    HapticFeedback.lightImpact();
+    themeBloc.add(
+      ChangeTheme(
+        lightThemeId: newLightThemeId,
+        darkThemeId: newDarkThemeId,
+        saveSelection: true,
       ),
     );
   }

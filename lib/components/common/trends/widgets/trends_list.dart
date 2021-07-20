@@ -23,15 +23,12 @@ class TrendsList extends StatelessWidget {
 
     return ListCardAnimation(
       key: ValueKey<int>(trend.hashCode),
-      child: Card(
-        child: ListTile(
-          shape: kDefaultShapeBorder,
-          leading: const Icon(FeatherIcons.trendingUp, size: 18),
-          title: Text(trend.name!),
-          subtitle: subtitle,
-          onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
-            initialSearchQuery: trend.name,
-          ),
+      child: HarpyListCard(
+        leading: const Icon(FeatherIcons.trendingUp, size: 18),
+        title: Text(trend.name!),
+        subtitle: subtitle,
+        onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(
+          initialSearchQuery: trend.name,
         ),
       ),
     );
@@ -47,6 +44,8 @@ class TrendsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<TrendsBloc>();
     final state = bloc.state;
 
@@ -58,7 +57,7 @@ class TrendsList extends StatelessWidget {
       );
     } else if (state.hasTrends) {
       return SliverPadding(
-        padding: DefaultEdgeInsets.only(
+        padding: config.edgeInsetsOnly(
           left: true,
           right: true,
           bottom: true,

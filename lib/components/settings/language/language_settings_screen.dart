@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class LanguageSettingsScreen extends StatefulWidget {
   const LanguageSettingsScreen();
@@ -33,7 +34,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
 
     return RadioDialogTile<String>(
       leading: Icons.translate,
-      title: 'Translate language',
+      title: 'translate language',
       subtitle: translateValues[languageCode],
       description: 'Change the language used to translate tweets',
       value: languageCode,
@@ -48,9 +49,9 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
 
   List<Widget> _buildSettings(Locale locale) {
     return <Widget>[
-      const ListTile(
+      const HarpyListTile(
         leading: Icon(Icons.translate),
-        title: Text('App language'),
+        title: Text('app language'),
         subtitle: Text('coming soon!'),
         enabled: false,
       ),

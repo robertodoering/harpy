@@ -19,13 +19,14 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     required this.authenticationBloc,
     required this.themeBloc,
+    required this.configCubit,
   }) : super(AwaitingInitializationState()) {
     add(InitializeEvent());
   }
 
   final AuthenticationBloc authenticationBloc;
-
   final ThemeBloc themeBloc;
+  final ConfigCubit configCubit;
 
   static ApplicationBloc of(BuildContext context) =>
       context.watch<ApplicationBloc>();

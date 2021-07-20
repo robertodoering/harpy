@@ -29,7 +29,7 @@ Make sure to follow @harpy_app for news and updates about the app''';
     );
 
     return BlocProvider<TweetBloc>(
-      create: (_) => PreviewTweetBloc(tweet),
+      create: (_) => PreviewTweetBloc(tweet, enableUserTap: true),
       child: const TweetCardBase(),
     );
   }

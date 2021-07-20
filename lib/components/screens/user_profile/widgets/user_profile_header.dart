@@ -9,27 +9,28 @@ class UserProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<UserProfileBloc>();
 
     return SliverToBoxAdapter(
       child: Card(
-        margin: DefaultEdgeInsets.only(left: true, right: true, top: true),
+        margin: config.edgeInsetsOnly(left: true, right: true, top: true),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             defaultVerticalSpacer,
             Padding(
-              padding: DefaultEdgeInsets.symmetric(horizontal: true),
+              padding: config.edgeInsetsSymmetric(horizontal: true),
               child: UserProfileInfo(bloc),
             ),
             defaultSmallVerticalSpacer,
             if (bloc.user!.hasDescription) ...<Widget>[
               Padding(
-                padding: DefaultEdgeInsets.symmetric(horizontal: true),
+                padding: config.edgeInsetsSymmetric(horizontal: true),
                 child: UserProfileDescription(bloc),
               ),
               Padding(
-                padding: DefaultEdgeInsets.symmetric(horizontal: true),
+                padding: config.edgeInsetsSymmetric(horizontal: true),
                 child: UserProfileDescriptionTranslation(bloc),
               ),
               defaultSmallVerticalSpacer,
@@ -39,7 +40,7 @@ class UserProfileHeader extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Padding(
-                    padding: DefaultEdgeInsets.only(left: true),
+                    padding: config.edgeInsetsOnly(left: true),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[

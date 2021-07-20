@@ -56,7 +56,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   Widget _buildProCard(ThemeData theme) {
     return HarpyProCard(
-      children: <Widget>[
+      children: [
         const Text(
           'unlock the full potential of customizing the home screen with '
           'harpy pro',
@@ -74,8 +74,8 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   Widget _buildInfoText(ThemeData theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(CupertinoIcons.info, color: theme.accentColor),
+      children: [
+        Icon(CupertinoIcons.info, color: theme.colorScheme.primary),
         defaultHorizontalSpacer,
         const Flexible(
           child: Text(
@@ -95,7 +95,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         widget.model.setToDefault();
       },
       itemBuilder: (_) {
-        return <PopupMenuEntry<int>>[
+        return [
           const HarpyPopupMenuItem<int>(
             value: 0,
             text: Text('reset to default'),
@@ -109,6 +109,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return ChangeNotifierProvider<HomeTabModel>.value(
       value: widget.model,
@@ -125,23 +126,21 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
               return CustomScrollView(
                 slivers: <Widget>[
                   SliverPadding(
-                    padding: DefaultEdgeInsets.all(),
+                    padding: config.edgeInsets,
                     sliver: SliverList(
-                      delegate: SliverChildListDelegate(
-                        <Widget>[
-                          if (Harpy.isFree) ...<Widget>[
-                            _buildProCard(theme),
-                            defaultVerticalSpacer,
-                            _buildInfoText(theme),
-                            defaultVerticalSpacer,
-                          ],
-                          const HomeTabReorderList(),
-                          if (model.canAddMoreLists)
-                            const AddListHomeTabCard()
-                          else if (Harpy.isFree)
-                            const AddListHomeTabCard(proDisabled: true)
+                      delegate: SliverChildListDelegate([
+                        if (Harpy.isFree) ...[
+                          _buildProCard(theme),
+                          defaultVerticalSpacer,
+                          _buildInfoText(theme),
+                          defaultVerticalSpacer,
                         ],
-                      ),
+                        const HomeTabReorderList(),
+                        if (model.canAddMoreLists)
+                          const AddListHomeTabCard()
+                        else if (Harpy.isFree)
+                          const AddListHomeTabCard(proDisabled: true)
+                      ]),
                     ),
                   ),
                   SliverToBoxAdapter(

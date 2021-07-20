@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +15,7 @@ class HomeDrawer extends StatelessWidget {
 
   Widget _buildActions(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final authBloc = AuthenticationBloc.of(context);
 
     return Column(
@@ -23,9 +26,9 @@ class HomeDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               // profile
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(CupertinoIcons.person),
-                title: const Text('Profile'),
+                title: const Text('profile'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushUserProfile(
@@ -35,9 +38,9 @@ class HomeDrawer extends StatelessWidget {
               ),
 
               // lists
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(CupertinoIcons.list_bullet),
-                title: const Text('Lists'),
+                title: const Text('lists'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushShowListsScreen();
@@ -47,9 +50,9 @@ class HomeDrawer extends StatelessWidget {
               const Divider(),
 
               // settings
-              ListTile(
+              HarpyListTile(
                 leading: const Icon(FeatherIcons.settings),
-                title: const Text('Settings'),
+                title: const Text('settings'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(SettingsScreen.route);
@@ -58,39 +61,36 @@ class HomeDrawer extends StatelessWidget {
 
               // harpy pro
               if (Harpy.isFree)
-                ListTile(
-                  leading: const FlareIcon.shiningStar(
-                    size: 30,
-                    offset: Offset(-4, 0),
+                HarpyListTile(
+                  leading: FlareIcon.shiningStar(
+                    size: theme.iconTheme.size! + 8,
                   ),
-                  title: const Text('Harpy pro'),
+                  leadingPadding: config.edgeInsets.copyWith(
+                    left: max(config.paddingValue - 4, 0),
+                    right: max(config.paddingValue - 4, 0),
+                    top: max(config.paddingValue - 4, 0),
+                    bottom: max(config.paddingValue - 4, 0),
+                  ),
+                  title: const Text('harpy pro'),
                   // todo: add harpy pro analytics
                   onTap: () => app<MessageService>().show('coming soon!'),
                 ),
 
               // about
-              ListTile(
-                leading: const FlareIcon.harpyLogo(offset: Offset(-4, 0)),
-                title: const Text('About'),
+              HarpyListTile(
+                leading: FlareIcon.harpyLogo(
+                  size: theme.iconTheme.size!,
+                ),
+                leadingPadding: config.edgeInsets.copyWith(
+                  left: max(config.paddingValue - 6, 0),
+                  right: max(config.paddingValue - 6, 0),
+                  top: max(config.paddingValue - 6, 0),
+                  bottom: max(config.paddingValue - 6, 0),
+                ),
+                title: const Text('about'),
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushNamed(AboutScreen.route);
-                },
-              ),
-
-              // beta info
-              ListTile(
-                leading: Icon(CupertinoIcons.info, color: theme.accentColor),
-                title: Text(
-                  'Beta info',
-                  style: TextStyle(
-                    color: theme.accentColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushNamed(BetaInfoScreen.route);
                 },
               ),
             ],
@@ -98,9 +98,9 @@ class HomeDrawer extends StatelessWidget {
         ),
 
         // logout
-        ListTile(
+        HarpyListTile(
           leading: const Icon(CupertinoIcons.square_arrow_left),
-          title: const Text('Logout'),
+          title: const Text('logout'),
           onTap: () =>
               context.read<AuthenticationBloc>().add(const LogoutEvent()),
         ),

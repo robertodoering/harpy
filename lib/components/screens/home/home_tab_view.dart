@@ -8,15 +8,13 @@ import 'package:provider/provider.dart';
 //  content automatically if it is otherwise covered by the tab bar
 
 class HomeTabView extends StatelessWidget {
-  // non-const to always rebuild when returning to home screen
-  // ignore: prefer_const_constructors_in_immutables
-  HomeTabView();
+  const HomeTabView();
 
   Widget _mapEntryContent(BuildContext context, int index, HomeTabEntry entry) {
     if (entry.isDefaultType) {
       switch (entry.id) {
         case 'home':
-          return HomeTimeline();
+          return const HomeTimeline();
         case 'media':
           return const HomeMediaTimeline();
         case 'mentions':

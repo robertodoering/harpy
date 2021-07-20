@@ -21,7 +21,10 @@ class SelectLocationListTile extends StatelessWidget {
     Widget child;
 
     if (state.isLoading) {
-      child = const CircularProgressIndicator();
+      child = const Padding(
+        padding: EdgeInsets.all(8),
+        child: CircularProgressIndicator(),
+      );
     } else if (state.hasFailed) {
       child = HarpyButton.flat(
         padding: const EdgeInsets.all(8),
@@ -58,6 +61,7 @@ class SelectLocationListTile extends StatelessWidget {
       leading: CupertinoIcons.list_bullet,
       title: 'select location',
       trailing: _buildTrailing(locationBloc, locationState),
+      trailingPadding: EdgeInsets.zero,
       description: 'change the trends location',
       denseRadioTiles: true,
       titles: [TrendsLocationData.worldwide]

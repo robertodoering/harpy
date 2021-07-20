@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a button at the bottom of the screen that listens to the
 /// [ScrollDirection] and animates in or out of the screen to provide a button
@@ -98,14 +99,15 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scrollDirection = ScrollDirection.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final scrollDirection = ScrollDirection.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
+    final config = context.watch<ConfigCubit>().state;
 
     final show = _show(mediaQuery, scrollDirection);
 
     return Stack(
-      children: <Widget>[
+      children: [
         widget.child,
         Align(
           alignment: Alignment.bottomCenter,
@@ -117,15 +119,18 @@ class _ScrollToStartState extends State<ScrollToStart> {
               shift: show ? Offset.zero : const Offset(0, 1),
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: defaultPaddingValue + mediaQuery.padding.bottom,
+                  bottom: config.paddingValue + mediaQuery.padding.bottom,
                 ),
                 child: HarpyButton.raised(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 18,
                     vertical: 12,
                   ),
-                  icon: const Icon(CupertinoIcons.arrow_up),
-                  backgroundColor: theme.cardColor.withOpacity(.8),
+                  icon: Icon(
+                    CupertinoIcons.arrow_up,
+                    color: harpyTheme.foregroundColor,
+                  ),
+                  backgroundColor: harpyTheme.alternateCardColor,
                   onTap: () => _scrollToStart(mediaQuery),
                 ),
               ),

@@ -271,9 +271,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case AboutScreen.route:
       screen = const AboutScreen();
       break;
-    case BetaInfoScreen.route:
-      screen = const BetaInfoScreen();
-      break;
     case ChangelogScreen.route:
       screen = const ChangelogScreen();
       break;

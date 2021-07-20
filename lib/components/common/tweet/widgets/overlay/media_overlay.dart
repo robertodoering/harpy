@@ -6,14 +6,14 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:share/share.dart';
 
-/// Default behaviour to open a tweet media externally.
+/// Default behavior to open a tweet media externally.
 void defaultOnMediaOpenExternally(String? mediaUrl) {
   if (mediaUrl != null) {
     launchUrl(mediaUrl);
   }
 }
 
-/// Default behaviour to download a tweet media.
+/// Default behavior to download a tweet media.
 Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
   if (type != null && mediaUrl != null) {
     final fileName = fileNameFromUrl(mediaUrl);
@@ -55,7 +55,7 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
   }
 }
 
-/// Default behaviour to share a tweet media.
+/// Default behavior to share a tweet media.
 void defaultOnMediaShare(String? mediaUrl) {
   if (mediaUrl != null) {
     Share.share(mediaUrl);
@@ -182,8 +182,8 @@ class _MediaOverlayState extends State<MediaOverlay>
 
   @override
   void dispose() {
-    super.dispose();
     harpyRouteObserver.unsubscribe(this);
+    super.dispose();
   }
 
   @override
@@ -218,7 +218,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.white),
-        leading: const HarpyBackButton(),
+        leading: const HarpyBackButton(color: Colors.white),
       ),
     );
   }
