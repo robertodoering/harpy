@@ -1,5 +1,5 @@
 Version 0.6.9
-2021-xx-xx
+2021-07-21
 
 · Improved theme customization (harpy pro)
 · Added support for system light & dark themes (harpy pro)
