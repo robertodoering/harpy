@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,11 +97,17 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           HarpyListTile(
-            leading: const FlareIcon.shiningStar(
-              size: 28,
-              offset: Offset(-4, 0),
+            leading: FlareIcon.shiningStar(
+              size: theme.iconTheme.size! + 8,
+            ),
+            leadingPadding: config.edgeInsets.copyWith(
+              left: max(config.paddingValue - 4, 0),
+              right: max(config.paddingValue - 4, 0),
+              top: max(config.paddingValue - 4, 0),
+              bottom: max(config.paddingValue - 4, 0),
             ),
             title: const Text('harpy pro'),
+            subtitle: const Text('(coming soon)'),
             borderRadius: const BorderRadius.only(
               bottomLeft: kDefaultRadius,
               bottomRight: kDefaultRadius,
@@ -124,11 +132,17 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           HarpyListTile(
-            leading: const FlareIcon.shiningStar(
-              size: 28,
-              offset: Offset(-4, 0),
+            leading: FlareIcon.shiningStar(
+              size: theme.iconTheme.size! + 8,
+            ),
+            leadingPadding: config.edgeInsets.copyWith(
+              left: max(config.paddingValue - 4, 0),
+              right: max(config.paddingValue - 4, 0),
+              top: max(config.paddingValue - 4, 0),
+              bottom: max(config.paddingValue - 4, 0),
             ),
             title: const Text('rate harpy'),
+            subtitle: const Text('(coming soon)'),
             borderRadius: const BorderRadius.only(
               bottomLeft: kDefaultRadius,
               bottomRight: kDefaultRadius,
@@ -156,9 +170,7 @@ class AboutScreen extends StatelessWidget {
           ],
         ),
       ),
-      subtitle: const Text(
-        'thank you for your feedback and bug reports asdasdsadsa!',
-      ),
+      subtitle: const Text('thank you for your feedback and bug reports!'),
       onTap: () => launchUrl(mailto),
     );
   }
