@@ -165,7 +165,6 @@ class InitializeTwitterSessionEvent extends AuthenticationEvent {
       } else {
         // failed initializing login
         // remove retrieved session assuming it's not valid anymore
-        // todo: in case of network error should allow user to retry
         await onLogout(bloc);
       }
     }
