@@ -34,10 +34,10 @@ class MentionSuggestions extends StatelessWidget {
 
   final ComposeTextController? controller;
 
-  Widget _buildHeader(ThemeData theme, String text) {
+  Widget _buildHeader(Config config, ThemeData theme, String text) {
     return Padding(
-      padding: DefaultEdgeInsets.all().copyWith(
-        bottom: defaultSmallPaddingValue / 2,
+      padding: config.edgeInsets.copyWith(
+        bottom: config.smallPaddingValue / 2,
       ),
       child: Text(
         text,
@@ -48,11 +48,11 @@ class MentionSuggestions extends StatelessWidget {
     );
   }
 
-  Widget _buildUser(ThemeData theme, UserData user) {
+  Widget _buildUser(Config config, ThemeData theme, UserData user) {
     return HarpyButton.flat(
       padding: EdgeInsets.symmetric(
-        vertical: defaultSmallPaddingValue / 2,
-        horizontal: defaultPaddingValue,
+        vertical: config.smallPaddingValue / 2,
+        horizontal: config.paddingValue,
       ),
       text: Text.rich(
         TextSpan(
@@ -62,7 +62,7 @@ class MentionSuggestions extends StatelessWidget {
           ],
         ),
         style: theme.textTheme.bodyText1!.copyWith(
-          color: theme.accentColor,
+          color: theme.colorScheme.secondary,
         ),
       ),
       onTap: () => controller!.replaceSelection(
@@ -71,23 +71,32 @@ class MentionSuggestions extends StatelessWidget {
     );
   }
 
-  Widget _buildFollowingUsers(ThemeData theme, MentionSuggestionsState state) {
+  Widget _buildFollowingUsers(
+    Config config,
+    ThemeData theme,
+    MentionSuggestionsState state,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildHeader(theme, 'following users'),
-        for (UserData user in state.filteredFollowing) _buildUser(theme, user),
+      children: <Widget>[
+        _buildHeader(config, theme, 'following users'),
+        for (UserData user in state.filteredFollowing)
+          _buildUser(config, theme, user),
       ],
     );
   }
 
-  Widget _buildSearchedUsers(ThemeData theme, MentionSuggestionsState state) {
+  Widget _buildSearchedUsers(
+    Config config,
+    ThemeData theme,
+    MentionSuggestionsState state,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildHeader(theme, 'other users'),
+      children: <Widget>[
+        _buildHeader(config, theme, 'other users'),
         for (UserData user in state.filteredSearchedUsers)
-          _buildUser(theme, user),
+          _buildUser(config, theme, user),
       ],
     );
   }
@@ -95,6 +104,8 @@ class MentionSuggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<MentionSuggestionsBloc>();
     final state = bloc.state;
 
@@ -106,9 +117,9 @@ class MentionSuggestions extends StatelessWidget {
         shrinkWrap: true,
         children: [
           if (state.filteredFollowing.isNotEmpty)
-            _buildFollowingUsers(theme, state),
+            _buildFollowingUsers(config, theme, state),
           if (state.filteredSearchedUsers.isNotEmpty)
-            _buildSearchedUsers(theme, state),
+            _buildSearchedUsers(config, theme, state),
         ],
       );
     }

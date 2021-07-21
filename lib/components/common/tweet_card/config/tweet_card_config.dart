@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:harpy/components/components.dart';
 
 @immutable

@@ -15,12 +15,14 @@ class ComposeTweetActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<ComposeBloc>();
 
     return Row(
       children: [
         HarpyButton.flat(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.photo),
           iconSize: 20,
           onTap: () => bloc.add(const PickTweetMediaEvent()),
@@ -35,14 +37,14 @@ class ComposeTweetActionRow extends StatelessWidget {
         // ),
         // defaultSmallHorizontalSpacer,
         HarpyButton.flat(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
           onTap: () => controller.insertString('@'),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           text: const Text('#', style: TextStyle(fontSize: 20)),
           onTap: () => controller.insertString('#'),
         ),
@@ -109,13 +111,15 @@ class _PostTweetButtonState extends State<PostTweetButton> {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<ComposeBloc>();
 
     final canTweet =
         bloc.state.hasMedia || widget.controller!.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
-      padding: DefaultEdgeInsets.all(),
+      padding: config.edgeInsets,
       icon: const Icon(Icons.send),
       iconSize: 20,
       onTap: canTweet ? () => _showDialog(bloc) : null,

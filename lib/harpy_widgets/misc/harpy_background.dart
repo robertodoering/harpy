@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a background with a gradient from top to bottom.
 ///
@@ -32,7 +33,9 @@ class HarpyBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColors = colors ?? HarpyTheme.of(context).backgroundColors;
+    final harpyTheme = context.watch<HarpyTheme>();
+
+    final backgroundColors = colors ?? harpyTheme.backgroundColors;
 
     return AnimatedContainer(
       duration: kThemeAnimationDuration,

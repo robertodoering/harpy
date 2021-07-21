@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 typedef TweetBuilder = Widget Function(TweetData tweet);
 
@@ -43,12 +44,14 @@ class TweetList extends StatelessWidget {
     if (index.isEven) {
       return tweetBuilder(tweets[index ~/ 2]);
     } else {
-      return SizedBox(height: defaultPaddingValue);
+      return defaultVerticalSpacer;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return CustomScrollView(
       controller: controller,
       physics: enableScroll
@@ -58,7 +61,7 @@ class TweetList extends StatelessWidget {
       slivers: [
         ...beginSlivers,
         SliverPadding(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               _itemBuilder,

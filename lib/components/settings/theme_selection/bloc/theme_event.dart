@@ -5,130 +5,240 @@ abstract class ThemeEvent {
   const ThemeEvent();
 
   Stream<ThemeState> applyAsync({
-    required ThemeState currentState,
+    required ThemeState state,
     required ThemeBloc bloc,
   });
 }
 
-/// The event to change the app wide theme.
-class ChangeThemeEvent extends ThemeEvent {
-  const ChangeThemeEvent({
-    required this.id,
-    this.saveSelection = false,
+class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
+  const UpdateThemeConfig({
+    required this.config,
   });
 
-  /// The `id` used to save the selection to.
+  final Config config;
+
+  @override
+  Stream<ThemeState> applyAsync({
+    required ThemeState state,
+    required ThemeBloc bloc,
+  }) async* {
+    log.fine('updated theme config');
+
+    yield state.copyWith(config: config);
+  }
+}
+
+class ChangeTheme extends ThemeEvent with HarpyLogger {
+  const ChangeTheme({
+    this.lightThemeId,
+    this.darkThemeId,
+    this.saveSelection = false,
+  }) : assert(lightThemeId != null || darkThemeId != null);
+
+  /// The id of the light and / or dark theme to select.
   ///
   /// 0..9: index of predefined theme (unused indices are reserved)
-  /// 10+: index of custom theme (pro only)
-  final int id;
+  /// 10+: index of custom theme
+  final int? lightThemeId;
+  final int? darkThemeId;
 
-  /// Whether the selection should be saved using the [ThemePreferences].
   final bool saveSelection;
 
-  static final Logger _log = Logger('ChangeThemeEvent');
-
-  HarpyTheme? _findTheme(ThemeBloc bloc) {
-    try {
-      if (id < 10) {
-        return id > 0 ? predefinedThemes[id] : predefinedThemes[0];
-      } else {
-        // selected theme id = 10 -> index = 0
-        final index = id - 10;
-
-        _log.fine('using custom theme with index $index');
-
-        return bloc.customThemes[index];
-      }
-    } catch (e, st) {
-      _log.severe('theme id does not correspond to a theme', e, st);
+  HarpyThemeData? _themeDataFromId(int? id, ThemeState state) {
+    if (id == null) {
       return null;
     }
+
+    if (id >= 0 && id < predefinedThemes.length) {
+      return predefinedThemes[id];
+    } else if (id >= 10) {
+      if (id - 10 < state.customThemesData.length) {
+        return state.customThemesData[id - 10];
+      }
+    }
+
+    return null;
   }
 
   @override
   Stream<ThemeState> applyAsync({
-    required ThemeState currentState,
+    required ThemeState state,
     required ThemeBloc bloc,
   }) async* {
-    final harpyTheme = _findTheme(bloc);
-
-    if (harpyTheme != null) {
-      _log.fine('changing theme to ${harpyTheme.name} with id $id');
-      bloc.harpyTheme = harpyTheme;
+    if (lightThemeId != null) {
+      log.fine('updating light theme to id $lightThemeId');
 
       if (saveSelection) {
-        app<ThemePreferences>().selectedTheme = id;
-        app<AnalyticsService>().logThemeId(id);
+        app<ThemePreferences>().lightThemeId = lightThemeId!;
       }
     }
 
-    bloc.updateSystemUi(bloc.harpyTheme);
+    if (darkThemeId != null) {
+      log.fine('updating dark theme to id $darkThemeId');
 
-    yield ThemeSetState();
+      if (saveSelection) {
+        app<ThemePreferences>().darkThemeId = darkThemeId!;
+      }
+    }
+
+    final lightThemeData = _themeDataFromId(lightThemeId, state);
+    final darkThemeData = _themeDataFromId(darkThemeId, state);
+
+    if (lightThemeData != null || darkThemeData != null) {
+      final newState = state.copyWith(
+        lightThemeData: lightThemeData,
+        darkThemeData: darkThemeData,
+      );
+
+      yield newState;
+    } else {
+      log.warning('no matching theme found');
+    }
   }
 }
 
-/// Updates the system ui based on the [theme].
-///
-/// Does not yield anything.
-class UpdateSystemUi extends ThemeEvent {
-  const UpdateSystemUi({
-    required this.theme,
-  });
+class LoadCustomThemes extends ThemeEvent with HarpyLogger {
+  const LoadCustomThemes();
 
-  final HarpyTheme theme;
-
-  @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState currentState,
-    required ThemeBloc bloc,
-  }) async* {
-    bloc.updateSystemUi(theme);
-  }
-}
-
-/// Saves the custom themes in [ThemeBloc.customThemes] using the
-/// [ThemePreferences].
-class SaveCustomThemes extends ThemeEvent {
-  const SaveCustomThemes();
-
-  static final Logger _log = Logger('SaveCustomThemes');
-
-  String? _encodeThemeData(HarpyThemeData themeData) {
+  HarpyThemeData? _decodeThemeData(String themeDataJson) {
     try {
-      return jsonEncode(themeData.toJson());
+      return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
     } catch (e, st) {
-      _log.warning('unable to encode custom theme data', e, st);
+      log.warning('unable to decode custom theme data', e, st);
       return null;
     }
   }
 
   @override
   Stream<ThemeState> applyAsync({
-    required ThemeState currentState,
+    required ThemeState state,
     required ThemeBloc bloc,
   }) async* {
-    final encodedCustomThemes = bloc.customThemes
-        .map((theme) => HarpyThemeData.fromHarpyTheme(theme))
-        .map(_encodeThemeData)
-        .where((themeDataJson) => themeDataJson != null)
+    log.fine('loading custom themes');
+
+    final customThemesData = app<ThemePreferences>()
+        .customThemes
+        .map(_decodeThemeData)
+        .whereType<HarpyThemeData>()
         .toList();
 
-    _log.fine('saving ${encodedCustomThemes.length} custom themes');
+    log.fine('loaded ${customThemesData.length} custom themes');
 
-    app<ThemePreferences>().customThemes = encodedCustomThemes;
+    yield state.copyWith(customThemesData: customThemesData);
   }
 }
 
-class RefreshTheme extends ThemeEvent {
-  const RefreshTheme();
+class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
+  const DeleteCustomTheme({
+    required this.themeId,
+  });
+
+  final int themeId;
 
   @override
   Stream<ThemeState> applyAsync({
-    required ThemeState currentState,
+    required ThemeState state,
     required ThemeBloc bloc,
   }) async* {
-    bloc.add(ChangeThemeEvent(id: app<ThemePreferences>().selectedTheme));
+    log.fine('deleting custom theme $themeId');
+
+    final index = themeId - 10;
+
+    final customThemesData = List.of(state.customThemesData);
+
+    if (index >= 0 && index < customThemesData.length) {
+      customThemesData.removeAt(index);
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+
+      final lightThemeId = app<ThemePreferences>().lightThemeId;
+      final darkThemeId = app<ThemePreferences>().darkThemeId;
+
+      // reset selection when deleting a selected theme
+      if (themeId == lightThemeId || themeId == darkThemeId) {
+        bloc.add(ChangeTheme(
+          lightThemeId: themeId == lightThemeId ? 0 : null,
+          darkThemeId: themeId == darkThemeId ? 0 : null,
+          saveSelection: true,
+        ));
+      }
+    }
   }
+}
+
+/// Adds a custom theme at [themeId].
+///
+/// If [themeId] points to an existing custom theme, it will be modified
+/// instead.
+///
+/// The light or dark theme selection will automatically be updated.
+class AddCustomTheme extends ThemeEvent with HarpyLogger {
+  const AddCustomTheme({
+    required this.themeData,
+    required this.themeId,
+    this.changeLightThemeSelection = false,
+    this.changeDarkThemeSelection = false,
+  });
+
+  final HarpyThemeData themeData;
+  final int themeId;
+  final bool changeLightThemeSelection;
+  final bool changeDarkThemeSelection;
+
+  @override
+  Stream<ThemeState> applyAsync({
+    required ThemeState state,
+    required ThemeBloc bloc,
+  }) async* {
+    log.fine('adding custom theme at $themeId');
+
+    final index = themeId - 10;
+
+    final customThemesData = List.of(state.customThemesData);
+
+    // add or modify theme
+    if (index >= 0 && index < customThemesData.length) {
+      customThemesData[index] = themeData;
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+    } else if (index >= customThemesData.length) {
+      customThemesData.add(themeData);
+
+      _persistCustomThemes(customThemesData);
+      yield state.copyWith(customThemesData: customThemesData);
+    } else {
+      log.warning('unexpected custom themes state');
+    }
+
+    // change selection to new theme
+    if (changeLightThemeSelection || changeDarkThemeSelection) {
+      bloc.add(ChangeTheme(
+        lightThemeId: changeLightThemeSelection ? themeId : null,
+        darkThemeId: changeDarkThemeSelection ? themeId : null,
+        saveSelection: true,
+      ));
+    }
+  }
+}
+
+void _persistCustomThemes(List<HarpyThemeData> customThemesData) {
+  final log = Logger('_persistCustomThemes');
+
+  log.fine('saving custom themes');
+
+  final encodedCustomThemes = customThemesData
+      .map((data) {
+        try {
+          return jsonEncode(data.toJson());
+        } catch (e, st) {
+          log.warning('unable to encode custom theme data', e, st);
+          return null;
+        }
+      })
+      .whereType<String>()
+      .toList();
+
+  app<ThemePreferences>().customThemes = encodedCustomThemes;
 }

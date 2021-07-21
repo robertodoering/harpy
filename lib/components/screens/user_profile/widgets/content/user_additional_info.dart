@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 /// Builds additional info about a user for the [UserProfileHeader].
 class UserProfileAdditionalInfo extends StatelessWidget {
@@ -43,7 +44,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
       child: Text(
         url.displayUrl,
         style: theme.textTheme.bodyText1!.copyWith(
-          color: theme.accentColor,
+          color: theme.colorScheme.secondary,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -55,6 +56,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     final children = [
       if (bloc.user!.hasLocation)
@@ -81,7 +83,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
           if (child == children.last)
             defaultSmallVerticalSpacer
           else
-            SizedBox(height: defaultSmallPaddingValue / 2),
+            SizedBox(height: config.smallPaddingValue / 2),
         ],
       ],
     );

@@ -24,7 +24,7 @@ class UserProfileInfo extends StatelessWidget {
         text: const Text('following'),
         onTap: () => bloc.add(const UnfollowUserEvent()),
         dense: true,
-        backgroundColor: theme.primaryColor,
+        backgroundColor: theme.colorScheme.primary,
       ),
       secondChild: HarpyButton.raised(
         text: const Text('follow'),

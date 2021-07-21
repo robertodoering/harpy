@@ -16,7 +16,6 @@ class HarpyScaffold extends StatelessWidget {
     this.actions,
     this.drawer,
     this.endDrawer,
-    this.endDrawerEnableOpenDragGesture = true,
     this.backgroundColors,
     this.appBarBottom,
     this.floatingActionButton,
@@ -29,7 +28,6 @@ class HarpyScaffold extends StatelessWidget {
   final List<Widget>? actions;
   final Widget? drawer;
   final Widget? endDrawer;
-  final bool endDrawerEnableOpenDragGesture;
   final PreferredSizeWidget? appBarBottom;
   final Widget? floatingActionButton;
   final bool buildSafeArea;
@@ -119,7 +117,8 @@ class HarpyScaffold extends StatelessWidget {
     return Scaffold(
       drawer: drawer,
       endDrawer: endDrawer,
-      endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
+      drawerEnableOpenDragGesture: false,
+      endDrawerEnableOpenDragGesture: false,
       floatingActionButton: _buildFloatingActionButton(mediaQuery),
       body: HarpyBackground(
         colors: backgroundColors,

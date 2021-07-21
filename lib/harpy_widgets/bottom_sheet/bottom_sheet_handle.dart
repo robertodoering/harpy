@@ -6,7 +6,7 @@ class BottomSheetHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
+    final theme = Theme.of(context);
 
     return Container(
       width: 40,
@@ -14,7 +14,7 @@ class BottomSheetHandle extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: kDefaultBorderRadius,
-        color: harpyTheme.foregroundColor.withOpacity(.2),
+        color: theme.colorScheme.onBackground.withOpacity(.2),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a [SliverAppBar] with an optional background.
 ///
@@ -122,9 +123,9 @@ class HarpySliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = HarpyTheme.of(context);
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
     // whether a flexible space widget should be built for the sliver app bar
     final hasFlexibleSpace = background != null;

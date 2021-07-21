@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -24,9 +23,6 @@ class TweetCardTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.watch<TweetBloc>();
     final tweet = bloc.tweet;
-
-    final fontSizeDelta =
-        app<LayoutPreferences>().fontSizeDelta + style.sizeDelta;
 
     final buildTranslation = tweet.hasTranslation &&
         !tweet.translation!.unchanged &&
@@ -53,7 +49,7 @@ class TweetCardTranslation extends StatelessWidget {
                   language: tweet.translation!.language,
                   entities: tweet.entities,
                   urlToIgnore: tweet.quoteUrl,
-                  fontSizeDelta: fontSizeDelta,
+                  fontSizeDelta: style.sizeDelta,
                 ),
               )
             : SizedBox(

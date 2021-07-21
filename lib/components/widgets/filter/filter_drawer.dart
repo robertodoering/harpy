@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 class FilterDrawer extends StatelessWidget {
   const FilterDrawer({
@@ -74,6 +75,7 @@ class FilterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return Drawer(
       child: HarpyBackground(
@@ -82,19 +84,19 @@ class FilterDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             // add status bar height to top padding and make it scrollable
-            SizedBox(height: defaultPaddingValue + mediaQuery.padding.top),
+            SizedBox(height: config.paddingValue + mediaQuery.padding.top),
             _buildTitleRow(theme),
-            _buildSearchButton(theme, DefaultEdgeInsets.all()),
-            for (Widget group in filterGroups) ...[
+            _buildSearchButton(theme, config.edgeInsets),
+            for (Widget group in filterGroups) ...<Widget>[
               group,
               if (group != filterGroups.last) defaultVerticalSpacer,
             ],
             _buildSearchButton(
               theme,
-              DefaultEdgeInsets.all().copyWith(bottom: 0),
+              config.edgeInsets.copyWith(bottom: 0),
             ),
             // add nav bar height to bottom padding and make it scrollable
-            SizedBox(height: defaultPaddingValue + mediaQuery.padding.bottom),
+            SizedBox(height: config.paddingValue + mediaQuery.padding.bottom),
           ],
         ),
       ),

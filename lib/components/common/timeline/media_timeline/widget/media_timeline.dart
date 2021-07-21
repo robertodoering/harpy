@@ -59,12 +59,12 @@ class _MediaTimelineState extends State<MediaTimeline> {
     );
   }
 
-  Widget _buildList(List<MediaTimelineEntry> entries) {
+  Widget _buildList(Config config, List<MediaTimelineEntry> entries) {
     return SliverWaterfallFlow(
       gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
         crossAxisCount: _buildTiled ? 2 : 1,
-        mainAxisSpacing: defaultSmallPaddingValue,
-        crossAxisSpacing: defaultSmallPaddingValue,
+        mainAxisSpacing: config.smallPaddingValue,
+        crossAxisSpacing: config.smallPaddingValue,
       ),
       delegate: SliverChildBuilderDelegate(
         (_, index) => _itemBuilder(entries, index),
@@ -76,6 +76,8 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
+
     final model = context.watch<MediaTimelineModel>();
     final entries = model.value;
 
@@ -90,8 +92,8 @@ class _MediaTimelineState extends State<MediaTimeline> {
             const SliverFillLoadingIndicator()
           else if (model.hasEntries) ...[
             SliverPadding(
-              padding: DefaultEdgeInsets.all(),
-              sliver: _buildList(entries),
+              padding: config.edgeInsets,
+              sliver: _buildList(config, entries),
             ),
             if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
           ] else

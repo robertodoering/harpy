@@ -4,8 +4,6 @@ part of 'authentication_bloc.dart';
 abstract class AuthenticationEvent {
   const AuthenticationEvent();
 
-  static final Logger _log = Logger('AuthenticationEvent');
-
   /// Executed when a user is authenticated either after a session is retrieved
   /// automatically after initialization or after a user authenticated manually.
   ///
@@ -61,18 +59,12 @@ abstract class AuthenticationEvent {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = userId;
 
-      final selectedThemeId = app<ThemePreferences>().selectedTheme;
-
       // initialize the custom themes for this user
-      bloc.themeBloc.loadCustomThemes();
-
-      if (selectedThemeId != -1) {
-        _log.fine('initializing selected theme with id $selectedThemeId');
-
-        bloc.themeBloc.add(ChangeThemeEvent(id: selectedThemeId));
-      } else {
-        _log.fine('no theme selected for the user');
-      }
+      bloc.themeBloc.add(const LoadCustomThemes());
+      bloc.themeBloc.add(ChangeTheme(
+        lightThemeId: app<ThemePreferences>().lightThemeId,
+        darkThemeId: app<ThemePreferences>().darkThemeId,
+      ));
     }
 
     return bloc.authenticatedUser != null;
@@ -103,7 +95,7 @@ abstract class AuthenticationEvent {
     }));
 
     // reset the theme to the default theme
-    bloc.themeBloc.add(const ChangeThemeEvent(id: 0));
+    bloc.themeBloc.add(const ChangeTheme(lightThemeId: 0, darkThemeId: 0));
   }
 
   Stream<AuthenticationState> applyAsync({

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 class SearchTextField extends StatelessWidget {
   const SearchTextField({
@@ -23,7 +24,7 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = HarpyTheme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
     final fillColor = theme.brightness == Brightness.light
         ? Colors.black.withOpacity(.05)
@@ -45,9 +46,9 @@ class SearchTextField extends StatelessWidget {
           filled: true,
           fillColor: fillColor,
           isDense: true,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(128),
+            borderRadius: kDefaultBorderRadius,
           ),
         ),
       ),

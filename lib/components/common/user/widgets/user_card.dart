@@ -21,43 +21,44 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ListCardAnimation(
       key: ValueKey<int>(user.hashCode),
-      child: Card(
-        child: ListTile(
-          shape: kDefaultShapeBorder,
-          isThreeLine: user.hasDescription,
-          leading: HarpyCircleAvatar(
-            imageUrl: user.profileImageUrl,
-          ),
-          title: Text(
-            user.name,
-            softWrap: false,
-            overflow: TextOverflow.fade,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '@${user.handle}',
-                softWrap: false,
-                overflow: TextOverflow.fade,
-              ),
-              if (user.hasDescription)
-                TwitterText(
-                  user.description!,
-                  entities: user.userDescriptionEntities,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  entityStyle: const TextStyle(),
-                  onHashtagTap: null,
-                  onUserMentionTap: null,
-                  onUrlTap: null,
-                ),
-            ],
-          ),
-          onTap: () => _onUserTap(context),
+      child: HarpyListCard(
+        color: theme.cardTheme.color,
+        leading: HarpyCircleAvatar(
+          imageUrl: user.profileImageUrl,
         ),
+        title: Text(
+          user.name,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              '@${user.handle}',
+              softWrap: false,
+              overflow: TextOverflow.fade,
+            ),
+            if (user.hasDescription) ...[
+              defaultSmallVerticalSpacer,
+              TwitterText(
+                user.description!,
+                entities: user.userDescriptionEntities,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                entityStyle: const TextStyle(),
+                onHashtagTap: null,
+                onUserMentionTap: null,
+                onUrlTap: null,
+              ),
+            ],
+          ],
+        ),
+        onTap: () => _onUserTap(context),
       ),
     );
   }

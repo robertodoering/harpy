@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// Builds a [CustomScrollView] for the [users].
 ///
@@ -34,12 +35,14 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return CustomScrollView(
       physics: enableScroll ? null : const NeverScrollableScrollPhysics(),
       slivers: [
         ...beginSlivers,
         SliverPadding(
-          padding: DefaultEdgeInsets.all(),
+          padding: config.edgeInsets,
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
               _itemBuilder,

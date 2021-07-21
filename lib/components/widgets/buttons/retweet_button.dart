@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/preferences/layout_preferences.dart';
-import 'package:harpy/core/services/service_locator.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
@@ -78,10 +76,9 @@ class _RetweetButtonState extends State<RetweetButton> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = HarpyTheme.of(context);
-    final bloc = context.watch<TweetBloc>();
+    final harpyTheme = context.watch<HarpyTheme>();
 
-    final fontSizeDelta = app<LayoutPreferences>().fontSizeDelta;
+    final bloc = context.watch<TweetBloc>();
 
     return ActionButton(
       active: widget.bloc.tweet.retweeted,
@@ -92,10 +89,10 @@ class _RetweetButtonState extends State<RetweetButton> {
             color: harpyTheme.retweetColor,
             fontWeight: FontWeight.bold,
           )
-          .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
+          .apply(fontSizeDelta: widget.sizeDelta),
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
-          .apply(fontSizeDelta: fontSizeDelta + widget.sizeDelta),
+          .apply(fontSizeDelta: widget.sizeDelta),
       value: widget.bloc.tweet.retweetCount,
       activate: _showRetweetButtonMenu,
       deactivate: bloc.onUnretweet,
@@ -116,7 +113,7 @@ class _RetweetButtonState extends State<RetweetButton> {
         ),
         child: child,
       ),
-      iconSize: widget.iconSize + fontSizeDelta + widget.sizeDelta,
+      iconSize: widget.iconSize,
       iconBuilder: (_, __, size) => Icon(FeatherIcons.repeat, size: size),
     );
   }

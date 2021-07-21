@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds an [icon] and [text] row with padding for the icon that matches the
 /// size of a [TweetCard] avatar.
@@ -21,6 +22,7 @@ class TweetListInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return FadeAnimation(
       duration: kShortAnimationDuration,
@@ -28,15 +30,15 @@ class TweetListInfoRow extends StatelessWidget {
       child: Padding(
         padding: padding ??
             EdgeInsets.symmetric(
-              horizontal: defaultPaddingValue * 2,
-              vertical: defaultSmallPaddingValue,
+              horizontal: config.paddingValue * 2,
+              vertical: config.smallPaddingValue,
             ),
         child: Row(
           children: [
             IconTheme(
               data: theme.iconTheme.copyWith(size: 18),
               child: SizedBox(
-                width: TweetCardAvatar.defaultRadius * 2,
+                width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
                 child: icon,
               ),
             ),

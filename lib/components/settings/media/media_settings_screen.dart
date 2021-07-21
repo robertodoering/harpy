@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:provider/provider.dart';
 
 class MediaSettingsScreen extends StatefulWidget {
   const MediaSettingsScreen();
@@ -28,11 +29,11 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
     2: 'never autoplay',
   };
 
-  List<Widget> _buildSettings(ThemeData theme) {
-    return [
+  List<Widget> _buildSettings(ThemeData theme, Config config) {
+    return <Widget>[
       RadioDialogTile<int>(
         leading: CupertinoIcons.photo,
-        title: 'Tweet image quality',
+        title: 'tweet image quality',
         subtitle: _mediaQualityValues[mediaPreferences.bestMediaQuality],
         description: 'change when tweet images use the best quality',
         value: mediaPreferences.bestMediaQuality,
@@ -42,25 +43,28 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
-      ListTile(
-        leading: const SizedBox(),
-        title: Row(
-          children: [
-            const SizedBox(width: 16),
-            Icon(CupertinoIcons.info, color: theme.accentColor),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'media is always downloaded in the best quality',
-                style: theme.textTheme.bodyText1,
+      defaultSmallVerticalSpacer,
+      Row(
+        children: [
+          // align with the text in the list tile
+          SizedBox(width: config.paddingValue * 4),
+          Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
+          defaultHorizontalSpacer,
+          Expanded(
+            child: Text(
+              'media is always downloaded in the best quality',
+              style: theme.textTheme.subtitle2!.apply(
+                fontSizeDelta: -2,
+                color: theme.textTheme.subtitle2!.color!.withOpacity(.8),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      SwitchListTile(
-        secondary: const Icon(CupertinoIcons.crop),
-        title: const Text('Crop tweet image'),
+      defaultVerticalSpacer,
+      HarpySwitchTile(
+        leading: const Icon(CupertinoIcons.crop),
+        title: const Text('crop tweet image'),
         subtitle: const Text('reduces height'),
         value: mediaPreferences.cropImage,
         onChanged: (value) {
@@ -69,7 +73,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
-        title: 'Autoplay gifs',
+        title: 'autoplay gifs',
         subtitle: _autoplayValues[mediaPreferences.autoplayMedia],
         description: 'change when gifs should automatically play',
         value: mediaPreferences.autoplayMedia,
@@ -81,7 +85,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       ),
       RadioDialogTile<int>(
         leading: CupertinoIcons.play_circle,
-        title: 'Autoplay videos',
+        title: 'autoplay videos',
         subtitle: _autoplayValues[mediaPreferences.autoplayVideos],
         description: 'change when videos should automatically play',
         value: mediaPreferences.autoplayVideos,
@@ -91,17 +95,13 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
-      SwitchListTile(
-        secondary: const Icon(CupertinoIcons.link),
-        title: const Text('Always open links externally'),
-        subtitle: const Text('coming soon!'),
-        value: mediaPreferences.openLinksExternally,
-        onChanged: null,
-        // todo: implement
-        // onChanged: (bool value) {
-        //   setState(() => mediaPreferences.openLinksExternally = value);
-        // },
-      ),
+      // HarpySwitchTile(
+      //   leading: const Icon(CupertinoIcons.link),
+      //   title: const Text('always open links externally'),
+      //   subtitle: const Text('coming soon!'),
+      //   value: mediaPreferences.openLinksExternally,
+      //   enabled: false,
+      // ),
     ];
   }
 
@@ -129,6 +129,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     return HarpyScaffold(
       title: 'media settings',
@@ -136,7 +137,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       buildSafeArea: true,
       body: ListView(
         padding: EdgeInsets.zero,
-        children: _buildSettings(theme),
+        children: _buildSettings(theme, config),
       ),
     );
   }

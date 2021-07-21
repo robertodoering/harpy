@@ -52,18 +52,19 @@ class TwitterLists extends StatelessWidget {
 
   List<Widget> _buildOwnerships(
     BuildContext context,
+    Config config,
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
     return [
       SliverPadding(
-        padding: DefaultEdgeInsets.symmetric(horizontal: true),
+        padding: config.edgeInsetsSymmetric(horizontal: true),
         sliver: const SliverBoxInfoMessage(
           primaryMessage: Text('owned'),
         ),
       ),
       SliverPadding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (_, index) => _itemBuilder(index, state.ownerships, context),
@@ -75,7 +76,7 @@ class TwitterLists extends StatelessWidget {
       ),
       if (state.hasMoreOwnerships || state.loadingMoreOwnerships)
         SliverPadding(
-          padding: DefaultEdgeInsets.only(bottom: true),
+          padding: config.edgeInsetsOnly(bottom: true),
           sliver: SliverToBoxAdapter(
             child: Center(
               child: AnimatedSwitcher(
@@ -95,18 +96,19 @@ class TwitterLists extends StatelessWidget {
 
   List<Widget> _buildSubscriptions(
     BuildContext context,
+    Config config,
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
     return [
       SliverPadding(
-        padding: DefaultEdgeInsets.symmetric(horizontal: true),
+        padding: config.edgeInsetsSymmetric(horizontal: true),
         sliver: const SliverBoxInfoMessage(
           primaryMessage: Text('subscribed'),
         ),
       ),
       SliverPadding(
-        padding: DefaultEdgeInsets.all(),
+        padding: config.edgeInsets,
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (_, index) => _itemBuilder(index, state.subscriptions, context),
@@ -118,7 +120,7 @@ class TwitterLists extends StatelessWidget {
       ),
       if (state.hasMoreSubscriptions || state.loadingMoreSubscriptions)
         SliverPadding(
-          padding: DefaultEdgeInsets.only(bottom: true),
+          padding: config.edgeInsetsOnly(bottom: true),
           sliver: SliverToBoxAdapter(
             child: Center(
               child: AnimatedSwitcher(
@@ -139,8 +141,8 @@ class TwitterLists extends StatelessWidget {
   void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
     showHarpyBottomSheet<void>(
       context,
-      children: [
-        ListTile(
+      children: <Widget>[
+        HarpyListTile(
           leading: const Icon(CupertinoIcons.person_3),
           title: const Text('show members'),
           onTap: () {
@@ -155,6 +157,7 @@ class TwitterLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<ListsShowBloc>();
     final state = bloc.state;
@@ -173,12 +176,14 @@ class TwitterLists extends StatelessWidget {
           if (state.hasOwnerships)
             ..._buildOwnerships(
               context,
+              config,
               bloc,
               state,
             ),
           if (state.hasSubscriptions)
             ..._buildSubscriptions(
               context,
+              config,
               bloc,
               state,
             ),

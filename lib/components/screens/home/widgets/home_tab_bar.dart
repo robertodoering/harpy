@@ -30,12 +30,10 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
     final model = context.watch<HomeTabModel>();
 
-    final cardColor =
-        Color.lerp(theme.cardTheme.color, theme.scaffoldBackgroundColor, .9)!
-            .withOpacity(.8);
+    final cardColor = harpyTheme.alternateCardColor;
 
     return Container(
       width: double.infinity,

@@ -49,7 +49,7 @@ void showTweetActionsBottomSheet(
         ),
       ),
       if (isAuthenticatedUser)
-        ListTile(
+        HarpyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
             'delete',
@@ -66,7 +66,7 @@ void showTweetActionsBottomSheet(
           },
         ),
       if (showReply)
-        ListTile(
+        HarpyListTile(
           leading: const Icon(CupertinoIcons.reply),
           title: const Text('reply'),
           onTap: () async {
@@ -76,7 +76,7 @@ void showTweetActionsBottomSheet(
             );
           },
         ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),
         onTap: () {
@@ -84,7 +84,7 @@ void showTweetActionsBottomSheet(
           app<HarpyNavigator>().maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy tweet text'),
         enabled: bloc.tweet.hasText,
@@ -94,7 +94,7 @@ void showTweetActionsBottomSheet(
           app<HarpyNavigator>().maybePop();
         },
       ),
-      ListTile(
+      HarpyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share tweet'),
         onTap: () {
