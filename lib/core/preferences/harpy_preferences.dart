@@ -107,9 +107,9 @@ class HarpyPreferences {
     bool prefix = false,
   }) {
     try {
-      return _preferences.getStringList(_key(key, prefix)) ?? <String>[];
+      return _preferences.getStringList(_key(key, prefix)) ?? [];
     } catch (e) {
-      return <String>[];
+      return [];
     }
   }
 

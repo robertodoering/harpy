@@ -40,7 +40,7 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
       Navigator.of(context).pop(Uri.dataFromString(navigation.url));
       return NavigationDecision.prevent;
     } else {
-      if (<String>[
+      if ([
         'twitter.com/oauth/authorize', // login page
         'api.twitter.com/login/error', // login error (e.g. invalid username / password)
         'api.twitter.com/account/login_verification' // 2 factor authentication

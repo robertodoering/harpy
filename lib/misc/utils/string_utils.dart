@@ -57,7 +57,7 @@ String? parseHtmlEntities(String? source) {
 
 /// Unicode code units of whitespaces defined by the Unicode White_Space
 /// property (as defined in version 6.2 or later) and the BOM character, 0xFEFF.
-const List<int> _unicodeWhitespaces = <int>[
+const List<int> _unicodeWhitespaces = [
   // <control-0009>..<control-000D>
   0x0009, 0x000A, 0x000B, 0x000B, 0x000C, 0x000D,
   0x0020, // SPACE

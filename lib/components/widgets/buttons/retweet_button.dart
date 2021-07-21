@@ -49,7 +49,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final result = await showMenu<int>(
       context: context,
       elevation: popupMenuTheme.elevation,
-      items: const <PopupMenuEntry<int>>[
+      items: const [
         HarpyPopupMenuItem<int>(
           value: 0,
           icon: Icon(FeatherIcons.repeat),

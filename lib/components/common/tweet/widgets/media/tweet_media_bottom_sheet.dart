@@ -24,7 +24,7 @@ void showTweetMediaBottomSheet(
   showHarpyBottomSheet<void>(
     context,
     hapticFeedback: true,
-    children: <Widget>[
+    children: [
       HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open externally'),

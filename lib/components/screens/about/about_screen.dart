@@ -47,7 +47,7 @@ class AboutScreen extends StatelessWidget {
 
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           HarpyListTile(
             leading: const Icon(Icons.history),
             title: Text(
@@ -215,7 +215,7 @@ class AboutScreen extends StatelessWidget {
       ],
       body: ListView(
         padding: config.edgeInsets,
-        children: <Widget>[
+        children: [
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
           _buildIntroductionText(theme, linkStyle),

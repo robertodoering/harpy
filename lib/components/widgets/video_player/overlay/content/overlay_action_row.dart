@@ -18,7 +18,7 @@ class OverlayActionRow extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: <Color>[
+          colors: [
             Colors.transparent,
             Colors.black45,
           ],

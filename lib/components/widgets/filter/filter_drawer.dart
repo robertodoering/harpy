@@ -87,7 +87,7 @@ class FilterDrawer extends StatelessWidget {
             SizedBox(height: config.paddingValue + mediaQuery.padding.top),
             _buildTitleRow(theme),
             _buildSearchButton(theme, config.edgeInsets),
-            for (Widget group in filterGroups) ...<Widget>[
+            for (Widget group in filterGroups) ...[
               group,
               if (group != filterGroups.last) defaultVerticalSpacer,
             ],

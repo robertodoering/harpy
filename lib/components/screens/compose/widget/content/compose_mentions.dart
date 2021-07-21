@@ -78,7 +78,7 @@ class MentionSuggestions extends StatelessWidget {
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(config, theme, 'following users'),
         for (UserData user in state.filteredFollowing)
           _buildUser(config, theme, user),
@@ -93,7 +93,7 @@ class MentionSuggestions extends StatelessWidget {
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(config, theme, 'other users'),
         for (UserData user in state.filteredSearchedUsers)
           _buildUser(config, theme, user),

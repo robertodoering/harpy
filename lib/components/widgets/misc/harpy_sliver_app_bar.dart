@@ -65,7 +65,7 @@ class HarpySliverAppBar extends StatelessWidget {
       centerTitle: true,
       title: _buildTitle(theme),
       background: background,
-      stretchModes: const <StretchMode>[
+      stretchModes: const [
         StretchMode.zoomBackground,
         StretchMode.fadeTitle,
       ],
@@ -99,7 +99,7 @@ class HarpySliverAppBar extends StatelessWidget {
 
     return BoxDecoration(
       gradient: LinearGradient(
-        colors: <Color>[
+        colors: [
           harpyTheme.backgroundColors.first.withOpacity(.8),
           end!.withOpacity(.8),
         ],

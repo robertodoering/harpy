@@ -51,7 +51,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     var connections = user?.connections;
 
     if (user?.connections == null) {
-      await Future.wait<void>(<Future<void>>[
+      await Future.wait([
         // user data
         if (userData == null && _handle != null)
           bloc.userService
@@ -64,7 +64,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
         // followed_by)
         if (connections == null && _handle != null)
           bloc.userService
-              .friendshipsLookup(screenNames: <String>[_handle!])
+              .friendshipsLookup(screenNames: [_handle!])
               .then((response) => response.length == 1 ? response.first : null)
               .then<void>((friendship) => connections = friendship?.connections)
               .catchError(silentErrorHandler),

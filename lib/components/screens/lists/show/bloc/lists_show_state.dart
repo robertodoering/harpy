@@ -104,7 +104,7 @@ class ListsLoadingMore extends ListsShowState {
     required this.subscriptions,
     required this.ownershipsCursor,
     required this.subscriptionsCursor,
-  })   : loadingOwnerships = true,
+  })  : loadingOwnerships = true,
         loadingSubscriptions = false;
 
   const ListsLoadingMore.loadingSubscriptions({
@@ -112,7 +112,7 @@ class ListsLoadingMore extends ListsShowState {
     required this.subscriptions,
     required this.ownershipsCursor,
     required this.subscriptionsCursor,
-  })   : loadingOwnerships = false,
+  })  : loadingOwnerships = false,
         loadingSubscriptions = true;
 
   final bool loadingOwnerships;

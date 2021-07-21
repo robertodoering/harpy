@@ -32,7 +32,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   final VideoPlayerController? controller;
 
   /// Lists of listeners called whenever an action on the video has been taken.
-  final List<OnAction> _actionListener = <OnAction>[];
+  final List<OnAction> _actionListener = [];
 
   /// Whether the video has already been initialized.
   bool get initialized => controller!.value.isInitialized;
@@ -170,7 +170,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   void _pushFullscreen() {
     _fullscreen = true;
 
-    SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     app<HarpyNavigator>().push(
       HeroDialogRoute<void>(

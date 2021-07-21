@@ -64,7 +64,7 @@ class _ProDialogState extends State<ProDialog> {
           ],
           Text.rich(
             TextSpan(
-              children: <TextSpan>[
+              children: [
                 const TextSpan(text: 'buy harpy pro in the '),
                 TextSpan(
                   text: 'play store',
@@ -77,7 +77,7 @@ class _ProDialogState extends State<ProDialog> {
           ),
         ],
       ),
-      actions: const <DialogAction<dynamic>>[
+      actions: const <DialogAction<bool>>[
         DialogAction<bool>(
           result: true,
           text: 'try it out',

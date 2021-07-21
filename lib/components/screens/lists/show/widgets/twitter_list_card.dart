@@ -29,7 +29,7 @@ class TwitterListCard extends StatelessWidget {
             overflow: TextOverflow.fade,
           ),
         ),
-        if (list.isPrivate) ...<Widget>[
+        if (list.isPrivate) ...[
           SizedBox(width: config.smallPaddingValue / 2),
           const Icon(CupertinoIcons.padlock),
         ],
@@ -91,7 +91,7 @@ class TwitterListCard extends StatelessWidget {
             padding: config.edgeInsets,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 _buildTitle(config, theme),
                 if (list.hasDescription) _buildDescription(theme),
                 defaultSmallVerticalSpacer,

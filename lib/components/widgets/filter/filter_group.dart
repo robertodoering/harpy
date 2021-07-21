@@ -53,7 +53,7 @@ class FilterGroup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             if (title != null || toggleAll != null)
               _buildTitleRow(config, theme),
             ...children,

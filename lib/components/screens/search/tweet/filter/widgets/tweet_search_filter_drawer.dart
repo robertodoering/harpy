@@ -56,7 +56,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           trailing: DropdownButton<int>(
             value: model.value.resultType,
             onChanged: model.setResultType,
-            items: <DropdownMenuItem<int>>[
+            items: [
               DropdownMenuItem<int>(
                 value: 0,
                 child: Text('mixed (default)', style: style),
@@ -191,7 +191,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       showSearchButton: model.hasSearchQuery,
       onClear: model.clear,
       onSearch: () => bloc.add(SearchTweets(filter: model.value)),
-      filterGroups: <Widget>[
+      filterGroups: [
         _buildGeneralGroup(config, model, theme),
         _buildIncludesGroup(model),
         _buildExcludesGroup(model),

@@ -24,7 +24,7 @@ class HarpyBackground extends StatelessWidget {
       end: Alignment.bottomCenter,
       colors: backgroundColors.length > 1
           ? backgroundColors
-          : <Color>[
+          : [
               backgroundColors.first,
               backgroundColors.first,
             ],

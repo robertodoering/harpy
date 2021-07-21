@@ -65,7 +65,7 @@ class PostTweetDialogContent extends StatelessWidget {
 
   Widget _buildLoading(Config config, PostTweetBloc bloc) {
     return Column(
-      children: <Widget>[
+      children: [
         SizedBox(height: config.paddingValue * 2),
         const Center(child: CircularProgressIndicator()),
       ],

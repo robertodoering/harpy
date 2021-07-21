@@ -55,7 +55,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
         Wrap(
           spacing: config.smallPaddingValue,
           runSpacing: config.smallPaddingValue,
-          children: <Widget>[
+          children: [
             for (int i = 0; i < widget.activeFilters.length; i++)
               FadeAnimation(
                 child: Chip(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 /// Builds the [TweetList] for the [TweetSearchScreen].
@@ -16,7 +15,7 @@ class TweetSearchList extends StatelessWidget {
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: TweetList(
-          state is TweetSearchResult ? state.tweets : <TweetData>[],
+          state is TweetSearchResult ? state.tweets : [],
           enableScroll: state.hasResults,
           beginSlivers: [
             TweetSearchAppBar(text: state.searchQuery),

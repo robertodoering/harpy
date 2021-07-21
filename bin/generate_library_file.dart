@@ -83,7 +83,7 @@ Future<void> main(List<String> arguments) async {
 
     final result = await Process.run(
       'dartfmt',
-      <String>[
+      [
         '-w',
         '--fix',
         libraryFile.path,

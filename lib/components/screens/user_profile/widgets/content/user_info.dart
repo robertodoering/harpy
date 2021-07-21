@@ -91,9 +91,9 @@ class UserProfileInfo extends StatelessWidget {
   Widget _buildUserName(ThemeData theme) {
     return Text.rich(
       TextSpan(
-        children: <InlineSpan>[
+        children: [
           TextSpan(text: bloc.user!.name),
-          if (bloc.user!.verified) ...<InlineSpan>[
+          if (bloc.user!.verified) ...[
             const TextSpan(text: ' '),
             const WidgetSpan(
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),

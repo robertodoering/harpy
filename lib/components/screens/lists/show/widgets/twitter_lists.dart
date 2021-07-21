@@ -141,7 +141,7 @@ class TwitterLists extends StatelessWidget {
   void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
     showHarpyBottomSheet<void>(
       context,
-      children: <Widget>[
+      children: [
         HarpyListTile(
           leading: const Icon(CupertinoIcons.person_3),
           title: const Text('show members'),

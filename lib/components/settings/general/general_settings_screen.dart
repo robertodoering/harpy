@@ -18,7 +18,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   final GeneralPreferences? generalPreferences = app<GeneralPreferences>();
 
   List<Widget> get _settings {
-    return <Widget>[
+    return [
       HarpySwitchTile(
         leading: const Icon(Icons.update),
         title: const Text('show changelog dialog'),

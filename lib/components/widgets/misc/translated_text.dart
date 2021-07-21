@@ -37,7 +37,7 @@ class TranslatedText extends StatelessWidget {
         // 'translated from' original language text
         Text.rich(
           TextSpan(
-            children: <TextSpan>[
+            children: [
               const TextSpan(text: 'translated from'),
               TextSpan(
                 text: ' ${language ?? 'unknown'}',

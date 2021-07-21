@@ -154,9 +154,9 @@ class TwitterText extends StatefulWidget {
 }
 
 class _TwitterTextState extends State<TwitterText> {
-  final List<GestureRecognizer> _gestureRecognizer = <GestureRecognizer>[];
+  final List<GestureRecognizer> _gestureRecognizer = [];
 
-  final List<TwitterTextSpan> _textSpans = <TwitterTextSpan>[];
+  final List<TwitterTextSpan> _textSpans = [];
 
   @override
   void initState() {
@@ -278,7 +278,7 @@ class _TwitterTextState extends State<TwitterText> {
 
     return Text.rich(
       TextSpan(
-        children: <TextSpan>[
+        children: [
           for (TwitterTextSpan textSpan in _textSpans)
             TextSpan(
               text: textSpan.text,
@@ -372,7 +372,7 @@ List<int>? _findIndices(String text, String entityText, int indexStart) {
 
     if (start != -1) {
       final end = start + entityText.length;
-      return <int>[start, end];
+      return [start, end];
     }
   } catch (e) {
     // assume indices can't be found
