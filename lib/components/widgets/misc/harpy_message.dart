@@ -7,7 +7,7 @@ class HarpyMessage extends StatefulWidget {
     required this.child,
   }) : super(key: globalKey);
 
-  final Widget? child;
+  final Widget child;
 
   static final GlobalKey<HarpyMessageState> globalKey =
       GlobalKey<HarpyMessageState>();
@@ -23,9 +23,14 @@ class HarpyMessageState extends State<HarpyMessage> {
   ScaffoldMessengerState get state => _messengerKey.currentState!;
 
   void show(String message, [SnackBarAction? action]) {
+    final theme = Theme.of(context);
+
     _messengerKey.currentState!.showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: theme.textTheme.subtitle2,
+        ),
         action: action,
       ),
     );

@@ -46,7 +46,7 @@ class Harpy extends StatelessWidget {
         harpyRouteObserver,
       ],
       home: const SplashScreen(),
-      builder: (_, child) => _ContentBuilder(child: child),
+      builder: (_, child) => _ContentBuilder(child: child!),
     );
   }
 }
@@ -56,7 +56,7 @@ class _ContentBuilder extends StatelessWidget {
     required this.child,
   });
 
-  final Widget? child;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

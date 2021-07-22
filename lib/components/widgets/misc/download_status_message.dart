@@ -30,6 +30,7 @@ class _DownloadStatusMessageState extends State<DownloadStatusMessage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final status = widget.notifier.value;
 
     return AnimatedSwitcher(
@@ -39,13 +40,18 @@ class _DownloadStatusMessageState extends State<DownloadStatusMessage> {
       child: Row(
         key: ValueKey(status),
         children: [
-          Flexible(child: Text(status.message)),
+          Flexible(
+            child: Text(
+              status.message,
+              style: theme.textTheme.subtitle2,
+            ),
+          ),
           if (status.state == DownloadState.inProgress) ...[
             defaultHorizontalSpacer,
-            const SizedBox(
+            SizedBox(
               width: 18,
               height: 18,
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: theme.accentColor),
             ),
           ],
         ],

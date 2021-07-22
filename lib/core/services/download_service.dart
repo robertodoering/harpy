@@ -18,7 +18,7 @@ class DownloadService with HarpyLogger {
     required String url,
     required String name,
     VoidCallback? onStart,
-    VoidCallback? onSuccess,
+    ValueChanged<String>? onSuccess,
     VoidCallback? onFailure,
   }) async {
     final path = await _requestDownloadDirectory();
@@ -45,7 +45,7 @@ class DownloadService with HarpyLogger {
 
         log.fine('download successful');
 
-        onSuccess?.call();
+        onSuccess?.call(path);
       } catch (e, st) {
         log.severe('error while trying to download file', e, st);
 
