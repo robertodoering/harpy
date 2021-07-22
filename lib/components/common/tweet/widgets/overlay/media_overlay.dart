@@ -28,7 +28,7 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
 
       final snackBar = SnackBar(
         content: DownloadStatusMessage(notifier: notifier),
-        duration: const Duration(seconds: 10),
+        duration: const Duration(seconds: 15),
       );
 
       await app<DownloadService>()
@@ -36,8 +36,8 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
             url: mediaUrl,
             name: fileName,
             onStart: () => app<MessageService>().showCustom(snackBar),
-            onSuccess: () => notifier.value = DownloadStatus(
-              message: '${type.name} saved',
+            onSuccess: (path) => notifier.value = DownloadStatus(
+              message: '${type.name} saved in\n$path',
               state: DownloadState.successful,
             ),
             onFailure: () => notifier.value = const DownloadStatus(
@@ -47,9 +47,9 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
           )
           .handleError(silentErrorHandler);
 
-      // hide snack bar 3 seconds after download finished (assuming it's
+      // hide snack bar shortly after download finished (assuming it's
       // still showing)
-      await Future<void>.delayed(const Duration(seconds: 3));
+      await Future<void>.delayed(const Duration(seconds: 4));
       app<MessageService>().messageState.state.hideCurrentSnackBar();
     }
   }
