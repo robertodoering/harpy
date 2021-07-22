@@ -1,0 +1,5 @@
+Version 0.6.10
+2021-07-23
+
+· Updated download notification to show destination folder
+· Fixed notification text for light themes
