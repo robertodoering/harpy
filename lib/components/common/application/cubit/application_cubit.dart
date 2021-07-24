@@ -6,7 +6,6 @@ import 'package:harpy/components/settings/config/cubit/config_cubit.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Starts the application initialization upon starting the app.
@@ -56,16 +55,12 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     if (authenticationCubit.state is Authenticated) {
       // navigate to home screen after session has been restored
-      unawaited(
-        app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route),
-      );
+      app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
     } else {
       // navigate to login screen
-      unawaited(
-        app<HarpyNavigator>().pushReplacementNamed(
-          LoginScreen.route,
-          type: RouteType.fade,
-        ),
+      app<HarpyNavigator>().pushReplacementNamed(
+        LoginScreen.route,
+        type: RouteType.fade,
       );
     }
 

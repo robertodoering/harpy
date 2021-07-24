@@ -70,15 +70,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         if (state is Authenticated) {
           if (app<SetupPreferences>().performedSetup) {
-            unawaited(app<HarpyNavigator>().pushReplacementNamed(
+            app<HarpyNavigator>().pushReplacementNamed(
               HomeScreen.route,
               type: RouteType.fade,
-            ));
+            );
           } else {
-            unawaited(app<HarpyNavigator>().pushReplacementNamed(
+            app<HarpyNavigator>().pushReplacementNamed(
               SetupScreen.route,
               type: RouteType.fade,
-            ));
+            );
           }
         }
 
@@ -90,10 +90,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         emit(const Unauthenticated());
 
-        unawaited(app<HarpyNavigator>().pushReplacementNamed(
+        app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
           type: RouteType.fade,
-        ));
+        );
 
         break;
       case TwitterAuthStatus.userCancelled:
@@ -101,22 +101,25 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         emit(const Unauthenticated());
 
-        unawaited(app<HarpyNavigator>().pushReplacementNamed(
+        app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
           type: RouteType.fade,
-        ));
+        );
 
         break;
     }
   }
 
+  /// Navigates to the [LoginScreen] and invalidates the active session.
   Future<void> logout() async {
     log.fine('logging out');
 
     // reset the theme to the default theme
     themeBloc.add(const ChangeTheme(lightThemeId: 0, darkThemeId: 0));
 
-    await app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+    app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
+
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // invalidate session after navigation to avoid building the home screen
     // without the user data

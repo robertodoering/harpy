@@ -30,11 +30,9 @@ class _SetupScreenState extends State<SetupScreen> {
 
     app<SetupPreferences>().performedSetup = true;
 
-    unawaited(
-      app<HarpyNavigator>().pushReplacementNamed(
-        HomeScreen.route,
-        type: RouteType.fade,
-      ),
+    app<HarpyNavigator>().pushReplacementNamed(
+      HomeScreen.route,
+      type: RouteType.fade,
     );
   }
 
