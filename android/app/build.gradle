@@ -107,8 +107,3 @@ dependencies {
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava' // fixes guava conflict: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
     implementation 'com.android.support:multidex:1.0.3' // multidex support for android <=21
 }
-
-if (hasKeyStore) {
-    // enable google services for firebase analytics when signing the app
-    apply plugin: 'com.google.gms.google-services'
-}

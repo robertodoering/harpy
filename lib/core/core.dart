@@ -22,7 +22,6 @@ export 'preferences/trends_preferences.dart';
 export 'preferences/tweet_visibility_preferences.dart';
 export 'regex/common_regex.dart';
 export 'regex/twitter_regex.dart';
-export 'services/analytics_service.dart';
 export 'services/connectivity_service.dart';
 export 'services/download_service.dart';
 export 'services/message_service.dart';

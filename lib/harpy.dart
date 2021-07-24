@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,10 +38,6 @@ class Harpy extends StatelessWidget {
       navigatorKey: app<HarpyNavigator>().key,
       onGenerateRoute: onGenerateRoute,
       navigatorObservers: [
-        FirebaseAnalyticsObserver(
-          analytics: app<AnalyticsService>().analytics,
-          nameExtractor: screenNameExtractor,
-        ),
         harpyRouteObserver,
       ],
       home: const SplashScreen(),

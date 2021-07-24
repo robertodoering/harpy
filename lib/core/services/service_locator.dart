@@ -28,7 +28,6 @@ void setupServices() {
     ..registerLazySingleton(() => MessageService())
     ..registerLazySingleton(() => TranslationService())
     ..registerLazySingleton(() => ConnectivityService())
-    ..registerLazySingleton(() => AnalyticsService())
     ..registerLazySingleton(() => DownloadService())
     ..registerLazySingleton(() => MediaUploadService())
     ..registerLazySingleton(() => MediaVideoConverter())
