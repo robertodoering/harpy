@@ -12,6 +12,9 @@ class AuthPreferences {
   String get userId => harpyPrefs.getString('userId', '')!;
   set userId(String value) => harpyPrefs.setString('userId', value);
 
+  int get auth => harpyPrefs.getInt('auth', -1);
+  set auth(int value) => harpyPrefs.setInt('auth', value);
+
   void clearAuth() {
     harpyPrefs.remove('userToken');
     harpyPrefs.remove('userSecret');

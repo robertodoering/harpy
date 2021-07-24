@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
@@ -48,12 +49,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> login() async {
     log.fine('logging in');
 
+    if (!validateAppConfig()) {
+      return;
+    }
+
     emit(const AwaitingAuthentication());
 
-    final result = await TwitterAuth(
-      consumerKey: twitterConsumerKey,
-      consumerSecret: twitterConsumerSecret,
-    ).authenticateWithTwitter(
+    final result = await _twitterAuth().authenticateWithTwitter(
       webviewNavigation: _webviewNavigation,
       onExternalNavigation: launchUrl,
     );
@@ -135,11 +137,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> _onLogin(TwitterAuthSession authSession) async {
     log.fine('on login');
 
-    (app<TwitterApi>().client as TwitterClient)
-      ..consumerKey = twitterConsumerKey
-      ..consumerSecret = twitterConsumerSecret
-      ..token = authSession.token
-      ..secret = authSession.tokenSecret;
+    _initializeTwitterApi(authSession);
 
     final user = await _initializeUser(authSession.userId);
 
@@ -229,4 +227,42 @@ Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
       settings: const RouteSettings(name: 'login'),
     ),
   );
+}
+
+TwitterAuth _twitterAuth() {
+  final auth = app<AuthPreferences>().auth;
+  final keys = twitterConsumerKey.split(',');
+  final secrets = twitterConsumerSecret.split(',');
+  int index;
+
+  assert(keys.length == secrets.length);
+
+  if (keys.length != secrets.length) {
+    index = 0;
+  } else if (auth == -1) {
+    index = math.Random().nextInt(keys.length);
+    app<AuthPreferences>().auth = index;
+  } else if (auth >= 0 && auth < keys.length) {
+    index = auth;
+  } else {
+    index = 0;
+  }
+
+  return TwitterAuth(
+    consumerKey: keys[index],
+    consumerSecret: secrets[index],
+  );
+}
+
+void _initializeTwitterApi(TwitterAuthSession authSession) {
+  final auth = app<AuthPreferences>().auth;
+  final keys = twitterConsumerKey.split(',');
+  final secrets = twitterConsumerSecret.split(',');
+  final index = auth == -1 ? 0 : auth;
+
+  (app<TwitterApi>().client as TwitterClient)
+    ..consumerKey = keys[index]
+    ..consumerSecret = secrets[index]
+    ..token = authSession.token
+    ..secret = authSession.tokenSecret;
 }

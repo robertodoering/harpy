@@ -19,6 +19,7 @@ platform :android do
 
   desc "Builds an appbundle and uploads it to the play store beta (open testing) track"
   lane :beta do
+    # todo
     api_key = ENV['twitter_consumer_key']
     api_secret = ENV['twitter_consumer_secret']
     sentry_dsn = ENV['sentry_dsn']

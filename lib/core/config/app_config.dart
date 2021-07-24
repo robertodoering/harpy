@@ -35,7 +35,7 @@ final bool hasTwitterConfig =
 /// --dart-define=twitter_consumer_key=your_consumer_key \
 /// --dart-define=twitter_consumer_secret=your_consumer_secret
 /// ```
-void validateAppConfig() {
+bool validateAppConfig() {
   if (!hasTwitterConfig) {
     _log.severe(
       'Twitter api key or secret is missing.\n'
@@ -50,4 +50,6 @@ void validateAppConfig() {
       '--dart-define=twitter_consumer_secret=your_consumer_secret',
     );
   }
+
+  return hasTwitterConfig;
 }
