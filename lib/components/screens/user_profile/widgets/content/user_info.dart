@@ -7,6 +7,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the info for a user in the [UserProfileHeader].
 ///
@@ -111,13 +112,13 @@ class UserProfileInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     // hide follow button when the profile of the authenticated user is showing
     // or when the connections have not been requested to determine whether the
     // authenticated user is following this user.
-    final enableFollow = authBloc.authenticatedUser!.id != bloc.user!.id &&
-        bloc.user!.hasConnections;
+    final enableFollow =
+        authCubit.state.user?.id != bloc.user!.id && bloc.user!.hasConnections;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

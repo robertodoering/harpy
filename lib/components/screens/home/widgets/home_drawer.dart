@@ -16,7 +16,7 @@ class HomeDrawer extends StatelessWidget {
   Widget _buildActions(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return Column(
       children: [
@@ -32,7 +32,7 @@ class HomeDrawer extends StatelessWidget {
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushUserProfile(
-                    screenName: authBloc.authenticatedUser!.handle,
+                    screenName: authCubit.state.user!.handle,
                   );
                 },
               ),
@@ -101,8 +101,7 @@ class HomeDrawer extends StatelessWidget {
         HarpyListTile(
           leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('logout'),
-          onTap: () =>
-              context.read<AuthenticationBloc>().add(const LogoutEvent()),
+          onTap: authCubit.logout,
         ),
       ],
     );

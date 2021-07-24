@@ -16,11 +16,11 @@ class ComposeTweetMentions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return BlocProvider<MentionSuggestionsBloc>(
       create: (context) => MentionSuggestionsBloc(
-        authenticatedUser: authBloc.authenticatedUser!,
+        authenticatedUser: authCubit.state.user!,
       ),
       child: MentionSuggestions(controller: controller),
     );

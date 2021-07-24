@@ -25,17 +25,17 @@ class GlobalProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => AuthenticationBloc(
+            create: (context) => AuthenticationCubit(
               themeBloc: context.read<ThemeBloc>(),
             ),
           ),
           BlocProvider(
             // can't be lazy since initialization starts upon bloc creation
             lazy: false,
-            create: (context) => ApplicationBloc(
-              authenticationBloc: context.read<AuthenticationBloc>(),
+            create: (context) => ApplicationCubit(
               themeBloc: context.read<ThemeBloc>(),
               configCubit: context.read<ConfigCubit>(),
+              authenticationCubit: context.read<AuthenticationCubit>(),
             ),
           ),
           BlocProvider(create: (_) => HomeTimelineBloc()),

@@ -5,6 +5,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:provider/provider.dart';
 
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
@@ -29,9 +30,11 @@ class _SetupScreenState extends State<SetupScreen> {
 
     app<SetupPreferences>().performedSetup = true;
 
-    app<HarpyNavigator>().pushReplacementNamed(
-      HomeScreen.route,
-      type: RouteType.fade,
+    unawaited(
+      app<HarpyNavigator>().pushReplacementNamed(
+        HomeScreen.route,
+        type: RouteType.fade,
+      ),
     );
   }
 
@@ -42,10 +45,10 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
-  Widget _buildUsername(AuthenticationBloc authenticationBloc) {
+  Widget _buildUsername(String name) {
     return Center(
       child: PrimaryHeadline(
-        authenticationBloc.authenticatedUser!.name,
+        name,
         delay: const Duration(milliseconds: 800),
       ),
     );
@@ -90,7 +93,7 @@ class _SetupScreenState extends State<SetupScreen> {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
 
-    final authenticationBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     // the max height constraints for the welcome text and the user name
     final maxTextHeight = mediaQuery.orientation == Orientation.portrait
@@ -115,7 +118,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: maxTextHeight),
-                      child: _buildUsername(authenticationBloc),
+                      child: _buildUsername(authCubit.state.user!.name),
                     ),
                     const SizedBox(height: 32),
                     _buildThemeSelection(theme),

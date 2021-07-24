@@ -22,11 +22,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
-  Future<void> _startLogin(AuthenticationBloc bloc) async {
+  Future<void> _startLogin(AuthenticationCubit authCubit) async {
     unawaited(HapticFeedback.mediumImpact());
     await _slideLoginKey.currentState!.forward();
 
-    bloc.add(const LoginEvent());
+    unawaited(authCubit.login());
   }
 
   Widget _buildAboutButton(ThemeData theme) {
@@ -83,18 +83,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(AuthenticationCubit authCubit) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         _LoginButton(
-          onTap: () => _startLogin(context.read<AuthenticationBloc>()),
+          onTap: () => _startLogin(authCubit),
         ),
       ],
     );
   }
 
-  Widget _buildLoginScreen(ThemeData theme) {
+  Widget _buildLoginScreen(ThemeData theme, AuthenticationCubit authCubit) {
     final mediaQuery = MediaQuery.of(context);
 
     return SlideAnimation(
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Expanded(child: _buildButtons()),
+              Expanded(child: _buildButtons(authCubit)),
               const SizedBox(height: 32),
               SizedBox(height: mediaQuery.padding.bottom),
             ],
@@ -128,16 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (context, state) {
-        final theme = Theme.of(context);
+    final theme = Theme.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
-        return HarpyBackground(
-          child: state is AwaitingAuthenticationState
-              ? const Center(child: CircularProgressIndicator())
-              : _buildLoginScreen(theme),
-        );
-      },
+    return HarpyBackground(
+      child: authCubit.state is AwaitingAuthentication
+          ? const Center(child: CircularProgressIndicator())
+          : _buildLoginScreen(theme, authCubit),
     );
   }
 }

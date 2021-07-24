@@ -35,12 +35,12 @@ class HarpyNavigator {
 
   Future<T?> push<T>(Route<T> route) => state.push<T>(route);
 
-  void pushReplacementNamed(
+  Future<void> pushReplacementNamed(
     String route, {
     RouteType type = RouteType.defaultRoute,
     Map<String, dynamic>? arguments,
   }) {
-    state.pushReplacementNamed<void, void>(
+    return state.pushReplacementNamed<void, void>(
       route,
       arguments: <String, dynamic>{
         'routeType': type,

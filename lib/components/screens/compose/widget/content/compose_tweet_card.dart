@@ -106,13 +106,12 @@ class _TopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return BlocProvider<TweetBloc>(
       create: (_) => PreviewTweetBloc(
         TweetData(
-          user: authBloc.authenticatedUser!,
+          user: authCubit.state.user!,
           createdAt: DateTime.now(),
         ),
       ),

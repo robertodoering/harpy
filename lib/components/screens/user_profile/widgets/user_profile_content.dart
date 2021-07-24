@@ -14,9 +14,9 @@ class UserProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = context.watch<AuthenticationBloc>();
+    final authCubit = context.watch<AuthenticationCubit>();
 
-    final isAuthenticatedUser = bloc.user!.id == authBloc.authenticatedUser!.id;
+    final isAuthenticatedUser = bloc.user!.id == authCubit.state.user?.id;
 
     final screenName = bloc.user?.handle;
 
