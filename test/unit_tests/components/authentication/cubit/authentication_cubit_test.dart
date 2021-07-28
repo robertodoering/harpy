@@ -284,6 +284,42 @@ void main() {
       });
     });
 
+    group('logout', () {
+      test('navigates to login screen and invalidates session', () async {
+        app<AuthPreferences>().userToken = 'token';
+        app<AuthPreferences>().userSecret = 'secret';
+        app<AuthPreferences>().userId = 'id';
+
+        await authCubit.logout(Duration.zero);
+
+        expect(app<AuthPreferences>().userToken, equals(''));
+        expect(app<AuthPreferences>().userSecret, equals(''));
+        expect(app<AuthPreferences>().userId, equals(''));
+
+        expect(authCubit.state, isA<Unauthenticated>());
+
+        verify(
+          () => app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route),
+        );
+      });
+
+      blocTest<ThemeBloc, ThemeState>(
+        'resets theme to the default theme',
+        build: () => themeBloc,
+        seed: () => themeBloc.state.copyWith(
+          lightThemeData: predefinedThemes[2],
+          darkThemeData: predefinedThemes[2],
+        ),
+        act: (_) => authCubit.logout(Duration.zero),
+        expect: () => [
+          equals(themeBloc.state.copyWith(
+            lightThemeData: predefinedThemes[0],
+            darkThemeData: predefinedThemes[0],
+          )),
+        ],
+      );
+    });
+
     group('twitter auth initialization', () {
       test('sets auth if not previously set', () {
         app<AuthPreferences>().initializeTwitterAuth();
