@@ -290,7 +290,7 @@ void main() {
         app<AuthPreferences>().userSecret = 'secret';
         app<AuthPreferences>().userId = 'id';
 
-        await authCubit.logout(Duration.zero);
+        await authCubit.logout(delay: Duration.zero);
 
         expect(app<AuthPreferences>().userToken, equals(''));
         expect(app<AuthPreferences>().userSecret, equals(''));
@@ -310,7 +310,7 @@ void main() {
           lightThemeData: predefinedThemes[2],
           darkThemeData: predefinedThemes[2],
         ),
-        act: (_) => authCubit.logout(Duration.zero),
+        act: (_) => authCubit.logout(delay: Duration.zero),
         expect: () => [
           equals(themeBloc.state.copyWith(
             lightThemeData: predefinedThemes[0],

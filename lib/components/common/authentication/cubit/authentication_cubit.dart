@@ -119,9 +119,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   }
 
   /// Navigates to the [LoginScreen] and invalidates the active session.
-  Future<void> logout([
-    Duration delay = const Duration(milliseconds: 300),
-  ]) async {
+  Future<void> logout({
+    @visibleForTesting Duration delay = const Duration(milliseconds: 300),
+  }) async {
     log.fine('logging out');
 
     // reset the theme to the default theme
@@ -129,10 +129,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
 
-    await Future<void>.delayed(delay);
-
     // invalidate session after navigation to avoid building the home screen
     // without the user data
+    await Future<void>.delayed(delay);
     await _onLogout();
   }
 
