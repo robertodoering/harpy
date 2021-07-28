@@ -9,8 +9,8 @@ typedef WebviewNavigation = Future<Uri?> Function(TwitterLoginWebview webview);
 /// [TwitterLoginWebview].
 class TwitterAuth {
   TwitterAuth({
-    required String consumerKey,
-    required String consumerSecret,
+    required this.consumerKey,
+    required this.consumerSecret,
   }) : _auth = Authorization(
           ClientCredentials(consumerKey, consumerSecret),
           Platform(
@@ -20,6 +20,9 @@ class TwitterAuth {
             SignatureMethods.hmacSha1,
           ),
         );
+
+  final String consumerKey;
+  final String consumerSecret;
 
   final Authorization _auth;
 

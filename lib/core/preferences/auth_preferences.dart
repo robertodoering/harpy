@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
 class AuthPreferences {
@@ -14,6 +17,22 @@ class AuthPreferences {
 
   int get auth => harpyPrefs.getInt('auth', -1);
   set auth(int value) => harpyPrefs.setInt('auth', value);
+
+  TwitterAuth initializeTwitterAuth() {
+    if (app<AuthPreferences>().auth == -1) {
+      final count = app<AppConfig>().credentialsCount;
+
+      app<AuthPreferences>().auth = Random().nextInt(count);
+    }
+
+    final key = app<AppConfig>().key(app<AuthPreferences>().auth);
+    final secret = app<AppConfig>().secret(app<AuthPreferences>().auth);
+
+    return TwitterAuth(
+      consumerKey: key,
+      consumerSecret: secret,
+    );
+  }
 
   void clearAuth() {
     harpyPrefs.remove('userToken');

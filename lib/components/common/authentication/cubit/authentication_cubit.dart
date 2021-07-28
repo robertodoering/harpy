@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math' as math;
 
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
@@ -49,16 +48,18 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> login() async {
     log.fine('logging in');
 
-    if (!validateAppConfig()) {
+    if (!app<AppConfig>().validateAppConfig()) {
       return;
     }
 
     emit(const AwaitingAuthentication());
 
-    final result = await _twitterAuth().authenticateWithTwitter(
-      webviewNavigation: _webviewNavigation,
-      onExternalNavigation: launchUrl,
-    );
+    final result = await app<AuthPreferences>()
+        .initializeTwitterAuth()
+        .authenticateWithTwitter(
+          webviewNavigation: _webviewNavigation,
+          onExternalNavigation: launchUrl,
+        );
 
     switch (result.status) {
       case TwitterAuthStatus.success:
@@ -82,6 +83,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
               type: RouteType.fade,
             );
           }
+        } else {
+          app<HarpyNavigator>().pushReplacementNamed(
+            LoginScreen.route,
+            type: RouteType.fade,
+          );
         }
 
         break;
@@ -137,7 +143,16 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> _onLogin(TwitterAuthSession authSession) async {
     log.fine('on login');
 
-    _initializeTwitterApi(authSession);
+    final key = app<AppConfig>().key(app<AuthPreferences>().auth);
+    final secret = app<AppConfig>().secret(app<AuthPreferences>().auth);
+
+    if (app<TwitterApi>().client is TwitterClient) {
+      (app<TwitterApi>().client as TwitterClient)
+        ..consumerKey = key
+        ..consumerSecret = secret
+        ..token = authSession.token
+        ..secret = authSession.tokenSecret;
+    }
 
     final user = await _initializeUser(authSession.userId);
 
@@ -172,14 +187,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   /// Invalidates the user token and emits the [Unauthenticated] state.
   Future<void> _onLogout() async {
     log.fine('on logout');
-    final client = app<TwitterApi>().client as TwitterClient;
 
-    if (client.token.isNotEmpty && client.secret.isNotEmpty) {
-      unawaited(
-        client
-            .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
-            .handleError(silentErrorHandler),
-      );
+    if (app<TwitterApi>().client is TwitterClient) {
+      final client = app<TwitterApi>().client as TwitterClient;
+
+      if (client.token.isNotEmpty && client.secret.isNotEmpty) {
+        unawaited(
+          client
+              .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
+              .handleError(silentErrorHandler),
+        );
+      }
     }
 
     app<AuthPreferences>().clearAuth();
@@ -227,42 +245,4 @@ Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
       settings: const RouteSettings(name: 'login'),
     ),
   );
-}
-
-TwitterAuth _twitterAuth() {
-  final auth = app<AuthPreferences>().auth;
-  final keys = twitterConsumerKey.split(',');
-  final secrets = twitterConsumerSecret.split(',');
-  int index;
-
-  assert(keys.length == secrets.length);
-
-  if (keys.length != secrets.length) {
-    index = 0;
-  } else if (auth == -1) {
-    index = math.Random().nextInt(keys.length);
-    app<AuthPreferences>().auth = index;
-  } else if (auth >= 0 && auth < keys.length) {
-    index = auth;
-  } else {
-    index = 0;
-  }
-
-  return TwitterAuth(
-    consumerKey: keys[index],
-    consumerSecret: secrets[index],
-  );
-}
-
-void _initializeTwitterApi(TwitterAuthSession authSession) {
-  final auth = app<AuthPreferences>().auth;
-  final keys = twitterConsumerKey.split(',');
-  final secrets = twitterConsumerSecret.split(',');
-  final index = auth == -1 ? 0 : auth;
-
-  (app<TwitterApi>().client as TwitterClient)
-    ..consumerKey = keys[index]
-    ..consumerSecret = secrets[index]
-    ..token = authSession.token
-    ..secret = authSession.tokenSecret;
 }

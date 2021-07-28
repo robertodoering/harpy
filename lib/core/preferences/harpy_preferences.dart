@@ -10,7 +10,7 @@ class HarpyPreferences {
   /// Can be used to prefix the given key.
   ///
   /// Used to differentiate user preferences.
-  late String prefix;
+  String? prefix;
 
   /// Initializes the [_preferences] instance.
   Future<void> initialize() async {
@@ -19,7 +19,7 @@ class HarpyPreferences {
   }
 
   String _key(String key, bool usePrefix) {
-    if (usePrefix && prefix.isNotEmpty == true) {
+    if (usePrefix && prefix != null && prefix!.isNotEmpty == true) {
       return '$prefix.$key';
     } else {
       return key;

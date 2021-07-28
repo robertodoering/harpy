@@ -22,6 +22,7 @@ void setupServices() {
         ),
       ),
     )
+    ..registerLazySingleton(() => const AppConfig())
     ..registerLazySingleton(() => HarpyNavigator())
     ..registerLazySingleton(() => HarpyInfo())
     ..registerLazySingleton(() => ChangelogParser())
