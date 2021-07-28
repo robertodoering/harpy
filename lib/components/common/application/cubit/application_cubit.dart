@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/common/authentication/cubit/authentication_cubit.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/settings/config/cubit/config_cubit.dart';
@@ -43,7 +44,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
     updateSystemUi(themeBloc.state.darkHarpyTheme);
 
     await Future.wait([
-      FlutterDisplayMode.setHighRefreshRate(),
+      FlutterDisplayMode.setHighRefreshRate().handleError(silentErrorHandler),
       app<HarpyPreferences>().initialize(),
       app<ConnectivityService>().initialize(),
     ]);
