@@ -141,22 +141,22 @@ class ChangelogData {
 
   /// Optional information at the beginning of the changelog, including the
   /// name of the version ('Version x.y.z').
-  final List<String> headerLines = <String>[];
+  final List<String> headerLines = [];
 
   /// Entries that start with 'Added'.
-  final List<ChangelogEntry> additions = <ChangelogEntry>[];
+  final List<ChangelogEntry> additions = [];
 
   /// Entries that start with 'Changed'.
-  final List<ChangelogEntry> changes = <ChangelogEntry>[];
+  final List<ChangelogEntry> changes = [];
 
   /// Entries that start with 'Fixed'.
-  final List<ChangelogEntry> fixes = <ChangelogEntry>[];
+  final List<ChangelogEntry> fixes = [];
 
   /// Entries that start with 'Removed'.
-  final List<ChangelogEntry> removals = <ChangelogEntry>[];
+  final List<ChangelogEntry> removals = [];
 
   /// Entries that don't have a predefined prefix.
-  final List<ChangelogEntry> others = <ChangelogEntry>[];
+  final List<ChangelogEntry> others = [];
 
   /// Whether no [ChangelogEntry] exists.
   bool get empty =>
@@ -173,7 +173,7 @@ class ChangelogEntry {
   });
 
   final String line;
-  final List<String> additionalInfo = <String>[];
+  final List<String> additionalInfo = [];
 }
 
 enum ChangelogType {

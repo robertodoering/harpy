@@ -84,7 +84,7 @@ class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
         prependIfMissing(
           hashtag.replaceAll(nonHashtagCharactersRegex, ''),
           '#',
-          <String>['#', '＃'],
+          ['#', '＃'],
         ),
       ),
     );

@@ -55,7 +55,7 @@ class TweetImagesLayout extends StatelessWidget {
 
   Widget _buildTwo(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         Expanded(
           child: _buildChild(
             0,
@@ -79,14 +79,14 @@ class TweetImagesLayout extends StatelessWidget {
 
   Widget _buildThree(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         Expanded(
           child: _buildChild(0, context, topLeft: true, bottomLeft: true),
         ),
         SizedBox(width: padding),
         Expanded(
           child: Column(
-            children: <Widget>[
+            children: [
               Expanded(child: _buildChild(1, context, topRight: true)),
               SizedBox(height: padding),
               Expanded(child: _buildChild(2, context, bottomRight: true)),
@@ -99,10 +99,10 @@ class TweetImagesLayout extends StatelessWidget {
 
   Widget _buildFour(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         Expanded(
           child: Column(
-            children: <Widget>[
+            children: [
               Expanded(child: _buildChild(0, context, topLeft: true)),
               SizedBox(height: padding),
               Expanded(child: _buildChild(2, context, bottomLeft: true)),
@@ -112,7 +112,7 @@ class TweetImagesLayout extends StatelessWidget {
         SizedBox(width: padding),
         Expanded(
           child: Column(
-            children: <Widget>[
+            children: [
               Expanded(child: _buildChild(1, context, topRight: true)),
               SizedBox(height: padding),
               Expanded(child: _buildChild(3, context, bottomRight: true)),

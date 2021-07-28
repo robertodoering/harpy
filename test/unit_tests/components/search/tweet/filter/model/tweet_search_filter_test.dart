@@ -27,15 +27,15 @@ void main() {
 
     test('builds query with includesPhrases filter', () {
       const filter1 = TweetSearchFilter(
-        includesPhrases: <String>['cat'],
+        includesPhrases: ['cat'],
       );
 
       const filter2 = TweetSearchFilter(
-        includesPhrases: <String>['cute', 'cat'],
+        includesPhrases: ['cute', 'cat'],
       );
 
       const filter3 = TweetSearchFilter(
-        includesPhrases: <String>['cute cat', 'petting'],
+        includesPhrases: ['cute cat', 'petting'],
       );
 
       expect(filter1.buildQuery(), equals('cat'));
@@ -45,11 +45,11 @@ void main() {
 
     test('builds query with includesHashtags filter', () {
       const filter1 = TweetSearchFilter(
-        includesHashtags: <String>['#cute'],
+        includesHashtags: ['#cute'],
       );
 
       const filter2 = TweetSearchFilter(
-        includesHashtags: <String>['#cute', '#cat'],
+        includesHashtags: ['#cute', '#cat'],
       );
 
       expect(filter1.buildQuery(), equals('#cute'));
@@ -58,11 +58,11 @@ void main() {
 
     test('builds query with includesMentions filter', () {
       const filter1 = TweetSearchFilter(
-        includesMentions: <String>['@harpy_app'],
+        includesMentions: ['@harpy_app'],
       );
 
       const filter2 = TweetSearchFilter(
-        includesHashtags: <String>['@harpy_app', '@NASA'],
+        includesHashtags: ['@harpy_app', '@NASA'],
       );
 
       expect(filter1.buildQuery(), equals('@harpy_app'));
@@ -71,11 +71,11 @@ void main() {
 
     test('builds query with includesUrls filter', () {
       const filter1 = TweetSearchFilter(
-        includesUrls: <String>['google'],
+        includesUrls: ['google'],
       );
 
       const filter2 = TweetSearchFilter(
-        includesUrls: <String>['google', 'github'],
+        includesUrls: ['google', 'github'],
       );
 
       expect(filter1.buildQuery(), equals('url:google'));
@@ -117,15 +117,15 @@ void main() {
 
     test('builds query with excludesPhrases filter', () {
       const filter1 = TweetSearchFilter(
-        excludesPhrases: <String>['cat'],
+        excludesPhrases: ['cat'],
       );
 
       const filter2 = TweetSearchFilter(
-        excludesPhrases: <String>['cute', 'cat'],
+        excludesPhrases: ['cute', 'cat'],
       );
 
       const filter3 = TweetSearchFilter(
-        excludesPhrases: <String>['cute cat', 'petting'],
+        excludesPhrases: ['cute cat', 'petting'],
       );
 
       expect(filter1.buildQuery(), equals('-cat'));
@@ -135,11 +135,11 @@ void main() {
 
     test('builds query with excludesHashtags filter', () {
       const filter1 = TweetSearchFilter(
-        excludesHashtags: <String>['-#cute'],
+        excludesHashtags: ['-#cute'],
       );
 
       const filter2 = TweetSearchFilter(
-        excludesHashtags: <String>['-#cute', '-#cat'],
+        excludesHashtags: ['-#cute', '-#cat'],
       );
 
       expect(filter1.buildQuery(), equals('-#cute'));
@@ -148,11 +148,11 @@ void main() {
 
     test('builds query with excludesMentions filter', () {
       const filter1 = TweetSearchFilter(
-        excludesMentions: <String>['-@harpy_app'],
+        excludesMentions: ['-@harpy_app'],
       );
 
       const filter2 = TweetSearchFilter(
-        excludesMentions: <String>['-@harpy_app', '-@NASA'],
+        excludesMentions: ['-@harpy_app', '-@NASA'],
       );
 
       expect(filter1.buildQuery(), equals('-@harpy_app'));

@@ -115,7 +115,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       value: widget.model,
       child: HarpyScaffold(
         title: 'home customization',
-        actions: <Widget>[_buildAction()],
+        actions: [_buildAction()],
         body: GestureDetector(
           // remove focus on background tap
           onTap: () => removeFocus(context),
@@ -124,7 +124,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
               final model = context.watch<HomeTabModel>();
 
               return CustomScrollView(
-                slivers: <Widget>[
+                slivers: [
                   SliverPadding(
                     padding: config.edgeInsets,
                     sliver: SliverList(

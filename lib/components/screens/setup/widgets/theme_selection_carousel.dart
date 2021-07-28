@@ -118,7 +118,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+      children: [
         FadeAnimation(
           duration: kShortAnimationDuration,
           child: Text(
@@ -132,7 +132,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
         ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 150),
           child: Stack(
-            children: <Widget>[
+            children: [
               // theme carousel
               PageView(
                 physics: const NeverScrollableScrollPhysics(),
@@ -168,7 +168,7 @@ class _ThemeSelectionCarouselState extends State<ThemeSelectionCarousel> {
 
               // previous / next gesture detection
               Row(
-                children: <Widget>[
+                children: [
                   Expanded(
                     flex: 2,
                     child: GestureDetector(

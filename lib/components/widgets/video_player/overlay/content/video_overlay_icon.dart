@@ -95,7 +95,7 @@ class OverlayIconForward extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         const Spacer(),
         Expanded(
           child: VideoOverlayIcon(
@@ -119,7 +119,7 @@ class OverlayIconRewind extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         Expanded(
           child: VideoOverlayIcon(
             icon: Icons.fast_rewind,

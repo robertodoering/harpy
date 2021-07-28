@@ -5,6 +5,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:provider/provider.dart';
 
 /// The [SetupScreen] is shown when a user logged into the app for the first
 /// time.
@@ -42,10 +43,10 @@ class _SetupScreenState extends State<SetupScreen> {
     );
   }
 
-  Widget _buildUsername(AuthenticationBloc authenticationBloc) {
+  Widget _buildUsername(String name) {
     return Center(
       child: PrimaryHeadline(
-        authenticationBloc.authenticatedUser!.name,
+        name,
         delay: const Duration(milliseconds: 800),
       ),
     );
@@ -62,7 +63,7 @@ class _SetupScreenState extends State<SetupScreen> {
         offset: const Offset(0, 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Text('select your theme', style: theme.textTheme.headline4),
             const SizedBox(height: 16),
             const ThemeSelectionCarousel(),
@@ -90,7 +91,7 @@ class _SetupScreenState extends State<SetupScreen> {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
 
-    final authenticationBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     // the max height constraints for the welcome text and the user name
     final maxTextHeight = mediaQuery.orientation == Orientation.portrait
@@ -102,20 +103,20 @@ class _SetupScreenState extends State<SetupScreen> {
         key: _slideSetupKey,
         endPosition: Offset(0, -mediaQuery.size.height),
         child: Column(
-          children: <Widget>[
+          children: [
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: mediaQuery.padding.top),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: maxTextHeight),
                       child: _buildText(),
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: maxTextHeight),
-                      child: _buildUsername(authenticationBloc),
+                      child: _buildUsername(authCubit.state.user!.name),
                     ),
                     const SizedBox(height: 32),
                     _buildThemeSelection(theme),

@@ -22,7 +22,7 @@ class LikesTimeline extends StatelessWidget {
           state.timelineTweets,
           key: const PageStorageKey<String>('likes_timeline'),
           enableScroll: state.enableScroll,
-          endSlivers: <Widget>[
+          endSlivers: [
             if (state.showInitialLoading)
               const TweetListLoadingSliver()
             else if (state.showNoTweetsFound)

@@ -19,7 +19,7 @@ class SettingsGroup extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: config.paddingValue),
           child: Text(title, style: theme.textTheme.headline4),

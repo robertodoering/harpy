@@ -10,8 +10,8 @@ void initLogger({String? prefix}) {
   const horizontalSeparator = '--------------------------------';
 
   Logger.root.onRecord.listen((rec) {
-    final content = <String>[
-      if (prefix != null) ...<String>[
+    final content = [
+      if (prefix != null) ...[
         prefix,
         separator,
       ],

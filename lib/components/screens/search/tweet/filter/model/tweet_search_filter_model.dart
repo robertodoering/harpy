@@ -34,7 +34,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(tweetAuthor: '');
     } else {
       value = value.copyWith(
-        tweetAuthor: removePrependedSymbol(tweetAuthor, <String>['@']),
+        tweetAuthor: removePrependedSymbol(tweetAuthor, ['@']),
       );
     }
   }
@@ -44,7 +44,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
       value = value.copyWith(replyingTo: '');
     } else {
       value = value.copyWith(
-        replyingTo: removePrependedSymbol(replyingTo, <String>['@']),
+        replyingTo: removePrependedSymbol(replyingTo, ['@']),
       );
     }
   }
@@ -69,7 +69,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     value = value.copyWith(
       includesHashtags: appendToList(
         value.includesHashtags,
-        prependIfMissing(hashtag, '#', <String>['#', '＃']),
+        prependIfMissing(hashtag, '#', ['#', '＃']),
       ),
     );
   }
@@ -84,7 +84,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     value = value.copyWith(
       includesMentions: appendToList(
         value.includesMentions,
-        prependIfMissing(mention, '@', <String>['@']),
+        prependIfMissing(mention, '@', ['@']),
       ),
     );
   }
@@ -135,7 +135,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     value = value.copyWith(
       excludesHashtags: appendToList(
         value.excludesHashtags,
-        prependIfMissing(hashtag, '#', <String>['#', '＃']),
+        prependIfMissing(hashtag, '#', ['#', '＃']),
       ),
     );
   }
@@ -150,7 +150,7 @@ class TweetSearchFilterModel extends ValueNotifier<TweetSearchFilter> {
     value = value.copyWith(
       excludesMentions: appendToList(
         value.excludesMentions,
-        prependIfMissing(mention, '@', <String>['@']),
+        prependIfMissing(mention, '@', ['@']),
       ),
     );
   }

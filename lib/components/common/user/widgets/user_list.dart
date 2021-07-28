@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 class UserList extends StatelessWidget {
   const UserList(
     this.users, {
-    this.beginSlivers = const <Widget>[],
-    this.endSlivers = const <Widget>[],
+    this.beginSlivers = const [],
+    this.endSlivers = const [],
     this.enableScroll = true,
   });
 
@@ -39,7 +39,7 @@ class UserList extends StatelessWidget {
 
     return CustomScrollView(
       physics: enableScroll ? null : const NeverScrollableScrollPhysics(),
-      slivers: <Widget>[
+      slivers: [
         ...beginSlivers,
         SliverPadding(
           padding: config.edgeInsets,

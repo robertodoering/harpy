@@ -74,12 +74,12 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
       child: Card(
         elevation: 0,
         child: Column(
-          children: <Widget>[
+          children: [
             Expanded(
               child: Scrollbar(
                 child: ListView(
                   padding: EdgeInsets.zero,
-                  children: <Widget>[
+                  children: [
                     const _TopRow(),
                     ComposeTextField(
                       controller: _controller,
@@ -106,13 +106,12 @@ class _TopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return BlocProvider<TweetBloc>(
       create: (_) => PreviewTweetBloc(
         TweetData(
-          user: authBloc.authenticatedUser!,
+          user: authCubit.state.user!,
           createdAt: DateTime.now(),
         ),
       ),

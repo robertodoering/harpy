@@ -14,9 +14,9 @@ class UserProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = context.watch<AuthenticationBloc>();
+    final authCubit = context.watch<AuthenticationCubit>();
 
-    final isAuthenticatedUser = bloc.user!.id == authBloc.authenticatedUser!.id;
+    final isAuthenticatedUser = bloc.user!.id == authCubit.state.user?.id;
 
     final screenName = bloc.user?.handle;
 
@@ -31,11 +31,11 @@ class UserProfileContent extends StatelessWidget {
             child: HarpyScaffold(
               endDrawer: const UserTimelineFilterDrawer(),
               body: HarpySliverTabView(
-                headerSlivers: const <Widget>[
+                headerSlivers: const [
                   UserProfileAppBar(),
                   UserProfileHeader(),
                 ],
-                tabs: <Widget>[
+                tabs: [
                   const HarpyTab(
                     icon: Icon(CupertinoIcons.time),
                     text: Text('timeline'),
@@ -54,7 +54,7 @@ class UserProfileContent extends StatelessWidget {
                     text: Text('likes'),
                   ),
                 ],
-                children: <Widget>[
+                children: [
                   const UserTimeline(),
                   const UserMediaTimeline(),
                   if (isAuthenticatedUser)

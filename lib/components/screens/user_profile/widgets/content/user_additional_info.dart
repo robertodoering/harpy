@@ -20,7 +20,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     Widget? child,
   }) {
     return Row(
-      children: <Widget>[
+      children: [
         Icon(icon, size: 16),
         defaultHorizontalSpacer,
         Expanded(
@@ -58,7 +58,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final children = <Widget>[
+    final children = [
       if (bloc.user!.hasLocation)
         _buildRow(
           theme,
@@ -77,8 +77,8 @@ class UserProfileAdditionalInfo extends StatelessWidget {
     ];
 
     return Column(
-      children: <Widget>[
-        for (Widget child in children) ...<Widget>[
+      children: [
+        for (Widget child in children) ...[
           child,
           if (child == children.last)
             defaultSmallVerticalSpacer

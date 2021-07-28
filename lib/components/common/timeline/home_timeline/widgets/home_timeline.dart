@@ -47,7 +47,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
     if (state.showNewTweetsExist(tweet.originalId)) {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           NewTweetsText(state.newTweets),
           defaultVerticalSpacer,
           HomeTimelineTweetCard(tweet),
@@ -92,7 +92,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
                 controller: _controller,
                 tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
                 enableScroll: state.enableScroll,
-                endSlivers: <Widget>[
+                endSlivers: [
                   if (state.showInitialLoading)
                     const TweetListLoadingSliver()
                   else if (state.showNoTweetsFound)

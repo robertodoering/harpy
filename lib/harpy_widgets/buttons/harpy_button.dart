@@ -201,7 +201,7 @@ class HarpyButton extends StatelessWidget {
     return IntrinsicWidth(
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           if (icon != null) icon!,
           if (icon != null && text != null)
             SizedBox(width: betweenPadding ?? _padding.horizontal / 2),

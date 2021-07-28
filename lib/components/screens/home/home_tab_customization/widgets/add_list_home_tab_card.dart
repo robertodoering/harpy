@@ -49,7 +49,7 @@ class AddListHomeTabCard extends StatelessWidget {
                 ),
         borderRadius: kDefaultBorderRadius,
         child: Row(
-          children: <Widget>[
+          children: [
             icon,
             Expanded(
               child: Text(

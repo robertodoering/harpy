@@ -26,7 +26,6 @@ class _ProDialogState extends State<ProDialog> {
     super.initState();
 
     // todo: link to harpy pro
-    // todo: add harpy pro analytics
     _recognizer = TapGestureRecognizer()
       ..onTap = () => app<MessageService>().show('coming soon!');
   }
@@ -51,10 +50,10 @@ class _ProDialogState extends State<ProDialog> {
     return HarpyDialog(
       title: const Text('harpy pro'),
       content: Column(
-        children: <Widget>[
+        children: [
           const FlareIcon.shiningStar(size: 64),
           const SizedBox(height: 16),
-          if (widget.feature != null) ...<Widget>[
+          if (widget.feature != null) ...[
             Text(
               '${widget.feature} is only available in the '
               'pro version for harpy',
@@ -64,7 +63,7 @@ class _ProDialogState extends State<ProDialog> {
           ],
           Text.rich(
             TextSpan(
-              children: <TextSpan>[
+              children: [
                 const TextSpan(text: 'buy harpy pro in the '),
                 TextSpan(
                   text: 'play store',
@@ -77,7 +76,7 @@ class _ProDialogState extends State<ProDialog> {
           ),
         ],
       ),
-      actions: const <DialogAction<dynamic>>[
+      actions: const <DialogAction<bool>>[
         DialogAction<bool>(
           result: true,
           text: 'try it out',

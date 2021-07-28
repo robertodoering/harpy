@@ -5,6 +5,8 @@ import 'package:harpy/core/core.dart';
 
 part 'config.dart';
 
+/// Handles loading, updating and persisting the [Config] which is used for
+/// configuration of ui components in the app.
 class ConfigCubit extends Cubit<Config> {
   ConfigCubit() : super(Config.defaultConfig);
 

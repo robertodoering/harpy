@@ -16,15 +16,15 @@ class HomeDrawer extends StatelessWidget {
   Widget _buildActions(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return Column(
-      children: <Widget>[
+      children: [
         Expanded(
           child: ListView(
             primary: false,
             padding: EdgeInsets.zero,
-            children: <Widget>[
+            children: [
               // profile
               HarpyListTile(
                 leading: const Icon(CupertinoIcons.person),
@@ -32,7 +32,7 @@ class HomeDrawer extends StatelessWidget {
                 onTap: () async {
                   await app<HarpyNavigator>().maybePop();
                   app<HarpyNavigator>().pushUserProfile(
-                    screenName: authBloc.authenticatedUser!.handle,
+                    screenName: authCubit.state.user!.handle,
                   );
                 },
               ),
@@ -72,7 +72,6 @@ class HomeDrawer extends StatelessWidget {
                     bottom: max(config.paddingValue - 4, 0),
                   ),
                   title: const Text('harpy pro'),
-                  // todo: add harpy pro analytics
                   onTap: () => app<MessageService>().show('coming soon!'),
                 ),
 
@@ -101,8 +100,7 @@ class HomeDrawer extends StatelessWidget {
         HarpyListTile(
           leading: const Icon(CupertinoIcons.square_arrow_left),
           title: const Text('logout'),
-          onTap: () =>
-              context.read<AuthenticationBloc>().add(const LogoutEvent()),
+          onTap: authCubit.logout,
         ),
       ],
     );
@@ -113,7 +111,7 @@ class HomeDrawer extends StatelessWidget {
     return Drawer(
       child: HarpyBackground(
         child: Column(
-          children: <Widget>[
+          children: [
             const HomeDrawerHeader(),
             Expanded(
               child: SafeArea(

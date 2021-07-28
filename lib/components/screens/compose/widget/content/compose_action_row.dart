@@ -20,7 +20,7 @@ class ComposeTweetActionRow extends StatelessWidget {
     final bloc = context.watch<ComposeBloc>();
 
     return Row(
-      children: <Widget>[
+      children: [
         HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.photo),

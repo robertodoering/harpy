@@ -112,11 +112,11 @@ class _AnimatedNumberState extends State<AnimatedNumber>
           animation: _controller,
           builder: (_, __) => Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               Text(unchanged),
               Stack(
                 fit: StackFit.passthrough,
-                children: <Widget>[
+                children: [
                   FractionalTranslation(
                     translation: _oldNumber! > widget.number!
                         ? _newSlideAnimation.value

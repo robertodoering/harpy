@@ -39,9 +39,9 @@ class HomeTabView extends StatelessWidget {
     return DefaultTabController(
       length: model.visibleEntries.length,
       child: Stack(
-        children: <Widget>[
+        children: [
           NestedScrollView(
-            headerSliverBuilder: (_, __) => <Widget>[
+            headerSliverBuilder: (_, __) => [
               // padding for the home app bar that is built above the nested
               // scroll view
               SliverToBoxAdapter(
@@ -51,7 +51,7 @@ class HomeTabView extends StatelessWidget {
               ),
             ],
             body: TabBarView(
-              children: <Widget>[
+              children: [
                 for (int i = 0; i < model.visibleEntries.length; i++)
                   _mapEntryContent(context, i, model.visibleEntries[i]),
               ],

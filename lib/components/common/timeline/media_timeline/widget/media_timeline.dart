@@ -87,10 +87,10 @@ class _MediaTimelineState extends State<MediaTimeline> {
           model.hasEntries ? _buildFloatingActionButton() : null,
       body: CustomScrollView(
         key: const PageStorageKey<String>('user_media_timeline'),
-        slivers: <Widget>[
+        slivers: [
           if (widget.showInitialLoading)
             const SliverFillLoadingIndicator()
-          else if (model.hasEntries) ...<Widget>[
+          else if (model.hasEntries) ...[
             SliverPadding(
               padding: config.edgeInsets,
               sliver: _buildList(config, entries),

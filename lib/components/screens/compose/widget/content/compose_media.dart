@@ -30,7 +30,7 @@ class ComposeTweetMedia extends StatelessWidget {
   Widget _buildGif(ComposeState state) {
     return TweetMediaLayout(
       child: TweetImagesLayout(
-        children: <Widget>[
+        children: [
           Image.file(
             File(state.media.first.path!),
             fit: BoxFit.cover,
@@ -72,7 +72,7 @@ class ComposeTweetMedia extends StatelessWidget {
     return Padding(
       padding: config.edgeInsets,
       child: Stack(
-        children: <Widget>[
+        children: [
           child,
           Align(
             alignment: Alignment.topRight,

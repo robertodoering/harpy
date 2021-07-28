@@ -22,7 +22,7 @@ class NewTweetsText extends StatelessWidget {
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           const Icon(FeatherIcons.chevronsUp),
           defaultHorizontalSpacer,
           Text(_text, style: theme.textTheme.subtitle2),

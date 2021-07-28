@@ -101,11 +101,11 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
       final tweetHashtags = tweet.entities?.hashtags
               ?.map((hashtag) => hashtag.text?.toLowerCase() ?? '')
               .toList() ??
-          <String>[];
+          [];
 
       if (filter.excludesHashtags
-          .map((hashtag) => removePrependedSymbol(
-              hashtag.toLowerCase(), const <String>['#', '＃']))
+          .map((hashtag) =>
+              removePrependedSymbol(hashtag.toLowerCase(), const ['#', '＃']))
           .any(tweetHashtags.contains)) {
         return true;
       }

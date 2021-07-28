@@ -23,7 +23,7 @@ class VisibilityChangeDetector extends StatefulWidget {
 }
 
 class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
-  final List<ValueChanged<bool>?> _onChanged = <ValueChanged<bool>?>[];
+  final List<ValueChanged<bool>> _onChanged = [];
 
   bool visible = false;
 
@@ -32,7 +32,7 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
     super.initState();
 
     if (widget.onVisibilityChanged != null) {
-      _onChanged.add(widget.onVisibilityChanged);
+      _onChanged.add(widget.onVisibilityChanged!);
     }
   }
 
@@ -48,7 +48,7 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
     visible = value;
     if (mounted) {
       for (final callback in _onChanged) {
-        callback!(value);
+        callback(value);
       }
     }
   }

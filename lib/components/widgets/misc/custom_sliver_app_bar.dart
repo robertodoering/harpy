@@ -99,10 +99,10 @@ class CustomSliverAppBar extends StatefulWidget {
   /// Scaffold(
   ///   body: CustomScrollView(
   ///     primary: true,
-  ///     slivers: <Widget>[
+  ///     slivers: [
   ///       SliverAppBar(
   ///         title: Text('Hello World'),
-  ///         actions: <Widget>[
+  ///         actions: [
   ///           IconButton(
   ///             icon: Icon(Icons.shopping_cart),
   ///             tooltip: 'Open shopping cart',
@@ -497,7 +497,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.shape,
     required this.toolbarHeight,
     required this.decorationBuilder,
-  })   : assert(primary || topPadding == 0.0),
+  })  : assert(primary || topPadding == 0.0),
         _bottomHeight = bottom?.preferredSize.height ?? 0.0;
 
   final Widget? leading;

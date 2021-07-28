@@ -60,7 +60,7 @@ class TweetData {
         tweet.extendedEntities!.media!.isNotEmpty) {
       for (final media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
-          images ??= <ImageData>[];
+          images ??= [];
           images.add(ImageData.fromMedia(media));
         } else if (media.type == kMediaVideo) {
           video = VideoData.fromMedia(media);

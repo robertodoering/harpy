@@ -7,6 +7,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the info for a user in the [UserProfileHeader].
 ///
@@ -91,9 +92,9 @@ class UserProfileInfo extends StatelessWidget {
   Widget _buildUserName(ThemeData theme) {
     return Text.rich(
       TextSpan(
-        children: <InlineSpan>[
+        children: [
           TextSpan(text: bloc.user!.name),
-          if (bloc.user!.verified) ...<InlineSpan>[
+          if (bloc.user!.verified) ...[
             const TextSpan(text: ' '),
             const WidgetSpan(
               child: Icon(CupertinoIcons.checkmark_seal_fill, size: 22),
@@ -111,27 +112,27 @@ class UserProfileInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     // hide follow button when the profile of the authenticated user is showing
     // or when the connections have not been requested to determine whether the
     // authenticated user is following this user.
-    final enableFollow = authBloc.authenticatedUser!.id != bloc.user!.id &&
-        bloc.user!.hasConnections;
+    final enableFollow =
+        authCubit.state.user?.id != bloc.user!.id && bloc.user!.hasConnections;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildAvatar(),
         defaultHorizontalSpacer,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Row(
-                children: <Widget>[
+                children: [
                   Expanded(child: _buildHandle(theme)),
-                  if (enableFollow) ...<Widget>[
+                  if (enableFollow) ...[
                     defaultHorizontalSpacer,
                     _buildFollowButton(theme),
                   ],

@@ -10,8 +10,8 @@ class ChangelogWidget extends StatelessWidget {
 
   Widget _spacedColumn(List<Widget> children) {
     return Column(
-      children: <Widget>[
-        for (Widget child in children) ...<Widget>[
+      children: [
+        for (Widget child in children) ...[
           child,
           if (child != children.last) const SizedBox(height: 12),
         ],
@@ -21,7 +21,7 @@ class ChangelogWidget extends StatelessWidget {
 
   Widget _buildHeaderText() {
     return Column(
-      children: <Widget>[
+      children: [
         for (String headerLine in data!.headerLines)
           Text(headerLine, textAlign: TextAlign.start),
         const SizedBox(height: 12)
@@ -32,7 +32,7 @@ class ChangelogWidget extends StatelessWidget {
   Widget _buildEntry(ChangelogEntry entry, Widget icon) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Padding(
           // move the icon down a bit to make up for the text's line height
           padding: const EdgeInsets.only(top: 2),
@@ -42,7 +42,7 @@ class ChangelogWidget extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Text(entry.line, textAlign: TextAlign.left),
               if (entry.additionalInfo.isNotEmpty)
                 Padding(
@@ -59,11 +59,11 @@ class ChangelogWidget extends StatelessWidget {
   Widget _buildAdditionalInformation(List<String> additionalInformation) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        for (String line in additionalInformation) ...<Widget>[
+      children: [
+        for (String line in additionalInformation) ...[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               const Text('·'),
               const SizedBox(width: 12),
               Expanded(child: Text(line, textAlign: TextAlign.left)),
@@ -121,7 +121,7 @@ class ChangelogWidget extends StatelessWidget {
             ))
         .toList();
 
-    return _spacedColumn(<Widget>[
+    return _spacedColumn([
       if (data?.headerLines != null) _buildHeaderText(),
       if (additions.isNotEmpty) _spacedColumn(additions),
       if (changes.isNotEmpty) _spacedColumn(changes),

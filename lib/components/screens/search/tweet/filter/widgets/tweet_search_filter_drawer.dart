@@ -16,7 +16,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
     return FilterGroup(
       title: 'general',
-      children: <Widget>[
+      children: [
         Padding(
           padding: config.edgeInsetsSymmetric(horizontal: true),
           child: ClearableTextField(
@@ -56,7 +56,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           trailing: DropdownButton<int>(
             value: model.value.resultType,
             onChanged: model.setResultType,
-            items: <DropdownMenuItem<int>>[
+            items: [
               DropdownMenuItem<int>(
                 value: 0,
                 child: Text('mixed (default)', style: style),
@@ -80,7 +80,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   Widget _buildIncludesGroup(TweetSearchFilterModel model) {
     return FilterGroup(
       title: 'includes',
-      children: <Widget>[
+      children: [
         FilterListEntry(
           labelText: 'keyword / phrase',
           activeFilters: model.value.includesPhrases,
@@ -134,7 +134,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   Widget _buildExcludesGroup(TweetSearchFilterModel model) {
     return FilterGroup(
       title: 'excludes',
-      children: <Widget>[
+      children: [
         FilterListEntry(
           labelText: 'keyword / phrase',
           activeFilters: model.value.excludesPhrases,
@@ -191,7 +191,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       showSearchButton: model.hasSearchQuery,
       onClear: model.clear,
       onSearch: () => bloc.add(SearchTweets(filter: model.value)),
-      filterGroups: <Widget>[
+      filterGroups: [
         _buildGeneralGroup(config, model, theme),
         _buildIncludesGroup(model),
         _buildExcludesGroup(model),

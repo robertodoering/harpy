@@ -69,7 +69,7 @@ class RadioDialogTile<T> extends StatelessWidget {
         ),
       ],
       content: Column(
-        children: <Widget>[
+        children: [
           for (int i = 0; i < values.length; i++)
             RadioListTile<T>(
               value: values[i],

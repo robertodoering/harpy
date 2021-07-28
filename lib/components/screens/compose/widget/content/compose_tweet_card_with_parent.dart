@@ -83,7 +83,7 @@ class _ComposeTweetCardWithParentState
         return ListView(
           controller: _controller,
           padding: EdgeInsets.zero,
-          children: <Widget>[
+          children: [
             AnimatedContainer(
               duration: kShortAnimationDuration,
               height: _keyboardVisible ? constraints.maxHeight : height / 2,

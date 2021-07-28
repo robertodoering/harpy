@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:provider/provider.dart';
 
 /// The header for the [HomeDrawer].
 class HomeDrawerHeader extends StatelessWidget {
@@ -15,7 +16,7 @@ class HomeDrawerHeader extends StatelessWidget {
         screenName: user.handle,
       ),
       child: Row(
-        children: <Widget>[
+        children: [
           // circle avatar
           HarpyCircleAvatar(
             radius: 32,
@@ -28,7 +29,7 @@ class HomeDrawerHeader extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Text(
                   user.name,
                   style: Theme.of(context).textTheme.headline6,
@@ -48,7 +49,12 @@ class HomeDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthenticationBloc.of(context).authenticatedUser!;
+    final authCubit = context.watch<AuthenticationCubit>();
+    final user = authCubit.state.user;
+
+    if (user == null) {
+      return const SizedBox();
+    }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -65,7 +71,7 @@ class HomeDrawerHeader extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           _buildAvatarRow(context, user),
           const SizedBox(height: 16),
           SizedBox(

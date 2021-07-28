@@ -30,7 +30,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   };
 
   List<Widget> _buildSettings(ThemeData theme, Config config) {
-    return <Widget>[
+    return [
       RadioDialogTile<int>(
         leading: CupertinoIcons.photo,
         title: 'tweet image quality',
@@ -107,7 +107,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
-    return <Widget>[
+    return [
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {
@@ -115,7 +115,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(mediaPreferences.defaultSettings);
         },
         itemBuilder: (_) {
-          return <PopupMenuEntry<int>>[
+          return [
             const HarpyPopupMenuItem<int>(
               value: 0,
               text: Text('reset to default'),

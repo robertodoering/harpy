@@ -25,7 +25,7 @@ Future<T?> showHarpyBottomSheet<T>(
       top: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           const BottomSheetHandle(),
           ...children,
         ],

@@ -1,34 +1,34 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:logging/logging.dart';
+import 'package:harpy/core/logger/logger_mixin.dart';
 
 /// Uses the [Connectivity] plugin to listen to connectivity changes.
-///
-/// Should be initialized to set the initial connectivity state.
-class ConnectivityService {
+class ConnectivityService with HarpyLogger {
   ConnectivityService() {
-    _log.fine('listening to connectivity status changes');
+    log.fine('listening to connectivity status changes');
 
     Connectivity().onConnectivityChanged.listen((result) {
-      _log.fine('connectivity state changed to $result');
+      log.fine('connectivity state changed to $result');
       _lastResult = result;
     });
   }
 
-  static final Logger _log = Logger('ConnectivityService');
-
   /// The last [ConnectivityResult] that is updated automatically whenever the
   /// state changes.
-  ConnectivityResult? _lastResult;
+  ConnectivityResult _lastResult = ConnectivityResult.mobile;
 
-  /// `true` if the device is currently connected to a cellular network.
+  /// Whether the device is currently connected to a cellular network.
   bool get mobile => _lastResult == ConnectivityResult.mobile;
 
-  /// `true` if the device is currently connected to a wifi.
+  /// Whether the device is currently connected to a wifi network.
   ///
   /// This doesn't necessarily mean it also has an internet connection.
   bool get wifi => _lastResult == ConnectivityResult.wifi;
 
   Future<void> initialize() async {
-    _lastResult = await Connectivity().checkConnectivity();
+    try {
+      _lastResult = await Connectivity().checkConnectivity();
+    } catch (e, st) {
+      log.warning('unable to initialize connectivity', e, st);
+    }
   }
 }

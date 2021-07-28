@@ -21,7 +21,7 @@ class TimelineFilterDrawer extends StatelessWidget {
       title: 'includes',
       toggleAll: model.toggleIncludes,
       allToggled: model.toggledAllIncludes,
-      children: <Widget>[
+      children: [
         FilterSwitchTile(
           text: 'images',
           value: model.value.includesImages,
@@ -44,7 +44,7 @@ class TimelineFilterDrawer extends StatelessWidget {
   Widget _buildExcludesGroup(TimelineFilterModel model) {
     return FilterGroup(
       title: 'excludes',
-      children: <Widget>[
+      children: [
         FilterListEntry(
           labelText: 'keyword / phrase',
           activeFilters: model.value.excludesPhrases,
@@ -89,7 +89,7 @@ class TimelineFilterDrawer extends StatelessWidget {
         onClear();
       },
       onSearch: onFilter,
-      filterGroups: <Widget>[
+      filterGroups: [
         _buildIncludesGroup(model),
         _buildExcludesGroup(model),
       ],

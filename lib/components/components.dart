@@ -1,7 +1,8 @@
 library components;
 
-export 'common/application/bloc/application_bloc.dart';
-export 'common/authentication/bloc/authentication_bloc.dart';
+export 'common/application/cubit/application_cubit.dart';
+export 'common/authentication/cubit/authentication_cubit.dart';
+export 'common/authentication/widgets/retry_authentication_dialog.dart';
 export 'common/find_trends_locations/bloc/find_trends_locations_bloc.dart';
 export 'common/find_trends_locations/widgets/dialog_content/find_custom_location_content.dart';
 export 'common/find_trends_locations/widgets/dialog_content/found_locations_content.dart';

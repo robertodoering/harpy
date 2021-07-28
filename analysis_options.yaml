@@ -157,7 +157,7 @@ linter:
     - prefer_is_not_operator
     - prefer_iterable_whereType
 #    - prefer_mixin # conflicts with some flutter classes (PreferredSizeWidget, RouteAware, etc.)
-#    - prefer_null_aware_method_calls # todo: add when available in stable
+#   - prefer_null_aware_method_calls # todo: add when available in stable
     - prefer_null_aware_operators
     - prefer_single_quotes
     - prefer_spread_collections
@@ -194,10 +194,10 @@ linter:
     - unnecessary_this
     - use_full_hex_values_for_flutter_colors
     - use_function_type_syntax_for_parameters
-    - use_if_null_to_convert_nulls_to_bools # todo: add when available in stable
+    - use_if_null_to_convert_nulls_to_bools
     - use_is_even_rather_than_modulo
     - use_late_for_private_fields_and_variables
-    - use_named_constants # todo: add when available in stable
+    - use_named_constants
     - use_raw_strings
     - use_rethrow_when_possible
     - use_setters_to_change_properties

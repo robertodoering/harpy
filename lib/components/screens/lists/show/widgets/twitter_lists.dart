@@ -56,7 +56,7 @@ class TwitterLists extends StatelessWidget {
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
-    return <Widget>[
+    return [
       SliverPadding(
         padding: config.edgeInsetsSymmetric(horizontal: true),
         sliver: const SliverBoxInfoMessage(
@@ -100,7 +100,7 @@ class TwitterLists extends StatelessWidget {
     ListsShowBloc bloc,
     ListsShowState state,
   ) {
-    return <Widget>[
+    return [
       SliverPadding(
         padding: config.edgeInsetsSymmetric(horizontal: true),
         sliver: const SliverBoxInfoMessage(
@@ -141,7 +141,7 @@ class TwitterLists extends StatelessWidget {
   void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
     showHarpyBottomSheet<void>(
       context,
-      children: <Widget>[
+      children: [
         HarpyListTile(
           leading: const Icon(CupertinoIcons.person_3),
           title: const Text('show members'),
@@ -163,7 +163,7 @@ class TwitterLists extends StatelessWidget {
     final state = bloc.state;
 
     return CustomScrollView(
-      slivers: <Widget>[
+      slivers: [
         const HarpySliverAppBar(title: 'lists', floating: true),
         if (state.isLoading)
           const SliverFillLoadingIndicator()
@@ -172,7 +172,7 @@ class TwitterLists extends StatelessWidget {
             message: const Text('error requesting lists'),
             onRetry: () => bloc.add(const ShowLists()),
           )
-        else if (state.hasResult) ...<Widget>[
+        else if (state.hasResult) ...[
           if (state.hasOwnerships)
             ..._buildOwnerships(
               context,

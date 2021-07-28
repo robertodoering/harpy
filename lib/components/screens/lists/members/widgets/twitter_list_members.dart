@@ -27,13 +27,13 @@ class TwitterListMembers extends StatelessWidget {
           },
           child: UserList(
             state.members,
-            beginSlivers: <Widget>[
+            beginSlivers: [
               HarpySliverAppBar(
                 title: '${list.name} members',
                 floating: true,
               )
             ],
-            endSlivers: <Widget>[
+            endSlivers: [
               if (state.isLoading)
                 const UserListLoadingSliver()
               else if (state.isFailure)

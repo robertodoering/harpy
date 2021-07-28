@@ -64,7 +64,7 @@ class VideoThumbnail extends StatelessWidget {
           );
 
     return Stack(
-      children: <Widget>[
+      children: [
         if (thumbnail != null) Center(child: _buildThumbnailImage()),
         Center(
           child: Container(

@@ -29,7 +29,7 @@ class TweetSearchAppBar extends StatelessWidget {
           model.clear();
         },
       ),
-      actions: <Widget>[
+      actions: [
         HarpyButton.flat(
           padding: const EdgeInsets.all(16),
           icon: const Icon(Icons.filter_alt_outlined),

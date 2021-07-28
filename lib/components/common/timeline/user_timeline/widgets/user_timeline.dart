@@ -40,7 +40,7 @@ class UserTimeline extends StatelessWidget {
             state.timelineTweets,
             key: const PageStorageKey<String>('user_timeline'),
             enableScroll: state.enableScroll,
-            endSlivers: <Widget>[
+            endSlivers: [
               if (state.showInitialLoading)
                 const TweetListLoadingSliver()
               else if (state.showNoTweetsFound)

@@ -25,7 +25,7 @@ class UserSearchBloc extends PaginatedBloc {
       context.watch<UserSearchBloc>();
 
   /// The result of the last user search request.
-  List<UserData> users = <UserData>[];
+  List<UserData> users = [];
 
   String? lastQuery;
 

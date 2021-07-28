@@ -48,7 +48,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
   }
 
   List<Widget> _buildSettings(Locale locale) {
-    return <Widget>[
+    return [
       const HarpyListTile(
         leading: Icon(Icons.translate),
         title: Text('app language'),

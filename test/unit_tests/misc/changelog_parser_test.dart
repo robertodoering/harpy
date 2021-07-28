@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:package_info/package_info.dart';
 
 class MockHarpyInfo extends Mock implements HarpyInfo {}
@@ -14,7 +14,7 @@ void main() {
     app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
     app.registerLazySingleton<ChangelogParser>(() => ChangelogParser());
 
-    when(app<HarpyInfo>().packageInfo).thenReturn(
+    when(() => app<HarpyInfo>().packageInfo).thenReturn(
       PackageInfo(buildNumber: '14', version: '', packageName: '', appName: ''),
     );
   });

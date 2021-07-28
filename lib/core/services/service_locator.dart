@@ -22,13 +22,13 @@ void setupServices() {
         ),
       ),
     )
+    ..registerLazySingleton(() => const AppConfig())
     ..registerLazySingleton(() => HarpyNavigator())
     ..registerLazySingleton(() => HarpyInfo())
     ..registerLazySingleton(() => ChangelogParser())
     ..registerLazySingleton(() => MessageService())
     ..registerLazySingleton(() => TranslationService())
     ..registerLazySingleton(() => ConnectivityService())
-    ..registerLazySingleton(() => AnalyticsService())
     ..registerLazySingleton(() => DownloadService())
     ..registerLazySingleton(() => MediaUploadService())
     ..registerLazySingleton(() => MediaVideoConverter())

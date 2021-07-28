@@ -59,8 +59,6 @@ Some interesting features of the app include:
 * [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management.
 * [get_it](https://pub.dev/packages/get_it) as a service provider that includes
   the ability to navigate and to show on screen messages from anywhere in the app.
-* [firebase_analytics](https://pub.dev/packages/firebase_analytics) for
-  analytics.
 * [sentry](https://pub.dev/packages/sentry) as an online error tracking service
   where users can send a crash report when an exception has not been handled in
   the app.

@@ -12,8 +12,8 @@ class SettingsScreen extends StatelessWidget {
   static const String route = 'settings';
 
   Map<String, List<Widget>> get _settings {
-    return <String, List<Widget>>{
-      'tweet': <Widget>[
+    return {
+      'tweet': [
         HarpyListTile(
           leading: const Icon(CupertinoIcons.photo),
           title: const Text('media'),
@@ -23,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
-      'appearance': <Widget>[
+      'appearance': [
         HarpyListTile(
           leading: const Icon(Icons.color_lens),
           title: const Text('theme'),
@@ -41,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
-      'other': <Widget>[
+      'other': [
         HarpyListTile(
           leading: const Icon(FeatherIcons.sliders),
           title: const Text('general'),

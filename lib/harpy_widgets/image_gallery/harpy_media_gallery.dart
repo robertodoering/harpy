@@ -105,7 +105,7 @@ class HarpyMediaGallery extends StatelessWidget {
         maxScale: PhotoViewComputedScale.covered * 3,
         gestureDetectorBehavior: HitTestBehavior.opaque,
         child: Stack(
-          children: <Widget>[
+          children: [
             GestureDetector(
               onTap: Navigator.of(context).pop,
             ),

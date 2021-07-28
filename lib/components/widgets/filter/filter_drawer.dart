@@ -29,7 +29,7 @@ class FilterDrawer extends StatelessWidget {
 
   Widget _buildTitleRow(ThemeData theme) {
     return Row(
-      children: <Widget>[
+      children: [
         defaultHorizontalSpacer,
         Expanded(
           child: Text(title, style: theme.textTheme.subtitle1),
@@ -82,12 +82,12 @@ class FilterDrawer extends StatelessWidget {
         child: ListView(
           primary: false,
           padding: EdgeInsets.zero,
-          children: <Widget>[
+          children: [
             // add status bar height to top padding and make it scrollable
             SizedBox(height: config.paddingValue + mediaQuery.padding.top),
             _buildTitleRow(theme),
             _buildSearchButton(theme, config.edgeInsets),
-            for (Widget group in filterGroups) ...<Widget>[
+            for (Widget group in filterGroups) ...[
               group,
               if (group != filterGroups.last) defaultVerticalSpacer,
             ],

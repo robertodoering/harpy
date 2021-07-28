@@ -16,11 +16,11 @@ class ComposeTweetMentions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthenticationBloc.of(context);
+    final authCubit = context.watch<AuthenticationCubit>();
 
     return BlocProvider<MentionSuggestionsBloc>(
       create: (context) => MentionSuggestionsBloc(
-        authenticatedUser: authBloc.authenticatedUser!,
+        authenticatedUser: authCubit.state.user!,
       ),
       child: MentionSuggestions(controller: controller),
     );
@@ -78,7 +78,7 @@ class MentionSuggestions extends StatelessWidget {
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(config, theme, 'following users'),
         for (UserData user in state.filteredFollowing)
           _buildUser(config, theme, user),
@@ -93,7 +93,7 @@ class MentionSuggestions extends StatelessWidget {
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         _buildHeader(config, theme, 'other users'),
         for (UserData user in state.filteredSearchedUsers)
           _buildUser(config, theme, user),
@@ -115,7 +115,7 @@ class MentionSuggestions extends StatelessWidget {
       child = ListView(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
-        children: <Widget>[
+        children: [
           if (state.filteredFollowing.isNotEmpty)
             _buildFollowingUsers(config, theme, state),
           if (state.filteredSearchedUsers.isNotEmpty)

@@ -33,7 +33,7 @@ class ChangeHomeTabEntryIconDialog extends StatelessWidget {
       content: Wrap(
         spacing: 4,
         runSpacing: 4,
-        children: <Widget>[
+        children: [
           if (entry.hasName) _buildButton(context, entry.name![0]),
           for (String iconName in HomeTabEntryIcon.iconNameMap.keys)
             _buildButton(context, iconName)

@@ -46,12 +46,12 @@ class PostTweetDialogContent extends StatelessWidget {
     return AnimatedSwitcher(
       duration: kShortAnimationDuration ~/ 2,
       child: Column(
-        children: <Widget>[
+        children: [
           Text(
             state.message!,
             key: Key(state.message!),
           ),
-          if (state.hasAdditionalInfo) ...<Widget>[
+          if (state.hasAdditionalInfo) ...[
             defaultSmallVerticalSpacer,
             Text(
               state.additionalInfo!,
@@ -65,7 +65,7 @@ class PostTweetDialogContent extends StatelessWidget {
 
   Widget _buildLoading(Config config, PostTweetBloc bloc) {
     return Column(
-      children: <Widget>[
+      children: [
         SizedBox(height: config.paddingValue * 2),
         const Center(child: CircularProgressIndicator()),
       ],
@@ -84,13 +84,13 @@ class PostTweetDialogContent extends StatelessWidget {
         title: const Text('tweeting'),
         content: CustomAnimatedSize(
           child: Column(
-            children: <Widget>[
+            children: [
               if (state.hasMessage) _buildStateMessage(theme, state),
               if (state.inProgress) _buildLoading(config, postTweetBloc),
             ],
           ),
         ),
-        actions: <Widget>[
+        actions: [
           DialogAction<void>(
             text: 'ok',
             onTap: state.inProgress ? null : app<HarpyNavigator>().maybePop,

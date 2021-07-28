@@ -26,13 +26,13 @@ class LoadingDataError extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           DefaultTextStyle(
             style: theme.textTheme.headline6!,
             textAlign: TextAlign.center,
             child: message,
           ),
-          if (onRetry != null) ...<Widget>[
+          if (onRetry != null) ...[
             defaultVerticalSpacer,
             HarpyButton.flat(
               dense: true,
@@ -40,7 +40,7 @@ class LoadingDataError extends StatelessWidget {
               onTap: onRetry,
             ),
           ],
-          if (onClearFilter != null) ...<Widget>[
+          if (onClearFilter != null) ...[
             defaultVerticalSpacer,
             HarpyButton.flat(
               dense: true,

@@ -7,6 +7,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 final _nameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
 
+/// Handles creating and modifying custom themes.
 class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
   CustomThemeCubit({
     required this.initialThemeData,

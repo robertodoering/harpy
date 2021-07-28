@@ -19,11 +19,10 @@ void showTweetActionsBottomSheet(
 }) {
   final theme = Theme.of(context);
   final bloc = context.read<TweetBloc>();
-  final authBloc = context.read<AuthenticationBloc>();
+  final authCubit = context.read<AuthenticationCubit>();
   final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
-  final isAuthenticatedUser =
-      bloc.tweet.user.id == authBloc.authenticatedUser!.id;
+  final isAuthenticatedUser = bloc.tweet.user.id == authCubit.state.userId;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
@@ -37,10 +36,10 @@ void showTweetActionsBottomSheet(
   showHarpyBottomSheet<void>(
     context,
     hapticFeedback: true,
-    children: <Widget>[
+    children: [
       BottomSheetHeader(
         child: Column(
-          children: <Widget>[
+          children: [
             Text('tweet from ${tweet.user.name}'),
             defaultSmallVerticalSpacer,
             Text(tweetTime),

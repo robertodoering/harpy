@@ -14,7 +14,7 @@ class UserProfileAppBar extends StatelessWidget {
     TimelineFilterModel model,
     UserTimelineBloc timelineBloc,
   ) {
-    return <Widget>[
+    return [
       _buildButton(
         theme,
         timelineBloc.state.enableFilter &&

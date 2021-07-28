@@ -50,12 +50,12 @@ class _FilterListEntryState extends State<FilterListEntry> {
       final foregroundColor = theme.colorScheme.onSecondary;
       final backgroundColor = theme.colorScheme.secondary;
 
-      return <Widget>[
+      return [
         defaultSmallVerticalSpacer,
         Wrap(
           spacing: config.smallPaddingValue,
           runSpacing: config.smallPaddingValue,
-          children: <Widget>[
+          children: [
             for (int i = 0; i < widget.activeFilters.length; i++)
               FadeAnimation(
                 child: Chip(
@@ -75,7 +75,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
         )
       ];
     } else {
-      return <Widget>[];
+      return [];
     }
   }
 

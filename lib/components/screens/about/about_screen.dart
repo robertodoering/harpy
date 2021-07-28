@@ -23,7 +23,7 @@ class AboutScreen extends StatelessWidget {
       'https://developer.twitter.com/en/developer-terms/policy';
 
   List<Widget> _buildTitleWithLogo(Color? textColor) {
-    return <Widget>[
+    return [
       SizedBox(
         height: 100,
         child: FlareActor(
@@ -47,7 +47,7 @@ class AboutScreen extends StatelessWidget {
 
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           HarpyListTile(
             leading: const Icon(Icons.history),
             title: Text(
@@ -79,7 +79,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: config.edgeInsets,
             child: Text.rich(
@@ -123,7 +123,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Padding(
             padding: config.edgeInsets,
             child: Text(
@@ -199,7 +199,7 @@ class AboutScreen extends StatelessWidget {
 
     return HarpyScaffold(
       title: 'about',
-      actions: <Widget>[
+      actions: [
         CustomPopupMenuButton<void>(
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
@@ -215,11 +215,11 @@ class AboutScreen extends StatelessWidget {
       ],
       body: ListView(
         padding: config.edgeInsets,
-        children: <Widget>[
+        children: [
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
           _buildIntroductionText(theme, linkStyle),
-          if (Harpy.isFree) ...<Widget>[
+          if (Harpy.isFree) ...[
             defaultVerticalSpacer,
             _buildProText(theme, config, linkStyle),
           ],

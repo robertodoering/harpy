@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 /// The initial screen that is shown when opening the app.
 ///
-/// After initialization, the [ApplicationBloc] will navigate to either the
+/// After initialization, the [ApplicationCubit] will navigate to either the
 /// [LoginScreen] or the [HomeScreen].
 class SplashScreen extends StatelessWidget {
   const SplashScreen();
