@@ -8,8 +8,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
-/// The custom theme screen for editing existing custom themes and creating
-/// new custom themes.
+/// Used for editing existing custom themes and creating new custom themes.
 class CustomThemeScreen extends StatelessWidget {
   const CustomThemeScreen({
     required this.themeData,

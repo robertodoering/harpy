@@ -14,6 +14,8 @@ import 'package:logging/logging.dart';
 part 'theme_event.dart';
 part 'theme_state.dart';
 
+/// Handles changing the light and dark themes and loading + updating custom
+/// theme data.
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc({
     required this.configCubit,
@@ -46,7 +48,7 @@ void updateSystemUi(HarpyTheme theme) {
   if (theme.navBarColor.opacity != 1 && !isAndroid11plus) {
     // only android 11 and above allow for a transparent navigation bar where
     // the app can draw behind it
-    navBarColor = theme.backgroundColors.last;
+    navBarColor = theme.navBarColor.withOpacity(1);
   } else {
     navBarColor = theme.navBarColor;
   }
