@@ -40,26 +40,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
 /// Updates the system ui to match the [theme].
 void updateSystemUi(HarpyTheme theme) {
-  Color navBarColor;
-
-  final isAndroid11plus =
-      (app<HarpyInfo>().deviceInfo?.version.sdkInt ?? 0) >= 30;
-
-  if (theme.navBarColor.opacity != 1 && !isAndroid11plus) {
-    // only android 11 and above allow for a transparent navigation bar where
-    // the app can draw behind it
-    navBarColor = theme.navBarColor.withOpacity(1);
-  } else {
-    navBarColor = theme.navBarColor;
-  }
-
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: theme.statusBarColor,
       statusBarBrightness: theme.statusBarBrightness,
       statusBarIconBrightness: theme.statusBarIconBrightness,
-      systemNavigationBarColor: navBarColor,
-      systemNavigationBarDividerColor: navBarColor,
+      systemNavigationBarColor: theme.navBarColor,
+      systemNavigationBarDividerColor: theme.navBarColor,
       systemNavigationBarIconBrightness: theme.navBarIconBrightness,
     ),
   );
