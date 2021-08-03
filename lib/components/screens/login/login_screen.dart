@@ -22,6 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<SlideAnimationState> _slideLoginKey =
       GlobalKey<SlideAnimationState>();
 
+  @override
+  void initState() {
+    super.initState();
+
+    ChangelogDialog.maybeShow(context);
+  }
+
   Future<void> _startLogin(AuthenticationCubit authCubit) async {
     unawaited(HapticFeedback.mediumImpact());
     await _slideLoginKey.currentState!.forward();
