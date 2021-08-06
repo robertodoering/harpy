@@ -75,25 +75,31 @@ class HomeAppBar extends StatelessWidget {
     // scroll view in the home tab view, we use an animated shifted position
     // widget and animate the app bar out of the view based on the scroll
     // position to manually hide / show the app bar
-    return AnimatedShiftedPosition(
-      shift: scrollDirection.direction == VerticalDirection.down
-          ? const Offset(0, -1)
-          : Offset.zero,
-      child: Stack(
-        children: [
-          HomeTabBar(
-            padding: EdgeInsets.only(
-              top: topPadding,
-              bottom: bottomPadding,
-              left: HarpyTab.height(context) + config.paddingValue * 2,
-              right: config.paddingValue,
+    return Align(
+      alignment:
+          config.bottomAppBar ? Alignment.bottomCenter : Alignment.topCenter,
+      child: AnimatedShiftedPosition(
+        shift: scrollDirection.direction == VerticalDirection.down
+            ? config.bottomAppBar
+                ? const Offset(0, 1)
+                : const Offset(0, -1)
+            : Offset.zero,
+        child: Stack(
+          children: [
+            HomeTabBar(
+              padding: EdgeInsets.only(
+                top: topPadding,
+                bottom: bottomPadding,
+                left: HarpyTab.height(context) + config.paddingValue * 2,
+                right: config.paddingValue,
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
-            child: const _DrawerButton(),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
+              child: const _DrawerButton(),
+            ),
+          ],
+        ),
       ),
     );
   }
