@@ -23,7 +23,7 @@ class AddListHomeTabCard extends StatelessWidget {
     final model = context.watch<HomeTabModel>();
 
     final Widget icon = Padding(
-      padding: const EdgeInsets.all(HarpyTab.tabPadding),
+      padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
       child: proDisabled
           ? const FlareIcon.shiningStar(size: HarpyTab.tabIconSize)
           : const Icon(

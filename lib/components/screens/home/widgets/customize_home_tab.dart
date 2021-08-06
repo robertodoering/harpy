@@ -9,21 +9,18 @@ import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class CustomizeHomeTab extends StatelessWidget {
-  const CustomizeHomeTab({
-    this.cardColor,
-  });
-
-  final Color? cardColor;
+  const CustomizeHomeTab();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final Widget child = HarpyButton.flat(
-      padding: const EdgeInsets.all(HarpyTab.tabPadding - 2),
+    final Widget child = HarpyButton.raised(
+      elevation: 0,
+      backgroundColor: theme.colorScheme.secondary.withOpacity(.9),
+      padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
+      iconSize: HarpyTab.tabIconSize,
       icon: const Icon(FeatherIcons.settings),
-      iconSize: HarpyTab.tabIconSize + 2,
-      foregroundColor: theme.iconTheme.color!.withOpacity(.8),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
         model: context.read<HomeTabModel>(),
       ),

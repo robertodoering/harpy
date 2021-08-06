@@ -33,7 +33,7 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
@@ -44,11 +44,10 @@ class HomeTabView extends StatelessWidget {
             headerSliverBuilder: (_, __) => [
               // padding for the home app bar that is built above the nested
               // scroll view
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: HomeAppBar.height(mediaQuery.padding.top - 8),
+              if (!config.bottomAppBar)
+                SliverToBoxAdapter(
+                  child: SizedBox(height: HomeAppBar.height(context)),
                 ),
-              ),
             ],
             body: TabBarView(
               children: [

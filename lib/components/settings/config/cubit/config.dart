@@ -5,29 +5,35 @@ class Config extends Equatable {
   const Config({
     required this.fontSizeDelta,
     required this.compactMode,
+    required this.bottomAppBar,
   });
 
   final double fontSizeDelta;
   final bool compactMode;
+  final bool bottomAppBar;
 
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
+    bottomAppBar: false,
   );
 
   @override
   List<Object?> get props => [
         fontSizeDelta,
         compactMode,
+        bottomAppBar,
       ];
 
   Config copyWith({
     double? fontSizeDelta,
     bool? compactMode,
+    bool? bottomAppBar,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
+      bottomAppBar: bottomAppBar ?? this.bottomAppBar,
     );
   }
 }

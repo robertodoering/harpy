@@ -56,10 +56,9 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
     );
   }
 
-  Widget _buildToggleVisibilityIcon() {
+  Widget _buildToggleVisibilityIcon(double tabPadding) {
     return HarpyButton.flat(
-      padding: const EdgeInsets.all(HarpyTab.tabPadding)
-          .copyWith(right: HarpyTab.tabPadding / 2),
+      padding: EdgeInsets.all(tabPadding).copyWith(right: tabPadding / 2),
       icon: Icon(
         _entry.visible! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         size: HarpyTab.tabIconSize,
@@ -74,10 +73,9 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
     );
   }
 
-  Widget _buildRemoveEntryIcon() {
+  Widget _buildRemoveEntryIcon(double tabPadding) {
     return HarpyButton.flat(
-      padding: const EdgeInsets.all(HarpyTab.tabPadding)
-          .copyWith(right: HarpyTab.tabPadding / 2),
+      padding: EdgeInsets.all(tabPadding).copyWith(right: tabPadding / 2),
       icon: const Icon(
         CupertinoIcons.xmark,
         size: HarpyTab.tabIconSize,
@@ -94,6 +92,8 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
+    final tabPadding = HarpyTab.tabPadding(context);
+
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
       opacity: _entry.visible! ? 1 : .6,
@@ -102,9 +102,9 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
+              padding: EdgeInsets.all(tabPadding / 2),
               child: HarpyButton.raised(
-                padding: const EdgeInsets.all(HarpyTab.tabPadding / 2),
+                padding: EdgeInsets.all(tabPadding / 2),
                 icon: HomeTabEntryIcon(_entry.icon),
                 onTap: () async {
                   widget.model.changeIcon(
@@ -128,21 +128,22 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
             Flexible(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: HarpyTab.tabPadding,
+                  vertical: tabPadding,
                   horizontal: config.smallPaddingValue,
                 ),
                 child: _buildTextField(theme),
               ),
             ),
             if (_entry.removable)
-              _buildRemoveEntryIcon()
+              _buildRemoveEntryIcon(tabPadding)
             else
-              _buildToggleVisibilityIcon(),
+              _buildToggleVisibilityIcon(tabPadding),
             ReorderableDragStartListener(
               index: widget.index,
               child: Container(
-                padding: const EdgeInsets.all(HarpyTab.tabPadding)
-                    .copyWith(left: HarpyTab.tabPadding / 2),
+                padding: EdgeInsets.all(tabPadding).copyWith(
+                  left: tabPadding / 2,
+                ),
                 color: Colors.transparent,
                 child: const Icon(
                   CupertinoIcons.bars,
