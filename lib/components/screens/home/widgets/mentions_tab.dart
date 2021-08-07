@@ -27,7 +27,6 @@ class MentionsTab extends StatelessWidget {
     if (state.hasNewMentions) {
       return Bubbled(
         bubble: const Bubble(),
-        bubbleOffset: const Offset(2, -2),
         child: child,
       );
     } else {
