@@ -1,4 +1,8 @@
 Version 0.6.11
 2021-xx-xx
 
+· Updated home app bar
+· Added option to show home app bar at the bottom 
+  · in settings > general
 · Enabled transparent navigation bar for Android 10 and below (Thanks Steve-Mr!)
+· Minor style improvements
