@@ -189,7 +189,13 @@ class HarpyButton extends StatelessWidget {
     } else {
       // black or white depending on the background color
 
-      return ThemeData.estimateBrightnessForColor(backgroundColor!) ==
+      final colorOnBackground = Color.lerp(
+        theme.backgroundColor,
+        backgroundColor,
+        backgroundColor!.opacity,
+      )!;
+
+      return ThemeData.estimateBrightnessForColor(colorOnBackground) ==
               Brightness.light
           ? Colors.black
           : Colors.white;
