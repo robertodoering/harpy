@@ -99,6 +99,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
+    final route = ModalRoute.of(context)?.settings.name;
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = ScrollDirection.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
@@ -106,7 +107,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     final show = _show(mediaQuery, scrollDirection);
 
-    final padding = config.bottomAppBar
+    final padding = config.bottomAppBar && route == HomeScreen.route
         ? HomeAppBar.height(context) + config.paddingValue
         : config.paddingValue + mediaQuery.padding.bottom;
 
