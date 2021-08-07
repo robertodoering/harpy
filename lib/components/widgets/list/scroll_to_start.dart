@@ -106,6 +106,10 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
     final show = _show(mediaQuery, scrollDirection);
 
+    final padding = config.bottomAppBar
+        ? HomeAppBar.height(context) + config.paddingValue
+        : config.paddingValue + mediaQuery.padding.bottom;
+
     return Stack(
       children: [
         widget.child,
@@ -118,14 +122,9 @@ class _ScrollToStartState extends State<ScrollToStart> {
             child: AnimatedShiftedPosition(
               shift: show ? Offset.zero : const Offset(0, 1),
               child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: config.paddingValue + mediaQuery.padding.bottom,
-                ),
+                padding: EdgeInsets.only(bottom: padding),
                 child: HarpyButton.raised(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
-                  ),
+                  padding: config.edgeInsets,
                   icon: Icon(
                     CupertinoIcons.arrow_up,
                     color: harpyTheme.foregroundColor,
