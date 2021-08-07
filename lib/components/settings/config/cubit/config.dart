@@ -39,7 +39,7 @@ class Config extends Equatable {
 }
 
 extension ConfigStateExtension on Config {
-  double get paddingValue => compactMode ? 10 : 16;
+  double get paddingValue => compactMode ? 12 : 16;
   double get smallPaddingValue => paddingValue / 2;
 
   EdgeInsets get edgeInsets => EdgeInsets.all(paddingValue);
