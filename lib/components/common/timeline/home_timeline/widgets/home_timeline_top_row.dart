@@ -40,14 +40,14 @@ class _RefreshButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = context.watch<HarpyTheme>();
+    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<HomeTimelineBloc>();
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
-      backgroundColor: harpyTheme.alternateCardColor,
+      backgroundColor: theme.cardTheme.color,
       icon: const Icon(Icons.refresh),
       onTap: () => bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
     );
@@ -59,13 +59,13 @@ class _ComposeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = context.watch<HarpyTheme>();
+    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
-      backgroundColor: harpyTheme.alternateCardColor,
+      backgroundColor: theme.cardTheme.color,
       icon: const Icon(FeatherIcons.feather),
       onTap: () => app<HarpyNavigator>().pushComposeScreen(),
     );
@@ -78,7 +78,6 @@ class _FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<HomeTimelineBloc>();
     final state = bloc.state;
@@ -89,11 +88,9 @@ class _FilterButton extends StatelessWidget {
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
-      backgroundColor: hasFilter
-          ? theme.colorScheme.secondary.withOpacity(.9)
-          : harpyTheme.alternateCardColor,
+      backgroundColor: theme.cardTheme.color,
       icon: hasFilter
-          ? const Icon(Icons.filter_alt)
+          ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
       onTap:
           bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,

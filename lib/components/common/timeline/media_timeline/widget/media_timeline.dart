@@ -26,7 +26,7 @@ class MediaTimeline extends StatefulWidget {
 class _MediaTimelineState extends State<MediaTimeline> {
   bool _buildTiled = app<LayoutPreferences>().mediaTiled;
 
-  Widget _buildTopRow(Config config, HarpyTheme harpyTheme) {
+  Widget _buildTopRow(Config config, ThemeData theme) {
     return SliverToBoxAdapter(
       child: Padding(
         padding: config.edgeInsetsOnly(
@@ -40,7 +40,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
             HarpyButton.raised(
               padding: config.edgeInsets,
               elevation: 0,
-              backgroundColor: harpyTheme.alternateCardColor,
+              backgroundColor: theme.cardTheme.color,
               icon: Icon(
                 _buildTiled
                     ? CupertinoIcons.square_split_1x2
@@ -94,7 +94,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final harpyTheme = context.watch<HarpyTheme>();
+    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final model = context.watch<MediaTimelineModel>();
@@ -106,7 +106,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
         if (widget.showInitialLoading)
           const SliverFillLoadingIndicator()
         else if (model.hasEntries) ...[
-          _buildTopRow(config, harpyTheme),
+          _buildTopRow(config, theme),
           SliverPadding(
             padding: config.edgeInsets,
             sliver: _buildList(config, entries),
