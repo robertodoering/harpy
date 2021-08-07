@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HomeTabEntryIcon extends StatelessWidget {
   const HomeTabEntryIcon(
     this.iconName, {
-    this.size = HarpyTab.tabIconSize,
+    this.size,
   });
 
   /// The name that matches the icon data in [iconNameMap].
@@ -14,7 +13,7 @@ class HomeTabEntryIcon extends StatelessWidget {
   /// instead.
   final String? iconName;
 
-  final double size;
+  final double? size;
 
   /// Maps the name of an icon to its [IconData].
   static const Map<String, IconData> iconNameMap = <String, IconData>{
@@ -75,6 +74,8 @@ class HomeTabEntryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = this.size ?? Theme.of(context).iconTheme.size!;
+
     if (iconName?.length == 1) {
       return Container(
         width: size,

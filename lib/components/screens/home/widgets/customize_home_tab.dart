@@ -19,7 +19,6 @@ class CustomizeHomeTab extends StatelessWidget {
       elevation: 0,
       backgroundColor: theme.colorScheme.secondary.withOpacity(.9),
       padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-      iconSize: HarpyTab.tabIconSize,
       icon: const Icon(FeatherIcons.settings),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
         model: context.read<HomeTabModel>(),

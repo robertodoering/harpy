@@ -61,7 +61,6 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
       padding: EdgeInsets.all(tabPadding).copyWith(right: tabPadding / 2),
       icon: Icon(
         _entry.visible! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
-        size: HarpyTab.tabIconSize,
       ),
       // prevent hiding the last entry
       onTap: !widget.model.canHideMoreEntries && _entry.visible!
@@ -76,10 +75,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
   Widget _buildRemoveEntryIcon(double tabPadding) {
     return HarpyButton.flat(
       padding: EdgeInsets.all(tabPadding).copyWith(right: tabPadding / 2),
-      icon: const Icon(
-        CupertinoIcons.xmark,
-        size: HarpyTab.tabIconSize,
-      ),
+      icon: const Icon(CupertinoIcons.xmark),
       onTap: () {
         HapticFeedback.lightImpact();
         widget.model.remove(widget.index);
@@ -145,10 +141,7 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
                   left: tabPadding / 2,
                 ),
                 color: Colors.transparent,
-                child: const Icon(
-                  CupertinoIcons.bars,
-                  size: HarpyTab.tabIconSize,
-                ),
+                child: const Icon(CupertinoIcons.bars),
               ),
             ),
           ],

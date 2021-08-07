@@ -17,15 +17,13 @@ class HarpyTab extends StatefulWidget {
   final Color? cardColor;
 
   static double height(BuildContext context) {
-    return tabPadding(context) * 2 + tabIconSize;
+    final iconSize = Theme.of(context).iconTheme.size!;
+
+    return tabPadding(context) * 2 + iconSize;
   }
 
-  static const double tabIconSize = 20;
-
   static double tabPadding(BuildContext context) {
-    final config = context.read<ConfigCubit>().state;
-
-    return config.compactMode ? 12 : 16;
+    return context.read<ConfigCubit>().state.paddingValue;
   }
 
   @override
@@ -122,14 +120,13 @@ class _HarpyTabState extends State<HarpyTab>
             child: IconTheme(
               data: iconTheme.copyWith(
                 color: _colorAnimation.value,
-                size: HarpyTab.tabIconSize,
               ),
               child: DefaultTextStyle(
                 style: theme.textTheme.subtitle1!.copyWith(
                   color: _colorAnimation.value,
                 ),
                 child: SizedBox(
-                  height: HarpyTab.tabIconSize,
+                  height: iconTheme.size,
                   child: Row(
                     children: [
                       widget.icon,

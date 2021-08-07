@@ -6,47 +6,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-// todo: add actions to home timeline
-
-//   List<Widget> _buildActions(
-//     BuildContext context,
-//     ThemeData theme,
-//     TimelineFilterModel model,
-//     HomeTimelineBloc bloc,
-//   ) {
-//     return [
-//       HarpyButton.flat(
-//         padding: const EdgeInsets.all(16),
-//         icon: bloc.state.enableFilter &&
-//                 bloc.state.timelineFilter != TimelineFilter.empty
-//             ? Icon(Icons.filter_alt, color: theme.colorScheme.secondary)
-//             : const Icon(Icons.filter_alt_outlined),
-//         onTap:
-//             bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
-//       ),
-//       CustomPopupMenuButton<int>(
-//         icon: const Icon(Icons.more_vert),
-//         onSelected: (selection) {
-//           if (selection == 0) {
-//             ScrollDirection.of(context)!.reset();
-
-//             bloc.add(const RefreshHomeTimeline(clearPrevious: true));
-//           }
-//         },
-//         itemBuilder: (context) {
-//           return <PopupMenuEntry<int>>[
-//             const HarpyPopupMenuItem<int>(
-//               value: 0,
-//               text: Text('refresh'),
-//             ),
-//           ];
-//         },
-//       ),
-//     ];
-//   }
-
-// todo: add support for building home app bar at the bottom
-
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar();
 
@@ -86,6 +45,7 @@ class HomeAppBar extends StatelessWidget {
             : Offset.zero,
         child: Stack(
           children: [
+            const SizedBox(width: double.infinity),
             HomeTabBar(
               padding: EdgeInsets.only(
                 top: topPadding,
@@ -118,7 +78,6 @@ class _DrawerButton extends StatelessWidget {
       child: HarpyButton.raised(
         backgroundColor: theme.colorScheme.primary.withOpacity(.9),
         padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-        iconSize: HarpyTab.tabIconSize,
         icon: const RotatedBox(
           quarterTurns: 1,
           child: Icon(FeatherIcons.barChart2),
