@@ -33,6 +33,7 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
     final model = context.watch<HomeTabModel>();
 
@@ -47,6 +48,10 @@ class HomeTabView extends StatelessWidget {
               if (!config.bottomAppBar)
                 SliverToBoxAdapter(
                   child: SizedBox(height: HomeAppBar.height(context)),
+                )
+              else
+                SliverToBoxAdapter(
+                  child: SizedBox(height: mediaQuery.padding.top),
                 ),
             ],
             body: TabBarView(
