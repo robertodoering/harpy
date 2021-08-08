@@ -29,6 +29,7 @@ class ConfigCubit extends Cubit<Config> {
   void resetToDefault() {
     app<HarpyPreferences>().setInt('fontSizeDeltaId', 0);
     app<HarpyPreferences>().setBool('compactMode', false);
+    app<HarpyPreferences>().setBool('bottomAppBar', false);
 
     emit(Config.defaultConfig);
   }
@@ -54,5 +55,11 @@ class ConfigCubit extends Cubit<Config> {
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
       ),
     );
+  }
+
+  void updateBottomAppBar(bool value) {
+    app<HarpyPreferences>().setBool('bottomAppBar', value);
+
+    emit(state.copyWith(bottomAppBar: value));
   }
 }

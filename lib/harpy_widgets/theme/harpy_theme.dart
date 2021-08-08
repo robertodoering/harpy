@@ -131,7 +131,7 @@ class HarpyTheme {
           )!;
 
     alternateCardColor =
-        Color.lerp(cardColor, averageBackgroundColor, .9)!.withOpacity(.8);
+        Color.lerp(cardColor, averageBackgroundColor, .9)!.withOpacity(.9);
 
     solidCardColor1 =
         Color.lerp(cardColor, averageBackgroundColor, .85)!.withOpacity(1);

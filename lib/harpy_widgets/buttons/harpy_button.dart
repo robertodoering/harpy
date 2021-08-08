@@ -113,7 +113,7 @@ class HarpyButton extends StatelessWidget {
 
   /// The size of the [icon].
   ///
-  /// Defaults to the current icon theme's size (22).
+  /// Defaults to the current icon theme's size.
   final double? iconSize;
 
   /// The callback when the button is tapped.
@@ -189,7 +189,13 @@ class HarpyButton extends StatelessWidget {
     } else {
       // black or white depending on the background color
 
-      return ThemeData.estimateBrightnessForColor(backgroundColor!) ==
+      final colorOnBackground = Color.lerp(
+        theme.backgroundColor,
+        backgroundColor,
+        backgroundColor!.opacity,
+      )!;
+
+      return ThemeData.estimateBrightnessForColor(colorOnBackground) ==
               Brightness.light
           ? Colors.black
           : Colors.white;
@@ -227,7 +233,7 @@ class HarpyButton extends StatelessWidget {
     return _HarpyButtonBase(
       onTap: onTap,
       child: AnimatedTheme(
-        data: ThemeData(
+        data: theme.copyWith(
           // material background color
           canvasColor: bgColor,
 
@@ -237,7 +243,7 @@ class HarpyButton extends StatelessWidget {
           ),
 
           // icon color
-          iconTheme: IconThemeData(color: fgColor, size: iconSize),
+          iconTheme: theme.iconTheme.copyWith(color: fgColor, size: iconSize),
         ),
         child: Material(
           elevation: elevation,

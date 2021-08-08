@@ -15,6 +15,7 @@ export 'common/timeline/filter/model/timeline_filter_model.dart';
 export 'common/timeline/filter/widgets/timeline_filter_drawer.dart';
 export 'common/timeline/home_timeline/bloc/home_timeline_bloc.dart';
 export 'common/timeline/home_timeline/widgets/home_timeline.dart';
+export 'common/timeline/home_timeline/widgets/home_timeline_top_row.dart';
 export 'common/timeline/home_timeline/widgets/home_timeline_tweet_card.dart';
 export 'common/timeline/likes_timeline/bloc/likes_timeline_bloc.dart';
 export 'common/timeline/likes_timeline/widgets/likes_timeline.dart';

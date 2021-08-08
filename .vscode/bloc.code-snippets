@@ -1,8 +1,27 @@
 {
+	"Media query": {
+		"prefix": "mqof",
+		"scope": "dart",
+		"body": "final mediaQuery = MediaQuery.of(context);"
+	},
+	"Theme": {
+		"prefix": "thof",
+		"scope": "dart",
+		"body": "final theme = Theme.of(context);"
+	},
+	"HarpyTheme": {
+		"prefix": "harpythof",
+		"scope": "dart",
+		"body": "final harpyTheme = context.watch<HarpyTheme>();"
+	},
+	"Config": {
+		"prefix": "configof",
+		"scope": "dart",
+		"body": "final config = context.watch<ConfigCubit>().state;"
+	},
 	"Bloc base": {
 		"prefix": "bloc",
 		"scope": "dart",
-		"description": "Create a new bloc",
 		"body": [
 			"import 'package:equatable/equatable.dart';",
 			"import 'package:flutter_bloc/flutter_bloc.dart';",
@@ -24,7 +43,6 @@
 	"Event base": {
 		"prefix": "event",
 		"scope": "dart",
-		"description": "Create the base for a new bloc event class",
 		"body": [
 			"part of '${1/(.*)/${1:/downcase}/}_bloc.dart';",
 			"",
@@ -42,7 +60,6 @@
 	"State base": {
 		"prefix": "state",
 		"scope": "dart",
-		"description": "Create the base for a bloc state class",
 		"body": [
 			"part of '${1/(.*)/${1:/downcase}/}_bloc.dart';",
 			"",

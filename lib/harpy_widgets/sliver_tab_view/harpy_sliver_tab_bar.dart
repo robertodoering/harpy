@@ -18,8 +18,10 @@ class HarpySliverTapBar extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: config.edgeInsetsOnly(top: true),
-        child: HarpyTabBar(
-          tabs: tabs,
+        child: Center(
+          child: HarpyTabBar(
+            tabs: tabs,
+          ),
         ),
       ),
     );

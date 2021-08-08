@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// A tab for a [HarpyTabBar].
 class HarpyTab extends StatefulWidget {
@@ -15,11 +16,15 @@ class HarpyTab extends StatefulWidget {
 
   final Color? cardColor;
 
-  /// The height of a tab.
-  static const double height = tabPadding * 2 + tabIconSize;
+  static double height(BuildContext context) {
+    final iconSize = Theme.of(context).iconTheme.size!;
 
-  static const double tabPadding = 16;
-  static const double tabIconSize = 20;
+    return tabPadding(context) * 2 + iconSize;
+  }
+
+  static double tabPadding(BuildContext context) {
+    return context.read<ConfigCubit>().state.paddingValue;
+  }
 
   @override
   _HarpyTabState createState() => _HarpyTabState();
@@ -111,18 +116,17 @@ class _HarpyTabState extends State<HarpyTab>
         child: Card(
           color: widget.cardColor,
           child: Padding(
-            padding: const EdgeInsets.all(HarpyTab.tabPadding),
+            padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
             child: IconTheme(
               data: iconTheme.copyWith(
                 color: _colorAnimation.value,
-                size: HarpyTab.tabIconSize,
               ),
               child: DefaultTextStyle(
                 style: theme.textTheme.subtitle1!.copyWith(
                   color: _colorAnimation.value,
                 ),
                 child: SizedBox(
-                  height: HarpyTab.tabIconSize,
+                  height: iconTheme.size,
                   child: Row(
                     children: [
                       widget.icon,

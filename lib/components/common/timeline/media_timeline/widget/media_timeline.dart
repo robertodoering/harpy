@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
@@ -25,17 +26,34 @@ class MediaTimeline extends StatefulWidget {
 class _MediaTimelineState extends State<MediaTimeline> {
   bool _buildTiled = app<LayoutPreferences>().mediaTiled;
 
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () => setState(() {
-        final value = !_buildTiled;
-        _buildTiled = value;
-        app<LayoutPreferences>().mediaTiled = value;
-      }),
-      child: Icon(
-        _buildTiled
-            ? CupertinoIcons.square_split_1x2
-            : CupertinoIcons.square_split_2x2,
+  Widget _buildTopRow(Config config, ThemeData theme) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: config.edgeInsetsOnly(
+          top: true,
+          left: true,
+          right: true,
+        ),
+        child: Row(
+          children: [
+            const Spacer(),
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: Icon(
+                _buildTiled
+                    ? CupertinoIcons.square_split_1x2
+                    : CupertinoIcons.square_split_2x2,
+              ),
+              onTap: () => setState(() {
+                final value = !_buildTiled;
+                _buildTiled = value;
+                app<LayoutPreferences>().mediaTiled = value;
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -76,35 +94,32 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final model = context.watch<MediaTimelineModel>();
     final entries = model.value;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      floatingActionButton:
-          model.hasEntries ? _buildFloatingActionButton() : null,
-      body: CustomScrollView(
-        key: const PageStorageKey<String>('user_media_timeline'),
-        slivers: [
-          if (widget.showInitialLoading)
-            const SliverFillLoadingIndicator()
-          else if (model.hasEntries) ...[
-            SliverPadding(
-              padding: config.edgeInsets,
-              sliver: _buildList(config, entries),
-            ),
-            if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
-          ] else
-            const SliverFillLoadingError(
-              message: Text('no media found'),
-            ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: mediaQuery.padding.bottom),
+    return CustomScrollView(
+      key: const PageStorageKey<String>('user_media_timeline'),
+      slivers: [
+        if (widget.showInitialLoading)
+          const SliverFillLoadingIndicator()
+        else if (model.hasEntries) ...[
+          _buildTopRow(config, theme),
+          SliverPadding(
+            padding: config.edgeInsets,
+            sliver: _buildList(config, entries),
           ),
-        ],
-      ),
+          if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
+        ] else
+          const SliverFillLoadingError(
+            message: Text('no media found'),
+          ),
+        SliverToBoxAdapter(
+          child: SizedBox(height: mediaQuery.padding.bottom),
+        ),
+      ],
     );
   }
 }
