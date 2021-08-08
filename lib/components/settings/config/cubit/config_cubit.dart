@@ -18,10 +18,13 @@ class ConfigCubit extends Cubit<Config> {
 
     final compactMode = app<HarpyPreferences>().getBool('compactMode', false);
 
+    final bottomAppBar = app<HarpyPreferences>().getBool('bottomAppBar', false);
+
     emit(
       state.copyWith(
         compactMode: compactMode,
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
+        bottomAppBar: bottomAppBar,
       ),
     );
   }
