@@ -99,12 +99,17 @@ class _ScrollToStartState extends State<ScrollToStart> {
 
   @override
   Widget build(BuildContext context) {
+    final route = ModalRoute.of(context)?.settings.name;
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = ScrollDirection.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigCubit>().state;
 
     final show = _show(mediaQuery, scrollDirection);
+
+    final padding = config.bottomAppBar && route == HomeScreen.route
+        ? HomeAppBar.height(context) + config.paddingValue
+        : config.paddingValue + mediaQuery.padding.bottom;
 
     return Stack(
       children: [
@@ -118,14 +123,9 @@ class _ScrollToStartState extends State<ScrollToStart> {
             child: AnimatedShiftedPosition(
               shift: show ? Offset.zero : const Offset(0, 1),
               child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: config.paddingValue + mediaQuery.padding.bottom,
-                ),
+                padding: EdgeInsets.only(bottom: padding),
                 child: HarpyButton.raised(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
-                  ),
+                  padding: config.edgeInsets,
                   icon: Icon(
                     CupertinoIcons.arrow_up,
                     color: harpyTheme.foregroundColor,

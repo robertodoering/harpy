@@ -38,8 +38,10 @@ class TrendsCard extends StatelessWidget {
             ),
           ),
           defaultHorizontalSpacer,
-          HarpyButton.flat(
+          HarpyButton.raised(
             padding: config.edgeInsets,
+            elevation: 0,
+            backgroundColor: theme.cardTheme.color,
             icon: const Icon(CupertinoIcons.refresh),
             onTap: state.isLoading
                 ? null

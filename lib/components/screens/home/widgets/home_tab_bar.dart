@@ -5,19 +5,17 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the tab bar with the tabs for the home screen.
-class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
-  const HomeTabBar();
+class HomeTabBar extends StatelessWidget {
+  const HomeTabBar({
+    required this.padding,
+  });
 
-  static const double height = HarpyTab.height + 8;
-
-  @override
-  Size get preferredSize => const Size(double.infinity, height);
+  final EdgeInsets padding;
 
   Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
     if (entry.isDefaultType && entry.id == 'mentions') {
       return MentionsTab(
         entry: entry,
-        cardColor: cardColor,
       );
     } else {
       return HarpyTab(
@@ -35,18 +33,15 @@ class HomeTabBar extends StatelessWidget with PreferredSizeWidget {
 
     final cardColor = harpyTheme.alternateCardColor;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(bottom: 8),
-      child: HarpyTabBar(
-        tabs: [
-          for (HomeTabEntry entry in model.visibleEntries)
-            _mapEntryTabs(entry, cardColor),
-        ],
-        endWidgets: [
-          CustomizeHomeTab(cardColor: cardColor),
-        ],
-      ),
+    return HarpyTabBar(
+      padding: padding,
+      tabs: [
+        for (HomeTabEntry entry in model.visibleEntries)
+          _mapEntryTabs(entry, cardColor),
+      ],
+      endWidgets: const [
+        CustomizeHomeTab(),
+      ],
     );
   }
 }

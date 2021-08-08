@@ -47,6 +47,16 @@ class HomeDrawer extends StatelessWidget {
                 },
               ),
 
+              // compose
+              HarpyListTile(
+                leading: const Icon(FeatherIcons.feather),
+                title: const Text('compose tweet'),
+                onTap: () async {
+                  await app<HarpyNavigator>().maybePop();
+                  app<HarpyNavigator>().pushComposeScreen();
+                },
+              ),
+
               const Divider(),
 
               // settings

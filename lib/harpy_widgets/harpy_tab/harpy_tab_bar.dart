@@ -9,12 +9,18 @@ class HarpyTabBar extends StatefulWidget {
   const HarpyTabBar({
     required this.tabs,
     this.endWidgets,
+    this.padding,
   });
 
   final List<Widget> tabs;
 
   /// A list of additional widgets that will be built at the end of the tab bar.
   final List<Widget>? endWidgets;
+
+  /// Padding around the [tabs] inside the scroll view.
+  ///
+  /// Defaults to horizontal default edge insets.
+  final EdgeInsets? padding;
 
   @override
   _HarpyTapBarState createState() => _HarpyTapBarState();
@@ -97,27 +103,24 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
-    return Center(
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: config.edgeInsetsSymmetric(horizontal: true),
-          child: Row(
-            children: [
-              for (int i = 0; i < widget.tabs.length; i++) ...[
-                _buildTab(i),
-                if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
-              ],
-              if (widget.endWidgets != null) ...[
-                for (Widget widget in widget.endWidgets!) ...[
-                  defaultSmallHorizontalSpacer,
-                  widget,
-                ],
-              ],
+    return SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      padding: widget.padding ?? config.edgeInsetsSymmetric(horizontal: true),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (int i = 0; i < widget.tabs.length; i++) ...[
+            _buildTab(i),
+            if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
+          ],
+          if (widget.endWidgets != null) ...[
+            for (Widget widget in widget.endWidgets!) ...[
+              defaultSmallHorizontalSpacer,
+              widget,
             ],
-          ),
-        ),
+          ],
+        ],
       ),
     );
   }

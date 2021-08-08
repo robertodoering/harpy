@@ -21,7 +21,7 @@ extension HomeTimelineExtension on HomeTimelineState? {
       this is HomeTimelineResult &&
       (this as HomeTimelineResult).canRequestOlder;
 
-  bool get enableScroll => timelineTweets.isNotEmpty;
+  bool get hasTweets => timelineTweets.isNotEmpty;
 
   bool get enableFilter =>
       this is HomeTimelineResult || timelineFilter != TimelineFilter.empty;

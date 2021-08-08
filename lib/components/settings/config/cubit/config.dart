@@ -5,35 +5,41 @@ class Config extends Equatable {
   const Config({
     required this.fontSizeDelta,
     required this.compactMode,
+    required this.bottomAppBar,
   });
 
   final double fontSizeDelta;
   final bool compactMode;
+  final bool bottomAppBar;
 
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
+    bottomAppBar: false,
   );
 
   @override
   List<Object?> get props => [
         fontSizeDelta,
         compactMode,
+        bottomAppBar,
       ];
 
   Config copyWith({
     double? fontSizeDelta,
     bool? compactMode,
+    bool? bottomAppBar,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
+      bottomAppBar: bottomAppBar ?? this.bottomAppBar,
     );
   }
 }
 
 extension ConfigStateExtension on Config {
-  double get paddingValue => compactMode ? 10 : 16;
+  double get paddingValue => compactMode ? 12 : 16;
   double get smallPaddingValue => paddingValue / 2;
 
   EdgeInsets get edgeInsets => EdgeInsets.all(paddingValue);
