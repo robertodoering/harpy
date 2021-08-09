@@ -121,6 +121,7 @@ class _AddBackgroundColor extends StatelessWidget {
         child: HarpyListTile(
           leading: const Icon(CupertinoIcons.add),
           title: const Text('add background color'),
+          borderRadius: kDefaultBorderRadius,
           onTap: cubit.addBackgroundColor,
         ),
       ),
