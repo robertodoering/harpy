@@ -47,7 +47,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
       Row(
         children: [
           // align with the text in the list tile
-          SizedBox(width: config.paddingValue * 4),
+          SizedBox(width: config.paddingValue * 3 + theme.iconTheme.size!),
           Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
           defaultHorizontalSpacer,
           Expanded(
@@ -95,13 +95,6 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
-      // HarpySwitchTile(
-      //   leading: const Icon(CupertinoIcons.link),
-      //   title: const Text('always open links externally'),
-      //   subtitle: const Text('coming soon!'),
-      //   value: mediaPreferences.openLinksExternally,
-      //   enabled: false,
-      // ),
     ];
   }
 

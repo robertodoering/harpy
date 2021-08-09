@@ -1,0 +1,4 @@
+Version 0.6.12
+2021-xx-xx
+
+· Minor style improvements
