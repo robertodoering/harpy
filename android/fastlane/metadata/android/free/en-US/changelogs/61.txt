@@ -1,4 +1,4 @@
 Version 0.6.12
-2021-xx-xx
+2021-08-10
 
-· Minor style improvements
+· Fixed Twitter authentication issues
