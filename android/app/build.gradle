@@ -105,5 +105,5 @@ flutter {
 
 dependencies {
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava' // fixes guava conflict: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
-    implementation 'com.android.support:multidex:1.0.3' // multidex support for android <=21
+    implementation 'androidx.multidex:multidex:2.0.1' // multidex support for android <=21
 }
