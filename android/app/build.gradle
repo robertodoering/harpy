@@ -50,11 +50,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 30
-
-    lintOptions {
-        disable 'InvalidPackage'
-    }
+    compileSdkVersion 31
 
     defaultConfig {
         // 19+ required by the webview_flutter plugin
@@ -75,6 +71,10 @@ android {
             versionCode proVersionCode.toInteger()
             versionName proVersionName
         }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
     }
 
     if (hasKeyStore) {
