@@ -1,4 +1,9 @@
 buildscript {
+    ext {
+        // defines the package used by https://pub.dev/packages/flutter_ffmpeg
+        flutterFFmpegPackage  = "full-gpl-lts"
+    }
+
     repositories {
         mavenCentral()
         google()
@@ -6,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.4'
+        classpath 'com.android.tools.build:gradle:4.2.2'
     }
 }
 
@@ -21,16 +26,9 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    // defines the package used by https://pub.dev/packages/flutter_ffmpeg
-    flutterFFmpegPackage  = "full-gpl-lts"
 }
