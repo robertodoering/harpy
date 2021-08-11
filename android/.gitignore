@@ -5,6 +5,7 @@ gradle-wrapper.jar
 /gradlew.bat
 /local.properties
 GeneratedPluginRegistrant.java
+build/
 
 # play store key
 fastlane/fastlane_key.json
