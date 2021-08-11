@@ -2,14 +2,14 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
+  localPropertiesFile.withReader('UTF-8') { reader ->
+    localProperties.load(reader)
+  }
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+  throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 // key.properties
@@ -18,26 +18,26 @@ boolean hasKeyStore = false
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-    hasKeyStore = true
+  keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+  hasKeyStore = true
 } else {
-    println "+++"
-    println "No keystore defined. The app will not be signed."
-    println "Create a android/key.properties file with the following properties:"
-    println "storePassword"
-    println "keyPassword"
-    println "keyAlias"
-    println "storeFile"
-    println "+++"
+  println "+++"
+  println "No keystore defined. The app will not be signed."
+  println "Create a android/key.properties file with the following properties:"
+  println "storePassword"
+  println "keyPassword"
+  println "keyAlias"
+  println "storeFile"
+  println "+++"
 }
 
 // version.properties
 def versionProperties = new Properties()
 def versionPropertiesFile = rootProject.file('version.properties')
 if (versionPropertiesFile.exists()) {
-    versionPropertiesFile.withReader('UTF-8') { reader ->
-        versionProperties.load(reader)
-    }
+  versionPropertiesFile.withReader('UTF-8') { reader ->
+    versionProperties.load(reader)
+  }
 }
 
 def freeVersionCode = versionProperties.getProperty('freeVersionCode')
@@ -50,60 +50,61 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 31
+  compileSdkVersion 31
 
-    defaultConfig {
-        // 19+ required by the webview_flutter plugin
-        minSdkVersion 19
-        targetSdkVersion 30
-        multiDexEnabled true
-    }
+  defaultConfig {
+    // 19+ required by the webview_flutter plugin
+    minSdkVersion 19
+    targetSdkVersion 30
+    multiDexEnabled true
+  }
 
-    flavorDimensions "app"
-    productFlavors {
-        free {
-            applicationId "com.robertodoering.harpy.free"
-            versionCode freeVersionCode.toInteger()
-            versionName freeVersionName
-        }
-        pro {
-            applicationId "com.robertodoering.harpy.pro"
-            versionCode proVersionCode.toInteger()
-            versionName proVersionName
-        }
+  flavorDimensions "app"
+  productFlavors {
+    free {
+      applicationId "com.robertodoering.harpy.free"
+      versionCode freeVersionCode.toInteger()
+      versionName freeVersionName
     }
+    pro {
+      applicationId "com.robertodoering.harpy.pro"
+      versionCode proVersionCode.toInteger()
+      versionName proVersionName
+    }
+  }
 
-    lintOptions {
-        disable 'InvalidPackage'
-    }
+  lintOptions {
+    disable 'InvalidPackage'
+  }
 
-    if (hasKeyStore) {
-        signingConfigs {
-            release {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-            }
-        }
+  if (hasKeyStore) {
+    signingConfigs {
+      release {
+        keyAlias keystoreProperties['keyAlias']
+        keyPassword keystoreProperties['keyPassword']
+        storeFile file(keystoreProperties['storeFile'])
+        storePassword keystoreProperties['storePassword']
+      }
     }
+  }
 
-    buildTypes {
-        release {
-            if (hasKeyStore) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug
-            }
-        }
+  buildTypes {
+    release {
+      if (hasKeyStore) {
+        signingConfig signingConfigs.release
+      } else {
+        signingConfig signingConfigs.debug
+      }
     }
+  }
 }
 
 flutter {
-    source '../..'
+  source '../..'
 }
 
 dependencies {
-    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava' // fixes guava conflict: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
-    implementation 'androidx.multidex:multidex:2.0.1' // multidex support for android <=21
+  implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+  // fixes guava conflict: https://stackoverflow.com/questions/56639529/duplicate-class-com-google-common-util-concurrent-listenablefuture-found-in-modu
+  implementation 'androidx.multidex:multidex:2.0.1' // multidex support for android <=21
 }
