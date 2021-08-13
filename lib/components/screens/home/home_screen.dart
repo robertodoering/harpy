@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ScrollDirectionListener(
           depth: 1,
           child: HarpyScaffold(
-            drawer: HomeDrawer(),
             endDrawer: HomeTimelineFilterDrawer(),
             body: HomeTabView(),
           ),
