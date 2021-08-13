@@ -107,7 +107,6 @@ export 'screens/home/home_tab_customization/widgets/home_tab_entry_icon.dart';
 export 'screens/home/home_tab_customization/widgets/home_tab_reorder_card.dart';
 export 'screens/home/home_tab_customization/widgets/home_tab_reorder_list.dart';
 export 'screens/home/home_tab_view.dart';
-export 'screens/home/widgets/customize_home_tab.dart';
 export 'screens/home/widgets/home_app_bar.dart';
 export 'screens/home/widgets/home_drawer.dart';
 export 'screens/home/widgets/home_drawer_header.dart';
