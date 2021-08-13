@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 class MentionsTimeline extends StatefulWidget {
   const MentionsTimeline({
     required this.indexInTabView,
+    this.beginSlivers = const [],
   });
 
   final int indexInTabView;
+  final List<Widget> beginSlivers;
 
   @override
   _MentionsTimelineState createState() => _MentionsTimelineState();
@@ -43,10 +45,13 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
     final bloc = context.watch<MentionsTimelineBloc>();
     final state = bloc.state;
 
+    // todo: add ability to refresh mentions
+
     return ScrollToStart(
       child: TweetList(
         state.timelineTweets,
         key: const PageStorageKey<String>('mentions_timeline'),
+        beginSlivers: widget.beginSlivers,
         endSlivers: [
           if (state.showLoading)
             const TweetListLoadingSliver()

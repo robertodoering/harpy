@@ -84,6 +84,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
               tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
               enableScroll: state.hasTweets,
               beginSlivers: [
+                const HomeTopSliverPadding(),
                 if (state.hasTweets) const HomeTimelineTopRow(),
               ],
               endSlivers: [

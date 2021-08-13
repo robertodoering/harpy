@@ -29,7 +29,10 @@ class HomeTabView extends StatelessWidget {
         case 'media':
           return const HomeMediaTimeline();
         case 'mentions':
-          return MentionsTimeline(indexInTabView: index + _indexOffset);
+          return MentionsTimeline(
+            indexInTabView: index + _indexOffset,
+            beginSlivers: const [HomeTopSliverPadding()],
+          );
         case 'search':
           return const SearchScreen();
         default:
@@ -44,51 +47,110 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final config = context.watch<ConfigCubit>().state;
     final model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
       length: model.visibleEntries.length + 1,
       initialIndex: _indexOffset,
-      child: Stack(
-        children: [
-          NestedScrollView(
-            headerSliverBuilder: (_, __) => [
-              // padding for the home app bar that is built above the nested
-              // scroll view
-              if (!config.bottomAppBar)
-                SliverToBoxAdapter(
-                  child: SizedBox(height: HomeAppBar.height(context)),
-                )
-              else
-                SliverToBoxAdapter(
-                  child: SizedBox(height: mediaQuery.padding.top),
-                ),
-            ],
-            body: TabBarView(
+      child: HomeTabControllerListener(
+        child: Stack(
+          children: [
+            TabBarView(
               children: [
-                const HomeOverview(),
+                const NewHomeDrawer(),
                 for (int i = 0; i < model.visibleEntries.length; i++)
                   _mapEntryContent(context, i, model.visibleEntries[i]),
               ],
             ),
-          ),
-          const HomeAppBar(),
-        ],
+            const HomeAppBar(),
+          ],
+        ),
       ),
     );
   }
 }
 
-class HomeOverview extends StatefulWidget {
-  const HomeOverview();
+class HomeTabControllerListener extends StatefulWidget {
+  const HomeTabControllerListener({
+    required this.child,
+  });
+
+  final Widget child;
 
   @override
-  _HomeOverviewState createState() => _HomeOverviewState();
+  _HomeTabControllerListenerState createState() =>
+      _HomeTabControllerListenerState();
 }
 
-class _HomeOverviewState extends State<HomeOverview> {
+class _HomeTabControllerListenerState extends State<HomeTabControllerListener> {
+  late TabController _controller;
+  late ScrollDirection _scrollDirection;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _controller = DefaultTabController.of(context)!
+      ..animation!.addListener(_listener);
+    _scrollDirection = ScrollDirection.of(context)!;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller.animation!.removeListener(_listener);
+  }
+
+  void _listener() {
+    if (mounted) {
+      if (_scrollDirection.down) {
+        _scrollDirection.reset();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
+
+class HomeTopPadding extends StatelessWidget {
+  const HomeTopPadding();
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
+
+    if (!config.bottomAppBar) {
+      return SizedBox(height: HomeAppBar.height(context));
+    } else {
+      return SizedBox(height: mediaQuery.padding.top);
+    }
+  }
+}
+
+class HomeTopSliverPadding extends StatelessWidget {
+  const HomeTopSliverPadding();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SliverToBoxAdapter(
+      child: HomeTopPadding(),
+    );
+  }
+}
+
+class NewHomeDrawer extends StatefulWidget {
+  const NewHomeDrawer();
+
+  @override
+  _NewHomeDrawerState createState() => _NewHomeDrawerState();
+}
+
+class _NewHomeDrawerState extends State<NewHomeDrawer> {
   late TabController _tabController;
 
   double animationValue = 0;
@@ -128,36 +190,17 @@ class _HomeOverviewState extends State<HomeOverview> {
     // todo: build home overview
     //  try staggered animation
 
-    return Container(color: Colors.red);
-
-    return Stack(
+    return ListView(
+      padding: config.edgeInsets,
       children: [
-        const IgnorePointer(
-          ignoring: false,
-          child: Opacity(
-            opacity: 0,
-            child: HomeDrawer(),
-          ),
-        ),
-        Padding(
-          padding: config.edgeInsets,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _AuthenticatedUser(),
-              defaultVerticalSpacer,
-              const _FollowersCount(),
-              defaultVerticalSpacer,
-              defaultVerticalSpacer,
-              const Expanded(child: _Entries()),
-              SizedBox(height: mediaQuery.padding.bottom),
-            ],
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerRight,
-          child: Text(animationValue.toStringAsFixed(2)),
-        ),
+        const HomeTopPadding(),
+        const _AuthenticatedUser(),
+        defaultVerticalSpacer,
+        const _FollowersCount(),
+        defaultVerticalSpacer,
+        defaultVerticalSpacer,
+        const _Entries(),
+        SizedBox(height: mediaQuery.padding.bottom),
       ],
     );
   }
@@ -236,7 +279,7 @@ class _FollowersCount extends StatelessWidget {
       children: [
         Expanded(
           child: HarpyListCard(
-            title: Text('$friendsCount following'),
+            title: Text('$friendsCount  following'),
             onTap: () => app<HarpyNavigator>().pushFollowingScreen(
               userId: user.id,
             ),
@@ -245,7 +288,7 @@ class _FollowersCount extends StatelessWidget {
         defaultHorizontalSpacer,
         Expanded(
           child: HarpyListCard(
-            title: Text('$followersCount followers'),
+            title: Text('$followersCount  followers'),
             onTap: () => app<HarpyNavigator>().pushFollowersScreen(
               userId: user.id,
             ),
@@ -328,7 +371,8 @@ class _Entries extends StatelessWidget {
           title: const Text('about'),
           onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
         ),
-        const Spacer(),
+        defaultVerticalSpacer,
+        defaultVerticalSpacer,
         HarpyListCard(
           leading: Icon(
             CupertinoIcons.square_arrow_left,

@@ -20,10 +20,15 @@ class HomeListTimeline extends StatelessWidget {
 
     assert(bloc != null, 'missing list timeline bloc for home list timeline');
 
+    // todo: add ability to refresh lists
+
     if (bloc != null) {
       return BlocProvider<ListTimelineBloc>.value(
         value: bloc,
-        child: ListTimeline(listId: listId),
+        child: ListTimeline(
+          listId: listId,
+          beginSlivers: const [HomeTopSliverPadding()],
+        ),
       );
     } else {
       return const SizedBox();

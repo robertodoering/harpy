@@ -32,6 +32,9 @@ class HomeMediaTimeline extends StatelessWidget {
             child: MediaTimeline(
               showInitialLoading: state.showInitialLoading,
               showLoadingOlder: state.showLoadingOlder,
+              beginSlivers: const [
+                HomeTopSliverPadding(),
+              ],
             ),
           ),
         ),

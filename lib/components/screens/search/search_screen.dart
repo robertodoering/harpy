@@ -33,6 +33,7 @@ class SearchScreen extends StatelessWidget {
     return ScrollToStart(
       child: CustomScrollView(
         slivers: [
+          const HomeTopSliverPadding(),
           SliverPadding(
             padding: config.edgeInsets.copyWith(bottom: 0),
             sliver: SliverList(
