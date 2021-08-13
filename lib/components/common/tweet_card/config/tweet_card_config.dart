@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/components.dart';
 
+// fix for weird analyzer bug that causes false positives
+// ignore_for_file: prefer_int_literals
+
 @immutable
 class TweetCardConfig {
   const TweetCardConfig({
@@ -48,11 +51,11 @@ const kDefaultTweetCardQuoteConfig = TweetCardConfig(
     TweetCardElement.actionsButton,
   ],
   styles: {
-    TweetCardElement.avatar: TweetCardElementStyle(sizeDelta: -2),
-    TweetCardElement.name: TweetCardElementStyle(sizeDelta: -2),
-    TweetCardElement.handle: TweetCardElementStyle(sizeDelta: -2),
-    TweetCardElement.text: TweetCardElementStyle(sizeDelta: -2),
-    TweetCardElement.translation: TweetCardElementStyle(sizeDelta: -2),
-    TweetCardElement.actionsButton: TweetCardElementStyle(sizeDelta: -2),
+    TweetCardElement.avatar: TweetCardElementStyle(sizeDelta: -2.0),
+    TweetCardElement.name: TweetCardElementStyle(sizeDelta: -2.0),
+    TweetCardElement.handle: TweetCardElementStyle(sizeDelta: -2.0),
+    TweetCardElement.text: TweetCardElementStyle(sizeDelta: -2.0),
+    TweetCardElement.translation: TweetCardElementStyle(sizeDelta: -2.0),
+    TweetCardElement.actionsButton: TweetCardElementStyle(sizeDelta: -2.0),
   },
 );
