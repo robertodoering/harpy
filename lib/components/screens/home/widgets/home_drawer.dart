@@ -308,7 +308,9 @@ class _Entries extends StatelessWidget {
     ];
 
     return Column(
-      children: _animate(children),
+      children: app<GeneralPreferences>().performanceMode
+          ? children
+          : _animate(children),
     );
   }
 }
