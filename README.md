@@ -51,32 +51,32 @@ information about the progress.
 
 ## About
 
+Harpy is a fully featured Twitter client that focuses on great UI/UX and a clean experience.
+
 This project aims to provide a good example for a medium-big sized Flutter app
 in hopes that it will be useful for some.
 
 Some interesting features of the app include:
 
-* [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management.
+* [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management, using blocs and cubits.
 * [get_it](https://pub.dev/packages/get_it) as a service provider that includes
   the ability to navigate and to show on screen messages from anywhere in the app.
-* [sentry](https://pub.dev/packages/sentry) as an online error tracking service
-  where users can send a crash report when an exception has not been handled in
-  the app.
+* [sentry](https://pub.dev/packages/sentry) as an online error tracking service to report unhandled exceptions.
 * Fully featured theme customization.
 * Fully featured video player using the
   [video_player](https://pub.dev/packages/video_player) package.
 * A 'pro' and 'free' android
   [product flavor](https://developer.android.com/studio/build/build-variants).
 
-## Development / Setup
+
+### Development / Setup
 
 Harpy is being released in the Play Store for Android, therefore only
 Android devices are used for testing the builds.
 
 ### Twitter API key
 
-Get your [Twitter API](https://developer.twitter.com/en/docs) key
-[here](https://developer.twitter.com/en/apply-for-access).
+Follow [these instructions](https://github.com/robertodoering/harpy/wiki/Twitter-key-setup) for setting up your Twitter API key.
 
 ### Building
 
