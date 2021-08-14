@@ -58,6 +58,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final bloc = context.watch<HomeTimelineBloc>();
     final state = bloc.state;
 
@@ -66,6 +67,9 @@ class _HomeTimelineState extends State<HomeTimeline> {
       child: ScrollToStart(
         controller: _controller,
         child: CustomRefreshIndicator(
+          offset: config.bottomAppBar
+              ? 0
+              : HomeAppBar.height(context) + config.paddingValue,
           onRefresh: () async {
             ScrollDirection.of(context)!.reset();
             bloc.add(const RefreshHomeTimeline());
