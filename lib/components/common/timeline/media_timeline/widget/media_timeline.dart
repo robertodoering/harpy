@@ -14,10 +14,12 @@ class MediaTimeline extends StatefulWidget {
   const MediaTimeline({
     required this.showInitialLoading,
     required this.showLoadingOlder,
+    this.beginSlivers = const [],
   });
 
   final bool showInitialLoading;
   final bool showLoadingOlder;
+  final List<Widget> beginSlivers;
 
   @override
   _MediaTimelineState createState() => _MediaTimelineState();
@@ -103,6 +105,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
     return CustomScrollView(
       key: const PageStorageKey<String>('user_media_timeline'),
       slivers: [
+        ...widget.beginSlivers,
         if (widget.showInitialLoading)
           const SliverFillLoadingIndicator()
         else if (model.hasEntries) ...[

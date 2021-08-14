@@ -1,137 +1,316 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+/// A fullscreen-sized navigation drawer for the [HomeTabView].
+///
+/// Entries are animated dynamically based on the animation in the tab view.
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
-  Widget _buildActions(BuildContext context) {
-    final theme = Theme.of(context);
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final authCubit = context.watch<AuthenticationCubit>();
 
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            primary: false,
-            padding: EdgeInsets.zero,
-            children: [
-              // profile
-              HarpyListTile(
-                leading: const Icon(CupertinoIcons.person),
-                title: const Text('profile'),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushUserProfile(
-                    screenName: authCubit.state.user!.handle,
-                  );
-                },
-              ),
+    return _DrawerAnimationListener(
+      builder: (context) {
+        final animationController = context.watch<AnimationController>();
 
-              // lists
-              HarpyListTile(
-                leading: const Icon(CupertinoIcons.list_bullet),
-                title: const Text('lists'),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushShowListsScreen();
-                },
-              ),
-
-              // compose
-              HarpyListTile(
-                leading: const Icon(FeatherIcons.feather),
-                title: const Text('compose tweet'),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushComposeScreen();
-                },
-              ),
-
-              const Divider(),
-
-              // settings
-              HarpyListTile(
-                leading: const Icon(FeatherIcons.settings),
-                title: const Text('settings'),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushNamed(SettingsScreen.route);
-                },
-              ),
-
-              // harpy pro
-              if (Harpy.isFree)
-                HarpyListTile(
-                  leading: FlareIcon.shiningStar(
-                    size: theme.iconTheme.size! + 8,
-                  ),
-                  leadingPadding: config.edgeInsets.copyWith(
-                    left: max(config.paddingValue - 4, 0),
-                    right: max(config.paddingValue - 4, 0),
-                    top: max(config.paddingValue - 4, 0),
-                    bottom: max(config.paddingValue - 4, 0),
-                  ),
-                  title: const Text('harpy pro'),
-                  onTap: () => app<MessageService>().show('coming soon!'),
-                ),
-
-              // about
-              HarpyListTile(
-                leading: FlareIcon.harpyLogo(
-                  size: theme.iconTheme.size!,
-                ),
-                leadingPadding: config.edgeInsets.copyWith(
-                  left: max(config.paddingValue - 6, 0),
-                  right: max(config.paddingValue - 6, 0),
-                  top: max(config.paddingValue - 6, 0),
-                  bottom: max(config.paddingValue - 6, 0),
-                ),
-                title: const Text('about'),
-                onTap: () async {
-                  await app<HarpyNavigator>().maybePop();
-                  app<HarpyNavigator>().pushNamed(AboutScreen.route);
-                },
-              ),
-            ],
-          ),
-        ),
-
-        // logout
-        HarpyListTile(
-          leading: const Icon(CupertinoIcons.square_arrow_left),
-          title: const Text('logout'),
-          onTap: authCubit.logout,
-        ),
-      ],
+        return ListView(
+          padding: config.edgeInsets,
+          children: [
+            const HomeTopPadding(),
+            const _AuthenticatedUser(),
+            defaultVerticalSpacer,
+            const _FollowersCount(),
+            defaultVerticalSpacer,
+            defaultVerticalSpacer,
+            _Entries(animationController),
+            SizedBox(height: mediaQuery.padding.bottom),
+          ],
+        );
+      },
     );
+  }
+}
+
+class _DrawerAnimationListener extends StatefulWidget {
+  const _DrawerAnimationListener({
+    required this.builder,
+  });
+
+  final WidgetBuilder builder;
+
+  @override
+  _DrawerAnimationListenerState createState() =>
+      _DrawerAnimationListenerState();
+}
+
+class _DrawerAnimationListenerState extends State<_DrawerAnimationListener>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _tabController = DefaultTabController.of(context)!;
+    _tabController.animation!.addListener(_tabControllerListener);
+  }
+
+  @override
+  void dispose() {
+    _tabController.animation!.removeListener(_tabControllerListener);
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  void _tabControllerListener() {
+    if (mounted) {
+      final value = 1 - _tabController.animation!.value;
+
+      if (value >= 0 && value <= 1 && value != _controller.value) {
+        _controller.value = value;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: HarpyBackground(
-        child: Column(
-          children: [
-            const HomeDrawerHeader(),
-            Expanded(
-              child: SafeArea(
-                top: false,
-                child: _buildActions(context),
+    return ListenableProvider(
+      create: (_) => _controller,
+      child: Builder(builder: widget.builder),
+    );
+  }
+}
+
+class _AuthenticatedUser extends StatelessWidget {
+  const _AuthenticatedUser();
+
+  @override
+  Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+    final authCubit = context.watch<AuthenticationCubit>();
+    final user = authCubit.state.user;
+
+    if (user == null) {
+      return const SizedBox();
+    }
+
+    return InkWell(
+      borderRadius: kDefaultBorderRadius,
+      onTap: () => app<HarpyNavigator>().pushUserProfile(
+        screenName: user.handle,
+      ),
+      child: Card(
+        child: Padding(
+          padding: config.edgeInsets,
+          child: Row(
+            children: [
+              HarpyCircleAvatar(
+                radius: 28,
+                imageUrl: user.appropriateUserImageUrl,
               ),
-            ),
-          ],
+              defaultHorizontalSpacer,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.name,
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    defaultSmallVerticalSpacer,
+                    Text(
+                      '@${user.handle}',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _FollowersCount extends StatelessWidget {
+  const _FollowersCount();
+
+  static final NumberFormat _numberFormat = NumberFormat.compact();
+
+  @override
+  Widget build(BuildContext context) {
+    final authCubit = context.watch<AuthenticationCubit>();
+    final user = authCubit.state.user;
+
+    if (user == null) {
+      return const SizedBox();
+    }
+
+    final friendsCount = _numberFormat.format(user.friendsCount);
+    final followersCount = _numberFormat.format(user.followersCount);
+
+    return Row(
+      children: [
+        Expanded(
+          child: HarpyListCard(
+            title: Text('$friendsCount  following'),
+            onTap: () => app<HarpyNavigator>().pushFollowingScreen(
+              userId: user.id,
+            ),
+          ),
+        ),
+        defaultHorizontalSpacer,
+        Expanded(
+          child: HarpyListCard(
+            title: Text('$followersCount  followers'),
+            onTap: () => app<HarpyNavigator>().pushFollowersScreen(
+              userId: user.id,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Entries extends StatelessWidget {
+  const _Entries(this.controller);
+
+  final AnimationController controller;
+
+  List<Widget> _animate(List<Widget> children) {
+    final animated = <Widget>[];
+
+    for (var i = 0; i < children.length; i++) {
+      final offsetAnimation = Tween<Offset>(
+        begin: Offset(lerpDouble(-.3, -2, i / children.length)!, 0),
+        end: Offset.zero,
+      ).animate(controller);
+
+      animated.add(
+        ShiftedPosition(
+          shift: offsetAnimation.value,
+          child: Opacity(
+            opacity: controller.value,
+            child: children[i],
+          ),
+        ),
+      );
+    }
+
+    return animated;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+    final authCubit = context.watch<AuthenticationCubit>();
+    final user = authCubit.state.user;
+
+    if (user == null) {
+      return const SizedBox();
+    }
+
+    final children = [
+      HarpyListCard(
+        leading: const Icon(CupertinoIcons.person),
+        title: const Text('profile'),
+        onTap: () => app<HarpyNavigator>().pushUserProfile(
+          screenName: authCubit.state.user!.handle,
+        ),
+      ),
+      defaultVerticalSpacer,
+      HarpyListCard(
+        leading: const Icon(CupertinoIcons.list_bullet),
+        title: const Text('lists'),
+        onTap: () => app<HarpyNavigator>().pushShowListsScreen(),
+      ),
+      defaultVerticalSpacer,
+      HarpyListCard(
+        leading: const Icon(FeatherIcons.feather),
+        title: const Text('compose'),
+        onTap: () => app<HarpyNavigator>().pushComposeScreen(),
+      ),
+      defaultVerticalSpacer,
+      defaultVerticalSpacer,
+      HarpyListCard(
+        leading: const Icon(FeatherIcons.settings),
+        title: const Text('settings'),
+        onTap: () => app<HarpyNavigator>().pushNamed(SettingsScreen.route),
+      ),
+      defaultVerticalSpacer,
+      if (Harpy.isFree) ...[
+        HarpyListCard(
+          leading: FlareIcon.shiningStar(
+            size: theme.iconTheme.size! + 8,
+          ),
+          leadingPadding: config.edgeInsets.copyWith(
+            left: max(config.paddingValue - 4, 0),
+            right: max(config.paddingValue - 4, 0),
+            top: max(config.paddingValue - 4, 0),
+            bottom: max(config.paddingValue - 4, 0),
+          ),
+          title: const Text('harpy pro'),
+          subtitle: const Text('coming soon!'),
+        ),
+        defaultVerticalSpacer,
+      ],
+      HarpyListCard(
+        leading: FlareIcon.harpyLogo(
+          size: theme.iconTheme.size!,
+        ),
+        leadingPadding: config.edgeInsets.copyWith(
+          left: max(config.paddingValue - 6, 0),
+          right: max(config.paddingValue - 6, 0),
+          top: max(config.paddingValue - 6, 0),
+          bottom: max(config.paddingValue - 6, 0),
+        ),
+        title: const Text('about'),
+        onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
+      ),
+      defaultVerticalSpacer,
+      defaultVerticalSpacer,
+      HarpyListCard(
+        leading: Icon(
+          CupertinoIcons.square_arrow_left,
+          color: theme.colorScheme.error,
+        ),
+        title: const Text('logout'),
+        onTap: authCubit.logout,
+      ),
+    ];
+
+    return Column(
+      children: app<GeneralPreferences>().performanceMode
+          ? children
+          : _animate(children),
     );
   }
 }

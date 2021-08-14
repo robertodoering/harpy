@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 class HomeTabView extends StatelessWidget {
   const HomeTabView();
 
+  static const _indexOffset = 1;
+
   Widget _mapEntryContent(BuildContext context, int index, HomeTabEntry entry) {
     if (entry.isDefaultType) {
       switch (entry.id) {
@@ -18,7 +20,10 @@ class HomeTabView extends StatelessWidget {
         case 'media':
           return const HomeMediaTimeline();
         case 'mentions':
-          return MentionsTimeline(indexInTabView: index);
+          return MentionsTimeline(
+            indexInTabView: index + _indexOffset,
+            beginSlivers: const [HomeTopSliverPadding()],
+          );
         case 'search':
           return const SearchScreen();
         default:
@@ -33,37 +38,70 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final config = context.watch<ConfigCubit>().state;
     final model = context.watch<HomeTabModel>();
 
     return DefaultTabController(
-      length: model.visibleEntries.length,
-      child: Stack(
-        children: [
-          NestedScrollView(
-            headerSliverBuilder: (_, __) => [
-              // padding for the home app bar that is built above the nested
-              // scroll view
-              if (!config.bottomAppBar)
-                SliverToBoxAdapter(
-                  child: SizedBox(height: HomeAppBar.height(context)),
-                )
-              else
-                SliverToBoxAdapter(
-                  child: SizedBox(height: mediaQuery.padding.top),
-                ),
-            ],
-            body: TabBarView(
+      length: model.visibleEntries.length + 1,
+      initialIndex: _indexOffset,
+      child: _HomeTabListener(
+        child: Stack(
+          children: [
+            TabBarView(
               children: [
+                const HomeDrawer(),
                 for (int i = 0; i < model.visibleEntries.length; i++)
                   _mapEntryContent(context, i, model.visibleEntries[i]),
               ],
             ),
-          ),
-          const HomeAppBar(),
-        ],
+            const HomeAppBar(),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class _HomeTabListener extends StatefulWidget {
+  const _HomeTabListener({
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  _HomeTabListenerState createState() => _HomeTabListenerState();
+}
+
+class _HomeTabListenerState extends State<_HomeTabListener> {
+  late TabController _controller;
+  late ScrollDirection _scrollDirection;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _controller = DefaultTabController.of(context)!
+      ..animation!.addListener(_listener);
+    _scrollDirection = ScrollDirection.of(context)!;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller.animation!.removeListener(_listener);
+  }
+
+  void _listener() {
+    if (mounted) {
+      if (_scrollDirection.down) {
+        _scrollDirection.reset();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }

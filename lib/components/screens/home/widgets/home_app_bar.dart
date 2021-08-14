@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
@@ -43,46 +42,14 @@ class HomeAppBar extends StatelessWidget {
                 ? const Offset(0, 1)
                 : const Offset(0, -1)
             : Offset.zero,
-        child: Stack(
-          children: [
-            const SizedBox(width: double.infinity),
-            HomeTabBar(
-              padding: EdgeInsets.only(
-                top: topPadding,
-                bottom: bottomPadding,
-                left: HarpyTab.height(context) + config.paddingValue * 2,
-                right: config.paddingValue,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
-              child: const _DrawerButton(),
-            ),
-          ],
+        child: HomeTabBar(
+          padding: EdgeInsets.only(
+            top: topPadding,
+            bottom: bottomPadding,
+            left: config.paddingValue,
+            right: config.paddingValue,
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _DrawerButton extends StatelessWidget {
-  const _DrawerButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final config = context.watch<ConfigCubit>().state;
-
-    return Padding(
-      padding: config.edgeInsetsOnly(left: true),
-      child: HarpyButton.raised(
-        backgroundColor: theme.colorScheme.primary.withOpacity(.9),
-        padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-        icon: const RotatedBox(
-          quarterTurns: 1,
-          child: Icon(FeatherIcons.barChart2),
-        ),
-        onTap: Scaffold.of(context).openDrawer,
       ),
     );
   }
