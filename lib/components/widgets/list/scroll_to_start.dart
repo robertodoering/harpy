@@ -16,10 +16,12 @@ import 'package:provider/provider.dart';
 class ScrollToStart extends StatefulWidget {
   const ScrollToStart({
     required this.child,
+    this.text,
     this.controller,
   });
 
   final Widget child;
+  final Widget? text;
   final ScrollController? controller;
 
   @override
@@ -64,7 +66,6 @@ class _ScrollToStartState extends State<ScrollToStart> {
     }
   }
 
-  /// Determines if the button should show.
   bool _show(MediaQueryData mediaQuery, ScrollDirection? scrollDirection) {
     if (_controller == null || !_controller!.hasClients) {
       return false;
@@ -130,6 +131,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                     CupertinoIcons.arrow_up,
                     color: harpyTheme.foregroundColor,
                   ),
+                  text: widget.text,
                   backgroundColor: harpyTheme.alternateCardColor,
                   onTap: () => _scrollToStart(mediaQuery),
                 ),

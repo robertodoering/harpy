@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class HomeTimeline extends StatefulWidget {
   const HomeTimeline();
@@ -13,11 +14,24 @@ class HomeTimeline extends StatefulWidget {
 class _HomeTimelineState extends State<HomeTimeline> {
   late ScrollController _controller;
 
+  /// The index of the newest visible tweet.
+  int _newestVisibleIndex = 0;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     _controller = PrimaryScrollController.of(context)!;
+  }
+
+  void _onLayoutFinished(int firstIndex, int lastIndex) {
+    final index = firstIndex ~/ 2;
+
+    if (_newestVisibleIndex != index) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        setState(() => _newestVisibleIndex = index);
+      });
+    }
   }
 
   void _blocListener(BuildContext context, HomeTimelineState state) {
@@ -65,6 +79,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
       listener: _blocListener,
       child: ScrollToStart(
         controller: _controller,
+        text: AnimatedNumber(number: _newestVisibleIndex),
         child: CustomRefreshIndicator(
           onRefresh: () async {
             ScrollDirection.of(context)!.reset();
@@ -82,6 +97,7 @@ class _HomeTimelineState extends State<HomeTimeline> {
               key: const PageStorageKey<String>('home_timeline'),
               controller: _controller,
               tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
+              onLayoutFinished: _onLayoutFinished,
               enableScroll: state.hasTweets,
               beginSlivers: [
                 const HomeTopSliverPadding(),
