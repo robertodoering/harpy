@@ -65,10 +65,12 @@ class _AnimatedNumberState extends State<AnimatedNumber>
 
     if (oldWidget.number != widget.number) {
       _newNumberStr = widget.numberFormat.format(widget.number);
-      _controller.forward(from: 0).then((_) {
-        _oldNumberStr = _newNumberStr;
-        _oldNumber = widget.number;
-      });
+      if (!_controller.isAnimating) {
+        _controller.forward(from: 0).then((_) {
+          _oldNumberStr = _newNumberStr;
+          _oldNumber = widget.number;
+        });
+      }
     }
   }
 
