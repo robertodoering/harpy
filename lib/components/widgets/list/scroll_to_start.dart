@@ -78,17 +78,11 @@ class _ScrollToStartState extends State<ScrollToStart> {
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
-    // ignore: invalid_use_of_protected_member
     if (!_hasSingleScrollPosition ||
         _controller!.offset > mediaQuery.size.height * 5) {
-      // We use animateTo instead of jumpTo because jumpTo(0) will cause the
-      // refresh indicator to trigger.
+      // jumpTo(0) will cause the refresh indicator to trigger.
       // todo: fixed in flutter:master, change to jumpTo when it hits stable
-      _controller!.animateTo(
-        0,
-        duration: const Duration(microseconds: 1),
-        curve: Curves.linear,
-      );
+      _controller!.jumpTo(1);
     } else {
       _controller!.animateTo(
         0,
