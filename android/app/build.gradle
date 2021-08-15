@@ -55,7 +55,7 @@ android {
   defaultConfig {
     // 19+ required by the webview_flutter plugin
     minSdkVersion 19
-    targetSdkVersion 30
+    targetSdkVersion 31
     multiDexEnabled true
   }
 
