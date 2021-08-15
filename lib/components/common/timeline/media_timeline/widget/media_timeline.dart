@@ -64,7 +64,6 @@ class _MediaTimelineState extends State<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final model = context.watch<MediaTimelineModel>();
