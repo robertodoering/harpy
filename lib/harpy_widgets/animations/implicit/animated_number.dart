@@ -65,10 +65,12 @@ class _AnimatedNumberState extends State<AnimatedNumber>
 
     if (oldWidget.number != widget.number) {
       _newNumberStr = widget.numberFormat.format(widget.number);
-      _controller.forward(from: 0).then((_) {
-        _oldNumberStr = _newNumberStr;
-        _oldNumber = widget.number;
-      });
+      if (!_controller.isAnimating) {
+        _controller.forward(from: 0).then((_) {
+          _oldNumberStr = _newNumberStr;
+          _oldNumber = widget.number;
+        });
+      }
     }
   }
 
@@ -108,33 +110,35 @@ class _AnimatedNumberState extends State<AnimatedNumber>
       );
 
       return ClipRect(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (_, __) => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(unchanged),
-              Stack(
-                fit: StackFit.passthrough,
-                children: [
-                  FractionalTranslation(
-                    translation: _oldNumber! > widget.number!
-                        ? _newSlideAnimation.value
-                        : -_newSlideAnimation.value,
-                    child: Text(newText),
-                  ),
-                  Opacity(
-                    opacity: _opacityAnimation.value,
-                    child: FractionalTranslation(
+        child: CustomAnimatedSize(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (_, __) => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(unchanged),
+                Stack(
+                  fit: StackFit.passthrough,
+                  children: [
+                    FractionalTranslation(
                       translation: _oldNumber! > widget.number!
-                          ? _oldSlideAnimation.value
-                          : -_oldSlideAnimation.value,
-                      child: Text(oldText),
+                          ? _newSlideAnimation.value
+                          : -_newSlideAnimation.value,
+                      child: Text(newText),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Opacity(
+                      opacity: _opacityAnimation.value,
+                      child: FractionalTranslation(
+                        translation: _oldNumber! > widget.number!
+                            ? _oldSlideAnimation.value
+                            : -_oldSlideAnimation.value,
+                        child: Text(oldText),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );

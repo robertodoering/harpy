@@ -16,10 +16,12 @@ import 'package:provider/provider.dart';
 class ScrollToStart extends StatefulWidget {
   const ScrollToStart({
     required this.child,
+    this.text,
     this.controller,
   });
 
   final Widget child;
+  final Widget? text;
   final ScrollController? controller;
 
   @override
@@ -64,7 +66,6 @@ class _ScrollToStartState extends State<ScrollToStart> {
     }
   }
 
-  /// Determines if the button should show.
   bool _show(MediaQueryData mediaQuery, ScrollDirection? scrollDirection) {
     if (_controller == null || !_controller!.hasClients) {
       return false;
@@ -77,17 +78,11 @@ class _ScrollToStartState extends State<ScrollToStart> {
   }
 
   void _scrollToStart(MediaQueryData mediaQuery) {
-    // ignore: invalid_use_of_protected_member
     if (!_hasSingleScrollPosition ||
         _controller!.offset > mediaQuery.size.height * 5) {
-      // We use animateTo instead of jumpTo because jumpTo(0) will cause the
-      // refresh indicator to trigger.
+      // jumpTo(0) will cause the refresh indicator to trigger.
       // todo: fixed in flutter:master, change to jumpTo when it hits stable
-      _controller!.animateTo(
-        0,
-        duration: const Duration(microseconds: 1),
-        curve: Curves.linear,
-      );
+      _controller!.jumpTo(1);
     } else {
       _controller!.animateTo(
         0,
@@ -130,6 +125,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
                     CupertinoIcons.arrow_up,
                     color: harpyTheme.foregroundColor,
                   ),
+                  text: widget.text,
                   backgroundColor: harpyTheme.alternateCardColor,
                   onTap: () => _scrollToStart(mediaQuery),
                 ),

@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 
 typedef TweetBuilder = Widget Function(TweetData tweet);
 
+/// Signature for a function that is called at the end of layout in the list
+/// builder.
+typedef OnLayoutFinished = void Function(int firstIndex, int lastIndex);
+
 /// Builds a [CustomScrollView] for the [tweets].
 ///
 /// An optional list of [beginSlivers] are built before the [tweets] and
@@ -14,6 +18,7 @@ class TweetList extends StatelessWidget {
     this.tweets, {
     this.controller,
     this.tweetBuilder = defaultTweetBuilder,
+    this.onLayoutFinished,
     this.beginSlivers = const [],
     this.endSlivers = const [],
     this.enableScroll = true,
@@ -26,6 +31,8 @@ class TweetList extends StatelessWidget {
   final ScrollController? controller;
 
   final TweetBuilder tweetBuilder;
+
+  final OnLayoutFinished? onLayoutFinished;
 
   /// Slivers built at the beginning of the [CustomScrollView].
   final List<Widget> beginSlivers;
@@ -63,15 +70,34 @@ class TweetList extends StatelessWidget {
         SliverPadding(
           padding: config.edgeInsets,
           sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
+            delegate: _TweetListBuilderDelegate(
               _itemBuilder,
+              onLayoutFinished: onLayoutFinished,
               childCount: tweets.length * 2 - 1,
-              addAutomaticKeepAlives: false,
             ),
           ),
         ),
         ...endSlivers,
       ],
     );
+  }
+}
+
+class _TweetListBuilderDelegate extends SliverChildBuilderDelegate {
+  _TweetListBuilderDelegate(
+    NullableIndexedWidgetBuilder builder, {
+    this.onLayoutFinished,
+    int? childCount,
+  }) : super(
+          builder,
+          childCount: childCount,
+          addAutomaticKeepAlives: false,
+        );
+
+  final OnLayoutFinished? onLayoutFinished;
+
+  @override
+  void didFinishLayout(int firstIndex, int lastIndex) {
+    onLayoutFinished?.call(firstIndex, lastIndex);
   }
 }

@@ -7,6 +7,7 @@ class TweetVisibilityPreferences {
   /// The id of the list visible tweet in the home timeline.
   int get lastVisibleTweet =>
       harpyPrefs.getInt('lastVisibleTweet', 0, prefix: true);
+
   set lastVisibleTweet(int value) =>
       harpyPrefs.setInt('lastVisibleTweet', value, prefix: true);
 
