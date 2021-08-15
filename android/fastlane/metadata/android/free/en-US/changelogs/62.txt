@@ -1,6 +1,7 @@
 Version 0.6.13
-2021-xx-xx
+2021-08-16
 
 · Added unread tweets counter in home timeline
+· Added refresh button to mentions and lists
 · Updated home drawer
 · Minor style improvements

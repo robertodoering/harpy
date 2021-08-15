@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -48,7 +49,7 @@ class _RefreshButton extends StatelessWidget {
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: const Icon(Icons.refresh),
+      icon: const Icon(CupertinoIcons.refresh),
       onTap: () => bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
     );
   }

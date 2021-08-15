@@ -28,38 +28,6 @@ class MediaTimeline extends StatefulWidget {
 class _MediaTimelineState extends State<MediaTimeline> {
   bool _buildTiled = app<LayoutPreferences>().mediaTiled;
 
-  Widget _buildTopRow(Config config, ThemeData theme) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: config.edgeInsetsOnly(
-          top: true,
-          left: true,
-          right: true,
-        ),
-        child: Row(
-          children: [
-            const Spacer(),
-            HarpyButton.raised(
-              padding: config.edgeInsets,
-              elevation: 0,
-              backgroundColor: theme.cardTheme.color,
-              icon: Icon(
-                _buildTiled
-                    ? CupertinoIcons.square_split_1x2
-                    : CupertinoIcons.square_split_2x2,
-              ),
-              onTap: () => setState(() {
-                final value = !_buildTiled;
-                _buildTiled = value;
-                app<LayoutPreferences>().mediaTiled = value;
-              }),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _itemBuilder(List<MediaTimelineEntry> entries, int index) {
     return MediaTimelineMediaWidget(
       entry: entries[index],
@@ -109,7 +77,14 @@ class _MediaTimelineState extends State<MediaTimeline> {
         if (widget.showInitialLoading)
           const SliverFillLoadingIndicator()
         else if (model.hasEntries) ...[
-          _buildTopRow(config, theme),
+          _TopRow(
+            buildTiled: _buildTiled,
+            onToggleTiled: () => setState(() {
+              final value = !_buildTiled;
+              _buildTiled = value;
+              app<LayoutPreferences>().mediaTiled = value;
+            }),
+          ),
           SliverPadding(
             padding: config.edgeInsets,
             sliver: _buildList(config, entries),
@@ -123,6 +98,57 @@ class _MediaTimelineState extends State<MediaTimeline> {
           child: SizedBox(height: mediaQuery.padding.bottom),
         ),
       ],
+    );
+  }
+}
+
+class _TopRow extends StatelessWidget {
+  const _TopRow({
+    required this.buildTiled,
+    required this.onToggleTiled,
+  });
+
+  final bool buildTiled;
+  final VoidCallback onToggleTiled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+    final bloc = context.watch<HomeTimelineBloc>();
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: config.edgeInsetsOnly(
+          top: true,
+          left: true,
+          right: true,
+        ),
+        child: Row(
+          children: [
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: const Icon(CupertinoIcons.refresh),
+              onTap: () =>
+                  bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
+            ),
+            const Spacer(),
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: Icon(
+                buildTiled
+                    ? CupertinoIcons.square_split_1x2
+                    : CupertinoIcons.square_split_2x2,
+              ),
+              onTap: onToggleTiled,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

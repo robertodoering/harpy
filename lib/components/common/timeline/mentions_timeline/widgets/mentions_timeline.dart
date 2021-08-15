@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class MentionsTimeline extends StatefulWidget {
@@ -45,13 +47,14 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
     final bloc = context.watch<MentionsTimelineBloc>();
     final state = bloc.state;
 
-    // todo: add ability to refresh mentions
-
     return ScrollToStart(
       child: TweetList(
         state.timelineTweets,
         key: const PageStorageKey<String>('mentions_timeline'),
-        beginSlivers: widget.beginSlivers,
+        beginSlivers: [
+          ...widget.beginSlivers,
+          if (state.hasMentions) const _TopRow(),
+        ],
         endSlivers: [
           if (state.showLoading)
             const TweetListLoadingSliver()
@@ -70,6 +73,40 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
             child: SizedBox(height: mediaQuery.padding.bottom),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TopRow extends StatelessWidget {
+  const _TopRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+    final bloc = context.watch<MentionsTimelineBloc>();
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: config.edgeInsetsOnly(
+          top: true,
+          left: true,
+          right: true,
+        ),
+        child: Row(
+          children: [
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: const Icon(CupertinoIcons.refresh),
+              onTap: () => bloc.add(
+                const RequestMentionsTimeline(updateViewedMention: true),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

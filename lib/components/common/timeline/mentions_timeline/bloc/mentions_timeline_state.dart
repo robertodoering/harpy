@@ -13,6 +13,8 @@ extension MentionsTimelineExtension on MentionsTimelineState {
 
   bool get enableScroll => !showLoading;
 
+  bool get hasMentions => timelineTweets.isNotEmpty;
+
   bool get hasNewMentions {
     if (this is MentionsTimelineResult) {
       return (this as MentionsTimelineResult).newMentions > 0;

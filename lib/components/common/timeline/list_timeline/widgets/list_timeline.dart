@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the [TweetList] for the tweets in a list.
@@ -33,7 +35,10 @@ class ListTimeline extends StatelessWidget {
           state.timelineTweets,
           key: PageStorageKey<String>('list_timeline_$listId'),
           enableScroll: state.enableScroll,
-          beginSlivers: beginSlivers,
+          beginSlivers: [
+            ...beginSlivers,
+            if (state.hasTweets) const _TopRow(),
+          ],
           endSlivers: [
             if (state.showLoading)
               const TweetListLoadingSliver()
@@ -55,6 +60,38 @@ class ListTimeline extends StatelessWidget {
               ),
             SliverToBoxAdapter(
               child: SizedBox(height: mediaQuery.padding.bottom),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TopRow extends StatelessWidget {
+  const _TopRow();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+    final bloc = context.watch<ListTimelineBloc>();
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: config.edgeInsetsOnly(
+          top: true,
+          left: true,
+          right: true,
+        ),
+        child: Row(
+          children: [
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: const Icon(CupertinoIcons.refresh),
+              onTap: () => bloc.add(const RequestListTimeline()),
             ),
           ],
         ),

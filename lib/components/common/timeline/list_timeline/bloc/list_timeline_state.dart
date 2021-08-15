@@ -23,6 +23,8 @@ extension ListTimelineExtension on ListTimelineState {
 
   bool get enableScroll => !showLoading;
 
+  bool get hasTweets => timelineTweets.isNotEmpty;
+
   List<TweetData> get timelineTweets {
     if (this is ListTimelineResult) {
       return (this as ListTimelineResult).tweets;
