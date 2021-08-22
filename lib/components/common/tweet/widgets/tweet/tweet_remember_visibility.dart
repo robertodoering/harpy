@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// Uses the [TweetVisibilityPreferences] to save the last visible tweet id.
 ///
@@ -49,7 +50,7 @@ class _TweetRememberVisibilityState extends State<TweetRememberVisibility> {
 
     _visible = visible;
 
-    if (_visible) {
+    if (_visible && !isTest) {
       // wait a second to see whether this tweet is still visible before
       // updating the visibility
       Future<void>.delayed(const Duration(seconds: 1)).then((_) {

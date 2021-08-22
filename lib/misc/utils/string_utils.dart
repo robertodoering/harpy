@@ -109,7 +109,7 @@ String? trimOne(
 String tweetTimeDifference(BuildContext context, DateTime createdAt) {
   return timeago.format(
     createdAt.toLocal(),
-    locale: Localizations.localeOf(context).toString(),
+    locale: Localizations.localeOf(context).languageCode,
   );
 }
 

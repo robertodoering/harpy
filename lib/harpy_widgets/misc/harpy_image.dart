@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// Builds a network [Image] with a shimmer loading animation that fades into
@@ -67,7 +68,8 @@ class HarpyImage extends StatelessWidget {
     return Image.network(
       imageUrl,
       errorBuilder: _errorBuilder,
-      loadingBuilder: _loadingBuilder,
+      // remove loading builder in golden tests
+      loadingBuilder: isTest ? null : _loadingBuilder,
       fit: fit,
       width: width,
       height: height,
