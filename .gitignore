@@ -30,6 +30,9 @@
 /build/
 pubspec.lock
 
+# flutter test golden failure output
+**/failures/*.png
+
 # Web related
 lib/generated_plugin_registrant.dart
 

@@ -1,4 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,9 +25,44 @@ class MockAppConfig extends AppConfig {
   final String twitterConsumerSecret;
 }
 
+class MockHomeTimelineBloc extends HomeTimelineBloc {
+  MockHomeTimelineBloc(HomeTimelineState initialState) {
+    emit(initialState);
+  }
+
+  @override
+  void add(HomeTimelineEvent event) {
+    // ignore added events
+  }
+}
+
+class MockMentionsTimelineBloc extends MentionsTimelineBloc {
+  MockMentionsTimelineBloc(MentionsTimelineState initialState) {
+    emit(initialState);
+  }
+
+  @override
+  void add(MentionsTimelineEvent event) {
+    // ignore added events
+  }
+}
+
 class MockHarpyNavigator extends Mock implements HarpyNavigator {}
 
 class MockMessageService extends Mock implements MessageService {}
+
+class MockHarpyInfo extends Mock implements HarpyInfo {}
+
+class MockTranslationService extends Mock implements TranslationService {}
+
+class MockConnectivityService extends Mock implements ConnectivityService {
+  MockConnectivityService() {
+    when(() => mobile).thenReturn(false);
+    when(() => wifi).thenReturn(true);
+  }
+}
+
+// twitter api
 
 class MockTwitterApiClient extends Mock implements AbstractTwitterClient {}
 

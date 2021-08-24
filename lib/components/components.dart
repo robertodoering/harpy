@@ -55,6 +55,7 @@ export 'common/tweet_card/config/tweet_card_config_element.dart';
 export 'common/tweet_card/content/elements/tweet_card_actions_button.dart';
 export 'common/tweet_card/content/elements/tweet_card_actions_row.dart';
 export 'common/tweet_card/content/elements/tweet_card_avatar.dart';
+export 'common/tweet_card/content/elements/tweet_card_details.dart';
 export 'common/tweet_card/content/elements/tweet_card_handle.dart';
 export 'common/tweet_card/content/elements/tweet_card_media.dart';
 export 'common/tweet_card/content/elements/tweet_card_name.dart';

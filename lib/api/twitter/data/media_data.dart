@@ -24,7 +24,7 @@ class ImageData extends MediaData {
     }
   }
 
-  ImageData.fromImageUrl(this.baseUrl);
+  ImageData.fromImageUrl(this.baseUrl, this.aspectRatio);
 
   /// The base url for the image.
   late String baseUrl;
@@ -72,7 +72,10 @@ class VideoData extends MediaData {
         .toList()
           ..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
 
-    thumbnail = ImageData.fromImageUrl(media.mediaUrlHttps ?? '');
+    thumbnail = ImageData.fromImageUrl(
+      media.mediaUrlHttps ?? '',
+      aspectRatioDouble,
+    );
   }
 
   /// The aspect ratio of the video.
