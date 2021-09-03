@@ -42,21 +42,21 @@ dependencies:
   android_path_provider: ^0.2.1
   connectivity: ^3.0.3
   device_info: ^2.0.0
-  file_picker: ^4.0.0
+  file_picker: ^4.0.1
   flutter_displaymode: ^0.3.1-nullsafety.0
   flutter_ffmpeg: ^0.4.0
   flutter_hsvcolor_picker: ^1.1.0
   flutter_keyboard_visibility: ^5.0.1
   location: ^4.1.1
   package_info: ^2.0.0
-  path_provider: ^2.0.1
+  path_provider: ^2.0.3
   pedantic: ^1.11.0
   permission_handler: ^8.1.4+2
-  sentry_flutter: ^5.0.0
+  sentry_flutter: ^6.0.0
   share: ^2.0.1
   shared_preferences: ^2.0.7
-  url_launcher: ^6.0.2
-  video_player: ^2.1.14
+  url_launcher: ^6.0.10
+  video_player: ^2.1.15
   webview_flutter: ^2.0.4
 
 dev_dependencies:
