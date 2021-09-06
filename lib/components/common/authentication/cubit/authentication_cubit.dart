@@ -92,7 +92,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         break;
       case TwitterAuthStatus.failure:
-        log.warning('login failed');
+        log.warning(
+          'login failed\n\n'
+          'If this issue is persistent, see\n'
+          'https://github.com/robertodoering/harpy/wiki/Troubleshooting',
+        );
 
         app<MessageService>().show('authentication failed, please try again');
 

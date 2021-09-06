@@ -87,7 +87,9 @@ class AppConfig with HarpyLogger {
         '--flavor free \\\n'
         '--dart-define=flavor=free \\\n'
         '--dart-define=twitter_consumer_key=your_consumer_key \\\n'
-        '--dart-define=twitter_consumer_secret=your_consumer_secret',
+        '--dart-define=twitter_consumer_secret=your_consumer_secret\n\n'
+        'For more information, see\n'
+        'https://github.com/robertodoering/harpy/wiki/Troubleshooting',
       );
     }
 
