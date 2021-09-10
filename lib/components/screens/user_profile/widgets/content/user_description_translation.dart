@@ -14,7 +14,9 @@ class UserProfileDescriptionTranslation extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
-    return CustomAnimatedSize(
+    return AnimatedSize(
+      duration: kShortAnimationDuration,
+      curve: Curves.easeOutCubic,
       child: AnimatedOpacity(
         opacity: bloc.user!.hasDescriptionTranslation ? 1 : 0,
         duration: kShortAnimationDuration,

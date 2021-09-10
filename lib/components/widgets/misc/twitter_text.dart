@@ -1,5 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -227,12 +228,20 @@ class _TwitterTextState extends State<TwitterText> {
         return;
       }
 
-      recognizer = MultiTapGestureRecognizer(longTapDelay: kLongPressTimeout)
-        ..onTap = ((_) => widget.onUrlTap?.call(context, value))
-        ..onLongTapDown = (_, __) => widget.onUrlLongPress.call(
-              context,
-              value,
-            );
+      // TODO(robertodoering): This triggers a false-positive assert in flutter
+      // version 2.5 at `package:flutter/…/rendering/paragraph.dart:996`
+      // which incorrectly implies the inability to use a
+      // `MultiTapGestureRecognizer` in a `TextSpan`.
+      // As a temporary workaround we prevent adding the recognizer in debug &
+      // profile mode.
+      if (kReleaseMode) {
+        recognizer = MultiTapGestureRecognizer(longTapDelay: kLongPressTimeout)
+          ..onTap = ((_) => widget.onUrlTap?.call(context, value))
+          ..onLongTapDown = (_, __) => widget.onUrlLongPress.call(
+                context,
+                value,
+              );
+      }
 
       text = value.displayUrl;
     } else if (value is UserMentionData) {

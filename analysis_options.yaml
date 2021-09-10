@@ -6,6 +6,7 @@ analyzer:
   errors:
     # treat missing returns as a warning (not a hint)
     missing_return: warning
+    todo: ignore
   exclude: [
     # ignore all generated files
     lib/**.g.dart,

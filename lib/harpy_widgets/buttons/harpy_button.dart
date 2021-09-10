@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// The base for the [HarpyButton].
 ///
@@ -35,6 +36,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
   Widget build(BuildContext context) {
     return AnimatedScale(
       scale: _tapDown ? .8 : 1,
+      duration: kShortAnimationDuration,
       curve: Curves.easeOutCirc,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -66,7 +68,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
 class HarpyButton extends StatelessWidget {
   /// A button that appears raised with a shadow.
   ///
-  /// Uses the [ThemeData.buttonColor] as the [backgroundColor] by default.
+  /// Uses the [HarpyTheme.foregroundColor] as the [backgroundColor] by default.
   const HarpyButton.raised({
     required this.onTap,
     this.text,
@@ -124,7 +126,7 @@ class HarpyButton extends StatelessWidget {
 
   /// The color of the button.
   ///
-  /// Uses the [ThemeData.buttonColor] if `null`.
+  /// Uses the [HarpyTheme.foregroundColor] if `null`.
   final Color? backgroundColor;
 
   /// The color of the [icon] and [text] of the button.
@@ -220,8 +222,9 @@ class HarpyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
-    var bgColor = backgroundColor ?? theme.buttonColor;
+    var bgColor = backgroundColor ?? harpyTheme.foregroundColor;
     var fgColor = _calculateForegroundColor(theme);
 
     if (onTap == null) {

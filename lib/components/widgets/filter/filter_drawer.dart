@@ -44,7 +44,9 @@ class FilterDrawer extends StatelessWidget {
   }
 
   Widget _buildSearchButton(ThemeData theme, EdgeInsets padding) {
-    return CustomAnimatedSize(
+    return AnimatedSize(
+      duration: kShortAnimationDuration,
+      curve: Curves.easeOutCubic,
       child: AnimatedSwitcher(
         switchInCurve: Curves.easeInOut,
         switchOutCurve: Curves.easeInOut,

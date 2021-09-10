@@ -44,7 +44,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   }
 
   /// Initializes a web bases twitter authentication and navigates to the
-  /// [SetupScreen] or [HomeScreen] on successfull authentication.
+  /// [SetupScreen] or [HomeScreen] on successful authentication.
   Future<void> login() async {
     log.fine('logging in');
 
@@ -143,7 +143,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   /// data.
   ///
   /// Emits the [Authenticated] state if the user has been requested
-  /// succesfully.
+  /// successfully.
   /// Otherwise [_onLogout] is called to invalidate the user session.
   Future<void> _onLogin(TwitterAuthSession authSession) async {
     log.fine('on login');

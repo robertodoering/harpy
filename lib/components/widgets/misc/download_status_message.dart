@@ -51,7 +51,9 @@ class _DownloadStatusMessageState extends State<DownloadStatusMessage> {
             SizedBox(
               width: 18,
               height: 18,
-              child: CircularProgressIndicator(color: theme.accentColor),
+              child: CircularProgressIndicator(
+                color: theme.colorScheme.secondary,
+              ),
             ),
           ],
         ],

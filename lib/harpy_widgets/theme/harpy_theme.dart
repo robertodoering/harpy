@@ -369,8 +369,6 @@ class HarpyTheme {
       ),
       textTheme: _textTheme,
     ).copyWith(
-      buttonColor: foregroundColor,
-
       // determines the status bar icon color
       primaryColorBrightness: brightness,
 
@@ -439,11 +437,6 @@ class HarpyTheme {
           borderRadius: kDefaultBorderRadius,
         ),
         contentPadding: config.edgeInsets,
-      ),
-
-      appBarTheme: AppBarTheme(
-        // overrides the system ui overlay style
-        brightness: statusBarBrightness,
       ),
     );
   }

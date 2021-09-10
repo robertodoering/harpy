@@ -18,8 +18,9 @@ class TweetDetailParentTweet extends StatelessWidget {
     final state = bloc.state;
 
     return SliverToBoxAdapter(
-      child: CustomAnimatedSize(
+      child: AnimatedSize(
         duration: kLongAnimationDuration,
+        curve: Curves.easeOutCubic,
         alignment: Alignment.topCenter,
         child: state.hasParent
             ? Column(

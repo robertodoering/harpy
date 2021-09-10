@@ -110,7 +110,9 @@ class _AnimatedNumberState extends State<AnimatedNumber>
       );
 
       return ClipRect(
-        child: CustomAnimatedSize(
+        child: AnimatedSize(
+          duration: kShortAnimationDuration,
+          curve: Curves.easeOutCubic,
           child: AnimatedBuilder(
             animation: _controller,
             builder: (_, __) => Row(

@@ -41,8 +41,8 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
     _controller ??= ComposeTextController(
       textStyleMap: <RegExp, TextStyle>{
-        hashtagRegex: TextStyle(color: Theme.of(context).accentColor),
-        mentionRegex: TextStyle(color: Theme.of(context).accentColor),
+        hashtagRegex: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        mentionRegex: TextStyle(color: Theme.of(context).colorScheme.secondary),
       },
     );
   }

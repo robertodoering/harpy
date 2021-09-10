@@ -82,7 +82,9 @@ class PostTweetDialogContent extends StatelessWidget {
     return WillPopPostTweetDialog(
       child: HarpyDialog(
         title: const Text('tweeting'),
-        content: CustomAnimatedSize(
+        content: AnimatedSize(
+          duration: kShortAnimationDuration,
+          curve: Curves.easeOutCubic,
           child: Column(
             children: [
               if (state.hasMessage) _buildStateMessage(theme, state),
