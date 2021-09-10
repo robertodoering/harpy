@@ -155,7 +155,7 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
       final lightThemeId = app<ThemePreferences>().lightThemeId;
       final darkThemeId = app<ThemePreferences>().darkThemeId;
 
-      if (themeId >= lightThemeId || themeId >= darkThemeId) {
+      if (themeId <= lightThemeId || themeId <= darkThemeId) {
         bloc.add(ChangeTheme(
           lightThemeId: _adjustedThemeId(lightThemeId),
           darkThemeId: _adjustedThemeId(darkThemeId),
@@ -165,13 +165,12 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
     }
   }
 
-  // reset selection when deleting a selected theme
-  // or decrement if deleted id preceded selected id
+  /// Returns the new `themeId` of the currently selected theme.
   int? _adjustedThemeId(int currentThemeId) {
     if (themeId == currentThemeId) {
       return 0;
     }
-    if (themeId >= currentThemeId) {
+    if (themeId <= currentThemeId) {
       return currentThemeId - 1;
     }
     return null;
