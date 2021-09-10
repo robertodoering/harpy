@@ -135,6 +135,17 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
 
   final int themeId;
 
+  /// Returns the new `themeId` of the currently selected theme.
+  int? _adjustedThemeId(int currentThemeId) {
+    if (themeId == currentThemeId) {
+      return 0;
+    }
+    if (themeId <= currentThemeId) {
+      return currentThemeId - 1;
+    }
+    return null;
+  }
+
   @override
   Stream<ThemeState> applyAsync({
     required ThemeState state,
@@ -163,17 +174,6 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
         ));
       }
     }
-  }
-
-  /// Returns the new `themeId` of the currently selected theme.
-  int? _adjustedThemeId(int currentThemeId) {
-    if (themeId == currentThemeId) {
-      return 0;
-    }
-    if (themeId <= currentThemeId) {
-      return currentThemeId - 1;
-    }
-    return null;
   }
 }
 
