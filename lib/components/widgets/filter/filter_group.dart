@@ -48,7 +48,9 @@ class FilterGroup extends StatelessWidget {
 
     return Card(
       margin: margin ?? config.edgeInsetsSymmetric(horizontal: true),
-      child: CustomAnimatedSize(
+      child: AnimatedSize(
+        duration: kShortAnimationDuration,
+        curve: Curves.easeOutCubic,
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisSize: MainAxisSize.min,

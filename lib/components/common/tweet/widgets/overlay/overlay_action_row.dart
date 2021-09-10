@@ -43,7 +43,9 @@ class MediaOverlayActionRow extends StatelessWidget {
         child: BlocBuilder<TweetBloc, TweetState>(
           builder: (context, state) => Row(
             children: [
-              CustomAnimatedSize(
+              AnimatedSize(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeOutCubic,
                 alignment: Alignment.centerLeft,
                 child: RetweetButton(
                   tweetBloc,
@@ -51,7 +53,9 @@ class MediaOverlayActionRow extends StatelessWidget {
                 ),
               ),
               defaultSmallHorizontalSpacer,
-              CustomAnimatedSize(
+              AnimatedSize(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeOutCubic,
                 alignment: Alignment.centerLeft,
                 child: FavoriteButton(
                   tweetBloc,

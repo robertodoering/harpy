@@ -7,17 +7,26 @@ class TweetMediaModel {
 
   void resetOverlays() {
     if (!_showingOverlays) {
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      );
       _showingOverlays = true;
     }
   }
 
   void toggleOverlays() {
     if (_showingOverlays) {
-      SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: const [],
+      );
       _showingOverlays = false;
     } else {
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      );
       _showingOverlays = true;
     }
   }

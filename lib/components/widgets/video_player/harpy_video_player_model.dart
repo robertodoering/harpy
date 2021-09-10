@@ -170,7 +170,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   void _pushFullscreen() {
     _fullscreen = true;
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     app<HarpyNavigator>().push(
       HeroDialogRoute<void>(
@@ -186,7 +186,10 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   void _popFullscreen() {
     _fullscreen = false;
 
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
 
     if (hasListeners) {
       app<HarpyNavigator>().maybePop();

@@ -34,7 +34,9 @@ class TweetCardTranslation extends StatelessWidget {
             ? outerPadding
             : 0.0;
 
-    return CustomAnimatedSize(
+    return AnimatedSize(
+      duration: kShortAnimationDuration,
+      curve: Curves.easeOutCubic,
       child: AnimatedOpacity(
         opacity: buildTranslation ? 1 : 0,
         duration: kShortAnimationDuration,

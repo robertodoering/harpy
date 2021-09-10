@@ -73,7 +73,9 @@ class _ComposeTweetSuggestionsState extends State<ComposeTweetSuggestions> {
       child = const SizedBox();
     }
 
-    return CustomAnimatedSize(
+    return AnimatedSize(
+      duration: kShortAnimationDuration,
+      curve: Curves.easeOutCubic,
       alignment: Alignment.topCenter,
       child: AnimatedSwitcher(
         duration: kShortAnimationDuration,
