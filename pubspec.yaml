@@ -39,7 +39,6 @@ dependencies:
   waterfall_flow: ^3.0.1
 
   # plugins
-  android_path_provider: ^0.2.1
   connectivity: ^3.0.3
   device_info: ^2.0.0
   file_picker: ^4.0.1
