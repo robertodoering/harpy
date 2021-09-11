@@ -1,20 +1,16 @@
 package com.robertodoering.harpy
 
 import android.os.Environment
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
-class AndroidPathProviderPlugin : MethodCallHandler {
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "android_path_provider")
-      channel.setMethodCallHandler(AndroidPathProviderPlugin())
-    }
-  }
+class AndroidPathProviderPlugin : FlutterPlugin, MethodCallHandler {
+
+  override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
+
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
