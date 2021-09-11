@@ -47,6 +47,7 @@ def proVersionCode = versionProperties.getProperty('proVersionCode')
 def proVersionName = versionProperties.getProperty('proVersionName')
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
