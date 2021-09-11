@@ -1,11 +1,11 @@
 package com.robertodoering.harpy
 
+import android.os.Environment
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import android.os.Environment;
 
 class AndroidPathProviderPlugin : MethodCallHandler {
   companion object {
@@ -17,57 +17,47 @@ class AndroidPathProviderPlugin : MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getAlarmsPath") {
-      result.success(
+    when (call.method) {
+      "getAlarmsPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getDCIMPath") {
-      result.success(
+          .absolutePath
+      )
+      "getDCIMPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getDocumentsPath") {
-      result.success(
+          .absolutePath
+      )
+      "getDocumentsPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getDownloadsPath") {
-      result.success(
+          .absolutePath
+      )
+      "getDownloadsPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getMoviesPath") {
-      result.success(
+          .absolutePath
+      )
+      "getMoviesPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getMusicPath") {
-      result.success(
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath()
-      );
-    } else if (call.method == "getNotificationsPath") {
-      result.success(
+          .absolutePath
+      )
+      "getMusicPath" -> result.success(
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath
+      )
+      "getNotificationsPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getPicturesPath") {
-      result.success(
+          .absolutePath
+      )
+      "getPicturesPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getPodcastsPath") {
-      result.success(
+          .absolutePath
+      )
+      "getPodcastsPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS)
-          .getAbsolutePath()
-      );
-    } else if (call.method == "getRingtonesPath") {
-      result.success(
+          .absolutePath
+      )
+      "getRingtonesPath" -> result.success(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES)
-          .getAbsolutePath()
-      );
-    } else {
-      result.notImplemented()
+          .absolutePath
+      )
+      else -> result.notImplemented()
     }
   }
 }
