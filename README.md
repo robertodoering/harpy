@@ -25,7 +25,11 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 </p>
 <p align="center">
   <a href="https://github.com/Solido/awesome-flutter">
-   <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true"/>
+   <img src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true"/>
+  </a>
+  
+  <a href="https://github.com/robertodoering/harpy/actions/workflows/flutter.yml">
+   <img src="https://github.com/robertodoering/harpy/actions/workflows/flutter.yml/badge.svg"/>
   </a>
 </p>
 
