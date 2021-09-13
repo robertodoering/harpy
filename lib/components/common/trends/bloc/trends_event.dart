@@ -28,10 +28,10 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
         .handleError(silentErrorHandler);
 
     if (trends != null && trends.isNotEmpty && trends.first.trends != null) {
-      final sortedTrends = trends.first.trends!;
-      sortedTrends.sort(
-        (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
-      );
+      final sortedTrends = trends.first.trends!
+        ..sort(
+          (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
+        );
 
       yield FoundTrendsState(
         woeid: 1,

@@ -125,8 +125,9 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
-        log.fine('found ${tweets.length} older tweets');
-        log.finer('can request older: $canRequestOlder');
+        log
+          ..fine('found ${tweets.length} older tweets')
+          ..finer('can request older: $canRequestOlder');
 
         yield LikesTimelineResult(
           tweets: currentState.tweets.followedBy(tweets).toList(),

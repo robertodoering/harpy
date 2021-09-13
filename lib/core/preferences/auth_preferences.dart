@@ -35,8 +35,9 @@ class AuthPreferences {
   }
 
   void clearAuth() {
-    harpyPrefs.remove('userToken');
-    harpyPrefs.remove('userSecret');
-    harpyPrefs.remove('userId');
+    harpyPrefs
+      ..remove('userToken')
+      ..remove('userSecret')
+      ..remove('userId');
   }
 }

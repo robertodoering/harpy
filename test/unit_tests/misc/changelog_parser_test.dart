@@ -11,8 +11,9 @@ class MockHarpyInfo extends Mock implements HarpyInfo {}
 
 void main() {
   setUp(() {
-    app.registerLazySingleton<HarpyInfo>(() => MockHarpyInfo());
-    app.registerLazySingleton<ChangelogParser>(() => ChangelogParser());
+    app
+      ..registerLazySingleton<HarpyInfo>(() => MockHarpyInfo())
+      ..registerLazySingleton<ChangelogParser>(() => ChangelogParser());
 
     when(() => app<HarpyInfo>().packageInfo).thenReturn(
       PackageInfo(buildNumber: '14', version: '', packageName: '', appName: ''),

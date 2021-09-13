@@ -42,9 +42,7 @@ class SearchUsers extends LoadPaginatedData {
 
   @override
   Future<bool> loadData(PaginatedBloc paginatedBloc) async {
-    final bloc = paginatedBloc as UserSearchBloc;
-
-    bloc.lastQuery = query;
+    final bloc = paginatedBloc as UserSearchBloc..lastQuery = query;
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
 
@@ -97,10 +95,11 @@ class ClearSearchedUsers extends PaginatedEvent {
 
     _log.fine('clearing searched users');
 
-    userSearchBloc.lockRequests = false;
-    userSearchBloc.cursor = 1;
-    userSearchBloc.users.clear();
-    userSearchBloc.lastQuery = null;
+    userSearchBloc
+      ..lockRequests = false
+      ..cursor = 1
+      ..users.clear()
+      ..lastQuery = null;
 
     yield InitialPaginatedState();
   }

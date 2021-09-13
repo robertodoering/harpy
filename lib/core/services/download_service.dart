@@ -28,8 +28,7 @@ class DownloadService with HarpyLogger {
         onStart?.call();
 
         // create directory in case it doesn't exist already
-        final directory = Directory(path);
-        directory.createSync(recursive: true);
+        final directory = Directory(path)..createSync(recursive: true);
 
         final file = File('${directory.path}/$name');
 
