@@ -53,32 +53,35 @@ Future<Uint8List?> _imageStreamHandler(
   var listenedOnce = false;
 
   imageStreamCompleter.addListener(
-    ImageStreamListener((image, _) async {
-      if (listenedOnce) {
-        return;
-      }
+    ImageStreamListener(
+      (image, _) async {
+        if (listenedOnce) {
+          return;
+        }
 
-      listenedOnce = true;
+        listenedOnce = true;
 
-      _log.info('got cached image');
+        _log.info('got cached image');
 
-      final byteData = await image.image.toByteData();
+        final byteData = await image.image.toByteData();
 
-      if (byteData != null) {
-        completer.complete(
-          byteData.buffer.asUint8List(
-            byteData.offsetInBytes,
-            byteData.lengthInBytes,
-          ),
-        );
-      } else {
-        _log.warning('cached image byte data is null');
+        if (byteData != null) {
+          completer.complete(
+            byteData.buffer.asUint8List(
+              byteData.offsetInBytes,
+              byteData.lengthInBytes,
+            ),
+          );
+        } else {
+          _log.warning('cached image byte data is null');
+          completer.complete();
+        }
+      },
+      onError: (e, st) {
+        _log.severe('error loading cached image', e, st);
         completer.complete();
-      }
-    }, onError: (e, st) {
-      _log.severe('error loading cached image', e, st);
-      completer.complete();
-    }),
+      },
+    ),
   );
 
   return completer.future;

@@ -22,7 +22,8 @@ class MediaVideoConverter {
     final outputPath = '${tempDir.path}/media_video.$extension';
 
     _log.fine(
-        'converting video from: $sourcePath to destinationPath: $outputPath');
+      'converting video from: $sourcePath to destinationPath: $outputPath',
+    );
 
     // todo: also limit length of video
 

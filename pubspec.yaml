@@ -10,53 +10,55 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-
-  # packages
+  android_path_provider: ^0.2.1
+  args: ^2.3.0
+  bloc: ^7.1.0
+  collection: ^1.15.0
+  connectivity: ^3.0.3
   cupertino_icons: ^1.0.2
   dart_twitter_api: ^0.5.3
+  device_info: ^2.0.0
   equatable: ^2.0.0
+  file_picker: ^4.0.1
   flare_flutter: ^3.0.0
+  flutter:
+    sdk: flutter
   flutter_bloc: ^7.2.0
+  flutter_displaymode: ^0.3.1-nullsafety.0
   flutter_feather_icons: ^2.0.0+1
+  flutter_ffmpeg: ^0.4.0
+  flutter_hsvcolor_picker: ^1.1.0
+  flutter_keyboard_visibility: ^5.0.1
+  flutter_localizations:
+    sdk: flutter
   get_it: ^7.2.0
+  http: ^0.13.3
   humanizer: ^0.0.2
   intl: ^0.17.0
+  json_annotation: ^4.1.0
   like_button: ^2.0.3
+  location: ^4.1.1
   logging: ^1.0.1
   mime_type: ^1.0.0
+  oauth1: ^2.0.0
+  package_info: ^2.0.0
+  path_provider: ^2.0.3
+  pedantic: ^1.11.0
+  permission_handler: ^8.1.4+2
   photo_view:
     # custom photo_view with better gesture recognition
     git: git://github.com/robertodoering/photo_view.git
   provider: ^6.0.0
   scroll_to_index: ^2.0.0
-  shimmer: ^2.0.0
-  timeago: ^3.0.2
-  visibility_detector: ^0.2.0
-  waterfall_flow: ^3.0.1
-
-  # plugins
-  android_path_provider: ^0.2.1
-  connectivity: ^3.0.3
-  device_info: ^2.0.0
-  file_picker: ^4.0.1
-  flutter_displaymode: ^0.3.1-nullsafety.0
-  flutter_ffmpeg: ^0.4.0
-  flutter_hsvcolor_picker: ^1.1.0
-  flutter_keyboard_visibility: ^5.0.1
-  location: ^4.1.1
-  package_info: ^2.0.0
-  path_provider: ^2.0.3
-  pedantic: ^1.11.0
-  permission_handler: ^8.1.4+2
   sentry_flutter: ^6.0.0
   share: ^2.0.1
   shared_preferences: ^2.0.7
+  shimmer: ^2.0.0
+  timeago: ^3.0.2
   url_launcher: ^6.0.10
   video_player: ^2.1.15
+  visibility_detector: ^0.2.0
+  waterfall_flow: ^3.0.1
   webview_flutter: ^2.0.4
 
 dev_dependencies:
@@ -65,7 +67,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   golden_toolkit: ^0.10.0
-  json_serializable: ^4.1.1
+  json_serializable: ^5.0.0
   mocktail: ^0.1.4
 
 flutter:

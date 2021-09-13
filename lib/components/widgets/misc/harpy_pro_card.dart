@@ -144,8 +144,9 @@ class _HarpyProCardPainter extends CustomPainter {
       )
       ..lineTo(size.width, size.height);
 
-    canvas..drawPath(path1, overlayPaint)..drawPath(path2, overlayPaint);
     canvas
+      ..drawPath(path1, overlayPaint)
+      ..drawPath(path2, overlayPaint)
       ..drawPath(
         path1,
         overlayPaint..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),

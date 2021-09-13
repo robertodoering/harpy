@@ -155,8 +155,9 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
-        log.fine('found ${tweets.length} older tweets');
-        log.finer('can request older: $canRequestOlder');
+        log
+          ..fine('found ${tweets.length} older tweets')
+          ..finer('can request older: $canRequestOlder');
 
         yield HomeTimelineResult(
           tweets: state.tweets.followedBy(tweets).toList(),
@@ -229,8 +230,12 @@ class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           }
           return tweets;
         })
-        .then((tweets) =>
-            handleTweets(tweets, timelineFilter ?? currentState.timelineFilter))
+        .then(
+          (tweets) => handleTweets(
+            tweets,
+            timelineFilter ?? currentState.timelineFilter,
+          ),
+        )
         .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -377,9 +382,11 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
     _saveTimelineFilter(bloc!);
 
-    bloc.add(RefreshHomeTimeline(
-      clearPrevious: true,
-      timelineFilter: timelineFilter,
-    ));
+    bloc.add(
+      RefreshHomeTimeline(
+        clearPrevious: true,
+        timelineFilter: timelineFilter,
+      ),
+    );
   }
 }

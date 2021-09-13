@@ -17,7 +17,9 @@ class UserSearchAppBar extends StatelessWidget {
         hintText: 'search users',
         onSubmitted: (text) {
           if (text.trim().isNotEmpty) {
-            bloc..add(const ClearSearchedUsers())..add(SearchUsers(text));
+            bloc
+              ..add(const ClearSearchedUsers())
+              ..add(SearchUsers(text));
           }
         },
         onClear: () => bloc.add(const ClearSearchedUsers()),

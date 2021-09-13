@@ -101,43 +101,58 @@ class HarpyNavigator {
   void pushFollowingScreen({
     required String userId,
   }) {
-    pushNamed(FollowingScreen.route, arguments: <String, dynamic>{
-      'userId': userId,
-    });
+    pushNamed(
+      FollowingScreen.route,
+      arguments: <String, dynamic>{
+        'userId': userId,
+      },
+    );
   }
 
   void pushFollowersScreen({
     required String userId,
   }) {
-    pushNamed(FollowersScreen.route, arguments: <String, dynamic>{
-      'userId': userId,
-    });
+    pushNamed(
+      FollowersScreen.route,
+      arguments: <String, dynamic>{
+        'userId': userId,
+      },
+    );
   }
 
   void pushTweetDetailScreen({
     required TweetData tweet,
   }) {
-    pushNamed(TweetDetailScreen.route, arguments: <String, dynamic>{
-      'tweet': tweet,
-    });
+    pushNamed(
+      TweetDetailScreen.route,
+      arguments: <String, dynamic>{
+        'tweet': tweet,
+      },
+    );
   }
 
   void pushTweetSearchScreen({
     String? initialSearchQuery,
   }) {
-    pushNamed(TweetSearchScreen.route, arguments: <String, dynamic>{
-      'initialSearchQuery': initialSearchQuery,
-    });
+    pushNamed(
+      TweetSearchScreen.route,
+      arguments: <String, dynamic>{
+        'initialSearchQuery': initialSearchQuery,
+      },
+    );
   }
 
   void pushComposeScreen({
     TweetData? inReplyToStatus,
     TweetData? quotedTweet,
   }) {
-    pushNamed(ComposeScreen.route, arguments: <String, dynamic>{
-      'inReplyToStatus': inReplyToStatus,
-      'quotedTweet': quotedTweet,
-    });
+    pushNamed(
+      ComposeScreen.route,
+      arguments: <String, dynamic>{
+        'inReplyToStatus': inReplyToStatus,
+        'quotedTweet': quotedTweet,
+      },
+    );
   }
 
   /// Pushes a [ShowListsScreen].
@@ -151,34 +166,46 @@ class HarpyNavigator {
     String? userId,
     ValueChanged<TwitterListData>? onListSelected,
   }) {
-    pushNamed(ShowListsScreen.route, arguments: <String, dynamic>{
-      'userId': userId,
-      'onListSelected': onListSelected,
-    });
+    pushNamed(
+      ShowListsScreen.route,
+      arguments: <String, dynamic>{
+        'userId': userId,
+        'onListSelected': onListSelected,
+      },
+    );
   }
 
   void pushListTimelineScreen({
     required TwitterListData list,
   }) {
-    pushNamed(ListTimelineScreen.route, arguments: <String, dynamic>{
-      'list': list,
-    });
+    pushNamed(
+      ListTimelineScreen.route,
+      arguments: <String, dynamic>{
+        'list': list,
+      },
+    );
   }
 
   void pushListMembersScreen({
     required TwitterListData list,
   }) {
-    pushNamed(ListMembersScreen.route, arguments: <String, dynamic>{
-      'list': list,
-    });
+    pushNamed(
+      ListMembersScreen.route,
+      arguments: <String, dynamic>{
+        'list': list,
+      },
+    );
   }
 
   void pushHomeTabCustomizationScreen({
     required HomeTabModel model,
   }) {
-    pushNamed(HomeTabCustomizationScreen.route, arguments: <String, dynamic>{
-      'model': model,
-    });
+    pushNamed(
+      HomeTabCustomizationScreen.route,
+      arguments: <String, dynamic>{
+        'model': model,
+      },
+    );
   }
 }
 

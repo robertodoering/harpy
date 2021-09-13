@@ -26,10 +26,12 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
       if (tweet.hasImages) {
         for (final image in tweet.images!) {
           if (!_containsMedia(newEntries, image)) {
-            newEntries.add(MediaTimelineEntry(
-              tweet: tweet,
-              media: image,
-            ));
+            newEntries.add(
+              MediaTimelineEntry(
+                tweet: tweet,
+                media: image,
+              ),
+            );
           }
         }
       } else if (tweet.hasGif) {

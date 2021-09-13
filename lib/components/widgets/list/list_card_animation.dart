@@ -22,8 +22,10 @@ class ListCardAnimation extends StatefulWidget {
     required this.child,
     Key? key,
     this.buildVisibilityChangeDetector = true,
-  })  : assert(!buildVisibilityChangeDetector ||
-            buildVisibilityChangeDetector && key != null),
+  })  : assert(
+          !buildVisibilityChangeDetector ||
+              buildVisibilityChangeDetector && key != null,
+        ),
         super(key: key);
 
   final Widget child;
@@ -59,10 +61,12 @@ class _ListCardAnimationState extends State<ListCardAnimation>
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 150),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutCubic,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOutCubic,
+      ),
+    );
 
     _fadeAnimation = CurvedAnimation(
       parent: _controller,

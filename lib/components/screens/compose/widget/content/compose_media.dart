@@ -16,12 +16,14 @@ class ComposeTweetMedia extends StatelessWidget {
     return TweetMediaLayout(
       child: TweetImagesLayout(
         children: state.media
-            .map((imageFile) => Image.file(
-                  File(imageFile.path),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ))
+            .map(
+              (imageFile) => Image.file(
+                File(imageFile.path),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            )
             .toList(),
       ),
     );

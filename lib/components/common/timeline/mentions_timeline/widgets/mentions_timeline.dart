@@ -65,9 +65,9 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
           else if (state.showMentionsError)
             SliverFillLoadingError(
               message: const Text('error loading mentions'),
-              onRetry: () => bloc.add(const RequestMentionsTimeline(
-                updateViewedMention: true,
-              )),
+              onRetry: () => bloc.add(
+                const RequestMentionsTimeline(updateViewedMention: true),
+              ),
             ),
           SliverToBoxAdapter(
             child: SizedBox(height: mediaQuery.padding.bottom),

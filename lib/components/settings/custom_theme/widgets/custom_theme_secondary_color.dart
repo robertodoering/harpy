@@ -16,10 +16,12 @@ class CustomThemeSecondaryColor extends StatelessWidget {
       child: CustomThemeColor(
         color: cubit.harpyTheme.secondaryColor,
         title: const Text('secondary'),
-        subtitle: Text(colorValueToHex(
-          cubit.harpyTheme.secondaryColor.value,
-          displayOpacity: false,
-        )),
+        subtitle: Text(
+          colorValueToHex(
+            cubit.harpyTheme.secondaryColor.value,
+            displayOpacity: false,
+          ),
+        ),
         onColorChanged: cubit.changeSecondaryColor,
       ),
     );

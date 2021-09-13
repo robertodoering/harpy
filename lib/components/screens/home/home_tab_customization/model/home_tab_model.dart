@@ -47,8 +47,10 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
             value.entries.where((entry) => entry.isDefaultType).length;
 
         if (defaultTabsCount != defaultHomeTabEntries.length) {
-          throw Exception('invalid default tabs count: $defaultTabsCount, '
-              'expected ${defaultHomeTabEntries.length}');
+          throw Exception(
+            'invalid default tabs count: $defaultTabsCount, '
+            'expected ${defaultHomeTabEntries.length}',
+          );
         } else if (value.entries.any((entry) => !entry.valid)) {
           throw Exception('invalid entry in configuration');
         } else if (Harpy.isFree && listEntries.length > 1 ||

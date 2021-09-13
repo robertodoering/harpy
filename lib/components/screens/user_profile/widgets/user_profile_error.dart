@@ -22,10 +22,12 @@ class UserProfileError extends StatelessWidget {
       title: '',
       body: LoadingDataError(
         message: const Text('error loading user'),
-        onRetry: () => bloc.add(InitializeUserEvent(
-          user: user,
-          handle: screenName,
-        )),
+        onRetry: () => bloc.add(
+          InitializeUserEvent(
+            user: user,
+            handle: screenName,
+          ),
+        ),
       ),
     );
   }

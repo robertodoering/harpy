@@ -20,7 +20,9 @@ class ChangelogParser with HarpyLogger {
   ///
   /// Returns `null` if no corresponding changelog file exists.
   Future<ChangelogData?> parse(
-      BuildContext? context, String versionCode) async {
+    BuildContext? context,
+    String versionCode,
+  ) async {
     try {
       final changelogString = await rootBundle.loadString(
         _changelogString(versionCode),

@@ -21,9 +21,9 @@ class UserTimelineFilterDrawer extends StatelessWidget {
       onClear: () {
         if (bloc.state.timelineFilter != TimelineFilter.empty) {
           ScrollDirection.of(context)!.reset();
-          bloc.add(const FilterUserTimeline(
-            timelineFilter: TimelineFilter.empty,
-          ));
+          bloc.add(
+            const FilterUserTimeline(timelineFilter: TimelineFilter.empty),
+          );
         }
       },
     );

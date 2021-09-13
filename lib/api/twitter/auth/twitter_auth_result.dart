@@ -11,8 +11,10 @@ class TwitterAuthResult {
   const TwitterAuthResult({
     required this.status,
     this.session,
-  }) : assert(status == TwitterAuthStatus.success && session != null ||
-            status != TwitterAuthStatus.success);
+  }) : assert(
+          status == TwitterAuthStatus.success && session != null ||
+              status != TwitterAuthStatus.success,
+        );
 
   final TwitterAuthStatus status;
   final TwitterAuthSession? session;

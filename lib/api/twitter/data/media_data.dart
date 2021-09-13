@@ -70,7 +70,7 @@ class VideoData extends MediaData {
     variants = media.videoInfo!.variants!
         .where((variant) => variant.bitrate != null)
         .toList()
-          ..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
+      ..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
 
     thumbnail = ImageData.fromImageUrl(
       media.mediaUrlHttps ?? '',

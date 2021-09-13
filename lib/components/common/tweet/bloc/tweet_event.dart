@@ -315,11 +315,13 @@ bool _actionPerformed(dynamic error) {
       final Map<String, dynamic> body = jsonDecode(error.body);
       final List<dynamic> errors = body['errors'] ?? <Map<String, dynamic>>[];
 
-      return errors.any((dynamic error) =>
-          error is Map<String, dynamic> &&
-          (error['code'] == 139 ||
-              error['code'] == 327 ||
-              error['code'] == 144));
+      return errors.any(
+        (dynamic error) =>
+            error is Map<String, dynamic> &&
+            (error['code'] == 139 ||
+                error['code'] == 327 ||
+                error['code'] == 144),
+      );
     } catch (e) {
       // unexpected error format
     }

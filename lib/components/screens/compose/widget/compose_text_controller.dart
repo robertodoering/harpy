@@ -126,7 +126,8 @@ class ComposeTextController extends TextEditingController {
       onMatch: (match) {
         final regExp = textStyleMap.entries
             .singleWhere(
-                (element) => element.key.allMatches(match[0]!).isNotEmpty)
+              (element) => element.key.allMatches(match[0]!).isNotEmpty,
+            )
             .key;
 
         children.add(

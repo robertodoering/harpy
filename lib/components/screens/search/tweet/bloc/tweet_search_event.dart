@@ -139,10 +139,12 @@ class RetryTweetSearch extends TweetSearchEvent {
     required TweetSearchBloc bloc,
   }) async* {
     if (currentState is TweetSearchFailure) {
-      bloc.add(SearchTweets(
-        customQuery: currentState.query,
-        filter: currentState.filter,
-      ));
+      bloc.add(
+        SearchTweets(
+          customQuery: currentState.query,
+          filter: currentState.filter,
+        ),
+      );
     }
   }
 }

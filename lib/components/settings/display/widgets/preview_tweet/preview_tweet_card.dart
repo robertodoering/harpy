@@ -22,9 +22,11 @@ Make sure to follow @harpy_app for news and updates about the app''';
       ),
       text: text,
       visibleText: text,
-      entities: const EntitiesData(userMentions: [
-        UserMentionData(handle: 'harpy_app'),
-      ]),
+      entities: const EntitiesData(
+        userMentions: [
+          UserMentionData(handle: 'harpy_app'),
+        ],
+      ),
       createdAt: DateTime.now(),
     );
 

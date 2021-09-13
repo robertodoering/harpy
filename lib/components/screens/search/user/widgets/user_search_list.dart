@@ -36,7 +36,8 @@ class UserSearchList extends StatelessWidget {
                 )
               else if (bloc.showNoDataExists)
                 const SliverFillInfoMessage(
-                    primaryMessage: Text('no users found')),
+                  primaryMessage: Text('no users found'),
+                ),
               SliverToBoxAdapter(
                 child: SizedBox(height: mediaQuery.padding.bottom),
               ),

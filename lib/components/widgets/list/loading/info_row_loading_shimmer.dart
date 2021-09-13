@@ -38,7 +38,10 @@ class InfoRowPlaceholder extends StatelessWidget {
         SizedBox(
           width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
           child: const PlaceholderBox(
-              width: 28, height: 28, shape: BoxShape.circle),
+            width: 28,
+            height: 28,
+            shape: BoxShape.circle,
+          ),
         ),
         defaultHorizontalSpacer,
         const Expanded(

@@ -20,10 +20,12 @@ void main() {
 
   setUp(() async {
     await setupApp();
-    app.registerLazySingleton<AppConfig>(() => const MockAppConfig(
-          twitterConsumerKey: 'key1,key2,key3',
-          twitterConsumerSecret: 'secret1,secret2,secret3',
-        ));
+    app.registerLazySingleton<AppConfig>(
+      () => const MockAppConfig(
+        twitterConsumerKey: 'key1,key2,key3',
+        twitterConsumerSecret: 'secret1,secret2,secret3',
+      ),
+    );
 
     themeBloc = ThemeBloc(configCubit: ConfigCubit());
     authCubit = AuthenticationCubit(themeBloc: themeBloc);
@@ -93,21 +95,26 @@ void main() {
         },
         skip: 1,
         expect: () => [
-          equals(themeBloc.state.copyWith(
-            lightThemeData: predefinedThemes[2],
-            darkThemeData: predefinedThemes[1],
-          )),
+          equals(
+            themeBloc.state.copyWith(
+              lightThemeData: predefinedThemes[2],
+              darkThemeData: predefinedThemes[1],
+            ),
+          ),
         ],
       );
     });
 
     group('login', () {
       test('does nothing if app config is invalid', () async {
-        app.unregister<AppConfig>();
-        app.registerLazySingleton<AppConfig>(() => const MockAppConfig(
+        app
+          ..unregister<AppConfig>()
+          ..registerLazySingleton<AppConfig>(
+            () => const MockAppConfig(
               twitterConsumerKey: '',
               twitterConsumerSecret: '',
-            ));
+            ),
+          );
 
         await authCubit.login();
 
@@ -117,8 +124,9 @@ void main() {
       test(
           'successfully authenticates and navigates to setup screen if setup '
           'has not been performed before', () async {
-        app.unregister<AuthPreferences>();
-        app.registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+        app
+          ..unregister<AuthPreferences>()
+          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
 
         final twitterAuth = MockTwitterAuth();
 
@@ -163,8 +171,9 @@ void main() {
       test(
           'successfully authenticates and navigates to home screen if setup '
           'has been performed before', () async {
-        app.unregister<AuthPreferences>();
-        app.registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+        app
+          ..unregister<AuthPreferences>()
+          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
 
         app<HarpyPreferences>().prefix = 'id';
         app<SetupPreferences>().performedSetup = true;
@@ -211,8 +220,9 @@ void main() {
 
       test('navigates back to login screen on unsuccessful authentication',
           () async {
-        app.unregister<AuthPreferences>();
-        app.registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+        app
+          ..unregister<AuthPreferences>()
+          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
 
         final twitterAuth = MockTwitterAuth();
 
@@ -243,8 +253,9 @@ void main() {
       test(
           'navigates back to login screen when authentication was successful '
           'but user was unable to be requested', () async {
-        app.unregister<AuthPreferences>();
-        app.registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+        app
+          ..unregister<AuthPreferences>()
+          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
 
         final twitterAuth = MockTwitterAuth();
 
@@ -312,10 +323,12 @@ void main() {
         ),
         act: (_) => authCubit.logout(delay: Duration.zero),
         expect: () => [
-          equals(themeBloc.state.copyWith(
-            lightThemeData: predefinedThemes[0],
-            darkThemeData: predefinedThemes[0],
-          )),
+          equals(
+            themeBloc.state.copyWith(
+              lightThemeData: predefinedThemes[0],
+              darkThemeData: predefinedThemes[0],
+            ),
+          ),
         ],
       );
     });
@@ -346,11 +359,14 @@ void main() {
       });
 
       test('can use a single set of credentials', () {
-        app.unregister<AppConfig>();
-        app.registerLazySingleton<AppConfig>(() => const MockAppConfig(
+        app
+          ..unregister<AppConfig>()
+          ..registerLazySingleton<AppConfig>(
+            () => const MockAppConfig(
               twitterConsumerKey: 'key',
               twitterConsumerSecret: 'secret',
-            ));
+            ),
+          );
 
         final auth = app<AuthPreferences>().initializeTwitterAuth();
 

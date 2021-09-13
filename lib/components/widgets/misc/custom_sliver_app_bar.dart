@@ -4,6 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+// ignore_for_file: require_trailing_commas
+// ignore_for_file: prefer_null_aware_method_calls
+
+// copied from the widgets library for some customizations
+// let's just pretend this doesn't exist
+
 typedef DecorationBuilder = Decoration Function(
     double minExtend, double maxExtend);
 

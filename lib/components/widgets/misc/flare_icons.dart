@@ -81,10 +81,12 @@ class FlareIcon extends StatelessWidget {
   /// using a [FlareIcon] doesn't appear blank for a few frames when it
   /// builds for the first time.
   static void cacheIcons(BuildContext context) {
-    cachedActor(AssetFlare(
-      bundle: DefaultAssetBundle.of(context),
-      name: '$_path/shining_star.flr',
-    ));
+    cachedActor(
+      AssetFlare(
+        bundle: DefaultAssetBundle.of(context),
+        name: '$_path/shining_star.flr',
+      ),
+    );
   }
 
   @override

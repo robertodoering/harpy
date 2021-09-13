@@ -5,6 +5,11 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 // ignore_for_file: always_put_control_body_on_new_line
 // ignore_for_file: curly_braces_in_flow_control_structures
 // ignore_for_file: prefer_int_literals
+// ignore_for_file: require_trailing_commas
+// ignore_for_file: prefer_null_aware_method_calls
+
+// copied from the widgets library for some customizations
+// let's just pretend this doesn't exist
 
 class CustomPopupMenuButton<T> extends StatefulWidget {
   /// Creates a button that shows a popup menu.

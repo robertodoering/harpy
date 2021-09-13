@@ -31,18 +31,20 @@ class MentionSuggestionsBloc
 
   void _followingBlocListener(PaginatedState state) {
     if (followingBloc.hasData) {
-      add(UpdateMentionsSuggestionsEvent(
-        followingUsers: followingBloc.users,
-      ));
+      add(
+        UpdateMentionsSuggestionsEvent(followingUsers: followingBloc.users),
+      );
     }
   }
 
   void _userSearchBlocListener(PaginatedState state) {
     if (state is LoadedData) {
-      add(UpdateMentionsSuggestionsEvent(
-        searchedUsers: userSearchBloc.users,
-        searchQuery: userSearchBloc.lastQuery,
-      ));
+      add(
+        UpdateMentionsSuggestionsEvent(
+          searchedUsers: userSearchBloc.users,
+          searchQuery: userSearchBloc.lastQuery,
+        ),
+      );
     }
   }
 

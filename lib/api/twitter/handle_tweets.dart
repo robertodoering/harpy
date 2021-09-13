@@ -104,8 +104,12 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
           [];
 
       if (filter.excludesHashtags
-          .map((hashtag) =>
-              removePrependedSymbol(hashtag.toLowerCase(), const ['#', '＃']))
+          .map(
+            (hashtag) => removePrependedSymbol(
+              hashtag.toLowerCase(),
+              const ['#', '＃'],
+            ),
+          )
           .any(tweetHashtags.contains)) {
         return true;
       }

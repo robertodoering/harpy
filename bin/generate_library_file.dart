@@ -43,8 +43,9 @@ Future<void> main(List<String> arguments) async {
   final List<String>? excludes = argResult['excludes'];
 
   if (!path.startsWith('lib')) {
-    throw ArgumentError('path must be relative to the project root '
-        '(e.g. lib/foo/bar/)');
+    throw ArgumentError(
+      'path must be relative to the project root (e.g. lib/foo/bar/)',
+    );
   }
 
   final dir = Directory(path);

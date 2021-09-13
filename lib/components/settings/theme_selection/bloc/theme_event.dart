@@ -167,11 +167,13 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
       final darkThemeId = app<ThemePreferences>().darkThemeId;
 
       if (themeId <= lightThemeId || themeId <= darkThemeId) {
-        bloc.add(ChangeTheme(
-          lightThemeId: _adjustedThemeId(lightThemeId),
-          darkThemeId: _adjustedThemeId(darkThemeId),
-          saveSelection: true,
-        ));
+        bloc.add(
+          ChangeTheme(
+            lightThemeId: _adjustedThemeId(lightThemeId),
+            darkThemeId: _adjustedThemeId(darkThemeId),
+            saveSelection: true,
+          ),
+        );
       }
     }
   }
@@ -224,19 +226,19 @@ class AddCustomTheme extends ThemeEvent with HarpyLogger {
 
     // change selection to new theme
     if (changeLightThemeSelection || changeDarkThemeSelection) {
-      bloc.add(ChangeTheme(
-        lightThemeId: changeLightThemeSelection ? themeId : null,
-        darkThemeId: changeDarkThemeSelection ? themeId : null,
-        saveSelection: true,
-      ));
+      bloc.add(
+        ChangeTheme(
+          lightThemeId: changeLightThemeSelection ? themeId : null,
+          darkThemeId: changeDarkThemeSelection ? themeId : null,
+          saveSelection: true,
+        ),
+      );
     }
   }
 }
 
 void _persistCustomThemes(List<HarpyThemeData> customThemesData) {
-  final log = Logger('_persistCustomThemes');
-
-  log.fine('saving custom themes');
+  final log = Logger('_persistCustomThemes')..fine('saving custom themes');
 
   final encodedCustomThemes = customThemesData
       .map((data) {

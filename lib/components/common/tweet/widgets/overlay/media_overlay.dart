@@ -155,21 +155,19 @@ class _MediaOverlayState extends State<MediaOverlay>
       duration: kShortAnimationDuration,
     );
 
-    _topAnimation = Tween<Offset>(
+    _topAnimation = Tween(
       begin: Offset.zero,
       end: const Offset(0, -1),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
 
-    _bottomAnimation = Tween<Offset>(
+    _bottomAnimation = Tween(
       begin: Offset.zero,
       end: const Offset(0, 1),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
 
     _controller.reverse(from: 1);
   }

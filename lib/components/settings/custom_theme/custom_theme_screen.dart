@@ -177,14 +177,17 @@ class _SaveThemeAction extends StatelessWidget {
 
     final onTap = cubit.canSaveTheme
         ? () {
-            themeBloc.add(AddCustomTheme(
-              themeData: cubit.state,
-              themeId: cubit.themeId,
-              changeLightThemeSelection: systemBrightness == Brightness.light ||
-                  lightThemeId == darkThemeId,
-              changeDarkThemeSelection: systemBrightness == Brightness.dark ||
-                  lightThemeId == darkThemeId,
-            ));
+            themeBloc.add(
+              AddCustomTheme(
+                themeData: cubit.state,
+                themeId: cubit.themeId,
+                changeLightThemeSelection:
+                    systemBrightness == Brightness.light ||
+                        lightThemeId == darkThemeId,
+                changeDarkThemeSelection: systemBrightness == Brightness.dark ||
+                    lightThemeId == darkThemeId,
+              ),
+            );
 
             Navigator.of(context).pop();
           }

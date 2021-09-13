@@ -32,10 +32,9 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
   Future<void> _initChangelogData() async {
     final dataFutures =
         List<int>.generate(_currentVersion + 1, (index) => index)
-            .map((versionCode) => changelogParser!.parse(
-                  context,
-                  '$versionCode',
-                ))
+            .map(
+              (versionCode) => changelogParser!.parse(context, '$versionCode'),
+            )
             .toList();
 
     var dataList = await Future.wait<ChangelogData?>(dataFutures);

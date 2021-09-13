@@ -78,47 +78,57 @@ class ChangelogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final additions = data!.additions
-        .map((entry) => _buildEntry(
-              entry,
-              const Icon(CupertinoIcons.plus_circled, color: Colors.green),
-            ))
+        .map(
+          (entry) => _buildEntry(
+            entry,
+            const Icon(CupertinoIcons.plus_circled, color: Colors.green),
+          ),
+        )
         .toList();
 
     final changes = data!.changes
-        .map((entry) => _buildEntry(
-              entry,
-              const Icon(
-                CupertinoIcons.smallcircle_fill_circle,
-                color: Colors.yellow,
-              ),
-            ))
+        .map(
+          (entry) => _buildEntry(
+            entry,
+            const Icon(
+              CupertinoIcons.smallcircle_fill_circle,
+              color: Colors.yellow,
+            ),
+          ),
+        )
         .toList();
 
     final fixes = data!.fixes
-        .map((entry) => _buildEntry(
-              entry,
-              const Icon(
-                CupertinoIcons.smallcircle_fill_circle,
-                color: Colors.orange,
-              ),
-            ))
+        .map(
+          (entry) => _buildEntry(
+            entry,
+            const Icon(
+              CupertinoIcons.smallcircle_fill_circle,
+              color: Colors.orange,
+            ),
+          ),
+        )
         .toList();
 
     final removals = data!.removals
-        .map((entry) => _buildEntry(
-              entry,
-              const Icon(CupertinoIcons.minus_circled, color: Colors.red),
-            ))
+        .map(
+          (entry) => _buildEntry(
+            entry,
+            const Icon(CupertinoIcons.minus_circled, color: Colors.red),
+          ),
+        )
         .toList();
 
     final others = data!.others
-        .map((entry) => _buildEntry(
-              entry,
-              const Icon(
-                CupertinoIcons.smallcircle_fill_circle,
-                color: Colors.blue,
-              ),
-            ))
+        .map(
+          (entry) => _buildEntry(
+            entry,
+            const Icon(
+              CupertinoIcons.smallcircle_fill_circle,
+              color: Colors.blue,
+            ),
+          ),
+        )
         .toList();
 
     return _spacedColumn([

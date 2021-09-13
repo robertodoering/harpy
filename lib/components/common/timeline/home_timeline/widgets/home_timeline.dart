@@ -120,9 +120,11 @@ class _HomeTimelineState extends State<HomeTimeline> {
                       const RefreshHomeTimeline(clearPrevious: true),
                     ),
                     onClearFilter: state.hasTimelineFilter
-                        ? () => bloc.add(const FilterHomeTimeline(
-                              timelineFilter: TimelineFilter.empty,
-                            ))
+                        ? () => bloc.add(
+                              const FilterHomeTimeline(
+                                timelineFilter: TimelineFilter.empty,
+                              ),
+                            )
                         : null,
                   )
                 else if (state.showTimelineError)

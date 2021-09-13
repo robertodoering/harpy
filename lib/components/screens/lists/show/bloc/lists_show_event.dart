@@ -57,8 +57,10 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
     }
 
     if (ownerships != null && subscriptions != null) {
-      log.fine('found ${ownerships.length} ownerships & '
-          '${subscriptions.length} subscriptions');
+      log.fine(
+        'found ${ownerships.length} ownerships & '
+        '${subscriptions.length} subscriptions',
+      );
 
       if (ownerships.isNotEmpty || subscriptions.isNotEmpty) {
         yield ListsResult(

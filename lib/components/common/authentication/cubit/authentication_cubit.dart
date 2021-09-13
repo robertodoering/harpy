@@ -175,11 +175,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
       app<HarpyPreferences>().prefix = authSession.userId;
 
       // initialize the custom themes for this user
-      themeBloc.add(const LoadCustomThemes());
-      themeBloc.add(ChangeTheme(
-        lightThemeId: app<ThemePreferences>().lightThemeId,
-        darkThemeId: app<ThemePreferences>().darkThemeId,
-      ));
+      themeBloc
+        ..add(const LoadCustomThemes())
+        ..add(
+          ChangeTheme(
+            lightThemeId: app<ThemePreferences>().lightThemeId,
+            darkThemeId: app<ThemePreferences>().darkThemeId,
+          ),
+        );
     } else {
       log.fine('not authenticated');
 
