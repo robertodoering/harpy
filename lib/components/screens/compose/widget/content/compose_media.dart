@@ -18,7 +18,7 @@ class ComposeTweetMedia extends StatelessWidget {
         children: state.media
             .map(
               (imageFile) => Image.file(
-                File(imageFile.path),
+                File(imageFile.path!),
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -34,7 +34,7 @@ class ComposeTweetMedia extends StatelessWidget {
       child: TweetImagesLayout(
         children: [
           Image.file(
-            File(state.media.first.path),
+            File(state.media.first.path!),
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -63,7 +63,7 @@ class ComposeTweetMedia extends StatelessWidget {
       case MediaType.video:
         child = ComposeMediaVideo(
           bloc: bloc,
-          key: Key(state.media.first.path),
+          key: Key(state.media.first.path!),
         );
         break;
       case null:
@@ -115,7 +115,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
     super.initState();
 
     _controller = VideoPlayerController.file(
-      File(widget.bloc.state.media.first.path),
+      File(widget.bloc.state.media.first.path!),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
 
