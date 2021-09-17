@@ -39,7 +39,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     } else {
       mediaFiles.addAll(
         bloc.composeBloc.state.media.map(
-          (platformFile) => File(platformFile.path),
+          (platformFile) => File(platformFile.path!),
         ),
       );
     }

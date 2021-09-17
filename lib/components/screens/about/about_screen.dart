@@ -70,6 +70,57 @@ class AboutScreen extends StatelessWidget {
             ),
             onTap: () => launchUrl('https://github.com/robertodoering/harpy'),
           ),
+          HarpyListTile(
+            title: const Text('harpy on twitter'),
+            subtitle: Text(
+              '@harpy_app',
+              style: linkStyle,
+            ),
+            leading: const Icon(FeatherIcons.twitter),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: kDefaultRadius,
+              bottomRight: kDefaultRadius,
+            ),
+            onTap: () {
+              app<HarpyNavigator>().pushUserProfile(screenName: 'harpy_app');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDonationText(ThemeData theme, Config config) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: config.edgeInsets,
+            child: Text(
+              'if you like harpy, please consider supporting the '
+              'development by donating',
+              style: theme.textTheme.subtitle2,
+            ),
+          ),
+          HarpyListTile(
+            leading: const Icon(FeatherIcons.coffee),
+            title: const Text(
+              'buy me a coffee',
+            ),
+            onTap: () => launchUrl('https://ko-fi.com/robertodoering'),
+          ),
+          HarpyListTile(
+            leading: const Icon(FeatherIcons.dollarSign),
+            title: const Text(
+              'donate via PayPal',
+            ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: kDefaultRadius,
+              bottomRight: kDefaultRadius,
+            ),
+            onTap: () =>
+                launchUrl('https://paypal.com/paypalme/robertodoering'),
+          ),
         ],
       ),
     );
@@ -219,6 +270,8 @@ class AboutScreen extends StatelessWidget {
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
           _buildIntroductionText(theme, linkStyle),
+          defaultVerticalSpacer,
+          _buildDonationText(theme, config),
           if (Harpy.isFree) ...[
             defaultVerticalSpacer,
             _buildProText(theme, config, linkStyle),
