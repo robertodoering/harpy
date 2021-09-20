@@ -142,6 +142,10 @@ class HarpyNavigator {
     );
   }
 
+  void pushSearchScreen() {
+    pushNamed(SearchScreen.route);
+  }
+
   void pushComposeScreen({
     TweetData? inReplyToStatus,
     TweetData? quotedTweet,
@@ -303,6 +307,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case UserSearchScreen.route:
       screen = const UserSearchScreen();
+      break;
+    case SearchScreen.route:
+      screen = const SearchScreen();
       break;
     case TweetSearchScreen.route:
       screen = TweetSearchScreen(
