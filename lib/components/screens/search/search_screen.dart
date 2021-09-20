@@ -18,7 +18,6 @@ class SearchScreen extends StatelessWidget {
           beginSlivers: [
             HarpySliverAppBar(title: 'search'),
           ],
-          isHome: false,
         ),
       ),
     );

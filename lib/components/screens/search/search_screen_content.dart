@@ -9,11 +9,9 @@ import 'package:provider/provider.dart';
 class SearchScreenContent extends StatelessWidget {
   const SearchScreenContent({
     this.beginSlivers = const <Widget>[],
-    this.isHome = true,
   });
 
   final List<Widget> beginSlivers;
-  final bool isHome;
 
   Widget _buildUserSearchCard() {
     return HarpyListCard(
@@ -39,7 +37,6 @@ class SearchScreenContent extends StatelessWidget {
     return ScrollToStart(
       child: CustomScrollView(
         slivers: [
-          if (isHome) const HomeTopSliverPadding(),
           ...beginSlivers,
           SliverPadding(
             padding: config.edgeInsets.copyWith(bottom: 0),
