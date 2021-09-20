@@ -311,7 +311,16 @@ class _Entries extends StatelessWidget {
           color: theme.colorScheme.error,
         ),
         title: const Text('logout'),
-        onTap: authCubit.logout,
+        onTap: () async {
+          final logout = await showDialog<bool>(
+            context: context,
+            builder: (_) => const HarpyLogoutDialog(),
+          );
+
+          if (logout != null && logout) {
+            await authCubit.logout();
+          }
+        },
       ),
     ];
 
