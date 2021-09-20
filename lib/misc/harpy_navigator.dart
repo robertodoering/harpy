@@ -142,8 +142,15 @@ class HarpyNavigator {
     );
   }
 
-  void pushSearchScreen() {
-    pushNamed(SearchScreen.route);
+  void pushSearchScreen({
+    required TrendsBloc trendsBloc,
+  }) {
+    pushNamed(
+      SearchScreen.route,
+      arguments: <String, dynamic>{
+        'trendsBloc': trendsBloc,
+      },
+    );
   }
 
   void pushComposeScreen({
@@ -309,7 +316,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       screen = const UserSearchScreen();
       break;
     case SearchScreen.route:
-      screen = const SearchScreen();
+      screen = SearchScreen(
+        trendsBloc: arguments['trendsBloc'],
+      );
       break;
     case TweetSearchScreen.route:
       screen = TweetSearchScreen(

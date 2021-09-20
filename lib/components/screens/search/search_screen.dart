@@ -4,16 +4,18 @@ import 'package:harpy/components/components.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({
-    Key? key,
-  }) : super(key: key);
+    required this.trendsBloc,
+  });
 
   static const String route = 'search';
+
+  final TrendsBloc trendsBloc;
 
   @override
   Widget build(BuildContext context) {
     return HarpyScaffold(
-      body: BlocProvider<TrendsBloc>(
-        create: (_) => TrendsBloc()..add(const FindTrendsEvent()),
+      body: BlocProvider<TrendsBloc>.value(
+        value: trendsBloc,
         child: const SearchScreenContent(
           beginSlivers: [
             HarpySliverAppBar(title: 'search'),
