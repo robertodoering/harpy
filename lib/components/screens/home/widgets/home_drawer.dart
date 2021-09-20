@@ -248,6 +248,14 @@ class _Entries extends StatelessWidget {
       ),
       defaultVerticalSpacer,
       HarpyListCard(
+        leading: const Icon(CupertinoIcons.search),
+        title: const Text('search'),
+        onTap: () => app<HarpyNavigator>().pushSearchScreen(
+          trendsBloc: context.read<TrendsBloc>(),
+        ),
+      ),
+      defaultVerticalSpacer,
+      HarpyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
         onTap: () => app<HarpyNavigator>().pushShowListsScreen(),
