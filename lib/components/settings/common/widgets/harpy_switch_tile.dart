@@ -7,8 +7,10 @@ class HarpySwitchTile extends StatelessWidget {
     this.title,
     this.subtitle,
     this.leading,
+    this.borderRadius,
     this.onChanged,
     this.enabled = true,
+    this.multilineTitle = false,
   });
 
   final bool value;
@@ -16,9 +18,11 @@ class HarpySwitchTile extends StatelessWidget {
   final Widget? title;
   final Widget? subtitle;
   final Widget? leading;
+  final BorderRadius? borderRadius;
 
   final ValueChanged<bool>? onChanged;
   final bool enabled;
+  final bool multilineTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,10 @@ class HarpySwitchTile extends StatelessWidget {
         value: value,
         onChanged: onChanged,
       ),
+      borderRadius: borderRadius,
+      verticalAlignment: CrossAxisAlignment.center,
       enabled: enabled,
+      multilineTitle: multilineTitle,
       onTap: onChanged != null ? () => onChanged!(!value) : null,
     );
   }

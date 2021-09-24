@@ -103,6 +103,15 @@ class HarpyButton extends StatelessWidget {
         elevation = 0,
         assert(text != null || icon != null);
 
+  static _HarpyButtonBase custom({
+    required Widget child,
+    required VoidCallback? onTap,
+  }) =>
+      _HarpyButtonBase(
+        onTap: onTap,
+        child: child,
+      );
+
   /// The text widget of the button.
   ///
   /// Can be `null` if the button has no text.

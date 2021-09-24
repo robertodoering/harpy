@@ -29,20 +29,20 @@ class ThemeSelectionScreen extends StatelessWidget {
           HarpyTheme.fromData(data: predefinedThemes[i], config: config),
           selectedLightTheme: i == lightThemeId,
           selectedDarkTheme: i == darkThemeId,
-          onTap: () => _selectTheme(
+          onTap: () => selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i,
             newDarkThemeId: i,
           ),
-          onSelectLightTheme: () => _selectTheme(
+          onSelectLightTheme: () => selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
             newLightThemeId: i,
           ),
-          onSelectDarkTheme: () => _selectTheme(
+          onSelectDarkTheme: () => selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
@@ -69,7 +69,7 @@ class ThemeSelectionScreen extends StatelessWidget {
                   themeId: i + 10,
                 );
               } else {
-                _selectTheme(
+                selectTheme(
                   themeBloc: bloc,
                   lightThemeId: lightThemeId,
                   darkThemeId: darkThemeId,
@@ -78,13 +78,13 @@ class ThemeSelectionScreen extends StatelessWidget {
                 );
               }
             },
-            onSelectLightTheme: () => _selectTheme(
+            onSelectLightTheme: () => selectTheme(
               themeBloc: bloc,
               lightThemeId: lightThemeId,
               darkThemeId: darkThemeId,
               newLightThemeId: i + 10,
             ),
-            onSelectDarkTheme: () => _selectTheme(
+            onSelectDarkTheme: () => selectTheme(
               themeBloc: bloc,
               lightThemeId: lightThemeId,
               darkThemeId: darkThemeId,
@@ -142,7 +142,7 @@ Future<void> _editCustomTheme(
   );
 }
 
-void _selectTheme({
+void selectTheme({
   required ThemeBloc themeBloc,
   required int lightThemeId,
   required int darkThemeId,
