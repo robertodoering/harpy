@@ -25,7 +25,11 @@ class HomeTabView extends StatelessWidget {
             beginSlivers: const [HomeTopSliverPadding()],
           );
         case 'search':
-          return const SearchScreen();
+          return const SearchScreenContent(
+            beginSlivers: [
+              HomeTopSliverPadding(),
+            ],
+          );
         default:
           return const SizedBox();
       }

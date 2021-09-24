@@ -248,6 +248,14 @@ class _Entries extends StatelessWidget {
       ),
       defaultVerticalSpacer,
       HarpyListCard(
+        leading: const Icon(CupertinoIcons.search),
+        title: const Text('search'),
+        onTap: () => app<HarpyNavigator>().pushSearchScreen(
+          trendsBloc: context.read<TrendsBloc>(),
+        ),
+      ),
+      defaultVerticalSpacer,
+      HarpyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
         onTap: () => app<HarpyNavigator>().pushShowListsScreen(),
@@ -303,7 +311,16 @@ class _Entries extends StatelessWidget {
           color: theme.colorScheme.error,
         ),
         title: const Text('logout'),
-        onTap: authCubit.logout,
+        onTap: () async {
+          final logout = await showDialog<bool>(
+            context: context,
+            builder: (_) => const HarpyLogoutDialog(),
+          );
+
+          if (logout != null && logout) {
+            await authCubit.logout();
+          }
+        },
       ),
     ];
 
