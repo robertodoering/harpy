@@ -12,6 +12,7 @@ import 'package:pedantic/pedantic.dart';
 part 'user_profile_event.dart';
 part 'user_profile_state.dart';
 
+// TODO: refactor
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
     required String? screenName,
