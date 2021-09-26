@@ -10,7 +10,7 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  android_path_provider: ^0.2.1
+  android_path_provider: ^0.3.0
   args: ^2.3.0
   bloc: ^7.1.0
   collection: ^1.15.0
