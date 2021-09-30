@@ -60,6 +60,28 @@ class ConfigCubit extends Cubit<Config> {
     );
   }
 
+  void updateDisplayFont(String fontFamily, bool isGoogleFont) {
+    emit(
+      state.copyWith(
+        displayFont: CustomFont(
+          isGoogleFont: isGoogleFont,
+          fontFamily: fontFamily,
+        ),
+      ),
+    );
+  }
+
+  void updateBodyFont(String fontFamily, bool isGoogleFont) {
+    emit(
+      state.copyWith(
+        bodyFont: CustomFont(
+          isGoogleFont: isGoogleFont,
+          fontFamily: fontFamily,
+        ),
+      ),
+    );
+  }
+
   void updateBottomAppBar(bool value) {
     app<HarpyPreferences>().setBool('bottomAppBar', value);
 

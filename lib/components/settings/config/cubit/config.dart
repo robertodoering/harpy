@@ -6,16 +6,28 @@ class Config extends Equatable {
     required this.fontSizeDelta,
     required this.compactMode,
     required this.bottomAppBar,
+    required this.displayFont,
+    required this.bodyFont,
   });
 
   final double fontSizeDelta;
   final bool compactMode;
   final bool bottomAppBar;
+  final CustomFont displayFont;
+  final CustomFont bodyFont;
 
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
+    displayFont: CustomFont(
+      fontFamily: 'Comfortaa',
+      isGoogleFont: false,
+    ),
+    bodyFont: CustomFont(
+      fontFamily: 'OpenSans',
+      isGoogleFont: false,
+    ),
   );
 
   @override
@@ -23,17 +35,23 @@ class Config extends Equatable {
         fontSizeDelta,
         compactMode,
         bottomAppBar,
+        displayFont,
+        bodyFont,
       ];
 
   Config copyWith({
     double? fontSizeDelta,
     bool? compactMode,
     bool? bottomAppBar,
+    CustomFont? displayFont,
+    CustomFont? bodyFont,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
       bottomAppBar: bottomAppBar ?? this.bottomAppBar,
+      displayFont: displayFont ?? this.displayFont,
+      bodyFont: bodyFont ?? this.bodyFont,
     );
   }
 }
@@ -92,3 +110,16 @@ const _fontSizeDeltaIdNameMap = <int, String>{
   1: 'big',
   2: 'biggest',
 };
+
+class CustomFont extends Equatable {
+  const CustomFont({
+    required this.isGoogleFont,
+    required this.fontFamily,
+  });
+
+  final bool isGoogleFont;
+  final String fontFamily;
+
+  @override
+  List<Object?> get props => [isGoogleFont, fontFamily];
+}

@@ -81,11 +81,13 @@ class DisplaySettingsScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const HarpyListTile(
-                leading: Icon(CupertinoIcons.textformat),
-                title: Text('font type'),
-                subtitle: Text('coming soon!'),
-                enabled: false,
+              HarpyListTile(
+                leading: const Icon(CupertinoIcons.textformat),
+                title: const Text('font type'),
+                subtitle: const Text('coming soon!'),
+                onTap: () {
+                  configCubit.updateBodyFont('Roboto', true);
+                },
               ),
               HarpySwitchTile(
                 leading: const Icon(CupertinoIcons.rectangle_compress_vertical),

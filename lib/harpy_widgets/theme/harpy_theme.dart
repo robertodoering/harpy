@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
 
@@ -242,108 +243,150 @@ class HarpyTheme {
   }
 
   void _setupTextTheme() {
-    const displayFont = 'Comfortaa';
-    const bodyFont = 'OpenSans';
+    final fontSizeDelta = config.fontSizeDelta;
 
     final textColor = foregroundColor;
-
-    final fontSizeDelta = config.fontSizeDelta;
 
     _textTheme = brightness == Brightness.light
         ? Typography.blackMountainView
         : Typography.whiteMountainView;
 
     _textTheme = _textTheme
-        .apply(fontFamily: bodyFont)
         .copyWith(
           // headline
-          headline1: const TextStyle(
-            fontSize: 64,
-            letterSpacing: 6,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline1: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 64,
+              letterSpacing: 6,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          headline2: const TextStyle(
-            fontSize: 48,
-            letterSpacing: 2,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline2: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 48,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          headline3: const TextStyle(
-            fontSize: 48,
-            letterSpacing: 0,
-            fontFamily: displayFont,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline3: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 48,
+              letterSpacing: 0,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          headline4: const TextStyle(
-            fontSize: 18,
-            letterSpacing: 2,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline4: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 18,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          headline5: const TextStyle(
-            fontSize: 20,
-            letterSpacing: 2,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline5: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 20,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          headline6: const TextStyle(
-            fontSize: 20,
-            letterSpacing: 2,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          headline6: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 20,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
 
           // subtitle
-          subtitle1: const TextStyle(
-            fontSize: 16,
-            letterSpacing: 1,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          subtitle1: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              letterSpacing: 1,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          subtitle2: const TextStyle(
-            height: 1.1,
-            fontSize: 16,
-            fontFamily: displayFont,
-            fontWeight: FontWeight.w300,
-            fontFamilyFallback: _fontFamilyFallback,
+          subtitle2: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              height: 1.1,
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
 
           // body
-          bodyText2: const TextStyle(
-            fontSize: 16,
-            fontFamilyFallback: _fontFamilyFallback,
+          bodyText2: _applyCustomBodyFont(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          bodyText1: TextStyle(
-            fontSize: 14,
-            color: textColor.withOpacity(.7),
-            fontFamilyFallback: _fontFamilyFallback,
+          bodyText1: _applyCustomBodyFont(
+            textStyle: TextStyle(
+              fontSize: 14,
+              color: textColor.withOpacity(.7),
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          button: TextStyle(
-            fontSize: 16,
-            letterSpacing: 1.2,
-            fontFamily: displayFont,
-            color: buttonTextColor,
-            fontFamilyFallback: _fontFamilyFallback,
+          button: _applyCustomDisplayFont(
+            textStyle: TextStyle(
+              fontSize: 16,
+              letterSpacing: 1.2,
+              color: buttonTextColor,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          caption: const TextStyle(
-            fontSize: 12,
-            letterSpacing: .4,
-            fontFamilyFallback: _fontFamilyFallback,
+          caption: _applyCustomBodyFont(
+            textStyle: const TextStyle(
+              fontSize: 12,
+              letterSpacing: .4,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
-          overline: const TextStyle(
-            fontSize: 10,
-            letterSpacing: 1.5,
-            fontFamilyFallback: _fontFamilyFallback,
+          overline: _applyCustomBodyFont(
+            textStyle: const TextStyle(
+              fontSize: 10,
+              letterSpacing: 1.5,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
           ),
         )
         .apply(fontSizeDelta: fontSizeDelta);
+  }
+
+  TextStyle _applyCustomDisplayFont({
+    required TextStyle textStyle,
+  }) {
+    return _applyCustomFont(
+      textStyle: textStyle,
+      font: config.displayFont,
+    );
+  }
+
+  TextStyle _applyCustomBodyFont({
+    required TextStyle textStyle,
+  }) {
+    return _applyCustomFont(
+      textStyle: textStyle,
+      font: config.bodyFont,
+    );
+  }
+
+  TextStyle _applyCustomFont({
+    required TextStyle textStyle,
+    required CustomFont font,
+  }) {
+    if (font.isGoogleFont) {
+      return GoogleFonts.getFont(font.fontFamily, textStyle: textStyle);
+    }
+
+    return textStyle.copyWith(fontFamily: font.fontFamily);
   }
 
   void _setupThemeData() {
