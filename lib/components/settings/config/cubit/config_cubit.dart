@@ -20,11 +20,27 @@ class ConfigCubit extends Cubit<Config> {
 
     final bottomAppBar = app<HarpyPreferences>().getBool('bottomAppBar', false);
 
+    final displayFontFamily = app<HarpyPreferences>().getString(
+      'displayFontFamily',
+      'Comfortaa',
+    );
+
+    final bodyFontFamily = app<HarpyPreferences>().getString(
+      'bodyFontFamily',
+      'OpenSans',
+    );
+
     emit(
       state.copyWith(
         compactMode: compactMode,
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
         bottomAppBar: bottomAppBar,
+        displayFont: displayFontFamily != null
+            ? CustomFont(fontFamily: displayFontFamily)
+            : null,
+        bodyFont: bodyFontFamily != null
+            ? CustomFont(fontFamily: bodyFontFamily)
+            : null,
       ),
     );
   }
@@ -33,6 +49,9 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setInt('fontSizeDeltaId', 0);
     app<HarpyPreferences>().setBool('compactMode', false);
     app<HarpyPreferences>().setBool('bottomAppBar', false);
+
+    app<HarpyPreferences>().setString('displayFontFamily', 'Comfortaa');
+    app<HarpyPreferences>().setString('bodyFontFamily', 'OpenSans');
 
     emit(Config.defaultConfig);
   }
@@ -60,22 +79,24 @@ class ConfigCubit extends Cubit<Config> {
     );
   }
 
-  void updateDisplayFont(String fontFamily, bool isGoogleFont) {
+  void updateDisplayFont(String fontFamily) {
+    app<HarpyPreferences>().setString('displayFontFamily', fontFamily);
+
     emit(
       state.copyWith(
         displayFont: CustomFont(
-          isGoogleFont: isGoogleFont,
           fontFamily: fontFamily,
         ),
       ),
     );
   }
 
-  void updateBodyFont(String fontFamily, bool isGoogleFont) {
+  void updateBodyFont(String fontFamily) {
+    app<HarpyPreferences>().setString('bodyFontFamily', fontFamily);
+
     emit(
       state.copyWith(
         bodyFont: CustomFont(
-          isGoogleFont: isGoogleFont,
           fontFamily: fontFamily,
         ),
       ),

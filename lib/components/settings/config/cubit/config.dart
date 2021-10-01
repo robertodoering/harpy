@@ -22,11 +22,9 @@ class Config extends Equatable {
     bottomAppBar: false,
     displayFont: CustomFont(
       fontFamily: 'Comfortaa',
-      isGoogleFont: false,
     ),
     bodyFont: CustomFont(
       fontFamily: 'OpenSans',
-      isGoogleFont: false,
     ),
   );
 
@@ -113,13 +111,14 @@ const _fontSizeDeltaIdNameMap = <int, String>{
 
 class CustomFont extends Equatable {
   const CustomFont({
-    required this.isGoogleFont,
     required this.fontFamily,
   });
 
-  final bool isGoogleFont;
   final String fontFamily;
 
+  bool get loadFromAsset =>
+      <String>['Comfortaa', 'OpenSans'].contains(fontFamily);
+
   @override
-  List<Object?> get props => [isGoogleFont, fontFamily];
+  List<Object?> get props => [fontFamily];
 }

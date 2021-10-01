@@ -382,11 +382,11 @@ class HarpyTheme {
     required TextStyle textStyle,
     required CustomFont font,
   }) {
-    if (font.isGoogleFont) {
-      return GoogleFonts.getFont(font.fontFamily, textStyle: textStyle);
+    if (font.loadFromAsset) {
+      return textStyle.copyWith(fontFamily: font.fontFamily);
     }
 
-    return textStyle.copyWith(fontFamily: font.fontFamily);
+    return GoogleFonts.getFont(font.fontFamily, textStyle: textStyle);
   }
 
   void _setupThemeData() {
