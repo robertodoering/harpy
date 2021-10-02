@@ -86,17 +86,13 @@ class ConfigCubit extends Cubit<Config> {
   void updateDisplayFont(String fontFamily) {
     app<HarpyPreferences>().setString('displayFontFamily', fontFamily);
 
-    emit(
-      state.copyWith(displayFont: fontFamily),
-    );
+    emit(state.copyWith(displayFont: fontFamily));
   }
 
   void updateBodyFont(String fontFamily) {
     app<HarpyPreferences>().setString('bodyFontFamily', fontFamily);
 
-    emit(
-      state.copyWith(bodyFont: fontFamily),
-    );
+    emit(state.copyWith(bodyFont: fontFamily));
   }
 
   void updateBottomAppBar(bool value) {
