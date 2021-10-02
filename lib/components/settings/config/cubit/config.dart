@@ -20,8 +20,8 @@ class Config extends Equatable {
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
-    displayFont: 'Comfortaa',
-    bodyFont: 'OpenSans',
+    displayFont: kDefaultDisplayFontFamily,
+    bodyFont: kDefaultBodyFontFamily,
   );
 
   @override

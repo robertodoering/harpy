@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 part 'config.dart';
 
@@ -22,12 +23,12 @@ class ConfigCubit extends Cubit<Config> {
 
     final displayFontFamily = app<HarpyPreferences>().getString(
       'displayFontFamily',
-      'Comfortaa',
+      kDefaultDisplayFontFamily,
     );
 
     final bodyFontFamily = app<HarpyPreferences>().getString(
       'bodyFontFamily',
-      'OpenSans',
+      kDefaultBodyFontFamily,
     );
 
     emit(
@@ -46,8 +47,15 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setBool('compactMode', false);
     app<HarpyPreferences>().setBool('bottomAppBar', false);
 
-    app<HarpyPreferences>().setString('displayFontFamily', 'Comfortaa');
-    app<HarpyPreferences>().setString('bodyFontFamily', 'OpenSans');
+    app<HarpyPreferences>().setString(
+      'displayFontFamily',
+      kDefaultDisplayFontFamily,
+    );
+
+    app<HarpyPreferences>().setString(
+      'bodyFontFamily',
+      kDefaultBodyFontFamily,
+    );
 
     emit(Config.defaultConfig);
   }

@@ -24,9 +24,10 @@ const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
 const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
 const Radius kDefaultRadius = Radius.circular(16);
 
+/// Fonts
 const List<String> kAssetFonts = [
-  'Comfortaa',
-  'OpenSans',
+  kDefaultBodyFontFamily,
+  kDefaultDisplayFontFamily,
 ];
 
 bool isAssetFontFamily(String font) {
@@ -36,6 +37,9 @@ bool isAssetFontFamily(String font) {
 const List<String> kAvailableGoogleFonts = [
   'Fira Code',
 ];
+
+const String kDefaultBodyFontFamily = 'OpenSans';
+const String kDefaultDisplayFontFamily = 'Comfortaa';
 
 class HarpyTheme {
   HarpyTheme.fromData({
