@@ -13,19 +13,15 @@ class Config extends Equatable {
   final double fontSizeDelta;
   final bool compactMode;
   final bool bottomAppBar;
-  final CustomFont displayFont;
-  final CustomFont bodyFont;
+  final String displayFont;
+  final String bodyFont;
 
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
-    displayFont: CustomFont(
-      fontFamily: 'Comfortaa',
-    ),
-    bodyFont: CustomFont(
-      fontFamily: 'OpenSans',
-    ),
+    displayFont: 'Comfortaa',
+    bodyFont: 'OpenSans',
   );
 
   @override
@@ -41,8 +37,8 @@ class Config extends Equatable {
     double? fontSizeDelta,
     bool? compactMode,
     bool? bottomAppBar,
-    CustomFont? displayFont,
-    CustomFont? bodyFont,
+    String? displayFont,
+    String? bodyFont,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
@@ -108,17 +104,3 @@ const _fontSizeDeltaIdNameMap = <int, String>{
   1: 'big',
   2: 'biggest',
 };
-
-class CustomFont extends Equatable {
-  const CustomFont({
-    required this.fontFamily,
-  });
-
-  final String fontFamily;
-
-  bool get loadFromAsset =>
-      <String>['Comfortaa', 'OpenSans'].contains(fontFamily);
-
-  @override
-  List<Object?> get props => [fontFamily];
-}

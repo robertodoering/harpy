@@ -35,12 +35,8 @@ class ConfigCubit extends Cubit<Config> {
         compactMode: compactMode,
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
         bottomAppBar: bottomAppBar,
-        displayFont: displayFontFamily != null
-            ? CustomFont(fontFamily: displayFontFamily)
-            : null,
-        bodyFont: bodyFontFamily != null
-            ? CustomFont(fontFamily: bodyFontFamily)
-            : null,
+        displayFont: displayFontFamily,
+        bodyFont: bodyFontFamily,
       ),
     );
   }
@@ -83,11 +79,7 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setString('displayFontFamily', fontFamily);
 
     emit(
-      state.copyWith(
-        displayFont: CustomFont(
-          fontFamily: fontFamily,
-        ),
-      ),
+      state.copyWith(displayFont: fontFamily),
     );
   }
 
@@ -95,11 +87,7 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setString('bodyFontFamily', fontFamily);
 
     emit(
-      state.copyWith(
-        bodyFont: CustomFont(
-          fontFamily: fontFamily,
-        ),
-      ),
+      state.copyWith(bodyFont: fontFamily),
     );
   }
 

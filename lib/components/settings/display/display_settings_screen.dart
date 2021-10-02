@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -85,9 +84,11 @@ class DisplaySettingsScreen extends StatelessWidget {
               FontRadioDialogTile(
                 title: 'body font',
                 leadingIcon: CupertinoIcons.textformat,
-                font: config.bodyFont.fontFamily,
+                font: config.bodyFont,
                 onChanged: (value) {
                   if (value != null) {
+                    HapticFeedback.lightImpact();
+
                     configCubit.updateBodyFont(value);
                   }
                 },
@@ -95,9 +96,11 @@ class DisplaySettingsScreen extends StatelessWidget {
               FontRadioDialogTile(
                 title: 'display font',
                 leadingIcon: CupertinoIcons.textformat,
-                font: config.displayFont.fontFamily,
+                font: config.displayFont,
                 onChanged: (value) {
                   if (value != null) {
+                    HapticFeedback.lightImpact();
+
                     configCubit.updateDisplayFont(value);
                   }
                 },
@@ -139,13 +142,9 @@ class FontRadioDialogTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetFonts = ['OpenSans', 'Comfortaa'];
-
-    final googleFonts = GoogleFonts.asMap().keys.toList().take(20);
-
     final availableFonts = [
-      ...assetFonts,
-      ...googleFonts,
+      ...kAssetFonts,
+      ...kAvailableGoogleFonts,
     ];
 
     return RadioDialogTile<String>(

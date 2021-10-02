@@ -24,6 +24,19 @@ const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
 const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
 const Radius kDefaultRadius = Radius.circular(16);
 
+const List<String> kAssetFonts = [
+  'Comfortaa',
+  'OpenSans',
+];
+
+bool isAssetFontFamily(String font) {
+  return kAssetFonts.contains(font);
+}
+
+const List<String> kAvailableGoogleFonts = [
+  'Fira Code',
+];
+
 class HarpyTheme {
   HarpyTheme.fromData({
     required HarpyThemeData data,
@@ -365,7 +378,7 @@ class HarpyTheme {
   }) {
     return _applyCustomFont(
       textStyle: textStyle,
-      font: config.displayFont,
+      fontFamily: config.displayFont,
     );
   }
 
@@ -374,19 +387,19 @@ class HarpyTheme {
   }) {
     return _applyCustomFont(
       textStyle: textStyle,
-      font: config.bodyFont,
+      fontFamily: config.bodyFont,
     );
   }
 
   TextStyle _applyCustomFont({
     required TextStyle textStyle,
-    required CustomFont font,
+    required String fontFamily,
   }) {
-    if (font.loadFromAsset) {
-      return textStyle.copyWith(fontFamily: font.fontFamily);
+    if (isAssetFontFamily(fontFamily)) {
+      return textStyle.copyWith(fontFamily: fontFamily);
     }
 
-    return GoogleFonts.getFont(font.fontFamily, textStyle: textStyle);
+    return GoogleFonts.getFont(fontFamily, textStyle: textStyle);
   }
 
   void _setupThemeData() {
