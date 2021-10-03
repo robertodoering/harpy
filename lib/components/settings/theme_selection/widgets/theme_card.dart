@@ -96,7 +96,10 @@ class ThemeCard extends StatelessWidget {
               HarpyButton.flat(
                 padding: config.edgeInsets,
                 icon: const Icon(CupertinoIcons.ellipsis_vertical),
-                onTap: () => _showBottomSheet(context),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _showBottomSheet(context);
+                },
               ),
           ],
         ),
