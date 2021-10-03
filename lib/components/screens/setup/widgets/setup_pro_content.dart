@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -50,13 +51,23 @@ class SetupProContent extends StatelessWidget {
                 ),
                 SizedBox(height: config.paddingValue * 2),
                 const _FeatureRow(
-                  icon: Icons.palette,
+                  icon: Icons.ad_units_outlined,
+                  text: 'no ads',
+                ),
+                SizedBox(height: config.paddingValue * 2),
+                const _FeatureRow(
+                  icon: Icons.palette_outlined,
                   text: 'fully customizable themes',
                 ),
                 SizedBox(height: config.paddingValue * 2),
                 const _FeatureRow(
-                  icon: Icons.home,
+                  icon: CupertinoIcons.home,
                   text: 'home screen customization',
+                ),
+                SizedBox(height: config.paddingValue * 2),
+                const _FeatureRow(
+                  icon: CupertinoIcons.textformat,
+                  text: 'font customization',
                 ),
                 SizedBox(height: config.paddingValue * 2),
                 const _FeatureRow(

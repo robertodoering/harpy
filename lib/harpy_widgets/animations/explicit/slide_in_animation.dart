@@ -10,6 +10,7 @@ class SlideInAnimation extends StatefulWidget {
   const SlideInAnimation({
     required this.child,
     required this.offset,
+    this.shouldHide = true,
     this.curve = Curves.fastOutSlowIn,
     this.duration = kLongAnimationDuration,
     this.delay = Duration.zero,
@@ -17,6 +18,7 @@ class SlideInAnimation extends StatefulWidget {
 
   final Widget child;
   final Offset offset;
+  final bool shouldHide;
   final Curve curve;
   final Duration duration;
   final Duration delay;
@@ -38,7 +40,7 @@ class _SlideInAnimationState extends State<SlideInAnimation>
 
     _animation = CurveTween(curve: widget.curve).animate(_controller);
 
-    _hidden = widget.delay != Duration.zero;
+    _hidden = widget.shouldHide && widget.delay != Duration.zero;
 
     Future<void>.delayed(widget.delay).then((_) {
       if (mounted) {
@@ -61,7 +63,7 @@ class _SlideInAnimationState extends State<SlideInAnimation>
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, __) => _hidden
-          ? Container()
+          ? const SizedBox()
           : Transform.translate(
               offset: Offset(
                 (1 - _animation.value) * widget.offset.dx,

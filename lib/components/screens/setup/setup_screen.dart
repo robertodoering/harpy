@@ -22,6 +22,21 @@ class SetupScreen extends StatefulWidget {
 class _SetupScreenState extends State<SetupScreen> {
   final _controller = PageController();
 
+  var _enableScroll = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future<void>.delayed(const Duration(milliseconds: 3100)).then(
+      (_) {
+        if (mounted) {
+          setState(() => _enableScroll = true);
+        }
+      },
+    );
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -51,34 +66,46 @@ class _SetupScreenState extends State<SetupScreen> {
       ),
       child: HarpyScaffold(
         buildSafeArea: true,
-        body: SafeArea(
-          child: AnimatedPadding(
-            duration: kShortAnimationDuration,
-            padding: EdgeInsets.symmetric(vertical: config.paddingValue * 2),
-            child: Column(
-              children: [
-                Expanded(
-                  child: PageView(
-                    controller: _controller,
-                    children: children,
+        body: AnimatedPadding(
+          duration: kShortAnimationDuration,
+          padding: EdgeInsets.symmetric(vertical: config.paddingValue * 2),
+          child: Column(
+            children: [
+              Expanded(
+                child: PageView(
+                  controller: _controller,
+                  physics: _enableScroll
+                      ? null
+                      : const NeverScrollableScrollPhysics(),
+                  children: children,
+                ),
+              ),
+              SlideInAnimation(
+                delay: const Duration(milliseconds: 3100),
+                curve: Curves.easeOutCubic,
+                offset: const Offset(0, 25),
+                shouldHide: false,
+                child: FadeAnimation(
+                  delay: const Duration(milliseconds: 3100),
+                  curve: Curves.easeOutCubic,
+                  shouldHide: false,
+                  child: Stack(
+                    children: [
+                      _PageIndicator(
+                        controller: _controller,
+                        length: children.length,
+                      ),
+                      _SkipButton(controller: _controller),
+                      _PrevButton(controller: _controller),
+                      _NextButton(
+                        controller: _controller,
+                        length: children.length,
+                      ),
+                    ],
                   ),
                 ),
-                Stack(
-                  children: [
-                    _PageIndicator(
-                      controller: _controller,
-                      length: children.length,
-                    ),
-                    _SkipButton(controller: _controller),
-                    _PrevButton(controller: _controller),
-                    _NextButton(
-                      controller: _controller,
-                      length: children.length,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
