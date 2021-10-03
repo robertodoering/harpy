@@ -197,11 +197,7 @@ class _SkipButtonState extends State<_SkipButton> {
         child: HarpyButton.flat(
           padding: config.edgeInsets,
           text: const Text('skip'),
-          onTap: _opacity == 0
-              ? null
-              : () => app<HarpyNavigator>().pushReplacementNamed(
-                    HomeScreen.route,
-                  ),
+          onTap: _opacity == 0 ? null : finishSetup,
         ),
       ),
     );
@@ -340,4 +336,9 @@ class _NextButtonState extends State<_NextButton> {
       ),
     );
   }
+}
+
+void finishSetup() {
+  app<SetupPreferences>().performedSetup = true;
+  app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
 }

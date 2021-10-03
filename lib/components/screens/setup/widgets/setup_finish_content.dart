@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the third page for the [SetupScreen].
@@ -34,12 +33,10 @@ class SetupFinishContent extends StatelessWidget {
           if (Harpy.isPro)
             Padding(
               padding: config.edgeInsets,
-              child: Center(
+              child: const Center(
                 child: HarpyButton.flat(
-                  text: const Text('finish setup'),
-                  onTap: () => app<HarpyNavigator>().pushReplacementNamed(
-                    HomeScreen.route,
-                  ),
+                  text: Text('finish setup'),
+                  onTap: finishSetup,
                 ),
               ),
             ),

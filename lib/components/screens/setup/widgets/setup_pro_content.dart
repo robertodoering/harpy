@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the last page for the setup screen.
@@ -95,9 +93,7 @@ class SetupProContent extends StatelessWidget {
               child: HarpyButton.raised(
                 backgroundColor: theme.colorScheme.primary,
                 text: const Text('finish setup'),
-                onTap: () => app<HarpyNavigator>().pushReplacementNamed(
-                  HomeScreen.route,
-                ),
+                onTap: finishSetup,
               ),
             ),
           ),
