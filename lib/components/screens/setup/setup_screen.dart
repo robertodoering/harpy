@@ -96,7 +96,10 @@ class _SetupScreenState extends State<SetupScreen> {
                         length: children.length,
                       ),
                       _SkipButton(controller: _controller),
-                      _PrevButton(controller: _controller),
+                      _PrevButton(
+                        controller: _controller,
+                        length: children.length,
+                      ),
                       _NextButton(
                         controller: _controller,
                         length: children.length,
@@ -208,9 +211,11 @@ class _SkipButtonState extends State<_SkipButton> {
 class _PrevButton extends StatefulWidget {
   const _PrevButton({
     required this.controller,
+    required this.length,
   });
 
   final PageController controller;
+  final int length;
 
   @override
   _PrevButtonState createState() => _PrevButtonState();
@@ -256,7 +261,9 @@ class _PrevButtonState extends State<_PrevButton> {
           onTap: _opacity == 0
               ? null
               : () => widget.controller.animateToPage(
-                    widget.controller.page!.ceil() - 1,
+                    (widget.controller.page! - 1)
+                        .round()
+                        .clamp(0, widget.length - 1),
                     duration: kLongAnimationDuration,
                     curve: Curves.easeOutCubic,
                   ),
@@ -323,7 +330,9 @@ class _NextButtonState extends State<_NextButton> {
           onTap: _opacity == 0
               ? null
               : () => widget.controller.animateToPage(
-                    widget.controller.page!.floor() + 1,
+                    (widget.controller.page! + 1)
+                        .round()
+                        .clamp(0, widget.length),
                     duration: kLongAnimationDuration,
                     curve: Curves.easeOutCubic,
                   ),
