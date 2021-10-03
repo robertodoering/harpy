@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -189,6 +190,10 @@ class _SkipButtonState extends State<_SkipButton> {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
+    if (_opacity == 0) {
+      return const SizedBox();
+    }
+
     return Opacity(
       opacity: _opacity,
       child: Container(
@@ -197,7 +202,7 @@ class _SkipButtonState extends State<_SkipButton> {
         child: HarpyButton.flat(
           padding: config.edgeInsets,
           text: const Text('skip'),
-          onTap: _opacity == 0 ? null : finishSetup,
+          onTap: finishSetup,
         ),
       ),
     );
@@ -246,6 +251,10 @@ class _PrevButtonState extends State<_PrevButton> {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
+    if (_opacity == 0) {
+      return const SizedBox();
+    }
+
     return Opacity(
       opacity: _opacity,
       child: Container(
@@ -254,15 +263,11 @@ class _PrevButtonState extends State<_PrevButton> {
         child: HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_left),
-          onTap: _opacity == 0
-              ? null
-              : () => widget.controller.animateToPage(
-                    (widget.controller.page! - 1)
-                        .round()
-                        .clamp(0, widget.length - 1),
-                    duration: kLongAnimationDuration,
-                    curve: Curves.easeOutCubic,
-                  ),
+          onTap: () => widget.controller.animateToPage(
+            (widget.controller.page! - 1).round().clamp(0, widget.length - 1),
+            duration: kLongAnimationDuration,
+            curve: Curves.easeOutCubic,
+          ),
         ),
       ),
     );
@@ -315,6 +320,10 @@ class _NextButtonState extends State<_NextButton> {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
+    if (_opacity == 0) {
+      return const SizedBox();
+    }
+
     return Opacity(
       opacity: _opacity,
       child: Container(
@@ -323,15 +332,11 @@ class _NextButtonState extends State<_NextButton> {
         child: HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_right),
-          onTap: _opacity == 0
-              ? null
-              : () => widget.controller.animateToPage(
-                    (widget.controller.page! + 1)
-                        .round()
-                        .clamp(0, widget.length),
-                    duration: kLongAnimationDuration,
-                    curve: Curves.easeOutCubic,
-                  ),
+          onTap: () => widget.controller.animateToPage(
+            (widget.controller.page! + 1).round().clamp(0, widget.length),
+            duration: kLongAnimationDuration,
+            curve: Curves.easeOutCubic,
+          ),
         ),
       ),
     );
@@ -339,6 +344,7 @@ class _NextButtonState extends State<_NextButton> {
 }
 
 void finishSetup() {
+  HapticFeedback.lightImpact();
   app<SetupPreferences>().performedSetup = true;
   app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
 }
