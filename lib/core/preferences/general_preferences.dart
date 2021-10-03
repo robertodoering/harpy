@@ -8,4 +8,8 @@ class GeneralPreferences {
   bool get performanceMode => harpyPrefs.getBool('performanceMode', false);
   set performanceMode(bool value) =>
       harpyPrefs.setBool('performanceMode', value);
+
+  /// Whether the user has consented to send automatic crash reports.
+  bool get crashReports => harpyPrefs.getBool('crashReports', true);
+  set crashReports(bool value) => harpyPrefs.setBool('crashReports', value);
 }

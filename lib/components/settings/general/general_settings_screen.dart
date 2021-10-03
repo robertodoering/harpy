@@ -40,6 +40,16 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             },
           ),
           HarpySwitchTile(
+            leading: const Icon(Icons.bug_report_outlined),
+            title: const Text('automatic crash reports'),
+            subtitle: const Text('anonymously report errors to improve harpy'),
+            value: generalPreferences.crashReports,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(() => generalPreferences.crashReports = value);
+            },
+          ),
+          HarpySwitchTile(
             leading: const Icon(Icons.speed),
             title: const Text('performance mode'),
             subtitle: const Text('reduces animations and effects'),

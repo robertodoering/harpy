@@ -9,9 +9,9 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 /// Calls [runApp] to run the app and catches any errors thrown by the Flutter
 /// framework or dart.
 ///
-/// In debug mode, any caught errors will be printed to the console.
-/// In release mode, errors are reported to the https://sentry.io error
-/// tracking service.
+/// * In debug mode, any caught errors will be printed to the console.
+/// * In release mode, errors are reported to the https://sentry.io error
+///   tracking service (when the user has given their consent).
 ///
 /// See https://flutter.dev/docs/cookbook/maintenance/error-reporting for more
 /// information about error reporting in Flutter.
@@ -64,14 +64,16 @@ class HarpyErrorHandler with HarpyLogger {
 
     log.severe('caught error', error, stackTrace);
 
-    // report the error in release mode
-    if (kReleaseMode && app<AppConfig>().hasSentryDsn) {
+    if (!app<GeneralPreferences>().crashReports) {
+      log.info('not reporting error due to missing consent from the user');
+    } else if (kReleaseMode && app<AppConfig>().hasSentryDsn) {
       log.info('reporting error to sentry');
+
       try {
         await Sentry.captureException(error, stackTrace: stackTrace);
         log.fine('error reported');
-      } catch (e) {
-        log.warning('error while reporting error');
+      } catch (e, st) {
+        log.warning('error while reporting error', e, st);
       }
     } else {
       log.info('not reporting error in debug / profile mode');

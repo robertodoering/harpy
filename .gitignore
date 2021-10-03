@@ -28,7 +28,6 @@
 .pub-cache/
 .pub/
 /build/
-pubspec.lock
 
 # flutter test golden failure output
 **/failures/*.png

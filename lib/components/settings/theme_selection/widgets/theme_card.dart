@@ -17,6 +17,7 @@ class ThemeCard extends StatelessWidget {
     required this.onTap,
     required this.onSelectLightTheme,
     required this.onSelectDarkTheme,
+    this.enableBottomSheet = false,
     this.onEdit,
     this.onDelete,
   });
@@ -27,6 +28,7 @@ class ThemeCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onSelectLightTheme;
   final VoidCallback onSelectDarkTheme;
+  final bool enableBottomSheet;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
@@ -51,7 +53,7 @@ class ThemeCard extends StatelessWidget {
       selected: selectedLightTheme || selectedDarkTheme,
       child: InkWell(
         onTap: onTap,
-        onLongPress: () => _showBottomSheet(context),
+        onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
         borderRadius: kDefaultBorderRadius,
         child: Row(
           children: [
@@ -90,11 +92,15 @@ class ThemeCard extends StatelessWidget {
                   ),
                 ),
             ],
-            HarpyButton.flat(
-              padding: config.edgeInsets,
-              icon: const Icon(CupertinoIcons.ellipsis_vertical),
-              onTap: () => _showBottomSheet(context),
-            ),
+            if (enableBottomSheet)
+              HarpyButton.flat(
+                padding: config.edgeInsets,
+                icon: const Icon(CupertinoIcons.ellipsis_vertical),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _showBottomSheet(context);
+                },
+              ),
           ],
         ),
       ),
