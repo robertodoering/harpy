@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:harpy/api/api.dart';
@@ -27,7 +28,9 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
   final AuthenticationCubit authenticationCubit;
 
   Future<void> _initialize() async {
-    initLogger();
+    if (!kReleaseMode) {
+      initLogger();
+    }
 
     // sets the visibility detector controller update interval to fire more
     // frequently
