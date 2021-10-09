@@ -39,7 +39,7 @@ class _HarpyTabState extends State<HarpyTab>
   late AnimationController _animationController;
 
   late Animation<Color?> _colorAnimation;
-  late Animation<double> _opacityAnimation;
+  late Animation<Color?> _cardColorAnimation;
   late Animation<double> _textOpacityAnimation;
 
   @override
@@ -48,11 +48,6 @@ class _HarpyTabState extends State<HarpyTab>
 
     _animationController = AnimationController(vsync: this)
       ..addListener(() => setState(() {}));
-
-    _opacityAnimation = Tween<double>(
-      begin: 1,
-      end: .5,
-    ).animate(_animationController);
 
     _textOpacityAnimation = Tween<double>(
       begin: 1,
@@ -74,6 +69,13 @@ class _HarpyTabState extends State<HarpyTab>
     }
 
     final theme = Theme.of(context);
+
+    final cardColor = widget.cardColor ?? theme.cardColor;
+
+    _cardColorAnimation = ColorTween(
+      begin: cardColor,
+      end: cardColor.withOpacity(cardColor.opacity / 2),
+    ).animate(_animationController);
 
     _colorAnimation = ColorTween(
       begin: theme.colorScheme.primary,
@@ -111,28 +113,25 @@ class _HarpyTabState extends State<HarpyTab>
 
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (_, __) => Opacity(
-        opacity: _opacityAnimation.value,
-        child: Card(
-          color: widget.cardColor,
-          child: Padding(
-            padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-            child: IconTheme(
-              data: iconTheme.copyWith(
+      builder: (_, __) => Card(
+        color: _cardColorAnimation.value,
+        child: Padding(
+          padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
+          child: IconTheme(
+            data: iconTheme.copyWith(
+              color: _colorAnimation.value,
+            ),
+            child: DefaultTextStyle(
+              style: theme.textTheme.subtitle1!.copyWith(
                 color: _colorAnimation.value,
               ),
-              child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1!.copyWith(
-                  color: _colorAnimation.value,
-                ),
-                child: SizedBox(
-                  height: iconTheme.size,
-                  child: Row(
-                    children: [
-                      widget.icon,
-                      if (widget.text != null) _buildText(),
-                    ],
-                  ),
+              child: SizedBox(
+                height: iconTheme.size,
+                child: Row(
+                  children: [
+                    widget.icon,
+                    if (widget.text != null) _buildText(),
+                  ],
                 ),
               ),
             ),
