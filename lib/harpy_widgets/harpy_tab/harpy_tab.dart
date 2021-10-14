@@ -70,7 +70,7 @@ class _HarpyTabState extends State<HarpyTab>
 
     final theme = Theme.of(context);
 
-    final cardColor = widget.cardColor ?? theme.cardColor;
+    final cardColor = widget.cardColor ?? theme.cardTheme.color!;
 
     _cardColorAnimation = ColorTween(
       begin: cardColor,
