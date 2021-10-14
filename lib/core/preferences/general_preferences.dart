@@ -12,4 +12,10 @@ class GeneralPreferences {
   /// Whether the user has consented to send automatic crash reports.
   bool get crashReports => harpyPrefs.getBool('crashReports', true);
   set crashReports(bool value) => harpyPrefs.setBool('crashReports', value);
+
+  /// Whether the app should start at the last timeline position when opening.
+  bool get keepTimelinePosition =>
+      harpyPrefs.getBool('keepTimelinePosition', true);
+  set keepTimelinePosition(bool value) =>
+      harpyPrefs.setBool('keepTimelinePosition', value);
 }

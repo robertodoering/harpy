@@ -23,8 +23,11 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String? _sinceId(int lastVisibleTweet) {
-    if (lastVisibleTweet != 0) {
+  String? _sinceId() {
+    final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
+    final keepTimelinePosition = app<GeneralPreferences>().keepTimelinePosition;
+
+    if (keepTimelinePosition && lastVisibleTweet != 0) {
       return '${lastVisibleTweet - 1}';
     } else {
       return null;
@@ -41,17 +44,18 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
     yield const HomeTimelineInitialLoading();
 
     final filter = TimelineFilter.fromJsonString(
-      bloc.timelineFilterPreferences.homeTimelineFilter,
+      app<TimelineFilterPreferences>().homeTimelineFilter,
     );
 
-    final lastVisibleTweet = bloc.tweetVisibilityPreferences.lastVisibleTweet;
+    final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
+    final keepTimelinePosition = app<GeneralPreferences>().keepTimelinePosition;
 
     String? maxId;
 
     final tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
-          sinceId: _sinceId(lastVisibleTweet),
+          sinceId: _sinceId(),
           excludeReplies: filter.excludesReplies,
         )
         .then((tweets) {
@@ -72,7 +76,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           maxId: maxId,
           timelineFilter: filter,
           lastInitialTweet: tweets.last.originalId,
-          newTweets: lastVisibleTweet == 0 ? 0 : tweets.length - 1,
+          newTweets: keepTimelinePosition && lastVisibleTweet != 0
+              ? tweets.length - 1
+              : 0,
           initialResults: true,
         );
 
@@ -367,7 +373,7 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
       final encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
-      bloc.timelineFilterPreferences.homeTimelineFilter = encodedFilter;
+      app<TimelineFilterPreferences>().homeTimelineFilter = encodedFilter;
     } catch (e, st) {
       log.warning('unable to encode timeline filter', e, st);
     }

@@ -50,6 +50,18 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             },
           ),
           HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.rectangle_dock),
+            title: const Text('keep last timeline position'),
+            subtitle: const Text('when opening the app'),
+            value: generalPreferences.keepTimelinePosition,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(
+                () => generalPreferences.keepTimelinePosition = value,
+              );
+            },
+          ),
+          HarpySwitchTile(
             leading: const Icon(Icons.speed),
             title: const Text('performance mode'),
             subtitle: const Text('reduces animations and effects'),
