@@ -3,4 +3,7 @@ Version 0.7.1
 
 · Added font customization (thanks Nino) (Pro)
 · Added option to not keep timeline position when opening harpy
+  · In settings > general
+· Added option to not hide the home tab bar when scrolling down / up
+  · In settings > general
 · Improved home tab bar icon visibility

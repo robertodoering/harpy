@@ -50,7 +50,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             },
           ),
           HarpySwitchTile(
-            leading: const Icon(CupertinoIcons.rectangle_dock),
+            leading: const Icon(CupertinoIcons.square_list),
             title: const Text('keep last timeline position'),
             subtitle: const Text('when opening the app'),
             value: generalPreferences.keepTimelinePosition,
@@ -58,6 +58,20 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
               HapticFeedback.lightImpact();
               setState(
                 () => generalPreferences.keepTimelinePosition = value,
+              );
+            },
+          ),
+          HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.rectangle),
+            title: const Text('automatically hide tab bar'),
+            subtitle: Text(
+              'when scrolling ${config.bottomAppBar ? "up" : "down"}',
+            ),
+            value: generalPreferences.hideHomeTabBar,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(
+                () => generalPreferences.hideHomeTabBar = value,
               );
             },
           ),

@@ -13,6 +13,10 @@ class GeneralPreferences {
   bool get crashReports => harpyPrefs.getBool('crashReports', true);
   set crashReports(bool value) => harpyPrefs.setBool('crashReports', value);
 
+  /// Whether to automatically hide the home tab bar when swiping up / down.
+  bool get hideHomeTabBar => harpyPrefs.getBool('hideHomeTabBar', true);
+  set hideHomeTabBar(bool value) => harpyPrefs.setBool('hideHomeTabBar', value);
+
   /// Whether the app should start at the last timeline position when opening.
   bool get keepTimelinePosition =>
       harpyPrefs.getBool('keepTimelinePosition', true);
