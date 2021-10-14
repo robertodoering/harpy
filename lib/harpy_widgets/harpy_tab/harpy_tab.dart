@@ -74,7 +74,7 @@ class _HarpyTabState extends State<HarpyTab>
 
     _cardColorAnimation = ColorTween(
       begin: cardColor,
-      end: cardColor.withOpacity(cardColor.opacity / 2),
+      end: cardColor.withOpacity(cardColor.opacity * .7),
     ).animate(_animationController);
 
     _colorAnimation = ColorTween(
