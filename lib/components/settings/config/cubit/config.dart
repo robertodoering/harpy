@@ -6,16 +6,21 @@ class Config extends Equatable {
     required this.fontSizeDelta,
     required this.compactMode,
     required this.bottomAppBar,
+    required this.hideHomeTabBar,
   });
 
   final double fontSizeDelta;
   final bool compactMode;
   final bool bottomAppBar;
 
+  /// Whether to automatically hide the home tab bar when swiping up / down.
+  final bool hideHomeTabBar;
+
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
+    hideHomeTabBar: true,
   );
 
   @override
@@ -23,17 +28,20 @@ class Config extends Equatable {
         fontSizeDelta,
         compactMode,
         bottomAppBar,
+        hideHomeTabBar,
       ];
 
   Config copyWith({
     double? fontSizeDelta,
     bool? compactMode,
     bool? bottomAppBar,
+    bool? hideHomeTabBar,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
       bottomAppBar: bottomAppBar ?? this.bottomAppBar,
+      hideHomeTabBar: hideHomeTabBar ?? this.hideHomeTabBar,
     );
   }
 }

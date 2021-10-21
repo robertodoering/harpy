@@ -17,14 +17,18 @@ class ConfigCubit extends Cubit<Config> {
     );
 
     final compactMode = app<HarpyPreferences>().getBool('compactMode', false);
-
     final bottomAppBar = app<HarpyPreferences>().getBool('bottomAppBar', false);
+    final hideHomeTabBar = app<HarpyPreferences>().getBool(
+      'hideHomeTabBar',
+      true,
+    );
 
     emit(
       state.copyWith(
         compactMode: compactMode,
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
         bottomAppBar: bottomAppBar,
+        hideHomeTabBar: hideHomeTabBar,
       ),
     );
   }
@@ -64,5 +68,11 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setBool('bottomAppBar', value);
 
     emit(state.copyWith(bottomAppBar: value));
+  }
+
+  void updateHideHomeTabBar(bool value) {
+    app<HarpyPreferences>().setBool('hideHomeTabBar', value);
+
+    emit(state.copyWith(hideHomeTabBar: value));
   }
 }

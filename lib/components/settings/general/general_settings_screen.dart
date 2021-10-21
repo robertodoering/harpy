@@ -78,12 +78,10 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             subtitle: Text(
               'when scrolling ${config.bottomAppBar ? "up" : "down"}',
             ),
-            value: generalPreferences.hideHomeTabBar,
+            value: config.hideHomeTabBar,
             onChanged: (value) {
               HapticFeedback.lightImpact();
-              setState(
-                () => generalPreferences.hideHomeTabBar = value,
-              );
+              configCubit.updateHideHomeTabBar(value);
             },
           ),
           HarpySwitchTile(

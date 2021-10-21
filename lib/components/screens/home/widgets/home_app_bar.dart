@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +24,6 @@ class HomeAppBar extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final generalPreferences = app<GeneralPreferences>();
-
     final topPadding = config.bottomAppBar ? 0.0 : mediaQuery.padding.top + 4;
     final bottomPadding =
         config.bottomAppBar ? mediaQuery.padding.bottom + 4 : 0.0;
@@ -45,7 +42,7 @@ class HomeAppBar extends StatelessWidget {
     return Align(
       alignment:
           config.bottomAppBar ? Alignment.bottomCenter : Alignment.topCenter,
-      child: generalPreferences.hideHomeTabBar
+      child: config.hideHomeTabBar
           ? _DynamicAppBar(padding: padding)
           : _StaticAppBar(padding: padding),
     );
