@@ -11,11 +11,22 @@ class TweetVisibilityPreferences {
   set lastVisibleTweet(int value) =>
       harpyPrefs.setInt('lastVisibleTweet', value, prefix: true);
 
+  /// Updates tweet visibility based on the home timeline position behavior
+  /// setting.
   void updateVisibleTweet(TweetData tweet) {
-    final id = int.tryParse(tweet.originalId);
+    if (app<GeneralPreferences>().keepLastHomeTimelinePosition) {
+      final id = int.tryParse(tweet.originalId);
 
-    if (id != null && id > lastVisibleTweet) {
-      lastVisibleTweet = id;
+      if (id != null) {
+        final keepNewestReadTweet =
+            app<GeneralPreferences>().keepNewestReadTweet;
+        final keepLastReadTweet = app<GeneralPreferences>().keepLastReadTweet;
+
+        if (keepLastReadTweet ||
+            (keepNewestReadTweet && id > lastVisibleTweet)) {
+          lastVisibleTweet = id;
+        }
+      }
     }
   }
 

@@ -23,10 +23,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   @override
   List<Object> get props => <Object>[];
 
-  String? _sinceId() {
-    final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
-    final keepTimelinePosition = app<GeneralPreferences>().keepTimelinePosition;
-
+  String? _sinceId(int lastVisibleTweet, bool keepTimelinePosition) {
     if (keepTimelinePosition && lastVisibleTweet != 0) {
       return '${lastVisibleTweet - 1}';
     } else {
@@ -48,14 +45,15 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
     );
 
     final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
-    final keepTimelinePosition = app<GeneralPreferences>().keepTimelinePosition;
+    final keepTimelinePosition =
+        app<GeneralPreferences>().keepLastHomeTimelinePosition;
 
     String? maxId;
 
     final tweets = await bloc.timelineService
         .homeTimeline(
           count: 200,
-          sinceId: _sinceId(),
+          sinceId: _sinceId(lastVisibleTweet, keepTimelinePosition),
           excludeReplies: filter.excludesReplies,
         )
         .then((tweets) {
@@ -82,7 +80,9 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           initialResults: true,
         );
 
-        bloc.add(const RequestOlderHomeTimeline());
+        if (keepTimelinePosition) {
+          bloc.add(const RequestOlderHomeTimeline());
+        }
       } else {
         bloc.add(RefreshHomeTimeline(timelineFilter: filter));
       }

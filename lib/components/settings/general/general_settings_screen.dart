@@ -15,6 +15,12 @@ class GeneralSettingsScreen extends StatefulWidget {
 }
 
 class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
+  final Map<int, String> _homeTimelinePositionBehavior = {
+    0: 'show newest already-read tweet',
+    1: 'show last read tweet',
+    2: "show newest tweet (don't restore position)",
+  };
+
   @override
   Widget build(BuildContext context) {
     final changelogPreferences = app<ChangelogPreferences>();
@@ -49,15 +55,20 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
               setState(() => generalPreferences.crashReports = value);
             },
           ),
-          HarpySwitchTile(
-            leading: const Icon(CupertinoIcons.square_list),
-            title: const Text('keep last timeline position'),
-            subtitle: const Text('when opening the app'),
-            value: generalPreferences.keepTimelinePosition,
+          RadioDialogTile<int>(
+            leading: CupertinoIcons.square_list,
+            title: 'restore home timeline position',
+            titles: _homeTimelinePositionBehavior.values.toList(),
+            subtitle: _homeTimelinePositionBehavior[
+                generalPreferences.homeTimelinePositionBehavior],
+            values: _homeTimelinePositionBehavior.keys.toList(),
+            description: 'change how the app behaves when opening the home '
+                'timeline',
+            value: generalPreferences.homeTimelinePositionBehavior,
             onChanged: (value) {
               HapticFeedback.lightImpact();
               setState(
-                () => generalPreferences.keepTimelinePosition = value,
+                () => generalPreferences.homeTimelinePositionBehavior = value!,
               );
             },
           ),

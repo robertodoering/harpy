@@ -2,7 +2,7 @@ Version 0.7.1
 2021-00-00
 
 · Added font customization (thanks Nino) (Pro)
-· Added option to not keep timeline position when opening harpy
+· Added option to change the timeline position behavior when restoring a session
   · In settings > general
 · Added option to not hide the home tab bar when scrolling down / up
   · In settings > general

@@ -17,9 +17,23 @@ class GeneralPreferences {
   bool get hideHomeTabBar => harpyPrefs.getBool('hideHomeTabBar', true);
   set hideHomeTabBar(bool value) => harpyPrefs.setBool('hideHomeTabBar', value);
 
-  /// Whether the app should start at the last timeline position when opening.
-  bool get keepTimelinePosition =>
-      harpyPrefs.getBool('keepTimelinePosition', true);
-  set keepTimelinePosition(bool value) =>
-      harpyPrefs.setBool('keepTimelinePosition', value);
+  /// How the home timeline scroll position should behave after the initial
+  /// request.
+  ///
+  /// 0: Show newest read tweet
+  ///    The newest tweet that the user has already read in their last session
+  ///    should appear initially
+  /// 1: Show last read tweet
+  ///    The last tweet a user has read in their last session should appear
+  ///    initially
+  /// 2: Show newest tweet
+  ///    Don't change the scroll position
+  int get homeTimelinePositionBehavior =>
+      harpyPrefs.getInt('timelinePositionBehavior', 0);
+  set homeTimelinePositionBehavior(int value) =>
+      harpyPrefs.setInt('timelinePositionBehavior', value);
+
+  bool get keepLastHomeTimelinePosition => homeTimelinePositionBehavior != 2;
+  bool get keepNewestReadTweet => homeTimelinePositionBehavior == 0;
+  bool get keepLastReadTweet => homeTimelinePositionBehavior == 1;
 }
