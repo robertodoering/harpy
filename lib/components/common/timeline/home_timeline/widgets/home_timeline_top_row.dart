@@ -37,7 +37,7 @@ class HomeTimelineTopRow extends StatelessWidget {
 }
 
 class _RefreshButton extends StatelessWidget {
-  const _RefreshButton() : super();
+  const _RefreshButton();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _RefreshButton extends StatelessWidget {
 }
 
 class _ComposeButton extends StatelessWidget {
-  const _ComposeButton() : super();
+  const _ComposeButton();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _ComposeButton extends StatelessWidget {
 }
 
 class _FilterButton extends StatelessWidget {
-  const _FilterButton() : super();
+  const _FilterButton();
 
   @override
   Widget build(BuildContext context) {
