@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:harpy/api/api.dart';
@@ -7,7 +8,9 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/components/settings/config/cubit/config_cubit.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Starts the application initialization upon starting the app.
@@ -44,7 +47,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     // update the system ui to match the initial theme
     // (the initial light and dark theme are the same)
-    updateSystemUi(themeBloc.state.darkHarpyTheme);
+    unawaited(_initializeSystemUi(themeBloc.state.darkHarpyTheme));
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(silentErrorHandler),
@@ -75,4 +78,26 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 enum ApplicationState {
   uninitialized,
   initialized,
+}
+
+/// Changes the system ui to the initial theme for the initialization.
+Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
+  final version = app<HarpyInfo>().deviceInfo?.version.sdkInt ?? -1;
+
+  if (version >= 0 && version <= 29) {
+    // a workaround for a bug for android version 10 and below that requires the
+    // ui overlay to change the icon brightness to allow for transparency in the
+    // navigation bar
+    // see: https://github.com/robertodoering/harpy/issues/397
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+  }
+
+  updateSystemUi(initialTheme);
 }
