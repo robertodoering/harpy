@@ -7,3 +7,4 @@ Version 0.7.1
 · Added option to not hide the home tab bar when scrolling down / up
   · In settings > general
 · Improved home tab bar icon visibility
+· Fixed android 10 and below not correctly displaying system ui transparency
