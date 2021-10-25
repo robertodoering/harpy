@@ -40,7 +40,7 @@ class HomeTabBar extends StatelessWidget {
     return HarpyTabBar(
       padding: padding,
       tabs: [
-        const _DrawerButton(),
+        const _DrawerTab(),
         for (HomeTabEntry entry in model.visibleEntries)
           _mapEntryTabs(entry, cardColor),
       ],
@@ -51,22 +51,21 @@ class HomeTabBar extends StatelessWidget {
   }
 }
 
-class _DrawerButton extends StatelessWidget {
-  const _DrawerButton();
+class _DrawerTab extends StatelessWidget {
+  const _DrawerTab();
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
-    return HarpyButton.raised(
-      backgroundColor: theme.colorScheme.primary.withOpacity(.9),
-      padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-      elevation: 0,
+    return HarpyTab(
+      cardColor: harpyTheme.alternateCardColor,
+      selectedCardColor: harpyTheme.primaryColor,
+      selectedForegroundColor: harpyTheme.onPrimary,
       icon: const RotatedBox(
         quarterTurns: 1,
         child: Icon(FeatherIcons.barChart2),
       ),
-      onTap: () => DefaultTabController.of(context)!.animateTo(0),
     );
   }
 }
