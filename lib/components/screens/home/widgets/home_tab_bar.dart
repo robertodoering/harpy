@@ -18,7 +18,7 @@ class HomeTabBar extends StatelessWidget {
 
   Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
     if (entry.isDefaultType && entry.id == 'mentions') {
-      return MentionsTab(
+      return _MentionsTab(
         entry: entry,
       );
     } else {
@@ -51,6 +51,37 @@ class HomeTabBar extends StatelessWidget {
   }
 }
 
+class _MentionsTab extends StatelessWidget {
+  const _MentionsTab({
+    required this.entry,
+  });
+
+  final HomeTabEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final harpyTheme = context.watch<HarpyTheme>();
+
+    final bloc = context.watch<MentionsTimelineBloc>();
+    final state = bloc.state;
+
+    final child = HarpyTab(
+      icon: HomeTabEntryIcon(entry.icon),
+      text: entry.hasName ? Text(entry.name!) : null,
+      cardColor: harpyTheme.alternateCardColor,
+    );
+
+    if (state.hasNewMentions) {
+      return Bubbled(
+        bubble: const Bubble(),
+        child: child,
+      );
+    } else {
+      return child;
+    }
+  }
+}
+
 class _DrawerTab extends StatelessWidget {
   const _DrawerTab();
 
@@ -75,11 +106,7 @@ class _CustomizeHomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final Widget child = HarpyButton.raised(
-      elevation: 0,
-      backgroundColor: theme.colorScheme.secondary.withOpacity(.9),
+    final child = HarpyButton.flat(
       padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
       icon: const Icon(FeatherIcons.settings),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
