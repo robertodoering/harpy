@@ -116,7 +116,6 @@ export 'screens/home/widgets/home_lists_provider.dart';
 export 'screens/home/widgets/home_tab_bar.dart';
 export 'screens/home/widgets/home_timeline_filter_drawer.dart';
 export 'screens/home/widgets/home_top_padding.dart';
-export 'screens/home/widgets/mentions_tab.dart';
 export 'screens/home/widgets/new_tweets_text.dart';
 export 'screens/lists/members/bloc/list_members_bloc.dart';
 export 'screens/lists/members/list_members_screen.dart';
