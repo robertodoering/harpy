@@ -10,8 +10,7 @@ class PlaceholderBox extends StatelessWidget {
     this.heightFactor,
     this.shape = BoxShape.rectangle,
     this.alignment = Alignment.center,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final double? width;
   final double? height;

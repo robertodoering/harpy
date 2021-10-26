@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:harpy/api/api.dart';
@@ -21,10 +20,6 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
   }
 
   final String? screenName;
-
-  final TimelineService timelineService = app<TwitterApi>().timelineService;
-  final TimelineFilterPreferences? timelineFilterPreferences =
-      app<TimelineFilterPreferences>();
 
   /// Completes when the user timeline has been requested using the
   /// [RequestUserTimeline] event.

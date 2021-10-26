@@ -1,9 +1,7 @@
 import 'package:harpy/core/core.dart';
 
 class MediaPreferences {
-  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
-
-  final ConnectivityService connectivityService = app<ConnectivityService>();
+  const MediaPreferences();
 
   /// Whether the best media quality should be used.
   ///
@@ -13,54 +11,60 @@ class MediaPreferences {
   /// 0: always use best quality
   /// 1: only use best quality when using wifi
   /// 2: never use best quality
-  int get bestMediaQuality => harpyPrefs.getInt('bestMediaQuality', 2);
+  int get bestMediaQuality =>
+      app<HarpyPreferences>().getInt('bestMediaQuality', 2);
   set bestMediaQuality(int value) =>
-      harpyPrefs.setInt('bestMediaQuality', value);
+      app<HarpyPreferences>().setInt('bestMediaQuality', value);
 
   /// Whether the image height of a tweet with a single image should be
   /// constrained to a 16 / 9 aspect ratio.
-  bool get cropImage => harpyPrefs.getBool('cropImage', false);
-  set cropImage(bool value) => harpyPrefs.setBool('cropImage', value);
+  bool get cropImage => app<HarpyPreferences>().getBool('cropImage', false);
+  set cropImage(bool value) =>
+      app<HarpyPreferences>().setBool('cropImage', value);
 
   /// Whether gifs should play automatically.
   ///
   /// 0: always autoplay
   /// 1: only autoplay when using wifi
   /// 2: never autoplay
-  int get autoplayMedia =>
-      harpyPrefs.getInt('autoplayMedia', 1, lowerLimit: 0, upperLimit: 2);
-  set autoplayMedia(int value) => harpyPrefs.setInt('autoplayMedia', value);
+  int get autoplayMedia => app<HarpyPreferences>()
+      .getInt('autoplayMedia', 1, lowerLimit: 0, upperLimit: 2);
+  set autoplayMedia(int value) =>
+      app<HarpyPreferences>().setInt('autoplayMedia', value);
 
   /// Whether videos should play automatically.
   ///
   /// 0: always autoplay
   /// 1: only autoplay when using wifi
   /// 2: never autoplay
-  int get autoplayVideos =>
-      harpyPrefs.getInt('autoplayVideos', 2, lowerLimit: 0, upperLimit: 2);
-  set autoplayVideos(int value) => harpyPrefs.setInt('autoplayVideos', value);
+  int get autoplayVideos => app<HarpyPreferences>()
+      .getInt('autoplayVideos', 2, lowerLimit: 0, upperLimit: 2);
+  set autoplayVideos(int value) =>
+      app<HarpyPreferences>().setInt('autoplayVideos', value);
 
   /// Whether links should open externally instead of using a built in web view.
   bool get openLinksExternally =>
-      harpyPrefs.getBool('openLinksExternally', false);
+      app<HarpyPreferences>().getBool('openLinksExternally', false);
   set openLinksExternally(bool value) =>
-      harpyPrefs.setBool('openLinksExternally', value);
+      app<HarpyPreferences>().setBool('openLinksExternally', value);
 
   /// Whether gifs should play automatically, taking the connectivity into
   /// account.
   bool get shouldAutoplayMedia =>
-      autoplayMedia == 0 || autoplayMedia == 1 && connectivityService.wifi;
+      autoplayMedia == 0 ||
+      autoplayMedia == 1 && app<ConnectivityService>().wifi;
 
   /// Whether videos should play automatically, taking the connectivity into
   /// account.
   bool get shouldAutoplayVideos =>
-      autoplayVideos == 0 || autoplayVideos == 1 && connectivityService.wifi;
+      autoplayVideos == 0 ||
+      autoplayVideos == 1 && app<ConnectivityService>().wifi;
 
   /// Whether the best media quality should be used, taking the connectivity
   /// into account.
   bool get shouldUseBestMediaQuality =>
       bestMediaQuality == 0 ||
-      bestMediaQuality == 1 && connectivityService.wifi;
+      bestMediaQuality == 1 && app<ConnectivityService>().wifi;
 
   /// Sets all media settings to the default settings.
   void defaultSettings() {

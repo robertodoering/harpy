@@ -25,8 +25,10 @@ class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
 
     yield const LoadingTrendsLocations();
 
-    final trendsLocation =
-        await bloc.trendsService.available().handleError(silentErrorHandler);
+    final trendsLocation = await app<TwitterApi>()
+        .trendsService
+        .available()
+        .handleError(silentErrorHandler);
 
     if (trendsLocation != null) {
       final locations = <TrendsLocationData>[];

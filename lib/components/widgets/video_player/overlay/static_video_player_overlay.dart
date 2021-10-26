@@ -59,7 +59,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   void _onVideoPlayerAction(HarpyVideoPlayerAction action) {
     if (mounted) {
       setState(() {
-        // todo: cleanup this mess
+        // TODO: cleanup this mess (:
         if (action == HarpyVideoPlayerAction.play) {
           _rewindIcon = null;
           _forwardIcon = null;

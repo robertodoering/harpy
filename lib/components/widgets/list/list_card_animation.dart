@@ -41,8 +41,6 @@ class ListCardAnimation extends StatefulWidget {
 
 class _ListCardAnimationState extends State<ListCardAnimation>
     with SingleTickerProviderStateMixin<ListCardAnimation> {
-  final GeneralPreferences generalPreferences = app<GeneralPreferences>();
-
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
@@ -128,7 +126,7 @@ class _ListCardAnimationState extends State<ListCardAnimation>
 
   @override
   Widget build(BuildContext context) {
-    if (generalPreferences.performanceMode) {
+    if (app<GeneralPreferences>().performanceMode) {
       return widget.child;
     } else if (widget.buildVisibilityChangeDetector) {
       return VisibilityChangeDetector(

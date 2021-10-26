@@ -13,11 +13,6 @@ class MentionsTimelineBloc
     extends Bloc<MentionsTimelineEvent, MentionsTimelineState> {
   MentionsTimelineBloc() : super(const MentionsTimelineInitial());
 
-  final TimelineService timelineService = app<TwitterApi>().timelineService;
-
-  final TweetVisibilityPreferences? tweetVisibilityPreferences =
-      app<TweetVisibilityPreferences>();
-
   @override
   Stream<MentionsTimelineState> mapEventToState(
     MentionsTimelineEvent event,

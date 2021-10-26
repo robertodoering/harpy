@@ -23,7 +23,8 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
 
     yield RequestingTrends(location: location);
 
-    final trends = await bloc.trendsService
+    final trends = await app<TwitterApi>()
+        .trendsService
         .place(id: location.woeid)
         .handleError(silentErrorHandler);
 

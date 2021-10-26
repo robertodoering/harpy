@@ -19,8 +19,6 @@ class UserSearchBloc extends PaginatedBloc {
   final bool silentErrors;
   final Duration lock;
 
-  final UserService userService = app<TwitterApi>().userService;
-
   static UserSearchBloc of(BuildContext context) =>
       context.watch<UserSearchBloc>();
 

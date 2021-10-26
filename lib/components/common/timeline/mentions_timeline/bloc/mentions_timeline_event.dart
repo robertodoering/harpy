@@ -51,9 +51,10 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
     yield const MentionsTimelineLoading();
 
     final lastViewedMention =
-        bloc.tweetVisibilityPreferences!.lastViewedMention;
+        app<TweetVisibilityPreferences>().lastViewedMention;
 
-    final tweets = await bloc.timelineService
+    final tweets = await app<TwitterApi>()
+        .timelineService
         .mentionsTimeline(count: 200)
         .then(handleTweets)
         .handleError(twitterApiErrorHandler);
@@ -93,7 +94,7 @@ class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
     if (currentState is MentionsTimelineResult) {
       log.fine('updating viewed mentions');
 
-      bloc.tweetVisibilityPreferences!.updateLastViewedMention(
+      app<TweetVisibilityPreferences>().updateLastViewedMention(
         currentState.tweets.first,
       );
 

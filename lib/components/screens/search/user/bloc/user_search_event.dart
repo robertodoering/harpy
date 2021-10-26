@@ -46,7 +46,8 @@ class SearchUsers extends LoadPaginatedData {
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
 
-    var users = await bloc.userService
+    var users = await app<TwitterApi>()
+        .userService
         .usersSearch(
           q: query!,
           count: 20,

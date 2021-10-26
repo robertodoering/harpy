@@ -1,5 +1,5 @@
 import 'package:device_info/device_info.dart';
-import 'package:logging/logging.dart';
+import 'package:harpy/core/core.dart';
 import 'package:package_info/package_info.dart';
 
 /// Provides application and device information using the `package_info` and
@@ -7,9 +7,7 @@ import 'package:package_info/package_info.dart';
 ///
 /// See https://pub.dev/packages/package_info and
 /// https://pub.dev/packages/device_info.
-class HarpyInfo {
-  static final Logger _log = Logger('HarpyInfo');
-
+class HarpyInfo with HarpyLogger {
   /// Application metadata.
   PackageInfo? packageInfo;
 
@@ -19,7 +17,7 @@ class HarpyInfo {
   AndroidDeviceInfo? deviceInfo;
 
   Future<void> initialize() async {
-    await Future.wait<void>(<Future<void>>[
+    await Future.wait([
       _initPackageInfo(),
       _initDeviceInfo(),
     ]);
@@ -29,7 +27,7 @@ class HarpyInfo {
     try {
       packageInfo = await PackageInfo.fromPlatform();
     } catch (e, st) {
-      _log.warning('error while loading package info', e, st);
+      log.warning('error while loading package info', e, st);
     }
   }
 
@@ -37,7 +35,7 @@ class HarpyInfo {
     try {
       deviceInfo = await DeviceInfoPlugin().androidInfo;
     } catch (e, st) {
-      _log.warning('error while loading device info', e, st);
+      log.warning('error while loading device info', e, st);
     }
   }
 }

@@ -50,7 +50,8 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
     String? maxId;
 
-    final tweets = await bloc.timelineService
+    final tweets = await app<TwitterApi>()
+        .timelineService
         .homeTimeline(
           count: 200,
           sinceId: _sinceId(lastVisibleTweet, keepTimelinePosition),
@@ -142,7 +143,8 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
       String? newMaxId;
       var canRequestOlder = false;
 
-      final tweets = await bloc.timelineService
+      final tweets = await app<TwitterApi>()
+          .timelineService
           .homeTimeline(
             count: 200,
             maxId: maxId,
@@ -224,7 +226,8 @@ class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
     String? maxId;
 
-    final tweets = await bloc.timelineService
+    final tweets = await app<TwitterApi>()
+        .timelineService
         .homeTimeline(
           count: 200,
           excludeReplies: timelineFilter?.excludesReplies ??

@@ -1,6 +1,5 @@
 part of 'tweet_bloc.dart';
 
-@immutable
 class TweetState extends Equatable {
   const TweetState({
     this.isFavoriting = false,

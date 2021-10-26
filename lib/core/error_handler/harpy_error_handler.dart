@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/helper/network_error_handler.dart';
 import 'package:harpy/core/core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -31,7 +32,7 @@ class HarpyErrorHandler with HarpyLogger {
         if (kReleaseMode && app<AppConfig>().hasSentryDsn) {
           await SentryFlutter.init(
             (options) => options.dsn = app<AppConfig>().sentryDsn,
-          );
+          ).handleError(silentErrorHandler);
         }
 
         runApp(child);
@@ -70,7 +71,8 @@ class HarpyErrorHandler with HarpyLogger {
       log.info('reporting error to sentry');
 
       try {
-        await Sentry.captureException(error, stackTrace: stackTrace);
+        await Sentry.captureException(error, stackTrace: stackTrace)
+            .handleError(silentErrorHandler);
         log.fine('error reported');
       } catch (e, st) {
         log.warning('error while reporting error', e, st);

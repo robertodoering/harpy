@@ -29,7 +29,8 @@ class FindTrendsLocations extends FindTrendsLocationsEvent with HarpyLogger {
 
     yield const FindTrendsLocationsLoading();
 
-    final closest = await bloc.trendsService
+    final closest = await app<TwitterApi>()
+        .trendsService
         .closest(lat: latitude, long: longitude)
         .handleError(silentErrorHandler);
 

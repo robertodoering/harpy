@@ -20,8 +20,6 @@ class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState>
 
   final String? listId;
 
-  final ListsService listsService = app<TwitterApi>().listsService;
-
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderListTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();

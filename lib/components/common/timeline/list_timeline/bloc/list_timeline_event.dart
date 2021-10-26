@@ -22,7 +22,8 @@ class RequestListTimeline extends ListTimelineEvent with HarpyLogger {
 
     yield const ListTimelineLoading();
 
-    final tweets = await bloc.listsService
+    final tweets = await app<TwitterApi>()
+        .listsService
         .statuses(listId: bloc.listId, count: 200)
         .then(handleTweets)
         .handleError(twitterApiErrorHandler);
@@ -80,7 +81,8 @@ class RequestOlderListTimeline extends ListTimelineEvent with HarpyLogger {
 
       yield ListTimelineLoadingOlder(oldResult: currentState);
 
-      final tweets = await bloc.listsService
+      final tweets = await app<TwitterApi>()
+          .listsService
           .statuses(listId: bloc.listId, count: 200, maxId: maxId)
           .then(handleTweets)
           .handleError(twitterApiErrorHandler);

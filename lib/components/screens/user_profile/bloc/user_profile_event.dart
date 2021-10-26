@@ -1,6 +1,5 @@
 part of 'user_profile_bloc.dart';
 
-@immutable
 abstract class UserProfileEvent {
   const UserProfileEvent();
 
@@ -54,7 +53,8 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
       await Future.wait([
         // user data
         if (userData == null && _handle != null)
-          bloc.userService
+          app<TwitterApi>()
+              .userService
               .usersShow(screenName: _handle)
               .then((user) => UserData.fromUser(user))
               .then((user) => userData = user)
@@ -63,7 +63,8 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
         // friendship lookup for the relationship status (following /
         // followed_by)
         if (connections == null && _handle != null)
-          bloc.userService
+          app<TwitterApi>()
+              .userService
               .friendshipsLookup(screenNames: [_handle!])
               .then((response) => response.length == 1 ? response.first : null)
               .then<void>((friendship) => connections = friendship?.connections)
@@ -101,7 +102,9 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsCreate(userId: bloc.user!.id);
+      await app<TwitterApi>()
+          .userService
+          .friendshipsCreate(userId: bloc.user!.id);
       log.fine('successfully followed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
@@ -127,7 +130,9 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
     yield InitializedUserState();
 
     try {
-      await bloc.userService.friendshipsDestroy(userId: bloc.user!.id);
+      await app<TwitterApi>()
+          .userService
+          .friendshipsDestroy(userId: bloc.user!.id);
       log.fine('successfully unfollowed @${bloc.user!.handle}');
     } catch (e) {
       twitterApiErrorHandler(e);
@@ -159,7 +164,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     final translationService = app<TranslationService>();
 
     final translateLanguage =
-        bloc.languagePreferences.activeTranslateLanguage(locale.languageCode);
+        app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
     yield TranslatingDescriptionState();
 

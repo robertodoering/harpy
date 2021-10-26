@@ -19,8 +19,6 @@ class LikesTimelineBloc extends Bloc<LikesTimelineEvent, LikesTimelineState>
 
   final String? screenName;
 
-  final TweetService tweetService = app<TwitterApi>().tweetService;
-
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderLikesTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();

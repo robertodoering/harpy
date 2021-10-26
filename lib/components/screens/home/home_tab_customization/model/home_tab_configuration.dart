@@ -1,11 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/components/components.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'home_tab_configuration.g.dart';
 
-@immutable
 @JsonSerializable(explicitToJson: true)
 class HomeTabConfiguration extends Equatable {
   const HomeTabConfiguration({

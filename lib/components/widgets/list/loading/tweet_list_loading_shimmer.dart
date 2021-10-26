@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 
 /// A loading shimmer for a tweet list with placeholder tweet cards.
 class TweetListLoadingSliver extends StatelessWidget {
-  const TweetListLoadingSliver({
-    Key? key,
-  }) : super(key: key);
+  const TweetListLoadingSliver();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,7 @@ class TweetListLoadingSliver extends StatelessWidget {
 }
 
 class TweetPlaceholder extends StatelessWidget {
-  const TweetPlaceholder({
-    Key? key,
-  }) : super(key: key);
+  const TweetPlaceholder();
 
   @override
   Widget build(BuildContext context) {

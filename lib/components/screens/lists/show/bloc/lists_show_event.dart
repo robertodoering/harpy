@@ -25,9 +25,9 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
     PaginatedTwitterLists? paginatedOwnerships;
     PaginatedTwitterLists? paginatedSubscriptions;
 
-    final responses = await Future.wait<PaginatedTwitterLists>([
-      bloc.listsService.ownerships(userId: bloc.userId),
-      bloc.listsService.subscriptions(userId: bloc.userId),
+    final responses = await Future.wait([
+      app<TwitterApi>().listsService.ownerships(userId: bloc.userId),
+      app<TwitterApi>().listsService.subscriptions(userId: bloc.userId),
     ]).handleError(twitterApiErrorHandler);
 
     if (responses != null && responses.length == 2) {
@@ -98,7 +98,8 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final paginatedOwnerships = await bloc.listsService
+      final paginatedOwnerships = await app<TwitterApi>()
+          .listsService
           .ownerships(
             userId: bloc.userId,
             cursor: currentState.ownershipsCursor,
@@ -152,7 +153,8 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
         subscriptionsCursor: currentState.subscriptionsCursor,
       );
 
-      final paginatedSubscriptions = await bloc.listsService
+      final paginatedSubscriptions = await app<TwitterApi>()
+          .listsService
           .subscriptions(
             userId: bloc.userId,
             cursor: currentState.subscriptionsCursor,

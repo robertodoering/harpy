@@ -8,8 +8,7 @@ class SelectFindMethodContent extends StatelessWidget {
   const SelectFindMethodContent({
     required this.onSelectNearLocation,
     required this.onSelectCustomLocation,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final VoidCallback onSelectNearLocation;
   final VoidCallback onSelectCustomLocation;

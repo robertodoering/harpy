@@ -33,12 +33,13 @@ class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
 
     final filter = timelineFilter ??
         TimelineFilter.fromJsonString(
-          bloc.timelineFilterPreferences!.userTimelineFilter,
+          app<TimelineFilterPreferences>().userTimelineFilter,
         );
 
     String? maxId;
 
-    final tweets = await bloc.timelineService
+    final tweets = await app<TwitterApi>()
+        .timelineService
         .userTimeline(
           screenName: bloc.screenName,
           count: 200,
@@ -122,7 +123,8 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
       String? newMaxId;
       var canRequestOlder = false;
 
-      final tweets = await bloc.timelineService
+      final tweets = await app<TwitterApi>()
+          .timelineService
           .userTimeline(
             screenName: bloc.screenName,
             count: 200,
@@ -186,7 +188,7 @@ class FilterUserTimeline extends UserTimelineEvent with HarpyLogger {
       final encodedFilter = jsonEncode(timelineFilter.toJson());
       log.finer('saving filter: $encodedFilter');
 
-      bloc.timelineFilterPreferences!.userTimelineFilter = encodedFilter;
+      app<TimelineFilterPreferences>().userTimelineFilter = encodedFilter;
     } catch (e, st) {
       log.warning('unable to encode timeline filter', e, st);
     }

@@ -22,8 +22,6 @@ class ListsShowBloc extends Bloc<ListsShowEvent, ListsShowState> {
   /// When `null`, the authenticated user's lists will be returned.
   final String? userId;
 
-  final ListsService listsService = app<TwitterApi>().listsService;
-
   @override
   Stream<ListsShowState> mapEventToState(
     ListsShowEvent event,

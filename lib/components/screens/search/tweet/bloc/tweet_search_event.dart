@@ -100,7 +100,8 @@ class SearchTweets extends TweetSearchEvent {
 
       yield TweetSearchLoading(query: query);
 
-      final tweets = await bloc.searchService
+      final tweets = await app<TwitterApi>()
+          .tweetSearchService
           .searchTweets(
             q: query,
             count: 100,

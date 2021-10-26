@@ -5,7 +5,6 @@ part of 'post_tweet_bloc.dart';
 /// The attached media (if any) is uploaded separately before posting the tweet.
 /// If the attached media is a video, it is converted beforehand to comply with
 /// the twitter requirements.
-@immutable
 class PostTweetEvent extends Equatable with HarpyLogger {
   const PostTweetEvent(this.text);
 
@@ -54,7 +53,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
           type: bloc.composeBloc.state.type,
         );
 
-        final mediaId = await bloc.mediaUploadService!.upload(
+        final mediaId = await app<MediaUploadService>().upload(
           mediaFiles[i],
           type: bloc.composeBloc.state.type,
         );
@@ -102,7 +101,8 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     // additional info that will be displayed in the dialog (e.g. error message)
     String? additionalInfo;
 
-    final sentStatus = await bloc.tweetService
+    final sentStatus = await app<TwitterApi>()
+        .tweetService
         .update(
           status: text,
           mediaIds: mediaIds,

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Builds a [WidgetsBindingObserver] that listens to system brightness changes
-/// and provides decendents with the current system brightness.
+/// and provides descendants with the current system brightness with a
+/// [Provider<Brightness>].
 ///
-/// We use this instead of [MediaQuery.platformBrightnessOf] to adapt on system
+/// We use this instead of [MediaQuery.platformBrightnessOf] to react on system
 /// brightness changes while the app is running.
 class SystemBrightnessObserver extends StatefulWidget {
   const SystemBrightnessObserver({

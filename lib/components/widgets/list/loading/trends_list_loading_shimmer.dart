@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 
 /// A loading shimmer for a trends list with placeholder trend cards.
 class TrendsListLoadingSliver extends StatelessWidget {
-  const TrendsListLoadingSliver({
-    Key? key,
-  }) : super(key: key);
+  const TrendsListLoadingSliver();
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +33,7 @@ class TrendsListLoadingSliver extends StatelessWidget {
 }
 
 class TrendsPlaceholder extends StatelessWidget {
-  const TrendsPlaceholder({
-    Key? key,
-  }) : super(key: key);
+  const TrendsPlaceholder();
 
   @override
   Widget build(BuildContext context) {

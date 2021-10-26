@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -23,9 +22,6 @@ class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
   }
 
   final ComposeBloc composeBloc;
-
-  final TweetService tweetService = app<TwitterApi>().tweetService;
-  final MediaUploadService? mediaUploadService = app<MediaUploadService>();
 
   @override
   Stream<PostTweetState> mapEventToState(

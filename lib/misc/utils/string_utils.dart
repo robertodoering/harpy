@@ -40,7 +40,7 @@ String prettyPrintDuration(Duration? duration) {
 
 /// Contains html entities that are returned in twitter text responses with
 /// their corresponding character.
-const Map<String, String> _twitterHtmlEntities = <String, String>{
+const Map<String, String> _twitterHtmlEntities = {
   '&amp;': '&',
   '&lt;': '<',
   '&gt;': '>',
@@ -75,7 +75,7 @@ const List<int> _unicodeWhitespaces = [
   0xFEFF, // ZERO WIDTH NO_BREAK SPACE
 ];
 
-/// Returns the [source] without the first leading or trailing whitespace.
+/// Returns the [value] without the first leading or trailing whitespace.
 ///
 /// Similar to [String.trim()] except it only removes one of the starting and
 /// one of the trailing whitespace if any are present.
@@ -85,23 +85,23 @@ const List<int> _unicodeWhitespaces = [
 ///
 /// [_unicodeWhitespaces] includes a list of trimmed characters.
 String? trimOne(
-  String? source, {
-  bool start = true,
+  String? value, {
+  bool begin = true,
   bool end = true,
 }) {
-  if (source != null && source.isNotEmpty == true) {
-    if (start && _unicodeWhitespaces.contains(source.codeUnitAt(0))) {
-      source = source.substring(1, source.length);
+  if (value != null && value.isNotEmpty == true) {
+    if (begin && _unicodeWhitespaces.contains(value.codeUnitAt(0))) {
+      value = value.substring(1, value.length);
     }
 
     if (end &&
-        source.isNotEmpty &&
-        _unicodeWhitespaces.contains(source.codeUnitAt(source.length - 1))) {
-      source = source.substring(0, source.length - 1);
+        value.isNotEmpty &&
+        _unicodeWhitespaces.contains(value.codeUnitAt(value.length - 1))) {
+      value = value.substring(0, value.length - 1);
     }
   }
 
-  return source;
+  return value;
 }
 
 /// Returns a formatted String displaying the difference of the tweet creation
@@ -181,14 +181,14 @@ String? removePrependedSymbol(String? value, List<String> symbols) {
   return value;
 }
 
-/// Returns a display string for the color value.
+/// Returns a display string for a 32 bit [color] value in ARGB format.
 ///
 /// When [displayOpacity] is `true`, the returned string will include the
 /// opacity as a percentage.
 ///
-/// If [displayOpacity] is `true` and the opacity is 0%, the text 'trasparent'
+/// If [displayOpacity] is `true` and the opacity is 0%, the text 'transparent'
 /// is returned instead.
-String colorValueToHex(int color, {bool displayOpacity = true}) {
+String colorValueToDisplayHex(int color, {bool displayOpacity = true}) {
   final a = (color >> 24) & 0xff;
 
   final rgb = [

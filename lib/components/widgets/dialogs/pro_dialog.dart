@@ -25,7 +25,7 @@ class _ProDialogState extends State<ProDialog> {
   void initState() {
     super.initState();
 
-    // todo: link to harpy pro
+    // TODO: link to harpy pro
     _recognizer = TapGestureRecognizer()
       ..onTap = () => app<MessageService>().show('coming soon!');
   }

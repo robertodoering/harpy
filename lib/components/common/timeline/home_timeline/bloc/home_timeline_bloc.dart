@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:harpy/api/api.dart';
@@ -15,8 +14,6 @@ part 'home_timeline_state.dart';
 class HomeTimelineBloc extends Bloc<HomeTimelineEvent, HomeTimelineState>
     with RequestLock {
   HomeTimelineBloc() : super(const HomeTimelineInitial());
-
-  final TimelineService timelineService = app<TwitterApi>().timelineService;
 
   /// Completes when the home timeline has been refreshed using the
   /// [RefreshHomeTimeline] event.

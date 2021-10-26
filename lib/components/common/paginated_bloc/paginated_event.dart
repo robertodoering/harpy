@@ -1,6 +1,5 @@
 part of 'paginated_bloc.dart';
 
-@immutable
 abstract class PaginatedEvent {
   const PaginatedEvent();
 

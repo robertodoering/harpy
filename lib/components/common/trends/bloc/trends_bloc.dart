@@ -14,8 +14,6 @@ part 'trends_state.dart';
 class TrendsBloc extends Bloc<TrendsEvent, TrendsState> {
   TrendsBloc() : super(const TrendsInitial());
 
-  final trendsService = app<TwitterApi>().trendsService;
-
   final trendsPreferences = app<TrendsPreferences>();
 
   @override

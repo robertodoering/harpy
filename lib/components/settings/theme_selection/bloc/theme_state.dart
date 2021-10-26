@@ -1,6 +1,5 @@
 part of 'theme_bloc.dart';
 
-@immutable
 class ThemeState extends Equatable {
   ThemeState({
     required this.lightThemeData,

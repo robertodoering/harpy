@@ -17,7 +17,7 @@ class CustomThemeSecondaryColor extends StatelessWidget {
         color: cubit.harpyTheme.secondaryColor,
         title: const Text('secondary'),
         subtitle: Text(
-          colorValueToHex(
+          colorValueToDisplayHex(
             cubit.harpyTheme.secondaryColor.value,
             displayOpacity: false,
           ),

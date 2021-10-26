@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'timeline_filter.g.dart';
 
-@immutable
 @JsonSerializable()
 class TimelineFilter extends Equatable {
   const TimelineFilter({

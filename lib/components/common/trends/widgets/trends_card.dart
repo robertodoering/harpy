@@ -8,9 +8,7 @@ import 'package:provider/provider.dart';
 /// Displays the location of currently displayed trends by the parent
 /// [TrendsBloc] and allows for the user to configure the trend location.
 class TrendsCard extends StatelessWidget {
-  const TrendsCard({
-    Key? key,
-  }) : super(key: key);
+  const TrendsCard();
 
   @override
   Widget build(BuildContext context) {

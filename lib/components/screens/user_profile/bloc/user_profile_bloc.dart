@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dart_twitter_api/api/users/user_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,10 +23,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   ///
   /// Set with an [InitializeUserEvent].
   UserData? user;
-
-  final UserService userService = app<TwitterApi>().userService;
-
-  final LanguagePreferences languagePreferences = app<LanguagePreferences>();
 
   static UserProfileBloc of(BuildContext context) =>
       context.watch<UserProfileBloc>();

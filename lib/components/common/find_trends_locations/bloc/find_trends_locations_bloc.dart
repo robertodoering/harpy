@@ -17,8 +17,6 @@ class FindTrendsLocationsBloc
     extends Bloc<FindTrendsLocationsEvent, FindTrendsLocationsState> {
   FindTrendsLocationsBloc() : super(const FindTrendsLocationsInitial());
 
-  final TrendsService trendsService = app<TwitterApi>().trendsService;
-
   /// Validator for a text field that verifies the [value] is a valid
   /// latitude value.
   ///

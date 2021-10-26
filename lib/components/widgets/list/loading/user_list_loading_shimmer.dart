@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 
 /// A loading shimmer for a user list with placeholder user cards.
 class UserListLoadingSliver extends StatelessWidget {
-  const UserListLoadingSliver({
-    Key? key,
-  }) : super(key: key);
+  const UserListLoadingSliver();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,7 @@ class UserListLoadingSliver extends StatelessWidget {
 }
 
 class UserPlaceholder extends StatelessWidget {
-  const UserPlaceholder({
-    Key? key,
-  }) : super(key: key);
+  const UserPlaceholder();
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 part of 'tweet_bloc.dart';
 
-@immutable
 abstract class TweetEvent {
   const TweetEvent();
 
@@ -31,7 +30,7 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
     yield bloc.state.copyWith(isRetweeting: true);
 
     try {
-      await bloc.tweetService.retweet(id: bloc.tweet.id);
+      await app<TwitterApi>().tweetService.retweet(id: bloc.tweet.id);
 
       log.fine('retweeted ${bloc.tweet.id}');
 
@@ -82,7 +81,7 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
     yield bloc.state.copyWith(isRetweeting: true);
 
     try {
-      await bloc.tweetService.unretweet(id: bloc.tweet.id);
+      await app<TwitterApi>().tweetService.unretweet(id: bloc.tweet.id);
 
       log.fine('un-retweeted ${bloc.tweet.id}');
 
@@ -131,7 +130,7 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
     yield bloc.state.copyWith(isFavoriting: true);
 
     try {
-      await bloc.tweetService.createFavorite(id: bloc.tweet.id);
+      await app<TwitterApi>().tweetService.createFavorite(id: bloc.tweet.id);
 
       log.fine('favorited ${bloc.tweet.id}');
 
@@ -180,7 +179,7 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
     yield bloc.state.copyWith(isFavoriting: true);
 
     try {
-      await bloc.tweetService.destroyFavorite(id: bloc.tweet.id);
+      await app<TwitterApi>().tweetService.destroyFavorite(id: bloc.tweet.id);
 
       log.fine('un-favorited ${bloc.tweet.id}');
 
@@ -217,12 +216,13 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
 
   @override
   Stream<TweetState> applyAsync({
-    TweetState? currentState,
-    TweetBloc? bloc,
+    required TweetState currentState,
+    required TweetBloc bloc,
   }) async* {
     log.fine('deleting tweet');
 
-    final tweet = await bloc!.tweetService
+    final tweet = await app<TwitterApi>()
+        .tweetService
         .destroy(id: bloc.tweet.id, trimUser: true)
         .handleError(silentErrorHandler);
 
@@ -249,16 +249,15 @@ class TranslateTweet extends TweetEvent {
   }) async* {
     yield bloc.state.copyWith(isTranslating: true);
 
-    final translateLanguage = bloc.languagePreferences.activeTranslateLanguage(
-      locale.languageCode,
-    );
+    final translateLanguage =
+        app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
     final translatable = bloc.tweet.translatable(translateLanguage);
 
     Translation? translation;
 
     if (translatable) {
-      translation = await bloc.translationService
+      translation = await app<TranslationService>()
           .translate(text: bloc.tweet.visibleText, to: translateLanguage)
           .handleError(silentErrorHandler);
     }
@@ -280,7 +279,7 @@ abstract class MediaActionEvent extends TweetEvent {
   });
 
   /// The tweet that has the action for the media.
-  // todo: remove
+  // TODO: remove
   final TweetData tweet;
 
   /// When the tweet media is of type image, the index determines which image

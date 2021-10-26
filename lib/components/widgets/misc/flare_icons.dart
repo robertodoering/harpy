@@ -11,22 +11,19 @@ class FlareIcon extends StatelessWidget {
     this.offset = Offset.zero,
     this.animation,
     this.color,
-    Key? key,
-  }) : super(key: key);
+  });
 
   /// An animated favorite icon.
   const FlareIcon.favorite({
     required String animation,
     double size = 18,
     Color? color,
-    Key? key,
   }) : this(
           fileName: '$_path/favorite.flr',
           size: size,
           sizeDifference: -0.5,
           animation: animation,
           color: color,
-          key: key,
         );
 
   /// An animated shining star icon.

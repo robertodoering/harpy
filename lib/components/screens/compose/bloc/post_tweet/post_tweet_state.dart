@@ -1,6 +1,5 @@
 part of 'post_tweet_bloc.dart';
 
-@immutable
 abstract class PostTweetState extends Equatable {
   const PostTweetState({
     this.message,

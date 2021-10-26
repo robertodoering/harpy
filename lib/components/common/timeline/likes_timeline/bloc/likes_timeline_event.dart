@@ -27,7 +27,8 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 
     String? maxId;
 
-    final tweets = await bloc.tweetService
+    final tweets = await app<TwitterApi>()
+        .tweetService
         .listFavorites(
           screenName: bloc.screenName,
           count: 200,
@@ -106,7 +107,8 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
       String? newMaxId;
       var canRequestOlder = false;
 
-      final tweets = await bloc.tweetService
+      final tweets = await app<TwitterApi>()
+          .tweetService
           .listFavorites(
             screenName: bloc.screenName,
             count: 200,

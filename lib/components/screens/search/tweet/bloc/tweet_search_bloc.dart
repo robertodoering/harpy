@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dart_twitter_api/api/tweets/tweet_search_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:harpy/api/api.dart';
@@ -20,8 +19,6 @@ class TweetSearchBloc extends Bloc<TweetSearchEvent, TweetSearchState> {
       add(SearchTweets(customQuery: initialSearchQuery));
     }
   }
-
-  final TweetSearchService searchService = app<TwitterApi>().tweetSearchService;
 
   @override
   Stream<TweetSearchState> mapEventToState(

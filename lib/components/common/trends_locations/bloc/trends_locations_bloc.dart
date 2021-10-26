@@ -15,8 +15,6 @@ class TrendsLocationsBloc
     extends Bloc<TrendsLocationsEvent, TrendsLocationsState> with HarpyLogger {
   TrendsLocationsBloc() : super(const TrendsLocationsNotLoaded());
 
-  final TrendsService trendsService = app<TwitterApi>().trendsService;
-
   @override
   Stream<TrendsLocationsState> mapEventToState(
     TrendsLocationsEvent event,

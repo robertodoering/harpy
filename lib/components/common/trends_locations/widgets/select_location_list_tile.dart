@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 /// Used to select the location that is used by the [TrendsBloc] to show
@@ -13,9 +12,7 @@ import 'package:provider/provider.dart';
 ///
 /// Only countries are shown to keep the list small.
 class SelectLocationListTile extends StatelessWidget {
-  const SelectLocationListTile({
-    Key? key,
-  }) : super(key: key);
+  const SelectLocationListTile();
 
   Widget _buildTrailing(TrendsLocationsBloc bloc, TrendsLocationsState state) {
     Widget child;
@@ -75,7 +72,7 @@ class SelectLocationListTile extends StatelessWidget {
       popOnOpen: true,
       onChanged: (location) {
         if (location != null) {
-          unawaited(HapticFeedback.lightImpact());
+          HapticFeedback.lightImpact();
           trendsBloc.add(UpdateTrendsLocation(location: location));
         }
       },

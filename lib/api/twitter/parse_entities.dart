@@ -6,7 +6,7 @@ EntitiesData parseEntities(String text) {
   final hashtags = <HashtagData>[];
   final userMentions = <UserMentionData>[];
 
-  // Search for hashtags in text, ensure we correctly remove the
+  // search for hashtags in text, ensure we correctly remove the
   //  start (valid characters are # and ＃)
   for (final match in hashtagRegex.allMatches(text)) {
     final hashtag = match.group(0);
@@ -20,7 +20,7 @@ EntitiesData parseEntities(String text) {
     }
   }
 
-  // Search for mentions in text
+  // search for mentions in text
   for (final match in mentionRegex.allMatches(text)) {
     final mention = match.group(0);
 

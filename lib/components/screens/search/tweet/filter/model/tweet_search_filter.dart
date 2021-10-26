@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 /// A filter for the twitter standard tweet search api as defined here:
 /// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/guides/standard-operators.
-@immutable
 class TweetSearchFilter extends Equatable {
   const TweetSearchFilter({
     this.tweetAuthor = '',

@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/core/core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'trends_location_data.g.dart';
 
-@immutable
 @JsonSerializable()
 class TrendsLocationData extends Equatable {
   const TrendsLocationData({
