@@ -25,17 +25,14 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
             customThemesData: const [],
           ),
         ) {
+    on<ThemeEvent>((event, emit) => event.handle(this, emit));
+
     configCubit.stream.listen((config) {
       add(UpdateThemeConfig(config: config));
     });
   }
 
   final ConfigCubit configCubit;
-
-  @override
-  Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
-    yield* event.applyAsync(state: state, bloc: this);
-  }
 }
 
 /// Updates the system ui to match the [theme].

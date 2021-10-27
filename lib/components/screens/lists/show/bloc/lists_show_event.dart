@@ -3,10 +3,7 @@ part of 'lists_show_bloc.dart';
 abstract class ListsShowEvent {
   const ListsShowEvent();
 
-  Stream<ListsShowState> applyAsync({
-    required ListsShowState currentState,
-    required ListsShowBloc bloc,
-  });
+  Future<void> handle(ListsShowBloc bloc, Emitter emit);
 }
 
 /// Returns the first 20 owned and 20 subscribed lists.
@@ -14,13 +11,10 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
   const ShowLists();
 
   @override
-  Stream<ListsShowState> applyAsync({
-    required ListsShowState currentState,
-    required ListsShowBloc bloc,
-  }) async* {
+  Future<void> handle(ListsShowBloc bloc, Emitter emit) async {
     log.fine('loading lists');
 
-    yield const ListsInitialLoading();
+    emit(const ListsInitialLoading());
 
     PaginatedTwitterLists? paginatedOwnerships;
     PaginatedTwitterLists? paginatedSubscriptions;
@@ -63,17 +57,19 @@ class ShowLists extends ListsShowEvent with HarpyLogger {
       );
 
       if (ownerships.isNotEmpty || subscriptions.isNotEmpty) {
-        yield ListsResult(
-          ownerships: ownerships,
-          subscriptions: subscriptions,
-          ownershipsCursor: ownershipsCursor,
-          subscriptionsCursor: subscriptionsCursor,
+        emit(
+          ListsResult(
+            ownerships: ownerships,
+            subscriptions: subscriptions,
+            ownershipsCursor: ownershipsCursor,
+            subscriptionsCursor: subscriptionsCursor,
+          ),
         );
       } else {
-        yield const ListsNoResult();
+        emit(const ListsNoResult());
       }
     } else {
-      yield const ListsFailure();
+      emit(const ListsFailure());
     }
   }
 }
@@ -86,23 +82,24 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
   const LoadMoreOwnerships();
 
   @override
-  Stream<ListsShowState> applyAsync({
-    required ListsShowState currentState,
-    required ListsShowBloc bloc,
-  }) async* {
-    if (currentState is ListsResult && currentState.hasMoreOwnerships) {
-      yield ListsLoadingMore.loadingOwnerships(
-        ownerships: currentState.ownerships,
-        subscriptions: currentState.subscriptions,
-        ownershipsCursor: currentState.ownershipsCursor,
-        subscriptionsCursor: currentState.subscriptionsCursor,
+  Future<void> handle(ListsShowBloc bloc, Emitter emit) async {
+    final state = bloc.state;
+
+    if (state is ListsResult && state.hasMoreOwnerships) {
+      emit(
+        ListsLoadingMore.loadingOwnerships(
+          ownerships: state.ownerships,
+          subscriptions: state.subscriptions,
+          ownershipsCursor: state.ownershipsCursor,
+          subscriptionsCursor: state.subscriptionsCursor,
+        ),
       );
 
       final paginatedOwnerships = await app<TwitterApi>()
           .listsService
           .ownerships(
             userId: bloc.userId,
-            cursor: currentState.ownershipsCursor,
+            cursor: state.ownershipsCursor,
           )
           .handleError(twitterApiErrorHandler);
 
@@ -111,22 +108,26 @@ class LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
             .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final ownerships = List<TwitterListData>.of(
-          currentState.ownerships.followedBy(newOwnerships),
+        final ownerships = List.of(
+          state.ownerships.followedBy(newOwnerships),
         );
 
-        yield ListsResult(
-          ownerships: ownerships,
-          subscriptions: currentState.subscriptions,
-          ownershipsCursor: paginatedOwnerships.nextCursorStr,
-          subscriptionsCursor: currentState.subscriptionsCursor,
+        emit(
+          ListsResult(
+            ownerships: ownerships,
+            subscriptions: state.subscriptions,
+            ownershipsCursor: paginatedOwnerships.nextCursorStr,
+            subscriptionsCursor: state.subscriptionsCursor,
+          ),
         );
       } else {
-        yield ListsResult(
-          ownerships: currentState.ownerships,
-          subscriptions: currentState.subscriptions,
-          ownershipsCursor: null,
-          subscriptionsCursor: currentState.subscriptionsCursor,
+        emit(
+          ListsResult(
+            ownerships: state.ownerships,
+            subscriptions: state.subscriptions,
+            ownershipsCursor: null,
+            subscriptionsCursor: state.subscriptionsCursor,
+          ),
         );
       }
     }
@@ -141,23 +142,24 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
   const LoadMoreSubscriptions();
 
   @override
-  Stream<ListsShowState> applyAsync({
-    required ListsShowState currentState,
-    required ListsShowBloc bloc,
-  }) async* {
-    if (currentState is ListsResult && currentState.hasMoreSubscriptions) {
-      yield ListsLoadingMore.loadingSubscriptions(
-        ownerships: currentState.ownerships,
-        subscriptions: currentState.subscriptions,
-        ownershipsCursor: currentState.ownershipsCursor,
-        subscriptionsCursor: currentState.subscriptionsCursor,
+  Future<void> handle(ListsShowBloc bloc, Emitter emit) async {
+    final state = bloc.state;
+
+    if (state is ListsResult && state.hasMoreSubscriptions) {
+      emit(
+        ListsLoadingMore.loadingSubscriptions(
+          ownerships: state.ownerships,
+          subscriptions: state.subscriptions,
+          ownershipsCursor: state.ownershipsCursor,
+          subscriptionsCursor: state.subscriptionsCursor,
+        ),
       );
 
       final paginatedSubscriptions = await app<TwitterApi>()
           .listsService
           .subscriptions(
             userId: bloc.userId,
-            cursor: currentState.subscriptionsCursor,
+            cursor: state.subscriptionsCursor,
           )
           .handleError(twitterApiErrorHandler);
 
@@ -166,22 +168,26 @@ class LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
             .map((list) => TwitterListData.fromTwitterList(list))
             .toList();
 
-        final subscriptions = List<TwitterListData>.of(
-          currentState.subscriptions.followedBy(newSubscriptions),
+        final subscriptions = List.of(
+          state.subscriptions.followedBy(newSubscriptions),
         );
 
-        yield ListsResult(
-          ownerships: currentState.ownerships,
-          subscriptions: subscriptions,
-          ownershipsCursor: currentState.ownershipsCursor,
-          subscriptionsCursor: paginatedSubscriptions.nextCursorStr,
+        emit(
+          ListsResult(
+            ownerships: state.ownerships,
+            subscriptions: subscriptions,
+            ownershipsCursor: state.ownershipsCursor,
+            subscriptionsCursor: paginatedSubscriptions.nextCursorStr,
+          ),
         );
       } else {
-        yield ListsResult(
-          ownerships: currentState.ownerships,
-          subscriptions: currentState.subscriptions,
-          ownershipsCursor: currentState.ownershipsCursor,
-          subscriptionsCursor: null,
+        emit(
+          ListsResult(
+            ownerships: state.ownerships,
+            subscriptions: state.subscriptions,
+            ownershipsCursor: state.ownershipsCursor,
+            subscriptionsCursor: null,
+          ),
         );
       }
     }

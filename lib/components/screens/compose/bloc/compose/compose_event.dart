@@ -1,21 +1,15 @@
 part of 'compose_bloc.dart';
 
-abstract class ComposeEvent extends Equatable {
+abstract class ComposeEvent {
   const ComposeEvent();
 
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  });
+  Future<void> handle(ComposeBloc bloc, Emitter emit);
 }
 
 /// Opens a [FilePicker] to add up to 4 images, one gif or one video to the
 /// composed tweet.
 class PickTweetMediaEvent extends ComposeEvent {
   const PickTweetMediaEvent();
-
-  @override
-  List<Object> get props => <Object>[];
 
   bool _pickedImages(FilePickerResult result) {
     return result.files.every(
@@ -52,10 +46,7 @@ class PickTweetMediaEvent extends ComposeEvent {
   }
 
   @override
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  }) async* {
+  Future<void> handle(ComposeBloc bloc, Emitter emit) async {
     final result = await FilePicker.platform
         .pickFiles(
           type: FileType.media,
@@ -66,7 +57,7 @@ class PickTweetMediaEvent extends ComposeEvent {
 
     if (result != null && result.files.isNotEmpty) {
       if (_pickedImages(result)) {
-        bloc!.add(AddImagesEvent(files: result.files));
+        bloc.add(AddImagesEvent(files: result.files));
       } else if (_pickedGif(result)) {
         _addGif(bloc, result);
       } else if (_pickedVideo(result)) {
@@ -88,11 +79,6 @@ class AddImagesEvent extends ComposeEvent {
 
   final List<PlatformFile> files;
 
-  @override
-  List<Object> get props => <Object>[
-        files,
-      ];
-
   void _removeDuplicates(List<PlatformFile> newFiles, ComposeState? state) {
     for (final image in List<PlatformFile>.from(newFiles)) {
       if (state!.media.any(
@@ -107,16 +93,13 @@ class AddImagesEvent extends ComposeEvent {
   }
 
   @override
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  }) async* {
+  Future<void> handle(ComposeBloc bloc, Emitter emit) async {
     var newFiles = List<PlatformFile>.from(files);
 
-    if (currentState!.hasImages) {
-      _removeDuplicates(newFiles, currentState);
+    if (bloc.state.hasImages) {
+      _removeDuplicates(newFiles, bloc.state);
 
-      newFiles = List<PlatformFile>.from(currentState.media)..addAll(newFiles);
+      newFiles = List.from(bloc.state.media)..addAll(newFiles);
     }
 
     if (newFiles.length > 4) {
@@ -124,9 +107,11 @@ class AddImagesEvent extends ComposeEvent {
       newFiles = newFiles.sublist(0, 4);
     }
 
-    yield ComposeState(
-      media: newFiles,
-      type: MediaType.image,
+    emit(
+      ComposeState(
+        media: newFiles,
+        type: MediaType.image,
+      ),
     );
   }
 }
@@ -139,18 +124,12 @@ class AddGifEvent extends ComposeEvent {
   final PlatformFile file;
 
   @override
-  List<Object> get props => <Object>[
-        file,
-      ];
-
-  @override
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  }) async* {
-    yield ComposeState(
-      media: <PlatformFile>[file],
-      type: MediaType.gif,
+  Future<void> handle(ComposeBloc bloc, Emitter emit) async {
+    emit(
+      ComposeState(
+        media: <PlatformFile>[file],
+        type: MediaType.gif,
+      ),
     );
   }
 }
@@ -163,18 +142,12 @@ class AddVideoEvent extends ComposeEvent {
   final PlatformFile file;
 
   @override
-  List<Object> get props => <Object>[
-        file,
-      ];
-
-  @override
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  }) async* {
-    yield ComposeState(
-      media: <PlatformFile>[file],
-      type: MediaType.video,
+  Future<void> handle(ComposeBloc bloc, Emitter emit) async {
+    emit(
+      ComposeState(
+        media: <PlatformFile>[file],
+        type: MediaType.video,
+      ),
     );
   }
 }
@@ -183,13 +156,7 @@ class ClearComposedTweet extends ComposeEvent {
   const ClearComposedTweet();
 
   @override
-  List<Object> get props => <Object>[];
-
-  @override
-  Stream<ComposeState> applyAsync({
-    ComposeState? currentState,
-    ComposeBloc? bloc,
-  }) async* {
-    yield const ComposeState();
+  Future<void> handle(ComposeBloc bloc, Emitter emit) async {
+    emit(const ComposeState());
   }
 }

@@ -16,6 +16,7 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
   UserTimelineBloc({
     required this.screenName,
   }) : super(const UserTimelineInitial()) {
+    on<UserTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestUserTimeline());
   }
 
@@ -28,11 +29,4 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderUserTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();
-
-  @override
-  Stream<UserTimelineState> mapEventToState(
-    UserTimelineEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

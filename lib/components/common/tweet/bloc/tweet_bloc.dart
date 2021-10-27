@@ -21,7 +21,9 @@ part 'tweet_state.dart';
 /// translating, etc.
 class TweetBloc extends Bloc<TweetEvent, TweetState>
     with TweetBlocActionCallback {
-  TweetBloc(this.tweet) : super(const TweetState());
+  TweetBloc(this.tweet) : super(const TweetState()) {
+    on<TweetEvent>((event, emit) => event.handle(this, emit));
+  }
 
   /// Reference to the tweet that is used to display a tweet card.
   ///
@@ -95,12 +97,5 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
   void onReplyToTweet() {
     app<HarpyNavigator>().pushComposeScreen(inReplyToStatus: tweet);
-  }
-
-  @override
-  Stream<TweetState> mapEventToState(
-    TweetEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
   }
 }

@@ -3,10 +3,7 @@ part of 'paginated_bloc.dart';
 abstract class PaginatedEvent {
   const PaginatedEvent();
 
-  Stream<PaginatedState> applyAsync({
-    required PaginatedState currentState,
-    required PaginatedBloc bloc,
-  });
+  Future<void> handle(PaginatedBloc bloc, Emitter emit);
 }
 
 /// An abstract event to load paginated data.
@@ -27,10 +24,7 @@ abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
   }
 
   @override
-  Stream<PaginatedState> applyAsync({
-    required PaginatedState currentState,
-    required PaginatedBloc bloc,
-  }) async* {
+  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
     if (bloc.lockRequests) {
       return;
     }
@@ -42,16 +36,16 @@ abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
       return;
     }
 
-    yield LoadingPaginatedData();
+    emit(LoadingPaginatedData());
 
     if (await loadData(bloc)) {
-      yield LoadedData();
+      emit(LoadedData());
 
       if (bloc.lockDuration != Duration.zero) {
         _lockRequests(bloc);
       }
     } else {
-      yield LoadingFailed();
+      emit(LoadingFailed());
     }
 
     bloc.loadDataCompleter.complete();
@@ -64,14 +58,11 @@ class UnlockRequests extends PaginatedEvent with HarpyLogger {
   const UnlockRequests();
 
   @override
-  Stream<PaginatedState> applyAsync({
-    required PaginatedState currentState,
-    required PaginatedBloc bloc,
-  }) async* {
+  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
     log.fine('unlocking request lock');
 
     bloc.lockRequests = false;
 
-    yield LoadedData();
+    emit(LoadedData());
   }
 }

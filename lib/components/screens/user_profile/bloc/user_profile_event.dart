@@ -3,17 +3,14 @@ part of 'user_profile_bloc.dart';
 abstract class UserProfileEvent {
   const UserProfileEvent();
 
-  Stream<UserProfileState> applyAsync({
-    required UserProfileState currentState,
-    required UserProfileBloc bloc,
-  });
+  Future<void> handle(UserProfileBloc bloc, Emitter emit);
 }
 
 /// Initializes the data for the [UserProfileBloc.user].
 ///
-/// Either [user] or [handle] must not be `null`.
+/// Either [user] or [userHandle] must not be `null`.
 ///
-/// If [user] is `null`, requests the user data for the [handle] and the
+/// If [user] is `null`, requests the user data for the [userHandle] and the
 /// relationship status (following / followed_by).
 ///
 /// Otherwise if the [UserData.connections] is `null`, only requests the
@@ -27,24 +24,21 @@ abstract class UserProfileEvent {
 class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
   const InitializeUserEvent({
     this.user,
-    this.handle,
-  }) : assert(user != null || handle != null);
+    this.userHandle,
+  }) : assert(user != null || userHandle != null);
 
   final UserData? user;
 
-  final String? handle;
+  final String? userHandle;
 
   /// The user id used to request the user or the relationship status.
-  String? get _handle => handle ?? user?.handle;
+  String? get _userHandle => userHandle ?? user?.handle;
 
   @override
-  Stream<UserProfileState> applyAsync({
-    required UserProfileState currentState,
-    required UserProfileBloc bloc,
-  }) async* {
+  Future<void> handle(UserProfileBloc bloc, Emitter emit) async {
     log.fine('initialize user');
 
-    yield LoadingUserState();
+    emit(LoadingUserState());
 
     var userData = user;
     var connections = user?.connections;
@@ -52,20 +46,20 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     if (user?.connections == null) {
       await Future.wait([
         // user data
-        if (userData == null && _handle != null)
+        if (userData == null && _userHandle != null)
           app<TwitterApi>()
               .userService
-              .usersShow(screenName: _handle)
+              .usersShow(screenName: _userHandle)
               .then((user) => UserData.fromUser(user))
               .then((user) => userData = user)
               .handleError(silentErrorHandler),
 
         // friendship lookup for the relationship status (following /
         // followed_by)
-        if (connections == null && _handle != null)
+        if (connections == null && _userHandle != null)
           app<TwitterApi>()
               .userService
-              .friendshipsLookup(screenNames: [_handle!])
+              .friendshipsLookup(screenNames: [_userHandle!])
               .then((response) => response.length == 1 ? response.first : null)
               .then<void>((friendship) => connections = friendship?.connections)
               .catchError(silentErrorHandler),
@@ -73,7 +67,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
     }
 
     if (userData == null) {
-      yield FailedLoadingUserState();
+      emit(FailedLoadingUserState());
     } else {
       bloc.user = userData!.copyWith(
         connections: connections,
@@ -83,7 +77,7 @@ class InitializeUserEvent extends UserProfileEvent with HarpyLogger {
         ),
       );
 
-      yield InitializedUserState();
+      emit(InitializedUserState());
     }
   }
 }
@@ -92,14 +86,11 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
   const FollowUserEvent();
 
   @override
-  Stream<UserProfileState> applyAsync({
-    required UserProfileState currentState,
-    required UserProfileBloc bloc,
-  }) async* {
+  Future<void> handle(UserProfileBloc bloc, Emitter emit) async {
     log.fine('following @${bloc.user!.handle}');
 
     bloc.user!.connections?.add('following');
-    yield InitializedUserState();
+    emit(InitializedUserState());
 
     try {
       await app<TwitterApi>()
@@ -111,7 +102,7 @@ class FollowUserEvent extends UserProfileEvent with HarpyLogger {
 
       // assume still not following
       bloc.user!.connections?.remove('following');
-      yield InitializedUserState();
+      emit(InitializedUserState());
     }
   }
 }
@@ -120,14 +111,11 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
   const UnfollowUserEvent();
 
   @override
-  Stream<UserProfileState> applyAsync({
-    required UserProfileState currentState,
-    required UserProfileBloc bloc,
-  }) async* {
+  Future<void> handle(UserProfileBloc bloc, Emitter emit) async {
     log.fine('unfollowing @${bloc.user!.handle}');
 
     bloc.user!.connections?.remove('following');
-    yield InitializedUserState();
+    emit(InitializedUserState());
 
     try {
       await app<TwitterApi>()
@@ -139,7 +127,7 @@ class UnfollowUserEvent extends UserProfileEvent with HarpyLogger {
 
       // assume still following
       bloc.user!.connections?.add('following');
-      yield InitializedUserState();
+      emit(InitializedUserState());
     }
   }
 }
@@ -155,10 +143,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
   final Locale locale;
 
   @override
-  Stream<UserProfileState> applyAsync({
-    required UserProfileState currentState,
-    required UserProfileBloc bloc,
-  }) async* {
+  Future<void> handle(UserProfileBloc bloc, Emitter emit) async {
     unawaited(HapticFeedback.lightImpact());
 
     final translationService = app<TranslationService>();
@@ -166,7 +151,7 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
 
-    yield TranslatingDescriptionState();
+    emit(TranslatingDescriptionState());
 
     await translationService
         .translate(text: bloc.user!.description, to: translateLanguage)
@@ -182,6 +167,6 @@ class TranslateUserDescriptionEvent extends UserProfileEvent {
       app<MessageService>().show('description not translated');
     }
 
-    yield InitializedUserState();
+    emit(InitializedUserState());
   }
 }

@@ -13,12 +13,7 @@ part 'trends_locations_state.dart';
 /// Handles loading locations that can be used to request local trends.
 class TrendsLocationsBloc
     extends Bloc<TrendsLocationsEvent, TrendsLocationsState> with HarpyLogger {
-  TrendsLocationsBloc() : super(const TrendsLocationsNotLoaded());
-
-  @override
-  Stream<TrendsLocationsState> mapEventToState(
-    TrendsLocationsEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
+  TrendsLocationsBloc() : super(const TrendsLocationsNotLoaded()) {
+    on<TrendsLocationsEvent>((event, emit) => event.handle(this, emit));
   }
 }

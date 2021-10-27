@@ -5,17 +5,12 @@ part of 'post_tweet_bloc.dart';
 /// The attached media (if any) is uploaded separately before posting the tweet.
 /// If the attached media is a video, it is converted beforehand to comply with
 /// the twitter requirements.
-class PostTweetEvent extends Equatable with HarpyLogger {
+class PostTweetEvent with HarpyLogger {
   const PostTweetEvent(this.text);
 
   final String text;
 
-  @override
-  List<Object> get props => <Object>[
-        text,
-      ];
-
-  Stream<PostTweetState> _uploadMedia(PostTweetBloc bloc) async* {
+  Future<void> _uploadMedia(PostTweetBloc bloc, Emitter emit) async {
     log.fine('uploading media');
 
     final mediaFiles = <File>[];
@@ -23,7 +18,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     if (bloc.composeBloc.state.hasVideo) {
       final videoSource = bloc.composeBloc.state.media.first;
 
-      yield const ConvertingTweetVideo();
+      emit(const ConvertingTweetVideo());
 
       final output = await app<MediaVideoConverter>().convertVideo(
         videoSource.path,
@@ -33,7 +28,7 @@ class PostTweetEvent extends Equatable with HarpyLogger {
       if (output != null) {
         mediaFiles.add(output);
       } else {
-        yield const ConvertingTweetVideoError();
+        emit(const ConvertingTweetVideoError());
       }
     } else {
       mediaFiles.addAll(
@@ -47,10 +42,12 @@ class PostTweetEvent extends Equatable with HarpyLogger {
 
     try {
       for (var i = 0; i < mediaFiles.length; i++) {
-        yield UploadingTweetMedia(
-          index: i,
-          multiple: mediaFiles.length > 1,
-          type: bloc.composeBloc.state.type,
+        emit(
+          UploadingTweetMedia(
+            index: i,
+            multiple: mediaFiles.length > 1,
+            type: bloc.composeBloc.state.type,
+          ),
         );
 
         final mediaId = await app<MediaUploadService>().upload(
@@ -64,36 +61,35 @@ class PostTweetEvent extends Equatable with HarpyLogger {
       }
 
       log.fine('${mediaIds.length} media uploaded');
-      yield TweetMediaSuccessfullyUploaded(
-        previousMessage: bloc.state.message,
-        previousAdditionalInfo: bloc.state.additionalInfo,
-        mediaIds: mediaIds,
+      emit(
+        TweetMediaSuccessfullyUploaded(
+          previousMessage: bloc.state.message,
+          previousAdditionalInfo: bloc.state.additionalInfo,
+          mediaIds: mediaIds,
+        ),
       );
     } catch (e, st) {
       log.severe('error while uploading media', e, st);
-      yield const UploadingTweetMediaError();
+      emit(const UploadingTweetMediaError());
     }
   }
 
-  Stream<PostTweetState> applyAsync({
-    required PostTweetState currentState,
-    required PostTweetBloc bloc,
-  }) async* {
+  Future<void> handle(PostTweetBloc bloc, Emitter emit) async {
     if (bloc.composeBloc.state.hasMedia) {
-      await for (final state in _uploadMedia(bloc)) {
-        yield state;
-      }
+      await _uploadMedia(bloc, emit);
     }
 
     if (bloc.state is PostTweetErrorState) {
+      // error ocurred while uploading media
       return;
     }
 
     log.fine('updating status');
 
-    yield const PostingTweet();
+    emit(const PostingTweet());
 
     List<String>? mediaIds;
+
     if (bloc.state is TweetMediaSuccessfullyUploaded) {
       mediaIds = (bloc.state as TweetMediaSuccessfullyUploaded).mediaIds;
     }
@@ -125,9 +121,9 @@ class PostTweetEvent extends Equatable with HarpyLogger {
     });
 
     if (sentStatus != null) {
-      yield TweetSuccessfullyPosted(tweet: sentStatus);
+      emit(TweetSuccessfullyPosted(tweet: sentStatus));
     } else {
-      yield PostingTweetError(errorMessage: additionalInfo);
+      emit(PostingTweetError(errorMessage: additionalInfo));
     }
   }
 }

@@ -18,15 +18,9 @@ class PostTweetBloc extends Bloc<PostTweetEvent, PostTweetState> {
     String text, {
     required this.composeBloc,
   }) : super(const PostTweetInitial()) {
+    on<PostTweetEvent>((event, emit) => event.handle(this, emit));
     add(PostTweetEvent(text));
   }
 
   final ComposeBloc composeBloc;
-
-  @override
-  Stream<PostTweetState> mapEventToState(
-    PostTweetEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

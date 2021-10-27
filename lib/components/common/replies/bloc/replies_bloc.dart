@@ -15,16 +15,10 @@ part 'replies_state.dart';
 /// requested.
 class RepliesBloc extends Bloc<RepliesEvent, RepliesState> {
   RepliesBloc(this.tweet) : super(const LoadingReplies()) {
+    on<RepliesEvent>((event, emit) => event.handle(this, emit));
     add(const LoadReplies());
   }
 
   /// The original tweet which to show replies for.
   final TweetData tweet;
-
-  @override
-  Stream<RepliesState> mapEventToState(
-    RepliesEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

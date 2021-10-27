@@ -3,10 +3,7 @@ part of 'trends_locations_bloc.dart';
 abstract class TrendsLocationsEvent {
   const TrendsLocationsEvent();
 
-  Stream<TrendsLocationsState> applyAsync({
-    required TrendsLocationsState currentState,
-    required TrendsLocationsBloc bloc,
-  });
+  Future<void> handle(TrendsLocationsBloc bloc, Emitter emit);
 }
 
 /// Loads the trend locations that are returned by twitter to request local
@@ -17,13 +14,10 @@ class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
   const LoadTrendsLocations();
 
   @override
-  Stream<TrendsLocationsState> applyAsync({
-    required TrendsLocationsState currentState,
-    required TrendsLocationsBloc bloc,
-  }) async* {
+  Future<void> handle(TrendsLocationsBloc bloc, Emitter emit) async {
     log.fine('loading trends locations');
 
-    yield const LoadingTrendsLocations();
+    emit(const LoadingTrendsLocations());
 
     final trendsLocation = await app<TwitterApi>()
         .trendsService
@@ -55,16 +49,16 @@ class LoadTrendsLocations extends TrendsLocationsEvent with HarpyLogger {
 
         log.fine('found ${locations.length} trends locations');
 
-        yield TrendsLocationsLoaded(locations: locations);
+        emit(TrendsLocationsLoaded(locations: locations));
       } else {
         log.fine('found no trends locations');
 
-        yield const TrendsLocationsEmpty();
+        emit(const TrendsLocationsEmpty());
       }
     } else {
       log.info('error finding trends locations');
 
-      yield const TrendsLocationsLoadingFailure();
+      emit(const TrendsLocationsLoadingFailure());
     }
   }
 }

@@ -16,7 +16,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
     required String? screenName,
   }) : super(LoadingUserState()) {
-    add(InitializeUserEvent(user: user, handle: screenName));
+    on<UserProfileEvent>((event, emit) => event.handle(this, emit));
+    add(InitializeUserEvent(user: user, userHandle: screenName));
   }
 
   /// The [UserData] for the user to display.
@@ -26,11 +27,4 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
   static UserProfileBloc of(BuildContext context) =>
       context.watch<UserProfileBloc>();
-
-  @override
-  Stream<UserProfileState> mapEventToState(
-    UserProfileEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

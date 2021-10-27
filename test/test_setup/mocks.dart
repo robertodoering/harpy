@@ -25,25 +25,15 @@ class MockAppConfig extends AppConfig {
   final String twitterConsumerSecret;
 }
 
-class MockHomeTimelineBloc extends HomeTimelineBloc {
+class MockHomeTimelineBloc extends Mock implements HomeTimelineBloc {
   MockHomeTimelineBloc(HomeTimelineState initialState) {
-    emit(initialState);
-  }
-
-  @override
-  void add(HomeTimelineEvent event) {
-    // ignore added events
+    when(() => state).thenReturn(initialState);
   }
 }
 
-class MockMentionsTimelineBloc extends MentionsTimelineBloc {
+class MockMentionsTimelineBloc extends Mock implements MentionsTimelineBloc {
   MockMentionsTimelineBloc(MentionsTimelineState initialState) {
-    emit(initialState);
-  }
-
-  @override
-  void add(MentionsTimelineEvent event) {
-    // ignore added events
+    when(() => state).thenReturn(initialState);
   }
 }
 

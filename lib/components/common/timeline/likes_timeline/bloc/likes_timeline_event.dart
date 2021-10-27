@@ -1,12 +1,9 @@
 part of 'likes_timeline_bloc.dart';
 
-abstract class LikesTimelineEvent extends Equatable {
+abstract class LikesTimelineEvent {
   const LikesTimelineEvent();
 
-  Stream<LikesTimelineState> applyAsync({
-    required LikesTimelineState currentState,
-    required LikesTimelineBloc bloc,
-  });
+  Future<void> handle(LikesTimelineBloc bloc, Emitter emit);
 }
 
 /// Requests the likes timeline tweets for the [LikesTimelineBloc.screenName].
@@ -14,16 +11,10 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
   const RequestLikesTimeline();
 
   @override
-  List<Object> get props => <Object>[];
-
-  @override
-  Stream<LikesTimelineState> applyAsync({
-    required LikesTimelineState currentState,
-    required LikesTimelineBloc bloc,
-  }) async* {
+  Future<void> handle(LikesTimelineBloc bloc, Emitter emit) async {
     log.fine('requesting likes timeline');
 
-    yield const LikesTimelineInitialLoading();
+    emit(const LikesTimelineInitialLoading());
 
     String? maxId;
 
@@ -46,15 +37,17 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
       log.fine('found ${tweets.length} initial tweets');
 
       if (tweets.isNotEmpty) {
-        yield LikesTimelineResult(
-          tweets: tweets,
-          maxId: maxId,
+        emit(
+          LikesTimelineResult(
+            tweets: tweets,
+            maxId: maxId,
+          ),
         );
       } else {
-        yield const LikesTimelineNoResult();
+        emit(const LikesTimelineNoResult());
       }
     } else {
-      yield const LikesTimelineFailure();
+      emit(const LikesTimelineFailure());
     }
   }
 }
@@ -68,9 +61,6 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
   const RequestOlderLikesTimeline();
 
-  @override
-  List<Object> get props => <Object>[];
-
   String? _findMaxId(LikesTimelineResult state) {
     final lastId = int.tryParse(state.maxId ?? '');
 
@@ -82,18 +72,17 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
   }
 
   @override
-  Stream<LikesTimelineState> applyAsync({
-    required LikesTimelineState currentState,
-    required LikesTimelineBloc bloc,
-  }) async* {
+  Future<void> handle(LikesTimelineBloc bloc, Emitter emit) async {
     if (bloc.lock()) {
       bloc.requestOlderCompleter.complete();
       bloc.requestOlderCompleter = Completer<void>();
       return;
     }
 
-    if (currentState is LikesTimelineResult) {
-      final maxId = _findMaxId(currentState);
+    final state = bloc.state;
+
+    if (state is LikesTimelineResult) {
+      final maxId = _findMaxId(state);
 
       if (maxId == null) {
         log.info('tried to request older but max id was null');
@@ -102,7 +91,7 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
 
       log.fine('requesting older likes timeline tweets');
 
-      yield LikesTimelineLoadingOlder(oldResult: currentState);
+      emit(LikesTimelineLoadingOlder(oldResult: state));
 
       String? newMaxId;
       var canRequestOlder = false;
@@ -131,16 +120,20 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
           ..fine('found ${tweets.length} older tweets')
           ..finer('can request older: $canRequestOlder');
 
-        yield LikesTimelineResult(
-          tweets: currentState.tweets.followedBy(tweets).toList(),
-          maxId: newMaxId,
-          canRequestOlder: canRequestOlder,
+        emit(
+          LikesTimelineResult(
+            tweets: state.tweets.followedBy(tweets).toList(),
+            maxId: newMaxId,
+            canRequestOlder: canRequestOlder,
+          ),
         );
       } else {
         // re-yield result state with previous tweets but new max id
-        yield LikesTimelineResult(
-          tweets: currentState.tweets,
-          maxId: currentState.maxId,
+        emit(
+          LikesTimelineResult(
+            tweets: state.tweets,
+            maxId: state.maxId,
+          ),
         );
       }
     }

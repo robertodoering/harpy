@@ -3,20 +3,14 @@ part of 'tweet_bloc.dart';
 abstract class TweetEvent {
   const TweetEvent();
 
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  });
+  Future<void> handle(TweetBloc bloc, Emitter emit);
 }
 
 class RetweetTweet extends TweetEvent with HarpyLogger {
   const RetweetTweet();
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
     if (bloc.state.isRetweeting) {
       log.fine('currently un-retweeting');
       bloc.tweet.retweeted = true;
@@ -27,14 +21,14 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
       ..retweetCount += 1
       ..retweeted = true;
 
-    yield bloc.state.copyWith(isRetweeting: true);
+    emit(bloc.state.copyWith(isRetweeting: true));
 
     try {
       await app<TwitterApi>().tweetService.retweet(id: bloc.tweet.id);
 
       log.fine('retweeted ${bloc.tweet.id}');
 
-      yield bloc.state.copyWith(isRetweeting: false);
+      emit(bloc.state.copyWith(isRetweeting: false));
 
       if (!bloc.tweet.retweeted) {
         // the user has un-retweeted the tweet while we were making the request
@@ -46,15 +40,13 @@ class RetweetTweet extends TweetEvent with HarpyLogger {
           ..retweetCount = math.max(0, bloc.tweet.retweetCount - 1)
           ..retweeted = false;
 
-        yield bloc.state.copyWith(
-          isRetweeting: false,
-        );
+        emit(bloc.state.copyWith(isRetweeting: false));
 
         log.warning('error retweeting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
-        yield bloc.state.copyWith(isRetweeting: false);
+        emit(bloc.state.copyWith(isRetweeting: false));
       }
     }
   }
@@ -64,10 +56,7 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
   const UnretweetTweet();
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
     if (bloc.state.isRetweeting) {
       log.fine('currently retweeting');
       bloc.tweet.retweeted = false;
@@ -78,14 +67,14 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
       ..retweetCount = math.max(0, bloc.tweet.retweetCount - 1)
       ..retweeted = false;
 
-    yield bloc.state.copyWith(isRetweeting: true);
+    emit(bloc.state.copyWith(isRetweeting: true));
 
     try {
       await app<TwitterApi>().tweetService.unretweet(id: bloc.tweet.id);
 
       log.fine('un-retweeted ${bloc.tweet.id}');
 
-      yield bloc.state.copyWith(isRetweeting: false);
+      emit(bloc.state.copyWith(isRetweeting: false));
 
       if (bloc.tweet.retweeted) {
         // the user has retweeted the tweet while we were making the request
@@ -97,13 +86,13 @@ class UnretweetTweet extends TweetEvent with HarpyLogger {
           ..retweetCount += 1
           ..retweeted = true;
 
-        yield bloc.state.copyWith(isRetweeting: false);
+        emit(bloc.state.copyWith(isRetweeting: false));
 
         log.warning('error un-retweeting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
-        yield bloc.state.copyWith(isRetweeting: false);
+        emit(bloc.state.copyWith(isRetweeting: false));
       }
     }
   }
@@ -113,10 +102,7 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
   const FavoriteTweet();
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
     if (bloc.state.isFavoriting) {
       log.fine('currently un-favoriting');
       bloc.tweet.favorited = true;
@@ -127,14 +113,14 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
       ..favoriteCount += 1
       ..favorited = true;
 
-    yield bloc.state.copyWith(isFavoriting: true);
+    emit(bloc.state.copyWith(isFavoriting: true));
 
     try {
       await app<TwitterApi>().tweetService.createFavorite(id: bloc.tweet.id);
 
       log.fine('favorited ${bloc.tweet.id}');
 
-      yield bloc.state.copyWith(isFavoriting: false);
+      emit(bloc.state.copyWith(isFavoriting: false));
 
       if (!bloc.tweet.favorited) {
         // the user has un-favorited the tweet while we were making the request
@@ -146,13 +132,13 @@ class FavoriteTweet extends TweetEvent with HarpyLogger {
           ..favoriteCount = math.max(0, bloc.tweet.favoriteCount - 1)
           ..favorited = false;
 
-        yield bloc.state.copyWith(isFavoriting: false);
+        emit(bloc.state.copyWith(isFavoriting: false));
 
         log.warning('error favoriting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
-        yield bloc.state.copyWith(isFavoriting: false);
+        emit(bloc.state.copyWith(isFavoriting: false));
       }
     }
   }
@@ -162,10 +148,7 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
   const UnfavoriteTweet();
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
     if (bloc.state.isFavoriting) {
       log.fine('currently favoriting');
       bloc.tweet.favorited = false;
@@ -176,14 +159,14 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
       ..favoriteCount = math.max(0, bloc.tweet.favoriteCount - 1)
       ..favorited = false;
 
-    yield bloc.state.copyWith(isFavoriting: true);
+    emit(bloc.state.copyWith(isFavoriting: true));
 
     try {
       await app<TwitterApi>().tweetService.destroyFavorite(id: bloc.tweet.id);
 
       log.fine('un-favorited ${bloc.tweet.id}');
 
-      yield bloc.state.copyWith(isFavoriting: false);
+      emit(bloc.state.copyWith(isFavoriting: false));
 
       if (bloc.tweet.favorited) {
         // the user has favorited the tweet while we were making the request
@@ -195,13 +178,13 @@ class UnfavoriteTweet extends TweetEvent with HarpyLogger {
           ..favoriteCount += 1
           ..favorited = true;
 
-        yield bloc.state.copyWith(isFavoriting: false);
+        emit(bloc.state.copyWith(isFavoriting: false));
 
         log.warning('error favoriting ${bloc.tweet.id}', e, st);
 
         twitterApiErrorHandler(e);
       } else {
-        yield bloc.state.copyWith(isFavoriting: false);
+        emit(bloc.state.copyWith(isFavoriting: false));
       }
     }
   }
@@ -215,10 +198,7 @@ class DeleteTweet extends TweetEvent with HarpyLogger {
   final VoidCallback? onDeleted;
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
     log.fine('deleting tweet');
 
     final tweet = await app<TwitterApi>()
@@ -243,11 +223,8 @@ class TranslateTweet extends TweetEvent {
   final Locale locale;
 
   @override
-  Stream<TweetState> applyAsync({
-    required TweetState currentState,
-    required TweetBloc bloc,
-  }) async* {
-    yield bloc.state.copyWith(isTranslating: true);
+  Future<void> handle(TweetBloc bloc, Emitter emit) async {
+    emit(bloc.state.copyWith(isTranslating: true));
 
     final translateLanguage =
         app<LanguagePreferences>().activeTranslateLanguage(locale.languageCode);
@@ -268,7 +245,7 @@ class TranslateTweet extends TweetEvent {
 
     bloc.tweet.translation = translation;
 
-    yield bloc.state.copyWith(isTranslating: false);
+    emit(bloc.state.copyWith(isTranslating: false));
   }
 }
 

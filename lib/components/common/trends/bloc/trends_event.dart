@@ -3,25 +3,19 @@ part of 'trends_bloc.dart';
 abstract class TrendsEvent {
   const TrendsEvent();
 
-  Stream<TrendsState> applyAsync({
-    required TrendsState currentState,
-    required TrendsBloc bloc,
-  });
+  Future<void> handle(TrendsBloc bloc, Emitter emit);
 }
 
 class FindTrendsEvent extends TrendsEvent with HarpyLogger {
   const FindTrendsEvent();
 
   @override
-  Stream<TrendsState> applyAsync({
-    required TrendsState currentState,
-    required TrendsBloc bloc,
-  }) async* {
+  Future<void> handle(TrendsBloc bloc, Emitter emit) async {
     log.fine('finding trends');
 
     final location = TrendsLocationData.fromPreferences();
 
-    yield RequestingTrends(location: location);
+    emit(RequestingTrends(location: location));
 
     final trends = await app<TwitterApi>()
         .trendsService
@@ -34,13 +28,15 @@ class FindTrendsEvent extends TrendsEvent with HarpyLogger {
           (o1, o2) => (o2.tweetVolume ?? 0) - (o1.tweetVolume ?? 0),
         );
 
-      yield FoundTrendsState(
-        woeid: 1,
-        trends: sortedTrends,
-        location: location,
+      emit(
+        FoundTrendsState(
+          woeid: 1,
+          trends: sortedTrends,
+          location: location,
+        ),
       );
     } else {
-      yield FindTrendsFailure(location: location);
+      emit(FindTrendsFailure(location: location));
     }
   }
 }
@@ -53,10 +49,7 @@ class UpdateTrendsLocation extends TrendsEvent with HarpyLogger {
   final TrendsLocationData location;
 
   @override
-  Stream<TrendsState> applyAsync({
-    required TrendsState currentState,
-    required TrendsBloc bloc,
-  }) async* {
+  Future<void> handle(TrendsBloc bloc, Emitter emit) async {
     log.fine('updating trends location');
 
     try {

@@ -1,12 +1,9 @@
 part of 'mentions_timeline_bloc.dart';
 
-abstract class MentionsTimelineEvent extends Equatable {
+abstract class MentionsTimelineEvent {
   const MentionsTimelineEvent();
 
-  Stream<MentionsTimelineState> applyAsync({
-    required MentionsTimelineState currentState,
-    required MentionsTimelineBloc bloc,
-  });
+  Future<void> handle(MentionsTimelineBloc bloc, Emitter emit);
 }
 
 /// Requests the newest 200 mentions timeline tweets.
@@ -25,9 +22,6 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
   /// timeline view.
   final bool updateViewedMention;
 
-  @override
-  List<Object> get props => <Object>[];
-
   int _newMentions(List<TweetData> tweets, int lastViewedMention) {
     if (lastViewedMention == 0) {
       // first open
@@ -42,13 +36,10 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
   }
 
   @override
-  Stream<MentionsTimelineState> applyAsync({
-    required MentionsTimelineState currentState,
-    required MentionsTimelineBloc bloc,
-  }) async* {
+  Future<void> handle(MentionsTimelineBloc bloc, Emitter emit) async {
     log.fine('requesting initial mentions timeline');
 
-    yield const MentionsTimelineLoading();
+    emit(const MentionsTimelineLoading());
 
     final lastViewedMention =
         app<TweetVisibilityPreferences>().lastViewedMention;
@@ -63,15 +54,17 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
       log.fine('found ${tweets.length} tweet mentions');
 
       if (tweets.isNotEmpty) {
-        yield MentionsTimelineResult(
-          tweets: tweets,
-          newMentions: _newMentions(tweets, lastViewedMention),
+        emit(
+          MentionsTimelineResult(
+            tweets: tweets,
+            newMentions: _newMentions(tweets, lastViewedMention),
+          ),
         );
       } else {
-        yield const MentionsTimelineNoResults();
+        emit(const MentionsTimelineNoResults());
       }
     } else {
-      yield const MentionsTimelineFailure();
+      emit(const MentionsTimelineFailure());
     }
   }
 }
@@ -84,23 +77,21 @@ class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
   const UpdateViewedMentions();
 
   @override
-  List<Object> get props => <Object>[];
+  Future<void> handle(MentionsTimelineBloc bloc, Emitter emit) async {
+    final state = bloc.state;
 
-  @override
-  Stream<MentionsTimelineState> applyAsync({
-    required MentionsTimelineState currentState,
-    required MentionsTimelineBloc bloc,
-  }) async* {
-    if (currentState is MentionsTimelineResult) {
+    if (state is MentionsTimelineResult) {
       log.fine('updating viewed mentions');
 
       app<TweetVisibilityPreferences>().updateLastViewedMention(
-        currentState.tweets.first,
+        state.tweets.first,
       );
 
-      yield MentionsTimelineResult(
-        tweets: currentState.tweets,
-        newMentions: 0,
+      emit(
+        MentionsTimelineResult(
+          tweets: state.tweets,
+          newMentions: 0,
+        ),
       );
     }
   }

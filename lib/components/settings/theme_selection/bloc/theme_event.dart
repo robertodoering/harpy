@@ -3,10 +3,7 @@ part of 'theme_bloc.dart';
 abstract class ThemeEvent {
   const ThemeEvent();
 
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  });
+  Future<void> handle(ThemeBloc bloc, Emitter emit);
 }
 
 class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
@@ -17,13 +14,10 @@ class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
   final Config config;
 
   @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  }) async* {
+  Future<void> handle(ThemeBloc bloc, Emitter emit) async {
     log.fine('updated theme config');
 
-    yield state.copyWith(config: config);
+    emit(bloc.state.copyWith(config: config));
   }
 }
 
@@ -60,10 +54,7 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
   }
 
   @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  }) async* {
+  Future<void> handle(ThemeBloc bloc, Emitter emit) async {
     if (lightThemeId != null) {
       log.fine('updating light theme to id $lightThemeId');
 
@@ -80,16 +71,16 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
       }
     }
 
-    final lightThemeData = _themeDataFromId(lightThemeId, state);
-    final darkThemeData = _themeDataFromId(darkThemeId, state);
+    final lightThemeData = _themeDataFromId(lightThemeId, bloc.state);
+    final darkThemeData = _themeDataFromId(darkThemeId, bloc.state);
 
     if (lightThemeData != null || darkThemeData != null) {
-      final newState = state.copyWith(
-        lightThemeData: lightThemeData,
-        darkThemeData: darkThemeData,
+      emit(
+        bloc.state.copyWith(
+          lightThemeData: lightThemeData,
+          darkThemeData: darkThemeData,
+        ),
       );
-
-      yield newState;
     } else {
       log.warning('no matching theme found');
     }
@@ -109,10 +100,7 @@ class LoadCustomThemes extends ThemeEvent with HarpyLogger {
   }
 
   @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  }) async* {
+  Future<void> handle(ThemeBloc bloc, Emitter emit) async {
     log.fine('loading custom themes');
 
     final customThemesData = app<ThemePreferences>()
@@ -123,7 +111,7 @@ class LoadCustomThemes extends ThemeEvent with HarpyLogger {
 
     log.fine('loaded ${customThemesData.length} custom themes');
 
-    yield state.copyWith(customThemesData: customThemesData);
+    emit(bloc.state.copyWith(customThemesData: customThemesData));
   }
 }
 
@@ -146,21 +134,18 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
   }
 
   @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  }) async* {
+  Future<void> handle(ThemeBloc bloc, Emitter emit) async {
     log.fine('deleting custom theme $themeId');
 
     final index = themeId - 10;
 
-    final customThemesData = List.of(state.customThemesData);
+    final customThemesData = List.of(bloc.state.customThemesData);
 
     if (index >= 0 && index < customThemesData.length) {
       customThemesData.removeAt(index);
 
       _persistCustomThemes(customThemesData);
-      yield state.copyWith(customThemesData: customThemesData);
+      emit(bloc.state.copyWith(customThemesData: customThemesData));
 
       final lightThemeId = app<ThemePreferences>().lightThemeId;
       final darkThemeId = app<ThemePreferences>().darkThemeId;
@@ -198,27 +183,24 @@ class AddCustomTheme extends ThemeEvent with HarpyLogger {
   final bool changeDarkThemeSelection;
 
   @override
-  Stream<ThemeState> applyAsync({
-    required ThemeState state,
-    required ThemeBloc bloc,
-  }) async* {
+  Future<void> handle(ThemeBloc bloc, Emitter emit) async {
     log.fine('adding custom theme at $themeId');
 
     final index = themeId - 10;
 
-    final customThemesData = List.of(state.customThemesData);
+    final customThemesData = List.of(bloc.state.customThemesData);
 
     // add or modify theme
     if (index >= 0 && index < customThemesData.length) {
       customThemesData[index] = themeData;
 
       _persistCustomThemes(customThemesData);
-      yield state.copyWith(customThemesData: customThemesData);
+      emit(bloc.state.copyWith(customThemesData: customThemesData));
     } else if (index >= customThemesData.length) {
       customThemesData.add(themeData);
 
       _persistCustomThemes(customThemesData);
-      yield state.copyWith(customThemesData: customThemesData);
+      emit(bloc.state.copyWith(customThemesData: customThemesData));
     } else {
       log.warning('unexpected custom themes state');
     }

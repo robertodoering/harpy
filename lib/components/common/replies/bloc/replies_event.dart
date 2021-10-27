@@ -3,10 +3,7 @@ part of 'replies_bloc.dart';
 abstract class RepliesEvent {
   const RepliesEvent();
 
-  Stream<RepliesState> applyAsync({
-    required RepliesState currentState,
-    required RepliesBloc bloc,
-  });
+  Future<void> handle(RepliesBloc bloc, Emitter emit);
 }
 
 /// Requests the replies and the parent tweet.
@@ -42,37 +39,34 @@ class LoadReplies extends RepliesEvent with HarpyLogger {
   }
 
   @override
-  Stream<RepliesState> applyAsync({
-    required RepliesState currentState,
-    required RepliesBloc bloc,
-  }) async* {
+  Future<void> handle(RepliesBloc bloc, Emitter emit) async {
     log.fine('loading replies for ${bloc.tweet.id}');
 
-    yield const LoadingReplies();
+    emit(const LoadingReplies());
 
-    final results = await Future.wait<dynamic>([
+    final results = await Future.wait([
       _loadAllParentTweets(bloc.tweet),
       _loadReplies(bloc.tweet),
     ]);
 
-    final TweetData? parent = results[0] is TweetData ? results[0] : null;
-    final List<TweetData>? replies =
-        results[1] is List<TweetData> ? results[1] : null;
+    final parent = results[0] is TweetData ? results[0] as TweetData : null;
+    final replies =
+        results[1] is List<TweetData> ? results[1] as List<TweetData> : null;
 
     if (replies != null) {
       if (replies.isNotEmpty) {
         log.fine('found ${replies.length} replies');
 
-        yield RepliesResult(replies: replies, parent: parent);
+        emit(RepliesResult(replies: replies, parent: parent));
       } else {
         log.fine('no replies found');
 
-        yield RepliesNoResult(parent: parent);
+        emit(RepliesNoResult(parent: parent));
       }
     } else {
       log.fine('error requesting replies');
 
-      yield RepliesFailure(parent: parent);
+      emit(RepliesFailure(parent: parent));
     }
   }
 }

@@ -15,6 +15,7 @@ class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState>
   ListTimelineBloc({
     required this.listId,
   }) : super(const ListTimelineLoading()) {
+    on<ListTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestListTimeline());
   }
 
@@ -23,11 +24,4 @@ class ListTimelineBloc extends Bloc<ListTimelineEvent, ListTimelineState>
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderListTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();
-
-  @override
-  Stream<ListTimelineState> mapEventToState(
-    ListTimelineEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }
