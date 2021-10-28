@@ -4,6 +4,9 @@ import 'package:harpy/components/components.dart';
 
 part 'following_followers_event.dart';
 
+// TODO: just create one bloc that is not abstract and has events to load
+// following OR followers with the same state
+
 /// An abstraction for the [FollowersBloc] and the [FollowingBloc].
 abstract class FollowingFollowersBloc extends PaginatedBloc {
   FollowingFollowersBloc({

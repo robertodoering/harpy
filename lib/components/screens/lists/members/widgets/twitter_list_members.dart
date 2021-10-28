@@ -14,19 +14,16 @@ class TwitterListMembers extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    final bloc = context.watch<ListMembersBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<ListMembersCubit>();
+    final state = cubit.state;
 
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: LoadMoreListener(
           listen: state.hasMoreData,
-          onLoadMore: () async {
-            bloc.add(const LoadMoreMembers());
-            await bloc.requestMoreCompleter.future;
-          },
+          onLoadMore: cubit.loadMore,
           child: UserList(
-            state.members,
+            state.members.toList(),
             beginSlivers: [
               HarpySliverAppBar(
                 title: '${list.name} members',
@@ -34,19 +31,26 @@ class TwitterListMembers extends StatelessWidget {
               )
             ],
             endSlivers: [
-              if (state.isLoading)
-                const UserListLoadingSliver()
-              else if (state.isFailure)
-                SliverFillLoadingError(
-                  message: const Text('error loading list members'),
-                  onRetry: () => bloc.add(const ShowListMembers()),
-                )
-              else if (state.hasNoMembers)
-                SliverFillLoadingError(
-                  message: const Text('no members found'),
-                  onRetry: () => bloc.add(const ShowListMembers()),
-                ),
-              if (state.loadingMore) const SliverBoxLoadingIndicator(),
+              ...?state.whenOrNull(
+                loading: () => [
+                  const UserListLoadingSliver(),
+                ],
+                error: () => [
+                  SliverFillLoadingError(
+                    message: const Text('error loading list members'),
+                    onRetry: cubit.initialize,
+                  ),
+                ],
+                noData: () => [
+                  SliverFillLoadingError(
+                    message: const Text('no members found'),
+                    onRetry: cubit.initialize,
+                  ),
+                ],
+                loadingMore: (_) => [
+                  const SliverBoxLoadingIndicator(),
+                ],
+              ),
               SliverToBoxAdapter(
                 child: SizedBox(height: mediaQuery.padding.bottom),
               ),
