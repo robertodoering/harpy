@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/settings/display/font/font_screen.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
 
 class DisplaySettingsScreen extends StatelessWidget {
@@ -142,20 +145,25 @@ class FontRadioDialogTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final availableFonts = [
-      ...kAssetFonts,
-      ...kAvailableGoogleFonts,
-    ];
+    return HarpyListTile(
+      title: Text(title),
+      leading: Icon(leadingIcon),
+      subtitle: Text(font),
+      onTap: () async {
+        final result = await app<HarpyNavigator>().push<String>(
+          HarpyPageRoute(
+            builder: (_) {
+              return FontScreen(
+                selectedFont: font,
+              );
+            },
+          ),
+        );
 
-    return RadioDialogTile<String>(
-      value: font,
-      leading: leadingIcon,
-      title: title,
-      description: '',
-      subtitle: font,
-      titles: availableFonts,
-      values: availableFonts,
-      onChanged: onChanged,
+        if (result != null) {
+          onChanged.call(result);
+        }
+      },
     );
   }
 }
