@@ -6,21 +6,22 @@ part of 'timeline_filter.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineFilter _$TimelineFilterFromJson(Map<String, dynamic> json) {
-  return TimelineFilter(
-    includesImages: json['includesImages'] as bool,
-    includesGif: json['includesGif'] as bool,
-    includesVideo: json['includesVideo'] as bool,
-    excludesHashtags: (json['excludesHashtags'] as List<dynamic>)
-        .map((e) => e as String)
-        .toList(),
-    excludesPhrases: (json['excludesPhrases'] as List<dynamic>)
-        .map((e) => e as String)
-        .toList(),
-    excludesReplies: json['excludesReplies'] as bool,
-    excludesRetweets: json['excludesRetweets'] as bool,
-  );
-}
+TimelineFilter _$TimelineFilterFromJson(Map<String, dynamic> json) =>
+    TimelineFilter(
+      includesImages: json['includesImages'] as bool? ?? false,
+      includesGif: json['includesGif'] as bool? ?? false,
+      includesVideo: json['includesVideo'] as bool? ?? false,
+      excludesHashtags: (json['excludesHashtags'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
+      excludesPhrases: (json['excludesPhrases'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
+      excludesReplies: json['excludesReplies'] as bool? ?? false,
+      excludesRetweets: json['excludesRetweets'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$TimelineFilterToJson(TimelineFilter instance) =>
     <String, dynamic>{
