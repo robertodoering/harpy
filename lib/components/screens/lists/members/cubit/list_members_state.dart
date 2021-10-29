@@ -12,21 +12,20 @@ class ListMembersState with _$ListMembersState {
   }) = _ListMembersStateLoadingMore;
 
   const factory ListMembersState.loading() = _ListMembersStateLoading;
-
   const factory ListMembersState.error() = _ListMembersStateError;
-
   const factory ListMembersState.noData() = _ListMembersStateNoData;
 }
 
 extension ListMembersDataExtension on ListMembersState {
   BuiltList<UserData> get members => maybeMap(
-        data: (data) => data.members,
-        loadingMore: (data) => data.members,
+        data: (state) => state.members,
+        loadingMore: (state) => state.members,
         orElse: () => BuiltList(),
       );
 
   bool get hasMoreData => maybeMap(
-        data: (data) => data.membersCursor != null && data.membersCursor != '0',
+        data: (state) =>
+            state.membersCursor != null && state.membersCursor != '0',
         orElse: () => false,
       );
 }

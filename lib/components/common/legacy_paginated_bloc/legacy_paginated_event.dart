@@ -1,21 +1,23 @@
-part of 'paginated_bloc.dart';
+part of 'legacy_paginated_bloc.dart';
 
-abstract class PaginatedEvent {
-  const PaginatedEvent();
+// TODO: remove and migrate to PaginatedCubitMixin
 
-  Future<void> handle(PaginatedBloc bloc, Emitter emit);
+abstract class LegacyPaginatedEvent {
+  const LegacyPaginatedEvent();
+
+  Future<void> handle(LegacyPaginatedBloc bloc, Emitter emit);
 }
 
 /// An abstract event to load paginated data.
-abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
+abstract class LoadPaginatedData extends LegacyPaginatedEvent with HarpyLogger {
   const LoadPaginatedData();
 
   /// Loads the data and returns `true` when the data was able to be loaded or
   /// `false` when an error occurred.
-  Future<bool> loadData(PaginatedBloc paginatedBloc);
+  Future<bool> loadData(LegacyPaginatedBloc paginatedBloc);
 
   /// Prevents successive requests for 30 seconds.
-  void _lockRequests(PaginatedBloc bloc) {
+  void _lockRequests(LegacyPaginatedBloc bloc) {
     bloc.lockRequests = true;
 
     Future<void>.delayed(bloc.lockDuration).then(
@@ -24,7 +26,7 @@ abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
   }
 
   @override
-  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
+  Future<void> handle(LegacyPaginatedBloc bloc, Emitter emit) async {
     if (bloc.lockRequests) {
       return;
     }
@@ -53,12 +55,12 @@ abstract class LoadPaginatedData extends PaginatedEvent with HarpyLogger {
   }
 }
 
-/// An event to unlock the requests for the [PaginatedBloc].
-class UnlockRequests extends PaginatedEvent with HarpyLogger {
+/// An event to unlock the requests for the [LegacyPaginatedBloc].
+class UnlockRequests extends LegacyPaginatedEvent with HarpyLogger {
   const UnlockRequests();
 
   @override
-  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
+  Future<void> handle(LegacyPaginatedBloc bloc, Emitter emit) async {
     log.fine('unlocking request lock');
 
     bloc.lockRequests = false;

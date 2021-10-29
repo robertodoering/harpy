@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/core/core.dart';
 
-part 'paginated_event.dart';
-part 'paginated_state.dart';
+part 'legacy_paginated_event.dart';
+part 'legacy_paginated_state.dart';
+
+// TODO: remove and migrate to PaginatedCubitMixin
 
 /// An abstract bloc for loading data from paginated twitter requests with the
 /// twitter api.
-abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
-  PaginatedBloc() : super(InitialPaginatedState()) {
-    on<PaginatedEvent>((event, emit) => event.handle(this, emit));
+abstract class LegacyPaginatedBloc
+    extends Bloc<LegacyPaginatedEvent, LegacyPaginatedState> {
+  LegacyPaginatedBloc() : super(InitialPaginatedState()) {
+    on<LegacyPaginatedEvent>((event, emit) => event.handle(this, emit));
   }
 
   /// Whether data has been loaded.

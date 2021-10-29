@@ -1,7 +1,7 @@
 /// A lock for requests to prevent successive calls for a given duration.
 ///
 /// Used to prevent spamming a request when the request is triggered
-/// automatically (e.g. when scroll at the end of a list to load more
+/// automatically (e.g. when scrolling at the end of a list to load more
 /// paginated data).
 mixin RequestLock {
   bool _isLocked = false;

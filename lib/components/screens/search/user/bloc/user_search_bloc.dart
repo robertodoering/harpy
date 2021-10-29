@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 
 part 'user_search_event.dart';
 
-class UserSearchBloc extends PaginatedBloc {
+class UserSearchBloc extends LegacyPaginatedBloc {
   UserSearchBloc({
     this.silentErrors = false,
     this.lock = const Duration(seconds: 1),

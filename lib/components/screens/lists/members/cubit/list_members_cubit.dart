@@ -10,7 +10,10 @@ import 'package:harpy/core/core.dart';
 part 'list_members_cubit.freezed.dart';
 part 'list_members_state.dart';
 
-class ListMembersCubit extends Cubit<ListMembersState> with HarpyLogger {
+// TODO: use PaginatedUsersCubit
+
+class ListMembersCubit extends Cubit<ListMembersState>
+    with RequestLock, HarpyLogger {
   ListMembersCubit({
     required this.list,
   }) : super(const ListMembersState.loading()) {
@@ -50,6 +53,10 @@ class ListMembersCubit extends Cubit<ListMembersState> with HarpyLogger {
   }
 
   Future<void> loadMore() async {
+    if (lock()) {
+      return;
+    }
+
     final currentState = state;
 
     if (currentState is _ListMembersStateData && currentState.hasMoreData) {

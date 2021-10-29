@@ -41,7 +41,7 @@ class SearchUsers extends LoadPaginatedData {
   }
 
   @override
-  Future<bool> loadData(PaginatedBloc paginatedBloc) async {
+  Future<bool> loadData(LegacyPaginatedBloc paginatedBloc) async {
     final bloc = paginatedBloc as UserSearchBloc..lastQuery = query;
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
@@ -82,13 +82,13 @@ class SearchUsers extends LoadPaginatedData {
 }
 
 /// An event to clear the previously searched users.
-class ClearSearchedUsers extends PaginatedEvent {
+class ClearSearchedUsers extends LegacyPaginatedEvent {
   const ClearSearchedUsers();
 
   static final Logger _log = Logger('ClearSearchedUsers');
 
   @override
-  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
+  Future<void> handle(LegacyPaginatedBloc bloc, Emitter emit) async {
     final userSearchBloc = bloc as UserSearchBloc;
 
     _log.fine('clearing searched users');
