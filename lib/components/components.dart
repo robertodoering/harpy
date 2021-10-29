@@ -9,6 +9,8 @@ export 'common/find_trends_locations/widgets/dialog_content/found_locations_cont
 export 'common/find_trends_locations/widgets/dialog_content/select_find_method_content.dart';
 export 'common/find_trends_locations/widgets/find_location_dialog.dart';
 export 'common/paginated_bloc/paginated_bloc.dart';
+export 'common/pagination/paginated_mixin.dart';
+export 'common/pagination/paginated_state.dart';
 export 'common/replies/bloc/replies_bloc.dart';
 export 'common/timeline/filter/model/timeline_filter.dart';
 export 'common/timeline/filter/model/timeline_filter_model.dart';
