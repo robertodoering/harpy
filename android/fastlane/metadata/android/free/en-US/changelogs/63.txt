@@ -1,0 +1,11 @@
+Version 0.7.0
+2021-10-07
+
+· Improved setup screen
+  · Please log out to see the improved setup
+· Added logout dialog (thanks Nino)
+· Added donation link to about screen (thanks Nino)
+· Added search screen navigation in home drawer (thanks Nino)
+· Fixed updating the selected theme when deleting a custom theme (thanks altynbek132) (Pro)
+· Performance & stability improvements (thanks Goooler)
+· Minor style improvements

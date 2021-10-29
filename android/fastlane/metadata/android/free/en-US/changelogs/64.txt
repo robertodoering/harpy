@@ -1,0 +1,10 @@
+Version 0.7.1
+2021-10-26
+
+· Added option to change the timeline position behavior when restoring a session
+  · In settings > general
+· Added option to not hide the home tab bar when scrolling down / up
+  · In settings > general
+· Improved home tab bar icon visibility
+· Updated home tab bar tab styling
+· Fixed android 10 and below not correctly displaying system ui transparency

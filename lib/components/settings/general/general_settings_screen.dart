@@ -15,6 +15,12 @@ class GeneralSettingsScreen extends StatefulWidget {
 }
 
 class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
+  final Map<int, String> _homeTimelinePositionBehavior = {
+    0: 'show newest already-read tweet',
+    1: 'show last read tweet',
+    2: "show newest tweet (don't restore position)",
+  };
+
   @override
   Widget build(BuildContext context) {
     final changelogPreferences = app<ChangelogPreferences>();
@@ -37,6 +43,45 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             onChanged: (value) {
               HapticFeedback.lightImpact();
               setState(() => changelogPreferences.showChangelogDialog = value);
+            },
+          ),
+          HarpySwitchTile(
+            leading: const Icon(Icons.bug_report_outlined),
+            title: const Text('automatic crash reports'),
+            subtitle: const Text('anonymously report errors to improve harpy'),
+            value: generalPreferences.crashReports,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(() => generalPreferences.crashReports = value);
+            },
+          ),
+          RadioDialogTile<int>(
+            leading: CupertinoIcons.square_list,
+            title: 'restore home timeline position',
+            titles: _homeTimelinePositionBehavior.values.toList(),
+            subtitle: _homeTimelinePositionBehavior[
+                generalPreferences.homeTimelinePositionBehavior],
+            values: _homeTimelinePositionBehavior.keys.toList(),
+            description: 'change how the app behaves when opening the home '
+                'timeline',
+            value: generalPreferences.homeTimelinePositionBehavior,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(
+                () => generalPreferences.homeTimelinePositionBehavior = value!,
+              );
+            },
+          ),
+          HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.rectangle),
+            title: const Text('automatically hide tab bar'),
+            subtitle: Text(
+              'when scrolling ${config.bottomAppBar ? "up" : "down"}',
+            ),
+            value: config.hideHomeTabBar,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              configCubit.updateHideHomeTabBar(value);
             },
           ),
           HarpySwitchTile(

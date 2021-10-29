@@ -52,10 +52,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildText() {
-    return const Align(
+  Widget _buildText(ThemeData theme) {
+    return Align(
       alignment: Alignment.bottomCenter,
-      child: SecondaryHeadline('welcome to'),
+      child: FadeAnimation(
+        curve: Curves.easeInOut,
+        duration: const Duration(seconds: 1),
+        child: SlideInAnimation(
+          offset: const Offset(0, 50),
+          curve: Curves.easeOut,
+          duration: const Duration(seconds: 1),
+          child: Text(
+            'welcome to',
+            style: theme.textTheme.headline4,
+          ),
+        ),
+      ),
     );
   }
 
@@ -112,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _buildAboutButton(theme),
           Column(
             children: [
-              Expanded(child: _buildText()),
+              Expanded(child: _buildText(theme)),
               Expanded(
                 flex: 2,
                 child: Column(

@@ -6,7 +6,7 @@ class SetupPreferences {
   /// Whether the currently authenticated user has been through the setup after
   /// their first login.
   bool get performedSetup =>
-      harpyPrefs.getBool('performedSetup', false, prefix: true);
+      harpyPrefs.getBool('performedSetup2', false, prefix: true);
   set performedSetup(bool value) =>
-      harpyPrefs.setBool('performedSetup', value, prefix: true);
+      harpyPrefs.setBool('performedSetup2', value, prefix: true);
 }

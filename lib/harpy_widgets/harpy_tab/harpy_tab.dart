@@ -9,12 +9,16 @@ class HarpyTab extends StatefulWidget {
     required this.icon,
     this.text,
     this.cardColor,
+    this.selectedCardColor,
+    this.selectedForegroundColor,
   });
 
   final Widget icon;
   final Widget? text;
 
   final Color? cardColor;
+  final Color? selectedCardColor;
+  final Color? selectedForegroundColor;
 
   static double height(BuildContext context) {
     final iconSize = Theme.of(context).iconTheme.size!;
@@ -38,8 +42,8 @@ class _HarpyTabState extends State<HarpyTab>
   /// 0: Tab content is not visible.
   late AnimationController _animationController;
 
-  late Animation<Color?> _colorAnimation;
-  late Animation<double> _opacityAnimation;
+  late Animation<Color?> _foregroundColorAnimation;
+  late Animation<Color?> _cardColorAnimation;
   late Animation<double> _textOpacityAnimation;
 
   @override
@@ -48,11 +52,6 @@ class _HarpyTabState extends State<HarpyTab>
 
     _animationController = AnimationController(vsync: this)
       ..addListener(() => setState(() {}));
-
-    _opacityAnimation = Tween<double>(
-      begin: 1,
-      end: .5,
-    ).animate(_animationController);
 
     _textOpacityAnimation = Tween<double>(
       begin: 1,
@@ -75,8 +74,16 @@ class _HarpyTabState extends State<HarpyTab>
 
     final theme = Theme.of(context);
 
-    _colorAnimation = ColorTween(
-      begin: theme.colorScheme.primary,
+    final cardColor = widget.cardColor ?? theme.cardTheme.color!;
+    final selectedCardColor = widget.selectedCardColor ?? cardColor;
+
+    _cardColorAnimation = ColorTween(
+      begin: selectedCardColor,
+      end: cardColor.withOpacity(cardColor.opacity * .8),
+    ).animate(_animationController);
+
+    _foregroundColorAnimation = ColorTween(
+      begin: widget.selectedForegroundColor ?? theme.colorScheme.primary,
       end: theme.textTheme.subtitle1!.color,
     ).animate(_animationController);
   }
@@ -111,28 +118,25 @@ class _HarpyTabState extends State<HarpyTab>
 
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (_, __) => Opacity(
-        opacity: _opacityAnimation.value,
-        child: Card(
-          color: widget.cardColor,
-          child: Padding(
-            padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-            child: IconTheme(
-              data: iconTheme.copyWith(
-                color: _colorAnimation.value,
+      builder: (_, __) => Card(
+        color: _cardColorAnimation.value,
+        child: Padding(
+          padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
+          child: IconTheme(
+            data: iconTheme.copyWith(
+              color: _foregroundColorAnimation.value,
+            ),
+            child: DefaultTextStyle(
+              style: theme.textTheme.subtitle1!.copyWith(
+                color: _foregroundColorAnimation.value,
               ),
-              child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1!.copyWith(
-                  color: _colorAnimation.value,
-                ),
-                child: SizedBox(
-                  height: iconTheme.size,
-                  child: Row(
-                    children: [
-                      widget.icon,
-                      if (widget.text != null) _buildText(),
-                    ],
-                  ),
+              child: SizedBox(
+                height: iconTheme.size,
+                child: Row(
+                  children: [
+                    widget.icon,
+                    if (widget.text != null) _buildText(),
+                  ],
                 ),
               ),
             ),

@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Provides the currently used [HarpyTheme] to its decendents.
+/// Provides the currently used [HarpyTheme] to its descendants.
 class HarpyThemeProvider extends StatelessWidget {
   const HarpyThemeProvider({
     required this.child,

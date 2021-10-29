@@ -18,7 +18,7 @@ class HomeTabBar extends StatelessWidget {
 
   Widget _mapEntryTabs(HomeTabEntry entry, Color cardColor) {
     if (entry.isDefaultType && entry.id == 'mentions') {
-      return MentionsTab(
+      return _MentionsTab(
         entry: entry,
       );
     } else {
@@ -40,7 +40,7 @@ class HomeTabBar extends StatelessWidget {
     return HarpyTabBar(
       padding: padding,
       tabs: [
-        const _DrawerButton(),
+        const _DrawerTab(),
         for (HomeTabEntry entry in model.visibleEntries)
           _mapEntryTabs(entry, cardColor),
       ],
@@ -51,22 +51,52 @@ class HomeTabBar extends StatelessWidget {
   }
 }
 
-class _DrawerButton extends StatelessWidget {
-  const _DrawerButton();
+class _MentionsTab extends StatelessWidget {
+  const _MentionsTab({
+    required this.entry,
+  });
+
+  final HomeTabEntry entry;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final harpyTheme = context.watch<HarpyTheme>();
 
-    return HarpyButton.raised(
-      backgroundColor: theme.colorScheme.primary.withOpacity(.9),
-      padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-      elevation: 0,
+    final bloc = context.watch<MentionsTimelineBloc>();
+    final state = bloc.state;
+
+    final child = HarpyTab(
+      icon: HomeTabEntryIcon(entry.icon),
+      text: entry.hasName ? Text(entry.name!) : null,
+      cardColor: harpyTheme.alternateCardColor,
+    );
+
+    if (state.hasNewMentions) {
+      return Bubbled(
+        bubble: const Bubble(),
+        child: child,
+      );
+    } else {
+      return child;
+    }
+  }
+}
+
+class _DrawerTab extends StatelessWidget {
+  const _DrawerTab();
+
+  @override
+  Widget build(BuildContext context) {
+    final harpyTheme = context.watch<HarpyTheme>();
+
+    return HarpyTab(
+      cardColor: harpyTheme.alternateCardColor,
+      selectedCardColor: harpyTheme.primaryColor,
+      selectedForegroundColor: harpyTheme.onPrimary,
       icon: const RotatedBox(
         quarterTurns: 1,
         child: Icon(FeatherIcons.barChart2),
       ),
-      onTap: () => DefaultTabController.of(context)!.animateTo(0),
     );
   }
 }
@@ -76,11 +106,7 @@ class _CustomizeHomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final Widget child = HarpyButton.raised(
-      elevation: 0,
-      backgroundColor: theme.colorScheme.secondary.withOpacity(.9),
+    final child = HarpyButton.flat(
       padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
       icon: const Icon(FeatherIcons.settings),
       onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
