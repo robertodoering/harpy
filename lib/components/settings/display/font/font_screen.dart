@@ -14,6 +14,26 @@ class FontScreen extends StatelessWidget {
 
   final String selectedFont;
 
+  Widget _buildProCard(Config config, ThemeData theme) {
+    return Padding(
+      padding: config.edgeInsetsSymmetric(horizontal: true),
+      child: HarpyProCard(
+        children: [
+          const Text(
+            'all fonts are available in the pro '
+            'version of harpy',
+          ),
+          Text(
+            '(coming soon)',
+            style: theme.textTheme.subtitle2!.copyWith(
+              color: Colors.white.withOpacity(.6),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -30,23 +50,7 @@ class FontScreen extends StatelessWidget {
     ];
 
     final children = [
-      Padding(
-        padding: config.edgeInsetsSymmetric(horizontal: true),
-        child: HarpyProCard(
-          children: [
-            const Text(
-              'all fonts are available in the pro '
-              'version of harpy',
-            ),
-            Text(
-              '(coming soon)',
-              style: theme.textTheme.subtitle2!.copyWith(
-                color: Colors.white.withOpacity(.6),
-              ),
-            ),
-          ],
-        ),
-      ),
+      if (Harpy.isFree) _buildProCard(config, theme),
       for (String font in availableFonts)
         FontCard(
           font: font,
