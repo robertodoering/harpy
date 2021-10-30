@@ -11,6 +11,7 @@ import 'package:harpy/core/core.dart';
 /// For example implementations, see:
 /// * [FollowersCubit]
 /// * [FollowingCubit]
+/// * [ListMembersCubit]
 abstract class PaginatedUsersCubit
     extends Cubit<PaginatedState<BuiltList<UserData>>>
     with

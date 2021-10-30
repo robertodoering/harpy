@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 /// For example implementations, see:
 /// * [FollowersScreen]
 /// * [FollowingScreen]
+/// * [ListMembersScreen]
 class PaginatedUsersScreen extends StatelessWidget {
   const PaginatedUsersScreen({
     required this.title,
