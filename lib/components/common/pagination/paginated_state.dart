@@ -13,6 +13,7 @@ class PaginatedState<T> with _$PaginatedState<T> {
     required T data,
   }) = PaginatedStateLoadingMore;
 
+  const factory PaginatedState.initial() = PaginatedStateInitial;
   const factory PaginatedState.loading() = PaginatedStateLoading;
   const factory PaginatedState.error() = PaginatedStateError;
   const factory PaginatedState.noData() = PaginatedStateNoData;

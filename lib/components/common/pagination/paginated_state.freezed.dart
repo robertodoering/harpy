@@ -30,6 +30,10 @@ class _$PaginatedStateTearOff {
     );
   }
 
+  PaginatedStateInitial<T> initial<T>() {
+    return PaginatedStateInitial<T>();
+  }
+
   PaginatedStateLoading<T> loading<T>() {
     return PaginatedStateLoading<T>();
   }
@@ -52,6 +56,7 @@ mixin _$PaginatedState<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -61,6 +66,7 @@ mixin _$PaginatedState<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -70,6 +76,7 @@ mixin _$PaginatedState<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -80,6 +87,7 @@ mixin _$PaginatedState<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -89,6 +97,7 @@ mixin _$PaginatedState<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -98,6 +107,7 @@ mixin _$PaginatedState<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -199,6 +209,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -211,6 +222,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -223,6 +235,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -239,6 +252,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -251,6 +265,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -263,6 +278,7 @@ class _$PaginatedStateData<T> implements PaginatedStateData<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -355,6 +371,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -367,6 +384,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -379,6 +397,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -395,6 +414,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -407,6 +427,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -419,6 +440,7 @@ class _$PaginatedStateLoadingMore<T> implements PaginatedStateLoadingMore<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -439,6 +461,136 @@ abstract class PaginatedStateLoadingMore<T> implements PaginatedState<T> {
   @JsonKey(ignore: true)
   $PaginatedStateLoadingMoreCopyWith<T, PaginatedStateLoadingMore<T>>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PaginatedStateInitialCopyWith<T, $Res> {
+  factory $PaginatedStateInitialCopyWith(PaginatedStateInitial<T> value,
+          $Res Function(PaginatedStateInitial<T>) then) =
+      _$PaginatedStateInitialCopyWithImpl<T, $Res>;
+}
+
+/// @nodoc
+class _$PaginatedStateInitialCopyWithImpl<T, $Res>
+    extends _$PaginatedStateCopyWithImpl<T, $Res>
+    implements $PaginatedStateInitialCopyWith<T, $Res> {
+  _$PaginatedStateInitialCopyWithImpl(PaginatedStateInitial<T> _value,
+      $Res Function(PaginatedStateInitial<T>) _then)
+      : super(_value, (v) => _then(v as PaginatedStateInitial<T>));
+
+  @override
+  PaginatedStateInitial<T> get _value =>
+      super._value as PaginatedStateInitial<T>;
+}
+
+/// @nodoc
+
+class _$PaginatedStateInitial<T> implements PaginatedStateInitial<T> {
+  const _$PaginatedStateInitial();
+
+  @override
+  String toString() {
+    return 'PaginatedState<$T>.initial()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is PaginatedStateInitial<T>);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data, int? cursor) data,
+    required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() error,
+    required TResult Function() noData,
+  }) {
+    return initial();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(T data, int? cursor)? data,
+    TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? error,
+    TResult Function()? noData,
+  }) {
+    return initial?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data, int? cursor)? data,
+    TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? error,
+    TResult Function()? noData,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PaginatedStateData<T> value) data,
+    required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
+    required TResult Function(PaginatedStateLoading<T> value) loading,
+    required TResult Function(PaginatedStateError<T> value) error,
+    required TResult Function(PaginatedStateNoData<T> value) noData,
+  }) {
+    return initial(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PaginatedStateData<T> value)? data,
+    TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
+    TResult Function(PaginatedStateLoading<T> value)? loading,
+    TResult Function(PaginatedStateError<T> value)? error,
+    TResult Function(PaginatedStateNoData<T> value)? noData,
+  }) {
+    return initial?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PaginatedStateData<T> value)? data,
+    TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
+    TResult Function(PaginatedStateLoading<T> value)? loading,
+    TResult Function(PaginatedStateError<T> value)? error,
+    TResult Function(PaginatedStateNoData<T> value)? noData,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PaginatedStateInitial<T> implements PaginatedState<T> {
+  const factory PaginatedStateInitial() = _$PaginatedStateInitial<T>;
 }
 
 /// @nodoc
@@ -485,6 +637,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -497,6 +650,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -509,6 +663,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -525,6 +680,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -537,6 +693,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -549,6 +706,7 @@ class _$PaginatedStateLoading<T> implements PaginatedStateLoading<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -608,6 +766,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -620,6 +779,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -632,6 +792,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -648,6 +809,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -660,6 +822,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -672,6 +835,7 @@ class _$PaginatedStateError<T> implements PaginatedStateError<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -731,6 +895,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data, int? cursor) data,
     required TResult Function(T data) loadingMore,
+    required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() error,
     required TResult Function() noData,
@@ -743,6 +908,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -755,6 +921,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data, int? cursor)? data,
     TResult Function(T data)? loadingMore,
+    TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? error,
     TResult Function()? noData,
@@ -771,6 +938,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(PaginatedStateData<T> value) data,
     required TResult Function(PaginatedStateLoadingMore<T> value) loadingMore,
+    required TResult Function(PaginatedStateInitial<T> value) initial,
     required TResult Function(PaginatedStateLoading<T> value) loading,
     required TResult Function(PaginatedStateError<T> value) error,
     required TResult Function(PaginatedStateNoData<T> value) noData,
@@ -783,6 +951,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,
@@ -795,6 +964,7 @@ class _$PaginatedStateNoData<T> implements PaginatedStateNoData<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PaginatedStateData<T> value)? data,
     TResult Function(PaginatedStateLoadingMore<T> value)? loadingMore,
+    TResult Function(PaginatedStateInitial<T> value)? initial,
     TResult Function(PaginatedStateLoading<T> value)? loading,
     TResult Function(PaginatedStateError<T> value)? error,
     TResult Function(PaginatedStateNoData<T> value)? noData,

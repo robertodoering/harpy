@@ -22,9 +22,7 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
           // only start searching if no new query has been fired for 300ms
           // to prevent spamming requests when quickly typing
           if (bloc.state.lastQuery == query) {
-            bloc.userSearchBloc
-              ..add(const ClearSearchedUsers())
-              ..add(SearchUsers(query));
+            bloc.userSearchCubit.search(query);
           }
         }),
       );

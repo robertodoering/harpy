@@ -20,18 +20,18 @@ class MentionSuggestionsBloc
         super(const MentionSuggestionsState()) {
     on<MentionSuggestionsEvent>((event, emit) => event.handle(this, emit));
     followingCubit.stream.listen(_followingCubitListener);
-    userSearchBloc.stream.listen(_userSearchBlocListener);
+    userSearchCubit.stream.listen(_userSearchCubitListener);
   }
 
-  final UserSearchBloc userSearchBloc = UserSearchBloc(
+  final userSearchCubit = UserSearchCubit(
     silentErrors: true,
-    lock: Duration.zero,
   );
 
   final FollowingCubit followingCubit;
 
   /// Whether user suggestions are currently being loaded.
-  bool get loadingSearchedUsers => userSearchBloc.state is LoadingPaginatedData;
+  bool get loadingSearchedUsers =>
+      userSearchCubit.state is PaginatedStateLoadingMore;
 
   void _followingCubitListener(PaginatedState<BuiltList<UserData>> state) {
     if (followingCubit.state is PaginatedStateData) {
@@ -43,12 +43,12 @@ class MentionSuggestionsBloc
     }
   }
 
-  void _userSearchBlocListener(LegacyPaginatedState state) {
-    if (state is LoadedData) {
+  void _userSearchCubitListener(PaginatedState<UsersSearchStateData> state) {
+    if (state is PaginatedStateData) {
       add(
         UpdateMentionsSuggestionsEvent(
-          searchedUsers: userSearchBloc.users,
-          searchQuery: userSearchBloc.lastQuery,
+          searchedUsers: state.data!.users.toList(),
+          searchQuery: state.data!.query,
         ),
       );
     }
