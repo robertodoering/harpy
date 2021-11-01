@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 /// Used for editing existing custom themes and creating new custom themes.
@@ -59,7 +58,7 @@ class _CustomThemeContent extends StatelessWidget {
     final cubit = context.watch<CustomThemeCubit>();
 
     return GestureDetector(
-      onTap: () => removeFocus(context),
+      onTap: FocusScope.of(context).unfocus,
       child: Theme(
         data: cubit.harpyTheme.themeData,
         child: HarpyScaffold(

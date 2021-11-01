@@ -135,8 +135,7 @@ class ScrollDirection extends InheritedWidget {
     required this.direction,
     required Widget child,
     required this.reset,
-    Key? key,
-  }) : super(key: key, child: child);
+  }) : super(child: child);
 
   final VerticalDirection? direction;
   final VoidCallback reset;

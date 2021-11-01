@@ -43,7 +43,7 @@ void showTweetActionsBottomSheet(
             Text('tweet from ${tweet.user.name}'),
             defaultSmallVerticalSpacer,
             Text(tweetTime),
-            // todo: add source here and make bottom sheet scrollable
+            // TODO: add tweet source here and make bottom sheet scrollable
           ],
         ),
       ),

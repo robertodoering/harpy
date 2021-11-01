@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 import 'package:harpy/api/api.dart';
+import 'package:harpy/core/core.dart';
 import 'package:http/http.dart' as http;
-import 'package:logging/logging.dart';
 
-class TranslationService {
-  static final Logger _log = Logger('TranslationService');
+const _timeout = Duration(seconds: 10);
 
-  static const Duration _timeout = Duration(seconds: 10);
+class TranslationService with HarpyLogger {
+  const TranslationService();
 
-  /// Translates the [text] to the [to] language.
-  ///
   /// Throws an error if the response is not valid or if the [Translation]
   /// object was unable to be parsed from the response.
   Future<Translation> translate({
@@ -18,7 +16,7 @@ class TranslationService {
     String from = 'auto',
     String to = 'en',
   }) async {
-    _log.fine('translating from $from to $to');
+    log.fine('translating from $from to $to');
 
     final params = <String, String?>{
       'client': 'gtx',
@@ -58,7 +56,7 @@ class TranslationService {
         translated.write(translationText[0]);
       }
 
-      _log.fine('translated from:\n$original\nto:\n$translated');
+      log.fine('translated from:\n$original\nto:\n$translated');
 
       return Translation(
         original: original.toString(),
@@ -69,7 +67,7 @@ class TranslationService {
         language: translateLanguages[body.last[0][0]],
       );
     } catch (e, st) {
-      _log.severe(
+      log.severe(
         'error while trying to parse translate response: ${response.body}',
         e,
         st,

@@ -13,6 +13,7 @@ class ListMembersBloc extends Bloc<ListMembersEvent, ListMembersState> {
   ListMembersBloc({
     required this.list,
   }) : super(const ListMembersInitialLoading()) {
+    on<ListMembersEvent>((event, emit) => event.handle(this, emit));
     add(const ShowListMembers());
   }
 
@@ -21,11 +22,4 @@ class ListMembersBloc extends Bloc<ListMembersEvent, ListMembersState> {
   final ListsService listsService = app<TwitterApi>().listsService;
 
   Completer<void> requestMoreCompleter = Completer<void>();
-
-  @override
-  Stream<ListMembersState> mapEventToState(
-    ListMembersEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

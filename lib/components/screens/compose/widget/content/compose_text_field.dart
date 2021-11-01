@@ -6,10 +6,8 @@ class ComposeTextField extends StatelessWidget {
   const ComposeTextField({
     required ComposeTextController? controller,
     required FocusNode? focusNode,
-    Key? key,
   })  : _controller = controller,
-        _focusNode = focusNode,
-        super(key: key);
+        _focusNode = focusNode;
 
   final ComposeTextController? _controller;
   final FocusNode? _focusNode;

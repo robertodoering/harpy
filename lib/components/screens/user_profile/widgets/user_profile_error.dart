@@ -25,7 +25,7 @@ class UserProfileError extends StatelessWidget {
         onRetry: () => bloc.add(
           InitializeUserEvent(
             user: user,
-            handle: screenName,
+            userHandle: screenName,
           ),
         ),
       ),

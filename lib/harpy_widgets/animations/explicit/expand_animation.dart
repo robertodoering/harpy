@@ -20,8 +20,7 @@ class ExpandAnimation extends StatefulWidget {
     this.duration = kShortAnimationDuration,
     this.delay = Duration.zero,
     this.onAnimated,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final ExpandType expandType;

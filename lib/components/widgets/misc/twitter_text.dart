@@ -191,7 +191,7 @@ class _TwitterTextState extends State<TwitterText> {
       final text = parseHtmlEntities(
         trimOne(
           widget.text.substring(start, end),
-          start: false,
+          begin: false,
           end: trimEnd,
         ),
       )!;
@@ -410,7 +410,6 @@ void _addEntity(
 }
 
 /// Represents an entity and its location in twitter text.
-@immutable
 class TwitterTextEntity {
   const TwitterTextEntity(this.indices, this.value);
 
@@ -434,7 +433,6 @@ class TwitterTextEntity {
 }
 
 /// A class that represents a text span for the [TwitterText].
-@immutable
 class TwitterTextSpan {
   const TwitterTextSpan(
     this.text, {

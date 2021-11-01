@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 class HomeProvider extends StatelessWidget {
   const HomeProvider({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

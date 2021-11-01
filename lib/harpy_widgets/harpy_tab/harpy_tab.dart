@@ -153,8 +153,7 @@ class HarpyTabScope extends InheritedWidget {
     required this.index,
     required this.animationValue,
     required Widget child,
-    Key? key,
-  }) : super(key: key, child: child);
+  }) : super(child: child);
 
   final int index;
 

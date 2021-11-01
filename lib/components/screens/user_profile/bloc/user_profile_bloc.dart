@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dart_twitter_api/api/users/user_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +16,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc({
     required String? screenName,
   }) : super(LoadingUserState()) {
-    add(InitializeUserEvent(user: user, handle: screenName));
+    on<UserProfileEvent>((event, emit) => event.handle(this, emit));
+    add(InitializeUserEvent(user: user, userHandle: screenName));
   }
 
   /// The [UserData] for the user to display.
@@ -25,17 +25,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   /// Set with an [InitializeUserEvent].
   UserData? user;
 
-  final UserService userService = app<TwitterApi>().userService;
-
-  final LanguagePreferences languagePreferences = app<LanguagePreferences>();
-
   static UserProfileBloc of(BuildContext context) =>
       context.watch<UserProfileBloc>();
-
-  @override
-  Stream<UserProfileState> mapEventToState(
-    UserProfileEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

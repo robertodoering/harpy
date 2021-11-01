@@ -1,6 +1,5 @@
 part of 'user_profile_bloc.dart';
 
-@immutable
 abstract class UserProfileState {}
 
 /// The state when a user is currently being loaded.

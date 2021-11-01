@@ -1,12 +1,9 @@
-import 'package:flutter/foundation.dart';
-
 enum TwitterAuthStatus {
   success,
   failure,
   userCancelled,
 }
 
-@immutable
 class TwitterAuthResult {
   const TwitterAuthResult({
     required this.status,
@@ -27,7 +24,6 @@ class TwitterAuthResult {
   }
 }
 
-@immutable
 class TwitterAuthSession {
   const TwitterAuthSession({
     required this.token,

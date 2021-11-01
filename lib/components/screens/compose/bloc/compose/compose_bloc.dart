@@ -13,7 +13,9 @@ class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc({
     this.inReplyToStatus,
     this.quotedTweet,
-  }) : super(const ComposeState());
+  }) : super(const ComposeState()) {
+    on<ComposeEvent>((event, emit) => event.handle(this, emit));
+  }
 
   final TweetData? inReplyToStatus;
   final TweetData? quotedTweet;
@@ -22,11 +24,4 @@ class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   bool get isReplying => inReplyToStatus != null;
 
   String get hintText => isReplying ? 'tweet your reply' : "what's happening?";
-
-  @override
-  Stream<ComposeState> mapEventToState(
-    ComposeEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

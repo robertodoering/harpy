@@ -118,7 +118,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
         actions: [_buildAction()],
         body: GestureDetector(
           // remove focus on background tap
-          onTap: () => removeFocus(context),
+          onTap: FocusScope.of(context).unfocus,
           child: Builder(
             builder: (context) {
               final model = context.watch<HomeTabModel>();

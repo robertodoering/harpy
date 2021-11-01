@@ -55,7 +55,7 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   }
 
   // sort to make sure the tweets are in chronological order with the newest
-  //   reply to a tweet pushing the parent tweet to the front
+  //  reply to a tweet pushing the parent tweet to the front
   tweetDataList.sort((a, b) {
     final targetA = a.replies.isNotEmpty ? a.replies.first : a;
     final targetB = b.replies.isNotEmpty ? b.replies.first : b;

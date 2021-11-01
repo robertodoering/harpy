@@ -4,19 +4,22 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
 class AuthPreferences {
-  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
+  const AuthPreferences();
 
-  String get userToken => harpyPrefs.getString('userToken', '')!;
-  set userToken(String value) => harpyPrefs.setString('userToken', value);
+  String get userToken => app<HarpyPreferences>().getString('userToken', '');
+  set userToken(String value) =>
+      app<HarpyPreferences>().setString('userToken', value);
 
-  String get userSecret => harpyPrefs.getString('userSecret', '')!;
-  set userSecret(String value) => harpyPrefs.setString('userSecret', value);
+  String get userSecret => app<HarpyPreferences>().getString('userSecret', '');
+  set userSecret(String value) =>
+      app<HarpyPreferences>().setString('userSecret', value);
 
-  String get userId => harpyPrefs.getString('userId', '')!;
-  set userId(String value) => harpyPrefs.setString('userId', value);
+  String get userId => app<HarpyPreferences>().getString('userId', '');
+  set userId(String value) =>
+      app<HarpyPreferences>().setString('userId', value);
 
-  int get auth => harpyPrefs.getInt('auth', -1);
-  set auth(int value) => harpyPrefs.setInt('auth', value);
+  int get auth => app<HarpyPreferences>().getInt('auth', -1);
+  set auth(int value) => app<HarpyPreferences>().setInt('auth', value);
 
   TwitterAuth initializeTwitterAuth() {
     if (app<AuthPreferences>().auth == -1) {
@@ -35,7 +38,7 @@ class AuthPreferences {
   }
 
   void clearAuth() {
-    harpyPrefs
+    app<HarpyPreferences>()
       ..remove('userToken')
       ..remove('userSecret')
       ..remove('userId');

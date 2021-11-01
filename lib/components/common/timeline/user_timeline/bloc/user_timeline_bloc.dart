@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:dart_twitter_api/api/tweets/timeline_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:harpy/api/api.dart';
@@ -17,14 +16,11 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
   UserTimelineBloc({
     required this.screenName,
   }) : super(const UserTimelineInitial()) {
+    on<UserTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestUserTimeline());
   }
 
   final String? screenName;
-
-  final TimelineService timelineService = app<TwitterApi>().timelineService;
-  final TimelineFilterPreferences? timelineFilterPreferences =
-      app<TimelineFilterPreferences>();
 
   /// Completes when the user timeline has been requested using the
   /// [RequestUserTimeline] event.
@@ -33,11 +29,4 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderUserTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();
-
-  @override
-  Stream<UserTimelineState> mapEventToState(
-    UserTimelineEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

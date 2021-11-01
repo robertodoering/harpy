@@ -17,7 +17,9 @@ class CustomThemeCardColor extends StatelessWidget {
         color: cubit.harpyTheme.cardColor,
         allowTransparency: true,
         title: const Text('card'),
-        subtitle: Text(colorValueToHex(cubit.harpyTheme.cardColor.value)),
+        subtitle: Text(
+          colorValueToDisplayHex(cubit.harpyTheme.cardColor.value),
+        ),
         onColorChanged: cubit.changeCardColor,
       ),
     );

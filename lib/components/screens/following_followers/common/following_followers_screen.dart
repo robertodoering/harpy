@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 typedef BlocAction<T> = void Function(T);
 
 /// The shared base for the [FollowingScreen] and the [FollowersScreen].
-// todo: refactor similar to user search screen
+// TODO: refactor similar to user search screen
 class FollowingFollowersScreen<B extends FollowingFollowersBloc>
     extends StatelessWidget {
   const FollowingFollowersScreen({

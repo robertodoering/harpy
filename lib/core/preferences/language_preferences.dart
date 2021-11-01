@@ -2,7 +2,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
 class LanguagePreferences {
-  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
+  const LanguagePreferences();
 
   /// The language code used by the translate service to translate a tweet or
   /// a user description.
@@ -11,9 +11,9 @@ class LanguagePreferences {
   /// By default the translate language code will derive from the locale of the
   /// app.
   String get translateLanguage =>
-      harpyPrefs.getString('translateLanguage', '')!;
+      app<HarpyPreferences>().getString('translateLanguage', '');
   set translateLanguage(String value) =>
-      harpyPrefs.setString('translateLanguage', value);
+      app<HarpyPreferences>().setString('translateLanguage', value);
 
   /// Returns the translation language code that should be used for
   /// translations.

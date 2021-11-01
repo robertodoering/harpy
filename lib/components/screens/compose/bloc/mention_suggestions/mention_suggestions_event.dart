@@ -1,12 +1,9 @@
 part of 'mention_suggestions_bloc.dart';
 
-abstract class MentionSuggestionsEvent extends Equatable {
+abstract class MentionSuggestionsEvent {
   const MentionSuggestionsEvent();
 
-  Stream<MentionSuggestionsState> applyAsync({
-    required MentionSuggestionsState currentState,
-    required MentionSuggestionsBloc bloc,
-  });
+  Future<void> handle(MentionSuggestionsBloc bloc, Emitter emit);
 }
 
 class FindMentionsEvent extends MentionSuggestionsEvent {
@@ -15,19 +12,11 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
   final String text;
 
   @override
-  List<Object> get props => <Object>[
-        text,
-      ];
-
-  @override
-  Stream<MentionSuggestionsState> applyAsync({
-    required MentionSuggestionsState currentState,
-    required MentionSuggestionsBloc bloc,
-  }) async* {
+  Future<void> handle(MentionSuggestionsBloc bloc, Emitter emit) async {
     final query =
         text.contains('@') ? text.substring(text.indexOf('@') + 1) : text;
 
-    if (query.isNotEmpty && currentState.searchedUsers[query] == null) {
+    if (query.isNotEmpty && bloc.state.searchedUsers[query] == null) {
       unawaited(
         Future<void>.delayed(const Duration(milliseconds: 300)).then((_) {
           // only start searching if no new query has been fired for 300ms
@@ -41,10 +30,12 @@ class FindMentionsEvent extends MentionSuggestionsEvent {
       );
     }
 
-    yield MentionSuggestionsState(
-      lastQuery: query,
-      searchedUsers: currentState.searchedUsers,
-      followingUsers: currentState.followingUsers,
+    emit(
+      MentionSuggestionsState(
+        lastQuery: query,
+        searchedUsers: bloc.state.searchedUsers,
+        followingUsers: bloc.state.followingUsers,
+      ),
     );
   }
 }
@@ -59,13 +50,6 @@ class UpdateMentionsSuggestionsEvent extends MentionSuggestionsEvent {
   final List<UserData>? followingUsers;
   final List<UserData>? searchedUsers;
   final String? searchQuery;
-
-  @override
-  List<Object?> get props => <Object?>[
-        followingUsers,
-        searchedUsers,
-        searchQuery,
-      ];
 
   Map<String, List<UserData>?> _searchedUsers(
     MentionSuggestionsState currentState,
@@ -84,14 +68,11 @@ class UpdateMentionsSuggestionsEvent extends MentionSuggestionsEvent {
   }
 
   @override
-  Stream<MentionSuggestionsState> applyAsync({
-    required MentionSuggestionsState currentState,
-    required MentionSuggestionsBloc bloc,
-  }) async* {
-    yield MentionSuggestionsState(
-      lastQuery: currentState.lastQuery,
-      searchedUsers: _searchedUsers(currentState),
-      followingUsers: followingUsers ?? currentState.followingUsers,
+  Future<void> handle(MentionSuggestionsBloc bloc, Emitter emit) async {
+    MentionSuggestionsState(
+      lastQuery: bloc.state.lastQuery,
+      searchedUsers: _searchedUsers(bloc.state),
+      followingUsers: followingUsers ?? bloc.state.followingUsers,
     );
   }
 }

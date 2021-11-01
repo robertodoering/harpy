@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
-import 'package:logging/logging.dart';
+import 'package:harpy/core/core.dart';
 import 'package:path_provider/path_provider.dart';
 
-class MediaVideoConverter {
-  static final Logger _log = Logger('MediaVideoConverter');
-
+class MediaVideoConverter with HarpyLogger {
   final FlutterFFmpeg _ffmpeg = FlutterFFmpeg();
 
   /// Uses [FlutterFFmpeg] to convert the [sourcePath] file to follow the
@@ -21,11 +19,11 @@ class MediaVideoConverter {
     final tempDir = await getTemporaryDirectory();
     final outputPath = '${tempDir.path}/media_video.$extension';
 
-    _log.fine(
+    log.fine(
       'converting video from: $sourcePath to destinationPath: $outputPath',
     );
 
-    // todo: also limit length of video
+    // TODO: also limit length of video
 
     final result = await _ffmpeg.execute(
       // override existing output
@@ -46,7 +44,7 @@ class MediaVideoConverter {
       '$outputPath',
     );
 
-    _log.fine('conversion done with result code: $result');
+    log.fine('conversion done with result code: $result');
 
     if (result == 0) {
       return File(outputPath);

@@ -1,12 +1,9 @@
 part of 'tweet_search_bloc.dart';
 
-abstract class TweetSearchEvent extends Equatable {
+abstract class TweetSearchEvent {
   const TweetSearchEvent();
 
-  Stream<TweetSearchState> applyAsync({
-    required TweetSearchState currentState,
-    required TweetSearchBloc bloc,
-  });
+  Future<void> handle(TweetSearchBloc bloc, Emitter emit);
 }
 
 /// Searches tweets based on the [customQuery] or the [filter].
@@ -19,7 +16,7 @@ abstract class TweetSearchEvent extends Equatable {
 ///
 /// Yields a [TweetSearchResult] on successful request or a
 /// [TweetSearchFailure] on failure.
-class SearchTweets extends TweetSearchEvent {
+class SearchTweets extends TweetSearchEvent with HarpyLogger {
   const SearchTweets({
     this.customQuery,
     this.filter,
@@ -34,14 +31,6 @@ class SearchTweets extends TweetSearchEvent {
   ///
   /// `null` if a [customQuery] was used to search tweets.
   final TweetSearchFilter? filter;
-
-  static final Logger _log = Logger('SearchTweets');
-
-  @override
-  List<Object?> get props => <Object?>[
-        customQuery,
-        filter,
-      ];
 
   bool _unchangedQuery(String? query, TweetSearchState currentState) {
     if (currentState is TweetSearchResult) {
@@ -84,23 +73,21 @@ class SearchTweets extends TweetSearchEvent {
   }
 
   @override
-  Stream<TweetSearchState> applyAsync({
-    required TweetSearchState currentState,
-    required TweetSearchBloc bloc,
-  }) async* {
+  Future<void> handle(TweetSearchBloc bloc, Emitter emit) async {
     final query = _searchQuery();
 
-    if (_unchangedQuery(query, currentState)) {
-      _log.fine('search query does not differ from last query');
+    if (_unchangedQuery(query, bloc.state)) {
+      log.fine('search query does not differ from last query');
       return;
     }
 
     if (query != null) {
-      _log.fine('searching tweets');
+      log.fine('searching tweets');
 
-      yield TweetSearchLoading(query: query);
+      emit(TweetSearchLoading(query: query));
 
-      final tweets = await bloc.searchService
+      final tweets = await app<TwitterApi>()
+          .tweetSearchService
           .searchTweets(
             q: query,
             count: 100,
@@ -110,15 +97,17 @@ class SearchTweets extends TweetSearchEvent {
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
-        _log.fine('found ${tweets.length} tweets for query: $query');
+        log.fine('found ${tweets.length} tweets for query: $query');
 
-        yield TweetSearchResult(
-          filter: filter,
-          query: query,
-          tweets: tweets,
+        emit(
+          TweetSearchResult(
+            filter: filter,
+            query: query,
+            tweets: tweets,
+          ),
         );
       } else {
-        yield TweetSearchFailure(query: query, filter: filter);
+        emit(TweetSearchFailure(query: query, filter: filter));
       }
     }
   }
@@ -131,18 +120,14 @@ class RetryTweetSearch extends TweetSearchEvent {
   const RetryTweetSearch();
 
   @override
-  List<Object> get props => <Object>[];
+  Future<void> handle(TweetSearchBloc bloc, Emitter emit) async {
+    final state = bloc.state;
 
-  @override
-  Stream<TweetSearchState> applyAsync({
-    required TweetSearchState currentState,
-    required TweetSearchBloc bloc,
-  }) async* {
-    if (currentState is TweetSearchFailure) {
+    if (state is TweetSearchFailure) {
       bloc.add(
         SearchTweets(
-          customQuery: currentState.query,
-          filter: currentState.filter,
+          customQuery: state.query,
+          filter: state.filter,
         ),
       );
     }
@@ -154,13 +139,7 @@ class ClearSearchResult extends TweetSearchEvent {
   const ClearSearchResult();
 
   @override
-  List<Object> get props => <Object>[];
-
-  @override
-  Stream<TweetSearchState> applyAsync({
-    required TweetSearchState currentState,
-    required TweetSearchBloc bloc,
-  }) async* {
-    yield const TweetSearchInitial();
+  Future<void> handle(TweetSearchBloc bloc, Emitter emit) async {
+    emit(const TweetSearchInitial());
   }
 }

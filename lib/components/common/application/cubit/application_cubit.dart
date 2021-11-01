@@ -32,7 +32,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
   Future<void> _initialize() async {
     if (!kReleaseMode) {
-      initLogger();
+      initializeLogger();
     }
 
     // sets the visibility detector controller update interval to fire more

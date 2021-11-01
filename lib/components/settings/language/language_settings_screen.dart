@@ -14,9 +14,9 @@ class LanguageSettingsScreen extends StatefulWidget {
 }
 
 class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
-  final LanguagePreferences? languagePreferences = app<LanguagePreferences>();
-
   Widget _buildTranslateSetting(Locale locale) {
+    final languagePreferences = app<LanguagePreferences>();
+
     final translateValues = Map<String, String>.of(
       translateLanguages,
     );
@@ -28,8 +28,8 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
     translateValues[systemDefault] = '${translateValues[systemDefault]} '
         '(default)';
 
-    final languageCode = languagePreferences!.hasSetTranslateLanguage
-        ? languagePreferences!.translateLanguage
+    final languageCode = languagePreferences.hasSetTranslateLanguage
+        ? languagePreferences.translateLanguage
         : systemDefault;
 
     return RadioDialogTile<String>(
@@ -42,7 +42,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
       titles: translateValues.values.toList(),
       values: translateLanguages.keys.toList(),
       onChanged: (value) {
-        setState(() => languagePreferences!.translateLanguage = value!);
+        setState(() => languagePreferences.translateLanguage = value!);
       },
     );
   }

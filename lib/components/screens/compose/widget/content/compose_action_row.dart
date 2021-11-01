@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
   const ComposeTweetActionRow({
@@ -28,14 +27,6 @@ class ComposeTweetActionRow extends StatelessWidget {
           onTap: () => bloc.add(const PickTweetMediaEvent()),
         ),
         defaultSmallHorizontalSpacer,
-        // todo: implement adding new photos
-        // HarpyButton.flat(
-        //   padding: DefaultEdgeInsets.all(),
-        //   icon: const Icon(Icons.add_a_photo),
-        //   iconSize: 20,
-        //   onTap: null,
-        // ),
-        // defaultSmallHorizontalSpacer,
         HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.at),
@@ -59,8 +50,7 @@ class ComposeTweetActionRow extends StatelessWidget {
 class PostTweetButton extends StatefulWidget {
   const PostTweetButton({
     required this.controller,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final ComposeTextController? controller;
 
@@ -88,7 +78,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   }
 
   Future<void> _showDialog(ComposeBloc bloc) async {
-    removeFocus(context);
+    FocusScope.of(context).unfocus();
 
     final sentTweet = await showDialog<TweetData>(
       context: context,

@@ -7,8 +7,7 @@ import 'package:shimmer/shimmer.dart';
 class SliverBoxLoadingShimmer extends StatelessWidget {
   const SliverBoxLoadingShimmer({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

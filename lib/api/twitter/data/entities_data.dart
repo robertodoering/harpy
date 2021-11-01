@@ -1,8 +1,6 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
-@immutable
 class EntitiesData extends Equatable {
   const EntitiesData({
     this.hashtags = const [],
@@ -56,7 +54,6 @@ class EntitiesData extends Equatable {
   }
 }
 
-@immutable
 class HashtagData extends Equatable {
   const HashtagData({
     required this.text,
@@ -77,7 +74,6 @@ class HashtagData extends Equatable {
       ];
 }
 
-@immutable
 class EntitiesMediaData extends Equatable {
   const EntitiesMediaData({
     required this.url,
@@ -99,7 +95,6 @@ class EntitiesMediaData extends Equatable {
       ];
 }
 
-@immutable
 class UrlData extends Equatable {
   const UrlData({
     required this.displayUrl,
@@ -137,7 +132,6 @@ class UrlData extends Equatable {
       ];
 }
 
-@immutable
 class UserMentionData extends Equatable {
   const UserMentionData({
     required this.handle,

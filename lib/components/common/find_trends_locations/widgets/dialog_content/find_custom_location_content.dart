@@ -12,8 +12,7 @@ class FindCustomLocationContent extends StatelessWidget {
     required this.onLongitudeChanged,
     required this.onLatitudeChanged,
     required this.onConfirm,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final GlobalKey<FormState> formKey;
   final VoidCallback onFormChanged;

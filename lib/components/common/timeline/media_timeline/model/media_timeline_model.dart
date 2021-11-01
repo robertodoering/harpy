@@ -58,7 +58,6 @@ class MediaTimelineModel extends ValueNotifier<List<MediaTimelineEntry>> {
 /// An entry for a media timeline that maps a [TweetData] to its [MediaData].
 ///
 /// A single tweet might have multiple media data (i.e. more than one image).
-@immutable
 class MediaTimelineEntry {
   const MediaTimelineEntry({
     required this.tweet,

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-// todo: when switching tabs in the home tab view, consider scrolling the
+// TODO: when switching tabs in the home tab view, consider scrolling the
 //  content automatically if it is otherwise covered by the tab bar
 
 class HomeTabView extends StatelessWidget {

@@ -1,10 +1,8 @@
-import 'package:logging/logging.dart';
+import 'package:harpy/core/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Wraps the [SharedPreferences].
-class HarpyPreferences {
-  static final Logger _log = Logger('HarpyPreferences');
-
+class HarpyPreferences with HarpyLogger {
   late SharedPreferences _preferences;
 
   /// Can be used to prefix the given key.
@@ -14,7 +12,7 @@ class HarpyPreferences {
 
   /// Initializes the [_preferences] instance.
   Future<void> initialize() async {
-    _log.fine('initializing harpy preferences');
+    log.fine('initializing harpy preferences');
     _preferences = await SharedPreferences.getInstance();
   }
 
@@ -54,7 +52,7 @@ class HarpyPreferences {
     int value, {
     bool prefix = false,
   }) {
-    _log.fine('set ${_key(key, prefix)} to $value');
+    log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setInt(_key(key, prefix), value);
   }
 
@@ -76,13 +74,13 @@ class HarpyPreferences {
     bool value, {
     bool prefix = false,
   }) {
-    _log.fine('set ${_key(key, prefix)} to $value');
+    log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setBool(_key(key, prefix), value);
   }
 
-  String? getString(
+  String getString(
     String key,
-    String? defaultValue, {
+    String defaultValue, {
     bool prefix = false,
   }) {
     try {
@@ -97,7 +95,7 @@ class HarpyPreferences {
     String value, {
     bool prefix = false,
   }) {
-    _log.fine('set ${_key(key, prefix)} to $value');
+    log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setString(_key(key, prefix), value);
   }
 
@@ -118,7 +116,7 @@ class HarpyPreferences {
     List<String?> value, {
     bool prefix = false,
   }) {
-    _log.fine('set ${_key(key, prefix)} to $value');
+    log.fine('set ${_key(key, prefix)} to $value');
     _preferences.setStringList(_key(key, prefix), value as List<String>);
   }
 
@@ -126,7 +124,7 @@ class HarpyPreferences {
     String key, {
     bool prefix = false,
   }) {
-    _log.fine('remove ${_key(key, prefix)}');
+    log.fine('remove ${_key(key, prefix)}');
     _preferences.remove(_key(key, prefix));
   }
 }

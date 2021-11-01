@@ -3,10 +3,7 @@ part of 'find_trends_locations_bloc.dart';
 abstract class FindTrendsLocationsEvent {
   const FindTrendsLocationsEvent();
 
-  Stream<FindTrendsLocationsState> applyAsync({
-    required FindTrendsLocationsState currentState,
-    required FindTrendsLocationsBloc bloc,
-  });
+  Future<void> handle(FindTrendsLocationsBloc bloc, Emitter emit);
 }
 
 /// Finds trends locations that are close to the [latitude] and [longitude]
@@ -21,15 +18,13 @@ class FindTrendsLocations extends FindTrendsLocationsEvent with HarpyLogger {
   final String longitude;
 
   @override
-  Stream<FindTrendsLocationsState> applyAsync({
-    required FindTrendsLocationsState currentState,
-    required FindTrendsLocationsBloc bloc,
-  }) async* {
+  Future<void> handle(FindTrendsLocationsBloc bloc, Emitter emit) async {
     log.fine('finding closest trends locations');
 
-    yield const FindTrendsLocationsLoading();
+    emit(const FindTrendsLocationsLoading());
 
-    final closest = await bloc.trendsService
+    final closest = await app<TwitterApi>()
+        .trendsService
         .closest(lat: latitude, long: longitude)
         .handleError(silentErrorHandler);
 
@@ -54,16 +49,16 @@ class FindTrendsLocations extends FindTrendsLocationsEvent with HarpyLogger {
       if (locations.isNotEmpty) {
         log.fine('found ${locations.length} closest trends locations');
 
-        yield FindTrendsLocationsLoaded(locations: locations);
+        emit(FindTrendsLocationsLoaded(locations: locations));
       } else {
         log.fine('found no closest trends locations');
 
-        yield const FindTrendsLocationsEmpty();
+        emit(const FindTrendsLocationsEmpty());
       }
     } else {
       log.info('error finding closest trends locations');
 
-      yield const FindTrendsLocationsLoadingFailure();
+      emit(const FindTrendsLocationsLoadingFailure());
     }
   }
 }
@@ -107,26 +102,23 @@ class FindNearbyLocations extends FindTrendsLocationsEvent with HarpyLogger {
   }
 
   @override
-  Stream<FindTrendsLocationsState> applyAsync({
-    required FindTrendsLocationsState currentState,
-    required FindTrendsLocationsBloc bloc,
-  }) async* {
+  Future<void> handle(FindTrendsLocationsBloc bloc, Emitter emit) async {
     log.fine('finding nearby locations');
 
-    yield const FindTrendsLocationsLoading();
+    emit(const FindTrendsLocationsLoading());
 
     final geo = location.Location();
 
     try {
       if (!await _requestService(geo)) {
         log.info('location service enabling request denied');
-        yield const FindTrendsLocationsLocationServiceDisabled();
+        emit(const FindTrendsLocationsLocationServiceDisabled());
         return;
       }
 
       if (!await _requestPermission(geo)) {
         log.info('location permission not granted');
-        yield const FindTrendsLocationsLocationPermissionsDenied();
+        emit(const FindTrendsLocationsLocationPermissionsDenied());
         return;
       }
 
@@ -143,7 +135,7 @@ class FindNearbyLocations extends FindTrendsLocationsEvent with HarpyLogger {
     } catch (e, st) {
       log.warning('unable to get current position', e, st);
 
-      yield const FindTrendsLocationsLoadingFailure();
+      emit(const FindTrendsLocationsLoadingFailure());
     }
   }
 }
@@ -154,12 +146,9 @@ class ClearFoundTrendsLocations extends FindTrendsLocationsEvent
   const ClearFoundTrendsLocations();
 
   @override
-  Stream<FindTrendsLocationsState> applyAsync({
-    required FindTrendsLocationsState currentState,
-    required FindTrendsLocationsBloc bloc,
-  }) async* {
+  Future<void> handle(FindTrendsLocationsBloc bloc, Emitter emit) async {
     log.fine('clearing found trends locations');
 
-    yield const FindTrendsLocationsInitial();
+    emit(const FindTrendsLocationsInitial());
   }
 }

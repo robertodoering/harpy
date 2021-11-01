@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 /// A dialog that allows the user to find relevant trends locations.
@@ -10,9 +9,7 @@ import 'package:provider/provider.dart';
 /// The user can use their geolocation data to find nearby locations or enter
 /// custom geolocation coordinates.
 class FindLocationDialog extends StatefulWidget {
-  const FindLocationDialog({
-    Key? key,
-  }) : super(key: key);
+  const FindLocationDialog();
 
   @override
   _FindLocationDialogState createState() => _FindLocationDialogState();
@@ -41,7 +38,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
       DialogAction<void>(
         text: 'back',
         onTap: () {
-          removeFocus(context);
+          FocusScope.of(context).unfocus();
 
           if (tabController.index == 0) {
             Navigator.of(context).pop();
@@ -65,7 +62,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
   }
 
   void _onConfirm(FindTrendsLocationsBloc bloc, TabController tabController) {
-    removeFocus(context);
+    FocusScope.of(context).unfocus();
 
     tabController.animateTo(2);
 
@@ -124,7 +121,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
 
           return GestureDetector(
             // remove focus on background tap
-            onTap: () => removeFocus(context),
+            onTap: FocusScope.of(context).unfocus,
             child: HarpyDialog(
               title: const Text('find location'),
               contentPadding: const EdgeInsets.symmetric(vertical: 24),
