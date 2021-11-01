@@ -1,7 +1,5 @@
 part of 'trends_locations_bloc.dart';
 
-// todo: rename locations
-
 abstract class TrendsLocationsState extends Equatable {
   const TrendsLocationsState();
 }

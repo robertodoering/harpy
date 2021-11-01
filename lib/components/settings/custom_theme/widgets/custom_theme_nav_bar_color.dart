@@ -17,7 +17,9 @@ class CustomThemeNavBarColor extends StatelessWidget {
         color: cubit.harpyTheme.navBarColor,
         allowTransparency: true,
         title: const Text('navigation bar'),
-        subtitle: Text(colorValueToHex(cubit.harpyTheme.navBarColor.value)),
+        subtitle: Text(
+          colorValueToDisplayHex(cubit.harpyTheme.navBarColor.value),
+        ),
         onColorChanged: cubit.changeNavBarColor,
       ),
     );

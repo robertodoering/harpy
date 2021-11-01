@@ -7,8 +7,7 @@ import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
 class DownloadStatusMessage extends StatefulWidget {
   const DownloadStatusMessage({
     required this.notifier,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<DownloadStatus> notifier;
 

@@ -27,7 +27,7 @@ class TweetDetailParentTweet extends StatelessWidget {
                 children: [
                   Padding(
                     padding: config.edgeInsets.copyWith(bottom: 0),
-                    // todo: tweet card should not have an animation
+                    // TODO: tweet card should not have an animation
                     child: TweetCard(state.parent!),
                   ),
                   defaultVerticalSpacer,

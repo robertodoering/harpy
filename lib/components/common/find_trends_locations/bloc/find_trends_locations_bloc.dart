@@ -15,9 +15,9 @@ part 'find_trends_locations_state.dart';
 /// coordinates.
 class FindTrendsLocationsBloc
     extends Bloc<FindTrendsLocationsEvent, FindTrendsLocationsState> {
-  FindTrendsLocationsBloc() : super(const FindTrendsLocationsInitial());
-
-  final TrendsService trendsService = app<TwitterApi>().trendsService;
+  FindTrendsLocationsBloc() : super(const FindTrendsLocationsInitial()) {
+    on<FindTrendsLocationsEvent>((event, emit) => event.handle(this, emit));
+  }
 
   /// Validator for a text field that verifies the [value] is a valid
   /// latitude value.
@@ -71,12 +71,5 @@ class FindTrendsLocationsBloc
       // invalid value
       return errorMessage;
     }
-  }
-
-  @override
-  Stream<FindTrendsLocationsState> mapEventToState(
-    FindTrendsLocationsEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
   }
 }

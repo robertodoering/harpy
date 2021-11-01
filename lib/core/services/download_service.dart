@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
 class DownloadService with HarpyLogger {
+  const DownloadService();
+
   /// Downloads the file for the [url] into the downloads directory.
   ///
   /// If the file is an image, we try to get the data from the image cache
@@ -54,14 +56,12 @@ class DownloadService with HarpyLogger {
   }
 
   Future<String?> _requestDownloadDirectory() async {
-    final messageService = app<MessageService>();
-
     final status = await Permission.storage.request();
 
     if (status.isGranted) {
       return AndroidPathProvider.downloadsPath;
     } else {
-      messageService.show('storage permission not granted');
+      app<MessageService>().show('storage permission not granted');
 
       return null;
     }
@@ -78,7 +78,6 @@ void _writeFile(List<dynamic> args) {
 /// The current status of a download.
 ///
 /// Used to display a status message in a snack bar.
-@immutable
 class DownloadStatus {
   const DownloadStatus({
     required this.message,

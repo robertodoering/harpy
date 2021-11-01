@@ -6,7 +6,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Displays user mention suggestions after typing `@`.
-// todo: should not show exact match in suggestions list
+// TODO: should not show exact match in suggestions list
 class ComposeTweetMentions extends StatelessWidget {
   const ComposeTweetMentions({
     required this.controller,

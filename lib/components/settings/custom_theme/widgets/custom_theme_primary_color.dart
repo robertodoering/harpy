@@ -17,7 +17,7 @@ class CustomThemePrimaryColor extends StatelessWidget {
         color: cubit.harpyTheme.primaryColor,
         title: const Text('primary'),
         subtitle: Text(
-          colorValueToHex(
+          colorValueToDisplayHex(
             cubit.harpyTheme.primaryColor.value,
             displayOpacity: false,
           ),

@@ -20,7 +20,7 @@ class HomeListTimeline extends StatelessWidget {
 
     assert(bloc != null, 'missing list timeline bloc for home list timeline');
 
-    // todo: add ability to refresh lists
+    // TODO: add ability to refresh lists
 
     if (bloc != null) {
       return BlocProvider<ListTimelineBloc>.value(

@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:harpy/components/components.dart';
 
 // fix for weird analyzer bug that causes false positives
 // ignore_for_file: prefer_int_literals
 
-@immutable
 class TweetCardConfig {
   const TweetCardConfig({
     required this.elements,

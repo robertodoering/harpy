@@ -15,8 +15,6 @@ class MediaSettingsScreen extends StatefulWidget {
 }
 
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
-  final MediaPreferences mediaPreferences = app<MediaPreferences>();
-
   final Map<int, String> _mediaQualityValues = <int, String>{
     0: 'always use best quality',
     1: 'only use best quality on wifi',
@@ -30,6 +28,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
   };
 
   List<Widget> _buildSettings(ThemeData theme, Config config) {
+    final mediaPreferences = app<MediaPreferences>();
+
     return [
       RadioDialogTile<int>(
         leading: CupertinoIcons.photo,
@@ -100,6 +100,8 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
+    final mediaPreferences = app<MediaPreferences>();
+
     return [
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),

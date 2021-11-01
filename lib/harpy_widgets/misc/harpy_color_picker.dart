@@ -3,7 +3,6 @@ import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class HarpyColorPicker extends StatefulWidget {
@@ -34,7 +33,7 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
   }
 
   void _onColorChanged(Color color) {
-    removeFocus(context);
+    FocusScope.of(context).unfocus();
 
     setState(() => _color = color);
 
@@ -87,7 +86,7 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
         app<LayoutPreferences>().colorPickerTab.clamp(0, children.length - 1);
 
     return GestureDetector(
-      onTap: () => removeFocus(context),
+      onTap: FocusScope.of(context).unfocus,
       child: DefaultTabController(
         initialIndex: initialIndex,
         length: children.length,

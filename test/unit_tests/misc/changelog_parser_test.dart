@@ -13,7 +13,7 @@ void main() {
   setUp(() {
     app
       ..registerLazySingleton<HarpyInfo>(() => MockHarpyInfo())
-      ..registerLazySingleton<ChangelogParser>(() => ChangelogParser());
+      ..registerLazySingleton<ChangelogParser>(() => const ChangelogParser());
 
     when(() => app<HarpyInfo>().packageInfo).thenReturn(
       PackageInfo(buildNumber: '14', version: '', packageName: '', appName: ''),

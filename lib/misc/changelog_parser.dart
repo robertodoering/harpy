@@ -4,10 +4,12 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:intl/intl.dart';
 
+const String _linePrefix = '· ';
+
 /// Parses the [ChangelogData] from a changelog file located in
 /// `android/fastlane/metadata/android/$flavor/en-US/changelogs/$versionCode.txt`.
 class ChangelogParser with HarpyLogger {
-  static const String linePrefix = '· ';
+  const ChangelogParser();
 
   /// Returns the [ChangelogData] for the current version.
   ///
@@ -33,7 +35,7 @@ class ChangelogParser with HarpyLogger {
 
       ChangelogEntry? entry;
 
-      var entryStart = changelogString.indexOf(linePrefix);
+      var entryStart = changelogString.indexOf(_linePrefix);
       if (entryStart == -1) {
         entryStart = 0;
       }
@@ -61,7 +63,7 @@ class ChangelogParser with HarpyLogger {
       final entryString = changelogString.substring(entryStart);
 
       for (var line in entryString.split('\n')) {
-        line = line.replaceFirst(linePrefix, '');
+        line = line.replaceFirst(_linePrefix, '');
 
         if (line.trim().isEmpty) {
           continue;

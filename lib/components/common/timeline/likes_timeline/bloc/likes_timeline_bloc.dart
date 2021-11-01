@@ -14,21 +14,13 @@ class LikesTimelineBloc extends Bloc<LikesTimelineEvent, LikesTimelineState>
   LikesTimelineBloc({
     required this.screenName,
   }) : super(const LikesTimelineInitial()) {
+    on<LikesTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestLikesTimeline());
   }
 
   final String? screenName;
 
-  final TweetService tweetService = app<TwitterApi>().tweetService;
-
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderLikesTimeline].
   Completer<void> requestOlderCompleter = Completer<void>();
-
-  @override
-  Stream<LikesTimelineState> mapEventToState(
-    LikesTimelineEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

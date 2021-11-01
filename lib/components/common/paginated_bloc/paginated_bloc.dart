@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/core/core.dart';
 
@@ -10,7 +9,9 @@ part 'paginated_state.dart';
 /// An abstract bloc for loading data from paginated twitter requests with the
 /// twitter api.
 abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
-  PaginatedBloc() : super(InitialPaginatedState());
+  PaginatedBloc() : super(InitialPaginatedState()) {
+    on<PaginatedEvent>((event, emit) => event.handle(this, emit));
+  }
 
   /// Whether data has been loaded.
   bool get hasData;
@@ -48,9 +49,4 @@ abstract class PaginatedBloc extends Bloc<PaginatedEvent, PaginatedState> {
 
   /// Whether to show an error message.
   bool get showError => state is LoadingFailed;
-
-  @override
-  Stream<PaginatedState> mapEventToState(PaginatedEvent event) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

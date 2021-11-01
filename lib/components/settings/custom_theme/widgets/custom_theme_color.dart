@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class CustomThemeColor extends StatelessWidget {
@@ -26,7 +25,7 @@ class CustomThemeColor extends StatelessWidget {
   final EdgeInsets? padding;
 
   Future<void> _changeColor(BuildContext context) async {
-    removeFocus(context);
+    FocusScope.of(context).unfocus();
 
     final newColor = await showDialog<Color>(
       context: context,

@@ -1,9 +1,7 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 
-@immutable
 class UserData extends Equatable {
   const UserData({
     this.id = '',

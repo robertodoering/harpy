@@ -128,8 +128,7 @@ class _HomeListsBlocsScope extends InheritedWidget {
   const _HomeListsBlocsScope({
     required this.blocs,
     required Widget child,
-    Key? key,
-  }) : super(key: key, child: child);
+  }) : super(child: child);
 
   final List<ListTimelineBloc> blocs;
 

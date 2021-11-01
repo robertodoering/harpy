@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 
 /// Loading shimmer representing a [TweetListInfoRow].
 class InfoRowLoadingShimmer extends StatelessWidget {
-  const InfoRowLoadingShimmer({
-    Key? key,
-  }) : super(key: key);
+  const InfoRowLoadingShimmer();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +23,7 @@ class InfoRowLoadingShimmer extends StatelessWidget {
 }
 
 class InfoRowPlaceholder extends StatelessWidget {
-  const InfoRowPlaceholder({
-    Key? key,
-  }) : super(key: key);
+  const InfoRowPlaceholder();
 
   @override
   Widget build(BuildContext context) {

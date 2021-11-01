@@ -21,6 +21,8 @@ class HarpyThemeProvider extends StatelessWidget {
             : themeBloc.state.darkHarpyTheme;
 
         // match the system ui to the current theme
+        // TODO: refactor to use a [AnnotatedRegion] instead of calling
+        //  [SystemChrome.setSystemUIOverlayStyle] manually
         WidgetsBinding.instance?.addPostFrameCallback((_) {
           updateSystemUi(harpyTheme);
         });

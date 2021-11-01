@@ -6,14 +6,12 @@ part of 'translation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Translation _$TranslationFromJson(Map<String, dynamic> json) {
-  return Translation(
-    original: json['original'] as String?,
-    text: json['text'] as String?,
-    languageCode: json['language_code'] as String?,
-    language: json['language'] as String?,
-  );
-}
+Translation _$TranslationFromJson(Map<String, dynamic> json) => Translation(
+      original: json['original'] as String?,
+      text: json['text'] as String?,
+      languageCode: json['language_code'] as String?,
+      language: json['language'] as String?,
+    );
 
 Map<String, dynamic> _$TranslationToJson(Translation instance) =>
     <String, dynamic>{

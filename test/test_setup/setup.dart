@@ -32,18 +32,18 @@ Future<void> setupApp() async {
     )
     // preferences
     ..registerLazySingleton<HarpyPreferences>(() => MockHarpyPreferences())
-    ..registerLazySingleton(() => AuthPreferences())
-    ..registerLazySingleton(() => MediaPreferences())
-    ..registerLazySingleton(() => ThemePreferences())
-    ..registerLazySingleton(() => SetupPreferences())
-    ..registerLazySingleton(() => LayoutPreferences())
-    ..registerLazySingleton(() => ChangelogPreferences())
-    ..registerLazySingleton(() => GeneralPreferences())
-    ..registerLazySingleton(() => LanguagePreferences())
-    ..registerLazySingleton(() => TweetVisibilityPreferences())
-    ..registerLazySingleton(() => TimelineFilterPreferences())
-    ..registerLazySingleton(() => HomeTabPreferences())
-    ..registerLazySingleton(() => TrendsPreferences());
+    ..registerLazySingleton(() => const AuthPreferences())
+    ..registerLazySingleton(() => const MediaPreferences())
+    ..registerLazySingleton(() => const ThemePreferences())
+    ..registerLazySingleton(() => const SetupPreferences())
+    ..registerLazySingleton(() => const LayoutPreferences())
+    ..registerLazySingleton(() => const ChangelogPreferences())
+    ..registerLazySingleton(() => const GeneralPreferences())
+    ..registerLazySingleton(() => const LanguagePreferences())
+    ..registerLazySingleton(() => const TweetVisibilityPreferences())
+    ..registerLazySingleton(() => const TimelineFilterPreferences())
+    ..registerLazySingleton(() => const HomeTabPreferences())
+    ..registerLazySingleton(() => const TrendsPreferences());
 
   await app<HarpyPreferences>().initialize();
 }

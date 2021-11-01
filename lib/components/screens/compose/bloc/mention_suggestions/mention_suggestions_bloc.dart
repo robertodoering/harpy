@@ -15,6 +15,7 @@ class MentionSuggestionsBloc
     required UserData authenticatedUser,
   })  : followingBloc = FollowingBloc(userId: authenticatedUser.id),
         super(const MentionSuggestionsState()) {
+    on<MentionSuggestionsEvent>((event, emit) => event.handle(this, emit));
     followingBloc.stream.listen(_followingBlocListener);
     userSearchBloc.stream.listen(_userSearchBlocListener);
   }
@@ -46,12 +47,5 @@ class MentionSuggestionsBloc
         ),
       );
     }
-  }
-
-  @override
-  Stream<MentionSuggestionsState> mapEventToState(
-    MentionSuggestionsEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
   }
 }

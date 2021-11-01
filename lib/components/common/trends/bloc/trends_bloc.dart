@@ -12,16 +12,9 @@ part 'trends_event.dart';
 part 'trends_state.dart';
 
 class TrendsBloc extends Bloc<TrendsEvent, TrendsState> {
-  TrendsBloc() : super(const TrendsInitial());
-
-  final trendsService = app<TwitterApi>().trendsService;
+  TrendsBloc() : super(const TrendsInitial()) {
+    on<TrendsEvent>((event, emit) => event.handle(this, emit));
+  }
 
   final trendsPreferences = app<TrendsPreferences>();
-
-  @override
-  Stream<TrendsState> mapEventToState(
-    TrendsEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
-  }
 }

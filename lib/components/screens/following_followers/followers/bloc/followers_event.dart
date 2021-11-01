@@ -4,8 +4,9 @@ class LoadFollowers extends LoadUsers {
   const LoadFollowers();
 
   @override
-  Future<PaginatedUsers?> requestUsers(FollowingFollowersBloc? bloc) {
-    return bloc!.userService
+  Future<PaginatedUsers?> requestUsers(FollowingFollowersBloc bloc) {
+    return app<TwitterApi>()
+        .userService
         .followersList(
           userId: bloc.userId,
           skipStatus: true,

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'translation.g.dart';
@@ -6,7 +5,6 @@ part 'translation.g.dart';
 @JsonSerializable(
   fieldRename: FieldRename.snake,
 )
-@immutable
 class Translation {
   const Translation({
     this.original,

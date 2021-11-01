@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
 /// Builds a sliver app bar for the [TweetSearchScreen] with a [SearchTextField]
 /// in the title.
@@ -34,7 +33,7 @@ class TweetSearchAppBar extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           icon: const Icon(Icons.filter_alt_outlined),
           onTap: () {
-            removeFocus(context);
+            FocusScope.of(context).unfocus();
 
             Scaffold.of(context).openEndDrawer();
           },

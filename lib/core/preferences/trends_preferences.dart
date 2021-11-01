@@ -1,10 +1,11 @@
 import 'package:harpy/core/core.dart';
 
 class TrendsPreferences {
-  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
+  const TrendsPreferences();
 
   /// The json encoded string for the trends location.
-  String get trendsLocation => harpyPrefs.getString('trendsLocation', '')!;
+  String get trendsLocation =>
+      app<HarpyPreferences>().getString('trendsLocation', '');
   set trendsLocation(String value) =>
-      harpyPrefs.setString('trendsLocation', value);
+      app<HarpyPreferences>().setString('trendsLocation', value);
 }

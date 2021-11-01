@@ -3,23 +3,17 @@ part of 'list_members_bloc.dart';
 abstract class ListMembersEvent {
   const ListMembersEvent();
 
-  Stream<ListMembersState> applyAsync({
-    required ListMembersState currentState,
-    required ListMembersBloc bloc,
-  });
+  Future<void> handle(ListMembersBloc bloc, Emitter emit);
 }
 
 class ShowListMembers extends ListMembersEvent with HarpyLogger {
   const ShowListMembers();
 
   @override
-  Stream<ListMembersState> applyAsync({
-    required ListMembersState currentState,
-    required ListMembersBloc bloc,
-  }) async* {
+  Future<void> handle(ListMembersBloc bloc, Emitter emit) async {
     log.fine('load list members');
 
-    yield const ListMembersInitialLoading();
+    emit(const ListMembersInitialLoading());
 
     final paginatedUsers = await bloc.listsService
         .members(listId: bloc.list.idStr)
@@ -30,15 +24,17 @@ class ShowListMembers extends ListMembersEvent with HarpyLogger {
           paginatedUsers.users!.map((user) => UserData.fromUser(user)).toList();
 
       if (members.isNotEmpty) {
-        yield ListMembersResult(
-          members: members,
-          membersCursor: paginatedUsers.nextCursorStr,
+        emit(
+          ListMembersResult(
+            members: members,
+            membersCursor: paginatedUsers.nextCursorStr,
+          ),
         );
       } else {
-        yield const NoListMembersResult();
+        emit(const NoListMembersResult());
       }
     } else {
-      yield const ListMembersFailure();
+      emit(const ListMembersFailure());
     }
   }
 }
@@ -47,39 +43,44 @@ class LoadMoreMembers extends ListMembersEvent with HarpyLogger {
   const LoadMoreMembers();
 
   @override
-  Stream<ListMembersState> applyAsync({
-    required ListMembersState currentState,
-    required ListMembersBloc bloc,
-  }) async* {
-    if (currentState is ListMembersResult && currentState.hasMoreData) {
+  Future<void> handle(ListMembersBloc bloc, Emitter emit) async {
+    final state = bloc.state;
+
+    if (state is ListMembersResult && state.hasMoreData) {
       log.fine('load more members');
 
-      yield MembersLoadingMore(
-        members: currentState.members,
-        membersCursor: currentState.membersCursor,
+      emit(
+        MembersLoadingMore(
+          members: state.members,
+          membersCursor: state.membersCursor,
+        ),
       );
 
       final paginatedMembers = await bloc.listsService
-          .members(listId: bloc.list.idStr, cursor: currentState.membersCursor)
+          .members(listId: bloc.list.idStr, cursor: state.membersCursor)
           .handleError(twitterApiErrorHandler);
 
       if (paginatedMembers != null) {
         final members = List<UserData>.of(
-          currentState.members.followedBy(
+          state.members.followedBy(
             paginatedMembers.users!
                 .map((user) => UserData.fromUser(user))
                 .toList(),
           ),
         );
 
-        yield ListMembersResult(
-          members: members,
-          membersCursor: paginatedMembers.nextCursorStr,
+        emit(
+          ListMembersResult(
+            members: members,
+            membersCursor: paginatedMembers.nextCursorStr,
+          ),
         );
       } else {
-        yield ListMembersResult(
-          members: currentState.members,
-          membersCursor: null,
+        emit(
+          ListMembersResult(
+            members: state.members,
+            membersCursor: null,
+          ),
         );
       }
     }

@@ -146,7 +146,7 @@ class TweetData {
   /// replaced with their display urls.
   String visibleText;
 
-  // todo: should just be one field 'media'
+  // TODO: should just be one field 'media'
   List<ImageData>? images;
   VideoData? video;
   VideoData? gif;

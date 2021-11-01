@@ -11,17 +11,7 @@ part 'mentions_timeline_state.dart';
 
 class MentionsTimelineBloc
     extends Bloc<MentionsTimelineEvent, MentionsTimelineState> {
-  MentionsTimelineBloc() : super(const MentionsTimelineInitial());
-
-  final TimelineService timelineService = app<TwitterApi>().timelineService;
-
-  final TweetVisibilityPreferences? tweetVisibilityPreferences =
-      app<TweetVisibilityPreferences>();
-
-  @override
-  Stream<MentionsTimelineState> mapEventToState(
-    MentionsTimelineEvent event,
-  ) async* {
-    yield* event.applyAsync(currentState: state, bloc: this);
+  MentionsTimelineBloc() : super(const MentionsTimelineInitial()) {
+    on<MentionsTimelineEvent>((event, emit) => event.handle(this, emit));
   }
 }

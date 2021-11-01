@@ -1,17 +1,20 @@
 import 'package:harpy/core/core.dart';
 
 class GeneralPreferences {
-  final HarpyPreferences harpyPrefs = app<HarpyPreferences>();
+  const GeneralPreferences();
 
   /// Whether animations and effects should be reduced to increase
   /// performance on lower end devices.
-  bool get performanceMode => harpyPrefs.getBool('performanceMode', false);
+  bool get performanceMode =>
+      app<HarpyPreferences>().getBool('performanceMode', false);
   set performanceMode(bool value) =>
-      harpyPrefs.setBool('performanceMode', value);
+      app<HarpyPreferences>().setBool('performanceMode', value);
 
   /// Whether the user has consented to send automatic crash reports.
-  bool get crashReports => harpyPrefs.getBool('crashReports', true);
-  set crashReports(bool value) => harpyPrefs.setBool('crashReports', value);
+  bool get crashReports =>
+      app<HarpyPreferences>().getBool('crashReports', true);
+  set crashReports(bool value) =>
+      app<HarpyPreferences>().setBool('crashReports', value);
 
   /// How the home timeline scroll position should behave after the initial
   /// request.
@@ -25,9 +28,9 @@ class GeneralPreferences {
   /// 2: Show newest tweet
   ///    Don't change the scroll position
   int get homeTimelinePositionBehavior =>
-      harpyPrefs.getInt('timelinePositionBehavior', 0);
+      app<HarpyPreferences>().getInt('timelinePositionBehavior', 0);
   set homeTimelinePositionBehavior(int value) =>
-      harpyPrefs.setInt('timelinePositionBehavior', value);
+      app<HarpyPreferences>().setInt('timelinePositionBehavior', value);
 
   bool get keepLastHomeTimelinePosition => homeTimelinePositionBehavior != 2;
   bool get keepNewestReadTweet => homeTimelinePositionBehavior == 0;

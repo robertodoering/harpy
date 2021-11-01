@@ -215,14 +215,12 @@ class _HarpyDialogState extends State<HarpyDialog> {
 /// Either [text] or [icon] must not be `null`.
 class DialogAction<T> extends StatelessWidget {
   const DialogAction({
-    Key? key,
     this.result,
     this.onTap,
     this.text,
     this.icon,
     this.padding = const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-  })  : assert(text != null || icon != null),
-        super(key: key);
+  }) : assert(text != null || icon != null);
 
   final T? result;
   final VoidCallback? onTap;

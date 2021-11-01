@@ -46,7 +46,8 @@ class SearchUsers extends LoadPaginatedData {
 
     _log.fine('searching users with $query for page ${bloc.cursor}');
 
-    var users = await bloc.userService
+    var users = await app<TwitterApi>()
+        .userService
         .usersSearch(
           q: query!,
           count: 20,
@@ -87,10 +88,7 @@ class ClearSearchedUsers extends PaginatedEvent {
   static final Logger _log = Logger('ClearSearchedUsers');
 
   @override
-  Stream<PaginatedState> applyAsync({
-    required PaginatedState currentState,
-    required PaginatedBloc bloc,
-  }) async* {
+  Future<void> handle(PaginatedBloc bloc, Emitter emit) async {
     final userSearchBloc = bloc as UserSearchBloc;
 
     _log.fine('clearing searched users');
@@ -101,6 +99,6 @@ class ClearSearchedUsers extends PaginatedEvent {
       ..users.clear()
       ..lastQuery = null;
 
-    yield InitialPaginatedState();
+    emit(InitialPaginatedState());
   }
 }

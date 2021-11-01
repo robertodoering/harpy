@@ -1,5 +1,5 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:harpy/core/logger/logger_mixin.dart';
+import 'package:harpy/core/core.dart';
 
 /// Uses the [Connectivity] plugin to listen to connectivity changes.
 class ConnectivityService with HarpyLogger {

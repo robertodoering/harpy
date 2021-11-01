@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 /// Content for the [FindLocationDialog] when locations have been searched for.
 class FoundLocationsContent extends StatelessWidget {
-  const FoundLocationsContent({Key? key}) : super(key: key);
+  const FoundLocationsContent();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class FoundLocationsContent extends StatelessWidget {
                   : null,
               onTap: () {
                 Navigator.of(context).pop();
-                unawaited(HapticFeedback.lightImpact());
+                HapticFeedback.lightImpact();
                 trendsBloc.add(UpdateTrendsLocation(location: location));
               },
             ),

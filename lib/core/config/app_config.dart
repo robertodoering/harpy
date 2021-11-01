@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:harpy/core/core.dart';
 
-/// Wrapper for environment variables that are set with --dart-define flag when
+/// Wrapper for environment variables that are set with --dart-define when
 /// running the app.
 class AppConfig with HarpyLogger {
   const AppConfig();

@@ -129,8 +129,7 @@ class HarpyButton extends StatelessWidget {
 
   /// The callback when the button is tapped.
   ///
-  /// If `null`, the button has reduced transparency to appear disabled and can
-  /// note tapped.
+  /// If `null`, the button has reduced transparency to appear disabled.
   final VoidCallback? onTap;
 
   /// The color of the button.

@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 
 final Logger _log = Logger('HarpyNavigator');
 
-///Determines what [PageRoute] is used for the new route.
+/// Determines what [PageRoute] is used for the new route.
 ///
 /// This determines the transition animation for the new route.
 enum RouteType {

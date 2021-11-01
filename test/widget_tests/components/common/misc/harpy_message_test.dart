@@ -25,7 +25,7 @@ void main() {
   group('message service', () {
     testWidgets('uses the harpy message global key to show message',
         (tester) async {
-      final messageService = MessageService();
+      const messageService = MessageService();
 
       await tester.pumpWidget(
         MaterialApp(

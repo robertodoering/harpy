@@ -17,7 +17,9 @@ class CustomThemeStatusBarColor extends StatelessWidget {
         color: cubit.harpyTheme.statusBarColor,
         allowTransparency: true,
         title: const Text('status bar'),
-        subtitle: Text(colorValueToHex(cubit.harpyTheme.statusBarColor.value)),
+        subtitle: Text(
+          colorValueToDisplayHex(cubit.harpyTheme.statusBarColor.value),
+        ),
         onColorChanged: cubit.changeStatusBarColor,
       ),
     );

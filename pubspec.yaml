@@ -12,7 +12,7 @@ environment:
 dependencies:
   android_path_provider: ^0.3.0
   args: ^2.3.0
-  bloc: ^7.1.0
+  bloc: ^8.0.0-dev.3
   collection: ^1.15.0
   connectivity: ^3.0.3
   cupertino_icons: ^1.0.2
@@ -23,7 +23,7 @@ dependencies:
   flare_flutter: ^3.0.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.2.0
+  flutter_bloc: ^8.0.0-dev.2
   flutter_displaymode: ^0.3.1-nullsafety.0
   flutter_feather_icons: ^2.0.0+1
   flutter_ffmpeg: ^0.4.0
@@ -34,9 +34,9 @@ dependencies:
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   http: ^0.13.3
-  humanizer: ^0.0.2
+  humanizer: ^1.0.0
   intl: ^0.17.0
-  json_annotation: ^4.1.0
+  json_annotation: ^4.3.0
   like_button: ^2.0.3
   location: ^4.1.1
   logging: ^1.0.1
@@ -64,13 +64,13 @@ dependencies:
   webview_flutter: ^2.0.4
 
 dev_dependencies:
-  bloc_test: ^8.0.0
+  bloc_test: ^9.0.0-dev.3
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter
-  golden_toolkit: ^0.10.0
-  json_serializable: ^5.0.0
-  mocktail: ^0.1.4
+  golden_toolkit: ^0.11.0
+  json_serializable: ^6.0.1
+  mocktail: ^0.2.0
 
 flutter:
   uses-material-design: true
