@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/settings/display/font/font_screen.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
@@ -84,8 +82,9 @@ class DisplaySettingsScreen extends StatelessWidget {
                   },
                 ),
               ),
-              FontRadioDialogTile(
+              _FontRadioDialogTile(
                 title: 'body font',
+                appBarTitle: 'select a body font',
                 leadingIcon: CupertinoIcons.textformat,
                 font: config.bodyFont,
                 onChanged: (value) {
@@ -96,8 +95,9 @@ class DisplaySettingsScreen extends StatelessWidget {
                   }
                 },
               ),
-              FontRadioDialogTile(
+              _FontRadioDialogTile(
                 title: 'display font',
+                appBarTitle: 'select a display font',
                 leadingIcon: CupertinoIcons.textformat,
                 font: config.displayFont,
                 onChanged: (value) {
@@ -130,15 +130,17 @@ class DisplaySettingsScreen extends StatelessWidget {
   }
 }
 
-class FontRadioDialogTile extends StatelessWidget {
-  const FontRadioDialogTile({
+class _FontRadioDialogTile extends StatelessWidget {
+  const _FontRadioDialogTile({
     required this.title,
+    required this.appBarTitle,
     required this.font,
     required this.onChanged,
     required this.leadingIcon,
   });
 
   final String title;
+  final String appBarTitle;
   final String font;
   final IconData leadingIcon;
   final ValueChanged<String?> onChanged;
@@ -152,11 +154,10 @@ class FontRadioDialogTile extends StatelessWidget {
       onTap: () async {
         final result = await app<HarpyNavigator>().push<String>(
           HarpyPageRoute(
-            builder: (_) {
-              return FontScreen(
-                selectedFont: font,
-              );
-            },
+            builder: (_) => FontSelection(
+              selectedFont: font,
+              title: appBarTitle,
+            ),
           ),
         );
 

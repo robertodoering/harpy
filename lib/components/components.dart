@@ -183,6 +183,7 @@ export 'settings/custom_theme/widgets/custom_theme_pro_card.dart';
 export 'settings/custom_theme/widgets/custom_theme_secondary_color.dart';
 export 'settings/custom_theme/widgets/custom_theme_status_bar_color.dart';
 export 'settings/display/display_settings_screen.dart';
+export 'settings/display/widgets/font/font_selection.dart';
 export 'settings/display/widgets/preview_tweet/bloc/preview_tweet_bloc.dart';
 export 'settings/display/widgets/preview_tweet/preview_tweet_card.dart';
 export 'settings/general/general_settings_screen.dart';

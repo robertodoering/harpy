@@ -25,21 +25,13 @@ const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
 const Radius kDefaultRadius = Radius.circular(16);
 
 /// Fonts
+const String kDefaultBodyFontFamily = 'OpenSans';
+const String kDefaultDisplayFontFamily = 'Comfortaa';
+
 const List<String> kAssetFonts = [
   kDefaultBodyFontFamily,
   kDefaultDisplayFontFamily,
 ];
-
-bool isAssetFontFamily(String font) {
-  return kAssetFonts.contains(font);
-}
-
-const List<String> kAvailableGoogleFonts = [
-  'Fira Code',
-];
-
-const String kDefaultBodyFontFamily = 'OpenSans';
-const String kDefaultDisplayFontFamily = 'Comfortaa';
 
 class HarpyTheme {
   HarpyTheme.fromData({
@@ -380,30 +372,21 @@ class HarpyTheme {
   TextStyle _applyCustomDisplayFont({
     required TextStyle textStyle,
   }) {
-    return _applyCustomFont(
+    return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.displayFont,
+      fallback: kDefaultDisplayFontFamily,
     );
   }
 
   TextStyle _applyCustomBodyFont({
     required TextStyle textStyle,
   }) {
-    return _applyCustomFont(
+    return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.bodyFont,
+      fallback: kDefaultBodyFontFamily,
     );
-  }
-
-  TextStyle _applyCustomFont({
-    required TextStyle textStyle,
-    required String fontFamily,
-  }) {
-    if (isAssetFontFamily(fontFamily)) {
-      return textStyle.copyWith(fontFamily: fontFamily);
-    }
-
-    return GoogleFonts.getFont(fontFamily, textStyle: textStyle);
   }
 
   void _setupThemeData() {
@@ -496,6 +479,10 @@ class HarpyTheme {
           borderSide: BorderSide(color: dividerColor),
           borderRadius: kDefaultBorderRadius,
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: primaryColor),
+          borderRadius: kDefaultBorderRadius,
+        ),
         contentPadding: config.edgeInsets,
       ),
     );
@@ -541,4 +528,22 @@ Brightness _complementaryBrightness(Brightness brightness) {
 double _contrastRatio(double firstLuminance, double secondLuminance) {
   return (max(firstLuminance, secondLuminance) + 0.05) /
       (min(firstLuminance, secondLuminance) + 0.05);
+}
+
+TextStyle applyGoogleFont({
+  required TextStyle textStyle,
+  required String fontFamily,
+  String? fallback,
+}) {
+  if (kAssetFonts.contains(fontFamily)) {
+    return textStyle.copyWith(fontFamily: fontFamily);
+  }
+
+  try {
+    return GoogleFonts.getFont(fontFamily, textStyle: textStyle);
+  } catch (e) {
+    return fallback != null
+        ? textStyle.copyWith(fontFamily: fallback)
+        : textStyle;
+  }
 }

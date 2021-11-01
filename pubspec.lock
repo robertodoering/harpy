@@ -426,7 +426,7 @@ packages:
       name: golden_toolkit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.0"
+    version: "0.11.0"
   google_fonts:
     dependency: "direct main"
     description:
