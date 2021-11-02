@@ -154,7 +154,7 @@ class _FontRadioDialogTile extends StatelessWidget {
       onTap: () async {
         final result = await app<HarpyNavigator>().push<String>(
           HarpyPageRoute(
-            builder: (_) => FontSelection(
+            builder: (_) => FontSelectionScreen(
               selectedFont: font,
               title: appBarTitle,
             ),

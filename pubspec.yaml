@@ -13,6 +13,7 @@ dependencies:
   android_path_provider: ^0.3.0
   args: ^2.3.0
   bloc: ^8.0.0-dev.3
+  built_collection: ^5.1.1
   collection: ^1.15.0
   connectivity: ^3.0.3
   cupertino_icons: ^1.0.2
@@ -31,6 +32,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.0.1
   flutter_localizations:
     sdk: flutter
+  freezed_annotation: ^0.15.0
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   http: ^0.13.3
@@ -68,6 +70,7 @@ dev_dependencies:
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter
+  freezed: ^0.15.0+1
   golden_toolkit: ^0.11.0
   json_serializable: ^6.0.1
   mocktail: ^0.2.0
