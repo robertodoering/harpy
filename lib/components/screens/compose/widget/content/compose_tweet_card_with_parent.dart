@@ -25,8 +25,8 @@ class ComposeTweetCardWithParent extends StatefulWidget {
 
 class _ComposeTweetCardWithParentState
     extends State<ComposeTweetCardWithParent> {
-  ScrollController? _controller;
-  late StreamSubscription<bool> _keyboardListener;
+  late final ScrollController _controller;
+  late final StreamSubscription<bool> _keyboardListener;
 
   bool _keyboardVisible = false;
 
@@ -42,7 +42,7 @@ class _ComposeTweetCardWithParentState
       if (visible) {
         // scroll to the start so the compose tweet card is fully visible
         unawaited(
-          _controller!.animateTo(
+          _controller.animateTo(
             0,
             duration: kLongAnimationDuration,
             curve: Curves.easeOutCirc,
@@ -64,7 +64,7 @@ class _ComposeTweetCardWithParentState
     super.dispose();
 
     _keyboardListener.cancel();
-    _controller!.dispose();
+    _controller.dispose();
   }
 
   @override

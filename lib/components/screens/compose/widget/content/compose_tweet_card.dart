@@ -15,10 +15,14 @@ class ComposeTweetCard extends StatefulWidget {
   _ComposeTweetCardState createState() => _ComposeTweetCardState();
 }
 
-class _ComposeTweetCardState extends State<ComposeTweetCard> {
-  late FocusNode _focusNode;
-  late StreamSubscription<bool> _keyboardListener;
+class _ComposeTweetCardState extends State<ComposeTweetCard>
+    with AutomaticKeepAliveClientMixin {
+  late final FocusNode _focusNode;
+  late final StreamSubscription<bool> _keyboardListener;
   ComposeTextController? _controller;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -67,6 +71,8 @@ class _ComposeTweetCardState extends State<ComposeTweetCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final bloc = context.watch<ComposeBloc>();
 
     return GestureDetector(
