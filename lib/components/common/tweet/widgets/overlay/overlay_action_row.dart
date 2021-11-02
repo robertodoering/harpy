@@ -22,6 +22,7 @@ class MediaOverlayActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final foregroundColor = theme.colorScheme.onBackground;
 
     return Theme(
       data: theme.copyWith(
@@ -50,6 +51,7 @@ class MediaOverlayActionRow extends StatelessWidget {
                 child: RetweetButton(
                   tweetBloc,
                   padding: const EdgeInsets.all(16),
+                  overlayForegroundColor: foregroundColor,
                 ),
               ),
               defaultSmallHorizontalSpacer,

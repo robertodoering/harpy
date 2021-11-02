@@ -12,12 +12,19 @@ class RetweetButton extends StatefulWidget {
     this.padding = const EdgeInsets.all(8),
     this.iconSize = 21,
     this.sizeDelta = 0,
+    this.overlayForegroundColor,
   });
 
   final TweetBloc bloc;
   final EdgeInsets padding;
   final double iconSize;
   final double sizeDelta;
+
+  /// The foreground color for the icon an text in the retweet menu.
+  ///
+  /// Used in the [MediaOverlayActionRow] to override the color for light
+  /// themes.
+  final Color? overlayForegroundColor;
 
   @override
   _RetweetButtonState createState() => _RetweetButtonState();
@@ -49,16 +56,28 @@ class _RetweetButtonState extends State<RetweetButton> {
     final result = await showMenu<int>(
       context: context,
       elevation: popupMenuTheme.elevation,
-      items: const [
-        HarpyPopupMenuItem<int>(
+      items: [
+        HarpyPopupMenuItem(
           value: 0,
-          icon: Icon(FeatherIcons.repeat),
-          text: Text('retweet'),
+          icon: Icon(
+            FeatherIcons.repeat,
+            color: widget.overlayForegroundColor,
+          ),
+          text: Text(
+            'retweet',
+            style: TextStyle(color: widget.overlayForegroundColor),
+          ),
         ),
-        HarpyPopupMenuItem<int>(
+        HarpyPopupMenuItem(
           value: 1,
-          icon: Icon(FeatherIcons.feather),
-          text: Text('quote tweet'),
+          icon: Icon(
+            FeatherIcons.feather,
+            color: widget.overlayForegroundColor,
+          ),
+          text: Text(
+            'quote tweet',
+            style: TextStyle(color: widget.overlayForegroundColor),
+          ),
         ),
       ],
       position: position,
