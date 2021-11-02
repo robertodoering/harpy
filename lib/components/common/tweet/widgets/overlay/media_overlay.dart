@@ -206,7 +206,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: <Color>[
+          colors: [
             Colors.black87,
             Colors.transparent,
           ],
@@ -229,7 +229,7 @@ class _MediaOverlayState extends State<MediaOverlay>
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: <Color>[
+          colors: [
             Colors.transparent,
             Colors.black87,
           ],

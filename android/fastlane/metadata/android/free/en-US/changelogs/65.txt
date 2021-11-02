@@ -4,3 +4,4 @@ Version 0.7.2
 · Added font customization (pro) (thanks Nino)
   · In settings > display
 · Updated user profile banner
+· Fixed retweet menu text color for light themes (thanks @Miku_998)
