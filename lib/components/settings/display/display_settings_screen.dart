@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
 
 class DisplaySettingsScreen extends StatelessWidget {
@@ -81,11 +82,31 @@ class DisplaySettingsScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const HarpyListTile(
-                leading: Icon(CupertinoIcons.textformat),
-                title: Text('font type'),
-                subtitle: Text('coming soon!'),
-                enabled: false,
+              _FontRadioDialogTile(
+                title: 'body font',
+                appBarTitle: 'select a body font',
+                leadingIcon: CupertinoIcons.textformat,
+                font: config.bodyFont,
+                onChanged: (value) {
+                  if (value != null) {
+                    HapticFeedback.lightImpact();
+
+                    configCubit.updateBodyFont(value);
+                  }
+                },
+              ),
+              _FontRadioDialogTile(
+                title: 'display font',
+                appBarTitle: 'select a display font',
+                leadingIcon: CupertinoIcons.textformat,
+                font: config.displayFont,
+                onChanged: (value) {
+                  if (value != null) {
+                    HapticFeedback.lightImpact();
+
+                    configCubit.updateDisplayFont(value);
+                  }
+                },
               ),
               HarpySwitchTile(
                 leading: const Icon(CupertinoIcons.rectangle_compress_vertical),
@@ -105,6 +126,45 @@ class DisplaySettingsScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _FontRadioDialogTile extends StatelessWidget {
+  const _FontRadioDialogTile({
+    required this.title,
+    required this.appBarTitle,
+    required this.font,
+    required this.onChanged,
+    required this.leadingIcon,
+  });
+
+  final String title;
+  final String appBarTitle;
+  final String font;
+  final IconData leadingIcon;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return HarpyListTile(
+      title: Text(title),
+      leading: Icon(leadingIcon),
+      subtitle: Text(font),
+      onTap: () async {
+        final result = await app<HarpyNavigator>().push<String>(
+          HarpyPageRoute(
+            builder: (_) => FontSelectionScreen(
+              selectedFont: font,
+              title: appBarTitle,
+            ),
+          ),
+        );
+
+        if (result != null) {
+          onChanged.call(result);
+        }
+      },
     );
   }
 }

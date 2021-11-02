@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 part 'config.dart';
 
@@ -23,11 +24,23 @@ class ConfigCubit extends Cubit<Config> {
       true,
     );
 
+    final displayFontFamily = app<HarpyPreferences>().getString(
+      'displayFontFamily',
+      kDefaultDisplayFontFamily,
+    );
+
+    final bodyFontFamily = app<HarpyPreferences>().getString(
+      'bodyFontFamily',
+      kDefaultBodyFontFamily,
+    );
+
     emit(
       state.copyWith(
         compactMode: compactMode,
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
         bottomAppBar: bottomAppBar,
+        displayFont: displayFontFamily,
+        bodyFont: bodyFontFamily,
         hideHomeTabBar: hideHomeTabBar,
       ),
     );
@@ -37,6 +50,16 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setInt('fontSizeDeltaId', 0);
     app<HarpyPreferences>().setBool('compactMode', false);
     app<HarpyPreferences>().setBool('bottomAppBar', false);
+
+    app<HarpyPreferences>().setString(
+      'displayFontFamily',
+      kDefaultDisplayFontFamily,
+    );
+
+    app<HarpyPreferences>().setString(
+      'bodyFontFamily',
+      kDefaultBodyFontFamily,
+    );
 
     emit(Config.defaultConfig);
   }
@@ -62,6 +85,18 @@ class ConfigCubit extends Cubit<Config> {
         fontSizeDelta: _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0,
       ),
     );
+  }
+
+  void updateDisplayFont(String fontFamily) {
+    app<HarpyPreferences>().setString('displayFontFamily', fontFamily);
+
+    emit(state.copyWith(displayFont: fontFamily));
+  }
+
+  void updateBodyFont(String fontFamily) {
+    app<HarpyPreferences>().setString('bodyFontFamily', fontFamily);
+
+    emit(state.copyWith(bodyFont: fontFamily));
   }
 
   void updateBottomAppBar(bool value) {

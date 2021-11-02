@@ -1,0 +1,5 @@
+Version 0.7.2
+2021-11-xx
+
+· Added font customization (pro) (thanks Nino)
+  · In settings > display

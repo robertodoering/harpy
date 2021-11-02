@@ -6,12 +6,16 @@ class Config extends Equatable {
     required this.fontSizeDelta,
     required this.compactMode,
     required this.bottomAppBar,
+    required this.displayFont,
+    required this.bodyFont,
     required this.hideHomeTabBar,
   });
 
   final double fontSizeDelta;
   final bool compactMode;
   final bool bottomAppBar;
+  final String displayFont;
+  final String bodyFont;
 
   /// Whether to automatically hide the home tab bar when swiping up / down.
   final bool hideHomeTabBar;
@@ -20,6 +24,8 @@ class Config extends Equatable {
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
+    displayFont: kDefaultDisplayFontFamily,
+    bodyFont: kDefaultBodyFontFamily,
     hideHomeTabBar: true,
   );
 
@@ -28,6 +34,8 @@ class Config extends Equatable {
         fontSizeDelta,
         compactMode,
         bottomAppBar,
+        displayFont,
+        bodyFont,
         hideHomeTabBar,
       ];
 
@@ -35,12 +43,16 @@ class Config extends Equatable {
     double? fontSizeDelta,
     bool? compactMode,
     bool? bottomAppBar,
+    String? displayFont,
+    String? bodyFont,
     bool? hideHomeTabBar,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
       compactMode: compactMode ?? this.compactMode,
       bottomAppBar: bottomAppBar ?? this.bottomAppBar,
+      displayFont: displayFont ?? this.displayFont,
+      bodyFont: bodyFont ?? this.bodyFont,
       hideHomeTabBar: hideHomeTabBar ?? this.hideHomeTabBar,
     );
   }
