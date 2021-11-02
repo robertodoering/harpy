@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +56,7 @@ class UserProfileAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
     final profileBloc = context.watch<UserProfileBloc>();
     final model = context.watch<TimelineFilterModel>();
@@ -62,13 +65,19 @@ class UserProfileAppBar extends StatelessWidget {
     final _hasUser = profileBloc.state is InitializedUserState ||
         profileBloc.state is TranslatingDescriptionState;
 
-    return HarpySliverAppBar(
-      title: profileBloc.user?.name ?? '',
-      stretch: true,
+    final expandedHeight = min<double>(200, mediaQuery.size.height * .25);
+
+    return SliverAppBar(
+      centerTitle: true,
+      elevation: 0,
       pinned: true,
+      backgroundColor: Colors.transparent,
+      expandedHeight: expandedHeight,
+      flexibleSpace: _hasUser
+          ? FlexibleSpaceBar(background: UserBanner(profileBloc))
+          : null,
       leading: _buildLeading(context, theme),
       actions: _buildActions(context, theme, model, timelineBloc),
-      background: _hasUser ? UserBanner(profileBloc) : null,
     );
   }
 }

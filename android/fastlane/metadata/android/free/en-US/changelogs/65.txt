@@ -3,3 +3,4 @@ Version 0.7.2
 
 · Added font customization (pro) (thanks Nino)
   · In settings > display
+· Updated user profile banner
