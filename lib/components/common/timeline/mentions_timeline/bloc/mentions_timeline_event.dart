@@ -55,7 +55,7 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
             tweets: tweets,
             hasNewMentions: !updateViewedMention &&
                 lastViewedMention != 0 &&
-                lastViewedMention > (newestMentionId ?? 0),
+                lastViewedMention < (newestMentionId ?? 0),
             newestMentionId: newestMentionId,
           ),
         );
