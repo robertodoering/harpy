@@ -22,19 +22,6 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
   /// timeline view.
   final bool updateViewedMention;
 
-  int _newMentions(List<TweetData> tweets, int lastViewedMention) {
-    if (lastViewedMention == 0) {
-      // first open
-      return 0;
-    }
-
-    final indexOfFirstNewestTweet = tweets.lastIndexWhere(
-      (tweet) => (int.tryParse(tweet.originalId) ?? 0) > lastViewedMention,
-    );
-
-    return indexOfFirstNewestTweet + 1;
-  }
-
   @override
   Future<void> handle(MentionsTimelineBloc bloc, Emitter emit) async {
     log.fine('requesting initial mentions timeline');
@@ -44,11 +31,20 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
     final lastViewedMention =
         app<TweetVisibilityPreferences>().lastViewedMention;
 
+    int? newestMentionId;
+
     final tweets = await app<TwitterApi>()
         .timelineService
         .mentionsTimeline(count: 200)
-        .then(handleTweets)
-        .handleError(twitterApiErrorHandler);
+        .then((tweets) {
+      if (tweets.isNotEmpty) {
+        newestMentionId = int.tryParse(
+          TweetData.fromTweet(tweets.first).originalId,
+        );
+      }
+
+      return handleTweets(tweets);
+    }).handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweet mentions');
@@ -57,7 +53,10 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
         emit(
           MentionsTimelineResult(
             tweets: tweets,
-            newMentions: _newMentions(tweets, lastViewedMention),
+            hasNewMentions: !updateViewedMention &&
+                lastViewedMention != 0 &&
+                lastViewedMention < (newestMentionId ?? 0),
+            newestMentionId: newestMentionId,
           ),
         );
       } else {
@@ -70,9 +69,10 @@ class RequestMentionsTimeline extends MentionsTimelineEvent with HarpyLogger {
 }
 
 /// Updates the last viewed mention in the [TweetVisibilityPreferences] and
-/// changes the [MentionsTimelineResult.newMentions] to 0.
+/// changes the [MentionsTimelineResult.hasNewMentions] to `false`.
 ///
-/// Only has an effect if the current state is [MentionsTimelineResult].
+/// Only has an effect if the current state is [MentionsTimelineResult] and the
+/// [MentionsTimelineResult.newestMentionId] is not `null`.
 class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
   const UpdateViewedMentions();
 
@@ -80,17 +80,16 @@ class UpdateViewedMentions extends MentionsTimelineEvent with HarpyLogger {
   Future<void> handle(MentionsTimelineBloc bloc, Emitter emit) async {
     final state = bloc.state;
 
-    if (state is MentionsTimelineResult) {
+    if (state is MentionsTimelineResult && state.newestMentionId != null) {
       log.fine('updating viewed mentions');
 
-      app<TweetVisibilityPreferences>().updateLastViewedMention(
-        state.tweets.first,
-      );
+      app<TweetVisibilityPreferences>().lastViewedMention =
+          state.newestMentionId!;
 
       emit(
         MentionsTimelineResult(
           tweets: state.tweets,
-          newMentions: 0,
+          hasNewMentions: false,
         ),
       );
     }

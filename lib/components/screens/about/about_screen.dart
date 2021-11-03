@@ -22,6 +22,8 @@ class AboutScreen extends StatelessWidget {
   static const String _privacyPolicy =
       'https://developer.twitter.com/en/developer-terms/policy';
 
+  static const String _harpyTwitterUrl = 'https://twitter.com/harpy_app';
+
   List<Widget> _buildTitleWithLogo(Color? textColor) {
     return [
       SizedBox(
@@ -42,7 +44,11 @@ class AboutScreen extends StatelessWidget {
     ];
   }
 
-  Widget _buildIntroductionText(ThemeData theme, TextStyle linkStyle) {
+  Widget _buildIntroductionText(
+    ThemeData theme,
+    TextStyle linkStyle,
+    bool isAuthenticated,
+  ) {
     final version = app<HarpyInfo>().packageInfo!.version;
 
     return Card(
@@ -82,7 +88,11 @@ class AboutScreen extends StatelessWidget {
               bottomRight: kDefaultRadius,
             ),
             onTap: () {
-              app<HarpyNavigator>().pushUserProfile(screenName: 'harpy_app');
+              if (isAuthenticated) {
+                app<HarpyNavigator>().pushUserProfile(screenName: 'harpy_app');
+              } else {
+                launchUrl(_harpyTwitterUrl);
+              }
             },
           ),
         ],
@@ -240,6 +250,9 @@ class AboutScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
+    final isAuthenticated =
+        context.read<AuthenticationCubit>().state is Authenticated;
+
     final textTheme = theme.textTheme;
     final color = textTheme.bodyText2!.color;
 
@@ -269,7 +282,7 @@ class AboutScreen extends StatelessWidget {
         children: [
           ..._buildTitleWithLogo(color),
           defaultVerticalSpacer,
-          _buildIntroductionText(theme, linkStyle),
+          _buildIntroductionText(theme, linkStyle, isAuthenticated),
           defaultVerticalSpacer,
           _buildDonationText(theme, config),
           if (Harpy.isFree) ...[

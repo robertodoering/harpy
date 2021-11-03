@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
   freezed_annotation: ^0.15.0
   get_it: ^7.2.0
+  google_fonts: ^2.1.0
   http: ^0.13.3
   humanizer: ^1.0.0
   intl: ^0.17.0

@@ -35,12 +35,4 @@ class TweetVisibilityPreferences {
       app<HarpyPreferences>().getInt('lastViewedMention', 0, prefix: true);
   set lastViewedMention(int value) =>
       app<HarpyPreferences>().setInt('lastViewedMention', value, prefix: true);
-
-  void updateLastViewedMention(TweetData tweet) {
-    final id = int.tryParse(tweet.originalId);
-
-    if (id != null) {
-      lastViewedMention = id;
-    }
-  }
 }
