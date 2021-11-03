@@ -17,7 +17,7 @@ extension MentionsTimelineExtension on MentionsTimelineState {
 
   bool get hasNewMentions {
     if (this is MentionsTimelineResult) {
-      return (this as MentionsTimelineResult).newMentions > 0;
+      return (this as MentionsTimelineResult).hasNewMentions;
     } else {
       return false;
     }
@@ -51,19 +51,26 @@ class MentionsTimelineLoading extends MentionsTimelineState {
 class MentionsTimelineResult extends MentionsTimelineState {
   const MentionsTimelineResult({
     required this.tweets,
-    required this.newMentions,
+    required this.hasNewMentions,
+    this.newestMentionId,
   });
 
   final List<TweetData> tweets;
 
-  /// The number of new tweet mentions since the last time the user loaded
-  /// the mentions timeline.
-  final int newMentions;
+  /// Whether new mentions exist since the user has last viewed their mentions.
+  final bool hasNewMentions;
+
+  /// The original id of the newest tweet.
+  ///
+  /// This can differ from the first tweet in [tweets] if the newest mention is
+  /// a reply to another mention.
+  final int? newestMentionId;
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => [
         tweets,
-        newMentions,
+        hasNewMentions,
+        newestMentionId,
       ];
 }
 
