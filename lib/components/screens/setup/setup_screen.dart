@@ -62,9 +62,7 @@ class _SetupScreenState extends State<SetupScreen> {
     ];
 
     return BlocProvider(
-      create: (_) => UserProfileBloc(
-        screenName: 'harpy_app',
-      ),
+      create: (_) => UserRelationshipBloc(handle: 'harpy_app'),
       child: HarpyScaffold(
         buildSafeArea: true,
         body: AnimatedPadding(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
@@ -90,12 +89,11 @@ class _FollowHarpy extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final userProfileBloc = context.watch<UserProfileBloc>();
-    final following = userProfileBloc.user?.following ?? false;
+    final bloc = context.watch<UserRelationshipBloc>();
 
     return Card(
       child: HarpySwitchTile(
-        value: following,
+        value: bloc.state.following,
         borderRadius: kDefaultBorderRadius,
         title: Text.rich(
           TextSpan(
@@ -114,9 +112,9 @@ class _FollowHarpy extends StatelessWidget {
         ),
         onChanged: (value) {
           HapticFeedback.lightImpact();
-          following
-              ? userProfileBloc.add(const UnfollowUserEvent())
-              : userProfileBloc.add(const FollowUserEvent());
+          bloc.state.following
+              ? bloc.add(const UserRelationshipEvent.unfollow())
+              : bloc.add(const UserRelationshipEvent.follow());
         },
       ),
     );

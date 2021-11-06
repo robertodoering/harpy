@@ -12,7 +12,7 @@ class UserMediaTimeline extends StatelessWidget {
     final bloc = context.watch<UserTimelineBloc>();
     final state = bloc.state;
 
-    return ChangeNotifierProvider<MediaTimelineModel>(
+    return ChangeNotifierProvider(
       create: (_) => MediaTimelineModel(
         initialTweets: bloc.state.timelineTweets,
       ),

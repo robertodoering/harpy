@@ -6,7 +6,7 @@ abstract class LikesTimelineEvent {
   Future<void> handle(LikesTimelineBloc bloc, Emitter emit);
 }
 
-/// Requests the likes timeline tweets for the [LikesTimelineBloc.screenName].
+/// Requests the likes timeline tweets for the [LikesTimelineBloc.handle].
 class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
   const RequestLikesTimeline();
 
@@ -21,7 +21,7 @@ class RequestLikesTimeline extends LikesTimelineEvent with HarpyLogger {
     final tweets = await app<TwitterApi>()
         .tweetService
         .listFavorites(
-          screenName: bloc.screenName,
+          screenName: bloc.handle,
           count: 200,
         )
         .then((tweets) {
@@ -99,7 +99,7 @@ class RequestOlderLikesTimeline extends LikesTimelineEvent with HarpyLogger {
       final tweets = await app<TwitterApi>()
           .tweetService
           .listFavorites(
-            screenName: bloc.screenName,
+            screenName: bloc.handle,
             count: 200,
             maxId: maxId,
           )

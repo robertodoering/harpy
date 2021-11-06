@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
+// TODO: remove when improving filter
+// https://github.com/robertodoering/harpy/issues/341
+
 class UserTimelineFilterDrawer extends StatelessWidget {
   const UserTimelineFilterDrawer();
 

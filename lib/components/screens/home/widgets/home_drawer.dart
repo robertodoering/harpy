@@ -121,9 +121,7 @@ class _AuthenticatedUser extends StatelessWidget {
 
     return InkWell(
       borderRadius: kDefaultBorderRadius,
-      onTap: () => app<HarpyNavigator>().pushUserProfile(
-        screenName: user.handle,
-      ),
+      onTap: () => app<HarpyNavigator>().pushUserProfile(initialUser: user),
       child: Card(
         child: Padding(
           padding: config.edgeInsets,
@@ -243,7 +241,7 @@ class _Entries extends StatelessWidget {
         leading: const Icon(CupertinoIcons.person),
         title: const Text('profile'),
         onTap: () => app<HarpyNavigator>().pushUserProfile(
-          screenName: authCubit.state.user!.handle,
+          initialUser: authCubit.state.user,
         ),
       ),
       defaultVerticalSpacer,

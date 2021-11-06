@@ -11,16 +11,18 @@ import 'package:harpy/core/core.dart';
 part 'user_timeline_event.dart';
 part 'user_timeline_state.dart';
 
+// TODO: refactor
+
 class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState>
     with RequestLock {
   UserTimelineBloc({
-    required this.screenName,
+    required this.handle,
   }) : super(const UserTimelineInitial()) {
     on<UserTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestUserTimeline());
   }
 
-  final String? screenName;
+  final String? handle;
 
   /// Completes when the user timeline has been requested using the
   /// [RequestUserTimeline] event.

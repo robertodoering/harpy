@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
+// TODO: remove refresh floating action button and instead add it as a refresh
+//  button in the begin slivers of the timeline (same as home timeline)
+
 class UserLikesTimeline extends StatelessWidget {
   const UserLikesTimeline();
 

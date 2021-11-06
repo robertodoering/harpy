@@ -9,16 +9,18 @@ import 'package:harpy/core/core.dart';
 part 'likes_timeline_event.dart';
 part 'likes_timeline_state.dart';
 
+// TODO: refactor
+
 class LikesTimelineBloc extends Bloc<LikesTimelineEvent, LikesTimelineState>
     with RequestLock {
   LikesTimelineBloc({
-    required this.screenName,
+    required this.handle,
   }) : super(const LikesTimelineInitial()) {
     on<LikesTimelineEvent>((event, emit) => event.handle(this, emit));
     add(const RequestLikesTimeline());
   }
 
-  final String? screenName;
+  final String? handle;
 
   /// Completes when older tweets for the timeline have been requested using
   /// [RequestOlderLikesTimeline].

@@ -12,19 +12,12 @@ class UserCard extends StatelessWidget {
 
   final UserData user;
 
-  void _onUserTap(BuildContext context) {
-    app<HarpyNavigator>().pushUserProfile(
-      currentRoute: ModalRoute.of(context)!.settings,
-      screenName: user.handle,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return ListCardAnimation(
-      key: ValueKey<int>(user.hashCode),
+      key: ValueKey(user.hashCode),
       child: HarpyListCard(
         color: theme.cardTheme.color,
         leading: HarpyCircleAvatar(
@@ -58,7 +51,10 @@ class UserCard extends StatelessWidget {
             ],
           ],
         ),
-        onTap: () => _onUserTap(context),
+        onTap: () => app<HarpyNavigator>().pushUserProfile(
+          currentRoute: ModalRoute.of(context)!.settings,
+          initialUser: user,
+        ),
       ),
     );
   }

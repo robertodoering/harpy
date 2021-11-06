@@ -13,6 +13,7 @@ dependencies:
   android_path_provider: ^0.3.0
   args: ^2.3.0
   bloc: ^8.0.0-dev.3
+  bloc_concurrency: ^0.2.0-dev.1
   built_collection: ^5.1.1
   collection: ^1.15.0
   connectivity: ^3.0.3

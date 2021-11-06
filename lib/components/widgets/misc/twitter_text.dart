@@ -22,7 +22,7 @@ void defaultOnUserMentionTap(
 ) {
   app<HarpyNavigator>().pushUserProfile(
     currentRoute: ModalRoute.of(context)!.settings,
-    screenName: userMention.handle,
+    handle: userMention.handle,
   );
 }
 

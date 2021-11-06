@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.0.0-dev.4"
+  bloc_concurrency:
+    dependency: "direct main"
+    description:
+      name: bloc_concurrency
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0-dev.1"
   bloc_test:
     dependency: "direct dev"
     description:

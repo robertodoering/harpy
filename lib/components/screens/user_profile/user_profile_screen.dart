@@ -1,51 +1,63 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
-/// Builds the screen for a user profile.
-///
-/// The [screenName] is used to load the user data upon creation.
-// todo: refactor user profile screen & bloc
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
-    required this.screenName,
-  });
+    this.initialUser,
+    this.handle,
+  }) : assert(initialUser != null || handle != null);
 
-  /// The screenName that is used to load the user data.
-  final String? screenName;
+  final UserData? initialUser;
+  final String? handle;
 
-  static const String route = 'user_profile';
+  static const route = 'user_profile';
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UserProfileBloc>(
-      create: (context) => UserProfileBloc(screenName: screenName),
-      child: BlocBuilder<UserProfileBloc, UserProfileState>(
-        builder: (context, state) {
-          final bloc = UserProfileBloc.of(context);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => UserRelationshipBloc(
+            handle: handle ?? initialUser!.handle,
+          )..add(const UserRelationshipEvent.load()),
+        ),
+        BlocProvider(
+          create: (_) => UserProfileCubit(
+            initialUser: initialUser,
+            handle: handle,
+          ),
+        ),
+      ],
+      child: const _Scaffold(),
+    );
+  }
+}
 
-          if (state is LoadingUserState) {
-            return const UserProfileLoading();
-          } else if (state is InitializedUserState ||
-              state is TranslatingDescriptionState) {
-            return HarpyBackground(
-              child: FadeAnimation(
-                duration: kShortAnimationDuration,
-                curve: Curves.easeInOut,
-                child: UserProfileContent(bloc: bloc),
-              ),
-            );
-          } else {
-            return HarpyBackground(
-              child: FadeAnimation(
-                duration: kShortAnimationDuration,
-                curve: Curves.easeInOut,
-                child: UserProfileError(bloc, screenName: screenName),
-              ),
-            );
-          }
-        },
+class _Scaffold extends StatelessWidget {
+  const _Scaffold();
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.watch<UserProfileCubit>();
+    final state = cubit.state;
+
+    return HarpyScaffold(
+      body: state.map(
+        data: (data) => UserProfileContent(
+          user: data.user,
+        ),
+        // TODO: add proper loading shimmer for user profile screen
+        loading: (_) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (_) => LoadingDataError(
+          message: const Text('error loading user'),
+          onRetry: cubit.requestUserData,
+        ),
       ),
     );
   }

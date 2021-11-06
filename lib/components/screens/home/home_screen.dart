@@ -25,14 +25,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const WillPopHarpy(
-      child: HomeProvider(
-        // scroll direction listener has to be built above the filter
-        child: ScrollDirectionListener(
-          depth: 1,
-          child: HarpyScaffold(
-            endDrawer: HomeTimelineFilterDrawer(),
-            body: HomeTabView(),
+    return WillPopHarpy(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => HomeTabModel()),
+          ChangeNotifierProvider(create: (_) => TimelineFilterModel.home()),
+          BlocProvider(
+            create: (_) =>
+                TrendsLocationsBloc()..add(const LoadTrendsLocations()),
+          ),
+          BlocProvider(
+            create: (_) => TrendsBloc()..add(const FindTrendsEvent()),
+          )
+        ],
+        child: Builder(
+          builder: (context) => HomeListsProvider(
+            model: context.watch<HomeTabModel>(),
+            // scroll direction listener has to be built above the filter
+            child: const ScrollDirectionListener(
+              depth: 1,
+              child: HarpyScaffold(
+                endDrawer: HomeTimelineFilterDrawer(),
+                body: HomeTabView(),
+              ),
+            ),
           ),
         ),
       ),

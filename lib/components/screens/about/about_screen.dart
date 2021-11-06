@@ -87,13 +87,11 @@ class AboutScreen extends StatelessWidget {
               bottomLeft: kDefaultRadius,
               bottomRight: kDefaultRadius,
             ),
-            onTap: () {
-              if (isAuthenticated) {
-                app<HarpyNavigator>().pushUserProfile(screenName: 'harpy_app');
-              } else {
-                launchUrl(_harpyTwitterUrl);
-              }
-            },
+            onTap: isAuthenticated
+                ? () => app<HarpyNavigator>().pushUserProfile(
+                      handle: 'harpy_app',
+                    )
+                : () => launchUrl(_harpyTwitterUrl),
           ),
         ],
       ),

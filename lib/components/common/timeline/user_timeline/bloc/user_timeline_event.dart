@@ -6,7 +6,7 @@ abstract class UserTimelineEvent {
   Future<void> handle(UserTimelineBloc bloc, Emitter emit);
 }
 
-/// Requests the user timeline tweets for the [UserTimelineBloc.screenName].
+/// Requests the user timeline tweets for the [UserTimelineBloc.handle].
 class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
   const RequestUserTimeline({
     this.timelineFilter,
@@ -30,7 +30,7 @@ class RequestUserTimeline extends UserTimelineEvent with HarpyLogger {
     final tweets = await app<TwitterApi>()
         .timelineService
         .userTimeline(
-          screenName: bloc.screenName,
+          screenName: bloc.handle,
           count: 200,
           excludeReplies: filter.excludesReplies,
         )
@@ -113,7 +113,7 @@ class RequestOlderUserTimeline extends UserTimelineEvent with HarpyLogger {
       final tweets = await app<TwitterApi>()
           .timelineService
           .userTimeline(
-            screenName: bloc.screenName,
+            screenName: bloc.handle,
             count: 200,
             maxId: maxId,
             excludeReplies: state.timelineFilter.excludesReplies,

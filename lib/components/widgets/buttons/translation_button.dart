@@ -74,26 +74,3 @@ class TweetTranslationButton extends StatelessWidget {
     );
   }
 }
-
-/// The translation button for the [UserProfileHeader].
-class UserDescriptionTranslationButton extends StatelessWidget {
-  const UserDescriptionTranslationButton(this.bloc);
-
-  final UserProfileBloc bloc;
-
-  @override
-  Widget build(BuildContext context) {
-    final config = context.watch<ConfigCubit>().state;
-
-    final locale = Localizations.localeOf(context);
-
-    final active = bloc.user!.hasDescriptionTranslation ||
-        bloc.state is TranslatingDescriptionState;
-
-    return TranslationButton(
-      active: active,
-      padding: config.edgeInsets,
-      activate: () => bloc.add(TranslateUserDescriptionEvent(locale: locale)),
-    );
-  }
-}

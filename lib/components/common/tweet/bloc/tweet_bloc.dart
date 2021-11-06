@@ -42,7 +42,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: route?.settings,
-      screenName: tweet.user.handle,
+      initialUser: tweet.user,
     );
   }
 
@@ -55,7 +55,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     if (tweet.retweetUserHandle != null) {
       app<HarpyNavigator>().pushUserProfile(
         currentRoute: route?.settings,
-        screenName: tweet.retweetUserHandle!,
+        handle: tweet.retweetUserHandle,
       );
     }
   }
