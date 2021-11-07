@@ -149,7 +149,7 @@ export 'screens/splash/splash_screen.dart';
 export 'screens/tweet_detail/tweet_detail_screen.dart';
 export 'screens/tweet_detail/widgets/tweet_detail_card.dart';
 export 'screens/tweet_detail/widgets/tweet_detail_parent_tweet.dart';
-export 'screens/user_profile/bloc/user_profile_cubit.dart';
+export 'screens/user_profile/cubit/user_profile_cubit.dart';
 export 'screens/user_profile/user_profile_screen.dart';
 export 'screens/user_profile/widgets/user_banner.dart';
 export 'screens/user_profile/widgets/user_likes_timeline.dart';
