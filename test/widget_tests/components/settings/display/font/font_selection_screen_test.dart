@@ -24,9 +24,16 @@ void main() {
       'builds with selected font',
       (tester) async {
         await tester.pumpWidgetBuilder(
+<<<<<<< HEAD
           const FontSelectionScreen(
             title: 'select a body font',
             selectedFont: 'OpenSans',
+=======
+          FontSelectionScreen(
+            title: 'select a body font',
+            selectedFont: 'OpenSans',
+            onChanged: (_) {},
+>>>>>>> master
           ),
           wrapper: buildAppBase,
           surfaceSize: Device.phone.size,
@@ -42,8 +49,11 @@ void main() {
         expect(title, findsOneWidget);
         expect(fontCard, findsWidgets);
       },
+<<<<<<< HEAD
       // TODO: figure out why tf these tests are flakey..
       // "A Timer is still pending even after the widget tree was disposed."
+=======
+>>>>>>> master
       skip: true,
     );
 
@@ -51,9 +61,16 @@ void main() {
       'changes selection ont font card tap',
       (tester) async {
         await tester.pumpWidgetBuilder(
+<<<<<<< HEAD
           const FontSelectionScreen(
             title: 'select a body font',
             selectedFont: 'OpenSans',
+=======
+          FontSelectionScreen(
+            title: 'select a body font',
+            selectedFont: 'OpenSans',
+            onChanged: (_) {},
+>>>>>>> master
           ),
           wrapper: buildAppBase,
           surfaceSize: Device.phone.size,
@@ -79,9 +96,16 @@ void main() {
       'search filters google fonts',
       (tester) async {
         await tester.pumpWidgetBuilder(
+<<<<<<< HEAD
           const FontSelectionScreen(
             title: 'select a body font',
             selectedFont: 'OpenSans',
+=======
+          FontSelectionScreen(
+            title: 'select a body font',
+            selectedFont: 'OpenSans',
+            onChanged: (_) {},
+>>>>>>> master
           ),
           wrapper: buildAppBase,
           surfaceSize: Device.phone.size,

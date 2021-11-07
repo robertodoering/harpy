@@ -88,11 +88,9 @@ class DisplaySettingsScreen extends StatelessWidget {
                 leadingIcon: CupertinoIcons.textformat,
                 font: config.bodyFont,
                 onChanged: (value) {
-                  if (value != null) {
-                    HapticFeedback.lightImpact();
+                  HapticFeedback.lightImpact();
 
-                    configCubit.updateBodyFont(value);
-                  }
+                  configCubit.updateBodyFont(value);
                 },
               ),
               _FontRadioDialogTile(
@@ -101,11 +99,9 @@ class DisplaySettingsScreen extends StatelessWidget {
                 leadingIcon: CupertinoIcons.textformat,
                 font: config.displayFont,
                 onChanged: (value) {
-                  if (value != null) {
-                    HapticFeedback.lightImpact();
+                  HapticFeedback.lightImpact();
 
-                    configCubit.updateDisplayFont(value);
-                  }
+                  configCubit.updateDisplayFont(value);
                 },
               ),
               HarpySwitchTile(
@@ -143,7 +139,7 @@ class _FontRadioDialogTile extends StatelessWidget {
   final String appBarTitle;
   final String font;
   final IconData leadingIcon;
-  final ValueChanged<String?> onChanged;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -151,20 +147,15 @@ class _FontRadioDialogTile extends StatelessWidget {
       title: Text(title),
       leading: Icon(leadingIcon),
       subtitle: Text(font),
-      onTap: () async {
-        final result = await app<HarpyNavigator>().push<String>(
-          HarpyPageRoute(
-            builder: (_) => FontSelectionScreen(
-              selectedFont: font,
-              title: appBarTitle,
-            ),
+      onTap: () => app<HarpyNavigator>().push<String>(
+        HarpyPageRoute(
+          builder: (_) => FontSelectionScreen(
+            selectedFont: font,
+            title: appBarTitle,
+            onChanged: onChanged,
           ),
-        );
-
-        if (result != null) {
-          onChanged.call(result);
-        }
-      },
+        ),
+      ),
     );
   }
 }
