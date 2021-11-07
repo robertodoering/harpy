@@ -12,7 +12,7 @@ export 'common/pagination/paginated_cubit_mixin.dart';
 export 'common/pagination/paginated_state.dart';
 export 'common/pagination/paginated_users/cubit/paginated_users_cubit.dart';
 export 'common/pagination/paginated_users/widgets/paginated_users_screen.dart';
-export 'common/replies/bloc/replies_bloc.dart';
+export 'common/replies/cubit/replies_cubit.dart';
 export 'common/timeline/filter/model/timeline_filter.dart';
 export 'common/timeline/filter/model/timeline_filter_model.dart';
 export 'common/timeline/filter/widgets/timeline_filter_drawer.dart';

@@ -75,11 +75,6 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
   }
 }
 
-enum ApplicationState {
-  uninitialized,
-  initialized,
-}
-
 /// Changes the system ui to the initial theme for the initialization.
 Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
   final version = app<HarpyInfo>().deviceInfo?.version.sdkInt ?? -1;
@@ -100,4 +95,9 @@ Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
   }
 
   updateSystemUi(initialTheme);
+}
+
+enum ApplicationState {
+  uninitialized,
+  initialized,
 }

@@ -14,8 +14,8 @@ class TweetDetailParentTweet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<RepliesBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<RepliesCubit>();
+    final state = cubit.state;
 
     return SliverToBoxAdapter(
       child: AnimatedSize(
@@ -33,7 +33,7 @@ class TweetDetailParentTweet extends StatelessWidget {
                   defaultVerticalSpacer,
                   TweetListInfoRow(
                     icon: const Icon(CupertinoIcons.reply),
-                    text: Text('${bloc.tweet.user.name} replied'),
+                    text: Text('${cubit.tweet.user.name} replied'),
                   ),
                   defaultVerticalSpacer,
                 ],
