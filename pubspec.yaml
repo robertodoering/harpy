@@ -39,7 +39,7 @@ dependencies:
   http: ^0.13.3
   humanizer: ^1.0.0
   intl: ^0.17.0
-  json_annotation: ^4.3.0
+  json_annotation: ^4.1.0
   like_button: ^2.0.3
   location: ^4.1.1
   logging: ^1.0.1
@@ -73,7 +73,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^0.15.0+1
   golden_toolkit: ^0.11.0
-  json_serializable: ^6.0.1
+  json_serializable: ^5.0.0
   mocktail: ^0.2.0
 
 flutter:

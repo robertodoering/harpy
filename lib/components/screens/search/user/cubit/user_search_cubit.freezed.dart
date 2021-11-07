@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'user_search_state.dart';
+part of 'user_search_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -17,9 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$UsersSearchStateDataTearOff {
   const _$UsersSearchStateDataTearOff();
 
-  _UsersSearchStateData call(
-      {required BuiltList<UserData> users, required String query}) {
-    return _UsersSearchStateData(
+  _Data call({required BuiltList<UserData> users, required String query}) {
+    return _Data(
       users: users,
       query: query,
     );
@@ -75,32 +74,29 @@ class _$UsersSearchStateDataCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$UsersSearchStateDataCopyWith<$Res>
+abstract class _$DataCopyWith<$Res>
     implements $UsersSearchStateDataCopyWith<$Res> {
-  factory _$UsersSearchStateDataCopyWith(_UsersSearchStateData value,
-          $Res Function(_UsersSearchStateData) then) =
-      __$UsersSearchStateDataCopyWithImpl<$Res>;
+  factory _$DataCopyWith(_Data value, $Res Function(_Data) then) =
+      __$DataCopyWithImpl<$Res>;
   @override
   $Res call({BuiltList<UserData> users, String query});
 }
 
 /// @nodoc
-class __$UsersSearchStateDataCopyWithImpl<$Res>
-    extends _$UsersSearchStateDataCopyWithImpl<$Res>
-    implements _$UsersSearchStateDataCopyWith<$Res> {
-  __$UsersSearchStateDataCopyWithImpl(
-      _UsersSearchStateData _value, $Res Function(_UsersSearchStateData) _then)
-      : super(_value, (v) => _then(v as _UsersSearchStateData));
+class __$DataCopyWithImpl<$Res> extends _$UsersSearchStateDataCopyWithImpl<$Res>
+    implements _$DataCopyWith<$Res> {
+  __$DataCopyWithImpl(_Data _value, $Res Function(_Data) _then)
+      : super(_value, (v) => _then(v as _Data));
 
   @override
-  _UsersSearchStateData get _value => super._value as _UsersSearchStateData;
+  _Data get _value => super._value as _Data;
 
   @override
   $Res call({
     Object? users = freezed,
     Object? query = freezed,
   }) {
-    return _then(_UsersSearchStateData(
+    return _then(_Data(
       users: users == freezed
           ? _value.users
           : users // ignore: cast_nullable_to_non_nullable
@@ -115,8 +111,8 @@ class __$UsersSearchStateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UsersSearchStateData implements _UsersSearchStateData {
-  const _$_UsersSearchStateData({required this.users, required this.query});
+class _$_Data implements _Data {
+  const _$_Data({required this.users, required this.query});
 
   @override
   final BuiltList<UserData> users;
@@ -132,7 +128,7 @@ class _$_UsersSearchStateData implements _UsersSearchStateData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UsersSearchStateData &&
+            other is _Data &&
             (identical(other.users, users) || other.users == users) &&
             (identical(other.query, query) || other.query == query));
   }
@@ -142,15 +138,13 @@ class _$_UsersSearchStateData implements _UsersSearchStateData {
 
   @JsonKey(ignore: true)
   @override
-  _$UsersSearchStateDataCopyWith<_UsersSearchStateData> get copyWith =>
-      __$UsersSearchStateDataCopyWithImpl<_UsersSearchStateData>(
-          this, _$identity);
+  _$DataCopyWith<_Data> get copyWith =>
+      __$DataCopyWithImpl<_Data>(this, _$identity);
 }
 
-abstract class _UsersSearchStateData implements UsersSearchStateData {
-  const factory _UsersSearchStateData(
-      {required BuiltList<UserData> users,
-      required String query}) = _$_UsersSearchStateData;
+abstract class _Data implements UsersSearchStateData {
+  const factory _Data(
+      {required BuiltList<UserData> users, required String query}) = _$_Data;
 
   @override
   BuiltList<UserData> get users;
@@ -158,6 +152,5 @@ abstract class _UsersSearchStateData implements UsersSearchStateData {
   String get query;
   @override
   @JsonKey(ignore: true)
-  _$UsersSearchStateDataCopyWith<_UsersSearchStateData> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
 }

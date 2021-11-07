@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'font_selection_state.dart';
+part of 'font_selection_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -17,9 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$FontSelectionStateTearOff {
   const _$FontSelectionStateTearOff();
 
-  _FontSelectionState call(
-      {required String preview, required BuiltList<String> fonts}) {
-    return _FontSelectionState(
+  _State call({required String preview, required BuiltList<String> fonts}) {
+    return _State(
       preview: preview,
       fonts: fonts,
     );
@@ -75,32 +74,29 @@ class _$FontSelectionStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$FontSelectionStateCopyWith<$Res>
+abstract class _$StateCopyWith<$Res>
     implements $FontSelectionStateCopyWith<$Res> {
-  factory _$FontSelectionStateCopyWith(
-          _FontSelectionState value, $Res Function(_FontSelectionState) then) =
-      __$FontSelectionStateCopyWithImpl<$Res>;
+  factory _$StateCopyWith(_State value, $Res Function(_State) then) =
+      __$StateCopyWithImpl<$Res>;
   @override
   $Res call({String preview, BuiltList<String> fonts});
 }
 
 /// @nodoc
-class __$FontSelectionStateCopyWithImpl<$Res>
-    extends _$FontSelectionStateCopyWithImpl<$Res>
-    implements _$FontSelectionStateCopyWith<$Res> {
-  __$FontSelectionStateCopyWithImpl(
-      _FontSelectionState _value, $Res Function(_FontSelectionState) _then)
-      : super(_value, (v) => _then(v as _FontSelectionState));
+class __$StateCopyWithImpl<$Res> extends _$FontSelectionStateCopyWithImpl<$Res>
+    implements _$StateCopyWith<$Res> {
+  __$StateCopyWithImpl(_State _value, $Res Function(_State) _then)
+      : super(_value, (v) => _then(v as _State));
 
   @override
-  _FontSelectionState get _value => super._value as _FontSelectionState;
+  _State get _value => super._value as _State;
 
   @override
   $Res call({
     Object? preview = freezed,
     Object? fonts = freezed,
   }) {
-    return _then(_FontSelectionState(
+    return _then(_State(
       preview: preview == freezed
           ? _value.preview
           : preview // ignore: cast_nullable_to_non_nullable
@@ -115,8 +111,8 @@ class __$FontSelectionStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_FontSelectionState implements _FontSelectionState {
-  const _$_FontSelectionState({required this.preview, required this.fonts});
+class _$_State implements _State {
+  const _$_State({required this.preview, required this.fonts});
 
   @override
   final String preview;
@@ -132,7 +128,7 @@ class _$_FontSelectionState implements _FontSelectionState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FontSelectionState &&
+            other is _State &&
             (identical(other.preview, preview) || other.preview == preview) &&
             (identical(other.fonts, fonts) || other.fonts == fonts));
   }
@@ -142,14 +138,13 @@ class _$_FontSelectionState implements _FontSelectionState {
 
   @JsonKey(ignore: true)
   @override
-  _$FontSelectionStateCopyWith<_FontSelectionState> get copyWith =>
-      __$FontSelectionStateCopyWithImpl<_FontSelectionState>(this, _$identity);
+  _$StateCopyWith<_State> get copyWith =>
+      __$StateCopyWithImpl<_State>(this, _$identity);
 }
 
-abstract class _FontSelectionState implements FontSelectionState {
-  const factory _FontSelectionState(
-      {required String preview,
-      required BuiltList<String> fonts}) = _$_FontSelectionState;
+abstract class _State implements FontSelectionState {
+  const factory _State(
+      {required String preview, required BuiltList<String> fonts}) = _$_State;
 
   @override
   String get preview;
@@ -157,6 +152,5 @@ abstract class _FontSelectionState implements FontSelectionState {
   BuiltList<String> get fonts;
   @override
   @JsonKey(ignore: true)
-  _$FontSelectionStateCopyWith<_FontSelectionState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$StateCopyWith<_State> get copyWith => throw _privateConstructorUsedError;
 }

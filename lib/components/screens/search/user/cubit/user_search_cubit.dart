@@ -1,9 +1,12 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+
+part 'user_search_cubit.freezed.dart';
 
 /// Handles searching for twitter users.
 ///
@@ -132,4 +135,12 @@ Iterable<UserData> _filterDuplicates(
   }
 
   return filteredUsers;
+}
+
+@freezed
+class UsersSearchStateData with _$UsersSearchStateData {
+  const factory UsersSearchStateData({
+    required BuiltList<UserData> users,
+    required String query,
+  }) = _Data;
 }
