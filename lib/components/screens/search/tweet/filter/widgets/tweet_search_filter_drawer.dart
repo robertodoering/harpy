@@ -182,7 +182,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<TweetSearchBloc>();
+    final cubit = context.watch<TweetSearchCubit>();
     final model = context.watch<TweetSearchFilterModel>();
 
     return FilterDrawer(
@@ -190,7 +190,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       showClear: model.hasFilter,
       showSearchButton: model.hasSearchQuery,
       onClear: model.clear,
-      onSearch: () => bloc.add(SearchTweets(filter: model.value)),
+      onSearch: () => cubit.search(filter: model.value),
       filterGroups: [
         _buildGeneralGroup(config, model, theme),
         _buildIncludesGroup(model),

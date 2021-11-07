@@ -128,7 +128,7 @@ export 'screens/lists/timeline_screen/list_timeline_screen.dart';
 export 'screens/login/login_screen.dart';
 export 'screens/search/search_screen.dart';
 export 'screens/search/search_screen_content.dart';
-export 'screens/search/tweet/bloc/tweet_search_bloc.dart';
+export 'screens/search/tweet/cubit/tweet_search_cubit.dart';
 export 'screens/search/tweet/filter/model/tweet_search_filter.dart';
 export 'screens/search/tweet/filter/model/tweet_search_filter_model.dart';
 export 'screens/search/tweet/filter/widgets/tweet_search_filter_drawer.dart';

@@ -88,6 +88,7 @@ class UserProfileState with _$UserProfileState {
     required UserData user,
     @Default(false) bool isTranslatingDescription,
   }) = _Data;
+
   const factory UserProfileState.loading() = _Loading;
   const factory UserProfileState.error() = _Error;
 }

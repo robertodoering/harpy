@@ -5,19 +5,19 @@ import 'package:provider/provider.dart';
 
 class TweetSearchScreen extends StatelessWidget {
   const TweetSearchScreen({
-    this.initialSearchQuery,
+    this.initialQuery,
   });
 
-  final String? initialSearchQuery;
+  final String? initialQuery;
 
-  static const String route = 'tweet_search_screen';
+  static const route = 'tweet_search';
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TweetSearchFilterModel>(
+    return ChangeNotifierProvider(
       create: (_) => TweetSearchFilterModel(TweetSearchFilter.empty),
-      child: BlocProvider<TweetSearchBloc>(
-        create: (_) => TweetSearchBloc(initialSearchQuery: initialSearchQuery),
+      child: BlocProvider<TweetSearchCubit>(
+        create: (_) => TweetSearchCubit(initialQuery: initialQuery),
         child: const HarpyScaffold(
           endDrawer: TweetSearchFilterDrawer(),
           body: TweetSearchList(),

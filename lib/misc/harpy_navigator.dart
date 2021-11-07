@@ -334,7 +334,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case TweetSearchScreen.route:
       screen = TweetSearchScreen(
-        initialSearchQuery: arguments['initialSearchQuery'],
+        initialQuery: arguments['initialSearchQuery'],
       );
       break;
     case HomeTabCustomizationScreen.route:
