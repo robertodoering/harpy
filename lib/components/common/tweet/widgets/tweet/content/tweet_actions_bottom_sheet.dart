@@ -22,7 +22,7 @@ void showTweetActionsBottomSheet(
   final authCubit = context.read<AuthenticationCubit>();
   final homeTimelineBloc = context.read<HomeTimelineBloc>();
 
-  final isAuthenticatedUser = bloc.tweet.user.id == authCubit.state.userId;
+  final isAuthenticatedUser = bloc.tweet.user.id == authCubit.state.user?.id;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;

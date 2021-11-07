@@ -249,7 +249,7 @@ class AboutScreen extends StatelessWidget {
     final config = context.watch<ConfigCubit>().state;
 
     final isAuthenticated =
-        context.read<AuthenticationCubit>().state is Authenticated;
+        context.read<AuthenticationCubit>().state.isAuthenticated;
 
     final textTheme = theme.textTheme;
     final color = textTheme.bodyText2!.color;

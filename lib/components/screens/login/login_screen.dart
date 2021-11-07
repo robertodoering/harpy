@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authCubit = context.watch<AuthenticationCubit>();
 
     return HarpyBackground(
-      child: authCubit.state is AwaitingAuthentication
+      child: authCubit.state.isAwaitingAuthentication
           ? const Center(child: CircularProgressIndicator())
           : _buildLoginScreen(theme, authCubit),
     );

@@ -60,7 +60,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     await authenticationCubit.restoreSession();
 
-    if (authenticationCubit.state is Authenticated) {
+    if (authenticationCubit.state.isAuthenticated) {
       // navigate to home screen after session has been restored
       app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
     } else {
