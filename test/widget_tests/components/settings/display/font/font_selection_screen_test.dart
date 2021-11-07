@@ -22,9 +22,10 @@ void main() {
   group('font selection screen', () {
     testGoldens('builds with selected font', (tester) async {
       await tester.pumpWidgetBuilder(
-        const FontSelectionScreen(
+        FontSelectionScreen(
           title: 'select a body font',
           selectedFont: 'OpenSans',
+          onChanged: (_) {},
         ),
         wrapper: buildAppBase,
         surfaceSize: Device.phone.size,
@@ -43,9 +44,10 @@ void main() {
 
     testGoldens('changes selection ont font card tap', (tester) async {
       await tester.pumpWidgetBuilder(
-        const FontSelectionScreen(
+        FontSelectionScreen(
           title: 'select a body font',
           selectedFont: 'OpenSans',
+          onChanged: (_) {},
         ),
         wrapper: buildAppBase,
         surfaceSize: Device.phone.size,
@@ -67,9 +69,10 @@ void main() {
 
     testGoldens('search filters google fonts', (tester) async {
       await tester.pumpWidgetBuilder(
-        const FontSelectionScreen(
+        FontSelectionScreen(
           title: 'select a body font',
           selectedFont: 'OpenSans',
+          onChanged: (_) {},
         ),
         wrapper: buildAppBase,
         surfaceSize: Device.phone.size,

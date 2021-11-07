@@ -1,45 +1,28 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/harpy_widgets/theme/harpy_theme.dart';
 
-class FontSelectionCubit extends Cubit<FontSelectionState> {
-  FontSelectionCubit({
-    required String initialPreview,
-  }) : super(
-          FontSelectionState(
-            preview: initialPreview,
-            fonts: BuiltList(),
-          ),
-        ) {
+class FontSelectionCubit extends Cubit<BuiltList<String>> {
+  FontSelectionCubit() : super(BuiltList()) {
     _googleFonts = GoogleFonts.asMap()
         .keys
         .where((element) => !kAssetFonts.contains(element))
         .toBuiltList();
 
-    emit(state.copyWith(fonts: _googleFonts));
+    emit(_googleFonts);
   }
-
   late final BuiltList<String> _googleFonts;
 
   void updateFilter(String filter) {
     if (filter.isEmpty) {
-      emit(state.copyWith(fonts: _googleFonts));
+      emit(_googleFonts);
     } else {
       emit(
-        state.copyWith(
-          fonts: _googleFonts
-              .where(
-                (font) => font.toLowerCase().contains(filter.toLowerCase()),
-              )
-              .toBuiltList(),
-        ),
+        _googleFonts
+            .where((font) => font.toLowerCase().contains(filter.toLowerCase()))
+            .toBuiltList(),
       );
     }
-  }
-
-  void selectPreview(String preview) {
-    emit(state.copyWith(preview: preview));
   }
 }

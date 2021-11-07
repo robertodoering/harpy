@@ -4,27 +4,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class FontSelectionScreen extends StatelessWidget {
   const FontSelectionScreen({
     required this.title,
     required this.selectedFont,
+    required this.onChanged,
   });
 
   final String title;
   final String selectedFont;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => FontSelectionCubit(initialPreview: selectedFont),
+      create: (_) => FontSelectionCubit(),
       child: HarpyScaffold(
         body: GestureDetector(
           onTap: FocusScope.of(context).unfocus,
           child: _FontSelectionList(
             title: title,
-            selectedFont: selectedFont,
+            initialSelection: selectedFont,
+            onChanged: onChanged,
           ),
         ),
       ),
@@ -32,14 +36,50 @@ class FontSelectionScreen extends StatelessWidget {
   }
 }
 
-class _FontSelectionList extends StatelessWidget {
+class _FontSelectionList extends StatefulWidget {
   const _FontSelectionList({
     required this.title,
-    required this.selectedFont,
+    required this.initialSelection,
+    required this.onChanged,
   });
 
   final String title;
-  final String selectedFont;
+  final String initialSelection;
+  final ValueChanged<String> onChanged;
+
+  @override
+  State<_FontSelectionList> createState() => _FontSelectionListState();
+}
+
+class _FontSelectionListState extends State<_FontSelectionList>
+    with RouteAware {
+  late String _selectedFont;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedFont = widget.initialSelection;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    harpyRouteObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    harpyRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPop() {
+    if (Harpy.isPro || Harpy.isFree && kAssetFonts.contains(_selectedFont)) {
+      widget.onChanged(_selectedFont);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +88,6 @@ class _FontSelectionList extends StatelessWidget {
     final config = context.watch<ConfigCubit>().state;
 
     final cubit = context.watch<FontSelectionCubit>();
-    final state = cubit.state;
 
     final style = theme.textTheme.subtitle2!;
 
@@ -61,30 +100,30 @@ class _FontSelectionList extends StatelessWidget {
         FontCard(
           font: font,
           assetFont: true,
-          selected: font == selectedFont,
-          previewed: font == state.preview,
+          selected: font == _selectedFont,
           style: style.copyWith(fontFamily: font),
-          onPreview: () => cubit.selectPreview(font),
+          onSelect: () => setState(() => _selectedFont = font),
+          onConfirm: Navigator.of(context).pop,
         ),
       defaultVerticalSpacer,
       TextField(
         decoration: const InputDecoration(hintText: 'search'),
         onChanged: cubit.updateFilter,
       ),
-      for (final font in state.fonts)
+      for (final font in cubit.state)
         FontCard(
           font: font,
-          selected: font == selectedFont,
-          previewed: font == state.preview,
-          style: applyGoogleFont(textStyle: style, fontFamily: state.preview),
-          onPreview: () => cubit.selectPreview(font),
+          selected: font == _selectedFont,
+          style: applyGoogleFont(textStyle: style, fontFamily: _selectedFont),
+          onSelect: () => setState(() => _selectedFont = font),
+          onConfirm: Navigator.of(context).pop,
         ),
     ];
 
     return CustomScrollView(
       slivers: [
         HarpySliverAppBar(
-          title: title,
+          title: widget.title,
           floating: true,
         ),
         SliverPadding(

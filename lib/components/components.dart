@@ -184,7 +184,6 @@ export 'settings/custom_theme/widgets/custom_theme_secondary_color.dart';
 export 'settings/custom_theme/widgets/custom_theme_status_bar_color.dart';
 export 'settings/display/display_settings_screen.dart';
 export 'settings/display/font/cubit/font_selection_cubit.dart';
-export 'settings/display/font/cubit/font_selection_state.dart';
 export 'settings/display/font/font_selection_screen.dart';
 export 'settings/display/font/widgets/font_card.dart';
 export 'settings/display/widgets/preview_tweet/bloc/preview_tweet_bloc.dart';
