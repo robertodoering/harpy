@@ -60,7 +60,6 @@ export 'common/tweet_card/content/elements/tweet_card_actions_row.dart';
 export 'common/tweet_card/content/elements/tweet_card_avatar.dart';
 export 'common/tweet_card/content/elements/tweet_card_details.dart';
 export 'common/tweet_card/content/elements/tweet_card_handle.dart';
-export 'common/tweet_card/content/elements/tweet_card_media.dart';
 export 'common/tweet_card/content/elements/tweet_card_name.dart';
 export 'common/tweet_card/content/elements/tweet_card_quote.dart';
 export 'common/tweet_card/content/elements/tweet_card_retweeter.dart';

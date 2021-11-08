@@ -320,10 +320,6 @@ class _$_Data implements _Data {
   /// Either built from the filter or manually entered by the user.
   final String query;
   @override
-
-  /// The filter that built the query if a filter was used.
-  ///
-  /// `null` if the user entered the query manually.
   final TweetSearchFilter? filter;
 
   @override
@@ -448,10 +444,6 @@ abstract class _Data implements NewTweetSearchState {
   ///
   /// Either built from the filter or manually entered by the user.
   String get query;
-
-  /// The filter that built the query if a filter was used.
-  ///
-  /// `null` if the user entered the query manually.
   TweetSearchFilter? get filter;
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;

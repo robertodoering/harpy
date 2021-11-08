@@ -6,14 +6,12 @@ import 'package:provider/provider.dart';
 
 /// The favorite button for the [TweetCardActionsRow].
 class FavoriteButton extends StatelessWidget {
-  const FavoriteButton(
-    this.bloc, {
+  const FavoriteButton({
     this.padding = const EdgeInsets.all(8),
     this.iconSize = 22,
     this.sizeDelta = 0,
   });
 
-  final TweetBloc bloc;
   final EdgeInsets padding;
   final double iconSize;
   final double sizeDelta;
@@ -23,8 +21,10 @@ class FavoriteButton extends StatelessWidget {
     final theme = Theme.of(context);
     final harpyTheme = context.watch<HarpyTheme>();
 
+    final bloc = context.watch<TweetBloc>();
+
     return ActionButton(
-      active: bloc.tweet.favorited,
+      active: bloc.state.favorited,
       padding: padding,
       activeIconColor: harpyTheme.favoriteColor,
       activeTextStyle: theme.textTheme.button!

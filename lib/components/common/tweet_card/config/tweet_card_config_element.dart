@@ -64,8 +64,8 @@ extension TweetCardElementExtension on TweetCardElement {
   }
 
   /// Build padding below when:
-  /// - this element requires padding and
-  /// - this is the last element or the next element also requires padding
+  /// * this element requires padding and
+  /// * this is the last element or the next element also requires padding
   bool buildBottomPadding(int index, Iterable<TweetCardElement> elements) {
     return requiresPadding &&
         (index == elements.length - 1 ||

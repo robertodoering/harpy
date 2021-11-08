@@ -59,12 +59,10 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             bloc.add(
-              DeleteTweet(
-                onDeleted: () {
-                  homeTimelineBloc.add(
-                    RemoveFromHomeTimeline(tweet: bloc.tweet),
-                  );
-                },
+              TweetEvent.delete(
+                onDeleted: () => homeTimelineBloc.add(
+                  RemoveFromHomeTimeline(tweet: bloc.tweet),
+                ),
               ),
             );
             app<HarpyNavigator>().maybePop();

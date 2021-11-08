@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -64,8 +65,6 @@ void defaultOnMediaShare(String? mediaUrl) {
 
 class MediaOverlay extends StatefulWidget {
   const MediaOverlay({
-    required this.tweet,
-    required this.tweetBloc,
     required this.child,
     required this.onDownload,
     required this.onOpenExternally,
@@ -76,8 +75,6 @@ class MediaOverlay extends StatefulWidget {
     this.onShowTweet,
   });
 
-  final TweetData tweet;
-  final TweetBloc tweetBloc;
   final Widget child;
 
   /// When set to `true`, tapping the [child] will hide the overlay and disable
@@ -100,7 +97,6 @@ class MediaOverlay extends StatefulWidget {
   /// When no [onDownload], [onOpenExternally] and [onShare] callbacks are
   /// provided, the default implementations will be used.
   static void open({
-    required TweetData tweet,
     required TweetBloc tweetBloc,
     required Widget child,
     bool enableImmersiveMode = true,
@@ -110,23 +106,26 @@ class MediaOverlay extends StatefulWidget {
     VoidCallback? onOpenExternally,
     VoidCallback? onShare,
   }) {
+    final tweet = tweetBloc.tweet;
+
     final mediaUrl = tweet.downloadMediaUrl();
 
     app<HarpyNavigator>().push(
       HeroDialogRoute<void>(
         onBackgroundTap: app<HarpyNavigator>().maybePop,
-        builder: (context) => MediaOverlay(
-          tweet: tweet,
-          tweetBloc: tweetBloc,
-          enableImmersiveMode: enableImmersiveMode,
-          enableDismissible: enableDismissible,
-          overlap: overlap,
-          onDownload: onDownload ??
-              () => defaultOnMediaDownload(tweet.mediaType, mediaUrl),
-          onOpenExternally:
-              onOpenExternally ?? () => defaultOnMediaOpenExternally(mediaUrl),
-          onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),
-          child: child,
+        builder: (context) => BlocProvider.value(
+          value: tweetBloc,
+          child: MediaOverlay(
+            enableImmersiveMode: enableImmersiveMode,
+            enableDismissible: enableDismissible,
+            overlap: overlap,
+            onDownload: onDownload ??
+                () => defaultOnMediaDownload(tweet.mediaType, mediaUrl),
+            onOpenExternally: onOpenExternally ??
+                () => defaultOnMediaOpenExternally(mediaUrl),
+            onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),
+            child: child,
+          ),
         ),
       ),
     );
@@ -181,6 +180,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   @override
   void dispose() {
     harpyRouteObserver.unsubscribe(this);
+    _controller.dispose();
     super.dispose();
   }
 
@@ -237,7 +237,6 @@ class _MediaOverlayState extends State<MediaOverlay>
       ),
       padding: EdgeInsets.only(bottom: mediaQuery.padding.bottom),
       child: MediaOverlayActionRow(
-        widget.tweetBloc,
         onDownload: widget.onDownload,
         onOpenExternally: widget.onOpenExternally,
         onShare: widget.onShare,

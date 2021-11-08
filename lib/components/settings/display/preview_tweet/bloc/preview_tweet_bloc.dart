@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/tweet_data.dart';
 import 'package:harpy/components/common/tweet/bloc/tweet_bloc.dart';
 
-/// Overrides actions in the [TweetBloc] to prevent them in a case where we want
-/// to use a preview / mock tweet card.
+/// Overrides delegates in the [TweetBloc] to prevent requests when want to use
+/// a preview / mock tweet card.
 class PreviewTweetBloc extends TweetBloc {
   PreviewTweetBloc(
     TweetData tweet, {

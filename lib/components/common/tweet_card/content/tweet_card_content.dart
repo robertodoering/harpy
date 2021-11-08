@@ -54,7 +54,7 @@ class TweetCardContent extends StatelessWidget {
           requireBottomOuterPadding: !(media || quote || actionsRow || details),
           style: TweetCardElement.translation.style(config),
         ),
-      if (media) TweetCardElement.media: const TweetCardMedia(),
+      if (media) TweetCardElement.media: const TweetMedia(),
       if (quote) TweetCardElement.quote: const TweetCardQuote(),
       if (details)
         TweetCardElement.details: TweetCardDetails(

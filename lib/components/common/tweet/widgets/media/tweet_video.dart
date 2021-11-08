@@ -3,28 +3,22 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] video.
 class TweetVideo extends StatelessWidget {
-  const TweetVideo(
-    this.tweet, {
-    required this.tweetBloc,
-  });
+  const TweetVideo();
 
-  final TweetData? tweet;
-  final TweetBloc tweetBloc;
-
-  void _openGallery(HarpyVideoPlayerModel model) {
+  void _openGallery(HarpyVideoPlayerModel model, TweetBloc bloc) {
     MediaOverlay.open(
-      tweet: tweet!,
-      tweetBloc: tweetBloc,
+      tweetBloc: bloc,
       enableImmersiveMode: false,
       child: HarpyVideoPlayer.fromModel(
         model,
-        thumbnail: tweet!.video!.thumbnailUrl,
-        thumbnailAspectRatio: tweet!.video!.validAspectRatio
-            ? tweet!.video!.aspectRatioDouble
+        thumbnail: bloc.tweet.video!.thumbnailUrl,
+        thumbnailAspectRatio: bloc.tweet.video!.validAspectRatio
+            ? bloc.tweet.video!.aspectRatioDouble
             : 16 / 9,
       ),
     );
@@ -34,6 +28,8 @@ class TweetVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaPreferences = app<MediaPreferences>();
 
+    final bloc = context.watch<TweetBloc>();
+
     return GestureDetector(
       // eat all tap gestures (e.g. tapping on the overlay)
       onTap: () {},
@@ -42,14 +38,14 @@ class TweetVideo extends StatelessWidget {
         borderRadius: kDefaultBorderRadius,
         child: HarpyVideoPlayer.fromController(
           VideoPlayerController.network(
-            tweet!.video!.appropriateUrl!,
+            bloc.tweet.video!.appropriateUrl!,
             videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
           ),
-          thumbnail: tweet!.video!.thumbnailUrl,
-          onVideoPlayerTap: _openGallery,
+          thumbnail: bloc.tweet.video!.thumbnailUrl,
+          onVideoPlayerTap: (model) => _openGallery(model, bloc),
           onVideoPlayerLongPress: () => showTweetMediaBottomSheet(
             context,
-            url: tweet!.downloadMediaUrl(),
+            url: bloc.tweet.downloadMediaUrl(),
             mediaType: MediaType.video,
           ),
           autoplay: mediaPreferences.shouldAutoplayVideos,
