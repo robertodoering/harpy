@@ -45,9 +45,7 @@ class PaginatedUsersScreen extends StatelessWidget {
                   loading: (_) => [const UserListLoadingSliver()],
                   loadingMore: (_) => [const LoadMoreIndicator()],
                   noData: (_) => [
-                    SliverFillInfoMessage(
-                      primaryMessage: Text(noDataMessage),
-                    ),
+                    SliverFillInfoMessage(primaryMessage: Text(noDataMessage)),
                   ],
                   error: (_) => [
                     SliverFillLoadingError(

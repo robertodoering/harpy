@@ -115,8 +115,8 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   }
 }
 
-/// Mirrors state in the mutable [TweetBloc.tweet] which the presentation uses
-/// to update it's content.
+/// Mirrors state of the mutable [TweetBloc.tweet], which the presentation uses
+/// to update its content.
 ///
 /// Ideally the [TweetData] would be the state, however since it's mutable we
 /// wrap the necessary values in this state.
