@@ -43,7 +43,7 @@ void main() {
         expect(title, findsOneWidget);
         expect(fontCard, findsWidgets);
       },
-      // TODO: figure out why tf these tests are flakey..
+      // TODO: figure out why tf these tests are flaky..
       // "A Timer is still pending even after the widget tree was disposed."
       skip: true,
     );
