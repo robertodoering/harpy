@@ -31,6 +31,8 @@ class UserRelationshipBloc
       (event, emit) => event.handle(this, emit),
       transformer: sequential(),
     );
+
+    add(const UserRelationshipEvent.load());
   }
 
   final String _handle;

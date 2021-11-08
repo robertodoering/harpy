@@ -23,7 +23,7 @@ class UserProfileScreen extends StatelessWidget {
         BlocProvider(
           create: (_) => UserRelationshipBloc(
             handle: handle ?? initialUser!.handle,
-          )..add(const UserRelationshipEvent.load()),
+          ),
         ),
         BlocProvider(
           create: (_) => UserProfileCubit(
