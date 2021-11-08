@@ -26,8 +26,10 @@ class UserProfileAppBar extends StatelessWidget {
       elevation: 0,
       pinned: true,
       backgroundColor: Colors.transparent,
-      expandedHeight: expandedHeight,
-      flexibleSpace: FlexibleSpaceBar(background: UserBanner(user: user)),
+      expandedHeight: user.hasBanner ? expandedHeight : 0,
+      flexibleSpace: user.hasBanner
+          ? FlexibleSpaceBar(background: UserBanner(user: user))
+          : null,
       leading: const _BackButton(),
       actions: const [_FilterButton()],
     );

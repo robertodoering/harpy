@@ -1,0 +1,4 @@
+Version 0.7.3
+2021-11-xx
+
+· Fixed drawing error image when user has no banner
