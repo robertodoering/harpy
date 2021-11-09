@@ -89,15 +89,3 @@ class FindTrendsLocationsState with _$FindTrendsLocationsState {
   const factory FindTrendsLocationsState.serviceDisabled() = _ServiceDisabled;
   const factory FindTrendsLocationsState.permissionDenied() = _PermissionDenied;
 }
-
-extension FindTrendsLocationsExtension on FindTrendsLocationsState {
-  bool get isLoading => this is _Loading;
-  bool get hasLocations => this is _Data;
-  bool get hasServiceDisabled => this is _ServiceDisabled;
-  bool get hasPermissionsDenied => this is _PermissionDenied;
-
-  BuiltList<TrendsLocationData> get locations => maybeWhen(
-        data: (locations) => locations,
-        orElse: () => BuiltList(),
-      );
-}

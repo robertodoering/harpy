@@ -16,54 +16,52 @@ class FoundLocationsContent extends StatelessWidget {
     final bloc = context.watch<FindTrendsLocationsBloc>();
     final state = bloc.state;
 
-    if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (state.hasLocations) {
-      final locations = state.locations.toList();
+    return state.maybeWhen(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      data: (locations) {
+        final allLocations = locations.toList();
 
-      if (!locations.contains(TrendsLocationData.worldwide)) {
-        locations.insert(0, TrendsLocationData.worldwide);
-      }
+        if (!allLocations.contains(TrendsLocationData.worldwide)) {
+          allLocations.insert(0, TrendsLocationData.worldwide);
+        }
 
-      return Column(
-        children: [
-          for (final location in locations)
-            ListTile(
-              leading: const Icon(CupertinoIcons.location),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-              title: Text(location.name),
-              subtitle: location.isTown && location.hasCountry
-                  ? Text(location.country)
-                  : null,
-              onTap: () {
-                Navigator.of(context).pop();
-                HapticFeedback.lightImpact();
-                trendsCubit.updateLocation(location: location);
-              },
-            ),
-        ],
-      );
-    } else if (state.hasServiceDisabled) {
-      return Padding(
+        return Column(
+          children: [
+            for (final location in allLocations)
+              ListTile(
+                leading: const Icon(CupertinoIcons.location),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                title: Text(location.name),
+                subtitle: location.isTown && location.hasCountry
+                    ? Text(location.country)
+                    : null,
+                onTap: () {
+                  Navigator.of(context).pop();
+                  HapticFeedback.lightImpact();
+                  trendsCubit.updateLocation(location: location);
+                },
+              ),
+          ],
+        );
+      },
+      serviceDisabled: () => Padding(
         padding: config.edgeInsets,
         child: const Center(
           child: Text('location service is unavailable'),
         ),
-      );
-    } else if (state.hasPermissionsDenied) {
-      return Padding(
+      ),
+      permissionDenied: () => Padding(
         padding: config.edgeInsets,
         child: const Center(
           child: Text('location permissions have been denied'),
         ),
-      );
-    } else {
-      return Padding(
+      ),
+      orElse: () => Padding(
         padding: config.edgeInsets,
         child: const Center(
           child: Text('no locations found'),
         ),
-      );
-    }
+      ),
+    );
   }
 }
