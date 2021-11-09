@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class SearchScreenContent extends StatelessWidget {
   const SearchScreenContent({
-    this.beginSlivers = const <Widget>[],
+    this.beginSlivers = const [],
   });
 
   final List<Widget> beginSlivers;

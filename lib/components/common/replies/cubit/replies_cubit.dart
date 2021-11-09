@@ -112,6 +112,8 @@ class RepliesCubit extends Cubit<RepliesState> with HarpyLogger {
 
 @freezed
 class RepliesState with _$RepliesState {
+  const factory RepliesState.loading() = _Loading;
+
   const factory RepliesState.data({
     required BuiltList<TweetData> replies,
 
@@ -121,10 +123,7 @@ class RepliesState with _$RepliesState {
   }) = _Data;
 
   const factory RepliesState.noData({final TweetData? parent}) = _NoData;
-
   const factory RepliesState.error({final TweetData? parent}) = _Error;
-
-  const factory RepliesState.loading() = _Loading;
 }
 
 extension RepliesStateExtension on RepliesState {

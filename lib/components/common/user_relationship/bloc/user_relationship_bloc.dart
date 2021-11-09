@@ -40,6 +40,9 @@ class UserRelationshipBloc
 
 @freezed
 class UserRelationshipState with _$UserRelationshipState {
+  const factory UserRelationshipState.initial() = _Initial;
+  const factory UserRelationshipState.loading() = _Loading;
+
   const factory UserRelationshipState.data({
     /// The 'connections' of this relationship for the authenticated user.
     ///
@@ -47,8 +50,7 @@ class UserRelationshipState with _$UserRelationshipState {
     /// `blocking`, `muting`.
     required BuiltSet<String> connections,
   }) = _Data;
-  const factory UserRelationshipState.initial() = _Initial;
-  const factory UserRelationshipState.loading() = _Loading;
+
   const factory UserRelationshipState.error() = _Error;
 }
 

@@ -128,6 +128,7 @@ class TweetSearchCubit extends Cubit<NewTweetSearchState> with HarpyLogger {
 @freezed
 class NewTweetSearchState with _$NewTweetSearchState {
   const factory NewTweetSearchState.initial() = _Initial;
+  const factory NewTweetSearchState.loading({required String query}) = _Loading;
 
   const factory NewTweetSearchState.data({
     required BuiltList<TweetData> tweets,
@@ -143,10 +144,6 @@ class NewTweetSearchState with _$NewTweetSearchState {
     required String query,
     TweetSearchFilter? filter,
   }) = _NoData;
-
-  const factory NewTweetSearchState.loading({
-    required String query,
-  }) = _Loading;
 
   const factory NewTweetSearchState.error({
     required String query,
