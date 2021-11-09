@@ -19,7 +19,7 @@ class FoundLocationsContent extends StatelessWidget {
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state.hasLocations) {
-      final locations = state.locations;
+      final locations = state.locations.toList();
 
       if (!locations.contains(TrendsLocationData.worldwide)) {
         locations.insert(0, TrendsLocationData.worldwide);
