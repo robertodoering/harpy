@@ -154,12 +154,12 @@ class HarpyNavigator {
   }
 
   void pushSearchScreen({
-    required TrendsBloc trendsBloc,
+    required TrendsCubit trendsCubit,
   }) {
     pushNamed(
       SearchScreen.route,
       arguments: <String, dynamic>{
-        'trendsBloc': trendsBloc,
+        'trendsCubit': trendsCubit,
       },
     );
   }
@@ -329,7 +329,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case SearchScreen.route:
       screen = SearchScreen(
-        trendsBloc: arguments['trendsBloc'],
+        trendsCubit: arguments['trendsCubit'],
       );
       break;
     case TweetSearchScreen.route:

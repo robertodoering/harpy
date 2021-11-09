@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class TrendsList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(int index, List<Trend> trends) {
+  Widget _itemBuilder(int index, BuiltList<Trend> trends) {
     if (index.isEven) {
       return _buildTrendCard(trends[index ~/ 2]);
     } else {
@@ -46,17 +47,11 @@ class TrendsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
-    final bloc = context.watch<TrendsBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<TrendsCubit>();
+    final state = cubit.state;
 
-    if (state.isLoading) {
-      return const TrendsListLoadingSliver();
-    } else if (state.loadingFailed) {
-      return const SliverBoxInfoMessage(
-        secondaryMessage: Text('error requesting trends'),
-      );
-    } else if (state.hasTrends) {
-      return SliverPadding(
+    return state.map(
+      data: (value) => SliverPadding(
         padding: config.edgeInsetsOnly(
           left: true,
           right: true,
@@ -64,15 +59,18 @@ class TrendsList extends StatelessWidget {
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => _itemBuilder(index, state.trends),
-            childCount: state.trends.length * 2 - 1,
+            (_, index) => _itemBuilder(index, value.trends),
+            childCount: value.trends.length * 2 - 1,
           ),
         ),
-      );
-    } else {
-      return const SliverBoxInfoMessage(
+      ),
+      loading: (_) => const TrendsListLoadingSliver(),
+      error: (_) => const SliverBoxInfoMessage(
+        secondaryMessage: Text('error requesting trends'),
+      ),
+      initial: (_) => const SliverBoxInfoMessage(
         secondaryMessage: Text('no trends exist'),
-      );
-    }
+      ),
+    );
   }
 }

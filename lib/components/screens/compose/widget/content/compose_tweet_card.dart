@@ -88,11 +88,11 @@ class _ComposeTweetCardState extends State<ComposeTweetCard>
                   children: [
                     const _TopRow(),
                     ComposeTextField(
-                      controller: _controller,
+                      controller: _controller!,
                       focusNode: _focusNode,
                     ),
-                    ComposeTweetMentions(controller: _controller),
-                    ComposeTweetTrends(controller: _controller),
+                    ComposeTweetMentions(controller: _controller!),
+                    ComposeTweetTrends(controller: _controller!),
                     _buildMedia(bloc.state),
                   ],
                 ),

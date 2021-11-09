@@ -34,9 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
             create: (_) =>
                 TrendsLocationsBloc()..add(const LoadTrendsLocations()),
           ),
-          BlocProvider(
-            create: (_) => TrendsBloc()..add(const FindTrendsEvent()),
-          )
+          BlocProvider(create: (_) => TrendsCubit()..findTrends())
         ],
         child: Builder(
           builder: (context) => HomeListsProvider(

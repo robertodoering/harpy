@@ -6,7 +6,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Used to select the location that is used by the [TrendsBloc] to show
+/// Used to select the location that is used by the [TrendsCubit] to show
 /// local trends from the list of predefined locations that twitter has
 /// trends for.
 ///
@@ -47,8 +47,8 @@ class SelectLocationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trendsBloc = context.watch<TrendsBloc>();
-    final trendsState = trendsBloc.state;
+    final trendsCubit = context.watch<TrendsCubit>();
+    final trendsState = trendsCubit.state;
 
     final locationBloc = context.watch<TrendsLocationsBloc>();
     final locationState = locationBloc.state;
@@ -73,7 +73,7 @@ class SelectLocationListTile extends StatelessWidget {
       onChanged: (location) {
         if (location != null) {
           HapticFeedback.lightImpact();
-          trendsBloc.add(UpdateTrendsLocation(location: location));
+          trendsCubit.updateLocation(location: location);
         }
       },
     );

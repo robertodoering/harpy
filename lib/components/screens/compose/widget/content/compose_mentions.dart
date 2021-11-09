@@ -12,7 +12,7 @@ class ComposeTweetMentions extends StatelessWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class MentionSuggestions extends StatelessWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   Widget _buildHeader(Config config, ThemeData theme, String text) {
     return Padding(
@@ -65,9 +65,7 @@ class MentionSuggestions extends StatelessWidget {
           color: theme.colorScheme.secondary,
         ),
       ),
-      onTap: () => controller!.replaceSelection(
-        '@${user.handle} ',
-      ),
+      onTap: () => controller.replaceSelection('@${user.handle} '),
     );
   }
 

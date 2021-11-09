@@ -249,7 +249,7 @@ class _Entries extends StatelessWidget {
         leading: const Icon(CupertinoIcons.search),
         title: const Text('search'),
         onTap: () => app<HarpyNavigator>().pushSearchScreen(
-          trendsBloc: context.read<TrendsBloc>(),
+          trendsCubit: context.read<TrendsCubit>(),
         ),
       ),
       defaultVerticalSpacer,

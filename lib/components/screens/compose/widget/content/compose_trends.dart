@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
@@ -11,20 +10,20 @@ class ComposeTweetTrends extends StatelessWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TrendsBloc>(
-      create: (context) => TrendsBloc(),
+    return BlocProvider<TrendsCubit>(
+      create: (context) => TrendsCubit(),
       child: Builder(
         builder: (context) {
-          final bloc = context.watch<TrendsBloc>();
-          final state = bloc.state;
+          final cubit = context.watch<TrendsCubit>();
+          final state = cubit.state;
 
           Widget? child;
 
-          if (state.hasTrends) {
+          if (state.hasData) {
             child = TrendSuggestions(controller: controller);
           }
 
@@ -32,8 +31,8 @@ class ComposeTweetTrends extends StatelessWidget {
             controller: controller,
             selectionRegExp: hashtagStartRegex,
             onSearch: (hashtag) {
-              if (state is TrendsInitial) {
-                bloc.add(const FindTrendsEvent());
+              if (state.isInitial) {
+                cubit.findTrends();
               }
             },
             child: child,
@@ -49,15 +48,15 @@ class TrendSuggestions extends StatelessWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final bloc = context.watch<TrendsBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<TrendsCubit>();
+    final state = cubit.state;
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -77,7 +76,7 @@ class TrendSuggestions extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (Trend trend in state.hashtags)
+            for (final trend in state.hashtags)
               HarpyButton.flat(
                 padding: EdgeInsets.symmetric(
                   vertical: config.smallPaddingValue / 2,
@@ -89,7 +88,7 @@ class TrendSuggestions extends StatelessWidget {
                     color: theme.colorScheme.secondary,
                   ),
                 ),
-                onTap: () => controller!.replaceSelection('${trend.name} '),
+                onTap: () => controller.replaceSelection('${trend.name} '),
               ),
           ],
         )

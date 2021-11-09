@@ -11,7 +11,7 @@ class FoundLocationsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-    final trendsBloc = context.watch<TrendsBloc>();
+    final trendsCubit = context.watch<TrendsCubit>();
 
     final bloc = context.watch<FindTrendsLocationsBloc>();
     final state = bloc.state;
@@ -38,7 +38,7 @@ class FoundLocationsContent extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 HapticFeedback.lightImpact();
-                trendsBloc.add(UpdateTrendsLocation(location: location));
+                trendsCubit.updateLocation(location: location);
               },
             ),
         ],

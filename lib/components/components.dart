@@ -33,7 +33,7 @@ export 'common/timeline/mentions_timeline/bloc/mentions_timeline_bloc.dart';
 export 'common/timeline/mentions_timeline/widgets/mentions_timeline.dart';
 export 'common/timeline/user_timeline/bloc/user_timeline_bloc.dart';
 export 'common/timeline/user_timeline/widgets/user_timeline.dart';
-export 'common/trends/bloc/trends_bloc.dart';
+export 'common/trends/cubit/trends_cubit.dart';
 export 'common/trends/widgets/trends_card.dart';
 export 'common/trends/widgets/trends_list.dart';
 export 'common/trends_locations/bloc/trends_locations_bloc.dart';
