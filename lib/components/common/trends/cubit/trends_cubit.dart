@@ -64,6 +64,11 @@ class TrendsCubit extends Cubit<TrendsState> with HarpyLogger {
 class TrendsState with _$TrendsState {
   const factory TrendsState.initial() = _Initial;
 
+  const factory TrendsState.loading({
+    /// The location used to request trends with.
+    required TrendsLocationData location,
+  }) = _Loading;
+
   const factory TrendsState.data({
     required int woeid,
     required BuiltList<Trend> trends,
@@ -72,11 +77,6 @@ class TrendsState with _$TrendsState {
     /// The location used to request trends with.
     required TrendsLocationData location,
   }) = _Data;
-
-  const factory TrendsState.loading({
-    /// The location used to request trends with.
-    required TrendsLocationData location,
-  }) = _Loading;
 
   const factory TrendsState.error({
     /// The location used to request trends with.

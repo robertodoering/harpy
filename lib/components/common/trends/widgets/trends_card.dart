@@ -65,7 +65,7 @@ void _showTrendsConfiguration(BuildContext context) {
       ),
       MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: context.read<TrendsLocationsBloc>()),
+          BlocProvider.value(value: context.read<TrendsLocationsCubit>()),
           BlocProvider.value(value: cubit),
         ],
         child: const SelectLocationListTile(),

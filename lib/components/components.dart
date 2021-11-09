@@ -36,7 +36,7 @@ export 'common/timeline/user_timeline/widgets/user_timeline.dart';
 export 'common/trends/cubit/trends_cubit.dart';
 export 'common/trends/widgets/trends_card.dart';
 export 'common/trends/widgets/trends_list.dart';
-export 'common/trends_locations/bloc/trends_locations_bloc.dart';
+export 'common/trends_locations/cubit/trends_locations_cubit.dart';
 export 'common/trends_locations/data/trends_location_data.dart';
 export 'common/trends_locations/widgets/select_location_list_tile.dart';
 export 'common/tweet/bloc/tweet_bloc.dart';

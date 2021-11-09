@@ -30,10 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         providers: [
           ChangeNotifierProvider(create: (_) => HomeTabModel()),
           ChangeNotifierProvider(create: (_) => TimelineFilterModel.home()),
-          BlocProvider(
-            create: (_) =>
-                TrendsLocationsBloc()..add(const LoadTrendsLocations()),
-          ),
+          BlocProvider(create: (_) => TrendsLocationsCubit()..load()),
           BlocProvider(create: (_) => TrendsCubit()..findTrends())
         ],
         child: Builder(
