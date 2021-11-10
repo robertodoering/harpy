@@ -20,6 +20,9 @@ class TweetCardHandle extends StatelessWidget {
 
     final tweet = context.select<TweetBloc, TweetData>((bloc) => bloc.tweet);
 
+    final configCubit = context.watch<ConfigCubit>();
+    final config = configCubit.state;
+
     return GestureDetector(
       onTap: () => context.read<TweetBloc>().onUserTap(context),
       child: Text.rich(
@@ -40,10 +43,15 @@ class TweetCardHandle extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.baseline,
               baseline: TextBaseline.alphabetic,
-              child: _CreatedAtTime(
-                createdAt: tweet.createdAt,
-                sizeDelta: style.sizeDelta,
-              ),
+              child:  config.showAbsoluteTime ?
+                _CreatedAtAbsoluteTime(
+                  createdAt: tweet.createdAt,
+                  sizeDelta: style.sizeDelta,
+                ) : 
+                _CreatedAtTime(
+                  createdAt: tweet.createdAt,
+                  sizeDelta: style.sizeDelta,
+                ),
             ),
           ],
         ),
@@ -105,6 +113,30 @@ class _CreatedAtTimeState extends State<_CreatedAtTime> {
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
           .apply(fontSizeDelta: widget.sizeDelta),
+      overflow: TextOverflow.fade,
+      maxLines: 1,
+    );
+  }
+}
+
+class _CreatedAtAbsoluteTime extends StatelessWidget {
+
+  const _CreatedAtAbsoluteTime({
+    required this.createdAt,
+    this.sizeDelta = 0,
+  });
+
+  final DateTime createdAt;
+  final double sizeDelta;
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Text(
+      getAbsoluteTime(context, createdAt),
+      style: theme.textTheme.bodyText1!
+          .copyWith(height: 1)
+          .apply(fontSizeDelta: sizeDelta),
       overflow: TextOverflow.fade,
       maxLines: 1,
     );

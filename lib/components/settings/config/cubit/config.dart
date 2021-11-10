@@ -41,6 +41,7 @@ class Config extends Equatable {
         displayFont,
         bodyFont,
         hideHomeTabBar,
+        showAbsoluteTime
       ];
 
   Config copyWith({

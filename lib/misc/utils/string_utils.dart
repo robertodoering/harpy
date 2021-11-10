@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 /// Pretty prints a duration difference as long as the difference is smaller
@@ -112,6 +113,15 @@ String tweetTimeDifference(BuildContext context, DateTime createdAt) {
     locale: Localizations.localeOf(context).languageCode,
   );
 }
+
+//create a function that returns the absulute text of a datetime
+String getAbsoluteTime(BuildContext context, DateTime createdAt) {
+  return DateFormat.yMd(Localizations.localeOf(context).languageCode)
+    .add_Hm()
+    .format(createdAt.toLocal())
+    .toLowerCase();
+}
+// 7/29/2021 4:20 PM
 
 /// Returns the file name from a string url.
 ///
