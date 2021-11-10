@@ -114,14 +114,13 @@ String tweetTimeDifference(BuildContext context, DateTime createdAt) {
   );
 }
 
-//create a function that returns the absulute text of a datetime
+/// Returns a formatted String displaying the absolute time.
 String getAbsoluteTime(BuildContext context, DateTime createdAt) {
   return DateFormat.yMd(Localizations.localeOf(context).languageCode)
     .add_Hm()
     .format(createdAt.toLocal())
     .toLowerCase();
 }
-// 7/29/2021 4:20 PM
 
 /// Returns the file name from a string url.
 ///
