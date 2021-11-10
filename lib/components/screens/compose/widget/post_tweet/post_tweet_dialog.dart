@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 
-/// A dialog that uses the [PostTweetBloc] to post a tweet.
+/// A dialog that uses the [PostTweetCubit] to post a tweet.
 ///
 /// While posting the tweet is in progress, the dialog is not dismissible.
 class PostTweetDialog extends StatelessWidget {
@@ -16,16 +13,15 @@ class PostTweetDialog extends StatelessWidget {
   });
 
   final ComposeBloc composeBloc;
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PostTweetBloc>(
-      create: (_) => PostTweetBloc(
-        controller!.text,
+    return BlocProvider(
+      create: (_) => PostTweetCubit(
         composeBloc: composeBloc,
-      ),
-      child: PostTweetDialogContent(
+      )..post(controller.text),
+      child: _Content(
         composeBloc: composeBloc,
         controller: controller,
       ),
@@ -33,8 +29,8 @@ class PostTweetDialog extends StatelessWidget {
   }
 }
 
-class PostTweetDialogContent extends StatelessWidget {
-  const PostTweetDialogContent({
+class _Content extends StatelessWidget {
+  const _Content({
     required this.composeBloc,
     required this.controller,
   });
@@ -42,7 +38,44 @@ class PostTweetDialogContent extends StatelessWidget {
   final ComposeBloc composeBloc;
   final ComposeTextController? controller;
 
-  Widget _buildStateMessage(ThemeData theme, PostTweetState state) {
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.watch<PostTweetCubit>();
+    final state = cubit.state;
+
+    return _WillPopDialog(
+      child: HarpyDialog(
+        title: const Text('tweeting'),
+        content: AnimatedSize(
+          duration: kShortAnimationDuration,
+          curve: Curves.easeOutCubic,
+          child: Column(
+            children: [
+              if (state.message != null) const _StateMessage(),
+              if (state.inProgress) const _ProgressIndicator(),
+            ],
+          ),
+        ),
+        actions: [
+          DialogAction<void>(
+            text: 'ok',
+            onTap: state.inProgress ? null : Navigator.of(context).pop,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _StateMessage extends StatelessWidget {
+  const _StateMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cubit = context.watch<PostTweetCubit>();
+    final state = cubit.state;
+
     return AnimatedSwitcher(
       duration: kShortAnimationDuration ~/ 2,
       child: Column(
@@ -51,7 +84,7 @@ class PostTweetDialogContent extends StatelessWidget {
             state.message!,
             key: Key(state.message!),
           ),
-          if (state.hasAdditionalInfo) ...[
+          if (state.additionalInfo != null) ...[
             defaultSmallVerticalSpacer,
             Text(
               state.additionalInfo!,
@@ -62,8 +95,15 @@ class PostTweetDialogContent extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildLoading(Config config, PostTweetBloc bloc) {
+class _ProgressIndicator extends StatelessWidget {
+  const _ProgressIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
     return Column(
       children: [
         SizedBox(height: config.paddingValue * 2),
@@ -71,40 +111,10 @@ class PostTweetDialogContent extends StatelessWidget {
       ],
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final config = context.watch<ConfigCubit>().state;
-    final postTweetBloc = context.watch<PostTweetBloc>();
-    final state = postTweetBloc.state;
-
-    return WillPopPostTweetDialog(
-      child: HarpyDialog(
-        title: const Text('tweeting'),
-        content: AnimatedSize(
-          duration: kShortAnimationDuration,
-          curve: Curves.easeOutCubic,
-          child: Column(
-            children: [
-              if (state.hasMessage) _buildStateMessage(theme, state),
-              if (state.inProgress) _buildLoading(config, postTweetBloc),
-            ],
-          ),
-        ),
-        actions: [
-          DialogAction<void>(
-            text: 'ok',
-            onTap: state.inProgress ? null : app<HarpyNavigator>().maybePop,
-          )
-        ],
-      ),
-    );
-  }
 }
 
-class WillPopPostTweetDialog extends StatelessWidget {
-  const WillPopPostTweetDialog({
+class _WillPopDialog extends StatelessWidget {
+  const _WillPopDialog({
     required this.child,
   });
 
@@ -112,11 +122,7 @@ class WillPopPostTweetDialog extends StatelessWidget {
 
   Future<bool> _onWillPop(BuildContext context, PostTweetState state) async {
     if (!state.inProgress) {
-      if (state is TweetSuccessfullyPosted) {
-        Navigator.of(context).pop<TweetData>(state.tweet);
-      } else {
-        Navigator.of(context).pop<void>();
-      }
+      Navigator.of(context).pop(state.tweet);
     }
 
     return false;
@@ -124,8 +130,8 @@ class WillPopPostTweetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postTweetBloc = context.watch<PostTweetBloc>();
-    final state = postTweetBloc.state;
+    final cubit = context.watch<PostTweetCubit>();
+    final state = cubit.state;
 
     return WillPopScope(
       onWillPop: () => _onWillPop(context, state),

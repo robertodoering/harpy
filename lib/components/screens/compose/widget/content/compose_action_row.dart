@@ -52,7 +52,7 @@ class PostTweetButton extends StatefulWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   _PostTweetButtonState createState() => _PostTweetButtonState();
@@ -63,14 +63,14 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   void initState() {
     super.initState();
 
-    widget.controller!.addListener(_listener);
+    widget.controller.addListener(_listener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    widget.controller!.removeListener(_listener);
+    widget.controller.removeListener(_listener);
   }
 
   void _listener() {
@@ -110,7 +110,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     final bloc = context.watch<ComposeBloc>();
 
     final canTweet =
-        bloc.state.hasMedia || widget.controller!.text.trim().isNotEmpty;
+        bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
       padding: config.edgeInsets,

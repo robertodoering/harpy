@@ -77,7 +77,7 @@ export 'screens/changelog/changelog_screen.dart';
 export 'screens/changelog/widgets/changelog_widget.dart';
 export 'screens/compose/bloc/compose/compose_bloc.dart';
 export 'screens/compose/bloc/mention_suggestions/mention_suggestions_bloc.dart';
-export 'screens/compose/bloc/post_tweet/post_tweet_bloc.dart';
+export 'screens/compose/bloc/post_tweet/post_tweet_cubit.dart';
 export 'screens/compose/compose_screen.dart';
 export 'screens/compose/widget/compose_text_controller.dart';
 export 'screens/compose/widget/content/compose_action_row.dart';
