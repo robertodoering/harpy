@@ -24,7 +24,7 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.photo),
           iconSize: 20,
-          onTap: () => bloc.add(const PickTweetMediaEvent()),
+          onTap: () => bloc.add(const ComposeEvent.pickMedia()),
         ),
         defaultSmallHorizontalSpacer,
         HarpyButton.flat(

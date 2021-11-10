@@ -27,7 +27,9 @@ class ComposeTextField extends StatelessWidget {
         style: theme.textTheme.bodyText1,
         maxLines: null,
         decoration: InputDecoration(
-          hintText: bloc.hintText,
+          hintText: bloc.inReplyToStatus != null
+              ? 'tweet your reply'
+              : "what's happening?",
           isDense: true,
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
