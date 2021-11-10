@@ -127,6 +127,7 @@ class _CreatedAtAbsoluteTime extends StatelessWidget {
 
   final DateTime createdAt;
   final double sizeDelta;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
