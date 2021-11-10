@@ -91,8 +91,6 @@ class _ComposeTweetCardState extends State<ComposeTweetCard>
                       controller: _controller!,
                       focusNode: _focusNode,
                     ),
-                    ComposeTweetMentions(controller: _controller!),
-                    ComposeTweetTrends(controller: _controller!),
                     _buildMedia(bloc.state),
                   ],
                 ),
