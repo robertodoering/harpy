@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
@@ -16,27 +17,29 @@ class TwitterLists extends StatelessWidget {
   final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(
-    int index,
-    List<TwitterListData> lists,
     BuildContext context,
+    int index,
+    BuiltList<TwitterListData> lists,
   ) {
     if (index.isEven) {
-      final list = lists[index ~/ 2];
+      final listData = lists[index ~/ 2];
 
       return TwitterListCard(
-        list,
-        key: Key(list.idStr),
+        listData,
+        key: Key(listData.idStr),
         onSelected: onListSelected != null
-            ? () => onListSelected!(list)
-            : () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
-        onLongPress: () => _showListActionBottomSheet(context, list),
+            ? () => onListSelected!(listData)
+            : () => app<HarpyNavigator>().pushListTimelineScreen(
+                  list: listData,
+                ),
+        onLongPress: () => _showListActionBottomSheet(context, listData),
       );
     } else {
       return defaultVerticalSpacer;
     }
   }
 
-  int? _indexCallback(Key key, List<TwitterListData> lists) {
+  int? _indexCallback(Key key, BuiltList<TwitterListData> lists) {
     if (key is ValueKey<String>) {
       final index = lists.indexWhere(
         (list) => list.idStr == key.value,
@@ -50,41 +53,40 @@ class TwitterLists extends StatelessWidget {
     return null;
   }
 
-  List<Widget> _buildOwnerships(
-    BuildContext context,
-    Config config,
-    ListsShowBloc bloc,
-    ListsShowState state,
-  ) {
+  List<Widget> _buildLists({
+    required Config config,
+    required String title,
+    required BuiltList<TwitterListData> listData,
+    required bool hasMore,
+    required bool loadingMore,
+    required VoidCallback onLoadMore,
+  }) {
     return [
       SliverPadding(
         padding: config.edgeInsetsSymmetric(horizontal: true),
-        sliver: const SliverBoxInfoMessage(
-          primaryMessage: Text('owned'),
-        ),
+        sliver: SliverBoxInfoMessage(primaryMessage: Text(title)),
       ),
       SliverPadding(
         padding: config.edgeInsets,
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) => _itemBuilder(index, state.ownerships, context),
-            findChildIndexCallback: (key) =>
-                _indexCallback(key, state.ownerships),
-            childCount: state.ownerships.length * 2 - 1,
+            (context, index) => _itemBuilder(context, index, listData),
+            findChildIndexCallback: (key) => _indexCallback(key, listData),
+            childCount: listData.length * 2 - 1,
           ),
         ),
       ),
-      if (state.hasMoreOwnerships || state.loadingMoreOwnerships)
+      if (hasMore || loadingMore)
         SliverPadding(
           padding: config.edgeInsetsOnly(bottom: true),
           sliver: SliverToBoxAdapter(
             child: Center(
               child: AnimatedSwitcher(
                 duration: kShortAnimationDuration,
-                child: state.hasMoreOwnerships
+                child: hasMore
                     ? HarpyButton.flat(
                         text: const Text('load more'),
-                        onTap: () => bloc.add(const LoadMoreOwnerships()),
+                        onTap: onLoadMore,
                       )
                     : const CircularProgressIndicator(),
               ),
@@ -94,63 +96,25 @@ class TwitterLists extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildSubscriptions(
-    BuildContext context,
-    Config config,
-    ListsShowBloc bloc,
-    ListsShowState state,
-  ) {
-    return [
-      SliverPadding(
-        padding: config.edgeInsetsSymmetric(horizontal: true),
-        sliver: const SliverBoxInfoMessage(
-          primaryMessage: Text('subscribed'),
-        ),
-      ),
-      SliverPadding(
-        padding: config.edgeInsets,
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (_, index) => _itemBuilder(index, state.subscriptions, context),
-            findChildIndexCallback: (key) =>
-                _indexCallback(key, state.subscriptions),
-            childCount: state.subscriptions.length * 2 - 1,
-          ),
-        ),
-      ),
-      if (state.hasMoreSubscriptions || state.loadingMoreSubscriptions)
-        SliverPadding(
-          padding: config.edgeInsetsOnly(bottom: true),
-          sliver: SliverToBoxAdapter(
-            child: Center(
-              child: AnimatedSwitcher(
-                duration: kShortAnimationDuration,
-                child: state.hasMoreSubscriptions
-                    ? HarpyButton.flat(
-                        text: const Text('load more'),
-                        onTap: () => bloc.add(const LoadMoreSubscriptions()),
-                      )
-                    : const CircularProgressIndicator(),
-              ),
-            ),
-          ),
-        ),
-    ];
+  List<Widget> _buildOwnerships(Config config, ListsShowBloc bloc) {
+    return _buildLists(
+      config: config,
+      title: 'owned',
+      listData: bloc.state.ownerships,
+      hasMore: bloc.state.hasMoreOwnerships,
+      loadingMore: bloc.state.loadingMoreOwnerships,
+      onLoadMore: () => bloc.add(const ListsShowEvent.loadMoreOwnerships()),
+    );
   }
 
-  void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
-    showHarpyBottomSheet<void>(
-      context,
-      children: [
-        HarpyListTile(
-          leading: const Icon(CupertinoIcons.person_3),
-          title: const Text('show members'),
-          onTap: () {
-            Navigator.of(context).pop();
-            app<HarpyNavigator>().pushListMembersScreen(list: list);
-          },
-        )
-      ],
+  List<Widget> _buildSubscriptions(Config config, ListsShowBloc bloc) {
+    return _buildLists(
+      config: config,
+      title: 'subscribed',
+      listData: bloc.state.subscriptions,
+      hasMore: bloc.state.hasMoreSubscriptions,
+      loadingMore: bloc.state.loadingMoreSubscriptions,
+      onLoadMore: () => bloc.add(const ListsShowEvent.loadMoreSubscriptions()),
     );
   }
 
@@ -165,36 +129,52 @@ class TwitterLists extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         const HarpySliverAppBar(title: 'lists', floating: true),
-        if (state.isLoading)
-          const SliverFillLoadingIndicator()
-        else if (state.hasFailed)
-          SliverFillLoadingError(
-            message: const Text('error requesting lists'),
-            onRetry: () => bloc.add(const ShowLists()),
-          )
-        else if (state.hasResult) ...[
-          if (state.hasOwnerships)
-            ..._buildOwnerships(
-              context,
-              config,
-              bloc,
-              state,
+        ...?state.mapOrNull(
+          loading: (_) => [const SliverFillLoadingIndicator()],
+          error: (_) => [
+            SliverFillLoadingError(
+              message: const Text('error requesting lists'),
+              onRetry: () => bloc.add(const ListsShowEvent.show()),
             ),
-          if (state.hasSubscriptions)
-            ..._buildSubscriptions(
-              context,
-              config,
-              bloc,
-              state,
+          ],
+          data: (value) => [
+            if (value.ownerships.isNotEmpty)
+              ..._buildOwnerships(
+                config,
+                bloc,
+              ),
+            if (value.subscriptions.isNotEmpty)
+              ..._buildSubscriptions(
+                config,
+                bloc,
+              ),
+          ],
+          noData: (_) => [
+            const SliverFillInfoMessage(
+              secondaryMessage: Text('no lists exist'),
             ),
-        ] else
-          const SliverFillInfoMessage(
-            secondaryMessage: Text('no lists exist'),
-          ),
+          ],
+        ),
         SliverToBoxAdapter(
           child: SizedBox(height: mediaQuery.padding.bottom),
         ),
       ],
     );
   }
+}
+
+void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
+  showHarpyBottomSheet<void>(
+    context,
+    children: [
+      HarpyListTile(
+        leading: const Icon(CupertinoIcons.person_3),
+        title: const Text('show members'),
+        onTap: () {
+          Navigator.of(context).pop();
+          app<HarpyNavigator>().pushListMembersScreen(list: list);
+        },
+      )
+    ],
+  );
 }

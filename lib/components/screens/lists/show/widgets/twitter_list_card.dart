@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Builds a card that represents a twitter list.
 class TwitterListCard extends StatelessWidget {
   const TwitterListCard(
     this.list, {
