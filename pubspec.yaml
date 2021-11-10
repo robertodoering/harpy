@@ -62,6 +62,7 @@ dependencies:
   url_launcher: ^6.0.10
   video_player: ^2.1.15
   visibility_detector: ^0.2.0
+  wakelock: ^0.5.6
   waterfall_flow: ^3.0.1
   webview_flutter: ^2.0.4
 

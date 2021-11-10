@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 /// Actions that a user can take on a video.
 enum HarpyVideoPlayerAction {
@@ -60,6 +61,12 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   bool _fullscreen = false;
   bool get fullscreen => _fullscreen;
 
+  @override
+  void dispose() {
+    super.dispose();
+    Wakelock.disable();
+  }
+
   /// Initializes the [controller].
   Future<void> initialize() async {
     _initializing = true;
@@ -82,6 +89,7 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
   }) {
     if (finished || !hasListeners) {
       // finished or if no listeners exist (already disposed)
+      Wakelock.disable();
       return;
     }
 
@@ -90,11 +98,13 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
       if (notify) {
         _onAction(HarpyVideoPlayerAction.pause);
       }
+      Wakelock.disable();
     } else {
       controller!.play();
       if (notify) {
         _onAction(HarpyVideoPlayerAction.play);
       }
+      Wakelock.enable();
     }
 
     notifyListeners();
