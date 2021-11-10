@@ -34,6 +34,11 @@ class ConfigCubit extends Cubit<Config> {
       kDefaultBodyFontFamily,
     );
 
+    final showAbsoluteTime = app<HarpyPreferences>().getBool(
+      'showAbsoluteTime',
+      false,
+    );
+
     emit(
       state.copyWith(
         compactMode: compactMode,
@@ -42,6 +47,7 @@ class ConfigCubit extends Cubit<Config> {
         displayFont: displayFontFamily,
         bodyFont: bodyFontFamily,
         hideHomeTabBar: hideHomeTabBar,
+        showAbsoluteTime: showAbsoluteTime,
       ),
     );
   }
@@ -59,6 +65,11 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setString(
       'bodyFontFamily',
       kDefaultBodyFontFamily,
+    );
+
+    app<HarpyPreferences>().setBool(
+      'showAbsoluteTime',
+      false,
     );
 
     emit(Config.defaultConfig);
@@ -109,5 +120,11 @@ class ConfigCubit extends Cubit<Config> {
     app<HarpyPreferences>().setBool('hideHomeTabBar', value);
 
     emit(state.copyWith(hideHomeTabBar: value));
+  }
+
+  void updateShowAbsoluteTime(bool value) {
+    app<HarpyPreferences>().setBool('showAbsoluteTime', value);
+
+    emit(state.copyWith(showAbsoluteTime: value));
   }
 }

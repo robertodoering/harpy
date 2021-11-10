@@ -115,6 +115,16 @@ class DisplaySettingsScreen extends StatelessWidget {
                   configCubit.updateCompactMode(value);
                 },
               ),
+              HarpySwitchTile(
+                leading: const Icon(CupertinoIcons.calendar),
+                title: const Text('show absolute tweet time'),
+                value: config.showAbsoluteTime,
+                onChanged: (value) {
+                  HapticFeedback.lightImpact();
+
+                  configCubit.updateShowAbsoluteTime(value);
+                },
+              ),
               SizedBox(
                 height: mediaQuery.padding.bottom,
               )
