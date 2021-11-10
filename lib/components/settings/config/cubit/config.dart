@@ -9,6 +9,7 @@ class Config extends Equatable {
     required this.displayFont,
     required this.bodyFont,
     required this.hideHomeTabBar,
+    required this.showAbsoluteTime,
   });
 
   final double fontSizeDelta;
@@ -20,6 +21,8 @@ class Config extends Equatable {
   /// Whether to automatically hide the home tab bar when swiping up / down.
   final bool hideHomeTabBar;
 
+  final bool showAbsoluteTime;
+
   static const defaultConfig = Config(
     fontSizeDelta: 0,
     compactMode: false,
@@ -27,6 +30,7 @@ class Config extends Equatable {
     displayFont: kDefaultDisplayFontFamily,
     bodyFont: kDefaultBodyFontFamily,
     hideHomeTabBar: true,
+    showAbsoluteTime: false,
   );
 
   @override
@@ -46,6 +50,7 @@ class Config extends Equatable {
     String? displayFont,
     String? bodyFont,
     bool? hideHomeTabBar,
+    bool? showAbsoluteTime,
   }) {
     return Config(
       fontSizeDelta: fontSizeDelta ?? this.fontSizeDelta,
@@ -54,6 +59,7 @@ class Config extends Equatable {
       displayFont: displayFont ?? this.displayFont,
       bodyFont: bodyFont ?? this.bodyFont,
       hideHomeTabBar: hideHomeTabBar ?? this.hideHomeTabBar,
+      showAbsoluteTime: showAbsoluteTime ?? this.showAbsoluteTime,
     );
   }
 }
