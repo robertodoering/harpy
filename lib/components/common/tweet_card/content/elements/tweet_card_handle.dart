@@ -120,7 +120,6 @@ class _CreatedAtTimeState extends State<_CreatedAtTime> {
 }
 
 class _CreatedAtAbsoluteTime extends StatelessWidget {
-
   const _CreatedAtAbsoluteTime({
     required this.createdAt,
     this.sizeDelta = 0,
