@@ -43,15 +43,15 @@ class TweetCardHandle extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.baseline,
               baseline: TextBaseline.alphabetic,
-              child:  config.showAbsoluteTime ?
-                _CreatedAtAbsoluteTime(
-                  createdAt: tweet.createdAt,
-                  sizeDelta: style.sizeDelta,
-                ) : 
-                _CreatedAtTime(
-                  createdAt: tweet.createdAt,
-                  sizeDelta: style.sizeDelta,
-                ),
+              child: config.showAbsoluteTime
+                  ? _CreatedAtAbsoluteTime(
+                      createdAt: tweet.createdAt,
+                      sizeDelta: style.sizeDelta,
+                    )
+                  : _CreatedAtRelativeTime(
+                      createdAt: tweet.createdAt,
+                      sizeDelta: style.sizeDelta,
+                    ),
             ),
           ],
         ),
@@ -62,8 +62,8 @@ class TweetCardHandle extends StatelessWidget {
   }
 }
 
-class _CreatedAtTime extends StatefulWidget {
-  const _CreatedAtTime({
+class _CreatedAtRelativeTime extends StatefulWidget {
+  const _CreatedAtRelativeTime({
     required this.createdAt,
     this.sizeDelta = 0,
   });
@@ -72,10 +72,10 @@ class _CreatedAtTime extends StatefulWidget {
   final double sizeDelta;
 
   @override
-  _CreatedAtTimeState createState() => _CreatedAtTimeState();
+  _CreatedAtRelativeTimeState createState() => _CreatedAtRelativeTimeState();
 }
 
-class _CreatedAtTimeState extends State<_CreatedAtTime> {
+class _CreatedAtRelativeTimeState extends State<_CreatedAtRelativeTime> {
   Timer? _timer;
 
   @override
