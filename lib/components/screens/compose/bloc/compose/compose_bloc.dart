@@ -9,6 +9,8 @@ import 'package:harpy/core/core.dart';
 part 'compose_event.dart';
 part 'compose_state.dart';
 
+// TODO: refactor
+
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc({
     this.inReplyToStatus,

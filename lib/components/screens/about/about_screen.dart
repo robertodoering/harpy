@@ -14,15 +14,7 @@ import 'package:provider/provider.dart';
 class AboutScreen extends StatelessWidget {
   const AboutScreen();
 
-  static const String route = 'about';
-
-  static const String mailto =
-      'mailto:rbydoering+harpy@gmail.com?subject=Harpy';
-
-  static const String _privacyPolicy =
-      'https://developer.twitter.com/en/developer-terms/policy';
-
-  static const String _harpyTwitterUrl = 'https://twitter.com/harpy_app';
+  static const route = 'about';
 
   List<Widget> _buildTitleWithLogo(Color? textColor) {
     return [
@@ -70,10 +62,6 @@ class AboutScreen extends StatelessWidget {
             leading: const Icon(FeatherIcons.github),
             title: const Text('harpy is open source'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: kDefaultRadius,
-              bottomRight: kDefaultRadius,
-            ),
             onTap: () => launchUrl('https://github.com/robertodoering/harpy'),
           ),
           HarpyListTile(
@@ -91,7 +79,7 @@ class AboutScreen extends StatelessWidget {
                 ? () => app<HarpyNavigator>().pushUserProfile(
                       handle: 'harpy_app',
                     )
-                : () => launchUrl(_harpyTwitterUrl),
+                : () => launchUrl('https://twitter.com/harpy_app'),
           ),
         ],
       ),
@@ -106,28 +94,25 @@ class AboutScreen extends StatelessWidget {
             padding: config.edgeInsets,
             child: Text(
               'if you like harpy, please consider supporting the '
-              'development by donating',
+              'development with a donation',
               style: theme.textTheme.subtitle2,
             ),
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.coffee),
-            title: const Text(
-              'buy me a coffee',
-            ),
+            title: const Text('buy me a coffee'),
             onTap: () => launchUrl('https://ko-fi.com/robertodoering'),
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.dollarSign),
-            title: const Text(
-              'donate via PayPal',
-            ),
+            title: const Text('donate via PayPal'),
             borderRadius: const BorderRadius.only(
               bottomLeft: kDefaultRadius,
               bottomRight: kDefaultRadius,
             ),
-            onTap: () =>
-                launchUrl('https://paypal.com/paypalme/robertodoering'),
+            onTap: () => launchUrl(
+              'https://paypal.com/paypalme/robertodoering',
+            ),
           ),
         ],
       ),
@@ -230,7 +215,7 @@ class AboutScreen extends StatelessWidget {
         ),
       ),
       subtitle: const Text('thank you for your feedback and bug reports!'),
-      onTap: () => launchUrl(mailto),
+      onTap: () => launchUrl('mailto:rbydoering+harpy@gmail.com?subject=Harpy'),
     );
   }
 
@@ -238,7 +223,9 @@ class AboutScreen extends StatelessWidget {
     return HarpyListCard(
       leading: const Icon(CupertinoIcons.exclamationmark_shield),
       title: const Text('privacy policy'),
-      onTap: () => launchUrl(_privacyPolicy),
+      onTap: () => launchUrl(
+        'https://developer.twitter.com/en/developer-terms/policy',
+      ),
     );
   }
 
