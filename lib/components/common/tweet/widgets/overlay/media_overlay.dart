@@ -5,7 +5,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// Default behavior to open a tweet media externally.
 void defaultOnMediaOpenExternally(String? mediaUrl) {

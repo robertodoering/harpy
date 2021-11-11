@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:harpy/core/core.dart';
 
 /// Uses the [Connectivity] plugin to listen to connectivity changes.

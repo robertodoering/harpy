@@ -1,6 +1,6 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:harpy/core/core.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Provides application and device information using the `package_info` and
 /// `device_info` plugins.

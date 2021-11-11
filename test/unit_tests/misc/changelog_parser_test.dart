@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class MockHarpyInfo extends Mock implements HarpyInfo {}
 
