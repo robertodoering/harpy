@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 
 /// Shows a [ListTimeline] for the [list] in it's own screen.
 class ListTimelineScreen extends StatelessWidget {
@@ -16,22 +14,6 @@ class ListTimelineScreen extends StatelessWidget {
 
   static const String route = 'list_timeline_screen';
 
-  Widget _buildActionsButton(BuildContext context) {
-    return CustomPopupMenuButton<void>(
-      icon: const Icon(CupertinoIcons.ellipsis_vertical),
-      onSelected: (_) =>
-          app<HarpyNavigator>().pushListMembersScreen(list: list),
-      itemBuilder: (context) {
-        return <PopupMenuEntry<int>>[
-          const HarpyPopupMenuItem<int>(
-            value: 0,
-            text: Text('show members'),
-          ),
-        ];
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ListTimelineBloc>(
@@ -40,14 +22,12 @@ class ListTimelineScreen extends StatelessWidget {
         body: ScrollDirectionListener(
           child: ScrollToStart(
             child: ListTimeline(
+              list: list,
               listId: list.idStr,
               beginSlivers: [
                 HarpySliverAppBar(
                   title: list.name,
                   floating: true,
-                  actions: [
-                    _buildActionsButton(context),
-                  ],
                 ),
               ],
             ),

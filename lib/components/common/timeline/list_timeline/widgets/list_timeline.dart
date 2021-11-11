@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the [TweetList] for the tweets in a list.
@@ -11,11 +14,14 @@ class ListTimeline extends StatelessWidget {
   const ListTimeline({
     required this.listId,
     this.beginSlivers = const [],
+    this.list,
   });
 
   final String? listId;
 
   final List<Widget> beginSlivers;
+  
+  final TwitterListData? list;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,7 @@ class ListTimeline extends StatelessWidget {
           enableScroll: state.enableScroll,
           beginSlivers: [
             ...beginSlivers,
-            if (state.hasTweets) const _TopRow(),
+            if (state.hasTweets) _TopRow(list: list),
           ],
           endSlivers: [
             if (state.showLoading)
@@ -69,7 +75,10 @@ class ListTimeline extends StatelessWidget {
 }
 
 class _TopRow extends StatelessWidget {
-  const _TopRow();
+  const _TopRow({
+    this.list,
+  });
+  final TwitterListData? list;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +102,16 @@ class _TopRow extends StatelessWidget {
               icon: const Icon(CupertinoIcons.refresh),
               onTap: () => bloc.add(const RequestListTimeline()),
             ),
+            defaultHorizontalSpacer,
+            if(list != null)
+              HarpyButton.raised(
+                padding: config.edgeInsets,
+                elevation: 0,
+                backgroundColor: theme.cardTheme.color,
+                icon: const Icon(CupertinoIcons.info),
+                onTap: () => 
+                  app<HarpyNavigator>().pushListMembersScreen(list: list!),
+              ),
           ],
         ),
       ),
