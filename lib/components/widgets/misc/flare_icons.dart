@@ -3,6 +3,8 @@ import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 
+const _path = 'assets/flare';
+
 class FlareIcon extends StatelessWidget {
   const FlareIcon({
     required this.fileName,
@@ -49,8 +51,6 @@ class FlareIcon extends StatelessWidget {
           offset: offset,
           animation: animate ? 'show' : null,
         );
-
-  static const String _path = 'assets/flare';
 
   /// The path of the flare asset file.
   final String fileName;

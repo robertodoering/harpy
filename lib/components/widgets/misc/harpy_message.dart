@@ -9,8 +9,7 @@ class HarpyMessage extends StatefulWidget {
 
   final Widget child;
 
-  static final GlobalKey<HarpyMessageState> globalKey =
-      GlobalKey<HarpyMessageState>();
+  static final globalKey = GlobalKey<HarpyMessageState>();
 
   @override
   HarpyMessageState createState() => HarpyMessageState();

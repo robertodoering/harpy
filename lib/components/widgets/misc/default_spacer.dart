@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-const defaultHorizontalSpacer = DefaultSpacer(axis: Axis.horizontal);
-const defaultSmallHorizontalSpacer = DefaultSpacer(
+const defaultHorizontalSpacer = _DefaultSpacer(axis: Axis.horizontal);
+const defaultSmallHorizontalSpacer = _DefaultSpacer(
   axis: Axis.horizontal,
   factor: .5,
 );
 
-const defaultVerticalSpacer = DefaultSpacer(axis: Axis.vertical);
-const defaultSmallVerticalSpacer = DefaultSpacer(
+const defaultVerticalSpacer = _DefaultSpacer(axis: Axis.vertical);
+const defaultSmallVerticalSpacer = _DefaultSpacer(
   axis: Axis.vertical,
   factor: .5,
 );
 
-class DefaultSpacer extends StatelessWidget {
-  const DefaultSpacer({
+class _DefaultSpacer extends StatelessWidget {
+  const _DefaultSpacer({
     required this.axis,
     this.factor = 1,
   });

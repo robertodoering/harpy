@@ -59,7 +59,7 @@ class HarpyProCard extends StatelessWidget {
             ),
           ),
           child: CustomPaint(
-            painter: _HarpyProCardPainter(),
+            painter: const _ProCardPainter(),
             // material for the ink well
             child: Material(
               type: MaterialType.transparency,
@@ -98,7 +98,9 @@ class HarpyProCard extends StatelessWidget {
 
 /// Paints two curved paths in the opposite gradient that is used with the
 /// [HarpyProCard] to make it more interesting.
-class _HarpyProCardPainter extends CustomPainter {
+class _ProCardPainter extends CustomPainter {
+  const _ProCardPainter();
+
   @override
   void paint(Canvas canvas, Size size) {
     final overlayPaint = Paint()
