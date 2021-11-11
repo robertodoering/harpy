@@ -1,9 +1,9 @@
 import 'package:mime_type/mime_type.dart';
 
 /// The [MediaType] as it is returned in from twitter.
-const String kMediaPhoto = 'photo';
-const String kMediaVideo = 'video';
-const String kMediaGif = 'animated_gif';
+const kMediaPhoto = 'photo';
+const kMediaVideo = 'video';
+const kMediaGif = 'animated_gif';
 
 /// The type of media that can be attached to a tweet.
 enum MediaType {
@@ -40,5 +40,18 @@ MediaType? findMediaType(String? path) {
     return MediaType.image;
   } else {
     return null;
+  }
+}
+
+String? mediaCategoryFromType(MediaType? type) {
+  switch (type) {
+    case MediaType.image:
+      return 'TWEET_IMAGE';
+    case MediaType.gif:
+      return 'TWEET_GIF';
+    case MediaType.video:
+      return 'TWEET_VIDEO';
+    case null:
+      return null;
   }
 }

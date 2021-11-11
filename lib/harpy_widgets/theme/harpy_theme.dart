@@ -9,29 +9,35 @@ import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
 /// text.
 ///
 /// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
-const double kTextContrastRatio = 4.5;
+const kTextContrastRatio = 4.5;
 
 /// The minimum recommended contrast ratio for the visual representation of
 /// large text.
 ///
 /// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
-const double kLargeTextContrastRatio = 3;
+const kLargeTextContrastRatio = 3.0;
 
 /// The default border radius used throughout the app.
-const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
+const kDefaultShapeBorder = RoundedRectangleBorder(
   borderRadius: kDefaultBorderRadius,
 );
-const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
-const Radius kDefaultRadius = Radius.circular(16);
+const kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
+const kDefaultRadius = Radius.circular(16);
 
-/// Fonts
-const String kDefaultBodyFontFamily = 'OpenSans';
-const String kDefaultDisplayFontFamily = 'Comfortaa';
+/// The default animation durations.
+const kShortAnimationDuration = Duration(milliseconds: 300);
+const kLongAnimationDuration = Duration(milliseconds: 600);
 
-const List<String> kAssetFonts = [
+/// The default fonts.
+const kDefaultBodyFontFamily = 'OpenSans';
+const kDefaultDisplayFontFamily = 'Comfortaa';
+
+const kAssetFonts = [
   kDefaultBodyFontFamily,
   kDefaultDisplayFontFamily,
 ];
+
+const _fontFamilyFallback = ['NotoSans'];
 
 class HarpyTheme {
   HarpyTheme.fromData({
@@ -97,8 +103,6 @@ class HarpyTheme {
 
   late TextTheme _textTheme;
   late double _backgroundLuminance;
-
-  static const List<String> _fontFamilyFallback = ['NotoSans'];
 
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;

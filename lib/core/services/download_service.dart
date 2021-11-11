@@ -9,6 +9,8 @@ import 'package:harpy/core/core.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
+const _timeout = Duration(seconds: 30);
+
 class DownloadService with HarpyLogger {
   const DownloadService();
 
@@ -36,8 +38,7 @@ class DownloadService with HarpyLogger {
 
         log.fine('downloading media');
 
-        final response =
-            await http.get(Uri.parse(url)).timeout(const Duration(seconds: 30));
+        final response = await http.get(Uri.parse(url)).timeout(_timeout);
 
         await compute<List<dynamic>, void>(_writeFile, <dynamic>[
           file,

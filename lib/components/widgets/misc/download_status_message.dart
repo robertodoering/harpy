@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/animations/animation_constants.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 /// Builds a status message based on the [DownloadStatus] of the [notifier].
 class DownloadStatusMessage extends StatefulWidget {

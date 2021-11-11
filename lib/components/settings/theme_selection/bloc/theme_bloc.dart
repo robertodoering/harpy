@@ -19,8 +19,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     required this.configCubit,
   }) : super(
           ThemeState(
-            lightThemeData: crow,
-            darkThemeData: crow,
+            lightThemeData: predefinedThemes.first,
+            darkThemeData: predefinedThemes.first,
             config: configCubit.state,
             customThemesData: const [],
           ),

@@ -44,36 +44,26 @@ class TranslationService with HarpyLogger {
   }
 
   Translation _transformResponse(http.Response response) {
-    try {
-      // try to parse translation from response
-      final List<dynamic> body = jsonDecode(response.body);
+    // try to parse translation from response
+    final List<dynamic> body = jsonDecode(response.body);
 
-      final original = StringBuffer();
-      final translated = StringBuffer();
+    final original = StringBuffer();
+    final translated = StringBuffer();
 
-      for (final List<dynamic> translationText in body[0]) {
-        original.write(translationText[1]);
-        translated.write(translationText[0]);
-      }
-
-      log.fine('translated from:\n$original\nto:\n$translated');
-
-      return Translation(
-        original: original.toString(),
-        text: translated.toString(),
-        // ignore: avoid_dynamic_calls
-        languageCode: body.last[0][0],
-        // ignore: avoid_dynamic_calls
-        language: translateLanguages[body.last[0][0]],
-      );
-    } catch (e, st) {
-      log.severe(
-        'error while trying to parse translate response: ${response.body}',
-        e,
-        st,
-      );
-
-      rethrow;
+    for (final List<dynamic> translationText in body[0]) {
+      original.write(translationText[1]);
+      translated.write(translationText[0]);
     }
+
+    log.fine('translated from:\n$original\nto:\n$translated');
+
+    return Translation(
+      original: original.toString(),
+      text: translated.toString(),
+      // ignore: avoid_dynamic_calls
+      languageCode: body.last[0][0],
+      // ignore: avoid_dynamic_calls
+      language: translateLanguages[body.last[0][0]],
+    );
   }
 }

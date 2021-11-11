@@ -12,7 +12,7 @@ class MockHarpyPreferences extends HarpyPreferences {
   }
 }
 
-class MockAppConfig extends AppConfig {
+class MockAppConfig extends EnvConfig {
   const MockAppConfig({
     required this.twitterConsumerKey,
     required this.twitterConsumerSecret,

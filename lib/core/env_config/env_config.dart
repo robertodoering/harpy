@@ -3,8 +3,8 @@ import 'package:harpy/core/core.dart';
 
 /// Wrapper for environment variables that are set with --dart-define when
 /// running the app.
-class AppConfig with HarpyLogger {
-  const AppConfig();
+class EnvConfig with HarpyLogger {
+  const EnvConfig();
 
   @visibleForTesting
   String get twitterConsumerKey =>

@@ -48,7 +48,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> login() async {
     log.fine('logging in');
 
-    if (!app<AppConfig>().validateAppConfig()) {
+    if (!app<EnvConfig>().validateAppConfig()) {
       return;
     }
 
@@ -148,8 +148,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> _onLogin(TwitterAuthSession authSession) async {
     log.fine('on login');
 
-    final key = app<AppConfig>().key(app<AuthPreferences>().auth);
-    final secret = app<AppConfig>().secret(app<AuthPreferences>().auth);
+    final key = app<EnvConfig>().key(app<AuthPreferences>().auth);
+    final secret = app<EnvConfig>().secret(app<AuthPreferences>().auth);
 
     if (app<TwitterApi>().client is TwitterClient) {
       (app<TwitterApi>().client as TwitterClient)

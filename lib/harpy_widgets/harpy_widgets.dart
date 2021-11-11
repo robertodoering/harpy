@@ -1,6 +1,10 @@
+/// A widget library that defines basic widgets that are used throughout the
+/// app.
+///
+/// This has been moved into its own directory with the intention of separating
+/// these widget into their own reusable package in the future.
 library harpy_widgets;
 
-export 'animations/animation_constants.dart';
 export 'animations/explicit/bounce_in_animation.dart';
 export 'animations/explicit/bubble_animation.dart';
 export 'animations/explicit/expand_animation.dart';

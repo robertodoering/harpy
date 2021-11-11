@@ -20,7 +20,7 @@ void main() {
 
   setUp(() async {
     await setupApp();
-    app.registerLazySingleton<AppConfig>(
+    app.registerLazySingleton<EnvConfig>(
       () => const MockAppConfig(
         twitterConsumerKey: 'key1,key2,key3',
         twitterConsumerSecret: 'secret1,secret2,secret3',
@@ -108,8 +108,8 @@ void main() {
     group('login', () {
       test('does nothing if app config is invalid', () async {
         app
-          ..unregister<AppConfig>()
-          ..registerLazySingleton<AppConfig>(
+          ..unregister<EnvConfig>()
+          ..registerLazySingleton<EnvConfig>(
             () => const MockAppConfig(
               twitterConsumerKey: '',
               twitterConsumerSecret: '',
@@ -360,8 +360,8 @@ void main() {
 
       test('can use a single set of credentials', () {
         app
-          ..unregister<AppConfig>()
-          ..registerLazySingleton<AppConfig>(
+          ..unregister<EnvConfig>()
+          ..registerLazySingleton<EnvConfig>(
             () => const MockAppConfig(
               twitterConsumerKey: 'key',
               twitterConsumerSecret: 'secret',

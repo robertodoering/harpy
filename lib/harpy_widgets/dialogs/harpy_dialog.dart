@@ -9,7 +9,7 @@ enum DialogAnimationType {
   // the default material animation
   material,
 
-  // a playful bounce in animation
+  // a playful bounce-in animation
   bounce,
 
   // a subtle slide animation

@@ -4,7 +4,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:intl/intl.dart';
 
-const String _linePrefix = '· ';
+const _linePrefix = '· ';
 
 /// Parses the [ChangelogData] from a changelog file located in
 /// `android/fastlane/metadata/android/$flavor/en-US/changelogs/$versionCode.txt`.
