@@ -177,7 +177,7 @@ class _SaveThemeAction extends StatelessWidget {
     final onTap = cubit.canSaveTheme
         ? () {
             themeBloc.add(
-              AddCustomTheme(
+              ThemeEvent.addCustomTheme(
                 themeData: cubit.state,
                 themeId: cubit.themeId,
                 changeLightThemeSelection:

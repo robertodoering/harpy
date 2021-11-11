@@ -96,7 +96,9 @@ class ThemeSelectionScreen extends StatelessWidget {
               state: state,
               themeId: i + 10,
             ),
-            onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
+            onDelete: () => bloc.add(
+              ThemeEvent.deleteCustomTheme(themeId: i + 10),
+            ),
           ),
       const AddCustomThemeCard(),
       if (Harpy.isFree) ...[
@@ -152,7 +154,7 @@ void selectTheme({
   if (lightThemeId != newLightThemeId || darkThemeId != newDarkThemeId) {
     HapticFeedback.lightImpact();
     themeBloc.add(
-      ChangeTheme(
+      ThemeEvent.changeTheme(
         lightThemeId: newLightThemeId,
         darkThemeId: newDarkThemeId,
         saveSelection: true,

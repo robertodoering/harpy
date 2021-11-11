@@ -129,7 +129,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
     log.fine('logging out');
 
     // reset the theme to the default theme
-    themeBloc.add(const ChangeTheme(lightThemeId: 0, darkThemeId: 0));
+    themeBloc.add(
+      const ThemeEvent.changeTheme(
+        lightThemeId: 0,
+        darkThemeId: 0,
+      ),
+    );
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
 
@@ -171,9 +176,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
       // initialize the custom themes for this user
       themeBloc
-        ..add(const LoadCustomThemes())
+        ..add(const ThemeEvent.loadCustomThemes())
         ..add(
-          ChangeTheme(
+          ThemeEvent.changeTheme(
             lightThemeId: app<ThemePreferences>().lightThemeId,
             darkThemeId: app<ThemePreferences>().darkThemeId,
           ),
