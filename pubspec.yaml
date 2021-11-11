@@ -39,7 +39,7 @@ dependencies:
   http: ^0.13.3
   humanizer: ^1.0.0
   intl: ^0.17.0
-  json_annotation: ^4.1.0
+  json_annotation: ^4.3.0
   like_button: ^2.0.3
   location: ^4.1.1
   logging: ^1.0.1
