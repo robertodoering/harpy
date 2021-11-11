@@ -81,7 +81,7 @@ class _RetweetButtonState extends State<RetweetButton> {
             style: TextStyle(color: widget.overlayForegroundColor),
           ),
         ),
-        HarpyPopupMenuItem<int>(
+        const HarpyPopupMenuItem<int>(
           value: 2,
           icon: Icon(FeatherIcons.eye),
           text: Text('view retweeters'),
