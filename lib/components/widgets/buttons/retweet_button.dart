@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
@@ -79,6 +81,11 @@ class _RetweetButtonState extends State<RetweetButton> {
             style: TextStyle(color: widget.overlayForegroundColor),
           ),
         ),
+        HarpyPopupMenuItem<int>(
+          value: 2,
+          icon: Icon(FeatherIcons.eye),
+          text: Text('view retweeters'),
+        ),
       ],
       position: position,
       shape: popupMenuTheme.shape,
@@ -89,6 +96,12 @@ class _RetweetButtonState extends State<RetweetButton> {
       widget.bloc.onRetweet();
     } else if (result == 1) {
       widget.bloc.onComposeQuote();
+    } else if (result == 2) {
+      app<HarpyNavigator>().pushRetweetsScreen(
+        tweetId: widget.bloc.tweet.id,
+        //TODO find a way to change this using blocs
+        sort: 'mostFollowers',
+      );
     }
   }
 

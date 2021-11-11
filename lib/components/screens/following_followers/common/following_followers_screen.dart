@@ -43,7 +43,8 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
       child: BlocBuilder<B, PaginatedState>(
         builder: (context, state) {
           final bloc = context.watch<B>();
-
+          final sortedUser = bloc.users
+            ..sort((a, b) => b.followersCount.compareTo(a.followersCount));
           return HarpyScaffold(
             body: ScrollDirectionListener(
               child: ScrollToStart(
@@ -54,7 +55,7 @@ class FollowingFollowersScreen<B extends FollowingFollowersBloc>
                     await bloc.loadDataCompleter.future;
                   },
                   child: UserList(
-                    bloc.users,
+                    sortedUser,
                     beginSlivers: [
                       HarpySliverAppBar(title: title, floating: true),
                     ],

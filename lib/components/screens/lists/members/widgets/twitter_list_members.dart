@@ -16,7 +16,8 @@ class TwitterListMembers extends StatelessWidget {
 
     final bloc = context.watch<ListMembersBloc>();
     final state = bloc.state;
-
+    final sortedUser = state.members
+        ..sort((a, b) => b.followersCount.compareTo(a.followersCount));
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: LoadMoreListener(
@@ -26,7 +27,7 @@ class TwitterListMembers extends StatelessWidget {
             await bloc.requestMoreCompleter.future;
           },
           child: UserList(
-            state.members,
+            sortedUser,
             beginSlivers: [
               HarpySliverAppBar(
                 title: '${list.name} members',

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/screens/likes_retweets/likes/likes_screen.dart';
+import 'package:harpy/components/screens/likes_retweets/retweets/retweets_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -116,6 +118,30 @@ class HarpyNavigator {
       FollowersScreen.route,
       arguments: <String, dynamic>{
         'userId': userId,
+      },
+    );
+  }
+
+  void pushRetweetsScreen({
+    required String tweetId,
+    String? sort,
+  }) {
+    pushNamed(
+      RetweetsScreen.route,
+      arguments: <String, dynamic>{
+        'tweetId': tweetId,
+        'sort': sort,
+      },
+    );
+  }
+
+  void pushLikesScreen({
+    required String tweetId,
+  }) {
+    pushNamed(
+      LikesScreen.route,
+      arguments: <String, dynamic>{
+        'tweetId': tweetId,
       },
     );
   }
@@ -280,6 +306,17 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case FollowersScreen.route:
       screen = FollowersScreen(
         userId: arguments['userId'],
+      );
+      break;
+    case LikesScreen.route:
+      screen = LikesScreen(
+        tweetId: arguments['tweetId'],
+      );
+      break;
+    case RetweetsScreen.route:
+      screen = RetweetsScreen(
+        tweetId: arguments['tweetId'],
+        sort: arguments['sort'],
       );
       break;
     case SettingsScreen.route:

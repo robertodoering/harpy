@@ -56,6 +56,7 @@ class UserCard extends StatelessWidget {
                 onUrlTap: null,
               ),
             ],
+            FollowersCount(user),
           ],
         ),
         onTap: () => _onUserTap(context),
