@@ -22,7 +22,7 @@ class UserProfileContent extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => TimelineFilterModel.user()),
         BlocProvider(create: (_) => UserTimelineBloc(handle: user.handle)),
-        BlocProvider(create: (_) => LikesTimelineBloc(handle: user.handle)),
+        BlocProvider(create: (_) => LikesTimelineCubit(handle: user.handle)),
       ],
       child: ScrollDirectionListener(
         depth: 2,
@@ -59,7 +59,7 @@ class UserProfileContent extends StatelessWidget {
               const UserMediaTimeline(),
               if (isAuthenticatedUser)
                 const MentionsTimeline(indexInTabView: 2),
-              const UserLikesTimeline(),
+              const LikesTimeline(),
             ],
           ),
         ),

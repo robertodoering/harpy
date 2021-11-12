@@ -9,9 +9,10 @@ import 'package:provider/provider.dart';
 ///
 /// For example implementations, see:
 /// * [HomeTimeline]
+/// * [LikesTimeline]
 class Timeline extends StatefulWidget {
   const Timeline({
-    this.tweetBuilder = defaultTweetBuild,
+    this.tweetBuilder = TweetList.defaultTweetBuilder,
     this.beginSlivers = const [],
     this.refreshIndicatorOffset = 0,
     this.listKey,
@@ -21,8 +22,6 @@ class Timeline extends StatefulWidget {
   final List<Widget> beginSlivers;
   final double refreshIndicatorOffset;
   final Key? listKey;
-
-  static Widget defaultTweetBuild(TweetData tweet) => TweetCard(tweet);
 
   @override
   _TimelineState createState() => _TimelineState();

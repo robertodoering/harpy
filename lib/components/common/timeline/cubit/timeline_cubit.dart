@@ -14,6 +14,7 @@ part 'timeline_cubit.freezed.dart';
 ///
 /// For example implementations, see:
 /// * [HomeTimelineCubit]
+/// * [LikesTimelineCubit]
 abstract class TimelineCubit extends Cubit<TimelineState>
     with RequestLock, HarpyLogger {
   TimelineCubit() : super(const TimelineState.initial());
