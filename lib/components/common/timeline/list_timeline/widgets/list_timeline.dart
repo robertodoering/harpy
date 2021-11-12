@@ -110,8 +110,7 @@ class _TopRow extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: theme.cardTheme.color,
                 icon: const Icon(CupertinoIcons.info),
-                onTap: () => 
-                  app<HarpyNavigator>().pushListMembersScreen(list: list!),
+                onTap: () => app<HarpyNavigator>().pushListMembersScreen(listId: listId, name : name),
               ),
           ],
         ),
