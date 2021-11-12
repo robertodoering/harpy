@@ -74,9 +74,12 @@ class ListTimeline extends StatelessWidget {
 
 class _TopRow extends StatelessWidget {
   const _TopRow({
-    this.list,
+    required this.listId,
+    this.name,
   });
-  final TwitterListData? list;
+  
+  final String listId;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
