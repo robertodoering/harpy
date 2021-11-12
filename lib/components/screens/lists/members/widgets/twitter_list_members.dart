@@ -28,7 +28,7 @@ class TwitterListMembers extends StatelessWidget {
             state.members,
             beginSlivers: [
               HarpySliverAppBar(
-                title: '${name ?? ''} members',
+                title: name != null ? '$name members' : 'members',
                 floating: true,
               )
             ],
