@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 class ListMembersScreen extends StatelessWidget {
   const ListMembersScreen({
-    required this.list,
+    required this.listId,
+    this.name,
   });
 
-  final TwitterListData list;
+  final String listId;
+  final String? name;
 
   static const route = 'list_members_screen';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ListMembersBloc(list: list),
+      create: (_) => ListMembersBloc(listId: listId),
       child: HarpyScaffold(
         body: TwitterListMembers(
-          list: list,
+          name: name,
         ),
       ),
     );

@@ -28,7 +28,8 @@ class TwitterLists extends StatelessWidget {
         key: Key(list.idStr),
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
-            : () => app<HarpyNavigator>().pushListTimelineScreen(list: list),
+            : () => app<HarpyNavigator>()
+                .pushListTimelineScreen(listId: list.idStr, name: list.name),
         onLongPress: () => _showListActionBottomSheet(context, list),
       );
     } else {
@@ -147,7 +148,7 @@ class TwitterLists extends StatelessWidget {
           title: const Text('show members'),
           onTap: () {
             Navigator.of(context).pop();
-            app<HarpyNavigator>().pushListMembersScreen(list: list);
+            app<HarpyNavigator>().pushListMembersScreen(listId: list.idStr);
           },
         )
       ],
