@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     ChangelogDialog.maybeShow(context);
 
-    context.read<HomeTimelineBloc>().add(const HomeTimelineEvent.loadInitial());
+    context.read<HomeTimelineCubit>().loadInitial();
     context.read<MentionsTimelineBloc>().add(const RequestMentionsTimeline());
   }
 

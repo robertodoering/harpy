@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 
 /// Builds a [UserList] for a [PaginatedUsersCubit].
 ///
-/// NOTE: The parent needs to provide a [PaginatedUsersCubit].
-///
 /// For example implementations, see:
 /// * [FollowersScreen]
 /// * [FollowingScreen]

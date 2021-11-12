@@ -25,8 +25,8 @@ class MockAppConfig extends EnvConfig {
   final String twitterConsumerSecret;
 }
 
-class MockHomeTimelineBloc extends Mock implements HomeTimelineBloc {
-  MockHomeTimelineBloc(HomeTimelineState initialState) {
+class MockHomeTimelineCubit extends Mock implements HomeTimelineCubit {
+  MockHomeTimelineCubit(TimelineState initialState) {
     when(() => state).thenReturn(initialState);
   }
 }

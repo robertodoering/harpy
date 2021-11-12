@@ -38,7 +38,7 @@ class GlobalProvider extends StatelessWidget {
               authenticationCubit: context.read<AuthenticationCubit>(),
             ),
           ),
-          BlocProvider(create: (_) => HomeTimelineBloc()),
+          BlocProvider(create: (_) => HomeTimelineCubit()),
           BlocProvider(create: (_) => MentionsTimelineBloc()),
         ],
         child: child,

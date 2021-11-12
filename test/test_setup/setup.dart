@@ -52,7 +52,7 @@ Future<void> setupApp() async {
 /// widget tests.
 Widget buildAppBase(
   Widget child, {
-  HomeTimelineState? homeTimelineState,
+  TimelineState? homeTimelineState,
   MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
 }) {
   return _MockGlobalProviders(
@@ -85,7 +85,7 @@ Widget buildAppBase(
 /// Wraps the [child] in a [ListView] before building the app base.
 Widget buildAppListBase(
   Widget child, {
-  HomeTimelineState? homeTimelineState,
+  TimelineState? homeTimelineState,
   MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
 }) {
   return buildAppBase(
@@ -105,7 +105,7 @@ class _MockGlobalProviders extends StatelessWidget {
   });
 
   final WidgetBuilder builder;
-  final HomeTimelineState homeTimelineState;
+  final TimelineState homeTimelineState;
   final MentionsTimelineState mentionsTimelineState;
 
   @override
@@ -119,8 +119,8 @@ class _MockGlobalProviders extends StatelessWidget {
               configCubit: context.read<ConfigCubit>(),
             ),
           ),
-          BlocProvider<HomeTimelineBloc>(
-            create: (_) => MockHomeTimelineBloc(homeTimelineState),
+          BlocProvider<HomeTimelineCubit>(
+            create: (_) => MockHomeTimelineCubit(homeTimelineState),
           ),
           BlocProvider<MentionsTimelineBloc>(
             create: (_) => MockMentionsTimelineBloc(mentionsTimelineState),
@@ -132,7 +132,7 @@ class _MockGlobalProviders extends StatelessWidget {
   }
 }
 
-final _defaultHomeTimelineState = HomeTimelineState.data(
+final _defaultHomeTimelineState = TimelineState.data(
   tweets: exampleTweetList,
   maxId: '',
 );

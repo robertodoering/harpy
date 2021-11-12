@@ -114,7 +114,7 @@ class _TopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<HomeTimelineBloc>();
+    final cubit = context.watch<HomeTimelineCubit>();
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -130,9 +130,7 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () => bloc.add(
-                const HomeTimelineEvent.load(clearPrevious: true),
-              ),
+              onTap: () => cubit.load(clearPrevious: true),
             ),
             const Spacer(),
             HarpyButton.raised(
