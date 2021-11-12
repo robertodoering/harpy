@@ -30,7 +30,8 @@ class TwitterLists extends StatelessWidget {
         onSelected: onListSelected != null
             ? () => onListSelected!(listData)
             : () => app<HarpyNavigator>().pushListTimelineScreen(
-                  list: listData,
+                  listId: listData.idStr,
+                  name: listData.name,
                 ),
         onLongPress: () => _showListActionBottomSheet(context, listData),
       );
@@ -172,7 +173,10 @@ void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
         title: const Text('show members'),
         onTap: () {
           Navigator.of(context).pop();
-          app<HarpyNavigator>().pushListMembersScreen(list: list);
+          app<HarpyNavigator>().pushListMembersScreen(
+            listId: list.idStr,
+            name: list.name,
+          );
         },
       )
     ],
