@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 
-/// Builds the screen with a list of members for the specified twitter [list].
+/// Builds the screen with a list of members for the specified twitter list.
 class ListMembersScreen extends StatelessWidget {
   const ListMembersScreen({
     required this.listId,
