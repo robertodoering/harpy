@@ -127,7 +127,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
 
     final currentState = state;
 
-    if (currentState is _Data) {
+    if (currentState is TimelineStateData) {
       final maxId = currentState._requestMaxId;
 
       if (maxId == null) {
@@ -263,7 +263,7 @@ extension TimelineStateExtension on TimelineState {
       );
 }
 
-extension on _Data {
+extension on TimelineStateData {
   String? get _requestMaxId {
     final lastId = int.tryParse(maxId ?? '');
 
