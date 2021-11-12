@@ -13,15 +13,13 @@ import 'package:provider/provider.dart';
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
     required this.listId,
+    this.name,
     this.beginSlivers = const [],
-    this.list,
   });
 
-  final String? listId;
-
+  final String listId;
+  final String? name;
   final List<Widget> beginSlivers;
-  
-  final TwitterListData? list;
 
   @override
   Widget build(BuildContext context) {
