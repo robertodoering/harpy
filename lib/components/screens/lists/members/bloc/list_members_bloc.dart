@@ -11,13 +11,13 @@ part 'list_members_state.dart';
 
 class ListMembersBloc extends Bloc<ListMembersEvent, ListMembersState> {
   ListMembersBloc({
-    required this.list,
+    required this.listId,
   }) : super(const ListMembersInitialLoading()) {
     on<ListMembersEvent>((event, emit) => event.handle(this, emit));
     add(const ShowListMembers());
   }
 
-  final TwitterListData list;
+  final String listId;
 
   final ListsService listsService = app<TwitterApi>().listsService;
 

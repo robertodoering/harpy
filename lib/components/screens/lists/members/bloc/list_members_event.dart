@@ -16,7 +16,7 @@ class ShowListMembers extends ListMembersEvent with HarpyLogger {
     emit(const ListMembersInitialLoading());
 
     final paginatedUsers = await bloc.listsService
-        .members(listId: bloc.list.idStr)
+        .members(listId: bloc.listId)
         .handleError(twitterApiErrorHandler);
 
     if (paginatedUsers != null && paginatedUsers.users != null) {
@@ -57,7 +57,7 @@ class LoadMoreMembers extends ListMembersEvent with HarpyLogger {
       );
 
       final paginatedMembers = await bloc.listsService
-          .members(listId: bloc.list.idStr, cursor: state.membersCursor)
+          .members(listId: bloc.listId, cursor: state.membersCursor)
           .handleError(twitterApiErrorHandler);
 
       if (paginatedMembers != null) {

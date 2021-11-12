@@ -26,7 +26,7 @@ class HomeListTimeline extends StatelessWidget {
       return BlocProvider<ListTimelineBloc>.value(
         value: bloc,
         child: ListTimeline(
-          listId: listId,
+          listId: listId!,
           beginSlivers: const [HomeTopSliverPadding()],
         ),
       );

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
 class TwitterListMembers extends StatelessWidget {
   const TwitterListMembers({
-    required this.list,
+    this.name,
   });
 
-  final TwitterListData list;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class TwitterListMembers extends StatelessWidget {
             state.members,
             beginSlivers: [
               HarpySliverAppBar(
-                title: '${list.name} members',
+                title: '${name ?? ''} members',
                 floating: true,
               )
             ],
