@@ -14,7 +14,7 @@ class ListTimelineScreen extends StatelessWidget {
 
   final TwitterListData list;
 
-  static const String route = 'list_timeline_screen';
+  static const route = 'list_timeline';
 
   Widget _buildActionsButton(BuildContext context) {
     return CustomPopupMenuButton<void>(
