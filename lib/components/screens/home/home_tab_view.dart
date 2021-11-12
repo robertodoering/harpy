@@ -34,7 +34,7 @@ class HomeTabView extends StatelessWidget {
           return const SizedBox();
       }
     } else if (entry.isListType) {
-      return HomeListTimeline(listId: entry.id);
+      return HomeListTimeline(listId: entry.id, name: entry.name,);
     } else {
       return const SizedBox();
     }
