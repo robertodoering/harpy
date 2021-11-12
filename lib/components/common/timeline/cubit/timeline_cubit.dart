@@ -193,9 +193,9 @@ abstract class TimelineCubit extends Cubit<TimelineState>
 
 @freezed
 class TimelineState with _$TimelineState {
-  const factory TimelineState.initial() = _Initial;
+  const factory TimelineState.initial() = TimelineStateInitial;
 
-  const factory TimelineState.loading() = _Loading;
+  const factory TimelineState.loading() = TimelineStateLoading;
 
   const factory TimelineState.data({
     required BuiltList<TweetData> tweets,
@@ -216,21 +216,18 @@ class TimelineState with _$TimelineState {
     /// Whether we requested the initial home timeline with tweets that are
     /// newer than the last visible tweet from a previous session.
     @Default(false) bool isInitialResult,
-  }) = _Data;
+  }) = TimelineStateData;
 
-  const factory TimelineState.noData() = _NoData;
+  const factory TimelineState.noData() = TimelineStateNoData;
 
   const factory TimelineState.loadingMore({
-    required _Data data,
-  }) = _LoadingOlder;
+    required TimelineStateData data,
+  }) = TimelineStateLoadingOlder;
 
-  const factory TimelineState.error() = _Error;
+  const factory TimelineState.error() = TimelineStateError;
 }
 
 extension TimelineStateExtension on TimelineState {
-  bool get isLoading => this is _Loading;
-  bool get isLoadingMore => this is _LoadingOlder;
-
   bool get hasTweets => tweets.isNotEmpty;
 
   bool get canLoadMore => maybeMap(

@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
@@ -33,7 +34,41 @@ class HomeTimelineCubit extends TimelineCubit {
         );
   }
 
-  void addTweet(TweetData tweet) {}
+  void addTweet(TweetData tweet) {
+    final currentState = state;
 
-  void removeTweet(TweetData tweet) {}
+    if (currentState is TimelineStateData) {
+      final tweets = List.of(currentState.tweets);
+
+      if (tweet.parentTweetId == null) {
+        tweets.insert(0, tweet);
+      }
+
+      emit(
+        currentState.copyWith(
+          tweets: tweets.toBuiltList(),
+          isInitialResult: false,
+        ),
+      );
+    }
+  }
+
+  void removeTweet(TweetData tweet) {
+    final currentState = state;
+
+    if (currentState is TimelineStateData) {
+      final tweets = List.of(currentState.tweets);
+
+      if (tweet.parentTweetId == null) {
+        tweets.removeWhere((element) => element.id == tweet.id);
+      }
+
+      emit(
+        currentState.copyWith(
+          tweets: tweets.toBuiltList(),
+          isInitialResult: false,
+        ),
+      );
+    }
+  }
 }
