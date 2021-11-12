@@ -3,6 +3,26 @@ part of 'home_timeline_bloc.dart';
 abstract class HomeTimelineEvent {
   const HomeTimelineEvent();
 
+  const factory HomeTimelineEvent.loadInitial() = _LoadInitial;
+
+  const factory HomeTimelineEvent.load({
+    bool clearPrevious,
+  }) = _Load;
+
+  const factory HomeTimelineEvent.loadOlder() = _LoadOlder;
+
+  const factory HomeTimelineEvent.addTweet({
+    required TweetData tweet,
+  }) = _AddTweet;
+
+  const factory HomeTimelineEvent.removeTweet({
+    required TweetData tweet,
+  }) = _RemoveTweet;
+
+  const factory HomeTimelineEvent.applyFilter({
+    required TimelineFilter timelineFilter,
+  }) = _ApplyFilter;
+
   Future<void> handle(HomeTimelineBloc bloc, Emitter emit);
 }
 
@@ -13,31 +33,26 @@ abstract class HomeTimelineEvent {
 /// affect.
 ///
 /// After successful response, the older tweets are requested using the
-/// [RequestOlderHomeTimeline] event.
-class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
-  const RequestInitialHomeTimeline();
-
-  String? _sinceId(int lastVisibleTweet, bool keepTimelinePosition) {
-    if (keepTimelinePosition && lastVisibleTweet != 0) {
-      return '${lastVisibleTweet - 1}';
-    } else {
-      return null;
-    }
-  }
+/// [HomeTimelineEvent.loadOlder] event.
+class _LoadInitial extends HomeTimelineEvent with HarpyLogger {
+  const _LoadInitial();
 
   @override
   Future<void> handle(HomeTimelineBloc bloc, Emitter emit) async {
-    log.fine('requesting initial home timeline');
-
-    emit(const HomeTimelineInitialLoading());
-
-    final filter = TimelineFilter.fromJsonString(
-      app<TimelineFilterPreferences>().homeTimelineFilter,
-    );
-
-    final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
     final keepTimelinePosition =
         app<GeneralPreferences>().keepLastHomeTimelinePosition;
+
+    final lastVisibleTweet = app<TweetVisibilityPreferences>().lastVisibleTweet;
+
+    log.fine('requesting initial home timeline');
+    emit(const HomeTimelineState.loading());
+
+    if (!keepTimelinePosition || lastVisibleTweet == 0) {
+      // the user either doesn't want to keep the timeline position or the last
+      // visible tweet is not available (first open) -> load normally
+      bloc.add(const HomeTimelineEvent.load());
+      return;
+    }
 
     String? maxId;
 
@@ -45,8 +60,8 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
         .timelineService
         .homeTimeline(
           count: 200,
-          sinceId: _sinceId(lastVisibleTweet, keepTimelinePosition),
-          excludeReplies: filter.excludesReplies,
+          sinceId: '${lastVisibleTweet - 1}',
+          excludeReplies: bloc.filter.excludesReplies,
         )
         .then((tweets) {
           if (tweets.isNotEmpty) {
@@ -54,7 +69,7 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
           }
           return tweets;
         })
-        .then((tweets) => handleTweets(tweets, filter))
+        .then((tweets) => handleTweets(tweets, bloc.filter))
         .handleError(twitterApiErrorHandler);
 
     if (tweets != null) {
@@ -62,27 +77,86 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
       if (tweets.isNotEmpty) {
         emit(
-          HomeTimelineResult(
-            tweets: tweets,
+          HomeTimelineState.data(
+            tweets: tweets.toBuiltList(),
             maxId: maxId,
-            timelineFilter: filter,
-            lastInitialTweet: tweets.last.originalId,
-            newTweets: keepTimelinePosition && lastVisibleTweet != 0
-                ? tweets.length - 1
-                : 0,
-            initialResults: true,
+            initialResultsLastId: tweets.last.originalId,
+            initialResultsCount: tweets.length - 1,
+            isInitialResult: true,
           ),
         );
 
-        if (keepTimelinePosition) {
-          bloc.add(const RequestOlderHomeTimeline());
-        }
+        bloc.add(const HomeTimelineEvent.loadOlder());
       } else {
-        bloc.add(RefreshHomeTimeline(timelineFilter: filter));
+        // no initial tweets, load normally
+        bloc.add(const HomeTimelineEvent.load());
       }
     } else {
-      emit(HomeTimelineFailure(timelineFilter: filter));
+      emit(const HomeTimelineState.error());
     }
+  }
+}
+
+/// Refreshes the home timeline by requesting the newest 200 home timeline
+/// tweets.
+///
+/// If [clearPrevious] is `true`, [HomeTimelineState.loading] is yielded
+/// before requesting the timeline to clear the previous tweets and show a
+/// loading indicator.
+class _Load extends HomeTimelineEvent with HarpyLogger {
+  const _Load({
+    this.clearPrevious = false,
+  });
+
+  final bool clearPrevious;
+
+  @override
+  Future<void> handle(HomeTimelineBloc bloc, Emitter emit) async {
+    log.fine('refreshing home timeline');
+
+    if (clearPrevious) {
+      emit(const HomeTimelineState.loading());
+    }
+
+    String? maxId;
+
+    final tweets = await app<TwitterApi>()
+        .timelineService
+        .homeTimeline(
+          count: 200,
+          excludeReplies: bloc.filter.excludesReplies,
+        )
+        .then((tweets) {
+          if (tweets.isNotEmpty) {
+            maxId = tweets.last.idStr;
+          }
+          return tweets;
+        })
+        .then(
+          (tweets) => handleTweets(tweets, bloc.filter),
+        )
+        .handleError(twitterApiErrorHandler);
+
+    if (tweets != null) {
+      log.fine('found ${tweets.length} tweets');
+
+      if (tweets.isNotEmpty) {
+        emit(
+          HomeTimelineState.data(
+            tweets: tweets.toBuiltList(),
+            maxId: maxId,
+            initialResultsCount: 0,
+          ),
+        );
+      } else {
+        emit(const HomeTimelineState.noData());
+      }
+    } else {
+      emit(const HomeTimelineState.error());
+    }
+
+    bloc.refreshCompleter.complete();
+    bloc.refreshCompleter = Completer<void>();
   }
 }
 
@@ -92,10 +166,10 @@ class RequestInitialHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 /// user wants to load the older (previous) tweets.
 ///
 /// Only the last 800 tweets in a home timeline can be requested.
-class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
-  const RequestOlderHomeTimeline();
+class _LoadOlder extends HomeTimelineEvent with HarpyLogger {
+  const _LoadOlder();
 
-  String? _findMaxId(HomeTimelineResult state) {
+  String? _findMaxId(_Data state) {
     final lastId = int.tryParse(state.maxId ?? '');
 
     if (lastId != null) {
@@ -115,7 +189,7 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
     final state = bloc.state;
 
-    if (state is HomeTimelineResult) {
+    if (state is _Data) {
       final maxId = _findMaxId(state);
 
       if (maxId == null) {
@@ -125,54 +199,43 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
       log.fine('requesting older home timeline tweets');
 
-      emit(HomeTimelineLoadingOlder(oldResult: state));
+      emit(HomeTimelineState.loadingOlder(data: state));
 
       String? newMaxId;
-      var canRequestOlder = false;
 
       final tweets = await app<TwitterApi>()
           .timelineService
           .homeTimeline(
             count: 200,
             maxId: maxId,
-            excludeReplies: state.timelineFilter.excludesReplies,
+            excludeReplies: bloc.filter.excludesReplies,
           )
           .then((tweets) {
             if (tweets.isNotEmpty) {
               newMaxId = tweets.last.idStr;
-              canRequestOlder = true;
-            } else {
-              canRequestOlder = false;
             }
+
             return tweets;
           })
-          .then((tweets) => handleTweets(tweets, state.timelineFilter))
+          .then((tweets) => handleTweets(tweets, bloc.filter))
           .handleError(twitterApiErrorHandler);
 
       if (tweets != null) {
-        log
-          ..fine('found ${tweets.length} older tweets')
-          ..finer('can request older: $canRequestOlder');
+        log.fine('found ${tweets.length} older tweets');
 
         emit(
-          HomeTimelineResult(
-            tweets: state.tweets.followedBy(tweets).toList(),
+          state.copyWith(
+            tweets: state.tweets.followedBy(tweets).toBuiltList(),
             maxId: newMaxId,
-            timelineFilter: state.timelineFilter,
-            lastInitialTweet: state.lastInitialTweet,
-            newTweets: state.newTweets,
-            canRequestOlder: canRequestOlder,
+            isInitialResult: false,
           ),
         );
       } else {
         // re-yield result state with previous tweets but new max id
         emit(
-          HomeTimelineResult(
-            tweets: state.tweets,
+          state.copyWith(
             maxId: newMaxId,
-            timelineFilter: state.timelineFilter,
-            lastInitialTweet: state.lastInitialTweet,
-            newTweets: state.newTweets,
+            isInitialResult: false,
           ),
         );
       }
@@ -183,93 +246,15 @@ class RequestOlderHomeTimeline extends HomeTimelineEvent with HarpyLogger {
   }
 }
 
-/// Refreshes the home timeline by requesting the newest 200 home timeline
-/// tweets.
-///
-/// If [clearPrevious] is `true`, [HomeTimelineInitialLoading] is yielded
-/// before requesting the timeline to clear the previous tweets and show a
-/// loading indicator.
-class RefreshHomeTimeline extends HomeTimelineEvent with HarpyLogger {
-  const RefreshHomeTimeline({
-    this.clearPrevious = false,
-    this.timelineFilter,
-  });
-
-  final bool clearPrevious;
-  final TimelineFilter? timelineFilter;
-
-  @override
-  Future<void> handle(HomeTimelineBloc bloc, Emitter emit) async {
-    log.fine('refreshing home timeline');
-
-    if (clearPrevious) {
-      emit(const HomeTimelineInitialLoading());
-    }
-
-    String? maxId;
-
-    final tweets = await app<TwitterApi>()
-        .timelineService
-        .homeTimeline(
-          count: 200,
-          excludeReplies: timelineFilter?.excludesReplies ??
-              bloc.state.timelineFilter.excludesReplies,
-        )
-        .then((tweets) {
-          if (tweets.isNotEmpty) {
-            maxId = tweets.last.idStr;
-          }
-          return tweets;
-        })
-        .then(
-          (tweets) => handleTweets(
-            tweets,
-            timelineFilter ?? bloc.state.timelineFilter,
-          ),
-        )
-        .handleError(twitterApiErrorHandler);
-
-    if (tweets != null) {
-      log.fine('found ${tweets.length} tweets');
-
-      if (tweets.isNotEmpty) {
-        emit(
-          HomeTimelineResult(
-            tweets: tweets,
-            maxId: maxId,
-            timelineFilter: timelineFilter ?? bloc.state.timelineFilter,
-            newTweets: 0,
-          ),
-        );
-      } else {
-        emit(
-          HomeTimelineNoResult(
-            timelineFilter: timelineFilter ?? bloc.state.timelineFilter,
-          ),
-        );
-      }
-    } else {
-      emit(
-        HomeTimelineFailure(
-          timelineFilter: timelineFilter ?? bloc.state.timelineFilter,
-        ),
-      );
-    }
-
-    bloc.refreshCompleter.complete();
-    bloc.refreshCompleter = Completer<void>();
-  }
-}
-
 /// Adds a single [tweet] to the home timeline tweets.
 ///
 /// If the tweet is a reply, the reply will be added to the replies for the
 /// parent tweet.
 /// Else it will be added to the beginning of the list.
 ///
-/// Only affects the list when the state is [HomeTimelineResult].
-class AddToHomeTimeline extends HomeTimelineEvent {
-  const AddToHomeTimeline({
+/// Only affects the list when the state is [HomeTimelineState.data].
+class _AddTweet extends HomeTimelineEvent {
+  const _AddTweet({
     required this.tweet,
   });
 
@@ -279,7 +264,7 @@ class AddToHomeTimeline extends HomeTimelineEvent {
   Future<void> handle(HomeTimelineBloc bloc, Emitter emit) async {
     final state = bloc.state;
 
-    if (state is HomeTimelineResult) {
+    if (state is _Data) {
       final tweets = List.of(state.tweets);
 
       if (tweet.parentTweetId == null) {
@@ -287,14 +272,9 @@ class AddToHomeTimeline extends HomeTimelineEvent {
       }
 
       emit(
-        HomeTimelineResult(
-          tweets: tweets,
-          maxId: state.maxId,
-          timelineFilter: state.timelineFilter,
-          newTweets: state.newTweets,
-          lastInitialTweet: state.lastInitialTweet,
-          initialResults: state.initialResults,
-          canRequestOlder: state.canRequestOlder,
+        state.copyWith(
+          tweets: tweets.toBuiltList(),
+          isInitialResult: false,
         ),
       );
     }
@@ -303,9 +283,9 @@ class AddToHomeTimeline extends HomeTimelineEvent {
 
 /// Removes a single [tweet] from the home timeline tweets.
 ///
-/// Only affects the list when the state is [HomeTimelineResult].
-class RemoveFromHomeTimeline extends HomeTimelineEvent {
-  const RemoveFromHomeTimeline({
+/// Only affects the list when the state is [HomeTimelineState.data].
+class _RemoveTweet extends HomeTimelineEvent {
+  const _RemoveTweet({
     required this.tweet,
   });
 
@@ -315,7 +295,7 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
   Future<void> handle(HomeTimelineBloc bloc, Emitter emit) async {
     final state = bloc.state;
 
-    if (state is HomeTimelineResult) {
+    if (state is _Data) {
       final tweets = List.of(state.tweets);
 
       if (tweet.parentTweetId == null) {
@@ -323,14 +303,9 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
       }
 
       emit(
-        HomeTimelineResult(
-          tweets: tweets,
-          maxId: state.maxId,
-          timelineFilter: state.timelineFilter,
-          newTweets: state.newTweets,
-          lastInitialTweet: state.lastInitialTweet,
-          initialResults: state.initialResults,
-          canRequestOlder: state.canRequestOlder,
+        state.copyWith(
+          tweets: tweets.toBuiltList(),
+          isInitialResult: false,
         ),
       );
     }
@@ -338,9 +313,9 @@ class RemoveFromHomeTimeline extends HomeTimelineEvent {
 }
 
 /// Sets the filter for the home timeline if the current state is
-/// [HomeTimelineResult] and refreshes the list afterwards.
-class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
-  const FilterHomeTimeline({
+/// [HomeTimelineState.data] and refreshes the list afterwards.
+class _ApplyFilter extends HomeTimelineEvent with HarpyLogger {
+  const _ApplyFilter({
     required this.timelineFilter,
   });
 
@@ -363,11 +338,6 @@ class FilterHomeTimeline extends HomeTimelineEvent with HarpyLogger {
 
     _saveTimelineFilter(bloc);
 
-    bloc.add(
-      RefreshHomeTimeline(
-        clearPrevious: true,
-        timelineFilter: timelineFilter,
-      ),
-    );
+    bloc.add(const HomeTimelineEvent.load(clearPrevious: true));
   }
 }

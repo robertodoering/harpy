@@ -132,9 +132,7 @@ class _MockGlobalProviders extends StatelessWidget {
   }
 }
 
-final _defaultHomeTimelineState = HomeTimelineResult(
-  maxId: '',
-  newTweets: 0,
-  timelineFilter: TimelineFilter.empty,
+final _defaultHomeTimelineState = HomeTimelineState.data(
   tweets: exampleTweetList,
+  maxId: '',
 );

@@ -93,7 +93,9 @@ class _PostTweetButtonState extends State<PostTweetButton> {
       // since no navigation can happen while the dialog is showing, we can
       // that the context is still valid
       // ignore: use_build_context_synchronously
-      context.read<HomeTimelineBloc>().add(AddToHomeTimeline(tweet: sentTweet));
+      context.read<HomeTimelineBloc>().add(
+            HomeTimelineEvent.addTweet(tweet: sentTweet),
+          );
 
       // ignore: use_build_context_synchronously
       Navigator.popUntil(

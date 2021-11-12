@@ -130,8 +130,9 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () =>
-                  bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
+              onTap: () => bloc.add(
+                const HomeTimelineEvent.load(clearPrevious: true),
+              ),
             ),
             const Spacer(),
             HarpyButton.raised(

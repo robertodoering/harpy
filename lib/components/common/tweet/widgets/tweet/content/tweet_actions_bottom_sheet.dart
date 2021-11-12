@@ -61,7 +61,7 @@ void showTweetActionsBottomSheet(
             bloc.add(
               TweetEvent.delete(
                 onDeleted: () => homeTimelineBloc.add(
-                  RemoveFromHomeTimeline(tweet: bloc.tweet),
+                  HomeTimelineEvent.removeTweet(tweet: bloc.tweet),
                 ),
               ),
             );

@@ -14,24 +14,24 @@ class HomeMediaTimeline extends StatelessWidget {
 
     return ChangeNotifierProvider<MediaTimelineModel>(
       create: (_) => MediaTimelineModel(
-        initialTweets: bloc.state.timelineTweets,
+        initialTweets: bloc.state.tweets.toList(),
       ),
       child: BlocListener<HomeTimelineBloc, HomeTimelineState>(
         listener: (context, state) {
-          context
-              .read<MediaTimelineModel>()
-              .updateEntries(state.timelineTweets);
+          context.read<MediaTimelineModel>().updateEntries(
+                state.tweets.toList(),
+              );
         },
         child: ScrollToStart(
           child: LoadMoreListener(
-            listen: state.enableRequestOlder,
+            listen: state.canRequestOlder,
             onLoadMore: () async {
-              bloc.add(const RequestOlderHomeTimeline());
+              bloc.add(const HomeTimelineEvent.loadOlder());
               await bloc.requestOlderCompleter.future;
             },
             child: MediaTimeline(
-              showInitialLoading: state.showInitialLoading,
-              showLoadingOlder: state.showLoadingOlder,
+              showInitialLoading: state.isLoading,
+              showLoadingOlder: state.isLoadingOlder,
               beginSlivers: const [
                 HomeTopSliverPadding(),
               ],

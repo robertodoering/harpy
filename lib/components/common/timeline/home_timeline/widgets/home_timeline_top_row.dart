@@ -50,7 +50,7 @@ class _RefreshButton extends StatelessWidget {
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(CupertinoIcons.refresh),
-      onTap: () => bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
+      onTap: () => bloc.add(const HomeTimelineEvent.load(clearPrevious: true)),
     );
   }
 }
@@ -83,18 +83,14 @@ class _FilterButton extends StatelessWidget {
     final bloc = context.watch<HomeTimelineBloc>();
     final state = bloc.state;
 
-    final hasFilter =
-        state.enableFilter && state.timelineFilter != TimelineFilter.empty;
-
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: hasFilter
+      icon: bloc.filter != TimelineFilter.empty
           ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
-      onTap:
-          bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
+      onTap: !state.isLoading ? Scaffold.of(context).openEndDrawer : null,
     );
   }
 }
