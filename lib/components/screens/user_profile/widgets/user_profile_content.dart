@@ -21,7 +21,7 @@ class UserProfileContent extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TimelineFilterModel.user()),
-        BlocProvider(create: (_) => UserTimelineBloc(handle: user.handle)),
+        BlocProvider(create: (_) => UserTimelineCubit(handle: user.handle)),
         BlocProvider(create: (_) => LikesTimelineCubit(handle: user.handle)),
       ],
       child: ScrollDirectionListener(

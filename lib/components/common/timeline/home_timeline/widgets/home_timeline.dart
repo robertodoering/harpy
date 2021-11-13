@@ -15,7 +15,7 @@ class HomeTimeline extends StatelessWidget {
     return BlocProvider<TimelineCubit>.value(
       value: cubit,
       child: Timeline(
-        listKey: const PageStorageKey<String>('home_timeline'),
+        listKey: const PageStorageKey('home_timeline'),
         refreshIndicatorOffset: config.bottomAppBar
             ? 0
             : HomeAppBar.height(context) + config.paddingValue,

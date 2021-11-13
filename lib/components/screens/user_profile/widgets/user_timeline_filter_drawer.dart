@@ -11,22 +11,20 @@ class UserTimelineFilterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<UserTimelineBloc>();
+    final cubit = context.watch<UserTimelineCubit>();
     final model = context.watch<TimelineFilterModel>();
 
     return TimelineFilterDrawer(
       title: 'user timeline filter',
-      showFilterButton: bloc.state.timelineFilter != model.value,
+      showFilterButton: cubit.filter != model.value,
       onFilter: () {
-        ScrollDirection.of(context)!.reset();
-        bloc.add(FilterUserTimeline(timelineFilter: model.value));
+        ScrollDirection.of(context)?.reset();
+        cubit.applyFilter(model.value);
       },
       onClear: () {
-        if (bloc.state.timelineFilter != TimelineFilter.empty) {
+        if (cubit.filter != TimelineFilter.empty) {
           ScrollDirection.of(context)!.reset();
-          bloc.add(
-            const FilterUserTimeline(timelineFilter: TimelineFilter.empty),
-          );
+          cubit.applyFilter(TimelineFilter.empty);
         }
       },
     );

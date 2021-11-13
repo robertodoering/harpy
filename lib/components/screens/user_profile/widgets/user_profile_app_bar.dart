@@ -62,7 +62,7 @@ class _FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timelineBloc = context.watch<UserTimelineBloc>();
+    final cubit = context.watch<UserTimelineCubit>();
 
     return Padding(
       padding: const EdgeInsets.all(4),
@@ -70,13 +70,10 @@ class _FilterButton extends StatelessWidget {
         backgroundColor: theme.canvasColor.withOpacity(.4),
         elevation: 0,
         padding: const EdgeInsets.all(12),
-        icon: timelineBloc.state.enableFilter &&
-                timelineBloc.state.timelineFilter != TimelineFilter.empty
+        icon: cubit.filter != TimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.colorScheme.secondary)
             : const Icon(Icons.filter_alt_outlined),
-        onTap: timelineBloc.state.enableFilter
-            ? Scaffold.of(context).openEndDrawer
-            : null,
+        onTap: Scaffold.of(context).openEndDrawer,
       ),
     );
   }

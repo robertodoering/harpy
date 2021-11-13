@@ -14,13 +14,13 @@ class Timeline extends StatefulWidget {
   const Timeline({
     this.tweetBuilder = TweetList.defaultTweetBuilder,
     this.beginSlivers = const [],
-    this.refreshIndicatorOffset = 0,
+    this.refreshIndicatorOffset,
     this.listKey,
   });
 
   final TweetBuilder tweetBuilder;
   final List<Widget> beginSlivers;
-  final double refreshIndicatorOffset;
+  final double? refreshIndicatorOffset;
   final Key? listKey;
 
   @override
@@ -99,6 +99,7 @@ class _TimelineState extends State<Timeline> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<TimelineCubit>();
     final state = cubit.state;
 
@@ -108,7 +109,7 @@ class _TimelineState extends State<Timeline> {
         controller: _controller,
         text: AnimatedNumber(number: _newestVisibleIndex),
         child: CustomRefreshIndicator(
-          offset: widget.refreshIndicatorOffset,
+          offset: widget.refreshIndicatorOffset ?? config.paddingValue,
           onRefresh: () async {
             ScrollDirection.of(context)?.reset();
             await cubit.load();

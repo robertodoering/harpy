@@ -9,29 +9,27 @@ class UserMediaTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<UserTimelineBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<UserTimelineCubit>();
+    final state = cubit.state;
 
     return ChangeNotifierProvider(
       create: (_) => MediaTimelineModel(
-        initialTweets: bloc.state.timelineTweets,
+        initialTweets: cubit.state.tweets.toList(),
       ),
-      child: BlocListener<UserTimelineBloc, UserTimelineState>(
+      child: BlocListener<UserTimelineCubit, TimelineState>(
         listener: (context, state) {
           context
               .read<MediaTimelineModel>()
-              .updateEntries(state.timelineTweets);
+              .updateEntries(state.tweets.toList());
         },
         child: ScrollToStart(
           child: LoadMoreListener(
-            listen: state.enableRequestOlder,
-            onLoadMore: () async {
-              bloc.add(const RequestOlderUserTimeline());
-              await bloc.requestOlderCompleter.future;
-            },
+            listen: state.canLoadMore,
+            onLoadMore: cubit.loadOlder,
             child: MediaTimeline(
-              showInitialLoading: state.showInitialLoading,
-              showLoadingOlder: state.showLoadingOlder,
+              showInitialLoading: state is TimelineStateInitial,
+              showLoadingOlder: state is TimelineStateLoading,
+              onRefresh: () => cubit.load(clearPrevious: true),
             ),
           ),
         ),

@@ -13,7 +13,7 @@ class LikesTimeline extends StatelessWidget {
     return BlocProvider<TimelineCubit>.value(
       value: cubit,
       child: const Timeline(
-        listKey: PageStorageKey<String>('likes_timeline'),
+        listKey: PageStorageKey('likes_timeline'),
       ),
     );
   }
