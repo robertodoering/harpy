@@ -7,9 +7,11 @@ import 'package:harpy/components/components.dart';
 class HomeListTimeline extends StatelessWidget {
   const HomeListTimeline({
     required this.listId,
+    this.name,
   });
 
   final String? listId;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class HomeListTimeline extends StatelessWidget {
       return BlocProvider<ListTimelineBloc>.value(
         value: bloc,
         child: ListTimeline(
-          listId: listId,
+          listId: listId!,
+          name: name,
           beginSlivers: const [HomeTopSliverPadding()],
         ),
       );
