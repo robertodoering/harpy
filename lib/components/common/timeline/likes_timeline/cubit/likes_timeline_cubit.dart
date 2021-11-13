@@ -14,9 +14,6 @@ class LikesTimelineCubit extends TimelineCubit {
   final String? handle;
 
   @override
-  void persistFilter(String encodedFilter) {}
-
-  @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
     return app<TwitterApi>().tweetService.listFavorites(
           screenName: handle,
@@ -25,10 +22,4 @@ class LikesTimelineCubit extends TimelineCubit {
           maxId: maxId,
         );
   }
-
-  @override
-  bool get restoreInitialPosition => false;
-
-  @override
-  int get restoredTweetId => 0;
 }

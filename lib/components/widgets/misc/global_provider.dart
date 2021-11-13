@@ -39,7 +39,7 @@ class GlobalProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (_) => HomeTimelineCubit()),
-          BlocProvider(create: (_) => MentionsTimelineBloc()),
+          BlocProvider(create: (_) => MentionsTimelineCubit()),
         ],
         child: child,
       ),

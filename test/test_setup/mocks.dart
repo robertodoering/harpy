@@ -31,8 +31,8 @@ class MockHomeTimelineCubit extends Mock implements HomeTimelineCubit {
   }
 }
 
-class MockMentionsTimelineBloc extends Mock implements MentionsTimelineBloc {
-  MockMentionsTimelineBloc(MentionsTimelineState initialState) {
+class MockMentionsTimelineCubit extends Mock implements MentionsTimelineCubit {
+  MockMentionsTimelineCubit(TimelineState<bool> initialState) {
     when(() => state).thenReturn(initialState);
   }
 }

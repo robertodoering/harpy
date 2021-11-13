@@ -13,11 +13,6 @@ class HomeTimelineCubit extends TimelineCubit {
   }
 
   @override
-  void persistFilter(String encodedFilter) {
-    app<TimelineFilterPreferences>().homeTimelineFilter = encodedFilter;
-  }
-
-  @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
     return app<TwitterApi>().timelineService.homeTimeline(
           count: 200,
@@ -33,6 +28,11 @@ class HomeTimelineCubit extends TimelineCubit {
 
   @override
   int get restoredTweetId => app<TweetVisibilityPreferences>().lastVisibleTweet;
+
+  @override
+  void persistFilter(String encodedFilter) {
+    app<TimelineFilterPreferences>().homeTimelineFilter = encodedFilter;
+  }
 
   void addTweet(TweetData tweet) {
     final currentState = state;

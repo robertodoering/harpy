@@ -13,9 +13,6 @@ class ListTimelineCubit extends TimelineCubit {
   final String listId;
 
   @override
-  void persistFilter(String encodedFilter) {}
-
-  @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
     return app<TwitterApi>().listsService.statuses(
           listId: listId,
@@ -23,10 +20,4 @@ class ListTimelineCubit extends TimelineCubit {
           maxId: maxId,
         );
   }
-
-  @override
-  bool get restoreInitialPosition => false;
-
-  @override
-  int get restoredTweetId => 0;
 }

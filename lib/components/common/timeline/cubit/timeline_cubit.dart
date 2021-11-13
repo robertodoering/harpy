@@ -12,26 +12,38 @@ part 'timeline_cubit.freezed.dart';
 
 /// Implements common functionality for cubits that handle timelines.
 ///
+/// Implementations can use the generic type to build their own custom data
+/// which available in [TimelineStateData].
+///
 /// For example implementations, see:
 /// * [HomeTimelineCubit]
 /// * [LikesTimelineCubit]
-abstract class TimelineCubit extends Cubit<TimelineState>
+/// * [ListTimelineCubit]
+/// * [UserTimelineCubit]
+/// * [MentionsTimelineCubit]
+abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
     with RequestLock, HarpyLogger {
   TimelineCubit() : super(const TimelineState.initial());
 
   TimelineFilter filter = TimelineFilter.empty;
-
-  bool get restoreInitialPosition;
-  int get restoredTweetId;
-
-  @protected
-  void persistFilter(String encodedFilter);
 
   @protected
   Future<List<Tweet>> request({
     String? sinceId,
     String? maxId,
   });
+
+  @protected
+  bool get restoreInitialPosition => false;
+
+  @protected
+  int get restoredTweetId => 0;
+
+  @protected
+  void persistFilter(String encodedFilter) {}
+
+  @protected
+  T? buildCustomData() {}
 
   Future<void> loadInitial() async {
     log.fine('loading initial timeline');
@@ -66,6 +78,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
             initialResultsLastId: tweets.last.originalId,
             initialResultsCount: tweets.length - 1,
             isInitialResult: true,
+            customData: buildCustomData(),
           ),
         );
 
@@ -111,6 +124,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
           TimelineState.data(
             tweets: tweets.toBuiltList(),
             maxId: maxId,
+            customData: buildCustomData(),
           ),
         );
       } else {
@@ -128,7 +142,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
 
     final currentState = state;
 
-    if (currentState is TimelineStateData) {
+    if (currentState is TimelineStateData<T>) {
       final maxId = currentState._requestMaxId;
 
       if (maxId == null) {
@@ -138,7 +152,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
 
       log.fine('loading older timeline tweets');
 
-      emit(TimelineState.loadingMore(data: currentState));
+      emit(TimelineState<T>.loadingMore(data: currentState));
 
       String? newMaxId;
 
@@ -193,7 +207,7 @@ abstract class TimelineCubit extends Cubit<TimelineState>
 }
 
 @freezed
-class TimelineState with _$TimelineState {
+class TimelineState<T extends Object> with _$TimelineState {
   const factory TimelineState.initial() = TimelineStateInitial;
 
   const factory TimelineState.loading() = TimelineStateLoading;
@@ -217,6 +231,7 @@ class TimelineState with _$TimelineState {
     /// Whether we requested the initial home timeline with tweets that are
     /// newer than the last visible tweet from a previous session.
     @Default(false) bool isInitialResult,
+    T? customData,
   }) = TimelineStateData;
 
   const factory TimelineState.noData() = TimelineStateNoData;

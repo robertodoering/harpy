@@ -12,17 +12,22 @@ class HomeTabView extends StatelessWidget {
 
   static const _indexOffset = 1;
 
-  Widget _mapEntryContent(BuildContext context, int index, HomeTabEntry entry) {
+  Widget _mapEntryContent(
+    int index,
+    HomeTabEntry entry,
+    double refreshIndicatorOffset,
+  ) {
     if (entry.isDefaultType) {
       switch (entry.id) {
         case 'home':
-          return const HomeTimeline();
+          return HomeTimeline(refreshIndicatorOffset: refreshIndicatorOffset);
         case 'media':
           return const HomeMediaTimeline();
         case 'mentions':
           return MentionsTimeline(
             indexInTabView: index + _indexOffset,
             beginSlivers: const [HomeTopSliverPadding()],
+            refreshIndicatorOffset: refreshIndicatorOffset,
           );
         case 'search':
           return const SearchScreenContent(
@@ -45,7 +50,12 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
     final model = context.watch<HomeTabModel>();
+
+    final refreshIndicatorOffset = config.bottomAppBar
+        ? 0.0
+        : HomeAppBar.height(context) + config.paddingValue;
 
     return DefaultTabController(
       length: model.visibleEntries.length + 1,
@@ -56,8 +66,12 @@ class HomeTabView extends StatelessWidget {
             TabBarView(
               children: [
                 const HomeDrawer(),
-                for (int i = 0; i < model.visibleEntries.length; i++)
-                  _mapEntryContent(context, i, model.visibleEntries[i]),
+                for (var i = 0; i < model.visibleEntries.length; i++)
+                  _mapEntryContent(
+                    i,
+                    model.visibleEntries[i],
+                    refreshIndicatorOffset,
+                  ),
               ],
             ),
             const HomeAppBar(),

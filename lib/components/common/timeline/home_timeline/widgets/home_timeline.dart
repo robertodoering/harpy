@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 
 class HomeTimeline extends StatelessWidget {
-  const HomeTimeline();
+  const HomeTimeline({
+    this.refreshIndicatorOffset,
+  });
+
+  final double? refreshIndicatorOffset;
 
   @override
   Widget build(BuildContext context) {
-    final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<HomeTimelineCubit>();
     final state = cubit.state;
 
@@ -16,9 +19,7 @@ class HomeTimeline extends StatelessWidget {
       value: cubit,
       child: Timeline(
         listKey: const PageStorageKey('home_timeline'),
-        refreshIndicatorOffset: config.bottomAppBar
-            ? 0
-            : HomeAppBar.height(context) + config.paddingValue,
+        refreshIndicatorOffset: refreshIndicatorOffset,
         tweetBuilder: (tweet) => HomeTimelineTweetCard(tweet),
         beginSlivers: [
           const HomeTopSliverPadding(),

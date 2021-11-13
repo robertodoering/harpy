@@ -17,11 +17,6 @@ class UserTimelineCubit extends TimelineCubit {
   final String? handle;
 
   @override
-  void persistFilter(String encodedFilter) {
-    app<TimelineFilterPreferences>().userTimelineFilter = encodedFilter;
-  }
-
-  @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
     return app<TwitterApi>().timelineService.userTimeline(
           screenName: handle,
@@ -33,8 +28,7 @@ class UserTimelineCubit extends TimelineCubit {
   }
 
   @override
-  bool get restoreInitialPosition => false;
-
-  @override
-  int get restoredTweetId => 0;
+  void persistFilter(String encodedFilter) {
+    app<TimelineFilterPreferences>().userTimelineFilter = encodedFilter;
+  }
 }

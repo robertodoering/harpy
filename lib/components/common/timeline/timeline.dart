@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 /// For example implementations, see:
 /// * [HomeTimeline]
 /// * [LikesTimeline]
+/// * [ListTimeline]
+/// * [UserTimeline]
+/// * [MentionsTimeline]
 class Timeline extends StatefulWidget {
   const Timeline({
     this.tweetBuilder = TweetList.defaultTweetBuilder,

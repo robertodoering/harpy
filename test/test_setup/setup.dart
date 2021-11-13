@@ -53,7 +53,7 @@ Future<void> setupApp() async {
 Widget buildAppBase(
   Widget child, {
   TimelineState? homeTimelineState,
-  MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
+  TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
 }) {
   return _MockGlobalProviders(
     homeTimelineState: homeTimelineState ?? _defaultHomeTimelineState,
@@ -86,7 +86,7 @@ Widget buildAppBase(
 Widget buildAppListBase(
   Widget child, {
   TimelineState? homeTimelineState,
-  MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
+  TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
 }) {
   return buildAppBase(
     ListView(
@@ -106,7 +106,7 @@ class _MockGlobalProviders extends StatelessWidget {
 
   final WidgetBuilder builder;
   final TimelineState homeTimelineState;
-  final MentionsTimelineState mentionsTimelineState;
+  final TimelineState<bool> mentionsTimelineState;
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +122,8 @@ class _MockGlobalProviders extends StatelessWidget {
           BlocProvider<HomeTimelineCubit>(
             create: (_) => MockHomeTimelineCubit(homeTimelineState),
           ),
-          BlocProvider<MentionsTimelineBloc>(
-            create: (_) => MockMentionsTimelineBloc(mentionsTimelineState),
+          BlocProvider<MentionsTimelineCubit>(
+            create: (_) => MockMentionsTimelineCubit(mentionsTimelineState),
           ),
         ],
         child: Builder(builder: builder),
