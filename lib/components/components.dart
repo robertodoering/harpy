@@ -23,7 +23,7 @@ export 'common/timeline/home_timeline/widgets/home_timeline_top_row.dart';
 export 'common/timeline/home_timeline/widgets/home_timeline_tweet_card.dart';
 export 'common/timeline/likes_timeline/cubit/likes_timeline_cubit.dart';
 export 'common/timeline/likes_timeline/widgets/likes_timeline.dart';
-export 'common/timeline/list_timeline/bloc/list_timeline_bloc.dart';
+export 'common/timeline/list_timeline/list_timeline_cubit.dart';
 export 'common/timeline/list_timeline/widgets/list_timeline.dart';
 export 'common/timeline/media_timeline/model/media_timeline_model.dart';
 export 'common/timeline/media_timeline/widget/media_timeline.dart';

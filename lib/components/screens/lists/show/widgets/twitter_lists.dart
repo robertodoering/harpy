@@ -169,7 +169,7 @@ void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
     context,
     children: [
       HarpyListTile(
-        leading: const Icon(CupertinoIcons.person_3),
+        leading: const Icon(CupertinoIcons.person_2),
         title: const Text('show members'),
         onTap: () {
           Navigator.of(context).pop();

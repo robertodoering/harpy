@@ -3,25 +3,23 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-/// Returns the likes timeline for the authenticated user when [handle] `null`.
-class LikesTimelineCubit extends TimelineCubit {
-  LikesTimelineCubit({
-    required this.handle,
+class ListTimelineCubit extends TimelineCubit {
+  ListTimelineCubit({
+    required this.listId,
   }) {
     loadInitial();
   }
 
-  final String? handle;
+  final String listId;
 
   @override
   void persistFilter(String encodedFilter) {}
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return app<TwitterApi>().tweetService.listFavorites(
-          screenName: handle,
+    return app<TwitterApi>().listsService.statuses(
+          listId: listId,
           count: 200,
-          sinceId: sinceId,
           maxId: maxId,
         );
   }
