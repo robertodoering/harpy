@@ -13,13 +13,6 @@ class HomeTimelineCubit extends TimelineCubit {
   }
 
   @override
-  bool get restoreInitialPosition =>
-      app<GeneralPreferences>().keepLastHomeTimelinePosition;
-
-  @override
-  int get restoredTweetId => app<TweetVisibilityPreferences>().lastVisibleTweet;
-
-  @override
   void persistFilter(String encodedFilter) {
     app<TimelineFilterPreferences>().homeTimelineFilter = encodedFilter;
   }
@@ -33,6 +26,13 @@ class HomeTimelineCubit extends TimelineCubit {
           excludeReplies: filter.excludesReplies,
         );
   }
+
+  @override
+  bool get restoreInitialPosition =>
+      app<GeneralPreferences>().keepLastHomeTimelinePosition;
+
+  @override
+  int get restoredTweetId => app<TweetVisibilityPreferences>().lastVisibleTweet;
 
   void addTweet(TweetData tweet) {
     final currentState = state;
