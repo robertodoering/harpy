@@ -117,7 +117,7 @@ class _Theme extends StatelessWidget {
             selectedDarkTheme: i == darkThemeId,
             // false positive
             // ignore: avoid_redundant_argument_values
-            enableBottomSheet: Harpy.isPro,
+            enableBottomSheet: isPro,
             onTap: () => selectTheme(
               themeBloc: bloc,
               lightThemeId: lightThemeId,

@@ -15,7 +15,7 @@ class ComposeScreen extends StatelessWidget {
   /// The tweet that the user is quoting (aka retweeting with quote).
   final TweetData? quotedTweet;
 
-  static const String route = 'compose_screen';
+  static const route = 'compose';
 
   @override
   Widget build(BuildContext context) {

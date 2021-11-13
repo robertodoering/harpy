@@ -21,12 +21,12 @@ class PaginatedState<T> with _$PaginatedState<T> {
 
 extension PaginatedStateExtension<T> on PaginatedState<T> {
   T? get data => mapOrNull(
-        data: (state) => state.data,
-        loadingMore: (state) => state.data,
+        data: (value) => value.data,
+        loadingMore: (value) => value.data,
       );
 
   bool get canLoadMore => maybeMap(
-        data: (data) => data.cursor != null && data.cursor != 0,
+        data: (value) => value.cursor != null && value.cursor != 0,
         orElse: () => false,
       );
 }

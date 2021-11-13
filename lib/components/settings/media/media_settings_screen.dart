@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class MediaSettingsScreen extends StatefulWidget {
   const MediaSettingsScreen();
 
-  static const String route = 'media_settings';
+  static const route = 'media_settings';
 
   @override
   _MediaSettingsScreenState createState() => _MediaSettingsScreenState();

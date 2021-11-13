@@ -270,7 +270,7 @@ class AboutScreen extends StatelessWidget {
           _buildIntroductionText(theme, linkStyle, isAuthenticated),
           defaultVerticalSpacer,
           _buildDonationText(theme, config),
-          if (Harpy.isFree) ...[
+          if (isFree) ...[
             defaultVerticalSpacer,
             _buildProText(theme, config, linkStyle),
           ],

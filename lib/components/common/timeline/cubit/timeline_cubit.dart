@@ -247,7 +247,7 @@ extension TimelineStateExtension on TimelineState {
   bool get hasTweets => tweets.isNotEmpty;
 
   bool get canLoadMore => maybeMap(
-        data: (data) => data.maxId != null && data.maxId != '0',
+        data: (value) => value.maxId != null && value.maxId != '0',
         orElse: () => false,
       );
 

@@ -5,7 +5,7 @@ const predefinedThemes = [
   _crow,
   _swan,
   _harpy,
-  if (Harpy.isPro) ...predefinedProThemes,
+  if (isPro) ...predefinedProThemes,
 ];
 
 const predefinedProThemes = [

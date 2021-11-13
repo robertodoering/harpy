@@ -29,7 +29,7 @@ class SetupFinishContent extends StatelessWidget {
               ],
             ),
           ),
-          if (Harpy.isPro)
+          if (isPro)
             Padding(
               padding: config.edgeInsets,
               child: const Center(

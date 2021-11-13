@@ -20,7 +20,7 @@ class AddCustomThemeCard extends StatelessWidget {
       color: Colors.transparent,
       leading: const Icon(CupertinoIcons.add),
       title: const Text('add custom theme'),
-      trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 28) : null,
+      trailing: isFree ? const FlareIcon.shiningStar(size: 28) : null,
       border: Border.all(color: theme.dividerColor),
       onTap: () => _pushCustomTheme(
         context,

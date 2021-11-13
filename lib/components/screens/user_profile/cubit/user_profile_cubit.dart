@@ -96,7 +96,7 @@ class UserProfileState with _$UserProfileState {
 
 extension UserProfileStateExtension on UserProfileState {
   bool get isTranslatingDescription => maybeMap(
-        data: (data) => data.isTranslatingDescription,
+        data: (value) => value.isTranslatingDescription,
         orElse: () => false,
       );
 }

@@ -105,7 +105,7 @@ class TweetSearchCubit extends Cubit<NewTweetSearchState> with HarpyLogger {
     required TweetSearchFilter? filter,
   }) {
     return state.maybeMap(
-      data: (data) => data.query == query && data.filter == filter,
+      data: (value) => value.query == query && value.filter == filter,
       orElse: () => false,
     );
   }
@@ -155,20 +155,20 @@ extension TweetSearchStateExtension on NewTweetSearchState {
   bool get hasData => this is _Data;
 
   BuiltList<TweetData> get tweets => maybeMap(
-        data: (data) => data.tweets,
+        data: (value) => value.tweets,
         orElse: () => BuiltList(),
       );
 
   String? get query => mapOrNull(
-        data: (data) => data.query,
-        noData: (noData) => noData.query,
-        loading: (loading) => loading.query,
-        error: (error) => error.query,
+        data: (value) => value.query,
+        noData: (value) => value.query,
+        loading: (value) => value.query,
+        error: (value) => value.query,
       );
 
   TweetSearchFilter? get filter => mapOrNull<TweetSearchFilter?>(
-        data: (data) => data.filter,
-        noData: (noData) => noData.filter,
-        error: (error) => error.filter,
+        data: (value) => value.filter,
+        noData: (value) => value.filter,
+        error: (value) => value.filter,
       );
 }

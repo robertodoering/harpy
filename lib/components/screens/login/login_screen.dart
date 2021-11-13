@@ -12,7 +12,7 @@ import 'package:pedantic/pedantic.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
 
-  static const String route = 'login';
+  static const route = 'login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

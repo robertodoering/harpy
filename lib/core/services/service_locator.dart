@@ -5,16 +5,15 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/core/preferences/home_tab_preferences.dart';
 import 'package:harpy/misc/misc.dart';
 
-/// [GetIt] is a simple service locator for accessing services from anywhere
-/// in the app.
-final GetIt app = GetIt.instance;
+final app = GetIt.instance;
 
-/// Adds the services to the [app] service locator.
+/// Adds all globally available services to the service locator.
 void setupServices() {
   app
     ..registerLazySingleton<TwitterApi>(
       () => TwitterApi(
         client: TwitterClient(
+          // updated in the `AuthenticationCubit`
           consumerKey: '',
           consumerSecret: '',
           token: '',

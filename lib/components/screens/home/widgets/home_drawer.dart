@@ -272,7 +272,7 @@ class _Entries extends StatelessWidget {
         onTap: () => app<HarpyNavigator>().pushNamed(SettingsScreen.route),
       ),
       defaultVerticalSpacer,
-      if (Harpy.isFree) ...[
+      if (isFree) ...[
         HarpyListCard(
           leading: FlareIcon.shiningStar(
             size: theme.iconTheme.size! + 8,

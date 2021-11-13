@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class GeneralSettingsScreen extends StatefulWidget {
   const GeneralSettingsScreen();
 
-  static const String route = 'general_settings';
+  static const route = 'general_settings';
 
   @override
   _GeneralSettingsScreenState createState() => _GeneralSettingsScreenState();

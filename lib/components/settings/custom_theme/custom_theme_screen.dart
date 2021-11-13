@@ -29,7 +29,7 @@ class CustomThemeScreen extends StatelessWidget {
   /// theme.
   final int themeId;
 
-  static const String route = 'custom_theme_screen';
+  static const route = 'custom_theme';
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _CustomThemeContent extends StatelessWidget {
                 child: ListView(
                   padding: config.edgeInsetsSymmetric(vertical: true),
                   children: [
-                    if (Harpy.isFree) ...[
+                    if (isFree) ...[
                       const CustomThemeProCard(),
                       defaultVerticalSpacer,
                     ],

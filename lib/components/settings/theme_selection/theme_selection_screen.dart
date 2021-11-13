@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class ThemeSelectionScreen extends StatelessWidget {
   const ThemeSelectionScreen();
 
-  static const String route = 'theme_selection';
+  static const route = 'theme_selection';
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             newDarkThemeId: i,
           ),
         ),
-      if (Harpy.isPro)
+      if (isPro)
         for (var i = 0; i < state.customThemesData.length; i++)
           ThemeCard(
             HarpyTheme.fromData(
@@ -101,7 +101,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             ),
           ),
       const AddCustomThemeCard(),
-      if (Harpy.isFree) ...[
+      if (isFree) ...[
         Padding(
           padding: config.edgeInsets,
           child: Text(

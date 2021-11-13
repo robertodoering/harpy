@@ -268,7 +268,7 @@ class AuthenticationState with _$AuthenticationState {
 }
 
 extension AuthenticationStateExtension on AuthenticationState {
-  UserData? get user => mapOrNull(authenticated: (data) => data.user);
+  UserData? get user => mapOrNull(authenticated: (value) => value.user);
 
   bool get isAuthenticated => this is _Authenticated;
   bool get isAwaitingAuthentication => this is _AwaitingAuthentication;

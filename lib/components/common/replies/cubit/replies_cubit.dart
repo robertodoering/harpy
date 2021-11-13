@@ -130,13 +130,13 @@ extension RepliesStateExtension on RepliesState {
   bool get hasParent => parent != null;
 
   TweetData? get parent => mapOrNull<TweetData?>(
-        data: (data) => data.parent,
-        noData: (noData) => noData.parent,
-        error: (error) => error.parent,
+        data: (value) => value.parent,
+        noData: (value) => value.parent,
+        error: (value) => value.parent,
       );
 
   BuiltList<TweetData> get replies => maybeMap(
-        data: (data) => data.replies,
+        data: (value) => value.replies,
         orElse: () => BuiltList(),
       );
 }

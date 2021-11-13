@@ -76,7 +76,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
 
   @override
   void didPop() {
-    if (Harpy.isPro || Harpy.isFree && kAssetFonts.contains(_selectedFont)) {
+    if (isPro || isFree && kAssetFonts.contains(_selectedFont)) {
       widget.onChanged(_selectedFont);
     }
   }
@@ -92,7 +92,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
     final style = theme.textTheme.subtitle2!;
 
     final children = [
-      if (Harpy.isFree) ...[
+      if (isFree) ...[
         const _FontSelectionProCard(),
         defaultSmallVerticalSpacer,
       ],
