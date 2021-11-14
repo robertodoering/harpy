@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Builds a card that represents a twitter list.
 class TwitterListCard extends StatelessWidget {
   const TwitterListCard(
     this.list, {
@@ -55,7 +54,7 @@ class TwitterListCard extends StatelessWidget {
           imageUrl: list.user!.profileImageUrl,
           radius: 8,
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         Flexible(
           child: Text(
             list.user!.name,
@@ -64,7 +63,7 @@ class TwitterListCard extends StatelessWidget {
             overflow: TextOverflow.fade,
           ),
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         Text(
           '@${list.user!.handle}',
           style: theme.textTheme.bodyText1,
@@ -83,7 +82,7 @@ class TwitterListCard extends StatelessWidget {
     return ListCardAnimation(
       key: key,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         onLongPress: onLongPress,
         onTap: onSelected,
         child: Card(
@@ -94,7 +93,7 @@ class TwitterListCard extends StatelessWidget {
               children: [
                 _buildTitle(config, theme),
                 if (list.hasDescription) _buildDescription(theme),
-                defaultSmallVerticalSpacer,
+                smallVerticalSpacer,
                 if (list.user != null) _buildUserRow(theme),
               ],
             ),

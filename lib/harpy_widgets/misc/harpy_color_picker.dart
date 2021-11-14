@@ -93,14 +93,14 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
         child: _ColorPickerTabListener(
           child: Column(
             children: [
-              defaultVerticalSpacer,
+              verticalSpacer,
               HarpyTabBar(tabs: children.keys.toList()),
-              defaultVerticalSpacer,
+              verticalSpacer,
               _ColorPickerHeader(
                 color: _color,
                 onColorChanged: _onColorChanged,
               ),
-              defaultVerticalSpacer,
+              verticalSpacer,
               SizedBox(
                 height: 340,
                 child: TabBarView(
@@ -108,7 +108,7 @@ class _HarpyColorPickerState extends State<HarpyColorPicker> {
                   children: children.values.toList(),
                 ),
               ),
-              defaultVerticalSpacer,
+              verticalSpacer,
               if (widget.allowTransparency)
                 Padding(
                   padding: config.edgeInsetsSymmetric(horizontal: true),
@@ -142,8 +142,8 @@ class _ColorPickerHeader extends StatelessWidget {
 
     return Row(
       children: [
-        defaultHorizontalSpacer,
-        defaultHorizontalSpacer,
+        horizontalSpacer,
+        horizontalSpacer,
         Container(
           width: 32,
           height: 32,
@@ -153,7 +153,7 @@ class _ColorPickerHeader extends StatelessWidget {
             border: Border.all(color: theme.dividerColor),
           ),
         ),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Theme(
             data: theme.copyWith(

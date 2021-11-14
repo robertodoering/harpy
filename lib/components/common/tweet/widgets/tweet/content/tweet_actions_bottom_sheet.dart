@@ -8,7 +8,7 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:intl/intl.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// Shows a harpy bottom sheet for the tweet actions.
 ///
@@ -20,9 +20,9 @@ void showTweetActionsBottomSheet(
   final theme = Theme.of(context);
   final bloc = context.read<TweetBloc>();
   final authCubit = context.read<AuthenticationCubit>();
-  final homeTimelineBloc = context.read<HomeTimelineBloc>();
+  final homeTimelineCubit = context.read<HomeTimelineCubit>();
 
-  final isAuthenticatedUser = bloc.tweet.user.id == authCubit.state.userId;
+  final isAuthenticatedUser = bloc.tweet.user.id == authCubit.state.user?.id;
 
   final showReply =
       ModalRoute.of(context)!.settings.name != ComposeScreen.route;
@@ -41,7 +41,7 @@ void showTweetActionsBottomSheet(
         child: Column(
           children: [
             Text('tweet from ${tweet.user.name}'),
-            defaultSmallVerticalSpacer,
+            smallVerticalSpacer,
             Text(tweetTime),
             // TODO: add tweet source here and make bottom sheet scrollable
           ],
@@ -59,12 +59,8 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             bloc.add(
-              DeleteTweet(
-                onDeleted: () {
-                  homeTimelineBloc.add(
-                    RemoveFromHomeTimeline(tweet: bloc.tweet),
-                  );
-                },
+              TweetEvent.delete(
+                onDeleted: () => homeTimelineCubit.removeTweet(bloc.tweet),
               ),
             );
             app<HarpyNavigator>().maybePop();

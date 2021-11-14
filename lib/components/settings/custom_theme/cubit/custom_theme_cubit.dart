@@ -27,7 +27,7 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
   late HarpyTheme harpyTheme;
 
   bool get validName => _nameRegex.hasMatch(state.name);
-  bool get modifiedTheme => Harpy.isPro && state != initialThemeData;
+  bool get modifiedTheme => isPro && state != initialThemeData;
   bool get canSaveTheme => modifiedTheme && validName;
 
   bool get canAddBackgroundColor => state.backgroundColors.length < 5;

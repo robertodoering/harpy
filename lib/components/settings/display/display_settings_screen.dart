@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class DisplaySettingsScreen extends StatelessWidget {
   const DisplaySettingsScreen();
 
-  static const String route = 'display_settings';
+  static const route = 'display_settings';
 
   @override
   Widget build(BuildContext context) {

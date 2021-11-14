@@ -5,14 +5,14 @@ import 'package:harpy/components/components.dart';
 class UserSearchScreen extends StatelessWidget {
   const UserSearchScreen();
 
-  static const String route = 'user_search_screen';
+  static const route = 'user_search';
 
   @override
   Widget build(BuildContext context) {
-    return HarpyScaffold(
-      body: BlocProvider<UserSearchBloc>(
-        create: (_) => UserSearchBloc(),
-        child: const UserSearchList(),
+    return BlocProvider<UserSearchCubit>(
+      create: (_) => UserSearchCubit(),
+      child: const HarpyScaffold(
+        body: UserSearchList(),
       ),
     );
   }

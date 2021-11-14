@@ -3,22 +3,16 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 /// Builds a [HarpyVideoPlayer] for the [TweetMedia] gif.
 class TweetGif extends StatelessWidget {
-  const TweetGif(
-    this.tweet, {
-    required this.tweetBloc,
-  });
+  const TweetGif();
 
-  final TweetData? tweet;
-  final TweetBloc tweetBloc;
-
-  void _openGallery(HarpyVideoPlayerModel model) {
+  void _openGallery(HarpyVideoPlayerModel model, TweetBloc bloc) {
     MediaOverlay.open(
-      tweet: tweet!,
-      tweetBloc: tweetBloc,
+      tweetBloc: bloc,
       enableImmersiveMode: false,
       overlap: true,
       child: WillPopScope(
@@ -31,9 +25,9 @@ class TweetGif extends StatelessWidget {
         },
         child: HarpyGifPlayer.fromModel(
           model,
-          thumbnail: tweet!.gif!.thumbnailUrl,
-          thumbnailAspectRatio: tweet!.gif!.validAspectRatio
-              ? tweet!.gif!.aspectRatioDouble
+          thumbnail: bloc.tweet.gif!.thumbnailUrl,
+          thumbnailAspectRatio: bloc.tweet.gif!.validAspectRatio
+              ? bloc.tweet.gif!.aspectRatioDouble
               : 16 / 9,
         ),
       ),
@@ -44,19 +38,21 @@ class TweetGif extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaPreferences = app<MediaPreferences>();
 
+    final bloc = context.watch<TweetBloc>();
+
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: kDefaultBorderRadius,
+      borderRadius: kBorderRadius,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
-          tweet!.gif!.appropriateUrl!,
+          bloc.tweet.gif!.appropriateUrl!,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
         ),
-        thumbnail: tweet!.gif!.thumbnailUrl,
-        onGifTap: _openGallery,
+        thumbnail: bloc.tweet.gif!.thumbnailUrl,
+        onGifTap: (model) => _openGallery(model, bloc),
         onGifLongPress: () => showTweetMediaBottomSheet(
           context,
-          url: tweet!.downloadMediaUrl(),
+          url: bloc.tweet.downloadMediaUrl(),
           mediaType: MediaType.gif,
         ),
         autoplay: mediaPreferences.shouldAutoplayMedia,

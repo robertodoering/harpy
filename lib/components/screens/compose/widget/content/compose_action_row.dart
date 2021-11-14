@@ -24,16 +24,16 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.photo),
           iconSize: 20,
-          onTap: () => bloc.add(const PickTweetMediaEvent()),
+          onTap: () => bloc.add(const ComposeEvent.pickMedia()),
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
           onTap: () => controller.insertString('@'),
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         HarpyButton.flat(
           padding: config.edgeInsets,
           text: const Text('#', style: TextStyle(fontSize: 20)),
@@ -52,7 +52,7 @@ class PostTweetButton extends StatefulWidget {
     required this.controller,
   });
 
-  final ComposeTextController? controller;
+  final ComposeTextController controller;
 
   @override
   _PostTweetButtonState createState() => _PostTweetButtonState();
@@ -63,14 +63,14 @@ class _PostTweetButtonState extends State<PostTweetButton> {
   void initState() {
     super.initState();
 
-    widget.controller!.addListener(_listener);
+    widget.controller.addListener(_listener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    widget.controller!.removeListener(_listener);
+    widget.controller.removeListener(_listener);
   }
 
   void _listener() {
@@ -93,7 +93,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
       // since no navigation can happen while the dialog is showing, we can
       // that the context is still valid
       // ignore: use_build_context_synchronously
-      context.read<HomeTimelineBloc>().add(AddToHomeTimeline(tweet: sentTweet));
+      context.read<HomeTimelineCubit>().addTweet(sentTweet);
 
       // ignore: use_build_context_synchronously
       Navigator.popUntil(
@@ -110,7 +110,7 @@ class _PostTweetButtonState extends State<PostTweetButton> {
     final bloc = context.watch<ComposeBloc>();
 
     final canTweet =
-        bloc.state.hasMedia || widget.controller!.text.trim().isNotEmpty;
+        bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
     return HarpyButton.flat(
       padding: config.edgeInsets,

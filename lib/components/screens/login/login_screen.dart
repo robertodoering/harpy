@@ -12,7 +12,7 @@ import 'package:pedantic/pedantic.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
 
-  static const String route = 'login';
+  static const route = 'login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authCubit = context.watch<AuthenticationCubit>();
 
     return HarpyBackground(
-      child: authCubit.state is AwaitingAuthentication
+      child: authCubit.state.isAwaitingAuthentication
           ? const Center(child: CircularProgressIndicator())
           : _buildLoginScreen(theme, authCubit),
     );

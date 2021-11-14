@@ -21,7 +21,7 @@ class HomeTabEntry extends Equatable {
   ///
   /// Represent a default view (e.g. 'home', 'search') or the id of a list
   /// when [type] is `list`.
-  final String? id;
+  final String id;
 
   /// The type of this entry.
   ///

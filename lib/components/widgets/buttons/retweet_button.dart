@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
 /// The retweet button for a [TweetCardActionsRow].
 class RetweetButton extends StatefulWidget {
-  const RetweetButton(
-    this.bloc, {
+  const RetweetButton({
     this.padding = const EdgeInsets.all(8),
     this.iconSize = 21,
     this.sizeDelta = 0,
     this.overlayForegroundColor,
   });
 
-  final TweetBloc bloc;
   final EdgeInsets padding;
   final double iconSize;
   final double sizeDelta;
@@ -33,7 +29,7 @@ class RetweetButton extends StatefulWidget {
 }
 
 class _RetweetButtonState extends State<RetweetButton> {
-  Future<void> _showRetweetButtonMenu() async {
+  Future<void> _showRetweetButtonMenu(TweetBloc bloc) async {
     final popupMenuTheme = PopupMenuTheme.of(context);
 
     final button = context.findRenderObject() as RenderBox;
@@ -81,11 +77,6 @@ class _RetweetButtonState extends State<RetweetButton> {
             style: TextStyle(color: widget.overlayForegroundColor),
           ),
         ),
-        const HarpyPopupMenuItem<int>(
-          value: 2,
-          icon: Icon(FeatherIcons.eye),
-          text: Text('view retweeters'),
-        ),
       ],
       position: position,
       shape: popupMenuTheme.shape,
@@ -93,15 +84,9 @@ class _RetweetButtonState extends State<RetweetButton> {
     );
 
     if (result == 0) {
-      widget.bloc.onRetweet();
+      bloc.onRetweet();
     } else if (result == 1) {
-      widget.bloc.onComposeQuote();
-    } else if (result == 2) {
-      app<HarpyNavigator>().pushRetweetsScreen(
-        tweetId: widget.bloc.tweet.id,
-        //TODO find a way to change this using blocs
-        sort: 'mostFollowers',
-      );
+      bloc.onComposeQuote();
     }
   }
 
@@ -113,7 +98,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final bloc = context.watch<TweetBloc>();
 
     return ActionButton(
-      active: widget.bloc.tweet.retweeted,
+      active: bloc.state.retweeted,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: theme.textTheme.button!
@@ -125,8 +110,8 @@ class _RetweetButtonState extends State<RetweetButton> {
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
           .apply(fontSizeDelta: widget.sizeDelta),
-      value: widget.bloc.tweet.retweetCount,
-      activate: _showRetweetButtonMenu,
+      value: bloc.tweet.retweetCount,
+      activate: () => _showRetweetButtonMenu(bloc),
       deactivate: bloc.onUnretweet,
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,

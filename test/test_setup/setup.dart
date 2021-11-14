@@ -52,8 +52,8 @@ Future<void> setupApp() async {
 /// widget tests.
 Widget buildAppBase(
   Widget child, {
-  HomeTimelineState? homeTimelineState,
-  MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
+  TimelineState? homeTimelineState,
+  TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
 }) {
   return _MockGlobalProviders(
     homeTimelineState: homeTimelineState ?? _defaultHomeTimelineState,
@@ -85,8 +85,8 @@ Widget buildAppBase(
 /// Wraps the [child] in a [ListView] before building the app base.
 Widget buildAppListBase(
   Widget child, {
-  HomeTimelineState? homeTimelineState,
-  MentionsTimelineState mentionsTimelineState = const MentionsTimelineInitial(),
+  TimelineState? homeTimelineState,
+  TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
 }) {
   return buildAppBase(
     ListView(
@@ -105,8 +105,8 @@ class _MockGlobalProviders extends StatelessWidget {
   });
 
   final WidgetBuilder builder;
-  final HomeTimelineState homeTimelineState;
-  final MentionsTimelineState mentionsTimelineState;
+  final TimelineState homeTimelineState;
+  final TimelineState<bool> mentionsTimelineState;
 
   @override
   Widget build(BuildContext context) {
@@ -119,11 +119,11 @@ class _MockGlobalProviders extends StatelessWidget {
               configCubit: context.read<ConfigCubit>(),
             ),
           ),
-          BlocProvider<HomeTimelineBloc>(
-            create: (_) => MockHomeTimelineBloc(homeTimelineState),
+          BlocProvider<HomeTimelineCubit>(
+            create: (_) => MockHomeTimelineCubit(homeTimelineState),
           ),
-          BlocProvider<MentionsTimelineBloc>(
-            create: (_) => MockMentionsTimelineBloc(mentionsTimelineState),
+          BlocProvider<MentionsTimelineCubit>(
+            create: (_) => MockMentionsTimelineCubit(mentionsTimelineState),
           ),
         ],
         child: Builder(builder: builder),
@@ -132,9 +132,7 @@ class _MockGlobalProviders extends StatelessWidget {
   }
 }
 
-final _defaultHomeTimelineState = HomeTimelineResult(
-  maxId: '',
-  newTweets: 0,
-  timelineFilter: TimelineFilter.empty,
+final _defaultHomeTimelineState = TimelineState.data(
   tweets: exampleTweetList,
+  maxId: '',
 );

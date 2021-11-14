@@ -7,7 +7,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class LanguageSettingsScreen extends StatefulWidget {
   const LanguageSettingsScreen();
 
-  static const String route = 'language_settings';
+  static const route = 'language_settings';
 
   @override
   _LanguageSettingsScreenState createState() => _LanguageSettingsScreenState();

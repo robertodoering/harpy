@@ -1,4 +1,4 @@
-Map<String, String> translateLanguages = <String, String>{
+const translateLanguages = {
   /* Afrikaans */ 'af': 'Afrikaans',
   /* Albanian */ 'sq': 'Albanian',
   /* Amharic */ 'am': 'Amharic',

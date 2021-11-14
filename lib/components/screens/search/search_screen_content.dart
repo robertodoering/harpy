@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class SearchScreenContent extends StatelessWidget {
   const SearchScreenContent({
-    this.beginSlivers = const <Widget>[],
+    this.beginSlivers = const [],
   });
 
   final List<Widget> beginSlivers;
@@ -43,7 +43,7 @@ class SearchScreenContent extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 _buildUserSearchCard(),
-                defaultVerticalSpacer,
+                verticalSpacer,
                 _buildTweetSearchCard(),
               ]),
             ),
@@ -55,7 +55,7 @@ class SearchScreenContent extends StatelessWidget {
             child: TrendsCard(),
           ),
           const SliverToBoxAdapter(
-            child: defaultVerticalSpacer,
+            child: verticalSpacer,
           ),
           const TrendsList(),
           SliverToBoxAdapter(

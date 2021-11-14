@@ -6,7 +6,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Used to select the location that is used by the [TrendsBloc] to show
+/// Used to select the location that is used by the [TrendsCubit] to show
 /// local trends from the list of predefined locations that twitter has
 /// trends for.
 ///
@@ -14,24 +14,7 @@ import 'package:provider/provider.dart';
 class SelectLocationListTile extends StatelessWidget {
   const SelectLocationListTile();
 
-  Widget _buildTrailing(TrendsLocationsBloc bloc, TrendsLocationsState state) {
-    Widget child;
-
-    if (state.isLoading) {
-      child = const Padding(
-        padding: EdgeInsets.all(8),
-        child: CircularProgressIndicator(),
-      );
-    } else if (state.hasFailed) {
-      child = HarpyButton.flat(
-        padding: const EdgeInsets.all(8),
-        icon: const Icon(CupertinoIcons.refresh),
-        onTap: () => bloc.add(const LoadTrendsLocations()),
-      );
-    } else {
-      child = const SizedBox();
-    }
-
+  Widget _buildTrailing(TrendsLocationsCubit locationCubit) {
     return Container(
       width: 50,
       height: 50,
@@ -40,40 +23,52 @@ class SelectLocationListTile extends StatelessWidget {
         duration: kShortAnimationDuration,
         switchInCurve: Curves.easeInOut,
         switchOutCurve: Curves.easeInOut,
-        child: child,
+        child: locationCubit.state.maybeMap(
+          loading: (_) => const Padding(
+            padding: EdgeInsets.all(8),
+            child: CircularProgressIndicator(),
+          ),
+          error: (_) => HarpyButton.flat(
+            padding: const EdgeInsets.all(8),
+            icon: const Icon(CupertinoIcons.refresh),
+            onTap: locationCubit.load,
+          ),
+          orElse: () => const SizedBox(),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final trendsBloc = context.watch<TrendsBloc>();
-    final trendsState = trendsBloc.state;
+    final trendsCubit = context.watch<TrendsCubit>();
+    final trendsState = trendsCubit.state;
 
-    final locationBloc = context.watch<TrendsLocationsBloc>();
-    final locationState = locationBloc.state;
+    final locationCubit = context.watch<TrendsLocationsCubit>();
+    final locationState = locationCubit.state;
 
     return RadioDialogTile<TrendsLocationData>(
       value: trendsState.location ?? TrendsLocationData.worldwide,
       leading: CupertinoIcons.list_bullet,
       title: 'select location',
-      trailing: _buildTrailing(locationBloc, locationState),
+      trailing: _buildTrailing(locationCubit),
       trailingPadding: EdgeInsets.zero,
       description: 'change the trends location',
       denseRadioTiles: true,
-      titles: [TrendsLocationData.worldwide]
-          .followedBy(locationState.locations)
-          .map((e) => e.name)
-          .toList(),
-      values: [TrendsLocationData.worldwide]
-          .followedBy(locationState.locations)
-          .toList(),
-      enabled: locationState.hasLocations,
+      titles: [
+        TrendsLocationData.worldwide,
+        ...locationState.locations,
+      ].map((e) => e.name).toList(),
+      values: [
+        TrendsLocationData.worldwide,
+        ...locationState.locations,
+      ],
+      enabled: locationState.hasData,
       popOnOpen: true,
       onChanged: (location) {
         if (location != null) {
           HapticFeedback.lightImpact();
-          trendsBloc.add(UpdateTrendsLocation(location: location));
+          trendsCubit.updateLocation(location: location);
         }
       },
     );

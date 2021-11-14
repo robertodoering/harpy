@@ -13,7 +13,7 @@ class BottomSheetHandle extends StatelessWidget {
       height: 3,
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         color: theme.colorScheme.onBackground.withOpacity(.2),
       ),
     );

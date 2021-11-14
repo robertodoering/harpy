@@ -23,3 +23,24 @@ List<String> removeFromList(List<String> list, int index) {
     return list;
   }
 }
+
+/// Splits the [list] into smaller lists with a max [length].
+List<List<T>> splitList<T>(List<T> list, int length) {
+  final chunks = <List<T>>[];
+  Iterable<T> chunk;
+
+  do {
+    final remainingEntries = list.sublist(
+      chunks.length * length,
+    );
+
+    if (remainingEntries.isEmpty) {
+      break;
+    }
+
+    chunk = remainingEntries.take(length);
+    chunks.add(List<T>.from(chunk));
+  } while (chunk.length == length);
+
+  return chunks;
+}

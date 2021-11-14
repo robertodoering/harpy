@@ -51,6 +51,13 @@ class _MediaTimelineGalleryOverlayState
     _bloc = TweetBloc(_tweet);
   }
 
+  @override
+  void dispose() {
+    _bloc.close();
+
+    super.dispose();
+  }
+
   void _onPageChanged(int newIndex) {
     _index = newIndex;
 
@@ -59,6 +66,7 @@ class _MediaTimelineGalleryOverlayState
     if (mounted && newTweet.id != _tweet.id) {
       setState(() {
         _tweet = newTweet;
+        _bloc.close();
         _bloc = TweetBloc(_tweet);
       });
     }
@@ -66,11 +74,9 @@ class _MediaTimelineGalleryOverlayState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TweetBloc, TweetState>(
-      bloc: _bloc,
-      builder: (_, __) => MediaOverlay(
-        tweet: _tweet,
-        tweetBloc: _bloc,
+    return BlocProvider.value(
+      value: _bloc,
+      child: MediaOverlay(
         enableImmersiveMode: false,
         onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
         onDownload: () => defaultOnMediaDownload(_tweet.mediaType, _mediaUrl),

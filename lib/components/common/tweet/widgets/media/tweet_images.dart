@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the images for the [TweetMedia] using the [TweetImagesLayout].
 class TweetImages extends StatefulWidget {
-  const TweetImages(
-    this.tweet, {
-    required this.tweetBloc,
+  const TweetImages({
     this.uncroppedImage = false,
   });
-
-  final TweetData? tweet;
-  final TweetBloc tweetBloc;
 
   /// Whether the image is displayed in (almost) full size.
   final bool uncroppedImage;
@@ -22,76 +18,76 @@ class TweetImages extends StatefulWidget {
 }
 
 class _TweetImagesState extends State<TweetImages> {
-  List<ImageData>? get _images => widget.tweet!.images;
-
   /// The current index the gallery is showing.
   ///
   /// Used to determine what image to download.
   int _galleryIndex = 0;
 
-  void _onImageTap(int index) {
+  void _onImageTap(int index, TweetBloc bloc) {
     _galleryIndex = index;
 
-    final mediaUrl = widget.tweet!.downloadMediaUrl(_galleryIndex);
+    final mediaUrl = bloc.tweet.downloadMediaUrl(_galleryIndex);
 
     MediaOverlay.open(
-      tweet: widget.tweet!,
-      tweetBloc: widget.tweetBloc,
+      tweetBloc: bloc,
       overlap: true,
-      onDownload: () => defaultOnMediaDownload(
-        widget.tweet!.mediaType,
-        mediaUrl,
-      ),
+      onDownload: () => defaultOnMediaDownload(bloc.tweet.mediaType, mediaUrl),
       onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
       onShare: () => defaultOnMediaShare(mediaUrl),
       child: HarpyMediaGallery.builder(
-        itemCount: _images!.length,
+        itemCount: bloc.tweet.images!.length,
         initialIndex: index,
-        beginBorderRadiusBuilder: _borderRadiusForImage,
-        heroTagBuilder: (index) => _images!.map(_imageHeroTag).toList()[index],
+        beginBorderRadiusBuilder: (index) => _borderRadiusForImage(
+          index,
+          bloc.tweet.images!.length,
+        ),
+        heroTagBuilder: (index) =>
+            bloc.tweet.images!.map(_imageHeroTag).toList()[index],
         onPageChanged: (newIndex) => _galleryIndex = newIndex,
         builder: (_, index) => HarpyImage(
-          imageUrl: _images![index].appropriateUrl,
+          imageUrl: bloc.tweet.images![index].appropriateUrl,
         ),
       ),
     );
   }
 
-  Future<void> _onImageLongPress(int index, BuildContext context) async {
+  Future<void> _onImageLongPress(
+    int index,
+    BuildContext context,
+    TweetData tweet,
+  ) async {
     _galleryIndex = index;
 
     showTweetMediaBottomSheet(
       context,
-      url: widget.tweet!.downloadMediaUrl(index),
+      url: tweet.downloadMediaUrl(index),
       mediaType: MediaType.image,
     );
   }
 
-  BorderRadius _borderRadiusForImage(int index) {
-    final count = _images!.length;
-
+  BorderRadius _borderRadiusForImage(int index, int count) {
     if (count == 1) {
-      return const BorderRadius.all(kDefaultRadius);
+      return const BorderRadius.all(kRadius);
     } else if (count == 2) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 1 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 0 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 1 ? kRadius : Radius.zero,
       );
     } else if (count == 3) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 2 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 0 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 2 ? kRadius : Radius.zero,
       );
     } else if (count == 4) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 2 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 3 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 2 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 3 ? kRadius : Radius.zero,
       );
     } else {
       return BorderRadius.zero;
@@ -108,31 +104,32 @@ class _TweetImagesState extends State<TweetImages> {
         : '${image.hashCode}';
   }
 
-  List<Widget> _buildImages() {
-    return _images!.map((image) {
-      final child = HarpyImage(
-        imageUrl: image.appropriateUrl,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-      );
-
-      return Hero(
-        tag: _imageHeroTag(image),
-        // keep building the image since the images can be visible in the
-        // background of the image gallery
-        placeholderBuilder: (_, __, child) => child,
-        child: child,
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final bloc = context.watch<TweetBloc>();
+
     return TweetImagesLayout(
-      onImageTap: _onImageTap,
-      onImageLongPress: _onImageLongPress,
-      children: _buildImages(),
+      onImageTap: (index) => _onImageTap(index, bloc),
+      onImageLongPress: (index, context) => _onImageLongPress(
+        index,
+        context,
+        bloc.tweet,
+      ),
+      children: [
+        for (final image in bloc.tweet.images!)
+          Hero(
+            tag: _imageHeroTag(image),
+            // keep building the image since the images can be visible in the
+            // background of the image gallery
+            placeholderBuilder: (_, __, child) => child,
+            child: HarpyImage(
+              imageUrl: image.appropriateUrl,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+      ],
     );
   }
 }

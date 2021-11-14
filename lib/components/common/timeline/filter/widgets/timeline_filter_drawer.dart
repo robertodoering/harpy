@@ -51,14 +51,14 @@ class TimelineFilterDrawer extends StatelessWidget {
           onSubmitted: model.addExcludingPhrase,
           onDeleted: model.removeExcludingPhrase,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'hashtag',
           activeFilters: model.value.excludesHashtags,
           onSubmitted: model.addExcludingHashtag,
           onDeleted: model.removeExcludingHashtag,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterSwitchTile(
           text: 'replies',
           value: model.value.excludesReplies,

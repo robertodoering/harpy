@@ -39,7 +39,7 @@ class InfoRowPlaceholder extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         const Expanded(
           child: PlaceholderBox(
             widthFactor: .3,

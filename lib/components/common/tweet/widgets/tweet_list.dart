@@ -51,7 +51,7 @@ class TweetList extends StatelessWidget {
     if (index.isEven) {
       return tweetBuilder(tweets[index ~/ 2]);
     } else {
-      return defaultVerticalSpacer;
+      return verticalSpacer;
     }
   }
 

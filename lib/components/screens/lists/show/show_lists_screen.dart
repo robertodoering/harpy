@@ -16,7 +16,7 @@ class ShowListsScreen extends StatelessWidget {
   /// When `null`, the list timeline screen will be navigated to.
   final ValueChanged<TwitterListData>? onListSelected;
 
-  static const String route = 'show_lists_screen';
+  static const route = 'show_lists';
 
   @override
   Widget build(BuildContext context) {

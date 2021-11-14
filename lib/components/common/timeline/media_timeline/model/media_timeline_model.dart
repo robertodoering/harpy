@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 
+// TODO: refactor into cubit
+
 /// Contains a list of entries for the [MediaTimelineModel].
 ///
 /// Each entry represents one image, gif or video that is mapped to its

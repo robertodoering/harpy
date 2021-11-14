@@ -9,7 +9,7 @@ import 'package:harpy/misc/misc.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen();
 
-  static const String route = 'settings';
+  static const route = 'settings';
 
   Map<String, List<Widget>> get _settings {
     return {

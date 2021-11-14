@@ -60,7 +60,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     await authenticationCubit.restoreSession();
 
-    if (authenticationCubit.state is Authenticated) {
+    if (authenticationCubit.state.isAuthenticated) {
       // navigate to home screen after session has been restored
       app<HarpyNavigator>().pushReplacementNamed(HomeScreen.route);
     } else {
@@ -73,11 +73,6 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     emit(ApplicationState.initialized);
   }
-}
-
-enum ApplicationState {
-  uninitialized,
-  initialized,
 }
 
 /// Changes the system ui to the initial theme for the initialization.
@@ -100,4 +95,9 @@ Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
   }
 
   updateSystemUi(initialTheme);
+}
+
+enum ApplicationState {
+  uninitialized,
+  initialized,
 }

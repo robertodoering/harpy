@@ -55,8 +55,8 @@ class _SetupWelcomeContentState extends State<SetupWelcomeContent>
                     ),
                   ),
                 ),
-                defaultVerticalSpacer,
-                defaultVerticalSpacer,
+                verticalSpacer,
+                verticalSpacer,
                 SlideInAnimation(
                   delay: const Duration(milliseconds: 800),
                   duration: const Duration(milliseconds: 1600),
@@ -80,7 +80,7 @@ class _SetupWelcomeContentState extends State<SetupWelcomeContent>
               ],
             ),
           ),
-          defaultVerticalSpacer,
+          verticalSpacer,
           SlideInAnimation(
             delay: const Duration(milliseconds: 2400),
             duration: const Duration(milliseconds: 900),
@@ -99,7 +99,7 @@ class _SetupWelcomeContentState extends State<SetupWelcomeContent>
               ),
             ),
           ),
-          defaultVerticalSpacer,
+          verticalSpacer,
           Expanded(
             child: BounceInAnimation(
               delay: const Duration(milliseconds: 2800),
@@ -112,7 +112,7 @@ class _SetupWelcomeContentState extends State<SetupWelcomeContent>
                       style: theme.textTheme.headline6!.copyWith(height: 1),
                       maxLines: 1,
                     ),
-                    defaultSmallHorizontalSpacer,
+                    smallHorizontalSpacer,
                     const Icon(CupertinoIcons.chevron_right),
                   ],
                 ),

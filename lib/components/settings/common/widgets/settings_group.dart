@@ -24,7 +24,7 @@ class SettingsGroup extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: config.paddingValue),
           child: Text(title, style: theme.textTheme.headline4),
         ),
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
         ...children,
       ],
     );

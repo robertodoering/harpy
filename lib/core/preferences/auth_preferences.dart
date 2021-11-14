@@ -23,13 +23,13 @@ class AuthPreferences {
 
   TwitterAuth initializeTwitterAuth() {
     if (app<AuthPreferences>().auth == -1) {
-      final count = app<AppConfig>().credentialsCount;
+      final count = app<EnvConfig>().credentialsCount;
 
       app<AuthPreferences>().auth = Random().nextInt(count);
     }
 
-    final key = app<AppConfig>().key(app<AuthPreferences>().auth);
-    final secret = app<AppConfig>().secret(app<AuthPreferences>().auth);
+    final key = app<EnvConfig>().key(app<AuthPreferences>().auth);
+    final secret = app<EnvConfig>().secret(app<AuthPreferences>().auth);
 
     return TwitterAuth(
       consumerKey: key,

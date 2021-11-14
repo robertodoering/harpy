@@ -38,15 +38,15 @@ class UserPlaceholder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               PlaceholderBox(widthFactor: .75, height: 15),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
               PlaceholderBox(widthFactor: .3, height: 15),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
               PlaceholderBox(widthFactor: 1, height: 15),
             ],
           ),

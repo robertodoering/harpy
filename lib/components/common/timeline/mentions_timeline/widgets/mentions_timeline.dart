@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,70 +9,53 @@ class MentionsTimeline extends StatefulWidget {
   const MentionsTimeline({
     required this.indexInTabView,
     this.beginSlivers = const [],
+    this.refreshIndicatorOffset,
   });
 
   final int indexInTabView;
   final List<Widget> beginSlivers;
+  final double? refreshIndicatorOffset;
 
   @override
   _MentionsTimelineState createState() => _MentionsTimelineState();
 }
 
 class _MentionsTimelineState extends State<MentionsTimeline> {
-  late TabController _controller;
+  TabController? _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _controller ??= DefaultTabController.of(context)?..addListener(_listener);
 
-    _controller = DefaultTabController.of(context)!..addListener(_listener);
+    assert(_controller != null);
   }
 
   @override
   void dispose() {
     super.dispose();
-
-    _controller.removeListener(_listener);
+    _controller?.removeListener(_listener);
   }
 
   void _listener() {
-    if (mounted && _controller.index == widget.indexInTabView) {
-      context.read<MentionsTimelineBloc>().add(const UpdateViewedMentions());
+    if (mounted && _controller?.index == widget.indexInTabView) {
+      context.read<MentionsTimelineCubit>().updateViewedMentions();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    final cubit = context.watch<MentionsTimelineCubit>();
+    final state = cubit.state;
 
-    final bloc = context.watch<MentionsTimelineBloc>();
-    final state = bloc.state;
-
-    return ScrollToStart(
-      child: TweetList(
-        state.timelineTweets,
-        key: const PageStorageKey<String>('mentions_timeline'),
+    return BlocProvider<TimelineCubit>.value(
+      value: cubit,
+      child: Timeline(
+        listKey: const PageStorageKey('mentions_timeline'),
+        refreshIndicatorOffset: widget.refreshIndicatorOffset,
         beginSlivers: [
           ...widget.beginSlivers,
-          if (state.hasMentions) const _TopRow(),
-        ],
-        endSlivers: [
-          if (state.showLoading)
-            const TweetListLoadingSliver()
-          else if (state.showNoMentionsFound)
-            const SliverFillLoadingError(
-              message: Text('no mentions found'),
-            )
-          else if (state.showMentionsError)
-            SliverFillLoadingError(
-              message: const Text('error loading mentions'),
-              onRetry: () => bloc.add(
-                const RequestMentionsTimeline(updateViewedMention: true),
-              ),
-            ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: mediaQuery.padding.bottom),
-          ),
+          if (state.hasTweets) const _TopRow(),
         ],
       ),
     );
@@ -85,7 +69,7 @@ class _TopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<MentionsTimelineBloc>();
+    final cubit = context.watch<MentionsTimelineCubit>();
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -101,9 +85,7 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () => bloc.add(
-                const RequestMentionsTimeline(updateViewedMention: true),
-              ),
+              onTap: () => cubit.load(clearPrevious: true),
             ),
           ],
         ),

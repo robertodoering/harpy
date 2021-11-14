@@ -34,7 +34,7 @@ class AddListHomeTabCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor),
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
       ),
       child: InkWell(
         onTap: proDisabled
@@ -46,7 +46,7 @@ class AddListHomeTabCard extends StatelessWidget {
                     model.addList(list: list);
                   },
                 ),
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: Row(
           children: [
             icon,

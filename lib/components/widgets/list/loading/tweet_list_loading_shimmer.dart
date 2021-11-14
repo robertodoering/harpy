@@ -41,24 +41,24 @@ class TweetPlaceholder extends StatelessWidget {
         Row(
           children: [
             const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   PlaceholderBox(widthFactor: .75, height: 15),
-                  defaultSmallVerticalSpacer,
+                  smallVerticalSpacer,
                   PlaceholderBox(widthFactor: .5, height: 15),
                 ],
               ),
             )
           ],
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         const PlaceholderBox(widthFactor: .6, height: 15),
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
         const PlaceholderBox(height: 15),
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
         const PlaceholderBox(widthFactor: .8, height: 15),
       ],
     );

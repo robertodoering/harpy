@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -7,20 +8,14 @@ import 'package:provider/provider.dart';
 class ChangelogScreen extends StatefulWidget {
   const ChangelogScreen();
 
-  static const String route = 'changelog_screen';
+  static const route = 'changelog';
 
   @override
   _ChangelogScreenState createState() => _ChangelogScreenState();
 }
 
 class _ChangelogScreenState extends State<ChangelogScreen> {
-  final HarpyInfo? harpyInfo = app<HarpyInfo>();
-  final ChangelogParser? changelogParser = app<ChangelogParser>();
-
-  List<ChangelogData?>? _dataList;
-
-  int get _currentVersion =>
-      int.tryParse(harpyInfo!.packageInfo!.buildNumber) ?? 0;
+  BuiltList<ChangelogData>? _dataList;
 
   @override
   void initState() {
@@ -30,19 +25,21 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
   }
 
   Future<void> _initChangelogData() async {
-    final dataFutures =
-        List<int>.generate(_currentVersion + 1, (index) => index)
-            .map(
-              (versionCode) => changelogParser!.parse(context, '$versionCode'),
-            )
-            .toList();
+    final currentVersion =
+        int.tryParse(app<HarpyInfo>().packageInfo?.buildNumber ?? '0') ?? 0;
 
-    var dataList = await Future.wait<ChangelogData?>(dataFutures);
-
-    dataList = dataList.whereType<ChangelogData>().toList().reversed.toList();
+    final dataList = await Future.wait(
+      List<int>.generate(currentVersion + 1, (index) => index).map(
+        (versionCode) => app<ChangelogParser>().parse(
+          context,
+          '$versionCode',
+        ),
+      ),
+    );
 
     setState(() {
-      _dataList = dataList;
+      _dataList =
+          dataList.whereType<ChangelogData>().toList().reversed.toBuiltList();
     });
   }
 
@@ -69,7 +66,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
             ),
           ),
         ),
-        separatorBuilder: (_, __) => defaultVerticalSpacer,
+        separatorBuilder: (_, __) => verticalSpacer,
       );
     }
 

@@ -43,11 +43,13 @@ class HarpySliverAppBar extends StatelessWidget {
         if (titleWidget != null) Expanded(child: titleWidget!),
         if (title != null)
           Flexible(
-            child: Text(
-              title ?? '',
-              style: theme.textTheme.headline6,
-              overflow: TextOverflow.fade,
-              softWrap: false,
+            child: FittedBox(
+              child: Text(
+                title ?? '',
+                style: theme.textTheme.headline6,
+                overflow: TextOverflow.fade,
+                softWrap: false,
+              ),
             ),
           ),
         if (showIcon) ...[

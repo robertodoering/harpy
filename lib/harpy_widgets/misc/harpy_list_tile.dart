@@ -87,7 +87,7 @@ class HarpyListTile extends StatelessWidget {
                             child: title!,
                           ),
                         if (title != null && subtitle != null)
-                          defaultSmallVerticalSpacer,
+                          smallVerticalSpacer,
                         if (subtitle != null)
                           DefaultTextStyle(
                             maxLines: multilineSubtitle ? null : 1,

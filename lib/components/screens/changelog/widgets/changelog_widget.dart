@@ -6,12 +6,12 @@ import 'package:harpy/misc/misc.dart';
 class ChangelogWidget extends StatelessWidget {
   const ChangelogWidget(this.data);
 
-  final ChangelogData? data;
+  final ChangelogData data;
 
   Widget _spacedColumn(List<Widget> children) {
     return Column(
       children: [
-        for (Widget child in children) ...[
+        for (final child in children) ...[
           child,
           if (child != children.last) const SizedBox(height: 12),
         ],
@@ -22,7 +22,7 @@ class ChangelogWidget extends StatelessWidget {
   Widget _buildHeaderText() {
     return Column(
       children: [
-        for (String headerLine in data!.headerLines)
+        for (final headerLine in data.headerLines)
           Text(headerLine, textAlign: TextAlign.start),
         const SizedBox(height: 12)
       ],
@@ -60,7 +60,7 @@ class ChangelogWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (String line in additionalInformation) ...[
+        for (final line in additionalInformation) ...[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -77,7 +77,7 @@ class ChangelogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final additions = data!.additions
+    final additions = data.additions
         .map(
           (entry) => _buildEntry(
             entry,
@@ -86,7 +86,7 @@ class ChangelogWidget extends StatelessWidget {
         )
         .toList();
 
-    final changes = data!.changes
+    final changes = data.changes
         .map(
           (entry) => _buildEntry(
             entry,
@@ -98,7 +98,7 @@ class ChangelogWidget extends StatelessWidget {
         )
         .toList();
 
-    final fixes = data!.fixes
+    final fixes = data.fixes
         .map(
           (entry) => _buildEntry(
             entry,
@@ -110,7 +110,7 @@ class ChangelogWidget extends StatelessWidget {
         )
         .toList();
 
-    final removals = data!.removals
+    final removals = data.removals
         .map(
           (entry) => _buildEntry(
             entry,
@@ -119,7 +119,7 @@ class ChangelogWidget extends StatelessWidget {
         )
         .toList();
 
-    final others = data!.others
+    final others = data.others
         .map(
           (entry) => _buildEntry(
             entry,
@@ -132,7 +132,7 @@ class ChangelogWidget extends StatelessWidget {
         .toList();
 
     return _spacedColumn([
-      if (data?.headerLines != null) _buildHeaderText(),
+      if (data.headerLines.isNotEmpty) _buildHeaderText(),
       if (additions.isNotEmpty) _spacedColumn(additions),
       if (changes.isNotEmpty) _spacedColumn(changes),
       if (fixes.isNotEmpty) _spacedColumn(fixes),

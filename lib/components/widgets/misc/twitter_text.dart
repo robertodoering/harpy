@@ -10,7 +10,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
 typedef EntityTapped<T> = void Function(BuildContext context, T value);
@@ -22,7 +22,7 @@ void defaultOnUserMentionTap(
 ) {
   app<HarpyNavigator>().pushUserProfile(
     currentRoute: ModalRoute.of(context)!.settings,
-    screenName: userMention.handle,
+    handle: userMention.handle,
   );
 }
 
@@ -75,9 +75,7 @@ void defaultOnHashtagTap(BuildContext context, HashtagData hashtag) {
 
     if (ModalRoute.of(context)!.settings.name == TweetSearchScreen.route) {
       // already in tweet search
-      context
-          .read<TweetSearchBloc>()
-          .add(SearchTweets(customQuery: searchQuery));
+      context.read<TweetSearchCubit>().search(customQuery: searchQuery);
     } else {
       app<HarpyNavigator>().pushTweetSearchScreen(
         initialSearchQuery: '#${hashtag.text}',

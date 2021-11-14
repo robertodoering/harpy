@@ -31,13 +31,11 @@ class TweetCardActionsRow extends StatelessWidget {
     return Row(
       children: [
         RetweetButton(
-          bloc,
           padding: padding,
           iconSize: iconSize - 1,
           sizeDelta: style.sizeDelta,
         ),
         FavoriteButton(
-          bloc,
           padding: padding,
           iconSize: iconSize,
           sizeDelta: style.sizeDelta,
@@ -60,7 +58,6 @@ class TweetCardActionsRow extends StatelessWidget {
         if (tweet.translatable(translateLanguage) ||
             tweet.quoteTranslatable(translateLanguage))
           TweetTranslationButton(
-            bloc,
             padding: padding,
             iconSize: iconSize,
             sizeDelta: style.sizeDelta,

@@ -12,7 +12,7 @@ class MockHarpyPreferences extends HarpyPreferences {
   }
 }
 
-class MockAppConfig extends AppConfig {
+class MockAppConfig extends EnvConfig {
   const MockAppConfig({
     required this.twitterConsumerKey,
     required this.twitterConsumerSecret,
@@ -25,14 +25,14 @@ class MockAppConfig extends AppConfig {
   final String twitterConsumerSecret;
 }
 
-class MockHomeTimelineBloc extends Mock implements HomeTimelineBloc {
-  MockHomeTimelineBloc(HomeTimelineState initialState) {
+class MockHomeTimelineCubit extends Mock implements HomeTimelineCubit {
+  MockHomeTimelineCubit(TimelineState initialState) {
     when(() => state).thenReturn(initialState);
   }
 }
 
-class MockMentionsTimelineBloc extends Mock implements MentionsTimelineBloc {
-  MockMentionsTimelineBloc(MentionsTimelineState initialState) {
+class MockMentionsTimelineCubit extends Mock implements MentionsTimelineCubit {
+  MockMentionsTimelineCubit(TimelineState<bool> initialState) {
     when(() => state).thenReturn(initialState);
   }
 }

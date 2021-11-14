@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class ThemeSelectionScreen extends StatelessWidget {
   const ThemeSelectionScreen();
 
-  static const String route = 'theme_selection';
+  static const route = 'theme_selection';
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             newDarkThemeId: i,
           ),
         ),
-      if (Harpy.isPro)
+      if (isPro)
         for (var i = 0; i < state.customThemesData.length; i++)
           ThemeCard(
             HarpyTheme.fromData(
@@ -96,10 +96,12 @@ class ThemeSelectionScreen extends StatelessWidget {
               state: state,
               themeId: i + 10,
             ),
-            onDelete: () => bloc.add(DeleteCustomTheme(themeId: i + 10)),
+            onDelete: () => bloc.add(
+              ThemeEvent.deleteCustomTheme(themeId: i + 10),
+            ),
           ),
       const AddCustomThemeCard(),
-      if (Harpy.isFree) ...[
+      if (isFree) ...[
         Padding(
           padding: config.edgeInsets,
           child: Text(
@@ -119,7 +121,7 @@ class ThemeSelectionScreen extends StatelessWidget {
         padding: config.edgeInsets,
         itemCount: children.length,
         itemBuilder: (_, index) => children[index],
-        separatorBuilder: (_, __) => defaultSmallVerticalSpacer,
+        separatorBuilder: (_, __) => smallVerticalSpacer,
       ),
     );
   }
@@ -152,7 +154,7 @@ void selectTheme({
   if (lightThemeId != newLightThemeId || darkThemeId != newDarkThemeId) {
     HapticFeedback.lightImpact();
     themeBloc.add(
-      ChangeTheme(
+      ThemeEvent.changeTheme(
         lightThemeId: newLightThemeId,
         darkThemeId: newDarkThemeId,
         saveSelection: true,

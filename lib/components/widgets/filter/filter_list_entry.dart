@@ -51,7 +51,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
       final backgroundColor = theme.colorScheme.secondary;
 
       return [
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
         Wrap(
           spacing: config.smallPaddingValue,
           runSpacing: config.smallPaddingValue,
