@@ -29,8 +29,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   /// In the free version, only one list can be added.
   /// In the pro version, up to 10 lists can be added.
   bool get canAddMoreLists =>
-      Harpy.isFree && listEntries.isEmpty ||
-      Harpy.isPro && listEntries.length < 10;
+      isFree && listEntries.isEmpty || isPro && listEntries.length < 10;
 
   void initialize() {
     final configurationJson = homeTabPreferences!.homeTabConfiguration;
@@ -53,8 +52,8 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
           );
         } else if (value.entries.any((entry) => !entry.valid)) {
           throw Exception('invalid entry in configuration');
-        } else if (Harpy.isFree && listEntries.length > 1 ||
-            Harpy.isPro && listEntries.length > 10) {
+        } else if (isFree && listEntries.length > 1 ||
+            isPro && listEntries.length > 10) {
           throw Exception('invalid list count');
         }
 
@@ -84,7 +83,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     value = value.removeEntry(oldIndex).addEntry(entry, index);
 
-    if (Harpy.isPro) {
+    if (isPro) {
       _persistValue();
     }
   }
@@ -102,7 +101,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       entry.copyWith(visible: !entry.visible!),
     );
 
-    if (Harpy.isPro) {
+    if (isPro) {
       _persistValue();
     }
   }
@@ -114,7 +113,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
   void remove(int index) {
     log.fine('removing $index');
 
-    if (Harpy.isFree) {
+    if (isFree) {
       // reset to default configuration
       value = HomeTabConfiguration.defaultConfiguration;
     } else if (value.entries[index].removable) {
@@ -141,7 +140,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     log.fine('adding list ${list.name}');
 
-    if (Harpy.isFree) {
+    if (isFree) {
       // reset to default configuration before adding list
       value = HomeTabConfiguration.defaultConfiguration;
     }
@@ -179,7 +178,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     var entry = value.entries[index];
 
-    if (Harpy.isFree && entry.isListType) {
+    if (isFree && entry.isListType) {
       // reload configuration to dismiss unrelated changes before
       // persisting value
       initialize();
@@ -194,7 +193,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       entry.copyWith(icon: icon),
     );
 
-    if (Harpy.isPro || Harpy.isFree && entry.isListType) {
+    if (isPro || isFree && entry.isListType) {
       _persistValue();
     }
   }
@@ -208,7 +207,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
       value.entries[index].copyWith(name: name),
     );
 
-    if (Harpy.isPro) {
+    if (isPro) {
       _persistValue();
     }
   }

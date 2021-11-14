@@ -6,7 +6,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Displays the location of currently displayed trends by the parent
-/// [TrendsBloc] and allows for the user to configure the trend location.
+/// [TrendsCubit] and allows for the user to configure the trend location.
 class TrendsCard extends StatelessWidget {
   const TrendsCard();
 
@@ -15,8 +15,8 @@ class TrendsCard extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final bloc = context.watch<TrendsBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<TrendsCubit>();
+    final state = cubit.state;
 
     return Padding(
       padding: config.edgeInsetsSymmetric(horizontal: true),
@@ -29,13 +29,13 @@ class TrendsCard extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
               title: Text(
-                state.trendLocationName,
+                state.locationName,
                 style: TextStyle(color: theme.colorScheme.primary),
               ),
               onTap: () => _showTrendsConfiguration(context),
             ),
           ),
-          defaultHorizontalSpacer,
+          horizontalSpacer,
           HarpyButton.raised(
             padding: config.edgeInsets,
             elevation: 0,
@@ -44,8 +44,8 @@ class TrendsCard extends StatelessWidget {
             onTap: state.isLoading
                 ? null
                 : () {
-                    ScrollDirection.of(context)!.reset();
-                    bloc.add(const FindTrendsEvent());
+                    ScrollDirection.of(context)?.reset();
+                    cubit.findTrends();
                   },
           )
         ],
@@ -55,18 +55,18 @@ class TrendsCard extends StatelessWidget {
 }
 
 void _showTrendsConfiguration(BuildContext context) {
-  final trendsBloc = context.read<TrendsBloc>();
+  final cubit = context.read<TrendsCubit>();
 
   showHarpyBottomSheet<void>(
     context,
     children: [
       BottomSheetHeader(
-        child: Text(trendsBloc.state.trendLocationName),
+        child: Text(cubit.state.locationName),
       ),
       MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: context.read<TrendsLocationsBloc>()),
-          BlocProvider.value(value: trendsBloc),
+          BlocProvider.value(value: context.read<TrendsLocationsCubit>()),
+          BlocProvider.value(value: cubit),
         ],
         child: const SelectLocationListTile(),
       ),
@@ -80,7 +80,7 @@ void _showTrendsConfiguration(BuildContext context) {
             builder: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider(create: (_) => FindTrendsLocationsBloc()),
-                BlocProvider.value(value: trendsBloc),
+                BlocProvider.value(value: cubit),
               ],
               child: const FindLocationDialog(),
             ),

@@ -29,9 +29,9 @@ class HarpyErrorHandler with HarpyLogger {
 
     runZonedGuarded(
       () async {
-        if (kReleaseMode && app<AppConfig>().hasSentryDsn) {
+        if (kReleaseMode && app<EnvConfig>().hasSentryDsn) {
           await SentryFlutter.init(
-            (options) => options.dsn = app<AppConfig>().sentryDsn,
+            (options) => options.dsn = app<EnvConfig>().sentryDsn,
           ).handleError(silentErrorHandler);
         }
 
@@ -67,7 +67,7 @@ class HarpyErrorHandler with HarpyLogger {
 
     if (!app<GeneralPreferences>().crashReports) {
       log.info('not reporting error due to missing consent from the user');
-    } else if (kReleaseMode && app<AppConfig>().hasSentryDsn) {
+    } else if (kReleaseMode && app<EnvConfig>().hasSentryDsn) {
       log.info('reporting error to sentry');
 
       try {

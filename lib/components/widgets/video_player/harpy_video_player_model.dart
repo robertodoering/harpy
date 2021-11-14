@@ -63,8 +63,8 @@ class HarpyVideoPlayerModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    super.dispose();
     Wakelock.disable();
+    super.dispose();
   }
 
   /// Initializes the [controller].

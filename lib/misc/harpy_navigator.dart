@@ -23,6 +23,7 @@ final harpyRouteObserver = RouteObserver<ModalRoute<dynamic>>();
 /// [MaterialApp].
 ///
 /// This allows for navigation without access to the [BuildContext].
+// TODO: refactor and make use of flutter's navigator 2.0
 class HarpyNavigator {
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
@@ -64,14 +65,23 @@ class HarpyNavigator {
   }
 
   void pushUserProfile({
-    required String screenName,
+    UserData? initialUser,
+    String? handle,
     RouteSettings? currentRoute,
   }) {
+    assert(
+      initialUser != null || handle != null,
+      'no initial user or handle specified',
+    );
+
+    handle ??= initialUser!.handle;
+
+    // prevent navigation to the same user back to back
     if (currentRoute?.name == UserProfileScreen.route) {
       final arguments = currentRoute!.arguments as Map<String, dynamic>? ??
           <String, dynamic>{};
 
-      if (arguments['screenName'] == screenName) {
+      if (arguments['handle'] == handle) {
         _log.fine('preventing navigation to current user');
         return;
       }
@@ -80,7 +90,8 @@ class HarpyNavigator {
     pushNamed(
       UserProfileScreen.route,
       arguments: <String, dynamic>{
-        'screenName': screenName,
+        'initialUser': initialUser,
+        'handle': handle,
       },
     );
   }
@@ -143,12 +154,12 @@ class HarpyNavigator {
   }
 
   void pushSearchScreen({
-    required TrendsBloc trendsBloc,
+    required TrendsCubit trendsCubit,
   }) {
     pushNamed(
       SearchScreen.route,
       arguments: <String, dynamic>{
-        'trendsBloc': trendsBloc,
+        'trendsCubit': trendsCubit,
       },
     );
   }
@@ -248,7 +259,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case UserProfileScreen.route:
       screen = UserProfileScreen(
-        screenName: arguments['screenName'],
+        initialUser: arguments['initialUser'],
+        handle: arguments['handle'],
       );
       break;
     case ComposeScreen.route:
@@ -320,12 +332,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case SearchScreen.route:
       screen = SearchScreen(
-        trendsBloc: arguments['trendsBloc'],
+        trendsCubit: arguments['trendsCubit'],
       );
       break;
     case TweetSearchScreen.route:
       screen = TweetSearchScreen(
-        initialSearchQuery: arguments['initialSearchQuery'],
+        initialQuery: arguments['initialSearchQuery'],
       );
       break;
     case HomeTabCustomizationScreen.route:

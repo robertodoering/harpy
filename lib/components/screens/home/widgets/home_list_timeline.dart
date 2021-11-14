@@ -7,30 +7,32 @@ import 'package:harpy/components/components.dart';
 class HomeListTimeline extends StatelessWidget {
   const HomeListTimeline({
     required this.listId,
-    this.name,
+    required this.name,
   });
 
-  final String? listId;
+  final String listId;
   final String? name;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = HomeListsProvider.blocOf(
+    final config = context.watch<ConfigCubit>().state;
+
+    final cubit = HomeListsProvider.cubitOf(
       context,
       listId: listId,
     );
 
-    assert(bloc != null, 'missing list timeline bloc for home list timeline');
+    assert(cubit != null, 'missing list timeline cubit for home list timeline');
 
-    // TODO: add ability to refresh lists
-
-    if (bloc != null) {
-      return BlocProvider<ListTimelineBloc>.value(
-        value: bloc,
+    if (cubit != null) {
+      return BlocProvider.value(
+        value: cubit,
         child: ListTimeline(
-          listId: listId!,
           name: name,
           beginSlivers: const [HomeTopSliverPadding()],
+          refreshIndicatorOffset: config.bottomAppBar
+              ? 0
+              : HomeAppBar.height(context) + config.paddingValue,
         ),
       );
     } else {

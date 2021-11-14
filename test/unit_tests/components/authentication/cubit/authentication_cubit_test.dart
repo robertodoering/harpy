@@ -20,7 +20,7 @@ void main() {
 
   setUp(() async {
     await setupApp();
-    app.registerLazySingleton<AppConfig>(
+    app.registerLazySingleton<EnvConfig>(
       () => const MockAppConfig(
         twitterConsumerKey: 'key1,key2,key3',
         twitterConsumerSecret: 'secret1,secret2,secret3',
@@ -38,7 +38,7 @@ void main() {
       test('does nothing if no previous session exists', () async {
         await authCubit.restoreSession();
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
       });
 
       test('restores a session with initialized user', () async {
@@ -52,7 +52,7 @@ void main() {
 
         await authCubit.restoreSession();
 
-        expect(authCubit.state, isA<Authenticated>());
+        expect(authCubit.state.isAuthenticated, isTrue);
       });
 
       test('invalidates session if requesting user failed', () async {
@@ -66,7 +66,7 @@ void main() {
 
         await authCubit.restoreSession();
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
         expect(app<AuthPreferences>().userToken, isEmpty);
         expect(app<AuthPreferences>().userSecret, isEmpty);
         expect(app<AuthPreferences>().userId, isEmpty);
@@ -108,8 +108,8 @@ void main() {
     group('login', () {
       test('does nothing if app config is invalid', () async {
         app
-          ..unregister<AppConfig>()
-          ..registerLazySingleton<AppConfig>(
+          ..unregister<EnvConfig>()
+          ..registerLazySingleton<EnvConfig>(
             () => const MockAppConfig(
               twitterConsumerKey: '',
               twitterConsumerSecret: '',
@@ -118,7 +118,7 @@ void main() {
 
         await authCubit.login();
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
       });
 
       test(
@@ -151,12 +151,12 @@ void main() {
         );
 
         when(() => app<TwitterApi>().userService.usersShow(userId: 'id'))
-            .thenAnswer((_) async => User());
+            .thenAnswer((_) async => User()..idStr = 'id');
 
         await authCubit.login();
 
-        expect(authCubit.state, isA<Authenticated>());
-        expect(authCubit.state.userId, equals('id'));
+        expect(authCubit.state.isAuthenticated, isTrue);
+        expect(authCubit.state.user?.id, equals('id'));
 
         expect(app<HarpyPreferences>().prefix, equals('id'));
 
@@ -201,12 +201,12 @@ void main() {
         );
 
         when(() => app<TwitterApi>().userService.usersShow(userId: 'id'))
-            .thenAnswer((_) async => User());
+            .thenAnswer((_) async => User()..idStr = 'id');
 
         await authCubit.login();
 
-        expect(authCubit.state, isA<Authenticated>());
-        expect(authCubit.state.userId, equals('id'));
+        expect(authCubit.state.isAuthenticated, isTrue);
+        expect(authCubit.state.user?.id, equals('id'));
 
         expect(app<HarpyPreferences>().prefix, equals('id'));
 
@@ -241,7 +241,7 @@ void main() {
 
         await authCubit.login();
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
         verify(
           () => app<HarpyNavigator>().pushReplacementNamed(
             LoginScreen.route,
@@ -284,7 +284,7 @@ void main() {
 
         await authCubit.login();
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
 
         verify(
           () => app<HarpyNavigator>().pushReplacementNamed(
@@ -307,7 +307,7 @@ void main() {
         expect(app<AuthPreferences>().userSecret, equals(''));
         expect(app<AuthPreferences>().userId, equals(''));
 
-        expect(authCubit.state, isA<Unauthenticated>());
+        expect(authCubit.state.isAuthenticated, isFalse);
 
         verify(
           () => app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route),
@@ -360,8 +360,8 @@ void main() {
 
       test('can use a single set of credentials', () {
         app
-          ..unregister<AppConfig>()
-          ..registerLazySingleton<AppConfig>(
+          ..unregister<EnvConfig>()
+          ..registerLazySingleton<EnvConfig>(
             () => const MockAppConfig(
               twitterConsumerKey: 'key',
               twitterConsumerSecret: 'secret',

@@ -12,56 +12,61 @@ class TweetDetailScreen extends StatelessWidget {
 
   final TweetData tweet;
 
-  static const String route = 'tweet_detail_screen';
+  static const route = 'tweet_detail';
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RepliesBloc>(
-      create: (_) => RepliesBloc(tweet),
+    return BlocProvider(
+      create: (_) => RepliesCubit(tweet: tweet),
       child: const ScrollDirectionListener(
         child: ScrollToStart(
-          child: _TweetDetailScreenContent(),
+          child: _Content(),
         ),
       ),
     );
   }
 }
 
-class _TweetDetailScreenContent extends StatelessWidget {
-  const _TweetDetailScreenContent();
+class _Content extends StatelessWidget {
+  const _Content();
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    final bloc = context.watch<RepliesBloc>();
+    final bloc = context.watch<RepliesCubit>();
     final state = bloc.state;
 
     return HarpyScaffold(
       body: TweetList(
-        state.replies,
+        state.replies.toList(),
         beginSlivers: [
           const HarpySliverAppBar(title: 'tweet', floating: true),
           const TweetDetailParentTweet(),
           const TweetDetailCard(),
-          if (state.isLoading) ...const [
-            InfoRowLoadingShimmer(),
-            SliverToBoxAdapter(child: defaultVerticalSpacer),
-            TweetListLoadingSliver(),
-          ] else if (state.hasResult)
-            const SliverBoxTweetListInfoRow(
-              icon: Icon(CupertinoIcons.reply_all),
-              text: Text('replies'),
-            )
-          else if (state.hasFailed)
-            SliverFillLoadingError(
-              message: const Text('error requesting replies'),
-              onRetry: () => bloc.add(const LoadReplies()),
-            )
-          else if (state.hasNoResult)
-            const SliverBoxInfoMessage(
-              secondaryMessage: Text('no replies exist'),
-            ),
+          ...?state.maybeMap(
+            loading: (_) => const [
+              InfoRowLoadingShimmer(),
+              SliverToBoxAdapter(child: verticalSpacer),
+              TweetListLoadingSliver(),
+            ],
+            data: (_) => const [
+              SliverBoxTweetListInfoRow(
+                icon: Icon(CupertinoIcons.reply_all),
+                text: Text('replies'),
+              ),
+            ],
+            noData: (_) => const [
+              SliverBoxInfoMessage(secondaryMessage: Text('no replies exist')),
+            ],
+            error: (_) => [
+              SliverFillLoadingError(
+                message: const Text('error requesting replies'),
+                onRetry: bloc.request,
+              )
+            ],
+            orElse: () => null,
+          ),
         ],
         endSlivers: [
           SliverToBoxAdapter(

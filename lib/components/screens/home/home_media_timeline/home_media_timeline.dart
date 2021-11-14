@@ -9,32 +9,28 @@ class HomeMediaTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<HomeTimelineBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<HomeTimelineCubit>();
+    final state = cubit.state;
 
     return ChangeNotifierProvider<MediaTimelineModel>(
       create: (_) => MediaTimelineModel(
-        initialTweets: bloc.state.timelineTweets,
+        initialTweets: state.tweets.toList(),
       ),
-      child: BlocListener<HomeTimelineBloc, HomeTimelineState>(
+      child: BlocListener<HomeTimelineCubit, TimelineState>(
         listener: (context, state) {
-          context
-              .read<MediaTimelineModel>()
-              .updateEntries(state.timelineTweets);
+          context.read<MediaTimelineModel>().updateEntries(
+                state.tweets.toList(),
+              );
         },
         child: ScrollToStart(
           child: LoadMoreListener(
-            listen: state.enableRequestOlder,
-            onLoadMore: () async {
-              bloc.add(const RequestOlderHomeTimeline());
-              await bloc.requestOlderCompleter.future;
-            },
+            listen: state.canLoadMore,
+            onLoadMore: cubit.loadOlder,
             child: MediaTimeline(
-              showInitialLoading: state.showInitialLoading,
-              showLoadingOlder: state.showLoadingOlder,
-              beginSlivers: const [
-                HomeTopSliverPadding(),
-              ],
+              showInitialLoading: state is TimelineStateLoading,
+              showLoadingOlder: state is TimelineStateLoadingOlder,
+              onRefresh: () => cubit.load(clearPrevious: true),
+              beginSlivers: const [HomeTopSliverPadding()],
             ),
           ),
         ),

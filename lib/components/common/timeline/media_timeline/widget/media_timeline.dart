@@ -7,6 +7,8 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
+// TODO: Refactor media timeline to user a parent `TimelineCubit` instead
+
 /// Builds the list of tweet media widgets for a [MediaTimelineModel].
 ///
 /// Tapping a media will open the media gallery.
@@ -14,11 +16,13 @@ class MediaTimeline extends StatefulWidget {
   const MediaTimeline({
     required this.showInitialLoading,
     required this.showLoadingOlder,
+    required this.onRefresh,
     this.beginSlivers = const [],
   });
 
   final bool showInitialLoading;
   final bool showLoadingOlder;
+  final VoidCallback onRefresh;
   final List<Widget> beginSlivers;
 
   @override
@@ -78,6 +82,7 @@ class _MediaTimelineState extends State<MediaTimeline> {
         else if (model.hasEntries) ...[
           _TopRow(
             buildTiled: _buildTiled,
+            onRefresh: widget.onRefresh,
             onToggleTiled: () => setState(() {
               final value = !_buildTiled;
               _buildTiled = value;
@@ -104,17 +109,18 @@ class _MediaTimelineState extends State<MediaTimeline> {
 class _TopRow extends StatelessWidget {
   const _TopRow({
     required this.buildTiled,
+    required this.onRefresh,
     required this.onToggleTiled,
   });
 
   final bool buildTiled;
+  final VoidCallback onRefresh;
   final VoidCallback onToggleTiled;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<HomeTimelineBloc>();
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -130,8 +136,7 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () =>
-                  bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
+              onTap: onRefresh,
             ),
             const Spacer(),
             HarpyButton.raised(

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class MockHarpyInfo extends Mock implements HarpyInfo {}
 
@@ -114,7 +114,7 @@ void main() {
   });
 }
 
-const String _changelog1 = '''
+const _changelog1 = '''
 First header line.
 Second header line. This is a long one.
 
@@ -126,7 +126,7 @@ Second header line. This is a long one.
 · Removed my sanity
 · Unrelated changelog entry''';
 
-const String _changelog2 = '''
+const _changelog2 = '''
 · Added Twitter Media settings:
     · Set the quality when using WiFi
     · Set the quality when using mobile data
@@ -138,5 +138,5 @@ const String _changelog2 = '''
 · Unrelated changelog entry
 ''';
 
-const String _changelog3 = '''
+const _changelog3 = '''
 ''';

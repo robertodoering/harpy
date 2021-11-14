@@ -33,7 +33,7 @@ class ComposeParentTweetCard extends StatelessWidget {
                 width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
                 child: const Icon(CupertinoIcons.reply, size: 18),
               ),
-              defaultHorizontalSpacer,
+              horizontalSpacer,
               Expanded(
                 child: Text(
                   text,
@@ -43,7 +43,7 @@ class ComposeParentTweetCard extends StatelessWidget {
             ],
           ),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         TweetCard(parentTweet),
       ],
     );

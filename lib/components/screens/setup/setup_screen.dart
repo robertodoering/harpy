@@ -14,7 +14,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class SetupScreen extends StatefulWidget {
   const SetupScreen();
 
-  static const route = 'setup_screen';
+  static const route = 'setup';
 
   @override
   State<SetupScreen> createState() => _SetupScreenState();
@@ -58,13 +58,11 @@ class _SetupScreenState extends State<SetupScreen> {
       ),
       const SetupAppearanceContent(),
       const SetupFinishContent(),
-      if (Harpy.isFree) const SetupProContent(),
+      if (isFree) const SetupProContent(),
     ];
 
     return BlocProvider(
-      create: (_) => UserProfileBloc(
-        screenName: 'harpy_app',
-      ),
+      create: (_) => UserRelationshipBloc(handle: 'harpy_app'),
       child: HarpyScaffold(
         buildSafeArea: true,
         body: AnimatedPadding(

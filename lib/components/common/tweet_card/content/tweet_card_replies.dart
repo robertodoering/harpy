@@ -53,7 +53,7 @@ class TweetCardReplies extends StatelessWidget {
                   width: TweetCardAvatar.defaultRadius(fontSizeDelta) * 2,
                   child: Icon(CupertinoIcons.reply, size: 18 + fontSizeDelta),
                 ),
-                defaultHorizontalSpacer,
+                horizontalSpacer,
                 Expanded(
                   child: Text(
                     '$authors replied',
@@ -68,7 +68,7 @@ class TweetCardReplies extends StatelessWidget {
             reply,
             color: _cardColor(harpyTheme),
           ),
-          if (reply != tweet.replies.last) defaultVerticalSpacer,
+          if (reply != tweet.replies.last) verticalSpacer,
         ],
       ],
     );

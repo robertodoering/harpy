@@ -4,13 +4,13 @@ import 'package:harpy/components/components.dart';
 
 class ComposeTextField extends StatelessWidget {
   const ComposeTextField({
-    required ComposeTextController? controller,
-    required FocusNode? focusNode,
+    required ComposeTextController controller,
+    required FocusNode focusNode,
   })  : _controller = controller,
         _focusNode = focusNode;
 
-  final ComposeTextController? _controller;
-  final FocusNode? _focusNode;
+  final ComposeTextController _controller;
+  final FocusNode _focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,9 @@ class ComposeTextField extends StatelessWidget {
         style: theme.textTheme.bodyText1,
         maxLines: null,
         decoration: InputDecoration(
-          hintText: bloc.hintText,
+          hintText: bloc.inReplyToStatus != null
+              ? 'tweet your reply'
+              : "what's happening?",
           isDense: true,
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,

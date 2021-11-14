@@ -27,13 +27,13 @@ class TweetSearchFilterDrawer extends StatelessWidget {
               labelStyle: TextStyle(fontSize: 14),
               isDense: true,
               border: OutlineInputBorder(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kBorderRadius,
               ),
             ),
             onChanged: model.setTweetAuthor,
           ),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         Padding(
           padding: config.edgeInsetsSymmetric(horizontal: true),
           child: ClearableTextField(
@@ -44,13 +44,13 @@ class TweetSearchFilterDrawer extends StatelessWidget {
               labelStyle: TextStyle(fontSize: 14),
               isDense: true,
               border: OutlineInputBorder(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kBorderRadius,
               ),
             ),
             onChanged: model.setReplyingTo,
           ),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         ListTile(
           title: Text('results', style: style),
           trailing: DropdownButton<int>(
@@ -72,7 +72,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
             ],
           ),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
       ],
     );
   }
@@ -87,28 +87,28 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           onSubmitted: model.addIncludingPhrase,
           onDeleted: model.removeIncludingPhrase,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'hashtag',
           activeFilters: model.value.includesHashtags,
           onSubmitted: model.addIncludingHashtag,
           onDeleted: model.removeIncludingHashtag,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'user mention',
           activeFilters: model.value.includesMentions,
           onSubmitted: model.addIncludingMention,
           onDeleted: model.removeIncludingMention,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'url',
           activeFilters: model.value.includesUrls,
           onSubmitted: model.addIncludingUrl,
           onDeleted: model.removeIncludingUrls,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterSwitchTile(
           text: 'retweets',
           enabled: model.enableIncludesRetweets,
@@ -141,21 +141,21 @@ class TweetSearchFilterDrawer extends StatelessWidget {
           onSubmitted: model.addExcludingPhrase,
           onDeleted: model.removeExcludingPhrase,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'hashtag',
           activeFilters: model.value.excludesHashtags,
           onSubmitted: model.addExcludingHashtag,
           onDeleted: model.removeExcludingHashtag,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterListEntry(
           labelText: 'user mention',
           activeFilters: model.value.excludesMentions,
           onSubmitted: model.addExcludingMention,
           onDeleted: model.removeExcludingMention,
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         FilterSwitchTile(
           text: 'retweets',
           enabled: model.enableExcludesRetweets,
@@ -182,7 +182,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<TweetSearchBloc>();
+    final cubit = context.watch<TweetSearchCubit>();
     final model = context.watch<TweetSearchFilterModel>();
 
     return FilterDrawer(
@@ -190,7 +190,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
       showClear: model.hasFilter,
       showSearchButton: model.hasSearchQuery,
       onClear: model.clear,
-      onSearch: () => bloc.add(SearchTweets(filter: model.value)),
+      onSearch: () => cubit.search(filter: model.value),
       filterGroups: [
         _buildGeneralGroup(config, model, theme),
         _buildIncludesGroup(model),

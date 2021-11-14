@@ -82,7 +82,7 @@ class ComposeTweetMedia extends StatelessWidget {
               padding: EdgeInsets.all(config.smallPaddingValue),
               child: CircleButton(
                 color: Colors.black45,
-                onTap: () => bloc.add(const ClearComposedTweet()),
+                onTap: () => bloc.add(const ComposeEvent.clear()),
                 child: const Icon(CupertinoIcons.xmark),
               ),
             ),
@@ -128,21 +128,21 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
 
       if (_controller!.value.duration > const Duration(seconds: 140)) {
         // video too long
-        widget.bloc.add(const ClearComposedTweet());
+        widget.bloc.add(const ComposeEvent.clear());
         app<MessageService>().show(
           'video must be shorter than 140 seconds',
         );
       } else if (_controller!.value.duration <
           const Duration(milliseconds: 500)) {
         // video too short
-        widget.bloc.add(const ClearComposedTweet());
+        widget.bloc.add(const ComposeEvent.clear());
         app<MessageService>().show('video must be longer than 0.5 seconds');
       } else {
         setState(() {});
       }
     } catch (e) {
       // invalid video
-      widget.bloc.add(const ClearComposedTweet());
+      widget.bloc.add(const ComposeEvent.clear());
       app<MessageService>().show('invalid video');
     }
   }
@@ -155,7 +155,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
       child: ClipRRect(
         key: ValueKey<VideoPlayerController?>(_controller),
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: HarpyVideoPlayer.fromController(
           _controller,
           allowVerticalOverflow: true,

@@ -2,23 +2,23 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
 
-part 'authentication_state.dart';
+part 'authentication_cubit.freezed.dart';
 
 /// Handles authentication with twitter using [TwitterAuth] and loads the
 /// authenticated user's [UserData].
 class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   AuthenticationCubit({
     required this.themeBloc,
-  }) : super(const Unauthenticated());
+  }) : super(const AuthenticationState.unauthenticated());
 
   final ThemeBloc themeBloc;
 
@@ -48,11 +48,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   Future<void> login() async {
     log.fine('logging in');
 
-    if (!app<AppConfig>().validateAppConfig()) {
+    if (!app<EnvConfig>().validateAppConfig()) {
       return;
     }
 
-    emit(const AwaitingAuthentication());
+    emit(const AuthenticationState.awaitingAuthentication());
 
     final result = await app<AuthPreferences>()
         .initializeTwitterAuth()
@@ -71,7 +71,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         await _onLogin(result.session!);
 
-        if (state is Authenticated) {
+        if (state is _Authenticated) {
           if (app<SetupPreferences>().performedSetup) {
             app<HarpyNavigator>().pushReplacementNamed(
               HomeScreen.route,
@@ -100,7 +100,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
         app<MessageService>().show('authentication failed, please try again');
 
-        emit(const Unauthenticated());
+        emit(const AuthenticationState.unauthenticated());
 
         app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
@@ -111,7 +111,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
       case TwitterAuthStatus.userCancelled:
         log.fine('login cancelled by user');
 
-        emit(const Unauthenticated());
+        emit(const AuthenticationState.unauthenticated());
 
         app<HarpyNavigator>().pushReplacementNamed(
           LoginScreen.route,
@@ -129,7 +129,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
     log.fine('logging out');
 
     // reset the theme to the default theme
-    themeBloc.add(const ChangeTheme(lightThemeId: 0, darkThemeId: 0));
+    themeBloc.add(
+      const ThemeEvent.changeTheme(
+        lightThemeId: 0,
+        darkThemeId: 0,
+      ),
+    );
 
     app<HarpyNavigator>().pushReplacementNamed(LoginScreen.route);
 
@@ -142,14 +147,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
   /// Initializes the twitter api client and requests the authenticated user's
   /// data.
   ///
-  /// Emits the [Authenticated] state if the user has been requested
-  /// successfully.
+  /// Emits the [AuthenticationState.authenticated] state if the user has been
+  /// requested successfully.
   /// Otherwise [_onLogout] is called to invalidate the user session.
   Future<void> _onLogin(TwitterAuthSession authSession) async {
     log.fine('on login');
 
-    final key = app<AppConfig>().key(app<AuthPreferences>().auth);
-    final secret = app<AppConfig>().secret(app<AuthPreferences>().auth);
+    final key = app<EnvConfig>().key(app<AuthPreferences>().auth);
+    final secret = app<EnvConfig>().secret(app<AuthPreferences>().auth);
 
     if (app<TwitterApi>().client is TwitterClient) {
       (app<TwitterApi>().client as TwitterClient)
@@ -164,21 +169,16 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
     if (user != null) {
       log.fine('authenticated');
 
-      emit(
-        Authenticated(
-          twitterAuthSession: authSession,
-          authenticatedUser: user,
-        ),
-      );
+      emit(AuthenticationState.authenticated(user: user));
 
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = authSession.userId;
 
       // initialize the custom themes for this user
       themeBloc
-        ..add(const LoadCustomThemes())
+        ..add(const ThemeEvent.loadCustomThemes())
         ..add(
-          ChangeTheme(
+          ThemeEvent.changeTheme(
             lightThemeId: app<ThemePreferences>().lightThemeId,
             darkThemeId: app<ThemePreferences>().darkThemeId,
           ),
@@ -192,7 +192,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
     }
   }
 
-  /// Invalidates the user token and emits the [Unauthenticated] state.
+  /// Invalidates the user token and emits the
+  /// [AuthenticationState.unauthenticated] state.
   Future<void> _onLogout() async {
     log.fine('on logout');
 
@@ -210,7 +211,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
 
     app<AuthPreferences>().clearAuth();
 
-    emit(const Unauthenticated());
+    emit(const AuthenticationState.unauthenticated());
   }
 }
 
@@ -253,4 +254,22 @@ Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
       settings: const RouteSettings(name: 'login'),
     ),
   );
+}
+
+@freezed
+class AuthenticationState with _$AuthenticationState {
+  const factory AuthenticationState.authenticated({
+    required UserData user,
+  }) = _Authenticated;
+
+  const factory AuthenticationState.unauthenticated() = _Unauthenticated;
+  const factory AuthenticationState.awaitingAuthentication() =
+      _AwaitingAuthentication;
+}
+
+extension AuthenticationStateExtension on AuthenticationState {
+  UserData? get user => mapOrNull(authenticated: (value) => value.user);
+
+  bool get isAuthenticated => this is _Authenticated;
+  bool get isAwaitingAuthentication => this is _AwaitingAuthentication;
 }

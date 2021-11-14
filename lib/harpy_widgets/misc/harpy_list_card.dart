@@ -36,7 +36,7 @@ class HarpyListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         border: border,
         color: color ?? Theme.of(context).cardTheme.color,
       ),
@@ -45,7 +45,7 @@ class HarpyListCard extends StatelessWidget {
         subtitle: subtitle,
         leading: leading,
         trailing: trailing,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         color: color,
         onTap: onTap,
         contentPadding: contentPadding,

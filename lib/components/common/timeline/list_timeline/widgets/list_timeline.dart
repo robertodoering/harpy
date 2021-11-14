@@ -1,71 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
-/// Builds the [TweetList] for the tweets in a list.
-///
-/// [listId] is used for the [PageStorageKey] of the list.
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
-    required this.listId,
     this.name,
     this.beginSlivers = const [],
+    this.refreshIndicatorOffset,
   });
 
-  final String listId;
   final String? name;
   final List<Widget> beginSlivers;
+  final double? refreshIndicatorOffset;
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    final cubit = context.watch<ListTimelineCubit>();
+    final state = cubit.state;
 
-    final bloc = context.watch<ListTimelineBloc>();
-    final state = bloc.state;
-
-    return ScrollToStart(
-      child: LoadMoreListener(
-        listen: state.enableRequestOlder,
-        onLoadMore: () async {
-          bloc.add(const RequestOlderListTimeline());
-          await bloc.requestOlderCompleter.future;
-        },
-        child: TweetList(
-          state.timelineTweets,
-          key: PageStorageKey<String>('list_timeline_$listId'),
-          enableScroll: state.enableScroll,
-          beginSlivers: [
-            ...beginSlivers,
-            if (state.hasTweets) _TopRow(listId: listId, name: name),
-          ],
-          endSlivers: [
-            if (state.showLoading)
-              const TweetListLoadingSliver()
-            else if (state.showNoResult)
-              SliverFillLoadingError(
-                message: const Text('no list tweets found'),
-                onRetry: () => bloc.add(const RequestListTimeline()),
-              )
-            else if (state.showError)
-              SliverFillLoadingError(
-                message: const Text('error loading list tweets'),
-                onRetry: () => bloc.add(const RequestListTimeline()),
-              )
-            else if (state.showLoadingOlder)
-              const SliverBoxLoadingIndicator()
-            else if (state.showReachedEnd)
-              const SliverBoxInfoMessage(
-                secondaryMessage: Text('no more list tweets available'),
-              ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: mediaQuery.padding.bottom),
-            ),
-          ],
-        ),
+    return BlocProvider<TimelineCubit>.value(
+      value: cubit,
+      child: Timeline(
+        listKey: PageStorageKey('list_timeline_${cubit.listId}'),
+        beginSlivers: [
+          ...beginSlivers,
+          if (state.hasTweets) _TopRow(listId: cubit.listId, name: name),
+        ],
+        refreshIndicatorOffset: refreshIndicatorOffset,
       ),
     );
   }
@@ -84,7 +50,7 @@ class _TopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<ListTimelineBloc>();
+    final cubit = context.watch<ListTimelineCubit>();
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -100,16 +66,18 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () => bloc.add(const RequestListTimeline()),
+              onTap: () => cubit.load(clearPrevious: true),
             ),
-            defaultHorizontalSpacer,
+            const Spacer(),
             HarpyButton.raised(
               padding: config.edgeInsets,
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
-              icon: const Icon(CupertinoIcons.info),
-              onTap: () => app<HarpyNavigator>()
-                  .pushListMembersScreen(listId: listId, name: name),
+              icon: const Icon(CupertinoIcons.person_2),
+              onTap: () => app<HarpyNavigator>().pushListMembersScreen(
+                listId: listId,
+                name: name,
+              ),
             ),
           ],
         ),

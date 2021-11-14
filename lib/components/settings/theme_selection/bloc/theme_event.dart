@@ -3,11 +3,34 @@ part of 'theme_bloc.dart';
 abstract class ThemeEvent {
   const ThemeEvent();
 
+  const factory ThemeEvent.updateConfig({
+    required Config config,
+  }) = _UpdateConfig;
+
+  const factory ThemeEvent.changeTheme({
+    required int? lightThemeId,
+    required int? darkThemeId,
+    bool saveSelection,
+  }) = _ChangeTheme;
+
+  const factory ThemeEvent.loadCustomThemes() = _LoadCustomThemes;
+
+  const factory ThemeEvent.deleteCustomTheme({
+    required int themeId,
+  }) = _DeleteCustomTheme;
+
+  const factory ThemeEvent.addCustomTheme({
+    required HarpyThemeData themeData,
+    required int themeId,
+    bool changeLightThemeSelection,
+    bool changeDarkThemeSelection,
+  }) = _AddCustomTheme;
+
   Future<void> handle(ThemeBloc bloc, Emitter emit);
 }
 
-class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
-  const UpdateThemeConfig({
+class _UpdateConfig extends ThemeEvent with HarpyLogger {
+  const _UpdateConfig({
     required this.config,
   });
 
@@ -21,8 +44,8 @@ class UpdateThemeConfig extends ThemeEvent with HarpyLogger {
   }
 }
 
-class ChangeTheme extends ThemeEvent with HarpyLogger {
-  const ChangeTheme({
+class _ChangeTheme extends ThemeEvent with HarpyLogger {
+  const _ChangeTheme({
     this.lightThemeId,
     this.darkThemeId,
     this.saveSelection = false,
@@ -77,8 +100,8 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
     if (lightThemeData != null || darkThemeData != null) {
       emit(
         bloc.state.copyWith(
-          lightThemeData: lightThemeData,
-          darkThemeData: darkThemeData,
+          lightThemeData: lightThemeData ?? bloc.state.lightThemeData,
+          darkThemeData: darkThemeData ?? bloc.state.darkThemeData,
         ),
       );
     } else {
@@ -87,8 +110,8 @@ class ChangeTheme extends ThemeEvent with HarpyLogger {
   }
 }
 
-class LoadCustomThemes extends ThemeEvent with HarpyLogger {
-  const LoadCustomThemes();
+class _LoadCustomThemes extends ThemeEvent with HarpyLogger {
+  const _LoadCustomThemes();
 
   HarpyThemeData? _decodeThemeData(String themeDataJson) {
     try {
@@ -115,8 +138,8 @@ class LoadCustomThemes extends ThemeEvent with HarpyLogger {
   }
 }
 
-class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
-  const DeleteCustomTheme({
+class _DeleteCustomTheme extends ThemeEvent with HarpyLogger {
+  const _DeleteCustomTheme({
     required this.themeId,
   });
 
@@ -152,7 +175,7 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
 
       if (themeId <= lightThemeId || themeId <= darkThemeId) {
         bloc.add(
-          ChangeTheme(
+          ThemeEvent.changeTheme(
             lightThemeId: _adjustedThemeId(lightThemeId),
             darkThemeId: _adjustedThemeId(darkThemeId),
             saveSelection: true,
@@ -169,8 +192,8 @@ class DeleteCustomTheme extends ThemeEvent with HarpyLogger {
 /// instead.
 ///
 /// The light or dark theme selection will automatically be updated.
-class AddCustomTheme extends ThemeEvent with HarpyLogger {
-  const AddCustomTheme({
+class _AddCustomTheme extends ThemeEvent with HarpyLogger {
+  const _AddCustomTheme({
     required this.themeData,
     required this.themeId,
     this.changeLightThemeSelection = false,
@@ -208,7 +231,7 @@ class AddCustomTheme extends ThemeEvent with HarpyLogger {
     // change selection to new theme
     if (changeLightThemeSelection || changeDarkThemeSelection) {
       bloc.add(
-        ChangeTheme(
+        ThemeEvent.changeTheme(
           lightThemeId: changeLightThemeSelection ? themeId : null,
           darkThemeId: changeDarkThemeSelection ? themeId : null,
           saveSelection: true,

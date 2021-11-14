@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Builds the header for the [UserProfileScreen].
 class UserProfileHeader extends StatelessWidget {
-  const UserProfileHeader();
+  const UserProfileHeader({
+    required this.user,
+  });
+
+  final UserData user;
 
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<UserProfileBloc>();
 
     return SliverToBoxAdapter(
       child: Card(
@@ -18,22 +22,25 @@ class UserProfileHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            defaultVerticalSpacer,
+            verticalSpacer,
             Padding(
               padding: config.edgeInsetsSymmetric(horizontal: true),
-              child: UserProfileInfo(bloc),
+              child: UserProfileInfo(user: user),
             ),
-            defaultSmallVerticalSpacer,
-            if (bloc.user!.hasDescription) ...[
+            smallVerticalSpacer,
+            if (user.hasDescription) ...[
               Padding(
                 padding: config.edgeInsetsSymmetric(horizontal: true),
-                child: UserProfileDescription(bloc),
+                child: TwitterText(
+                  user.description!,
+                  entities: user.userDescriptionEntities,
+                ),
               ),
               Padding(
                 padding: config.edgeInsetsSymmetric(horizontal: true),
-                child: UserProfileDescriptionTranslation(bloc),
+                child: _DescriptionTranslation(user: user),
               ),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
             ],
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,20 +51,83 @@ class UserProfileHeader extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        UserProfileAdditionalInfo(bloc),
-                        FollowersCount(bloc.user!),
-                        defaultVerticalSpacer,
+                        UserProfileAdditionalInfo(user: user),
+                        FollowersCount(user),
+                        verticalSpacer,
                       ],
                     ),
                   ),
                 ),
-                if (bloc.user!.hasDescription)
-                  UserDescriptionTranslationButton(bloc),
+                if (user.hasDescription)
+                  _DescriptionTranslationButton(user: user),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DescriptionTranslation extends StatelessWidget {
+  const _DescriptionTranslation({
+    required this.user,
+  });
+
+  final UserData user;
+
+  @override
+  Widget build(BuildContext context) {
+    final config = context.watch<ConfigCubit>().state;
+
+    return AnimatedSize(
+      duration: kShortAnimationDuration,
+      curve: Curves.easeOutCubic,
+      child: AnimatedOpacity(
+        opacity: user.hasDescriptionTranslation ? 1 : 0,
+        duration: kShortAnimationDuration,
+        curve: Curves.easeOut,
+        child: user.hasDescriptionTranslation &&
+                !user.descriptionTranslation!.unchanged
+            ? Padding(
+                padding: EdgeInsets.only(top: config.smallPaddingValue),
+                child: TranslatedText(
+                  user.descriptionTranslation!.text!,
+                  language: user.descriptionTranslation!.language,
+                  entities: user.userDescriptionEntities,
+                ),
+              )
+            : const SizedBox(width: double.infinity),
+      ),
+    );
+  }
+}
+
+class _DescriptionTranslationButton extends StatelessWidget {
+  const _DescriptionTranslationButton({
+    required this.user,
+  });
+
+  final UserData user;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    final config = context.watch<ConfigCubit>().state;
+
+    final cubit = context.watch<UserProfileCubit>();
+    final state = cubit.state;
+
+    final active =
+        user.hasDescriptionTranslation || state.isTranslatingDescription;
+
+    return TranslationButton(
+      active: active,
+      padding: config.edgeInsets,
+      activate: () {
+        HapticFeedback.lightImpact();
+        cubit.translateDescription(locale: locale);
+      },
     );
   }
 }

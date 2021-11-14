@@ -26,7 +26,7 @@ class HomeTabCustomizationScreen extends StatefulWidget {
 
   final HomeTabModel model;
 
-  static const String route = 'home_tab_customization_screen';
+  static const route = 'home_tab_customization';
 
   @override
   _HomeTabCustomizationScreenState createState() =>
@@ -49,7 +49,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   @override
   void didPop() {
-    if (Harpy.isFree) {
+    if (isFree) {
       widget.model.initialize();
     }
   }
@@ -76,7 +76,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(CupertinoIcons.info, color: theme.colorScheme.primary),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         const Flexible(
           child: Text(
             'changes other than adding lists are not saved in the free version'
@@ -129,16 +129,16 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                     padding: config.edgeInsets,
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        if (Harpy.isFree) ...[
+                        if (isFree) ...[
                           _buildProCard(theme),
-                          defaultVerticalSpacer,
+                          verticalSpacer,
                           _buildInfoText(theme),
-                          defaultVerticalSpacer,
+                          verticalSpacer,
                         ],
                         const HomeTabReorderList(),
                         if (model.canAddMoreLists)
                           const AddListHomeTabCard()
-                        else if (Harpy.isFree)
+                        else if (isFree)
                           const AddListHomeTabCard(proDisabled: true)
                       ]),
                     ),

@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:mime_type/mime_type.dart';
 
 class MediaUploadService {
   const MediaUploadService();
 
-  static const int _maxChunkSize = 500000;
+  static const _maxChunkSize = 500000;
 
   /// Uploads a media file to Twitter.
   ///
@@ -40,7 +41,7 @@ class MediaUploadService {
 
     // `splitList` splits the media bytes into lists with the max length of
     // 500000 (the max chunk size in bytes)
-    final mediaChunks = splitList<int>(
+    final mediaChunks = splitList(
       mediaBytes,
       _maxChunkSize,
     );
@@ -105,39 +106,5 @@ class MediaUploadService {
     } else {
       return null;
     }
-  }
-
-  String? mediaCategoryFromType(MediaType? type) {
-    switch (type) {
-      case MediaType.image:
-        return 'TWEET_IMAGE';
-      case MediaType.gif:
-        return 'TWEET_GIF';
-      case MediaType.video:
-        return 'TWEET_VIDEO';
-      case null:
-        return null;
-    }
-  }
-
-  /// Splits the [list] into smaller lists with a max [length].
-  List<List<T>> splitList<T>(List<T> list, int length) {
-    final chunks = <List<T>>[];
-    Iterable<T> chunk;
-
-    do {
-      final remainingEntries = list.sublist(
-        chunks.length * length,
-      );
-
-      if (remainingEntries.isEmpty) {
-        break;
-      }
-
-      chunk = remainingEntries.take(length);
-      chunks.add(List<T>.from(chunk));
-    } while (chunk.length == length);
-
-    return chunks;
   }
 }

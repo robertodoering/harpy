@@ -42,7 +42,7 @@ class TweetListInfoRow extends StatelessWidget {
                 child: icon,
               ),
             ),
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             Expanded(
               child: DefaultTextStyle(
                 style: theme.textTheme.subtitle1!,

@@ -89,7 +89,7 @@ class _ComposeTweetCardWithParentState
               height: _keyboardVisible ? constraints.maxHeight : height / 2,
               child: const ComposeTweetCard(),
             ),
-            defaultVerticalSpacer,
+            verticalSpacer,
             if (widget.inReplyToStatus != null)
               ComposeParentTweetCard(
                 parentTweet: widget.inReplyToStatus!,

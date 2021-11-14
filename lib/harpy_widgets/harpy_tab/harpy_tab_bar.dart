@@ -88,7 +88,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
       controller: _scrollController!,
       index: index,
       child: InkWell(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         onTap: () => _tabController!.animateTo(index),
         child: HarpyTabScope(
           index: index,
@@ -112,11 +112,11 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
         children: [
           for (int i = 0; i < widget.tabs.length; i++) ...[
             _buildTab(i),
-            if (i != widget.tabs.length - 1) defaultSmallHorizontalSpacer,
+            if (i != widget.tabs.length - 1) smallHorizontalSpacer,
           ],
           if (widget.endWidgets != null) ...[
             for (Widget widget in widget.endWidgets!) ...[
-              defaultSmallHorizontalSpacer,
+              smallHorizontalSpacer,
               widget,
             ],
           ],

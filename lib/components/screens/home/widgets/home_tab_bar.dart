@@ -62,8 +62,8 @@ class _MentionsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final harpyTheme = context.watch<HarpyTheme>();
 
-    final bloc = context.watch<MentionsTimelineBloc>();
-    final state = bloc.state;
+    final cubit = context.watch<MentionsTimelineCubit>();
+    final state = cubit.state;
 
     final child = HarpyTab(
       icon: HomeTabEntryIcon(entry.icon),
@@ -114,7 +114,7 @@ class _CustomizeHomeTab extends StatelessWidget {
       ),
     );
 
-    if (Harpy.isFree) {
+    if (isFree) {
       return Bubbled(
         bubble: const FlareIcon.shiningStar(),
         bubbleOffset: const Offset(2, -2),

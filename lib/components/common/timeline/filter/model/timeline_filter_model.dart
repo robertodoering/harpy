@@ -3,6 +3,8 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 
+// TODO: refactor into cubit
+
 class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
   TimelineFilterModel.home() : super(TimelineFilter.empty) {
     value = TimelineFilter.fromJsonString(

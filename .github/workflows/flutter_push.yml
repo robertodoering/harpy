@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   test:
-    name: flutter test
+    name: flutter
     runs-on: ubuntu-latest
 
     steps:
@@ -13,28 +13,7 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter test
-
-  analyze:
-    name: flutter analyze
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-      - run: flutter pub get
+      - run: flutter packages pub run build_runner build
       - run: flutter analyze
-
-  format:
-    name: flutter format
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-      - run: flutter pub get
       - run: flutter format . --set-exit-if-changed
+      - run: flutter test

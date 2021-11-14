@@ -2,30 +2,45 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
 
+part 'tweet_bloc.freezed.dart';
 part 'tweet_bloc_action_mixin.dart';
 part 'tweet_event.dart';
-part 'tweet_state.dart';
 
 /// Handles actions done on a single tweet, such as retweeting, favoriting,
 /// translating, etc.
+///
+/// Delegates used in the presentation are methods on the bloc to allow for the
+/// [PreviewTweetBloc] to change their implementation.
 class TweetBloc extends Bloc<TweetEvent, TweetState>
     with TweetBlocActionCallback {
-  TweetBloc(this.tweet) : super(const TweetState()) {
-    on<TweetEvent>((event, emit) => event.handle(this, emit));
+  TweetBloc(this.tweet)
+      : super(
+          TweetState(
+            retweeted: tweet.retweeted,
+            favorited: tweet.favorited,
+            translated: tweet.hasTranslation,
+            isTranslating: false,
+          ),
+        ) {
+    on<TweetEvent>(
+      (event, emit) => event.handle(this, emit),
+      transformer: sequential(),
+    );
   }
 
-  /// Reference to the tweet that is used to display a tweet card.
+  /// The tweet that is used to display a tweet card.
   ///
   /// The [TweetData] is mutable and changes from actions that are done on the
   /// tweet will affect the source data.
@@ -42,7 +57,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
     app<HarpyNavigator>().pushUserProfile(
       currentRoute: route?.settings,
-      screenName: tweet.user.handle,
+      initialUser: tweet.user,
     );
   }
 
@@ -55,7 +70,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     if (tweet.retweetUserHandle != null) {
       app<HarpyNavigator>().pushUserProfile(
         currentRoute: route?.settings,
-        screenName: tweet.retweetUserHandle!,
+        handle: tweet.retweetUserHandle,
       );
     }
   }
@@ -66,12 +81,12 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
   void onRetweet() {
     HapticFeedback.lightImpact();
-    add(const RetweetTweet());
+    add(const TweetEvent.retweet());
   }
 
   void onUnretweet() {
     HapticFeedback.lightImpact();
-    add(const UnretweetTweet());
+    add(const TweetEvent.unretweet());
   }
 
   void onComposeQuote() {
@@ -80,17 +95,17 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
   void onFavorite() {
     HapticFeedback.lightImpact();
-    add(const FavoriteTweet());
+    add(const TweetEvent.favorite());
   }
 
   void onUnfavorite() {
     HapticFeedback.lightImpact();
-    add(const UnfavoriteTweet());
+    add(const TweetEvent.unfavorite());
   }
 
   void onTranslate(Locale locale) {
     HapticFeedback.lightImpact();
-    add(TranslateTweet(locale: locale));
+    add(TweetEvent.translate(locale: locale));
 
     _invoke(TweetAction.translate);
   }
@@ -98,4 +113,19 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   void onReplyToTweet() {
     app<HarpyNavigator>().pushComposeScreen(inReplyToStatus: tweet);
   }
+}
+
+/// Mirrors state of the mutable [TweetBloc.tweet], which the presentation uses
+/// to update its content.
+///
+/// Ideally the [TweetData] would be the state, however since it's mutable we
+/// wrap the necessary values in this state.
+@freezed
+class TweetState with _$TweetState {
+  const factory TweetState({
+    required bool retweeted,
+    required bool favorited,
+    required bool translated,
+    required bool isTranslating,
+  }) = _State;
 }

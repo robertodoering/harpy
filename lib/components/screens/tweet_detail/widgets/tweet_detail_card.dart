@@ -9,13 +9,13 @@ class TweetDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<RepliesBloc>();
+    final cubit = context.watch<RepliesCubit>();
 
     return SliverPadding(
       padding: config.edgeInsets.copyWith(top: 0),
       sliver: SliverToBoxAdapter(
         child: BlocProvider(
-          create: (_) => TweetBloc(bloc.tweet),
+          create: (_) => TweetBloc(cubit.tweet),
           child: Card(
             child: TweetCardContent(
               outerPadding: config.paddingValue,

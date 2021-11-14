@@ -54,7 +54,7 @@ class ThemeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: Row(
           children: [
             Expanded(
@@ -68,7 +68,7 @@ class ThemeCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (Harpy.isPro) ...[
+            if (isPro) ...[
               // show an indicator for the selected light / dark theme in the
               // pro version
               if (selectedLightTheme)
@@ -167,7 +167,7 @@ class _ThemeCardBase extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
           border: selected
               ? Border.all(color: harpyTheme.primaryColor)
               : Border.all(color: Colors.transparent),
@@ -226,12 +226,11 @@ void showThemeSelectionBottomSheet(
       HarpyListTile(
         leading: const Icon(CupertinoIcons.sun_max),
         title: const Text('use as system light theme'),
-        subtitle:
-            Harpy.isFree ? const Text('only available in harpy pro') : null,
-        trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 24) : null,
+        subtitle: isFree ? const Text('only available in harpy pro') : null,
+        trailing: isFree ? const FlareIcon.shiningStar(size: 24) : null,
         // false positive
         // ignore: avoid_redundant_argument_values
-        onTap: Harpy.isFree
+        onTap: isFree
             ? null
             : () {
                 HapticFeedback.lightImpact();
@@ -242,12 +241,11 @@ void showThemeSelectionBottomSheet(
       HarpyListTile(
         leading: const Icon(CupertinoIcons.moon),
         title: const Text('use as system dark theme'),
-        subtitle:
-            Harpy.isFree ? const Text('only available in harpy pro') : null,
-        trailing: Harpy.isFree ? const FlareIcon.shiningStar(size: 24) : null,
+        subtitle: isFree ? const Text('only available in harpy pro') : null,
+        trailing: isFree ? const FlareIcon.shiningStar(size: 24) : null,
         // false positive
         // ignore: avoid_redundant_argument_values
-        onTap: Harpy.isFree
+        onTap: isFree
             ? null
             : () {
                 HapticFeedback.lightImpact();

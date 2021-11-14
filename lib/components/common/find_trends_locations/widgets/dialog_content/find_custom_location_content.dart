@@ -52,7 +52,7 @@ class FindCustomLocationContent extends StatelessWidget {
                   validator: FindTrendsLocationsBloc.latitudeValidator,
                   onChanged: onLatitudeChanged,
                 ),
-                defaultVerticalSpacer,
+                verticalSpacer,
                 TextFormField(
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
@@ -64,7 +64,7 @@ class FindCustomLocationContent extends StatelessWidget {
                   validator: FindTrendsLocationsBloc.longitudeValidator,
                   onChanged: onLongitudeChanged,
                 ),
-                defaultVerticalSpacer,
+                verticalSpacer,
                 HarpyButton.flat(
                   text: const Text('confirm'),
                   onTap: onConfirm,

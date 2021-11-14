@@ -18,7 +18,6 @@ class UserData extends Equatable {
     this.descriptionTranslation,
     this.userUrl,
     this.userDescriptionUrls = const [],
-    this.connections,
     this.userDescriptionEntities = const EntitiesData(),
   });
 
@@ -58,16 +57,19 @@ class UserData extends Equatable {
 
   final String id;
 
-  /// The display name of the user .
+  /// The display name of the user.
+  ///
+  /// e.g. 'Google Developers'.
   final String name;
 
-  /// The screen name, handle or alias that this user identifies themselves
-  /// with.
+  /// The handle or alias that this user identifies themselves with.
   ///
   /// Handles are unique but subject to change.
   ///
   /// Typically a maximum of 15 characters long, but some historical accounts
   /// may exist with longer names.
+  ///
+  /// e.g. 'googledevs'.
   final String handle;
 
   final bool verified;
@@ -91,12 +93,6 @@ class UserData extends Equatable {
   final List<UrlData> userDescriptionUrls;
   final Translation? descriptionTranslation;
 
-  /// The connections for this relationship for the authenticated user.
-  ///
-  /// Can be: `following`, `following_requested`, `followed_by`, `none`,
-  /// `blocking`, `muting`.
-  final List<String>? connections;
-
   final EntitiesData userDescriptionEntities;
 
   UserData copyWith({
@@ -114,7 +110,6 @@ class UserData extends Equatable {
     UrlData? userUrl,
     List<UrlData>? userDescriptionUrls,
     Translation? descriptionTranslation,
-    List<String>? connections,
     EntitiesData? userDescriptionEntities,
   }) {
     return UserData(
@@ -133,7 +128,6 @@ class UserData extends Equatable {
       userDescriptionUrls: userDescriptionUrls ?? this.userDescriptionUrls,
       descriptionTranslation:
           descriptionTranslation ?? this.descriptionTranslation,
-      connections: connections ?? this.connections,
       userDescriptionEntities:
           userDescriptionEntities ?? this.userDescriptionEntities,
     );
@@ -155,21 +149,12 @@ class UserData extends Equatable {
         userUrl,
         userDescriptionUrls,
         descriptionTranslation,
-        connections,
         userDescriptionEntities,
       ];
 }
 
 extension UserDataExtension on UserData {
   bool get hasDescriptionTranslation => descriptionTranslation != null;
-
-  bool get hasConnections => connections != null;
-
-  bool get following =>
-      connections != null && connections!.contains('following');
-
-  bool get follows =>
-      connections != null && connections!.contains('followed_by');
 
   bool get hasDescription => description != null && description!.isNotEmpty;
 

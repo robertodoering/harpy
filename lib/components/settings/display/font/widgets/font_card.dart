@@ -28,9 +28,8 @@ class FontCard extends StatelessWidget {
     return HarpyListCard(
       border: selected ? Border.all(color: theme.colorScheme.primary) : null,
       title: Text(font, style: style),
-      trailing: Harpy.isFree && !assetFont
-          ? const FlareIcon.shiningStar(size: 22)
-          : null,
+      trailing:
+          isFree && !assetFont ? const FlareIcon.shiningStar(size: 22) : null,
       onTap: selected ? onConfirm : onSelect,
     );
   }

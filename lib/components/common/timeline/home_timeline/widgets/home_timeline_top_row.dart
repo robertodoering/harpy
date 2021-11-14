@@ -27,7 +27,7 @@ class HomeTimelineTopRow extends StatelessWidget {
             _RefreshButton(),
             Spacer(),
             _ComposeButton(),
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             _FilterButton(),
           ],
         ),
@@ -43,14 +43,14 @@ class _RefreshButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<HomeTimelineBloc>();
+    final cubit = context.watch<HomeTimelineCubit>();
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(CupertinoIcons.refresh),
-      onTap: () => bloc.add(const RefreshHomeTimeline(clearPrevious: true)),
+      onTap: () => cubit.load(clearPrevious: true),
     );
   }
 }
@@ -80,21 +80,16 @@ class _FilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final bloc = context.watch<HomeTimelineBloc>();
-    final state = bloc.state;
-
-    final hasFilter =
-        state.enableFilter && state.timelineFilter != TimelineFilter.empty;
+    final cubit = context.watch<HomeTimelineCubit>();
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: hasFilter
+      icon: cubit.filter != TimelineFilter.empty
           ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
-      onTap:
-          bloc.state.enableFilter ? Scaffold.of(context).openEndDrawer : null,
+      onTap: Scaffold.of(context).openEndDrawer,
     );
   }
 }

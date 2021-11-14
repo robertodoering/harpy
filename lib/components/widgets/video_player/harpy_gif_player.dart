@@ -126,7 +126,7 @@ class _HarpyGifPlayerState extends State<HarpyGifPlayer> {
         : toHeroContext.widget as Hero;
 
     final tween = BorderRadiusTween(
-      begin: const BorderRadius.all(kDefaultRadius),
+      begin: const BorderRadius.all(kRadius),
       end: BorderRadius.zero,
     );
 

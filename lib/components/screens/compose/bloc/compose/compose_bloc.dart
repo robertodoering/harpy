@@ -1,27 +1,38 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
+part 'compose_bloc.freezed.dart';
 part 'compose_event.dart';
-part 'compose_state.dart';
 
 class ComposeBloc extends Bloc<ComposeEvent, ComposeState> {
   ComposeBloc({
     this.inReplyToStatus,
     this.quotedTweet,
-  }) : super(const ComposeState()) {
+  }) : super(ComposeState(media: BuiltList())) {
     on<ComposeEvent>((event, emit) => event.handle(this, emit));
   }
 
   final TweetData? inReplyToStatus;
   final TweetData? quotedTweet;
+}
 
-  /// Whether the user is replying to an existing tweet.
-  bool get isReplying => inReplyToStatus != null;
+@freezed
+class ComposeState with _$ComposeState {
+  const factory ComposeState({
+    required BuiltList<PlatformFile> media,
+    MediaType? type,
+  }) = _State;
+}
 
-  String get hintText => isReplying ? 'tweet your reply' : "what's happening?";
+extension ComposeStateExtension on ComposeState {
+  bool get hasMedia => media.isNotEmpty;
+  bool get hasImages => type == MediaType.image;
+  bool get hasGif => type == MediaType.gif;
+  bool get hasVideo => type == MediaType.video;
 }

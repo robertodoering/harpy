@@ -53,7 +53,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
             // this ensures that the confirm button gets disabled
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               tabController.animateTo(0);
-              bloc.add(const ClearFoundTrendsLocations());
+              bloc.add(const FindTrendsLocationsEvent.clear());
             });
           }
         },
@@ -67,7 +67,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
     tabController.animateTo(2);
 
     bloc.add(
-      FindTrendsLocations(
+      FindTrendsLocationsEvent.search(
         latitude: _latitude!,
         longitude: _longitude!,
       ),
@@ -89,7 +89,7 @@ class _FindLocationDialogState extends State<FindLocationDialog> {
       children: [
         SelectFindMethodContent(
           onSelectNearLocation: () {
-            bloc.add(const FindNearbyLocations());
+            bloc.add(const FindTrendsLocationsEvent.nearby());
             setState(() => tabController.animateTo(2));
           },
           onSelectCustomLocation: () {

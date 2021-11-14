@@ -29,7 +29,7 @@ class CustomThemeScreen extends StatelessWidget {
   /// theme.
   final int themeId;
 
-  static const String route = 'custom_theme_screen';
+  static const route = 'custom_theme';
 
   @override
   Widget build(BuildContext context) {
@@ -73,22 +73,22 @@ class _CustomThemeContent extends StatelessWidget {
                 child: ListView(
                   padding: config.edgeInsetsSymmetric(vertical: true),
                   children: [
-                    if (Harpy.isFree) ...[
+                    if (isFree) ...[
                       const CustomThemeProCard(),
-                      defaultVerticalSpacer,
+                      verticalSpacer,
                     ],
                     const CustomThemeName(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemePrimaryColor(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemeSecondaryColor(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemeCardColor(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemeStatusBarColor(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemeNavBarColor(),
-                    defaultVerticalSpacer,
+                    verticalSpacer,
                     const CustomThemeBackgroundColors(),
                     SizedBox(height: mediaQuery.padding.bottom),
                   ],
@@ -177,7 +177,7 @@ class _SaveThemeAction extends StatelessWidget {
     final onTap = cubit.canSaveTheme
         ? () {
             themeBloc.add(
-              AddCustomTheme(
+              ThemeEvent.addCustomTheme(
                 themeData: cubit.state,
                 themeId: cubit.themeId,
                 changeLightThemeSelection:

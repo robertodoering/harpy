@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:harpy/api/api.dart';
 
 const harpyAppUser = UserData(
@@ -14,6 +15,4 @@ final exampleTweet = TweetData(
   ],
 );
 
-final exampleTweetList = [
-  exampleTweet,
-];
+final exampleTweetList = BuiltList.of([exampleTweet]);

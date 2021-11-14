@@ -21,7 +21,7 @@ class SettingsList extends StatelessWidget {
         title: settings.keys.elementAt(index),
         children: settings.values.elementAt(index),
       ),
-      separatorBuilder: (_, __) => defaultVerticalSpacer,
+      separatorBuilder: (_, __) => verticalSpacer,
     );
   }
 }

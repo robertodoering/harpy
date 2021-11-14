@@ -26,7 +26,7 @@ class TwitterAuth {
 
   final Authorization _auth;
 
-  static const String callbackUrl = 'harpy://';
+  static const callbackUrl = 'harpy://';
 
   /// Starts the 3-legged oauth flow to retrieve the user access tokens.
   ///

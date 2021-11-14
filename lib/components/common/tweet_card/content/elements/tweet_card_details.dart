@@ -32,7 +32,7 @@ class TweetCardDetails extends StatelessWidget {
 
     return Column(
       children: [
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
         Wrap(
           children: [
             Text(time, style: textStyle),

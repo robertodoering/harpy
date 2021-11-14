@@ -8,11 +8,12 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
+const isFree = String.fromEnvironment('flavor', defaultValue: 'free') == 'free';
+const isPro = String.fromEnvironment('flavor') == 'pro';
+
 /// Builds the root [MaterialApp].
 class Harpy extends StatelessWidget {
-  static const bool isFree =
-      String.fromEnvironment('flavor', defaultValue: 'free') == 'free';
-  static const bool isPro = String.fromEnvironment('flavor') == 'pro';
+  const Harpy();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class Harpy extends StatelessWidget {
         harpyRouteObserver,
       ],
       home: const SplashScreen(),
-      builder: (_, child) => _ContentBuilder(child: child!),
+      builder: (_, child) => _ContentBuilder(child: child),
     );
   }
 }
@@ -51,7 +52,7 @@ class _ContentBuilder extends StatelessWidget {
     required this.child,
   });
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {

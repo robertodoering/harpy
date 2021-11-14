@@ -71,8 +71,10 @@ class _TwitterLoginWebviewState extends State<TwitterLoginWebview> {
     return WebView(
       initialUrl: initialUrl.toString(),
       javascriptMode: JavascriptMode.unrestricted,
-      navigationDelegate: (navigation) =>
-          _navigationDelegate(context, navigation),
+      navigationDelegate: (navigation) => _navigationDelegate(
+        context,
+        navigation,
+      ),
     );
   }
 }

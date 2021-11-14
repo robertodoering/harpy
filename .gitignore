@@ -29,7 +29,11 @@
 .pub/
 /build/
 
-# flutter test golden failure output
+# generated files
+**/*.g.dart
+**/*.freezed.dart
+
+# golden test failures
 **/failures/*.png
 
 # Web related
@@ -43,9 +47,6 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-
-# Harpy app config
-assets/config/app_config.yaml
 
 # Android key.properties
 android/key.properties

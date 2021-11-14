@@ -16,7 +16,7 @@ void main() {
 
   // HarpyErrorHandler will run the app and handle uncaught errors
   HarpyErrorHandler(
-    child: GlobalProvider(
+    child: const GlobalProvider(
       child: Harpy(),
     ),
   );

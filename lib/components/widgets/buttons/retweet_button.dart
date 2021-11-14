@@ -7,15 +7,13 @@ import 'package:provider/provider.dart';
 
 /// The retweet button for a [TweetCardActionsRow].
 class RetweetButton extends StatefulWidget {
-  const RetweetButton(
-    this.bloc, {
+  const RetweetButton({
     this.padding = const EdgeInsets.all(8),
     this.iconSize = 21,
     this.sizeDelta = 0,
     this.overlayForegroundColor,
   });
 
-  final TweetBloc bloc;
   final EdgeInsets padding;
   final double iconSize;
   final double sizeDelta;
@@ -31,7 +29,7 @@ class RetweetButton extends StatefulWidget {
 }
 
 class _RetweetButtonState extends State<RetweetButton> {
-  Future<void> _showRetweetButtonMenu() async {
+  Future<void> _showRetweetButtonMenu(TweetBloc bloc) async {
     final popupMenuTheme = PopupMenuTheme.of(context);
 
     final button = context.findRenderObject() as RenderBox;
@@ -86,9 +84,9 @@ class _RetweetButtonState extends State<RetweetButton> {
     );
 
     if (result == 0) {
-      widget.bloc.onRetweet();
+      bloc.onRetweet();
     } else if (result == 1) {
-      widget.bloc.onComposeQuote();
+      bloc.onComposeQuote();
     }
   }
 
@@ -100,7 +98,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     final bloc = context.watch<TweetBloc>();
 
     return ActionButton(
-      active: widget.bloc.tweet.retweeted,
+      active: bloc.state.retweeted,
       padding: widget.padding,
       activeIconColor: harpyTheme.retweetColor,
       activeTextStyle: theme.textTheme.button!
@@ -112,8 +110,8 @@ class _RetweetButtonState extends State<RetweetButton> {
       inactiveTextStyle: theme.textTheme.button!
           .copyWith(color: theme.textTheme.bodyText2!.color)
           .apply(fontSizeDelta: widget.sizeDelta),
-      value: widget.bloc.tweet.retweetCount,
-      activate: _showRetweetButtonMenu,
+      value: bloc.tweet.retweetCount,
+      activate: () => _showRetweetButtonMenu(bloc),
       deactivate: bloc.onUnretweet,
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,

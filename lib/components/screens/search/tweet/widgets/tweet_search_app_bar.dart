@@ -15,16 +15,16 @@ class TweetSearchAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TweetSearchBloc>();
+    final cubit = context.watch<TweetSearchCubit>();
     final model = context.watch<TweetSearchFilterModel>();
 
     return HarpySliverAppBar(
       titleWidget: SearchTextField(
         text: text,
         hintText: 'search tweets',
-        onSubmitted: (text) => bloc.add(SearchTweets(customQuery: text)),
+        onSubmitted: (text) => cubit.search(customQuery: text),
         onClear: () {
-          bloc.add(const ClearSearchResult());
+          cubit.clear();
           model.clear();
         },
       ),
@@ -34,7 +34,6 @@ class TweetSearchAppBar extends StatelessWidget {
           icon: const Icon(Icons.filter_alt_outlined),
           onTap: () {
             FocusScope.of(context).unfocus();
-
             Scaffold.of(context).openEndDrawer();
           },
         ),

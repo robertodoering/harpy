@@ -31,7 +31,7 @@ class PlaceholderBox extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: shape == BoxShape.circle ? null : kDefaultBorderRadius,
+          borderRadius: shape == BoxShape.circle ? null : kBorderRadius,
           shape: shape,
           color: theme.cardTheme.color,
         ),

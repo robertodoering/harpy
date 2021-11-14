@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 typedef OnOpenMediaOverlay = void Function(Widget child);
 
 class TweetMedia extends StatelessWidget {
-  const TweetMedia(this.tweet);
-
-  final TweetData tweet;
+  const TweetMedia();
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+
     final bloc = context.watch<TweetBloc>();
+    final tweet = bloc.tweet;
 
     final uncroppedImage = tweet.hasSingleImage &&
         mediaQuery.orientation == Orientation.portrait &&
@@ -28,22 +28,18 @@ class TweetMedia extends StatelessWidget {
         aspectRatio = tweet.images!.first.aspectRatio;
       }
 
-      child = TweetImages(
-        tweet,
-        tweetBloc: bloc,
-        uncroppedImage: uncroppedImage,
-      );
+      child = TweetImages(uncroppedImage: uncroppedImage);
     } else if (tweet.hasVideo) {
       aspectRatio = tweet.video!.validAspectRatio
           ? tweet.video!.aspectRatioDouble
           : 16 / 9;
 
-      child = TweetVideo(tweet, tweetBloc: bloc);
+      child = const TweetVideo();
     } else if (tweet.hasGif) {
       aspectRatio =
           tweet.gif!.validAspectRatio ? tweet.gif!.aspectRatioDouble : 16 / 9;
 
-      child = TweetGif(tweet, tweetBloc: bloc);
+      child = const TweetGif();
     } else {
       child = const SizedBox();
     }

@@ -182,7 +182,7 @@ void main() {
 
       await screenMatchesGolden(tester, 'media_one_image');
 
-      final media = find.byType(TweetCardMedia);
+      final media = find.byType(TweetMedia);
       final tweetImages = find.byType(TweetImages);
       final harpyImage = find.byType(HarpyImage);
 
@@ -212,7 +212,7 @@ void main() {
 
       await screenMatchesGolden(tester, 'media_four_images');
 
-      final media = find.byType(TweetCardMedia);
+      final media = find.byType(TweetMedia);
       final tweetImages = find.byType(TweetImages);
       final harpyImage = find.byType(HarpyImage);
 
@@ -243,7 +243,7 @@ void main() {
 
       await screenMatchesGolden(tester, 'media_video');
 
-      final media = find.byType(TweetCardMedia);
+      final media = find.byType(TweetMedia);
       final tweetVideo = find.byType(TweetVideo);
       final videoPlayer = find.byType(HarpyVideoPlayer);
 
@@ -275,7 +275,7 @@ void main() {
 
       await screenMatchesGolden(tester, 'media_gif');
 
-      final media = find.byType(TweetCardMedia);
+      final media = find.byType(TweetMedia);
       final tweetGif = find.byType(TweetGif);
       final gifPlayer = find.byType(HarpyGifPlayer);
 

@@ -9,29 +9,35 @@ import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
 /// text.
 ///
 /// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
-const double kTextContrastRatio = 4.5;
+const kTextContrastRatio = 4.5;
 
 /// The minimum recommended contrast ratio for the visual representation of
 /// large text.
 ///
 /// See https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html.
-const double kLargeTextContrastRatio = 3;
+const kLargeTextContrastRatio = 3.0;
 
 /// The default border radius used throughout the app.
-const ShapeBorder kDefaultShapeBorder = RoundedRectangleBorder(
-  borderRadius: kDefaultBorderRadius,
+const kShapeBorder = RoundedRectangleBorder(
+  borderRadius: kBorderRadius,
 );
-const BorderRadius kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
-const Radius kDefaultRadius = Radius.circular(16);
+const kBorderRadius = BorderRadius.all(kRadius);
+const kRadius = Radius.circular(16);
 
-/// Fonts
-const String kDefaultBodyFontFamily = 'OpenSans';
-const String kDefaultDisplayFontFamily = 'Comfortaa';
+/// The default animation durations.
+const kShortAnimationDuration = Duration(milliseconds: 300);
+const kLongAnimationDuration = Duration(milliseconds: 600);
 
-const List<String> kAssetFonts = [
-  kDefaultBodyFontFamily,
-  kDefaultDisplayFontFamily,
+/// The default fonts.
+const kBodyFontFamily = 'OpenSans';
+const kDisplayFontFamily = 'Comfortaa';
+
+const kAssetFonts = [
+  kBodyFontFamily,
+  kDisplayFontFamily,
 ];
+
+const _fontFamilyFallback = ['NotoSans'];
 
 class HarpyTheme {
   HarpyTheme.fromData({
@@ -97,8 +103,6 @@ class HarpyTheme {
 
   late TextTheme _textTheme;
   late double _backgroundLuminance;
-
-  static const List<String> _fontFamilyFallback = ['NotoSans'];
 
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
@@ -375,7 +379,7 @@ class HarpyTheme {
     return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.displayFont,
-      fallback: kDefaultDisplayFontFamily,
+      fallback: kDisplayFontFamily,
     );
   }
 
@@ -385,7 +389,7 @@ class HarpyTheme {
     return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.bodyFont,
-      fallback: kDefaultBodyFontFamily,
+      fallback: kBodyFontFamily,
     );
   }
 
@@ -426,7 +430,7 @@ class HarpyTheme {
 
       cardTheme: CardTheme(
         color: cardColor,
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
         elevation: 0,
         margin: EdgeInsets.zero,
       ),
@@ -448,13 +452,13 @@ class HarpyTheme {
         contentTextStyle: _textTheme.subtitle2,
         actionTextColor: primaryColor,
         disabledActionTextColor: primaryColor.withOpacity(.5),
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
         behavior: SnackBarBehavior.floating,
       ),
 
       popupMenuTheme: PopupMenuThemeData(
         color: averageBackgroundColor,
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
       ),
 
       iconTheme: const IconThemeData.fallback().copyWith(
@@ -463,7 +467,7 @@ class HarpyTheme {
       ),
 
       scrollbarTheme: ScrollbarThemeData(
-        radius: kDefaultRadius,
+        radius: kRadius,
         thickness: MaterialStateProperty.resolveWith((_) => 3),
         mainAxisMargin: config.paddingValue * 2,
         thumbColor: MaterialStateColor.resolveWith(
@@ -474,14 +478,14 @@ class HarpyTheme {
       ),
 
       inputDecorationTheme: InputDecorationTheme(
-        border: const OutlineInputBorder(borderRadius: kDefaultBorderRadius),
+        border: const OutlineInputBorder(borderRadius: kBorderRadius),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: dividerColor),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
         ),
         contentPadding: config.edgeInsets,
       ),

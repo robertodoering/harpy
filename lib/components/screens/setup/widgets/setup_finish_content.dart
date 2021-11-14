@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
@@ -24,13 +23,13 @@ class SetupFinishContent extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: const [
                 _CrashReports(),
-                defaultVerticalSpacer,
-                defaultVerticalSpacer,
+                verticalSpacer,
+                verticalSpacer,
                 _FollowHarpy(),
               ],
             ),
           ),
-          if (Harpy.isPro)
+          if (isPro)
             Padding(
               padding: config.edgeInsets,
               child: const Center(
@@ -64,7 +63,7 @@ class _CrashReportsState extends State<_CrashReports> {
       child: HarpySwitchTile(
         value: generalPreferences.crashReports,
         multilineTitle: true,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         title: Text(
           'send automatic crash reports',
           style: theme.textTheme.headline5,
@@ -90,13 +89,12 @@ class _FollowHarpy extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final userProfileBloc = context.watch<UserProfileBloc>();
-    final following = userProfileBloc.user?.following ?? false;
+    final bloc = context.watch<UserRelationshipBloc>();
 
     return Card(
       child: HarpySwitchTile(
-        value: following,
-        borderRadius: kDefaultBorderRadius,
+        value: bloc.state.following,
+        borderRadius: kBorderRadius,
         title: Text.rich(
           TextSpan(
             children: [
@@ -114,9 +112,9 @@ class _FollowHarpy extends StatelessWidget {
         ),
         onChanged: (value) {
           HapticFeedback.lightImpact();
-          following
-              ? userProfileBloc.add(const UnfollowUserEvent())
-              : userProfileBloc.add(const FollowUserEvent());
+          bloc.state.following
+              ? bloc.add(const UserRelationshipEvent.unfollow())
+              : bloc.add(const UserRelationshipEvent.follow());
         },
       ),
     );

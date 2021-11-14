@@ -3,13 +3,16 @@ part of 'compose_bloc.dart';
 abstract class ComposeEvent {
   const ComposeEvent();
 
+  const factory ComposeEvent.pickMedia() = _PickMedia;
+  const factory ComposeEvent.clear() = _Clear;
+
   Future<void> handle(ComposeBloc bloc, Emitter emit);
 }
 
 /// Opens a [FilePicker] to add up to 4 images, one gif or one video to the
 /// composed tweet.
-class PickTweetMediaEvent extends ComposeEvent {
-  const PickTweetMediaEvent();
+class _PickMedia extends ComposeEvent {
+  const _PickMedia();
 
   bool _pickedImages(FilePickerResult result) {
     return result.files.every(
@@ -27,7 +30,7 @@ class PickTweetMediaEvent extends ComposeEvent {
     if (result.files.length > 1) {
       app<MessageService>().show('only one gif can be attached');
     } else {
-      bloc!.add(AddGifEvent(file: result.files.first));
+      bloc!.add(_AddGif(file: result.files.first));
     }
   }
 
@@ -35,7 +38,7 @@ class PickTweetMediaEvent extends ComposeEvent {
     if (result.files.length > 1) {
       app<MessageService>().show('only one video can be attached');
     } else {
-      bloc!.add(AddVideoEvent(file: result.files.first));
+      bloc!.add(_AddVideo(file: result.files.first));
     }
   }
 
@@ -48,16 +51,12 @@ class PickTweetMediaEvent extends ComposeEvent {
   @override
   Future<void> handle(ComposeBloc bloc, Emitter emit) async {
     final result = await FilePicker.platform
-        .pickFiles(
-          type: FileType.media,
-          allowMultiple: true,
-        )
-        // ignore exception
-        .handleError((dynamic e, st) {});
+        .pickFiles(type: FileType.media, allowMultiple: true)
+        .handleError(silentErrorHandler);
 
     if (result != null && result.files.isNotEmpty) {
       if (_pickedImages(result)) {
-        bloc.add(AddImagesEvent(files: result.files));
+        bloc.add(_AddImage(files: result.files));
       } else if (_pickedGif(result)) {
         _addGif(bloc, result);
       } else if (_pickedVideo(result)) {
@@ -72,8 +71,8 @@ class PickTweetMediaEvent extends ComposeEvent {
   }
 }
 
-class AddImagesEvent extends ComposeEvent {
-  const AddImagesEvent({
+class _AddImage extends ComposeEvent {
+  const _AddImage({
     required this.files,
   });
 
@@ -109,15 +108,15 @@ class AddImagesEvent extends ComposeEvent {
 
     emit(
       ComposeState(
-        media: newFiles,
+        media: newFiles.toBuiltList(),
         type: MediaType.image,
       ),
     );
   }
 }
 
-class AddGifEvent extends ComposeEvent {
-  const AddGifEvent({
+class _AddGif extends ComposeEvent {
+  const _AddGif({
     required this.file,
   });
 
@@ -127,15 +126,15 @@ class AddGifEvent extends ComposeEvent {
   Future<void> handle(ComposeBloc bloc, Emitter emit) async {
     emit(
       ComposeState(
-        media: <PlatformFile>[file],
+        media: BuiltList.of([file]),
         type: MediaType.gif,
       ),
     );
   }
 }
 
-class AddVideoEvent extends ComposeEvent {
-  const AddVideoEvent({
+class _AddVideo extends ComposeEvent {
+  const _AddVideo({
     required this.file,
   });
 
@@ -145,18 +144,18 @@ class AddVideoEvent extends ComposeEvent {
   Future<void> handle(ComposeBloc bloc, Emitter emit) async {
     emit(
       ComposeState(
-        media: <PlatformFile>[file],
+        media: BuiltList.of([file]),
         type: MediaType.video,
       ),
     );
   }
 }
 
-class ClearComposedTweet extends ComposeEvent {
-  const ClearComposedTweet();
+class _Clear extends ComposeEvent {
+  const _Clear();
 
   @override
   Future<void> handle(ComposeBloc bloc, Emitter emit) async {
-    emit(const ComposeState());
+    emit(ComposeState(media: BuiltList()));
   }
 }

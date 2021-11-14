@@ -29,10 +29,10 @@ class TweetImagesLayout extends StatelessWidget {
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
       borderRadius: BorderRadius.only(
-        topLeft: topLeft ? kDefaultRadius : Radius.zero,
-        bottomLeft: bottomLeft ? kDefaultRadius : Radius.zero,
-        topRight: topRight ? kDefaultRadius : Radius.zero,
-        bottomRight: bottomRight ? kDefaultRadius : Radius.zero,
+        topLeft: topLeft ? kRadius : Radius.zero,
+        bottomLeft: bottomLeft ? kRadius : Radius.zero,
+        topRight: topRight ? kRadius : Radius.zero,
+        bottomRight: bottomRight ? kRadius : Radius.zero,
       ),
       child: GestureDetector(
         onTap: () => onImageTap?.call(index),

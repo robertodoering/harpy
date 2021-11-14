@@ -45,7 +45,7 @@ class HarpyBackground extends StatelessWidget {
       ),
       child: Material(
         type: MaterialType.transparency,
-        child: child ?? Container(),
+        child: child ?? const SizedBox(),
       ),
     );
   }

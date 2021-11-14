@@ -113,7 +113,7 @@ class MediaTimelineMediaWidget extends StatelessWidget {
       create: (_) => TweetBloc(entry.tweet),
       child: ClipRRect(
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: child,
       ),
     );
