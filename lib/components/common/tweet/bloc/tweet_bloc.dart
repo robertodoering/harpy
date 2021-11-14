@@ -15,7 +15,9 @@ import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
 
 part 'tweet_bloc.freezed.dart';
+
 part 'tweet_bloc_action_mixin.dart';
+
 part 'tweet_event.dart';
 
 /// Handles actions done on a single tweet, such as retweeting, favoriting,
@@ -91,6 +93,13 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
 
   void onComposeQuote() {
     app<HarpyNavigator>().pushComposeScreen(quotedTweet: tweet);
+  }
+
+  void onShowRetweeters() {
+    app<HarpyNavigator>().pushRetweetsScreen(
+      tweetId: tweet.id,
+      sort: 'mostFollowers',
+    );
   }
 
   void onFavorite() {

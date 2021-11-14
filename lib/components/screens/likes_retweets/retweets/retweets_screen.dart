@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/screens/likes_retweets/common/likes_retweets_screen.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/bloc/retweets_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/components/screens/likes_retweets/likes_retweets_screen.dart';
+import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
 
 /// Builds the screen with a list of the followers for the user with the
 /// [tweetId].
@@ -11,7 +13,7 @@ class RetweetsScreen extends StatelessWidget {
   });
 
   /// The [tweetId] of the user whom to search the followers for.
-  final String? tweetId;
+  final String tweetId;
 
   /// The [sort] of the how to order the users displayed
   final String? sort;
@@ -20,12 +22,11 @@ class RetweetsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LikesRetweetsScreen<RetweetsBloc>(
-      create: (_) => RetweetsBloc(tweetId: tweetId, sort: sort),
-      userId: tweetId,
-      title: 'Retweeted by',
-      errorMessage: 'error loading retweets',
-      loadUsers: (bloc) => bloc.add(const LoadRetweets()),
+    return BlocProvider<RetweetsCubit>(
+      create: (_) => RetweetsCubit()..loadRetweetedByUsers(tweetId),
+      child: const HarpyScaffold(
+        body: LikesRetweetsScreen(title: 'Retweeted By'),
+      ),
     );
   }
 }
