@@ -78,6 +78,9 @@ Some interesting features of the app include:
 Harpy is being released in the Play Store for Android, therefore only
 Android devices are used for testing the builds.
 
+Run the build runner once after cloning the project
+- `flutter packages pub run build_runner build`
+
 ### Twitter API key
 
 Follow [these instructions](https://github.com/robertodoering/harpy/wiki/Twitter-key-setup) for setting up your Twitter API key.
@@ -88,10 +91,3 @@ The app can be built with the "free" or "pro" flavor by running:
 
 * `flutter run --flavor free --dart-define=flavor=free --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
 * `flutter run --flavor pro --dart-define=flavor=pro --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
-
-### Misc
-
-To generate [json_serializable](https://pub.dev/packages/json_serializable)
-models:
-
-* `flutter packages pub run build_runner build`
