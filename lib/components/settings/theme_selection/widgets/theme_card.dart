@@ -54,7 +54,7 @@ class ThemeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: Row(
           children: [
             Expanded(
@@ -167,7 +167,7 @@ class _ThemeCardBase extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
           border: selected
               ? Border.all(color: harpyTheme.primaryColor)
               : Border.all(color: Colors.transparent),

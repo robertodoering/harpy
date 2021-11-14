@@ -36,7 +36,7 @@ class TwitterLists extends StatelessWidget {
         onLongPress: () => _showListActionBottomSheet(context, listData),
       );
     } else {
-      return defaultVerticalSpacer;
+      return verticalSpacer;
     }
   }
 

@@ -21,7 +21,7 @@ class CustomThemeBackgroundColors extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: config.paddingValue * 2),
           child: Text('background colors', style: theme.textTheme.headline4),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
         const _ReorderableBackgroundColors(),
         const _AddBackgroundColor(),
       ],
@@ -116,12 +116,12 @@ class _AddBackgroundColor extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: theme.dividerColor),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
         ),
         child: HarpyListTile(
           leading: const Icon(CupertinoIcons.add),
           title: const Text('add background color'),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
           onTap: cubit.addBackgroundColor,
         ),
       ),

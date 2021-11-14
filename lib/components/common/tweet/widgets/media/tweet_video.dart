@@ -35,7 +35,7 @@ class TweetVideo extends StatelessWidget {
       onTap: () {},
       child: ClipRRect(
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: HarpyVideoPlayer.fromController(
           VideoPlayerController.network(
             bloc.tweet.video!.appropriateUrl!,

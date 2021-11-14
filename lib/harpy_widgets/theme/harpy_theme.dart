@@ -18,23 +18,23 @@ const kTextContrastRatio = 4.5;
 const kLargeTextContrastRatio = 3.0;
 
 /// The default border radius used throughout the app.
-const kDefaultShapeBorder = RoundedRectangleBorder(
-  borderRadius: kDefaultBorderRadius,
+const kShapeBorder = RoundedRectangleBorder(
+  borderRadius: kBorderRadius,
 );
-const kDefaultBorderRadius = BorderRadius.all(kDefaultRadius);
-const kDefaultRadius = Radius.circular(16);
+const kBorderRadius = BorderRadius.all(kRadius);
+const kRadius = Radius.circular(16);
 
 /// The default animation durations.
 const kShortAnimationDuration = Duration(milliseconds: 300);
 const kLongAnimationDuration = Duration(milliseconds: 600);
 
 /// The default fonts.
-const kDefaultBodyFontFamily = 'OpenSans';
-const kDefaultDisplayFontFamily = 'Comfortaa';
+const kBodyFontFamily = 'OpenSans';
+const kDisplayFontFamily = 'Comfortaa';
 
 const kAssetFonts = [
-  kDefaultBodyFontFamily,
-  kDefaultDisplayFontFamily,
+  kBodyFontFamily,
+  kDisplayFontFamily,
 ];
 
 const _fontFamilyFallback = ['NotoSans'];
@@ -379,7 +379,7 @@ class HarpyTheme {
     return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.displayFont,
-      fallback: kDefaultDisplayFontFamily,
+      fallback: kDisplayFontFamily,
     );
   }
 
@@ -389,7 +389,7 @@ class HarpyTheme {
     return applyGoogleFont(
       textStyle: textStyle,
       fontFamily: config.bodyFont,
-      fallback: kDefaultBodyFontFamily,
+      fallback: kBodyFontFamily,
     );
   }
 
@@ -430,7 +430,7 @@ class HarpyTheme {
 
       cardTheme: CardTheme(
         color: cardColor,
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
         elevation: 0,
         margin: EdgeInsets.zero,
       ),
@@ -452,13 +452,13 @@ class HarpyTheme {
         contentTextStyle: _textTheme.subtitle2,
         actionTextColor: primaryColor,
         disabledActionTextColor: primaryColor.withOpacity(.5),
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
         behavior: SnackBarBehavior.floating,
       ),
 
       popupMenuTheme: PopupMenuThemeData(
         color: averageBackgroundColor,
-        shape: kDefaultShapeBorder,
+        shape: kShapeBorder,
       ),
 
       iconTheme: const IconThemeData.fallback().copyWith(
@@ -467,7 +467,7 @@ class HarpyTheme {
       ),
 
       scrollbarTheme: ScrollbarThemeData(
-        radius: kDefaultRadius,
+        radius: kRadius,
         thickness: MaterialStateProperty.resolveWith((_) => 3),
         mainAxisMargin: config.paddingValue * 2,
         thumbColor: MaterialStateColor.resolveWith(
@@ -478,14 +478,14 @@ class HarpyTheme {
       ),
 
       inputDecorationTheme: InputDecorationTheme(
-        border: const OutlineInputBorder(borderRadius: kDefaultBorderRadius),
+        border: const OutlineInputBorder(borderRadius: kBorderRadius),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: dividerColor),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
         ),
         contentPadding: config.edgeInsets,
       ),

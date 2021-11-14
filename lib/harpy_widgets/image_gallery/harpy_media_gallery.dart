@@ -35,7 +35,7 @@ class HarpyMediaGallery extends StatelessWidget {
   final PhotoViewGalleryPageChangedCallback? onPageChanged;
 
   static BorderRadius defaultBeginBorderRadiusBuilder(int index) {
-    return kDefaultBorderRadius;
+    return kBorderRadius;
   }
 
   Widget _flightShuttleBuilder(

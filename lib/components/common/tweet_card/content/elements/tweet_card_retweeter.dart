@@ -27,7 +27,7 @@ class TweetCardRetweeter extends StatelessWidget {
               width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
               child: Icon(FeatherIcons.repeat, size: 16 + style.sizeDelta),
             ),
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             Flexible(
               child: Text(
                 '${tweet.retweetUserName} retweeted',

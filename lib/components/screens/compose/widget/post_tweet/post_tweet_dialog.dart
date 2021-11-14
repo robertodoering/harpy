@@ -85,7 +85,7 @@ class _StateMessage extends StatelessWidget {
             key: Key(state.message!),
           ),
           if (state.additionalInfo != null) ...[
-            defaultSmallVerticalSpacer,
+            smallVerticalSpacer,
             Text(
               state.additionalInfo!,
               style: theme.textTheme.bodyText1,

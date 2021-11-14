@@ -78,7 +78,7 @@ class _TweetCardQuoteBase extends StatelessWidget {
       onTap: bloc.onTweetTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
           border: Border.all(color: theme.dividerColor),
         ),
         child: TweetCardContent(

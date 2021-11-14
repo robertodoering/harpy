@@ -32,14 +32,14 @@ class UserProfileInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _Avatar(user: user),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _Handle(user: user),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
               _Name(user: user),
             ],
           ),

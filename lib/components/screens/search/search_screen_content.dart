@@ -43,7 +43,7 @@ class SearchScreenContent extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 _buildUserSearchCard(),
-                defaultVerticalSpacer,
+                verticalSpacer,
                 _buildTweetSearchCard(),
               ]),
             ),
@@ -55,7 +55,7 @@ class SearchScreenContent extends StatelessWidget {
             child: TrendsCard(),
           ),
           const SliverToBoxAdapter(
-            child: defaultVerticalSpacer,
+            child: verticalSpacer,
           ),
           const TrendsList(),
           SliverToBoxAdapter(

@@ -47,7 +47,7 @@ class MediaOverlayActionRow extends StatelessWidget {
               overlayForegroundColor: foregroundColor,
             ),
           ),
-          defaultSmallHorizontalSpacer,
+          smallHorizontalSpacer,
           const AnimatedSize(
             duration: kShortAnimationDuration,
             curve: Curves.easeOutCubic,

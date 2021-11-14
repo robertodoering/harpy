@@ -60,7 +60,7 @@ class UserProfileAdditionalInfo extends StatelessWidget {
         for (final child in children) ...[
           child,
           if (child == children.last)
-            defaultSmallVerticalSpacer
+            smallVerticalSpacer
           else
             SizedBox(height: config.smallPaddingValue / 2),
         ],
@@ -89,7 +89,7 @@ class _InfoRow extends StatelessWidget {
         child: Row(
           children: [
             icon,
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             Expanded(
               child: child,
             ),

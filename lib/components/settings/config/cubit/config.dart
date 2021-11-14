@@ -27,8 +27,8 @@ class Config extends Equatable {
     fontSizeDelta: 0,
     compactMode: false,
     bottomAppBar: false,
-    displayFont: kDefaultDisplayFontFamily,
-    bodyFont: kDefaultBodyFontFamily,
+    displayFont: kDisplayFontFamily,
+    bodyFont: kBodyFontFamily,
     hideHomeTabBar: true,
     showAbsoluteTime: false,
   );

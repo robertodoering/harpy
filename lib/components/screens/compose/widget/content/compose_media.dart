@@ -155,7 +155,7 @@ class _ComposeMediaVideoState extends State<ComposeMediaVideo> {
       child: ClipRRect(
         key: ValueKey<VideoPlayerController?>(_controller),
         clipBehavior: Clip.hardEdge,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: HarpyVideoPlayer.fromController(
           _controller,
           allowVerticalOverflow: true,

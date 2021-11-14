@@ -26,12 +26,12 @@ class ConfigCubit extends Cubit<Config> {
 
     final displayFontFamily = app<HarpyPreferences>().getString(
       'displayFontFamily',
-      kDefaultDisplayFontFamily,
+      kDisplayFontFamily,
     );
 
     final bodyFontFamily = app<HarpyPreferences>().getString(
       'bodyFontFamily',
-      kDefaultBodyFontFamily,
+      kBodyFontFamily,
     );
 
     final showAbsoluteTime = app<HarpyPreferences>().getBool(
@@ -59,12 +59,12 @@ class ConfigCubit extends Cubit<Config> {
 
     app<HarpyPreferences>().setString(
       'displayFontFamily',
-      kDefaultDisplayFontFamily,
+      kDisplayFontFamily,
     );
 
     app<HarpyPreferences>().setString(
       'bodyFontFamily',
-      kDefaultBodyFontFamily,
+      kBodyFontFamily,
     );
 
     app<HarpyPreferences>().setBool(

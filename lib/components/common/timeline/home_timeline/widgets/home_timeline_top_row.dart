@@ -27,7 +27,7 @@ class HomeTimelineTopRow extends StatelessWidget {
             _RefreshButton(),
             Spacer(),
             _ComposeButton(),
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             _FilterButton(),
           ],
         ),

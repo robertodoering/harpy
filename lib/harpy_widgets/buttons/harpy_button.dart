@@ -259,7 +259,7 @@ class HarpyButton extends StatelessWidget {
         child: Material(
           elevation: elevation,
           type: materialType,
-          borderRadius: kDefaultBorderRadius,
+          borderRadius: kBorderRadius,
           child: Padding(
             padding: _padding,
             // use a builder so the context can reference the animated theme

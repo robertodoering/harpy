@@ -46,7 +46,7 @@ class _DownloadStatusMessageState extends State<DownloadStatusMessage> {
             ),
           ),
           if (status.state == DownloadState.inProgress) ...[
-            defaultHorizontalSpacer,
+            horizontalSpacer,
             SizedBox(
               width: 18,
               height: 18,

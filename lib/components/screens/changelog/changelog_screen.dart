@@ -66,7 +66,7 @@ class _ChangelogScreenState extends State<ChangelogScreen> {
             ),
           ),
         ),
-        separatorBuilder: (_, __) => defaultVerticalSpacer,
+        separatorBuilder: (_, __) => verticalSpacer,
       );
     }
 

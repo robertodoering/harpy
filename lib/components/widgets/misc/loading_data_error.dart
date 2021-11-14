@@ -33,7 +33,7 @@ class LoadingDataError extends StatelessWidget {
             child: message,
           ),
           if (onRetry != null) ...[
-            defaultVerticalSpacer,
+            verticalSpacer,
             HarpyButton.flat(
               dense: true,
               text: const Text('retry'),
@@ -41,7 +41,7 @@ class LoadingDataError extends StatelessWidget {
             ),
           ],
           if (onClearFilter != null) ...[
-            defaultVerticalSpacer,
+            verticalSpacer,
             HarpyButton.flat(
               dense: true,
               text: const Text('clear filter'),

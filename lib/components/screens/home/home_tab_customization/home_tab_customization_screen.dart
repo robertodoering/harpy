@@ -76,7 +76,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(CupertinoIcons.info, color: theme.colorScheme.primary),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         const Flexible(
           child: Text(
             'changes other than adding lists are not saved in the free version'
@@ -131,9 +131,9 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                       delegate: SliverChildListDelegate([
                         if (isFree) ...[
                           _buildProCard(theme),
-                          defaultVerticalSpacer,
+                          verticalSpacer,
                           _buildInfoText(theme),
-                          defaultVerticalSpacer,
+                          verticalSpacer,
                         ],
                         const HomeTabReorderList(),
                         if (model.canAddMoreLists)

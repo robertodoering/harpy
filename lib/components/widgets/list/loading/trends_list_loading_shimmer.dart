@@ -41,14 +41,14 @@ class TrendsPlaceholder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const PlaceholderBox(width: 28, height: 28, shape: BoxShape.circle),
-        defaultHorizontalSpacer,
-        defaultHorizontalSpacer,
+        horizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               PlaceholderBox(widthFactor: .75, height: 15),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
               PlaceholderBox(widthFactor: .3, height: 15),
             ],
           ),

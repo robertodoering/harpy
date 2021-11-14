@@ -103,7 +103,7 @@ class _HarpyTabState extends State<HarpyTab>
         alignment: Alignment.centerRight,
         child: Row(
           children: [
-            defaultSmallHorizontalSpacer,
+            smallHorizontalSpacer,
             widget.text!,
           ],
         ),

@@ -40,12 +40,12 @@ class HarpyProCard extends StatelessWidget {
     );
 
     return Material(
-      borderRadius: kDefaultBorderRadius,
+      borderRadius: kBorderRadius,
       elevation: 4,
       color: Colors.transparent,
       // clip the container and the custom paint
       child: ClipRRect(
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -64,7 +64,7 @@ class HarpyProCard extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                borderRadius: kDefaultBorderRadius,
+                borderRadius: kBorderRadius,
                 onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(16),

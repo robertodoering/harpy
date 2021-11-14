@@ -23,8 +23,8 @@ class SetupFinishContent extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: const [
                 _CrashReports(),
-                defaultVerticalSpacer,
-                defaultVerticalSpacer,
+                verticalSpacer,
+                verticalSpacer,
                 _FollowHarpy(),
               ],
             ),
@@ -63,7 +63,7 @@ class _CrashReportsState extends State<_CrashReports> {
       child: HarpySwitchTile(
         value: generalPreferences.crashReports,
         multilineTitle: true,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         title: Text(
           'send automatic crash reports',
           style: theme.textTheme.headline5,
@@ -94,7 +94,7 @@ class _FollowHarpy extends StatelessWidget {
     return Card(
       child: HarpySwitchTile(
         value: bloc.state.following,
-        borderRadius: kDefaultBorderRadius,
+        borderRadius: kBorderRadius,
         title: Text.rich(
           TextSpan(
             children: [

@@ -67,27 +67,27 @@ class _TweetImagesState extends State<TweetImages> {
 
   BorderRadius _borderRadiusForImage(int index, int count) {
     if (count == 1) {
-      return const BorderRadius.all(kDefaultRadius);
+      return const BorderRadius.all(kRadius);
     } else if (count == 2) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 1 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 0 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 1 ? kRadius : Radius.zero,
       );
     } else if (count == 3) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 2 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 0 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 2 ? kRadius : Radius.zero,
       );
     } else if (count == 4) {
       return BorderRadius.only(
-        topLeft: index == 0 ? kDefaultRadius : Radius.zero,
-        bottomLeft: index == 2 ? kDefaultRadius : Radius.zero,
-        topRight: index == 1 ? kDefaultRadius : Radius.zero,
-        bottomRight: index == 3 ? kDefaultRadius : Radius.zero,
+        topLeft: index == 0 ? kRadius : Radius.zero,
+        bottomLeft: index == 2 ? kRadius : Radius.zero,
+        topRight: index == 1 ? kRadius : Radius.zero,
+        bottomRight: index == 3 ? kRadius : Radius.zero,
       );
     } else {
       return BorderRadius.zero;

@@ -90,7 +90,7 @@ class _TimelineState extends State<Timeline> {
         mainAxisSize: MainAxisSize.min,
         children: [
           NewTweetsText(state.initialResultsCount),
-          defaultVerticalSpacer,
+          verticalSpacer,
           widget.tweetBuilder(tweet),
         ],
       );

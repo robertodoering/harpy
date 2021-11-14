@@ -47,7 +47,7 @@ class _Content extends StatelessWidget {
           ...?state.maybeMap(
             loading: (_) => const [
               InfoRowLoadingShimmer(),
-              SliverToBoxAdapter(child: defaultVerticalSpacer),
+              SliverToBoxAdapter(child: verticalSpacer),
               TweetListLoadingSliver(),
             ],
             data: (_) => const [

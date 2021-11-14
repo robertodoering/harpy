@@ -37,7 +37,7 @@ class UserCard extends StatelessWidget {
               overflow: TextOverflow.fade,
             ),
             if (user.hasDescription) ...[
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
               TwitterText(
                 user.description!,
                 entities: user.userDescriptionEntities,

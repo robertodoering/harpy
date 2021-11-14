@@ -121,7 +121,7 @@ class ThemeSelectionScreen extends StatelessWidget {
         padding: config.edgeInsets,
         itemCount: children.length,
         itemBuilder: (_, index) => children[index],
-        separatorBuilder: (_, __) => defaultSmallVerticalSpacer,
+        separatorBuilder: (_, __) => smallVerticalSpacer,
       ),
     );
   }

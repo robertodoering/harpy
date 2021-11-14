@@ -34,10 +34,10 @@ class HomeDrawer extends StatelessWidget {
           children: [
             const HomeTopPadding(),
             const _AuthenticatedUser(),
-            defaultVerticalSpacer,
+            verticalSpacer,
             const _FollowersCount(),
-            defaultVerticalSpacer,
-            defaultVerticalSpacer,
+            verticalSpacer,
+            verticalSpacer,
             _Entries(animationController),
             SizedBox(height: mediaQuery.padding.bottom),
           ],
@@ -120,7 +120,7 @@ class _AuthenticatedUser extends StatelessWidget {
     }
 
     return InkWell(
-      borderRadius: kDefaultBorderRadius,
+      borderRadius: kBorderRadius,
       onTap: () => app<HarpyNavigator>().pushUserProfile(initialUser: user),
       child: Card(
         child: Padding(
@@ -131,7 +131,7 @@ class _AuthenticatedUser extends StatelessWidget {
                 radius: 28,
                 imageUrl: user.appropriateUserImageUrl,
               ),
-              defaultHorizontalSpacer,
+              horizontalSpacer,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +140,7 @@ class _AuthenticatedUser extends StatelessWidget {
                       user.name,
                       style: Theme.of(context).textTheme.headline5,
                     ),
-                    defaultSmallVerticalSpacer,
+                    smallVerticalSpacer,
                     Text(
                       '@${user.handle}',
                       style: Theme.of(context).textTheme.subtitle1,
@@ -183,7 +183,7 @@ class _FollowersCount extends StatelessWidget {
             ),
           ),
         ),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: HarpyListCard(
             title: Text('$followersCount  followers'),
@@ -244,7 +244,7 @@ class _Entries extends StatelessWidget {
           initialUser: authCubit.state.user,
         ),
       ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       HarpyListCard(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('search'),
@@ -252,26 +252,26 @@ class _Entries extends StatelessWidget {
           trendsCubit: context.read<TrendsCubit>(),
         ),
       ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       HarpyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
         onTap: () => app<HarpyNavigator>().pushShowListsScreen(),
       ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       HarpyListCard(
         leading: const Icon(FeatherIcons.feather),
         title: const Text('compose'),
         onTap: () => app<HarpyNavigator>().pushComposeScreen(),
       ),
-      defaultVerticalSpacer,
-      defaultVerticalSpacer,
+      verticalSpacer,
+      verticalSpacer,
       HarpyListCard(
         leading: const Icon(FeatherIcons.settings),
         title: const Text('settings'),
         onTap: () => app<HarpyNavigator>().pushNamed(SettingsScreen.route),
       ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       if (isFree) ...[
         HarpyListCard(
           leading: FlareIcon.shiningStar(
@@ -286,7 +286,7 @@ class _Entries extends StatelessWidget {
           title: const Text('harpy pro'),
           subtitle: const Text('coming soon!'),
         ),
-        defaultVerticalSpacer,
+        verticalSpacer,
       ],
       HarpyListCard(
         leading: FlareIcon.harpyLogo(
@@ -301,8 +301,8 @@ class _Entries extends StatelessWidget {
         title: const Text('about'),
         onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
       ),
-      defaultVerticalSpacer,
-      defaultVerticalSpacer,
+      verticalSpacer,
+      verticalSpacer,
       HarpyListCard(
         leading: Icon(
           CupertinoIcons.square_arrow_left,

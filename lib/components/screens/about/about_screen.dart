@@ -53,8 +53,8 @@ class AboutScreen extends StatelessWidget {
               style: theme.textTheme.subtitle1,
             ),
             borderRadius: const BorderRadius.only(
-              topLeft: kDefaultRadius,
-              topRight: kDefaultRadius,
+              topLeft: kRadius,
+              topRight: kRadius,
             ),
             onTap: () => app<HarpyNavigator>().pushNamed(ChangelogScreen.route),
           ),
@@ -72,8 +72,8 @@ class AboutScreen extends StatelessWidget {
             ),
             leading: const Icon(FeatherIcons.twitter),
             borderRadius: const BorderRadius.only(
-              bottomLeft: kDefaultRadius,
-              bottomRight: kDefaultRadius,
+              bottomLeft: kRadius,
+              bottomRight: kRadius,
             ),
             onTap: isAuthenticated
                 ? () => app<HarpyNavigator>().pushUserProfile(
@@ -107,8 +107,8 @@ class AboutScreen extends StatelessWidget {
             leading: const Icon(FeatherIcons.dollarSign),
             title: const Text('donate via PayPal'),
             borderRadius: const BorderRadius.only(
-              bottomLeft: kDefaultRadius,
-              bottomRight: kDefaultRadius,
+              bottomLeft: kRadius,
+              bottomRight: kRadius,
             ),
             onTap: () => launchUrl(
               'https://paypal.com/paypalme/robertodoering',
@@ -153,8 +153,8 @@ class AboutScreen extends StatelessWidget {
             title: const Text('harpy pro'),
             subtitle: const Text('(coming soon)'),
             borderRadius: const BorderRadius.only(
-              bottomLeft: kDefaultRadius,
-              bottomRight: kDefaultRadius,
+              bottomLeft: kRadius,
+              bottomRight: kRadius,
             ),
             onTap: () => app<MessageService>().show('coming soon!'),
           ),
@@ -188,8 +188,8 @@ class AboutScreen extends StatelessWidget {
             title: const Text('rate harpy'),
             subtitle: const Text('(coming soon)'),
             borderRadius: const BorderRadius.only(
-              bottomLeft: kDefaultRadius,
-              bottomRight: kDefaultRadius,
+              bottomLeft: kRadius,
+              bottomRight: kRadius,
             ),
             onTap: () => app<MessageService>().show('coming soon!'),
           ),
@@ -266,19 +266,19 @@ class AboutScreen extends StatelessWidget {
         padding: config.edgeInsets,
         children: [
           ..._buildTitleWithLogo(color),
-          defaultVerticalSpacer,
+          verticalSpacer,
           _buildIntroductionText(theme, linkStyle, isAuthenticated),
-          defaultVerticalSpacer,
+          verticalSpacer,
           _buildDonationText(theme, config),
           if (isFree) ...[
-            defaultVerticalSpacer,
+            verticalSpacer,
             _buildProText(theme, config, linkStyle),
           ],
-          defaultVerticalSpacer,
+          verticalSpacer,
           _buildRateAppText(theme, config),
-          defaultVerticalSpacer,
+          verticalSpacer,
           _buildDeveloperText(config, linkStyle, textTheme),
-          defaultVerticalSpacer,
+          verticalSpacer,
           _buildPrivacyPolicy(),
           SizedBox(height: mediaQuery.padding.bottom),
         ],

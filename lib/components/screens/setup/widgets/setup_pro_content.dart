@@ -26,7 +26,7 @@ class SetupProContent extends StatelessWidget {
                 Row(
                   children: [
                     const FlareIcon.shiningStar(size: 96),
-                    defaultHorizontalSpacer,
+                    horizontalSpacer,
                     Expanded(
                       child: Text(
                         'harpy pro',
@@ -35,7 +35,7 @@ class SetupProContent extends StatelessWidget {
                     ),
                   ],
                 ),
-                defaultSmallVerticalSpacer,
+                smallVerticalSpacer,
                 Center(
                   child: Text(
                     '(coming soon)',
@@ -123,7 +123,7 @@ class _FeatureRow extends StatelessWidget {
           size: 26,
           color: theme.colorScheme.secondary,
         ),
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Text(
             text,

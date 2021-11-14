@@ -35,7 +35,7 @@ class TrendsCard extends StatelessWidget {
               onTap: () => _showTrendsConfiguration(context),
             ),
           ),
-          defaultHorizontalSpacer,
+          horizontalSpacer,
           HarpyButton.raised(
             padding: config.edgeInsets,
             elevation: 0,

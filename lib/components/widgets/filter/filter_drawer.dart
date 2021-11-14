@@ -30,7 +30,7 @@ class FilterDrawer extends StatelessWidget {
   Widget _buildTitleRow(ThemeData theme) {
     return Row(
       children: [
-        defaultHorizontalSpacer,
+        horizontalSpacer,
         Expanded(
           child: Text(title, style: theme.textTheme.subtitle1),
         ),
@@ -68,7 +68,7 @@ class FilterDrawer extends StatelessWidget {
                   ),
                 ),
               )
-            : defaultVerticalSpacer,
+            : verticalSpacer,
       ),
     );
   }
@@ -91,7 +91,7 @@ class FilterDrawer extends StatelessWidget {
             _buildSearchButton(theme, config.edgeInsets),
             for (Widget group in filterGroups) ...[
               group,
-              if (group != filterGroups.last) defaultVerticalSpacer,
+              if (group != filterGroups.last) verticalSpacer,
             ],
             _buildSearchButton(
               theme,

@@ -22,12 +22,12 @@ class UserProfileHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            defaultVerticalSpacer,
+            verticalSpacer,
             Padding(
               padding: config.edgeInsetsSymmetric(horizontal: true),
               child: UserProfileInfo(user: user),
             ),
-            defaultSmallVerticalSpacer,
+            smallVerticalSpacer,
             if (user.hasDescription) ...[
               Padding(
                 padding: config.edgeInsetsSymmetric(horizontal: true),
@@ -40,7 +40,7 @@ class UserProfileHeader extends StatelessWidget {
                 padding: config.edgeInsetsSymmetric(horizontal: true),
                 child: _DescriptionTranslation(user: user),
               ),
-              defaultSmallVerticalSpacer,
+              smallVerticalSpacer,
             ],
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -53,7 +53,7 @@ class UserProfileHeader extends StatelessWidget {
                       children: [
                         UserProfileAdditionalInfo(user: user),
                         FollowersCount(user),
-                        defaultVerticalSpacer,
+                        verticalSpacer,
                       ],
                     ),
                   ),

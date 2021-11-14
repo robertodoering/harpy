@@ -29,7 +29,7 @@ class UserList extends StatelessWidget {
     if (index.isEven) {
       return UserCard(users[index ~/ 2]);
     } else {
-      return defaultVerticalSpacer;
+      return verticalSpacer;
     }
   }
 

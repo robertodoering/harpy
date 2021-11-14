@@ -43,13 +43,13 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
-      defaultSmallVerticalSpacer,
+      smallVerticalSpacer,
       Row(
         children: [
           // align with the text in the list tile
           SizedBox(width: config.paddingValue * 3 + theme.iconTheme.size!),
           Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
-          defaultHorizontalSpacer,
+          horizontalSpacer,
           Expanded(
             child: Text(
               'media is always downloaded in the best quality',
@@ -61,7 +61,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           ),
         ],
       ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       HarpySwitchTile(
         leading: const Icon(CupertinoIcons.crop),
         title: const Text('crop tweet image'),

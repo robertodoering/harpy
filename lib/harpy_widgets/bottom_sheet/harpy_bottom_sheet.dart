@@ -17,8 +17,8 @@ Future<T?> showHarpyBottomSheet<T>(
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topLeft: kDefaultRadius,
-        topRight: kDefaultRadius,
+        topLeft: kRadius,
+        topRight: kRadius,
       ),
     ),
     builder: (_) => SafeArea(

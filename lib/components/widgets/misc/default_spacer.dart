@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-const defaultHorizontalSpacer = _DefaultSpacer(axis: Axis.horizontal);
-const defaultSmallHorizontalSpacer = _DefaultSpacer(
+const horizontalSpacer = _DefaultSpacer(axis: Axis.horizontal);
+const smallHorizontalSpacer = _DefaultSpacer(
   axis: Axis.horizontal,
   factor: .5,
 );
 
-const defaultVerticalSpacer = _DefaultSpacer(axis: Axis.vertical);
-const defaultSmallVerticalSpacer = _DefaultSpacer(
+const verticalSpacer = _DefaultSpacer(axis: Axis.vertical);
+const smallVerticalSpacer = _DefaultSpacer(
   axis: Axis.vertical,
   factor: .5,
 );

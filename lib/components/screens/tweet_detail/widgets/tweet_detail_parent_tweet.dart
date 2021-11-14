@@ -7,7 +7,7 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 /// Builds the parent tweet for the [TweetDetailScreen].
 ///
 /// When the parent is loaded, the tweet card will animate into view.
-/// If now parent tweet exist, only a [defaultVerticalSpacer] is built.
+/// If now parent tweet exist, only a [verticalSpacer] is built.
 class TweetDetailParentTweet extends StatelessWidget {
   const TweetDetailParentTweet();
 
@@ -30,15 +30,15 @@ class TweetDetailParentTweet extends StatelessWidget {
                     // TODO: tweet card should not have an animation
                     child: TweetCard(state.parent!),
                   ),
-                  defaultVerticalSpacer,
+                  verticalSpacer,
                   TweetListInfoRow(
                     icon: const Icon(CupertinoIcons.reply),
                     text: Text('${cubit.tweet.user.name} replied'),
                   ),
-                  defaultVerticalSpacer,
+                  verticalSpacer,
                 ],
               )
-            : defaultVerticalSpacer,
+            : verticalSpacer,
       ),
     );
   }

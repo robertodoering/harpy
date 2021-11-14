@@ -42,7 +42,7 @@ class TweetGif extends StatelessWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: kDefaultBorderRadius,
+      borderRadius: kBorderRadius,
       child: HarpyGifPlayer.fromController(
         VideoPlayerController.network(
           bloc.tweet.gif!.appropriateUrl!,

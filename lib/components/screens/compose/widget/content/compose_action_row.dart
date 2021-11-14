@@ -26,14 +26,14 @@ class ComposeTweetActionRow extends StatelessWidget {
           iconSize: 20,
           onTap: () => bloc.add(const ComposeEvent.pickMedia()),
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         HarpyButton.flat(
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
           onTap: () => controller.insertString('@'),
         ),
-        defaultSmallHorizontalSpacer,
+        smallHorizontalSpacer,
         HarpyButton.flat(
           padding: config.edgeInsets,
           text: const Text('#', style: TextStyle(fontSize: 20)),

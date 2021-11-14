@@ -39,7 +39,7 @@ class TrendsList extends StatelessWidget {
     if (index.isEven) {
       return _buildTrendCard(trends[index ~/ 2]);
     } else {
-      return defaultVerticalSpacer;
+      return verticalSpacer;
     }
   }
 

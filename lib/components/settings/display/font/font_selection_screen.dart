@@ -94,7 +94,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
     final children = [
       if (isFree) ...[
         const _FontSelectionProCard(),
-        defaultSmallVerticalSpacer,
+        smallVerticalSpacer,
       ],
       for (final font in kAssetFonts)
         FontCard(
@@ -105,7 +105,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
           onSelect: () => setState(() => _selectedFont = font),
           onConfirm: Navigator.of(context).pop,
         ),
-      defaultVerticalSpacer,
+      verticalSpacer,
       TextField(
         decoration: const InputDecoration(hintText: 'search'),
         onChanged: cubit.updateFilter,
@@ -130,9 +130,8 @@ class _FontSelectionListState extends State<_FontSelectionList>
           padding: config.edgeInsets,
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate(
-              (_, index) => index.isEven
-                  ? children[index ~/ 2]
-                  : defaultSmallVerticalSpacer,
+              (_, index) =>
+                  index.isEven ? children[index ~/ 2] : smallVerticalSpacer,
               childCount: children.length * 2 - 1,
               addAutomaticKeepAlives: false,
             ),
