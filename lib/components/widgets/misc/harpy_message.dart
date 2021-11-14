@@ -7,7 +7,7 @@ class HarpyMessage extends StatefulWidget {
     required this.child,
   }) : super(key: globalKey);
 
-  final Widget child;
+  final Widget? child;
 
   static final globalKey = GlobalKey<HarpyMessageState>();
 
