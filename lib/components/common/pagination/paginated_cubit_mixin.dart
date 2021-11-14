@@ -18,7 +18,7 @@ mixin PaginatedCubitMixin<Response, Data>
 
   /// Used to handle the [response] for [loadMore].
   ///
-  /// [data] refers to the data of the previous state.
+  /// [data] is the data of the previous state.
   ///
   /// Usually used to emit a [PaginatedState.data] with the new data appended
   /// and a new cursor.
@@ -41,6 +41,7 @@ mixin PaginatedCubitMixin<Response, Data>
       await onInitialResponse(response);
     } catch (e, st) {
       emit(const PaginatedState.error());
+
       await onRequestError(e, st);
     }
   }

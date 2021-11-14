@@ -4,19 +4,21 @@ part 'paginated_state.freezed.dart';
 
 @freezed
 class PaginatedState<T> with _$PaginatedState<T> {
+  const factory PaginatedState.initial() = PaginatedStateInitial;
+  const factory PaginatedState.loading() = PaginatedStateLoading;
+
   const factory PaginatedState.data({
     required T data,
     int? cursor,
   }) = PaginatedStateData;
 
+  const factory PaginatedState.noData() = PaginatedStateNoData;
+
   const factory PaginatedState.loadingMore({
     required T data,
   }) = PaginatedStateLoadingMore;
 
-  const factory PaginatedState.initial() = PaginatedStateInitial;
-  const factory PaginatedState.loading() = PaginatedStateLoading;
   const factory PaginatedState.error() = PaginatedStateError;
-  const factory PaginatedState.noData() = PaginatedStateNoData;
 }
 
 extension PaginatedStateExtension<T> on PaginatedState<T> {

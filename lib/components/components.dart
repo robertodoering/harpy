@@ -11,7 +11,7 @@ export 'common/find_trends_locations/widgets/find_location_dialog.dart';
 export 'common/pagination/paginated_cubit_mixin.dart';
 export 'common/pagination/paginated_state.dart';
 export 'common/pagination/paginated_users/cubit/paginated_users_cubit.dart';
-export 'common/pagination/paginated_users/widgets/paginated_users_screen.dart';
+export 'common/pagination/paginated_users/paginated_users_screen.dart';
 export 'common/replies/cubit/replies_cubit.dart';
 export 'common/timeline/cubit/timeline_cubit.dart';
 export 'common/timeline/filter/model/timeline_filter.dart';
