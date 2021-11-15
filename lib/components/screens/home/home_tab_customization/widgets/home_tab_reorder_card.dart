@@ -42,11 +42,15 @@ class _HomeTabReorderCardState extends State<HomeTabReorderCard> {
     return TextField(
       controller: _controller,
       scrollPadding: EdgeInsets.zero,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         isDense: true,
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: theme.dividerColor),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: theme.dividerColor),
+        ),
       ),
       style: theme.textTheme.subtitle1,
       onChanged: (value) => widget.model.changeName(
