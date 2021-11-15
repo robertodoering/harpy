@@ -78,7 +78,8 @@ class _TimelineState extends State<Timeline> {
           // using `positions` in case the controller is attached to multiple
           //   positions
           // ignore: invalid_use_of_protected_member
-          _controller.positions.first.maxScrollExtent + mediaQuery.size.height,
+          _controller.positions.first.maxScrollExtent +
+              mediaQuery.size.height * 3,
         );
       });
     }
