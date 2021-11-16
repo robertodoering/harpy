@@ -48,9 +48,19 @@ class ThemeCard extends StatelessWidget {
     final systemBrightness = context.watch<Brightness>();
     final config = context.watch<ConfigCubit>().state;
 
+    Color? borderColor;
+
+    if (systemBrightness == Brightness.light && selectedLightTheme ||
+        systemBrightness == Brightness.dark && selectedDarkTheme) {
+      borderColor = harpyTheme.primaryColor;
+    } else if (systemBrightness == Brightness.light && selectedDarkTheme ||
+        systemBrightness == Brightness.dark && selectedLightTheme) {
+      borderColor = harpyTheme.primaryColor.withOpacity(.5);
+    }
+
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
-      selected: selectedLightTheme || selectedDarkTheme,
+      borderColor: borderColor,
       child: InkWell(
         onTap: onTap,
         onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
@@ -119,7 +129,6 @@ class ProThemeCard extends StatelessWidget {
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
-      selected: false,
       child: Padding(
         padding: config.edgeInsets,
         child: Row(
@@ -143,12 +152,12 @@ class ProThemeCard extends StatelessWidget {
 class _ThemeCardBase extends StatelessWidget {
   const _ThemeCardBase({
     required this.harpyTheme,
-    required this.selected,
     required this.child,
+    this.borderColor,
   });
 
   final HarpyTheme harpyTheme;
-  final bool selected;
+  final Color? borderColor;
   final Widget child;
 
   @override
@@ -168,9 +177,7 @@ class _ThemeCardBase extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: gradient,
           borderRadius: kBorderRadius,
-          border: selected
-              ? Border.all(color: harpyTheme.primaryColor)
-              : Border.all(color: Colors.transparent),
+          border: Border.all(color: borderColor ?? Colors.transparent),
         ),
         child: Material(
           type: MaterialType.transparency,
