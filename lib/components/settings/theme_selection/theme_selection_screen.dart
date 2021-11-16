@@ -15,7 +15,6 @@ class ThemeSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final systemBrightness = context.watch<Brightness>();
     final config = context.watch<ConfigCubit>().state;
 
@@ -38,8 +37,10 @@ class ThemeSelectionScreen extends StatelessWidget {
             themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
-            newLightThemeId: systemBrightness == Brightness.light ? i : null,
-            newDarkThemeId: systemBrightness == Brightness.dark ? i : null,
+            newLightThemeId:
+                isFree || systemBrightness == Brightness.light ? i : null,
+            newDarkThemeId:
+                isFree || systemBrightness == Brightness.dark ? i : null,
           ),
           onSelectLightTheme: () => selectTheme(
             themeBloc: bloc,
@@ -159,8 +160,14 @@ void selectTheme({
   int? newLightThemeId,
   int? newDarkThemeId,
 }) {
+  assert(
+    isPro || newLightThemeId == newDarkThemeId,
+    "can't select light & dark theme independently in the free version",
+  );
+
   if (lightThemeId != newLightThemeId || darkThemeId != newDarkThemeId) {
     HapticFeedback.lightImpact();
+
     themeBloc.add(
       ThemeEvent.changeTheme(
         lightThemeId: newLightThemeId,

@@ -8,6 +8,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/components/settings/config/cubit/config_cubit.dart';
 import 'package:harpy/components/settings/theme_selection/bloc/theme_bloc.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
@@ -50,9 +51,9 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
     // update the system ui to match the initial theme
     unawaited(
       _initializeSystemUi(
-        systemBrightness == Brightness.light
-            ? themeBloc.state.lightHarpyTheme
-            : themeBloc.state.darkHarpyTheme,
+        isFree || systemBrightness == Brightness.dark
+            ? themeBloc.state.darkHarpyTheme
+            : themeBloc.state.lightHarpyTheme,
       ),
     );
 

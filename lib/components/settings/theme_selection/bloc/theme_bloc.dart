@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
 import 'package:harpy/misc/misc.dart';
@@ -21,7 +22,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     required this.configCubit,
   }) : super(
           ThemeState(
-            lightThemeData: predefinedThemes[1],
+            lightThemeData: isFree ? predefinedThemes[0] : predefinedThemes[1],
             darkThemeData: predefinedThemes[0],
             config: configCubit.state,
             customThemesData: const [],
