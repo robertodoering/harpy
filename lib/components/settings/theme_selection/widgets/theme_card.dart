@@ -78,7 +78,7 @@ class ThemeCard extends StatelessWidget {
                     CupertinoIcons.sun_max,
                     color: systemBrightness == Brightness.light
                         ? harpyTheme.secondaryColor
-                        : null,
+                        : harpyTheme.foregroundColor.withOpacity(.5),
                   ),
                 ),
               if (selectedDarkTheme)
@@ -88,7 +88,7 @@ class ThemeCard extends StatelessWidget {
                     CupertinoIcons.moon,
                     color: systemBrightness == Brightness.dark
                         ? harpyTheme.secondaryColor
-                        : null,
+                        : harpyTheme.foregroundColor.withOpacity(.5),
                   ),
                 ),
             ],

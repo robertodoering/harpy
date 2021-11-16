@@ -19,6 +19,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 /// Navigates to the [LoginScreen] otherwise.
 class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
   ApplicationCubit({
+    required this.systemBrightness,
     required this.themeBloc,
     required this.configCubit,
     required this.authenticationCubit,
@@ -26,6 +27,7 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
     _initialize();
   }
 
+  final Brightness systemBrightness;
   final ThemeBloc themeBloc;
   final ConfigCubit configCubit;
   final AuthenticationCubit authenticationCubit;
@@ -46,8 +48,13 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
     await app<HarpyInfo>().initialize();
 
     // update the system ui to match the initial theme
-    // (the initial light and dark theme are the same)
-    unawaited(_initializeSystemUi(themeBloc.state.darkHarpyTheme));
+    unawaited(
+      _initializeSystemUi(
+        systemBrightness == Brightness.light
+            ? themeBloc.state.lightHarpyTheme
+            : themeBloc.state.darkHarpyTheme,
+      ),
+    );
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(silentErrorHandler),
@@ -80,14 +87,20 @@ Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
   final version = app<HarpyInfo>().deviceInfo?.version.sdkInt ?? -1;
 
   if (version >= 0 && version <= 29) {
-    // a workaround for a bug for android version 10 and below that requires the
+    // a workaround for a bug on android version 10 and below that requires the
     // ui overlay to change the icon brightness to allow for transparency in the
     // navigation bar
     // see: https://github.com/robertodoering/harpy/issues/397
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarIconBrightness: Brightness.dark,
+      SystemUiOverlayStyle(
+        statusBarIconBrightness:
+            initialTheme.statusBarIconBrightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
+        systemNavigationBarIconBrightness:
+            initialTheme.navBarIconBrightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
       ),
     );
 

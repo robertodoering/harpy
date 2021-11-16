@@ -8,9 +8,9 @@ class ThemePreferences {
   /// - 0..9: index of predefined theme (unused indices are reserved)
   /// - 10+:  index of custom theme
   ///
-  /// Defaults to 0.
+  /// Defaults to 0 for the dark theme and 1 for the light theme.
   int get lightThemeId =>
-      app<HarpyPreferences>().getInt('lightThemeId', 0, prefix: true);
+      app<HarpyPreferences>().getInt('lightThemeId', 1, prefix: true);
   set lightThemeId(int value) =>
       app<HarpyPreferences>().setInt('lightThemeId', value, prefix: true);
 

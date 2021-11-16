@@ -9,5 +9,6 @@ Version 0.7.3
   · The date format will default to your system settings but will be customizable in the future 
 · Added 'show members' button in list timeline (Thanks Pedro!)
 · Added keeping screen awake while watching a video (Thanks Pedro!)
+· Changed default system light theme to 'swan'
 · Fixed images / gifs are not posted with a Tweet
 · Fixed drawing error image when user has no banner

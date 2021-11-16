@@ -16,9 +16,11 @@ class ThemeSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final systemBrightness = context.watch<Brightness>();
+    final config = context.watch<ConfigCubit>().state;
+
     final bloc = context.watch<ThemeBloc>();
     final state = bloc.state;
-    final config = context.watch<ConfigCubit>().state;
 
     final lightThemeId = app<ThemePreferences>().lightThemeId;
     final darkThemeId = app<ThemePreferences>().darkThemeId;
@@ -29,12 +31,15 @@ class ThemeSelectionScreen extends StatelessWidget {
           HarpyTheme.fromData(data: predefinedThemes[i], config: config),
           selectedLightTheme: i == lightThemeId,
           selectedDarkTheme: i == darkThemeId,
+          // false positive
+          // ignore: avoid_redundant_argument_values
+          enableBottomSheet: isPro,
           onTap: () => selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
             darkThemeId: darkThemeId,
-            newLightThemeId: i,
-            newDarkThemeId: i,
+            newLightThemeId: systemBrightness == Brightness.light ? i : null,
+            newDarkThemeId: systemBrightness == Brightness.dark ? i : null,
           ),
           onSelectLightTheme: () => selectTheme(
             themeBloc: bloc,
@@ -58,6 +63,7 @@ class ThemeSelectionScreen extends StatelessWidget {
             ),
             selectedLightTheme: i + 10 == lightThemeId,
             selectedDarkTheme: i + 10 == darkThemeId,
+            enableBottomSheet: true,
             onTap: () {
               if (lightThemeId == i + 10 && darkThemeId == i + 10) {
                 // already selected as light a dark theme, edit selected theme
@@ -73,8 +79,10 @@ class ThemeSelectionScreen extends StatelessWidget {
                   themeBloc: bloc,
                   lightThemeId: lightThemeId,
                   darkThemeId: darkThemeId,
-                  newLightThemeId: i + 10,
-                  newDarkThemeId: i + 10,
+                  newLightThemeId:
+                      systemBrightness == Brightness.light ? i + 10 : null,
+                  newDarkThemeId:
+                      systemBrightness == Brightness.dark ? i + 10 : null,
                 );
               }
             },

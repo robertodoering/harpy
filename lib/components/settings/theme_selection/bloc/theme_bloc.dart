@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,13 +21,16 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     required this.configCubit,
   }) : super(
           ThemeState(
-            lightThemeData: predefinedThemes.first,
-            darkThemeData: predefinedThemes.first,
+            lightThemeData: predefinedThemes[1],
+            darkThemeData: predefinedThemes[0],
             config: configCubit.state,
             customThemesData: const [],
           ),
         ) {
-    on<ThemeEvent>((event, emit) => event.handle(this, emit));
+    on<ThemeEvent>(
+      (event, emit) => event.handle(this, emit),
+      transformer: sequential(),
+    );
 
     configCubit.stream.listen((config) {
       add(ThemeEvent.updateConfig(config: config));

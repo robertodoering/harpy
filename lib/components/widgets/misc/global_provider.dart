@@ -33,6 +33,7 @@ class GlobalProvider extends StatelessWidget {
             // can't be lazy since initialization starts upon bloc creation
             lazy: false,
             create: (context) => ApplicationCubit(
+              systemBrightness: context.read<Brightness>(),
               themeBloc: context.read<ThemeBloc>(),
               configCubit: context.read<ConfigCubit>(),
               authenticationCubit: context.read<AuthenticationCubit>(),
