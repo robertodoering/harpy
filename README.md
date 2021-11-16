@@ -41,18 +41,18 @@ information about the progress.
 <br>
 
 <p align="center">
-  <img height="480" src="media/login_screen.gif"/>
-  <img height="480" src="media/setup_screen.gif"/>
+  <kbd><img height="480" src="media/login_screen.gif"/></kbd>
+  <kbd><img height="480" src="media/setup_screen.gif"/></kbd>
 </p>
 
 <details>
   <summary>More images</summary>
   
-  | Home | Media timeline | Theme selection |
+  | **Home** | **Media timeline** | **Theme selection** |
   | :---: | :---: | :---: |
-  | ![timeline](media/timeline.jpg) | ![media timeline](media/media_timeline.jpg) | ![theme selection](media/theme_selection.jpg) |
-  | Menu | Trends | Tweet search filter |
-  | ![drawer](media/drawer.jpg) | ![trends](media/trends.jpg) | ![tweet search filter](media/tweet_search_filter.jpg) |
+  | <kbd><img height="480" src="media/timeline.jpg"/></kbd> | <kbd><img height="480" src="media/media_timeline.jpg"/></kbd> | <kbd><img height="480" src="media/theme_selection.jpg"/></kbd> |
+  | **Menu** | **Trends** | **Tweet search filter** |
+  | <kbd><img height="480" src="media/drawer.jpg"/></kbd> | <kbd><img height="480" src="media/trends.jpg"/></kbd> | <kbd><img height="480" src="media/tweet_search_filter.jpg"/></kbd> |
 </details>
 
 ## About
