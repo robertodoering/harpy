@@ -110,7 +110,8 @@ class _MockGlobalProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SystemBrightnessObserver(
+    return Provider<Brightness>.value(
+      value: Brightness.dark,
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => ConfigCubit()),
