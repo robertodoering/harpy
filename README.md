@@ -1,5 +1,5 @@
 <p align="center">
-  <img max-height="172" src="media/harpy_title.png"/>
+  <img max-height="172" src="media/title.png"/>
 </p>
 
 <p align="center">
@@ -41,16 +41,18 @@ information about the progress.
 <br>
 
 <p align="center">
-  <img src="media/login_screen.gif"/>
-  <img src="media/setup_screen.gif"/>
+  <img height="480" src="media/login_screen.gif"/>
+  <img height="480" src="media/setup_screen.gif"/>
 </p>
 
 <details>
   <summary>More images</summary>
   
-  | Home | User profile | Theme selection |
+  | Home | Media timeline | Theme selection |
   | :---: | :---: | :---: |
-  | ![Home screen](media/home_screen.png) | ![User profile](media/user_profile.png) | ![Theme selection](media/theme_selection.png) |
+  | ![timeline](media/timeline.jpg) | ![media timeline](media/media_timeline.jpg) | ![theme selection](media/theme_selection.jpg) |
+  | Menu | Trends | Tweet search filter |
+  | ![drawer](media/drawer.jpg) | ![trends](media/trends.jpg) | ![tweet search filter](media/tweet_search_filter.jpg) |
 </details>
 
 ## About
