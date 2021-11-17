@@ -1,5 +1,5 @@
 <p align="center">
-  <img max-height="172" src="media/title.png"/>
+  <img max-height="172" width="80%" src="media/title.png"/>
 </p>
 
 <p align="center">
