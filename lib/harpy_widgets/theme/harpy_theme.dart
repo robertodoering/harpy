@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/theme/harpy_theme_data.dart';
@@ -488,6 +489,17 @@ class HarpyTheme {
           borderRadius: kBorderRadius,
         ),
         contentPadding: config.edgeInsets,
+      ),
+
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: statusBarColor,
+          statusBarBrightness: statusBarBrightness,
+          statusBarIconBrightness: statusBarIconBrightness,
+          systemNavigationBarColor: navBarColor,
+          systemNavigationBarDividerColor: navBarColor,
+          systemNavigationBarIconBrightness: navBarIconBrightness,
+        ),
       ),
     );
   }
