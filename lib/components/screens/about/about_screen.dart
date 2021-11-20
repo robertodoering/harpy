@@ -60,12 +60,12 @@ class AboutScreen extends StatelessWidget {
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.github),
-            title: const Text('harpy is open source'),
+            title: const Text('harpy on GitHub'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
             onTap: () => launchUrl('https://github.com/robertodoering/harpy'),
           ),
           HarpyListTile(
-            title: const Text('harpy on twitter'),
+            title: const Text('harpy on Twitter'),
             subtitle: Text(
               '@harpy_app',
               style: linkStyle,
