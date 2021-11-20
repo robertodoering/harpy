@@ -1,2 +1,28 @@
-json_key_file("fastlane/fastlane_key.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
-package_name("com.robertodoering.harpy.free") # e.g. com.krausefx.app
+# Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file("fastlane/play_store_key.json")
+
+
+for_lane :free_production do
+    package_name("com.robertodoering.harpy.free")
+end
+
+for_lane :free_beta do
+    package_name("com.robertodoering.harpy.free")
+end
+
+for_lane :free_alpha do
+    package_name("com.robertodoering.harpy.free")
+end
+
+
+for_lane :pro_production do
+    package_name("com.robertodoering.harpy.pro")
+end
+
+for_lane :pro_beta do
+    package_name("com.robertodoering.harpy.pro")
+end
+
+for_lane :pro_alpha do
+    package_name("com.robertodoering.harpy.pro")
+end
