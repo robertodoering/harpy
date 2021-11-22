@@ -7,13 +7,13 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free">
+  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free" target="_blank">
     <img alt="Get it on Google Play"
          src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
          width="200"/>
   </a>
 </p>
-
+  
 <br>
 
 <p align="center">
@@ -33,9 +33,17 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
   </a>
 </p>
 
+<br>
+
 <p align="center">
 Harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
 information about the progress.
+</p>
+
+<br>
+
+<p align="center">
+  <a href="https://ko-fi.com/robertodoering" target="_blank"><img height="35" src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 </p>
 
 <br>
