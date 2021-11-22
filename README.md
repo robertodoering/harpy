@@ -50,9 +50,9 @@ information about the progress.
   
   | **Home** | **Media timeline** | **Theme selection** |
   | :---: | :---: | :---: |
-  | <kbd><img height="480" src="media/timeline.jpg"/></kbd> | <kbd><img height="480" src="media/media_timeline.jpg"/></kbd> | <kbd><img height="480" src="media/theme_selection.jpg"/></kbd> |
+  | <kbd><img src="media/timeline.jpg"/></kbd> | <kbd><img src="media/media_timeline.jpg"/></kbd> | <kbd><img src="media/theme_selection.jpg"/></kbd> |
   | **Menu** | **Trends** | **Tweet search filter** |
-  | <kbd><img height="480" src="media/drawer.jpg"/></kbd> | <kbd><img height="480" src="media/trends.jpg"/></kbd> | <kbd><img height="480" src="media/tweet_search_filter.jpg"/></kbd> |
+  | <kbd><img src="media/drawer.jpg"/></kbd> | <kbd><img src="media/trends.jpg"/></kbd> | <kbd><img src="media/tweet_search_filter.jpg"/></kbd> |
 </details>
 
 ## About
