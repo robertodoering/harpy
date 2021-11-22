@@ -8,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -131,7 +132,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
     // reset the theme to the default theme
     themeBloc.add(
       const ThemeEvent.changeTheme(
-        lightThemeId: 0,
+        lightThemeId: isFree ? 0 : 1,
         darkThemeId: 0,
       ),
     );
