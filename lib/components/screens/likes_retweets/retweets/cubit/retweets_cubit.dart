@@ -21,14 +21,14 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
         .handleError(twitterApiErrorHandler)
         .then(
           (tweets) =>
-          tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList(),
-    );
+              tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList(),
+        );
     if (users != null) {
       // assume last page requested
-      final sortedUsers = users..sort((a, b) =>
-          b.followersCount.compareTo(a.followersCount));
-      final data =
-      RetweetedUsersData(tweetId: tweetId, users: sortedUsers.toBuiltList());
+      final sortedUsers = users
+        ..sort((a, b) => b.followersCount.compareTo(a.followersCount));
+      final data = RetweetedUsersData(
+          tweetId: tweetId, users: sortedUsers.toBuiltList());
       emit(
         PaginatedState.data(
           data: data,
