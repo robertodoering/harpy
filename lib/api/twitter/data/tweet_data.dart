@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/utils/string_utils.dart';
 
 class TweetData {
   TweetData({
@@ -271,7 +272,7 @@ String _visibleText(
     visibleText = visibleText.replaceAll(url.url!, url.displayUrl!);
   }
 
-  return visibleText.trim();
+  return parseHtmlEntities(visibleText.trim()) ?? '';
 }
 
 String _source(String? source) {

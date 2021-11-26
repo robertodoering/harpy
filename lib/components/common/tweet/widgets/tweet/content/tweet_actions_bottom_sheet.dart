@@ -90,7 +90,9 @@ void showTweetActionsBottomSheet(
         title: const Text('copy tweet text'),
         enabled: bloc.tweet.hasText,
         onTap: () {
-          Clipboard.setData(ClipboardData(text: tweet.visibleText));
+          Clipboard.setData(
+            ClipboardData(text: tweet.visibleText),
+          );
           app<MessageService>().show('copied tweet text');
           app<HarpyNavigator>().maybePop();
         },
