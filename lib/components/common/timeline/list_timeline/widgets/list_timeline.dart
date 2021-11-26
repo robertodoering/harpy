@@ -11,11 +11,13 @@ class ListTimeline extends StatelessWidget {
   const ListTimeline({
     this.name,
     this.beginSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
   });
 
   final String? name;
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
 
   @override
@@ -31,6 +33,7 @@ class ListTimeline extends StatelessWidget {
           ...beginSlivers,
           if (state.hasTweets) _TopRow(listId: cubit.listId, name: name),
         ],
+        endSlivers: endSlivers,
         refreshIndicatorOffset: refreshIndicatorOffset,
       ),
     );

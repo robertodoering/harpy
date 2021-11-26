@@ -101,7 +101,6 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
@@ -137,9 +136,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                       ]),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: mediaQuery.padding.bottom),
-                  ),
+                  const SliverBottomPadding(),
                 ],
               );
             },

@@ -17,12 +17,14 @@ class Timeline extends StatefulWidget {
   const Timeline({
     this.tweetBuilder = TweetList.defaultTweetBuilder,
     this.beginSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
     this.listKey,
   });
 
   final TweetBuilder tweetBuilder;
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
   final Key? listKey;
 
@@ -102,7 +104,6 @@ class _TimelineState extends State<Timeline> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<TimelineCubit>();
     final state = cubit.state;
@@ -153,9 +154,7 @@ class _TimelineState extends State<Timeline> {
                     )
                   ],
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: mediaQuery.padding.bottom),
-                ),
+                ...widget.endSlivers,
               ],
             ),
           ),

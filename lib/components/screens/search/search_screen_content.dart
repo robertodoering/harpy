@@ -9,9 +9,11 @@ import 'package:provider/provider.dart';
 class SearchScreenContent extends StatelessWidget {
   const SearchScreenContent({
     this.beginSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
   });
 
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
 
   Widget _buildUserSearchCard() {
     return HarpyListCard(
@@ -31,7 +33,6 @@ class SearchScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     return ScrollToStart(
@@ -48,19 +49,11 @@ class SearchScreenContent extends StatelessWidget {
               ]),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Divider(height: config.paddingValue * 2),
-          ),
-          const SliverToBoxAdapter(
-            child: TrendsCard(),
-          ),
-          const SliverToBoxAdapter(
-            child: verticalSpacer,
-          ),
+          SliverToBoxAdapter(child: Divider(height: config.paddingValue * 2)),
+          const SliverToBoxAdapter(child: TrendsCard()),
+          const SliverToBoxAdapter(child: verticalSpacer),
           const TrendsList(),
-          SliverToBoxAdapter(
-            child: SizedBox(height: mediaQuery.padding.bottom),
-          ),
+          ...endSlivers,
         ],
       ),
     );

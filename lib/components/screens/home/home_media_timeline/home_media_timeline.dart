@@ -31,6 +31,7 @@ class HomeMediaTimeline extends StatelessWidget {
               showLoadingOlder: state is TimelineStateLoadingOlder,
               onRefresh: () => cubit.load(clearPrevious: true),
               beginSlivers: const [HomeTopSliverPadding()],
+              endSlivers: const [HomeBottomSliverPadding()],
             ),
           ),
         ),

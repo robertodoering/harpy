@@ -121,7 +121,6 @@ class TwitterLists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<ListsShowBloc>();
@@ -156,9 +155,7 @@ class TwitterLists extends StatelessWidget {
             ),
           ],
         ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: mediaQuery.padding.bottom),
-        ),
+        const SliverBottomPadding(),
       ],
     );
   }

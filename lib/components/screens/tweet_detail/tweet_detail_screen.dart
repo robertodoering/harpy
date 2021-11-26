@@ -32,8 +32,6 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
     final bloc = context.watch<RepliesCubit>();
     final state = bloc.state;
 
@@ -68,11 +66,7 @@ class _Content extends StatelessWidget {
             orElse: () => null,
           ),
         ],
-        endSlivers: [
-          SliverToBoxAdapter(
-            child: SizedBox(height: mediaQuery.padding.bottom),
-          ),
-        ],
+        endSlivers: const [SliverBottomPadding()],
       ),
     );
   }

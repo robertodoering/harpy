@@ -22,7 +22,6 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     return _DrawerAnimationListener(
@@ -39,7 +38,7 @@ class HomeDrawer extends StatelessWidget {
             verticalSpacer,
             verticalSpacer,
             _Entries(animationController),
-            SizedBox(height: mediaQuery.padding.bottom),
+            const HomeBottomPadding(),
           ],
         );
       },

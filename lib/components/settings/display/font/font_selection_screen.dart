@@ -84,7 +84,6 @@ class _FontSelectionListState extends State<_FontSelectionList>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final cubit = context.watch<FontSelectionCubit>();
@@ -95,10 +94,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
       if (isFree) ...[
         const HarpyProCard(
           children: [
-            Text(
-              'all fonts are available in the pro '
-              'version of harpy',
-            ),
+            Text('all fonts are available in the pro version of harpy'),
           ],
         ),
         smallVerticalSpacer,
@@ -144,9 +140,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: mediaQuery.padding.bottom),
-        ),
+        const SliverBottomPadding(),
       ],
     );
   }

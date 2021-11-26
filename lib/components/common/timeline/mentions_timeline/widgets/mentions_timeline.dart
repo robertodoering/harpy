@@ -9,11 +9,13 @@ class MentionsTimeline extends StatefulWidget {
   const MentionsTimeline({
     required this.indexInTabView,
     this.beginSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
   });
 
   final int indexInTabView;
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
 
   @override
@@ -57,6 +59,7 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
           ...widget.beginSlivers,
           if (state.hasTweets) const _TopRow(),
         ],
+        endSlivers: widget.endSlivers,
       ),
     );
   }

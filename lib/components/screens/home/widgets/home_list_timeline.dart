@@ -30,6 +30,7 @@ class HomeListTimeline extends StatelessWidget {
         child: ListTimeline(
           name: name,
           beginSlivers: const [HomeTopSliverPadding()],
+          endSlivers: const [HomeBottomPadding()],
           refreshIndicatorOffset: config.bottomAppBar
               ? 0
               : HomeAppBar.height(context) + config.paddingValue,

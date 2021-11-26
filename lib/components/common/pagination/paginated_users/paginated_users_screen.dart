@@ -22,8 +22,6 @@ class PaginatedUsersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
     final cubit = context.watch<PaginatedUsersCubit>();
     final state = cubit.state;
 
@@ -52,9 +50,7 @@ class PaginatedUsersScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: mediaQuery.padding.bottom),
-                )
+                const SliverBottomPadding(),
               ],
             ),
           ),

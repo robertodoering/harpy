@@ -18,12 +18,14 @@ class MediaTimeline extends StatefulWidget {
     required this.showLoadingOlder,
     required this.onRefresh,
     this.beginSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
   });
 
   final bool showInitialLoading;
   final bool showLoadingOlder;
   final VoidCallback onRefresh;
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
 
   @override
   _MediaTimelineState createState() => _MediaTimelineState();
@@ -67,7 +69,6 @@ class _MediaTimelineState extends State<MediaTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final model = context.watch<MediaTimelineModel>();
@@ -95,12 +96,8 @@ class _MediaTimelineState extends State<MediaTimeline> {
           ),
           if (widget.showLoadingOlder) const SliverBoxLoadingIndicator(),
         ] else
-          const SliverFillLoadingError(
-            message: Text('no media found'),
-          ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: mediaQuery.padding.bottom),
-        ),
+          const SliverFillLoadingError(message: Text('no media found')),
+        ...widget.endSlivers,
       ],
     );
   }

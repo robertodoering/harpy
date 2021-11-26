@@ -6,3 +6,4 @@ Thank you for supporting the development of harpy!
 
 · Added links to harpy pro which were previously disabled
 · Fixed copying tweet text does not display some characters correctly (Thanks Pedro!)
+· Fixed app bar cut off content when displayed at the bottom
