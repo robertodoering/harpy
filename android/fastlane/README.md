@@ -16,16 +16,36 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android beta
+### android free_production
 ```
-fastlane android beta
+fastlane android free_production
 ```
-Builds an appbundle and uploads it to the play store beta (open testing) track
-### android alpha
+free production play store
+### android free_beta
 ```
-fastlane android alpha
+fastlane android free_beta
 ```
-Builds an appbundle and uploads it to the play store alpha (closed testing) track
+free beta play store
+### android free_alpha
+```
+fastlane android free_alpha
+```
+free alpha play store
+### android pro_production
+```
+fastlane android pro_production
+```
+pro production play store
+### android pro_beta
+```
+fastlane android pro_beta
+```
+pro beta play store
+### android pro_alpha
+```
+fastlane android pro_alpha
+```
+pro alpha play store
 
 ----
 

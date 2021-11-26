@@ -1,0 +1,11 @@
+Version 0.8.0
+2021-11-25
+
+· Added unread tweets counter & pull-to-refresh in all timelines
+· Added loading mentions older than the last 200 tweets
+· Added toggle to always show the absolute tweet creation time (Thanks Pedro!)
+  · In Settings > display
+· Added 'show members' button in list timelines (Thanks Pedro!)
+· Added keeping screen awake while watching a video (Thanks Pedro!)
+· Fixed images / gifs are not posted with a Tweet
+· Fixed drawing error image when user has no banner
