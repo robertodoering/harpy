@@ -35,9 +35,13 @@ class MentionsTimelineCubit extends TimelineCubit<bool> {
   @override
   Future<void> load({
     bool clearPrevious = false,
+    bool viewedMentions = true,
   }) async {
     await super.load(clearPrevious: clearPrevious);
-    updateViewedMentions();
+
+    if (viewedMentions) {
+      updateViewedMentions();
+    }
   }
 
   void updateViewedMentions() {

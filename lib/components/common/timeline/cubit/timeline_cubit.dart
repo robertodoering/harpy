@@ -264,9 +264,14 @@ extension TimelineStateExtension on TimelineState {
       );
 
   bool showNewTweetsExist(String? originalIdStr) => maybeMap(
-        data: (value) => value.initialResultsLastId == originalIdStr,
+        data: (value) =>
+            value.initialResultsLastId == originalIdStr &&
+            value.initialResultsCount != null &&
+            value.initialResultsCount! > 1,
         loadingMore: (value) =>
-            value.data.initialResultsLastId == originalIdStr,
+            value.data.initialResultsLastId == originalIdStr &&
+            value.data.initialResultsCount != null &&
+            value.data.initialResultsCount! > 1,
         orElse: () => false,
       );
 

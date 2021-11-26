@@ -17,7 +17,7 @@ class TweetListLoadingSliver extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.filled(
-            5,
+            15,
             Padding(
               padding: EdgeInsets.only(bottom: config.paddingValue * 2),
               child: const TweetPlaceholder(),

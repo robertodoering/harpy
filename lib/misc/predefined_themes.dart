@@ -2,8 +2,8 @@ import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 const predefinedThemes = [
-  _crow,
-  _swan,
+  _crow, // 0 -> default dark theme
+  _swan, // 1 -> default light theme
   _harpy,
   if (isPro) ...predefinedProThemes,
 ];

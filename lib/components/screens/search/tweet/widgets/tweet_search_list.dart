@@ -7,7 +7,6 @@ class TweetSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final cubit = context.watch<TweetSearchCubit>();
     final state = cubit.state;
 
@@ -38,9 +37,7 @@ class TweetSearchList extends StatelessWidget {
                 ),
               ],
             ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: mediaQuery.padding.bottom),
-            ),
+            const SliverBottomPadding(),
           ],
         ),
       ),

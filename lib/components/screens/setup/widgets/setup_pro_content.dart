@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the last page for the setup screen.
@@ -34,13 +35,6 @@ class SetupProContent extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                smallVerticalSpacer,
-                Center(
-                  child: Text(
-                    '(coming soon)',
-                    style: theme.textTheme.subtitle2,
-                  ),
                 ),
                 SizedBox(height: config.paddingValue * 3),
                 Text(
@@ -80,8 +74,9 @@ class SetupProContent extends StatelessWidget {
                       'harpy pro',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    elevation: 0,
-                    onTap: null,
+                    onTap: () => launchUrl(
+                      'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+                    ),
                   ),
                 ),
               ],

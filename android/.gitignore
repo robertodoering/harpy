@@ -8,7 +8,7 @@ GeneratedPluginRegistrant.java
 build/
 
 # play store key
-fastlane/fastlane_key.json
+fastlane/play_store_key.json
 
 # fastlane specific
 **/fastlane/report.xml

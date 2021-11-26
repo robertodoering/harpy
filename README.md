@@ -1,5 +1,5 @@
 <p align="center">
-  <img max-height="172" src="media/harpy_title.png"/>
+  <img max-height="172" width="80%" src="media/title.png"/>
 </p>
 
 <p align="center">
@@ -7,17 +7,17 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free">
+  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free" target="_blank">
     <img alt="Get it on Google Play"
          src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
          width="200"/>
   </a>
 </p>
-
+  
 <br>
 
 <p align="center">
-  <a href="/LICENSE"><img src="https://img.shields.io/github/license/robertodoering/harpy?color=8B00FD"/></a>
+  <a href="https://github.com/robertodoering/harpy/stargazers"><img src="https://img.shields.io/github/stars/robertodoering/harpy?color=8B00FD&logo=github"/></a>
   <a href="https://github.com/robertodoering/harpy/releases"><img src="https://img.shields.io/github/v/release/robertodoering/harpy?color=BC0492"/></a>
   <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.robertodoering.harpy.free%26l%3Dinstalls%26m%3D%24installs"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=F2091C"/></a>
@@ -33,6 +33,8 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
   </a>
 </p>
 
+<br>
+
 <p align="center">
 Harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
 information about the progress.
@@ -41,16 +43,24 @@ information about the progress.
 <br>
 
 <p align="center">
-  <img src="media/login_screen.gif"/>
-  <img src="media/setup_screen.gif"/>
+  <a href="https://ko-fi.com/robertodoering" target="_blank"><img height="35" src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+</p>
+
+<br>
+
+<p align="center">
+  <kbd><img height="480" src="media/login_screen.gif"/></kbd>
+  <kbd><img height="480" src="media/setup_screen.gif"/></kbd>
 </p>
 
 <details>
   <summary>More images</summary>
   
-  | Home | User profile | Theme selection |
+  | **Home** | **Media timeline** | **Theme selection** |
   | :---: | :---: | :---: |
-  | ![Home screen](media/home_screen.png) | ![User profile](media/user_profile.png) | ![Theme selection](media/theme_selection.png) |
+  | <kbd><img src="media/timeline.jpg"/></kbd> | <kbd><img src="media/media_timeline.jpg"/></kbd> | <kbd><img src="media/theme_selection.jpg"/></kbd> |
+  | **Menu** | **Trends** | **Tweet search filter** |
+  | <kbd><img src="media/drawer.jpg"/></kbd> | <kbd><img src="media/trends.jpg"/></kbd> | <kbd><img src="media/tweet_search_filter.jpg"/></kbd> |
 </details>
 
 ## About

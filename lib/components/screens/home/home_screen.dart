@@ -22,7 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
     ChangelogDialog.maybeShow(context);
 
     context.read<HomeTimelineCubit>().loadInitial();
-    context.read<MentionsTimelineCubit>().loadInitial();
+    context.read<MentionsTimelineCubit>().load(
+          clearPrevious: true,
+          viewedMentions: false,
+        );
   }
 
   @override

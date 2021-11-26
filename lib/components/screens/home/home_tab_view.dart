@@ -27,13 +27,13 @@ class HomeTabView extends StatelessWidget {
           return MentionsTimeline(
             indexInTabView: index + _indexOffset,
             beginSlivers: const [HomeTopSliverPadding()],
+            endSlivers: const [HomeBottomSliverPadding()],
             refreshIndicatorOffset: refreshIndicatorOffset,
           );
         case 'search':
           return const SearchScreenContent(
-            beginSlivers: [
-              HomeTopSliverPadding(),
-            ],
+            beginSlivers: [HomeTopSliverPadding()],
+            endSlivers: [HomeBottomSliverPadding()],
           );
         default:
           return const SizedBox();

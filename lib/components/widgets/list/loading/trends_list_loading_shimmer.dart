@@ -20,7 +20,7 @@ class TrendsListLoadingSliver extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.filled(
-            15,
+            25,
             Padding(
               padding: EdgeInsets.only(bottom: config.paddingValue * 2),
               child: const TrendsPlaceholder(),

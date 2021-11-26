@@ -50,6 +50,10 @@ class UserData extends Equatable {
       // custom
       userUrl: userUrl,
       userDescriptionUrls: userDescriptionUrls,
+      userDescriptionEntities: _userDescriptionEntities(
+        userDescriptionUrls,
+        user?.description,
+      ),
     );
   }
 
@@ -174,7 +178,7 @@ extension UserDataExtension on UserData {
   String get appropriateUserBannerUrl => '$profileBannerUrl/web_retina';
 }
 
-EntitiesData userDescriptionEntities(
+EntitiesData _userDescriptionEntities(
   List<UrlData> userDescriptionUrls,
   String? description,
 ) {

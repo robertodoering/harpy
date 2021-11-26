@@ -84,7 +84,6 @@ class _FontSelectionListState extends State<_FontSelectionList>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     final cubit = context.watch<FontSelectionCubit>();
@@ -93,7 +92,11 @@ class _FontSelectionListState extends State<_FontSelectionList>
 
     final children = [
       if (isFree) ...[
-        const _FontSelectionProCard(),
+        const HarpyProCard(
+          children: [
+            Text('all fonts are available in the pro version of harpy'),
+          ],
+        ),
         smallVerticalSpacer,
       ],
       for (final font in kAssetFonts)
@@ -137,33 +140,7 @@ class _FontSelectionListState extends State<_FontSelectionList>
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: mediaQuery.padding.bottom),
-        ),
-      ],
-    );
-  }
-}
-
-class _FontSelectionProCard extends StatelessWidget {
-  const _FontSelectionProCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return HarpyProCard(
-      children: [
-        const Text(
-          'all fonts are available in the pro '
-          'version of harpy',
-        ),
-        Text(
-          '(coming soon)',
-          style: theme.textTheme.subtitle2!.copyWith(
-            color: Colors.white.withOpacity(.6),
-          ),
-        ),
+        const SliverBottomPadding(),
       ],
     );
   }

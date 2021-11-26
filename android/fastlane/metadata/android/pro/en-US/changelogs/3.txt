@@ -1,0 +1,7 @@
+Version 0.8.1
+2021-11-27
+
+Thank you for supporting the development of harpy!
+
+· Fixed copying tweet text does not display some characters correctly (Thanks Pedro!)
+· Fixed app bar cut off content when displayed at the bottom

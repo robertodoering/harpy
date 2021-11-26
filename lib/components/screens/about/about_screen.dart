@@ -60,12 +60,12 @@ class AboutScreen extends StatelessWidget {
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.github),
-            title: const Text('harpy is open source'),
+            title: const Text('harpy on GitHub'),
             subtitle: Text('github.com/robertodoering/harpy', style: linkStyle),
             onTap: () => launchUrl('https://github.com/robertodoering/harpy'),
           ),
           HarpyListTile(
-            title: const Text('harpy on twitter'),
+            title: const Text('harpy on Twitter'),
             subtitle: Text(
               '@harpy_app',
               style: linkStyle,
@@ -89,7 +89,7 @@ class AboutScreen extends StatelessWidget {
   Widget _buildDonationText(ThemeData theme, Config config) {
     return Card(
       child: Column(
-        children: <Widget>[
+        children: [
           Padding(
             padding: config.edgeInsets,
             child: Text(
@@ -128,7 +128,7 @@ class AboutScreen extends StatelessWidget {
             padding: config.edgeInsets,
             child: Text.rich(
               TextSpan(
-                children: <TextSpan>[
+                children: [
                   const TextSpan(
                     text: 'support the development of harpy and get access '
                         'to a number of exclusive features by purchasing ',
@@ -151,12 +151,13 @@ class AboutScreen extends StatelessWidget {
               bottom: max(config.paddingValue - 4, 0),
             ),
             title: const Text('harpy pro'),
-            subtitle: const Text('(coming soon)'),
             borderRadius: const BorderRadius.only(
               bottomLeft: kRadius,
               bottomRight: kRadius,
             ),
-            onTap: () => app<MessageService>().show('coming soon!'),
+            onTap: () => launchUrl(
+              'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+            ),
           ),
         ],
       ),
@@ -207,7 +208,7 @@ class AboutScreen extends StatelessWidget {
       leading: const Icon(FeatherIcons.mail),
       title: Text.rich(
         TextSpan(
-          children: <InlineSpan>[
+          children: [
             const TextSpan(text: 'developed by '),
             TextSpan(text: 'roberto doering\n', style: linkStyle),
             TextSpan(text: 'rbydoering@gmail.com', style: linkStyle),
@@ -252,14 +253,12 @@ class AboutScreen extends StatelessWidget {
         CustomPopupMenuButton<void>(
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
           onSelected: (_) => showLicensePage(context: context),
-          itemBuilder: (context) {
-            return <PopupMenuEntry<int>>[
-              const HarpyPopupMenuItem<int>(
-                value: 0,
-                text: Text('show licenses'),
-              ),
-            ];
-          },
+          itemBuilder: (_) => const [
+            HarpyPopupMenuItem<int>(
+              value: 0,
+              text: Text('show licenses'),
+            ),
+          ],
         ),
       ],
       body: ListView(

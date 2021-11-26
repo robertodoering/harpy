@@ -25,6 +25,7 @@ class HomeTimeline extends StatelessWidget {
           const HomeTopSliverPadding(),
           if (state.hasTweets) const HomeTimelineTopRow(),
         ],
+        endSlivers: const [HomeBottomSliverPadding()],
       ),
     );
   }

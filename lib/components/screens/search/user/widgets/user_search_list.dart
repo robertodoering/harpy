@@ -7,8 +7,6 @@ class UserSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
     final cubit = context.watch<UserSearchCubit>();
     final state = cubit.state;
 
@@ -35,9 +33,7 @@ class UserSearchList extends StatelessWidget {
                   ),
                 ],
               ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: mediaQuery.padding.bottom),
-              ),
+              const SliverBottomPadding(),
             ],
           ),
         ),

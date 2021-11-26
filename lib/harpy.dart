@@ -21,7 +21,7 @@ class Harpy extends StatelessWidget {
     final systemBrightness = context.watch<Brightness>();
 
     return MaterialApp(
-      title: 'Harpy',
+      title: 'harpy',
       theme: themeBloc.state.lightHarpyTheme.themeData,
       darkTheme: themeBloc.state.darkHarpyTheme.themeData,
       themeMode: systemBrightness == Brightness.light

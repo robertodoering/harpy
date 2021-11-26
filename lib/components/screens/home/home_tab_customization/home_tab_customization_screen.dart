@@ -55,17 +55,11 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
   }
 
   Widget _buildProCard(ThemeData theme) {
-    return HarpyProCard(
+    return const HarpyProCard(
       children: [
-        const Text(
+        Text(
           'unlock the full potential of customizing the home screen with '
           'harpy pro',
-        ),
-        Text(
-          '(coming soon)',
-          style: theme.textTheme.subtitle2!.copyWith(
-            color: Colors.white.withOpacity(.6),
-          ),
         ),
       ],
     );
@@ -107,7 +101,6 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
@@ -143,9 +136,7 @@ class _HomeTabCustomizationScreenState extends State<HomeTabCustomizationScreen>
                       ]),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: mediaQuery.padding.bottom),
-                  ),
+                  const SliverBottomPadding(),
                 ],
               );
             },

@@ -44,7 +44,13 @@ class LoadingDataError extends StatelessWidget {
             verticalSpacer,
             HarpyButton.flat(
               dense: true,
-              text: const Text('clear filter'),
+              text: Text(
+                'clear filter',
+                style: TextStyle(
+                  color: theme.colorScheme.secondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: onClearFilter,
             ),
           ],

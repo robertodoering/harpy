@@ -22,7 +22,6 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     return _DrawerAnimationListener(
@@ -39,7 +38,7 @@ class HomeDrawer extends StatelessWidget {
             verticalSpacer,
             verticalSpacer,
             _Entries(animationController),
-            SizedBox(height: mediaQuery.padding.bottom),
+            const HomeBottomPadding(),
           ],
         );
       },
@@ -284,7 +283,9 @@ class _Entries extends StatelessWidget {
             bottom: max(config.paddingValue - 4, 0),
           ),
           title: const Text('harpy pro'),
-          subtitle: const Text('coming soon!'),
+          onTap: () => launchUrl(
+            'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+          ),
         ),
         verticalSpacer,
       ],

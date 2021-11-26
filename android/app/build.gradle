@@ -58,6 +58,7 @@ android {
   }
 
   flavorDimensions "app"
+
   productFlavors {
     free {
       applicationId "com.robertodoering.harpy.free"

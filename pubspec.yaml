@@ -83,6 +83,7 @@ flutter:
   assets:
     - assets/flare/
     - android/fastlane/metadata/android/free/en-US/changelogs/
+    - android/fastlane/metadata/android/pro/en-US/changelogs/
 
   fonts:
     - family: Comfortaa

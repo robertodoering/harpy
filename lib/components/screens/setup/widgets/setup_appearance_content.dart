@@ -95,6 +95,7 @@ class _Theme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final systemBrightness = context.watch<Brightness>();
     final config = context.watch<ConfigCubit>().state;
 
     final bloc = context.watch<ThemeBloc>();
@@ -122,8 +123,10 @@ class _Theme extends StatelessWidget {
               themeBloc: bloc,
               lightThemeId: lightThemeId,
               darkThemeId: darkThemeId,
-              newLightThemeId: i,
-              newDarkThemeId: i,
+              newLightThemeId:
+                  isFree || systemBrightness == Brightness.light ? i : null,
+              newDarkThemeId:
+                  isFree || systemBrightness == Brightness.dark ? i : null,
             ),
             onSelectLightTheme: () => selectTheme(
               themeBloc: bloc,
