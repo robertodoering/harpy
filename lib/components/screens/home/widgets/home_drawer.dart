@@ -284,7 +284,9 @@ class _Entries extends StatelessWidget {
             bottom: max(config.paddingValue - 4, 0),
           ),
           title: const Text('harpy pro'),
-          subtitle: const Text('coming soon!'),
+          onTap: () => launchUrl(
+            'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+          ),
         ),
         verticalSpacer,
       ],

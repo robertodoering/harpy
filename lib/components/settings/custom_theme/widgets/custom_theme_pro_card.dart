@@ -7,22 +7,15 @@ class CustomThemeProCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
     return Padding(
       padding: config.edgeInsetsSymmetric(horizontal: true),
-      child: HarpyProCard(
+      child: const HarpyProCard(
         children: [
-          const Text(
+          Text(
             'theme customization is only available in the pro '
             'version of harpy',
-          ),
-          Text(
-            '(coming soon)',
-            style: theme.textTheme.subtitle2!.copyWith(
-              color: Colors.white.withOpacity(.6),
-            ),
           ),
         ],
       ),

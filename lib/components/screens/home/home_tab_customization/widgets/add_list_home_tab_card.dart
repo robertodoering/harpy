@@ -4,6 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 class AddListHomeTabCard extends StatelessWidget {
@@ -38,7 +39,9 @@ class AddListHomeTabCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: proDisabled
-            ? null
+            ? () => launchUrl(
+                  'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+                )
             : () => app<HarpyNavigator>().pushShowListsScreen(
                   onListSelected: (list) {
                     Navigator.of(context).maybePop();

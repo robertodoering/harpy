@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 class HarpyProCard extends StatelessWidget {
   const HarpyProCard({
@@ -65,7 +66,9 @@ class HarpyProCard extends StatelessWidget {
               type: MaterialType.transparency,
               child: InkWell(
                 borderRadius: kBorderRadius,
-                onTap: () {},
+                onTap: () => launchUrl(
+                  'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: DefaultTextStyle(
