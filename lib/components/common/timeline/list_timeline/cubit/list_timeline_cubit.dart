@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';

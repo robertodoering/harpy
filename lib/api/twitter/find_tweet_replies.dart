@@ -1,4 +1,3 @@
-import 'package:dart_twitter_api/api/tweets/tweet_search_service.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
 import 'package:http/http.dart';

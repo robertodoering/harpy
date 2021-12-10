@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:provider/provider.dart';
 
 class ListTimeline extends StatelessWidget {
   const ListTimeline({

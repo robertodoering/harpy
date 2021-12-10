@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_tab/harpy_tab.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 

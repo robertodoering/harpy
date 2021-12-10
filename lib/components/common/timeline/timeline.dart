@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:provider/provider.dart';
 
 /// Builds a [TweetList] for a [TimelineCubit].
 ///
