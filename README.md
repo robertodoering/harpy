@@ -43,7 +43,7 @@ information about the progress.
 <br>
 
 <p align="center">
-  <a href="https://ko-fi.com/robertodoering" target="_blank"><img height="35" src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+  <a href="https://ko-fi.com/robertodoering" target="_blank"><img height="35" src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
 </p>
 
 <br>
