@@ -24,12 +24,13 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
   );
 
   Future<void> _request(String tweetId) async {
+    this.tweetId = tweetId;
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
         .handleError(twitterApiErrorHandler)
         .then(
-          (tweets) => createUsers(tweets, sort),
+          (tweets) => createUsers(tweets, sort, null),
         );
 
     if (users.isNotEmpty) {
@@ -68,14 +69,29 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
       log.warning('unable to encode list sort order', e, st);
     }
 
-    sort = sortBy.value;
-    _request(tweetId);
+    final currentState = state.data?.users.toList();
+    final sortUsers = createUsers(null, sortBy.value, currentState);
+    if (sortUsers.isNotEmpty) {
+      final data = RetweetedUsersData(
+        tweetId: tweetId,
+        users: sortUsers.toBuiltList(),
+      );
+      emit(
+        PaginatedState.data(
+          data: data,
+        ),
+      );
+    }
   }
 }
 
-List<UserData> createUsers(List<Tweet>? tweets, ListSortBy? sortBy) {
-  final users =
-      tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList() ?? [];
+List<UserData> createUsers(
+  List<Tweet>? tweets,
+  ListSortBy? sortBy,
+  List<UserData>? loadedUsers,
+) {
+  final users = loadedUsers ??
+      (tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList() ?? []);
   if (sortBy != null) {
     if (sortBy.byHandle) {
       users.sort((a, b) => b.handle.compareTo(a.handle));
