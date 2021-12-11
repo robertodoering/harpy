@@ -34,20 +34,15 @@ class _RetweetsScreenState extends State<RetweetsScreen> {
 
     ChangelogDialog.maybeShow(context);
 
-    context.read<RetweetsCubit>().loadRetweetedByUsers();
+    context.read<RetweetsCubit>().loadRetweetedByUsers(widget.tweetId);
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopHarpy(
-      child: MultiProvider(
-        providers: [
-          BlocProvider(
-            create: (_) =>
-                RetweetsCubit(tweetId: widget.tweetId)..loadRetweetedByUsers(),
-          ),
-          ChangeNotifierProvider(create: (_) => UserListSortByModel.sort()),
-        ],
+      child: BlocProvider<RetweetsCubit>.value(
+        value: context.read<RetweetsCubit>()
+          ..loadRetweetedByUsers(widget.tweetId),
         child: const HarpyScaffold(
           endDrawer: RetweetersSortDrawer(),
           body: LikesRetweetsScreen(title: 'Retweeted By'),

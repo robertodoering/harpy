@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
+import 'package:provider/provider.dart';
 
 part 'retweets_cubit.freezed.dart';
 
@@ -20,7 +23,7 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     app<UserListSortPreferences>().listSortOrder,
   );
 
-  Future<void> _request() async {
+  Future<void> _request(String tweetId) async {
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
@@ -42,21 +45,22 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     }
   }
 
-  Future<void> loadRetweetedByUsers() async {
+  Future<void> loadRetweetedByUsers(String tweetId) async {
     emit(const PaginatedState.loading());
 
-    await _request();
+    await _request(tweetId);
   }
 
   void persistSort(String encodedSort) {
     app<UserListSortPreferences>().listSortOrder = encodedSort;
   }
 
-  void applySort(ListSortBy sortBy, String tweetId) {
+  void applySort(BuildContext context, String tweetId) {
+    final sortBy = context.read<UserListSortByModel>();
     log.fine('set user list sort order');
 
     try {
-      final encodedSort = jsonEncode(sortBy.toJson());
+      final encodedSort = jsonEncode(sortBy.value.toJson());
       log.finer('saving sort: $encodedSort');
 
       persistSort(encodedSort);
@@ -64,8 +68,8 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
       log.warning('unable to encode list sort order', e, st);
     }
 
-    sort = sortBy;
-    _request();
+    sort = sortBy.value;
+    _request(tweetId);
   }
 }
 

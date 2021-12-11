@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/core/preferences/home_tab_preferences.dart';
+import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 import 'package:harpy/misc/misc.dart';
 
 final app = GetIt.instance;
@@ -45,5 +46,6 @@ void setupServices() {
     ..registerLazySingleton(() => const TweetVisibilityPreferences())
     ..registerLazySingleton(() => const TimelineFilterPreferences())
     ..registerLazySingleton(() => const HomeTabPreferences())
-    ..registerLazySingleton(() => const TrendsPreferences());
+    ..registerLazySingleton(() => const TrendsPreferences())
+    ..registerLazySingleton(() => const UserListSortPreferences());
 }
