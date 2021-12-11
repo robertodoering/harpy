@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/screens/likes_retweets/likes_retweets_screen.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
+import 'package:harpy/components/screens/likes_retweets/retweets/widgets/retweeters_sort_drawert.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:provider/provider.dart';
 
 /// Builds the screen with a list of the followers for the user with the
 /// [tweetId].
-class RetweetsScreen extends StatelessWidget {
+class RetweetsScreen extends StatefulWidget {
   const RetweetsScreen({
     required this.tweetId,
     this.sort,
@@ -21,11 +24,34 @@ class RetweetsScreen extends StatelessWidget {
   static const String route = 'retweets';
 
   @override
+  State<RetweetsScreen> createState() => _RetweetsScreenState();
+}
+
+class _RetweetsScreenState extends State<RetweetsScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    ChangelogDialog.maybeShow(context);
+
+    context.read<RetweetsCubit>().loadRetweetedByUsers();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider<RetweetsCubit>(
-      create: (_) => RetweetsCubit()..loadRetweetedByUsers(tweetId),
-      child: const HarpyScaffold(
-        body: LikesRetweetsScreen(title: 'Retweeted By'),
+    return WillPopHarpy(
+      child: MultiProvider(
+        providers: [
+          BlocProvider(
+            create: (_) =>
+                RetweetsCubit(tweetId: widget.tweetId)..loadRetweetedByUsers(),
+          ),
+          ChangeNotifierProvider(create: (_) => UserListSortByModel.sort()),
+        ],
+        child: const HarpyScaffold(
+          endDrawer: RetweetersSortDrawer(),
+          body: LikesRetweetsScreen(title: 'Retweeted By'),
+        ),
       ),
     );
   }
