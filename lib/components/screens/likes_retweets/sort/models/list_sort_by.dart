@@ -25,7 +25,7 @@ class ListSortBy extends Equatable {
         return ListSortBy.fromJson(jsonDecode(jsonString));
       }
     } catch (e) {
-      // unable to decode timeline filter
+      // unable to decode sort order
       return ListSortBy.empty;
     }
   }

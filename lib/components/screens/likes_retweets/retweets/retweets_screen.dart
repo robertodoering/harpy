@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/screens/likes_retweets/likes_retweets_screen.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/widgets/retweeters_sort_drawert.dart';
+import 'package:harpy/components/screens/likes_retweets/retweets/widgets/retweeters_sort_drawer.dart';
 import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
 import 'package:provider/provider.dart';
 
@@ -12,14 +12,10 @@ import 'package:provider/provider.dart';
 class RetweetsScreen extends StatefulWidget {
   const RetweetsScreen({
     required this.tweetId,
-    this.sort,
   });
 
   /// The [tweetId] of the user whom to search the followers for.
   final String tweetId;
-
-  /// The [sort] of the how to order the users displayed
-  final String? sort;
 
   static const String route = 'retweets';
 
@@ -33,15 +29,14 @@ class _RetweetsScreenState extends State<RetweetsScreen> {
     super.initState();
 
     ChangelogDialog.maybeShow(context);
-
-    context.read<RetweetsCubit>().loadRetweetedByUsers(widget.tweetId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopHarpy(
-      child: BlocProvider<RetweetsCubit>.value(
-        value: context.read<RetweetsCubit>()
+    return ChangeNotifierProvider(
+      create: (_) => UserListSortByModel.sort(),
+      child: BlocProvider<RetweetsCubit>(
+        create: (_) => RetweetsCubit(tweetId: widget.tweetId)
           ..loadRetweetedByUsers(widget.tweetId),
         child: const HarpyScaffold(
           endDrawer: RetweetersSortDrawer(),

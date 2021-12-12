@@ -36,11 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
         providers: [
           ChangeNotifierProvider(create: (_) => HomeTabModel()),
           ChangeNotifierProvider(create: (_) => TimelineFilterModel.home()),
-          ChangeNotifierProvider(create: (_) => UserListSortByModel.sort()),
           BlocProvider(create: (_) => TrendsLocationsCubit()..load()),
           BlocProvider(create: (_) => TrendsCubit()..findTrends()),
-          BlocProvider(create: (_) => LikesCubit()),
-          BlocProvider(create: (_) => RetweetsCubit(tweetId: '')),
         ],
         child: Builder(
           builder: (context) => HomeListsProvider(

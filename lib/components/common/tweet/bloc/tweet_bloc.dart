@@ -100,7 +100,6 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   void onShowRetweeters() {
     app<HarpyNavigator>().pushRetweetsScreen(
       tweetId: tweet.id,
-      sort: app<UserListSortPreferences>().listSortOrder,
     );
   }
 

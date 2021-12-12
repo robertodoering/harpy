@@ -136,13 +136,11 @@ class HarpyNavigator {
 
   void pushRetweetsScreen({
     required String tweetId,
-    String? sort,
   }) {
     pushNamed(
       RetweetsScreen.route,
       arguments: <String, dynamic>{
         'tweetId': tweetId,
-        'sort': sort,
       },
     );
   }
@@ -332,7 +330,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RetweetsScreen.route:
       screen = RetweetsScreen(
         tweetId: arguments['tweetId'],
-        sort: arguments['sort'],
       );
       break;
     case SettingsScreen.route:

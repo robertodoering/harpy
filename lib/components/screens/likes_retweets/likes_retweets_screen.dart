@@ -12,51 +12,45 @@ class LikesRetweetsScreen extends StatelessWidget {
     required this.title,
   });
 
-  /// The [tweetId] of the user whom to search the users for.
   final String title;
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    // TODO make the cubit type/cubit modular to determine which loadUser logic to user
+    // TODO make the cubit type/cubit dynamic to determine which loadUser logic to user
     final cubit = context.watch<RetweetsCubit>();
     final state = cubit.state;
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserListSortByModel.sort()),
-      ],
-      child: ScrollDirectionListener(
-        child: ScrollToStart(
-          child: UserList(
-            state.data?.users.toList() ?? [],
-            beginSlivers: [
-              HarpySliverAppBar(
-                title: title,
-                floating: true,
-                actions: const [_SortButton()],
-              ),
-            ],
-            endSlivers: [
-              ...?state.mapOrNull(
-                loading: (_) => [const UserListLoadingSliver()],
-                loadingMore: (_) => [const LoadMoreIndicator()],
-                noData: (_) => const [
-                  SliverFillInfoMessage(
-                    primaryMessage: Text('no users found'),
-                  ),
-                ],
-                error: (_) => const [
-                  SliverFillLoadingError(
-                    message: Text('error searching users'),
-                  ),
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: mediaQuery.padding.bottom),
-              ),
-            ],
-          ),
+    return ScrollDirectionListener(
+      child: ScrollToStart(
+        child: UserList(
+          state.data?.users.toList() ?? [],
+          beginSlivers: [
+            HarpySliverAppBar(
+              title: title,
+              floating: true,
+              actions: const [_SortButton()],
+            ),
+          ],
+          endSlivers: [
+            ...?state.mapOrNull(
+              loading: (_) => [const UserListLoadingSliver()],
+              loadingMore: (_) => [const LoadMoreIndicator()],
+              noData: (_) => const [
+                SliverFillInfoMessage(
+                  primaryMessage: Text('no users found'),
+                ),
+              ],
+              error: (_) => const [
+                SliverFillLoadingError(
+                  message: Text('error searching users'),
+                ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: mediaQuery.padding.bottom),
+            ),
+          ],
         ),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
 import 'package:harpy/core/core.dart';
 
 /// The [GlobalProvider] is built above the root [MaterialApp] to provide
@@ -41,7 +40,6 @@ class GlobalProvider extends StatelessWidget {
           ),
           BlocProvider(create: (_) => HomeTimelineCubit()),
           BlocProvider(create: (_) => MentionsTimelineCubit()),
-          BlocProvider(create: (_) => RetweetsCubit(tweetId: '')),
         ],
         child: child,
       ),
