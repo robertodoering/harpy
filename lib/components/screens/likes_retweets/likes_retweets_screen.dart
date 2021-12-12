@@ -17,7 +17,7 @@ class LikesRetweetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    // TODO make the cubit type/cubit dynamic to determine which loadUser logic to user
+    // TODO make the cubit type dynamic to determine which loadUser logic to user
     final cubit = context.watch<RetweetsCubit>();
     final state = cubit.state;
 
