@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/likes/cubit/likes_cubit.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ChangeNotifierProvider(create: (_) => HomeTabModel()),
           ChangeNotifierProvider(create: (_) => TimelineFilterModel.home()),
           BlocProvider(create: (_) => TrendsLocationsCubit()..load()),
-          BlocProvider(create: (_) => TrendsCubit()..findTrends()),
+          BlocProvider(create: (_) => TrendsCubit()..findTrends())
         ],
         child: Builder(
           builder: (context) => HomeListsProvider(

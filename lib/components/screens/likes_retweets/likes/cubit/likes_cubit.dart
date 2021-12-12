@@ -15,6 +15,7 @@ class LikesCubit extends Cubit<PaginatedState<LikedByUsersData>>
   LikesCubit() : super(const PaginatedState.loading());
 
   Future<void> _request({required String tweetId}) async {
+    //TODO switch to api v2 to enable like lookup on tweets
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
