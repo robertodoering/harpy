@@ -1,0 +1,4 @@
+Version 0.8.2
+2021-xx-xx
+
+· Fixed not returning to home screen after composing a Tweet
