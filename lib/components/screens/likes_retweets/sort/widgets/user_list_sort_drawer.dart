@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:provider/provider.dart';
 
 class UserListSortDrawer extends StatelessWidget {
@@ -23,22 +23,22 @@ class UserListSortDrawer extends StatelessWidget {
       children: [
         FilterSwitchTile(
           text: 'byDisplayName',
-          value: model.value.byDisplayName,
+          value: model.value.displayName,
           onChanged: model.setByDisplayName,
         ),
         FilterSwitchTile(
           text: 'byHandle',
-          value: model.value.byHandle,
+          value: model.value.handle,
           onChanged: model.setByHandle,
         ),
         FilterSwitchTile(
           text: 'byFollowers',
-          value: model.value.byFollowers,
+          value: model.value.followers,
           onChanged: model.setByFollowers,
         ),
         FilterSwitchTile(
           text: 'byFollowing',
-          value: model.value.byFollowing,
+          value: model.value.following,
           onChanged: model.setByFollowing,
         ),
       ],

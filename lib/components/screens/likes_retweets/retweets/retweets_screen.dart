@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/components/screens/likes_retweets/likes_retweets_screen.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/widgets/retweeters_sort_drawer.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the screen with a list of the followers for the user with the
@@ -36,8 +36,8 @@ class _RetweetsScreenState extends State<RetweetsScreen> {
     return ChangeNotifierProvider(
       create: (_) => UserListSortByModel.sort(),
       child: BlocProvider<RetweetsCubit>(
-        create: (_) => RetweetsCubit(tweetId: widget.tweetId)
-          ..loadRetweetedByUsers(widget.tweetId),
+        create: (_) =>
+            RetweetsCubit(tweetId: widget.tweetId)..loadRetweetedByUsers(),
         child: const HarpyScaffold(
           endDrawer: RetweetersSortDrawer(),
           body: LikesRetweetsScreen(title: 'Retweeted By'),

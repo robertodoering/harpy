@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +71,7 @@ class _SortButton extends StatelessWidget {
         backgroundColor: theme.canvasColor.withOpacity(.4),
         elevation: 0,
         padding: const EdgeInsets.all(12),
-        icon: cubit.value != ListSortBy.empty
+        icon: cubit.value != UserSortBy.empty
             ? Icon(Icons.sort, color: theme.colorScheme.secondary)
             : const Icon(Icons.sort_outlined),
         onTap: Scaffold.of(context).openEndDrawer,

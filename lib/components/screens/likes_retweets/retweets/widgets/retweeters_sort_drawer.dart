@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:harpy/components/screens/likes_retweets/sort/widgets/user_list_sort_drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class RetweetersSortDrawer extends StatelessWidget {
         cubit.applySort(context, cubit.tweetId);
       },
       onClear: () {
-        if (cubit.sort != ListSortBy.empty) {
+        if (cubit.sort != UserSortBy.empty) {
           ScrollDirection.of(context)?.reset();
           cubit.applySort(context, cubit.tweetId);
         }

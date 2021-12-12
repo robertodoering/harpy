@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/like_sort_by_model.dart';
+import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +19,11 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
   RetweetsCubit({required this.tweetId})
       : super(const PaginatedState.loading());
   late String tweetId;
-  ListSortBy sort = ListSortBy.fromJsonString(
+  UserSortBy sort = UserSortBy.fromJsonString(
     app<UserListSortPreferences>().listSortOrder,
   );
 
-  Future<void> _request(String tweetId) async {
-    this.tweetId = tweetId;
+  Future<void> _request() async {
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
@@ -46,10 +45,10 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     }
   }
 
-  Future<void> loadRetweetedByUsers(String tweetId) async {
+  Future<void> loadRetweetedByUsers() async {
     emit(const PaginatedState.loading());
 
-    await _request(tweetId);
+    await _request();
   }
 
   void persistSort(String encodedSort) {
@@ -87,19 +86,19 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
 
 List<UserData> createUsers(
   List<Tweet>? tweets,
-  ListSortBy? sortBy,
+  UserSortBy? sortBy,
   List<UserData>? loadedUsers,
 ) {
   final users = loadedUsers ??
       (tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList() ?? []);
   if (sortBy != null) {
-    if (sortBy.byHandle) {
+    if (sortBy.handle) {
       users.sort((a, b) => b.handle.compareTo(a.handle));
-    } else if (sortBy.byDisplayName) {
+    } else if (sortBy.displayName) {
       users.sort((a, b) => b.name.compareTo(a.name));
-    } else if (sortBy.byFollowers) {
+    } else if (sortBy.followers) {
       users.sort((a, b) => b.followersCount.compareTo(a.followersCount));
-    } else if (sortBy.byFollowing) {
+    } else if (sortBy.following) {
       users.sort((a, b) => b.friendsCount.compareTo(a.friendsCount));
     }
   }

@@ -3,8 +3,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
-import 'package:harpy/api/helper/network_error_handler.dart';
-import 'package:harpy/api/twitter/data/user_data.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
