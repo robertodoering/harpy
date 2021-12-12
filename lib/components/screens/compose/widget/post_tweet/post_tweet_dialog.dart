@@ -59,8 +59,9 @@ class _Content extends StatelessWidget {
         actions: [
           DialogAction<void>(
             text: 'ok',
-            onTap: state.inProgress ? null : Navigator.of(context).pop,
-          )
+            // need to use `maybePop` to trigger the `WillPopScope`
+            onTap: state.inProgress ? null : Navigator.of(context).maybePop,
+          ),
         ],
       ),
     );
