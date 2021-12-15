@@ -12,7 +12,7 @@ class UserListSortByModel extends ValueNotifier<UserSortBy> {
     );
   }
 
-  bool get hasSort => value != TimelineFilter.empty;
+  bool get hasSort => value != UserSortBy.empty;
 
   void clear() {
     value = UserSortBy.empty;

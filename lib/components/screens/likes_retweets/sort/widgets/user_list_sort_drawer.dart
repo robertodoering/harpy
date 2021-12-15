@@ -6,15 +6,15 @@ import 'package:provider/provider.dart';
 class UserListSortDrawer extends StatelessWidget {
   const UserListSortDrawer({
     required this.title,
-    required this.onFilter,
+    required this.onSort,
     required this.onClear,
-    required this.showFilterButton,
+    required this.showSortButton,
   });
 
   final String title;
-  final VoidCallback onFilter;
+  final VoidCallback onSort;
   final VoidCallback onClear;
-  final bool showFilterButton;
+  final bool showSortButton;
 
   Widget _buildSortOptions(UserListSortByModel model) {
     return FilterGroup(
@@ -22,22 +22,22 @@ class UserListSortDrawer extends StatelessWidget {
       allToggled: false,
       children: [
         FilterSwitchTile(
-          text: 'byDisplayName',
+          text: 'Display Name A-Z',
           value: model.value.displayName,
           onChanged: model.setByDisplayName,
         ),
         FilterSwitchTile(
-          text: 'byHandle',
+          text: 'Handle A-Z',
           value: model.value.handle,
           onChanged: model.setByHandle,
         ),
         FilterSwitchTile(
-          text: 'byFollowers',
+          text: 'most followers',
           value: model.value.followers,
           onChanged: model.setByFollowers,
         ),
         FilterSwitchTile(
-          text: 'byFollowing',
+          text: 'most following',
           value: model.value.following,
           onChanged: model.setByFollowing,
         ),
@@ -52,15 +52,15 @@ class UserListSortDrawer extends StatelessWidget {
     return FilterDrawer(
       title: title,
       showClear: model.hasSort,
-      showSearchButton: showFilterButton,
+      showSearchButton: showSortButton,
       searchButtonText: model.hasSort ? 'apply sort' : 'set to default',
-      searchButtonIcon: Icons.filter_alt_rounded,
+      searchButtonIcon: Icons.sort_outlined,
       onClear: () async {
         await Navigator.of(context).maybePop();
         model.clear();
         onClear();
       },
-      onSearch: onFilter,
+      onSearch: onSort,
       filterGroups: [
         _buildSortOptions(model),
       ],

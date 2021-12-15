@@ -11,17 +11,19 @@ class RetweetersSortDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<RetweetsCubit>();
+    final model = context.watch<UserListSortByModel>();
 
     return UserListSortDrawer(
       title: 'user list sort order',
-      showFilterButton: true,
-      onFilter: () {
-        cubit.applySort(context, cubit.tweetId);
+      showSortButton: cubit.sort != model.value,
+      onSort: () {
+        ScrollDirection.of(context)?.reset();
+        cubit.applySort(model.value);
       },
-      onClear: () {
+      onClear: () async {
         if (cubit.sort != UserSortBy.empty) {
-          ScrollDirection.of(context)?.reset();
-          cubit.applySort(context, cubit.tweetId);
+          ScrollDirection.of(context)!.reset();
+          cubit.applySort(UserSortBy.empty);
         }
       },
     );
