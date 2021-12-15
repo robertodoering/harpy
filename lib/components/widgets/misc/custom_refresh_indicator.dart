@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 // ignore_for_file: lines_longer_than_80_chars
 // ignore_for_file: always_put_control_body_on_new_line
@@ -298,7 +297,7 @@ class CustomRefreshIndicatorState extends State<CustomRefreshIndicator>
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
     if (notification.depth != 0 || !notification.leading) return false;
     if (_mode == _RefreshIndicatorMode.drag) {
-      notification.disallowGlow();
+      notification.disallowIndicator();
       return true;
     }
     return false;

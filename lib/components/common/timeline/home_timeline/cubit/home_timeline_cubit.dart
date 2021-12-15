@@ -1,5 +1,4 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:dart_twitter_api/api/tweets/data/tweet.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';

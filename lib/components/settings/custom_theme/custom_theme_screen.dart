@@ -5,7 +5,6 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:provider/provider.dart';
 
 /// Used for editing existing custom themes and creating new custom themes.
 class CustomThemeScreen extends StatelessWidget {

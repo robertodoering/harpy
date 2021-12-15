@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:provider/provider.dart';
 
 class MentionsTimeline extends StatefulWidget {
   const MentionsTimeline({

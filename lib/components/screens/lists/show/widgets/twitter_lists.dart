@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/twitter/data/twitter_list_data.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/buttons/harpy_button.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:provider/provider.dart';

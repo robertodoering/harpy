@@ -7,7 +7,6 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 /// Shown to new users upon logging in for the first time.
