@@ -7,7 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 
 part 'retweets_cubit.freezed.dart';
 
@@ -48,6 +47,8 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     await _request();
   }
 
+  // following the correct rule but ide takes something else is happening
+  // ignore: use_setters_to_change_properties
   void persistSort(String encodedSort) {
     app<UserListSortPreferences>().listSortOrder = encodedSort;
   }

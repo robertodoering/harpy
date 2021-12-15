@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 
 // TODO: refactor into cubit
 

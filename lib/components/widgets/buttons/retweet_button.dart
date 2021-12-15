@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/services/service_locator.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 

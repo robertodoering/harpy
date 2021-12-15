@@ -7,6 +7,6 @@ class UserListSortPreferences {
   String get listSortOrder =>
       app<HarpyPreferences>().getString('userListSortOrder', '', prefix: true);
 
-  set listSortOrder(String value) =>
-      app<HarpyPreferences>().setString('userListSortOrder', value, prefix: true);
+  set listSortOrder(String value) => app<HarpyPreferences>()
+      .setString('userListSortOrder', value, prefix: true);
 }

@@ -6,7 +6,6 @@ import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-/// The shared base for the [LikesScreen] and the [RetweetsScreen].
 class LikesRetweetsScreen extends StatelessWidget {
   const LikesRetweetsScreen({
     required this.title,
@@ -17,7 +16,7 @@ class LikesRetweetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    // TODO make the cubit type dynamic to determine which loadUser logic to user
+    // TODO make the cubit type dynamic
     final cubit = context.watch<RetweetsCubit>();
     final state = cubit.state;
 

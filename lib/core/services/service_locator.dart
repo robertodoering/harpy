@@ -2,7 +2,6 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 import 'package:harpy/misc/misc.dart';
 
 final app = GetIt.instance;

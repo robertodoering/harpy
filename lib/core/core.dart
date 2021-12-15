@@ -19,6 +19,7 @@ export 'preferences/theme_preferences.dart';
 export 'preferences/timeline_filter_preferences.dart';
 export 'preferences/trends_preferences.dart';
 export 'preferences/tweet_visibility_preferences.dart';
+export 'preferences/user_list_sort_preferences.dart';
 export 'regex/common_regex.dart';
 export 'regex/twitter_regex.dart';
 export 'services/connectivity_service.dart';

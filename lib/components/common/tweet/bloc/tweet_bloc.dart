@@ -10,9 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/sort/models/user_sort_by_model.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/core/preferences/user_list_sort_preferences.dart';
 import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart';
 
