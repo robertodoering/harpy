@@ -59,7 +59,15 @@ class DownloadService with HarpyLogger {
     final status = await Permission.storage.request();
 
     if (status.isGranted) {
-      return AndroidPathProvider.downloadsPath;
+      final path = await AndroidPathProvider.picturesPath;
+
+      if (path.isNotEmpty) {
+        return '$path/harpy';
+      } else {
+        app<MessageService>().show('unable to access storage');
+
+        return null;
+      }
     } else {
       app<MessageService>().show('storage permission not granted');
 
