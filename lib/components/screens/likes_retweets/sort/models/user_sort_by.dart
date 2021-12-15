@@ -39,11 +39,11 @@ class UserSortBy extends Equatable {
 
   @override
   List<Object> get props => <Object>[
-    following,
-    followers,
-    handle,
-    displayName,
-  ];
+        following,
+        followers,
+        handle,
+        displayName,
+      ];
 
   Map<String, dynamic> toJson() => _$UserSortByToJson(this);
 
