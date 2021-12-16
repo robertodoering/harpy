@@ -34,6 +34,8 @@ class ListTimelineScreen extends StatelessWidget {
             refreshIndicatorOffset: -mediaQuery.padding.top,
           ),
         ),
+        //TODO switch to a list timeline filter
+        drawer: const HomeTimelineFilterDrawer(),
       ),
     );
   }
