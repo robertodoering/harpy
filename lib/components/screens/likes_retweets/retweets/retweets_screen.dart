@@ -28,20 +28,21 @@ class _RetweetsScreenState extends State<RetweetsScreen> {
   void initState() {
     super.initState();
 
-    ChangelogDialog.maybeShow(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserListSortByModel.sort(),
-      child: BlocProvider<RetweetsCubit>(
-        create: (_) =>
-            RetweetsCubit(tweetId: widget.tweetId)..loadRetweetedByUsers(),
-        child: const HarpyScaffold(
-          endDrawer: RetweetersSortDrawer(),
-          body: LikesRetweetsScreen(title: 'Retweeted By'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserListSortByModel()),
+        BlocProvider(
+          create: (_) =>
+              RetweetsCubit(tweetId: widget.tweetId)..loadRetweetedByUsers(),
         ),
+      ],
+      child: const HarpyScaffold(
+        endDrawer: RetweetersSortDrawer(),
+        body: LikesRetweetsScreen(title: 'Retweeted By'),
       ),
     );
   }

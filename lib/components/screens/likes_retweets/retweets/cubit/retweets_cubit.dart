@@ -19,7 +19,11 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     app<UserListSortPreferences>().listSortOrder,
   );
 
-  Future<void> _request() async {
+  Future<void> _request({bool clearPrevious = false}) async {
+    if (clearPrevious) {
+      emit(const PaginatedState.loading());
+    }
+
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
@@ -64,6 +68,8 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     }
 
     final currentState = state.data?.users.toList();
+
+    sort = userSort;
     if (userSort != UserSortBy.empty) {
       final data = RetweetedUsersData(
         tweetId: tweetId,
@@ -75,7 +81,7 @@ class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
         ),
       );
     } else {
-      _request();
+      _request(clearPrevious: true);
     }
   }
 }

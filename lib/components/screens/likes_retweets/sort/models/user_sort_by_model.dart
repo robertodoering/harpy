@@ -5,7 +5,7 @@ import 'package:harpy/core/core.dart';
 // TODO: refactor into cubit
 
 class UserListSortByModel extends ValueNotifier<UserSortBy> {
-  UserListSortByModel.sort() : super(UserSortBy.empty) {
+  UserListSortByModel(): super(UserSortBy.empty) {
     value = UserSortBy.fromJsonString(
       app<UserListSortPreferences>().listSortOrder,
     );
