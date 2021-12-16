@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_cubit.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/components/screens/retweeters/retweets/cubit/retweets_cubit.dart';
 import 'package:provider/provider.dart';
 
 class RetweetsScreen extends StatelessWidget {
-  const LikesRetweetsScreen({
+  const RetweetsScreen({
     required this.title,
   });
 
@@ -15,19 +14,17 @@ class RetweetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    // TODO make the cubit type dynamic
-    final cubit = context.watch<RetweetsCubit>();
+    final cubit = context.watch<RetweetersCubit>();
     final state = cubit.state;
 
     return ScrollDirectionListener(
       child: ScrollToStart(
         child: UserList(
-          state.data?.users.toList() ?? [],
+          state.data?.toList() ?? [],
           beginSlivers: [
             HarpySliverAppBar(
               title: title,
               floating: true,
-              actions: const [_SortButton()],
             ),
           ],
           endSlivers: [
@@ -50,29 +47,6 @@ class RetweetsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _SortButton extends StatelessWidget {
-  const _SortButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cubit = context.watch<RetweetsCubit>();
-
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: HarpyButton.raised(
-        backgroundColor: theme.canvasColor.withOpacity(.4),
-        elevation: 0,
-        padding: const EdgeInsets.all(12),
-        icon: cubit.sort != UserSortBy.empty
-            ? Icon(Icons.sort, color: theme.colorScheme.secondary)
-            : const Icon(Icons.sort_outlined),
-        onTap: Scaffold.of(context).openEndDrawer,
       ),
     );
   }

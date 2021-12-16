@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/screens/likes_retweets/likes/likes_screen.dart';
-import 'package:harpy/components/screens/likes_retweets/retweets/retweets_screen.dart';
+import 'package:harpy/components/screens/retweeters/retweets/retweeters_screen.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -136,18 +135,7 @@ class HarpyNavigator {
     required String tweetId,
   }) {
     pushNamed(
-      RetweetsScreen.route,
-      arguments: <String, dynamic>{
-        'tweetId': tweetId,
-      },
-    );
-  }
-
-  void pushLikesScreen({
-    required String tweetId,
-  }) {
-    pushNamed(
-      LikesScreen.route,
+      RetweetersScreen.route,
       arguments: <String, dynamic>{
         'tweetId': tweetId,
       },
@@ -320,13 +308,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         userId: arguments['userId'],
       );
       break;
-    case LikesScreen.route:
-      screen = LikesScreen(
-        tweetId: arguments['tweetId'],
-      );
-      break;
-    case RetweetsScreen.route:
-      screen = RetweetsScreen(
+    case RetweetersScreen.route:
+      screen = RetweetersScreen(
         tweetId: arguments['tweetId'],
       );
       break;

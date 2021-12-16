@@ -44,6 +44,5 @@ void setupServices() {
     ..registerLazySingleton(() => const TweetVisibilityPreferences())
     ..registerLazySingleton(() => const TimelineFilterPreferences())
     ..registerLazySingleton(() => const HomeTabPreferences())
-    ..registerLazySingleton(() => const TrendsPreferences())
-    ..registerLazySingleton(() => const UserListSortPreferences());
+    ..registerLazySingleton(() => const TrendsPreferences());
 }
