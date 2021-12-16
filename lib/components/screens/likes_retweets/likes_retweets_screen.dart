@@ -5,7 +5,7 @@ import 'package:harpy/components/screens/likes_retweets/retweets/cubit/retweets_
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-class LikesRetweetsScreen extends StatelessWidget {
+class RetweetsScreen extends StatelessWidget {
   const LikesRetweetsScreen({
     required this.title,
   });

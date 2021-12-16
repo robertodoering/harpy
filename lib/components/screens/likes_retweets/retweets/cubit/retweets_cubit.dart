@@ -12,9 +12,12 @@ part 'retweets_cubit.freezed.dart';
 
 class RetweetsCubit extends Cubit<PaginatedState<RetweetedUsersData>>
     with RequestLock, HarpyLogger {
-  RetweetsCubit({required this.tweetId})
-      : super(const PaginatedState.loading());
-  late String tweetId;
+  RetweetsCubit({
+    required this.tweetId,
+  }) : super(const PaginatedState.loading());
+
+  final String tweetId;
+
   UserSortBy sort = UserSortBy.fromJsonString(
     app<UserListSortPreferences>().listSortOrder,
   );

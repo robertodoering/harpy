@@ -49,6 +49,7 @@ class UserCard extends StatelessWidget {
                 onUrlTap: null,
               ),
             ],
+            smallVerticalSpacer,
             FollowersCount(user),
           ],
         ),
