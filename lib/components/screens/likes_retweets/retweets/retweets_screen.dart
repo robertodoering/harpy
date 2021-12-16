@@ -27,7 +27,6 @@ class _RetweetsScreenState extends State<RetweetsScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
