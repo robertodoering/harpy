@@ -15,13 +15,13 @@ class MediaSettingsScreen extends StatefulWidget {
 }
 
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
-  final Map<int, String> _mediaQualityValues = <int, String>{
+  final Map<int, String> _mediaQualityValues = {
     0: 'always use best quality',
     1: 'only use best quality on wifi',
     2: 'never use best quality',
   };
 
-  final Map<int, String> _autoplayValues = <int, String>{
+  final Map<int, String> _autoplayValues = {
     0: 'always autoplay',
     1: 'only on wifi',
     2: 'never autoplay',

@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:android_path_provider/android_path_provider.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/misc/misc.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,74 +14,83 @@ const _timeout = Duration(seconds: 30);
 class DownloadService with HarpyLogger {
   const DownloadService();
 
-  /// Downloads the file for the [url] into the downloads directory.
-  ///
-  /// If the file is an image, we try to get the data from the image cache
-  /// first before downloading the image.
   Future<void> download({
     required String url,
     required String name,
+    required String path,
     VoidCallback? onStart,
     ValueChanged<String>? onSuccess,
     VoidCallback? onFailure,
   }) async {
-    final path = await _requestDownloadDirectory();
+    File? file;
+    http.Response? response;
 
-    if (path != null) {
-      try {
-        onStart?.call();
+    try {
+      // create directory in case it doesn't exist already
+      final directory = Directory(path)..createSync(recursive: true);
 
-        // create directory in case it doesn't exist already
-        final directory = Directory(path)..createSync(recursive: true);
+      file = File('${directory.path}/$name');
 
-        final file = File('${directory.path}/$name');
+      log.fine('downloading media');
 
-        log.fine('downloading media');
+      response = await http.get(Uri.parse(url)).timeout(_timeout);
 
-        final response = await http.get(Uri.parse(url)).timeout(_timeout);
+      file.writeAsBytesSync(response.bodyBytes);
 
-        await compute<List<dynamic>, void>(_writeFile, <dynamic>[
-          file,
-          response.bodyBytes,
-        ]);
+      log.fine('download successful');
 
-        log.fine('download successful');
+      onSuccess?.call(path);
+    } on FileSystemException catch (e) {
+      app<MessageService>().messageState.state.hideCurrentSnackBar();
 
-        onSuccess?.call(path);
-      } catch (e, st) {
-        log.severe('error while trying to download file', e, st);
-
-        onFailure?.call();
+      if (e.message.contains('Operation not permitted')) {
+        // ask the user to grant 'manage storage' permission
+        if (file != null && response != null) {
+          await _onFileSystemException(
+            file: file,
+            path: path,
+            bytes: response.bodyBytes,
+          );
+        }
       }
+    } catch (e, st) {
+      log.severe('error while trying to download file', e, st);
+
+      onFailure?.call();
     }
   }
 
-  Future<String?> _requestDownloadDirectory() async {
-    final status = await Permission.storage.request();
+  Future<void> _onFileSystemException({
+    required File file,
+    required String path,
+    required Uint8List bytes,
+  }) async {
+    // ask the user to grant 'manage storage' permission and try again if the
+    // permissions are granted
 
-    if (status.isGranted) {
-      final path = await AndroidPathProvider.picturesPath;
+    try {
+      final grant = await showDialog<bool>(
+        context: app<HarpyNavigator>().state.context,
+        builder: (_) => ManageStoragePermissionDialog(path: path),
+      );
 
-      if (path.isNotEmpty) {
-        return '$path/harpy';
-      } else {
-        app<MessageService>().show('unable to access storage');
+      if (grant ?? false) {
+        final status = await Permission.manageExternalStorage.request();
 
-        return null;
+        if (status.isGranted) {
+          file.writeAsBytesSync(bytes);
+
+          app<MessageService>().show('file saved in\n$path');
+        } else {
+          app<MessageService>().show('storage permission not granted');
+        }
       }
-    } else {
-      app<MessageService>().show('storage permission not granted');
+    } catch (e, st) {
+      log.severe('error while writing file', e, st);
 
-      return null;
+      app<MessageService>().show('saving file failed');
     }
   }
-}
-
-void _writeFile(List<dynamic> args) {
-  final File file = args[0];
-  final Uint8List bytes = args[1];
-
-  file.writeAsBytesSync(bytes);
 }
 
 /// The current status of a download.
