@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -67,6 +68,7 @@ class _DownloadDialogState extends State<DownloadDialog> {
               ),
             ),
             HarpyListTile(
+              leading: const Icon(CupertinoIcons.folder),
               title: const Text('download path'),
               subtitle: Text(_path),
               onTap: _selectPath,

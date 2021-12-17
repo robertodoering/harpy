@@ -122,12 +122,12 @@ String getAbsoluteTime(BuildContext context, DateTime createdAt) {
       .toLowerCase();
 }
 
-/// Returns the file name from a string url.
+/// Returns the filename from a string url.
 ///
 /// Example:
 /// Url: https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4?tag=10
 /// returns 'VoCc7t0UyB_R-KvW.mp4'.
-String? fileNameFromUrl(String? url) {
+String? filenameFromUrl(String? url) {
   if (url != null) {
     try {
       final startIndex = url.lastIndexOf('/') + 1;

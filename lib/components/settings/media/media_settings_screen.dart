@@ -1,8 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class MediaSettingsScreen extends StatefulWidget {
@@ -95,19 +97,26 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
           setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
+      HarpySwitchTile(
+        leading: const Icon(CupertinoIcons.arrow_down_to_line),
+        title: const Text('show download dialog'),
+        value: mediaPreferences.showDownloadDialog,
+        onChanged: (value) {
+          setState(() => mediaPreferences.showDownloadDialog = value);
+        },
+      ),
+      const _DownloadPathTile(),
     ];
   }
 
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
-    final mediaPreferences = app<MediaPreferences>();
-
     return [
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {
           HapticFeedback.lightImpact();
-          setState(mediaPreferences.defaultSettings);
+          setState(app<MediaPreferences>().defaultSettings);
         },
         itemBuilder: (_) {
           return [
@@ -134,6 +143,39 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         padding: EdgeInsets.zero,
         children: _buildSettings(theme, config),
       ),
+    );
+  }
+}
+
+class _DownloadPathTile extends StatefulWidget {
+  const _DownloadPathTile();
+
+  @override
+  State<_DownloadPathTile> createState() => _DownloadPathTileState();
+}
+
+class _DownloadPathTileState extends State<_DownloadPathTile> {
+  Future<void> _selectPath() async {
+    final path = await FilePicker.platform.getDirectoryPath();
+
+    if (path != null) {
+      if (path.isEmpty || path == '/') {
+        app<MessageService>().show('unable to access directory');
+      } else {
+        setState(() => app<MediaPreferences>().downloadPath = path);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final path = app<MediaPreferences>().downloadPath;
+
+    return HarpyListTile(
+      leading: const Icon(CupertinoIcons.folder),
+      title: const Text('download path'),
+      subtitle: path.isEmpty ? null : Text(path),
+      onTap: _selectPath,
     );
   }
 }

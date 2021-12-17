@@ -24,9 +24,9 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 ///   we request the 'manage external storage' permission and try again
 Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
   if (type != null && mediaUrl != null) {
-    final fileName = fileNameFromUrl(mediaUrl);
+    final filename = filenameFromUrl(mediaUrl);
 
-    if (fileName != null) {
+    if (filename != null) {
       final notifier = ValueNotifier<DownloadStatus>(
         DownloadStatus(
           message: 'downloading ${type.name}...',
@@ -48,13 +48,22 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
         initialPath = '$picturesPath/harpy';
       }
 
-      final selection = await showDialog<DownloadDialogSelection>(
-        context: app<HarpyNavigator>().state.context,
-        builder: (_) => DownloadDialog(
-          initialName: fileName,
-          initialPath: initialPath,
-        ),
-      );
+      DownloadDialogSelection? selection;
+
+      if (app<MediaPreferences>().showDownloadDialog) {
+        selection = await showDialog<DownloadDialogSelection>(
+          context: app<HarpyNavigator>().state.context,
+          builder: (_) => DownloadDialog(
+            initialName: filename,
+            initialPath: initialPath,
+          ),
+        );
+      } else {
+        selection = DownloadDialogSelection(
+          name: filename,
+          path: initialPath,
+        );
+      }
 
       if (selection == null) {
         return;
