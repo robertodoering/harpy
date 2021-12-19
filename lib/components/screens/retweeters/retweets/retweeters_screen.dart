@@ -21,7 +21,7 @@ class RetweetersScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => RetweetersCubit(tweetId: tweetId)..loadRetweetedByUsers(),
       child: const HarpyScaffold(
-        body: RetweetsScreen(title: 'Retweeted By'),
+        body: RetweetsScreen(title: 'retweeted by'),
       ),
     );
   }

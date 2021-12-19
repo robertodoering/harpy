@@ -21,17 +21,17 @@ class RetweetersCubit extends Cubit<PaginatedState<BuiltList<UserData>>>
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
-        .handleError(twitterApiErrorHandler)
-        .then(
-          createUsers,
-        );
+        .then((tweets) => tweets.map((tweet) => UserData.fromUser(tweet.user)))
+        .handleError(twitterApiErrorHandler);
 
-    if (users.isNotEmpty) {
-      emit(
-        PaginatedState.data(
-          data: users.toBuiltList(),
-        ),
-      );
+    if (users != null) {
+      if (users.isNotEmpty) {
+        emit(PaginatedState.data(data: users.toBuiltList()));
+      } else {
+        emit(const PaginatedState.noData());
+      }
+    } else {
+      emit(const PaginatedState.error());
     }
   }
 
