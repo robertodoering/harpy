@@ -42,6 +42,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _mediaQualityValues.values.toList(),
         values: _mediaQualityValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
@@ -70,6 +71,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         subtitle: const Text('reduces height'),
         value: mediaPreferences.cropImage,
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.cropImage = value);
         },
       ),
@@ -82,6 +84,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.autoplayMedia = value!);
         },
       ),
@@ -94,6 +97,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.autoplayVideos = value!);
         },
       ),
@@ -102,10 +106,17 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         title: const Text('show download dialog'),
         value: mediaPreferences.showDownloadDialog,
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.showDownloadDialog = value);
         },
       ),
-      const _DownloadPathTile(),
+      _DownloadPathTile(
+        path: app<MediaPreferences>().downloadPath,
+        onChanged: (value) {
+          HapticFeedback.lightImpact();
+          setState(() => app<MediaPreferences>().downloadPath = value);
+        },
+      ),
     ];
   }
 
@@ -148,7 +159,13 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 }
 
 class _DownloadPathTile extends StatefulWidget {
-  const _DownloadPathTile();
+  const _DownloadPathTile({
+    required this.path,
+    required this.onChanged,
+  });
+
+  final String path;
+  final ValueChanged<String> onChanged;
 
   @override
   State<_DownloadPathTile> createState() => _DownloadPathTileState();
@@ -162,19 +179,17 @@ class _DownloadPathTileState extends State<_DownloadPathTile> {
       if (path.isEmpty || path == '/') {
         app<MessageService>().show('unable to access directory');
       } else {
-        setState(() => app<MediaPreferences>().downloadPath = path);
+        widget.onChanged(path);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final path = app<MediaPreferences>().downloadPath;
-
     return HarpyListTile(
       leading: const Icon(CupertinoIcons.folder),
       title: const Text('download path'),
-      subtitle: path.isEmpty ? null : Text(path),
+      subtitle: widget.path.isEmpty ? null : Text(widget.path),
       onTap: _selectPath,
     );
   }

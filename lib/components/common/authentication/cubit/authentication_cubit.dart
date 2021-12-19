@@ -175,6 +175,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with HarpyLogger {
       // initialize the user prefix for the harpy preferences
       app<HarpyPreferences>().prefix = authSession.userId;
 
+      // TODO: fix defaults to system theme in free
+
       // initialize the custom themes for this user
       themeBloc
         ..add(const ThemeEvent.loadCustomThemes())

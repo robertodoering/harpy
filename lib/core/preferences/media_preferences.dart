@@ -87,5 +87,7 @@ class MediaPreferences {
     autoplayMedia = 1;
     autoplayVideos = 2;
     openLinksExternally = false;
+    downloadPath = '';
+    showDownloadDialog = true;
   }
 }

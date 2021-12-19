@@ -40,10 +40,8 @@ class DownloadService with HarpyLogger {
       log.fine('download successful');
 
       onSuccess?.call(path);
-    } on FileSystemException catch (e) {
-      app<MessageService>().messageState.state.hideCurrentSnackBar();
-
-      if (e.message.contains('Operation not permitted')) {
+    } on FileSystemException catch (e, st) {
+      if (e.osError?.message.contains('Operation not permitted') ?? false) {
         // ask the user to grant 'manage storage' permission
         if (file != null && response != null) {
           await _onFileSystemException(
@@ -52,6 +50,10 @@ class DownloadService with HarpyLogger {
             bytes: response.bodyBytes,
           );
         }
+      } else {
+        log.severe('unhandled FileSystemException', e, st);
+
+        onFailure?.call();
       }
     } catch (e, st) {
       log.severe('error while trying to download file', e, st);
@@ -68,6 +70,8 @@ class DownloadService with HarpyLogger {
     // ask the user to grant 'manage storage' permission and try again if the
     // permissions are granted
 
+    app<MessageService>().messageState.state.hideCurrentSnackBar();
+
     try {
       final grant = await showDialog<bool>(
         context: app<HarpyNavigator>().state.context,
@@ -80,7 +84,7 @@ class DownloadService with HarpyLogger {
         if (status.isGranted) {
           file.writeAsBytesSync(bytes);
 
-          app<MessageService>().show('file saved in\n$path');
+          app<MessageService>().show('media saved in\n$path');
         } else {
           app<MessageService>().show('storage permission not granted');
         }
@@ -88,7 +92,7 @@ class DownloadService with HarpyLogger {
     } catch (e, st) {
       log.severe('error while writing file', e, st);
 
-      app<MessageService>().show('saving file failed');
+      app<MessageService>().show('saving media failed');
     }
   }
 }

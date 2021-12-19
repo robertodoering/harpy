@@ -31,7 +31,7 @@ class ManageStoragePermissionDialog extends StatelessWidget {
       ),
       actions: const [
         DialogAction(result: false, text: 'cancel'),
-        DialogAction(result: true, text: 'grant access'),
+        DialogAction(result: true, text: 'grant'),
       ],
     );
   }
