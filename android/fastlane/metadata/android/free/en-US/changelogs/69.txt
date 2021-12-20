@@ -1,4 +1,6 @@
 Version 0.8.2
 2021-xx-xx
 
+· Added 'retweeted by' screen (thanks Demondre!)
+· Added following & followers count for user cards (thanks Demondre!)
 · Fixed not returning to home screen after composing a Tweet
