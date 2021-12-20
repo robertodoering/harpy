@@ -1,8 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
 class MediaSettingsScreen extends StatefulWidget {
@@ -15,13 +17,13 @@ class MediaSettingsScreen extends StatefulWidget {
 }
 
 class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
-  final Map<int, String> _mediaQualityValues = <int, String>{
+  final Map<int, String> _mediaQualityValues = {
     0: 'always use best quality',
     1: 'only use best quality on wifi',
     2: 'never use best quality',
   };
 
-  final Map<int, String> _autoplayValues = <int, String>{
+  final Map<int, String> _autoplayValues = {
     0: 'always autoplay',
     1: 'only on wifi',
     2: 'never autoplay',
@@ -40,6 +42,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _mediaQualityValues.values.toList(),
         values: _mediaQualityValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.bestMediaQuality = value!);
         },
       ),
@@ -68,6 +71,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         subtitle: const Text('reduces height'),
         value: mediaPreferences.cropImage,
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.cropImage = value);
         },
       ),
@@ -80,6 +84,7 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.autoplayMedia = value!);
         },
       ),
@@ -92,7 +97,24 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         titles: _autoplayValues.values.toList(),
         values: _autoplayValues.keys.toList(),
         onChanged: (value) {
+          HapticFeedback.lightImpact();
           setState(() => mediaPreferences.autoplayVideos = value!);
+        },
+      ),
+      HarpySwitchTile(
+        leading: const Icon(CupertinoIcons.arrow_down_to_line),
+        title: const Text('show download dialog'),
+        value: mediaPreferences.showDownloadDialog,
+        onChanged: (value) {
+          HapticFeedback.lightImpact();
+          setState(() => mediaPreferences.showDownloadDialog = value);
+        },
+      ),
+      _DownloadPathTile(
+        path: app<MediaPreferences>().downloadPath,
+        onChanged: (value) {
+          HapticFeedback.lightImpact();
+          setState(() => app<MediaPreferences>().downloadPath = value);
         },
       ),
     ];
@@ -100,14 +122,12 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
 
   /// Builds the actions for the 'reset to default' button as a [PopupMenuItem].
   List<Widget> _buildActions() {
-    final mediaPreferences = app<MediaPreferences>();
-
     return [
       CustomPopupMenuButton<void>(
         icon: const Icon(CupertinoIcons.ellipsis_vertical),
         onSelected: (_) {
           HapticFeedback.lightImpact();
-          setState(mediaPreferences.defaultSettings);
+          setState(app<MediaPreferences>().defaultSettings);
         },
         itemBuilder: (_) {
           return [
@@ -134,6 +154,43 @@ class _MediaSettingsScreenState extends State<MediaSettingsScreen> {
         padding: EdgeInsets.zero,
         children: _buildSettings(theme, config),
       ),
+    );
+  }
+}
+
+class _DownloadPathTile extends StatefulWidget {
+  const _DownloadPathTile({
+    required this.path,
+    required this.onChanged,
+  });
+
+  final String path;
+  final ValueChanged<String> onChanged;
+
+  @override
+  State<_DownloadPathTile> createState() => _DownloadPathTileState();
+}
+
+class _DownloadPathTileState extends State<_DownloadPathTile> {
+  Future<void> _selectPath() async {
+    final path = await FilePicker.platform.getDirectoryPath();
+
+    if (path != null) {
+      if (path.isEmpty || path == '/') {
+        app<MessageService>().show('unable to access directory');
+      } else {
+        widget.onChanged(path);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return HarpyListTile(
+      leading: const Icon(CupertinoIcons.folder),
+      title: const Text('download path'),
+      subtitle: widget.path.isEmpty ? null : Text(widget.path),
+      onTap: _selectPath,
     );
   }
 }

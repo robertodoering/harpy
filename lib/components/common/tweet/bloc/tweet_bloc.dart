@@ -94,7 +94,7 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
   }
 
   void onShowRetweeters() {
-    app<HarpyNavigator>().pushRetweetsScreen(
+    app<HarpyNavigator>().pushRetweetersScreen(
       tweetId: tweet.id,
     );
   }

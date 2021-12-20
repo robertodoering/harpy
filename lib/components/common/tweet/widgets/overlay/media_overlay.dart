@@ -1,3 +1,4 @@
+import 'package:android_path_provider/android_path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
@@ -5,6 +6,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Default behavior to open a tweet media externally.
@@ -15,11 +17,16 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 }
 
 /// Default behavior to download a tweet media.
+///
+/// - Asks for generic storage permission if not already granted
+/// - Shows dialog with customizable name and path (unless disabled in settings)
+/// - If writing the file fails (e.g. in trying to save in a custom folder),
+///   we request the 'manage external storage' permission and try again
 Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
   if (type != null && mediaUrl != null) {
-    final fileName = fileNameFromUrl(mediaUrl);
+    final filename = filenameFromUrl(mediaUrl);
 
-    if (fileName != null) {
+    if (filename != null) {
       final notifier = ValueNotifier<DownloadStatus>(
         DownloadStatus(
           message: 'downloading ${type.name}...',
@@ -27,16 +34,55 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
         ),
       );
 
-      final snackBar = SnackBar(
-        content: DownloadStatusMessage(notifier: notifier),
-        duration: const Duration(seconds: 15),
+      final storagePermission = await Permission.storage.request();
+
+      if (!storagePermission.isGranted) {
+        app<MessageService>().show('storage permission not granted');
+        return;
+      }
+
+      var initialPath = app<MediaPreferences>().downloadPath;
+
+      if (initialPath.isEmpty) {
+        final picturesPath = await AndroidPathProvider.picturesPath;
+        initialPath = '$picturesPath/harpy';
+      }
+
+      DownloadDialogSelection? selection;
+
+      if (app<MediaPreferences>().showDownloadDialog) {
+        selection = await showDialog<DownloadDialogSelection>(
+          context: app<HarpyNavigator>().state.context,
+          builder: (_) => DownloadDialog(
+            initialName: filename,
+            initialPath: initialPath,
+          ),
+        );
+      } else {
+        selection = DownloadDialogSelection(
+          name: filename,
+          path: initialPath,
+        );
+      }
+
+      if (selection == null) {
+        return;
+      }
+
+      app<MediaPreferences>().downloadPath = selection.path;
+
+      app<MessageService>().showCustom(
+        SnackBar(
+          content: DownloadStatusMessage(notifier: notifier),
+          duration: const Duration(seconds: 15),
+        ),
       );
 
       await app<DownloadService>()
           .download(
             url: mediaUrl,
-            name: fileName,
-            onStart: () => app<MessageService>().showCustom(snackBar),
+            name: selection.name,
+            path: selection.path,
             onSuccess: (path) => notifier.value = DownloadStatus(
               message: '${type.name} saved in\n$path',
               state: DownloadState.successful,

@@ -120,6 +120,7 @@ class _RetweetButtonState extends State<RetweetButton> {
       value: bloc.tweet.retweetCount,
       activate: () => _showRetweetButtonMenu(bloc),
       deactivate: bloc.onUnretweet,
+      onLongPress: bloc.onShowRetweeters,
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,
         dotSecondaryColor: Colors.limeAccent,
