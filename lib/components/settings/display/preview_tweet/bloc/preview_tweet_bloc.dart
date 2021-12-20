@@ -38,6 +38,9 @@ class PreviewTweetBloc extends TweetBloc {
   void onComposeQuote() {}
 
   @override
+  void onShowRetweeters() {}
+
+  @override
   void onFavorite() {}
 
   @override

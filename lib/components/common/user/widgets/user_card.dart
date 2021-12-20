@@ -49,6 +49,8 @@ class UserCard extends StatelessWidget {
                 onUrlTap: null,
               ),
             ],
+            smallVerticalSpacer,
+            FollowersCount(user),
           ],
         ),
         onTap: () => app<HarpyNavigator>().pushUserProfile(
