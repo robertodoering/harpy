@@ -28,6 +28,7 @@ class ActionButton extends StatefulWidget {
   const ActionButton({
     required this.iconBuilder,
     required this.active,
+    this.onLongPress,
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.activeIconColor,
     this.value,
@@ -87,6 +88,8 @@ class ActionButton extends StatefulWidget {
   /// The callback that is fired when the button is tapped and [active] is
   /// `true`.
   final VoidCallback? deactivate;
+
+  final VoidCallback? onLongPress;
 
   /// The colors used by the [BubbleAnimation] that starts when [active] changes
   /// from `false` to `true`.
@@ -179,6 +182,7 @@ class _ActionButtonState extends State<ActionButton>
       padding: widget.padding,
       betweenPadding: widget.padding.horizontal / 4,
       onTap: widget.active ? widget.deactivate : widget.activate,
+      onLongPress: widget.onLongPress,
       icon: icon,
       style: widget.active ? widget.activeTextStyle : widget.inactiveTextStyle,
       text: widget.value != null ? AnimatedNumber(number: widget.value) : null,

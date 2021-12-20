@@ -12,10 +12,12 @@ class _HarpyButtonBase extends StatefulWidget {
   const _HarpyButtonBase({
     required this.child,
     this.onTap,
+    this.onLongPress,
   });
 
   final Widget child;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   _HarpyButtonBaseState createState() => _HarpyButtonBaseState();
@@ -43,6 +45,7 @@ class _HarpyButtonBaseState extends State<_HarpyButtonBase> {
         onTapDown: (_) => _updateTapDown(true),
         onTapUp: (_) => _updateTapDown(false),
         onTapCancel: () => _updateTapDown(false),
+        onLongPress: widget.onLongPress,
         onTap: widget.onTap,
         child: widget.child,
       ),
@@ -71,6 +74,7 @@ class HarpyButton extends StatelessWidget {
   /// Uses the [HarpyTheme.foregroundColor] as the [backgroundColor] by default.
   const HarpyButton.raised({
     required this.onTap,
+    this.onLongPress,
     this.text,
     this.icon,
     this.iconSize,
@@ -90,6 +94,7 @@ class HarpyButton extends StatelessWidget {
   /// Should only be used when the context makes it clear it can be tapped.
   const HarpyButton.flat({
     required this.onTap,
+    this.onLongPress,
     this.text,
     this.icon,
     this.iconSize,
@@ -131,6 +136,8 @@ class HarpyButton extends StatelessWidget {
   ///
   /// If `null`, the button has reduced transparency to appear disabled.
   final VoidCallback? onTap;
+
+  final VoidCallback? onLongPress;
 
   /// The color of the button.
   ///
@@ -243,6 +250,7 @@ class HarpyButton extends StatelessWidget {
 
     return _HarpyButtonBase(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: AnimatedTheme(
         data: theme.copyWith(
           // material background color

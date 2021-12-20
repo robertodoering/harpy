@@ -93,6 +93,12 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     app<HarpyNavigator>().pushComposeScreen(quotedTweet: tweet);
   }
 
+  void onShowRetweeters() {
+    app<HarpyNavigator>().pushRetweetersScreen(
+      tweetId: tweet.id,
+    );
+  }
+
   void onFavorite() {
     HapticFeedback.lightImpact();
     add(const TweetEvent.favorite());
