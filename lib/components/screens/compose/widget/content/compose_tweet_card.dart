@@ -43,10 +43,12 @@ class _ComposeTweetCardState extends State<ComposeTweetCard>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    final theme = Theme.of(context);
+
     _controller ??= ComposeTextController(
-      textStyleMap: <RegExp, TextStyle>{
-        hashtagRegex: TextStyle(color: Theme.of(context).colorScheme.secondary),
-        mentionRegex: TextStyle(color: Theme.of(context).colorScheme.secondary),
+      textStyleMap: {
+        hashtagRegex: TextStyle(color: theme.colorScheme.secondary),
+        mentionRegex: TextStyle(color: theme.colorScheme.secondary),
       },
     );
   }
