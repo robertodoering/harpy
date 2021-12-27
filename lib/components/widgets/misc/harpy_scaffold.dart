@@ -58,7 +58,6 @@ class HarpyScaffold extends StatelessWidget {
 
   Widget? _leading(BuildContext context) {
     if (Scaffold.of(context).hasDrawer) {
-      //TODO figure out a way to only show this on the homepage
       return const DrawerButton();
     } else if (Navigator.of(context).canPop()) {
       return const HarpyBackButton();
