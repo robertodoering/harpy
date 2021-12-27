@@ -81,6 +81,7 @@ class _TopRow extends StatelessWidget {
                 name: name,
               ),
             ),
+            horizontalSpacer,
             HarpyButton.raised(
               padding: config.edgeInsets,
               elevation: 0,

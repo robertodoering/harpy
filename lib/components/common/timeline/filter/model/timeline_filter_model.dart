@@ -18,6 +18,12 @@ class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
     );
   }
 
+  TimelineFilterModel.list() : super(TimelineFilter.empty) {
+    value = TimelineFilter.fromJsonString(
+      app<TimelineFilterPreferences>().listTimelineFilter,
+    );
+  }
+
   bool get hasFilter => value != TimelineFilter.empty;
 
   bool get toggledAllIncludes =>
