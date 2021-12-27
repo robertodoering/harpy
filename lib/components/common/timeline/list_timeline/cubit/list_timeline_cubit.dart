@@ -8,8 +8,7 @@ class ListTimelineCubit extends TimelineCubit {
   }) {
     loadInitial();
     filter = TimelineFilter.fromJsonString(
-      //TODO switch list timeline filter
-      app<TimelineFilterPreferences>().homeTimelineFilter,
+      app<TimelineFilterPreferences>().listTimelineFilter,
     );
   }
 
