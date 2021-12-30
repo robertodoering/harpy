@@ -95,24 +95,24 @@ void main() {
       const url =
           'https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4';
 
-      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+      expect(filenameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
     });
 
     test('removes query params', () {
       const url =
           'https://video.twimg.com/ext_tw_video/1322182514157346818/pu/vid/1280x720/VoCc7t0UyB_R-KvW.mp4?tag=10';
 
-      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+      expect(filenameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
     });
 
     test('returns the url if its just the file name', () {
       const url = 'VoCc7t0UyB_R-KvW.mp4';
 
-      expect(fileNameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
+      expect(filenameFromUrl(url), equals('VoCc7t0UyB_R-KvW.mp4'));
     });
 
     test('returns null when the url is null', () {
-      expect(fileNameFromUrl(null), isNull);
+      expect(filenameFromUrl(null), isNull);
     });
   });
 

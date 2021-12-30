@@ -89,7 +89,7 @@ class RepliesCubit extends Cubit<RepliesState> with HarpyLogger {
       final parent = await app<TwitterApi>()
           .tweetService
           .show(id: tweet.parentTweetId!)
-          .then((tweet) => TweetData.fromTweet(tweet))
+          .then(TweetData.fromTweet)
           .handleError(silentErrorHandler);
 
       return parent;
@@ -137,6 +137,6 @@ extension RepliesStateExtension on RepliesState {
 
   BuiltList<TweetData> get replies => maybeMap(
         data: (value) => value.replies,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 }

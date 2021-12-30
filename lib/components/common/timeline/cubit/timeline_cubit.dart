@@ -254,7 +254,7 @@ extension TimelineStateExtension on TimelineState {
   BuiltList<TweetData> get tweets => maybeMap(
         data: (value) => value.tweets,
         loadingMore: (value) => value.data.tweets,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 
   int get initialResultsCount => maybeMap(

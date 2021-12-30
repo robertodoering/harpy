@@ -16,13 +16,10 @@ class EntitiesData extends Equatable {
     final userMentions = entities?.userMentions ?? [];
 
     return EntitiesData(
-      hashtags:
-          hashtags.map((hashtag) => HashtagData.fromHashtag(hashtag)).toList(),
-      media: media.map((media) => EntitiesMediaData.fromMedia(media)).toList(),
-      urls: urls.map((url) => UrlData.fromUrl(url)).toList(),
-      userMentions: userMentions
-          .map((userMention) => UserMentionData.fromUserMention(userMention))
-          .toList(),
+      hashtags: hashtags.map(HashtagData.fromHashtag).toList(),
+      media: media.map(EntitiesMediaData.fromMedia).toList(),
+      urls: urls.map(UrlData.fromUrl).toList(),
+      userMentions: userMentions.map(UserMentionData.fromUserMention).toList(),
     );
   }
 

@@ -25,8 +25,7 @@ abstract class PaginatedUsersCubit
   Future<void> onInitialResponse(PaginatedUsers response) async {
     log.fine('received initial paginated users response');
 
-    final users =
-        response.users?.map((user) => UserData.fromUser(user)).toBuiltList();
+    final users = response.users?.map(UserData.fromUser).toBuiltList();
 
     if (users == null || users.isEmpty) {
       emit(const PaginatedState.noData());
@@ -49,7 +48,7 @@ abstract class PaginatedUsersCubit
   ) async {
     log.fine('received loading more paginated users response');
 
-    final users = response.users?.map((user) => UserData.fromUser(user)) ?? [];
+    final users = response.users?.map(UserData.fromUser) ?? [];
 
     final cursor = int.tryParse(response.nextCursorStr ?? '');
 

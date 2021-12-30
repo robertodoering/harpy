@@ -64,7 +64,7 @@ class TwitterAuth {
         authCallback.queryParameters.containsKey('denied');
 
     if (!userCancelled) {
-      final oauthToken = authCallback!.queryParameters['oauth_token'];
+      final oauthToken = authCallback.queryParameters['oauth_token'];
       final oauthVerifier = authCallback.queryParameters['oauth_verifier'];
 
       if (oauthToken != null && oauthVerifier != null) {

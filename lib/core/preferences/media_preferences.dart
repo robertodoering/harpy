@@ -48,6 +48,18 @@ class MediaPreferences {
   set openLinksExternally(bool value) =>
       app<HarpyPreferences>().setBool('openLinksExternally', value);
 
+  /// Whether the download dialog should show when downloading media.
+  bool get showDownloadDialog =>
+      app<HarpyPreferences>().getBool('showDownloadDialog', true);
+  set showDownloadDialog(bool value) =>
+      app<HarpyPreferences>().setBool('showDownloadDialog', value);
+
+  /// Encoded download path data that maps a media type with its download path.
+  String get downloadPathData =>
+      app<HarpyPreferences>().getString('downloadPathData', '');
+  set downloadPathData(String value) =>
+      app<HarpyPreferences>().setString('downloadPathData', value);
+
   /// Whether gifs should play automatically, taking the connectivity into
   /// account.
   bool get shouldAutoplayMedia =>
@@ -72,5 +84,7 @@ class MediaPreferences {
     autoplayMedia = 1;
     autoplayVideos = 2;
     openLinksExternally = false;
+    downloadPathData = '';
+    showDownloadDialog = true;
   }
 }

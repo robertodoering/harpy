@@ -1,4 +1,5 @@
 import 'package:harpy/core/core.dart';
+import 'package:harpy/harpy.dart';
 
 class ThemePreferences {
   const ThemePreferences();
@@ -8,9 +9,10 @@ class ThemePreferences {
   /// - 0..9: index of predefined theme (unused indices are reserved)
   /// - 10+:  index of custom theme
   ///
-  /// Defaults to 0 for the dark theme and 1 for the light theme.
-  int get lightThemeId =>
-      app<HarpyPreferences>().getInt('lightThemeId', 1, prefix: true);
+  /// The default light and dark theme for the free version is the same (0).
+  /// Defaults to 0 for the dark and 1 for the light theme in the pro version.
+  int get lightThemeId => app<HarpyPreferences>()
+      .getInt('lightThemeId', isFree ? 0 : 1, prefix: true);
   set lightThemeId(int value) =>
       app<HarpyPreferences>().setInt('lightThemeId', value, prefix: true);
 

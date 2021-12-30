@@ -22,16 +22,16 @@ Future<void> setupApp() async {
   VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
   app
-    ..registerLazySingleton<TwitterApi>(() => MockTwitterApi())
-    ..registerLazySingleton<HarpyNavigator>(() => MockHarpyNavigator())
-    ..registerLazySingleton<MessageService>(() => MockMessageService())
-    ..registerLazySingleton<HarpyInfo>(() => MockHarpyInfo())
-    ..registerLazySingleton<TranslationService>(() => MockTranslationService())
+    ..registerLazySingleton<TwitterApi>(MockTwitterApi.new)
+    ..registerLazySingleton<HarpyNavigator>(MockHarpyNavigator.new)
+    ..registerLazySingleton<MessageService>(MockMessageService.new)
+    ..registerLazySingleton<HarpyInfo>(MockHarpyInfo.new)
+    ..registerLazySingleton<TranslationService>(MockTranslationService.new)
     ..registerLazySingleton<ConnectivityService>(
-      () => MockConnectivityService(),
+      MockConnectivityService.new,
     )
     // preferences
-    ..registerLazySingleton<HarpyPreferences>(() => MockHarpyPreferences())
+    ..registerLazySingleton<HarpyPreferences>(MockHarpyPreferences.new)
     ..registerLazySingleton(() => const AuthPreferences())
     ..registerLazySingleton(() => const MediaPreferences())
     ..registerLazySingleton(() => const ThemePreferences())

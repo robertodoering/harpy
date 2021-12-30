@@ -9,15 +9,13 @@ class RetweetersCubit extends Cubit<PaginatedState<BuiltList<UserData>>>
     with RequestLock, HarpyLogger {
   RetweetersCubit({
     required this.tweetId,
-  }) : super(const PaginatedState.loading());
+  }) : super(const PaginatedState.loading()) {
+    _request();
+  }
 
   final String tweetId;
 
-  Future<void> _request({bool clearPrevious = false}) async {
-    if (clearPrevious) {
-      emit(const PaginatedState.loading());
-    }
-
+  Future<void> _request() async {
     final users = await app<TwitterApi>()
         .tweetService
         .retweets(id: tweetId, count: 100)
@@ -34,16 +32,4 @@ class RetweetersCubit extends Cubit<PaginatedState<BuiltList<UserData>>>
       emit(const PaginatedState.error());
     }
   }
-
-  Future<void> loadRetweetedByUsers() async {
-    emit(const PaginatedState.loading());
-
-    await _request();
-  }
-}
-
-List<UserData> createUsers(
-  List<Tweet>? tweets,
-) {
-  return tweets?.map((tweet) => UserData.fromUser(tweet.user)).toList() ?? [];
 }

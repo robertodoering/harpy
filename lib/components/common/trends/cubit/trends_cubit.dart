@@ -109,6 +109,6 @@ extension TrendsStateExtension on TrendsState {
 
   BuiltList<Trend> get hashtags => maybeMap(
         data: (value) => value.hashtags,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 }

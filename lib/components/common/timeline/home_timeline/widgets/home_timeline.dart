@@ -20,7 +20,7 @@ class HomeTimeline extends StatelessWidget {
       child: Timeline(
         listKey: const PageStorageKey('home_timeline'),
         refreshIndicatorOffset: refreshIndicatorOffset,
-        tweetBuilder: (tweet) => HomeTimelineTweetCard(tweet),
+        tweetBuilder: HomeTimelineTweetCard.new,
         beginSlivers: [
           const HomeTopSliverPadding(),
           if (state.hasTweets) const HomeTimelineTopRow(),

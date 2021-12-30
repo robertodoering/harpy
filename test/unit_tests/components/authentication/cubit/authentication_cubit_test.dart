@@ -126,7 +126,7 @@ void main() {
           'has not been performed before', () async {
         app
           ..unregister<AuthPreferences>()
-          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+          ..registerLazySingleton<AuthPreferences>(MockAuthPreferences.new);
 
         final twitterAuth = MockTwitterAuth();
 
@@ -173,7 +173,7 @@ void main() {
           'has been performed before', () async {
         app
           ..unregister<AuthPreferences>()
-          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+          ..registerLazySingleton<AuthPreferences>(MockAuthPreferences.new);
 
         app<HarpyPreferences>().prefix = 'id';
         app<SetupPreferences>().performedSetup = true;
@@ -222,7 +222,7 @@ void main() {
           () async {
         app
           ..unregister<AuthPreferences>()
-          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+          ..registerLazySingleton<AuthPreferences>(MockAuthPreferences.new);
 
         final twitterAuth = MockTwitterAuth();
 
@@ -255,7 +255,7 @@ void main() {
           'but user was unable to be requested', () async {
         app
           ..unregister<AuthPreferences>()
-          ..registerLazySingleton<AuthPreferences>(() => MockAuthPreferences());
+          ..registerLazySingleton<AuthPreferences>(MockAuthPreferences.new);
 
         final twitterAuth = MockTwitterAuth();
 
