@@ -6,5 +6,5 @@ Version 0.8.2
 · Added 'retweeted by' screen (thanks Demondre!)
 · Added following & followers count for user cards (thanks Demondre!)
 · Added compose text default sentence capitalization
-· Changed default download path to `Pictures/harpy/`
+· Changed default download location to `Pictures/harpy/`
 · Fixed not returning to home screen after composing a Tweet
