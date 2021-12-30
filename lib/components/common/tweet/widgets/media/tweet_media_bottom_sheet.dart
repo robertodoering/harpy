@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Shows a harpy bottom sheet for the tweet media actions.
 ///
@@ -44,7 +45,11 @@ void showTweetMediaBottomSheet(
           if (onDownload != null) {
             onDownload();
           } else {
-            defaultOnMediaDownload(mediaType, url);
+            defaultOnMediaDownload(
+              downloadPathCubit: context.read(),
+              type: mediaType,
+              url: url,
+            );
           }
 
           Navigator.of(context).maybePop();

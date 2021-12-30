@@ -31,7 +31,11 @@ class _TweetImagesState extends State<TweetImages> {
     MediaOverlay.open(
       tweetBloc: bloc,
       overlap: true,
-      onDownload: () => defaultOnMediaDownload(bloc.tweet.mediaType, mediaUrl),
+      onDownload: () => defaultOnMediaDownload(
+        downloadPathCubit: context.read(),
+        type: bloc.tweet.mediaType,
+        url: mediaUrl,
+      ),
       onOpenExternally: () => defaultOnMediaOpenExternally(mediaUrl),
       onShare: () => defaultOnMediaShare(mediaUrl),
       child: HarpyMediaGallery.builder(

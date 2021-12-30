@@ -1,4 +1,3 @@
-import 'package:android_path_provider/android_path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
@@ -18,13 +17,14 @@ void defaultOnMediaOpenExternally(String? mediaUrl) {
 
 /// Default behavior to download a tweet media.
 ///
-/// - Asks for generic storage permission if not already granted
-/// - Shows dialog with customizable name and path (unless disabled in settings)
-/// - If writing the file fails (e.g. in trying to save in a custom folder),
-///   we request the 'manage external storage' permission and try again
-Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
-  if (type != null && mediaUrl != null) {
-    final filename = filenameFromUrl(mediaUrl);
+/// Asks for generic storage permission if not already granted.
+Future<void> defaultOnMediaDownload({
+  required DownloadPathCubit downloadPathCubit,
+  MediaType? type,
+  String? url,
+}) async {
+  if (type != null && url != null) {
+    final filename = filenameFromUrl(url);
 
     if (filename != null) {
       final notifier = ValueNotifier<DownloadStatus>(
@@ -41,35 +41,26 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
         return;
       }
 
-      var initialPath = app<MediaPreferences>().downloadPath;
-
-      if (initialPath.isEmpty) {
-        final picturesPath = await AndroidPathProvider.picturesPath;
-        initialPath = '$picturesPath/harpy';
-      }
-
       DownloadDialogSelection? selection;
 
       if (app<MediaPreferences>().showDownloadDialog) {
         selection = await showDialog<DownloadDialogSelection>(
           context: app<HarpyNavigator>().state.context,
-          builder: (_) => DownloadDialog(
-            initialName: filename,
-            initialPath: initialPath,
+          builder: (_) => BlocProvider.value(
+            value: downloadPathCubit,
+            child: DownloadDialog(initialName: filename, type: type),
           ),
         );
       } else {
         selection = DownloadDialogSelection(
           name: filename,
-          path: initialPath,
+          path: downloadPathCubit.state.fullPathForType(type) ?? '',
         );
       }
 
       if (selection == null) {
         return;
       }
-
-      app<MediaPreferences>().downloadPath = selection.path;
 
       app<MessageService>().showCustom(
         SnackBar(
@@ -80,7 +71,7 @@ Future<void> defaultOnMediaDownload(MediaType? type, String? mediaUrl) async {
 
       await app<DownloadService>()
           .download(
-            url: mediaUrl,
+            url: url,
             name: selection.name,
             path: selection.path,
             onSuccess: (path) => notifier.value = DownloadStatus(
@@ -166,7 +157,11 @@ class MediaOverlay extends StatefulWidget {
             enableDismissible: enableDismissible,
             overlap: overlap,
             onDownload: onDownload ??
-                () => defaultOnMediaDownload(tweet.mediaType, mediaUrl),
+                () => defaultOnMediaDownload(
+                      downloadPathCubit: context.read(),
+                      type: tweet.mediaType,
+                      url: mediaUrl,
+                    ),
             onOpenExternally: onOpenExternally ??
                 () => defaultOnMediaOpenExternally(mediaUrl),
             onShare: onShare ?? () => defaultOnMediaShare(mediaUrl),
