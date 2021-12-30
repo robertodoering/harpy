@@ -36,8 +36,8 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 <br>
 
 <p align="center">
-Harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
-information about the progress.
+harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
+information about the progress
 </p>
 
 <br>
