@@ -79,7 +79,11 @@ class _MediaTimelineGalleryOverlayState
       child: MediaOverlay(
         enableImmersiveMode: false,
         onOpenExternally: () => defaultOnMediaOpenExternally(_mediaUrl),
-        onDownload: () => defaultOnMediaDownload(_tweet.mediaType, _mediaUrl),
+        onDownload: () => defaultOnMediaDownload(
+          downloadPathCubit: context.read(),
+          type: _tweet.mediaType,
+          url: _mediaUrl,
+        ),
         onShare: () => defaultOnMediaShare(_mediaUrl),
         onShowTweet: () => app<HarpyNavigator>().pushTweetDetailScreen(
           tweet: _tweet,

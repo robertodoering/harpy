@@ -62,9 +62,8 @@ class _CustomThemeContent extends StatelessWidget {
         data: cubit.harpyTheme.themeData,
         child: HarpyScaffold(
           title: 'theme customization',
-          backgroundColors: cubit.state.backgroundColors
-              .map((color) => Color(color))
-              .toList(),
+          backgroundColors:
+              cubit.state.backgroundColors.map(Color.new).toList(),
           actions: const [_SaveThemeAction()],
           body: Column(
             children: [

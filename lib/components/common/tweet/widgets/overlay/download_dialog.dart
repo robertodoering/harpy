@@ -1,8 +1,10 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/misc/misc.dart';
 
 /// The return value of the [DownloadDialog].
 class DownloadDialogSelection {
@@ -19,46 +21,36 @@ class DownloadDialogSelection {
 class DownloadDialog extends StatefulWidget {
   const DownloadDialog({
     required this.initialName,
-    required this.initialPath,
+    required this.type,
   });
 
   final String initialName;
-  final String initialPath;
+  final MediaType type;
 
   @override
   State<DownloadDialog> createState() => _DownloadDialogState();
 }
 
 class _DownloadDialogState extends State<DownloadDialog> {
-  late String _path;
   late String _name;
 
   @override
   void initState() {
     super.initState();
 
-    _path = widget.initialPath;
     _name = widget.initialName;
-  }
-
-  Future<void> _selectPath() async {
-    final path = await FilePicker.platform.getDirectoryPath();
-
-    if (path != null) {
-      if (path.isEmpty || path == '/') {
-        app<MessageService>().show('unable to access directory');
-      } else {
-        setState(() => _path = path);
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.watch<DownloadPathCubit>();
+    final state = cubit.state;
+
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: HarpyDialog(
-        contentPadding: const EdgeInsets.symmetric(vertical: 24),
+        title: Text('download ${widget.type.name}'),
+        contentPadding: EdgeInsets.zero,
         content: Column(
           children: [
             HarpyListTile(
@@ -69,9 +61,15 @@ class _DownloadDialogState extends State<DownloadDialog> {
             ),
             HarpyListTile(
               leading: const Icon(CupertinoIcons.folder),
-              title: const Text('download path'),
-              subtitle: Text(_path),
-              onTap: _selectPath,
+              title: const Text('download location'),
+              subtitle: Text(state.fullPathForType(widget.type) ?? ''),
+              onTap: () => showDialog<void>(
+                context: context,
+                builder: (_) => BlocProvider.value(
+                  value: cubit,
+                  child: DownloadPathSelectionDialog(type: widget.type.name),
+                ),
+              ),
             ),
           ],
         ),
@@ -81,9 +79,12 @@ class _DownloadDialogState extends State<DownloadDialog> {
             onTap: Navigator.of(context).pop,
           ),
           DialogAction(
-            result: _path.isEmpty || _name.isEmpty
+            result: _name.isEmpty
                 ? null
-                : DownloadDialogSelection(name: _name, path: _path),
+                : DownloadDialogSelection(
+                    name: _name,
+                    path: state.fullPathForType(widget.type) ?? '',
+                  ),
             text: 'download',
           ),
         ],
@@ -124,54 +125,25 @@ class _NameTextFieldState extends State<_NameTextField> {
       }
     }
 
-    _controller = _FilenameEditingController(text: filename);
+    _controller = FilenameEditingController(text: filename);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return TextField(
       controller: _controller,
       onChanged: (value) {
         if (value.isNotEmpty && _suffix != null) {
           // append the suffix to the text field value if it is not empty
-          widget.onChanged('$value.$_suffix');
+          widget.onChanged('$value$_suffix');
         } else {
           widget.onChanged(value);
         }
       },
       decoration: InputDecoration(
         suffixText: _suffix,
-        contentPadding: EdgeInsets.zero,
-        border: const UnderlineInputBorder(),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: theme.dividerColor),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: theme.colorScheme.primary),
-        ),
+        labelText: 'filename',
       ),
     );
-  }
-}
-
-/// Prevents adding characters that are invalid in a file name.
-///
-/// What characters are invalid depend on the file system. Invalid characters
-/// that we check for are `|\\?*<":>+[]/\'`.
-class _FilenameEditingController extends TextEditingController {
-  _FilenameEditingController({String? text}) : super(text: text);
-
-  /// A single capturing group with invalid filename characters.
-  ///
-  /// We use a multiline string since both ' and " are used in the group.
-  final _invalidFilenameRegex = RegExp(r'''[|\\?*<":>+\[\]/']''');
-
-  @override
-  set value(TextEditingValue newValue) {
-    if (!newValue.text.contains(_invalidFilenameRegex)) {
-      super.value = newValue;
-    }
   }
 }

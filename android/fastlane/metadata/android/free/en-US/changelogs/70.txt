@@ -1,10 +1,8 @@
 Version 0.8.2
-2021-xx-xx
+2021-12-31
 
-· Added download dialog to customize file name & download path
-· Added option to disable download dialog
-  · In `settings > media > show download dialog`
-· Added haptic feedback in media settings
+· Added download dialog to customize filename & download path
+  · Can be disabled in `settings > media > show download dialog`
 · Added 'retweeted by' screen (thanks Demondre!)
 · Added following & followers count for user cards (thanks Demondre!)
 · Added compose text default sentence capitalization

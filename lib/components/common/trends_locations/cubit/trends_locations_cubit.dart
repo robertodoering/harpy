@@ -86,6 +86,6 @@ extension TrendsLocationsStateExtension on TrendsLocationsState {
 
   BuiltList<TrendsLocationData> get locations => maybeWhen(
         data: (locations) => locations,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 }

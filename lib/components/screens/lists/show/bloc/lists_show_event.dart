@@ -39,7 +39,7 @@ class _Show extends ListsShowEvent with HarpyLogger {
 
     if (paginatedOwnerships != null) {
       ownerships = paginatedOwnerships.lists!
-          .map((list) => TwitterListData.fromTwitterList(list))
+          .map(TwitterListData.fromTwitterList)
           .toBuiltList();
 
       ownershipsCursor = paginatedOwnerships.nextCursorStr;
@@ -47,7 +47,7 @@ class _Show extends ListsShowEvent with HarpyLogger {
 
     if (paginatedSubscriptions != null) {
       subscriptions = paginatedSubscriptions.lists!
-          .map((list) => TwitterListData.fromTwitterList(list))
+          .map(TwitterListData.fromTwitterList)
           .toBuiltList();
 
       subscriptionsCursor = paginatedSubscriptions.nextCursorStr;
@@ -102,7 +102,7 @@ class _LoadMoreOwnerships extends ListsShowEvent with HarpyLogger {
 
       if (paginatedOwnerships != null) {
         final newOwnerships = paginatedOwnerships.lists!
-            .map((list) => TwitterListData.fromTwitterList(list))
+            .map(TwitterListData.fromTwitterList)
             .toList();
 
         final ownerships =
@@ -154,8 +154,8 @@ class _LoadMoreSubscriptions extends ListsShowEvent with HarpyLogger {
           .handleError(twitterApiErrorHandler);
 
       if (paginatedSubscriptions != null) {
-        final newSubscriptions = paginatedSubscriptions.lists!
-            .map((list) => TwitterListData.fromTwitterList(list));
+        final newSubscriptions =
+            paginatedSubscriptions.lists!.map(TwitterListData.fromTwitterList);
 
         final subscriptions =
             state.subscriptions.followedBy(newSubscriptions).toBuiltList();

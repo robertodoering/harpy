@@ -21,18 +21,18 @@ void setupServices() {
       ),
     )
     ..registerLazySingleton(() => const EnvConfig())
-    ..registerLazySingleton(() => HarpyNavigator())
-    ..registerLazySingleton(() => HarpyInfo())
+    ..registerLazySingleton(HarpyNavigator.new)
+    ..registerLazySingleton(HarpyInfo.new)
     ..registerLazySingleton(() => const ChangelogParser())
     ..registerLazySingleton(() => const MessageService())
     ..registerLazySingleton(() => const TranslationService())
-    ..registerLazySingleton(() => ConnectivityService())
+    ..registerLazySingleton(ConnectivityService.new)
     ..registerLazySingleton(() => const DownloadService())
     ..registerLazySingleton(() => const MediaUploadService())
-    ..registerLazySingleton(() => MediaVideoConverter())
+    ..registerLazySingleton(MediaVideoConverter.new)
 
     // preferences
-    ..registerLazySingleton(() => HarpyPreferences())
+    ..registerLazySingleton(HarpyPreferences.new)
     ..registerLazySingleton(() => const AuthPreferences())
     ..registerLazySingleton(() => const MediaPreferences())
     ..registerLazySingleton(() => const ThemePreferences())
