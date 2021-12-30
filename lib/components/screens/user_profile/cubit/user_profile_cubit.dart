@@ -40,7 +40,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       final user = await app<TwitterApi>()
           .userService
           .usersShow(screenName: _handle)
-          .then((user) => UserData.fromUser(user))
+          .then(UserData.fromUser)
           .handleError(silentErrorHandler);
 
       if (user != null) {

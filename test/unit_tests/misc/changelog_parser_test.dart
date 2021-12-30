@@ -12,7 +12,7 @@ class MockHarpyInfo extends Mock implements HarpyInfo {}
 void main() {
   setUp(() {
     app
-      ..registerLazySingleton<HarpyInfo>(() => MockHarpyInfo())
+      ..registerLazySingleton<HarpyInfo>(MockHarpyInfo.new)
       ..registerLazySingleton<ChangelogParser>(() => const ChangelogParser());
 
     when(() => app<HarpyInfo>().packageInfo).thenReturn(

@@ -32,9 +32,7 @@ class Harpy extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: kMaterialSupportedLanguages.map(
-        (languageCode) => Locale(languageCode),
-      ),
+      supportedLocales: kMaterialSupportedLanguages.map(Locale.new),
       navigatorKey: app<HarpyNavigator>().key,
       onGenerateRoute: onGenerateRoute,
       navigatorObservers: [

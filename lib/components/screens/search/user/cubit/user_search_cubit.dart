@@ -33,7 +33,7 @@ class UserSearchCubit extends Cubit<PaginatedState<UsersSearchStateData>>
           page: page,
           includeEntities: false,
         )
-        .then((users) => users.map((user) => UserData.fromUser(user)))
+        .then((users) => users.map(UserData.fromUser))
         .then((users) => _filterDuplicates(oldUsers, users))
         .handleError(
           silentErrors ? silentErrorHandler : twitterApiErrorHandler,

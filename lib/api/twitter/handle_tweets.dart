@@ -26,7 +26,7 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
 
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
-      .map((tweet) => TweetData.fromTweet(tweet))
+      .map(TweetData.fromTweet)
       .toList();
 
   for (var i = 0; i < tweetDataList.length; i++) {

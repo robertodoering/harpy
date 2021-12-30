@@ -46,8 +46,7 @@ class HarpyTheme {
     required this.config,
   }) {
     name = data.name;
-    backgroundColors =
-        data.backgroundColors.map((color) => Color(color)).toList();
+    backgroundColors = data.backgroundColors.map(Color.new).toList();
     if (backgroundColors.isEmpty) {
       backgroundColors = [Colors.black];
     }

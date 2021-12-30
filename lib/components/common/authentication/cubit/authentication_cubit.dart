@@ -222,7 +222,7 @@ Future<UserData?> _initializeUser(String userId) async {
   final user = await app<TwitterApi>()
       .userService
       .usersShow(userId: userId)
-      .then((user) => UserData.fromUser(user))
+      .then(UserData.fromUser)
       .handleError((dynamic e, st) {
     error = e;
     silentErrorHandler(e, st);

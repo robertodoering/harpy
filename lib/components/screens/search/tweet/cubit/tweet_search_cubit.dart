@@ -46,9 +46,7 @@ class TweetSearchCubit extends Cubit<NewTweetSearchState> with HarpyLogger {
             resultType: _resultType(filter),
           )
           .then(
-            (result) => result.statuses!
-                .map((tweet) => TweetData.fromTweet(tweet))
-                .toBuiltList(),
+            (result) => result.statuses!.map(TweetData.fromTweet).toBuiltList(),
           )
           .handleError(twitterApiErrorHandler);
 
@@ -156,7 +154,7 @@ extension TweetSearchStateExtension on NewTweetSearchState {
 
   BuiltList<TweetData> get tweets => maybeMap(
         data: (value) => value.tweets,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 
   String? get query => mapOrNull(

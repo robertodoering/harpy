@@ -58,14 +58,14 @@ extension ListsShowStateExtension on ListsShowState {
         data: (value) => value.ownerships,
         loadingMoreOwnerships: (value) => value.ownerships,
         loadingMoreSubscriptions: (value) => value.ownerships,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 
   BuiltList<TwitterListData> get subscriptions => maybeMap(
         data: (value) => value.subscriptions,
         loadingMoreOwnerships: (value) => value.subscriptions,
         loadingMoreSubscriptions: (value) => value.subscriptions,
-        orElse: () => BuiltList(),
+        orElse: BuiltList.new,
       );
 
   bool get hasMoreOwnerships => maybeMap(

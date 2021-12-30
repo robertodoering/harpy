@@ -28,10 +28,8 @@ class UserData extends Equatable {
         ? UrlData.fromUrl(user.entities!.url!.urls!.first)
         : null;
 
-    final userDescriptionUrls = user?.entities?.description?.urls
-            ?.map((url) => UrlData.fromUrl(url))
-            .toList() ??
-        [];
+    final userDescriptionUrls =
+        user?.entities?.description?.urls?.map(UrlData.fromUrl).toList() ?? [];
 
     return UserData(
       // required

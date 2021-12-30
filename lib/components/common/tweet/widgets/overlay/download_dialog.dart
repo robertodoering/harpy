@@ -130,8 +130,6 @@ class _NameTextFieldState extends State<_NameTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return TextField(
       controller: _controller,
       onChanged: (value) {
