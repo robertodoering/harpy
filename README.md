@@ -37,7 +37,7 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 
 <p align="center">
 harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
-information about the progress
+information about the progress.
 </p>
 
 <br>
@@ -65,7 +65,7 @@ information about the progress
 
 ## About
 
-Harpy is a fully featured Twitter client that focuses on great UI/UX and a clean experience.
+harpy is a fully featured Twitter client that focuses on great UI/UX and a clean experience.
 
 This project aims to provide a good example for a medium-big sized Flutter app
 in hopes that it will be useful for some.
@@ -85,7 +85,7 @@ Some interesting features of the app include:
 
 ### Development / Setup
 
-Harpy is being released in the Play Store for Android, therefore only
+harpy is being released in the Play Store for Android, therefore only
 Android devices are used for testing the builds.
 
 Run the build runner once after cloning the project
