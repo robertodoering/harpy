@@ -7,6 +7,9 @@ class ListTimelineCubit extends TimelineCubit {
     required this.listId,
   }) {
     loadInitial();
+    filter = TimelineFilter.fromJsonString(
+      app<TimelineFilterPreferences>().listTimelineFilter,
+    );
   }
 
   final String listId;
@@ -18,5 +21,10 @@ class ListTimelineCubit extends TimelineCubit {
           count: 200,
           maxId: maxId,
         );
+  }
+
+  @override
+  void persistFilter(String encodedFilter) {
+    app<TimelineFilterPreferences>().listTimelineFilter = encodedFilter;
   }
 }

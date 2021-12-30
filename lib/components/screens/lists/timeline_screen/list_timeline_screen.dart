@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harpy/components/common/timeline/list_timeline/widgets/list_timeline_filter_drawer.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// Shows a [ListTimeline] for the [listId] in its own screen.
 class ListTimelineScreen extends StatelessWidget {
@@ -19,8 +21,11 @@ class ListTimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return BlocProvider(
-      create: (_) => ListTimelineCubit(listId: listId),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TimelineFilterModel.list()),
+        BlocProvider(create: (_) => ListTimelineCubit(listId: listId)),
+      ],
       child: HarpyScaffold(
         body: ScrollDirectionListener(
           child: ListTimeline(
@@ -34,6 +39,7 @@ class ListTimelineScreen extends StatelessWidget {
             refreshIndicatorOffset: -mediaQuery.padding.top,
           ),
         ),
+        endDrawer: const ListTimelineFilterDrawer(),
       ),
     );
   }

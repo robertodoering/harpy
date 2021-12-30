@@ -81,6 +81,16 @@ class _TopRow extends StatelessWidget {
                 name: name,
               ),
             ),
+            horizontalSpacer,
+            HarpyButton.raised(
+              padding: config.edgeInsets,
+              elevation: 0,
+              backgroundColor: theme.cardTheme.color,
+              icon: cubit.filter != TimelineFilter.empty
+                  ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
+                  : const Icon(Icons.filter_alt_outlined),
+              onTap: Scaffold.of(context).openEndDrawer,
+            ),
           ],
         ),
       ),
