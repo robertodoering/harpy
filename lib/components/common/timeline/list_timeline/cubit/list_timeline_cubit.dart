@@ -22,4 +22,9 @@ class ListTimelineCubit extends TimelineCubit {
           maxId: maxId,
         );
   }
+
+  @override
+  void persistFilter(String encodedFilter) {
+    app<TimelineFilterPreferences>().listTimelineFilter = encodedFilter;
+  }
 }
