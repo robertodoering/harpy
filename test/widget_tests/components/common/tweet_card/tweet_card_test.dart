@@ -26,7 +26,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
           ),
         ),
@@ -47,7 +47,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser.copyWith(
               name: 'Harpy with a really long name, like, really long.',
               handle: 'harpy_app_userhandle_size_is_normally_limited',
@@ -69,7 +69,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
             user: harpyAppUser,
@@ -93,7 +93,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
             lang: 'en',
@@ -119,7 +119,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
             lang: 'en',
@@ -150,7 +150,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
             lang: 'en',
@@ -169,7 +169,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
             images: [
               ImageData.fromImageUrl('test/images/yellow.png', 16 / 9),
@@ -196,7 +196,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
             images: [
               ImageData.fromImageUrl('test/images/red.png', 16 / 9),
@@ -226,7 +226,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
             video: VideoData.fromMedia(
               Media()
@@ -258,7 +258,7 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
             gif: VideoData.fromMedia(
               Media()
@@ -288,12 +288,12 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           TweetData(
-            createdAt: DateTime(2020),
+            createdAt: DateTime.now(),
             user: harpyAppUser,
             text: 'text',
             visibleText: 'text',
             quote: TweetData(
-              createdAt: DateTime(2020),
+              createdAt: DateTime.now(),
               user: harpyAppUser,
               text: 'quote text',
               visibleText: 'quote text',
