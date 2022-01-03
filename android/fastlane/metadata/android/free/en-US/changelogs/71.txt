@@ -1,0 +1,4 @@
+Version 0.8.3
+2022-xx-xx
+
+· Changed pressing the retweet button now always shows the retweet menu
