@@ -62,7 +62,7 @@ class _RetweetButtonState extends State<RetweetButton> {
             color: widget.overlayForegroundColor,
           ),
           text: Text(
-            'retweet',
+            bloc.state.retweeted ? 'unretweet' : 'retweet',
             style: TextStyle(color: widget.overlayForegroundColor),
           ),
         ),
@@ -89,7 +89,7 @@ class _RetweetButtonState extends State<RetweetButton> {
     );
 
     if (result == 0) {
-      bloc.onRetweet();
+      bloc.onToggleRetweet();
     } else if (result == 1) {
       bloc.onComposeQuote();
     } else if (result == 2) {
@@ -119,7 +119,7 @@ class _RetweetButtonState extends State<RetweetButton> {
           .apply(fontSizeDelta: widget.sizeDelta),
       value: bloc.tweet.retweetCount,
       activate: () => _showRetweetButtonMenu(bloc),
-      deactivate: bloc.onUnretweet,
+      deactivate: () => _showRetweetButtonMenu(bloc),
       onLongPress: bloc.onShowRetweeters,
       bubblesColor: BubblesColor(
         dotPrimaryColor: Colors.lime,

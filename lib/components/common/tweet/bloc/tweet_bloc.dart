@@ -79,9 +79,13 @@ class TweetBloc extends Bloc<TweetEvent, TweetState>
     showTweetActionsBottomSheet(context, tweet: tweet);
   }
 
-  void onRetweet() {
+  void onToggleRetweet() {
     HapticFeedback.lightImpact();
-    add(const TweetEvent.retweet());
+    if (state.retweeted) {
+      add(const TweetEvent.unretweet());
+    } else {
+      add(const TweetEvent.retweet());
+    }
   }
 
   void onUnretweet() {

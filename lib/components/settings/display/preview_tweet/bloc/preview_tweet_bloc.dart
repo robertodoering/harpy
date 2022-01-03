@@ -29,7 +29,7 @@ class PreviewTweetBloc extends TweetBloc {
   void onViewMoreActions(BuildContext context) {}
 
   @override
-  void onRetweet() {}
+  void onToggleRetweet() {}
 
   @override
   void onUnretweet() {}
