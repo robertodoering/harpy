@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/components/components.dart';
@@ -39,20 +38,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   }
 
   final ConfigCubit configCubit;
-}
-
-/// Updates the system ui to match the [theme].
-void updateSystemUi(HarpyTheme theme) {
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: theme.statusBarColor,
-      statusBarBrightness: theme.statusBarBrightness,
-      statusBarIconBrightness: theme.statusBarIconBrightness,
-      systemNavigationBarColor: theme.navBarColor,
-      systemNavigationBarDividerColor: theme.navBarColor,
-      systemNavigationBarIconBrightness: theme.navBarIconBrightness,
-    ),
-  );
 }
 
 @freezed

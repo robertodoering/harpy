@@ -5,10 +5,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/misc.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// Starts the application initialization upon starting the app.
@@ -45,15 +42,6 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
     // need the device info before we continue with updating the system ui
     await app<HarpyInfo>().initialize();
 
-    // update the system ui to match the initial theme
-    unawaited(
-      _initializeSystemUi(
-        isFree || systemBrightness == Brightness.dark
-            ? themeBloc.state.darkHarpyTheme
-            : themeBloc.state.lightHarpyTheme,
-      ),
-    );
-
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(silentErrorHandler),
       app<HarpyPreferences>().initialize(),
@@ -78,34 +66,6 @@ class ApplicationCubit extends Cubit<ApplicationState> with HarpyLogger {
 
     emit(ApplicationState.initialized);
   }
-}
-
-/// Changes the system ui to the initial theme for the initialization.
-Future<void> _initializeSystemUi(HarpyTheme initialTheme) async {
-  final version = app<HarpyInfo>().deviceInfo?.version.sdkInt ?? -1;
-
-  if (version >= 0 && version <= 29) {
-    // a workaround for a bug on android version 10 and below that requires the
-    // ui overlay to change the icon brightness to allow for transparency in the
-    // navigation bar
-    // see: https://github.com/robertodoering/harpy/issues/397
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarIconBrightness:
-            initialTheme.statusBarIconBrightness == Brightness.light
-                ? Brightness.dark
-                : Brightness.light,
-        systemNavigationBarIconBrightness:
-            initialTheme.navBarIconBrightness == Brightness.light
-                ? Brightness.dark
-                : Brightness.light,
-      ),
-    );
-
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-  }
-
-  updateSystemUi(initialTheme);
 }
 
 enum ApplicationState {

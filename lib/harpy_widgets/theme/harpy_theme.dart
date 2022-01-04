@@ -107,6 +107,15 @@ class HarpyTheme {
   Color get foregroundColor =>
       brightness == Brightness.light ? Colors.black : Colors.white;
 
+  SystemUiOverlayStyle get systemUiStyle => SystemUiOverlayStyle(
+        statusBarColor: statusBarColor,
+        statusBarBrightness: statusBarBrightness,
+        statusBarIconBrightness: statusBarIconBrightness,
+        systemNavigationBarColor: navBarColor,
+        systemNavigationBarDividerColor: navBarColor,
+        systemNavigationBarIconBrightness: navBarIconBrightness,
+      );
+
   /// Reduces the [backgroundColors] to a single interpolated color.
   void _setupAverageBackgroundColor() {
     averageBackgroundColor = backgroundColors.reduce(
@@ -490,16 +499,7 @@ class HarpyTheme {
         contentPadding: config.edgeInsets,
       ),
 
-      appBarTheme: AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: statusBarColor,
-          statusBarBrightness: statusBarBrightness,
-          statusBarIconBrightness: statusBarIconBrightness,
-          systemNavigationBarColor: navBarColor,
-          systemNavigationBarDividerColor: navBarColor,
-          systemNavigationBarIconBrightness: navBarIconBrightness,
-        ),
-      ),
+      appBarTheme: AppBarTheme(systemOverlayStyle: systemUiStyle),
     );
   }
 }

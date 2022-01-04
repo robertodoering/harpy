@@ -56,14 +56,10 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
 
   void changeStatusBarColor(Color color) {
     emit(state.copyWith(statusBarColor: color.value));
-
-    updateSystemUi(harpyTheme);
   }
 
   void changeNavBarColor(Color color) {
     emit(state.copyWith(navBarColor: color.value));
-
-    updateSystemUi(harpyTheme);
   }
 
   void changeBackgroundColor(int index, Color color) {
@@ -92,8 +88,6 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
         ],
       ),
     );
-
-    updateSystemUi(harpyTheme);
   }
 
   void removeBackgroundColor(int index) {
@@ -109,8 +103,6 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
           backgroundColors: List.of(state.backgroundColors)..removeAt(index),
         ),
       );
-
-      updateSystemUi(harpyTheme);
     } catch (e, st) {
       log.warning('unexpected list state', e, st);
     }
@@ -133,8 +125,6 @@ class CustomThemeCubit extends Cubit<HarpyThemeData> with HarpyLogger {
             ..insert(toIndex, color),
         ),
       );
-
-      updateSystemUi(harpyTheme);
     } catch (e, st) {
       log.warning('unexpected list state', e, st);
     }

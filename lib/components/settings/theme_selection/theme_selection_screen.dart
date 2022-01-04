@@ -145,8 +145,6 @@ Future<void> _editCustomTheme(
   final index = themeId - 10;
   final themeData = state.customThemesData[index];
 
-  updateSystemUi(HarpyTheme.fromData(data: themeData, config: config));
-
   app<HarpyNavigator>().pushCustomTheme(
     themeData: themeData,
     themeId: themeId,
