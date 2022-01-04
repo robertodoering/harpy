@@ -247,7 +247,6 @@ export 'widgets/misc/harpy_scaffold.dart';
 export 'widgets/misc/harpy_sliver_app_bar.dart';
 export 'widgets/misc/loading_data_error.dart';
 export 'widgets/misc/placeholder_box.dart';
-export 'widgets/misc/scroll_aware_floating_action_button.dart';
 export 'widgets/misc/translated_text.dart';
 export 'widgets/misc/twitter_text.dart';
 export 'widgets/misc/visibility_change_detector.dart';
