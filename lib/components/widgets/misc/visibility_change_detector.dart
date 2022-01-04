@@ -34,6 +34,12 @@ class _VisibilityChangeDetectorState extends State<VisibilityChangeDetector> {
     if (widget.onVisibilityChanged != null) {
       _onChanged.add(widget.onVisibilityChanged!);
     }
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // makes sure the onVisibilityChanged callback gets called for the newly
+      // created widget
+      VisibilityDetectorController.instance.notifyNow();
+    });
   }
 
   void addOnVisibilityChanged(ValueChanged<bool> callback) {
