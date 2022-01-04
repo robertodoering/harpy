@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
+import 'package:harpy/misc/misc.dart';
 
 const _path = 'assets/flare';
 
@@ -93,11 +94,16 @@ class FlareIcon extends StatelessWidget {
       child: SizedBox(
         width: _calculatedSize,
         height: _calculatedSize,
-        child: FlareActor(
-          fileName,
-          animation: animation,
-          color: color,
-        ),
+        // prevent building a flare actor in tests otherwise timer will be
+        // pending after the widget tree gets disposed in tests which cause the
+        // test to throw an exception
+        child: isTest
+            ? DecoratedBox(decoration: BoxDecoration(border: Border.all()))
+            : FlareActor(
+                fileName,
+                animation: isTest ? null : animation,
+                color: color,
+              ),
       ),
     );
   }

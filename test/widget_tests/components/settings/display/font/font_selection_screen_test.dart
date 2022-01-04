@@ -43,13 +43,10 @@ void main() {
         expect(title, findsOneWidget);
         expect(fontCard, findsWidgets);
       },
-      // TODO: figure out why tf these tests are flaky..
-      // "A Timer is still pending even after the widget tree was disposed."
-      skip: true,
     );
 
     testGoldens(
-      'changes selection ont font card tap',
+      'changes selection on font card tap',
       (tester) async {
         await tester.pumpWidgetBuilder(
           FontSelectionScreen(
@@ -74,7 +71,6 @@ void main() {
 
         expect(fontCard, findsWidgets);
       },
-      skip: true,
     );
 
     testGoldens(
@@ -103,7 +99,6 @@ void main() {
 
         expect(robotoFont, findsOneWidget);
       },
-      skip: true,
     );
   });
 }
