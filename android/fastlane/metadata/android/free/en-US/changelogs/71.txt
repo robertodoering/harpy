@@ -1,5 +1,6 @@
 Version 0.8.3
 2022-xx-xx
 
-· Fixed tweets sometimes stayed hidden until the first scroll
 · Changed pressing the retweet button now always shows the retweet menu
+· Fixed tweets sometimes stayed hidden until the first scroll
+· Fixed tweet detail screen doesn't autoplay gifs / video when enabled

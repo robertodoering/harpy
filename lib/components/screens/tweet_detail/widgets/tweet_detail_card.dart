@@ -13,13 +13,16 @@ class TweetDetailCard extends StatelessWidget {
     return SliverPadding(
       padding: config.edgeInsets.copyWith(top: 0),
       sliver: SliverToBoxAdapter(
-        child: BlocProvider(
-          create: (_) => TweetBloc(cubit.tweet),
-          child: Card(
-            child: TweetCardContent(
-              outerPadding: config.paddingValue,
-              innerPadding: config.smallPaddingValue,
-              config: _detailTweetCardConfig,
+        child: VisibilityChangeDetector(
+          key: Key('${cubit.tweet.hashCode}_visibility'),
+          child: BlocProvider(
+            create: (_) => TweetBloc(cubit.tweet),
+            child: Card(
+              child: TweetCardContent(
+                outerPadding: config.paddingValue,
+                innerPadding: config.smallPaddingValue,
+                config: _detailTweetCardConfig,
+              ),
             ),
           ),
         ),
