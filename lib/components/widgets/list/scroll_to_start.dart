@@ -81,6 +81,7 @@ class _ScrollToStartState extends State<ScrollToStart> {
         _controller!.offset > mediaQuery.size.height * 5) {
       // jumpTo(0) will cause the refresh indicator to trigger.
       // TODO: fixed in flutter:master, change to jumpTo(0) when it hits stable
+      // https://github.com/flutter/flutter/issues/26833
       _controller!.jumpTo(1);
     } else {
       _controller!.animateTo(
