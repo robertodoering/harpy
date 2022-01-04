@@ -31,8 +31,6 @@ class _VideoAutoplayState extends State<VideoAutoplay> {
 
     _visibilityChange = VisibilityChange.of(context);
 
-    // TODO: assertion fails in the tweet detail screen when the parent has a
-    //  gif and gif autoplay is enabled
     assert(_visibilityChange != null);
 
     _visibilityChange?.addOnVisibilityChanged(
