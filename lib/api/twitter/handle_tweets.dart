@@ -12,7 +12,7 @@ import 'package:harpy/misc/misc.dart';
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
 Future<List<TweetData>> handleTweets(
   List<Tweet> tweets, [
-  TimelineFilter? filter,
+  OldTimelineFilter? filter,
 ]) {
   return compute<List<dynamic>, List<TweetData>>(
     _isolateHandleTweets,
@@ -22,7 +22,7 @@ Future<List<TweetData>> handleTweets(
 
 List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   final List<Tweet> tweets = arguments[0];
-  final TimelineFilter? filter = arguments[1];
+  final OldTimelineFilter? filter = arguments[1];
 
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
@@ -68,8 +68,8 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   return tweetDataList;
 }
 
-bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
-  if (filter == null || filter == TimelineFilter.empty) {
+bool _filterTweet(Tweet tweet, OldTimelineFilter? filter) {
+  if (filter == null || filter == OldTimelineFilter.empty) {
     return false;
   } else {
     if (filter.excludesRetweets && tweet.retweetedStatus != null) {

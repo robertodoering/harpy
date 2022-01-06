@@ -11,7 +11,7 @@ class HomeTimelineFilterDrawer extends StatelessWidget {
     final cubit = context.watch<HomeTimelineCubit>();
     final model = context.watch<TimelineFilterModel>();
 
-    return TimelineFilterDrawer(
+    return OldTimelineFilterDrawer(
       title: 'home timeline filter',
       showFilterButton: cubit.filter != model.value,
       onFilter: () {
@@ -19,9 +19,9 @@ class HomeTimelineFilterDrawer extends StatelessWidget {
         cubit.applyFilter(model.value);
       },
       onClear: () {
-        if (cubit.filter != TimelineFilter.empty) {
+        if (cubit.filter != OldTimelineFilter.empty) {
           ScrollDirection.of(context)?.reset();
-          cubit.applyFilter(TimelineFilter.empty);
+          cubit.applyFilter(OldTimelineFilter.empty);
         }
       },
     );

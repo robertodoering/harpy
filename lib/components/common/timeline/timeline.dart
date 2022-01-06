@@ -140,8 +140,8 @@ class _TimelineState extends State<Timeline> {
                   noData: (_) => [
                     SliverFillLoadingError(
                       message: const Text('no tweets found'),
-                      onClearFilter: cubit.filter != TimelineFilter.empty
-                          ? () => cubit.applyFilter(TimelineFilter.empty)
+                      onClearFilter: cubit.filter != OldTimelineFilter.empty
+                          ? () => cubit.applyFilter(OldTimelineFilter.empty)
                           : null,
                     )
                   ],

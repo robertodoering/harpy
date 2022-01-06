@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'timeline_filter.g.dart';
+part 'old_timeline_filter.g.dart';
 
 @JsonSerializable()
-class TimelineFilter extends Equatable {
-  const TimelineFilter({
+class OldTimelineFilter extends Equatable {
+  const OldTimelineFilter({
     this.includesImages = false,
     this.includesGif = false,
     this.includesVideo = false,
@@ -17,19 +17,19 @@ class TimelineFilter extends Equatable {
     this.excludesRetweets = false,
   });
 
-  factory TimelineFilter.fromJson(Map<String, dynamic> json) =>
-      _$TimelineFilterFromJson(json);
+  factory OldTimelineFilter.fromJson(Map<String, dynamic> json) =>
+      _$OldTimelineFilterFromJson(json);
 
-  factory TimelineFilter.fromJsonString(String jsonString) {
+  factory OldTimelineFilter.fromJsonString(String jsonString) {
     try {
       if (jsonString.isEmpty) {
-        return TimelineFilter.empty;
+        return OldTimelineFilter.empty;
       } else {
-        return TimelineFilter.fromJson(jsonDecode(jsonString));
+        return OldTimelineFilter.fromJson(jsonDecode(jsonString));
       }
     } catch (e) {
       // unable to decode timeline filter
-      return TimelineFilter.empty;
+      return OldTimelineFilter.empty;
     }
   }
 
@@ -42,7 +42,7 @@ class TimelineFilter extends Equatable {
   final bool excludesReplies;
   final bool excludesRetweets;
 
-  static const TimelineFilter empty = TimelineFilter();
+  static const OldTimelineFilter empty = OldTimelineFilter();
 
   @override
   List<Object> get props => <Object>[
@@ -55,9 +55,9 @@ class TimelineFilter extends Equatable {
         excludesRetweets,
       ];
 
-  Map<String, dynamic> toJson() => _$TimelineFilterToJson(this);
+  Map<String, dynamic> toJson() => _$OldTimelineFilterToJson(this);
 
-  TimelineFilter copyWith({
+  OldTimelineFilter copyWith({
     bool? includesImages,
     bool? includesGif,
     bool? includesVideo,
@@ -66,7 +66,7 @@ class TimelineFilter extends Equatable {
     bool? excludesReplies,
     bool? excludesRetweets,
   }) {
-    return TimelineFilter(
+    return OldTimelineFilter(
       includesImages: includesImages ?? this.includesImages,
       includesGif: includesGif ?? this.includesGif,
       includesVideo: includesVideo ?? this.includesVideo,

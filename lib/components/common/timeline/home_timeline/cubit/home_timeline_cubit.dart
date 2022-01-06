@@ -6,7 +6,7 @@ import 'package:harpy/core/core.dart';
 
 class HomeTimelineCubit extends TimelineCubit {
   HomeTimelineCubit() {
-    filter = TimelineFilter.fromJsonString(
+    filter = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().homeTimelineFilter,
     );
   }

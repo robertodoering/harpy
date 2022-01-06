@@ -25,7 +25,7 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
     with RequestLock, HarpyLogger {
   TimelineCubit() : super(const TimelineState.initial());
 
-  TimelineFilter filter = TimelineFilter.empty;
+  OldTimelineFilter filter = OldTimelineFilter.empty;
 
   @protected
   Future<List<Tweet>> request({
@@ -189,7 +189,7 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
     }
   }
 
-  void applyFilter(TimelineFilter timelineFilter) {
+  void applyFilter(OldTimelineFilter timelineFilter) {
     log.fine('set home timeline filter');
 
     try {

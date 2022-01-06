@@ -7,7 +7,7 @@ class ListTimelineCubit extends TimelineCubit {
     required this.listId,
   }) {
     loadInitial();
-    filter = TimelineFilter.fromJsonString(
+    filter = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().listTimelineFilter,
     );
   }

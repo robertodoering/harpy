@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
 
-class TimelineFilterDrawer extends StatelessWidget {
-  const TimelineFilterDrawer({
+class OldTimelineFilterDrawer extends StatelessWidget {
+  const OldTimelineFilterDrawer({
     required this.title,
     required this.onFilter,
     required this.onClear,

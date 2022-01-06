@@ -70,7 +70,7 @@ class _FilterButton extends StatelessWidget {
         backgroundColor: theme.canvasColor.withOpacity(.4),
         elevation: 0,
         padding: const EdgeInsets.all(12),
-        icon: cubit.filter != TimelineFilter.empty
+        icon: cubit.filter != OldTimelineFilter.empty
             ? Icon(Icons.filter_alt, color: theme.colorScheme.secondary)
             : const Icon(Icons.filter_alt_outlined),
         onTap: Scaffold.of(context).openEndDrawer,

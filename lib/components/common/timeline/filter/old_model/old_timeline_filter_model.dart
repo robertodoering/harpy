@@ -5,32 +5,32 @@ import 'package:harpy/misc/misc.dart';
 
 // TODO: refactor into cubit
 
-class TimelineFilterModel extends ValueNotifier<TimelineFilter> {
-  TimelineFilterModel.home() : super(TimelineFilter.empty) {
-    value = TimelineFilter.fromJsonString(
+class TimelineFilterModel extends ValueNotifier<OldTimelineFilter> {
+  TimelineFilterModel.home() : super(OldTimelineFilter.empty) {
+    value = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().homeTimelineFilter,
     );
   }
 
-  TimelineFilterModel.user() : super(TimelineFilter.empty) {
-    value = TimelineFilter.fromJsonString(
+  TimelineFilterModel.user() : super(OldTimelineFilter.empty) {
+    value = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().userTimelineFilter,
     );
   }
 
-  TimelineFilterModel.list() : super(TimelineFilter.empty) {
-    value = TimelineFilter.fromJsonString(
+  TimelineFilterModel.list() : super(OldTimelineFilter.empty) {
+    value = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().listTimelineFilter,
     );
   }
 
-  bool get hasFilter => value != TimelineFilter.empty;
+  bool get hasFilter => value != OldTimelineFilter.empty;
 
   bool get toggledAllIncludes =>
       value.includesImages && value.includesGif && value.includesVideo;
 
   void clear() {
-    value = TimelineFilter.empty;
+    value = OldTimelineFilter.empty;
   }
 
   void toggleIncludes() {

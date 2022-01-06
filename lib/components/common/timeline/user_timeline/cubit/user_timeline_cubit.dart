@@ -6,7 +6,7 @@ class UserTimelineCubit extends TimelineCubit {
   UserTimelineCubit({
     required this.handle,
   }) {
-    filter = TimelineFilter.fromJsonString(
+    filter = OldTimelineFilter.fromJsonString(
       app<TimelineFilterPreferences>().userTimelineFilter,
     );
 
