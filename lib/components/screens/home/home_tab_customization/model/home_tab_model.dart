@@ -155,7 +155,7 @@ class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
 
     value = value.addEntry(
       HomeTabEntry(
-        id: list.idStr,
+        id: list.id,
         type: HomeTabEntryType.list.value,
         icon: icon,
         name: list.name,

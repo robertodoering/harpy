@@ -61,6 +61,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   timeago: ^3.0.2
   url_launcher: ^6.0.10
+  uuid: ^3.0.5
   video_player: ^2.1.15
   visibility_detector: ^0.2.0
   wakelock: ^0.5.6

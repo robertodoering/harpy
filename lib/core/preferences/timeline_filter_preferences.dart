@@ -3,6 +3,16 @@ import 'package:harpy/core/core.dart';
 class TimelineFilterPreferences {
   const TimelineFilterPreferences();
 
+  List<String> get timelineFilters =>
+      app<HarpyPreferences>().getStringList('timelineFilters');
+  set timelineFilters(List<String> value) =>
+      app<HarpyPreferences>().setStringList('timelineFilters', value);
+
+  List<String> get activeTimelineFilters =>
+      app<HarpyPreferences>().getStringList('activeTimelineFilters');
+  set activeTimelineFilters(List<String> value) =>
+      app<HarpyPreferences>().setStringList('activeTimelineFilters', value);
+
   /// The json encoded string for the home timeline filter.
   String get homeTimelineFilter =>
       app<HarpyPreferences>().getString('homeTimelineFilter', '', prefix: true);

@@ -14,6 +14,8 @@ export 'common/pagination/paginated_users/cubit/paginated_users_cubit.dart';
 export 'common/pagination/paginated_users/paginated_users_screen.dart';
 export 'common/replies/cubit/replies_cubit.dart';
 export 'common/timeline/cubit/timeline_cubit.dart';
+export 'common/timeline/filter/cubit/timeline_filter_cubit.dart';
+export 'common/timeline/filter/model/timeline_filter.dart';
 export 'common/timeline/filter/old_model/old_timeline_filter.dart';
 export 'common/timeline/filter/old_model/old_timeline_filter_model.dart';
 export 'common/timeline/filter/old_widgets/old_timeline_filter_drawer.dart';

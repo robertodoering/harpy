@@ -60,7 +60,7 @@ class ActiveTimelineFilter with _$ActiveTimelineFilter {
     ///
     /// `null` when the type is [TimelineFilterType.home] or if the filter
     /// should be used as a generic filter for the type (i.e. all users have
-    /// this filter if none for the given user is specified).
+    /// this filter unless the given user also has a specific filter).
     TimelineFilterData? data,
   }) = _ActiveTimelineFilter;
 
@@ -79,7 +79,7 @@ class TimelineFilterData with _$TimelineFilterData {
 
     /// The id of the user.
     required String id,
-  }) = _User;
+  }) = TimelineFilterDataUser;
 
   const factory TimelineFilterData.list({
     /// The name of the list (e.g. "Flutter").
@@ -87,7 +87,7 @@ class TimelineFilterData with _$TimelineFilterData {
 
     /// The id of the list.
     required String id,
-  }) = _List;
+  }) = TimelineFilterDataList;
 
   factory TimelineFilterData.fromJson(Map<String, dynamic> json) =>
       _$TimelineFilterDataFromJson(json);
