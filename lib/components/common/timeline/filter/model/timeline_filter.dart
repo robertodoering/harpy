@@ -6,11 +6,11 @@ part 'timeline_filter.g.dart';
 @freezed
 class TimelineFilter with _$TimelineFilter {
   const factory TimelineFilter({
-    /// A custom user specified name for the timeline filter.
-    required String name,
-
     /// A unique id for the timeline filter, generated on creation.
     required String uuid,
+
+    /// A custom user specified name for the timeline filter.
+    required String name,
     required TimelineFilterIncludes includes,
     required TimelineFilterExcludes excludes,
   }) = _TimelineFilter;

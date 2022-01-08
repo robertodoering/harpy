@@ -16,17 +16,15 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
             timelineFilters: BuiltList(),
             activeTimelineFilters: BuiltList(),
           ),
-        ) {
-    _initialize();
-  }
+        );
 
-  void _initialize() {
-    final timelineFilter = <TimelineFilter>[];
-    final activeTimelineFilter = <ActiveTimelineFilter>[];
+  void initialize() {
+    final timelineFilters = <TimelineFilter>[];
+    final activeTimelineFilters = <ActiveTimelineFilter>[];
 
     try {
       // decode timeline filter
-      timelineFilter.addAll(
+      timelineFilters.addAll(
         app<TimelineFilterPreferences>()
             .timelineFilters
             .map<dynamic>(jsonDecode)
@@ -35,7 +33,7 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
       );
 
       // decode active timeline filter
-      activeTimelineFilter.addAll(
+      activeTimelineFilters.addAll(
         app<TimelineFilterPreferences>()
             .activeTimelineFilters
             .map<dynamic>(jsonDecode)
@@ -48,8 +46,8 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
 
     emit(
       TimelineFilterState(
-        timelineFilters: timelineFilter.toBuiltList(),
-        activeTimelineFilters: activeTimelineFilter.toBuiltList(),
+        timelineFilters: timelineFilters.toBuiltList(),
+        activeTimelineFilters: activeTimelineFilters.toBuiltList(),
       ),
     );
   }
