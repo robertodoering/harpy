@@ -89,7 +89,14 @@ class _FilterButton extends StatelessWidget {
       icon: cubit.filter != OldTimelineFilter.empty
           ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
-      onTap: Scaffold.of(context).openEndDrawer,
+      onTap: () => Navigator.of(context).push(
+        HarpyPageRoute<void>(
+          builder: (_) => const TimelineFilterSelection(
+            type: TimelineFilterType.home,
+          ),
+          fullscreenDialog: true,
+        ),
+      ),
     );
   }
 }

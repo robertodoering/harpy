@@ -113,7 +113,6 @@ class _WillPopCustomTheme extends StatelessWidget {
 
   Future<bool> _onWillPop(
     BuildContext context, {
-    required HarpyTheme harpyTheme,
     required CustomThemeCubit cubit,
   }) async {
     var pop = true;
@@ -125,19 +124,13 @@ class _WillPopCustomTheme extends StatelessWidget {
         builder: (_) => const HarpyDialog(
           title: Text('discard changes?'),
           actions: [
-            DialogAction(
-              result: false,
-              text: 'cancel',
-            ),
-            DialogAction(
-              result: true,
-              text: 'discard',
-            ),
+            DialogAction(result: false, text: 'cancel'),
+            DialogAction(result: true, text: 'discard'),
           ],
         ),
       );
 
-      pop = discard != null && discard;
+      pop = discard ?? false;
     }
 
     if (pop) {
@@ -149,15 +142,10 @@ class _WillPopCustomTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = context.watch<HarpyTheme>();
     final cubit = context.watch<CustomThemeCubit>();
 
     return WillPopScope(
-      onWillPop: () => _onWillPop(
-        context,
-        harpyTheme: harpyTheme,
-        cubit: cubit,
-      ),
+      onWillPop: () => _onWillPop(context, cubit: cubit),
       child: child,
     );
   }

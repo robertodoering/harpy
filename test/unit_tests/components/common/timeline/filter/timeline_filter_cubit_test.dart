@@ -359,7 +359,7 @@ void main() {
           ].toBuiltList(),
         ),
         act: (cubit) => cubit.removeHomeTimelineFilter(),
-        expect: () => <TimelineFilterState>[
+        expect: () => [
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [

@@ -52,6 +52,26 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     );
   }
 
+  void addTimelineFilter(TimelineFilter timelineFilter) {
+    emit(
+      state.copyWith(
+        timelineFilters: state.timelineFilters.rebuild(
+          (builder) => builder.add(timelineFilter),
+        ),
+      ),
+    );
+
+    _persist();
+  }
+
+  void removeTimelineFilter(int index) {
+    // TODO
+  }
+
+  void duplicateTimelineFilter(int index) {
+    // TODO: add copy of timeline filter with new uuid
+  }
+
   void selectHomeTimelineFilter(String uuid) {
     final newActiveFilter = ActiveTimelineFilter(
       uuid: uuid,
