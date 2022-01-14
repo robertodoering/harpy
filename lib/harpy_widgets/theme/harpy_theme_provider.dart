@@ -15,11 +15,10 @@ class HarpyThemeProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider2<ThemeBloc, Brightness, HarpyTheme>(
-      update: (_, themeBloc, systemBrightness, __) {
-        return systemBrightness == Brightness.light
-            ? themeBloc.state.lightHarpyTheme
-            : themeBloc.state.darkHarpyTheme;
-      },
+      update: (_, themeBloc, systemBrightness, __) =>
+          systemBrightness == Brightness.light
+              ? themeBloc.state.lightHarpyTheme
+              : themeBloc.state.darkHarpyTheme,
       builder: (context, _) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: context.watch<HarpyTheme>().systemUiStyle,
         child: child,

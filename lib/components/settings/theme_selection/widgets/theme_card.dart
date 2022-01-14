@@ -62,9 +62,9 @@ class ThemeCard extends StatelessWidget {
       harpyTheme: harpyTheme,
       borderColor: borderColor,
       child: InkWell(
+        borderRadius: kBorderRadius,
         onTap: onTap,
         onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
-        borderRadius: kBorderRadius,
         child: Row(
           children: [
             Expanded(
@@ -173,7 +173,7 @@ class _ThemeCardBase extends StatelessWidget {
 
     return Theme(
       data: harpyTheme.themeData,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: gradient,
           borderRadius: kBorderRadius,
