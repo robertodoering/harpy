@@ -6,18 +6,13 @@ import 'package:harpy/misc/utils/list_utils.dart';
 class TimelineFilterCreationCubit extends Cubit<TimelineFilter>
     with HarpyLogger {
   TimelineFilterCreationCubit({
-    required String uuid,
-  }) : super(
-          TimelineFilter(
-            uuid: uuid,
-            name: 'New filter',
-            includes: _emptyIncludes,
-            excludes: _emptyExcludes,
-          ),
-        );
+    required TimelineFilter timelineFilter,
+  })  : _initialTimelineFilter = timelineFilter,
+        super(timelineFilter);
 
-  bool get modified =>
-      state.includes != _emptyIncludes || state.excludes != _emptyExcludes;
+  final TimelineFilter _initialTimelineFilter;
+
+  bool get modified => state != _initialTimelineFilter;
 
   bool get valid => state.name.isNotEmpty;
 
@@ -123,20 +118,3 @@ class TimelineFilterCreationCubit extends Cubit<TimelineFilter>
         ),
       );
 }
-
-const _emptyIncludes = TimelineFilterIncludes(
-  image: false,
-  gif: false,
-  video: false,
-  phrases: [],
-  hashtags: [],
-  mentions: [],
-);
-
-const _emptyExcludes = TimelineFilterExcludes(
-  replies: false,
-  retweets: false,
-  phrases: [],
-  hashtags: [],
-  mentions: [],
-);

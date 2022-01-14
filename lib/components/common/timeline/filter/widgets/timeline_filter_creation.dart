@@ -3,27 +3,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:uuid/uuid.dart';
 
 class TimelineFilterCreation extends StatelessWidget {
-  const TimelineFilterCreation();
+  const TimelineFilterCreation({
+    this.timelineFilter,
+  });
+
+  /// The existing filter used to update existing filters.
+  ///
+  /// `null` when a new filter should be created instead.
+  final TimelineFilter? timelineFilter;
 
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
     return BlocProvider(
-      create: (_) => TimelineFilterCreationCubit(uuid: const Uuid().v4()),
+      create: (_) => TimelineFilterCreationCubit(
+        timelineFilter: timelineFilter ?? TimelineFilter.empty(),
+      ),
       child: _WillPopFilterCreation(
         child: GestureDetector(
           onTap: FocusScope.of(context).unfocus,
           child: HarpyScaffold(
             body: CustomScrollView(
               slivers: [
-                const HarpySliverAppBar(
+                HarpySliverAppBar(
                   title: 'timeline filter creation',
                   floating: true,
-                  actions: [_SaveFilterAction()],
+                  actions: [
+                    _SaveFilterAction(isEditing: timelineFilter != null),
+                  ],
                 ),
                 SliverPadding(
                   padding: config.edgeInsets,
@@ -40,7 +50,11 @@ class TimelineFilterCreation extends StatelessWidget {
 }
 
 class _SaveFilterAction extends StatelessWidget {
-  const _SaveFilterAction();
+  const _SaveFilterAction({
+    required this.isEditing,
+  });
+
+  final bool isEditing;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +66,11 @@ class _SaveFilterAction extends StatelessWidget {
       icon: const Icon(FeatherIcons.check),
       onTap: cubit.valid
           ? () {
-              timelineFilterCubit.addTimelineFilter(cubit.state);
+              if (isEditing) {
+                timelineFilterCubit.updateTimelineFilter(cubit.state);
+              } else {
+                timelineFilterCubit.addTimelineFilter(cubit.state);
+              }
               Navigator.of(context).pop();
             }
           : null,

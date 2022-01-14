@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:uuid/uuid.dart';
 
 part 'timeline_filter_cubit.freezed.dart';
 
@@ -64,12 +65,44 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     _persist();
   }
 
-  void removeTimelineFilter(int index) {
-    // TODO
+  void updateTimelineFilter(TimelineFilter timelineFilter) {
+    final index = state.timelineFilters.indexWhere(
+      (filter) => filter.uuid == timelineFilter.uuid,
+    );
+
+    if (index != -1) {
+      emit(
+        state.copyWith(
+          timelineFilters: state.timelineFilters.rebuild(
+            (builder) => builder[index] = timelineFilter,
+          ),
+        ),
+      );
+
+      _persist();
+    }
   }
 
-  void duplicateTimelineFilter(int index) {
-    // TODO: add copy of timeline filter with new uuid
+  void removeTimelineFilter(String uuid) {
+    emit(
+      state.copyWith(
+        timelineFilters: state.timelineFilters.rebuild(
+          (builder) => builder.removeWhere((filter) => filter.uuid == uuid),
+        ),
+      ),
+    );
+
+    _persist();
+  }
+
+  void duplicateTimelineFilter(String uuid) {
+    final timelineFilter = state.timelineFilters.firstWhereOrNull(
+      (filter) => filter.uuid == uuid,
+    );
+
+    if (timelineFilter != null) {
+      addTimelineFilter(timelineFilter.copyWith(uuid: const Uuid().v4()));
+    }
   }
 
   void selectHomeTimelineFilter(String uuid) {

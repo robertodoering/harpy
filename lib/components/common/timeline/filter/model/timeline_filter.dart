@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'timeline_filter.freezed.dart';
 part 'timeline_filter.g.dart';
@@ -17,6 +18,26 @@ class TimelineFilter with _$TimelineFilter {
 
   factory TimelineFilter.fromJson(Map<String, dynamic> json) =>
       _$TimelineFilterFromJson(json);
+
+  factory TimelineFilter.empty() => TimelineFilter(
+        uuid: const Uuid().v4(),
+        name: 'New filter',
+        includes: const TimelineFilterIncludes(
+          image: false,
+          gif: false,
+          video: false,
+          phrases: [],
+          hashtags: [],
+          mentions: [],
+        ),
+        excludes: const TimelineFilterExcludes(
+          replies: false,
+          retweets: false,
+          phrases: [],
+          hashtags: [],
+          mentions: [],
+        ),
+      );
 }
 
 @freezed
@@ -71,7 +92,7 @@ class ActiveTimelineFilter with _$ActiveTimelineFilter {
 @freezed
 class TimelineFilterData with _$TimelineFilterData {
   const factory TimelineFilterData.user({
-    /// The user handle (not prefixed with an `@`) of the user.
+    /// The handle (not prefixed with an `@`) of the user.
     ///
     /// Since the handle can be modified it should not be used for matching a
     /// user but can be used to display where a filter is used.
