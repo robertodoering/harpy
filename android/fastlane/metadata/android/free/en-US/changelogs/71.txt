@@ -1,6 +1,8 @@
 Version 0.8.3
 2022-xx-xx
 
+· Updated privacy policy link
+  · harpy does not collect or store any data. A proper privacy policy was still necessary and is now available.
 · Changed pressing the retweet button now always shows the retweet menu
 · Fixed tweets sometimes stayed hidden until the first scroll
 · Fixed tweet detail screen doesn't autoplay gifs / video when enabled
