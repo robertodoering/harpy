@@ -10,6 +10,17 @@ import 'package:uuid/uuid.dart';
 
 part 'timeline_filter_cubit.freezed.dart';
 
+/// A global cubit that handles parsing, persisting and updating
+/// [TimelineFilter]s and [ActiveTimelineFilter]s, which can be used to filter
+/// timelines throughout harpy.
+///
+/// A [TimelineFilter] describes the attributes and behavior of a single filter
+/// and can used and shared across multiple timelines. Changes to the filter
+/// will sync across its timelines.
+///
+/// A [ActiveTimelineFilter] matches a timeline and its timeline filter. Some
+/// timelines can have unique filters based on a criteria (e.g. a user timeline
+/// can have a unique filters based on the user id).
 class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
   TimelineFilterCubit()
       : super(
@@ -65,6 +76,7 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     _persist();
   }
 
+  /// Updates the timeline filter with the same uuid as the [timelineFilter].
   void updateTimelineFilter(TimelineFilter timelineFilter) {
     final index = state.timelineFilters.indexWhere(
       (filter) => filter.uuid == timelineFilter.uuid,
@@ -83,10 +95,16 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     }
   }
 
+  /// Removes the timeline filter for the [uuid].
+  ///
+  /// Any active timeline filters referencing this filter will also be removed.
   void removeTimelineFilter(String uuid) {
     emit(
       state.copyWith(
         timelineFilters: state.timelineFilters.rebuild(
+          (builder) => builder.removeWhere((filter) => filter.uuid == uuid),
+        ),
+        activeTimelineFilters: state.activeTimelineFilters.rebuild(
           (builder) => builder.removeWhere((filter) => filter.uuid == uuid),
         ),
       ),
@@ -95,6 +113,7 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     _persist();
   }
 
+  /// Adds a copy of the matching timeline filter with a new uuid.
   void duplicateTimelineFilter(String uuid) {
     final timelineFilter = state.timelineFilters.firstWhereOrNull(
       (filter) => filter.uuid == uuid,
@@ -105,6 +124,8 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     }
   }
 
+  /// Creates a new active timeline filter for the home timeline or overrides an
+  /// existing selection.
   void selectHomeTimelineFilter(String uuid) {
     final newActiveFilter = ActiveTimelineFilter(
       uuid: uuid,
@@ -132,6 +153,12 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     _persist();
   }
 
+  /// Creates a new active timeline filter for the user timeline or overrides an
+  /// existing one.
+  ///
+  /// If [user] is `null`, the active timeline filter will be used as a generic
+  /// timeline filter for all users.
+  /// Otherwise the filter will only be active for the unique user.
   void selectUserTimelineFilter(String uuid, {UserData? user}) {
     final newActiveFilter = ActiveTimelineFilter(
       uuid: uuid,
@@ -152,15 +179,13 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
             filter.type == TimelineFilterType.user && filter.data == null,
       );
     } else {
-      // find specific user filter
-      index = activeTimelineFilters
-          .where(
-            (filter) =>
-                filter.type == TimelineFilterType.user &&
-                filter.data is TimelineFilterDataUser,
-          )
-          .toList()
-          .indexWhere((filter) => filter.data?.id == user.id);
+      // find unique user filter
+      index = activeTimelineFilters.indexWhere(
+        (filter) =>
+            filter.type == TimelineFilterType.user &&
+            filter.data is TimelineFilterDataUser &&
+            filter.data?.id == user.id,
+      );
     }
 
     if (index == -1) {
@@ -178,35 +203,43 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
     _persist();
   }
 
-  void selectListTimelineFilter(String uuid, {TwitterListData? list}) {
+  /// Creates a new active timeline filter for the list timeline or overrides an
+  /// existing one.
+  ///
+  /// If [listId] or listNameis `null`, the active timeline filter will be used
+  /// as a generic timeline filter for all lists.
+  /// Otherwise the filter will only be active for the unique list.
+  void selectListTimelineFilter(
+    String uuid, {
+    String? listId,
+    String? listName,
+  }) {
     final newActiveFilter = ActiveTimelineFilter(
       uuid: uuid,
       type: TimelineFilterType.list,
-      data: list == null
+      data: listId == null || listName == null
           ? null
-          : TimelineFilterData.list(name: list.name, id: list.id),
+          : TimelineFilterData.list(name: listName, id: listId),
     );
 
     final activeTimelineFilters = state.activeTimelineFilters.toList();
 
     int index;
 
-    if (list == null) {
+    if (listId == null || listName == null) {
       // find generic list filter
       index = activeTimelineFilters.indexWhere(
         (filter) =>
             filter.type == TimelineFilterType.list && filter.data == null,
       );
     } else {
-      // find specific list filter
-      index = activeTimelineFilters
-          .where(
-            (filter) =>
-                filter.type == TimelineFilterType.list &&
-                filter.data is TimelineFilterDataList,
-          )
-          .toList()
-          .indexWhere((filter) => filter.data?.id == list.id);
+      // find unique list filter
+      index = activeTimelineFilters.indexWhere(
+        (filter) =>
+            filter.type == TimelineFilterType.list &&
+            filter.data is TimelineFilterDataList &&
+            filter.data?.id == listId,
+      );
     }
 
     if (index == -1) {
@@ -273,10 +306,10 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
 
   /// Removes the list timeline filter from the active timeline filters.
   ///
-  /// If a [list] is specified, only the list timeline filter for the list is
+  /// If a [listId] is specified, only the list timeline filter for the list is
   /// removed.
-  void removeListTimelineFilter({TwitterListData? list}) {
-    if (list == null) {
+  void removeListTimelineFilter({String? listId}) {
+    if (listId == null) {
       emit(
         state.copyWith(
           activeTimelineFilters: state.activeTimelineFilters
@@ -295,7 +328,7 @@ class TimelineFilterCubit extends Cubit<TimelineFilterState> with HarpyLogger {
               .whereNot(
                 (filter) =>
                     filter.type == TimelineFilterType.list &&
-                    filter.data?.id == list.id,
+                    filter.data?.id == listId,
               )
               .toBuiltList(),
         ),
@@ -335,74 +368,56 @@ class TimelineFilterState with _$TimelineFilterState {
 }
 
 extension TimelineFilterStateExtension on TimelineFilterState {
-  TimelineFilter? timelineFilterByUuid(String uuid) =>
-      timelineFilters.firstWhereOrNull((filter) => filter.uuid == uuid);
+  TimelineFilter? filterByUuid(String? uuid) => uuid == null
+      ? null
+      : timelineFilters.firstWhereOrNull((filter) => filter.uuid == uuid);
 
-  TimelineFilter? get homeTimelineFilter {
-    final activeFilter = activeTimelineFilters.firstWhereOrNull(
-      (filter) => filter.type == TimelineFilterType.home,
-    );
+  /// Returns the currently active home timeline filter.
+  ActiveTimelineFilter? activeHomeFilter() =>
+      activeTimelineFilters.firstWhereOrNull(
+        (filter) => filter.type == TimelineFilterType.home,
+      );
 
-    if (activeFilter != null) {
-      return timelineFilterByUuid(activeFilter.uuid);
-    } else {
-      return null;
-    }
-  }
-
-  TimelineFilter? userTimelineFilter(UserData user) {
-    final userFilter = activeTimelineFilters
-        .where(
-          (filter) =>
-              filter.type == TimelineFilterType.user &&
-              filter.data is TimelineFilterDataUser,
-        )
-        .firstWhereOrNull((filter) => filter.data?.id == user.id);
-
-    if (userFilter != null) {
-      return timelineFilterByUuid(userFilter.uuid);
-    } else {
-      // if the user has no specific filter, we return the generic user
-      // timeline filter or null if no filter for users exist
-
-      final genericFilter = activeTimelineFilters.firstWhereOrNull(
+  /// Returns the currently active user timeline filter for the [userId].
+  ActiveTimelineFilter? activeUserFilter(String userId) =>
+      // unique filter
+      activeTimelineFilters
+          .where(
+            (filter) =>
+                filter.type == TimelineFilterType.user &&
+                filter.data is TimelineFilterDataUser,
+          )
+          .firstWhereOrNull((filter) => filter.data?.id == userId) ??
+      // generic filter
+      activeTimelineFilters.firstWhereOrNull(
         (filter) =>
             filter.type == TimelineFilterType.user && filter.data == null,
       );
 
-      if (genericFilter != null) {
-        return timelineFilterByUuid(genericFilter.uuid);
-      } else {
-        return null;
-      }
-    }
-  }
-
-  TimelineFilter? listTimelineFilter(TwitterListData list) {
-    final listFilter = activeTimelineFilters
-        .where(
-          (filter) =>
-              filter.type == TimelineFilterType.list &&
-              filter.data is TimelineFilterDataList,
-        )
-        .firstWhereOrNull((filter) => filter.data?.id == list.id);
-
-    if (listFilter != null) {
-      return timelineFilterByUuid(listFilter.uuid);
-    } else {
-      // if the list has no specific filter, we return the generic lits
-      // timeline filter or null if no filter for lists exist
-
-      final genericFilter = activeTimelineFilters.firstWhereOrNull(
+  /// Returns the currently active list timeline filter for the [listId].
+  ActiveTimelineFilter? activeListFilter(String listId) =>
+      // unique filter
+      activeTimelineFilters
+          .where(
+            (filter) =>
+                filter.type == TimelineFilterType.list &&
+                filter.data is TimelineFilterDataList,
+          )
+          .firstWhereOrNull((filter) => filter.data?.id == listId) ??
+      // generic filter
+      activeTimelineFilters.firstWhereOrNull(
         (filter) =>
             filter.type == TimelineFilterType.list && filter.data == null,
       );
 
-      if (genericFilter != null) {
-        return timelineFilterByUuid(genericFilter.uuid);
-      } else {
-        return null;
-      }
-    }
-  }
+  /// Returns the [TimelineFilter] for the home timeline.
+  TimelineFilter? homeFilter() => filterByUuid(activeHomeFilter()?.uuid);
+
+  /// Returns the [TimelineFilter] for the user timeline.
+  TimelineFilter? userFilter(String userId) =>
+      filterByUuid(activeUserFilter(userId)?.uuid);
+
+  /// Returns the [TimelineFilter] for the list timeline.
+  TimelineFilter? listFilter(String listId) =>
+      filterByUuid(activeListFilter(listId)?.uuid);
 }

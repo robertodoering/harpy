@@ -1,64 +1,64 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 part 'timeline_filter_selection_cubit.freezed.dart';
 
-class TimelineFilterSelectionCubit extends Cubit<TimelineFilterSelectionState> {
+/// Implements common functionality for cubits that that handle timeline filter
+/// selection.
+///
+/// For example implementations, see:
+/// * [HomeTimelineFilterCubit]
+/// * [UserTimelineFilterCubit]
+/// * [ListTimelineFilterCubit]
+abstract class TimelineFilterSelectionCubit
+    extends Cubit<TimelineFilterSelectionState> with HarpyLogger {
   TimelineFilterSelectionCubit({
-    required TimelineFilterCubit timelineFilterCubit,
-    required TimelineFilterType? type,
-    required UserData? user,
-    required TwitterListData? list,
-  })  : _timelineFilterCubit = timelineFilterCubit,
-        _type = type,
-        _user = user,
-        _list = list,
-        super(const TimelineFilterSelectionState.initial()) {
+    required this.timelineFilterCubit,
+  }) : super(const TimelineFilterSelectionState.initial()) {
     sortTimelineFilters();
   }
 
-  final TimelineFilterCubit _timelineFilterCubit;
+  @protected
+  final TimelineFilterCubit timelineFilterCubit;
 
-  /// Determines the origin of the timeline selection.
-  ///
-  /// Used to display the currently active filter (if any).
-  final TimelineFilterType? _type;
+  /// Whether the filter can have a unique selection.
+  @protected
+  bool get showUnique;
 
-  final UserData? _user;
-  final TwitterListData? _list;
+  /// The display name of a selected filter if it is unique.
+  @protected
+  String? get uniqueName;
+
+  /// The currently selected active timeline filter or `null` if no filter is
+  /// selected.
+  @protected
+  ActiveTimelineFilter? get activeFilter;
+
+  void selectTimelineFilter(String uuid);
+
+  void removeTimelineFilterSelection();
 
   void sortTimelineFilters() {
-    final timelineFilterState = _timelineFilterCubit.state;
+    log.fine('sorting timeline filters');
 
-    TimelineFilter? selectedTimelineFilter;
+    final timelineFilterState = timelineFilterCubit.state;
 
-    switch (_type) {
-      case TimelineFilterType.home:
-        selectedTimelineFilter = timelineFilterState.homeTimelineFilter;
-        break;
-      case TimelineFilterType.user:
-        assert(_user != null);
-        selectedTimelineFilter = timelineFilterState.userTimelineFilter(_user!);
-        break;
-      case TimelineFilterType.list:
-        assert(_list != null);
-        selectedTimelineFilter = timelineFilterState.listTimelineFilter(_list!);
-        break;
-      case null:
-        selectedTimelineFilter = null;
-        break;
-    }
+    final selectedTimelineFilter = timelineFilterState.filterByUuid(
+      activeFilter?.uuid,
+    );
 
     final sortedTimelineFilters =
         timelineFilterState.timelineFilters.sorted((a, b) {
+      // sort currently selected timeline filter first
       if (a == selectedTimelineFilter) {
         return -1;
       } else if (b == selectedTimelineFilter) {
         return 1;
       } else {
+        // sort active filters before other filters
         final indexA = timelineFilterState.activeTimelineFilters.indexWhere(
           (activeFilter) => activeFilter.uuid == a.uuid,
         );
@@ -95,9 +95,55 @@ class TimelineFilterSelectionCubit extends Cubit<TimelineFilterSelectionState> {
       emit(
         TimelineFilterSelectionState.data(
           sortedFilters: sortedFilters,
-          hasSelection: selectedTimelineFilter != null,
+          activeFilter: activeFilter,
+          showUnique: showUnique,
+          uniqueName: uniqueName,
+          isUnique: activeFilter?.data != null,
         ),
       );
+    }
+  }
+
+  /// Toggles whether the selection should be unique to the user / list or
+  /// generic (for all users / lists).
+  ///
+  /// If a filter is already selected and the toggle changes to unique, the
+  /// currently selected generic filter will also be selected for the new unique
+  /// user / list.
+  ///
+  /// If a filter is already selected and the toggle changes to generic, the
+  /// currently selected unique filter will be used as the generic filter.
+  void toggleUnique(bool value) {
+    log.fine('toggling selection unique $value');
+
+    final currentState = state;
+
+    if (currentState is _Data) {
+      final timelineFilterState = timelineFilterCubit.state;
+
+      final selectedTimelineFilter = timelineFilterState.filterByUuid(
+        currentState.activeFilter?.uuid,
+      );
+
+      if (selectedTimelineFilter != null) {
+        // a filter is already selected
+
+        if (value) {
+          // select the already selected (generic) filter again as a unique
+          // filter
+          emit(currentState.copyWith(isUnique: true));
+          selectTimelineFilter(selectedTimelineFilter.uuid);
+          sortTimelineFilters();
+        } else {
+          // remove unique filter first and then select it as a generic filter
+          removeTimelineFilterSelection();
+          emit(currentState.copyWith(isUnique: false));
+          selectTimelineFilter(selectedTimelineFilter.uuid);
+          sortTimelineFilters();
+        }
+      } else {
+        emit(currentState.copyWith(isUnique: value));
+      }
     }
   }
 }
@@ -110,8 +156,26 @@ class TimelineFilterSelectionState with _$TimelineFilterSelectionState {
 
   const factory TimelineFilterSelectionState.data({
     required BuiltList<SortedTimelineFilter> sortedFilters,
-    required bool hasSelection,
+
+    /// The currently selected active filter or `null` if no filter is selected.
+    required ActiveTimelineFilter? activeFilter,
+
+    /// Whether the currently selected filter is a unique filter.
+    required bool isUnique,
+
+    /// The display name of a selected filter if it is unique.
+    required String? uniqueName,
+
+    /// Whether the selection can be unique.
+    required bool showUnique,
   }) = _Data;
+}
+
+extension StateExtension on TimelineFilterSelectionState {
+  bool get isUnique => maybeMap(
+        data: (data) => data.isUnique,
+        orElse: () => false,
+      );
 }
 
 @freezed

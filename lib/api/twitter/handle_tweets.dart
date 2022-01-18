@@ -12,7 +12,7 @@ import 'package:harpy/misc/misc.dart';
 /// Only the parent [TweetData] of a reply chain will be in the returned list.
 Future<List<TweetData>> handleTweets(
   List<Tweet> tweets, [
-  OldTimelineFilter? filter,
+  TimelineFilter? filter,
 ]) {
   return compute<List<dynamic>, List<TweetData>>(
     _isolateHandleTweets,
@@ -22,7 +22,7 @@ Future<List<TweetData>> handleTweets(
 
 List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   final List<Tweet> tweets = arguments[0];
-  final OldTimelineFilter? filter = arguments[1];
+  final TimelineFilter? filter = arguments[1];
 
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
@@ -68,16 +68,18 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   return tweetDataList;
 }
 
-bool _filterTweet(Tweet tweet, OldTimelineFilter? filter) {
-  if (filter == null || filter == OldTimelineFilter.empty) {
+bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
+  // TODO: support new filters
+
+  if (filter == null) {
     return false;
   } else {
-    if (filter.excludesRetweets && tweet.retweetedStatus != null) {
+    if (filter.excludes.retweets && tweet.retweetedStatus != null) {
       // filter retweets
       return true;
     }
 
-    if (filter.includesImages || filter.includesGif || filter.includesVideo) {
+    if (filter.includes.image || filter.includes.gif || filter.includes.video) {
       // filter non-media tweets
       if (tweet.extendedEntities?.media == null ||
           tweet.extendedEntities!.media!.isEmpty) {
@@ -88,14 +90,14 @@ bool _filterTweet(Tweet tweet, OldTimelineFilter? filter) {
       final hasGif = tweet.extendedEntities!.media!.first.type == kMediaGif;
       final hasVideo = tweet.extendedEntities!.media!.first.type == kMediaVideo;
 
-      if (!(filter.includesImages && hasImage ||
-          filter.includesGif && hasGif ||
-          filter.includesVideo && hasVideo)) {
+      if (!(filter.includes.image && hasImage ||
+          filter.includes.gif && hasGif ||
+          filter.includes.video && hasVideo)) {
         return true;
       }
     }
 
-    if (filter.excludesHashtags.isNotEmpty) {
+    if (filter.excludes.hashtags.isNotEmpty) {
       // filter tweets with hashtags
 
       final tweetHashtags = tweet.entities?.hashtags
@@ -103,7 +105,7 @@ bool _filterTweet(Tweet tweet, OldTimelineFilter? filter) {
               .toList() ??
           [];
 
-      if (filter.excludesHashtags
+      if (filter.excludes.hashtags
           .map(
             (hashtag) => removePrependedSymbol(
               hashtag.toLowerCase(),
@@ -115,11 +117,11 @@ bool _filterTweet(Tweet tweet, OldTimelineFilter? filter) {
       }
     }
 
-    if (filter.excludesPhrases.isNotEmpty) {
+    if (filter.excludes.phrases.isNotEmpty) {
       // filter tweets with keywords / phrases
       final tweetText = tweet.fullText?.toLowerCase() ?? '';
 
-      if (filter.excludesPhrases
+      if (filter.excludes.phrases
           .map((phrase) => phrase.toLowerCase())
           .any(tweetText.contains)) {
         return true;

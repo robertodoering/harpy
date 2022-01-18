@@ -19,48 +19,46 @@ class UserProfileContent extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TimelineFilterModel.user()),
-        BlocProvider(create: (_) => UserTimelineCubit(handle: user.handle)),
+        BlocProvider(
+          create: (_) => UserTimelineCubit(
+            timelineFilterCubit: context.read(),
+            id: user.id,
+          ),
+        ),
         BlocProvider(create: (_) => LikesTimelineCubit(handle: user.handle)),
       ],
       child: ScrollDirectionListener(
         depth: 2,
-        // TODO: remove scaffold when removing filter drawer since a scaffold is
-        //  already built by the parent
-        child: HarpyScaffold(
-          endDrawer: const UserTimelineFilterDrawer(),
-          body: HarpySliverTabView(
-            headerSlivers: [
-              UserProfileAppBar(user: user),
-              UserProfileHeader(user: user),
-            ],
-            tabs: [
+        child: HarpySliverTabView(
+          headerSlivers: [
+            UserProfileAppBar(user: user),
+            UserProfileHeader(user: user),
+          ],
+          tabs: [
+            const HarpyTab(
+              icon: Icon(CupertinoIcons.time),
+              text: Text('timeline'),
+            ),
+            const HarpyTab(
+              icon: Icon(CupertinoIcons.photo),
+              text: Text('media'),
+            ),
+            if (isAuthenticatedUser)
               const HarpyTab(
-                icon: Icon(CupertinoIcons.time),
-                text: Text('timeline'),
+                icon: Icon(CupertinoIcons.at),
+                text: Text('mentions'),
               ),
-              const HarpyTab(
-                icon: Icon(CupertinoIcons.photo),
-                text: Text('media'),
-              ),
-              if (isAuthenticatedUser)
-                const HarpyTab(
-                  icon: Icon(CupertinoIcons.at),
-                  text: Text('mentions'),
-                ),
-              const HarpyTab(
-                icon: Icon(CupertinoIcons.heart_solid),
-                text: Text('likes'),
-              ),
-            ],
-            children: [
-              const UserTimeline(),
-              const UserMediaTimeline(),
-              if (isAuthenticatedUser)
-                const MentionsTimeline(indexInTabView: 2),
-              const LikesTimeline(),
-            ],
-          ),
+            const HarpyTab(
+              icon: Icon(CupertinoIcons.heart_solid),
+              text: Text('likes'),
+            ),
+          ],
+          children: [
+            UserTimeline(user: user),
+            const UserMediaTimeline(),
+            if (isAuthenticatedUser) const MentionsTimeline(indexInTabView: 2),
+            const LikesTimeline(),
+          ],
         ),
       ),
     );

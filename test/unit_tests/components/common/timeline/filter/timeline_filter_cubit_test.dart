@@ -268,7 +268,8 @@ void main() {
         build: TimelineFilterCubit.new,
         act: (cubit) => cubit.selectListTimelineFilter(
           '1337',
-          list: TwitterListData(name: 'Flutter', id: '42'),
+          listId: '42',
+          listName: 'Flutter',
         ),
         expect: () => [
           TimelineFilterState(
@@ -291,7 +292,8 @@ void main() {
         ),
         act: (cubit) => cubit.selectListTimelineFilter(
           '1338',
-          list: TwitterListData(name: 'Untitled List', id: '666'),
+          listId: '666',
+          listName: 'Untitled List',
         ),
         expect: () => [
           TimelineFilterState(
@@ -315,7 +317,8 @@ void main() {
         ),
         act: (cubit) => cubit.selectListTimelineFilter(
           '1338',
-          list: TwitterListData(name: 'Flutter', id: '42'),
+          listId: '42',
+          listName: 'Flutter',
         ),
         expect: () => [
           TimelineFilterState(
@@ -527,9 +530,7 @@ void main() {
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
         ),
-        act: (cubit) => cubit.removeListTimelineFilter(
-          list: TwitterListData(name: 'Untitled List', id: '666'),
-        ),
+        act: (cubit) => cubit.removeListTimelineFilter(listId: '666'),
         expect: () => <TimelineFilterState>[],
       );
 
@@ -547,9 +548,7 @@ void main() {
             _activeSpecificListTimelineFilter3,
           ].toBuiltList(),
         ),
-        act: (cubit) => cubit.removeListTimelineFilter(
-          list: TwitterListData(name: 'Untitled List', id: '666'),
-        ),
+        act: (cubit) => cubit.removeListTimelineFilter(listId: '666'),
         expect: () => [
           TimelineFilterState(
             timelineFilters: BuiltList(),

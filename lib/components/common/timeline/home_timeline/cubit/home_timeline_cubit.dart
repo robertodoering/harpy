@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:harpy/api/api.dart';
@@ -5,10 +7,13 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
 class HomeTimelineCubit extends TimelineCubit {
-  HomeTimelineCubit() {
-    filter = OldTimelineFilter.fromJsonString(
-      app<TimelineFilterPreferences>().homeTimelineFilter,
-    );
+  HomeTimelineCubit({
+    required TimelineFilterCubit timelineFilterCubit,
+  }) : super(timelineFilterCubit: timelineFilterCubit);
+
+  @override
+  TimelineFilter? filterFromState(TimelineFilterState state) {
+    return state.homeFilter();
   }
 
   @override
@@ -17,7 +22,7 @@ class HomeTimelineCubit extends TimelineCubit {
           count: 200,
           sinceId: sinceId,
           maxId: maxId,
-          excludeReplies: filter.excludesReplies,
+          excludeReplies: filter?.excludes.replies,
         );
   }
 
@@ -27,11 +32,6 @@ class HomeTimelineCubit extends TimelineCubit {
 
   @override
   int get restoredTweetId => app<TweetVisibilityPreferences>().lastVisibleTweet;
-
-  @override
-  void persistFilter(String encodedFilter) {
-    app<TimelineFilterPreferences>().homeTimelineFilter = encodedFilter;
-  }
 
   void addTweet(TweetData tweet) {
     final currentState = state;

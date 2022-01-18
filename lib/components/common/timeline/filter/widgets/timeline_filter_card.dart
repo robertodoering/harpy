@@ -9,11 +9,9 @@ import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 class TimelineFilterCard extends StatelessWidget {
   const TimelineFilterCard({
     required this.sortedFilter,
-    required this.onSelected,
   });
 
   final SortedTimelineFilter sortedFilter;
-  final ValueChanged<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,11 @@ class TimelineFilterCard extends StatelessWidget {
                 cubit: cubit,
                 filter: sortedFilter.timelineFilter,
               )
-          : () => onSelected(sortedFilter.timelineFilter.uuid),
+          : () {
+              HapticFeedback.lightImpact();
+              cubit.selectTimelineFilter(sortedFilter.timelineFilter.uuid);
+              Navigator.of(context).pop();
+            },
       onLongPress: () => _showTimelineFilterCardBottomSheet(
         context,
         filter: sortedFilter.timelineFilter,

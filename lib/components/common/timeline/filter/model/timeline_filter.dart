@@ -4,10 +4,11 @@ import 'package:uuid/uuid.dart';
 part 'timeline_filter.freezed.dart';
 part 'timeline_filter.g.dart';
 
+/// Describes the attributes and behavior of a timeline filter.
 @freezed
 class TimelineFilter with _$TimelineFilter {
   const factory TimelineFilter({
-    /// A unique id for the timeline filter, generated on creation.
+    /// A unique id for the timeline filter, generated randomly on creation.
     required String uuid,
 
     /// A custom user specified name for the timeline filter.
@@ -19,6 +20,10 @@ class TimelineFilter with _$TimelineFilter {
   factory TimelineFilter.fromJson(Map<String, dynamic> json) =>
       _$TimelineFilterFromJson(json);
 
+  /// Creates a new empty [TimelineFilter].
+  ///
+  /// Empty timeline filters are not be equal since they will have unique
+  /// [uuid]s.
   factory TimelineFilter.empty() => TimelineFilter(
         uuid: const Uuid().v4(),
         name: 'New filter',
@@ -69,6 +74,9 @@ class TimelineFilterExcludes with _$TimelineFilterExcludes {
       _$TimelineFilterExcludesFromJson(json);
 }
 
+/// Matches a timeline and its timeline filter. Some timelines can have unique
+/// filters based on a criteria (e.g. a user timeline can have a unique filters
+/// based on the user id).
 @freezed
 class ActiveTimelineFilter with _$ActiveTimelineFilter {
   const factory ActiveTimelineFilter({
@@ -81,7 +89,8 @@ class ActiveTimelineFilter with _$ActiveTimelineFilter {
     ///
     /// `null` when the type is [TimelineFilterType.home] or if the filter
     /// should be used as a generic filter for the type (i.e. all users have
-    /// this filter unless the given user also has a specific filter).
+    /// this generic filter unless the given user also has a unique filter which
+    /// takes precedence).
     TimelineFilterData? data,
   }) = _ActiveTimelineFilter;
 
@@ -89,6 +98,7 @@ class ActiveTimelineFilter with _$ActiveTimelineFilter {
       _$ActiveTimelineFilterFromJson(json);
 }
 
+/// Data for a timeline filter used to identify unique filters of a timeline.
 @freezed
 class TimelineFilterData with _$TimelineFilterData {
   const factory TimelineFilterData.user({

@@ -4,15 +4,18 @@ import 'package:harpy/core/core.dart';
 
 class ListTimelineCubit extends TimelineCubit {
   ListTimelineCubit({
+    required TimelineFilterCubit timelineFilterCubit,
     required this.listId,
-  }) {
+  }) : super(timelineFilterCubit: timelineFilterCubit) {
     loadInitial();
-    filter = OldTimelineFilter.fromJsonString(
-      app<TimelineFilterPreferences>().listTimelineFilter,
-    );
   }
 
   final String listId;
+
+  @override
+  TimelineFilter? filterFromState(TimelineFilterState state) {
+    return state.listFilter(listId);
+  }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
@@ -21,10 +24,5 @@ class ListTimelineCubit extends TimelineCubit {
           count: 200,
           maxId: maxId,
         );
-  }
-
-  @override
-  void persistFilter(String encodedFilter) {
-    app<TimelineFilterPreferences>().listTimelineFilter = encodedFilter;
   }
 }

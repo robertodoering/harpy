@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/misc/harpy_navigator.dart';
-import 'package:pedantic/pedantic.dart';
 
 /// Built as the begin sliver for the home timeline.
 class HomeTimelineTopRow extends StatelessWidget {
@@ -19,11 +17,7 @@ class HomeTimelineTopRow extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: config.edgeInsetsOnly(
-          top: true,
-          left: true,
-          right: true,
-        ),
+        padding: config.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: const [
             _RefreshButton(),
@@ -90,32 +84,23 @@ class _FilterButton extends StatelessWidget {
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: state.homeTimelineFilter != null
+      icon: state.homeFilter() != null
           ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
-      onTap: () => Navigator.of(context).push(
-        HarpyPageRoute<void>(
-          builder: (_) => TimelineFilterSelection.home(
-            onSelected: (uuid) async {
-              unawaited(HapticFeedback.lightImpact());
-              context
-                  .read<TimelineFilterCubit>()
-                  .selectHomeTimelineFilter(uuid);
-
-              // TODO: update home timeline with new filter
-
-              Navigator.of(context).pop();
-            },
-            onClearSelection: () {
-              HapticFeedback.lightImpact();
-              context.read<TimelineFilterCubit>().removeHomeTimelineFilter();
-
-              Navigator.of(context).pop();
-            },
-          ),
-          fullscreenDialog: true,
-        ),
-      ),
+      onTap: () => openHomeTimelineFilterSelection(context),
     );
   }
+}
+
+void openHomeTimelineFilterSelection(BuildContext context) {
+  Navigator.of(context).push(
+    HarpyPageRoute<void>(
+      builder: (_) => TimelineFilterSelection(
+        blocBuilder: (context) => HomeTimelineFilterCubit(
+          timelineFilterCubit: context.read(),
+        ),
+      ),
+      fullscreenDialog: true,
+    ),
+  );
 }

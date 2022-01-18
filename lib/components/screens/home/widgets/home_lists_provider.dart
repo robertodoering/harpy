@@ -2,6 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:provider/provider.dart';
 
 /// Builds all the [ListTimelineCubit]s for the [HomeTabModel.listEntries].
 ///
@@ -74,7 +75,12 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
 
   void _createCubits(List<HomeTabEntry> entries) {
     for (final entry in entries) {
-      cubits.add(ListTimelineCubit(listId: entry.id));
+      cubits.add(
+        ListTimelineCubit(
+          timelineFilterCubit: context.read(),
+          listId: entry.id,
+        ),
+      );
     }
   }
 
@@ -100,11 +106,11 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
 
   @override
   void dispose() {
-    super.dispose();
-
     for (final cubit in cubits) {
       cubit.close();
     }
+
+    super.dispose();
   }
 
   @override
