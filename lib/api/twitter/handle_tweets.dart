@@ -69,8 +69,6 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
 }
 
 bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
-  // TODO: support new filters
-
   if (filter == null) {
     return false;
   } else {
@@ -97,37 +95,84 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
       }
     }
 
-    if (filter.excludes.hashtags.isNotEmpty) {
-      // filter tweets with hashtags
+    final tweetHashtags = tweet.entities?.hashtags
+            ?.map((hashtag) => hashtag.text?.toLowerCase() ?? '')
+            .toList() ??
+        [];
 
-      final tweetHashtags = tweet.entities?.hashtags
-              ?.map((hashtag) => hashtag.text?.toLowerCase() ?? '')
-              .toList() ??
-          [];
+    final tweetMentions = tweet.entities?.userMentions
+            ?.map((mention) => mention.screenName?.toLowerCase() ?? '')
+            .toList() ??
+        [];
 
-      if (filter.excludes.hashtags
-          .map(
-            (hashtag) => removePrependedSymbol(
-              hashtag.toLowerCase(),
-              const ['#', '＃'],
-            ),
-          )
-          .any(tweetHashtags.contains)) {
-        return true;
-      }
+    final tweetText = tweet.fullText?.toLowerCase() ?? '';
+
+    // includes
+
+    // filter tweets where every included hashtags are not contained
+    if (filter.includes.hashtags
+        .map(_prepareHashtag)
+        .every(tweetHashtags.containsNot)) {
+      return true;
     }
 
-    if (filter.excludes.phrases.isNotEmpty) {
-      // filter tweets with keywords / phrases
-      final tweetText = tweet.fullText?.toLowerCase() ?? '';
+    // filter tweets where every included mentions are not contained
+    if (filter.includes.mentions
+        .map(_prepareMention)
+        .every(tweetMentions.containsNot)) {
+      return true;
+    }
 
-      if (filter.excludes.phrases
-          .map((phrase) => phrase.toLowerCase())
-          .any(tweetText.contains)) {
-        return true;
-      }
+    // filter tweets where every included keywords / phrases is not contained
+    if (filter.includes.phrases
+        .map((phrase) => phrase.toLowerCase())
+        .every((phrase) => !tweetText.contains(phrase))) {
+      return true;
+    }
+
+    // excludes
+
+    // filter tweets where any excluded hashtags are contained
+    if (filter.excludes.hashtags
+        .map(_prepareHashtag)
+        .any(tweetHashtags.contains)) {
+      return true;
+    }
+
+    // filter tweets where any excluded mentions are contained
+    if (filter.excludes.mentions
+        .map(_prepareMention)
+        .any(tweetMentions.containsNot)) {
+      return true;
+    }
+
+    // filter tweets where any excluded keywords / phrases are contained
+    if (filter.excludes.phrases
+        .map((phrase) => phrase.toLowerCase())
+        .any(tweetText.contains)) {
+      return true;
     }
 
     return false;
+  }
+}
+
+String? _prepareHashtag(String hashtag) {
+  return removePrependedSymbol(
+    hashtag.toLowerCase(),
+    const ['#', '＃'],
+  );
+}
+
+String? _prepareMention(String mention) {
+  return removePrependedSymbol(
+    mention.toLowerCase(),
+    const ['@'],
+  );
+}
+
+extension on Iterable {
+  bool containsNot(Object? element) {
+    return !contains(element);
   }
 }
