@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,10 +55,12 @@ Widget buildAppBase(
   Widget child, {
   TimelineState? homeTimelineState,
   TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
+  TimelineFilterState? timelineFilterState,
 }) {
   return _MockGlobalProviders(
     homeTimelineState: homeTimelineState ?? _defaultHomeTimelineState,
     mentionsTimelineState: mentionsTimelineState,
+    timelineFilterState: timelineFilterState ?? _defaultTimelineFilterState,
     builder: (context) {
       final themeBloc = context.watch<ThemeBloc>();
       final systemBrightness = context.watch<Brightness>();
@@ -87,6 +90,7 @@ Widget buildAppListBase(
   Widget child, {
   TimelineState? homeTimelineState,
   TimelineState<bool> mentionsTimelineState = const TimelineState.initial(),
+  TimelineFilterState? timelineFilterState,
 }) {
   return buildAppBase(
     ListView(
@@ -94,6 +98,7 @@ Widget buildAppListBase(
     ),
     homeTimelineState: homeTimelineState,
     mentionsTimelineState: mentionsTimelineState,
+    timelineFilterState: timelineFilterState,
   );
 }
 
@@ -102,11 +107,13 @@ class _MockGlobalProviders extends StatelessWidget {
     required this.builder,
     required this.homeTimelineState,
     required this.mentionsTimelineState,
+    required this.timelineFilterState,
   });
 
   final WidgetBuilder builder;
   final TimelineState homeTimelineState;
   final TimelineState<bool> mentionsTimelineState;
+  final TimelineFilterState timelineFilterState;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +126,9 @@ class _MockGlobalProviders extends StatelessWidget {
             create: (context) => ThemeBloc(
               configCubit: context.read<ConfigCubit>(),
             ),
+          ),
+          BlocProvider<TimelineFilterCubit>(
+            create: (_) => MockTimelineFilterCubit(timelineFilterState),
           ),
           BlocProvider<HomeTimelineCubit>(
             create: (_) => MockHomeTimelineCubit(homeTimelineState),
@@ -136,4 +146,9 @@ class _MockGlobalProviders extends StatelessWidget {
 final _defaultHomeTimelineState = TimelineState.data(
   tweets: exampleTweetList,
   maxId: '',
+);
+
+final _defaultTimelineFilterState = TimelineFilterState(
+  timelineFilters: BuiltList(),
+  activeTimelineFilters: BuiltList(),
 );

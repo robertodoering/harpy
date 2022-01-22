@@ -7,6 +7,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+import '../../../../../test_setup/data.dart';
 import '../../../../../test_setup/setup.dart';
 
 void main() {
@@ -35,18 +36,18 @@ void main() {
         act: (cubit) => cubit.initialize(),
         setUp: () {
           app<TimelineFilterPreferences>().timelineFilters = [
-            jsonEncode(_timelineFilter1.toJson()),
-            jsonEncode(_timelineFilter2.toJson()),
+            jsonEncode(timelineFilter1.toJson()),
+            jsonEncode(timelineFilter2.toJson()),
           ];
 
           app<TimelineFilterPreferences>().activeTimelineFilters = [
-            jsonEncode(_activeHomeTimelineFilter1.toJson()),
+            jsonEncode(activeHomeTimelineFilter1.toJson()),
           ];
         },
         expect: () => [
           TimelineFilterState(
-            timelineFilters: [_timelineFilter1, _timelineFilter2].toBuiltList(),
-            activeTimelineFilters: [_activeHomeTimelineFilter1].toBuiltList(),
+            timelineFilters: [timelineFilter1, timelineFilter2].toBuiltList(),
+            activeTimelineFilters: [activeHomeTimelineFilter1].toBuiltList(),
           ),
         ],
       );
@@ -73,10 +74,10 @@ void main() {
         'does nothing if the filter has no matching filter with the same uuid',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1].toBuiltList(),
+          timelineFilters: [timelineFilter1].toBuiltList(),
           activeTimelineFilters: BuiltList(),
         ),
-        act: (cubit) => cubit.updateTimelineFilter(_timelineFilter2),
+        act: (cubit) => cubit.updateTimelineFilter(timelineFilter2),
         expect: () => <TimelineFilterState>[],
       );
 
@@ -84,16 +85,16 @@ void main() {
         'updates a timeline filter with the matching uuid',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1].toBuiltList(),
+          timelineFilters: [timelineFilter1].toBuiltList(),
           activeTimelineFilters: BuiltList(),
         ),
         act: (cubit) => cubit.updateTimelineFilter(
-          _timelineFilter1.copyWith(name: 'updated poi'),
+          timelineFilter1.copyWith(name: 'updated poi'),
         ),
         expect: () => [
           TimelineFilterState(
             timelineFilters: [
-              _timelineFilter1.copyWith(name: 'updated poi'),
+              timelineFilter1.copyWith(name: 'updated poi'),
             ].toBuiltList(),
             activeTimelineFilters: BuiltList(),
           ),
@@ -106,7 +107,7 @@ void main() {
         'does nothing if the uuid does not have a matching filter',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1].toBuiltList(),
+          timelineFilters: [timelineFilter1].toBuiltList(),
           activeTimelineFilters: BuiltList(),
         ),
         act: (cubit) => cubit.removeTimelineFilter('aaa'),
@@ -117,17 +118,17 @@ void main() {
         'removes active and timeline filters with the matching uuid',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1, _timelineFilter2].toBuiltList(),
+          timelineFilters: [timelineFilter1, timelineFilter2].toBuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
-            _activeHomeTimelineFilter2,
+            activeHomeTimelineFilter1,
+            activeHomeTimelineFilter2,
           ].toBuiltList(),
         ),
         act: (cubit) => cubit.removeTimelineFilter('1337'),
         expect: () => [
           TimelineFilterState(
-            timelineFilters: [_timelineFilter2].toBuiltList(),
-            activeTimelineFilters: [_activeHomeTimelineFilter2].toBuiltList(),
+            timelineFilters: [timelineFilter2].toBuiltList(),
+            activeTimelineFilters: [activeHomeTimelineFilter2].toBuiltList(),
           ),
         ],
       );
@@ -138,7 +139,7 @@ void main() {
         'does nothing if the uuid does not have a matching filter',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1].toBuiltList(),
+          timelineFilters: [timelineFilter1].toBuiltList(),
           activeTimelineFilters: BuiltList(),
         ),
         act: (cubit) => cubit.duplicateTimelineFilter('aaa'),
@@ -149,7 +150,7 @@ void main() {
         'duplicates a timeline filter with a new uuid',
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
-          timelineFilters: [_timelineFilter1].toBuiltList(),
+          timelineFilters: [timelineFilter1].toBuiltList(),
           activeTimelineFilters: BuiltList(),
         ),
         act: (cubit) => cubit.duplicateTimelineFilter('1337'),
@@ -172,12 +173,12 @@ void main() {
         expect: () => [
           TimelineFilterState(
             timelineFilters: BuiltList(),
-            activeTimelineFilters: [_activeHomeTimelineFilter1].toBuiltList(),
+            activeTimelineFilters: [activeHomeTimelineFilter1].toBuiltList(),
           ),
         ],
         verify: (cubit) {
           final _activeFilterJson = jsonEncode(
-            _activeHomeTimelineFilter1.toJson(),
+            activeHomeTimelineFilter1.toJson(),
           );
 
           expect(
@@ -192,13 +193,13 @@ void main() {
         build: TimelineFilterCubit.new,
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
-          activeTimelineFilters: [_activeHomeTimelineFilter1].toBuiltList(),
+          activeTimelineFilters: [activeHomeTimelineFilter1].toBuiltList(),
         ),
         act: (cubit) => cubit.selectHomeTimelineFilter('1338'),
         expect: () => [
           TimelineFilterState(
             timelineFilters: BuiltList(),
-            activeTimelineFilters: [_activeHomeTimelineFilter2].toBuiltList(),
+            activeTimelineFilters: [activeHomeTimelineFilter2].toBuiltList(),
           ),
         ],
       );
@@ -243,7 +244,7 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeGenericUserTimelineFilter2,
+              activeGenericUserTimelineFilter2,
             ].toBuiltList(),
           ),
         ],
@@ -254,13 +255,13 @@ void main() {
         build: TimelineFilterCubit.new,
         act: (cubit) => cubit.selectUserTimelineFilter(
           '1337',
-          user: const UserData(id: '69', handle: '@harpy_app'),
+          user: const UserData(id: '69', handle: 'harpy_app'),
         ),
         expect: () => [
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
             ].toBuiltList(),
           ),
         ],
@@ -272,7 +273,7 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
           ].toBuiltList(),
         ),
         act: (cubit) => cubit.selectUserTimelineFilter(
@@ -283,7 +284,7 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeSpecificUserTimelineFilter3,
             ].toBuiltList(),
           ),
@@ -296,7 +297,7 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
           ].toBuiltList(),
         ),
         act: (cubit) => cubit.selectUserTimelineFilter(
@@ -353,7 +354,7 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeGenericListTimelineFilter2,
+              activeGenericListTimelineFilter2,
             ].toBuiltList(),
           ),
         ],
@@ -396,7 +397,7 @@ void main() {
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
               _activeSpecificListTimelineFilter1,
-              _activeSpecificListTimelineFilter3,
+              activeSpecificListTimelineFilter3,
             ].toBuiltList(),
           ),
         ],
@@ -420,7 +421,7 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeSpecificListTimelineFilter2,
+              activeSpecificListTimelineFilter2,
             ].toBuiltList(),
           ),
         ],
@@ -435,7 +436,7 @@ void main() {
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -450,9 +451,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -463,7 +464,7 @@ void main() {
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
               _activeGenericUserTimelineFilter1,
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeGenericListTimelineFilter1,
               _activeSpecificListTimelineFilter1,
             ].toBuiltList(),
@@ -479,8 +480,8 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeHomeTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -495,9 +496,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -507,8 +508,8 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeHomeTimelineFilter1,
-              _activeSpecificUserTimelineFilter1,
+              activeHomeTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeGenericListTimelineFilter1,
               _activeSpecificListTimelineFilter1,
             ].toBuiltList(),
@@ -523,9 +524,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -542,9 +543,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeSpecificUserTimelineFilter3,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
@@ -557,9 +558,9 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeHomeTimelineFilter1,
+              activeHomeTimelineFilter1,
               _activeGenericUserTimelineFilter1,
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeGenericListTimelineFilter1,
               _activeSpecificListTimelineFilter1,
             ].toBuiltList(),
@@ -575,9 +576,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
         ),
@@ -591,9 +592,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -603,9 +604,9 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeHomeTimelineFilter1,
+              activeHomeTimelineFilter1,
               _activeGenericUserTimelineFilter1,
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeSpecificListTimelineFilter1,
             ].toBuiltList(),
           ),
@@ -619,9 +620,9 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
           ].toBuiltList(),
@@ -636,12 +637,12 @@ void main() {
         seed: () => TimelineFilterState(
           timelineFilters: BuiltList(),
           activeTimelineFilters: [
-            _activeHomeTimelineFilter1,
+            activeHomeTimelineFilter1,
             _activeGenericUserTimelineFilter1,
-            _activeSpecificUserTimelineFilter1,
+            activeSpecificUserTimelineFilter1,
             _activeGenericListTimelineFilter1,
             _activeSpecificListTimelineFilter1,
-            _activeSpecificListTimelineFilter3,
+            activeSpecificListTimelineFilter3,
           ].toBuiltList(),
         ),
         act: (cubit) => cubit.removeListTimelineFilter(listId: '666'),
@@ -649,9 +650,9 @@ void main() {
           TimelineFilterState(
             timelineFilters: BuiltList(),
             activeTimelineFilters: [
-              _activeHomeTimelineFilter1,
+              activeHomeTimelineFilter1,
               _activeGenericUserTimelineFilter1,
-              _activeSpecificUserTimelineFilter1,
+              activeSpecificUserTimelineFilter1,
               _activeGenericListTimelineFilter1,
               _activeSpecificListTimelineFilter1,
             ].toBuiltList(),
@@ -662,74 +663,9 @@ void main() {
   });
 }
 
-const _timelineFilter1 = TimelineFilter(
-  uuid: '1337',
-  name: 'poi',
-  includes: TimelineFilterIncludes(
-    image: false,
-    gif: false,
-    video: false,
-    phrases: [],
-    hashtags: [],
-    mentions: [],
-  ),
-  excludes: TimelineFilterExcludes(
-    replies: false,
-    retweets: false,
-    phrases: [],
-    hashtags: [],
-    mentions: [],
-  ),
-);
-
-const _timelineFilter2 = TimelineFilter(
-  uuid: '1338',
-  name: 'wow',
-  includes: TimelineFilterIncludes(
-    image: false,
-    gif: false,
-    video: false,
-    phrases: [],
-    hashtags: [],
-    mentions: [],
-  ),
-  excludes: TimelineFilterExcludes(
-    replies: false,
-    retweets: true,
-    phrases: [
-      'ad',
-      'ads',
-      'sponsored',
-    ],
-    hashtags: [],
-    mentions: [],
-  ),
-);
-
-const _activeHomeTimelineFilter1 = ActiveTimelineFilter(
-  uuid: '1337',
-  type: TimelineFilterType.home,
-);
-
-const _activeHomeTimelineFilter2 = ActiveTimelineFilter(
-  uuid: '1338',
-  type: TimelineFilterType.home,
-);
-
 const _activeGenericUserTimelineFilter1 = ActiveTimelineFilter(
   uuid: '1337',
   type: TimelineFilterType.user,
-);
-
-const _activeGenericUserTimelineFilter2 = ActiveTimelineFilter(
-  uuid: '1338',
-  type: TimelineFilterType.user,
-);
-
-const _activeSpecificUserTimelineFilter1 = ActiveTimelineFilter(
-  uuid: '1337',
-  type: TimelineFilterType.user,
-  data: TimelineFilterData.user(handle: '@harpy_app', id: '69'),
 );
 
 const _activeSpecificUserTimelineFilter2 = ActiveTimelineFilter(
@@ -749,25 +685,8 @@ const _activeGenericListTimelineFilter1 = ActiveTimelineFilter(
   type: TimelineFilterType.list,
 );
 
-const _activeGenericListTimelineFilter2 = ActiveTimelineFilter(
-  uuid: '1338',
-  type: TimelineFilterType.list,
-);
-
 const _activeSpecificListTimelineFilter1 = ActiveTimelineFilter(
   uuid: '1337',
   type: TimelineFilterType.list,
   data: TimelineFilterData.list(name: 'Flutter', id: '42'),
-);
-
-const _activeSpecificListTimelineFilter2 = ActiveTimelineFilter(
-  uuid: '1338',
-  type: TimelineFilterType.list,
-  data: TimelineFilterData.list(name: 'Flutter', id: '42'),
-);
-
-const _activeSpecificListTimelineFilter3 = ActiveTimelineFilter(
-  uuid: '1338',
-  type: TimelineFilterType.list,
-  data: TimelineFilterData.list(name: 'Untitled List', id: '666'),
 );
