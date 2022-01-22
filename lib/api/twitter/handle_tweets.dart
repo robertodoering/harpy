@@ -110,46 +110,52 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
     // includes
 
     // filter tweets where every included hashtags are not contained
-    if (filter.includes.hashtags
-        .map(_prepareHashtag)
-        .every(tweetHashtags.containsNot)) {
+    if (filter.includes.hashtags.isNotEmpty &&
+        filter.includes.hashtags
+            .map(_prepareHashtag)
+            .every(tweetHashtags.containsNot)) {
       return true;
     }
 
     // filter tweets where every included mentions are not contained
-    if (filter.includes.mentions
-        .map(_prepareMention)
-        .every(tweetMentions.containsNot)) {
+    if (filter.includes.mentions.isNotEmpty &&
+        filter.includes.mentions
+            .map(_prepareMention)
+            .every(tweetMentions.containsNot)) {
       return true;
     }
 
     // filter tweets where every included keywords / phrases is not contained
-    if (filter.includes.phrases
-        .map((phrase) => phrase.toLowerCase())
-        .every((phrase) => !tweetText.contains(phrase))) {
+    if (filter.includes.phrases.isNotEmpty &&
+        filter.includes.phrases
+            .map((phrase) => phrase.toLowerCase())
+            .every((phrase) => !tweetText.contains(phrase))) {
       return true;
     }
 
     // excludes
 
     // filter tweets where any excluded hashtags are contained
-    if (filter.excludes.hashtags
-        .map(_prepareHashtag)
-        .any(tweetHashtags.contains)) {
+    if (filter.excludes.hashtags.isNotEmpty &&
+        filter.excludes.hashtags
+            .map(_prepareHashtag)
+            .any(tweetHashtags.contains)) {
       return true;
     }
 
     // filter tweets where any excluded mentions are contained
-    if (filter.excludes.mentions
-        .map(_prepareMention)
-        .any(tweetMentions.containsNot)) {
+    if (filter.excludes.mentions.isNotEmpty &&
+        filter.excludes.mentions
+            .map(_prepareMention)
+            .any(tweetMentions.containsNot)) {
       return true;
     }
 
     // filter tweets where any excluded keywords / phrases are contained
-    if (filter.excludes.phrases
-        .map((phrase) => phrase.toLowerCase())
-        .any(tweetText.contains)) {
+    if (filter.excludes.phrases.isNotEmpty &&
+        filter.excludes.phrases
+            .map((phrase) => phrase.toLowerCase())
+            .any(tweetText.contains)) {
       return true;
     }
 
