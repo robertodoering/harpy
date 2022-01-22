@@ -147,7 +147,7 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
     if (filter.excludes.mentions.isNotEmpty &&
         filter.excludes.mentions
             .map(_prepareMention)
-            .any(tweetMentions.containsNot)) {
+            .any(tweetMentions.contains)) {
       return true;
     }
 
