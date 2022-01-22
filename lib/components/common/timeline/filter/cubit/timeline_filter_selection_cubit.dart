@@ -6,7 +6,7 @@ import 'package:harpy/core/core.dart';
 
 part 'timeline_filter_selection_cubit.freezed.dart';
 
-/// Implements common functionality for cubits that that handle timeline filter
+/// Implements common functionality for cubits that handle timeline filter
 /// selection.
 ///
 /// For example implementations, see:
