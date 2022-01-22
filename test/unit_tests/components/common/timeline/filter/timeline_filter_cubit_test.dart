@@ -68,6 +68,102 @@ void main() {
       );
     });
 
+    group('update timeline filter', () {
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'does nothing if the filter has no matching filter with the same uuid',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1].toBuiltList(),
+          activeTimelineFilters: BuiltList(),
+        ),
+        act: (cubit) => cubit.updateTimelineFilter(_timelineFilter2),
+        expect: () => <TimelineFilterState>[],
+      );
+
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'updates a timeline filter with the matching uuid',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1].toBuiltList(),
+          activeTimelineFilters: BuiltList(),
+        ),
+        act: (cubit) => cubit.updateTimelineFilter(
+          _timelineFilter1.copyWith(name: 'updated poi'),
+        ),
+        expect: () => [
+          TimelineFilterState(
+            timelineFilters: [
+              _timelineFilter1.copyWith(name: 'updated poi'),
+            ].toBuiltList(),
+            activeTimelineFilters: BuiltList(),
+          ),
+        ],
+      );
+    });
+
+    group('remove timeline filter', () {
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'does nothing if the uuid does not have a matching filter',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1].toBuiltList(),
+          activeTimelineFilters: BuiltList(),
+        ),
+        act: (cubit) => cubit.removeTimelineFilter('aaa'),
+        expect: () => <TimelineFilterState>[],
+      );
+
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'removes active and timeline filters with the matching uuid',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1, _timelineFilter2].toBuiltList(),
+          activeTimelineFilters: [
+            _activeHomeTimelineFilter1,
+            _activeHomeTimelineFilter2,
+          ].toBuiltList(),
+        ),
+        act: (cubit) => cubit.removeTimelineFilter('1337'),
+        expect: () => [
+          TimelineFilterState(
+            timelineFilters: [_timelineFilter2].toBuiltList(),
+            activeTimelineFilters: [_activeHomeTimelineFilter2].toBuiltList(),
+          ),
+        ],
+      );
+    });
+
+    group('duplicate timeline filter', () {
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'does nothing if the uuid does not have a matching filter',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1].toBuiltList(),
+          activeTimelineFilters: BuiltList(),
+        ),
+        act: (cubit) => cubit.duplicateTimelineFilter('aaa'),
+        expect: () => <TimelineFilterState>[],
+      );
+
+      blocTest<TimelineFilterCubit, TimelineFilterState>(
+        'duplicates a timeline filter with a new uuid',
+        build: TimelineFilterCubit.new,
+        seed: () => TimelineFilterState(
+          timelineFilters: [_timelineFilter1].toBuiltList(),
+          activeTimelineFilters: BuiltList(),
+        ),
+        act: (cubit) => cubit.duplicateTimelineFilter('1337'),
+        verify: (cubit) {
+          expect(cubit.state.timelineFilters.length, equals(2));
+          expect(
+            cubit.state.timelineFilters[0].uuid !=
+                cubit.state.timelineFilters[1].uuid,
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('select home timeline filter', () {
       blocTest<TimelineFilterCubit, TimelineFilterState>(
         'adds home timeline filter and persists it',
