@@ -25,12 +25,12 @@ class TwitterLists extends StatelessWidget {
 
       return TwitterListCard(
         listData,
-        key: Key(listData.idStr),
+        key: Key(listData.id),
         onSelected: onListSelected != null
             ? () => onListSelected!(listData)
             : () => app<HarpyNavigator>().pushListTimelineScreen(
-                  listId: listData.idStr,
-                  name: listData.name,
+                  listId: listData.id,
+                  listName: listData.name,
                 ),
         onLongPress: () => _showListActionBottomSheet(context, listData),
       );
@@ -42,7 +42,7 @@ class TwitterLists extends StatelessWidget {
   int? _indexCallback(Key key, BuiltList<TwitterListData> lists) {
     if (key is ValueKey<String>) {
       final index = lists.indexWhere(
-        (list) => list.idStr == key.value,
+        (list) => list.id == key.value,
       );
 
       if (index != -1) {
@@ -170,8 +170,8 @@ void _showListActionBottomSheet(BuildContext context, TwitterListData list) {
         onTap: () {
           Navigator.of(context).pop();
           app<HarpyNavigator>().pushListMembersScreen(
-            listId: list.idStr,
-            name: list.name,
+            listId: list.id,
+            listName: list.name,
           );
         },
       )

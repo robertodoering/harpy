@@ -17,11 +17,7 @@ class HomeTimelineTopRow extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: config.edgeInsetsOnly(
-          top: true,
-          left: true,
-          right: true,
-        ),
+        padding: config.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: const [
             _RefreshButton(),
@@ -80,16 +76,31 @@ class _FilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
-    final cubit = context.watch<HomeTimelineCubit>();
+
+    final cubit = context.watch<TimelineFilterCubit>();
+    final state = cubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: cubit.filter != TimelineFilter.empty
+      icon: state.homeFilter() != null
           ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
           : const Icon(Icons.filter_alt_outlined),
-      onTap: Scaffold.of(context).openEndDrawer,
+      onTap: () => openHomeTimelineFilterSelection(context),
     );
   }
+}
+
+void openHomeTimelineFilterSelection(BuildContext context) {
+  Navigator.of(context).push(
+    HarpyPageRoute<void>(
+      builder: (_) => TimelineFilterSelection(
+        blocBuilder: (context) => HomeTimelineFilterCubit(
+          timelineFilterCubit: context.read(),
+        ),
+      ),
+      fullscreenDialog: true,
+    ),
+  );
 }

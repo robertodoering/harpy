@@ -19,6 +19,7 @@ class Timeline extends StatefulWidget {
     this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
     this.listKey,
+    this.onChangeFilter,
   });
 
   final TweetBuilder tweetBuilder;
@@ -26,6 +27,10 @@ class Timeline extends StatefulWidget {
   final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
   final Key? listKey;
+
+  /// A callback used to open the filter selection for the
+  /// [TimelineState.noData] state.
+  final VoidCallback? onChangeFilter;
 
   @override
   _TimelineState createState() => _TimelineState();
@@ -140,9 +145,8 @@ class _TimelineState extends State<Timeline> {
                   noData: (_) => [
                     SliverFillLoadingError(
                       message: const Text('no tweets found'),
-                      onClearFilter: cubit.filter != TimelineFilter.empty
-                          ? () => cubit.applyFilter(TimelineFilter.empty)
-                          : null,
+                      onChangeFilter:
+                          cubit.filter != null ? widget.onChangeFilter : null,
                     )
                   ],
                   loadingMore: (_) => [const SliverBoxLoadingIndicator()],

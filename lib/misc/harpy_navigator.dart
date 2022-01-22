@@ -207,25 +207,28 @@ class HarpyNavigator {
     );
   }
 
-  void pushListTimelineScreen({required String listId, String? name}) {
+  void pushListTimelineScreen({
+    required String listId,
+    required String listName,
+  }) {
     pushNamed(
       ListTimelineScreen.route,
       arguments: <String, dynamic>{
         'listId': listId,
-        'name': name,
+        'listName': listName,
       },
     );
   }
 
   void pushListMembersScreen({
     required String listId,
-    String? name,
+    required String listName,
   }) {
     pushNamed(
       ListMembersScreen.route,
       arguments: <String, dynamic>{
         'listId': listId,
-        'name': name,
+        'listName': listName,
       },
     );
   }
@@ -288,13 +291,13 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case ListTimelineScreen.route:
       screen = ListTimelineScreen(
         listId: arguments['listId'],
-        name: arguments['name'],
+        listName: arguments['listName'],
       );
       break;
     case ListMembersScreen.route:
       screen = ListMembersScreen(
         listId: arguments['listId'],
-        name: arguments['name'],
+        name: arguments['listName'],
       );
       break;
     case FollowingScreen.route:

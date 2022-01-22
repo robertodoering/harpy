@@ -14,7 +14,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
     final style = theme.textTheme.subtitle1!.copyWith(fontSize: 14);
 
     return FilterGroup(
-      title: 'general',
+      title: const Text('general'),
       children: [
         Padding(
           padding: config.edgeInsetsSymmetric(horizontal: true),
@@ -78,7 +78,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
   Widget _buildIncludesGroup(TweetSearchFilterModel model) {
     return FilterGroup(
-      title: 'includes',
+      title: const Text('includes'),
       children: [
         FilterListEntry(
           labelText: 'keyword / phrase',
@@ -132,7 +132,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
 
   Widget _buildExcludesGroup(TweetSearchFilterModel model) {
     return FilterGroup(
-      title: 'excludes',
+      title: const Text('excludes'),
       children: [
         FilterListEntry(
           labelText: 'keyword / phrase',

@@ -225,7 +225,7 @@ class AboutScreen extends StatelessWidget {
       leading: const Icon(CupertinoIcons.exclamationmark_shield),
       title: const Text('privacy policy'),
       onTap: () => launchUrl(
-        'https://developer.twitter.com/en/developer-terms/policy',
+        'https://github.com/robertodoering/harpy/blob/master/PRIVACY.md',
       ),
     );
   }

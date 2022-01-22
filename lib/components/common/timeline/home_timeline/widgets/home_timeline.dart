@@ -4,10 +4,10 @@ import 'package:harpy/components/components.dart';
 
 class HomeTimeline extends StatelessWidget {
   const HomeTimeline({
-    this.refreshIndicatorOffset,
+    required this.refreshIndicatorOffset,
   });
 
-  final double? refreshIndicatorOffset;
+  final double refreshIndicatorOffset;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +26,7 @@ class HomeTimeline extends StatelessWidget {
           if (state.hasTweets) const HomeTimelineTopRow(),
         ],
         endSlivers: const [HomeBottomSliverPadding()],
+        onChangeFilter: () => openHomeTimelineFilterSelection(context),
       ),
     );
   }

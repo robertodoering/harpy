@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -112,10 +113,15 @@ class HarpySliverAppBar extends StatelessWidget {
   }
 
   Widget? _leading(BuildContext context) {
+    final parentRoute = ModalRoute.of(context);
+
     if (leading != null) {
       return leading;
     } else if (Scaffold.of(context).hasDrawer) {
       return const DrawerButton();
+    } else if (parentRoute is PageRoute<dynamic> &&
+        parentRoute.fullscreenDialog) {
+      return const _CloseButton();
     } else if (Navigator.of(context).canPop()) {
       return const HarpyBackButton();
     } else {
@@ -151,6 +157,19 @@ class HarpySliverAppBar extends StatelessWidget {
       flexibleSpace: hasFlexibleSpace ? _buildFlexibleSpace(theme) : null,
       expandedHeight: hasFlexibleSpace ? expandedHeight : null,
       bottom: bottom,
+    );
+  }
+}
+
+class _CloseButton extends StatelessWidget {
+  const _CloseButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return HarpyButton.flat(
+      padding: const EdgeInsets.all(16),
+      icon: const Icon(CupertinoIcons.xmark),
+      onTap: Navigator.of(context).maybePop,
     );
   }
 }

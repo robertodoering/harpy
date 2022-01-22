@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
@@ -57,46 +56,43 @@ class _CustomThemeContent extends StatelessWidget {
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<CustomThemeCubit>();
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: cubit.harpyTheme.systemUiStyle,
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
       child: Theme(
         data: cubit.harpyTheme.themeData,
-        child: GestureDetector(
-          onTap: FocusScope.of(context).unfocus,
-          child: HarpyScaffold(
-            title: 'theme customization',
-            backgroundColors:
-                cubit.state.backgroundColors.map(Color.new).toList(),
-            actions: const [_SaveThemeAction()],
-            body: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    padding: config.edgeInsetsSymmetric(vertical: true),
-                    children: [
-                      if (isFree) ...[
-                        const CustomThemeProCard(),
-                        verticalSpacer,
-                      ],
-                      const CustomThemeName(),
+        child: HarpyScaffold(
+          title: 'theme customization',
+          backgroundColors:
+              cubit.state.backgroundColors.map(Color.new).toList(),
+          actions: const [_SaveThemeAction()],
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: config.edgeInsetsSymmetric(vertical: true),
+                  children: [
+                    if (isFree) ...[
+                      const CustomThemeProCard(),
                       verticalSpacer,
-                      const CustomThemePrimaryColor(),
-                      verticalSpacer,
-                      const CustomThemeSecondaryColor(),
-                      verticalSpacer,
-                      const CustomThemeCardColor(),
-                      verticalSpacer,
-                      const CustomThemeStatusBarColor(),
-                      verticalSpacer,
-                      const CustomThemeNavBarColor(),
-                      verticalSpacer,
-                      const CustomThemeBackgroundColors(),
-                      SizedBox(height: mediaQuery.padding.bottom),
                     ],
-                  ),
+                    const CustomThemeName(),
+                    verticalSpacer,
+                    const CustomThemePrimaryColor(),
+                    verticalSpacer,
+                    const CustomThemeSecondaryColor(),
+                    verticalSpacer,
+                    const CustomThemeCardColor(),
+                    verticalSpacer,
+                    const CustomThemeStatusBarColor(),
+                    verticalSpacer,
+                    const CustomThemeNavBarColor(),
+                    verticalSpacer,
+                    const CustomThemeBackgroundColors(),
+                    SizedBox(height: mediaQuery.padding.bottom),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -125,22 +121,17 @@ class _WillPopCustomTheme extends StatelessWidget {
         builder: (_) => const HarpyDialog(
           title: Text('discard changes?'),
           actions: [
-            DialogAction(
-              result: false,
-              text: 'cancel',
-            ),
-            DialogAction(
-              result: true,
-              text: 'discard',
-            ),
+            DialogAction(result: false, text: 'cancel'),
+            DialogAction(result: true, text: 'discard'),
           ],
         ),
       );
 
-      pop = discard != null && discard;
+      pop = discard ?? false;
     }
 
     if (pop) {
+      updateSystemUi(harpyTheme);
       return true;
     } else {
       return false;

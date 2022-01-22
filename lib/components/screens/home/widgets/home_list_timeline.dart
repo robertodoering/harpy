@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/components/components.dart';
 
-/// Wraps the [ListTimeline] with a [BlocProvider] for the matching bloc from
+/// Wraps the [ListTimeline] with a [BlocProvider] for the matching cubit from
 /// the [HomeListsProvider].
 class HomeListTimeline extends StatelessWidget {
   const HomeListTimeline({
     required this.listId,
-    required this.name,
+    required this.listName,
   });
 
   final String listId;
-  final String? name;
+  final String listName;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class HomeListTimeline extends StatelessWidget {
       return BlocProvider.value(
         value: cubit,
         child: ListTimeline(
-          name: name,
+          listName: listName,
           beginSlivers: const [HomeTopSliverPadding()],
           endSlivers: const [HomeBottomSliverPadding()],
           refreshIndicatorOffset: config.bottomAppBar

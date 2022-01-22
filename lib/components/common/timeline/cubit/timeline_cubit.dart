@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
@@ -15,6 +15,9 @@ part 'timeline_cubit.freezed.dart';
 /// Implementations can use the generic type to build their own custom data
 /// which available in [TimelineStateData].
 ///
+/// Listens to the [TimelineFilterCubit] and updates the timeline when the
+/// filter changes.
+///
 /// For example implementations, see:
 /// * [HomeTimelineCubit]
 /// * [LikesTimelineCubit]
@@ -23,9 +26,34 @@ part 'timeline_cubit.freezed.dart';
 /// * [MentionsTimelineCubit]
 abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
     with RequestLock, HarpyLogger {
-  TimelineCubit() : super(const TimelineState.initial());
+  TimelineCubit({
+    TimelineFilterCubit? timelineFilterCubit,
+  }) : super(const TimelineState.initial()) {
+    if (timelineFilterCubit != null) {
+      filter = filterFromState(timelineFilterCubit.state);
 
-  TimelineFilter filter = TimelineFilter.empty;
+      filterSubscription = timelineFilterCubit.stream.listen((state) {
+        final newFilter = filterFromState(state);
+
+        if (filter != newFilter) {
+          applyFilter(newFilter);
+        }
+      });
+    }
+  }
+
+  late final StreamSubscription? filterSubscription;
+
+  TimelineFilter? filter;
+
+  @override
+  Future<void> close() async {
+    await filterSubscription?.cancel();
+    await super.close();
+  }
+
+  @protected
+  TimelineFilter? filterFromState(TimelineFilterState state) {}
 
   @protected
   Future<List<Tweet>> request({
@@ -38,9 +66,6 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
 
   @protected
   int get restoredTweetId => 0;
-
-  @protected
-  void persistFilter(String encodedFilter) {}
 
   @protected
   T? buildCustomData() {}
@@ -189,17 +214,8 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
     }
   }
 
-  void applyFilter(TimelineFilter timelineFilter) {
-    log.fine('set home timeline filter');
-
-    try {
-      final encodedFilter = jsonEncode(timelineFilter.toJson());
-      log.finer('saving filter: $encodedFilter');
-
-      persistFilter(encodedFilter);
-    } catch (e, st) {
-      log.warning('unable to encode timeline filter', e, st);
-    }
+  void applyFilter(TimelineFilter? timelineFilter) {
+    log.fine('applied timeline filter');
 
     filter = timelineFilter;
     load(clearPrevious: true);

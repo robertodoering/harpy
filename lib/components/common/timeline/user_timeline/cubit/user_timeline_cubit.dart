@@ -4,30 +4,27 @@ import 'package:harpy/core/core.dart';
 
 class UserTimelineCubit extends TimelineCubit {
   UserTimelineCubit({
-    required this.handle,
-  }) {
-    filter = TimelineFilter.fromJsonString(
-      app<TimelineFilterPreferences>().userTimelineFilter,
-    );
-
+    required TimelineFilterCubit timelineFilterCubit,
+    required this.id,
+  }) : super(timelineFilterCubit: timelineFilterCubit) {
     loadInitial();
   }
 
-  final String? handle;
+  final String id;
+
+  @override
+  TimelineFilter? filterFromState(TimelineFilterState state) {
+    return state.userFilter(id);
+  }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
     return app<TwitterApi>().timelineService.userTimeline(
-          screenName: handle,
+          userId: id,
           count: 200,
           sinceId: sinceId,
           maxId: maxId,
-          excludeReplies: filter.excludesReplies,
+          excludeReplies: filter?.excludes.replies,
         );
-  }
-
-  @override
-  void persistFilter(String encodedFilter) {
-    app<TimelineFilterPreferences>().userTimelineFilter = encodedFilter;
   }
 }

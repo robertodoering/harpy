@@ -6,7 +6,7 @@ class TwitterListData {
     name = list.name ?? '';
     createdAt = list.createdAt;
     subscriberCount = list.subscriberCount;
-    idStr = list.idStr ?? '';
+    id = list.idStr ?? '';
     memberCount = list.memberCount;
     mode = list.mode ?? 'public';
     description = list.description;
@@ -17,7 +17,7 @@ class TwitterListData {
   late String name;
   DateTime? createdAt;
   int? subscriberCount;
-  late String idStr;
+  late String id;
   int? memberCount;
 
   /// Can be 'private' or 'public'.

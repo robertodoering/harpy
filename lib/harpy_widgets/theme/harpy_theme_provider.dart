@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
@@ -16,14 +15,18 @@ class HarpyThemeProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider2<ThemeBloc, Brightness, HarpyTheme>(
       update: (_, themeBloc, systemBrightness, __) {
-        return systemBrightness == Brightness.light
+        final harpyTheme = systemBrightness == Brightness.light
             ? themeBloc.state.lightHarpyTheme
             : themeBloc.state.darkHarpyTheme;
+
+        // match the system ui to the current theme
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          updateSystemUi(harpyTheme);
+        });
+
+        return harpyTheme;
       },
-      builder: (context, _) => AnnotatedRegion<SystemUiOverlayStyle>(
-        value: context.watch<HarpyTheme>().systemUiStyle,
-        child: child,
-      ),
+      child: child,
     );
   }
 }

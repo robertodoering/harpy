@@ -59,6 +59,7 @@ class _DynamicAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollDirection = ScrollDirection.of(context)!;
+    final harpyTheme = context.watch<HarpyTheme>();
     final config = context.watch<ConfigCubit>().state;
 
     return AnimatedShiftedPosition(
@@ -67,8 +68,11 @@ class _DynamicAppBar extends StatelessWidget {
               ? const Offset(0, 1)
               : const Offset(0, -1)
           : Offset.zero,
-      child: HomeTabBar(
-        padding: padding,
+      child: AnnotatedRegion(
+        value: harpyTheme.systemUiStyle,
+        child: HomeTabBar(
+          padding: padding,
+        ),
       ),
     );
   }

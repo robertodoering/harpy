@@ -37,6 +37,14 @@ class MockMentionsTimelineCubit extends Mock implements MentionsTimelineCubit {
   }
 }
 
+class MockTimelineFilterCubit extends Mock implements TimelineFilterCubit {
+  MockTimelineFilterCubit(TimelineFilterState initialState) {
+    when(() => state).thenReturn(initialState);
+    when(() => stream).thenAnswer((_) => Stream.value(initialState));
+    when(close).thenAnswer((_) async {});
+  }
+}
+
 class MockHarpyNavigator extends Mock implements HarpyNavigator {}
 
 class MockMessageService extends Mock implements MessageService {}

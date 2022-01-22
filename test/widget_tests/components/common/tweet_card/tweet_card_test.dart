@@ -10,13 +10,9 @@ import '../../../../test_setup/data.dart';
 import '../../../../test_setup/setup.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
+  setUpAll(loadAppFonts);
 
-  setUp(() async {
-    await setupApp();
-  });
+  setUp(setupApp);
 
   tearDown(app.reset);
 

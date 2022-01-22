@@ -32,19 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => HomeTabModel()),
-          ChangeNotifierProvider(create: (_) => TimelineFilterModel.home()),
           BlocProvider(create: (_) => TrendsLocationsCubit()..load()),
           BlocProvider(create: (_) => TrendsCubit()..findTrends())
         ],
         child: Builder(
           builder: (context) => HomeListsProvider(
-            model: context.watch<HomeTabModel>(),
-            // scroll direction listener has to be built above the filter
-            child: const ScrollDirectionListener(
-              depth: 1,
-              child: HarpyScaffold(
-                endDrawer: HomeTimelineFilterDrawer(),
-                body: HomeTabView(),
+            model: context.read(),
+            child: const HarpyScaffold(
+              body: ScrollDirectionListener(
+                depth: 1,
+                child: HomeTabView(),
               ),
             ),
           ),

@@ -8,13 +8,13 @@ import 'package:harpy/misc/misc.dart';
 
 class ListTimeline extends StatelessWidget {
   const ListTimeline({
-    this.name,
+    required this.listName,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
   });
 
-  final String? name;
+  final String listName;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
@@ -30,10 +30,16 @@ class ListTimeline extends StatelessWidget {
         listKey: PageStorageKey('list_timeline_${cubit.listId}'),
         beginSlivers: [
           ...beginSlivers,
-          if (state.hasTweets) _TopRow(listId: cubit.listId, name: name),
+          if (state.hasTweets)
+            _TopRow(listId: cubit.listId, listName: listName),
         ],
         endSlivers: endSlivers,
         refreshIndicatorOffset: refreshIndicatorOffset,
+        onChangeFilter: () => _openListTimelineFilterSelection(
+          context,
+          listId: cubit.listId,
+          listName: listName,
+        ),
       ),
     );
   }
@@ -42,11 +48,11 @@ class ListTimeline extends StatelessWidget {
 class _TopRow extends StatelessWidget {
   const _TopRow({
     required this.listId,
-    this.name,
+    required this.listName,
   });
 
   final String listId;
-  final String? name;
+  final String listName;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +84,7 @@ class _TopRow extends StatelessWidget {
               icon: const Icon(CupertinoIcons.person_2),
               onTap: () => app<HarpyNavigator>().pushListMembersScreen(
                 listId: listId,
-                name: name,
+                listName: listName,
               ),
             ),
             horizontalSpacer,
@@ -86,14 +92,37 @@ class _TopRow extends StatelessWidget {
               padding: config.edgeInsets,
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
-              icon: cubit.filter != TimelineFilter.empty
+              icon: cubit.filter != null
                   ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
                   : const Icon(Icons.filter_alt_outlined),
-              onTap: Scaffold.of(context).openEndDrawer,
+              onTap: () => _openListTimelineFilterSelection(
+                context,
+                listId: listId,
+                listName: listName,
+              ),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+void _openListTimelineFilterSelection(
+  BuildContext context, {
+  required String listId,
+  required String listName,
+}) {
+  Navigator.of(context).push(
+    HarpyPageRoute<void>(
+      builder: (_) => TimelineFilterSelection(
+        blocBuilder: (context) => ListTimelineFilterCubit(
+          timelineFilterCubit: context.read(),
+          listId: listId,
+          listName: listName,
+        ),
+      ),
+      fullscreenDialog: true,
+    ),
+  );
 }
