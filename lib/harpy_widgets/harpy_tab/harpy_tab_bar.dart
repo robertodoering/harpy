@@ -26,8 +26,8 @@ class HarpyTabBar extends StatefulWidget {
 }
 
 class _HarpyTapBarState extends State<HarpyTabBar> {
-  TabController? _tabController;
-  AutoScrollController? _scrollController;
+  late AutoScrollController? _scrollController;
+  late TabController? _tabController;
 
   int _currentIndex = 0;
 
@@ -43,15 +43,15 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
     super.didChangeDependencies();
 
     _tabController = DefaultTabController.of(context);
-    _tabController!.animation!.addListener(_tabControllerListener);
+    _tabController?.animation?.addListener(_tabControllerListener);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    _tabController!.animation!.removeListener(_tabControllerListener);
-    _scrollController!.dispose();
+    _tabController?.animation?.removeListener(_tabControllerListener);
+    _scrollController?.dispose();
   }
 
   void _tabControllerListener() {
@@ -59,11 +59,19 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
       // rebuild tabs with new animation value
       setState(() {});
 
-      final newIndex = _tabController!.animation!.value.round();
+      final newIndex = _tabController?.animation?.value.round() ?? 0;
 
       if (_currentIndex != newIndex) {
         // content changed, scroll tab bar to show active tab
-        _scrollToIndex(newIndex);
+
+        // we delay until we scroll in case the index changed in quick
+        // succession (e.g. when switching from index 0 to 3, the index changes
+        // from 0 to 1 to 2 and finally to 3)
+        Future<void>.delayed(const Duration(milliseconds: 100)).then((_) {
+          if (_currentIndex == newIndex) {
+            _scrollToIndex(newIndex);
+          }
+        });
       }
 
       _currentIndex = newIndex;
@@ -71,7 +79,7 @@ class _HarpyTapBarState extends State<HarpyTabBar> {
   }
 
   void _scrollToIndex(int index) {
-    _scrollController!.scrollToIndex(
+    _scrollController?.scrollToIndex(
       index,
       duration: kLongAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
