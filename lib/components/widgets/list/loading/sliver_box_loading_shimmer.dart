@@ -18,9 +18,16 @@ class SliverBoxLoadingShimmer extends StatelessWidget {
       child: FadeAnimation(
         duration: kShortAnimationDuration,
         curve: Curves.easeInOut,
-        child: Shimmer.fromColors(
-          baseColor: theme.cardTheme.color!.withOpacity(.3),
-          highlightColor: theme.colorScheme.secondary,
+        child: Shimmer(
+          gradient: LinearGradient(
+            colors: [
+              theme.cardTheme.color!.withOpacity(.3),
+              theme.cardTheme.color!.withOpacity(.3),
+              theme.colorScheme.secondary,
+              theme.cardTheme.color!.withOpacity(.3),
+              theme.cardTheme.color!.withOpacity(.3),
+            ],
+          ),
           child: child,
         ),
       ),

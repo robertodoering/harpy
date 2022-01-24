@@ -54,9 +54,16 @@ class HarpyImage extends StatelessWidget {
       duration: kShortAnimationDuration,
       child: loadingProgress == null
           ? child
-          : Shimmer.fromColors(
-              baseColor: theme.cardTheme.color!.withOpacity(.3),
-              highlightColor: theme.colorScheme.secondary,
+          : Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  theme.cardTheme.color!.withOpacity(.3),
+                  theme.cardTheme.color!.withOpacity(.3),
+                  theme.colorScheme.secondary,
+                  theme.cardTheme.color!.withOpacity(.3),
+                  theme.cardTheme.color!.withOpacity(.3),
+                ],
+              ),
               child: Container(color: theme.cardTheme.color),
             ),
     );
