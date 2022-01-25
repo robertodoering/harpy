@@ -32,6 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => HomeTabModel()),
+          // TODO: consider making trends cubits global to avoid having to pass
+          //  them to the search screen
           BlocProvider(create: (_) => TrendsLocationsCubit()..load()),
           BlocProvider(create: (_) => TrendsCubit()..findTrends())
         ],
