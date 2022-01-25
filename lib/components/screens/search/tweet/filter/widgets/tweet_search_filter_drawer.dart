@@ -13,7 +13,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   ) {
     final style = theme.textTheme.subtitle1!.copyWith(fontSize: 14);
 
-    return FilterGroup(
+    return ExpansionCard(
       title: const Text('general'),
       children: [
         Padding(
@@ -77,7 +77,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   }
 
   Widget _buildIncludesGroup(TweetSearchFilterModel model) {
-    return FilterGroup(
+    return ExpansionCard(
       title: const Text('includes'),
       children: [
         FilterListEntry(
@@ -131,7 +131,7 @@ class TweetSearchFilterDrawer extends StatelessWidget {
   }
 
   Widget _buildExcludesGroup(TweetSearchFilterModel model) {
-    return FilterGroup(
+    return ExpansionCard(
       title: const Text('excludes'),
       children: [
         FilterListEntry(

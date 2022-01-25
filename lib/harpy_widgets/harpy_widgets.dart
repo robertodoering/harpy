@@ -25,6 +25,7 @@ export 'harpy_tab/harpy_tab.dart';
 export 'harpy_tab/harpy_tab_bar.dart';
 export 'harpy_widgets.dart';
 export 'image_gallery/harpy_media_gallery.dart';
+export 'misc/expansion_card.dart';
 export 'misc/harpy_background.dart';
 export 'misc/harpy_circle_avatar.dart';
 export 'misc/harpy_color_picker.dart';

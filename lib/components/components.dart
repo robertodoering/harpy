@@ -211,7 +211,6 @@ export 'widgets/dialogs/color_picker_dialog.dart';
 export 'widgets/dialogs/logout_dialog.dart';
 export 'widgets/dialogs/manage_storage_permission_dialog.dart';
 export 'widgets/filter/filter_drawer.dart';
-export 'widgets/filter/filter_group.dart';
 export 'widgets/filter/filter_list_entry.dart';
 export 'widgets/filter/filter_switch_tile.dart';
 export 'widgets/list/list_card_animation.dart';
