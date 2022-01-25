@@ -35,7 +35,6 @@ void showTweetActionsBottomSheet(
 
   showHarpyBottomSheet<void>(
     context,
-    hapticFeedback: true,
     children: [
       BottomSheetHeader(
         child: Column(

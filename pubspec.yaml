@@ -44,6 +44,7 @@ dependencies:
   location: ^4.1.1
   logging: ^1.0.1
   mime_type: ^1.0.0
+  modal_bottom_sheet: ^2.0.0
   oauth1: ^2.0.0
   package_info_plus: ^1.3.0
   path_provider: ^2.0.3

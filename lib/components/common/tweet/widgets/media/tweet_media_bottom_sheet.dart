@@ -23,7 +23,6 @@ void showTweetMediaBottomSheet(
 
   showHarpyBottomSheet<void>(
     context,
-    hapticFeedback: true,
     children: [
       HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
