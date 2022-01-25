@@ -214,23 +214,23 @@ class HarpyTheme {
   void _setupTweetActionColors() {
     favoriteColor = _calculateBestContrastColor(
       colors: [
-        Colors.pink[300]!,
-        Colors.redAccent[700]!,
+        Colors.pinkAccent[200]!,
+        Colors.pinkAccent[400]!,
       ],
       baseLuminance: _backgroundLuminance,
     );
 
     retweetColor = _calculateBestContrastColor(
       colors: [
-        Colors.lightGreen[100]!,
-        Colors.green[800]!,
+        Colors.lightGreen[500]!,
+        Colors.green[700]!,
       ],
       baseLuminance: _backgroundLuminance,
     );
 
     translateColor = _calculateBestContrastColor(
       colors: [
-        Colors.lightBlueAccent[100]!,
+        Colors.lightBlueAccent[200]!,
         Colors.indigoAccent[700]!,
       ],
       baseLuminance: _backgroundLuminance,
