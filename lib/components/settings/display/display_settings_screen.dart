@@ -14,14 +14,12 @@ class DisplaySettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final theme = Theme.of(context);
-
     final configCubit = context.watch<ConfigCubit>();
     final config = configCubit.state;
 
     return HarpyScaffold(
       title: 'display settings',
+      buildSafeArea: true,
       actions: [
         CustomPopupMenuButton<void>(
           icon: const Icon(CupertinoIcons.ellipsis_vertical),
@@ -50,88 +48,114 @@ class DisplaySettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            children: [
-              const HarpyListTile(
-                leading: Icon(CupertinoIcons.textformat_size),
-                title: Text('font size'),
-              ),
-              SliderTheme(
-                data: theme.sliderTheme.copyWith(
-                  activeTrackColor: theme.colorScheme.secondary,
-                  thumbColor: theme.colorScheme.secondary,
-                  valueIndicatorColor:
-                      theme.colorScheme.secondary.withOpacity(.8),
-                  valueIndicatorTextStyle: theme.textTheme.subtitle1!.copyWith(
-                    color: theme.colorScheme.onSecondary,
-                    fontSize: 13,
-                  ),
-                ),
-                child: Slider(
-                  value: config.fontSizeDelta,
-                  label: config.fontSizeDeltaName,
-                  min: -4,
-                  max: 4,
-                  divisions: 4,
-                  onChanged: (value) {
-                    if (value != config.fontSizeDelta) {
-                      HapticFeedback.lightImpact();
-
-                      configCubit.updateFontSizeDelta(value);
-                    }
-                  },
-                ),
-              ),
-              _FontRadioDialogTile(
-                title: 'body font',
-                appBarTitle: 'select a body font',
-                leadingIcon: CupertinoIcons.textformat,
-                font: config.bodyFont,
-                onChanged: (value) {
-                  HapticFeedback.lightImpact();
-
-                  configCubit.updateBodyFont(value);
-                },
-              ),
-              _FontRadioDialogTile(
-                title: 'display font',
-                appBarTitle: 'select a display font',
-                leadingIcon: CupertinoIcons.textformat,
-                font: config.displayFont,
-                onChanged: (value) {
-                  HapticFeedback.lightImpact();
-
-                  configCubit.updateDisplayFont(value);
-                },
-              ),
-              HarpySwitchTile(
-                leading: const Icon(CupertinoIcons.rectangle_compress_vertical),
-                title: const Text('compact layout'),
-                subtitle: const Text('use a visually dense layout'),
-                value: config.compactMode,
-                onChanged: (value) {
-                  HapticFeedback.lightImpact();
-
-                  configCubit.updateCompactMode(value);
-                },
-              ),
-              HarpySwitchTile(
-                leading: const Icon(CupertinoIcons.calendar),
-                title: const Text('show absolute tweet time'),
-                value: config.showAbsoluteTime,
-                onChanged: (value) {
-                  HapticFeedback.lightImpact();
-
-                  configCubit.updateShowAbsoluteTime(value);
-                },
-              ),
-              SizedBox(
-                height: mediaQuery.padding.bottom,
-              )
-            ],
-          )
+          Padding(
+            padding: config.edgeInsets,
+            child: const _DisplaySettingsContent(),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class _DisplaySettingsContent extends StatelessWidget {
+  const _DisplaySettingsContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final configCubit = context.watch<ConfigCubit>();
+    final config = configCubit.state;
+
+    return Column(
+      children: [
+        ExpansionCard(
+          title: const Text('font'),
+          children: [
+            const HarpyListTile(
+              leading: Icon(CupertinoIcons.textformat_size),
+              title: Text('font size'),
+            ),
+            SliderTheme(
+              data: theme.sliderTheme.copyWith(
+                activeTrackColor: theme.colorScheme.secondary,
+                thumbColor: theme.colorScheme.secondary,
+                valueIndicatorColor:
+                    theme.colorScheme.secondary.withOpacity(.8),
+                valueIndicatorTextStyle: theme.textTheme.subtitle1!.copyWith(
+                  color: theme.colorScheme.onSecondary,
+                  fontSize: 13,
+                ),
+              ),
+              child: Slider(
+                value: config.fontSizeDelta,
+                label: config.fontSizeDeltaName,
+                min: -4,
+                max: 4,
+                divisions: 4,
+                onChanged: (value) {
+                  if (value != config.fontSizeDelta) {
+                    HapticFeedback.lightImpact();
+                    configCubit.updateFontSizeDelta(value);
+                  }
+                },
+              ),
+            ),
+            _FontRadioDialogTile(
+              title: 'body font',
+              appBarTitle: 'select a body font',
+              leadingIcon: CupertinoIcons.textformat,
+              font: config.bodyFont,
+              onChanged: (value) {
+                HapticFeedback.lightImpact();
+                configCubit.updateBodyFont(value);
+              },
+            ),
+            _FontRadioDialogTile(
+              title: 'display font',
+              appBarTitle: 'select a display font',
+              leadingIcon: CupertinoIcons.textformat,
+              font: config.displayFont,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: kRadius,
+                bottomRight: kRadius,
+              ),
+              onChanged: (value) {
+                HapticFeedback.lightImpact();
+                configCubit.updateDisplayFont(value);
+              },
+            ),
+          ],
+        ),
+        verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.rectangle_compress_vertical),
+            title: const Text('compact layout'),
+            subtitle: const Text('use a visually dense layout'),
+            value: config.compactMode,
+            borderRadius: kBorderRadius,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              configCubit.updateCompactMode(value);
+            },
+          ),
+        ),
+        verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.calendar),
+            title: const Text('show absolute tweet time'),
+            value: config.showAbsoluteTime,
+            borderRadius: kBorderRadius,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              configCubit.updateShowAbsoluteTime(value);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -143,6 +167,7 @@ class _FontRadioDialogTile extends StatelessWidget {
     required this.font,
     required this.onChanged,
     required this.leadingIcon,
+    this.borderRadius,
   });
 
   final String title;
@@ -150,6 +175,7 @@ class _FontRadioDialogTile extends StatelessWidget {
   final String font;
   final IconData leadingIcon;
   final ValueChanged<String> onChanged;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +183,7 @@ class _FontRadioDialogTile extends StatelessWidget {
       title: Text(title),
       leading: Icon(leadingIcon),
       subtitle: Text(font),
+      borderRadius: borderRadius,
       onTap: () => app<HarpyNavigator>().push<String>(
         HarpyPageRoute(
           builder: (_) => FontSelectionScreen(

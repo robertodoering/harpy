@@ -30,9 +30,6 @@ class ThemeSelectionScreen extends StatelessWidget {
           HarpyTheme.fromData(data: predefinedThemes[i], config: config),
           selectedLightTheme: i == lightThemeId,
           selectedDarkTheme: i == darkThemeId,
-          // false positive
-          // ignore: avoid_redundant_argument_values
-          enableBottomSheet: isPro,
           onTap: () => selectTheme(
             themeBloc: bloc,
             lightThemeId: lightThemeId,
@@ -64,7 +61,6 @@ class ThemeSelectionScreen extends StatelessWidget {
             ),
             selectedLightTheme: i + 10 == lightThemeId,
             selectedDarkTheme: i + 10 == darkThemeId,
-            enableBottomSheet: true,
             onTap: () {
               if (lightThemeId == i + 10 && darkThemeId == i + 10) {
                 // already selected as light a dark theme, edit selected theme

@@ -4,21 +4,33 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 import 'package:provider/provider.dart';
 
-class FilterGroup extends StatefulWidget {
-  const FilterGroup({
+/// A card which can collapse to hide its children.
+///
+/// Similar to the material [ExpansionPanel].
+class ExpansionCard extends StatefulWidget {
+  const ExpansionCard({
     required this.title,
     required this.children,
+    this.initiallyCollapsed = false,
   });
 
   final Widget title;
   final List<Widget> children;
+  final bool initiallyCollapsed;
 
   @override
-  State<FilterGroup> createState() => _FilterGroupState();
+  State<ExpansionCard> createState() => _ExpansionCardState();
 }
 
-class _FilterGroupState extends State<FilterGroup> {
-  bool _collapsed = false;
+class _ExpansionCardState extends State<ExpansionCard> {
+  late bool _collapsed;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _collapsed = widget.initiallyCollapsed;
+  }
 
   @override
   Widget build(BuildContext context) {

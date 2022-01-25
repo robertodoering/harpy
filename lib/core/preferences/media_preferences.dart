@@ -81,6 +81,7 @@ class MediaPreferences {
   /// Sets all media settings to the default settings.
   void defaultSettings() {
     bestMediaQuality = 2;
+    cropImage = false;
     autoplayMedia = 1;
     autoplayVideos = 2;
     openLinksExternally = false;

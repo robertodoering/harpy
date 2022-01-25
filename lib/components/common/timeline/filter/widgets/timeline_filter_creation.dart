@@ -90,7 +90,7 @@ class _FilterGroups extends StatelessWidget {
       delegate: SliverChildListDelegate([
         _FilterName(initialName: timelineFilter.name),
         verticalSpacer,
-        FilterGroup(
+        ExpansionCard(
           title: const Text('includes'),
           children: [
             FilterSwitchTile(
@@ -133,7 +133,7 @@ class _FilterGroups extends StatelessWidget {
           ],
         ),
         verticalSpacer,
-        FilterGroup(
+        ExpansionCard(
           title: const Text('excludes'),
           children: [
             FilterSwitchTile(

@@ -76,7 +76,7 @@ class HarpyListTile extends StatelessWidget {
                       children: [
                         if (title != null)
                           DefaultTextStyle(
-                            maxLines: multilineTitle ? null : 1,
+                            maxLines: multilineTitle ? 3 : 1,
                             overflow: TextOverflow.ellipsis,
                             style: textStyle.copyWith(
                               height: multilineTitle ? null : 1,

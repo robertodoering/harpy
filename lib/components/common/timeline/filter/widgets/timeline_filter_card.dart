@@ -176,7 +176,6 @@ void _showTimelineFilterCardBottomSheet(
   required TimelineFilter filter,
   required TimelineFilterSelectionCubit cubit,
 }) {
-  HapticFeedback.lightImpact();
   final theme = Theme.of(context);
 
   showHarpyBottomSheet<void>(

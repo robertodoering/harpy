@@ -248,6 +248,7 @@ class _Entries extends StatelessWidget {
         title: const Text('search'),
         onTap: () => app<HarpyNavigator>().pushSearchScreen(
           trendsCubit: context.read<TrendsCubit>(),
+          trendsLocationsCubit: context.read<TrendsLocationsCubit>(),
         ),
       ),
       verticalSpacer,

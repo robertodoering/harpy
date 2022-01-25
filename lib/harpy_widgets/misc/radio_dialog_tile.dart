@@ -23,6 +23,7 @@ class RadioDialogTile<T> extends StatelessWidget {
     this.enabled = true,
     this.denseRadioTiles = false,
     this.popOnOpen = false,
+    this.borderRadius,
   })  : assert(titles.length == values.length),
         assert(subtitles == null || subtitles.length == titles.length);
 
@@ -56,6 +57,7 @@ class RadioDialogTile<T> extends StatelessWidget {
   final Widget? trailing;
   final EdgeInsets? trailingPadding;
   final bool popOnOpen;
+  final BorderRadius? borderRadius;
 
   Widget _buildDialog(BuildContext context) {
     return HarpyDialog(
@@ -94,10 +96,12 @@ class RadioDialogTile<T> extends StatelessWidget {
     return HarpyListTile(
       leading: Icon(leading),
       title: Text(title),
+      multilineTitle: true,
       subtitle: subtitle != null ? Text(subtitle!) : null,
       enabled: enabled,
       trailing: trailing,
       trailingPadding: trailingPadding,
+      borderRadius: borderRadius,
       onTap: () {
         if (popOnOpen) {
           Navigator.of(context).pop();

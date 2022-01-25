@@ -22,9 +22,7 @@ class SetupAppearanceContent extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: const [
           PreviewTweetCard(
-            userName: 'Example tweet',
-            userHandle: 'example',
-            text: 'Thank you for using Harpy!',
+            text: 'Thank you for using harpy!',
           ),
           _AnimatedVerticalSpacer(),
           _AnimatedVerticalSpacer(),
@@ -115,9 +113,6 @@ class _Theme extends StatelessWidget {
             HarpyTheme.fromData(data: predefinedThemes[i], config: config),
             selectedLightTheme: i == lightThemeId,
             selectedDarkTheme: i == darkThemeId,
-            // false positive
-            // ignore: avoid_redundant_argument_values
-            enableBottomSheet: isPro,
             onTap: () => selectTheme(
               themeBloc: bloc,
               lightThemeId: lightThemeId,

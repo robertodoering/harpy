@@ -1,3 +1,6 @@
+// false positive
+// ignore_for_file: avoid_redundant_argument_values
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +20,6 @@ class ThemeCard extends StatelessWidget {
     required this.onTap,
     required this.onSelectLightTheme,
     required this.onSelectDarkTheme,
-    this.enableBottomSheet = false,
     this.onEdit,
     this.onDelete,
   });
@@ -28,14 +30,15 @@ class ThemeCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onSelectLightTheme;
   final VoidCallback onSelectDarkTheme;
-  final bool enableBottomSheet;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
   void _showBottomSheet(BuildContext context) {
-    showThemeSelectionBottomSheet(
+    _showThemeSelectionBottomSheet(
       context,
       name: harpyTheme.name,
+      selectedLightTheme: selectedLightTheme,
+      selectedDarkTheme: selectedDarkTheme,
       onSelectLightTheme: onSelectLightTheme,
       onSelectDarkTheme: onSelectDarkTheme,
       onDelete: onDelete,
@@ -64,7 +67,7 @@ class ThemeCard extends StatelessWidget {
       child: InkWell(
         borderRadius: kBorderRadius,
         onTap: onTap,
-        onLongPress: enableBottomSheet ? () => _showBottomSheet(context) : null,
+        onLongPress: () => _showBottomSheet(context),
         child: Row(
           children: [
             Expanded(
@@ -102,15 +105,14 @@ class ThemeCard extends StatelessWidget {
                   ),
                 ),
             ],
-            if (enableBottomSheet)
-              HarpyButton.flat(
-                padding: config.edgeInsets,
-                icon: const Icon(CupertinoIcons.ellipsis_vertical),
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  _showBottomSheet(context);
-                },
-              ),
+            HarpyButton.flat(
+              padding: config.edgeInsets,
+              icon: const Icon(CupertinoIcons.ellipsis_vertical),
+              onTap: () {
+                HapticFeedback.lightImpact();
+                _showBottomSheet(context);
+              },
+            ),
           ],
         ),
       ),
@@ -188,9 +190,11 @@ class _ThemeCardBase extends StatelessWidget {
   }
 }
 
-void showThemeSelectionBottomSheet(
+void _showThemeSelectionBottomSheet(
   BuildContext context, {
   required String name,
+  required bool selectedLightTheme,
+  required bool selectedDarkTheme,
   required VoidCallback onSelectLightTheme,
   required VoidCallback onSelectDarkTheme,
   required VoidCallback? onDelete,
@@ -231,34 +235,50 @@ void showThemeSelectionBottomSheet(
           },
         ),
       HarpyListTile(
-        leading: const Icon(CupertinoIcons.sun_max),
-        title: const Text('use as system light theme'),
+        leading: Icon(
+          CupertinoIcons.sun_max,
+          color: isPro && selectedLightTheme ? theme.colorScheme.primary : null,
+        ),
+        title: isPro && selectedLightTheme
+            ? Text(
+                'used as system light theme',
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : const Text('use as system light theme'),
         subtitle: isFree ? const Text('only available in harpy pro') : null,
         trailing: isFree ? const FlareIcon.shiningStar(size: 24) : null,
-        // false positive
-        // ignore: avoid_redundant_argument_values
-        onTap: isFree
-            ? null
-            : () {
-                HapticFeedback.lightImpact();
-                Navigator.of(context).pop();
-                onSelectLightTheme();
-              },
+        enabled: isPro,
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.of(context).pop();
+          onSelectLightTheme();
+        },
       ),
       HarpyListTile(
-        leading: const Icon(CupertinoIcons.moon),
-        title: const Text('use as system dark theme'),
+        leading: Icon(
+          CupertinoIcons.moon,
+          color: isPro && selectedDarkTheme ? theme.colorScheme.primary : null,
+        ),
+        title: isPro && selectedDarkTheme
+            ? Text(
+                'used as system dark theme',
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : const Text('use as system dark theme'),
         subtitle: isFree ? const Text('only available in harpy pro') : null,
         trailing: isFree ? const FlareIcon.shiningStar(size: 24) : null,
-        // false positive
-        // ignore: avoid_redundant_argument_values
-        onTap: isFree
-            ? null
-            : () {
-                HapticFeedback.lightImpact();
-                Navigator.of(context).pop();
-                onSelectDarkTheme();
-              },
+        enabled: isPro,
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.of(context).pop();
+          onSelectDarkTheme();
+        },
       ),
     ],
   );
