@@ -10,6 +10,7 @@ class HarpyListCard extends StatelessWidget {
     this.border,
     this.color,
     this.onTap,
+    this.enabled = true,
     this.contentPadding,
     this.leadingPadding,
     this.trailingPadding,
@@ -25,6 +26,7 @@ class HarpyListCard extends StatelessWidget {
   final Border? border;
   final Color? color;
   final VoidCallback? onTap;
+  final bool enabled;
 
   final EdgeInsets? contentPadding;
   final EdgeInsets? leadingPadding;
@@ -48,6 +50,7 @@ class HarpyListCard extends StatelessWidget {
         borderRadius: kBorderRadius,
         color: color,
         onTap: onTap,
+        enabled: enabled,
         contentPadding: contentPadding,
         leadingPadding: leadingPadding,
         trailingPadding: trailingPadding,

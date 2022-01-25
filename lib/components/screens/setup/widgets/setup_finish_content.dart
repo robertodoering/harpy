@@ -62,7 +62,6 @@ class _CrashReportsState extends State<_CrashReports> {
     return Card(
       child: HarpySwitchTile(
         value: generalPreferences.crashReports,
-        multilineTitle: true,
         borderRadius: kBorderRadius,
         title: Text(
           'send automatic crash reports',
