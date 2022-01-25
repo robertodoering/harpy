@@ -5,24 +5,21 @@ import 'package:harpy/components/components.dart';
 
 class PreviewTweetCard extends StatelessWidget {
   const PreviewTweetCard({
-    this.userName = 'Harpy',
-    this.userHandle = 'harpy_app',
     this.text = '''
-Thank you for using Harpy!
+Thank you for using harpy!
 
 Make sure to follow @harpy_app for news and updates about the app''',
   });
 
-  final String userName;
-  final String userHandle;
   final String text;
 
   @override
   Widget build(BuildContext context) {
     final tweet = TweetData(
-      user: UserData(
-        name: userName,
-        handle: userHandle,
+      user: const UserData(
+        name: 'harpy',
+        handle: 'harpy_app',
+        id: '1068105113284300800',
         profileImageUrl: 'https://pbs.twimg.com/profile_images/'
             '1356691241140957190/N03_GPid_400x400.jpg',
       ),

@@ -22,9 +22,7 @@ class SetupAppearanceContent extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: const [
           PreviewTweetCard(
-            userName: 'Example tweet',
-            userHandle: 'example',
-            text: 'Thank you for using Harpy!',
+            text: 'Thank you for using harpy!',
           ),
           _AnimatedVerticalSpacer(),
           _AnimatedVerticalSpacer(),
