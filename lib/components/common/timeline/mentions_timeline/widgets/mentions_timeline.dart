@@ -59,6 +59,7 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
           if (state.hasTweets) const _TopRow(),
         ],
         endSlivers: widget.endSlivers,
+        beginActionCount: 1,
       ),
     );
   }

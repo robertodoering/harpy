@@ -35,6 +35,8 @@ class ListTimeline extends StatelessWidget {
         ],
         endSlivers: endSlivers,
         refreshIndicatorOffset: refreshIndicatorOffset,
+        beginActionCount: 1,
+        endActionCount: 2,
         onChangeFilter: () => _openListTimelineFilterSelection(
           context,
           listId: cubit.listId,

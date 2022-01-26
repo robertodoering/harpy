@@ -26,6 +26,8 @@ class HomeTimeline extends StatelessWidget {
           if (state.hasTweets) const HomeTimelineTopRow(),
         ],
         endSlivers: const [HomeBottomSliverPadding()],
+        beginActionCount: 1,
+        endActionCount: 2,
         onChangeFilter: () => openHomeTimelineFilterSelection(context),
       ),
     );
