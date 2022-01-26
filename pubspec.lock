@@ -503,7 +503,7 @@ packages:
       name: golden_toolkit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0"
+    version: "0.13.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -1280,7 +1280,7 @@ packages:
       name: wakelock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.6"
+    version: "0.6.1"
   wakelock_macos:
     dependency: transitive
     description:
