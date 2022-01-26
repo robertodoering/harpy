@@ -20,6 +20,8 @@ class Timeline extends StatefulWidget {
     this.refreshIndicatorOffset,
     this.listKey,
     this.onChangeFilter,
+    this.beginActionCount = 0,
+    this.endActionCount = 0,
   });
 
   final TweetBuilder tweetBuilder;
@@ -27,6 +29,12 @@ class Timeline extends StatefulWidget {
   final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
   final Key? listKey;
+
+  /// The amount of action buttons which are displayed in the begin sliver.
+  ///
+  /// Used to display the loading shimmer placeholders.
+  final int beginActionCount;
+  final int endActionCount;
 
   /// A callback used to open the filter selection for the
   /// [TimelineState.noData] state.
@@ -132,10 +140,25 @@ class _TimelineState extends State<Timeline> {
               controller: _controller,
               tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
               onLayoutFinished: _onLayoutFinished,
-              beginSlivers: widget.beginSlivers,
+              beginSlivers: [
+                ...widget.beginSlivers,
+                ...?state.mapOrNull(
+                  loading: (_) => [
+                    TweetListLoadingSliver(
+                      beginActionCount: widget.beginActionCount,
+                      endActionCount: widget.endActionCount,
+                    ),
+                  ],
+                  error: (_) => [
+                    SliverFillLoadingError(
+                      message: const Text('error loading tweets'),
+                      onRetry: () => cubit.load(clearPrevious: true),
+                    ),
+                  ],
+                ),
+              ],
               endSlivers: [
                 ...?state.mapOrNull(
-                  loading: (_) => [const TweetListLoadingSliver()],
                   data: (data) => [
                     if (!data.canLoadMore)
                       const SliverBoxInfoMessage(
@@ -150,12 +173,6 @@ class _TimelineState extends State<Timeline> {
                     )
                   ],
                   loadingMore: (_) => [const SliverBoxLoadingIndicator()],
-                  error: (_) => [
-                    SliverFillLoadingError(
-                      message: const Text('error loading tweets'),
-                      onRetry: () => cubit.load(clearPrevious: true),
-                    )
-                  ],
                 ),
                 ...widget.endSlivers,
               ],

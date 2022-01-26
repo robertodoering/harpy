@@ -214,6 +214,7 @@ export 'widgets/list/list_info_message.dart';
 export 'widgets/list/list_loading_sliver.dart';
 export 'widgets/list/load_more_indicator.dart';
 export 'widgets/list/load_more_listener.dart';
+export 'widgets/list/loading/action_row_loading_shimmer.dart';
 export 'widgets/list/loading/info_row_loading_shimmer.dart';
 export 'widgets/list/loading/sliver_box_loading_shimmer.dart';
 export 'widgets/list/loading/trends_list_loading_shimmer.dart';

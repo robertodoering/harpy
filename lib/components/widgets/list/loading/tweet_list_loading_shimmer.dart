@@ -4,26 +4,48 @@ import 'package:provider/provider.dart';
 
 /// A loading shimmer for a tweet list with placeholder tweet cards.
 class TweetListLoadingSliver extends StatelessWidget {
-  const TweetListLoadingSliver();
+  const TweetListLoadingSliver({
+    this.beginActionCount = 0,
+    this.endActionCount = 0,
+  });
+
+  final int beginActionCount;
+  final int endActionCount;
 
   @override
   Widget build(BuildContext context) {
     final config = context.watch<ConfigCubit>().state;
 
     return SliverBoxLoadingShimmer(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: config.paddingValue * 2),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.filled(
-            15,
-            Padding(
-              padding: EdgeInsets.only(bottom: config.paddingValue * 2),
-              child: const TweetPlaceholder(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          verticalSpacer,
+          if (beginActionCount != 0 || endActionCount != 0) ...[
+            ActionRowLoading(
+              beginCount: beginActionCount,
+              endCount: endActionCount,
+            ),
+            verticalSpacer,
+          ],
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: config.paddingValue * 2),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...List.filled(
+                  15,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: config.paddingValue * 2),
+                    child: const TweetPlaceholder(),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

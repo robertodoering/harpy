@@ -28,6 +28,8 @@ class UserTimeline extends StatelessWidget {
           context,
           user: user,
         ),
+        beginActionCount: 1,
+        endActionCount: 1,
       ),
     );
   }
