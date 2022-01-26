@@ -1,5 +1,5 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class HomeListsProvider extends StatefulWidget {
     BuildContext context, {
     required String? listId,
   }) {
-    return _HomeListsCubitsScope.of(context)!.cubits.firstWhereOrNull(
+    return _HomeListsCubitsScope.of(context)?.cubits.firstWhereOrNull(
           (cubit) => cubit.listId == listId,
         );
   }
@@ -41,41 +41,62 @@ class HomeListsProvider extends StatefulWidget {
 }
 
 class _HomeListsProviderState extends State<HomeListsProvider> {
-  List<ListTimelineCubit> cubits = [];
+  List<ListTimelineCubit> _cubits = [];
 
-  /// Every cubit in [cubits] that does not have a matching entry anymore and
+  /// Every cubit in [_cubits] that does not have a matching entry anymore and
   /// should be closed.
-  List<ListTimelineCubit> get _unusedCubits =>
-      cubits.whereNot(_hasEntry).toList();
+  Iterable<ListTimelineCubit> get _unusedCubits => _cubits.whereNot(_hasEntry);
 
-  /// Every cubit in [cubits] that has a matching entry and should be kept.
-  List<ListTimelineCubit> get _usedCubits => cubits.where(_hasEntry).toList();
+  /// Every cubit in [_cubits] that has a matching entry and should be kept.
+  Iterable<ListTimelineCubit> get _usedCubits => _cubits.where(_hasEntry);
 
   /// Every new entry that should get a cubit.
-  List<HomeTabEntry> get _newEntries =>
-      widget.model.listEntries.where(_hasNocubit).toList();
+  Iterable<HomeTabEntry> get _newEntries =>
+      widget.model.listEntries.where(_hasNocubit);
+
+  bool _hasEntry(ListTimelineCubit cubit) =>
+      !widget.model.listEntries.any((entry) => entry.id == cubit.listId);
+
+  bool _hasNocubit(HomeTabEntry entry) =>
+      !_cubits.any((cubit) => cubit.listId == entry.id);
 
   @override
   void initState() {
     super.initState();
+
+    widget.model.addListener(_homeTabCubitListener);
+
     _createCubits(widget.model.listEntries);
   }
 
   @override
-  void didUpdateWidget(covariant HomeListsProvider oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  void dispose() {
+    widget.model.removeListener(_homeTabCubitListener);
 
+    for (final cubit in _cubits) {
+      cubit.close();
+    }
+
+    super.dispose();
+  }
+
+  void _homeTabCubitListener() {
     for (final cubit in _unusedCubits) {
       cubit.close();
     }
 
-    cubits = _usedCubits;
+    _cubits = _usedCubits.toList();
     _createCubits(_newEntries);
+
+    if (mounted) {
+      // rebuild inherited widget with new cubits
+      setState(() {});
+    }
   }
 
-  void _createCubits(List<HomeTabEntry> entries) {
+  void _createCubits(Iterable<HomeTabEntry> entries) {
     for (final entry in entries) {
-      cubits.add(
+      _cubits.add(
         ListTimelineCubit(
           timelineFilterCubit: context.read(),
           listId: entry.id,
@@ -84,40 +105,11 @@ class _HomeListsProviderState extends State<HomeListsProvider> {
     }
   }
 
-  bool _hasEntry(ListTimelineCubit cubit) {
-    for (final entry in widget.model.listEntries) {
-      if (entry.id == cubit.listId) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  bool _hasNocubit(HomeTabEntry entry) {
-    for (final cubit in cubits) {
-      if (cubit.listId == entry.id) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  @override
-  void dispose() {
-    for (final cubit in cubits) {
-      cubit.close();
-    }
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (cubits.isNotEmpty) {
+    if (_cubits.isNotEmpty) {
       return _HomeListsCubitsScope(
-        cubits: cubits,
+        cubits: _cubits.toBuiltList(),
         child: widget.child,
       );
     } else {
@@ -133,7 +125,7 @@ class _HomeListsCubitsScope extends InheritedWidget {
     required Widget child,
   }) : super(child: child);
 
-  final List<ListTimelineCubit> cubits;
+  final BuiltList<ListTimelineCubit> cubits;
 
   static _HomeListsCubitsScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_HomeListsCubitsScope>();
@@ -141,6 +133,6 @@ class _HomeListsCubitsScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_HomeListsCubitsScope old) {
-    return !listEquals(cubits, old.cubits);
+    return cubits != old.cubits;
   }
 }
