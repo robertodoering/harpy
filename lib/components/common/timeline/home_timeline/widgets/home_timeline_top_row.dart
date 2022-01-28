@@ -67,9 +67,7 @@ class _ComposeButton extends StatelessWidget {
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(FeatherIcons.feather),
-      onTap: state.hasTweets
-          ? () => app<HarpyNavigator>().pushComposeScreen()
-          : null,
+      onTap: state.hasTweets ? app<HarpyNavigator>().pushComposeScreen : null,
     );
   }
 }
