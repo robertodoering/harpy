@@ -115,6 +115,7 @@ export 'screens/home/home_tab_customization/widgets/home_tab_entry_icon.dart';
 export 'screens/home/home_tab_customization/widgets/home_tab_reorder_card.dart';
 export 'screens/home/home_tab_customization/widgets/home_tab_reorder_list.dart';
 export 'screens/home/home_tab_view.dart';
+export 'screens/home/widgets/floating_compose_button.dart';
 export 'screens/home/widgets/home_app_bar.dart';
 export 'screens/home/widgets/home_content_padding.dart';
 export 'screens/home/widgets/home_drawer.dart';

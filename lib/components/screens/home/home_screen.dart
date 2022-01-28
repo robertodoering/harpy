@@ -40,10 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Builder(
           builder: (context) => HomeListsProvider(
             model: context.read(),
-            child: const HarpyScaffold(
-              body: ScrollDirectionListener(
-                depth: 1,
-                child: HomeTabView(),
+            child: const ScrollDirectionListener(
+              depth: 1,
+              child: HarpyScaffold(
+                body: FloatingComposeButton(
+                  child: HomeTabView(),
+                ),
               ),
             ),
           ),
