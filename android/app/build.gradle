@@ -50,11 +50,11 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-  compileSdkVersion 31
+  compileSdk 31
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 31
+    minSdk 21
+    targetSdk 31
   }
 
   flavorDimensions "app"
@@ -72,7 +72,7 @@ android {
     }
   }
 
-  lintOptions {
+  lint {
     disable 'InvalidPackage'
   }
 
