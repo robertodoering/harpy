@@ -104,9 +104,9 @@ class _MediaSettingsListState extends State<_MediaSettingsList> {
         Row(
           children: [
             // align with the text in the list tile
-            SizedBox(width: config.paddingValue * 3 + theme.iconTheme.size!),
-            Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
             horizontalSpacer,
+            Icon(CupertinoIcons.info, color: theme.colorScheme.secondary),
+            SizedBox(width: config.paddingValue * 2),
             Expanded(
               child: Text(
                 'media is always downloaded in the best quality',
