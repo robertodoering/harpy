@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
@@ -116,6 +117,22 @@ class _GeneralSettingsListState extends State<_GeneralSettingsList> {
             onChanged: (value) {
               HapticFeedback.lightImpact();
               setState(() => generalPreferences.performanceMode = value);
+            },
+          ),
+        ),
+        verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(FeatherIcons.feather),
+            title: const Text('floating compose button'),
+            subtitle: const Text(
+              'display a floating compose button in the home screen',
+            ),
+            value: generalPreferences.floatingComposeButton,
+            borderRadius: kBorderRadius,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              setState(() => generalPreferences.floatingComposeButton = value);
             },
           ),
         ),

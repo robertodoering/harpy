@@ -32,6 +32,12 @@ class GeneralPreferences {
   set homeTimelinePositionBehavior(int value) =>
       app<HarpyPreferences>().setInt('timelinePositionBehavior', value);
 
+  /// Whether a floating compose button should show in the home screen.
+  bool get floatingComposeButton =>
+      app<HarpyPreferences>().getBool('floatingComposeButton', false);
+  set floatingComposeButton(bool value) =>
+      app<HarpyPreferences>().setBool('floatingComposeButton', value);
+
   bool get keepLastHomeTimelinePosition => homeTimelinePositionBehavior != 2;
   bool get keepNewestReadTweet => homeTimelinePositionBehavior == 0;
   bool get keepLastReadTweet => homeTimelinePositionBehavior == 1;
