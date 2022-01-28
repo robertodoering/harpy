@@ -12,7 +12,6 @@ class HomeTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<HomeTimelineCubit>();
-    final state = cubit.state;
 
     // we have to explicitly provide a `TimelineCubit` for the `Timeline`
     return BlocProvider<TimelineCubit>.value(
@@ -21,13 +20,11 @@ class HomeTimeline extends StatelessWidget {
         listKey: const PageStorageKey('home_timeline'),
         refreshIndicatorOffset: refreshIndicatorOffset,
         tweetBuilder: HomeTimelineTweetCard.new,
-        beginSlivers: [
-          const HomeTopSliverPadding(),
-          if (state.hasTweets) const HomeTimelineTopRow(),
+        beginSlivers: const [
+          HomeTopSliverPadding(),
+          HomeTimelineTopRow(),
         ],
         endSlivers: const [HomeBottomSliverPadding()],
-        beginActionCount: 1,
-        endActionCount: 2,
         onChangeFilter: () => openHomeTimelineFilterSelection(context),
       ),
     );

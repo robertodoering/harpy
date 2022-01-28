@@ -22,7 +22,6 @@ class ListTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<ListTimelineCubit>();
-    final state = cubit.state;
 
     return BlocProvider<TimelineCubit>.value(
       value: cubit,
@@ -30,13 +29,10 @@ class ListTimeline extends StatelessWidget {
         listKey: PageStorageKey('list_timeline_${cubit.listId}'),
         beginSlivers: [
           ...beginSlivers,
-          if (state.hasTweets)
-            _TopRow(listId: cubit.listId, listName: listName),
+          _TopRow(listId: cubit.listId, listName: listName),
         ],
         endSlivers: endSlivers,
         refreshIndicatorOffset: refreshIndicatorOffset,
-        beginActionCount: 1,
-        endActionCount: 2,
         onChangeFilter: () => _openListTimelineFilterSelection(
           context,
           listId: cubit.listId,
@@ -61,6 +57,7 @@ class _TopRow extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<ListTimelineCubit>();
+    final state = cubit.state;
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -76,7 +73,9 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () => cubit.load(clearPrevious: true),
+              onTap: state.hasTweets
+                  ? () => cubit.load(clearPrevious: true)
+                  : null,
             ),
             const Spacer(),
             HarpyButton.raised(
@@ -84,10 +83,12 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.person_2),
-              onTap: () => app<HarpyNavigator>().pushListMembersScreen(
-                listId: listId,
-                listName: listName,
-              ),
+              onTap: state.hasTweets
+                  ? () => app<HarpyNavigator>().pushListMembersScreen(
+                        listId: listId,
+                        listName: listName,
+                      )
+                  : null,
             ),
             horizontalSpacer,
             HarpyButton.raised(
@@ -95,13 +96,20 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: cubit.filter != null
-                  ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
+                  ? Icon(
+                      Icons.filter_alt,
+                      color: state.hasTweets
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.primary.withOpacity(.5),
+                    )
                   : const Icon(Icons.filter_alt_outlined),
-              onTap: () => _openListTimelineFilterSelection(
-                context,
-                listId: listId,
-                listName: listName,
-              ),
+              onTap: state.hasTweets
+                  ? () => _openListTimelineFilterSelection(
+                        context,
+                        listId: listId,
+                        listName: listName,
+                      )
+                  : null,
             ),
           ],
         ),

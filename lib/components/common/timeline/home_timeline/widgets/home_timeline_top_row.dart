@@ -40,13 +40,14 @@ class _RefreshButton extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<HomeTimelineCubit>();
+    final state = cubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(CupertinoIcons.refresh),
-      onTap: () => cubit.load(clearPrevious: true),
+      onTap: state.hasTweets ? () => cubit.load(clearPrevious: true) : null,
     );
   }
 }
@@ -58,13 +59,17 @@ class _ComposeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
+    final cubit = context.watch<HomeTimelineCubit>();
+    final state = cubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(FeatherIcons.feather),
-      onTap: () => app<HarpyNavigator>().pushComposeScreen(),
+      onTap: state.hasTweets
+          ? () => app<HarpyNavigator>().pushComposeScreen()
+          : null,
     );
   }
 }
@@ -77,17 +82,27 @@ class _FilterButton extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final cubit = context.watch<TimelineFilterCubit>();
-    final state = cubit.state;
+    final timelineCubit = context.watch<HomeTimelineCubit>();
+    final timelineState = timelineCubit.state;
+
+    final filterCubit = context.watch<TimelineFilterCubit>();
+    final filterState = filterCubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: state.homeFilter() != null
-          ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
+      icon: filterState.homeFilter() != null
+          ? Icon(
+              Icons.filter_alt,
+              color: timelineState.hasTweets
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.primary.withOpacity(.5),
+            )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: () => openHomeTimelineFilterSelection(context),
+      onTap: timelineState.hasTweets
+          ? () => openHomeTimelineFilterSelection(context)
+          : null,
     );
   }
 }

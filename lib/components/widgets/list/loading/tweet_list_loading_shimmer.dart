@@ -9,6 +9,8 @@ class TweetListLoadingSliver extends StatelessWidget {
     this.endActionCount = 0,
   });
 
+  /// Used for shimmer placeholders at the top of the list where action buttons
+  /// are usually placed.
   final int beginActionCount;
   final int endActionCount;
 
@@ -22,13 +24,12 @@ class TweetListLoadingSliver extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           verticalSpacer,
-          if (beginActionCount != 0 || endActionCount != 0) ...[
+          if (beginActionCount != 0 || endActionCount != 0)
             ActionRowLoading(
               beginCount: beginActionCount,
               endCount: endActionCount,
             ),
-            verticalSpacer,
-          ],
+          verticalSpacer,
           Padding(
             padding: EdgeInsets.symmetric(horizontal: config.paddingValue * 2),
             child: Column(

@@ -15,21 +15,16 @@ class UserTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<UserTimelineCubit>();
-    final state = cubit.state;
 
     return BlocProvider<TimelineCubit>.value(
       value: cubit,
       child: Timeline(
         listKey: const PageStorageKey('user_timeline'),
-        beginSlivers: [
-          if (state.hasTweets) _TopRow(user: user),
-        ],
+        beginSlivers: [_TopRow(user: user)],
         onChangeFilter: () => _openUserTimelineFilterSelection(
           context,
           user: user,
         ),
-        beginActionCount: 1,
-        endActionCount: 1,
       ),
     );
   }
@@ -69,13 +64,14 @@ class _RefreshButton extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<UserTimelineCubit>();
+    final state = cubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
       icon: const Icon(CupertinoIcons.refresh),
-      onTap: () => cubit.load(clearPrevious: true),
+      onTap: state.hasTweets ? () => cubit.load(clearPrevious: true) : null,
     );
   }
 }
@@ -92,17 +88,27 @@ class _FilterButton extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
 
-    final cubit = context.watch<TimelineFilterCubit>();
-    final state = cubit.state;
+    final timelineCubit = context.watch<UserTimelineCubit>();
+    final timelineState = timelineCubit.state;
+
+    final filterCubit = context.watch<TimelineFilterCubit>();
+    final filterState = filterCubit.state;
 
     return HarpyButton.raised(
       padding: config.edgeInsets,
       elevation: 0,
       backgroundColor: theme.cardTheme.color,
-      icon: state.userFilter(user.id) != null
-          ? Icon(Icons.filter_alt, color: theme.colorScheme.primary)
+      icon: filterState.userFilter(user.id) != null
+          ? Icon(
+              Icons.filter_alt,
+              color: timelineState.hasTweets
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.primary.withOpacity(.5),
+            )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: () => _openUserTimelineFilterSelection(context, user: user),
+      onTap: timelineState.hasTweets
+          ? () => _openUserTimelineFilterSelection(context, user: user)
+          : null,
     );
   }
 }

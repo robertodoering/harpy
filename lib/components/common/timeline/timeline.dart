@@ -20,8 +20,6 @@ class Timeline extends StatefulWidget {
     this.refreshIndicatorOffset,
     this.listKey,
     this.onChangeFilter,
-    this.beginActionCount = 0,
-    this.endActionCount = 0,
   });
 
   final TweetBuilder tweetBuilder;
@@ -29,12 +27,6 @@ class Timeline extends StatefulWidget {
   final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
   final Key? listKey;
-
-  /// The amount of action buttons which are displayed in the begin sliver.
-  ///
-  /// Used to display the loading shimmer placeholders.
-  final int beginActionCount;
-  final int endActionCount;
 
   /// A callback used to open the filter selection for the
   /// [TimelineState.noData] state.
@@ -143,12 +135,7 @@ class _TimelineState extends State<Timeline> {
               beginSlivers: [
                 ...widget.beginSlivers,
                 ...?state.mapOrNull(
-                  loading: (_) => [
-                    TweetListLoadingSliver(
-                      beginActionCount: widget.beginActionCount,
-                      endActionCount: widget.endActionCount,
-                    ),
-                  ],
+                  loading: (_) => const [TweetListLoadingSliver()],
                   error: (_) => [
                     SliverFillLoadingError(
                       message: const Text('error loading tweets'),

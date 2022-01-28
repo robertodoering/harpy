@@ -47,7 +47,6 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<MentionsTimelineCubit>();
-    final state = cubit.state;
 
     return BlocProvider<TimelineCubit>.value(
       value: cubit,
@@ -56,10 +55,9 @@ class _MentionsTimelineState extends State<MentionsTimeline> {
         refreshIndicatorOffset: widget.refreshIndicatorOffset,
         beginSlivers: [
           ...widget.beginSlivers,
-          if (state.hasTweets) const _TopRow(),
+          const _TopRow(),
         ],
         endSlivers: widget.endSlivers,
-        beginActionCount: 1,
       ),
     );
   }
@@ -73,6 +71,7 @@ class _TopRow extends StatelessWidget {
     final theme = Theme.of(context);
     final config = context.watch<ConfigCubit>().state;
     final cubit = context.watch<MentionsTimelineCubit>();
+    final state = cubit.state;
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -88,7 +87,9 @@ class _TopRow extends StatelessWidget {
               elevation: 0,
               backgroundColor: theme.cardTheme.color,
               icon: const Icon(CupertinoIcons.refresh),
-              onTap: () => cubit.load(clearPrevious: true),
+              onTap: state.hasTweets
+                  ? () => cubit.load(clearPrevious: true)
+                  : null,
             ),
           ],
         ),
