@@ -116,7 +116,7 @@ class _TimelineState extends State<Timeline> {
       listener: _blocListener,
       child: ScrollToStart(
         controller: _controller,
-        text: AnimatedNumber(number: _newestVisibleIndex),
+        text: AnimatedNumber(number: _newestVisibleIndex + 1),
         child: CustomRefreshIndicator(
           offset: widget.refreshIndicatorOffset ?? config.paddingValue,
           onRefresh: () async {
