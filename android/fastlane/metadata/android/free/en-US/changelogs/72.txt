@@ -1,6 +1,8 @@
 Version 0.8.3
 2022-02-xx
 
+· Add optional floating compose button
+  · Can be enabled in `Settings > General`
 · Updated settings screen styling
 · Updated retweet & like colors for better visibility (Thanks FerasK0!)
 · Minor bug fixes & style improvements
