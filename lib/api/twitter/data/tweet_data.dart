@@ -24,6 +24,7 @@ class TweetData {
     this.retweetUserHandle,
     this.quote,
     this.quoteUrl,
+    this.possiblySensitive,
     this.replies = const [],
     this.visibleText = '',
     this.images,
@@ -91,6 +92,7 @@ class TweetData {
       retweetUserHandle: retweetUserHandle,
       quote: quote,
       quoteUrl: quoteUrl,
+      possiblySensitive: tweet.possiblySensitive,
       // custom
       visibleText: _visibleText(tweet.fullText ?? '', quoteUrl, tweet.entities),
       images: images,
@@ -136,6 +138,7 @@ class TweetData {
   String? retweetUserHandle;
   TweetData? quote;
   String? quoteUrl;
+  bool? possiblySensitive;
 
   // custom fields
 
