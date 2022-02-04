@@ -72,6 +72,7 @@ class _DisplaySettingsContent extends StatelessWidget {
       children: [
         ExpansionCard(
           title: const Text('font'),
+          initiallyCollapsed: true,
           children: [
             const HarpyListTile(
               leading: Icon(CupertinoIcons.textformat_size),
