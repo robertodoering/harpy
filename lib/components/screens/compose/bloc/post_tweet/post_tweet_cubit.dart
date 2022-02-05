@@ -82,6 +82,8 @@ class PostTweetCubit extends Cubit<PostTweetState> with HarpyLogger {
       log.severe('error while uploading media', e, st);
       emit(const PostTweetState.error(message: 'error uploading media'));
     }
+
+    return null;
   }
 
   Future<void> post(String text) async {

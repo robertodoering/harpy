@@ -46,7 +46,7 @@ class HarpyProCard extends StatelessWidget {
       // clip the container and the custom paint
       child: ClipRRect(
         borderRadius: kBorderRadius,
-        child: Container(
+        child: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,

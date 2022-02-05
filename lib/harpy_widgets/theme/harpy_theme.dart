@@ -275,8 +275,8 @@ class HarpyTheme {
 
     _textTheme = _textTheme
         .copyWith(
-          // headline
-          headline1: _applyCustomDisplayFont(
+          // display
+          displayLarge: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 64,
               letterSpacing: 6,
@@ -284,7 +284,7 @@ class HarpyTheme {
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          headline2: _applyCustomDisplayFont(
+          displayMedium: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 48,
               letterSpacing: 2,
@@ -292,14 +292,24 @@ class HarpyTheme {
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          headline3: _applyCustomDisplayFont(
+          displaySmall: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 48,
               letterSpacing: 0,
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          headline4: _applyCustomDisplayFont(
+
+          // headline
+          headlineLarge: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 22,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
+          ),
+          headlineMedium: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 18,
               letterSpacing: 2,
@@ -307,15 +317,7 @@ class HarpyTheme {
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          headline5: _applyCustomDisplayFont(
-            textStyle: const TextStyle(
-              fontSize: 20,
-              letterSpacing: 2,
-              fontWeight: FontWeight.w300,
-              fontFamilyFallback: _fontFamilyFallback,
-            ),
-          ),
-          headline6: _applyCustomDisplayFont(
+          headlineSmall: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 20,
               letterSpacing: 2,
@@ -324,8 +326,16 @@ class HarpyTheme {
             ),
           ),
 
-          // subtitle
-          subtitle1: _applyCustomDisplayFont(
+          // title
+          titleLarge: _applyCustomDisplayFont(
+            textStyle: const TextStyle(
+              fontSize: 20,
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
+          ),
+          titleMedium: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               fontSize: 16,
               letterSpacing: 1,
@@ -333,7 +343,7 @@ class HarpyTheme {
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          subtitle2: _applyCustomDisplayFont(
+          titleSmall: _applyCustomDisplayFont(
             textStyle: const TextStyle(
               height: 1.1,
               fontSize: 16,
@@ -343,20 +353,29 @@ class HarpyTheme {
           ),
 
           // body
-          bodyText2: _applyCustomBodyFont(
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontFamilyFallback: _fontFamilyFallback,
-            ),
-          ),
-          bodyText1: _applyCustomBodyFont(
+          bodyLarge: _applyCustomBodyFont(
             textStyle: TextStyle(
               fontSize: 14,
               color: textColor.withOpacity(.7),
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          button: _applyCustomDisplayFont(
+          bodyMedium: _applyCustomBodyFont(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
+          ),
+          bodySmall: _applyCustomBodyFont(
+            textStyle: const TextStyle(
+              fontSize: 12,
+              letterSpacing: .4,
+              fontFamilyFallback: _fontFamilyFallback,
+            ),
+          ),
+
+          // label
+          labelLarge: _applyCustomDisplayFont(
             textStyle: TextStyle(
               fontSize: 16,
               letterSpacing: 1.2,
@@ -364,14 +383,15 @@ class HarpyTheme {
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          caption: _applyCustomBodyFont(
-            textStyle: const TextStyle(
-              fontSize: 12,
-              letterSpacing: .4,
+          labelMedium: _applyCustomDisplayFont(
+            textStyle: TextStyle(
+              fontSize: 14,
+              letterSpacing: 1.2,
+              color: buttonTextColor,
               fontFamilyFallback: _fontFamilyFallback,
             ),
           ),
-          overline: _applyCustomBodyFont(
+          labelSmall: _applyCustomBodyFont(
             textStyle: const TextStyle(
               fontSize: 10,
               letterSpacing: 1.5,
@@ -410,9 +430,9 @@ class HarpyTheme {
     themeData = ThemeData.from(
       colorScheme: ColorScheme(
         primary: primaryColor,
-        primaryVariant: primaryColor,
+        primaryContainer: primaryColor,
         secondary: secondaryColor,
-        secondaryVariant: secondaryColor,
+        secondaryContainer: secondaryColor,
         surface: primaryColor,
         background: averageBackgroundColor,
         error: errorColor,
@@ -425,9 +445,6 @@ class HarpyTheme {
       ),
       textTheme: _textTheme,
     ).copyWith(
-      // determines the status bar icon color
-      primaryColorBrightness: brightness,
-
       // used by toggleable widgets
       toggleableActiveColor: secondaryColor,
 

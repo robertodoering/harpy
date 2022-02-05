@@ -31,7 +31,7 @@ class AddListHomeTabCard extends StatelessWidget {
           : Icon(CupertinoIcons.add, size: iconSize),
     );
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(color: theme.dividerColor),
         borderRadius: kBorderRadius,

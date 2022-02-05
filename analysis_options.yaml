@@ -22,13 +22,13 @@ linter:
     - always_put_control_body_on_new_line
     - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters
-    # - always_specify_types
+    # - always_specify_types # we omit local variable types when they are inferred
     - always_use_package_imports
     - annotate_overrides
-    # - avoid_annotating_with_dynamic
+    # - avoid_annotating_with_dynamic # we annoate local variables with dynamic if no type is inferred
     - avoid_bool_literals_in_conditional_expressions
-    # - avoid_catches_without_on_clauses
-    # - avoid_catching_errors
+    # - avoid_catches_without_on_clauses # sometimes catching all exceptions & errors are desired
+    # - avoid_catching_errors # sometimes catching errors rather than exceptions might be desired
     - avoid_classes_with_only_static_members
     # - avoid_double_and_int_checks # only makes sense when targeting web
     - avoid_dynamic_calls
@@ -36,20 +36,21 @@ linter:
     - avoid_equals_and_hash_code_on_mutable_classes
     - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
+    # - avoid_final_parameters # causes false-positives with freezed models
     - avoid_function_literals_in_foreach_calls
     - avoid_implementing_value_types
     - avoid_init_to_null
     # - avoid_js_rounded_ints # only makes sense when targeting web
     - avoid_multiple_declarations_per_line
     - avoid_null_checks_in_equality_operators
-    # - avoid_positional_boolean_parameters
+    # - avoid_positional_boolean_parameters # we sometimes use positional booleans
     - avoid_print
     - avoid_private_typedef_functions
     - avoid_redundant_argument_values
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    # - avoid_returning_null
+    - avoid_returning_null
     - avoid_returning_null_for_future
     - avoid_returning_null_for_void
     - avoid_returning_this
@@ -72,6 +73,7 @@ linter:
     # - cast_nullable_to_non_nullable # makes sense after checking the type
     - close_sinks
     - comment_references
+    - conditional_uri_does_not_exist
     - constant_identifier_names
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
@@ -103,6 +105,8 @@ linter:
     - no_adjacent_strings_in_list
     - no_default_cases
     - no_duplicate_case_values
+    - no_leading_underscores_for_library_prefixes
+    - no_leading_underscores_for_local_identifiers
     - no_logic_in_create_state
     - no_runtimeType_toString
     - non_constant_identifier_names
@@ -161,7 +165,9 @@ linter:
     # - public_member_api_docs # we don't provide documentation for every public facing api
     - recursive_getters
     - require_trailing_commas
+    - secure_pubspec_urls
     - sized_box_for_whitespace
+    - sized_box_shrink_expand
     - slash_for_doc_comments
     - sort_child_properties_last
     - sort_constructors_first
@@ -180,6 +186,7 @@ linter:
     # - unnecessary_final # we prefer to have final locals
     - unnecessary_getters_setters
     - unnecessary_lambdas
+    - unnecessary_late
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_null_checks
@@ -195,6 +202,7 @@ linter:
     - unrelated_type_equality_checks
     - unsafe_html
     - use_build_context_synchronously
+    - use_decorated_box
     - use_full_hex_values_for_flutter_colors
     - use_function_type_syntax_for_parameters
     - use_if_null_to_convert_nulls_to_bools
@@ -210,4 +218,3 @@ linter:
     - use_to_and_as_if_applicable
     - valid_regexps
     - void_checks
-

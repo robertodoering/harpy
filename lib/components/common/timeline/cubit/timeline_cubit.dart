@@ -53,7 +53,7 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
   }
 
   @protected
-  TimelineFilter? filterFromState(TimelineFilterState state) {}
+  TimelineFilter? filterFromState(TimelineFilterState state) => null;
 
   @protected
   Future<List<Tweet>> request({
@@ -68,7 +68,7 @@ abstract class TimelineCubit<T extends Object> extends Cubit<TimelineState<T>>
   int get restoredTweetId => 0;
 
   @protected
-  T? buildCustomData() {}
+  T? buildCustomData() => null;
 
   Future<void> loadInitial() async {
     log.fine('loading initial timeline');
