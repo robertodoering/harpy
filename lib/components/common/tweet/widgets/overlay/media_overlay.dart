@@ -242,7 +242,7 @@ class _MediaOverlayState extends State<MediaOverlay>
   }
 
   Widget _buildAppBar() {
-    return Container(
+    return DecoratedBox(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

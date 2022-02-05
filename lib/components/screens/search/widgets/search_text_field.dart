@@ -28,7 +28,7 @@ class SearchTextField extends StatelessWidget {
         ? Colors.black.withOpacity(.05)
         : Colors.white.withOpacity(.05);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: harpyTheme.backgroundColors.first,
         borderRadius: BorderRadius.circular(128),

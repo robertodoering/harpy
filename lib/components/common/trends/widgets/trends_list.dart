@@ -14,12 +14,12 @@ class TrendsList extends StatelessWidget {
   const TrendsList();
 
   Widget _buildTrendCard(Trend trend) {
-    final _numberFormat = NumberFormat.compact();
+    final numberFormat = NumberFormat.compact();
 
     Widget? subtitle;
 
     if (trend.tweetVolume != null) {
-      subtitle = Text('${_numberFormat.format(trend.tweetVolume)} tweets');
+      subtitle = Text('${numberFormat.format(trend.tweetVolume)} tweets');
     }
 
     return ListCardAnimation(

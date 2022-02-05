@@ -93,9 +93,9 @@ class TweetSearchCubit extends Cubit<NewTweetSearchState> with HarpyLogger {
       if (filterQuery.trim().isNotEmpty) {
         return filterQuery.trim();
       }
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   bool _queryUnchanged({
@@ -117,9 +117,9 @@ class TweetSearchCubit extends Cubit<NewTweetSearchState> with HarpyLogger {
       } else if (filter.resultType == 2) {
         return 'popular';
       }
-    } else {
-      return null;
     }
+
+    return null;
   }
 }
 

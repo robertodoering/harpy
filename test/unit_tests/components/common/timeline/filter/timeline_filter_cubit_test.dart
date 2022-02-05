@@ -177,13 +177,13 @@ void main() {
           ),
         ],
         verify: (cubit) {
-          final _activeFilterJson = jsonEncode(
+          final activeFilterJson = jsonEncode(
             activeHomeTimelineFilter1.toJson(),
           );
 
           expect(
             app<TimelineFilterPreferences>().activeTimelineFilters,
-            [_activeFilterJson],
+            [activeFilterJson],
           );
         },
       );
@@ -219,13 +219,13 @@ void main() {
           ),
         ],
         verify: (cubit) {
-          final _activeFilterJson = jsonEncode(
+          final activeFilterJson = jsonEncode(
             _activeGenericUserTimelineFilter1.toJson(),
           );
 
           expect(
             app<TimelineFilterPreferences>().activeTimelineFilters,
-            [_activeFilterJson],
+            [activeFilterJson],
           );
         },
       );
@@ -329,13 +329,13 @@ void main() {
           ),
         ],
         verify: (cubit) {
-          final _activeFilterJson = jsonEncode(
+          final activeFilterJson = jsonEncode(
             _activeGenericListTimelineFilter1.toJson(),
           );
 
           expect(
             app<TimelineFilterPreferences>().activeTimelineFilters,
-            [_activeFilterJson],
+            [activeFilterJson],
           );
         },
       );

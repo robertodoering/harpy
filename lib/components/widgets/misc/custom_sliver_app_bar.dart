@@ -187,11 +187,6 @@ class CustomSliverAppBar extends StatefulWidget {
   /// if that is also null, then [ThemeData.primaryColor] is used.
   final Color? backgroundColor;
 
-  /// The brightness of the app bar's material. Typically this is set along
-  /// with [backgroundColor], [iconTheme], [textTheme].
-  ///
-  /// If this property is null, then [ThemeData.appBarTheme.brightness] is used,
-  /// if that is also null, then [ThemeData.primaryColorBrightness] is used.
   final Brightness? brightness;
 
   /// The color, opacity, and size to use for app bar icons. Typically this
@@ -575,7 +570,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       maxExtent: maxExtent,
       currentExtent: math.max(minExtent, maxExtent - shrinkOffset),
       toolbarOpacity: toolbarOpacity,
-      child: Container(
+      child: DecoratedBox(
         decoration: decorationBuilder!(minExtent, maxExtent),
         child: AppBar(
           leading: leading,

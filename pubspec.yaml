@@ -52,7 +52,7 @@ dependencies:
   permission_handler: ^8.1.4+2
   photo_view:
     # custom photo_view with better gesture recognition
-    git: git://github.com/robertodoering/photo_view.git
+    git: https://github.com/robertodoering/photo_view.git
   provider: ^6.0.0
   scroll_to_index: ^2.0.0
   sentry_flutter: ^6.0.0

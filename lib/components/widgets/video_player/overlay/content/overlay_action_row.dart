@@ -103,7 +103,7 @@ class OverlayActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
+    return DecoratedBox(
       decoration: _backgroundDecoration,
       child: Column(
         mainAxisSize: MainAxisSize.min,

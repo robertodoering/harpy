@@ -28,6 +28,8 @@ class MentionsTimelineCubit extends TimelineCubit<bool> {
     if (_newestMentionId != null) {
       return app<TweetVisibilityPreferences>().lastViewedMention <
           _newestMentionId!;
+    } else {
+      return null;
     }
   }
 
