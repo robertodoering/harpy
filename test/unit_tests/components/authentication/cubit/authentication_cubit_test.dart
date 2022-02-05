@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/misc.dart';
+import 'package:harpy/legacy/api/api.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/misc/misc.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../test_setup/mocks.dart';

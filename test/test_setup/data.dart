@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/legacy/api/api.dart';
+import 'package:harpy/legacy/components/components.dart';
 
 const harpyAppUser = UserData(
   name: 'Harpy',

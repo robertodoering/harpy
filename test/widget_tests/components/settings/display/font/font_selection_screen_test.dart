@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
 
 import '../../../../../test_setup/setup.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/components/components.dart';
+import 'package:harpy/legacy/components/components.dart';
 
 void main() {
   group('tweet search filter', () {

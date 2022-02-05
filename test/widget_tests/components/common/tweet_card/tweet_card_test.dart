@@ -1,10 +1,10 @@
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/legacy/api/api.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
 
 import '../../../../test_setup/data.dart';
 import '../../../../test_setup/setup.dart';

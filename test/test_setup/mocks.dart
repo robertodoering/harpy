@@ -1,8 +1,8 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/harpy_navigator.dart';
+import 'package:harpy/legacy/api/api.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/misc/misc.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

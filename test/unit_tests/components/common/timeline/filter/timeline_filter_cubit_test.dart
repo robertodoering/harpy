@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harpy/api/api.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:harpy/legacy/api/api.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
 
 import '../../../../../test_setup/data.dart';
 import '../../../../../test_setup/setup.dart';

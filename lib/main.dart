@@ -1,6 +1,6 @@
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/harpy.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
 
 /// The app can be built with the 'free' or 'pro' flavor by running
 /// `flutter run --flavor free --dart-define=flavor=free` or

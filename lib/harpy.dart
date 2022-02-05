@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
+import 'package:harpy/legacy/components/components.dart';
+import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/legacy/misc/misc.dart';
 import 'package:provider/provider.dart';
 
 const isFree = String.fromEnvironment('flavor', defaultValue: 'free') == 'free';
