@@ -1,5 +1,5 @@
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 
 class ThemePreferences {
   const ThemePreferences();

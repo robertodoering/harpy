@@ -1,4 +1,4 @@
-import 'package:harpy/harpy.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
 
 const predefinedThemes = [

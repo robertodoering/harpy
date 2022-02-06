@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/api/api.dart';
 import 'package:harpy/legacy/components/components.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 
 class HomeTabModel extends ValueNotifier<HomeTabConfiguration>
     with HarpyLogger {

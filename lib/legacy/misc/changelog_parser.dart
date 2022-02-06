@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:intl/intl.dart';
 
 const _linePrefix = '· ';

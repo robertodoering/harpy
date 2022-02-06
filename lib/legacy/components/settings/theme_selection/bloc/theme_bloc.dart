@@ -4,12 +4,17 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/components/components.dart';
 import 'package:harpy/legacy/core/core.dart';
-import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:harpy/legacy/misc/misc.dart';
 import 'package:logging/logging.dart';
+
+// importing barrel file breaks build runner
+// ignore: always_use_package_imports
+import '../../../../harpy_widgets/theme/harpy_theme.dart';
+// ignore: always_use_package_imports
+import '../../../../harpy_widgets/theme/harpy_theme_data.dart';
 
 part 'theme_bloc.freezed.dart';
 part 'theme_event.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/components/components.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
 
 /// Used for editing existing custom themes and creating new custom themes.

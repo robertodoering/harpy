@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/components/components.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
 import 'package:harpy/legacy/misc/misc.dart';
 import 'package:provider/provider.dart';

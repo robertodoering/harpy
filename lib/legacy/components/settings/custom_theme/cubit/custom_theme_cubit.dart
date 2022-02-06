@@ -1,8 +1,8 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harpy/harpy.dart';
 import 'package:harpy/legacy/components/components.dart';
 import 'package:harpy/legacy/core/core.dart';
+import 'package:harpy/legacy/harpy.dart';
 import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
 
 final _nameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
