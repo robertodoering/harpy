@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:mocktail/mocktail.dart';
 
-import '../images/transparent_image.dart';
+import '../../images/transparent_image.dart';
 
 /// Used to override the http client in tests to mock network images.
 ///
