@@ -1,0 +1,127 @@
+import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:harpy/api/api.dart';
+
+part 'media_data.freezed.dart';
+
+mixin MediaData {
+  /// The url with the best quality available.
+  String get bestUrl;
+
+  /// The aspect ratio of the image or video.
+  double get aspectRatioDouble;
+
+  /// The url based on the media quality settings.
+  String? get appropriateUrl;
+
+  MediaType get type;
+}
+
+@freezed
+class ImageMediaData with _$ImageMediaData, MediaData {
+  factory ImageMediaData({
+    /// The base url for the image.
+    required String baseUrl,
+
+    /// The aspect ratio of the image.
+    ///
+    /// The [large] size is used to calculate the aspect ratio but should be the
+    /// same as [small] and [medium].
+    ///
+    /// [thumb] sized images are always in a 1:1 aspect ratio.
+    required double aspectRatioDouble,
+  }) = _ImageMediaData;
+
+  factory ImageMediaData.fromMedia(Media media) {
+    final aspectRatioDouble =
+        (media.sizes?.large?.w ?? 16) / (media.sizes?.large?.h ?? 9);
+
+    return ImageMediaData(
+      baseUrl: media.mediaUrlHttps ?? '',
+      aspectRatioDouble: aspectRatioDouble,
+    );
+  }
+
+  ImageMediaData._();
+
+  @override
+  late final type = MediaType.image;
+
+  /// The image url used to download the image.
+  @override
+  late final bestUrl = '$baseUrl?name=large&format=png';
+
+  late final thumb = '$baseUrl?name=thumb&format=jpg';
+  late final small = '$baseUrl?name=small&format=jpg';
+  late final medium = '$baseUrl?name=medium&format=jpg';
+  late final large = '$baseUrl?name=large&format=jpg';
+
+  /// The image url for images drawn in the app.
+  ///
+  /// Returns the [bestUrl] if [MediaPreferences.bestMediaQuality] is
+  /// `true`, or [small] otherwise.
+  @override
+  String get appropriateUrl {
+    // TODO: handle media preferences 'should use best quality' setting.
+    return small;
+  }
+}
+
+@freezed
+class VideoMediaData with _$VideoMediaData, MediaData {
+  factory VideoMediaData({
+    /// The aspect ratio of the video.
+    required List<int> aspectRatio,
+    required double aspectRatioDouble,
+
+    /// The video variants sorted by their quality (best quality first).
+    required List<Variant> variants,
+
+    /// The url for a thumbnail image of the video.
+    required ImageMediaData thumbnail,
+    required MediaType type,
+  }) = _VideoMediaData;
+
+  factory VideoMediaData.fromMedia(Media media) {
+    final aspectRatio = media.videoInfo?.aspectRatio ?? [];
+
+    final aspectRatioDouble =
+        aspectRatio.length == 2 ? aspectRatio[0] / aspectRatio[1] : 16 / 9;
+
+    // removes variants that does not have a bitrate (content type:
+    // 'application/x-mpeg') and then sorts them by the bitrate descending
+    // (highest quality first)
+    final variants = media.videoInfo?.variants
+        ?.where((variant) => variant.bitrate != null)
+        .toList()
+      ?..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
+
+    final thumbnail = ImageMediaData(
+      baseUrl: media.mediaUrlHttps ?? '',
+      aspectRatioDouble: aspectRatioDouble,
+    );
+
+    assert(media.type == kMediaVideo || media.type == kMediaGif);
+
+    return VideoMediaData(
+      aspectRatio: aspectRatio,
+      aspectRatioDouble: aspectRatioDouble,
+      variants: variants ?? [],
+      thumbnail: thumbnail,
+      type: media.type == kMediaGif ? MediaType.gif : MediaType.video,
+    );
+  }
+
+  VideoMediaData._();
+
+  /// The video url for videos (and gifs) shown in the app.
+  ///
+  /// This is the same as [bestUrl] because the quality for worse variants is
+  /// too bad.
+  @override
+  late final appropriateUrl = bestUrl;
+
+  /// The url of the variant with the best quality.
+  @override
+  late final bestUrl = variants.isNotEmpty ? variants.first.url ?? '' : '';
+}

@@ -1,0 +1,12 @@
+import 'package:logging/logging.dart';
+
+/// Does nothing with an error except logging it.
+///
+/// Used when an error can just be ignored.
+void logErrorHandler(dynamic error, [StackTrace? stackTrace]) {
+  Logger.detached('error handler').info(
+    'silently ignoring error',
+    error,
+    stackTrace,
+  );
+}

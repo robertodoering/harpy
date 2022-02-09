@@ -1,6 +1,10 @@
-import 'package:harpy/harpy.dart';
-import 'package:harpy/legacy/components/components.dart';
-import 'package:harpy/legacy/core/core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The app can be built with the 'free' or 'pro' flavor by running
 /// `flutter run --flavor free --dart-define=flavor=free` or
@@ -10,14 +14,57 @@ import 'package:harpy/legacy/core/core.dart';
 /// specified using
 /// `--dart-define=twitter_consumer_key=your_consumer_key` and
 /// `--dart-define=twitter_consumer_secret=your_consumer_secret`.
-void main() {
-  // sets up the global service locator
-  setupServices();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
 
-  // HarpyErrorHandler will run the app and handle uncaught errors
-  HarpyErrorHandler(
-    child: const GlobalProvider(
-      child: Harpy(),
+  // ErrorHandler will run the app and handle uncaught errors
+  ErrorHandler(
+    sharedPreferences: sharedPreferences,
+    child: ProviderScope(
+      observers: const [ProviderLogger()],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const _HarpyApp(),
     ),
   );
+}
+
+class _HarpyApp extends ConsumerStatefulWidget {
+  const _HarpyApp();
+
+  @override
+  _HarpyAppState createState() => _HarpyAppState();
+}
+
+class _HarpyAppState extends ConsumerState<_HarpyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(applicationProvider).initialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'harpy',
+      color: Colors.black,
+      theme: ref.watch(lightThemeProvider).themeData,
+      darkTheme: ref.watch(darkThemeProvider).themeData,
+      themeMode: ref.watch(platformBrightnessProvider) == Brightness.light
+          ? ThemeMode.light
+          : ThemeMode.dark,
+      supportedLocales: kMaterialSupportedLanguages.map(Locale.new),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      routeInformationParser: ref.watch(routerProvider).routeInformationParser,
+      routerDelegate: ref.watch(routerProvider).routerDelegate,
+      builder: (_, child) => Unfocus(child: child),
+    );
+  }
 }

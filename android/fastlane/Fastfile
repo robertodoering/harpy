@@ -32,6 +32,7 @@ platform :android do
     api_key = ENV['free_twitter_key']
     api_secret = ENV['free_twitter_secret']
     sentry_dsn = ENV['sentry_dsn']
+    aes_key = ENV['aes_key']
 
     if api_key.nil?
       puts "missing twitter_consumer_key environment variable in android/fastlane/.env"
@@ -39,6 +40,8 @@ platform :android do
       puts "missing twitter_consumer_secret environment variable in android/fastlane/.env"
     elsif sentry_dsn.nil?
       puts "missing sentry_dsn environment variable in android/fastlane/.env"
+    elsif aes_key.nil?
+      puts "missing aes_key environment variable in android/fastlane/.env"
     else
       # build appbundle
       sh(
@@ -54,7 +57,9 @@ platform :android do
         "--dart-define",
         "twitter_consumer_secret=#{api_secret}",
         "--dart-define",
-        "sentry_dsn=#{sentry_dsn}"
+        "sentry_dsn=#{sentry_dsn}",
+        "--dart-define",
+        "aes_key=#{aes_key}"
       )
 
       upload_to_play_store(
@@ -70,6 +75,7 @@ platform :android do
     api_key = ENV['free_twitter_key']
     api_secret = ENV['free_twitter_secret']
     sentry_dsn = ENV['sentry_dsn']
+    aes_key = ENV['aes_key']
 
     if api_key.nil?
       puts "missing free_twitter_key environment variable in android/fastlane/.env"
@@ -77,6 +83,8 @@ platform :android do
       puts "missing free_twitter_secret environment variable in android/fastlane/.env"
     elsif sentry_dsn.nil?
       puts "missing sentry_dsn environment variable in android/fastlane/.env"
+    elsif aes_key.nil?
+      puts "missing aes_key environment variable in android/fastlane/.env"
     else
       # build appbundle
       sh(
@@ -92,7 +100,9 @@ platform :android do
         "--dart-define",
         "twitter_consumer_secret=#{api_secret}",
         "--dart-define",
-        "sentry_dsn=#{sentry_dsn}"
+        "sentry_dsn=#{sentry_dsn}",
+        "--dart-define",
+        "aes_key=#{aes_key}"
       )
 
       upload_to_play_store(
@@ -117,6 +127,7 @@ platform :android do
     api_key = ENV['pro_twitter_key']
     api_secret = ENV['pro_twitter_secret']
     sentry_dsn = ENV['sentry_dsn']
+    aes_key = ENV['aes_key']
 
     if api_key.nil?
       puts "missing pro_twitter_key environment variable in android/fastlane/.env"
@@ -124,6 +135,8 @@ platform :android do
       puts "missing pro_twitter_secret environment variable in android/fastlane/.env"
     elsif sentry_dsn.nil?
       puts "missing sentry_dsn environment variable in android/fastlane/.env"
+    elsif aes_key.nil?
+      puts "missing aes_key environment variable in android/fastlane/.env"
     else
       # build appbundle
       sh(
@@ -139,7 +152,9 @@ platform :android do
         "--dart-define",
         "twitter_consumer_secret=#{api_secret}",
         "--dart-define",
-        "sentry_dsn=#{sentry_dsn}"
+        "sentry_dsn=#{sentry_dsn}",
+        "--dart-define",
+        "aes_key=#{aes_key}"
       )
 
       upload_to_play_store(
@@ -155,6 +170,7 @@ platform :android do
     api_key = ENV['pro_twitter_key']
     api_secret = ENV['pro_twitter_secret']
     sentry_dsn = ENV['sentry_dsn']
+    aes_key = ENV['aes_key']
 
     if api_key.nil?
       puts "missing pro_twitter_key environment variable in android/fastlane/.env"
@@ -162,6 +178,8 @@ platform :android do
       puts "missing pro_twitter_secret environment variable in android/fastlane/.env"
     elsif sentry_dsn.nil?
       puts "missing sentry_dsn environment variable in android/fastlane/.env"
+    elsif aes_key.nil?
+      puts "missing aes_key environment variable in android/fastlane/.env"
     else
       # build appbundle
       sh(
@@ -177,7 +195,9 @@ platform :android do
         "--dart-define",
         "twitter_consumer_secret=#{api_secret}",
         "--dart-define",
-        "sentry_dsn=#{sentry_dsn}"
+        "sentry_dsn=#{sentry_dsn}",
+        "--dart-define",
+        "aes_key=#{aes_key}"
       )
 
       upload_to_play_store(
