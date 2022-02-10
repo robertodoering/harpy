@@ -5,6 +5,8 @@ export 'common/authentication/provider/login_provider.dart';
 export 'common/authentication/provider/logout_provider.dart';
 export 'common/authentication/widgets/login_webview.dart';
 export 'common/authentication/widgets/retry_authentication_dialog.dart';
+export 'common/widgets/harpy_background.dart';
+export 'common/widgets/harpy_scaffold.dart';
 export 'pages/home/home_page.dart';
 export 'pages/login/login_page.dart';
 export 'pages/settings/display/preferences/display_preferences.dart';
