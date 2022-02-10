@@ -26,19 +26,19 @@ Future<void> main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const _HarpyApp(),
+      child: const HarpyApp(),
     ),
   );
 }
 
-class _HarpyApp extends ConsumerStatefulWidget {
-  const _HarpyApp();
+class HarpyApp extends ConsumerStatefulWidget {
+  const HarpyApp();
 
   @override
   _HarpyAppState createState() => _HarpyAppState();
 }
 
-class _HarpyAppState extends ConsumerState<_HarpyApp> {
+class _HarpyAppState extends ConsumerState<HarpyApp> {
   @override
   void initState() {
     super.initState();

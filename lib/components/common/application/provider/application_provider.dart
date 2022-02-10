@@ -20,7 +20,7 @@ class Application with LoggerMixin {
   final Ref _ref;
 
   Future<void> initialize() async {
-    if (!kReleaseMode) {
+    if (!kReleaseMode && !isTest) {
       initializeLogger();
     }
 
