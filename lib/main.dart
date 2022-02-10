@@ -50,7 +50,9 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'harpy',
-      color: Colors.black,
+      color: ref.watch(platformBrightnessProvider) == Brightness.light
+          ? Colors.white
+          : Colors.black,
       theme: ref.watch(lightThemeProvider).themeData,
       darkTheme: ref.watch(darkThemeProvider).themeData,
       themeMode: ref.watch(platformBrightnessProvider) == Brightness.light

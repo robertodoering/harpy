@@ -9,6 +9,9 @@ import 'package:harpy/core/core.dart';
 part 'harpy_text_theme.dart';
 part 'harpy_theme_colors.dart';
 
+const kShortAnimationDuration = Duration(milliseconds: 300);
+const kLongAnimationDuration = Duration(milliseconds: 600);
+
 class HarpyTheme {
   HarpyTheme({
     required HarpyThemeData data,
@@ -17,10 +20,10 @@ class HarpyTheme {
     required String bodyFont,
   }) {
     name = data.name;
-    harpyColors = HarpyThemeColors(data: data);
+    colors = HarpyThemeColors(data: data);
 
-    harpyTextTheme = HarpyTextTheme(
-      brightness: harpyColors.brightness,
+    text = HarpyTextTheme(
+      brightness: colors.brightness,
       fontSizeDelta: fontSizeDelta,
       displayFont: displayFont,
       bodyFont: bodyFont,
@@ -31,28 +34,28 @@ class HarpyTheme {
 
   late final String name;
 
-  late final HarpyThemeColors harpyColors;
-  late final HarpyTextTheme harpyTextTheme;
+  late final HarpyThemeColors colors;
+  late final HarpyTextTheme text;
 
   late final ThemeData themeData;
 
   void _setupThemeData() {
     themeData = ThemeData.from(
       colorScheme: ColorScheme(
-        brightness: harpyColors.brightness,
-        primary: harpyColors.primary,
-        onPrimary: harpyColors.onPrimary,
-        secondary: harpyColors.secondary,
-        onSecondary: harpyColors.onSecondary,
-        error: harpyColors.error,
-        onError: harpyColors.onError,
-        background: harpyColors.averageBackgroundColor,
-        onBackground: harpyColors.onBackground,
-        surface: harpyColors.cardColor,
-        onSurface: harpyColors.onBackground,
+        brightness: colors.brightness,
+        primary: colors.primary,
+        onPrimary: colors.onPrimary,
+        secondary: colors.secondary,
+        onSecondary: colors.onSecondary,
+        error: colors.error,
+        onError: colors.onError,
+        background: colors.averageBackgroundColor,
+        onBackground: colors.onBackground,
+        surface: colors.cardColor,
+        onSurface: colors.onBackground,
       ),
     ).copyWith(
-      textTheme: harpyTextTheme.textTheme,
+      textTheme: text.textTheme,
       // TODO: theme overrides
     );
   }
