@@ -8,4 +8,5 @@ export 'core/log_error_handler.dart';
 export 'core/logger.dart';
 export 'core/preferences/preferences.dart';
 export 'core/provider_logger.dart';
+export 'core/utils/test_utils.dart';
 export 'widgets/unfocus.dart';
