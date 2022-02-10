@@ -2,6 +2,10 @@
 /// package to be shared across projects.
 library rby;
 
+export 'animations/immediate/immediate_animation.dart';
+export 'animations/immediate/immediate_opacity_animation.dart';
+export 'animations/immediate/immediate_scale_animation.dart';
+export 'animations/immediate/immediate_slide_animation.dart';
 export 'core/built_list_converter.dart';
 export 'core/handle_error_extension.dart';
 export 'core/log_error_handler.dart';
