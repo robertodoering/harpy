@@ -57,9 +57,6 @@ class ImageMediaData with _$ImageMediaData, MediaData {
   late final large = '$baseUrl?name=large&format=jpg';
 
   /// The image url for images drawn in the app.
-  ///
-  /// Returns the [bestUrl] if [MediaPreferences.bestMediaQuality] is
-  /// `true`, or [small] otherwise.
   @override
   String get appropriateUrl {
     // TODO: handle media preferences 'should use best quality' setting.
