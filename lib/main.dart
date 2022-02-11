@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -66,7 +67,10 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
       ],
       routeInformationParser: ref.watch(routerProvider).routeInformationParser,
       routerDelegate: ref.watch(routerProvider).routerDelegate,
-      builder: (_, child) => Unfocus(child: child),
+      builder: (_, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+        value: ref.watch(harpyThemeProvider).colors.systemUiOverlayStyle,
+        child: Unfocus(child: child),
+      ),
     );
   }
 }
