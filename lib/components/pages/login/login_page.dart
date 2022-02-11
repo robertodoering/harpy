@@ -1,4 +1,3 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,8 +91,8 @@ class _HarpyTitle extends StatelessWidget {
         duration: const Duration(seconds: 3),
         curve: Curves.easeOutCubic,
         begin: const Offset(0, .5),
-        child: FlareActor(
-          'assets/flare/harpy_title.flr',
+        child: FlareAnimation(
+          name: 'harpy_title',
           alignment: Alignment.bottomCenter,
           animation: 'show',
           color: theme.colorScheme.onBackground,
@@ -113,8 +112,8 @@ class _HarpyLogo extends StatelessWidget {
       duration: Duration(milliseconds: 2000),
       curve: Curves.easeOut,
       begin: Offset(0, .25),
-      child: FlareActor(
-        'assets/flare/harpy_logo.flr',
+      child: FlareAnimation(
+        name: 'harpy_logo',
         animation: 'show',
       ),
     );

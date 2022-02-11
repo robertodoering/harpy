@@ -12,20 +12,19 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'http_overrides.dart';
 import 'mocks.dart';
 
-Future<Widget> buildAppBase({
-  required Widget child,
+Widget buildAppBase(
+  Widget child, {
+  SharedPreferences? sharedPreferences,
   List<Override>? providerOverrides,
-  Map<String, Object> initialMockValues = const <String, Object>{},
-}) async {
+}) {
+  WidgetsApp.debugAllowBannerOverride = false;
   HttpOverrides.global = MockHttpOverrides();
   VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
-  SharedPreferences.setMockInitialValues(initialMockValues);
-  final sharedPreferences = await SharedPreferences.getInstance();
-
   return ProviderScope(
     overrides: [
-      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      if (sharedPreferences != null)
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       applicationProvider.overrideWithValue(MockApplication()),
       routesProvider.overrideWithValue([
         GoRoute(

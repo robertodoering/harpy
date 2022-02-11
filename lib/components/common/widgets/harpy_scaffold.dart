@@ -16,7 +16,13 @@ class HarpyScaffold extends StatelessWidget {
       body: HarpyBackground(
         child: SafeArea(
           bottom: safeAreaBottom,
-          child: child,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // TODO: custom app bar
+              Expanded(child: child),
+            ],
+          ),
         ),
       ),
     );

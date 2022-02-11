@@ -3,7 +3,11 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockApplication extends Mock implements Application {}
+class MockApplication extends Mock implements Application {
+  MockApplication() {
+    when(initialize).thenAnswer((_) async {});
+  }
+}
 
 class MockConnectivityService extends Mock implements ConnectivityService {
   MockConnectivityService() {
