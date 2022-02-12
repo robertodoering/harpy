@@ -4,18 +4,19 @@ import 'package:harpy/components/components.dart';
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
     required this.child,
-    this.safeAreaBottom = true,
+    this.safeArea = false,
   });
 
   final Widget child;
-  final bool safeAreaBottom;
+  final bool safeArea;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: HarpyBackground(
         child: SafeArea(
-          bottom: safeAreaBottom,
+          top: safeArea,
+          bottom: safeArea,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
