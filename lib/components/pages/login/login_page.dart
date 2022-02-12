@@ -38,7 +38,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authenticationState = ref.watch(authenticationStateProvider);
 
+    // TODO: add about page navigation
+
     return HarpyScaffold(
+      safeArea: true,
       child: authenticationState.maybeWhen(
         awaitingAuthentication: () => const Center(
           child: CircularProgressIndicator(),

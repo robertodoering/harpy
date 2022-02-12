@@ -18,7 +18,11 @@ class HarpyTheme {
     required double fontSizeDelta,
     required String displayFont,
     required String bodyFont,
-  }) {
+  })  : _fontSizeDelta = fontSizeDelta,
+        radius = const Radius.circular(16) {
+    borderRadius = BorderRadius.all(radius);
+    shape = RoundedRectangleBorder(borderRadius: borderRadius);
+
     name = data.name;
     colors = HarpyThemeColors(data: data);
 
@@ -31,6 +35,12 @@ class HarpyTheme {
 
     _setupThemeData();
   }
+
+  final double _fontSizeDelta;
+
+  final Radius radius;
+  late final BorderRadius borderRadius;
+  late final ShapeBorder shape;
 
   late final String name;
 
@@ -56,7 +66,26 @@ class HarpyTheme {
       ),
     ).copyWith(
       textTheme: text.textTheme,
-      // TODO: theme overrides
+      iconTheme: IconThemeData(
+        color: colors.onBackground,
+        opacity: 1,
+        size: 20 + _fontSizeDelta,
+      ),
+      cardTheme: CardTheme(
+        color: colors.cardColor,
+        shape: shape,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.alternateCardColor,
+        actionTextColor: colors.primary,
+        disabledActionTextColor: colors.primary.withOpacity(.5),
+        contentTextStyle: text.textTheme.subtitle2,
+        elevation: 0,
+        shape: shape,
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 

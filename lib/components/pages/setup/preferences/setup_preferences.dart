@@ -4,13 +4,11 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 final setupPreferencesProvider = Provider(
-  (ref) {
-    final prefix = ref.watch(authPreferencesProvider).userId;
-
-    return SetupPreferences(
-      preferences: ref.watch(preferencesProvider(prefix)),
-    );
-  },
+  (ref) => SetupPreferences(
+    preferences: ref.watch(
+      preferencesProvider(ref.watch(authPreferencesProvider).userId),
+    ),
+  ),
   name: 'SetupPreferencesProvider',
 );
 

@@ -74,14 +74,10 @@ class DisplayPreferences with _$DisplayPreferences {
 
   DisplayPreferences._();
 
-  late final double fontSizeDelta = _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0;
-}
-
-extension DisplayPreferencesExtension on DisplayPreferences {
-  double get paddingValue => compactMode ? 12 : 16;
-  double get smallPaddingValue => paddingValue / 2;
-
-  EdgeInsets get edgeInsets => EdgeInsets.all(paddingValue);
+  late final fontSizeDelta = _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0;
+  late final paddingValue = compactMode ? 12.0 : 16.0;
+  late final smallPaddingValue = paddingValue / 2;
+  late final edgeInsets = EdgeInsets.all(paddingValue);
 
   EdgeInsets edgeInsetsOnly({
     bool left = false,

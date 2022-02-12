@@ -67,6 +67,9 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
       ],
       routeInformationParser: ref.watch(routerProvider).routeInformationParser,
       routerDelegate: ref.watch(routerProvider).routerDelegate,
+      scrollBehavior: const ScrollBehavior(
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+      ),
       builder: (_, child) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: ref.watch(harpyThemeProvider).colors.systemUiOverlayStyle,
         child: Unfocus(child: child),
