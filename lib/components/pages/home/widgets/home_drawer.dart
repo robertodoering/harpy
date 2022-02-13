@@ -224,6 +224,7 @@ class _Entries extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final router = ref.watch(routerProvider);
     final general = ref.watch(generalPreferencesProvider);
     final user = ref.watch(authenticationStateProvider).user;
 
@@ -266,11 +267,10 @@ class _Entries extends ConsumerWidget {
       ),
       verticalSpacer,
       verticalSpacer,
-      const HarpyListCard(
-        leading: Icon(FeatherIcons.settings),
-        title: Text('settings'),
-        // TODO: settings screen
-        // onTap: () => app<HarpyNavigator>().pushNamed(SettingsScreen.route),
+      HarpyListCard(
+        leading: const Icon(FeatherIcons.settings),
+        title: const Text('settings'),
+        onTap: () => router.goNamed(SettingsPage.name),
       ),
       verticalSpacer,
       if (isFree) ...[

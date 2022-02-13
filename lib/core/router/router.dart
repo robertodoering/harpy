@@ -40,7 +40,14 @@ final routesProvider = Provider(
         child: const HomePage(),
       ),
       routes: [
-        // TODO: other screens
+        GoRoute(
+          name: SettingsPage.name,
+          path: 'settings',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: const SettingsPage(),
+          ),
+        ),
       ],
     ),
   ],

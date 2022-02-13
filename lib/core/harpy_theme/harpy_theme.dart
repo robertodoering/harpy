@@ -66,6 +66,11 @@ class HarpyTheme {
       ),
     ).copyWith(
       textTheme: text.textTheme,
+
+      // used when interacting with material widgets
+      splashColor: colors.secondary.withOpacity(.1),
+      highlightColor: colors.secondary.withOpacity(.1),
+
       iconTheme: IconThemeData(
         color: colors.onBackground,
         opacity: 1,
