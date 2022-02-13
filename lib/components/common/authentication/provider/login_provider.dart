@@ -39,7 +39,9 @@ class _Login with LoggerMixin {
   /// * [LoginPage] when authentication was not successful.
   Future<void> login() async {
     if (!_environment.validateAppConfig()) {
-      // TODO: also show a message for the dev
+      _ref
+          .read(messageServiceProvider)
+          .showText('invalid twitter key / secret');
       return;
     }
 

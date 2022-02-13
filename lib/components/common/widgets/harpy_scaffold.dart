@@ -17,12 +17,9 @@ class HarpyScaffold extends StatelessWidget {
         child: SafeArea(
           top: safeArea,
           bottom: safeArea,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // TODO: custom app bar
-              Expanded(child: child),
-            ],
+          child: SizedBox(
+            width: double.infinity,
+            child: child,
           ),
         ),
       ),

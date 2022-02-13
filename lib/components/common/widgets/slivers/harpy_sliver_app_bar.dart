@@ -124,6 +124,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant _SliverHeaderDelegate oldDelegate) {
     return oldDelegate.backgroundColors != backgroundColors ||
         oldDelegate.topPadding != topPadding ||
+        oldDelegate.contentPadding != contentPadding ||
+        oldDelegate.fontSize != fontSize ||
         oldDelegate.child != oldDelegate.child;
   }
 
