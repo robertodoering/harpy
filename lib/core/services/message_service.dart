@@ -12,6 +12,12 @@ class MessageService {
 
   final Ref _ref;
 
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showText(
+    String text,
+  ) {
+    return showSnackbar(SnackBar(content: Text(text)));
+  }
+
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
     SnackBar snackBar,
   ) {

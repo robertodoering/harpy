@@ -6,6 +6,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:intl/intl.dart';
 
 typedef AnimatedWidgetBuilder = Widget Function(
@@ -105,6 +106,7 @@ class _AuthenticatedUser extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final padding = ref.watch(displayPreferencesProvider).edgeInsets;
     final user = ref.watch(authenticationStateProvider).user;
@@ -115,8 +117,7 @@ class _AuthenticatedUser extends ConsumerWidget {
 
     return InkWell(
       borderRadius: harpyTheme.borderRadius,
-      // TODO: Navigate to user profile
-      // onTap: () => app<HarpyNavigator>().pushUserProfile(initialUser: user),
+      onTap: () => router.goNamed(UserPage.name),
       child: Card(
         child: Padding(
           padding: padding,
@@ -158,6 +159,7 @@ class _FollowersCount extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final user = ref.watch(authenticationStateProvider).user;
 
     if (user == null) {
@@ -172,20 +174,14 @@ class _FollowersCount extends ConsumerWidget {
         Expanded(
           child: HarpyListCard(
             title: Text('$friendsCount  following'),
-            // TODO: push following screen
-            // onTap: () => app<HarpyNavigator>().pushFollowingScreen(
-            //   userId: user.id,
-            // ),
+            onTap: () => router.goNamed(FollowingPage.name),
           ),
         ),
         horizontalSpacer,
         Expanded(
           child: HarpyListCard(
             title: Text('$followersCount  followers'),
-            // TODO: push following screen
-            // onTap: () => app<HarpyNavigator>().pushFollowersScreen(
-            //   userId: user.id,
-            // ),
+            onTap: () => router.goNamed(FollowersPage.name),
           ),
         ),
       ],
@@ -233,37 +229,28 @@ class _Entries extends ConsumerWidget {
     }
 
     final children = [
-      const HarpyListCard(
-        leading: Icon(CupertinoIcons.person),
-        title: Text('profile'),
-        // TODO: push user profile page
-        // onTap: () => app<HarpyNavigator>().pushUserProfile(
-        //   initialUser: authCubit.state.user,
-        // ),
+      HarpyListCard(
+        leading: const Icon(CupertinoIcons.person),
+        title: const Text('profile'),
+        onTap: () => router.goNamed(UserPage.name),
       ),
       verticalSpacer,
-      const HarpyListCard(
-        leading: Icon(CupertinoIcons.search),
-        title: Text('search'),
-        // TODO: push search page
-        // onTap: () => app<HarpyNavigator>().pushSearchScreen(
-        //   trendsCubit: context.read<TrendsCubit>(),
-        //   trendsLocationsCubit: context.read<TrendsLocationsCubit>(),
-        // ),
+      HarpyListCard(
+        leading: const Icon(CupertinoIcons.search),
+        title: const Text('search'),
+        onTap: () => router.goNamed(SearchPage.name),
       ),
       verticalSpacer,
-      const HarpyListCard(
-        leading: Icon(CupertinoIcons.list_bullet),
-        title: Text('lists'),
-        // TODO: push lists
-        // onTap: () => app<HarpyNavigator>().pushShowListsScreen(),
+      HarpyListCard(
+        leading: const Icon(CupertinoIcons.list_bullet),
+        title: const Text('lists'),
+        onTap: () => router.goNamed(ListsPage.name),
       ),
       verticalSpacer,
-      const HarpyListCard(
-        leading: Icon(FeatherIcons.feather),
-        title: Text('compose'),
-        // TODO: push compose page
-        // onTap: () => app<HarpyNavigator>().pushComposeScreen(),
+      HarpyListCard(
+        leading: const Icon(FeatherIcons.feather),
+        title: const Text('compose'),
+        onTap: () => router.goNamed(ComposePage.name),
       ),
       verticalSpacer,
       verticalSpacer,
@@ -274,7 +261,7 @@ class _Entries extends ConsumerWidget {
       ),
       verticalSpacer,
       if (isFree) ...[
-        const HarpyListCard(
+        HarpyListCard(
           // TODO: shining star icon
           // leading: FlareIcon.shiningStar(
           //   size: theme.iconTheme.size! + 8,
@@ -285,14 +272,14 @@ class _Entries extends ConsumerWidget {
           //   top: max(config.paddingValue - 4, 0),
           //   bottom: max(config.paddingValue - 4, 0),
           // ),
-          title: Text('harpy pro'),
-          // onTap: () => launchUrl(
-          //   'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
-          // ),
+          title: const Text('harpy pro'),
+          onTap: () => launchUrl(
+            'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
+          ),
         ),
         verticalSpacer,
       ],
-      const HarpyListCard(
+      HarpyListCard(
         // TODO: harpy logo icon
         // leading: FlareIcon.harpyLogo(
         //   size: theme.iconTheme.size!,
@@ -303,9 +290,8 @@ class _Entries extends ConsumerWidget {
         //   top: max(config.paddingValue - 6, 0),
         //   bottom: max(config.paddingValue - 6, 0),
         // ),
-        title: Text('about'),
-        // TODO: push about screen
-        // onTap: () => app<HarpyNavigator>().pushNamed(AboutScreen.route),
+        title: const Text('about'),
+        onTap: () => router.goNamed(AboutPage.name),
       ),
       verticalSpacer,
       verticalSpacer,
