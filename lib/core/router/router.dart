@@ -48,6 +48,14 @@ final routesProvider = Provider(
             child: const SettingsPage(),
           ),
         ),
+        GoRoute(
+          name: AboutPage.name,
+          path: 'about',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: const AboutPage(),
+          ),
+        ),
       ],
     ),
   ],

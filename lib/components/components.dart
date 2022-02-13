@@ -18,6 +18,7 @@ export 'common/widgets/spacer.dart';
 export 'common/widgets/tab_bar/harpy_tab.dart';
 export 'common/widgets/tab_bar/harpy_tab_bar.dart';
 export 'pages/about/about_page.dart';
+export 'pages/changelog/changelog_page.dart';
 export 'pages/compose/compose_page.dart';
 export 'pages/followers/followers_page.dart';
 export 'pages/following/following_page.dart';

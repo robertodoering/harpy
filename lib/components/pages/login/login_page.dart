@@ -38,8 +38,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authenticationState = ref.watch(authenticationStateProvider);
 
-    // TODO: add about page navigation
-
     return HarpyScaffold(
       safeArea: true,
       child: authenticationState.maybeWhen(
@@ -50,30 +48,54 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           duration: kLongAnimationDuration,
           curve: Curves.easeInCubic,
           offset: _loginStarted ? const Offset(0, -1) : Offset.zero,
-          child: Column(
+          child: Stack(
             children: [
-              const Spacer(),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * .5,
-                ),
-                child: Column(
-                  children: const [
-                    Expanded(child: _HarpyTitle()),
-                    Expanded(child: _HarpyLogo()),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Spacer(),
-              const SizedBox(height: 16),
+              const _AboutButton(),
               Column(
                 children: [
-                  _LoginButton(onTap: _startLogin),
-                  const SizedBox(height: 32),
+                  const Spacer(),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * .5,
+                    ),
+                    child: Column(
+                      children: const [
+                        Expanded(child: _HarpyTitle()),
+                        Expanded(child: _HarpyLogo()),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Spacer(),
+                  const SizedBox(height: 16),
+                  Column(
+                    children: [
+                      _LoginButton(onTap: _startLogin),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
                 ],
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AboutButton extends ConsumerWidget {
+  const _AboutButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: IconButton(
+        icon: const Icon(Icons.info_outline),
+        onPressed: () => Navigator.of(context).push(
+          HarpyPageRoute<void>(
+            builder: (_) => const AboutPage(),
           ),
         ),
       ),

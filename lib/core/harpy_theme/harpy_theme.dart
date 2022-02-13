@@ -70,7 +70,6 @@ class HarpyTheme {
       // used when interacting with material widgets
       splashColor: colors.secondary.withOpacity(.1),
       highlightColor: colors.secondary.withOpacity(.1),
-
       iconTheme: IconThemeData(
         color: colors.onBackground,
         opacity: 1,
@@ -90,6 +89,13 @@ class HarpyTheme {
         elevation: 0,
         shape: shape,
         behavior: SnackBarBehavior.floating,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: borderRadius),
+          ),
+        ),
       ),
     );
   }

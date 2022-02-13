@@ -302,6 +302,7 @@ class _Entries extends ConsumerWidget {
         ),
         title: const Text('logout'),
         // TODO: logout dialog
+        onTap: ref.read(logoutProvider).logout,
         // onTap: () async {
         //   final logout = await showDialog<bool>(
         //     context: context,
