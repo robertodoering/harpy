@@ -18,7 +18,7 @@ final platformBrightnessProvider = StateProvider(
     return WidgetsBinding.instance?.platformDispatcher.platformBrightness ??
         Brightness.light;
   },
-  name: 'SystemBrightnessProvider',
+  name: 'PlatformBrightnessProvider',
 );
 
 class _PlatformBrightnessObserver with WidgetsBindingObserver {

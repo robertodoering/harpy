@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -70,7 +69,7 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
       scrollBehavior: const ScrollBehavior(
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
-      builder: (_, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+      builder: (_, child) => AnnotatedRegion(
         value: ref.watch(harpyThemeProvider).colors.systemUiOverlayStyle,
         child: Unfocus(child: child),
       ),

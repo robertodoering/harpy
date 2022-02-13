@@ -37,8 +37,8 @@ class Application with LoggerMixin {
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(logErrorHandler),
-      _ref.read(deviceInfoServiceProvider).initialize(),
-      _ref.read(connectivityServiceProvider).initialize(),
+      _ref.read(deviceInfoProvider.notifier).initialize(),
+      _ref.read(connectivityProvider.notifier).initialize(),
       _ref.read(authenticationProvider).restoreSession(),
     ]);
 

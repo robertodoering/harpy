@@ -6,8 +6,8 @@ analyzer:
   errors:
     # treat missing returns as a warning (not a hint)
     missing_return: warning
-    todo: ignore
   exclude:
+    - "**/legacy/**/*"
     # ignore all generated files
     - "**/*.g.dart"
     - "**/*.freezed.dart"

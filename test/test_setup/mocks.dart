@@ -9,7 +9,7 @@ class MockApplication extends Mock implements Application {
   }
 }
 
-class MockConnectivityService extends Mock implements ConnectivityService {
+class MockConnectivityService extends Mock implements ConnectivityNotifier {
   MockConnectivityService() {
     when(initialize).thenAnswer((_) async {});
   }
