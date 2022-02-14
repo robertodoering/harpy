@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage();
@@ -41,6 +42,7 @@ class _TweetSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     return ExpansionCard(
@@ -54,9 +56,7 @@ class _TweetSettingsCard extends ConsumerWidget {
             bottomLeft: harpyTheme.radius,
             bottomRight: harpyTheme.radius,
           ),
-          // onTap: () => app<HarpyNavigator>().pushNamed(
-          //   MediaSettingsScreen.route,
-          // ),
+          onTap: () => router.goNamed(MediaSettingsPage.name),
         ),
       ],
     );
@@ -68,18 +68,17 @@ class _AppearanceSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     return ExpansionCard(
       title: const Text('appearance'),
       children: [
-        const HarpyListTile(
-          leading: Icon(Icons.color_lens),
-          title: Text('theme'),
-          subtitle: Text('select your theme'),
-          // onTap: () => app<HarpyNavigator>().pushNamed(
-          //   ThemeSelectionScreen.route,
-          // ),
+        HarpyListTile(
+          leading: const Icon(Icons.color_lens),
+          title: const Text('theme'),
+          subtitle: const Text('select your theme'),
+          onTap: () => router.goNamed(ThemeSettingsPage.name),
         ),
         HarpyListTile(
           leading: const Icon(FeatherIcons.layout),
@@ -89,9 +88,7 @@ class _AppearanceSettingsCard extends ConsumerWidget {
             bottomLeft: harpyTheme.radius,
             bottomRight: harpyTheme.radius,
           ),
-          // onTap: () => app<HarpyNavigator>().pushNamed(
-          //   DisplaySettingsScreen.route,
-          // ),
+          onTap: () => router.goNamed(DisplaySettingsPage.name),
         ),
       ],
     );
@@ -103,17 +100,16 @@ class _OtherSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     return ExpansionCard(
       title: const Text('other'),
       children: [
-        const HarpyListTile(
-          leading: Icon(FeatherIcons.sliders),
-          title: Text('general'),
-          // onTap: () => app<HarpyNavigator>().pushNamed(
-          //   GeneralSettingsScreen.route,
-          // ),
+        HarpyListTile(
+          leading: const Icon(FeatherIcons.sliders),
+          title: const Text('general'),
+          onTap: () => router.goNamed(GeneralSettingsPage.name),
         ),
         HarpyListTile(
           leading: const Icon(Icons.translate),
@@ -122,9 +118,7 @@ class _OtherSettingsCard extends ConsumerWidget {
             bottomLeft: harpyTheme.radius,
             bottomRight: harpyTheme.radius,
           ),
-          // onTap: () => app<HarpyNavigator>().pushNamed(
-          //   LanguageSettingsScreen.route,
-          // ),
+          onTap: () => router.goNamed(LanguageSettingsPage.name),
         ),
       ],
     );
