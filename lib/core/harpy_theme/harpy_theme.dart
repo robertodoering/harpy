@@ -109,7 +109,12 @@ class HarpyTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all(EdgeInsets.all(_paddingValue)),
+          padding: MaterialStateProperty.all(
+            EdgeInsets.symmetric(
+              horizontal: _paddingValue,
+              vertical: _paddingValue / 2,
+            ),
+          ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),
@@ -117,7 +122,12 @@ class HarpyTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all(EdgeInsets.all(_paddingValue)),
+          padding: MaterialStateProperty.all(
+            EdgeInsets.symmetric(
+              horizontal: _paddingValue,
+              vertical: _paddingValue / 2,
+            ),
+          ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),
