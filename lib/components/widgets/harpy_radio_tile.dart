@@ -7,6 +7,7 @@ class HarpyRadioTile<T> extends StatelessWidget {
     required this.groupValue,
     required this.onChanged,
     this.title,
+    this.subtitle,
     this.contentPadding,
     this.leadingPadding,
     this.trailingPadding,
@@ -17,6 +18,7 @@ class HarpyRadioTile<T> extends StatelessWidget {
   final ValueChanged<T>? onChanged;
 
   final Widget? title;
+  final Widget? subtitle;
   final EdgeInsets? contentPadding;
   final EdgeInsets? leadingPadding;
   final EdgeInsets? trailingPadding;
@@ -32,6 +34,7 @@ class HarpyRadioTile<T> extends StatelessWidget {
         },
       ),
       title: title,
+      subtitle: subtitle,
       onTap: onChanged != null ? () => onChanged?.call(value) : null,
       multilineTitle: true,
       contentPadding: contentPadding,
