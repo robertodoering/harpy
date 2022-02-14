@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-class RetryAuthenticationDialog extends StatelessWidget {
-  const RetryAuthenticationDialog();
+class LogoutDialog extends StatelessWidget {
+  const LogoutDialog();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('login'),
+      title: const Text('really logout?'),
       actionsAlignment: MainAxisAlignment.spaceAround,
-      content: const Text(
-        'unable to initialize user\n\n'
-        'please check your connection and try again',
-      ),
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
@@ -19,7 +15,7 @@ class RetryAuthenticationDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('retry'),
+          child: const Text('logout'),
         ),
       ],
     );

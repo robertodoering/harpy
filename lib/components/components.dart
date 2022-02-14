@@ -23,6 +23,7 @@ export 'home/widgets/home_padding.dart';
 export 'home/widgets/home_tab_bar.dart';
 export 'home/widgets/home_tab_view.dart';
 export 'home/widgets/home_tab_view_scroll_physics.dart';
+export 'home/widgets/logout_dialog.dart';
 export 'home/widgets/will_pop_harpy.dart';
 export 'lists/lists_page.dart';
 export 'login/login_page.dart';

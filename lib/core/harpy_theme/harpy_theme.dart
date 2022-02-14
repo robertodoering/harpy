@@ -90,6 +90,14 @@ class HarpyTheme {
         shape: shape,
         behavior: SnackBarBehavior.floating,
       ),
+      dialogTheme: DialogTheme(shape: shape),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: borderRadius),
+          ),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(

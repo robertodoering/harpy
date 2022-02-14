@@ -283,18 +283,16 @@ class _Entries extends ConsumerWidget {
           color: theme.colorScheme.error,
         ),
         title: const Text('logout'),
-        // TODO: logout dialog
-        onTap: ref.read(logoutProvider).logout,
-        // onTap: () async {
-        //   final logout = await showDialog<bool>(
-        //     context: context,
-        //     builder: (_) => const HarpyLogoutDialog(),
-        //   );
+        onTap: () async {
+          final result = await showDialog<bool>(
+            context: context,
+            builder: (_) => const LogoutDialog(),
+          );
 
-        //   if (logout != null && logout) {
-        //     await authCubit.logout();
-        //   }
-        // },
+          if (result ?? false) {
+            ref.read(logoutProvider).logout().ignore();
+          }
+        },
       ),
     ];
 
