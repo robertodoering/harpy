@@ -18,7 +18,9 @@ class HarpyTheme {
     required double fontSizeDelta,
     required String displayFont,
     required String bodyFont,
+    required double paddingValue,
   })  : _fontSizeDelta = fontSizeDelta,
+        _paddingValue = paddingValue,
         radius = const Radius.circular(16) {
     borderRadius = BorderRadius.all(radius);
     shape = RoundedRectangleBorder(borderRadius: borderRadius);
@@ -37,6 +39,7 @@ class HarpyTheme {
   }
 
   final double _fontSizeDelta;
+  final double _paddingValue;
 
   final Radius radius;
   late final BorderRadius borderRadius;
@@ -67,6 +70,8 @@ class HarpyTheme {
     ).copyWith(
       textTheme: text.textTheme,
 
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
       // used when interacting with material widgets
       splashColor: colors.secondary.withOpacity(.1),
       highlightColor: colors.secondary.withOpacity(.1),
@@ -91,8 +96,14 @@ class HarpyTheme {
         behavior: SnackBarBehavior.floating,
       ),
       dialogTheme: DialogTheme(shape: shape),
+      popupMenuTheme: PopupMenuThemeData(
+        color: colors.alternateCardColor,
+        shape: shape,
+        enableFeedback: true,
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
+          padding: MaterialStateProperty.all(EdgeInsets.all(_paddingValue)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),
@@ -100,6 +111,7 @@ class HarpyTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+          padding: MaterialStateProperty.all(EdgeInsets.all(_paddingValue)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),

@@ -32,6 +32,7 @@ final lightThemeProvider = StateProvider(
       fontSizeDelta: displayPreferences.fontSizeDelta,
       displayFont: displayPreferences.displayFont,
       bodyFont: displayPreferences.bodyFont,
+      paddingValue: displayPreferences.paddingValue,
     );
   },
   name: 'LightThemeProvider',
@@ -50,6 +51,7 @@ final darkThemeProvider = StateProvider(
       fontSizeDelta: displayPreferences.fontSizeDelta,
       displayFont: displayPreferences.displayFont,
       bodyFont: displayPreferences.bodyFont,
+      paddingValue: displayPreferences.paddingValue,
     );
   },
   name: 'DarkThemeProvider',
