@@ -40,11 +40,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     return HarpyScaffold(
       safeArea: true,
-      child: authenticationState.maybeWhen(
+      child: authenticationState.when(
         awaitingAuthentication: () => const Center(
           child: CircularProgressIndicator(),
         ),
-        orElse: () => AnimatedSlide(
+        authenticated: (_) => const SizedBox(),
+        unauthenticated: () => AnimatedSlide(
           duration: kLongAnimationDuration,
           curve: Curves.easeInCubic,
           offset: _loginStarted ? const Offset(0, -1) : Offset.zero,
