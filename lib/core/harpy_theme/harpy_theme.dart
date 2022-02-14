@@ -102,6 +102,17 @@ class HarpyTheme {
               state.contains(MaterialState.selected) ? colors.primary : null,
         ),
       ),
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.resolveWith(
+          (state) =>
+              state.contains(MaterialState.selected) ? colors.secondary : null,
+        ),
+        trackColor: MaterialStateProperty.resolveWith(
+          (state) => state.contains(MaterialState.selected)
+              ? colors.secondary.withAlpha(0x80)
+              : null,
+        ),
+      ),
       popupMenuTheme: PopupMenuThemeData(
         color: colors.alternateCardColor,
         shape: shape,

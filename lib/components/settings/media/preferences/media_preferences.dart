@@ -7,15 +7,15 @@ import 'package:harpy/rby/rby.dart';
 part 'media_preferences.freezed.dart';
 
 final mediaPreferencesProvider =
-    StateNotifierProvider<MediaPreferencesProvider, MediaPreferences>(
-  (ref) => MediaPreferencesProvider(
+    StateNotifierProvider<MediaPreferencesNotifier, MediaPreferences>(
+  (ref) => MediaPreferencesNotifier(
     preferences: ref.watch(preferencesProvider(null)),
   ),
   name: 'MediaPreferencesProvider',
 );
 
-class MediaPreferencesProvider extends StateNotifier<MediaPreferences> {
-  MediaPreferencesProvider({
+class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
+  MediaPreferencesNotifier({
     required Preferences preferences,
   })  : _preferences = preferences,
         super(
