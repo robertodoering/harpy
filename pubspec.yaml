@@ -23,7 +23,7 @@ dependencies:
   encrypt: ^5.0.1
   equatable: ^2.0.0
   file_picker: ^4.0.1
-  flare_flutter: ^3.0.0
+  flare_flutter: ^3.0.2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.0-dev.2

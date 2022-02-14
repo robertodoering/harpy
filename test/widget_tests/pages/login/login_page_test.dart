@@ -1,15 +1,19 @@
+import 'package:flare_flutter/flare_testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../test_setup/devices.dart';
 import '../../../test_setup/setup.dart';
 
 void main() {
-  setUpAll(loadAppFonts);
+  setUpAll(() async {
+    FlareTesting.setup();
+    await warmupFlare();
+    await loadAppFonts();
+  });
 
   group('login page', () {
     testGoldens('builds login page', (tester) async {

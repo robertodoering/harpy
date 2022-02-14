@@ -6,6 +6,7 @@ export 'common/authentication/provider/logout_provider.dart';
 export 'common/authentication/widgets/login_webview.dart';
 export 'common/authentication/widgets/retry_authentication_dialog.dart';
 export 'common/widgets/expansion_card.dart';
+export 'common/widgets/flare_animation.dart';
 export 'common/widgets/harpy_background.dart';
 export 'common/widgets/harpy_circle_avatar.dart';
 export 'common/widgets/harpy_image.dart';

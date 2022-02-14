@@ -262,16 +262,7 @@ class _Entries extends ConsumerWidget {
       verticalSpacer,
       if (isFree) ...[
         HarpyListCard(
-          // TODO: shining star icon
-          // leading: FlareIcon.shiningStar(
-          //   size: theme.iconTheme.size! + 8,
-          // ),
-          // leadingPadding: config.edgeInsets.copyWith(
-          //   left: max(config.paddingValue - 4, 0),
-          //   right: max(config.paddingValue - 4, 0),
-          //   top: max(config.paddingValue - 4, 0),
-          //   bottom: max(config.paddingValue - 4, 0),
-          // ),
+          leading: const FlareIcon.shiningStar(),
           title: const Text('harpy pro'),
           onTap: () => launchUrl(
             'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
@@ -280,16 +271,7 @@ class _Entries extends ConsumerWidget {
         verticalSpacer,
       ],
       HarpyListCard(
-        // TODO: harpy logo icon
-        // leading: FlareIcon.harpyLogo(
-        //   size: theme.iconTheme.size!,
-        // ),
-        // leadingPadding: config.edgeInsets.copyWith(
-        //   left: max(config.paddingValue - 6, 0),
-        //   right: max(config.paddingValue - 6, 0),
-        //   top: max(config.paddingValue - 6, 0),
-        //   bottom: max(config.paddingValue - 6, 0),
-        // ),
+        leading: const FlareIcon.harpyLogo(),
         title: const Text('about'),
         onTap: () => router.goNamed(AboutPage.name),
       ),

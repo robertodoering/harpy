@@ -116,8 +116,7 @@ class _HarpyTitle extends StatelessWidget {
         duration: const Duration(seconds: 3),
         curve: Curves.easeOutCubic,
         begin: const Offset(0, .5),
-        child: FlareAnimation(
-          name: 'harpy_title',
+        child: FlareAnimation.harpyTitle(
           alignment: Alignment.bottomCenter,
           animation: 'show',
           color: theme.colorScheme.onBackground,
@@ -137,10 +136,7 @@ class _HarpyLogo extends StatelessWidget {
       duration: Duration(milliseconds: 2000),
       curve: Curves.easeOut,
       begin: Offset(0, .25),
-      child: FlareAnimation(
-        name: 'harpy_logo',
-        animation: 'show',
-      ),
+      child: FlareAnimation.harpyLogo(animation: 'show'),
     );
   }
 }

@@ -59,18 +59,14 @@ class _HarpyLogo extends StatelessWidget {
       children: [
         SizedBox(
           height: 100,
-          child: FlareAnimation(
-            name: 'harpy_title',
+          child: FlareAnimation.harpyTitle(
             animation: 'show',
             color: theme.colorScheme.onBackground,
           ),
         ),
         const SizedBox(
           height: 100,
-          child: FlareAnimation(
-            name: 'harpy_logo',
-            animation: 'show',
-          ),
+          child: FlareAnimation.harpyLogo(animation: 'show'),
         ),
       ],
     );
