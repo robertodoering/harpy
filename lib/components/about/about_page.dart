@@ -207,10 +207,7 @@ class _ProCard extends ConsumerWidget {
             ),
           ),
           HarpyListTile(
-            // TODO: shining star icon
-            // leading: FlareIcon.shiningStar(
-            //   size: theme.iconTheme.size! + 8,
-            // ),
+            leading: const FlareIcon.shiningStar(),
             title: const Text('harpy pro'),
             borderRadius: BorderRadius.only(
               bottomLeft: harpyTheme.radius,
@@ -247,10 +244,7 @@ class _RateAppCard extends ConsumerWidget {
             ),
           ),
           HarpyListTile(
-            // TODO: shining star icon
-            // leading: FlareIcon.shiningStar(
-            //   size: theme.iconTheme.size! + 8,
-            // ),
+            leading: const FlareIcon.shiningStar(),
             title: const Text('rate harpy'),
             subtitle: const Text('(coming soon)'),
             borderRadius: BorderRadius.only(
