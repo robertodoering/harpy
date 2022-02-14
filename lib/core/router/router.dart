@@ -47,6 +47,16 @@ final routesProvider = Provider(
             key: state.pageKey,
             child: const SettingsPage(),
           ),
+          routes: [
+            GoRoute(
+              name: MediaSettingsPage.name,
+              path: 'media',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const MediaSettingsPage(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           name: AboutPage.name,
