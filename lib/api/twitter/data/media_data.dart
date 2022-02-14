@@ -1,6 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
 
 part 'media_data.freezed.dart';
 
@@ -11,10 +13,13 @@ mixin MediaData {
   /// The aspect ratio of the image or video.
   double get aspectRatioDouble;
 
-  /// The url based on the media quality settings.
-  String? get appropriateUrl;
-
   MediaType get type;
+
+  /// The url based on the media quality settings.
+  String? appropriateUrl(
+    MediaPreferences preferences,
+    ConnectivityResult connectivity,
+  );
 }
 
 @freezed
@@ -58,9 +63,13 @@ class ImageMediaData with _$ImageMediaData, MediaData {
 
   /// The image url for images drawn in the app.
   @override
-  String get appropriateUrl {
-    // TODO: handle media preferences 'should use best quality' setting.
-    return small;
+  String? appropriateUrl(
+    MediaPreferences mediaPreferences,
+    ConnectivityResult connectivity,
+  ) {
+    return mediaPreferences.shouldUseBestMediaQuality(connectivity)
+        ? bestUrl
+        : small;
   }
 }
 
@@ -116,7 +125,12 @@ class VideoMediaData with _$VideoMediaData, MediaData {
   /// This is the same as [bestUrl] because the quality for worse variants is
   /// too bad.
   @override
-  late final appropriateUrl = bestUrl;
+  String? appropriateUrl(
+    MediaPreferences mediaPreferences,
+    ConnectivityResult connectivity,
+  ) {
+    return bestUrl;
+  }
 
   /// The url of the variant with the best quality.
   @override
