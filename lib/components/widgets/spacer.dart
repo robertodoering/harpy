@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/pages/settings/display/preferences/display_preferences.dart';
+import 'package:harpy/components/components.dart';
 
 const horizontalSpacer = _Spacer(axis: Axis.horizontal);
 const smallHorizontalSpacer = _SmallSpacer(axis: Axis.horizontal);

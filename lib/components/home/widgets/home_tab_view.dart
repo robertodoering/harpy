@@ -55,6 +55,29 @@ class HomeTabView extends ConsumerWidget {
         : HomeAppBar.height(context, general: general, display: display) +
             display.paddingValue;
 
+    // TODO: try nested scroll view
+    // return DefaultTabController(
+    //   length: configuration.visibleEntries.length + 1,
+    //   initialIndex: _indexOffset,
+    //   child: NestedScrollView(
+    //     headerSliverBuilder: (context, _) => [
+    //       const HarpySliverAppBar(title: 'home'),
+    //     ],
+    //     body: TabBarView(
+    //       physics: const HomeTabViewScrollPhysics(),
+    //       children: [
+    //         const HomeDrawer(),
+    //         for (var i = 0; i < configuration.visibleEntries.length; i++)
+    //           _mapEntryContent(
+    //             i,
+    //             configuration.visibleEntries[i],
+    //             refreshIndicatorOffset,
+    //           ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
     return DefaultTabController(
       length: configuration.visibleEntries.length + 1,
       initialIndex: _indexOffset,
