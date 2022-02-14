@@ -96,6 +96,12 @@ class HarpyTheme {
         behavior: SnackBarBehavior.floating,
       ),
       dialogTheme: DialogTheme(shape: shape),
+      radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.resolveWith(
+          (state) =>
+              state.contains(MaterialState.selected) ? colors.primary : null,
+        ),
+      ),
       popupMenuTheme: PopupMenuThemeData(
         color: colors.alternateCardColor,
         shape: shape,
