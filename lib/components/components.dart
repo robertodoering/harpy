@@ -51,6 +51,8 @@ export 'widgets/harpy_image.dart';
 export 'widgets/harpy_list_card.dart';
 export 'widgets/harpy_list_tile.dart';
 export 'widgets/harpy_scaffold.dart';
+export 'widgets/popup_menu/harpy_popup_menu.dart';
+export 'widgets/popup_menu/harpy_popup_menu_button.dart';
 export 'widgets/slivers/harpy_sliver_app_bar.dart';
 export 'widgets/slivers/sliver_bottom_padding.dart';
 export 'widgets/spacer.dart';
