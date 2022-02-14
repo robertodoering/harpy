@@ -9,6 +9,11 @@
 		"scope": "dart",
 		"body": "final padding = ref.watch(displayPreferencesProvider).edgeInsets;"
 	},
+	"router": {
+		"prefix": "router",
+		"scope": "dart",
+		"body": "final router = ref.watch(routerProvider);"
+	},
 	"harpy theme": {
 		"prefix": "harpytheme",
 		"scope": "dart",
