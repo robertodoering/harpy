@@ -78,7 +78,7 @@ class _MediaSettingsList extends ConsumerWidget {
             horizontalSpacer,
             Icon(
               CupertinoIcons.info,
-              color: theme.colorScheme.secondary,
+              color: theme.colorScheme.primary,
             ),
             SizedBox(width: display.paddingValue * 2),
             Expanded(

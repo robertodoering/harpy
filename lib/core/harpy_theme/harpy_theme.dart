@@ -105,11 +105,11 @@ class HarpyTheme {
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.resolveWith(
           (state) =>
-              state.contains(MaterialState.selected) ? colors.secondary : null,
+              state.contains(MaterialState.selected) ? colors.primary : null,
         ),
         trackColor: MaterialStateProperty.resolveWith(
           (state) => state.contains(MaterialState.selected)
-              ? colors.secondary.withAlpha(0x80)
+              ? colors.primary.withAlpha(0x80)
               : null,
         ),
       ),
