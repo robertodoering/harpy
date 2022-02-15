@@ -36,6 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final authenticationState = ref.watch(authenticationStateProvider);
 
     return HarpyScaffold(
@@ -54,27 +55,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               const _AboutButton(),
               Column(
                 children: [
-                  const Spacer(),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * .5,
-                    ),
-                    child: Column(
-                      children: const [
-                        Expanded(child: _HarpyTitle()),
-                        Expanded(child: _HarpyLogo()),
-                      ],
+                  Expanded(
+                    child: OverflowBox(
+                      maxHeight: mediaQuery.size.height,
+                      child: Column(
+                        children: [
+                          const Spacer(),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: mediaQuery.size.height * .5,
+                            ),
+                            child: Column(
+                              children: const [
+                                Expanded(child: _HarpyTitle()),
+                                Expanded(child: _HarpyLogo()),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  const Spacer(),
-                  const SizedBox(height: 16),
-                  Column(
-                    children: [
-                      _LoginButton(onTap: _startLogin),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+                  const SizedBox(height: 32),
+                  _LoginButton(onTap: _startLogin),
+                  const SizedBox(height: 32),
                 ],
               ),
             ],
