@@ -18,7 +18,17 @@ class AboutPage extends ConsumerWidget {
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          const HarpySliverAppBar(title: 'about'),
+          HarpySliverAppBar(
+            title: 'about',
+            actions: [
+              HarpyPopupMenuButton(
+                onSelected: (_) => showLicensePage(context: context),
+                itemBuilder: (_) => const [
+                  HarpyPopupMenuItem(title: Text('licenses')),
+                ],
+              ),
+            ],
+          ),
           SliverPadding(
             padding: padding,
             sliver: const SliverList(
