@@ -144,6 +144,10 @@ class HarpyTheme {
           ),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: EdgeInsets.all(_paddingValue),
+        border: OutlineInputBorder(borderRadius: borderRadius),
+      ),
     );
   }
 

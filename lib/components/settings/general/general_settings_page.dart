@@ -34,7 +34,6 @@ class _GeneralSettingsList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
     final generalNotifier = ref.watch(generalPreferencesProvider.notifier);
 

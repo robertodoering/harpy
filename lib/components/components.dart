@@ -33,6 +33,8 @@ export 'settings/display/preferences/display_preferences.dart';
 export 'settings/general/general_settings_page.dart';
 export 'settings/general/preferences/general_preferences.dart';
 export 'settings/language/language_settings_page.dart';
+export 'settings/language/preferences/language_preferences.dart';
+export 'settings/language/widgets/translate_language_dialog_tile.dart';
 export 'settings/media/media_settings_page.dart';
 export 'settings/media/preferences/media_preferences.dart';
 export 'settings/media/provider/download_path_provider.dart';

@@ -12,7 +12,6 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
     this.title,
     this.borderRadius,
     this.dialogTitle,
-    this.denseEntries = false,
   });
 
   final T groupValue;
@@ -23,7 +22,6 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
   final BorderRadius? borderRadius;
 
   final Widget? dialogTitle;
-  final bool denseEntries;
   final ValueChanged<T>? onChanged;
 
   @override

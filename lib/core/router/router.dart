@@ -64,6 +64,14 @@ final routesProvider = Provider(
                 child: const GeneralSettingsPage(),
               ),
             ),
+            GoRoute(
+              name: LanguageSettingsPage.name,
+              path: 'language',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const LanguageSettingsPage(),
+              ),
+            ),
           ],
         ),
         GoRoute(

@@ -1,3 +1,4 @@
+export 'translate/data/languages.dart';
 export 'twitter/data/entities_data.dart';
 export 'twitter/data/media_data.dart';
 export 'twitter/data/tweet_data.dart';
