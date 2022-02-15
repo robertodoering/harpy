@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
+import 'package:harpy/components/components.dart';
+import 'package:harpy/rby/rby.dart';
+
+class TranslateLanguagesDialogTile extends ConsumerWidget {
+  const TranslateLanguagesDialogTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final harpyTheme = ref.watch(harpyThemeProvider);
+    final language = ref.watch(languagePreferencesProvider);
+
+    final locale = Localizations.localeOf(context);
+    final groupValue = language.activeTranslateLanguage(locale);
+    final name = kTranslateLanguages[groupValue];
+
+    return HarpyListTile(
+      leading: const Icon(Icons.translate),
+      title: const Text('translate language'),
+      subtitle: name != null ? Text(name) : null,
+      multilineTitle: true,
+      borderRadius: harpyTheme.borderRadius,
+      onTap: () => showDialog<void>(
+        context: context,
+        builder: (_) => const Unfocus(child: _TranslateLanguageDialog()),
+      ),
+    );
+  }
+}
+
+class _TranslateLanguageDialog extends ConsumerStatefulWidget {
+  const _TranslateLanguageDialog();
+
+  @override
+  _DialogState createState() => _DialogState();
+}
+
+class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
+  String _filter = '';
+
+  Map<String, Widget> get _entries => Map.fromEntries(
+        kTranslateLanguages.entries.where(
+          (entry) =>
+              entry.key.toLowerCase().contains(_filter.toLowerCase()) ||
+              entry.value.toLowerCase().contains(_filter.toLowerCase()),
+        ),
+      ).map((key, value) => MapEntry(key, Text(value)));
+
+  @override
+  Widget build(BuildContext context) {
+    final display = ref.watch(displayPreferencesProvider);
+    final language = ref.watch(languagePreferencesProvider);
+    final languageNotifier = ref.watch(languagePreferencesProvider.notifier);
+
+    final locale = Localizations.localeOf(context);
+
+    final groupValue = language.activeTranslateLanguage(locale);
+
+    return SimpleDialog(
+      title: const Text('change the language used to translate tweets'),
+      titlePadding: (display.edgeInsets * 2).copyWith(bottom: 0),
+      contentPadding: display.edgeInsetsSymmetric(vertical: true),
+      clipBehavior: Clip.antiAlias,
+      children: [
+        Padding(
+          padding: display.edgeInsetsSymmetric(horizontal: true),
+          child: TextField(
+            onChanged: (value) => setState(() => _filter = value),
+          ),
+        ),
+        verticalSpacer,
+        for (final entry in _entries.entries)
+          HarpyRadioTile<String>(
+            title: entry.value,
+            value: entry.key,
+            groupValue: groupValue,
+            leadingPadding: display.edgeInsets / 4,
+            contentPadding: display.edgeInsets / 4,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+              if (value != groupValue)
+                languageNotifier.setTranslateLanguage(value);
+            },
+          )
+      ],
+    );
+  }
+}
