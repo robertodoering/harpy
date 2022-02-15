@@ -9,6 +9,7 @@ final generalPreferencesProvider =
     StateNotifierProvider<GeneralPreferencesNotifier, GeneralPreferences>(
   (ref) => GeneralPreferencesNotifier(
     preferences: ref.watch(preferencesProvider(null)),
+    deviceInfo: ref.watch(deviceInfoProvider),
   ),
   name: 'GeneralPreferencesProvider',
 );
@@ -16,9 +17,16 @@ final generalPreferencesProvider =
 class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
   GeneralPreferencesNotifier({
     required Preferences preferences,
+    required DeviceInfo deviceInfo,
   })  : _preferences = preferences,
+        _deviceInfo = deviceInfo,
         super(
           GeneralPreferences(
+            showChangelogDialog: preferences.getBool(
+              'showChangelogDialog',
+              true,
+            ),
+            lastShownVersion: preferences.getInt('lastShownVersion', 0),
             performanceMode: preferences.getBool('performanceMode', false),
             crashReports: preferences.getBool('crashReports', true),
             homeTimelinePositionBehavior: preferences.getInt(
@@ -35,6 +43,12 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
         );
 
   final Preferences _preferences;
+  final DeviceInfo _deviceInfo;
+
+  void setShowChangelogDialog(bool value) {
+    state = state.copyWith(showChangelogDialog: value);
+    _preferences.setBool('showChangelogDialog', value);
+  }
 
   void setPerformanceMode(bool value) {
     state = state.copyWith(performanceMode: value);
@@ -65,11 +79,32 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
     state = state.copyWith(bottomAppBar: value);
     _preferences.setBool('bottomAppBar', value);
   }
+
+  void updateLastShownVersion() {
+    final version = _deviceInfo.packageInfo?.buildNumber;
+
+    if (version != null) {
+      final versionInt = int.tryParse(version);
+
+      if (versionInt != null) {
+        state.copyWith(lastShownVersion: versionInt);
+        _preferences.setInt('lastShownVersion', versionInt);
+      }
+    }
+  }
 }
 
 @freezed
 class GeneralPreferences with _$GeneralPreferences {
   factory GeneralPreferences({
+    /// Whether the changelog dialog should appear when the app has been updated
+    /// to a new version.
+    required bool showChangelogDialog,
+
+    /// The version code for the app version the changelog dialog last showed
+    /// on.
+    required int lastShownVersion,
+
     /// Whether animations and effects should be reduced to increase
     /// performance on lower end devices.
     required bool performanceMode,
@@ -106,4 +141,17 @@ class GeneralPreferences with _$GeneralPreferences {
   late final keepLastHomeTimelinePosition = homeTimelinePositionBehavior != 2;
   late final keepNewestReadTweet = homeTimelinePositionBehavior == 0;
   late final keepLastReadTweet = homeTimelinePositionBehavior == 1;
+
+  /// Whether the changelog dialog should show.
+  ///
+  /// - [showChangelogDialog] needs to be true
+  /// - [lastShownVersion] must have been set before (not a new user opening
+  /// the app for the first time)
+  /// - the [lastShownVersion] must be smaller than the current version (user
+  /// has updated)
+  bool shouldShowChangelogDialog(DeviceInfo deviceInfo) =>
+      showChangelogDialog &&
+      lastShownVersion != 0 &&
+      (int.tryParse(deviceInfo.packageInfo?.buildNumber ?? '0') ?? 0) >
+          lastShownVersion;
 }

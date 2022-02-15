@@ -34,6 +34,7 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
       leading: leading,
       title: title,
       subtitle: entries[groupValue],
+      multilineTitle: true,
       borderRadius: borderRadius,
       onTap: () => showDialog<void>(
         context: context,
