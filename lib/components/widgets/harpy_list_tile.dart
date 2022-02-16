@@ -54,7 +54,7 @@ class HarpyListTile extends ConsumerWidget {
         borderRadius: borderRadius,
         child: IconTheme(
           data: theme.iconTheme.copyWith(
-            color: enabled ? onBackground : onBackground.withOpacity(.4),
+            color: enabled ? onBackground : onBackground.withOpacity(.5),
           ),
           child: Row(
             crossAxisAlignment: verticalAlignment ??
@@ -81,7 +81,7 @@ class HarpyListTile extends ConsumerWidget {
                             style: textStyle.copyWith(
                               height: multilineTitle ? null : 1,
                               color: onBackground.withOpacity(
-                                enabled ? onBackground.opacity : .4,
+                                enabled ? onBackground.opacity : .5,
                               ),
                             ),
                             child: title!,
@@ -98,7 +98,7 @@ class HarpyListTile extends ConsumerWidget {
                                 .copyWith(
                                   height: multilineSubtitle ? null : 1,
                                   color: onBackground.withOpacity(
-                                    enabled ? .8 : .3,
+                                    enabled ? .8 : .4,
                                   ),
                                 )
                                 .apply(fontSizeDelta: -2),

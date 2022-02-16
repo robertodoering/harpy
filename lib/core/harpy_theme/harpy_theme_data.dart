@@ -1,6 +1,4 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:harpy/rby/rby.dart';
 
 part 'harpy_theme_data.freezed.dart';
 part 'harpy_theme_data.g.dart';
@@ -9,7 +7,7 @@ part 'harpy_theme_data.g.dart';
 class HarpyThemeData with _$HarpyThemeData {
   const factory HarpyThemeData({
     required String name,
-    @BuiltListIntConverter() required BuiltList<int> backgroundColors,
+    required List<int> backgroundColors,
     required int primaryColor,
     required int secondaryColor,
     required int cardColor,

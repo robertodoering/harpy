@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class HarpyBackground extends ConsumerWidget {
   const HarpyBackground({
@@ -14,16 +15,16 @@ class HarpyBackground extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
     final colors = harpyTheme.colors.backgroundColors;
 
-    return DecoratedBox(
+    return AnimatedContainer(
+      duration: kShortAnimationDuration,
       decoration: BoxDecoration(
-        color: colors.length == 1 ? colors.single : null,
-        gradient: colors.length > 1
-            ? LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: colors.toList(),
-              )
-            : null,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: colors.length == 1
+              ? List.filled(2, colors.single)
+              : colors.toList(),
+        ),
       ),
       child: Material(
         type: MaterialType.transparency,

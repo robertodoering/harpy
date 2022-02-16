@@ -24,15 +24,15 @@ final lightThemeProvider = StateProvider(
     final lightThemeId = ref.watch(
       themePreferencesProvider.select((value) => value.lightThemeId),
     );
-    final customThemes = ref.watch(customThemesProvider);
-    final displayPreferences = ref.watch(displayPreferencesProvider);
+    final customThemes = ref.watch(customHarpyThemesProvider);
+    final display = ref.watch(displayPreferencesProvider);
 
     return HarpyTheme(
       data: _themeDataFromId(lightThemeId, customThemes) ?? predefinedThemes[1],
-      fontSizeDelta: displayPreferences.fontSizeDelta,
-      displayFont: displayPreferences.displayFont,
-      bodyFont: displayPreferences.bodyFont,
-      paddingValue: displayPreferences.paddingValue,
+      fontSizeDelta: display.fontSizeDelta,
+      displayFont: display.displayFont,
+      bodyFont: display.bodyFont,
+      paddingValue: display.paddingValue,
     );
   },
   name: 'LightThemeProvider',
@@ -43,21 +43,21 @@ final darkThemeProvider = StateProvider(
     final darkThemeId = ref.watch(
       themePreferencesProvider.select((value) => value.darkThemeId),
     );
-    final customThemes = ref.watch(customThemesProvider);
-    final displayPreferences = ref.watch(displayPreferencesProvider);
+    final customThemes = ref.watch(customHarpyThemesProvider);
+    final display = ref.watch(displayPreferencesProvider);
 
     return HarpyTheme(
       data: _themeDataFromId(darkThemeId, customThemes) ?? predefinedThemes[0],
-      fontSizeDelta: displayPreferences.fontSizeDelta,
-      displayFont: displayPreferences.displayFont,
-      bodyFont: displayPreferences.bodyFont,
-      paddingValue: displayPreferences.paddingValue,
+      fontSizeDelta: display.fontSizeDelta,
+      displayFont: display.displayFont,
+      bodyFont: display.bodyFont,
+      paddingValue: display.paddingValue,
     );
   },
   name: 'DarkThemeProvider',
 );
 
-final customThemesProvider = StateProvider(
+final customHarpyThemesProvider = StateProvider(
   (ref) => ref
       .watch(themePreferencesProvider.select((value) => value.customThemes))
       .map(_decodeThemeData)

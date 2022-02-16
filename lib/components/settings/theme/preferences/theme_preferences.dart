@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,19 +10,20 @@ import 'package:harpy/rby/rby.dart';
 part 'theme_preferences.freezed.dart';
 
 final themePreferencesProvider =
-    StateNotifierProvider<ThemePreferencesNotifer, ThemePreferences>(
+    StateNotifierProvider<ThemePreferencesNotifier, ThemePreferences>(
   (ref) {
     final prefix = ref.watch(authPreferencesProvider).userId;
 
-    return ThemePreferencesNotifer(
+    return ThemePreferencesNotifier(
       preferences: ref.watch(preferencesProvider(prefix)),
     );
   },
   name: 'ThemePreferencesProvider',
 );
 
-class ThemePreferencesNotifer extends StateNotifier<ThemePreferences> {
-  ThemePreferencesNotifer({
+class ThemePreferencesNotifier extends StateNotifier<ThemePreferences>
+    with LoggerMixin {
+  ThemePreferencesNotifier({
     required Preferences preferences,
   })  : _preferences = preferences,
         super(
@@ -52,9 +55,68 @@ class ThemePreferencesNotifer extends StateNotifier<ThemePreferences> {
     }
   }
 
-  void setCustomThemes(BuiltList<String> customThemes) {
-    state = state.copyWith(customThemes: customThemes);
-    _preferences.setStringList('customThemes', customThemes.toList());
+  void addCustomTheme({
+    required HarpyThemeData themeData,
+    required int? themeId,
+    bool updateLightThemeSelection = false,
+    bool updateDarkThemeSelection = false,
+  }) {
+    try {
+      if (themeId != null)
+        // update existing theme
+        state = state.copyWith(
+          customThemes: state.customThemes.rebuild(
+            (builder) => builder[themeId - 10] = jsonEncode(themeData.toJson()),
+          ),
+        );
+      else
+        // add new theme
+        state = state.copyWith(
+          customThemes: state.customThemes.rebuild(
+            (builder) => builder.add(jsonEncode(themeData.toJson())),
+          ),
+        );
+
+      _preferences.setStringList('customThemes', state.customThemes.toList());
+
+      if (updateLightThemeSelection || updateDarkThemeSelection)
+        setThemeId(
+          lightThemeId: updateLightThemeSelection
+              ? themeId ?? state.customThemes.length - 1 + 10
+              : null,
+          darkThemeId: updateDarkThemeSelection
+              ? themeId ?? state.customThemes.length - 1 + 10
+              : null,
+        );
+    } catch (e, st) {
+      log.severe('unable to add custom theme', e, st);
+    }
+  }
+
+  void removeCustomTheme({
+    required int themeId,
+  }) {
+    state = state.copyWith(
+      customThemes: state.customThemes.rebuild(
+        (builder) => builder.removeAt(themeId - 10),
+      ),
+    );
+
+    _preferences.setStringList('customThemes', state.customThemes.toList());
+
+    if (themeId <= state.lightThemeId || themeId <= state.darkThemeId)
+      setThemeId(
+        lightThemeId: themeId == state.lightThemeId
+            ? 0
+            : themeId < state.lightThemeId
+                ? state.lightThemeId - 1
+                : null,
+        darkThemeId: themeId == state.darkThemeId
+            ? 0
+            : themeId < state.darkThemeId
+                ? state.darkThemeId - 1
+                : null,
+      );
   }
 }
 

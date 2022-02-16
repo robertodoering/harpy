@@ -57,6 +57,26 @@ final routesProvider = Provider(
               ),
             ),
             GoRoute(
+              name: ThemeSettingsPage.name,
+              path: 'theme',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const ThemeSettingsPage(),
+              ),
+              routes: [
+                GoRoute(
+                  name: CustomThemePage.name,
+                  path: 'custom',
+                  pageBuilder: (_, state) => HarpyPage(
+                    key: state.pageKey,
+                    child: CustomThemePage(
+                      themeId: int.tryParse(state.queryParams['themeId'] ?? ''),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            GoRoute(
               name: GeneralSettingsPage.name,
               path: 'general',
               pageBuilder: (_, state) => HarpyPage(

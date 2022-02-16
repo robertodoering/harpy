@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// A custom alternative [SliverAppBar] used in harpy.
 ///
@@ -77,7 +78,7 @@ class HarpySliverAppBar extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
     final topPadding = MediaQuery.of(context).padding.top;
 
-    final style = Theme.of(context).textTheme.titleLarge!;
+    final style = Theme.of(context).textTheme.titleLarge!.copyWith(height: 1);
 
     return SliverPersistentHeader(
       floating: true,
@@ -85,11 +86,11 @@ class HarpySliverAppBar extends ConsumerWidget {
         backgroundColors: harpyTheme.colors.backgroundColors,
         topPadding: topPadding,
         contentPadding: display.paddingValue,
-        fontSize: style.fontSize!,
+        titleStyle: style,
         child: NavigationToolbar(
           leading: _leading(context),
           middle: title != null
-              ? FittedBox(child: Text(title!, style: style.copyWith(height: 1)))
+              ? FittedBox(child: Text(title!, style: style))
               : null,
           trailing: _trailing(context),
           middleSpacing: display.paddingValue,
@@ -104,18 +105,19 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     required this.backgroundColors,
     required this.topPadding,
     required this.contentPadding,
-    required this.fontSize,
+    required this.titleStyle,
     required this.child,
   });
 
   final BuiltList<Color> backgroundColors;
   final double topPadding;
   final double contentPadding;
-  final double fontSize;
+  final TextStyle titleStyle;
   final Widget child;
 
   @override
-  double get minExtent => topPadding + contentPadding * 2 + fontSize;
+  double get minExtent =>
+      topPadding + contentPadding * 2 + titleStyle.fontSize!;
 
   @override
   double get maxExtent => minExtent;
@@ -125,31 +127,36 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return oldDelegate.backgroundColors != backgroundColors ||
         oldDelegate.topPadding != topPadding ||
         oldDelegate.contentPadding != contentPadding ||
-        oldDelegate.fontSize != fontSize ||
+        oldDelegate.titleStyle != titleStyle ||
         oldDelegate.child != oldDelegate.child;
   }
 
   Decoration? _decoration(MediaQueryData mediaQuery) {
-    if (backgroundColors.length == 1)
-      return BoxDecoration(color: backgroundColors.single.withOpacity(.8));
-    else if (backgroundColors.length > 1) {
-      final end = Color.lerp(
+    Color begin;
+    Color end;
+
+    if (backgroundColors.length == 1) {
+      begin = backgroundColors.single;
+      end = backgroundColors.single;
+    } else {
+      begin = backgroundColors.first;
+
+      end = Color.lerp(
         backgroundColors[0],
         backgroundColors[1],
         // min extend / mediaQuery.size * count of background colors minus the
         // first one
         minExtent / mediaQuery.size.height * (backgroundColors.length - 1),
       )!;
+    }
 
-      return BoxDecoration(
-        gradient: LinearGradient(
-          colors: [backgroundColors.first.withOpacity(.8), end.withOpacity(.8)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      );
-    } else
-      return null;
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: [begin.withOpacity(.8), end.withOpacity(.8)],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    );
   }
 
   @override
@@ -160,7 +167,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final mediaQuery = MediaQuery.of(context);
 
-    return Container(
+    return AnimatedContainer(
+      duration: kShortAnimationDuration,
       width: double.infinity,
       decoration: _decoration(mediaQuery),
       child: Material(

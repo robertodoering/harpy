@@ -14,7 +14,7 @@ const kLongAnimationDuration = Duration(milliseconds: 600);
 
 class HarpyTheme {
   HarpyTheme({
-    required HarpyThemeData data,
+    required this.data,
     required double fontSizeDelta,
     required String displayFont,
     required String bodyFont,
@@ -37,6 +37,8 @@ class HarpyTheme {
 
     _setupThemeData();
   }
+
+  final HarpyThemeData data;
 
   final double _fontSizeDelta;
   final double _paddingValue;
