@@ -9,7 +9,7 @@ import 'package:harpy/rby/rby.dart';
 
 part 'timeline_provider.freezed.dart';
 
-/// Implements common functionality for cubits that handle timelines.
+/// Implements common functionality for notifiers that handle timelines.
 ///
 /// Implementations can use the generic type to build their own custom data
 /// which available in [TimelineStateData].
