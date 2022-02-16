@@ -58,7 +58,7 @@ class ThemeCard extends ConsumerWidget {
       borderColor = harpyTheme.colors.primary;
     } else if (brightness == Brightness.light && selectedDarkTheme ||
         brightness == Brightness.dark && selectedLightTheme) {
-      borderColor = harpyTheme.colors.primary.withOpacity(.5);
+      borderColor = harpyTheme.themeData.dividerColor;
     }
 
     return ClipRRect(
