@@ -16,7 +16,19 @@ class GeneralSettingsPage extends ConsumerWidget {
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          const HarpySliverAppBar(title: 'general'),
+          HarpySliverAppBar(
+            title: 'general',
+            actions: [
+              HarpyPopupMenuButton(
+                onSelected: (_) => ref
+                    .read(generalPreferencesProvider.notifier)
+                    .defaultSettings(),
+                itemBuilder: (_) => const [
+                  HarpyPopupMenuItem(title: Text('reset to default')),
+                ],
+              ),
+            ],
+          ),
           SliverPadding(
             padding: display.edgeInsets,
             sliver: const _GeneralSettingsList(),
@@ -97,9 +109,9 @@ class _GeneralSettingsList extends ConsumerWidget {
             subtitle: const Text(
               'display a floating compose button in the home screen',
             ),
-            value: general.floatingComposebutton,
+            value: general.floatingComposeButton,
             borderRadius: harpyTheme.borderRadius,
-            onChanged: generalNotifier.setFloatingComposebutton,
+            onChanged: generalNotifier.setFloatingComposeButton,
           ),
         ),
         verticalSpacer,
