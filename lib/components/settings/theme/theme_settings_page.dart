@@ -40,19 +40,15 @@ class _PredefinedThemes extends ConsumerWidget {
     final lightThemeId = themePreferences.lightThemeId;
     final darkThemeId = themePreferences.darkThemeId;
 
+    final predefinedThemes = ref.watch(predefinedThemesProvider);
+
     return SliverPadding(
       padding: display.edgeInsetsSymmetric(horizontal: true),
       sliver: SliverList(
         delegate: SliverChildListDelegate.fixed([
           for (var i = 0; i < predefinedThemes.length; i++) ...[
             ThemeCard(
-              HarpyTheme(
-                data: predefinedThemes[i],
-                fontSizeDelta: display.fontSizeDelta,
-                displayFont: display.displayFont,
-                bodyFont: display.bodyFont,
-                paddingValue: display.paddingValue,
-              ),
+              predefinedThemes[i],
               selectedLightTheme: i == lightThemeId,
               selectedDarkTheme: i == darkThemeId,
               onTap: () => selectTheme(
@@ -162,6 +158,8 @@ class _LockedProThemes extends ConsumerWidget {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
+    final predefinedProThemes = ref.watch(predefinedProThemesProvider);
+
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
         Divider(height: display.paddingValue * 2),
@@ -175,18 +173,10 @@ class _LockedProThemes extends ConsumerWidget {
           ),
         ),
         verticalSpacer,
-        for (final proTheme in predefinedProThemes) ...[
+        for (final theme in predefinedProThemes) ...[
           Padding(
             padding: display.edgeInsetsSymmetric(horizontal: true),
-            child: LockedProThemeCard(
-              HarpyTheme(
-                data: proTheme,
-                fontSizeDelta: display.fontSizeDelta,
-                displayFont: display.displayFont,
-                bodyFont: display.bodyFont,
-                paddingValue: display.paddingValue,
-              ),
-            ),
+            child: LockedProThemeCard(theme),
           ),
           smallVerticalSpacer,
         ]

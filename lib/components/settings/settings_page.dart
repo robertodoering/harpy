@@ -51,7 +51,7 @@ class _TweetSettingsCard extends ConsumerWidget {
         HarpyListTile(
           leading: const Icon(CupertinoIcons.photo),
           title: const Text('media'),
-          subtitle: const Text('settings for videos, images and gifs'),
+          subtitle: const Text('settings for tweet videos, images and gifs'),
           borderRadius: BorderRadius.only(
             bottomLeft: harpyTheme.radius,
             bottomRight: harpyTheme.radius,
@@ -83,7 +83,7 @@ class _AppearanceSettingsCard extends ConsumerWidget {
         HarpyListTile(
           leading: const Icon(FeatherIcons.layout),
           title: const Text('display'),
-          subtitle: const Text('change the look of the app'),
+          subtitle: const Text('change the look of harpy'),
           borderRadius: BorderRadius.only(
             bottomLeft: harpyTheme.radius,
             bottomRight: harpyTheme.radius,

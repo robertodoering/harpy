@@ -53,6 +53,7 @@ export 'settings/theme/custom_theme/widgets/custom_theme_pro_card.dart';
 export 'settings/theme/custom_theme/widgets/custom_theme_secondary_color.dart';
 export 'settings/theme/custom_theme/widgets/custom_theme_status_bar_color.dart';
 export 'settings/theme/preferences/theme_preferences.dart';
+export 'settings/theme/provider/predefined_themes_provider.dart';
 export 'settings/theme/provider/theme_provider.dart';
 export 'settings/theme/theme_settings_page.dart';
 export 'settings/theme/widgets/create_custom_theme_card.dart';
