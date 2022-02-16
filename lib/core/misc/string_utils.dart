@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 /// Returns a display string for a 32 bit [color] value in ARGB format.
 ///
 /// When [displayOpacity] is `true`, the returned string will include the
@@ -30,4 +32,16 @@ String colorValueToDisplayHex(int color, {bool displayOpacity = true}) {
   } else {
     return '#$rgbString';
   }
+}
+
+/// Returns the [value] without its prepended symbol if it starts with any
+/// symbol in [symbols].
+String? removePrependedSymbol(String? value, Iterable<String> symbols) {
+  if (value == null) {
+    return null;
+  }
+
+  final symbol = symbols.firstWhereOrNull(value.startsWith);
+
+  return symbol != null ? value.substring(symbol.length) : null;
 }
