@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/widgets/harpy_dialog.dart';
+import 'package:harpy/components/components.dart';
 
 class RetryAuthenticationDialog extends StatelessWidget {
   const RetryAuthenticationDialog();
@@ -13,13 +13,13 @@ class RetryAuthenticationDialog extends StatelessWidget {
         'please check your connection and try again',
       ),
       actions: [
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('cancel'),
+        HarpyButton.text(
+          label: const Text('cancel'),
+          onTap: Navigator.of(context).pop,
         ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('retry'),
+        HarpyButton.elevated(
+          label: const Text('retry'),
+          onTap: () => Navigator.of(context).pop(true),
         ),
       ],
     );

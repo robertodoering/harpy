@@ -36,16 +36,16 @@ class LoadingError extends ConsumerWidget {
             ),
             if (onRetry != null) ...[
               verticalSpacer,
-              TextButton(
-                onPressed: onRetry,
-                child: const Text('retry'),
+              HarpyButton.text(
+                label: const Text('retry'),
+                onTap: onRetry,
               ),
             ],
             if (onChangeFilter != null) ...[
               verticalSpacer,
-              TextButton(
-                onPressed: onChangeFilter,
-                child: const Text('change filter'),
+              HarpyButton.text(
+                label: const Text('change filter'),
+                onTap: onChangeFilter,
               ),
             ],
           ],

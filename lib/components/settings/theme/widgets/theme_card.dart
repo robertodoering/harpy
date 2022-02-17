@@ -105,9 +105,9 @@ class ThemeCard extends ConsumerWidget {
                   ),
                 ),
             ],
-            IconButton(
+            HarpyButton.icon(
               icon: const Icon(CupertinoIcons.ellipsis_vertical),
-              onPressed: () => _showBottomSheet(context),
+              onTap: () => _showBottomSheet(context),
             ),
           ],
         ),

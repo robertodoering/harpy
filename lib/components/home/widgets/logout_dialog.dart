@@ -9,13 +9,13 @@ class LogoutDialog extends StatelessWidget {
     return HarpyDialog(
       title: const Text('really logout?'),
       actions: [
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('cancel'),
+        HarpyButton.text(
+          label: const Text('cancel'),
+          onTap: Navigator.of(context).pop,
         ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('logout'),
+        HarpyButton.elevated(
+          label: const Text('logout'),
+          onTap: () => Navigator.of(context).pop(true),
         ),
       ],
     );

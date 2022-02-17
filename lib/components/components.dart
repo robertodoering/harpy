@@ -78,6 +78,7 @@ export 'user/user_page.dart';
 export 'widgets/bottom_sheet/bottom_sheet_handle.dart';
 export 'widgets/bottom_sheet/bottom_sheet_header.dart';
 export 'widgets/bottom_sheet/harpy_bottom_sheet.dart';
+export 'widgets/button/harpy_button.dart';
 export 'widgets/expansion_card.dart';
 export 'widgets/flare_animation.dart';
 export 'widgets/harpy_background.dart';

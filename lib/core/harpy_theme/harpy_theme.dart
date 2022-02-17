@@ -100,8 +100,8 @@ class HarpyTheme {
       dialogTheme: DialogTheme(shape: shape),
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith(
-          (state) =>
-              state.contains(MaterialState.selected) ? colors.primary : null,
+          (states) =>
+              states.contains(MaterialState.selected) ? colors.primary : null,
         ),
       ),
       switchTheme: SwitchThemeData(
@@ -110,7 +110,7 @@ class HarpyTheme {
               state.contains(MaterialState.selected) ? colors.primary : null,
         ),
         trackColor: MaterialStateProperty.resolveWith(
-          (state) => state.contains(MaterialState.selected)
+          (states) => states.contains(MaterialState.selected)
               ? colors.primary.withAlpha(0x80)
               : null,
         ),
@@ -125,9 +125,10 @@ class HarpyTheme {
           padding: MaterialStateProperty.all(
             EdgeInsets.symmetric(
               horizontal: _paddingValue,
-              vertical: _paddingValue / 2,
+              vertical: _paddingValue * .66,
             ),
           ),
+          minimumSize: MaterialStateProperty.all(Size.zero),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),
@@ -138,9 +139,10 @@ class HarpyTheme {
           padding: MaterialStateProperty.all(
             EdgeInsets.symmetric(
               horizontal: _paddingValue,
-              vertical: _paddingValue / 2,
+              vertical: _paddingValue * .66,
             ),
           ),
+          minimumSize: MaterialStateProperty.all(Size.zero),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
           ),

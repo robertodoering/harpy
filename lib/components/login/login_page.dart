@@ -97,9 +97,9 @@ class _AboutButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: Alignment.topRight,
-      child: IconButton(
+      child: HarpyButton.icon(
         icon: const Icon(Icons.info_outline),
-        onPressed: () => Navigator.of(context).push(
+        onTap: () => Navigator.of(context).push(
           HarpyPageRoute<void>(
             builder: (_) => const AboutPage(),
           ),
@@ -161,9 +161,9 @@ class _LoginButton extends StatelessWidget {
       duration: const Duration(milliseconds: 1200),
       curve: Curves.elasticOut,
       begin: 0,
-      child: ElevatedButton(
-        onPressed: onTap,
-        child: const Text('login with Twitter'),
+      child: HarpyButton.elevated(
+        label: const Text('login with Twitter'),
+        onTap: onTap,
       ),
     );
   }

@@ -36,9 +36,9 @@ class _RefreshButton extends ConsumerWidget {
     final state = ref.watch(homeTimelineProvider);
     final notifier = ref.watch(homeTimelineProvider.notifier);
 
-    return IconButton(
+    return HarpyButton.card(
       icon: const Icon(CupertinoIcons.refresh),
-      onPressed: state.tweets.isNotEmpty
+      onTap: state.tweets.isNotEmpty
           ? () => notifier.load(clearPrevious: true)
           : null,
     );
@@ -52,9 +52,9 @@ class _ComposeButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeTimelineProvider);
 
-    return IconButton(
+    return HarpyButton.card(
       icon: const Icon(FeatherIcons.feather),
-      onPressed: state.tweets.isNotEmpty
+      onTap: state.tweets.isNotEmpty
           ? () {} // TODO
           : null,
     );
@@ -68,9 +68,9 @@ class _FilterButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeTimelineProvider);
 
-    return IconButton(
+    return HarpyButton.card(
       icon: const Icon(Icons.filter_alt_outlined),
-      onPressed: state.tweets.isNotEmpty
+      onTap: state.tweets.isNotEmpty
           ? () {} // TODO
           : null,
     );

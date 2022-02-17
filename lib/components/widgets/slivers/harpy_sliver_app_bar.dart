@@ -29,25 +29,25 @@ class HarpySliverAppBar extends ConsumerWidget {
     if (leading != null)
       return leading;
     else if (Scaffold.of(context).hasDrawer)
-      return IconButton(
+      return HarpyButton.icon(
         icon: const RotatedBox(
           quarterTurns: 1,
           child: Icon(FeatherIcons.barChart2),
         ),
-        onPressed: Scaffold.of(context).openDrawer,
+        onTap: Scaffold.of(context).openDrawer,
       );
     else if (route is PageRoute<dynamic> && route.fullscreenDialog)
-      return IconButton(
+      return HarpyButton.icon(
         icon: const Icon(CupertinoIcons.xmark),
-        onPressed: Navigator.of(context).maybePop,
+        onTap: Navigator.of(context).maybePop,
       );
     else if (Navigator.of(context).canPop())
-      return IconButton(
+      return HarpyButton.icon(
         icon: Transform.translate(
           offset: const Offset(-1, 0),
           child: const Icon(CupertinoIcons.left_chevron),
         ),
-        onPressed: Navigator.of(context).maybePop,
+        onTap: Navigator.of(context).maybePop,
       );
     else
       return null;
@@ -61,12 +61,12 @@ class HarpySliverAppBar extends ConsumerWidget {
         children: actions!,
       );
     else if (Scaffold.of(context).hasEndDrawer)
-      return IconButton(
+      return HarpyButton.icon(
         icon: const RotatedBox(
           quarterTurns: -1,
           child: Icon(FeatherIcons.barChart2),
         ),
-        onPressed: Scaffold.of(context).openEndDrawer,
+        onTap: Scaffold.of(context).openEndDrawer,
       );
     else
       return null;

@@ -38,7 +38,7 @@ class _ExpansionCardState extends ConsumerState<ExpansionCard> {
     final display = ref.watch(displayPreferencesProvider);
 
     return Card(
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -56,10 +56,10 @@ class _ExpansionCardState extends ConsumerState<ExpansionCard> {
                     ),
                   ),
                 ),
-                IconButton(
+                HarpyButton.icon(
                   padding: EdgeInsets.symmetric(
                     vertical: display.paddingValue,
-                    horizontal: display.paddingValue * 2,
+                    horizontal: display.paddingValue * 1.5,
                   ),
                   icon: AnimatedRotation(
                     duration: kShortAnimationDuration,
@@ -67,7 +67,7 @@ class _ExpansionCardState extends ConsumerState<ExpansionCard> {
                     turns: _collapsed ? .5 : 0,
                     child: const Icon(CupertinoIcons.chevron_down),
                   ),
-                  onPressed: () => setState(() => _collapsed = !_collapsed),
+                  onTap: () => setState(() => _collapsed = !_collapsed),
                 ),
               ],
             ),

@@ -114,13 +114,13 @@ class _WillPopCustomTheme extends StatelessWidget {
         builder: (_) => HarpyDialog(
           title: const Text('discard changes?'),
           actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('cancel'),
+            HarpyButton.text(
+              label: const Text('cancel'),
+              onTap: Navigator.of(context).pop,
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('discard'),
+            HarpyButton.text(
+              label: const Text('discard'),
+              onTap: () => Navigator.of(context).pop(true),
             ),
           ],
         ),
@@ -160,9 +160,9 @@ class _SaveThemeAction extends ConsumerWidget {
     final lightThemeId = themePreferences.lightThemeId;
     final darkThemeId = themePreferences.darkThemeId;
 
-    return IconButton(
+    return HarpyButton.icon(
       icon: const Icon(FeatherIcons.check),
-      onPressed: notifier.canSaveTheme
+      onTap: notifier.canSaveTheme
           ? () {
               themePreferencesNotifier.addCustomTheme(
                 themeData: harpyTheme.data,

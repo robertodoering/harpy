@@ -61,9 +61,9 @@ class _HarpyPopupMenuButtonState<T extends Object>
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return HarpyButton.icon(
       icon: const Icon(CupertinoIcons.ellipsis_vertical),
-      onPressed: widget.enabled ? showButtonMenu : null,
+      onTap: widget.enabled ? showButtonMenu : null,
     );
   }
 }

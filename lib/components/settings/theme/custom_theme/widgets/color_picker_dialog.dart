@@ -53,13 +53,13 @@ class _ColorPickerDialogState extends ConsumerState<ColorPickerDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(widget.color),
-          child: const Text('discard'),
+        HarpyButton.text(
+          label: const Text('discard'),
+          onTap: () => Navigator.of(context).pop(widget.color),
         ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(_color),
-          child: const Text('select'),
+        HarpyButton.elevated(
+          label: const Text('select'),
+          onTap: () => Navigator.of(context).pop(_color),
         ),
       ],
     );

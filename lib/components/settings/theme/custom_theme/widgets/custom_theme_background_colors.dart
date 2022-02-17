@@ -74,9 +74,9 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
             child: CustomThemeColor(
               color: Color(color),
               padding: EdgeInsets.zero,
-              leading: IconButton(
+              leading: HarpyButton.icon(
                 icon: const Icon(CupertinoIcons.xmark, size: 20),
-                onPressed: notifier.canRemoveBackgroundColor
+                onTap: notifier.canRemoveBackgroundColor
                     ? () => notifier.removeBackgroundColor(index)
                     : null,
               ),

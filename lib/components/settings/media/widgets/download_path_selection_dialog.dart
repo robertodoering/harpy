@@ -118,12 +118,13 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
         verticalSpacer,
         HarpyDialogActionBar(
           actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('cancel'),
+            HarpyButton.text(
+              label: const Text('cancel'),
+              onTap: Navigator.of(context).pop,
             ),
-            ElevatedButton(
-              onPressed: () {
+            HarpyButton.elevated(
+              label: const Text('confirm'),
+              onTap: () {
                 HapticFeedback.lightImpact();
 
                 ref.watch(downloadPathProvider.notifier).updateEntry(
@@ -134,7 +135,6 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
 
                 Navigator.of(context).pop();
               },
-              child: const Text('confirm'),
             ),
           ],
         ),
@@ -184,15 +184,15 @@ class _SubDirectoryTextFieldState extends State<_SubDirectoryTextField> {
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         label: const Text('sub directory'),
-        suffixIcon: IconButton(
-          onPressed: _controller.text.isNotEmpty
+        suffixIcon: HarpyButton.icon(
+          icon: const Icon(CupertinoIcons.xmark),
+          onTap: _controller.text.isNotEmpty
               ? () {
                   _controller.clear();
                   widget.onChanged('');
                   FocusScope.of(context).unfocus();
                 }
               : null,
-          icon: const Icon(CupertinoIcons.xmark),
         ),
       ),
     );
