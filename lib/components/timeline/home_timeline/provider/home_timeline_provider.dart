@@ -15,23 +15,28 @@ final homeTimelineFilterProvider = Provider.autoDispose(
 
 final homeTimelineProvider =
     StateNotifierProvider.autoDispose<HomeTimelineNotifier, TimelineState>(
-  HomeTimelineNotifier.new,
+  (ref) => HomeTimelineNotifier(ref: ref),
   name: 'HomeTimelineProvider',
 );
 
 class HomeTimelineNotifier extends TimelineNotifier {
-  HomeTimelineNotifier(this._ref) : super(ref: _ref);
+  HomeTimelineNotifier({
+    required Ref ref,
+  })  : _reader = ref.read,
+        super(ref: ref) {
+    loadInitial();
+  }
 
-  final Ref _ref;
+  final Reader _reader;
 
   @override
   TimelineFilter? currentFilter() {
-    return _ref.read(homeTimelineFilterProvider);
+    return _reader(homeTimelineFilterProvider);
   }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _ref.read(twitterApiProvider).timelineService.homeTimeline(
+    return _reader(twitterApiProvider).timelineService.homeTimeline(
           count: 200,
           sinceId: sinceId,
           maxId: maxId,
@@ -41,11 +46,11 @@ class HomeTimelineNotifier extends TimelineNotifier {
 
   @override
   bool get restoreInitialPosition =>
-      _ref.read(generalPreferencesProvider).keepLastHomeTimelinePosition;
+      _reader(generalPreferencesProvider).keepLastHomeTimelinePosition;
 
   @override
   int get restoredTweetId =>
-      _ref.read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
+      _reader(tweetVisibilityPreferencesProvider).lastVisibleTweet;
 
   void addTweet(TweetData tweet) {
     final currentState = state;
