@@ -15,7 +15,6 @@ class HomeTabView extends ConsumerWidget {
     if (entry.type == HomeTabEntryType.defaultType) {
       switch (entry.id) {
         case 'home':
-          // return HomeTimeline(refreshIndicatorOffset: refreshIndicatorOffset);
           return const HomeTimeline();
         case 'media':
         // return const HomeMediaTimeline();
