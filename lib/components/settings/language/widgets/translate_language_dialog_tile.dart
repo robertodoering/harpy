@@ -59,34 +59,37 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
 
     final groupValue = language.activeTranslateLanguage(locale);
 
-    return SimpleDialog(
+    return HarpyDialog(
       title: const Text('change the language used to translate tweets'),
-      titlePadding: (display.edgeInsets * 2).copyWith(bottom: 0),
-      contentPadding: display.edgeInsetsSymmetric(vertical: true),
+      contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
-      children: [
-        Padding(
-          padding: display.edgeInsetsSymmetric(horizontal: true),
-          child: TextField(
-            onChanged: (value) => setState(() => _filter = value),
+      stickyContent: Padding(
+        padding: display.edgeInsets,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: kTranslateLanguages[groupValue],
           ),
+          onChanged: (value) => setState(() => _filter = value),
         ),
-        verticalSpacer,
-        for (final entry in _entries.entries)
-          HarpyRadioTile<String>(
-            title: entry.value,
-            value: entry.key,
-            groupValue: groupValue,
-            leadingPadding: display.edgeInsets / 4,
-            contentPadding: display.edgeInsets / 4,
-            onChanged: (value) {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-              if (value != groupValue)
-                languageNotifier.setTranslateLanguage(value);
-            },
-          )
-      ],
+      ),
+      content: Column(
+        children: [
+          for (final entry in _entries.entries)
+            HarpyRadioTile<String>(
+              title: entry.value,
+              value: entry.key,
+              groupValue: groupValue,
+              leadingPadding: display.edgeInsets / 4,
+              contentPadding: display.edgeInsets / 4,
+              onChanged: (value) {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+                if (value != groupValue)
+                  languageNotifier.setTranslateLanguage(value);
+              },
+            ),
+        ],
+      ),
     );
   }
 }

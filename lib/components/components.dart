@@ -82,6 +82,7 @@ export 'widgets/expansion_card.dart';
 export 'widgets/flare_animation.dart';
 export 'widgets/harpy_background.dart';
 export 'widgets/harpy_circle_avatar.dart';
+export 'widgets/harpy_dialog.dart';
 export 'widgets/harpy_image.dart';
 export 'widgets/harpy_list_card.dart';
 export 'widgets/harpy_list_tile.dart';

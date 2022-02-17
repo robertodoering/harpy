@@ -111,9 +111,8 @@ class _WillPopCustomTheme extends StatelessWidget {
       // ask to discard changes before exiting customization
       final discard = await showDialog<bool>(
         context: context,
-        builder: (_) => AlertDialog(
+        builder: (_) => HarpyDialog(
           title: const Text('discard changes?'),
-          actionsAlignment: MainAxisAlignment.spaceAround,
           actions: [
             TextButton(
               onPressed: Navigator.of(context).pop,

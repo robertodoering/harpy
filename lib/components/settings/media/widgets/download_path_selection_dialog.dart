@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 /// A dialog to select one of a couple predefined external storage media
 /// directories for a type of media.
@@ -37,35 +36,35 @@ class _DownloadPathSelectionDialogState
     final display = ref.watch(displayPreferencesProvider);
     final downloadPath = ref.watch(downloadPathProvider);
 
-    return Unfocus(
-      child: AlertDialog(
-        title: Text('${widget.type} download location'),
-        contentPadding: display.edgeInsetsOnly(bottom: true),
-        content: downloadPath.when(
-          data: (mediaPaths, entries) {
-            final entry = entries.firstWhereOrNull(
-              (entry) => entry.type == widget.type,
-            );
+    return HarpyDialog(
+      title: Text('${widget.type} download location'),
+      contentPadding: display.edgeInsetsSymmetric(vertical: true),
+      content: downloadPath.when(
+        data: (mediaPaths, entries) {
+          final entry = entries.firstWhereOrNull(
+            (entry) => entry.type == widget.type,
+          );
 
-            if (entry != null) {
-              return _PathSelection(
-                type: widget.type,
-                mediaPaths: mediaPaths,
-                entry: entry,
-              );
-            } else {
-              return const SizedBox();
-              // return const LoadingDataError(
-              //   message: Text('error loading download paths'),
-              // );
-            }
-          },
-          error: () => const SizedBox(),
-          // error: () => const LoadingDataError(
-          //   message: Text('error loading download paths'),
-          // ),
-          loading: () => const Center(child: CircularProgressIndicator()),
-        ),
+          if (entry != null) {
+            return _PathSelection(
+              type: widget.type,
+              mediaPaths: mediaPaths,
+              entry: entry,
+            );
+          } else {
+            return const SizedBox();
+            // TODO:
+            // return const LoadingDataError(
+            //   message: Text('error loading download paths'),
+            // );
+          }
+        },
+        error: () => const SizedBox(),
+        // TODO:
+        // error: () => const LoadingDataError(
+        //   message: Text('error loading download paths'),
+        // ),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -100,53 +99,50 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HarpyListTile(
-            title: _SubDirectoryTextField(
-              initialName: _subDirectory,
-              onChanged: (value) => _subDirectory = value,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        HarpyListTile(
+          title: _SubDirectoryTextField(
+            initialName: _subDirectory,
+            onChanged: (value) => _subDirectory = value,
           ),
-          ...widget.mediaPaths.map(
-            (mediaPath) => HarpyRadioTile<String>(
-              title: Text(mediaPath.split('/').last),
-              subtitle: Text(mediaPath),
-              value: mediaPath,
-              groupValue: _selectedPath,
-              onChanged: (value) {
-                setState(() => _selectedPath = value);
+        ),
+        ...widget.mediaPaths.map(
+          (mediaPath) => HarpyRadioTile<String>(
+            title: Text(mediaPath.split('/').last),
+            subtitle: Text(mediaPath),
+            value: mediaPath,
+            groupValue: _selectedPath,
+            onChanged: (value) {
+              setState(() => _selectedPath = value);
+            },
+          ),
+        ),
+        verticalSpacer,
+        HarpyDialogActionBar(
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+
+                ref.watch(downloadPathProvider.notifier).updateEntry(
+                      type: widget.type,
+                      path: _selectedPath,
+                      subDir: _subDirectory,
+                    );
+
+                Navigator.of(context).pop();
               },
+              child: const Text('confirm'),
             ),
-          ),
-          verticalSpacer,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton(
-                onPressed: Navigator.of(context).pop,
-                child: const Text('cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-
-                  ref.watch(downloadPathProvider.notifier).updateEntry(
-                        type: widget.type,
-                        path: _selectedPath,
-                        subDir: _subDirectory,
-                      );
-
-                  Navigator.of(context).pop();
-                },
-                child: const Text('confirm'),
-              ),
-            ],
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 }

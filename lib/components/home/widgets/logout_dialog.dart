@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/components.dart';
 
 class LogoutDialog extends StatelessWidget {
   const LogoutDialog();
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return HarpyDialog(
       title: const Text('really logout?'),
-      actionsAlignment: MainAxisAlignment.spaceAround,
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,

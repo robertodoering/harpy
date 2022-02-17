@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:harpy/components/widgets/harpy_dialog.dart';
 
 class RetryAuthenticationDialog extends StatelessWidget {
   const RetryAuthenticationDialog();
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return HarpyDialog(
       title: const Text('login'),
-      actionsAlignment: MainAxisAlignment.spaceAround,
       content: const Text(
         'unable to initialize user\n\n'
         'please check your connection and try again',

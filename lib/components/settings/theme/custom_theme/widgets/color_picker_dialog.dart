@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
 
 // TODO: fork `flutter_colorpicker` package for style improvements
 
@@ -35,37 +34,34 @@ class _ColorPickerDialogState extends ConsumerState<ColorPickerDialog> {
   Widget build(BuildContext context) {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    return Unfocus(
-      child: AlertDialog(
-        contentPadding: EdgeInsets.zero,
-        actionsAlignment: MainAxisAlignment.spaceAround,
-        content: ClipRRect(
-          borderRadius: harpyTheme.borderRadius,
-          child: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: widget.color,
-              enableAlpha: widget.enableAlpha,
-              pickerAreaBorderRadius: harpyTheme.borderRadius,
-              hexInputBar: true,
-              labelTypes: const [],
-              onColorChanged: (color) {
-                _color = color;
-                widget.onColorChanged?.call(color);
-              },
-            ),
+    return HarpyDialog(
+      contentPadding: EdgeInsets.zero,
+      content: ClipRRect(
+        borderRadius: harpyTheme.borderRadius,
+        child: SingleChildScrollView(
+          child: ColorPicker(
+            pickerColor: widget.color,
+            enableAlpha: widget.enableAlpha,
+            pickerAreaBorderRadius: harpyTheme.borderRadius,
+            hexInputBar: true,
+            labelTypes: const [],
+            onColorChanged: (color) {
+              _color = color;
+              widget.onColorChanged?.call(color);
+            },
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(widget.color),
-            child: const Text('discard'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(_color),
-            child: const Text('select'),
-          ),
-        ],
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(widget.color),
+          child: const Text('discard'),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(_color),
+          child: const Text('select'),
+        ),
+      ],
     );
   }
 }

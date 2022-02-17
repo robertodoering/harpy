@@ -36,26 +36,27 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
       borderRadius: borderRadius,
       onTap: () => showDialog<void>(
         context: context,
-        builder: (_) => SimpleDialog(
+        builder: (_) => HarpyDialog(
           title: dialogTitle,
-          titlePadding: (display.edgeInsets * 2).copyWith(bottom: 0),
-          contentPadding: display.edgeInsetsSymmetric(vertical: true),
+          contentPadding: display.edgeInsetsOnly(top: true),
           clipBehavior: Clip.antiAlias,
-          children: [
-            for (final entry in entries.entries)
-              HarpyRadioTile<T>(
-                title: entry.value,
-                value: entry.key,
-                groupValue: groupValue,
-                leadingPadding: display.edgeInsets / 2,
-                contentPadding: display.edgeInsets / 2,
-                onChanged: (value) {
-                  HapticFeedback.lightImpact();
-                  Navigator.of(context).pop();
-                  if (value != groupValue) onChanged?.call(value);
-                },
-              )
-          ],
+          content: Column(
+            children: [
+              for (final entry in entries.entries)
+                HarpyRadioTile<T>(
+                  title: entry.value,
+                  value: entry.key,
+                  groupValue: groupValue,
+                  leadingPadding: display.edgeInsets / 2,
+                  contentPadding: display.edgeInsets / 2,
+                  onChanged: (value) {
+                    HapticFeedback.lightImpact();
+                    Navigator.of(context).pop();
+                    if (value != groupValue) onChanged?.call(value);
+                  },
+                )
+            ],
+          ),
         ),
       ),
     );
