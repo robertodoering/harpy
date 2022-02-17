@@ -52,18 +52,14 @@ class _DownloadPathSelectionDialogState
               entry: entry,
             );
           } else {
-            return const SizedBox();
-            // TODO:
-            // return const LoadingDataError(
-            //   message: Text('error loading download paths'),
-            // );
+            return const LoadingError(
+              message: Text('error loading download paths'),
+            );
           }
         },
-        error: () => const SizedBox(),
-        // TODO:
-        // error: () => const LoadingDataError(
-        //   message: Text('error loading download paths'),
-        // ),
+        error: () => const LoadingError(
+          message: Text('error loading download paths'),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
