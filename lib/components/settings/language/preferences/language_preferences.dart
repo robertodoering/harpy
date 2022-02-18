@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/translate/data/languages.dart';
@@ -47,7 +46,8 @@ class LanguagePreferences with _$LanguagePreferences {
 
   LanguagePreferences._();
 
-  String activeTranslateLanguage(Locale locale) => translateLanguage.isNotEmpty
-      ? translateLanguage
-      : translateLanguageFromLanguageCode(locale.languageCode) ?? 'en';
+  String activeTranslateLanguage(String languageCode) =>
+      translateLanguage.isNotEmpty
+          ? translateLanguage
+          : translateLanguageFromLanguageCode(languageCode) ?? 'en';
 }

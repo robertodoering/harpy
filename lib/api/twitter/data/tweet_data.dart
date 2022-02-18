@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/legacy/api/translate/data/translation.dart';
 import 'package:harpy/legacy/misc/utils/string_utils.dart';
 
 part 'tweet_data.freezed.dart';
@@ -57,6 +56,9 @@ class TweetData with _$TweetData {
     @Default('') String visibleText,
     @Default(<MediaData>[]) List<MediaData> media,
     Translation? translation,
+
+    /// Whether the tweet is currently being translated.
+    @Default(false) bool isTranslating,
   }) = _TweetData;
 
   factory TweetData.fromTweet(Tweet tweet) {
@@ -199,6 +201,7 @@ String _visibleText(String text, String? quoteUrl, Entities? entities) {
     visibleText = visibleText.replaceAll(url.url!, url.displayUrl!);
   }
 
+  // TODO: move from legacy
   return parseHtmlEntities(visibleText.trim()) ?? '';
 }
 

@@ -1,4 +1,7 @@
 export 'translate/data/languages.dart';
+export 'translate/data/translation.dart';
+export 'translate/translate_service.dart';
+export 'translate/translate_service_provider.dart';
 export 'twitter/data/entities_data.dart';
 export 'twitter/data/media_data.dart';
 export 'twitter/data/tweet_data.dart';
