@@ -10,14 +10,19 @@ class HomeTimeline extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
 
-    final refreshIndicatorOffset = general.bottomAppBar
-        ? 0.0
-        : HomeAppBar.height(context, general: general, display: display) +
-            display.paddingValue;
+    final appbarHeight =
+        HomeAppBar.height(context, general: general, display: display);
+
+    final refreshIndicatorOffset =
+        general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;
+
+    final scrollToTopOffset =
+        general.bottomAppBar ? appbarHeight + display.paddingValue : 0.0;
 
     return Timeline(
       provider: homeTimelineProvider,
       refreshIndicatorOffset: refreshIndicatorOffset,
+      scrollToTopOffset: scrollToTopOffset,
       beginSlivers: const [
         HomeTopSliverPadding(),
         HomeTimelineTopActions(),

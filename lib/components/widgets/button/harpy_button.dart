@@ -12,7 +12,7 @@ abstract class HarpyButton extends ConsumerWidget {
     Widget? label,
   }) = _HarpyTextButton;
 
-  /// Equivalant to an [ElevatedButton].
+  /// Equivalent to an [ElevatedButton].
   const factory HarpyButton.elevated({
     required VoidCallback? onTap,
     Widget? icon,

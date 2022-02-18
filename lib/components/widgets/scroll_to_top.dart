@@ -19,13 +19,13 @@ class ScrollToTop extends ConsumerStatefulWidget {
   const ScrollToTop({
     required this.child,
     this.content,
-    this.bottomOffset,
+    this.bottomPadding,
     this.controller,
   });
 
   final Widget child;
   final Widget? content;
-  final double? bottomOffset;
+  final double? bottomPadding;
   final ScrollController? controller;
 
   @override
@@ -108,7 +108,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
               child: _ScrollToTopButton(
                 onTap: _scrollToTop,
                 content: widget.content,
-                bottomOffset: widget.bottomOffset ?? 0,
+                bottomPadding: widget.bottomPadding,
               ),
             ),
           ),
@@ -122,12 +122,12 @@ class _ScrollToTopButton extends ConsumerWidget {
   const _ScrollToTopButton({
     required this.onTap,
     this.content,
-    this.bottomOffset = 0,
+    this.bottomPadding = 0,
   });
 
   final VoidCallback onTap;
   final Widget? content;
-  final double bottomOffset;
+  final double? bottomPadding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -135,11 +135,11 @@ class _ScrollToTopButton extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    final bottomPadding =
-        display.paddingValue + mediaQuery.padding.bottom + bottomOffset;
-
     return Padding(
-      padding: display.edgeInsets.copyWith(bottom: bottomPadding),
+      padding: display.edgeInsets.copyWith(
+        bottom:
+            bottomPadding ?? display.paddingValue + mediaQuery.padding.bottom,
+      ),
       child: Material(
         color: harpyTheme.colors.alternateCardColor,
         borderRadius: harpyTheme.borderRadius,

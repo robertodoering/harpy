@@ -19,7 +19,9 @@ class HomeAppBar extends ConsumerWidget {
         ? mediaQuery.padding.bottom
         : mediaQuery.padding.top;
 
-    return HarpyTab.height(context, display) + systemPadding + 4;
+    return HarpyTab.height(context, display) +
+        systemPadding +
+        display.paddingValue / 2;
   }
 
   @override
@@ -28,9 +30,12 @@ class HomeAppBar extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
 
-    final topPadding = general.bottomAppBar ? 0.0 : mediaQuery.padding.top + 4;
-    final bottomPadding =
-        general.bottomAppBar ? mediaQuery.padding.bottom + 4 : 0.0;
+    final topPadding = general.bottomAppBar
+        ? 0.0
+        : mediaQuery.padding.top + display.paddingValue / 2;
+    final bottomPadding = general.bottomAppBar
+        ? mediaQuery.padding.bottom + display.paddingValue / 2
+        : 0.0;
 
     final padding = EdgeInsets.only(
       top: topPadding,
@@ -71,9 +76,7 @@ class _DynamicAppBar extends ConsumerWidget {
               ? const Offset(0, 1)
               : const Offset(0, -1)
           : Offset.zero,
-      child: HomeTabBar(
-        padding: padding,
-      ),
+      child: HomeTabBar(padding: padding),
     );
   }
 }

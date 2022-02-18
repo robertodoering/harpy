@@ -111,11 +111,10 @@ class _TimelineState extends ConsumerState<Timeline>
     ref.listen(widget.provider, _providerListener);
 
     // TODO: refresh indicator
-    // TODO: scroll to top bottom offset for home timeline
 
     return ScrollToTop(
       controller: _controller,
-      bottomOffset: widget.scrollToTopOffset,
+      bottomPadding: widget.scrollToTopOffset,
       content: AnimatedNumber(
         duration: kShortAnimationDuration,
         number: _newestVisibleIndex + 1,
