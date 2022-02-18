@@ -7,11 +7,7 @@ class HomeTabView extends ConsumerWidget {
 
   static const _indexOffset = 1;
 
-  Widget _mapEntryContent(
-    int index,
-    HomeTabEntry entry,
-    double refreshIndicatorOffset,
-  ) {
+  Widget _mapEntryContent(HomeTabEntry entry) {
     if (entry.type == HomeTabEntryType.defaultType) {
       switch (entry.id) {
         case 'home':
@@ -47,36 +43,6 @@ class HomeTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final configuration = ref.watch(homeTabConfigurationProvider);
-    final display = ref.watch(displayPreferencesProvider);
-    final general = ref.watch(generalPreferencesProvider);
-
-    final refreshIndicatorOffset = general.bottomAppBar
-        ? 0.0
-        : HomeAppBar.height(context, general: general, display: display) +
-            display.paddingValue;
-
-    // TODO: try nested scroll view
-    // return DefaultTabController(
-    //   length: configuration.visibleEntries.length + 1,
-    //   initialIndex: _indexOffset,
-    //   child: NestedScrollView(
-    //     headerSliverBuilder: (context, _) => [
-    //       const HarpySliverAppBar(title: 'home'),
-    //     ],
-    //     body: TabBarView(
-    //       physics: const HomeTabViewScrollPhysics(),
-    //       children: [
-    //         const HomeDrawer(),
-    //         for (var i = 0; i < configuration.visibleEntries.length; i++)
-    //           _mapEntryContent(
-    //             i,
-    //             configuration.visibleEntries[i],
-    //             refreshIndicatorOffset,
-    //           ),
-    //       ],
-    //     ),
-    //   ),
-    // );
 
     return DefaultTabController(
       length: configuration.visibleEntries.length + 1,
@@ -87,12 +53,7 @@ class HomeTabView extends ConsumerWidget {
             physics: const HomeTabViewScrollPhysics(),
             children: [
               const HomeDrawer(),
-              for (var i = 0; i < configuration.visibleEntries.length; i++)
-                _mapEntryContent(
-                  i,
-                  configuration.visibleEntries[i],
-                  refreshIndicatorOffset,
-                ),
+              ...configuration.visibleEntries.map(_mapEntryContent),
             ],
           ),
           const HomeAppBar(),

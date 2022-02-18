@@ -23,15 +23,15 @@ class HomeTabConfiguration with _$HomeTabConfiguration {
   HomeTabConfiguration._();
 
   /// The entries that are visible in the home screen.
-  late final BuiltList visibleEntries =
+  late final BuiltList<HomeTabEntry> visibleEntries =
       entries.where((entry) => entry.visible ?? false).toBuiltList();
 
-  late final BuiltList defaultEntries = entries
+  late final BuiltList<HomeTabEntry> defaultEntries = entries
       .where((entry) => entry.type == HomeTabEntryType.defaultType)
       .toBuiltList();
 
   /// The entries that represent twitter lists in the home screen
-  late final BuiltList listEntries = entries
+  late final BuiltList<HomeTabEntry> listEntries = entries
       .where((entry) => entry.type == HomeTabEntryType.list)
       .toBuiltList();
 
