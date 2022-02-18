@@ -67,7 +67,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
     final show = _controller!.offset > mediaQuery.size.height &&
         scrollDirection == ScrollDirection.forward;
 
-    if (show != _show) setState(() => _show = show);
+    if (mounted && show != _show) setState(() => _show = show);
   }
 
   void _scrollToTop() {

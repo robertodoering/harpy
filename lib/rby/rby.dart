@@ -15,5 +15,7 @@ export 'core/provider_logger.dart';
 export 'core/url_launcher.dart';
 export 'core/utils/test_utils.dart';
 export 'widgets/badge.dart';
+export 'widgets/load_more_handler.dart';
+export 'widgets/load_more_listener.dart';
 export 'widgets/scroll_direction_listener.dart';
 export 'widgets/unfocus.dart';

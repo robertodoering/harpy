@@ -8,6 +8,13 @@ const smallHorizontalSpacer = _SmallSpacer(axis: Axis.horizontal);
 const verticalSpacer = _Spacer(axis: Axis.vertical);
 const smallVerticalSpacer = _SmallSpacer(axis: Axis.vertical);
 
+const sliverHorizontalSpacer = SliverToBoxAdapter(
+  child: _Spacer(axis: Axis.horizontal),
+);
+const sliverVerticalSpacer = SliverToBoxAdapter(
+  child: _Spacer(axis: Axis.vertical),
+);
+
 class _Spacer extends ConsumerWidget {
   const _Spacer({
     required this.axis,

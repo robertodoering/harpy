@@ -56,9 +56,7 @@ class _TimelineState extends ConsumerState<Timeline>
 
   @override
   void dispose() {
-    if (_disposeController) {
-      _controller?.dispose();
-    }
+    if (_disposeController) _controller?.dispose();
 
     super.dispose();
   }
@@ -68,25 +66,22 @@ class _TimelineState extends ConsumerState<Timeline>
 
     if (_newestVisibleIndex != index) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() => _newestVisibleIndex = index);
-        }
+        if (mounted) setState(() => _newestVisibleIndex = index);
       });
     }
   }
 
   Widget _tweetBuilder(TimelineState state, TweetData tweet) {
-    if (state.showNewTweetsExist(tweet.originalId))
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          NewTweetsText(state.initialResultsCount),
-          verticalSpacer,
-          widget.tweetBuilder(tweet),
-        ],
-      );
-    else
-      return widget.tweetBuilder(tweet);
+    return state.showNewTweetsExist(tweet.originalId)
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              NewTweetsText(state.initialResultsCount),
+              verticalSpacer,
+              widget.tweetBuilder(tweet),
+            ],
+          )
+        : widget.tweetBuilder(tweet);
   }
 
   void _providerListener(TimelineState? previous, TimelineState next) {
@@ -110,12 +105,11 @@ class _TimelineState extends ConsumerState<Timeline>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final notifier = ref.watch(widget.provider.notifier);
     final state = ref.watch(widget.provider);
+    final notifier = ref.watch(widget.provider.notifier);
 
     ref.listen(widget.provider, _providerListener);
 
-    // TODO: load more listener
     // TODO: refresh indicator
     // TODO: scroll to top bottom offset for home timeline
 
@@ -126,42 +120,53 @@ class _TimelineState extends ConsumerState<Timeline>
         duration: kShortAnimationDuration,
         number: _newestVisibleIndex + 1,
       ),
-      child: TweetList(
-        state.tweets.toList(),
-        controller: _controller,
-        tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
-        onLayoutFinished: _onLayoutFinished,
-        beginSlivers: [
-          ...widget.beginSlivers,
-          ...?state.mapOrNull(
-            loading: (_) => const [TweetListLoadingSliver()],
-            error: (_) => [
-              SliverFillLoadingError(
-                message: const Text('error loading tweets'),
-                onRetry: () => notifier.load(clearPrevious: true),
-              ),
-            ],
-          ),
-        ],
-        endSlivers: [
-          ...?state.mapOrNull(
-            data: (data) => [
-              if (!data.canLoadMore)
-                const SliverInfoMessage(
-                  secondaryMessage: Text('no more tweets available'),
+      child: LoadMoreHandler(
+        controller: _controller!,
+        listen: state.canLoadMore,
+        onLoadMore: notifier.loadOlder,
+        child: TweetList(
+          state.tweets.toList(),
+          controller: _controller,
+          tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
+          onLayoutFinished: _onLayoutFinished,
+          beginSlivers: [
+            ...widget.beginSlivers,
+            ...?state.mapOrNull(
+              loading: (_) => const [TweetListLoadingSliver()],
+              error: (_) => [
+                SliverFillLoadingError(
+                  message: const Text('error loading tweets'),
+                  onRetry: () => notifier.load(clearPrevious: true),
                 ),
-            ],
-            noData: (_) => [
-              SliverFillLoadingError(
-                message: const Text('no tweets found'),
-                onChangeFilter:
-                    notifier.filter != null ? widget.onChangeFilter : null,
-              )
-            ],
-            loadingMore: (_) => [const SliverLoadingIndicator()],
-          ),
-          ...widget.endSlivers,
-        ],
+              ],
+            ),
+          ],
+          endSlivers: [
+            ...?state.mapOrNull(
+              data: (data) => [
+                if (!data.canLoadMore) ...[
+                  const SliverInfoMessage(
+                    secondaryMessage: Text('no more tweets available'),
+                  ),
+                  sliverVerticalSpacer,
+                ],
+              ],
+              noData: (_) => [
+                SliverFillLoadingError(
+                  message: const Text('no tweets found'),
+                  onChangeFilter:
+                      notifier.filter != null ? widget.onChangeFilter : null,
+                ),
+                sliverVerticalSpacer,
+              ],
+              loadingMore: (_) => [
+                const SliverLoadingIndicator(),
+                sliverVerticalSpacer,
+              ],
+            ),
+            ...widget.endSlivers,
+          ],
+        ),
       ),
     );
   }
