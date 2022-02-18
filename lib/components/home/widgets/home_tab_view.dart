@@ -42,6 +42,7 @@ class HomeTabView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mediaQuery = MediaQuery.of(context);
     final configuration = ref.watch(homeTabConfigurationProvider);
 
     return DefaultTabController(
@@ -50,7 +51,9 @@ class HomeTabView extends ConsumerWidget {
       child: Stack(
         children: [
           TabBarView(
-            physics: const HomeTabViewScrollPhysics(),
+            physics: HomeTabViewScrollPhysics(
+              viewportWidth: mediaQuery.size.width,
+            ),
             children: [
               const HomeDrawer(),
               ...configuration.visibleEntries.map(_mapEntryContent),
