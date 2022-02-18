@@ -130,7 +130,6 @@ class TweetData with _$TweetData {
   late final hasSingleImage = media.length == 1 && hasImages;
   late final hasVideo = media.isNotEmpty && media[0].type == MediaType.video;
   late final hasGif = media.isNotEmpty && media[0].type == MediaType.gif;
-  late final hasTranslation = translation != null || quote?.translation != null;
   late final hasText = visibleText.isNotEmpty;
   late final hasParent = parentTweetId != null && parentTweetId!.isNotEmpty;
   late final hasSource = source.isNotEmpty;

@@ -157,6 +157,9 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   Future<void> translate({
     required String languageCode,
   }) async {
+    // TODO: also translate quote
+    //  maybe get quote from reader and call translate here
+
     final translateLanguage =
         _languagePreferences.activeTranslateLanguage(languageCode);
 
