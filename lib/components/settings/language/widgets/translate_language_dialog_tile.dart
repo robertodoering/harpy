@@ -14,7 +14,7 @@ class TranslateLanguagesDialogTile extends ConsumerWidget {
     final language = ref.watch(languagePreferencesProvider);
 
     final locale = Localizations.localeOf(context);
-    final groupValue = language.activeTranslateLanguage(locale);
+    final groupValue = language.activeTranslateLanguage(locale.languageCode);
     final name = kTranslateLanguages[groupValue];
 
     return HarpyListTile(
@@ -57,7 +57,7 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
 
     final locale = Localizations.localeOf(context);
 
-    final groupValue = language.activeTranslateLanguage(locale);
+    final groupValue = language.activeTranslateLanguage(locale.languageCode);
 
     return HarpyDialog(
       title: const Text('change the language used to translate tweets'),
