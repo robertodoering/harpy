@@ -122,7 +122,7 @@ class _ScrollToTopButton extends ConsumerWidget {
   const _ScrollToTopButton({
     required this.onTap,
     this.content,
-    this.bottomPadding = 0,
+    this.bottomPadding,
   });
 
   final VoidCallback onTap;

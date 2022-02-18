@@ -17,7 +17,7 @@ class HomeTimeline extends ConsumerWidget {
         general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;
 
     final scrollToTopOffset =
-        general.bottomAppBar ? appbarHeight + display.paddingValue : 0.0;
+        general.bottomAppBar ? appbarHeight + display.paddingValue : null;
 
     return Timeline(
       provider: homeTimelineProvider,
