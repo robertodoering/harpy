@@ -285,6 +285,7 @@ class _CreditsCard extends StatelessWidget {
 
     return HarpyListCard(
       leading: const Icon(FeatherIcons.mail),
+      multilineTitle: true,
       title: Text.rich(
         TextSpan(
           children: [

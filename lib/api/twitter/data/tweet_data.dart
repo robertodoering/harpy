@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/legacy/misc/utils/string_utils.dart';
 
 part 'tweet_data.freezed.dart';
 
@@ -191,17 +190,16 @@ String _visibleText(String text, String? quoteUrl, Entities? entities) {
   }
 
   // remove url of media if it exists
-  for (final media in entities?.media ?? <Media>[]) {
-    visibleText = visibleText.replaceAll(media.url!, '');
-  }
+  entities?.media?.forEach((media) {
+    visibleText = visibleText.replaceAll(media.url ?? '', '');
+  });
 
   // replace the shortened urls to the display urls
-  for (final url in entities?.urls ?? <Url>[]) {
-    visibleText = visibleText.replaceAll(url.url!, url.displayUrl!);
-  }
+  entities?.urls?.forEach((url) {
+    visibleText = visibleText.replaceAll(url.url ?? '', url.displayUrl ?? '');
+  });
 
-  // TODO: move from legacy
-  return parseHtmlEntities(visibleText.trim()) ?? '';
+  return parseHtmlEntities(visibleText.trim());
 }
 
 /// Returns the source without the enclosing html tag.
