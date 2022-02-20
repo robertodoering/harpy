@@ -2,6 +2,7 @@
 /// package to be shared across projects.
 library rby;
 
+export 'animations/explicit/bubble_animation.dart';
 export 'animations/immediate/immediate_animation.dart';
 export 'animations/immediate/immediate_opacity_animation.dart';
 export 'animations/immediate/immediate_scale_animation.dart';
