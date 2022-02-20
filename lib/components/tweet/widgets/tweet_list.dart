@@ -39,16 +39,7 @@ class TweetList extends ConsumerWidget {
   /// Whether the tweet list should be scrollable.
   final bool enableScroll;
 
-  static Widget defaultTweetBuilder(TweetData tweet) {
-    // TODO: tweet card
-    // return TweetCard(tweet);
-    return Card(
-      child: SizedBox(
-        height: 200,
-        child: Center(child: Text(tweet.visibleText)),
-      ),
-    );
-  }
+  static Widget defaultTweetBuilder(TweetData tweet) => TweetCard(tweet: tweet);
 
   Widget _itemBuilder(BuildContext context, int index) {
     if (index.isEven)

@@ -33,7 +33,7 @@ linter:
     # - avoid_double_and_int_checks # only makes sense when targeting web
     - avoid_dynamic_calls
     - avoid_empty_else
-    - avoid_equals_and_hash_code_on_mutable_classes
+    # - avoid_equals_and_hash_code_on_mutable_classes # requires using @immutable annotation
     - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
     # - avoid_final_parameters # causes false-positives with freezed models

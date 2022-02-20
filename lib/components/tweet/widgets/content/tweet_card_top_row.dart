@@ -28,8 +28,6 @@ class TweetCardTopRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final notifier = ref.watch(tweetProvider(tweet).notifier);
-
     final retweeter = TweetCardElement.retweeter.shouldBuild(tweet, config);
     final avatar = TweetCardElement.avatar.shouldBuild(tweet, config);
     final name = TweetCardElement.name.shouldBuild(tweet, config);
