@@ -13,17 +13,13 @@ class TweetCardText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox();
-    // TODO: text
-    // final theme = Theme.of(context);
+    final theme = Theme.of(context);
 
-    // return TwitterText(
-    //   tweet.text,
-    //   entities: tweet.entities,
-    //   urlToIgnore: tweet.quoteUrl,
-    //   style: theme.textTheme.bodyText2!.apply(
-    //     fontSizeDelta: style.sizeDelta,
-    //   ),
-    // );
+    return TwitterText(
+      tweet.text,
+      entities: tweet.entities,
+      urlToIgnore: tweet.quoteUrl,
+      style: theme.textTheme.bodyText2!.apply(fontSizeDelta: style.sizeDelta),
+    );
   }
 }
