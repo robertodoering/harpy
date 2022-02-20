@@ -76,7 +76,7 @@ void defaultOnHashtagTap(
   Reader reader,
   HashtagData hashtag,
 ) {
-  final searchQuery = '#${hashtag.text}';
+  // final searchQuery = '#${hashtag.text}';
 
   // TODO: search hashtag
   // if (ModalRoute.of(context)!.settings.name == TweetSearchScreen.route) {

@@ -64,7 +64,7 @@ class BubbleAnimation extends StatefulWidget {
     required this.controller,
     this.size,
     this.bubblesColor = defaultBubblesColor,
-    this.circleColor,
+    this.circleColor = defaultCircleColor,
   });
 
   final WidgetBuilder builder;
@@ -72,7 +72,7 @@ class BubbleAnimation extends StatefulWidget {
   final double? size;
 
   final BubblesColor bubblesColor;
-  final CircleColor? circleColor;
+  final CircleColor circleColor;
 
   static const defaultBubblesColor = BubblesColor(
     primary: Color(0xFFFFC107),
@@ -116,7 +116,7 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    final size = IconTheme.of(context).size!;
+    final size = widget.size ?? IconTheme.of(context).size!;
     final bubbleSize = size * 2;
     final circleSize = size * .8;
 
@@ -130,6 +130,7 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
             top: (size - bubbleSize) / 2.0,
             left: (size - bubbleSize) / 2.0,
             child: CustomPaint(
+              size: Size(bubbleSize, bubbleSize),
               painter: _BubblesPainter(
                 currentProgress: _bubbleAnimation.value,
                 bubblesColor: widget.bubblesColor,
@@ -142,10 +143,11 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
             top: (size - circleSize) / 2,
             left: (size - circleSize) / 2,
             child: CustomPaint(
+              size: Size(circleSize, circleSize),
               painter: _CirclePainter(
                 innerCircleRadiusProgress: _innerCircleAnimation.value,
                 outerCircleRadiusProgress: _outerCircleAnimation.value,
-                circleColor: widget.circleColor!,
+                circleColor: widget.circleColor,
               ),
             ),
           ),

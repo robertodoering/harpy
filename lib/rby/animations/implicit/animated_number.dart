@@ -12,7 +12,7 @@ class AnimatedNumber extends StatefulWidget {
     NumberFormat? numberFormat,
   }) : numberFormat = numberFormat ?? NumberFormat.compact();
 
-  final int? number;
+  final int number;
   final Duration duration;
   final NumberFormat numberFormat;
 
@@ -27,9 +27,9 @@ class _AnimatedNumberState extends State<AnimatedNumber>
   late Animation<Offset> _newSlideAnimation;
   late Animation<double> _opacityAnimation;
 
-  int? _oldNumber;
-  String? _oldNumberStr;
-  String? _newNumberStr;
+  late int _oldNumber;
+  late String _oldNumberStr;
+  late String _newNumberStr;
 
   @override
   void initState() {
@@ -82,70 +82,68 @@ class _AnimatedNumberState extends State<AnimatedNumber>
 
   @override
   Widget build(BuildContext context) {
-    if (_oldNumberStr != _newNumberStr) {
-      var changedIndex = 0;
+    if (_oldNumberStr == _newNumberStr) return Text(_newNumberStr);
 
-      if (_oldNumberStr!.length == _newNumberStr!.length) {
-        for (var i = 0; i < _oldNumberStr!.length; i++) {
-          if (_oldNumberStr![i] != _newNumberStr![i]) {
-            changedIndex = i;
-            break;
-          }
+    var changedIndex = 0;
+
+    if (_oldNumberStr.length == _newNumberStr.length) {
+      for (var i = 0; i < _oldNumberStr.length; i++) {
+        if (_oldNumberStr[i] != _newNumberStr[i]) {
+          changedIndex = i;
+          break;
         }
       }
+    }
 
-      // the unchanged part of the text
-      final unchanged = _newNumberStr!.substring(0, changedIndex);
+    // the unchanged part of the text
+    final unchanged = _newNumberStr.substring(0, changedIndex);
 
-      // the old text that should animate out
-      final oldText = _oldNumberStr!.substring(
-        changedIndex,
-        _oldNumberStr!.length,
-      );
+    // the old text that should animate out
+    final oldText = _oldNumberStr.substring(
+      changedIndex,
+      _oldNumberStr.length,
+    );
 
-      // the new text that should animate in
-      final newText = _newNumberStr!.substring(
-        changedIndex,
-        _newNumberStr!.length,
-      );
+    // the new text that should animate in
+    final newText = _newNumberStr.substring(
+      changedIndex,
+      _newNumberStr.length,
+    );
 
-      return ClipRect(
-        child: AnimatedSize(
-          duration: widget.duration,
-          curve: Curves.easeOutCubic,
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (_, __) => Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(unchanged),
-                Stack(
-                  fit: StackFit.passthrough,
-                  children: [
-                    FractionalTranslation(
-                      translation: _oldNumber! > widget.number!
-                          ? _newSlideAnimation.value
-                          : -_newSlideAnimation.value,
-                      child: Text(newText),
+    return ClipRect(
+      child: AnimatedSize(
+        duration: widget.duration,
+        curve: Curves.easeOutCubic,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (_, __) => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(unchanged),
+              Stack(
+                fit: StackFit.passthrough,
+                children: [
+                  FractionalTranslation(
+                    translation: _oldNumber > widget.number
+                        ? _newSlideAnimation.value
+                        : -_newSlideAnimation.value,
+                    child: Text(newText),
+                  ),
+                  Opacity(
+                    opacity: _opacityAnimation.value,
+                    child: FractionalTranslation(
+                      translation: _oldNumber > widget.number
+                          ? _oldSlideAnimation.value
+                          : -_oldSlideAnimation.value,
+                      child: Text(oldText),
                     ),
-                    Opacity(
-                      opacity: _opacityAnimation.value,
-                      child: FractionalTranslation(
-                        translation: _oldNumber! > widget.number!
-                            ? _oldSlideAnimation.value
-                            : -_oldSlideAnimation.value,
-                        child: Text(oldText),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
-      );
-    } else {
-      return Text(_newNumberStr!);
-    }
+      ),
+    );
   }
 }
