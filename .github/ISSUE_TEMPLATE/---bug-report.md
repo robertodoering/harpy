@@ -8,13 +8,13 @@ assignees: ''
 ---
 
 <!--
+For questions, feedback or ideas please open a discussions instead of a new issue:
+https://github.com/robertodoering/harpy/discussions
+
 Thanks for reporting a bug!
 
 Please check whether an issue of your bug already exists by searching the past issues:
 https://github.com/robertodoering/harpy/issues?q=is%3Aissue
-
-For questions, feedback or ideas please open a discussions instead of a new issue:
-https://github.com/robertodoering/harpy/discussions
 -->
 
 ### Bug description 
