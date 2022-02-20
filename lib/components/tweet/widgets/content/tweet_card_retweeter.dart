@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class TweetCardRetweeter extends StatelessWidget {
+class TweetCardRetweeter extends ConsumerWidget {
   const TweetCardRetweeter({
     required this.tweet,
     required this.style,
@@ -12,8 +14,11 @@ class TweetCardRetweeter extends StatelessWidget {
   final TweetCardElementStyle style;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+
+    final textStyle = theme.textTheme.bodyText2!;
 
     return GestureDetector(
       // TODO: on retweeter tap
@@ -21,20 +26,22 @@ class TweetCardRetweeter extends StatelessWidget {
       child: IntrinsicWidth(
         child: Row(
           children: [
-            // TODO: avatar radius
-            // SizedBox(
-            //   width: TweetCardAvatar.defaultRadius(config.fontSizeDelta) * 2,
-            //   child: Icon(FeatherIcons.repeat, size: 16 + style.sizeDelta),
-            // ),
+            SizedBox(
+              width: TweetCardAvatar.defaultRadius(display.fontSizeDelta) * 2,
+              child: Icon(
+                FeatherIcons.repeat,
+                size: textStyle.fontSize! + style.sizeDelta,
+              ),
+            ),
             horizontalSpacer,
             Flexible(
               child: Text(
                 '${tweet.retweetUserName} retweeted',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyText2!
+                style: textStyle
                     .copyWith(
-                      color: theme.textTheme.bodyText2!.color!.withOpacity(.8),
+                      color: textStyle.color?.withOpacity(.8),
                       height: 1,
                     )
                     .apply(fontSizeDelta: style.sizeDelta),
