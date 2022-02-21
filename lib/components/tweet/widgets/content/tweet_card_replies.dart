@@ -17,11 +17,9 @@ class TweetCardReplies extends ConsumerWidget {
   final Color? color;
 
   Color _cardColor(HarpyTheme harpyTheme) {
-    if (color != harpyTheme.colors.solidCardColor1) {
-      return harpyTheme.colors.solidCardColor1;
-    } else {
-      return harpyTheme.colors.solidCardColor2;
-    }
+    return color != harpyTheme.colors.solidCardColor1
+        ? harpyTheme.colors.solidCardColor1
+        : harpyTheme.colors.solidCardColor2;
   }
 
   @override
