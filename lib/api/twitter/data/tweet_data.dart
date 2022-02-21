@@ -138,6 +138,8 @@ class TweetData with _$TweetData {
   ///
   /// If [replies] is empty or the only reply author in [replies] is the same
   /// as the [user], an empty string is returned.
+  // FIXME: we should limit the amount of authors that are displayed in the
+  //  replies in case there are a lot
   late final replyAuthors = replies.fold<String>(
     '',
     (previousValue, reply) => previousValue.isNotEmpty

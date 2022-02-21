@@ -86,6 +86,7 @@ export 'tweet/widgets/content/tweet_card_details.dart';
 export 'tweet/widgets/content/tweet_card_handle.dart';
 export 'tweet/widgets/content/tweet_card_media.dart';
 export 'tweet/widgets/content/tweet_card_quote.dart';
+export 'tweet/widgets/content/tweet_card_replies.dart';
 export 'tweet/widgets/content/tweet_card_retweeter.dart';
 export 'tweet/widgets/content/tweet_card_text.dart';
 export 'tweet/widgets/content/tweet_card_top_row.dart';

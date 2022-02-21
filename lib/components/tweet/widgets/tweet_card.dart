@@ -93,18 +93,27 @@ class TweetCard extends ConsumerWidget {
 
     // TODO: build replies
 
+    final child = TweetCardContent(
+      tweet: state,
+      delegates: delegates,
+      outerPadding: display.paddingValue,
+      innerPadding: display.smallPaddingValue,
+      config: config,
+    );
+
     return Card(
       color: color,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => delegates.onTweetTap?.call(context, ref.read),
-        child: TweetCardContent(
-          tweet: state,
-          delegates: delegates,
-          outerPadding: display.paddingValue,
-          innerPadding: display.smallPaddingValue,
-          config: config,
-        ),
+        child: state.replies.isEmpty
+            ? child
+            : Column(
+                children: [
+                  child,
+                  TweetCardReplies(tweet: state, color: color),
+                ],
+              ),
       ),
     );
   }
