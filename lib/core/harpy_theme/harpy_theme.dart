@@ -116,7 +116,7 @@ class HarpyTheme {
         ),
       ),
       popupMenuTheme: PopupMenuThemeData(
-        color: colors.alternateCardColor,
+        color: colors.averageBackgroundColor,
         shape: shape,
         enableFeedback: true,
       ),

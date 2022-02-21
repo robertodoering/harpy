@@ -2,30 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/tweet/widgets/button/translate_button.dart';
 
 class TweetCardActions extends ConsumerWidget {
   const TweetCardActions({
     required this.tweet,
-    required this.onFavorite,
-    required this.onUnfavorite,
-    required this.onRetweet,
-    required this.onUnretweet,
-    required this.onTranslate,
-    required this.onShowRetweeters,
-    required this.onComposeQuote,
+    required this.delegates,
     required this.padding,
     required this.style,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onFavorite;
-  final TweetActionCallback? onUnfavorite;
-  final TweetActionCallback? onRetweet;
-  final TweetActionCallback? onUnretweet;
-  final TweetActionCallback? onTranslate;
-  final TweetActionCallback? onShowRetweeters;
-  final TweetActionCallback? onComposeQuote;
+  final TweetDelegates delegates;
   final EdgeInsets padding;
   final TweetCardElementStyle style;
 
@@ -41,16 +28,16 @@ class TweetCardActions extends ConsumerWidget {
       children: [
         RetweetButton(
           tweet: tweet,
-          onRetweet: onRetweet,
-          onUnretweet: onUnretweet,
-          onShowRetweeters: onShowRetweeters,
-          onComposeQuote: onComposeQuote,
+          onRetweet: delegates.onRetweet,
+          onUnretweet: delegates.onUnretweet,
+          onShowRetweeters: delegates.onShowRetweeters,
+          onComposeQuote: delegates.onComposeQuote,
           sizeDelta: style.sizeDelta,
         ),
         FavoriteButton(
           tweet: tweet,
-          onFavorite: onFavorite,
-          onUnfavorite: onUnfavorite,
+          onFavorite: delegates.onFavorite,
+          onUnfavorite: delegates.onUnfavorite,
           sizeDelta: style.sizeDelta,
         ),
         // TODO: buttons
@@ -62,18 +49,16 @@ class TweetCardActions extends ConsumerWidget {
         //     padding: padding,
         //   )
         // else
-        //   HarpyButton.flat(
-        //     onTap: bloc.onReplyToTweet,
-        //     icon: const Icon(CupertinoIcons.reply),
-        //     iconSize: iconSize,
-        //     padding: padding,
-        //   ),
+        Replybutton(
+          tweet: tweet,
+          onComposeReply: delegates.onComposeReply,
+        ),
         const Spacer(),
         if (tweet.translatable(translateLanguage) ||
             tweet.quoteTranslatable(translateLanguage))
           TranslateButton(
             tweet: tweet,
-            onTranslate: onTranslate,
+            onTranslate: delegates.onTranslate,
             sizeDelta: style.sizeDelta,
           ),
       ],

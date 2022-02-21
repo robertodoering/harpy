@@ -66,12 +66,7 @@ class TweetCardContent extends ConsumerWidget {
       if (actionsRow)
         TweetCardElement.actionsRow: TweetCardActions(
           tweet: tweet,
-          onFavorite: delegates.onFavorite,
-          onUnfavorite: delegates.onUnfavorite,
-          onRetweet: delegates.onRetweet,
-          onUnretweet: delegates.onUnretweet,
-          onTranslate: delegates.onTranslate,
-          onShowRetweeters: delegates.onShowRetweeters,
+          delegates: delegates,
           padding: EdgeInsets.all(outerPadding),
           style: TweetCardElement.actionsRow.style(config),
         ),
