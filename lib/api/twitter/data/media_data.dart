@@ -16,8 +16,8 @@ mixin MediaData {
   MediaType get type;
 
   /// The url based on the media quality settings.
-  String? appropriateUrl(
-    MediaPreferences preferences,
+  String appropriateUrl(
+    MediaPreferences mediaPreferences,
     ConnectivityResult connectivity,
   );
 }
@@ -63,7 +63,7 @@ class ImageMediaData with _$ImageMediaData, MediaData {
 
   /// The image url for images drawn in the app.
   @override
-  String? appropriateUrl(
+  String appropriateUrl(
     MediaPreferences mediaPreferences,
     ConnectivityResult connectivity,
   ) {
@@ -125,7 +125,7 @@ class VideoMediaData with _$VideoMediaData, MediaData {
   /// This is the same as [bestUrl] because the quality for worse variants is
   /// too bad.
   @override
-  String? appropriateUrl(
+  String appropriateUrl(
     MediaPreferences mediaPreferences,
     ConnectivityResult connectivity,
   ) {

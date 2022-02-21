@@ -91,6 +91,8 @@ export 'tweet/widgets/content/tweet_card_text.dart';
 export 'tweet/widgets/content/tweet_card_top_row.dart';
 export 'tweet/widgets/content/tweet_card_translation.dart';
 export 'tweet/widgets/content/tweet_name.dart';
+export 'tweet/widgets/media/tweet_images.dart';
+export 'tweet/widgets/media/tweet_images_layout.dart';
 export 'tweet/widgets/tweet_actions_bottom_sheet.dart';
 export 'tweet/widgets/tweet_card.dart';
 export 'tweet/widgets/tweet_card_content.dart';
