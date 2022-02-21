@@ -91,8 +91,6 @@ class TweetCard extends ConsumerWidget {
 
     final delegates = createDelegates(state, notifier);
 
-    // TODO: build replies
-
     final child = TweetCardContent(
       tweet: state,
       delegates: delegates,
