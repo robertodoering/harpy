@@ -218,7 +218,6 @@ class _FontRadioDialogTile extends ConsumerWidget {
       leading: Icon(leadingIcon),
       subtitle: Text(font),
       borderRadius: borderRadius,
-      verticalAlignment: CrossAxisAlignment.center,
       // TODO: font selection page
       // onTap: () => app<HarpyNavigator>().push<String>(
       //   HarpyPageRoute(

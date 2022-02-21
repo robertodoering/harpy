@@ -15,7 +15,7 @@ class HarpyListTile extends ConsumerWidget {
     this.contentPadding,
     this.leadingPadding,
     this.trailingPadding,
-    this.verticalAlignment,
+    this.verticalAlignment = CrossAxisAlignment.center,
     this.multilineTitle = false,
     this.multilineSubtitle = true,
   });
@@ -33,7 +33,7 @@ class HarpyListTile extends ConsumerWidget {
   final EdgeInsets? contentPadding;
   final EdgeInsets? leadingPadding;
   final EdgeInsets? trailingPadding;
-  final CrossAxisAlignment? verticalAlignment;
+  final CrossAxisAlignment verticalAlignment;
   final bool multilineTitle;
   final bool multilineSubtitle;
 
@@ -57,10 +57,7 @@ class HarpyListTile extends ConsumerWidget {
             color: enabled ? onBackground : onBackground.withOpacity(.5),
           ),
           child: Row(
-            crossAxisAlignment: verticalAlignment ??
-                (title != null && subtitle != null
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center),
+            crossAxisAlignment: verticalAlignment,
             children: [
               if (leading != null)
                 Padding(

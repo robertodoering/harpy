@@ -35,7 +35,6 @@ class HarpySwitchTile extends StatelessWidget {
         onChanged: onChanged,
       ),
       borderRadius: borderRadius,
-      verticalAlignment: CrossAxisAlignment.center,
       enabled: enabled,
       multilineTitle: true,
       onTap: onChanged != null

@@ -151,7 +151,6 @@ class _MediaSettingsList extends ConsumerWidget {
               leading: const Icon(CupertinoIcons.folder),
               title: const Text('image download location'),
               subtitle: Text(downloadPath.imageFullPath ?? ''),
-              verticalAlignment: CrossAxisAlignment.center,
               onTap: () => showDialog<void>(
                 context: context,
                 builder: (_) => const DownloadPathSelectionDialog(
@@ -163,7 +162,6 @@ class _MediaSettingsList extends ConsumerWidget {
               leading: const Icon(CupertinoIcons.folder),
               title: const Text('gif download location'),
               subtitle: Text(downloadPath.gifFullPath ?? ''),
-              verticalAlignment: CrossAxisAlignment.center,
               onTap: () => showDialog<void>(
                 context: context,
                 builder: (_) => const DownloadPathSelectionDialog(type: 'gif'),
@@ -173,7 +171,6 @@ class _MediaSettingsList extends ConsumerWidget {
               leading: const Icon(CupertinoIcons.folder),
               title: const Text('video download location'),
               subtitle: Text(downloadPath.videoFullPath ?? ''),
-              verticalAlignment: CrossAxisAlignment.center,
               onTap: () => showDialog<void>(
                 context: context,
                 builder: (_) => const DownloadPathSelectionDialog(
