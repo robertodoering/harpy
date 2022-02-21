@@ -9,7 +9,7 @@ enum HomeTabEntryType {
   list,
 }
 
-// TODO: Implement a better data structure that allows for custom data based on
+// FIXME: Implement a better data structure that allows for custom data based on
 // the type (e.g. id and name for a list)
 
 @freezed

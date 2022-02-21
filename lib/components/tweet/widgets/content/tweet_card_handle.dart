@@ -10,10 +10,12 @@ import 'package:timeago/timeago.dart' as timeago;
 class TweetCardHandle extends ConsumerWidget {
   const TweetCardHandle({
     required this.tweet,
+    required this.onUserTap,
     required this.style,
   });
 
   final TweetData tweet;
+  final TweetActionCallback? onUserTap;
   final TweetCardElementStyle style;
 
   @override
@@ -22,8 +24,7 @@ class TweetCardHandle extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return GestureDetector(
-      // TODO: on user tap
-      // onTap: () => context.read<TweetBloc>().onUserTap(context),
+      onTap: () => onUserTap?.call(context, ref.read),
       child: Text.rich(
         TextSpan(
           children: [

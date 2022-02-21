@@ -22,7 +22,9 @@ abstract class HarpyButton extends ConsumerWidget {
   /// A flat transparent icon button.
   const factory HarpyButton.icon({
     required VoidCallback? onTap,
-    required Widget icon,
+    Widget? icon,
+    Widget? label,
+    VoidCallback? onLongPress,
     EdgeInsets? padding,
   }) = _HarpyIconButton;
 
@@ -31,6 +33,8 @@ abstract class HarpyButton extends ConsumerWidget {
     required VoidCallback? onTap,
     Widget? icon,
     Widget? label,
+    VoidCallback? onLongPress,
+    EdgeInsets? padding,
     Color? foregroundColor,
     Color? backgroundColor,
   }) = _HarpyCardButton;
@@ -95,6 +99,8 @@ class _HarpyCardButton extends HarpyButton {
     required this.onTap,
     this.icon,
     this.label,
+    this.onLongPress,
+    this.padding,
     this.foregroundColor,
     this.backgroundColor,
   });
@@ -102,6 +108,8 @@ class _HarpyCardButton extends HarpyButton {
   final Widget? icon;
   final Widget? label;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final EdgeInsets? padding;
   final Color? foregroundColor;
   final Color? backgroundColor;
 
@@ -126,11 +134,12 @@ class _HarpyCardButton extends HarpyButton {
       ),
       overlayColor: MaterialStateProperty.all(theme.highlightColor),
       elevation: MaterialStateProperty.all(0),
-      padding: MaterialStateProperty.all(display.edgeInsets),
+      padding: MaterialStateProperty.all(padding ?? display.edgeInsets),
     );
 
     return ElevatedButton(
       onPressed: onTap,
+      onLongPress: onLongPress,
       style: style,
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -147,13 +156,17 @@ class _HarpyCardButton extends HarpyButton {
 class _HarpyIconButton extends HarpyButton {
   const _HarpyIconButton({
     required this.onTap,
-    required this.icon,
+    this.icon,
+    this.label,
     this.padding,
+    this.onLongPress,
   });
 
-  final Widget icon;
+  final Widget? icon;
+  final Widget? label;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -174,8 +187,16 @@ class _HarpyIconButton extends HarpyButton {
 
     return TextButton(
       onPressed: onTap,
+      onLongPress: onLongPress,
       style: style,
-      child: icon,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) icon!,
+          if (icon != null && label != null) smallHorizontalSpacer,
+          if (label != null) label!,
+        ],
+      ),
     );
   }
 }

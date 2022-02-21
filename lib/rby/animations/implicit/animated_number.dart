@@ -110,38 +110,36 @@ class _AnimatedNumberState extends State<AnimatedNumber>
       _newNumberStr.length,
     );
 
-    return ClipRect(
-      child: AnimatedSize(
-        duration: widget.duration,
-        curve: Curves.easeOutCubic,
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (_, __) => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(unchanged),
-              Stack(
-                fit: StackFit.passthrough,
-                children: [
-                  FractionalTranslation(
+    return AnimatedSize(
+      duration: widget.duration,
+      curve: Curves.easeOutCubic,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (_, __) => Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(unchanged),
+            Stack(
+              fit: StackFit.passthrough,
+              children: [
+                FractionalTranslation(
+                  translation: _oldNumber > widget.number
+                      ? _newSlideAnimation.value
+                      : -_newSlideAnimation.value,
+                  child: Text(newText),
+                ),
+                Opacity(
+                  opacity: _opacityAnimation.value,
+                  child: FractionalTranslation(
                     translation: _oldNumber > widget.number
-                        ? _newSlideAnimation.value
-                        : -_newSlideAnimation.value,
-                    child: Text(newText),
+                        ? _oldSlideAnimation.value
+                        : -_oldSlideAnimation.value,
+                    child: Text(oldText),
                   ),
-                  Opacity(
-                    opacity: _opacityAnimation.value,
-                    child: FractionalTranslation(
-                      translation: _oldNumber > widget.number
-                          ? _oldSlideAnimation.value
-                          : -_oldSlideAnimation.value,
-                      child: Text(oldText),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

@@ -167,7 +167,7 @@ class TweetData with _$TweetData {
     //   assert(false, 'tweet inside an invalid route');
     // }
 
-    // TODO: implement
+    // TODO: implement current reply parent getter
 
     return false;
   }

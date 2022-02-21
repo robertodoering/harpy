@@ -7,10 +7,12 @@ import 'package:harpy/components/components.dart';
 class TweetCardRetweeter extends ConsumerWidget {
   const TweetCardRetweeter({
     required this.tweet,
+    required this.onRetweeterTap,
     required this.style,
   });
 
   final TweetData tweet;
+  final TweetActionCallback? onRetweeterTap;
   final TweetCardElementStyle style;
 
   @override
@@ -21,8 +23,7 @@ class TweetCardRetweeter extends ConsumerWidget {
     final textStyle = theme.textTheme.bodyText2!;
 
     return GestureDetector(
-      // TODO: on retweeter tap
-      // onTap: () => context.read<TweetBloc>().onRetweeterTap(context),
+      onTap: () => onRetweeterTap?.call(context, ref.read),
       child: IntrinsicWidth(
         child: Row(
           children: [

@@ -2,43 +2,54 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/tweet/widgets/button/translate_button.dart';
 
 class TweetCardActions extends ConsumerWidget {
   const TweetCardActions({
     required this.tweet,
+    required this.onFavorite,
+    required this.onUnfavorite,
+    required this.onRetweet,
+    required this.onUnretweet,
+    required this.onTranslate,
+    required this.onShowRetweeters,
     required this.padding,
     required this.style,
   });
 
   final TweetData tweet;
+  final TweetActionCallback? onFavorite;
+  final TweetActionCallback? onUnfavorite;
+  final TweetActionCallback? onRetweet;
+  final TweetActionCallback? onUnretweet;
+  final TweetActionCallback? onTranslate;
+  final TweetActionCallback? onShowRetweeters;
   final EdgeInsets padding;
   final TweetCardElementStyle style;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final iconTheme = IconTheme.of(context);
+    final locale = Localizations.localeOf(context);
 
-    // final iconSize = iconTheme.size! + 2 + style.sizeDelta;
-
-    // final locale = Localizations.localeOf(context);
-    // final translateLanguage = ref
-    //     .watch(languagePreferencesProvider)
-    //     .activeTranslateLanguage(locale.languageCode);
+    final translateLanguage = ref
+        .watch(languagePreferencesProvider)
+        .activeTranslateLanguage(locale.languageCode);
 
     return Row(
-      children: const [
-        SizedBox(),
+      children: [
+        RetweetButton(
+          tweet: tweet,
+          onRetweet: onRetweet,
+          onUnretweet: onUnretweet,
+          sizeDelta: style.sizeDelta,
+        ),
+        FavoriteButton(
+          tweet: tweet,
+          onFavorite: onFavorite,
+          onUnfavorite: onUnfavorite,
+          sizeDelta: style.sizeDelta,
+        ),
         // TODO: buttons
-        // RetweetButton(
-        //   padding: padding,
-        //   iconSize: iconSize - 1,
-        //   sizeDelta: style.sizeDelta,
-        // ),
-        // FavoriteButton(
-        //   padding: padding,
-        //   iconSize: iconSize,
-        //   sizeDelta: style.sizeDelta,
-        // ),
         // if (!tweet.currentReplyParent(context))
         //   HarpyButton.flat(
         //     onTap: bloc.onTweetTap,
@@ -53,14 +64,14 @@ class TweetCardActions extends ConsumerWidget {
         //     iconSize: iconSize,
         //     padding: padding,
         //   ),
-        // const Spacer(),
-        // if (tweet.translatable(translateLanguage) ||
-        //     tweet.quoteTranslatable(translateLanguage))
-        //   TweetTranslationButton(
-        //     padding: padding,
-        //     iconSize: iconSize,
-        //     sizeDelta: style.sizeDelta,
-        //   ),
+        const Spacer(),
+        if (tweet.translatable(translateLanguage) ||
+            tweet.quoteTranslatable(translateLanguage))
+          TranslateButton(
+            tweet: tweet,
+            onTranslate: onTranslate,
+            sizeDelta: style.sizeDelta,
+          ),
       ],
     );
   }

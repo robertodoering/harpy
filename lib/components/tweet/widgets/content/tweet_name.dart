@@ -1,24 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class TweetCardName extends StatelessWidget {
+class TweetCardName extends ConsumerWidget {
   const TweetCardName({
     required this.tweet,
+    required this.onUserTap,
     required this.style,
   });
 
   final TweetData tweet;
+  final TweetActionCallback? onUserTap;
   final TweetCardElementStyle style;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      // TODO: on user tap
-      // onTap: () => context.read<TweetBloc>().onUserTap(context),
+      onTap: () => onUserTap?.call(context, ref.read),
       child: IntrinsicWidth(
         child: Row(
           children: [

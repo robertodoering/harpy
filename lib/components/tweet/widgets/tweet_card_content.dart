@@ -6,15 +6,16 @@ import 'package:harpy/components/components.dart';
 class TweetCardContent extends ConsumerWidget {
   const TweetCardContent({
     required this.tweet,
+    required this.delegates,
     required this.outerPadding,
     required this.innerPadding,
     required this.config,
   });
 
   final TweetData tweet;
+  final TweetDelegates delegates;
   final double outerPadding;
   final double innerPadding;
-
   final TweetCardConfig config;
 
   @override
@@ -31,9 +32,12 @@ class TweetCardContent extends ConsumerWidget {
     final details = TweetCardElement.details.shouldBuild(tweet, config);
     final actionsRow = TweetCardElement.actionsRow.shouldBuild(tweet, config);
 
-    final content = <TweetCardElement, Widget>{
+    final content = {
       TweetCardElement.topRow: TweetCardTopRow(
         tweet: tweet,
+        onUserTap: delegates.onUserTap,
+        onRetweeterTap: delegates.onRetweeterTap,
+        onViewActions: delegates.onViewActions,
         outerPadding: outerPadding,
         innerPadding: innerPadding,
         config: config,
@@ -62,6 +66,12 @@ class TweetCardContent extends ConsumerWidget {
       if (actionsRow)
         TweetCardElement.actionsRow: TweetCardActions(
           tweet: tweet,
+          onFavorite: delegates.onFavorite,
+          onUnfavorite: delegates.onUnfavorite,
+          onRetweet: delegates.onRetweet,
+          onUnretweet: delegates.onUnretweet,
+          onTranslate: delegates.onTranslate,
+          onShowRetweeters: delegates.onShowRetweeters,
           padding: EdgeInsets.all(outerPadding),
           style: TweetCardElement.actionsRow.style(config),
         ),

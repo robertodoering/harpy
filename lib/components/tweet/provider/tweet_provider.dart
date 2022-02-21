@@ -10,9 +10,10 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 
-final tweetProvider = StateNotifierProvider.autoDispose
-    .family<TweetNotifier, TweetData, TweetData>(
+final tweetProvider =
+    StateNotifierProvider.family<TweetNotifier, TweetData, TweetData>(
   (ref, tweet) => TweetNotifier(
+    read: ref.read,
     tweet: tweet,
     twitterApi: ref.watch(twitterApiProvider),
     translateService: ref.watch(translateServiceProvider),
@@ -24,17 +25,20 @@ final tweetProvider = StateNotifierProvider.autoDispose
 
 class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   TweetNotifier({
+    required Reader read,
     required TweetData tweet,
     required TwitterApi twitterApi,
     required TranslateService translateService,
     required MessageService messageService,
     required LanguagePreferences languagePreferences,
-  })  : _twitterApi = twitterApi,
+  })  : _read = read,
+        _twitterApi = twitterApi,
         _translateService = translateService,
         _messageService = messageService,
         _languagePreferences = languagePreferences,
         super(tweet);
 
+  final Reader _read;
   final TwitterApi _twitterApi;
   final TranslateService _translateService;
   final MessageService _messageService;
@@ -120,6 +124,8 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
           favoriteCount: math.max(0, state.favoriteCount - 1),
         );
 
+        // TODO: show error message
+
         logErrorHandler(e, st);
       }
     }
@@ -157,13 +163,17 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   Future<void> translate({
     required String languageCode,
   }) async {
-    // TODO: also translate quote
-    //  maybe get quote from reader and call translate here
-
     final translateLanguage =
         _languagePreferences.activeTranslateLanguage(languageCode);
 
     final translatable = state.translatable(translateLanguage);
+
+    if (state.quote != null && state.quote!.translatable(translateLanguage)) {
+      // also translate quote if one exist
+      _read(tweetProvider(state.quote!).notifier)
+          .translate(languageCode: languageCode)
+          .ignore();
+    }
 
     if (!translatable) {
       log.fine('tweet not translatable');
@@ -176,7 +186,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
         .translate(text: state.visibleText, to: translateLanguage)
         .handleError(logErrorHandler);
 
-    if (translation?.isTranslated ?? false)
+    if (translation != null && !translation.isTranslated)
       _messageService.showText('tweet not translated');
 
     state = state.copyWith(

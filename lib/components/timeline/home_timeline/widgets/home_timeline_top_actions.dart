@@ -55,7 +55,7 @@ class _ComposeButton extends ConsumerWidget {
     return HarpyButton.card(
       icon: const Icon(FeatherIcons.feather),
       onTap: state.tweets.isNotEmpty
-          ? () {} // TODO
+          ? () {} // TODO: navigate to compose page
           : null,
     );
   }
@@ -71,7 +71,7 @@ class _FilterButton extends ConsumerWidget {
     return HarpyButton.card(
       icon: const Icon(Icons.filter_alt_outlined),
       onTap: state.tweets.isNotEmpty
-          ? () {} // TODO
+          ? () {} // TODO: navigate to filter page
           : null,
     );
   }

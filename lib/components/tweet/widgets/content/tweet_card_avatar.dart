@@ -6,10 +6,12 @@ import 'package:harpy/components/components.dart';
 class TweetCardAvatar extends ConsumerWidget {
   const TweetCardAvatar({
     required this.tweet,
+    required this.onUserTap,
     required this.style,
   });
 
   final TweetData tweet;
+  final TweetActionCallback? onUserTap;
   final TweetCardElementStyle style;
 
   static const double _defaultRadius = 20;
@@ -23,8 +25,7 @@ class TweetCardAvatar extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return GestureDetector(
-      // TODO: on user tap
-      // onTap: () => bloc.onUserTap(context),
+      onTap: () => onUserTap?.call(context, ref.read),
       child: HarpyCircleAvatar(
         imageUrl: tweet.user.appropriateUserImageUrl,
         radius: defaultRadius(display.fontSizeDelta) + style.sizeDelta,

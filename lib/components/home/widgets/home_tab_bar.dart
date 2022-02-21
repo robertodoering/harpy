@@ -106,7 +106,7 @@ class _CustomizeHomeTab extends StatelessWidget {
     //   ),
     // );
 
-    // TODO: implement
+    // TODO: implement home customization tab
     return const SizedBox();
 
     // if (isFree) {

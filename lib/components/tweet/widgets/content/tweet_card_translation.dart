@@ -43,15 +43,13 @@ class TweetCardTranslation extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: outerPadding)
                     .copyWith(top: innerPadding)
                     .copyWith(bottom: bottomPadding),
-                child: const SizedBox(),
-                // TODO: translated text
-                // child: TranslatedText(
-                //   tweet.translation!.text!,
-                //   language: tweet.translation!.language,
-                //   entities: tweet.entities,
-                //   urlToIgnore: tweet.quoteUrl,
-                //   fontSizeDelta: style.sizeDelta,
-                // ),
+                child: TranslatedText(
+                  tweet.translation!.text,
+                  language: tweet.translation!.language,
+                  entities: tweet.entities,
+                  urlToIgnore: tweet.quoteUrl,
+                  fontSizeDelta: style.sizeDelta,
+                ),
               )
             : SizedBox(
                 width: double.infinity,

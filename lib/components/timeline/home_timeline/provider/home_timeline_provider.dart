@@ -62,7 +62,8 @@ class HomeTimelineNotifier extends TimelineNotifier {
         tweets.insert(0, tweet);
       }
 
-      // TODO: when replying to a tweet add the new tweet as a reply
+      // FIXME: when replying to a tweet add the new tweet as a reply to the
+      //  existing parent
 
       currentState.copyWith(
         tweets: tweets.toBuiltList(),

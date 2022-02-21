@@ -3,7 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-// TODO: fork `flutter_colorpicker` package for style improvements
+// FIXME: fork `flutter_colorpicker` package for style improvements
 
 class ColorPickerDialog extends ConsumerStatefulWidget {
   const ColorPickerDialog({
