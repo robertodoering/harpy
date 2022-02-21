@@ -30,6 +30,7 @@ export 'login/login_page.dart';
 export 'search/search_page.dart';
 export 'settings/display/display_settings_page.dart';
 export 'settings/display/preferences/display_preferences.dart';
+export 'settings/display/widgets/preview_tweet_card.dart';
 export 'settings/general/general_settings_page.dart';
 export 'settings/general/preferences/general_preferences.dart';
 export 'settings/language/language_settings_page.dart';

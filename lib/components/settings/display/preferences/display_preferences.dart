@@ -36,6 +36,14 @@ class DisplayPreferencesNotifier extends StateNotifier<DisplayPreferences> {
 
   final Preferences _preferences;
 
+  void defaultSettings() {
+    setCompactMode(false);
+    setDisplayFont(kDisplayFont);
+    setBodyFont(kBodyFont);
+    setFontSizeDeltaId(0);
+    setAbsoluteTweetTime(false);
+  }
+
   void setCompactMode(bool value) {
     state = state.copyWith(compactMode: value);
     _preferences.setBool('compactMode', value);

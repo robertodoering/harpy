@@ -152,6 +152,15 @@ class HarpyTheme {
         contentPadding: EdgeInsets.all(_paddingValue),
         border: OutlineInputBorder(borderRadius: borderRadius),
       ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: colors.primary,
+        thumbColor: colors.primary,
+        valueIndicatorColor: colors.primary.withOpacity(.8),
+        valueIndicatorTextStyle: text.textTheme.subtitle1!.copyWith(
+          color: colors.onPrimary,
+          fontSize: 13,
+        ),
+      ),
     );
   }
 

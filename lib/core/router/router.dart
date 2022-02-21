@@ -77,6 +77,14 @@ final routesProvider = Provider(
               ],
             ),
             GoRoute(
+              name: DisplaySettingsPage.name,
+              path: 'display',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const DisplaySettingsPage(),
+              ),
+            ),
+            GoRoute(
               name: GeneralSettingsPage.name,
               path: 'general',
               pageBuilder: (_, state) => HarpyPage(
