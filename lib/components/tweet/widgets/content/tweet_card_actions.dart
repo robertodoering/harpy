@@ -13,6 +13,7 @@ class TweetCardActions extends ConsumerWidget {
     required this.onUnretweet,
     required this.onTranslate,
     required this.onShowRetweeters,
+    required this.onComposeQuote,
     required this.padding,
     required this.style,
   });
@@ -24,6 +25,7 @@ class TweetCardActions extends ConsumerWidget {
   final TweetActionCallback? onUnretweet;
   final TweetActionCallback? onTranslate;
   final TweetActionCallback? onShowRetweeters;
+  final TweetActionCallback? onComposeQuote;
   final EdgeInsets padding;
   final TweetCardElementStyle style;
 
@@ -41,6 +43,8 @@ class TweetCardActions extends ConsumerWidget {
           tweet: tweet,
           onRetweet: onRetweet,
           onUnretweet: onUnretweet,
+          onShowRetweeters: onShowRetweeters,
+          onComposeQuote: onComposeQuote,
           sizeDelta: style.sizeDelta,
         ),
         FavoriteButton(
