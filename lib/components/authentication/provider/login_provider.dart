@@ -15,19 +15,20 @@ import 'package:twitter_webview_auth/twitter_webview_auth.dart';
 /// * [logoutProvider]
 final loginProvider = Provider(
   (ref) => _Login(
-    ref,
+    read: ref.read,
     environment: ref.watch(environmentProvider),
   ),
   name: 'LoginProvider',
 );
 
 class _Login with LoggerMixin {
-  const _Login(
-    this._ref, {
+  const _Login({
+    required Reader read,
     required Environment environment,
-  }) : _environment = environment;
+  })  : _read = read,
+        _environment = environment;
 
-  final Ref _ref;
+  final Reader _read;
   final Environment _environment;
 
   /// Initializes a web based twitter authentication.
@@ -39,15 +40,13 @@ class _Login with LoggerMixin {
   /// * [LoginPage] when authentication was not successful.
   Future<void> login() async {
     if (!_environment.validateAppConfig()) {
-      _ref
-          .read(messageServiceProvider)
-          .showText('invalid twitter key / secret');
+      _read(messageServiceProvider).showText('invalid twitter key / secret');
       return;
     }
 
     log.fine('logging in');
 
-    _ref.read(authenticationStateProvider.notifier).state =
+    _read(authenticationStateProvider.notifier).state =
         const AuthenticationState.awaitingAuthentication();
 
     final result = await TwitterAuth(
@@ -62,27 +61,26 @@ class _Login with LoggerMixin {
       success: (token, secret, userId) async {
         log.fine('successfully authenticated');
 
-        _ref.read(authPreferencesProvider.notifier).setAuth(
-              token: token,
-              secret: secret,
-              userId: userId,
-            );
+        _read(authPreferencesProvider.notifier).setAuth(
+          token: token,
+          secret: secret,
+          userId: userId,
+        );
 
-        await _ref
-            .read(authenticationProvider)
-            .onLogin(_ref.read(authPreferencesProvider));
+        await _read(authenticationProvider)
+            .onLogin(_read(authPreferencesProvider));
 
-        if (_ref.read(authenticationStateProvider).isAuthenticated) {
-          if (_ref.read(setupPreferencesProvider).performedSetup) {
-            _ref.read(routerProvider).goNamed(
+        if (_read(authenticationStateProvider).isAuthenticated) {
+          if (_read(setupPreferencesProvider).performedSetup) {
+            _read(routerProvider).goNamed(
               HomePage.name,
               queryParams: {'origin': 'login'},
             );
           } else {
-            _ref.read(routerProvider).goNamed(SetupPage.name);
+            _read(routerProvider).goNamed(SetupPage.name);
           }
         } else {
-          _ref.read(routerProvider).goNamed(LoginPage.name);
+          _read(routerProvider).goNamed(LoginPage.name);
         }
       },
       failure: (dynamic e, st) {
@@ -94,31 +92,31 @@ class _Login with LoggerMixin {
           st,
         );
 
-        _ref.read(messageServiceProvider).showSnackbar(
-              const SnackBar(
-                content: Text('authentication failed, please try again'),
-              ),
-            );
+        _read(messageServiceProvider).showSnackbar(
+          const SnackBar(
+            content: Text('authentication failed, please try again'),
+          ),
+        );
 
-        _ref.read(authenticationStateProvider.notifier).state =
+        _read(authenticationStateProvider.notifier).state =
             const AuthenticationState.unauthenticated();
 
-        _ref.read(routerProvider).goNamed(LoginPage.name);
+        _read(routerProvider).goNamed(LoginPage.name);
       },
       cancelled: () {
         log.fine('login cancelled by user');
 
-        _ref.read(authenticationStateProvider.notifier).state =
+        _read(authenticationStateProvider.notifier).state =
             const AuthenticationState.unauthenticated();
 
-        _ref.read(routerProvider).goNamed(LoginPage.name);
+        _read(routerProvider).goNamed(LoginPage.name);
       },
     );
   }
 
   /// Used by [TwitterAuth] to navigate to the login webview page.
   Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
-    return _ref.read(routerProvider).navigator?.push<Uri?>(
+    return _read(routerProvider).navigator?.push<Uri?>(
           HarpyPageRoute(
             builder: (_) => LoginWebview(webview: webview),
           ),

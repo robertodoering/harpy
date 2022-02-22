@@ -6,22 +6,24 @@ import 'package:harpy/core/core.dart';
 
 final mentionsTimelineProvider = StateNotifierProvider.autoDispose<
     MentionsTimelineNotifier, TimelineState<bool>>(
-  MentionsTimelineNotifier.new,
+  (ref) => MentionsTimelineNotifier(ref: ref),
   name: 'MentionsTimelineProvider',
 );
 
 class MentionsTimelineNotifier extends TimelineNotifier<bool> {
-  MentionsTimelineNotifier(this._ref) : super(ref: _ref);
+  MentionsTimelineNotifier({
+    required Ref ref,
+  })  : _read = ref.read,
+        super(ref: ref);
 
-  final Ref _ref;
+  final Reader _read;
 
   /// The original id of the newest tweet that got requested.
   int? _newestMentionId;
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _ref
-        .read(twitterApiProvider)
+    return _read(twitterApiProvider)
         .timelineService
         .mentionsTimeline(
           count: 200,
@@ -38,7 +40,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
 
   @override
   bool? buildCustomData() => _newestMentionId != null
-      ? _ref.read(tweetVisibilityPreferencesProvider).lastViewedMention <
+      ? _read(tweetVisibilityPreferencesProvider).lastViewedMention <
           _newestMentionId!
       : null;
 
@@ -60,7 +62,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
     if (currentState is TimelineStateData<bool> &&
         currentState.tweets.isNotEmpty &&
         _newestMentionId != null) {
-      _ref.read(tweetVisibilityPreferencesProvider).lastViewedMention =
+      _read(tweetVisibilityPreferencesProvider).lastViewedMention =
           _newestMentionId!;
 
       state = currentState.copyWith(customData: false);

@@ -13,17 +13,20 @@ part 'download_path_provider.g.dart';
 
 final downloadPathProvider =
     StateNotifierProvider.autoDispose<DownloadPathNotifier, DownloadPathState>(
-  DownloadPathNotifier.new,
+  (ref) => DownloadPathNotifier(read: ref.read),
   name: 'DownloadPathProvider',
 );
 
 class DownloadPathNotifier extends StateNotifier<DownloadPathState>
     with LoggerMixin {
-  DownloadPathNotifier(this._ref) : super(const DownloadPathState.loading()) {
+  DownloadPathNotifier({
+    required Reader read,
+  })  : _read = read,
+        super(const DownloadPathState.loading()) {
     initialize();
   }
 
-  final Ref _ref;
+  final Reader _read;
 
   Future<void> initialize() async {
     state = const DownloadPathState.loading();
@@ -35,8 +38,7 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
       return;
     }
 
-    final downloadPathData =
-        _ref.read(mediaPreferencesProvider).downloadPathData;
+    final downloadPathData = _read(mediaPreferencesProvider).downloadPathData;
 
     if (downloadPathData.isEmpty) {
       // use default
@@ -62,7 +64,7 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
         log.severe('error decoding downloda path data', e, st);
 
         // reset saved preferences and use default
-        _ref.read(mediaPreferencesProvider.notifier).setDownloadPathData('');
+        _read(mediaPreferencesProvider.notifier).setDownloadPathData('');
 
         state = DownloadPathState.data(
           mediaPaths: mediaPaths,
@@ -92,9 +94,9 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
         );
 
         try {
-          _ref.read(mediaPreferencesProvider.notifier).setDownloadPathData(
-                jsonEncode(DownloadPathData(entries: entries).toJson()),
-              );
+          _read(mediaPreferencesProvider.notifier).setDownloadPathData(
+            jsonEncode(DownloadPathData(entries: entries).toJson()),
+          );
 
           state = currentState.copyWith(entries: entries.toBuiltList());
         } catch (e, st) {

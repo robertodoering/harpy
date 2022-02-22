@@ -22,18 +22,20 @@ final authenticationStateProvider = StateProvider(
 /// * [loginProvider]
 /// * [logoutProvider]
 final authenticationProvider = Provider(
-  _Authentication.new,
+  (ref) => Authentication(read: ref.read),
   name: 'AuthenticationProvider',
 );
 
-class _Authentication with LoggerMixin {
-  const _Authentication(this._ref);
+class Authentication with LoggerMixin {
+  const Authentication({
+    required Reader read,
+  }) : _read = read;
 
-  final Ref _ref;
+  final Reader _read;
 
   /// Restores a previous session if one exists.
   Future<void> restoreSession() async {
-    final authPreferences = _ref.read(authPreferencesProvider);
+    final authPreferences = _read(authPreferencesProvider);
 
     if (authPreferences.isValid) {
       log.fine('session restored');
@@ -52,7 +54,7 @@ class _Authentication with LoggerMixin {
     if (user != null) {
       log.info('authenticated user successfully initialized');
 
-      _ref.read(authenticationStateProvider.notifier).state =
+      _read(authenticationStateProvider.notifier).state =
           AuthenticationState.authenticated(user: user);
     } else {
       log.info('authenticated user not initialized');
@@ -68,23 +70,22 @@ class _Authentication with LoggerMixin {
     log.fine('on logout');
 
     // invalidate token
-    _ref
-        .read(twitterApiProvider)
+    _read(twitterApiProvider)
         .client
         .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
         .handleError(logErrorHandler)
         .ignore();
 
     // clear saved session
-    _ref.read(authPreferencesProvider.notifier).clearAuth();
+    _read(authPreferencesProvider.notifier).clearAuth();
 
-    _ref.read(authenticationStateProvider.notifier).state =
+    _read(authenticationStateProvider.notifier).state =
         const AuthenticationState.unauthenticated();
   }
 
   /// Requests the [UserData] for the authenticated user.
   Future<UserData?> _initializeUser(String userId) async {
-    final twitterApi = _ref.read(twitterApiProvider);
+    final twitterApi = _read(twitterApiProvider);
 
     dynamic error;
 
@@ -99,8 +100,7 @@ class _Authentication with LoggerMixin {
     if (error is TimeoutException || error is SocketException) {
       // unable to authenticate user, allow to retry in case of temporary
       // network error
-      final retry = await _ref
-          .read(dialogServiceProvider)
+      final retry = await _read(dialogServiceProvider)
           .show<bool>(child: const RetryAuthenticationDialog());
 
       if (retry != null && retry) {

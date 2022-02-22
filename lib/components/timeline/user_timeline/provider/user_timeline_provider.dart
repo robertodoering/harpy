@@ -14,26 +14,31 @@ final userTimelineFilterProvider =
 
 final userTimelineProvider = StateNotifierProvider.autoDispose
     .family<UserTimelineNotifier, TimelineState, String>(
-  UserTimelineNotifier.new,
+  (ref, userId) => UserTimelineNotifier(ref: ref, userId: userId),
   name: 'UserTimelineProvider',
 );
 
 class UserTimelineNotifier extends TimelineNotifier {
-  UserTimelineNotifier(this._ref, this._userId) : super(ref: _ref) {
+  UserTimelineNotifier({
+    required Ref ref,
+    required String userId,
+  })  : _read = ref.read,
+        _userId = userId,
+        super(ref: ref) {
     loadInitial();
   }
 
-  final Ref _ref;
+  final Reader _read;
   final String _userId;
 
   @override
   TimelineFilter? currentFilter() {
-    return _ref.read(userTimelineFilterProvider(_userId));
+    return _read(userTimelineFilterProvider(_userId));
   }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _ref.read(twitterApiProvider).timelineService.userTimeline(
+    return _read(twitterApiProvider).timelineService.userTimeline(
           userId: _userId,
           count: 200,
           sinceId: sinceId,

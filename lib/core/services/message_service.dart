@@ -3,14 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/core/core.dart';
 
 final messageServiceProvider = Provider(
-  MessageService.new,
+  (ref) => MessageService(read: ref.read),
   name: 'MessageServiceProvider',
 );
 
 class MessageService {
-  const MessageService(this._ref);
+  const MessageService({
+    required Reader read,
+  }) : _read = read;
 
-  final Ref _ref;
+  final Reader _read;
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showText(
     String text,
@@ -21,7 +23,7 @@ class MessageService {
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
     SnackBar snackBar,
   ) {
-    final context = _ref.read(routerProvider).navigator?.context;
+    final context = _read(routerProvider).navigator?.context;
     assert(context != null);
 
     if (context != null) {

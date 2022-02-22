@@ -14,26 +14,31 @@ final listTimelineFilterProvider =
 
 final listTimelineProvider = StateNotifierProvider.autoDispose
     .family<ListTimelineNotifier, TimelineState, String>(
-  ListTimelineNotifier.new,
+  (ref, listId) => ListTimelineNotifier(ref: ref, listId: listId),
   name: 'ListTimelineProvider',
 );
 
 class ListTimelineNotifier extends TimelineNotifier {
-  ListTimelineNotifier(this._ref, this._listId) : super(ref: _ref) {
+  ListTimelineNotifier({
+    required Ref ref,
+    required String listId,
+  })  : _read = ref.read,
+        _listId = listId,
+        super(ref: ref) {
     loadInitial();
   }
 
-  final Ref _ref;
+  final Reader _read;
   final String _listId;
 
   @override
   TimelineFilter? currentFilter() {
-    return _ref.read(listTimelineFilterProvider(_listId));
+    return _read(listTimelineFilterProvider(_listId));
   }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _ref.read(twitterApiProvider).listsService.statuses(
+    return _read(twitterApiProvider).listsService.statuses(
           listId: _listId,
           count: 200,
           maxId: maxId,

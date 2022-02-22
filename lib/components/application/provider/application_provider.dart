@@ -10,14 +10,16 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 final applicationProvider = Provider(
-  Application.new,
+  (ref) => Application(read: ref.read),
   name: 'ApplicationProvider',
 );
 
 class Application with LoggerMixin {
-  const Application(this._ref);
+  const Application({
+    required Reader read,
+  }) : _read = read;
 
-  final Ref _ref;
+  final Reader _read;
 
   Future<void> initialize() async {
     if (!kReleaseMode && !isTest) {
@@ -37,22 +39,22 @@ class Application with LoggerMixin {
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(logErrorHandler),
-      _ref.read(deviceInfoProvider.notifier).initialize(),
-      _ref.read(connectivityProvider.notifier).initialize(),
-      _ref.read(authenticationProvider).restoreSession(),
+      _read(deviceInfoProvider.notifier).initialize(),
+      _read(connectivityProvider.notifier).initialize(),
+      _read(authenticationProvider).restoreSession(),
     ]);
 
-    if (_ref.read(authenticationStateProvider).isAuthenticated) {
+    if (_read(authenticationStateProvider).isAuthenticated) {
       log.fine('authenticated after initialization');
 
-      _ref.read(routerProvider).goNamed(
+      _read(routerProvider).goNamed(
         HomePage.name,
         queryParams: {'origin': 'splash'},
       );
     } else {
       log.fine('not authenticated after initialization');
 
-      _ref.read(routerProvider).goNamed(
+      _read(routerProvider).goNamed(
         LoginPage.name,
         queryParams: {'origin': 'splash'},
       );
