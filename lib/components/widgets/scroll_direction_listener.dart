@@ -1,12 +1,14 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/core/core.dart';
 
 /// Listens to [UserScrollNotification] that bubble up the tree to expose
 /// changes to the [ScrollDirection] to its children.
 ///
 /// Only changes in the [ScrollDirection.forward] and [ScrollDirection.reverse]
 /// direction are listened to.
-class ScrollDirectionListener extends StatefulWidget {
+class ScrollDirectionListener extends ConsumerStatefulWidget {
   const ScrollDirectionListener({
     required this.child,
     this.depth,
@@ -27,8 +29,35 @@ class ScrollDirectionListener extends StatefulWidget {
       _ScrollDirectionListenerState();
 }
 
-class _ScrollDirectionListenerState extends State<ScrollDirectionListener> {
+class _ScrollDirectionListenerState
+    extends ConsumerState<ScrollDirectionListener> with RouteAware {
+  RouteObserver? _observer;
+
   ScrollDirection _direction = ScrollDirection.idle;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _observer ??= ref.read(routeObserver)
+      ?..subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPushNext() {
+    // Assume scrolling up when a new route gets pushed onto the screen.
+    // This is a workaround for the ListCardAnimation to prevent a
+    // repeating animation when the next route gets popped and the list
+    // cards become visible again.
+    _set(ScrollDirection.forward);
+  }
+
+  @override
+  void dispose() {
+    _observer?.unsubscribe(this);
+
+    super.dispose();
+  }
 
   bool _onNotification(UserScrollNotification notification) {
     if (widget.depth != null && notification.depth != widget.depth) {
@@ -44,12 +73,19 @@ class _ScrollDirectionListenerState extends State<ScrollDirectionListener> {
     return false;
   }
 
+  void _set(ScrollDirection direction) {
+    if (mounted) setState(() => _direction = direction);
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener<UserScrollNotification>(
       onNotification: _onNotification,
       child: UserScrollDirection(
         direction: _direction,
+        idle: () => _set(ScrollDirection.idle),
+        forward: () => _set(ScrollDirection.forward),
+        reverse: () => _set(ScrollDirection.reverse),
         child: widget.child,
       ),
     );
@@ -61,11 +97,21 @@ class UserScrollDirection extends InheritedWidget {
   const UserScrollDirection({
     required Widget child,
     required this.direction,
+    required this.idle,
+    required this.reverse,
+    required this.forward,
   }) : super(child: child);
 
   final ScrollDirection direction;
+  final VoidCallback idle;
+  final VoidCallback reverse;
+  final VoidCallback forward;
 
-  static ScrollDirection? of(BuildContext context) {
+  static UserScrollDirection? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<UserScrollDirection>();
+  }
+
+  static ScrollDirection? scrollDirectionOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<UserScrollDirection>()
         ?.direction;

@@ -1,10 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+final routeObserver = Provider(
+  (ref) => RouteObserver(),
+  name: 'NavigatorObserver',
+);
+
 final routerProvider = Provider(
-  (ref) => GoRouter(routes: ref.watch(routesProvider)),
+  (ref) => GoRouter(
+    routes: ref.watch(routesProvider),
+    observers: [ref.watch(routeObserver)],
+  ),
   name: 'RouterProvider',
 );
 

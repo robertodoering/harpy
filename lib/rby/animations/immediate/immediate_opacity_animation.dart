@@ -6,7 +6,7 @@ class ImmediateOpacityAnimation extends ImmediateImplicitAnimation<double> {
   const ImmediateOpacityAnimation({
     required Widget child,
     required Duration duration,
-    double begin = 1,
+    double begin = 0,
     double end = 1,
     Curve curve = Curves.easeInOut,
     Duration delay = Duration.zero,

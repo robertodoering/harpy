@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
-class SliverInfoMessage extends StatelessWidget {
-  const SliverInfoMessage({
+class SliverFillInfoMessage extends StatelessWidget {
+  const SliverFillInfoMessage({
     this.primaryMessage,
     this.secondaryMessage,
   }) : assert(primaryMessage != null || secondaryMessage != null);
@@ -12,9 +12,12 @@ class SliverInfoMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InfoMessage(
-      primaryMessage: primaryMessage,
-      secondaryMessage: secondaryMessage,
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: InfoMessage(
+        primaryMessage: primaryMessage,
+        secondaryMessage: secondaryMessage,
+      ),
     );
   }
 }

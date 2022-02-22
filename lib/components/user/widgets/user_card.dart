@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:intl/intl.dart';
 
 class UserCard extends ConsumerWidget {
@@ -15,62 +16,66 @@ class UserCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
-    // TODO: list card animation
+    final router = ref.watch(routerProvider);
 
-    return Card(
-      child: InkWell(
-        borderRadius: harpyTheme.borderRadius,
-        // TODO: navigate to user page
-        onTap: () {},
-        // onTap: () => app<HarpyNavigator>().pushUserProfile(
-        //   currentRoute: ModalRoute.of(context)!.settings,
-        //   initialUser: user,
-        // ),
-        child: Column(
-          children: [
-            HarpyListTile(
-              color: theme.cardTheme.color,
-              verticalAlignment: CrossAxisAlignment.start,
-              contentPadding: display.edgeInsets.copyWith(
-                bottom: display.smallPaddingValue,
-              ),
-              leadingPadding: display.edgeInsets.copyWith(
-                bottom: display.smallPaddingValue,
-              ),
-              leading: HarpyCircleAvatar(
-                imageUrl: user.profileImageUrl,
-              ),
-              title: Text(
-                user.name,
-                softWrap: false,
-                overflow: TextOverflow.fade,
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '@${user.handle}',
+    return VisibilityChangeListener(
+      detectorKey: ValueKey(user.hashCode),
+      child: ListCardAnimation(
+        child: Card(
+          child: InkWell(
+            borderRadius: harpyTheme.borderRadius,
+            // TODO: provide initial user
+            onTap: () => router.goNamed(UserPage.name),
+            child: Column(
+              children: [
+                HarpyListTile(
+                  color: theme.cardTheme.color,
+                  verticalAlignment: CrossAxisAlignment.start,
+                  contentPadding: display.edgeInsets.copyWith(
+                    bottom: display.smallPaddingValue,
+                  ),
+                  leadingPadding: display.edgeInsets.copyWith(
+                    bottom: display.smallPaddingValue,
+                  ),
+                  leading: HarpyCircleAvatar(
+                    imageUrl: user.profileImageUrl,
+                  ),
+                  title: Text(
+                    user.name,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                   ),
-                  if (user.hasDescription) ...[
-                    smallVerticalSpacer,
-                    TwitterText(
-                      user.description!,
-                      entities: user.userDescriptionEntities,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      entityStyle: const TextStyle(),
-                      onHashtagTap: null,
-                      onUserMentionTap: null,
-                      onUrlTap: null,
-                    ),
-                  ],
-                ],
-              ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '@${user.handle}',
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
+                      ),
+                      if (user.hasDescription) ...[
+                        smallVerticalSpacer,
+                        TwitterText(
+                          user.description!,
+                          entities: user.userDescriptionEntities,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          entityStyle: const TextStyle(),
+                          onHashtagTap: null,
+                          onUserMentionTap: null,
+                          onUrlTap: null,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: _ConnectionsCount(user: user),
+                ),
+              ],
             ),
-            _ConnectionsCount(user: user),
-          ],
+          ),
         ),
       ),
     );
@@ -94,7 +99,7 @@ class _ConnectionsCount extends ConsumerWidget {
     final friendsCount = _numberFormat.format(user.friendsCount);
     final followersCount = _numberFormat.format(user.followersCount);
 
-    return Row(
+    return Wrap(
       children: [
         Tooltip(
           message: '${user.friendsCount}',

@@ -48,15 +48,13 @@ class PaginatedUsersPage extends ConsumerWidget {
                     sliverVerticalSpacer,
                   ],
                   noData: (_) => [
-                    SliverInfoMessage(primaryMessage: Text(noDataMessage)),
-                    sliverVerticalSpacer,
+                    SliverFillInfoMessage(primaryMessage: Text(noDataMessage)),
                   ],
                   error: (_) => [
                     SliverFillLoadingError(
                       message: Text(errorMessage),
                       onRetry: notifier.loadInitial,
                     ),
-                    sliverVerticalSpacer,
                   ],
                 ),
                 const SliverBottomPadding(),

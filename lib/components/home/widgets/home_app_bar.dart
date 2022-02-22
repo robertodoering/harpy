@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar();
@@ -63,7 +62,7 @@ class _DynamicAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollDirection = UserScrollDirection.of(context);
+    final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
     assert(scrollDirection != null);
 
     final general = ref.watch(generalPreferencesProvider);

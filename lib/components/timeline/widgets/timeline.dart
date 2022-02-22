@@ -145,10 +145,9 @@ class _TimelineState extends ConsumerState<Timeline>
               ...?state.mapOrNull(
                 data: (data) => [
                   if (!data.canLoadMore) ...[
-                    const SliverInfoMessage(
+                    const SliverFillInfoMessage(
                       secondaryMessage: Text('no more tweets available'),
                     ),
-                    sliverVerticalSpacer,
                   ],
                 ],
                 noData: (_) => [
@@ -157,7 +156,6 @@ class _TimelineState extends ConsumerState<Timeline>
                     onChangeFilter:
                         notifier.filter != null ? widget.onChangeFilter : null,
                   ),
-                  sliverVerticalSpacer,
                 ],
                 loadingMore: (_) => [
                   const SliverLoadingIndicator(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/rby/widgets/visibility_change_listener.dart';
 
 typedef TweetDelegatesCreator = TweetDelegates Function(
   TweetData tweet,
@@ -99,19 +100,24 @@ class TweetCard extends ConsumerWidget {
       config: config,
     );
 
-    return Card(
-      color: color,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => delegates.onTweetTap?.call(context, ref.read),
-        child: state.replies.isEmpty
-            ? child
-            : Column(
-                children: [
-                  child,
-                  TweetCardReplies(tweet: state, color: color),
-                ],
-              ),
+    return VisibilityChangeListener(
+      detectorKey: ValueKey(tweet.hashCode),
+      child: ListCardAnimation(
+        child: Card(
+          color: color,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => delegates.onTweetTap?.call(context, ref.read),
+            child: state.replies.isEmpty
+                ? child
+                : Column(
+                    children: [
+                      child,
+                      TweetCardReplies(tweet: state, color: color),
+                    ],
+                  ),
+          ),
+        ),
       ),
     );
   }

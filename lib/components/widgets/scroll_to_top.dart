@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 /// Builds a button at the bottom of the screen that animate in or out of the
 /// screen based on the scroll offset and direction.
@@ -62,7 +61,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
     );
 
     final mediaQuery = MediaQuery.of(context);
-    final scrollDirection = UserScrollDirection.of(context);
+    final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
 
     final show = _controller!.offset > mediaQuery.size.height &&
         scrollDirection == ScrollDirection.forward;
