@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
@@ -14,6 +15,7 @@ class Timeline extends ConsumerStatefulWidget {
     this.refreshIndicatorOffset,
     this.scrollToTopOffset,
     this.onChangeFilter,
+    this.onUpdatedTweetVisibility,
   });
 
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
@@ -27,6 +29,8 @@ class Timeline extends ConsumerStatefulWidget {
   /// A callback used to open the filter selection for the
   /// [TimelineState.noData] state.
   final VoidCallback? onChangeFilter;
+
+  final ValueChanged<TweetData>? onUpdatedTweetVisibility;
 
   @override
   _TimelineState createState() => _TimelineState();
@@ -61,12 +65,23 @@ class _TimelineState extends ConsumerState<Timeline>
     super.dispose();
   }
 
-  void _onLayoutFinished(int firstIndex, int lastIndex) {
+  void _onLayoutFinished({
+    required BuiltList<TweetData> tweets,
+    required int firstIndex,
+    required int lastIndex,
+  }) {
     final index = firstIndex ~/ 2;
 
     if (_newestVisibleIndex != index) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         if (mounted) setState(() => _newestVisibleIndex = index);
+
+        // wait a second to see whether this tweet is still visible before
+        // notifying
+        Future<void>.delayed(const Duration(seconds: 1)).then((_) {
+          if (mounted && _newestVisibleIndex == index)
+            widget.onUpdatedTweetVisibility?.call(tweets[index]);
+        });
       });
     }
   }
@@ -90,13 +105,12 @@ class _TimelineState extends ConsumerState<Timeline>
     if (next.scrollToEnd) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        _controller?.jumpTo(
-          // + height to make sure we reach the end
-          // using `positions` in case the controller is attached to multiple
-          //   positions
-          _controller?.positions.first.maxScrollExtent ??
-              0 + mediaQuery.size.height * 3,
-        );
+        if (_controller?.positions.length == 1)
+          _controller?.jumpTo(
+            // + height to make sure we reach the end
+            _controller?.positions.first.maxScrollExtent ??
+                0 + mediaQuery.size.height * 3,
+          );
       });
     }
   }
@@ -128,7 +142,11 @@ class _TimelineState extends ConsumerState<Timeline>
             state.tweets.toList(),
             controller: _controller,
             tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
-            onLayoutFinished: _onLayoutFinished,
+            onLayoutFinished: (firstIndex, lastIndex) => _onLayoutFinished(
+              tweets: state.tweets,
+              firstIndex: firstIndex,
+              lastIndex: lastIndex,
+            ),
             beginSlivers: [
               ...widget.beginSlivers,
               ...?state.mapOrNull(

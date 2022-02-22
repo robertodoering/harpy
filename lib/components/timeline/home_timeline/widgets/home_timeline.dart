@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class HomeTimeline extends ConsumerWidget {
   const HomeTimeline();
@@ -9,6 +10,7 @@ class HomeTimeline extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
+    final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
 
     final appbarHeight =
         HomeAppBar.height(context, general: general, display: display);
@@ -23,12 +25,12 @@ class HomeTimeline extends ConsumerWidget {
       provider: homeTimelineProvider,
       refreshIndicatorOffset: refreshIndicatorOffset,
       scrollToTopOffset: scrollToTopOffset,
+      onUpdatedTweetVisibility: tweetVisibility.updateVisibleTweet,
       beginSlivers: const [
         HomeTopSliverPadding(),
         HomeTimelineTopActions(),
       ],
       endSlivers: const [HomeBottomSliverPadding()],
-      // TODO: use onFinishLayout to remember tweet visibility?
       // TODO: open filter selection
       // onChangeFilter: () => ,
     );
