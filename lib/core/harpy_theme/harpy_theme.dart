@@ -161,6 +161,16 @@ class HarpyTheme {
           fontSize: 13,
         ),
       ),
+      tooltipTheme: TooltipThemeData(
+        padding: EdgeInsets.all(_paddingValue / 2),
+        textStyle: text.textTheme.subtitle2
+            ?.copyWith(color: colors.onPrimary)
+            .apply(fontSizeDelta: -2),
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: colors.primary,
+        ),
+      ),
     );
   }
 
