@@ -61,7 +61,7 @@ abstract class TimelineNotifier<T extends Object>
   int get restoredTweetId => 0;
 
   @protected
-  T? buildCustomData() => null;
+  T? buildCustomData(BuiltList<TweetData> tweets) => null;
 
   Future<void> loadInitial() async {
     log.fine('loading initial timeline');
@@ -95,7 +95,7 @@ abstract class TimelineNotifier<T extends Object>
           initialResultsLastId: tweets.last.originalId,
           initialResultsCount: tweets.length - 1,
           isInitialResult: true,
-          customData: buildCustomData(),
+          customData: buildCustomData(tweets),
         );
 
         // got initial tweets, load older
@@ -135,7 +135,7 @@ abstract class TimelineNotifier<T extends Object>
         state = TimelineState.data(
           tweets: tweets,
           maxId: maxId,
-          customData: buildCustomData(),
+          customData: buildCustomData(tweets),
         );
       } else {
         state = const TimelineState.noData();

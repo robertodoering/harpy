@@ -16,15 +16,13 @@ class HomeTabBar extends ConsumerWidget {
     required Color cardColor,
     required EdgeInsets padding,
   }) {
-    if (entry.type == HomeTabEntryType.defaultType && entry.id == 'mentions') {
-      return _MentionsTab(entry: entry);
-    } else {
-      return HarpyTab(
-        icon: HomeTabEntryIcon(entry.icon),
-        text: entry.hasName ? Text(entry.name!) : null,
-        cardColor: cardColor,
-      );
-    }
+    return entry.type == HomeTabEntryType.defaultType && entry.id == 'mentions'
+        ? _MentionsTab(entry: entry)
+        : HarpyTab(
+            icon: HomeTabEntryIcon(entry.icon),
+            text: entry.hasName ? Text(entry.name!) : null,
+            cardColor: cardColor,
+          );
   }
 
   @override
@@ -78,6 +76,7 @@ class _MentionsTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
+    final state = ref.watch(mentionsTimelineProvider);
 
     final child = HarpyTab(
       icon: HomeTabEntryIcon(entry.icon),
@@ -86,8 +85,7 @@ class _MentionsTab extends ConsumerWidget {
     );
 
     return Badge(
-      // TODO: show only when new mentions
-      // show: true,
+      show: state.hasNewMentions,
       child: child,
     );
   }

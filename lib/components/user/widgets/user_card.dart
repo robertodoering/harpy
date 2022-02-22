@@ -24,8 +24,7 @@ class UserCard extends ConsumerWidget {
         child: Card(
           child: InkWell(
             borderRadius: harpyTheme.borderRadius,
-            // TODO: provide initial user
-            onTap: () => router.goNamed(UserPage.name),
+            onTap: () => router.goNamed(UserPage.name, extra: user),
             child: Column(
               children: [
                 HarpyListTile(

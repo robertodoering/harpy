@@ -14,7 +14,7 @@ final tweetVisibilityPreferencesProvider = Provider(
   name: 'TweetVisibilityPreferencesProvider',
 );
 
-class TweetVisibilityPreferences {
+class TweetVisibilityPreferences with LoggerMixin {
   TweetVisibilityPreferences({
     required Preferences preferences,
     required GeneralPreferences generalPreferences,
@@ -42,6 +42,7 @@ class TweetVisibilityPreferences {
 
         if (keepLastReadTweet ||
             (keepNewestReadTweet && id > lastVisibleTweet)) {
+          log.fine('updated last visible tweet to $id');
           lastVisibleTweet = id;
         }
       }

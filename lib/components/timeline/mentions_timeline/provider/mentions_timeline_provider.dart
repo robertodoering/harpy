@@ -1,11 +1,12 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-final mentionsTimelineProvider = StateNotifierProvider.autoDispose<
-    MentionsTimelineNotifier, TimelineState<bool>>(
+final mentionsTimelineProvider =
+    StateNotifierProvider<MentionsTimelineNotifier, TimelineState<bool>>(
   (ref) => MentionsTimelineNotifier(ref: ref),
   name: 'MentionsTimelineProvider',
 );
@@ -18,40 +19,21 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
 
   final Reader _read;
 
-  /// The original id of the newest tweet that got requested.
-  int? _newestMentionId;
-
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _read(twitterApiProvider)
-        .timelineService
-        .mentionsTimeline(
+    return _read(twitterApiProvider).timelineService.mentionsTimeline(
           count: 200,
           maxId: maxId,
           sinceId: sinceId,
-        )
-        .then((tweets) {
-      if (maxId == null && tweets.isNotEmpty) {
-        _newestMentionId = int.tryParse(tweets.first.idStr ?? '');
-      }
-      return tweets;
-    });
+        );
   }
 
   @override
-  bool? buildCustomData() => _newestMentionId != null
-      ? _read(tweetVisibilityPreferencesProvider).lastViewedMention <
-          _newestMentionId!
-      : null;
+  bool? buildCustomData(BuiltList<TweetData> tweets) {
+    final newId = int.tryParse(tweets.first.originalId);
+    final lastId = _read(tweetVisibilityPreferencesProvider).lastViewedMention;
 
-  @override
-  Future<void> load({
-    bool clearPrevious = false,
-    bool viewedMentions = true,
-  }) async {
-    await super.load(clearPrevious: clearPrevious);
-
-    if (viewedMentions) updateViewedMentions();
+    return newId != null && lastId < newId;
   }
 
   void updateViewedMentions() {
@@ -60,12 +42,21 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
     final currentState = state;
 
     if (currentState is TimelineStateData<bool> &&
-        currentState.tweets.isNotEmpty &&
-        _newestMentionId != null) {
-      _read(tweetVisibilityPreferencesProvider).lastViewedMention =
-          _newestMentionId!;
+        currentState.tweets.isNotEmpty) {
+      final id = int.tryParse(currentState.tweets.first.originalId);
 
-      state = currentState.copyWith(customData: false);
+      if (id != null) {
+        _read(tweetVisibilityPreferencesProvider).lastViewedMention = id;
+
+        state = currentState.copyWith(customData: false);
+      }
     }
   }
+}
+
+extension MentionsTimelineStateExtension on TimelineState<bool> {
+  bool get hasNewMentions => maybeMap(
+        data: (data) => data.customData as bool? ?? false,
+        orElse: () => false,
+      );
 }

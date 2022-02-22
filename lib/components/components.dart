@@ -76,6 +76,7 @@ export 'timeline/home_timeline/widgets/home_timeline_top_actions.dart';
 export 'timeline/likes_timeline/provider/likes_timeline_provider.dart';
 export 'timeline/list_timeline/provider/list_timeline_provider.dart';
 export 'timeline/mentions_timeline/provider/mentions_timeline_provider.dart';
+export 'timeline/mentions_timeline/widgets/mentions_timeline.dart';
 export 'timeline/provider/timeline_provider.dart';
 export 'timeline/user_timeline/provider/user_timeline_provider.dart';
 export 'timeline/widgets/new_tweets_text.dart';

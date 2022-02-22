@@ -8,21 +8,30 @@ class HomeTabView extends ConsumerWidget {
 
   static const _indexOffset = 1;
 
-  Widget _mapEntryContent(HomeTabEntry entry) {
+  Widget _mapEntryContent({
+    required HomeTabEntry entry,
+    required double? refreshIndicatorOffset,
+    required double? scrollToTopOffset,
+  }) {
     if (entry.type == HomeTabEntryType.defaultType) {
       switch (entry.id) {
         case 'home':
-          return const HomeTimeline();
+          return HomeTimeline(
+            refreshIndicatorOffset: refreshIndicatorOffset,
+            scrollToTopOffset: scrollToTopOffset,
+          );
         case 'media':
+          return const SizedBox();
         // return const HomeMediaTimeline();
         case 'mentions':
-        // return MentionsTimeline(
-        //   indexInTabView: index + _indexOffset,
-        //   beginSlivers: const [HomeTopSliverPadding()],
-        //   endSlivers: const [HomeBottomSliverPadding()],
-        //   refreshIndicatorOffset: refreshIndicatorOffset,
-        // );
+          return MentionsTimeline(
+            beginSlivers: const [HomeTopSliverPadding()],
+            endSlivers: const [HomeBottomSliverPadding()],
+            refreshIndicatorOffset: refreshIndicatorOffset,
+            scrollToTopOffset: scrollToTopOffset,
+          );
         case 'search':
+          return const SizedBox();
         // return const SearchScreenContent(
         //   beginSlivers: [HomeTopSliverPadding()],
         //   endSlivers: [HomeBottomSliverPadding()],
@@ -44,7 +53,18 @@ class HomeTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+    final general = ref.watch(generalPreferencesProvider);
     final configuration = ref.watch(homeTabConfigurationProvider);
+
+    final appbarHeight =
+        HomeAppBar.height(context, general: general, display: display);
+
+    final refreshIndicatorOffset =
+        general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;
+
+    final scrollToTopOffset =
+        general.bottomAppBar ? appbarHeight + display.paddingValue : null;
 
     return DefaultTabController(
       length: configuration.visibleEntries.length + 1,
@@ -58,7 +78,13 @@ class HomeTabView extends ConsumerWidget {
               ),
               children: [
                 const HomeDrawer(),
-                ...configuration.visibleEntries.map(_mapEntryContent),
+                ...configuration.visibleEntries.map(
+                  (entry) => _mapEntryContent(
+                    entry: entry,
+                    refreshIndicatorOffset: refreshIndicatorOffset,
+                    scrollToTopOffset: scrollToTopOffset,
+                  ),
+                ),
               ],
             ),
             const HomeAppBar(),

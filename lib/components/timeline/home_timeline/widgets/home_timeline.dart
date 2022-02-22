@@ -4,22 +4,17 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
 class HomeTimeline extends ConsumerWidget {
-  const HomeTimeline();
+  const HomeTimeline({
+    required this.refreshIndicatorOffset,
+    required this.scrollToTopOffset,
+  });
+
+  final double? refreshIndicatorOffset;
+  final double? scrollToTopOffset;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final general = ref.watch(generalPreferencesProvider);
     final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
-
-    final appbarHeight =
-        HomeAppBar.height(context, general: general, display: display);
-
-    final refreshIndicatorOffset =
-        general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;
-
-    final scrollToTopOffset =
-        general.bottomAppBar ? appbarHeight + display.paddingValue : null;
 
     return Timeline(
       provider: homeTimelineProvider,
