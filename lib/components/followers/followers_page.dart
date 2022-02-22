@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/components/components.dart';
 
 class FollowersPage extends ConsumerWidget {
-  const FollowersPage();
+  const FollowersPage({
+    required this.userId,
+  });
 
-  static const name = 'follower';
+  final String userId;
+
+  static const name = 'followers';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    throw UnimplementedError();
+    return PaginatedUsersPage(
+      provider: followersProvider(userId),
+      title: 'followers',
+      errorMessage: 'error loading followers',
+      noDataMessage: 'no followers exist',
+    );
   }
 }

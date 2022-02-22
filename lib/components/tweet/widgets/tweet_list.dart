@@ -10,9 +10,6 @@ typedef TweetBuilder = Widget Function(TweetData tweet);
 typedef OnLayoutFinished = void Function(int firstIndex, int lastIndex);
 
 /// Builds a [CustomScrollView] for the [tweets].
-///
-/// An optional list of [beginSlivers] are built before the [tweets] and
-/// [endSlivers] are built after the [tweets].
 class TweetList extends ConsumerWidget {
   const TweetList(
     this.tweets, {
@@ -21,7 +18,6 @@ class TweetList extends ConsumerWidget {
     this.onLayoutFinished,
     this.beginSlivers = const [],
     this.endSlivers = const [],
-    this.enableScroll = true,
   });
 
   /// The list of tweets to be displayed in this list.
@@ -30,14 +26,8 @@ class TweetList extends ConsumerWidget {
   final TweetBuilder tweetBuilder;
   final OnLayoutFinished? onLayoutFinished;
 
-  /// Slivers built at the beginning of the [CustomScrollView].
   final List<Widget> beginSlivers;
-
-  /// Slivers built at the end of the [CustomScrollView].
   final List<Widget> endSlivers;
-
-  /// Whether the tweet list should be scrollable.
-  final bool enableScroll;
 
   static Widget defaultTweetBuilder(TweetData tweet) => TweetCard(tweet: tweet);
 
@@ -54,9 +44,6 @@ class TweetList extends ConsumerWidget {
 
     return CustomScrollView(
       controller: controller,
-      physics: enableScroll
-          ? const AlwaysScrollableScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
       cacheExtent: 0,
       slivers: [
         ...beginSlivers,

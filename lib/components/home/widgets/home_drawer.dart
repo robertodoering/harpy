@@ -177,7 +177,10 @@ class _FollowersCount extends ConsumerWidget {
             child: HarpyListCard(
               title: Text('$friendsCount  following'),
               multilineTitle: true,
-              onTap: () => router.goNamed(FollowingPage.name),
+              onTap: () => router.goNamed(
+                FollowingPage.name,
+                params: {'id': user.id},
+              ),
             ),
           ),
         ),
@@ -188,7 +191,10 @@ class _FollowersCount extends ConsumerWidget {
             child: HarpyListCard(
               title: Text('$followersCount  followers'),
               multilineTitle: true,
-              onTap: () => router.goNamed(FollowersPage.name),
+              onTap: () => router.goNamed(
+                FollowersPage.name,
+                params: {'id': user.id},
+              ),
             ),
           ),
         ),

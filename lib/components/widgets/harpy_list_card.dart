@@ -15,6 +15,7 @@ class HarpyListCard extends ConsumerWidget {
     this.contentPadding,
     this.leadingPadding,
     this.trailingPadding,
+    this.verticalAlignment = CrossAxisAlignment.center,
     this.multilineTitle = false,
     this.multilineSubtitle = true,
   });
@@ -32,6 +33,7 @@ class HarpyListCard extends ConsumerWidget {
   final EdgeInsets? contentPadding;
   final EdgeInsets? leadingPadding;
   final EdgeInsets? trailingPadding;
+  final CrossAxisAlignment verticalAlignment;
   final bool multilineTitle;
   final bool multilineSubtitle;
 
@@ -57,6 +59,7 @@ class HarpyListCard extends ConsumerWidget {
         contentPadding: contentPadding,
         leadingPadding: leadingPadding,
         trailingPadding: trailingPadding,
+        verticalAlignment: verticalAlignment,
         multilineTitle: multilineTitle,
         multilineSubtitle: multilineSubtitle,
       ),

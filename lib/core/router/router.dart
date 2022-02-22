@@ -103,6 +103,26 @@ final routesProvider = Provider(
           ],
         ),
         GoRoute(
+          name: FollowingPage.name,
+          path: 'following/:id',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: FollowingPage(
+              userId: state.params['id']!,
+            ),
+          ),
+        ),
+        GoRoute(
+          name: FollowersPage.name,
+          path: 'followers/:id',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: FollowersPage(
+              userId: state.params['id']!,
+            ),
+          ),
+        ),
+        GoRoute(
           name: AboutPage.name,
           path: 'about',
           pageBuilder: (_, state) => HarpyPage(
