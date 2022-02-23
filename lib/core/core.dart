@@ -7,6 +7,7 @@ export 'misc/error_handler.dart';
 export 'misc/filename_editing_controller.dart';
 export 'misc/request_lock_mixin.dart';
 export 'misc/string_utils.dart';
+export 'misc/twitter_error_handler.dart';
 export 'page_routes/fade_page_route.dart';
 export 'page_routes/harpy_page.dart';
 export 'page_routes/harpy_page_route.dart';

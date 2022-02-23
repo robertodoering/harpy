@@ -98,3 +98,19 @@ String? removePrependedSymbol(String? value, Iterable<String> symbols) {
 
   return symbol != null ? value.substring(symbol.length) : null;
 }
+
+/// Pretty prints a duration difference as long as the difference is smaller
+/// than an hour.
+String prettyPrintDurationDifference(Duration difference) {
+  final minutes = difference.inMinutes;
+  final seconds = difference.inSeconds;
+
+  if (minutes > 0) {
+    final remainingSeconds = seconds - minutes * 60;
+    final secondsString = '$remainingSeconds'.padLeft(2, '0');
+
+    return '$minutes:$secondsString minutes';
+  } else {
+    return '$seconds seconds';
+  }
+}

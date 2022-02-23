@@ -3,6 +3,7 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 part 'replies_provider.freezed.dart';
@@ -10,6 +11,7 @@ part 'replies_provider.freezed.dart';
 final repliesProvider = StateNotifierProvider.autoDispose
     .family<RepliesNotifier, RepliesState, TweetData>(
   (ref, tweet) => RepliesNotifier(
+    read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
     tweet: tweet,
   ),
@@ -18,14 +20,17 @@ final repliesProvider = StateNotifierProvider.autoDispose
 
 class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   RepliesNotifier({
+    required Reader read,
     required TwitterApi twitterApi,
     required TweetData tweet,
-  })  : _twitterApi = twitterApi,
+  })  : _read = read,
+        _twitterApi = twitterApi,
         _tweet = tweet,
         super(const RepliesState.loading()) {
     load();
   }
 
+  final Reader _read;
   final TwitterApi _twitterApi;
   final TweetData _tweet;
 
@@ -76,8 +81,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   Future<BuiltList<TweetData>?> _loadAllReplies(TweetData tweet) async {
     final result = await _twitterApi.tweetSearchService
         .findReplies(tweet)
-        .handleError(logErrorHandler);
-    // TODO: twitter error handler
+        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
 
     if (result != null) {
       log.fine('found ${result.replies.length} replies');

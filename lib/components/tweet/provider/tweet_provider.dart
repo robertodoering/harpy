@@ -67,7 +67,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
         retweetCount: math.max(0, state.retweetCount - 1),
       );
 
-      logErrorHandler(e, st);
+      twitterErrorHandler(_read, e, st);
     }
   }
 
@@ -95,7 +95,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
           retweetCount: state.retweetCount + 1,
         );
 
-        logErrorHandler(e, st);
+        twitterErrorHandler(_read, e, st);
       }
     }
   }
@@ -124,9 +124,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
           favoriteCount: math.max(0, state.favoriteCount - 1),
         );
 
-        // TODO: show error message
-
-        logErrorHandler(e, st);
+        twitterErrorHandler(_read, e, st);
       }
     }
   }
@@ -155,7 +153,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
           favoriteCount: state.favoriteCount + 1,
         );
 
-        logErrorHandler(e, st);
+        twitterErrorHandler(_read, e, st);
       }
     }
   }
@@ -202,7 +200,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
 
     final tweet = await _twitterApi.tweetService
         .destroy(id: state.id, trimUser: true)
-        .handleError(logErrorHandler);
+        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
 
     if (tweet != null) {
       _messageService.showText('tweet deleted');

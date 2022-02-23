@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 part 'paginated_notifier_mixin.freezed.dart';
 
@@ -28,10 +27,8 @@ mixin PaginatedNotifierMixin<R, D>
   @protected
   Future<void> onMoreResponse(R response, D data);
 
-  // TODO: twitter error handler
   @protected
-  Future<void> onRequestError(Object error, StackTrace stackTrace) async =>
-      logErrorHandler(error, stackTrace);
+  Future<void> onRequestError(Object error, StackTrace stackTrace);
 
   /// Loads the initial set of data and handles its response.
   ///

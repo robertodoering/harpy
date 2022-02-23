@@ -3,10 +3,12 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 final twitterListMembersProvider = StateNotifierProvider.autoDispose.family<
     TwitterListMembersNotifier, PaginatedState<BuiltList<UserData>>, String>(
   (ref, listId) => TwitterListMembersNotifier(
+    read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
     listId: listId,
   ),
@@ -15,16 +17,23 @@ final twitterListMembersProvider = StateNotifierProvider.autoDispose.family<
 
 class TwitterListMembersNotifier extends PaginatedUsersNotifier {
   TwitterListMembersNotifier({
+    required Reader read,
     required TwitterApi twitterApi,
     required String listId,
-  })  : _twitterApi = twitterApi,
+  })  : _read = read,
+        _twitterApi = twitterApi,
         _listId = listId,
         super(const PaginatedState.loading()) {
     loadInitial();
   }
 
+  final Reader _read;
   final TwitterApi _twitterApi;
   final String _listId;
+
+  @override
+  Future<void> onRequestError(Object error, StackTrace stackTrace) async =>
+      twitterErrorHandler(_read, error, stackTrace);
 
   @override
   Future<PaginatedUsers> request([int? cursor]) {

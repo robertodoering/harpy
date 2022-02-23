@@ -20,22 +20,21 @@ typedef EntityTapped<T> = void Function(
 
 void defaultOnUserMentionTap(
   BuildContext context,
-  Reader reader,
+  Reader read,
   UserMentionData mention,
 ) {
-  // TODO: provider user handle to route
-  // mention.handle
-  reader(routerProvider).goNamed(UserPage.name);
+  // TODO: provide user handle to route
+  read(routerProvider).goNamed(UserPage.name);
 }
 
-void defaultOnUrlTap(BuildContext context, Reader reader, UrlData url) {
+void defaultOnUrlTap(BuildContext context, Reader read, UrlData url) {
   launchUrl(url.expandedUrl);
 }
 
-void defaultOnUrlLongPress(BuildContext context, Reader reader, UrlData url) {
+void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
   showHarpyBottomSheet<void>(
     context,
-    harpyTheme: reader(harpyThemeProvider),
+    harpyTheme: read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Text(url.expandedUrl),
