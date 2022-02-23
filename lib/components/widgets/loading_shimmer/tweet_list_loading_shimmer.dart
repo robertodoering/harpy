@@ -16,7 +16,6 @@ class TweetListLoadingSliver extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           verticalSpacer,
-          verticalSpacer,
           Padding(
             padding: EdgeInsets.symmetric(horizontal: display.paddingValue * 2),
             child: Column(

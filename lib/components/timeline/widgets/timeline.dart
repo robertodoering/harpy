@@ -150,7 +150,10 @@ class _TimelineState extends ConsumerState<Timeline>
             beginSlivers: [
               ...widget.beginSlivers,
               ...?state.mapOrNull(
-                loading: (_) => const [TweetListLoadingSliver()],
+                loading: (_) => const [
+                  sliverVerticalSpacer,
+                  TweetListLoadingSliver(),
+                ],
                 error: (_) => [
                   SliverFillLoadingError(
                     message: const Text('error loading tweets'),

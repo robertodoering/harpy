@@ -1,5 +1,4 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
@@ -152,27 +151,6 @@ class TweetData with _$TweetData {
 
   bool quoteTranslatable(String translateLanguage) =>
       quote != null && quote!.translatable(translateLanguage);
-
-  /// Whether this tweet is the current reply parent in the reply screen.
-  bool currentReplyParent(BuildContext context) {
-    // final route = ModalRoute.of(context)?.settings;
-
-    // if (route != null && route.name == TweetDetailScreen.route) {
-    //   if (route.arguments is Map<String, dynamic>) {
-    //     final arguments = route.arguments as Map<String, dynamic>;
-
-    //     if (arguments['tweet'] is LegacyTweetData) {
-    //       return (arguments['tweet'] as LegacyTweetData).id == id;
-    //     }
-    //   }
-
-    //   assert(false, 'tweet inside an invalid route');
-    // }
-
-    // TODO: implement current reply parent getter
-
-    return false;
-  }
 
   String? downloadMediaUrl([int index = 0]) {
     return media.isNotEmpty ? media[index].bestUrl : null;

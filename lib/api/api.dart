@@ -7,6 +7,7 @@ export 'twitter/data/media_data.dart';
 export 'twitter/data/tweet_data.dart';
 export 'twitter/data/twitter_list_data.dart';
 export 'twitter/data/user_data.dart';
+export 'twitter/find_tweet_replies.dart';
 export 'twitter/handle_tweets.dart';
 export 'twitter/media_type.dart';
 export 'twitter/parse_entities.dart';

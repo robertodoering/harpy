@@ -17,7 +17,7 @@ class TweetList extends ConsumerWidget {
     this.tweetBuilder = defaultTweetBuilder,
     this.onLayoutFinished,
     this.beginSlivers = const [],
-    this.endSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
   });
 
   /// The list of tweets to be displayed in this list.
@@ -44,7 +44,7 @@ class TweetList extends ConsumerWidget {
 
     return CustomScrollView(
       controller: controller,
-      cacheExtent: 0,
+      cacheExtent: 100,
       slivers: [
         ...beginSlivers,
         SliverPadding(

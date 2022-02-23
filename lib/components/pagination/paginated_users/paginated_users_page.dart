@@ -48,7 +48,9 @@ class PaginatedUsersPage extends ConsumerWidget {
                     sliverVerticalSpacer,
                   ],
                   noData: (_) => [
-                    SliverFillInfoMessage(primaryMessage: Text(noDataMessage)),
+                    SliverFillInfoMessage(
+                      secondaryMessage: Text(noDataMessage),
+                    ),
                   ],
                   error: (_) => [
                     SliverFillLoadingError(

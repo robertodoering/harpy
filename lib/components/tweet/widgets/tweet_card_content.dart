@@ -67,6 +67,7 @@ class TweetCardContent extends ConsumerWidget {
         TweetCardElement.actionsRow: TweetCardActions(
           tweet: tweet,
           delegates: delegates,
+          actions: config.actions,
           padding: EdgeInsets.all(outerPadding),
           style: TweetCardElement.actionsRow.style(config),
         ),

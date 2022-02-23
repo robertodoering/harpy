@@ -16,6 +16,19 @@ enum TweetCardElement {
   details,
 }
 
+/// The actions used in the [TweetCardElement.actionsRow].
+enum TweetCardActionElement {
+  retweet,
+  favorite,
+  showReplies,
+  reply,
+  openExternally,
+  copyText,
+  share,
+  translate,
+  spacer,
+}
+
 extension TweetCardElementExtension on TweetCardElement {
   bool shouldBuild(TweetData tweet, TweetCardConfig config) {
     if (config.elements.contains(this))

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -110,6 +111,16 @@ final routesProvider = Provider(
               ),
             ),
           ],
+        ),
+        GoRoute(
+          name: TweetDetailPage.name,
+          path: 'detail',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: TweetDetailPage(
+              tweet: state.extra as TweetData,
+            ),
+          ),
         ),
         GoRoute(
           name: FollowingPage.name,

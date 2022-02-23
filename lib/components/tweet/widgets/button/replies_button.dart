@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class Replybutton extends ConsumerWidget {
-  const Replybutton({
+class Repliesbutton extends ConsumerWidget {
+  const Repliesbutton({
     required this.tweet,
-    required this.onComposeReply,
+    required this.onShowReplies,
     this.sizeDelta = 0,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onComposeReply;
+  final TweetActionCallback? onShowReplies;
   final double sizeDelta;
 
   @override
@@ -22,10 +22,10 @@ class Replybutton extends ConsumerWidget {
 
     return TweetActionButton(
       active: false,
-      iconBuilder: (_) => Icon(CupertinoIcons.reply, size: iconSize),
+      iconBuilder: (_) => Icon(CupertinoIcons.bubble_left, size: iconSize),
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onComposeReply?.call(context, ref.read),
+      activate: () => onShowReplies?.call(context, ref.read),
       deactivate: null,
     );
   }

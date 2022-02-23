@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/widgets/visibility_change_listener.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
 typedef TweetDelegatesCreator = TweetDelegates Function(
   TweetData tweet,
@@ -13,36 +14,6 @@ typedef TweetActionCallback = void Function(
   BuildContext context,
   Reader read,
 );
-
-class TweetDelegates {
-  const TweetDelegates({
-    required this.onTweetTap,
-    required this.onUserTap,
-    required this.onRetweeterTap,
-    required this.onViewActions,
-    required this.onFavorite,
-    required this.onUnfavorite,
-    required this.onRetweet,
-    required this.onUnretweet,
-    required this.onTranslate,
-    required this.onShowRetweeters,
-    required this.onComposeQuote,
-    required this.onComposeReply,
-  });
-
-  final TweetActionCallback? onTweetTap;
-  final TweetActionCallback? onUserTap;
-  final TweetActionCallback? onRetweeterTap;
-  final TweetActionCallback? onViewActions;
-  final TweetActionCallback? onFavorite;
-  final TweetActionCallback? onUnfavorite;
-  final TweetActionCallback? onRetweet;
-  final TweetActionCallback? onUnretweet;
-  final TweetActionCallback? onTranslate;
-  final TweetActionCallback? onShowRetweeters;
-  final TweetActionCallback? onComposeQuote;
-  final TweetActionCallback? onComposeReply;
-}
 
 class TweetCard extends ConsumerWidget {
   const TweetCard({
@@ -63,7 +34,10 @@ class TweetCard extends ConsumerWidget {
   ) {
     // TODO: implement all tweet delegates
     return TweetDelegates(
-      onTweetTap: null,
+      onTweetTap: (context, read) => read(routerProvider).pushNamed(
+        TweetDetailPage.name,
+        extra: tweet,
+      ),
       onUserTap: null,
       onRetweeterTap: null,
       onViewActions: (context, read) => showTweetActionsBottomSheet(
