@@ -17,10 +17,7 @@ class UserList extends ConsumerWidget {
   final List<Widget> endSlivers;
 
   Widget _itemBuilder(BuildContext context, int index) {
-    if (index.isEven)
-      return UserCard(users[index ~/ 2]);
-    else
-      return verticalSpacer;
+    return index.isEven ? UserCard(users[index ~/ 2]) : verticalSpacer;
   }
 
   @override

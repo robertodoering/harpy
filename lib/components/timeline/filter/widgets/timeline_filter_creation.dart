@@ -92,10 +92,11 @@ class _SaveFilterAction extends ConsumerWidget {
       icon: const Icon(FeatherIcons.check),
       onTap: notifier.valid
           ? () {
-              if (isEditing)
+              if (isEditing) {
                 timelineFilterNotifier.updateTimelineFilter(filter);
-              else
+              } else {
                 timelineFilterNotifier.addTimelineFilter(filter);
+              }
 
               Navigator.of(context).pop();
             }

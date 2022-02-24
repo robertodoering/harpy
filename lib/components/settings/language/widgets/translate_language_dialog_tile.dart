@@ -84,8 +84,9 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
               onChanged: (value) {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
-                if (value != groupValue)
+                if (value != groupValue) {
                   languageNotifier.setTranslateLanguage(value);
+                }
               },
             ),
         ],

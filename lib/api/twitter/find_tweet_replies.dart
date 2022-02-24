@@ -56,8 +56,9 @@ extension RepliesExtension on TweetSearchService {
 
     // filter found tweets by replies
     for (final reply in result.statuses!) {
-      if (reply.inReplyToStatusIdStr == tweet.id)
+      if (reply.inReplyToStatusIdStr == tweet.id) {
         replies.add(TweetData.fromTweet(reply));
+      }
     }
 
     // expect no more replies exists if no replies in the last 2 requests have

@@ -35,11 +35,14 @@ String trimOne(
   bool end = true,
 }) {
   if (value.isNotEmpty) {
-    if (begin && _unicodeWhitespaces.contains(value.codeUnitAt(0)))
+    if (begin && _unicodeWhitespaces.contains(value.codeUnitAt(0))) {
       value = value.substring(1, value.length);
+    }
 
-    if (end && _unicodeWhitespaces.contains(value.codeUnitAt(value.length - 1)))
+    if (end &&
+        _unicodeWhitespaces.contains(value.codeUnitAt(value.length - 1))) {
       value = value.substring(0, value.length - 1);
+    }
   }
 
   return value;

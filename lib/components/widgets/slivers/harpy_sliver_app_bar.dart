@@ -26,9 +26,9 @@ class HarpySliverAppBar extends ConsumerWidget {
   Widget? _leading(BuildContext context) {
     final route = ModalRoute.of(context);
 
-    if (leading != null)
+    if (leading != null) {
       return leading;
-    else if (Scaffold.of(context).hasDrawer)
+    } else if (Scaffold.of(context).hasDrawer) {
       return HarpyButton.icon(
         icon: const RotatedBox(
           quarterTurns: 1,
@@ -36,12 +36,12 @@ class HarpySliverAppBar extends ConsumerWidget {
         ),
         onTap: Scaffold.of(context).openDrawer,
       );
-    else if (route is PageRoute<dynamic> && route.fullscreenDialog)
+    } else if (route is PageRoute<dynamic> && route.fullscreenDialog) {
       return HarpyButton.icon(
         icon: const Icon(CupertinoIcons.xmark),
         onTap: Navigator.of(context).maybePop,
       );
-    else if (Navigator.of(context).canPop())
+    } else if (Navigator.of(context).canPop()) {
       return HarpyButton.icon(
         icon: Transform.translate(
           offset: const Offset(-1, 0),
@@ -49,18 +49,19 @@ class HarpySliverAppBar extends ConsumerWidget {
         ),
         onTap: Navigator.of(context).maybePop,
       );
-    else
+    } else {
       return null;
+    }
   }
 
   Widget? _trailing(BuildContext context) {
-    if (actions != null)
+    if (actions != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: actions!,
       );
-    else if (Scaffold.of(context).hasEndDrawer)
+    } else if (Scaffold.of(context).hasEndDrawer) {
       return HarpyButton.icon(
         icon: const RotatedBox(
           quarterTurns: -1,
@@ -68,8 +69,9 @@ class HarpySliverAppBar extends ConsumerWidget {
         ),
         onTap: Scaffold.of(context).openEndDrawer,
       );
-    else
+    } else {
       return null;
+    }
   }
 
   @override

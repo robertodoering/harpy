@@ -62,24 +62,25 @@ class ThemePreferencesNotifier extends StateNotifier<ThemePreferences>
     bool updateDarkThemeSelection = false,
   }) {
     try {
-      if (themeId != null)
+      if (themeId != null) {
         // update existing theme
         state = state.copyWith(
           customThemes: state.customThemes.rebuild(
             (builder) => builder[themeId - 10] = jsonEncode(themeData.toJson()),
           ),
         );
-      else
+      } else {
         // add new theme
         state = state.copyWith(
           customThemes: state.customThemes.rebuild(
             (builder) => builder.add(jsonEncode(themeData.toJson())),
           ),
         );
+      }
 
       _preferences.setStringList('customThemes', state.customThemes.toList());
 
-      if (updateLightThemeSelection || updateDarkThemeSelection)
+      if (updateLightThemeSelection || updateDarkThemeSelection) {
         setThemeId(
           lightThemeId: updateLightThemeSelection
               ? themeId ?? state.customThemes.length - 1 + 10
@@ -88,6 +89,7 @@ class ThemePreferencesNotifier extends StateNotifier<ThemePreferences>
               ? themeId ?? state.customThemes.length - 1 + 10
               : null,
         );
+      }
     } catch (e, st) {
       log.severe('unable to add custom theme', e, st);
     }
@@ -104,7 +106,7 @@ class ThemePreferencesNotifier extends StateNotifier<ThemePreferences>
 
     _preferences.setStringList('customThemes', state.customThemes.toList());
 
-    if (themeId <= state.lightThemeId || themeId <= state.darkThemeId)
+    if (themeId <= state.lightThemeId || themeId <= state.darkThemeId) {
       setThemeId(
         lightThemeId: themeId == state.lightThemeId
             ? 0
@@ -117,6 +119,7 @@ class ThemePreferencesNotifier extends StateNotifier<ThemePreferences>
                 ? state.darkThemeId - 1
                 : null,
       );
+    }
   }
 }
 

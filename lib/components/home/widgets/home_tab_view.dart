@@ -131,8 +131,9 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
   }
 
   void _listener() {
-    if (mounted && _userScrollDirection?.direction != ScrollDirection.forward)
+    if (mounted && _userScrollDirection?.direction != ScrollDirection.forward) {
       _userScrollDirection?.forward();
+    }
   }
 
   @override

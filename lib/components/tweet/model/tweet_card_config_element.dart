@@ -31,7 +31,7 @@ enum TweetCardActionElement {
 
 extension TweetCardElementExtension on TweetCardElement {
   bool shouldBuild(TweetData tweet, TweetCardConfig config) {
-    if (config.elements.contains(this))
+    if (config.elements.contains(this)) {
       switch (this) {
         case TweetCardElement.retweeter:
           return tweet.isRetweet;
@@ -51,8 +51,9 @@ extension TweetCardElementExtension on TweetCardElement {
         case TweetCardElement.details:
           return true;
       }
-    else
+    } else {
       return false;
+    }
   }
 
   /// Whether the element requires padding to be builds around it.

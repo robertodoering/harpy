@@ -32,10 +32,7 @@ class TweetList extends ConsumerWidget {
   static Widget defaultTweetBuilder(TweetData tweet) => TweetCard(tweet: tweet);
 
   Widget _itemBuilder(BuildContext context, int index) {
-    if (index.isEven)
-      return tweetBuilder(tweets[index ~/ 2]);
-    else
-      return verticalSpacer;
+    return index.isEven ? tweetBuilder(tweets[index ~/ 2]) : verticalSpacer;
   }
 
   @override

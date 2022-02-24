@@ -82,8 +82,9 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
   void didUpdateWidget(covariant TweetActionButton oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.active != widget.active)
+    if (oldWidget.active != widget.active) {
       widget.active ? _controller.forward(from: 0) : _controller.reset();
+    }
   }
 
   @override

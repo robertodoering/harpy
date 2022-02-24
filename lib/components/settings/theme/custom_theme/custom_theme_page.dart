@@ -127,8 +127,9 @@ class _WillPopCustomTheme extends StatelessWidget {
       );
 
       return discard ?? false;
-    } else
+    } else {
       return true;
+    }
   }
 
   @override

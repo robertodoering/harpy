@@ -94,13 +94,15 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
     );
 
     if (mounted) {
-      if (result == 0)
+      if (result == 0) {
         widget.tweet.retweeted
             ? widget.onUnretweet?.call(context, ref.read)
             : widget.onRetweet?.call(context, ref.read);
-      else if (result == 1)
+      } else if (result == 1) {
         widget.onComposeQuote?.call(context, ref.read);
-      else if (result == 2) widget.onShowRetweeters?.call(context, ref.read);
+      } else if (result == 2) {
+        widget.onShowRetweeters?.call(context, ref.read);
+      }
     }
   }
 

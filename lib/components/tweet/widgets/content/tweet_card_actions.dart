@@ -60,14 +60,15 @@ class TweetCardActions extends ConsumerWidget {
             .activeTranslateLanguage(locale);
 
         if (tweet.translatable(translateLanguage) ||
-            tweet.quoteTranslatable(translateLanguage))
+            tweet.quoteTranslatable(translateLanguage)) {
           return TranslateButton(
             tweet: tweet,
             onTranslate: delegates.onTranslate,
             sizeDelta: style.sizeDelta,
           );
-        else
+        } else {
           return null;
+        }
       case TweetCardActionElement.spacer:
         return const Spacer();
       case TweetCardActionElement.openExternally:

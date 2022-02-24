@@ -34,7 +34,7 @@ class HarpyDialog extends ConsumerWidget {
 
     Widget? titleWidget;
 
-    if (title != null)
+    if (title != null) {
       titleWidget = Center(
         child: Padding(
           padding: titlePadding ?? (display.edgeInsets * 2).copyWith(bottom: 0),
@@ -45,6 +45,7 @@ class HarpyDialog extends ConsumerWidget {
           ),
         ),
       );
+    }
 
     return Unfocus(
       child: Dialog(

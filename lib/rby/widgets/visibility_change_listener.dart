@@ -32,8 +32,9 @@ class _VisibilityChangeListenerState extends State<VisibilityChangeListener> {
   void initState() {
     super.initState();
 
-    if (widget.onVisibilityChanged != null)
+    if (widget.onVisibilityChanged != null) {
       _callbacks.add(widget.onVisibilityChanged!);
+    }
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // makes sure we trigger the visibility detector initially to update this
@@ -45,14 +46,19 @@ class _VisibilityChangeListenerState extends State<VisibilityChangeListener> {
   void _updateVisibility(bool visible) {
     _visible = visible;
 
-    if (mounted) for (final callback in _callbacks) callback(visible);
+    if (mounted) {
+      for (final callback in _callbacks) {
+        callback(visible);
+      }
+    }
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (!_visible && info.visibleBounds.height > 0)
+    if (!_visible && info.visibleBounds.height > 0) {
       _updateVisibility(true);
-    else if (_visible && info.visibleBounds.height == 0)
+    } else if (_visible && info.visibleBounds.height == 0) {
       _updateVisibility(false);
+    }
   }
 
   @override

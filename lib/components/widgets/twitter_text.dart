@@ -240,7 +240,9 @@ class _TwitterTextState extends ConsumerState<TwitterText> {
 
   @override
   void dispose() {
-    for (final recognizer in _gestureRecognizer) recognizer.dispose();
+    for (final recognizer in _gestureRecognizer) {
+      recognizer.dispose();
+    }
 
     super.dispose();
   }

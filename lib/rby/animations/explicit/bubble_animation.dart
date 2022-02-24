@@ -201,7 +201,7 @@ class _BubblesPainter extends CustomPainter {
   }
 
   void _updateOuterBubblesPosition() {
-    if (currentProgress < .3)
+    if (currentProgress < .3) {
       _currentRadius1 = _mapRange(
         currentProgress,
         fromLow: 0,
@@ -209,7 +209,7 @@ class _BubblesPainter extends CustomPainter {
         toLow: 0,
         toHigh: _maxOuterDotsRadius * .8,
       );
-    else
+    } else {
       _currentRadius1 = _mapRange(
         currentProgress,
         fromLow: .3,
@@ -217,12 +217,13 @@ class _BubblesPainter extends CustomPainter {
         toLow: .8 * _maxOuterDotsRadius,
         toHigh: _maxOuterDotsRadius,
       );
+    }
 
-    if (currentProgress == 0)
+    if (currentProgress == 0) {
       _currentDotSize1 = 0;
-    else if (currentProgress < .7)
+    } else if (currentProgress < .7) {
       _currentDotSize1 = _maxDotSize;
-    else
+    } else {
       _currentDotSize1 = _mapRange(
         currentProgress,
         fromLow: .7,
@@ -230,10 +231,11 @@ class _BubblesPainter extends CustomPainter {
         toLow: _maxDotSize,
         toHigh: 0,
       );
+    }
   }
 
   void _updateInnerBubblesPosition() {
-    if (currentProgress < .3)
+    if (currentProgress < .3) {
       _currentRadius2 = _mapRange(
         currentProgress,
         fromLow: 0,
@@ -241,14 +243,15 @@ class _BubblesPainter extends CustomPainter {
         toLow: 0,
         toHigh: _maxInnerDotsRadius,
       );
-    else
+    } else {
       _currentRadius2 = _maxInnerDotsRadius;
+    }
 
-    if (currentProgress == 0)
+    if (currentProgress == 0) {
       _currentDotSize2 = 0;
-    else if (currentProgress < .2)
+    } else if (currentProgress < .2) {
       _currentDotSize2 = _maxDotSize;
-    else if (currentProgress < .5)
+    } else if (currentProgress < .5) {
       _currentDotSize2 = _mapRange(
         currentProgress,
         fromLow: .2,
@@ -256,7 +259,7 @@ class _BubblesPainter extends CustomPainter {
         toLow: _maxDotSize,
         toHigh: .3 * _maxDotSize,
       );
-    else
+    } else {
       _currentDotSize2 = _mapRange(
         currentProgress,
         fromLow: .5,
@@ -264,6 +267,7 @@ class _BubblesPainter extends CustomPainter {
         toLow: _maxDotSize * .3,
         toHigh: 0,
       );
+    }
   }
 
   void _updateBubblesPaints() {

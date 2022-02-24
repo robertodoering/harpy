@@ -118,12 +118,13 @@ String? translateLanguageFromLocale(Locale locale) {
     //    return the matching translation language
     //  * Else return traditional chinese for TW / HK and simplified chinese
     //    otherwise
-    if (locale.scriptCode == 'Hans')
+    if (locale.scriptCode == 'Hans') {
       return 'zh-cn';
-    else if (locale.scriptCode == 'Hant')
+    } else if (locale.scriptCode == 'Hant') {
       return 'zh-tw';
-    else
+    } else {
       return ['HK', 'TW'].contains(locale.countryCode) ? 'zh-tw' : 'zh-cn';
+    }
   } else {
     return null;
   }

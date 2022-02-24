@@ -184,8 +184,9 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
         .translate(text: state.visibleText, to: translateLanguage)
         .handleError(logErrorHandler);
 
-    if (translation != null && !translation.isTranslated)
+    if (translation != null && !translation.isTranslated) {
       _messageService.showText('tweet not translated');
+    }
 
     state = state.copyWith(
       isTranslating: false,

@@ -176,19 +176,20 @@ class _PopupMenuRouteLayout extends SingleChildLayoutDelegate {
     if (selectedItemIndex != null) {
       var selectedItemOffset = 0.0;
 
-      for (var index = 0; index < selectedItemIndex!; index += 1)
+      for (var index = 0; index < selectedItemIndex!; index += 1) {
         selectedItemOffset += itemSizes[index]!.height;
+      }
 
       selectedItemOffset += itemSizes[selectedItemIndex!]!.height / 2;
       y = y + buttonHeight / 2.0 - selectedItemOffset;
     }
 
     double x;
-    if (position.left > position.right)
+    if (position.left > position.right) {
       x = size.width - position.right - childSize.width;
-    else if (position.left < position.right)
+    } else if (position.left < position.right) {
       x = position.left;
-    else
+    } else {
       switch (textDirection) {
         case TextDirection.rtl:
           x = size.width - position.right - childSize.width;
@@ -197,17 +198,20 @@ class _PopupMenuRouteLayout extends SingleChildLayoutDelegate {
           x = position.left;
           break;
       }
+    }
 
-    if (x < _kMenuScreenPadding + padding.left)
+    if (x < _kMenuScreenPadding + padding.left) {
       x = _kMenuScreenPadding + padding.left;
-    else if (x + childSize.width >
-        size.width - _kMenuScreenPadding - padding.right)
+    } else if (x + childSize.width >
+        size.width - _kMenuScreenPadding - padding.right) {
       x = size.width - childSize.width - _kMenuScreenPadding - padding.right;
-    if (y < _kMenuScreenPadding + padding.top)
+    }
+    if (y < _kMenuScreenPadding + padding.top) {
       y = _kMenuScreenPadding + padding.top;
-    else if (y + childSize.height >
-        size.height - _kMenuScreenPadding - padding.bottom)
+    } else if (y + childSize.height >
+        size.height - _kMenuScreenPadding - padding.bottom) {
       y = size.height - padding.bottom - _kMenuScreenPadding - childSize.height;
+    }
 
     return Offset(x, y);
   }

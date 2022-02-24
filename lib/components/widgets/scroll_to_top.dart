@@ -75,9 +75,9 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
     final mediaQuery = MediaQuery.of(context);
     final animationOffsetLimit = mediaQuery.size.height * 5;
 
-    if (_controller!.offset > animationOffsetLimit)
+    if (_controller!.offset > animationOffsetLimit) {
       _controller!.jumpTo(0);
-    else
+    } else {
       _controller!.animateTo(
         0,
         duration: lerpDuration(
@@ -87,6 +87,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
         ),
         curve: Curves.easeOut,
       );
+    }
   }
 
   @override

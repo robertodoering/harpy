@@ -28,9 +28,9 @@ abstract class PaginatedUsersNotifier
 
     final users = response.users?.map(UserData.fromUser).toBuiltList();
 
-    if (users == null || users.isEmpty)
+    if (users == null || users.isEmpty) {
       state = const PaginatedState.noData();
-    else {
+    } else {
       final cursor = int.tryParse(response.nextCursorStr ?? '');
 
       state = PaginatedState.data(

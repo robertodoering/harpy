@@ -264,7 +264,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
   /// If a [user] is specified, only the user timeline filter for the user is
   /// removed.
   void removeUserTimelineFilter({UserData? user}) {
-    if (user == null)
+    if (user == null) {
       state = state.copyWith(
         activeTimelineFilters: state.activeTimelineFilters
             .whereNot(
@@ -273,7 +273,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
             )
             .toBuiltList(),
       );
-    else
+    } else {
       state = state.copyWith(
         activeTimelineFilters: state.activeTimelineFilters
             .whereNot(
@@ -283,6 +283,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
             )
             .toBuiltList(),
       );
+    }
 
     _persist();
   }
@@ -292,7 +293,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
   /// If a [listId] is specified, only the list timeline filter for the list is
   /// removed.
   void removeListTimelineFilter({String? listId}) {
-    if (listId == null)
+    if (listId == null) {
       state = state.copyWith(
         activeTimelineFilters: state.activeTimelineFilters
             .whereNot(
@@ -301,7 +302,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
             )
             .toBuiltList(),
       );
-    else
+    } else {
       state = state.copyWith(
         activeTimelineFilters: state.activeTimelineFilters
             .whereNot(
@@ -311,6 +312,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
             )
             .toBuiltList(),
       );
+    }
 
     _persist();
   }

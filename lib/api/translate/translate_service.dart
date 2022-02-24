@@ -28,10 +28,11 @@ class TranslateService {
   }
 
   Future<Response> _validateResponse(Response response) async {
-    if (response.statusCode >= 200 && response.statusCode < 300)
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
-    else
+    } else {
       return Future.error(response);
+    }
   }
 
   Translation _transformResponse(Response response) {

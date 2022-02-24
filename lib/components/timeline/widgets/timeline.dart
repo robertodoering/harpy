@@ -79,8 +79,9 @@ class _TimelineState extends ConsumerState<Timeline>
         // wait a second to see whether this tweet is still visible before
         // notifying
         Future<void>.delayed(const Duration(seconds: 1)).then((_) {
-          if (mounted && _newestVisibleIndex == index)
+          if (mounted && _newestVisibleIndex == index) {
             widget.onUpdatedTweetVisibility?.call(tweets[index]);
+          }
         });
       });
     }
@@ -105,12 +106,13 @@ class _TimelineState extends ConsumerState<Timeline>
     if (next.scrollToEnd) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (_controller?.positions.length == 1)
+        if (_controller?.positions.length == 1) {
           _controller?.jumpTo(
             // + height to make sure we reach the end
             _controller?.positions.first.maxScrollExtent ??
                 0 + mediaQuery.size.height * 3,
           );
+        }
       });
     }
   }
