@@ -132,7 +132,7 @@ class _CreatedAtAbsoluteTime extends StatelessWidget {
     )!;
 
     return Text(
-      l10n.formatFullDate(localCreatedAt),
+      l10n.formatCompactDate(localCreatedAt),
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
           .apply(fontSizeDelta: sizeDelta),
