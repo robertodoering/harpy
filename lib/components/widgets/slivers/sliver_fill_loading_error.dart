@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 
 /// A [LoadingError] widget as a sliver that fills the remaining space in the
@@ -20,7 +21,13 @@ class SliverFillLoadingError extends StatelessWidget {
       hasScrollBody: false,
       child: LoadingError(
         message: message,
-        onRetry: onRetry,
+        onRetry: onRetry != null
+            ? () {
+                HapticFeedback.lightImpact();
+                UserScrollDirection.of(context)?.idle();
+                onRetry!();
+              }
+            : null,
         onChangeFilter: onChangeFilter,
       ),
     );

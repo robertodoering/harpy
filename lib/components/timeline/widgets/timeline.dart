@@ -38,8 +38,7 @@ class Timeline extends ConsumerStatefulWidget {
 
 class _TimelineState extends ConsumerState<Timeline>
     with AutomaticKeepAliveClientMixin {
-  ScrollController? _controller;
-  late bool _disposeController;
+  final ScrollController _controller = ScrollController();
 
   /// The index of the newest visible tweet.
   int _newestVisibleIndex = 0;
@@ -48,19 +47,8 @@ class _TimelineState extends ConsumerState<Timeline>
   bool get wantKeepAlive => true;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (_controller == null) {
-      final primaryScrollController = PrimaryScrollController.of(context);
-      _disposeController = primaryScrollController == null;
-      _controller ??= primaryScrollController ?? ScrollController();
-    }
-  }
-
-  @override
   void dispose() {
-    if (_disposeController) _controller?.dispose();
+    _controller.dispose();
 
     super.dispose();
   }
@@ -101,18 +89,11 @@ class _TimelineState extends ConsumerState<Timeline>
   }
 
   void _providerListener(TimelineState? previous, TimelineState next) {
-    final mediaQuery = MediaQuery.of(context);
-
     if (next.scrollToEnd) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (_controller?.positions.length == 1) {
-          _controller?.jumpTo(
-            // + height to make sure we reach the end
-            _controller?.positions.first.maxScrollExtent ??
-                0 + mediaQuery.size.height * 3,
-          );
-        }
+        assert(_controller.positions.length == 1);
+        _controller.jumpTo(_controller.positions.first.maxScrollExtent);
       });
     }
   }
@@ -137,7 +118,7 @@ class _TimelineState extends ConsumerState<Timeline>
         onRefresh: notifier.load,
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
         child: LoadMoreHandler(
-          controller: _controller!,
+          controller: _controller,
           listen: state.canLoadMore,
           onLoadMore: notifier.loadOlder,
           child: TweetList(

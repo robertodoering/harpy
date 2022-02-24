@@ -87,7 +87,7 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
   bool _onNotification(ScrollNotification notification) {
     if (notification.metrics.extentAfter <=
         (widget.extentTrigger ?? notification.metrics.viewportDimension / 2)) {
-      _loadMore();
+      WidgetsBinding.instance!.addPostFrameCallback((_) => _loadMore());
     }
 
     return false;

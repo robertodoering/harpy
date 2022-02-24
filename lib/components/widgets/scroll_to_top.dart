@@ -53,7 +53,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
   void _scrollListener() {
     if (_controller == null) return;
     if (!mounted) return;
-    if (_controller?.positions.length != 1) return;
+    if (_controller!.positions.length != 1) return;
 
     assert(
       _controller?.hasClients ?? false,

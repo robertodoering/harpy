@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-class MediaTimeline extends ConsumerWidget {
+class MediaTimeline extends ConsumerStatefulWidget {
   const MediaTimeline({
     required this.provider,
     this.beginSlivers = const [],
@@ -20,40 +21,68 @@ class MediaTimeline extends ConsumerWidget {
   final List<Widget> endSlivers;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MediaTimelineState createState() => _MediaTimelineState();
+}
+
+class _MediaTimelineState extends ConsumerState<MediaTimeline>
+    with AutomaticKeepAliveClientMixin {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
     final display = ref.watch(displayPreferencesProvider);
-    final timelineState = ref.watch(provider);
-    final timelineNotifier = ref.watch(provider.notifier);
+    final timelineState = ref.watch(widget.provider);
+    final timelineNotifier = ref.watch(widget.provider.notifier);
     final mediaEntries = ref.watch(mediaTimelineProvider(timelineState.tweets));
 
-    return CustomScrollView(
-      key: const PageStorageKey('media_timeline'),
-      slivers: [
-        ...beginSlivers,
-        if (mediaEntries.isNotEmpty) ...[
-          _TopRow(
-            onRefresh: () {
-              HapticFeedback.lightImpact();
-              timelineNotifier.load(clearPrevious: true);
-            },
-          ),
-          SliverPadding(
-            padding: display.edgeInsets,
-            sliver: _MediaList(entries: mediaEntries),
-          ),
-        ],
-        ...?timelineState.mapOrNull(
-          loading: (_) => [const SliverFillLoadingIndicator()],
-          loadingMore: (_) => [
-            const SliverLoadingIndicator(),
-            sliverVerticalSpacer,
-          ],
-          noData: (_) => [
-            const SliverFillInfoMessage(secondaryMessage: Text('no media')),
+    return ScrollToTop(
+      controller: _controller,
+      child: LoadMoreHandler(
+        controller: _controller,
+        listen: timelineState.canLoadMore,
+        onLoadMore: timelineNotifier.loadOlder,
+        child: CustomScrollView(
+          controller: _controller,
+          slivers: [
+            ...widget.beginSlivers,
+            if (mediaEntries.isNotEmpty) ...[
+              _TopRow(
+                onRefresh: () {
+                  HapticFeedback.lightImpact();
+                  timelineNotifier.load(clearPrevious: true);
+                },
+              ),
+              SliverPadding(
+                padding: display.edgeInsets,
+                sliver: _MediaList(entries: mediaEntries),
+              ),
+            ],
+            ...?timelineState.mapOrNull(
+              loading: (_) => [const SliverFillLoadingIndicator()],
+              loadingMore: (_) => [
+                const SliverLoadingIndicator(),
+                sliverVerticalSpacer,
+              ],
+              noData: (_) => [
+                const SliverFillInfoMessage(secondaryMessage: Text('no media')),
+              ],
+            ),
+            ...widget.endSlivers,
           ],
         ),
-        ...endSlivers,
-      ],
+      ),
     );
   }
 }
