@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:intl/intl.dart';
 
 class TweetCardDetails extends StatelessWidget {
   const TweetCardDetails({
@@ -15,14 +14,16 @@ class TweetCardDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = Localizations.of<MaterialLocalizations>(
+      context,
+      MaterialLocalizations,
+    )!;
 
-    final date = DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
-        .format(tweet.createdAt.toLocal())
-        .toLowerCase();
+    final date = l10n.formatFullDate(tweet.createdAt.toLocal());
 
-    final time = DateFormat.Hm(Localizations.localeOf(context).languageCode)
-        .format(tweet.createdAt.toLocal())
-        .toLowerCase();
+    final time = l10n.formatTimeOfDay(
+      TimeOfDay.fromDateTime(tweet.createdAt.toLocal()),
+    );
 
     final textStyle = theme.textTheme.bodyText2!.apply(
       color: theme.textTheme.bodyText1!.color,

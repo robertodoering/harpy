@@ -6,7 +6,6 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/services/message_service.dart';
 import 'package:harpy/rby/rby.dart';
-import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 void showTweetActionsBottomSheet(
@@ -22,11 +21,10 @@ void showTweetActionsBottomSheet(
   // final showReply =
   //     ModalRoute.of(context)!.settings.name != ComposeScreen.route;
 
-  final tweetTime =
-      DateFormat.yMMMd(Localizations.localeOf(context).languageCode)
-          .add_Hm()
-          .format(tweet.createdAt.toLocal())
-          .toLowerCase();
+  final l10n = Localizations.of<MaterialLocalizations>(
+    context,
+    MaterialLocalizations,
+  )!;
 
   showHarpyBottomSheet<void>(
     context,
@@ -37,7 +35,7 @@ void showTweetActionsBottomSheet(
           children: [
             Text('tweet from ${tweet.user.name}'),
             smallVerticalSpacer,
-            Text(tweetTime),
+            Text(l10n.formatFullDate(tweet.createdAt.toLocal())),
           ],
         ),
       ),

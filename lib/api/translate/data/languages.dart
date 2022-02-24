@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 const kTranslateLanguages = {
   'af': 'Afrikaans',
   'sq': 'Albanian',
@@ -105,13 +107,24 @@ const kTranslateLanguages = {
   'zu': 'Zulu'
 };
 
-/// Returns the language code used by the translate service from the
-/// [languageCode] that is used in the apps locale.
-String? translateLanguageFromLanguageCode(String languageCode) {
-  if (kTranslateLanguages.keys.contains(languageCode))
-    return languageCode;
-  else if (languageCode == 'zh')
-    return 'zh-cn';
-  else
+/// Returns the language code used by the translate service from the app
+/// [locale].
+String? translateLanguageFromLocale(Locale locale) {
+  if (kTranslateLanguages.keys.contains(locale.languageCode)) {
+    return locale.languageCode;
+  } else if (locale.languageCode == 'zh') {
+    // For chinese:
+    //  * If the script code is set to simplified / traditional
+    //    return the matching translation language
+    //  * Else return traditional chinese for TW / HK and simplified chinese
+    //    otherwise
+    if (locale.scriptCode == 'Hans')
+      return 'zh-cn';
+    else if (locale.scriptCode == 'Hant')
+      return 'zh-tw';
+    else
+      return ['HK', 'TW'].contains(locale.countryCode) ? 'zh-tw' : 'zh-cn';
+  } else {
     return null;
+  }
 }

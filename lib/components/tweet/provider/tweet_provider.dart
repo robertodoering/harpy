@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -159,17 +159,17 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   }
 
   Future<void> translate({
-    required String languageCode,
+    required Locale locale,
   }) async {
     final translateLanguage =
-        _languagePreferences.activeTranslateLanguage(languageCode);
+        _languagePreferences.activeTranslateLanguage(locale);
 
     final translatable = state.translatable(translateLanguage);
 
     if (state.quote != null && state.quote!.translatable(translateLanguage)) {
       // also translate quote if one exist
       _read(tweetProvider(state.quote!).notifier)
-          .translate(languageCode: languageCode)
+          .translate(locale: locale)
           .ignore();
     }
 

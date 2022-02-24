@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/translate/data/languages.dart';
@@ -38,7 +40,6 @@ class LanguagePreferences with _$LanguagePreferences {
     /// The language code used by the translate service to translate a tweet or
     /// a user description.
     ///
-    /// Returns an empty string when the default value should be used.
     /// By default the translate language code will derive from the locale of
     /// the app.
     required String translateLanguage,
@@ -46,8 +47,7 @@ class LanguagePreferences with _$LanguagePreferences {
 
   LanguagePreferences._();
 
-  String activeTranslateLanguage(String languageCode) =>
-      translateLanguage.isNotEmpty
-          ? translateLanguage
-          : translateLanguageFromLanguageCode(languageCode) ?? 'en';
+  String activeTranslateLanguage(Locale locale) => translateLanguage.isNotEmpty
+      ? translateLanguage
+      : translateLanguageFromLocale(locale) ?? 'en';
 }

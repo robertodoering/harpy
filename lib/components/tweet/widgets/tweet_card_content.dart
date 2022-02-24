@@ -21,9 +21,8 @@ class TweetCardContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = Localizations.localeOf(context);
-    final translateLanguage = ref
-        .watch(languagePreferencesProvider)
-        .activeTranslateLanguage(locale.languageCode);
+    final translateLanguage =
+        ref.watch(languagePreferencesProvider).activeTranslateLanguage(locale);
 
     final text = TweetCardElement.text.shouldBuild(tweet, config);
     final translation = TweetCardElement.translation.shouldBuild(tweet, config);

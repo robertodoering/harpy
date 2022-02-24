@@ -64,9 +64,7 @@ class TweetCard extends ConsumerWidget {
       },
       onTranslate: (context, _) {
         HapticFeedback.lightImpact();
-        notifier.translate(
-          languageCode: Localizations.localeOf(context).languageCode,
-        );
+        notifier.translate(locale: Localizations.localeOf(context));
       },
       onShowRetweeters: null,
       onComposeQuote: null,

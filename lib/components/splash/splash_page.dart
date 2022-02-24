@@ -25,9 +25,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   Future<void> _startTimer() async {
     await Future<void>.delayed(const Duration(seconds: 2));
 
-    if (mounted) {
-      setState(() => _showLoading = true);
-    }
+    if (mounted) setState(() => _showLoading = true);
   }
 
   @override

@@ -57,7 +57,7 @@ class TweetCardActions extends ConsumerWidget {
 
         final translateLanguage = ref
             .watch(languagePreferencesProvider)
-            .activeTranslateLanguage(locale.languageCode);
+            .activeTranslateLanguage(locale);
 
         if (tweet.translatable(translateLanguage) ||
             tweet.quoteTranslatable(translateLanguage))

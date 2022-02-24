@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class TweetCardHandle extends ConsumerWidget {
@@ -45,11 +44,11 @@ class TweetCardHandle extends ConsumerWidget {
               baseline: TextBaseline.alphabetic,
               child: display.absoluteTweetTime
                   ? _CreatedAtAbsoluteTime(
-                      createdAt: tweet.createdAt,
+                      localCreatedAt: tweet.createdAt.toLocal(),
                       sizeDelta: style.sizeDelta,
                     )
                   : _CreatedAtRelativeTime(
-                      createdAt: tweet.createdAt,
+                      localCreatedAt: tweet.createdAt.toLocal(),
                       sizeDelta: style.sizeDelta,
                     ),
             ),
@@ -64,11 +63,11 @@ class TweetCardHandle extends ConsumerWidget {
 
 class _CreatedAtRelativeTime extends StatefulWidget {
   const _CreatedAtRelativeTime({
-    required this.createdAt,
+    required this.localCreatedAt,
     this.sizeDelta = 0,
   });
 
-  final DateTime createdAt;
+  final DateTime localCreatedAt;
   final double sizeDelta;
 
   @override
@@ -82,8 +81,7 @@ class _CreatedAtRelativeTimeState extends State<_CreatedAtRelativeTime> {
   void initState() {
     super.initState();
 
-    final localCreatedAt = widget.createdAt.toLocal();
-    final difference = DateTime.now().difference(localCreatedAt);
+    final difference = DateTime.now().difference(widget.localCreatedAt);
 
     if (difference < const Duration(hours: 1)) {
       // update every minute
@@ -105,55 +103,39 @@ class _CreatedAtRelativeTimeState extends State<_CreatedAtRelativeTime> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
 
     return Text(
-      _tweetTimeDifference(context, widget.createdAt),
+      timeago.format(widget.localCreatedAt, locale: languageCode),
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
           .apply(fontSizeDelta: widget.sizeDelta),
-      overflow: TextOverflow.fade,
-      maxLines: 1,
     );
   }
 }
 
 class _CreatedAtAbsoluteTime extends StatelessWidget {
   const _CreatedAtAbsoluteTime({
-    required this.createdAt,
+    required this.localCreatedAt,
     this.sizeDelta = 0,
   });
 
-  final DateTime createdAt;
+  final DateTime localCreatedAt;
   final double sizeDelta;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = Localizations.of<MaterialLocalizations>(
+      context,
+      MaterialLocalizations,
+    )!;
 
     return Text(
-      _getAbsoluteTime(context, createdAt),
+      l10n.formatFullDate(localCreatedAt),
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
           .apply(fontSizeDelta: sizeDelta),
-      overflow: TextOverflow.fade,
-      maxLines: 1,
     );
   }
-}
-
-/// Returns a formatted String displaying the difference of the tweet creation
-/// time.
-String _tweetTimeDifference(BuildContext context, DateTime createdAt) {
-  return timeago.format(
-    createdAt.toLocal(),
-    locale: Localizations.localeOf(context).languageCode,
-  );
-}
-
-/// Returns a formatted String displaying the absolute time.
-String _getAbsoluteTime(BuildContext context, DateTime createdAt) {
-  return DateFormat.yMd(Localizations.localeOf(context).languageCode)
-      .add_Hm()
-      .format(createdAt.toLocal())
-      .toLowerCase();
 }
