@@ -21,8 +21,7 @@ class HomeTabView extends ConsumerWidget {
             scrollToTopOffset: scrollToTopOffset,
           );
         case 'media':
-          return const SizedBox();
-        // return const HomeMediaTimeline();
+          return const HomeMediaTimeline();
         case 'mentions':
           return MentionsTimeline(
             beginSlivers: const [HomeTopSliverPadding()],
