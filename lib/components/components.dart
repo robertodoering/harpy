@@ -34,6 +34,8 @@ export 'pagination/paginated_users/provider/paginated_users_provider.dart';
 export 'pagination/provider/paginated_notifier_mixin.dart';
 export 'pagination/provider/paginated_notifier_mixin.dart';
 export 'replies/provider/replies_provider.dart';
+export 'retweeters/provider/retweeters_provider.dart';
+export 'retweeters/retweeters_page.dart';
 export 'search/search_page.dart';
 export 'settings/display/display_settings_page.dart';
 export 'settings/display/preferences/display_preferences.dart';

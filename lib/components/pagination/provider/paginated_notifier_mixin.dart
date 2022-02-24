@@ -51,9 +51,7 @@ mixin PaginatedNotifierMixin<R, D>
   ///
   /// Does nothing if no next page is available.
   Future<void> loadMore() async {
-    if (lock()) {
-      return;
-    }
+    if (lock()) return;
 
     if (state is PaginatedStateData && state.canLoadMore) {
       final currentState = state as PaginatedStateData;

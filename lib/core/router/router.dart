@@ -55,9 +55,7 @@ final routesProvider = Provider(
           path: 'detail',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
-            child: TweetDetailPage(
-              tweet: state.extra as TweetData,
-            ),
+            child: TweetDetailPage(tweet: state.extra as TweetData),
           ),
         ),
         GoRoute(
@@ -81,13 +79,20 @@ final routesProvider = Provider(
           ),
         ),
         GoRoute(
+          name: RetweetersPage.name,
+          path: 'retweeters/:id',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            fullscreenDialog: true,
+            child: RetweetersPage(tweetId: state.params['id']!),
+          ),
+        ),
+        GoRoute(
           name: FollowingPage.name,
           path: 'following/:id',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
-            child: FollowingPage(
-              userId: state.params['id']!,
-            ),
+            child: FollowingPage(userId: state.params['id']!),
           ),
         ),
         GoRoute(
@@ -95,9 +100,7 @@ final routesProvider = Provider(
           path: 'followers/:id',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
-            child: FollowersPage(
-              userId: state.params['id']!,
-            ),
+            child: FollowersPage(userId: state.params['id']!),
           ),
         ),
         GoRoute(

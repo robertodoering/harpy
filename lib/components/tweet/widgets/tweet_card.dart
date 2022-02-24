@@ -61,7 +61,12 @@ class TweetCard extends ConsumerWidget {
         HapticFeedback.lightImpact();
         notifier.translate(locale: Localizations.localeOf(context));
       },
-      onShowRetweeters: null,
+      onShowRetweeters: tweet.retweetCount > 0
+          ? (_, read) => read(routerProvider).pushNamed(
+                RetweetersPage.name,
+                params: {'id': tweet.originalId},
+              )
+          : null,
       onComposeQuote: null,
       onComposeReply: null,
       onDeleteTweet: (_, read) {

@@ -82,14 +82,18 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
             style: TextStyle(color: widget.overlayForegroundColor),
           ),
         ),
-        HarpyPopupMenuItem(
-          value: 2,
-          leading: const Icon(FeatherIcons.eye),
-          title: Text(
-            'view retweeters',
-            style: TextStyle(color: widget.overlayForegroundColor),
+        if (widget.onShowRetweeters != null)
+          HarpyPopupMenuItem(
+            value: 2,
+            leading: Icon(
+              FeatherIcons.eye,
+              color: widget.overlayForegroundColor,
+            ),
+            title: Text(
+              'view retweeters',
+              style: TextStyle(color: widget.overlayForegroundColor),
+            ),
           ),
-        ),
       ],
     );
 
