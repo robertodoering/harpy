@@ -330,6 +330,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  download_manager:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "749be8a4c6ccce65722c58c1c689a70a1eeaba28"
+      url: "https://github.com/robertodoering/download_manager"
+    source: git
+    version: "0.0.0"
   encrypt:
     dependency: "direct main"
     description:

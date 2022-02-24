@@ -20,6 +20,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   dart_twitter_api: ^0.5.4
   device_info_plus: ^3.1.1
+  download_manager:
+    git: https://github.com/robertodoering/download_manager
   encrypt: ^5.0.1
   equatable: ^2.0.0
   file_picker: ^4.0.1
