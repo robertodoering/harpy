@@ -10,7 +10,6 @@ class TweetDelegates with _$TweetDelegates {
     required TweetActionCallback? onTweetTap,
     required TweetActionCallback? onUserTap,
     required TweetActionCallback? onRetweeterTap,
-    required TweetActionCallback? onViewActions,
     required TweetActionCallback? onFavorite,
     required TweetActionCallback? onUnfavorite,
     required TweetActionCallback? onRetweet,
@@ -19,5 +18,6 @@ class TweetDelegates with _$TweetDelegates {
     required TweetActionCallback? onShowRetweeters,
     required TweetActionCallback? onComposeQuote,
     required TweetActionCallback? onComposeReply,
+    required TweetActionCallback? onDeleteTweet,
   }) = _TweetDelegates;
 }

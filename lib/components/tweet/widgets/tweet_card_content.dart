@@ -34,9 +34,7 @@ class TweetCardContent extends ConsumerWidget {
     final content = {
       TweetCardElement.topRow: TweetCardTopRow(
         tweet: tweet,
-        onUserTap: delegates.onUserTap,
-        onRetweeterTap: delegates.onRetweeterTap,
-        onViewActions: delegates.onViewActions,
+        delegates: delegates,
         outerPadding: outerPadding,
         innerPadding: innerPadding,
         config: config,

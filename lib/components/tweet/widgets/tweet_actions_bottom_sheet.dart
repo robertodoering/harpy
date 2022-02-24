@@ -11,15 +11,13 @@ import 'package:share_plus/share_plus.dart';
 void showTweetActionsBottomSheet(
   BuildContext context, {
   required TweetData tweet,
+  required TweetDelegates delegates,
   required Reader read,
 }) {
   final theme = Theme.of(context);
 
   final authenticationState = read(authenticationStateProvider);
   final isAuthenticatedUser = tweet.user.id == authenticationState.user?.id;
-
-  // final showReply =
-  //     ModalRoute.of(context)!.settings.name != ComposeScreen.route;
 
   final l10n = Localizations.of<MaterialLocalizations>(
     context,
@@ -39,7 +37,7 @@ void showTweetActionsBottomSheet(
           ],
         ),
       ),
-      if (isAuthenticatedUser)
+      if (isAuthenticatedUser && delegates.onDeleteTweet != null)
         HarpyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
@@ -50,26 +48,20 @@ void showTweetActionsBottomSheet(
             ),
           ),
           onTap: () {
-            // TODO: use delegate for remove tweet callback
-            // bloc.add(
-            //   TweetEvent.delete(
-            //     onDeleted: () => homeTimelineCubit.removeTweet(bloc.tweet),
-            //   ),
-            // );
-            // app<HarpyNavigator>().maybePop();
+            HapticFeedback.lightImpact();
+            delegates.onDeleteTweet?.call(context, read);
+            Navigator.of(context).pop();
           },
         ),
-      // if (showReply)
-      //   HarpyListTile(
-      //     leading: const Icon(CupertinoIcons.reply),
-      //     title: const Text('reply'),
-      //     onTap: () async {
-      //       await app<HarpyNavigator>().maybePop();
-      //       app<HarpyNavigator>().pushComposeScreen(
-      //         inReplyToStatus: tweet,
-      //       );
-      //     },
-      //   ),
+      if (delegates.onComposeReply != null)
+        HarpyListTile(
+          leading: const Icon(CupertinoIcons.reply),
+          title: const Text('reply'),
+          onTap: () async {
+            delegates.onComposeReply?.call(context, read);
+            Navigator.of(context).pop();
+          },
+        ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),

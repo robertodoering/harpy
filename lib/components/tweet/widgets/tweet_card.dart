@@ -41,11 +41,6 @@ class TweetCard extends ConsumerWidget {
       ),
       onUserTap: null,
       onRetweeterTap: null,
-      onViewActions: (context, read) => showTweetActionsBottomSheet(
-        context,
-        tweet: tweet,
-        read: read,
-      ),
       onFavorite: (_, __) {
         HapticFeedback.lightImpact();
         notifier.favorite();
@@ -69,6 +64,13 @@ class TweetCard extends ConsumerWidget {
       onShowRetweeters: null,
       onComposeQuote: null,
       onComposeReply: null,
+      onDeleteTweet: (_, read) {
+        HapticFeedback.lightImpact();
+        notifier.delete(
+          onDeleted: () =>
+              read(homeTimelineProvider.notifier).removeTweet(tweet),
+        );
+      },
     );
   }
 

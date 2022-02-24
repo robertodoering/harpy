@@ -6,13 +6,13 @@ import 'package:harpy/components/components.dart';
 class TweetCardActionsButton extends ConsumerWidget {
   const TweetCardActionsButton({
     required this.tweet,
-    required this.onViewActions,
+    required this.delegates,
     required this.padding,
     required this.style,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onViewActions;
+  final TweetDelegates delegates;
   final EdgeInsets padding;
   final TweetCardElementStyle style;
 
@@ -26,7 +26,12 @@ class TweetCardActionsButton extends ConsumerWidget {
         size: iconTheme.size! + style.sizeDelta,
       ),
       padding: padding,
-      onTap: () => onViewActions?.call(context, ref.read),
+      onTap: () => showTweetActionsBottomSheet(
+        context,
+        tweet: tweet,
+        delegates: delegates,
+        read: ref.read,
+      ),
     );
   }
 }

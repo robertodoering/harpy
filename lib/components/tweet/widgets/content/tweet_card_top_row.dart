@@ -14,18 +14,14 @@ import 'package:harpy/components/components.dart';
 class TweetCardTopRow extends ConsumerWidget {
   const TweetCardTopRow({
     required this.tweet,
-    required this.onUserTap,
-    required this.onRetweeterTap,
-    required this.onViewActions,
+    required this.delegates,
     required this.outerPadding,
     required this.innerPadding,
     required this.config,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onUserTap;
-  final TweetActionCallback? onRetweeterTap;
-  final TweetActionCallback? onViewActions;
+  final TweetDelegates delegates;
 
   final double outerPadding;
   final double innerPadding;
@@ -55,7 +51,7 @@ class TweetCardTopRow extends ConsumerWidget {
               if (retweeter) ...[
                 TweetCardRetweeter(
                   tweet: tweet,
-                  onRetweeterTap: onRetweeterTap,
+                  onRetweeterTap: delegates.onRetweeterTap,
                   style: TweetCardElement.retweeter.style(config),
                 ),
                 if (avatar && name && handle) SizedBox(height: innerPadding),
@@ -64,13 +60,13 @@ class TweetCardTopRow extends ConsumerWidget {
                 // treat the whitespace between the avatar and name as a
                 // 'on user tap' gesture
                 behavior: HitTestBehavior.translucent,
-                onTap: () => onUserTap?.call(context, ref.read),
+                onTap: () => delegates.onUserTap?.call(context, ref.read),
                 child: Row(
                   children: [
                     if (avatar) ...[
                       TweetCardAvatar(
                         tweet: tweet,
-                        onUserTap: onUserTap,
+                        onUserTap: delegates.onUserTap,
                         style: TweetCardElement.avatar.style(config),
                       ),
                       SizedBox(width: outerPadding),
@@ -82,7 +78,7 @@ class TweetCardTopRow extends ConsumerWidget {
                           if (name)
                             TweetCardName(
                               tweet: tweet,
-                              onUserTap: onUserTap,
+                              onUserTap: delegates.onUserTap,
                               style: TweetCardElement.name.style(config),
                             ),
                           if (name && handle)
@@ -90,7 +86,7 @@ class TweetCardTopRow extends ConsumerWidget {
                           if (handle)
                             TweetCardHandle(
                               tweet: tweet,
-                              onUserTap: onUserTap,
+                              onUserTap: delegates.onUserTap,
                               style: TweetCardElement.handle.style(config),
                             ),
                         ],
@@ -106,7 +102,7 @@ class TweetCardTopRow extends ConsumerWidget {
         if (actionsButton)
           TweetCardActionsButton(
             tweet: tweet,
-            onViewActions: onViewActions,
+            delegates: delegates,
             padding: EdgeInsets.all(outerPadding),
             style: TweetCardElement.actionsButton.style(config),
           ),
