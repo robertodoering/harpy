@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 class HarpyDialog extends ConsumerWidget {
@@ -48,27 +49,32 @@ class HarpyDialog extends ConsumerWidget {
     return Unfocus(
       child: Dialog(
         clipBehavior: clipBehavior,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (titleWidget != null) titleWidget,
-            if (stickyContent != null) stickyContent!,
-            Flexible(
-              child: Padding(
-                padding: contentPadding ?? display.edgeInsets,
-                child: DefaultTextStyle(
-                  style: theme.textTheme.subtitle2!,
-                  child: SingleChildScrollView(child: content),
+        child: AnimatedSize(
+          duration: kShortAnimationDuration,
+          curve: Curves.easeInOut,
+          alignment: Alignment.topCenter,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (titleWidget != null) titleWidget,
+              if (stickyContent != null) stickyContent!,
+              Flexible(
+                child: Padding(
+                  padding: contentPadding ?? display.edgeInsets,
+                  child: DefaultTextStyle(
+                    style: theme.textTheme.subtitle2!,
+                    child: SingleChildScrollView(child: content),
+                  ),
                 ),
               ),
-            ),
-            if (actions != null)
-              HarpyDialogActionBar(
-                actions: actions!,
-                padding: actionsPadding,
-              ),
-          ],
+              if (actions != null)
+                HarpyDialogActionBar(
+                  actions: actions!,
+                  padding: actionsPadding,
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -107,7 +107,7 @@ class _WillPopCustomTheme extends StatelessWidget {
   Future<bool> _onWillPop(BuildContext context) async {
     FocusScope.of(context).unfocus();
 
-    if (notifier.modifiedTheme) {
+    if (notifier.modified) {
       // ask to discard changes before exiting customization
       final discard = await showDialog<bool>(
         context: context,

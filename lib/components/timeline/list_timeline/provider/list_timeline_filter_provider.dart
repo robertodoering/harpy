@@ -1,0 +1,59 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/components/components.dart';
+
+final listTimelineFilterProvider = StateNotifierProvider.autoDispose.family<
+    ListTimelineFilterNotifier,
+    TimelineFilterSelectionState,
+    TimelineFilterArguments>(
+  (ref, args) => ListTimelineFilterNotifier(
+    read: ref.read,
+    listId: args.listId,
+    listName: args.listName,
+  ),
+  name: 'ListTimelineFilterprovider',
+);
+
+class ListTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
+  ListTimelineFilterNotifier({
+    required Reader read,
+    required String listId,
+    required String listName,
+  })  : _read = read,
+        _listId = listId,
+        _listName = listName,
+        super(read: read);
+
+  final Reader _read;
+  final String _listId;
+  final String _listName;
+
+  @override
+  ActiveTimelineFilter? get activeFilter =>
+      _read(timelineFilterProvider).activeListFilter(_listId);
+
+  @override
+  bool get showUnique => true;
+
+  @override
+  String get uniqueName => _listName;
+
+  @override
+  void selectTimelineFilter(String uuid) {
+    log.fine('selecting list timeline filter');
+
+    _read(timelineFilterProvider.notifier).selectListTimelineFilter(
+      uuid,
+      listId: state.isUnique ? _listId : null,
+      listName: state.isUnique ? _listName : null,
+    );
+  }
+
+  @override
+  void removeTimelineFilterSelection() {
+    log.fine('removing list timeline filter selection');
+
+    _read(timelineFilterProvider.notifier).removeListTimelineFilter(
+      listId: state.isUnique ? _listId : null,
+    );
+  }
+}

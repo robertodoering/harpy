@@ -14,6 +14,7 @@ class HomeTimeline extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
 
     return Timeline(
@@ -26,8 +27,7 @@ class HomeTimeline extends ConsumerWidget {
         HomeTimelineTopActions(),
       ],
       endSlivers: const [HomeBottomSliverPadding()],
-      // TODO: open filter selection
-      // onChangeFilter: () => ,
+      onChangeFilter: () => router.pushNamed(HomeTimelineFilter.name),
     );
   }
 }

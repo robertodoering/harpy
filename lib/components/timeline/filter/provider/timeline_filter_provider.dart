@@ -29,7 +29,9 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
             timelineFilters: BuiltList(),
             activeTimelineFilters: BuiltList(),
           ),
-        );
+        ) {
+    initialize();
+  }
 
   final Preferences _preferences;
 

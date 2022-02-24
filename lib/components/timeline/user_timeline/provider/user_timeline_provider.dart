@@ -3,15 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-final userTimelineFilterProvider =
-    Provider.autoDispose.family<TimelineFilter?, String>(
-  (ref, userId) {
-    final state = ref.watch(timelineFilterProvider);
-    return state.filterByUuid(state.activeUserFilter(userId)?.uuid);
-  },
-  name: 'UserTimelineFilterProvider',
-);
-
 final userTimelineProvider = StateNotifierProvider.autoDispose
     .family<UserTimelineNotifier, TimelineState, String>(
   (ref, userId) => UserTimelineNotifier(ref: ref, userId: userId),
@@ -33,7 +24,8 @@ class UserTimelineNotifier extends TimelineNotifier {
 
   @override
   TimelineFilter? currentFilter() {
-    return _read(userTimelineFilterProvider(_userId));
+    final state = _read(timelineFilterProvider);
+    return state.filterByUuid(state.activeUserFilter(_userId)?.uuid);
   }
 
   @override

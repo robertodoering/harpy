@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -45,13 +46,28 @@ class TweetCard extends ConsumerWidget {
         tweet: tweet,
         read: read,
       ),
-      onFavorite: (_, __) => notifier.favorite(),
-      onUnfavorite: (_, __) => notifier.unfavorite(),
-      onRetweet: (_, __) => notifier.retweet(),
-      onUnretweet: (_, __) => notifier.unretweet(),
-      onTranslate: (context, __) => notifier.translate(
-        languageCode: Localizations.localeOf(context).languageCode,
-      ),
+      onFavorite: (_, __) {
+        HapticFeedback.lightImpact();
+        notifier.favorite();
+      },
+      onUnfavorite: (_, __) {
+        HapticFeedback.lightImpact();
+        notifier.unfavorite();
+      },
+      onRetweet: (_, __) {
+        HapticFeedback.lightImpact();
+        notifier.retweet();
+      },
+      onUnretweet: (_, __) {
+        HapticFeedback.lightImpact();
+        notifier.unretweet();
+      },
+      onTranslate: (context, _) {
+        HapticFeedback.lightImpact();
+        notifier.translate(
+          languageCode: Localizations.localeOf(context).languageCode,
+        );
+      },
       onShowRetweeters: null,
       onComposeQuote: null,
       onComposeReply: null,

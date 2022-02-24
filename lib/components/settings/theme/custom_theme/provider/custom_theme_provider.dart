@@ -35,8 +35,8 @@ class CustomThemeNotifier extends StateNotifier<HarpyThemeData> {
   final HarpyThemeData _baseThemeData;
 
   bool get validName => _nameRegex.hasMatch(state.name);
-  bool get modifiedTheme => isPro && state != _baseThemeData;
-  bool get canSaveTheme => mounted && modifiedTheme && validName;
+  bool get modified => isPro && state != _baseThemeData;
+  bool get canSaveTheme => mounted && modified && validName;
 
   bool get canAddBackgroundColor => state.backgroundColors.length < 5;
   bool get canRemoveBackgroundColor => state.backgroundColors.length > 1;

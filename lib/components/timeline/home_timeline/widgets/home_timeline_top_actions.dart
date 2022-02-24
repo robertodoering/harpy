@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class HomeTimelineTopActions extends ConsumerWidget {
   const HomeTimelineTopActions();
@@ -71,12 +72,22 @@ class _FilterButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final router = ref.watch(routerProvider);
     final state = ref.watch(homeTimelineProvider);
+    final notifier = ref.watch(homeTimelineProvider.notifier);
 
     return HarpyButton.card(
-      icon: const Icon(Icons.filter_alt_outlined),
+      icon: notifier.filter != null
+          ? Icon(
+              Icons.filter_alt,
+              color: state.tweets.isNotEmpty
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.primary.withOpacity(.5),
+            )
+          : const Icon(Icons.filter_alt_outlined),
       onTap: state.tweets.isNotEmpty
-          ? () {} // TODO: navigate to filter page
+          ? () => router.pushNamed(HomeTimelineFilter.name)
           : null,
     );
   }

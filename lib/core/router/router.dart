@@ -51,6 +51,56 @@ final routesProvider = Provider(
       ),
       routes: [
         GoRoute(
+          name: TweetDetailPage.name,
+          path: 'detail',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: TweetDetailPage(
+              tweet: state.extra as TweetData,
+            ),
+          ),
+        ),
+        GoRoute(
+          name: HomeTimelineFilter.name,
+          path: 'filter',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            fullscreenDialog: true,
+            child: const HomeTimelineFilter(),
+          ),
+        ),
+        GoRoute(
+          name: TimelineFilterCreation.name,
+          path: 'filter/create',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            fullscreenDialog: true,
+            child: TimelineFilterCreation(
+              initialTimelineFilter: state.extra as TimelineFilter?,
+            ),
+          ),
+        ),
+        GoRoute(
+          name: FollowingPage.name,
+          path: 'following/:id',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: FollowingPage(
+              userId: state.params['id']!,
+            ),
+          ),
+        ),
+        GoRoute(
+          name: FollowersPage.name,
+          path: 'followers/:id',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: FollowersPage(
+              userId: state.params['id']!,
+            ),
+          ),
+        ),
+        GoRoute(
           name: SettingsPage.name,
           path: 'settings',
           pageBuilder: (_, state) => HarpyPage(
@@ -111,36 +161,6 @@ final routesProvider = Provider(
               ),
             ),
           ],
-        ),
-        GoRoute(
-          name: TweetDetailPage.name,
-          path: 'detail',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            child: TweetDetailPage(
-              tweet: state.extra as TweetData,
-            ),
-          ),
-        ),
-        GoRoute(
-          name: FollowingPage.name,
-          path: 'following/:id',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            child: FollowingPage(
-              userId: state.params['id']!,
-            ),
-          ),
-        ),
-        GoRoute(
-          name: FollowersPage.name,
-          path: 'followers/:id',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            child: FollowersPage(
-              userId: state.params['id']!,
-            ),
-          ),
         ),
         GoRoute(
           name: AboutPage.name,
