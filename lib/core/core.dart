@@ -13,7 +13,6 @@ export 'page_routes/fade_page_route.dart';
 export 'page_routes/harpy_page.dart';
 export 'page_routes/harpy_page_route.dart';
 export 'preferences/preferences_provider.dart';
-export 'preferences/tweet_visibility_preferences.dart';
 export 'regex/common_regex.dart';
 export 'regex/twitter_regex.dart';
 export 'router/router.dart';

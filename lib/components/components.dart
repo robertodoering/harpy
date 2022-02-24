@@ -98,6 +98,7 @@ export 'tweet/detail/widgets/tweet_detail_header.dart';
 export 'tweet/model/tweet_card_config.dart';
 export 'tweet/model/tweet_card_config_element.dart';
 export 'tweet/model/tweet_delegates.dart';
+export 'tweet/preferences/tweet_visibility_preferences.dart';
 export 'tweet/provider/tweet_provider.dart';
 export 'tweet/widgets/button/favorite_button.dart';
 export 'tweet/widgets/button/reply_button.dart';
