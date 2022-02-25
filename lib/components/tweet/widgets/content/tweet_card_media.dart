@@ -22,11 +22,19 @@ class TweetCardMedia extends ConsumerWidget {
         break;
       case MediaType.gif:
         // TODO: add tweet gif
-        child = const SizedBox();
+        child = Container(
+          color: Colors.red,
+          alignment: Alignment.center,
+          child: const Text('gif'),
+        );
         break;
       case MediaType.video:
         // TODO: add tweet video
-        child = const SizedBox();
+        child = Container(
+          color: Colors.red,
+          alignment: Alignment.center,
+          child: const Text('video'),
+        );
         break;
       case null:
         return const SizedBox();
