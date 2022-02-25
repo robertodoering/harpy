@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-final customTrendsLocationProvider = Provider(
+/// Provides the [TrendsLocationData] that is saved in the preferences.
+final userTrendsLocationProvider = Provider(
   (ref) {
-    final trendsLocationsPreferences =
-        ref.watch(trendsLocationPreferencesProvider);
+    final trendsLocationsPreferences = ref.watch(
+      trendsLocationPreferencesProvider,
+    );
 
     final jsonString = trendsLocationsPreferences.trendsLocationData;
 

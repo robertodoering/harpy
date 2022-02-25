@@ -15,7 +15,7 @@ final trendsProvider =
   (ref) => TrendsProviderNotifier(
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
-    trendsLocationData: ref.watch(customTrendsLocationProvider),
+    userLocation: ref.watch(userTrendsLocationProvider),
   ),
   name: 'TrendsProvider',
 );
@@ -25,10 +25,10 @@ class TrendsProviderNotifier extends StateNotifier<AsyncValue<TrendsState>>
   TrendsProviderNotifier({
     required Reader read,
     required TwitterApi twitterApi,
-    required TrendsLocationData trendsLocationData,
+    required TrendsLocationData userLocation,
   })  : _read = read,
         _twitterApi = twitterApi,
-        _trendsLocationData = trendsLocationData,
+        _trendsLocationData = userLocation,
         super(const AsyncValue.loading()) {
     load();
   }

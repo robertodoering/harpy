@@ -36,7 +36,7 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
       borderRadius: borderRadius,
       onTap: () => showDialog<void>(
         context: context,
-        builder: (_) => HarpyDialog(
+        builder: (context) => HarpyDialog(
           title: dialogTitle,
           contentPadding: display.edgeInsetsOnly(top: true),
           clipBehavior: Clip.antiAlias,

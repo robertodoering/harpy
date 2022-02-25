@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
 
 class TranslateLanguagesDialogTile extends ConsumerWidget {
   const TranslateLanguagesDialogTile();
@@ -25,7 +24,7 @@ class TranslateLanguagesDialogTile extends ConsumerWidget {
       borderRadius: harpyTheme.borderRadius,
       onTap: () => showDialog<void>(
         context: context,
-        builder: (_) => const Unfocus(child: _TranslateLanguageDialog()),
+        builder: (_) => const _TranslateLanguageDialog(),
       ),
     );
   }

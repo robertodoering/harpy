@@ -29,8 +29,8 @@ class TrendCard extends ConsumerWidget {
           subtitle: trend.tweetVolume != null
               ? Text('${_numberFormat.format(trend.tweetVolume)} tweets')
               : null,
-          // TODO: go to search with trend as query
-          onTap: () => router.pushNamed(SearchPage.name),
+          // TODO: go to tweet search with trend as query
+          onTap: () {},
         ),
       ),
     );

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-class TrendsSelection extends ConsumerWidget {
-  const TrendsSelection();
+class TrendsSelectionRow extends ConsumerWidget {
+  const TrendsSelectionRow();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -14,7 +14,7 @@ class TrendsSelection extends ConsumerWidget {
 
     final state = ref.watch(trendsProvider);
     final notifier = ref.watch(trendsProvider.notifier);
-    final location = ref.watch(customTrendsLocationProvider);
+    final userLocation = ref.watch(userTrendsLocationProvider);
 
     return SliverPadding(
       padding: display.edgeInsetsSymmetric(horizontal: true),
@@ -28,11 +28,10 @@ class TrendsSelection extends ConsumerWidget {
                   color: theme.colorScheme.primary,
                 ),
                 title: Text(
-                  location.displayName,
+                  userLocation.displayName,
                   style: TextStyle(color: theme.colorScheme.primary),
                 ),
-                // TODO: imeplement trends configuration
-                // onTap: () => _showTrendsConfiguration(context),
+                onTap: () => _showTrendsConfiguration(context, ref.read),
               ),
             ),
             horizontalSpacer,
@@ -51,4 +50,29 @@ class TrendsSelection extends ConsumerWidget {
       ),
     );
   }
+}
+
+void _showTrendsConfiguration(BuildContext context, Reader read) {
+  showHarpyBottomSheet<void>(
+    context,
+    harpyTheme: read(harpyThemeProvider),
+    children: [
+      BottomSheetHeader(
+        child: Text(read(userTrendsLocationProvider).displayName),
+      ),
+      const TrendsSelectionListTile(),
+      HarpyListTile(
+        leading: const Icon(CupertinoIcons.search),
+        title: const Text('find location'),
+        onTap: () {
+          Navigator.of(context).pop();
+          // TODO: implement find location dialog
+          // showDialog<void>(
+          //   context: context,
+          //   builder: (_) => const FindLocationDialog(),
+          // );
+        },
+      ),
+    ],
+  );
 }
