@@ -104,6 +104,14 @@ final routesProvider = Provider(
           ),
         ),
         GoRoute(
+          name: SearchPage.name,
+          path: 'search',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            child: const SearchPage(),
+          ),
+        ),
+        GoRoute(
           name: SettingsPage.name,
           path: 'settings',
           pageBuilder: (_, state) => HarpyPage(

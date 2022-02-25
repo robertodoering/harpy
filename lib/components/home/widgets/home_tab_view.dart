@@ -30,11 +30,10 @@ class HomeTabView extends ConsumerWidget {
             scrollToTopOffset: scrollToTopOffset,
           );
         case 'search':
-          return const SizedBox();
-        // return const SearchScreenContent(
-        //   beginSlivers: [HomeTopSliverPadding()],
-        //   endSlivers: [HomeBottomSliverPadding()],
-        // );
+          return const SearchPageContent(
+            beginSlivers: [HomeTopSliverPadding()],
+            endSlivers: [HomeBottomSliverPadding()],
+          );
         default:
           return const SizedBox();
       }

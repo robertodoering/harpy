@@ -58,7 +58,7 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
           slivers: [
             ...widget.beginSlivers,
             if (mediaEntries.isNotEmpty) ...[
-              _TopRow(
+              _TopActions(
                 onRefresh: () {
                   HapticFeedback.lightImpact();
                   timelineNotifier.load(clearPrevious: true);
@@ -119,8 +119,8 @@ class _MediaList extends ConsumerWidget {
   }
 }
 
-class _TopRow extends ConsumerWidget {
-  const _TopRow({
+class _TopActions extends ConsumerWidget {
+  const _TopActions({
     required this.onRefresh,
   });
 
