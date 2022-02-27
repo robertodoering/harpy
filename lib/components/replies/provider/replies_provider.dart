@@ -44,6 +44,8 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
       _loadAllReplies(_tweet),
     ]);
 
+    if (!mounted) return;
+
     final parent = results[0] as TweetData?;
     final replies = results[1] as BuiltList<TweetData>?;
 
@@ -55,7 +57,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
       } else {
         log.fine('no replies found');
 
-        state = RepliesState.noData(parent: parent);
+        if (mounted) state = RepliesState.noData(parent: parent);
       }
     } else {
       log.fine('error requesting replies');

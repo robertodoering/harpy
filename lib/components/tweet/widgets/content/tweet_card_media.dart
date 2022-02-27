@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/tweet/widgets/media/tweet_video.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
@@ -14,6 +15,8 @@ class TweetCardMedia extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final harpyTheme = ref.watch(harpyThemeProvider);
+
     Widget child;
 
     switch (tweet.mediaType) {
@@ -21,24 +24,24 @@ class TweetCardMedia extends ConsumerWidget {
         child = TweetImages(tweet: tweet);
         break;
       case MediaType.gif:
-        // TODO: add tweet gif
-        child = Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('gif'),
+        child = ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: harpyTheme.borderRadius,
+          child: TweetGif(tweet: tweet),
         );
         break;
       case MediaType.video:
-        // TODO: add tweet video
-        child = Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('video'),
+        child = ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: harpyTheme.borderRadius,
+          child: TweetVideo(tweet: tweet),
         );
         break;
       case null:
         return const SizedBox();
     }
+
+    // TODO: clipr rect arouznd imageds?
 
     return _MediaConstrainedHeight(
       tweet: tweet,
