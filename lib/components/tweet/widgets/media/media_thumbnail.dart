@@ -23,6 +23,7 @@ class MediaThumbnail extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           HarpyImage(
             imageUrl: thumbnail.appropriateUrl(mediaPreferences, connectivity),
@@ -30,7 +31,7 @@ class MediaThumbnail extends ConsumerWidget {
             width: double.infinity,
             height: double.infinity,
           ),
-          Center(child: center),
+          center,
         ],
       ),
     );

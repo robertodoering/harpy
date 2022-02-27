@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/components/tweet/widgets/media/overlays/gif_video_player_overlay.dart';
 import 'package:harpy/core/core.dart';
+import 'package:video_player/video_player.dart';
 
 class TweetGif extends ConsumerWidget {
   const TweetGif({
@@ -31,7 +33,11 @@ class TweetGif extends ConsumerWidget {
     final notifier = ref.watch(harpyVideoPlayerProvider(arguments).notifier);
 
     return state.maybeMap(
-      data: (value) => const SizedBox(),
+      data: (value) => GifVideoPlayerOverlay(
+        notifier: notifier,
+        data: value,
+        child: VideoPlayer(notifier.controller),
+      ),
       loading: (_) => MediaThumbnail(
         thumbnail: videoMediaData.thumbnail,
         center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),

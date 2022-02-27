@@ -134,6 +134,7 @@ export 'tweet/widgets/content/tweet_card_top_row.dart';
 export 'tweet/widgets/content/tweet_card_translation.dart';
 export 'tweet/widgets/content/tweet_name.dart';
 export 'tweet/widgets/media/media_thumbnail.dart';
+export 'tweet/widgets/media/overlays/static_video_player_overlay.dart';
 export 'tweet/widgets/media/tweet_gif.dart';
 export 'tweet/widgets/media/tweet_images.dart';
 export 'tweet/widgets/media/tweet_images_layout.dart';

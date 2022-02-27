@@ -158,9 +158,14 @@ class HarpyVideoPlayerNotifier extends StateNotifier<HarpyVideoPlayerState> {
 
 @freezed
 class HarpyVideoPlayerState with _$HarpyVideoPlayerState {
-  const factory HarpyVideoPlayerState.uninitialized() = _Uninitialized;
-  const factory HarpyVideoPlayerState.loading() = _Loading;
-  const factory HarpyVideoPlayerState.error(String error) = _Error;
+  const factory HarpyVideoPlayerState.uninitialized() =
+      HarpyVideoPlayerStateUninitialized;
+
+  const factory HarpyVideoPlayerState.loading() = HarpyVideoPlayerStateLoading;
+
+  const factory HarpyVideoPlayerState.error(String error) =
+      HarpyVideoPlayerStateError;
+
   const factory HarpyVideoPlayerState.data({
     required String quality,
     required BuiltList<String> qualities,
@@ -169,5 +174,5 @@ class HarpyVideoPlayerState with _$HarpyVideoPlayerState {
     required bool isMuted,
     required Duration position,
     required Duration duration,
-  }) = _Data;
+  }) = HarpyVideoPlayerStateData;
 }
