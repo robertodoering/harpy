@@ -34,7 +34,6 @@ class HarpyVideoPlayerNotifier extends StateNotifier<HarpyVideoPlayerState> {
     required bool autoplay,
     required bool loop,
   })  : _urls = urls,
-        _autoplay = autoplay,
         _loop = loop,
         super(
           autoplay
@@ -52,7 +51,6 @@ class HarpyVideoPlayerNotifier extends StateNotifier<HarpyVideoPlayerState> {
   }
 
   final BuiltMap<String, String> _urls;
-  final bool _autoplay;
   final bool _loop;
 
   late String _quality;
