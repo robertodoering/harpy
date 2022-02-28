@@ -41,8 +41,6 @@ class AboutPage extends ConsumerWidget {
                 verticalSpacer,
                 _ProCard(),
                 verticalSpacer,
-                _RateAppCard(),
-                verticalSpacer,
                 _CreditsCard(),
                 verticalSpacer,
                 _PrivacyPolicyCard(),
@@ -233,44 +231,6 @@ class _ProCard extends ConsumerWidget {
   }
 }
 
-class _RateAppCard extends ConsumerWidget {
-  const _RateAppCard();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
-
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: display.edgeInsets,
-            child: Text(
-              'please rate harpy in the play store!',
-              style: theme.textTheme.subtitle2,
-            ),
-          ),
-          HarpyListTile(
-            leading: const FlareIcon.shiningStar(),
-            title: const Text('rate harpy'),
-            subtitle: const Text('(coming soon)'),
-            borderRadius: BorderRadius.only(
-              bottomLeft: harpyTheme.radius,
-              bottomRight: harpyTheme.radius,
-            ),
-            onTap: () => ref.read(messageServiceProvider).showText(
-                  'coming soon!',
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _CreditsCard extends StatelessWidget {
   const _CreditsCard();
 
@@ -291,12 +251,15 @@ class _CreditsCard extends StatelessWidget {
           children: [
             const TextSpan(text: 'developed by '),
             TextSpan(text: 'roberto doering\n', style: style),
-            TextSpan(text: 'rbydoering@gmail.com', style: style),
+            TextSpan(text: 'support@harpyapp.com', style: style),
           ],
         ),
       ),
       subtitle: const Text('thank you for your feedback and bug reports!'),
-      onTap: () => launchUrl('mailto:rbydoering+harpy@gmail.com?subject=Harpy'),
+      onTap: () => launchUrl(
+        'mailto:support@harpyapp.com?'
+        'subject=${isPro ? "harpy pro" : "harpy"}',
+      ),
     );
   }
 }
