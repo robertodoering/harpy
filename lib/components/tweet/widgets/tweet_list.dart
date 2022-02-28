@@ -41,7 +41,7 @@ class TweetList extends ConsumerWidget {
 
     return CustomScrollView(
       controller: controller,
-      cacheExtent: 100,
+      cacheExtent: 0,
       slivers: [
         ...beginSlivers,
         SliverPadding(
