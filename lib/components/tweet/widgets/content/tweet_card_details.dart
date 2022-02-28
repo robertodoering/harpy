@@ -20,7 +20,6 @@ class TweetCardDetails extends StatelessWidget {
     )!;
 
     final date = l10n.formatFullDate(tweet.createdAt.toLocal());
-
     final time = l10n.formatTimeOfDay(
       TimeOfDay.fromDateTime(tweet.createdAt.toLocal()),
     );

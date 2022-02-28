@@ -22,40 +22,40 @@ class TweetCardHandle extends ConsumerWidget {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
-    return GestureDetector(
-      onTap: () => onUserTap?.call(context, ref.read),
-      child: Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: '@${tweet.user.handle}',
-              style: theme.textTheme.bodyText1!
-                  .copyWith(height: 1)
-                  .apply(fontSizeDelta: style.sizeDelta),
-            ),
-            TextSpan(
-              text: ' \u00b7 ',
-              style: theme.textTheme.bodyText1!
-                  .copyWith(height: 1)
-                  .apply(fontSizeDelta: style.sizeDelta),
-            ),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.baseline,
-              baseline: TextBaseline.alphabetic,
-              child: display.absoluteTweetTime
-                  ? _CreatedAtAbsoluteTime(
-                      localCreatedAt: tweet.createdAt.toLocal(),
-                      sizeDelta: style.sizeDelta,
-                    )
-                  : _CreatedAtRelativeTime(
-                      localCreatedAt: tweet.createdAt.toLocal(),
-                      sizeDelta: style.sizeDelta,
-                    ),
-            ),
-          ],
+    return FittedBox(
+      child: GestureDetector(
+        onTap: () => onUserTap?.call(context, ref.read),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: '@${tweet.user.handle}',
+                style: theme.textTheme.bodyText1!
+                    .copyWith(height: 1)
+                    .apply(fontSizeDelta: style.sizeDelta),
+              ),
+              TextSpan(
+                text: ' \u00b7 ',
+                style: theme.textTheme.bodyText1!
+                    .copyWith(height: 1)
+                    .apply(fontSizeDelta: style.sizeDelta),
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
+                child: display.absoluteTweetTime
+                    ? _CreatedAtAbsoluteTime(
+                        localCreatedAt: tweet.createdAt.toLocal(),
+                        sizeDelta: style.sizeDelta,
+                      )
+                    : _CreatedAtRelativeTime(
+                        localCreatedAt: tweet.createdAt.toLocal(),
+                        sizeDelta: style.sizeDelta,
+                      ),
+              ),
+            ],
+          ),
         ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -131,11 +131,16 @@ class _CreatedAtAbsoluteTime extends StatelessWidget {
       MaterialLocalizations,
     )!;
 
-    return Text(
-      l10n.formatCompactDate(localCreatedAt),
-      style: theme.textTheme.bodyText1!
-          .copyWith(height: 1)
-          .apply(fontSizeDelta: sizeDelta),
+    final date = l10n.formatCompactDate(localCreatedAt);
+    final time = l10n.formatTimeOfDay(TimeOfDay.fromDateTime(localCreatedAt));
+
+    return FittedBox(
+      child: Text(
+        '$time \u00b7 $date',
+        style: theme.textTheme.bodyText1!
+            .copyWith(height: 1)
+            .apply(fontSizeDelta: sizeDelta),
+      ),
     );
   }
 }
