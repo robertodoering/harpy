@@ -105,7 +105,7 @@ class _FindMethodContent extends ConsumerWidget {
       children: [
         HarpyListTile(
           leading: const Icon(CupertinoIcons.location),
-          title: const Text('locations near me'),
+          title: const Text('nearby locations'),
           subtitle: const Text('requires location service'),
           onTap: onNearby,
         ),
