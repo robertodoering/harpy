@@ -25,7 +25,7 @@ class TimelineFilterCard extends ConsumerWidget {
       onTap: sortedFilter.isSelected
           ? () => ref.read(routerProvider).pushNamed(
                 TimelineFilterCreation.name,
-                extra: sortedFilter.timelineFilter,
+                extra: {'initialTimelineFilter': sortedFilter.timelineFilter},
               )
           : () {
               HapticFeedback.lightImpact();
@@ -218,7 +218,7 @@ void _showTimelineFilterCardBottomSheet(
 
           read(routerProvider).pushNamed(
             TimelineFilterCreation.name,
-            extra: filter,
+            extra: {'initialTimelineFilter': filter},
           );
         },
       ),

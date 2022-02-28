@@ -6,12 +6,15 @@ import 'package:harpy/components/components.dart';
 class TimelineFilterCreation extends ConsumerStatefulWidget {
   const TimelineFilterCreation({
     this.initialTimelineFilter,
+    this.onSaved,
   });
 
   /// The existing filter used to update existing filters.
   ///
   /// `null` when a new filter should be created instead.
   final TimelineFilter? initialTimelineFilter;
+
+  final ValueChanged<TimelineFilter>? onSaved;
 
   static const name = 'timeline_filter_creation';
 
@@ -52,9 +55,10 @@ class _TimelineFilterCreationState
               title: 'timeline filter creation',
               actions: [
                 _SaveFilterAction(
-                  filter: filter,
+                  initialTimelineFilter: _initialTimelineFilter,
                   notifier: notifier,
                   isEditing: widget.initialTimelineFilter != null,
+                  onSaved: widget.onSaved,
                 ),
               ],
             ),
@@ -75,14 +79,16 @@ class _TimelineFilterCreationState
 
 class _SaveFilterAction extends ConsumerWidget {
   const _SaveFilterAction({
-    required this.filter,
+    required this.initialTimelineFilter,
     required this.notifier,
     required this.isEditing,
+    required this.onSaved,
   });
 
-  final TimelineFilter filter;
+  final TimelineFilter initialTimelineFilter;
   final TimelineFilterCreationNotifier notifier;
   final bool isEditing;
+  final ValueChanged<TimelineFilter>? onSaved;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -92,11 +98,17 @@ class _SaveFilterAction extends ConsumerWidget {
       icon: const Icon(FeatherIcons.check),
       onTap: notifier.valid
           ? () {
+              final filter = ref.read(
+                timelineFilterCreationProvider(initialTimelineFilter),
+              );
+
               if (isEditing) {
                 timelineFilterNotifier.updateTimelineFilter(filter);
               } else {
                 timelineFilterNotifier.addTimelineFilter(filter);
               }
+
+              onSaved?.call(filter);
 
               Navigator.of(context).pop();
             }

@@ -74,7 +74,9 @@ final routesProvider = Provider(
             key: state.pageKey,
             fullscreenDialog: true,
             child: TimelineFilterCreation(
-              initialTimelineFilter: state.extra as TimelineFilter?,
+              initialTimelineFilter:
+                  (state.extra as Map?)?['initialTimelineFilter'],
+              onSaved: (state.extra as Map?)?['onSaved'],
             ),
           ),
         ),

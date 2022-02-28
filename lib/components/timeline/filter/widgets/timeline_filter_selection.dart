@@ -54,6 +54,17 @@ class _TimelineFilterSelectionState
     super.dispose();
   }
 
+  void _openFilterCreation(TimelineFilterSelectionNotifier notifier) {
+    ref.read(routerProvider).pushNamed(
+      TimelineFilterCreation.name,
+      extra: {
+        // ignore: avoid_types_on_closure_parameters
+        'onSaved': (TimelineFilter filter) =>
+            notifier.selectTimelineFilter(filter.uuid),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
@@ -66,10 +77,8 @@ class _TimelineFilterSelectionState
           sliverVerticalSpacer,
           ...?state.mapOrNull(
             noFilters: (_) => [
-              _AddNewFilterButton(
-                onTap: () => ref
-                    .read(routerProvider)
-                    .pushNamed(TimelineFilterCreation.name),
+              _AddNewFilterFillSliver(
+                onTap: () => _openFilterCreation(notifier),
               ),
             ],
             data: (data) => [
@@ -90,11 +99,7 @@ class _TimelineFilterSelectionState
                 sortedFilters: data.sortedFilters,
               ),
               sliverVerticalSpacer,
-              _AddNewFilterCard(
-                onTap: () => ref
-                    .read(routerProvider)
-                    .pushNamed(TimelineFilterCreation.name),
-              ),
+              _AddNewFilterCard(onTap: () => _openFilterCreation(notifier)),
             ],
           ),
           const SliverBottomPadding(),
@@ -243,8 +248,8 @@ class _AddNewFilterCard extends ConsumerWidget {
   }
 }
 
-class _AddNewFilterButton extends ConsumerWidget {
-  const _AddNewFilterButton({
+class _AddNewFilterFillSliver extends ConsumerWidget {
+  const _AddNewFilterFillSliver({
     required this.onTap,
   });
 
