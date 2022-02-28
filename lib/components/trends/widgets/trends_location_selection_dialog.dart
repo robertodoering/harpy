@@ -1,44 +1,24 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/trends/provider/trends_locations_provider.dart';
 
-class TrendsSelectionListTile extends ConsumerWidget {
-  const TrendsSelectionListTile();
+/// Builds a list of predetermined trends locations that are provided by
+/// Twitter.
+///
+/// Only countries are displayed in the list.
+class TrendsLocationSelectionDialog extends ConsumerStatefulWidget {
+  const TrendsLocationSelectionDialog();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userLocation = ref.watch(userTrendsLocationProvider);
-
-    return HarpyListTile(
-      leading: const Icon(CupertinoIcons.list_bullet),
-      title: const Text('select location'),
-      subtitle: Text(userLocation.name),
-      multilineTitle: true,
-      onTap: () {
-        Navigator.of(context).pop();
-        showDialog<void>(
-          context: context,
-          builder: (_) => const _TrendsLocationSelectionDialog(),
-        );
-      },
-    );
-  }
+  _LocationSelectionDialogState createState() =>
+      _LocationSelectionDialogState();
 }
 
-class _TrendsLocationSelectionDialog extends ConsumerStatefulWidget {
-  const _TrendsLocationSelectionDialog();
-
-  @override
-  _TrendsLocationSelectionDialogState createState() =>
-      _TrendsLocationSelectionDialogState();
-}
-
-class _TrendsLocationSelectionDialogState
-    extends ConsumerState<_TrendsLocationSelectionDialog> {
+class _LocationSelectionDialogState
+    extends ConsumerState<TrendsLocationSelectionDialog> {
   String _filter = '';
 
   Iterable<TrendsLocationData> filteredLocations(

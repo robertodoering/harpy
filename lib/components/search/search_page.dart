@@ -59,7 +59,7 @@ class _SearchPageContentState extends ConsumerState<SearchPageContent>
             ),
           ),
           SliverToBoxAdapter(child: Divider(height: display.paddingValue * 2)),
-          const TrendsSelectionRow(),
+          const TrendsSelectionHeader(),
           sliverVerticalSpacer,
           const TrendsList(),
           ...widget.endSlivers,

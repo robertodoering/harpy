@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-class TrendsSelectionRow extends ConsumerWidget {
-  const TrendsSelectionRow();
+class TrendsSelectionHeader extends ConsumerWidget {
+  const TrendsSelectionHeader();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +31,7 @@ class TrendsSelectionRow extends ConsumerWidget {
                   userLocation.displayName,
                   style: TextStyle(color: theme.colorScheme.primary),
                 ),
-                onTap: () => _showTrendsConfiguration(context, ref.read),
+                onTap: () => _showTrendsSelection(context, ref.read),
               ),
             ),
             horizontalSpacer,
@@ -52,7 +52,7 @@ class TrendsSelectionRow extends ConsumerWidget {
   }
 }
 
-void _showTrendsConfiguration(BuildContext context, Reader read) {
+void _showTrendsSelection(BuildContext context, Reader read) {
   showHarpyBottomSheet<void>(
     context,
     harpyTheme: read(harpyThemeProvider),
@@ -60,17 +60,29 @@ void _showTrendsConfiguration(BuildContext context, Reader read) {
       BottomSheetHeader(
         child: Text(read(userTrendsLocationProvider).displayName),
       ),
-      const TrendsSelectionListTile(),
+      HarpyListTile(
+        leading: const Icon(CupertinoIcons.list_bullet),
+        title: const Text('select location'),
+        subtitle: Text(read(userTrendsLocationProvider).name),
+        onTap: () {
+          Navigator.of(context).pop();
+          HapticFeedback.lightImpact();
+          showDialog<void>(
+            context: context,
+            builder: (_) => const TrendsLocationSelectionDialog(),
+          );
+        },
+      ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('find location'),
         onTap: () {
           Navigator.of(context).pop();
-          // TODO: implement find location dialog
-          // showDialog<void>(
-          //   context: context,
-          //   builder: (_) => const FindLocationDialog(),
-          // );
+          HapticFeedback.lightImpact();
+          showDialog<void>(
+            context: context,
+            builder: (_) => const FindTrendsLocationDialog(),
+          );
         },
       ),
     ],
