@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:harpy/components/components.dart';
+import 'package:video_player/video_player.dart';
+
+class VideoPlayerProgressIndicator extends StatelessWidget {
+  const VideoPlayerProgressIndicator({
+    required this.notifier,
+  });
+
+  final VideoPlayerNotifier notifier;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Transform(
+      alignment: Alignment.bottomCenter,
+      transform: Matrix4.diagonal3Values(1, .66, 1),
+      transformHitTests: false,
+      child: VideoProgressIndicator(
+        notifier.controller,
+        allowScrubbing: true,
+        padding: const EdgeInsets.only(top: 24),
+        colors: VideoProgressColors(
+          playedColor: theme.colorScheme.primary.withOpacity(.7),
+          bufferedColor: theme.colorScheme.primary.withOpacity(.3),
+        ),
+      ),
+    );
+  }
+}

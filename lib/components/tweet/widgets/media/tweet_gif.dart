@@ -21,7 +21,7 @@ class TweetGif extends ConsumerWidget {
 
     final videoMediaData = tweet.media.single as VideoMediaData;
 
-    final arguments = HarpyVideoPlayerArguments(
+    final arguments = VideoPlayerArguments(
       urls: BuiltMap.from(<String, String>{
         'best': tweet.media.single.bestUrl,
       }),
@@ -29,8 +29,8 @@ class TweetGif extends ConsumerWidget {
       loop: true,
     );
 
-    final state = ref.watch(harpyVideoPlayerProvider(arguments));
-    final notifier = ref.watch(harpyVideoPlayerProvider(arguments).notifier);
+    final state = ref.watch(videoPlayerProvider(arguments));
+    final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
     return state.maybeMap(
       data: (value) => GifVideoPlayerOverlay(

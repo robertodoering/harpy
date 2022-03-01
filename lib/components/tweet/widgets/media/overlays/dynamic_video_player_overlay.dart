@@ -9,8 +9,8 @@ class DynamicVideoPlayerOverlay extends StatelessWidget {
   });
 
   final Widget child;
-  final HarpyVideoPlayerNotifier notifier;
-  final HarpyVideoPlayerStateData data;
+  final VideoPlayerNotifier notifier;
+  final VideoPlayerStateData data;
 
   @override
   Widget build(BuildContext context) {
