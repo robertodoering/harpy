@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
@@ -22,18 +23,20 @@ class TweetVideo extends ConsumerWidget {
 
     final videoMediaData = tweet.media.single as VideoMediaData;
 
-    final arguments = HarpyVideoPlayerArguments(
+    final arguments = VideoPlayerArguments(
       urls: BuiltMap.from(<String, String>{
-        for (final variant in videoMediaData.variants)
-          '${variant.bitrate}': variant.url!,
+        for (var i = 0; i < min(3, videoMediaData.variants.length); i++)
+          _qualityNames[i]: videoMediaData.variants[i].url!,
       }),
       autoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
       loop: false,
     );
 
-    final state = ref.watch(harpyVideoPlayerProvider(arguments));
-    final notifier = ref.watch(harpyVideoPlayerProvider(arguments).notifier);
+    final state = ref.watch(videoPlayerProvider(arguments));
+    final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
+    // TODO: wrap static video player overlay with route aware widget to pause
+    //  videos on navigation.
     return state.maybeMap(
       data: (value) => StaticVideoPlayerOverlay(
         notifier: notifier,
@@ -46,14 +49,13 @@ class TweetVideo extends ConsumerWidget {
       ),
       orElse: () => MediaThumbnail(
         thumbnail: videoMediaData.thumbnail,
-        center: MediaThumbnailIcon(
-          icon: Transform.translate(
-            offset: const Offset(3, 0),
-            child: const Icon(CupertinoIcons.play),
-          ),
+        center: const MediaThumbnailIcon(
+          icon: Icon(Icons.play_arrow_rounded),
         ),
         onTap: notifier.initialize,
       ),
     );
   }
 }
+
+final _qualityNames = ['best', 'normal', 'small'];

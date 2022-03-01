@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
 class MediaThumbnail extends ConsumerWidget {
   const MediaThumbnail({
@@ -53,7 +54,7 @@ class MediaThumbnailIcon extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black54,
+        color: Colors.black45,
       ),
       child: Theme(
         data: theme.copyWith(
@@ -69,6 +70,35 @@ class MediaThumbnailIcon extends StatelessWidget {
           width: 42,
           height: 42,
           child: icon,
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedMediaThumbnailIcon extends StatelessWidget {
+  const AnimatedMediaThumbnailIcon({
+    required this.icon,
+    Key? key,
+  }) : super(key: key);
+
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: ImmediateScaleAnimation(
+        duration: kLongAnimationDuration,
+        curve: Curves.easeOutCubic,
+        begin: .8,
+        end: 1.2,
+        child: ImmediateOpacityAnimation(
+          duration: kLongAnimationDuration,
+          begin: 1,
+          end: 0,
+          child: MediaThumbnailIcon(
+            icon: icon,
+          ),
         ),
       ),
     );

@@ -76,8 +76,6 @@ class ImageMediaData with _$ImageMediaData, MediaData {
 @freezed
 class VideoMediaData with _$VideoMediaData, MediaData {
   factory VideoMediaData({
-    /// The aspect ratio of the video.
-    required List<int> aspectRatio,
     required double aspectRatioDouble,
 
     /// The video variants sorted by their quality (best quality first).
@@ -99,6 +97,7 @@ class VideoMediaData with _$VideoMediaData, MediaData {
     // (highest quality first)
     final variants = media.videoInfo?.variants
         ?.where((variant) => variant.bitrate != null)
+        .where((variant) => variant.url != null && variant.url!.isNotEmpty)
         .toList()
       ?..sort((a, b) => b.bitrate!.compareTo(a.bitrate!));
 
@@ -110,7 +109,6 @@ class VideoMediaData with _$VideoMediaData, MediaData {
     assert(media.type == kMediaVideo || media.type == kMediaGif);
 
     return VideoMediaData(
-      aspectRatio: aspectRatio,
       aspectRatioDouble: aspectRatioDouble,
       variants: variants ?? [],
       thumbnail: thumbnail,

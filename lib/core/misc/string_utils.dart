@@ -117,3 +117,11 @@ String prettyPrintDurationDifference(Duration difference) {
     return '$seconds seconds';
   }
 }
+
+String prettyPrintDuration(Duration? duration) {
+  if (duration == null) return '';
+
+  final seconds = (duration.inSeconds % 60).toString();
+
+  return '${duration.inMinutes}:${seconds.padLeft(2, '0')}';
+}

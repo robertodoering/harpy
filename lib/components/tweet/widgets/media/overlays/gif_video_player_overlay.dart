@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
 class GifVideoPlayerOverlay extends StatelessWidget {
   const GifVideoPlayerOverlay({
@@ -9,8 +11,8 @@ class GifVideoPlayerOverlay extends StatelessWidget {
   });
 
   final Widget child;
-  final HarpyVideoPlayerNotifier notifier;
-  final HarpyVideoPlayerStateData data;
+  final VideoPlayerNotifier notifier;
+  final VideoPlayerStateData data;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,10 @@ class GifVideoPlayerOverlay extends StatelessWidget {
         ),
         if (!data.isPlaying)
           const IgnorePointer(
-            child: MediaThumbnailIcon(icon: Icon(Icons.gif)),
+            child: ImmediateOpacityAnimation(
+              duration: kShortAnimationDuration,
+              child: MediaThumbnailIcon(icon: Icon(Icons.gif)),
+            ),
           ),
       ],
     );
