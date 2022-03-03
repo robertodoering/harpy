@@ -50,26 +50,28 @@ class MediaThumbnailIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.black45,
-      ),
-      child: Theme(
-        data: theme.copyWith(
-          progressIndicatorTheme: theme.progressIndicatorTheme.copyWith(
-            color: Colors.white,
-          ),
-          iconTheme: theme.iconTheme.copyWith(
-            size: 42,
-            color: Colors.white,
-          ),
+    return IgnorePointer(
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black45,
         ),
-        child: SizedBox(
-          width: 42,
-          height: 42,
-          child: icon,
+        child: Theme(
+          data: theme.copyWith(
+            progressIndicatorTheme: theme.progressIndicatorTheme.copyWith(
+              color: Colors.white,
+            ),
+            iconTheme: theme.iconTheme.copyWith(
+              size: 42,
+              color: Colors.white,
+            ),
+          ),
+          child: SizedBox(
+            width: 42,
+            height: 42,
+            child: icon,
+          ),
         ),
       ),
     );
@@ -86,19 +88,17 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: ImmediateScaleAnimation(
+    return ImmediateScaleAnimation(
+      duration: kLongAnimationDuration,
+      curve: Curves.easeOutCubic,
+      begin: .8,
+      end: 1.2,
+      child: ImmediateOpacityAnimation(
         duration: kLongAnimationDuration,
-        curve: Curves.easeOutCubic,
-        begin: .8,
-        end: 1.2,
-        child: ImmediateOpacityAnimation(
-          duration: kLongAnimationDuration,
-          begin: 1,
-          end: 0,
-          child: MediaThumbnailIcon(
-            icon: icon,
-          ),
+        begin: 1,
+        end: 0,
+        child: MediaThumbnailIcon(
+          icon: icon,
         ),
       ),
     );

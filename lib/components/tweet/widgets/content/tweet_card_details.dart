@@ -30,6 +30,7 @@ class TweetCardDetails extends StatelessWidget {
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         smallVerticalSpacer,
         Wrap(
@@ -37,12 +38,9 @@ class TweetCardDetails extends StatelessWidget {
             Text(time, style: textStyle),
             Text(' \u00b7 ', style: textStyle),
             Text(date, style: textStyle),
-            if (tweet.hasSource) ...[
-              Text(' \u00b7 ', style: textStyle),
-              Text(tweet.source, style: textStyle),
-            ],
           ],
         ),
+        if (tweet.hasSource) Text(tweet.source, style: textStyle),
       ],
     );
   }

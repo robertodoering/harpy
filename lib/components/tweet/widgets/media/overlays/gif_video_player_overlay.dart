@@ -24,11 +24,9 @@ class GifVideoPlayerOverlay extends StatelessWidget {
           child: child,
         ),
         if (!data.isPlaying)
-          const IgnorePointer(
-            child: ImmediateOpacityAnimation(
-              duration: kShortAnimationDuration,
-              child: MediaThumbnailIcon(icon: Icon(Icons.gif)),
-            ),
+          const ImmediateOpacityAnimation(
+            duration: kShortAnimationDuration,
+            child: MediaThumbnailIcon(icon: Icon(Icons.gif)),
           ),
       ],
     );

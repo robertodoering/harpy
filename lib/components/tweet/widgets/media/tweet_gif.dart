@@ -25,27 +25,37 @@ class TweetGif extends ConsumerWidget {
       urls: BuiltMap.from(<String, String>{
         'best': tweet.media.single.bestUrl,
       }),
-      autoplay: mediaPreferences.shouldAutoplayMedia(connectivity),
       loop: true,
     );
 
     final state = ref.watch(videoPlayerProvider(arguments));
     final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
-    return state.maybeMap(
-      data: (value) => GifVideoPlayerOverlay(
-        notifier: notifier,
-        data: value,
-        child: VideoPlayer(notifier.controller),
-      ),
-      loading: (_) => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
-      ),
-      orElse: () => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: Icon(Icons.gif)),
-        onTap: notifier.initialize,
+    return MediaAutoplay(
+      state: state,
+      notifier: notifier,
+      enableAutoplay: mediaPreferences.shouldAutoplayMedia(connectivity),
+      child: state.maybeMap(
+        data: (value) => GifVideoPlayerOverlay(
+          notifier: notifier,
+          data: value,
+          child: OverflowBox(
+            maxHeight: double.infinity,
+            child: AspectRatio(
+              aspectRatio: videoMediaData.aspectRatioDouble,
+              child: VideoPlayer(notifier.controller),
+            ),
+          ),
+        ),
+        loading: (_) => MediaThumbnail(
+          thumbnail: videoMediaData.thumbnail,
+          center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
+        ),
+        orElse: () => MediaThumbnail(
+          thumbnail: videoMediaData.thumbnail,
+          center: const MediaThumbnailIcon(icon: Icon(Icons.gif)),
+          onTap: () => notifier.initialize(volume: 0),
+        ),
       ),
     );
   }

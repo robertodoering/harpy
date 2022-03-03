@@ -47,8 +47,6 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
                   title: entry.value,
                   value: entry.key,
                   groupValue: groupValue,
-                  leadingPadding: display.edgeInsets / 2,
-                  contentPadding: display.edgeInsets / 2,
                   onChanged: (value) {
                     HapticFeedback.lightImpact();
                     Navigator.of(context).pop();

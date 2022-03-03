@@ -18,47 +18,49 @@ class StaticVideoPlayerOverlay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        GestureDetector(
-          onTap: notifier.togglePlayback,
-          child: child,
-        ),
-        VideoPlayerDoubleTapActions(
-          notifier: notifier,
-          data: data,
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              VideoPlayerProgressIndicator(notifier: notifier),
-              _VideoPlayerActions(notifier: notifier, data: data),
-            ],
+    return GestureDetector(
+      // eat all tap gestures that are not handled otherwise
+      onTap: () {},
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          GestureDetector(
+            onTap: notifier.togglePlayback,
+            child: child,
           ),
-        ),
-        if (data.isFinished)
-          const IgnorePointer(
-            child: ImmediateOpacityAnimation(
+          VideoPlayerDoubleTapActions(
+            notifier: notifier,
+            data: data,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                VideoPlayerProgressIndicator(notifier: notifier),
+                _VideoPlayerActions(notifier: notifier, data: data),
+              ],
+            ),
+          ),
+          if (data.isFinished)
+            const ImmediateOpacityAnimation(
               duration: kLongAnimationDuration,
               child: MediaThumbnailIcon(
                 icon: Icon(Icons.replay),
               ),
+            )
+          else if (data.isPlaying)
+            AnimatedMediaThumbnailIcon(
+              key: ValueKey(data.isPlaying),
+              icon: const Icon(Icons.play_arrow_rounded),
+            )
+          else
+            AnimatedMediaThumbnailIcon(
+              key: ValueKey(data.isPlaying),
+              icon: const Icon(Icons.pause_rounded),
             ),
-          )
-        else if (data.isPlaying)
-          AnimatedMediaThumbnailIcon(
-            key: ValueKey(data.isPlaying),
-            icon: const Icon(Icons.play_arrow_rounded),
-          )
-        else
-          AnimatedMediaThumbnailIcon(
-            key: ValueKey(data.isPlaying),
-            icon: const Icon(Icons.pause_rounded),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -158,7 +160,7 @@ void _showQualityBottomSheet(
     context,
     harpyTheme: read(harpyThemeProvider),
     children: [
-      const BottomSheetHeader(child: Text('quality')),
+      const BottomSheetHeader(child: Text('video quality')),
       for (final quality in data.qualities.entries)
         HarpyRadioTile<String>(
           value: quality.key,

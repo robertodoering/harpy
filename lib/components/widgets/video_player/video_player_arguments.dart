@@ -7,7 +7,6 @@ part 'video_player_arguments.freezed.dart';
 class VideoPlayerArguments with _$VideoPlayerArguments {
   const factory VideoPlayerArguments({
     required BuiltMap<String, String> urls,
-    required bool autoplay,
     required bool loop,
   }) = _VideoPlayerArguments;
 }

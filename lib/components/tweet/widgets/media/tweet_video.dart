@@ -15,7 +15,6 @@ class TweetVideo extends ConsumerWidget {
 
   final TweetData tweet;
 
-  /// TODO: handle autoplay with visibility detector
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
@@ -28,7 +27,6 @@ class TweetVideo extends ConsumerWidget {
         for (var i = 0; i < min(3, videoMediaData.variants.length); i++)
           _qualityNames[i]: videoMediaData.variants[i].url!,
       }),
-      autoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
       loop: false,
     );
 
@@ -37,22 +35,33 @@ class TweetVideo extends ConsumerWidget {
 
     // TODO: wrap static video player overlay with route aware widget to pause
     //  videos on navigation.
-    return state.maybeMap(
-      data: (value) => StaticVideoPlayerOverlay(
-        notifier: notifier,
-        data: value,
-        child: VideoPlayer(notifier.controller),
-      ),
-      loading: (_) => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
-      ),
-      orElse: () => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(
-          icon: Icon(Icons.play_arrow_rounded),
+    return MediaAutoplay(
+      state: state,
+      notifier: notifier,
+      enableAutoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
+      child: state.maybeMap(
+        data: (value) => StaticVideoPlayerOverlay(
+          notifier: notifier,
+          data: value,
+          child: OverflowBox(
+            maxHeight: double.infinity,
+            child: AspectRatio(
+              aspectRatio: videoMediaData.aspectRatioDouble,
+              child: VideoPlayer(notifier.controller),
+            ),
+          ),
         ),
-        onTap: notifier.initialize,
+        loading: (_) => MediaThumbnail(
+          thumbnail: videoMediaData.thumbnail,
+          center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
+        ),
+        orElse: () => MediaThumbnail(
+          thumbnail: videoMediaData.thumbnail,
+          center: const MediaThumbnailIcon(
+            icon: Icon(Icons.play_arrow_rounded),
+          ),
+          onTap: notifier.initialize,
+        ),
       ),
     );
   }

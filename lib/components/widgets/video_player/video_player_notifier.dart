@@ -15,7 +15,6 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
 
     final notifier = VideoPlayerNotifier(
       urls: arguments.urls,
-      autoplay: arguments.autoplay,
       loop: arguments.loop,
     );
 
@@ -31,23 +30,16 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
 class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerNotifier({
     required BuiltMap<String, String> urls,
-    required bool autoplay,
     required bool loop,
   })  : _urls = urls,
         _loop = loop,
-        super(
-          autoplay
-              ? const VideoPlayerState.loading()
-              : const VideoPlayerState.uninitialized(),
-        ) {
+        super(const VideoPlayerState.uninitialized()) {
     _quality = urls.keys.first;
 
     _controller = VideoPlayerController.network(
       urls.values.first,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
-
-    if (autoplay) initialize();
   }
 
   final BuiltMap<String, String> _urls;
@@ -84,13 +76,14 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
     }
   }
 
-  Future<void> initialize() async {
+  Future<void> initialize({double volume = 1}) async {
     state = const VideoPlayerState.loading();
 
     await _controller
         .initialize()
         .then((_) => _controller.addListener(_controllerListener))
-        .then((_) async => _loop ? _controller.setLooping(_loop) : null)
+        .then((_) async => _controller.setVolume(volume))
+        .then((_) async => _controller.setLooping(_loop))
         .then((_) => togglePlayback())
         .handleError(logErrorHandler);
   }
@@ -128,6 +121,8 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   }
 
   Future<void> changeQuality(String quality) async {
+    if (_quality == quality) return;
+
     final url = _urls[quality];
 
     if (url != null) {

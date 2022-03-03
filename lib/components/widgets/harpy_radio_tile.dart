@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-class HarpyRadioTile<T> extends StatelessWidget {
+class HarpyRadioTile<T> extends ConsumerWidget {
   const HarpyRadioTile({
     required this.value,
     required this.groupValue,
@@ -24,7 +25,12 @@ class HarpyRadioTile<T> extends StatelessWidget {
   final EdgeInsets? trailingPadding;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final iconTheme = IconTheme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+
+    final radioPadding = display.paddingValue - (40 - iconTheme.size!) / 2;
+
     return HarpyListTile(
       leading: Radio<T>(
         value: value,
@@ -38,7 +44,8 @@ class HarpyRadioTile<T> extends StatelessWidget {
       onTap: onChanged != null ? () => onChanged?.call(value) : null,
       multilineTitle: true,
       contentPadding: contentPadding,
-      leadingPadding: leadingPadding,
+      leadingPadding: leadingPadding ??
+          EdgeInsets.all(radioPadding.clamp(0, display.paddingValue)),
       trailingPadding: trailingPadding,
     );
   }
