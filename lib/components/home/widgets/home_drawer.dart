@@ -269,7 +269,7 @@ class _Entries extends ConsumerWidget {
       verticalSpacer,
       verticalSpacer,
       HarpyListCard(
-        leading: const Icon(FeatherIcons.settings),
+        leading: const Icon(Icons.settings_rounded),
         title: const Text('settings'),
         onTap: () => router.goNamed(SettingsPage.name),
       ),

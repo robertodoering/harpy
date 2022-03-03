@@ -23,7 +23,7 @@ class TweetDetailPage extends ConsumerWidget {
           child: TweetList(
             repliesState.replies.toList(),
             beginSlivers: [
-              const HarpySliverAppBar(title: 'tweet'),
+              const HarpySliverAppBar(title: Text('tweet')),
               TweetDetailHeader(
                 tweet: tweet,
                 parent: repliesState.parent,

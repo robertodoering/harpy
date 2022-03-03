@@ -16,7 +16,7 @@ class MediaSettingsPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(
-            title: 'media',
+            title: const Text('media'),
             actions: [
               HarpyPopupMenuButton(
                 onSelected: (_) {

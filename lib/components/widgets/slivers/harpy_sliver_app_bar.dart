@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,64 +16,14 @@ class HarpySliverAppBar extends ConsumerWidget {
     this.title,
     this.leading,
     this.actions,
-    this.floating = true,
-  });
+    this.fittedTitle = true,
+    Key? key,
+  }) : super(key: key);
 
-  final String? title;
+  final Widget? title;
   final Widget? leading;
   final List<Widget>? actions;
-  final bool floating;
-
-  Widget? _leading(BuildContext context) {
-    final route = ModalRoute.of(context);
-
-    if (leading != null) {
-      return leading;
-    } else if (Scaffold.of(context).hasDrawer) {
-      return HarpyButton.icon(
-        icon: const RotatedBox(
-          quarterTurns: 1,
-          child: Icon(FeatherIcons.barChart2),
-        ),
-        onTap: Scaffold.of(context).openDrawer,
-      );
-    } else if (route is PageRoute<dynamic> && route.fullscreenDialog) {
-      return HarpyButton.icon(
-        icon: const Icon(CupertinoIcons.xmark),
-        onTap: Navigator.of(context).maybePop,
-      );
-    } else if (Navigator.of(context).canPop()) {
-      return HarpyButton.icon(
-        icon: Transform.translate(
-          offset: const Offset(-1, 0),
-          child: const Icon(CupertinoIcons.left_chevron),
-        ),
-        onTap: Navigator.of(context).maybePop,
-      );
-    } else {
-      return null;
-    }
-  }
-
-  Widget? _trailing(BuildContext context) {
-    if (actions != null) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: actions!,
-      );
-    } else if (Scaffold.of(context).hasEndDrawer) {
-      return HarpyButton.icon(
-        icon: const RotatedBox(
-          quarterTurns: -1,
-          child: Icon(FeatherIcons.barChart2),
-        ),
-        onTap: Scaffold.of(context).openEndDrawer,
-      );
-    } else {
-      return null;
-    }
-  }
+  final bool fittedTitle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,18 +36,14 @@ class HarpySliverAppBar extends ConsumerWidget {
     return SliverPersistentHeader(
       floating: true,
       delegate: _SliverHeaderDelegate(
+        title: title,
+        leading: leading,
+        actions: actions,
         backgroundColors: harpyTheme.colors.backgroundColors,
         topPadding: topPadding,
-        contentPadding: display.paddingValue,
+        paddingValue: display.paddingValue,
         titleStyle: style,
-        child: NavigationToolbar(
-          leading: _leading(context),
-          middle: title != null
-              ? FittedBox(child: Text(title!, style: style))
-              : null,
-          trailing: _trailing(context),
-          middleSpacing: display.paddingValue,
-        ),
+        fittedTitle: fittedTitle,
       ),
     );
   }
@@ -104,33 +51,110 @@ class HarpySliverAppBar extends ConsumerWidget {
 
 class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   const _SliverHeaderDelegate({
+    required this.title,
+    required this.leading,
+    required this.actions,
     required this.backgroundColors,
     required this.topPadding,
-    required this.contentPadding,
+    required this.paddingValue,
     required this.titleStyle,
-    required this.child,
+    required this.fittedTitle,
   });
 
+  final Widget? title;
+  final Widget? leading;
+  final List<Widget>? actions;
   final BuiltList<Color> backgroundColors;
   final double topPadding;
-  final double contentPadding;
+  final double paddingValue;
   final TextStyle titleStyle;
-  final Widget child;
+  final bool fittedTitle;
 
   @override
-  double get minExtent =>
-      topPadding + contentPadding * 2 + titleStyle.fontSize!;
+  double get minExtent => topPadding + paddingValue * 2 + titleStyle.fontSize!;
 
   @override
   double get maxExtent => minExtent;
 
   @override
   bool shouldRebuild(covariant _SliverHeaderDelegate oldDelegate) {
-    return oldDelegate.backgroundColors != backgroundColors ||
+    return oldDelegate.title != title ||
+        oldDelegate.leading != leading ||
+        !listEquals(oldDelegate.actions, actions) ||
+        oldDelegate.backgroundColors != backgroundColors ||
         oldDelegate.topPadding != topPadding ||
-        oldDelegate.contentPadding != contentPadding ||
+        oldDelegate.paddingValue != paddingValue ||
         oldDelegate.titleStyle != titleStyle ||
-        oldDelegate.child != oldDelegate.child;
+        oldDelegate.fittedTitle != oldDelegate.fittedTitle;
+  }
+
+  Widget? _leading(BuildContext context) {
+    final route = ModalRoute.of(context);
+
+    Widget? child;
+
+    if (leading != null) {
+      child = leading;
+    } else if (Scaffold.of(context).hasDrawer) {
+      child = HarpyButton.icon(
+        icon: const RotatedBox(
+          quarterTurns: 1,
+          child: Icon(FeatherIcons.barChart2),
+        ),
+        onTap: Scaffold.of(context).openDrawer,
+      );
+    } else if (route is PageRoute<dynamic> && route.fullscreenDialog) {
+      child = HarpyButton.icon(
+        icon: const Icon(CupertinoIcons.xmark),
+        onTap: Navigator.of(context).maybePop,
+      );
+    } else if (Navigator.of(context).canPop()) {
+      child = HarpyButton.icon(
+        icon: Transform.translate(
+          offset: const Offset(-1, 0),
+          child: const Icon(CupertinoIcons.left_chevron),
+        ),
+        onTap: Navigator.of(context).maybePop,
+      );
+    }
+
+    if (child != null) {
+      return Padding(
+        padding: EdgeInsets.only(left: paddingValue / 2),
+        child: child,
+      );
+    } else {
+      return null;
+    }
+  }
+
+  Widget? _trailing(BuildContext context) {
+    Widget? child;
+
+    if (actions != null) {
+      child = Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: actions!,
+      );
+    } else if (Scaffold.of(context).hasEndDrawer) {
+      child = HarpyButton.icon(
+        icon: const RotatedBox(
+          quarterTurns: -1,
+          child: Icon(FeatherIcons.barChart2),
+        ),
+        onTap: Scaffold.of(context).openEndDrawer,
+      );
+    }
+
+    if (child != null) {
+      return Padding(
+        padding: EdgeInsets.only(right: paddingValue / 2),
+        child: child,
+      );
+    } else {
+      return null;
+    }
   }
 
   Decoration? _decoration(MediaQueryData mediaQuery) {
@@ -177,7 +201,17 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
         type: MaterialType.transparency,
         child: Padding(
           padding: EdgeInsets.only(top: topPadding),
-          child: child,
+          child: NavigationToolbar(
+            leading: _leading(context),
+            middle: title != null
+                ? DefaultTextStyle(
+                    style: titleStyle,
+                    child: fittedTitle ? FittedBox(child: title) : title!,
+                  )
+                : null,
+            trailing: _trailing(context),
+            middleSpacing: paddingValue / 2,
+          ),
         ),
       ),
     );

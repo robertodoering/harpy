@@ -39,7 +39,7 @@ class PaginatedUsersPage extends ConsumerWidget {
             onLoadMore: notifier.loadMore,
             child: UserList(
               state.data?.toList() ?? [],
-              beginSlivers: [HarpySliverAppBar(title: title)],
+              beginSlivers: [HarpySliverAppBar(title: Text(title))],
               endSlivers: [
                 ...?state.mapOrNull(
                   loading: (_) => [const UserListLoadingSliver()],

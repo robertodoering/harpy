@@ -52,7 +52,7 @@ class _TimelineFilterCreationState
         child: CustomScrollView(
           slivers: [
             HarpySliverAppBar(
-              title: 'timeline filter creation',
+              title: const Text('timeline filter creation'),
               actions: [
                 _SaveFilterAction(
                   initialTimelineFilter: _initialTimelineFilter,

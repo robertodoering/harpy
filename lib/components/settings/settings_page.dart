@@ -17,7 +17,7 @@ class SettingsPage extends ConsumerWidget {
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          const HarpySliverAppBar(title: 'settings'),
+          const HarpySliverAppBar(title: Text('settings')),
           SliverPadding(
             padding: padding,
             sliver: const SliverList(

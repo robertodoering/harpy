@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class SearchPage extends ConsumerWidget {
   const SearchPage();
@@ -13,7 +14,7 @@ class SearchPage extends ConsumerWidget {
     return const HarpyScaffold(
       child: ScrollDirectionListener(
         child: SearchPageContent(
-          beginSlivers: [HarpySliverAppBar(title: 'search')],
+          beginSlivers: [HarpySliverAppBar(title: Text('search'))],
         ),
       ),
     );
@@ -74,11 +75,12 @@ class _UserSearchCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
     return HarpyListCard(
       leading: const Icon(CupertinoIcons.search),
       title: const Text('users'),
-      onTap: () {}, // TODO: navigate to user search
-      // onTap: () => app<HarpyNavigator>().pushNamed(UserSearchScreen.route),
+      onTap: () => router.pushNamed(UserSearchPage.name),
     );
   }
 }
@@ -88,11 +90,12 @@ class _TweetSearchCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.read(routerProvider);
+
     return HarpyListCard(
       leading: const Icon(CupertinoIcons.search),
       title: const Text('tweets'),
-      onTap: () {}, // TODO: navigate to tweet search
-      // onTap: () => app<HarpyNavigator>().pushTweetSearchScreen(),
+      onTap: () => router.pushNamed(TweetSearchPage.name),
     );
   }
 }

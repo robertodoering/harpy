@@ -12,7 +12,7 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
   ) {
     log
       ..info(_msg('added', provider))
-      ..info('         $value');
+      ..info('         ${value.runtimeType}');
   }
 
   @override
@@ -24,7 +24,7 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
   ) {
     log
       ..info(_msg('updated', provider))
-      ..info('         $newValue');
+      ..info('         ${newValue.runtimeType}');
 
     if (newValue is AsyncError) {
       log.warning('async error', newValue.error, newValue.stackTrace);

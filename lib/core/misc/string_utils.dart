@@ -99,7 +99,31 @@ String? removePrependedSymbol(String? value, Iterable<String> symbols) {
 
   final symbol = symbols.firstWhereOrNull(value.startsWith);
 
-  return symbol != null ? value.substring(symbol.length) : null;
+  return symbol != null ? value.substring(symbol.length) : value;
+}
+
+/// Prepends the [prependSymbol] to the [value] if the value does not start
+/// with any of the [symbols].
+String? prependIfMissing(
+  String? value,
+  String prependSymbol,
+  Iterable<String> symbols,
+) {
+  if (value == null || value.isEmpty) {
+    return value;
+  } else {
+    for (final symbol in symbols) {
+      if (value.startsWith(symbol)) {
+        if (value.length == symbol.length) {
+          return null;
+        } else {
+          return value;
+        }
+      }
+    }
+
+    return '$prependSymbol$value';
+  }
 }
 
 /// Pretty prints a duration difference as long as the difference is smaller

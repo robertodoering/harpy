@@ -18,7 +18,7 @@ class DisplaySettingsPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(
-            title: 'display',
+            title: const Text('display'),
             actions: [
               HarpyPopupMenuButton(
                 onSelected: (_) => ref

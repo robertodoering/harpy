@@ -20,7 +20,9 @@ class RetweetersPage extends ConsumerWidget {
         child: ScrollToTop(
           child: UserList(
             state.whenOrNull(data: (users) => users.toList()) ?? [],
-            beginSlivers: const [HarpySliverAppBar(title: 'retweeted by')],
+            beginSlivers: const [
+              HarpySliverAppBar(title: Text('retweeted by')),
+            ],
             endSlivers: [
               ...?state.whenOrNull(
                 loading: () => [const UserListLoadingSliver()],

@@ -35,21 +35,22 @@ class _ScrollDirectionListenerState
 
   ScrollDirection _direction = ScrollDirection.idle;
 
+  // Assume scrolling up when a new route gets popped / pushed onto the screen.
+  // This is a workaround for scroll direction sensitive animations to prevent
+  // a repeating animation when the next route gets popped and the animated
+  // widget become visible again.
+  @override
+  void didPopNext() => _set(ScrollDirection.forward);
+
+  @override
+  void didPushNext() => _set(ScrollDirection.forward);
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     _observer ??= ref.read(routeObserver)
       ?..subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void didPushNext() {
-    // Assume scrolling up when a new route gets pushed onto the screen.
-    // This is a workaround for the ListCardAnimation to prevent a
-    // repeating animation when the next route gets popped and the list
-    // cards become visible again.
-    _set(ScrollDirection.forward);
   }
 
   @override

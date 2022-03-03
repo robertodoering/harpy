@@ -15,7 +15,7 @@ class LoginWebview extends StatelessWidget {
       child: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
-          const HarpySliverAppBar(title: 'login'),
+          const HarpySliverAppBar(title: Text('login')),
           SliverFillRemaining(child: webview),
         ],
       ),

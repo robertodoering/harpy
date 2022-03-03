@@ -14,7 +14,7 @@ class LanguageSettingsPage extends ConsumerWidget {
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          const HarpySliverAppBar(title: 'language'),
+          const HarpySliverAppBar(title: Text('language')),
           SliverPadding(
             padding: display.edgeInsets,
             sliver: const _LanguageSettingsList(),

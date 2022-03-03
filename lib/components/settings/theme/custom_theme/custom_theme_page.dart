@@ -42,7 +42,7 @@ class CustomThemePage extends ConsumerWidget {
               child: CustomScrollView(
                 slivers: [
                   HarpySliverAppBar(
-                    title: 'custom theme',
+                    title: const Text('custom theme'),
                     actions: [
                       _SaveThemeAction(themeId: themeId, notifier: notifier),
                     ],

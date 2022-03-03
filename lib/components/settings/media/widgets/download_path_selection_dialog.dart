@@ -1,11 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 
 /// A dialog to select one of a couple predefined external storage media
 /// directories for a type of media.
@@ -99,9 +97,11 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
       mainAxisSize: MainAxisSize.min,
       children: [
         HarpyListTile(
-          title: _SubDirectoryTextField(
-            initialName: _subDirectory,
+          title: ClearableTextField(
+            text: _subDirectory,
+            decoration: const InputDecoration(labelText: 'sub directory'),
             onChanged: (value) => _subDirectory = value,
+            onClear: () => _subDirectory = '',
           ),
         ),
         ...widget.mediaPaths.map(
@@ -139,62 +139,6 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _SubDirectoryTextField extends StatefulWidget {
-  const _SubDirectoryTextField({
-    required this.initialName,
-    required this.onChanged,
-  });
-
-  final String initialName;
-  final ValueChanged<String> onChanged;
-
-  @override
-  _SubDirectoryTextFieldState createState() => _SubDirectoryTextFieldState();
-}
-
-class _SubDirectoryTextFieldState extends State<_SubDirectoryTextField> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = FilenameEditingController(text: widget.initialName)
-      ..addListener(() {
-        // rebuild to update clear button
-        setState(() {});
-      });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        label: const Text('sub directory'),
-        suffixIcon: HarpyButton.icon(
-          icon: const Icon(CupertinoIcons.xmark),
-          onTap: _controller.text.isNotEmpty
-              ? () {
-                  _controller.clear();
-                  widget.onChanged('');
-                  FocusScope.of(context).unfocus();
-                }
-              : null,
-        ),
-      ),
     );
   }
 }

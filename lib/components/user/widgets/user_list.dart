@@ -8,7 +8,7 @@ class UserList extends ConsumerWidget {
   const UserList(
     this.users, {
     this.beginSlivers = const [],
-    this.endSlivers = const [],
+    this.endSlivers = const [SliverBottomPadding()],
   });
 
   final List<UserData> users;

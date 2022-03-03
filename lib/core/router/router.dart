@@ -7,7 +7,7 @@ import 'package:harpy/core/core.dart';
 
 final routeObserver = Provider(
   (ref) => RouteObserver(),
-  name: 'NavigatorObserver',
+  name: 'RouteObserver',
 );
 
 final routerProvider = Provider(
@@ -112,6 +112,38 @@ final routesProvider = Provider(
             key: state.pageKey,
             child: const SearchPage(),
           ),
+          routes: [
+            GoRoute(
+              name: UserSearchPage.name,
+              path: 'users',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const UserSearchPage(),
+              ),
+            ),
+            GoRoute(
+              name: TweetSearchPage.name,
+              path: 'tweets',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: const TweetSearchPage(),
+              ),
+              routes: [
+                GoRoute(
+                  name: TweetSearchFilter.name,
+                  path: 'filter',
+                  pageBuilder: (_, state) => HarpyPage(
+                    key: state.pageKey,
+                    fullscreenDialog: true,
+                    child: TweetSearchFilter(
+                      initialFilter: (state.extra as Map?)?['initialFilter'],
+                      onSaved: (state.extra as Map?)?['onSaved'],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           name: SettingsPage.name,

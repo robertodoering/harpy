@@ -19,7 +19,7 @@ class AboutPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(
-            title: 'about',
+            title: const Text('about'),
             actions: [
               HarpyPopupMenuButton(
                 onSelected: (_) => showLicensePage(context: context),

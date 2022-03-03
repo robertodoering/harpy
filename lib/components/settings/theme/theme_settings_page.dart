@@ -14,7 +14,7 @@ class ThemeSettingsPage extends ConsumerWidget {
     return const HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          HarpySliverAppBar(title: 'theme'),
+          HarpySliverAppBar(title: Text('theme')),
           _PredefinedThemes(),
           if (isPro) _CustomThemes(),
           SliverToBoxAdapter(child: smallVerticalSpacer),

@@ -17,7 +17,7 @@ class GeneralSettingsPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(
-            title: 'general',
+            title: const Text('general'),
             actions: [
               HarpyPopupMenuButton(
                 onSelected: (_) => ref

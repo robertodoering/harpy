@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 ///
 /// Used when an error can just be ignored.
 void logErrorHandler(dynamic error, [StackTrace? stackTrace]) {
-  Logger.detached('error handler').info(
+  Logger('error handler').info(
     'silently ignoring error',
     error,
     stackTrace,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/rby/rby.dart';
 
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({
@@ -14,12 +15,14 @@ class HarpyScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: HarpyBackground(
-        child: SafeArea(
-          top: safeArea,
-          bottom: safeArea,
-          child: SizedBox(
-            width: double.infinity,
-            child: child,
+        child: Unfocus(
+          child: SafeArea(
+            top: safeArea,
+            bottom: safeArea,
+            child: SizedBox(
+              width: double.infinity,
+              child: child,
+            ),
           ),
         ),
       ),

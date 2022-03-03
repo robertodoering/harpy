@@ -73,7 +73,7 @@ class _TimelineFilterSelectionState
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
-          const HarpySliverAppBar(title: 'settings'),
+          const HarpySliverAppBar(title: Text('settings')),
           sliverVerticalSpacer,
           ...?state.mapOrNull(
             noFilters: (_) => [
