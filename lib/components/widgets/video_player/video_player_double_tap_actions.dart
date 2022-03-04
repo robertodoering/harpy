@@ -5,10 +5,12 @@ class VideoPlayerDoubleTapActions extends StatefulWidget {
   const VideoPlayerDoubleTapActions({
     required this.notifier,
     required this.data,
+    this.compact = false,
   });
 
   final VideoPlayerNotifier notifier;
   final VideoPlayerStateData data;
+  final bool compact;
 
   @override
   _VideoPlayerDoubleTapActionsState createState() =>
@@ -36,6 +38,7 @@ class _VideoPlayerDoubleTapActionsState
                     _rewindIcon = AnimatedMediaThumbnailIcon(
                       key: UniqueKey(),
                       icon: const Icon(Icons.fast_rewind_rounded),
+                      compact: widget.compact,
                     );
                   });
                 },
@@ -57,6 +60,7 @@ class _VideoPlayerDoubleTapActionsState
                     _forwardIcon = AnimatedMediaThumbnailIcon(
                       key: UniqueKey(),
                       icon: const Icon(Icons.fast_forward_rounded),
+                      compact: widget.compact,
                     );
                   });
                 },

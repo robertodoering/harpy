@@ -8,5 +8,6 @@ class VideoPlayerArguments with _$VideoPlayerArguments {
   const factory VideoPlayerArguments({
     required BuiltMap<String, String> urls,
     required bool loop,
+    @Default(false) bool isVideo,
   }) = _VideoPlayerArguments;
 }

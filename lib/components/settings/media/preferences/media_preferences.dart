@@ -22,7 +22,7 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
           MediaPreferences(
             bestMediaQuality: preferences.getInt('bestMediaQuality', 2),
             cropImage: preferences.getBool('cropImage', false),
-            autoplayMedia: preferences.getInt('autoplayMedia', 1),
+            autoplayGifs: preferences.getInt('autoplayMedia', 1),
             autoplayVideos: preferences.getInt('autoplayVideos', 2),
             openLinksExternally: preferences.getBool(
               'openLinksExternally',
@@ -38,7 +38,7 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
   void defaultSettings() {
     setBestMediaQuality(2);
     setCropImage(false);
-    setAutoplayMedia(1);
+    setAutoplayGifs(1);
     setAutoplayVideos(2);
     setOpenLinksExternally(false);
     setShowDownloadDialog(true);
@@ -55,8 +55,9 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
     _preferences.setBool('cropImage', value);
   }
 
-  void setAutoplayMedia(int value) {
-    state = state.copyWith(autoplayMedia: value);
+  void setAutoplayGifs(int value) {
+    state = state.copyWith(autoplayGifs: value);
+    // NOTE: `autoplayMedia` is used for gifs
     _preferences.setInt('autoplayMedia', value);
   }
 
@@ -103,7 +104,7 @@ class MediaPreferences with _$MediaPreferences {
     /// 0: always autoplay
     /// 1: only autoplay when using wifi
     /// 2: never autoplay
-    required int autoplayMedia,
+    required int autoplayGifs,
 
     /// Whether videos should play automatically.
     ///
@@ -128,9 +129,9 @@ class MediaPreferences with _$MediaPreferences {
 
   /// Whether gifs should play automatically, taking the connectivity into
   /// account.
-  bool shouldAutoplayMedia(ConnectivityResult connectivity) =>
-      autoplayMedia == 0 ||
-      autoplayMedia == 1 && connectivity == ConnectivityResult.wifi;
+  bool shouldAutoplayGifs(ConnectivityResult connectivity) =>
+      autoplayGifs == 0 ||
+      autoplayGifs == 1 && connectivity == ConnectivityResult.wifi;
 
   /// Whether videos should play automatically, taking the connectivity into
   /// account.

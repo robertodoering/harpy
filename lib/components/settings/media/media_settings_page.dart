@@ -118,8 +118,8 @@ class _MediaSettingsList extends ConsumerWidget {
                 1: Text('only on wifi'),
                 2: Text('never autoplay'),
               },
-              groupValue: media.autoplayMedia,
-              onChanged: mediaNotifier.setAutoplayMedia,
+              groupValue: media.autoplayGifs,
+              onChanged: mediaNotifier.setAutoplayGifs,
             ),
             HarpyRadioDialogTile(
               leading: const Icon(CupertinoIcons.play_circle),

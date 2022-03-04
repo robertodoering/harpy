@@ -40,7 +40,7 @@ class TweetCardDetails extends StatelessWidget {
             Text(date, style: textStyle),
           ],
         ),
-        if (tweet.hasSource) Text(tweet.source, style: textStyle),
+        if (tweet.source.isNotEmpty) Text(tweet.source, style: textStyle),
       ],
     );
   }

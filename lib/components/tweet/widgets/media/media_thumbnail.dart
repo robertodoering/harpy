@@ -22,7 +22,9 @@ class MediaThumbnail extends ConsumerWidget {
     final connectivity = ref.watch(connectivityProvider);
 
     return GestureDetector(
-      onTap: onTap,
+      // if no tap handler is given we set an empty one to prevent gestures to
+      // propagate
+      onTap: onTap ?? () {},
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -42,9 +44,11 @@ class MediaThumbnail extends ConsumerWidget {
 class MediaThumbnailIcon extends StatelessWidget {
   const MediaThumbnailIcon({
     required this.icon,
+    this.compact = false,
   });
 
   final Widget icon;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,7 @@ class MediaThumbnailIcon extends StatelessWidget {
 
     return IgnorePointer(
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: compact ? const EdgeInsets.all(8) : const EdgeInsets.all(12),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black45,
@@ -63,13 +67,13 @@ class MediaThumbnailIcon extends StatelessWidget {
               color: Colors.white,
             ),
             iconTheme: theme.iconTheme.copyWith(
-              size: 42,
+              size: compact ? 32 : 42,
               color: Colors.white,
             ),
           ),
           child: SizedBox(
-            width: 42,
-            height: 42,
+            width: compact ? 32 : 42,
+            height: compact ? 32 : 42,
             child: icon,
           ),
         ),
@@ -81,10 +85,12 @@ class MediaThumbnailIcon extends StatelessWidget {
 class AnimatedMediaThumbnailIcon extends StatelessWidget {
   const AnimatedMediaThumbnailIcon({
     required this.icon,
+    this.compact = false,
     Key? key,
   }) : super(key: key);
 
   final Widget icon;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +105,7 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
         end: 0,
         child: MediaThumbnailIcon(
           icon: icon,
+          compact: compact,
         ),
       ),
     );

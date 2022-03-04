@@ -7,6 +7,7 @@ final videoPlayerHandlerProvider = Provider.autoDispose(
   name: 'VideoPlayerHandlerProvider',
 );
 
+/// Stores and handles references of active [VideoPlayerNotifier]s.
 class VideoPlayerHandler {
   final List<VideoPlayerNotifier> _notifiers = [];
 

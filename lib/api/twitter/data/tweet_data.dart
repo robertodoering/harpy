@@ -130,7 +130,6 @@ class TweetData with _$TweetData {
   late final hasGif = media.isNotEmpty && media[0].type == MediaType.gif;
   late final hasText = visibleText.isNotEmpty;
   late final hasParent = parentTweetId != null && parentTweetId!.isNotEmpty;
-  late final hasSource = source.isNotEmpty;
   late final tweetUrl = 'https://twitter.com/${user.handle}/status/$id';
 
   /// A concatenated string of the user names from the [replies].
@@ -164,17 +163,15 @@ class TweetData with _$TweetData {
 String _visibleText(String text, String? quoteUrl, Entities? entities) {
   var visibleText = text;
 
-  // remove url of quote if it exists
-  if (quoteUrl != null) {
-    visibleText = visibleText.replaceAll(quoteUrl, '');
-  }
+  // remove the quote url if it exists
+  if (quoteUrl != null) visibleText = visibleText.replaceAll(quoteUrl, '');
 
-  // remove url of media if it exists
+  // remove the media url if it exists
   entities?.media?.forEach((media) {
     visibleText = visibleText.replaceAll(media.url ?? '', '');
   });
 
-  // replace the shortened urls to the display urls
+  // replace the shortened urls with the display urls
   entities?.urls?.forEach((url) {
     visibleText = visibleText.replaceAll(url.url ?? '', url.displayUrl ?? '');
   });

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/tweet/widgets/media/tweet_video.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
@@ -34,14 +33,19 @@ class TweetCardMedia extends ConsumerWidget {
         child = ClipRRect(
           clipBehavior: Clip.hardEdge,
           borderRadius: harpyTheme.borderRadius,
-          child: TweetVideo(tweet: tweet),
+          child: TweetVideo(
+            tweet: tweet,
+            overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
+              data: data,
+              notifier: notifier,
+              child: child,
+            ),
+          ),
         );
         break;
       case null:
         return const SizedBox();
     }
-
-    // TODO: clipr rect arouznd imageds?
 
     return _MediaConstrainedHeight(
       tweet: tweet,

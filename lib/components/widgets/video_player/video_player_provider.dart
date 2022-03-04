@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/components/components.dart';
@@ -6,7 +7,7 @@ import 'package:harpy/rby/rby.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
-part 'video_player_notifier.freezed.dart';
+part 'video_player_provider.freezed.dart';
 
 final videoPlayerProvider = StateNotifierProvider.autoDispose
     .family<VideoPlayerNotifier, VideoPlayerState, VideoPlayerArguments>(
@@ -16,11 +17,15 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
     final notifier = VideoPlayerNotifier(
       urls: arguments.urls,
       loop: arguments.loop,
+      onInitialized: arguments.isVideo
+          ? () => handler.act((notifier) => notifier.pause())
+          : null,
     );
 
-    handler.add(notifier);
-
-    ref.onDispose(() => handler.remove(notifier));
+    if (arguments.isVideo) {
+      handler.add(notifier);
+      ref.onDispose(() => handler.remove(notifier));
+    }
 
     return notifier;
   },
@@ -31,19 +36,23 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerNotifier({
     required BuiltMap<String, String> urls,
     required bool loop,
-  })  : _urls = urls,
+    VoidCallback? onInitialized,
+  })  : assert(urls.isNotEmpty),
+        _onInitialized = onInitialized,
+        _urls = urls,
         _loop = loop,
         super(const VideoPlayerState.uninitialized()) {
     _quality = urls.keys.first;
 
     _controller = VideoPlayerController.network(
-      urls.values.first,
+      urls[_quality]!,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
   }
 
   final BuiltMap<String, String> _urls;
   final bool _loop;
+  final VoidCallback? _onInitialized;
 
   late String _quality;
 
@@ -51,11 +60,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerController get controller => _controller;
 
   void _controllerListener() {
-    if (_controller.value.isPlaying) {
-      Wakelock.enable();
-    } else {
-      Wakelock.disable();
-    }
+    Wakelock.toggle(enable: _controller.value.isPlaying);
 
     if (!_controller.value.isInitialized) {
       state = const VideoPlayerState.uninitialized();
@@ -68,22 +73,25 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
         isBuffering: _controller.value.isBuffering,
         isPlaying: _controller.value.isPlaying,
         isMuted: _controller.value.volume == 0,
-        isFinished: _controller.value.position >=
-            _controller.value.duration - const Duration(milliseconds: 400),
+        isFinished: _controller.value.duration != Duration.zero &&
+            _controller.value.position >=
+                _controller.value.duration - const Duration(milliseconds: 400),
         position: _controller.value.position,
         duration: _controller.value.duration,
       );
     }
   }
 
+  /// Starts loading the video and then plays it.
   Future<void> initialize({double volume = 1}) async {
     state = const VideoPlayerState.loading();
 
     await _controller
         .initialize()
         .then((_) => _controller.addListener(_controllerListener))
-        .then((_) async => _controller.setVolume(volume))
-        .then((_) async => _controller.setLooping(_loop))
+        .then((_) => _controller.setVolume(volume))
+        .then((_) => _controller.setLooping(_loop))
+        .then((_) => _onInitialized?.call())
         .then((_) => togglePlayback())
         .handleError(logErrorHandler);
   }
@@ -129,31 +137,27 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
       final position = await _controller.position;
       final volume = _controller.value.volume;
       final isPlaying = _controller.value.isPlaying;
+      final isLooping = _controller.value.isLooping;
 
       final oldController = _controller;
 
-      final newController = VideoPlayerController.network(
+      final controller = VideoPlayerController.network(
         url,
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
       );
 
       _quality = quality;
 
-      await newController
+      await controller
           .initialize()
-          .then(
-            (_) async =>
-                position != null ? newController.seekTo(position) : null,
-          )
-          .then((_) async => newController.setVolume(volume))
-          .then(
-            (_) async =>
-                isPlaying ? newController.play() : newController.pause(),
-          )
-          .then((_) => newController.addListener(_controllerListener))
+          .then((_) async => controller.seekTo(position ?? Duration.zero))
+          .then((_) async => controller.setVolume(volume))
+          .then((_) async => isPlaying ? controller.play() : controller.pause())
+          .then((_) async => controller.setLooping(isLooping))
+          .then((_) => controller.addListener(_controllerListener))
           .handleError(logErrorHandler);
 
-      _controller = newController;
+      _controller = controller;
 
       await oldController.dispose().handleError(logErrorHandler);
     }
@@ -161,6 +165,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
 
   @override
   void dispose() {
+    Wakelock.disable();
     _controller.dispose();
     super.dispose();
   }

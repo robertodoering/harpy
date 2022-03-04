@@ -8,11 +8,13 @@ class GifVideoPlayerOverlay extends StatelessWidget {
     required this.child,
     required this.notifier,
     required this.data,
+    this.compact = false,
   });
 
   final Widget child;
   final VideoPlayerNotifier notifier;
   final VideoPlayerStateData data;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,12 @@ class GifVideoPlayerOverlay extends StatelessWidget {
           child: child,
         ),
         if (!data.isPlaying)
-          const ImmediateOpacityAnimation(
+          ImmediateOpacityAnimation(
             duration: kShortAnimationDuration,
-            child: MediaThumbnailIcon(icon: Icon(Icons.gif)),
+            child: MediaThumbnailIcon(
+              icon: const Icon(Icons.gif),
+              compact: compact,
+            ),
           ),
       ],
     );

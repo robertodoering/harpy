@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
 class MediaTimelineMedia extends ConsumerWidget {
   const MediaTimelineMedia({
@@ -17,8 +18,6 @@ class MediaTimelineMedia extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    // TODO: media widget for gifs & videos
-
     Widget child;
 
     switch (entry.media.type) {
@@ -31,17 +30,26 @@ class MediaTimelineMedia extends ConsumerWidget {
         );
         break;
       case MediaType.gif:
-        child = Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('gif'),
+        child = VisibilityChangeListener(
+          detectorKey: ObjectKey(entry),
+          child: TweetGif(
+            tweet: entry.tweet,
+            compact: true,
+          ),
         );
         break;
       case MediaType.video:
-        child = Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('video'),
+        child = VisibilityChangeListener(
+          detectorKey: ObjectKey(entry),
+          child: TweetVideo(
+            tweet: entry.tweet,
+            compact: true,
+            overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
+              data: data,
+              notifier: notifier,
+              child: child,
+            ),
+          ),
         );
         break;
     }
