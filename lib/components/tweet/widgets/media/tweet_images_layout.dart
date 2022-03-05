@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
 
 typedef IndexedVoidCallback = void Function(int index);
 
@@ -60,40 +59,20 @@ class _ImageWrapper extends ConsumerWidget {
     required this.onImageTap,
     required this.onImageLongPress,
     required this.child,
-    this.topLeft = false,
-    this.bottomLeft = false,
-    this.topRight = false,
-    this.bottomRight = false,
   });
 
   final int index;
   final IndexedVoidCallback? onImageTap;
   final IndexedVoidCallback? onImageLongPress;
   final Widget child;
-  final bool topLeft;
-  final bool bottomLeft;
-  final bool topRight;
-  final bool bottomRight;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
-
-    return ClipRRect(
-      clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.only(
-        topLeft: topLeft ? harpyTheme.radius : Radius.zero,
-        bottomLeft: bottomLeft ? harpyTheme.radius : Radius.zero,
-        topRight: topRight ? harpyTheme.radius : Radius.zero,
-        bottomRight: bottomRight ? harpyTheme.radius : Radius.zero,
-      ),
-      child: GestureDetector(
-        onTap: onImageTap != null ? () => onImageTap?.call(index) : null,
-        onLongPress: onImageLongPress != null
-            ? () => onImageLongPress?.call(index)
-            : null,
-        child: child,
-      ),
+    return GestureDetector(
+      onTap: onImageTap != null ? () => onImageTap?.call(index) : null,
+      onLongPress:
+          onImageLongPress != null ? () => onImageLongPress?.call(index) : null,
+      child: child,
     );
   }
 }
@@ -113,10 +92,6 @@ class _SingleImageLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return _ImageWrapper(
       index: 0,
-      topLeft: true,
-      topRight: true,
-      bottomLeft: true,
-      bottomRight: true,
       onImageTap: onImageTap,
       onImageLongPress: onImageLongPress,
       child: child,
@@ -144,8 +119,6 @@ class _TwoImagesLayout extends StatelessWidget {
         Expanded(
           child: _ImageWrapper(
             index: 0,
-            topLeft: true,
-            bottomLeft: true,
             onImageTap: onImageTap,
             onImageLongPress: onImageLongPress,
             child: children[0],
@@ -155,8 +128,6 @@ class _TwoImagesLayout extends StatelessWidget {
         Expanded(
           child: _ImageWrapper(
             index: 1,
-            topRight: true,
-            bottomRight: true,
             onImageTap: onImageTap,
             onImageLongPress: onImageLongPress,
             child: children[1],
@@ -187,8 +158,6 @@ class _ThreeImagesLayout extends StatelessWidget {
         Expanded(
           child: _ImageWrapper(
             index: 0,
-            topLeft: true,
-            bottomLeft: true,
             onImageTap: onImageTap,
             onImageLongPress: onImageLongPress,
             child: children[0],
@@ -201,7 +170,6 @@ class _ThreeImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 1,
-                  topRight: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[1],
@@ -211,7 +179,6 @@ class _ThreeImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 2,
-                  bottomRight: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[2],
@@ -248,7 +215,6 @@ class _FourImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 0,
-                  topLeft: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[0],
@@ -258,7 +224,6 @@ class _FourImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 2,
-                  bottomLeft: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[2],
@@ -274,7 +239,6 @@ class _FourImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 1,
-                  topRight: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[1],
@@ -284,7 +248,6 @@ class _FourImagesLayout extends StatelessWidget {
               Expanded(
                 child: _ImageWrapper(
                   index: 3,
-                  bottomRight: true,
                   onImageTap: onImageTap,
                   onImageLongPress: onImageLongPress,
                   child: children[3],

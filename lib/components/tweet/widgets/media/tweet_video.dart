@@ -45,9 +45,8 @@ class TweetVideo extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    final videoMediaData = tweet.media.single as VideoMediaData;
-
-    final arguments = _videoArguments(videoMediaData);
+    final mediaData = tweet.media.single as VideoMediaData;
+    final arguments = _videoArguments(mediaData);
 
     final provider = videoPlayerProvider(arguments);
     final state = ref.watch(provider);
@@ -67,7 +66,7 @@ class TweetVideo extends ConsumerWidget {
               OverflowBox(
                 maxHeight: double.infinity,
                 child: AspectRatio(
-                  aspectRatio: videoMediaData.aspectRatioDouble,
+                  aspectRatio: mediaData.aspectRatioDouble,
                   child: VideoPlayer(notifier.controller),
                 ),
               ),
@@ -75,14 +74,14 @@ class TweetVideo extends ConsumerWidget {
           ),
         ),
         loading: (_) => MediaThumbnail(
-          thumbnail: videoMediaData.thumbnail,
+          thumbnail: mediaData.thumbnail,
           center: MediaThumbnailIcon(
             icon: const CircularProgressIndicator(),
             compact: compact,
           ),
         ),
         orElse: () => MediaThumbnail(
-          thumbnail: videoMediaData.thumbnail,
+          thumbnail: mediaData.thumbnail,
           center: MediaThumbnailIcon(
             icon: const Icon(Icons.play_arrow_rounded),
             compact: compact,
@@ -95,7 +94,10 @@ class TweetVideo extends ConsumerWidget {
 }
 
 class TweetGalleryVideo extends ConsumerWidget {
-  const TweetGalleryVideo({required this.tweet, required this.heroTag});
+  const TweetGalleryVideo({
+    required this.tweet,
+    required this.heroTag,
+  });
 
   final TweetData tweet;
   final Object heroTag;
@@ -103,75 +105,43 @@ class TweetGalleryVideo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
-    final videoMediaData = tweet.media.single as VideoMediaData;
 
-    final arguments = _videoArguments(videoMediaData);
+    final mediaData = tweet.media.single as VideoMediaData;
+    final arguments = _videoArguments(mediaData);
 
     final state = ref.watch(videoPlayerProvider(arguments));
     final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
     return state.maybeMap(
-      data: (data) => VideoAutopause(
-        child: Hero(
-          tag: heroTag,
-          flightShuttleBuilder:
-              (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
-                  _flightShuttleBuilder(
-            harpyTheme.borderRadius,
-            animation,
-            flightDirection,
-            fromHeroContext,
-            toHeroContext,
-          ),
-          child: AspectRatio(
-            aspectRatio: videoMediaData.aspectRatioDouble,
-            child: StaticVideoPlayerOverlay(
-              data: data,
-              notifier: notifier,
-              child: VideoPlayer(notifier.controller),
-            ),
+      data: (data) => Hero(
+        tag: heroTag,
+        flightShuttleBuilder:
+            (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
+                borderRadiusFlightShuttleBuilder(
+          harpyTheme.borderRadius,
+          animation,
+          flightDirection,
+          fromHeroContext,
+          toHeroContext,
+        ),
+        child: AspectRatio(
+          aspectRatio: mediaData.aspectRatioDouble,
+          child: StaticVideoPlayerOverlay(
+            data: data,
+            notifier: notifier,
+            child: VideoPlayer(notifier.controller),
           ),
         ),
       ),
       loading: (_) => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(
-          icon: CircularProgressIndicator(),
-        ),
+        thumbnail: mediaData.thumbnail,
+        center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
       ),
       orElse: () => MediaThumbnail(
-        thumbnail: videoMediaData.thumbnail,
-        center: const MediaThumbnailIcon(
-          icon: Icon(Icons.play_arrow_rounded),
-        ),
+        thumbnail: mediaData.thumbnail,
+        center: const MediaThumbnailIcon(icon: Icon(Icons.play_arrow_rounded)),
         onTap: notifier.initialize,
       ),
     );
   }
-}
-
-Widget _flightShuttleBuilder(
-  BorderRadius beginRadius,
-  Animation<double> animation,
-  HeroFlightDirection flightDirection,
-  BuildContext fromHeroContext,
-  BuildContext toHeroContext,
-) {
-  final hero = flightDirection == HeroFlightDirection.push
-      ? fromHeroContext.widget as Hero
-      : toHeroContext.widget as Hero;
-
-  final tween = BorderRadiusTween(
-    begin: beginRadius,
-    end: BorderRadius.zero,
-  );
-
-  return AnimatedBuilder(
-    animation: animation,
-    builder: (_, __) => ClipRRect(
-      clipBehavior: Clip.hardEdge,
-      borderRadius: tween.evaluate(animation),
-      child: hero.child,
-    ),
-  );
 }

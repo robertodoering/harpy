@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/services/connectivity_service.dart';
+import 'package:harpy/core/core.dart';
 
 class TweetImages extends ConsumerWidget {
   const TweetImages({
@@ -13,21 +13,124 @@ class TweetImages extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final harpyTheme = ref.watch(harpyThemeProvider);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
     return TweetImagesLayout(
-      onImageTap: (index) {}, // TODO: implement overlay
+      onImageTap: (index) => Navigator.of(context).push<void>(
+        HeroDialogRoute(
+          builder: (_) => MediaGalleryOverlay(
+            child: MediaGallery(
+              initialIndex: index,
+              itemCount: tweet.media.length,
+              builder: (_, index) => AspectRatio(
+                aspectRatio: tweet.media[index].aspectRatioDouble,
+                child: Hero(
+                  tag: 'tweet${tweet.media[index].hashCode}',
+                  flightShuttleBuilder: (
+                    _,
+                    animation,
+                    flightDirection,
+                    fromHeroContext,
+                    toHeroContext,
+                  ) =>
+                      _flightShuttleBuilder(
+                    _borderRadiusForImage(
+                      harpyTheme.radius,
+                      index,
+                      tweet.media.length,
+                    ),
+                    animation,
+                    flightDirection,
+                    fromHeroContext,
+                    toHeroContext,
+                  ),
+                  child: HarpyImage(
+                    imageUrl: tweet.media[index].appropriateUrl(
+                      mediaPreferences,
+                      connectivity,
+                    ),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       onImageLongPress: (index) {}, // TODO: implement media bottom sheet
       children: [
         for (final image in tweet.media)
-          HarpyImage(
-            imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+          Hero(
+            tag: 'tweet${image.hashCode}',
+            placeholderBuilder: (_, __, child) => child,
+            child: HarpyImage(
+              imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
       ],
     );
+  }
+}
+
+Widget _flightShuttleBuilder(
+  BorderRadius beginRadius,
+  Animation<double> animation,
+  HeroFlightDirection flightDirection,
+  BuildContext fromHeroContext,
+  BuildContext toHeroContext,
+) {
+  final hero = flightDirection == HeroFlightDirection.push
+      ? fromHeroContext.widget as Hero
+      : toHeroContext.widget as Hero;
+
+  final tween = BorderRadiusTween(
+    begin: beginRadius,
+    end: BorderRadius.zero,
+  );
+
+  return AnimatedBuilder(
+    animation: animation,
+    builder: (_, __) => ClipRRect(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: tween.evaluate(animation),
+      child: hero.child,
+    ),
+  );
+}
+
+BorderRadius _borderRadiusForImage(Radius radius, int index, int count) {
+  switch (count) {
+    case 1:
+      return BorderRadius.all(radius);
+    case 2:
+      return BorderRadius.only(
+        topLeft: index == 0 ? radius : Radius.zero,
+        bottomLeft: index == 0 ? radius : Radius.zero,
+        topRight: index == 1 ? radius : Radius.zero,
+        bottomRight: index == 1 ? radius : Radius.zero,
+      );
+    case 3:
+      return BorderRadius.only(
+        topLeft: index == 0 ? radius : Radius.zero,
+        bottomLeft: index == 0 ? radius : Radius.zero,
+        topRight: index == 1 ? radius : Radius.zero,
+        bottomRight: index == 2 ? radius : Radius.zero,
+      );
+    case 4:
+      return BorderRadius.only(
+        topLeft: index == 0 ? radius : Radius.zero,
+        bottomLeft: index == 2 ? radius : Radius.zero,
+        topRight: index == 1 ? radius : Radius.zero,
+        bottomRight: index == 3 ? radius : Radius.zero,
+      );
+    default:
+      return BorderRadius.zero;
   }
 }

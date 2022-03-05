@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -9,12 +10,14 @@ class GifVideoPlayerOverlay extends StatelessWidget {
     required this.notifier,
     required this.data,
     this.compact = false,
+    this.onGifTap,
   });
 
   final Widget child;
   final VideoPlayerNotifier notifier;
   final VideoPlayerStateData data;
   final bool compact;
+  final VoidCallback? onGifTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,11 @@ class GifVideoPlayerOverlay extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         GestureDetector(
-          onTap: notifier.togglePlayback,
+          onTap: onGifTap ??
+              () {
+                HapticFeedback.lightImpact();
+                notifier.togglePlayback();
+              },
           child: child,
         ),
         if (!data.isPlaying)

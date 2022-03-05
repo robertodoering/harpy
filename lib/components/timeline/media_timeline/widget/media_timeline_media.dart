@@ -20,6 +20,8 @@ class MediaTimelineMedia extends ConsumerWidget {
 
     Widget child;
 
+    // TODO: on media tap: show gallery
+
     switch (entry.media.type) {
       case MediaType.image:
         child = HarpyImage(
@@ -34,7 +36,18 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetGif(
             tweet: entry.tweet,
+            heroTag: 'media${entry.media.hashCode}',
             compact: true,
+            onGifTap: () => Navigator.of(context).push<void>(
+              HeroDialogRoute(
+                builder: (_) => MediaGalleryOverlay(
+                  child: TweetGalleryGif(
+                    tweet: entry.tweet,
+                    heroTag: 'media${entry.media.hashCode}',
+                  ),
+                ),
+              ),
+            ),
           ),
         );
         break;
@@ -48,11 +61,14 @@ class MediaTimelineMedia extends ConsumerWidget {
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
               data: data,
               notifier: notifier,
-              onVideoTap: () => showGallery(
-                context,
-                TweetGalleryVideo(
-                  tweet: entry.tweet,
-                  heroTag: 'media${entry.media.hashCode}',
+              onVideoTap: () => Navigator.of(context).push<void>(
+                HeroDialogRoute(
+                  builder: (_) => MediaGalleryOverlay(
+                    child: TweetGalleryVideo(
+                      tweet: entry.tweet,
+                      heroTag: 'media${entry.media.hashCode}',
+                    ),
+                  ),
                 ),
               ),
               child: child,

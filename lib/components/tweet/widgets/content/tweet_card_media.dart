@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
@@ -23,31 +24,39 @@ class TweetCardMedia extends ConsumerWidget {
         child = TweetImages(tweet: tweet);
         break;
       case MediaType.gif:
-        child = ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: harpyTheme.borderRadius,
-          child: TweetGif(tweet: tweet),
-        );
-        break;
-      case MediaType.video:
-        child = ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: harpyTheme.borderRadius,
-          child: TweetVideo(
-            tweet: tweet,
-            heroTag: 'tweet${tweet.media.single.hashCode}',
-            overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
-              data: data,
-              notifier: notifier,
-              onVideoTap: () => showGallery(
-                context,
-                TweetGalleryVideo(
+        child = TweetGif(
+          tweet: tweet,
+          heroTag: 'tweet${tweet.media.single.hashCode}',
+          onGifTap: () => Navigator.of(context).push<void>(
+            HeroDialogRoute(
+              builder: (_) => MediaGalleryOverlay(
+                child: TweetGalleryGif(
                   tweet: tweet,
                   heroTag: 'tweet${tweet.media.single.hashCode}',
                 ),
               ),
-              child: child,
             ),
+          ),
+        );
+        break;
+      case MediaType.video:
+        child = TweetVideo(
+          tweet: tweet,
+          heroTag: 'tweet${tweet.media.single.hashCode}',
+          overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
+            data: data,
+            notifier: notifier,
+            onVideoTap: () => Navigator.of(context).push<void>(
+              HeroDialogRoute(
+                builder: (_) => MediaGalleryOverlay(
+                  child: TweetGalleryVideo(
+                    tweet: tweet,
+                    heroTag: 'tweet${tweet.media.single.hashCode}',
+                  ),
+                ),
+              ),
+            ),
+            child: child,
           ),
         );
         break;
@@ -55,11 +64,13 @@ class TweetCardMedia extends ConsumerWidget {
         return const SizedBox();
     }
 
-    // TODO: clip rect around everything? / no clip rect in tweet images
-
-    return _MediaConstrainedHeight(
-      tweet: tweet,
-      child: child,
+    return ClipRRect(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: harpyTheme.borderRadius,
+      child: _MediaConstrainedHeight(
+        tweet: tweet,
+        child: child,
+      ),
     );
   }
 }
