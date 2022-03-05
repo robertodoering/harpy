@@ -12,6 +12,7 @@ export 'misc/twitter_error_handler.dart';
 export 'page_routes/fade_page_route.dart';
 export 'page_routes/harpy_page.dart';
 export 'page_routes/harpy_page_route.dart';
+export 'page_routes/hero_page_route.dart';
 export 'preferences/layout_preferences.dart';
 export 'preferences/preferences_provider.dart';
 export 'regex/common_regex.dart';

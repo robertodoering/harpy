@@ -43,10 +43,18 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetVideo(
             tweet: entry.tweet,
+            heroTag: 'media${entry.media.hashCode}',
             compact: true,
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
               data: data,
               notifier: notifier,
+              onVideoTap: () => showGallery(
+                context,
+                TweetGalleryVideo(
+                  tweet: entry.tweet,
+                  heroTag: 'media${entry.media.hashCode}',
+                ),
+              ),
               child: child,
             ),
           ),

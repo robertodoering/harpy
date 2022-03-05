@@ -60,7 +60,9 @@ class _TimelineState extends ConsumerState<Timeline>
   }) {
     final index = firstIndex ~/ 2;
 
-    if (_newestVisibleIndex != index) {
+    if (tweets.isNotEmpty && _newestVisibleIndex != index) {
+      final tweet = tweets[index];
+
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         if (mounted) setState(() => _newestVisibleIndex = index);
 
@@ -68,7 +70,7 @@ class _TimelineState extends ConsumerState<Timeline>
         // notifying
         Future<void>.delayed(const Duration(seconds: 1)).then((_) {
           if (mounted && _newestVisibleIndex == index) {
-            widget.onUpdatedTweetVisibility?.call(tweets[index]);
+            widget.onUpdatedTweetVisibility?.call(tweet);
           }
         });
       });

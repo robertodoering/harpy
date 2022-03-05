@@ -38,11 +38,15 @@ class VideoPlayerPlaybackButton extends ConsumerWidget {
     required this.data,
     required this.notifier,
     this.padding,
+    this.onPlay,
+    this.onPause,
   });
 
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
   final EdgeInsets? padding;
+  final VoidCallback? onPlay;
+  final VoidCallback? onPause;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +58,11 @@ class VideoPlayerPlaybackButton extends ConsumerWidget {
         color: Colors.white,
       ),
       padding: padding ?? EdgeInsets.all(display.smallPaddingValue),
-      onTap: notifier.togglePlayback,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        notifier.togglePlayback();
+        data.isPlaying ? onPause?.call() : onPlay?.call();
+      },
     );
   }
 }
@@ -80,7 +88,10 @@ class VideoPlayerMuteButton extends ConsumerWidget {
         color: Colors.white,
       ),
       padding: padding ?? EdgeInsets.all(display.smallPaddingValue),
-      onTap: notifier.toggleMute,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        notifier.toggleMute();
+      },
     );
   }
 }
@@ -151,7 +162,9 @@ class VideoPlayerFullscreenButton extends ConsumerWidget {
       icon: const Icon(Icons.fullscreen, color: Colors.white),
       padding: padding ?? EdgeInsets.all(display.smallPaddingValue),
       // TODO: fullscreen video
-      onTap: () {},
+      onTap: () {
+        // HapticFeedback.lightImpact();
+      },
     );
   }
 }

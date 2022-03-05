@@ -35,9 +35,17 @@ class TweetCardMedia extends ConsumerWidget {
           borderRadius: harpyTheme.borderRadius,
           child: TweetVideo(
             tweet: tweet,
+            heroTag: 'tweet${tweet.media.single.hashCode}',
             overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
               data: data,
               notifier: notifier,
+              onVideoTap: () => showGallery(
+                context,
+                TweetGalleryVideo(
+                  tweet: tweet,
+                  heroTag: 'tweet${tweet.media.single.hashCode}',
+                ),
+              ),
               child: child,
             ),
           ),
@@ -46,6 +54,8 @@ class TweetCardMedia extends ConsumerWidget {
       case null:
         return const SizedBox();
     }
+
+    // TODO: clip rect around everything? / no clip rect in tweet images
 
     return _MediaConstrainedHeight(
       tweet: tweet,

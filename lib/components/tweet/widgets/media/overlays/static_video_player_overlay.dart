@@ -1,22 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
-class StaticVideoPlayerOverlay extends ConsumerWidget {
+class StaticVideoPlayerOverlay extends ConsumerStatefulWidget {
   const StaticVideoPlayerOverlay({
     required this.child,
     required this.data,
     required this.notifier,
+    this.onVideoTap,
   });
 
   final Widget child;
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
+  final VoidCallback? onVideoTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _StaticVideoPlayerOverlayState createState() =>
+      _StaticVideoPlayerOverlayState();
+}
+
+class _StaticVideoPlayerOverlayState
+    extends ConsumerState<StaticVideoPlayerOverlay> {
+  Widget? _playbackIcon;
+
+  void _showPlay() {
+    setState(
+      () => _playbackIcon = AnimatedMediaThumbnailIcon(
+        key: UniqueKey(),
+        icon: const Icon(Icons.play_arrow_rounded),
+      ),
+    );
+  }
+
+  void _showPause() {
+    setState(
+      () => _playbackIcon = AnimatedMediaThumbnailIcon(
+        key: UniqueKey(),
+        icon: const Icon(Icons.pause_rounded),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       // eat all tap gestures that are not handled otherwise (e.g. tapping on
       // the overlay)
@@ -25,31 +55,47 @@ class StaticVideoPlayerOverlay extends ConsumerWidget {
         alignment: Alignment.center,
         children: [
           GestureDetector(
-            onTap: notifier.togglePlayback,
-            child: child,
+            onTap: widget.onVideoTap ??
+                () {
+                  HapticFeedback.lightImpact();
+                  widget.notifier.togglePlayback();
+                  widget.data.isPlaying ? _showPause() : _showPlay();
+                },
+            child: widget.child,
           ),
           VideoPlayerDoubleTapActions(
-            notifier: notifier,
-            data: data,
+            notifier: widget.notifier,
+            data: widget.data,
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                VideoPlayerProgressIndicator(notifier: notifier),
+                VideoPlayerProgressIndicator(notifier: widget.notifier),
                 VideoPlayerActions(
-                  notifier: notifier,
-                  data: data,
+                  data: widget.data,
+                  notifier: widget.notifier,
                   children: [
                     smallHorizontalSpacer,
-                    VideoPlayerPlaybackButton(data: data, notifier: notifier),
-                    VideoPlayerMuteButton(data: data, notifier: notifier),
+                    VideoPlayerPlaybackButton(
+                      notifier: widget.notifier,
+                      data: widget.data,
+                      onPlay: _showPlay,
+                      onPause: _showPause,
+                    ),
+                    VideoPlayerMuteButton(
+                      notifier: widget.notifier,
+                      data: widget.data,
+                    ),
                     smallHorizontalSpacer,
-                    VideoPlayerProgressText(data: data),
+                    VideoPlayerProgressText(data: widget.data),
                     const Spacer(),
-                    if (data.qualities.length > 1)
-                      VideoPlayerQualityButton(data: data, notifier: notifier),
+                    if (widget.data.qualities.length > 1)
+                      VideoPlayerQualityButton(
+                        data: widget.data,
+                        notifier: widget.notifier,
+                      ),
                     const VideoPlayerFullscreenButton(),
                     smallHorizontalSpacer,
                   ],
@@ -57,29 +103,20 @@ class StaticVideoPlayerOverlay extends ConsumerWidget {
               ],
             ),
           ),
-          if (data.isBuffering)
+          if (widget.data.isBuffering)
             const ImmediateOpacityAnimation(
               delay: Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
               child: MediaThumbnailIcon(icon: CircularProgressIndicator()),
             )
-          else if (data.isFinished)
+          else if (widget.data.isFinished)
             const ImmediateOpacityAnimation(
               duration: kLongAnimationDuration,
               child: MediaThumbnailIcon(
                 icon: Icon(Icons.replay),
               ),
             ),
-          if (data.isPlaying)
-            AnimatedMediaThumbnailIcon(
-              key: ValueKey(data.isPlaying),
-              icon: const Icon(Icons.play_arrow_rounded),
-            )
-          else
-            AnimatedMediaThumbnailIcon(
-              key: ValueKey(data.isPlaying),
-              icon: const Icon(Icons.pause_rounded),
-            ),
+          if (_playbackIcon != null) _playbackIcon!,
         ],
       ),
     );

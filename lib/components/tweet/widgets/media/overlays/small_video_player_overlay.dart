@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -7,19 +8,50 @@ import 'package:harpy/rby/rby.dart';
 /// Overlay for video players that builds compact actions and icons.
 ///
 /// Used in the media timeline.
-class SmallVideoPlayerOverlay extends ConsumerWidget {
+class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
   const SmallVideoPlayerOverlay({
     required this.child,
     required this.data,
     required this.notifier,
+    this.onVideoTap,
   });
 
   final Widget child;
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
+  final VoidCallback? onVideoTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _SmallVideoPlayerOverlayState createState() =>
+      _SmallVideoPlayerOverlayState();
+}
+
+class _SmallVideoPlayerOverlayState
+    extends ConsumerState<SmallVideoPlayerOverlay> {
+  Widget? _playbackIcon;
+
+  void _showPlay() {
+    setState(
+      () => _playbackIcon = AnimatedMediaThumbnailIcon(
+        key: UniqueKey(),
+        icon: const Icon(Icons.play_arrow_rounded),
+        compact: true,
+      ),
+    );
+  }
+
+  void _showPause() {
+    setState(
+      () => _playbackIcon = AnimatedMediaThumbnailIcon(
+        key: UniqueKey(),
+        icon: const Icon(Icons.pause_rounded),
+        compact: true,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
@@ -31,12 +63,17 @@ class SmallVideoPlayerOverlay extends ConsumerWidget {
         alignment: Alignment.center,
         children: [
           GestureDetector(
-            onTap: notifier.togglePlayback,
-            child: child,
+            onTap: widget.onVideoTap ??
+                () {
+                  HapticFeedback.lightImpact();
+                  widget.notifier.togglePlayback();
+                  widget.data.isPlaying ? _showPause() : _showPlay();
+                },
+            child: widget.child,
           ),
           VideoPlayerDoubleTapActions(
-            notifier: notifier,
-            data: data,
+            data: widget.data,
+            notifier: widget.notifier,
             compact: true,
           ),
           Align(
@@ -45,24 +82,26 @@ class SmallVideoPlayerOverlay extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 VideoPlayerProgressIndicator(
-                  notifier: notifier,
+                  notifier: widget.notifier,
                   compact: true,
                 ),
                 IconTheme(
                   data: iconTheme.copyWith(size: iconTheme.size! - 4),
                   child: VideoPlayerActions(
-                    notifier: notifier,
-                    data: data,
+                    data: widget.data,
+                    notifier: widget.notifier,
                     children: [
                       SizedBox(width: display.smallPaddingValue / 2),
                       VideoPlayerPlaybackButton(
-                        data: data,
-                        notifier: notifier,
+                        data: widget.data,
+                        notifier: widget.notifier,
                         padding: EdgeInsets.all(display.smallPaddingValue / 2),
+                        onPlay: _showPlay,
+                        onPause: _showPause,
                       ),
                       VideoPlayerMuteButton(
-                        data: data,
-                        notifier: notifier,
+                        data: widget.data,
+                        notifier: widget.notifier,
                         padding: EdgeInsets.all(display.smallPaddingValue / 2),
                       ),
                       SizedBox(width: display.smallPaddingValue / 2),
@@ -77,7 +116,7 @@ class SmallVideoPlayerOverlay extends ConsumerWidget {
               ],
             ),
           ),
-          if (data.isBuffering)
+          if (widget.data.isBuffering)
             const ImmediateOpacityAnimation(
               delay: Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
@@ -86,7 +125,7 @@ class SmallVideoPlayerOverlay extends ConsumerWidget {
                 compact: true,
               ),
             )
-          else if (data.isFinished)
+          else if (widget.data.isFinished)
             const ImmediateOpacityAnimation(
               duration: kLongAnimationDuration,
               child: MediaThumbnailIcon(
@@ -94,18 +133,7 @@ class SmallVideoPlayerOverlay extends ConsumerWidget {
                 compact: true,
               ),
             ),
-          if (data.isPlaying)
-            AnimatedMediaThumbnailIcon(
-              key: ValueKey(data.isPlaying),
-              icon: const Icon(Icons.play_arrow_rounded),
-              compact: true,
-            )
-          else
-            AnimatedMediaThumbnailIcon(
-              key: ValueKey(data.isPlaying),
-              icon: const Icon(Icons.pause_rounded),
-              compact: true,
-            ),
+          if (_playbackIcon != null) _playbackIcon!,
         ],
       ),
     );
