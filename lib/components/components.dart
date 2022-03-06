@@ -160,7 +160,6 @@ export 'tweet/widgets/media/tweet_gif.dart';
 export 'tweet/widgets/media/tweet_images.dart';
 export 'tweet/widgets/media/tweet_images_layout.dart';
 export 'tweet/widgets/media/tweet_video.dart';
-export 'tweet/widgets/media/video_autopause.dart';
 export 'tweet/widgets/tweet_actions_bottom_sheet.dart';
 export 'tweet/widgets/tweet_card.dart';
 export 'tweet/widgets/tweet_card_content.dart';

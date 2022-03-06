@@ -33,7 +33,7 @@ class TweetCardMedia extends ConsumerWidget {
       case MediaType.gif:
         child = TweetGif(
           tweet: tweet,
-          heroTag: 'tweet${tweet.media.single.hashCode}',
+          heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
           onGifTap: () => Navigator.of(context).push<void>(
             HeroDialogRoute(
               builder: (_) => MediaGalleryOverlay(
@@ -42,7 +42,7 @@ class TweetCardMedia extends ConsumerWidget {
                 delegates: delegates,
                 child: TweetGalleryGif(
                   tweet: tweet,
-                  heroTag: 'tweet${tweet.media.single.hashCode}',
+                  heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
                 ),
               ),
             ),
@@ -52,7 +52,7 @@ class TweetCardMedia extends ConsumerWidget {
       case MediaType.video:
         child = TweetVideo(
           tweet: tweet,
-          heroTag: 'tweet${tweet.media.single.hashCode}',
+          heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
           overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
             data: data,
             notifier: notifier,
@@ -64,7 +64,8 @@ class TweetCardMedia extends ConsumerWidget {
                   delegates: delegates,
                   child: TweetGalleryVideo(
                     tweet: tweet,
-                    heroTag: 'tweet${tweet.media.single.hashCode}',
+                    heroTag:
+                        'tweet${mediaHeroTag(context, tweet.media.single)}',
                   ),
                 ),
               ),
@@ -145,5 +146,18 @@ class _MediaConstrainedHeight extends ConsumerWidget {
       constraints: BoxConstraints(maxHeight: mediaQuery.size.height * .8),
       child: child,
     );
+  }
+}
+
+/// Creates a hero tag for the media which is unique for each route.
+String mediaHeroTag(BuildContext context, MediaData media) {
+  final routeSettings = ModalRoute.of(context)?.settings;
+
+  if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
+    final key = routeSettings.key as ValueKey;
+    // key = current route path
+    return '${media.hashCode}$key';
+  } else {
+    return '${media.hashCode}';
   }
 }

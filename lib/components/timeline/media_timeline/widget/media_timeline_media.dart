@@ -39,7 +39,7 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetGif(
             tweet: entry.tweet,
-            heroTag: 'media${entry.media.hashCode}',
+            heroTag: 'media${mediaHeroTag(context, entry.media)}',
             compact: true,
             // onGifTap: () => Navigator.of(context).push<void>(
             //   HeroDialogRoute(
@@ -48,7 +48,7 @@ class MediaTimelineMedia extends ConsumerWidget {
             //       delegates: tweetDelegates,
             //       child: TweetGalleryGif(
             //         tweet: entry.tweet,
-            //         heroTag: 'media${entry.media.hashCode}',
+            //         heroTag: 'media${mediaHeroTag(context,entry.media)}',
             //       ),
             //     ),
             //   ),
@@ -61,7 +61,7 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetVideo(
             tweet: entry.tweet,
-            heroTag: 'media${entry.media.hashCode}',
+            heroTag: 'media${mediaHeroTag(context, entry.media)}',
             compact: true,
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
               data: data,
@@ -73,7 +73,7 @@ class MediaTimelineMedia extends ConsumerWidget {
               //       delegates: tweetDelegates,
               //       child: TweetGalleryVideo(
               //         tweet: entry.tweet,
-              //         heroTag: 'media${entry.media.hashCode}',
+              //         heroTag: 'media${mediaHeroTag(context,entry.media)}',
               //       ),
               //     ),
               //   ),

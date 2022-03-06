@@ -32,7 +32,7 @@ class TweetImages extends ConsumerWidget {
             builder: (_, index) => AspectRatio(
               aspectRatio: tweet.media[index].aspectRatioDouble,
               child: Hero(
-                tag: _tweetImageHeroTag(context, tweet.media[index]),
+                tag: 'tweet${mediaHeroTag(context, tweet.media[index])}',
                 flightShuttleBuilder: (
                   _,
                   animation,
@@ -75,7 +75,7 @@ class TweetImages extends ConsumerWidget {
       children: [
         for (final image in tweet.media)
           Hero(
-            tag: _tweetImageHeroTag(context, image),
+            tag: 'tweet${mediaHeroTag(context, image)}',
             placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(
               imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
@@ -86,18 +86,6 @@ class TweetImages extends ConsumerWidget {
           ),
       ],
     );
-  }
-}
-
-String _tweetImageHeroTag(BuildContext context, MediaData media) {
-  final routeSettings = ModalRoute.of(context)?.settings;
-
-  if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
-    final key = routeSettings.key as ValueKey;
-    // key = current route path
-    return 'tweet${media.hashCode}$key';
-  } else {
-    return 'tweet${media.hashCode}';
   }
 }
 
