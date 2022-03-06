@@ -13,7 +13,10 @@ final routeObserver = Provider(
 final routerProvider = Provider(
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
-    observers: [ref.watch(routeObserver)],
+    observers: [
+      ref.watch(routeObserver),
+      ref.watch(videoAutopauseObserver),
+    ],
   ),
   name: 'RouterProvider',
 );

@@ -57,18 +57,16 @@ class TweetVideo extends ConsumerWidget {
       notifier: notifier,
       enableAutoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
       child: state.maybeMap(
-        data: (data) => VideoAutopause(
-          child: Hero(
-            tag: heroTag,
-            child: overlayBuilder(
-              data,
-              notifier,
-              OverflowBox(
-                maxHeight: double.infinity,
-                child: AspectRatio(
-                  aspectRatio: mediaData.aspectRatioDouble,
-                  child: VideoPlayer(notifier.controller),
-                ),
+        data: (data) => Hero(
+          tag: heroTag,
+          child: overlayBuilder(
+            data,
+            notifier,
+            OverflowBox(
+              maxHeight: double.infinity,
+              child: AspectRatio(
+                aspectRatio: mediaData.aspectRatioDouble,
+                child: VideoPlayer(notifier.controller),
               ),
             ),
           ),
