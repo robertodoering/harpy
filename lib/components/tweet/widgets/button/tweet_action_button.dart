@@ -21,6 +21,7 @@ class TweetActionButton extends ConsumerStatefulWidget {
     required this.deactivate,
     required this.iconSize,
     this.sizeDelta = 0,
+    this.foregroundColor,
     this.iconAnimationBuilder = defaultIconAnimationBuilder,
     this.onLongPress,
     this.activeColor,
@@ -35,6 +36,7 @@ class TweetActionButton extends ConsumerStatefulWidget {
   final bool active;
   final double iconSize;
   final double sizeDelta;
+  final Color? foregroundColor;
   final VoidCallback activate;
   final VoidCallback? deactivate;
   final VoidCallback? onLongPress;
@@ -102,7 +104,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
     final textStyle = theme.textTheme.button!.copyWith(
       fontSize: widget.iconSize - 4,
       height: 1,
-      color: widget.active ? widget.activeColor : null,
+      color: widget.active ? widget.activeColor : widget.foregroundColor,
       fontWeight: widget.active ? FontWeight.bold : null,
     );
 
@@ -110,7 +112,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       duration: kShortAnimationDuration,
       data: theme.copyWith(
         iconTheme: theme.iconTheme.copyWith(
-          color: widget.active ? widget.activeColor : null,
+          color: widget.active ? widget.activeColor : widget.foregroundColor,
         ),
       ),
       child: BubbleAnimation(
@@ -143,8 +145,9 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       backgroundColor: MaterialStateProperty.all(Colors.transparent),
       foregroundColor: MaterialStateProperty.resolveWith(
         (states) => states.contains(MaterialState.disabled)
-            ? theme.colorScheme.onBackground.withOpacity(.5)
-            : theme.colorScheme.onBackground,
+            ? (widget.foregroundColor ?? theme.colorScheme.onBackground)
+                .withOpacity(.5)
+            : widget.foregroundColor ?? theme.colorScheme.onBackground,
       ),
       overlayColor: MaterialStateProperty.all(theme.highlightColor),
       elevation: MaterialStateProperty.all(0),

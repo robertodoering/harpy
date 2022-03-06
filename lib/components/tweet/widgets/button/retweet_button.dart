@@ -13,7 +13,7 @@ class RetweetButton extends ConsumerStatefulWidget {
     required this.onShowRetweeters,
     required this.onComposeQuote,
     this.sizeDelta = 0,
-    this.overlayForegroundColor,
+    this.foregroundColor,
   });
 
   final TweetData tweet;
@@ -22,11 +22,7 @@ class RetweetButton extends ConsumerStatefulWidget {
   final TweetActionCallback? onShowRetweeters;
   final TweetActionCallback? onComposeQuote;
   final double sizeDelta;
-
-  /// The foreground color for the icon an text in the retweet menu.
-  ///
-  /// Used in the to override the color for light themes in the media overlay.
-  final Color? overlayForegroundColor;
+  final Color? foregroundColor;
 
   @override
   _RetweetButtonState createState() => _RetweetButtonState();
@@ -62,37 +58,19 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
       items: [
         HarpyPopupMenuItem(
           value: 0,
-          leading: Icon(
-            FeatherIcons.repeat,
-            color: widget.overlayForegroundColor,
-          ),
-          title: Text(
-            widget.tweet.retweeted ? 'unretweet' : 'retweet',
-            style: TextStyle(color: widget.overlayForegroundColor),
-          ),
+          leading: const Icon(FeatherIcons.repeat),
+          title: Text(widget.tweet.retweeted ? 'unretweet' : 'retweet'),
         ),
-        HarpyPopupMenuItem(
+        const HarpyPopupMenuItem(
           value: 1,
-          leading: Icon(
-            FeatherIcons.feather,
-            color: widget.overlayForegroundColor,
-          ),
-          title: Text(
-            'quote tweet',
-            style: TextStyle(color: widget.overlayForegroundColor),
-          ),
+          leading: Icon(FeatherIcons.feather),
+          title: Text('quote tweet'),
         ),
         if (widget.onShowRetweeters != null)
-          HarpyPopupMenuItem(
+          const HarpyPopupMenuItem(
             value: 2,
-            leading: Icon(
-              FeatherIcons.eye,
-              color: widget.overlayForegroundColor,
-            ),
-            title: Text(
-              'view retweeters',
-              style: TextStyle(color: widget.overlayForegroundColor),
-            ),
+            leading: Icon(FeatherIcons.users),
+            title: Text('view retweeters'),
           ),
       ],
     );
@@ -132,6 +110,7 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
         quaternary: Colors.green[900],
       ),
       circleColor: const CircleColor(start: Colors.green, end: Colors.lime),
+      foregroundColor: widget.foregroundColor,
       iconSize: iconSize,
       sizeDelta: widget.sizeDelta,
       activeColor: harpyTheme.colors.retweet,

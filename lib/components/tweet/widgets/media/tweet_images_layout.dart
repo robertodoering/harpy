@@ -19,37 +19,52 @@ class TweetImagesLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget child;
+
     switch (children.length) {
       case 1:
-        return _SingleImageLayout(
+        child = _SingleImageLayout(
           onImageTap: onImageTap,
           onImageLongPress: onImageLongPress,
           child: children.single,
         );
+        break;
       case 2:
-        return _TwoImagesLayout(
+        child = _TwoImagesLayout(
           betweenPadding: betweenPadding,
           onImageTap: onImageTap,
           onImageLongPress: onImageLongPress,
           children: children,
         );
+        break;
       case 3:
-        return _ThreeImagesLayout(
+        child = _ThreeImagesLayout(
           betweenPadding: betweenPadding,
           onImageTap: onImageTap,
           onImageLongPress: onImageLongPress,
           children: children,
         );
+        break;
       case 4:
-        return _FourImagesLayout(
+        child = _FourImagesLayout(
           betweenPadding: betweenPadding,
           onImageTap: onImageTap,
           onImageLongPress: onImageLongPress,
           children: children,
         );
+        break;
       default:
+        assert(false);
         return const SizedBox();
     }
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      // wrap the child in an empty gesture detector to avoid a tap in between
+      // images to propagate
+      onTap: () {},
+      child: child,
+    );
   }
 }
 

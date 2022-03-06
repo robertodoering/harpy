@@ -16,10 +16,11 @@ class TweetCardQuote extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
 
-    final state = ref.watch(tweetProvider(tweet.quote!));
-    final notifier = ref.watch(tweetProvider(tweet.quote!).notifier);
+    final provider = tweetProvider(tweet.quote!);
+    final state = ref.watch(provider);
+    final notifier = ref.watch(provider.notifier);
 
-    final delegates = TweetCard.defaultDelegates(state, notifier);
+    final delegates = defaultTweetDelegates(state, notifier);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -32,7 +33,7 @@ class TweetCardQuote extends ConsumerWidget {
         child: ClipRRect(
           borderRadius: harpyTheme.borderRadius,
           child: TweetCardContent(
-            tweet: state,
+            provider: provider,
             delegates: delegates,
             outerPadding: display.smallPaddingValue,
             innerPadding: display.smallPaddingValue / 2,

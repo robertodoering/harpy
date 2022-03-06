@@ -8,20 +8,27 @@ import 'package:harpy/core/core.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
-    required this.tweet,
+    required this.provider,
+    required this.delegates,
   });
 
-  final TweetData tweet;
+  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetDelegates delegates;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
+    final tweet = ref.watch(provider);
+
     Widget child;
 
     switch (tweet.mediaType) {
       case MediaType.image:
-        child = TweetImages(tweet: tweet);
+        child = TweetImages(
+          provider: provider,
+          delegates: delegates,
+        );
         break;
       case MediaType.gif:
         child = TweetGif(
@@ -30,6 +37,9 @@ class TweetCardMedia extends ConsumerWidget {
           onGifTap: () => Navigator.of(context).push<void>(
             HeroDialogRoute(
               builder: (_) => MediaGalleryOverlay(
+                provider: provider,
+                media: tweet.media.single,
+                delegates: delegates,
                 child: TweetGalleryGif(
                   tweet: tweet,
                   heroTag: 'tweet${tweet.media.single.hashCode}',
@@ -49,6 +59,9 @@ class TweetCardMedia extends ConsumerWidget {
             onVideoTap: () => Navigator.of(context).push<void>(
               HeroDialogRoute(
                 builder: (_) => MediaGalleryOverlay(
+                  provider: provider,
+                  media: tweet.media.single,
+                  delegates: delegates,
                   child: TweetGalleryVideo(
                     tweet: tweet,
                     heroTag: 'tweet${tweet.media.single.hashCode}',

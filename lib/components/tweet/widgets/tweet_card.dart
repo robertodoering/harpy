@@ -19,7 +19,7 @@ typedef TweetActionCallback = void Function(
 class TweetCard extends ConsumerWidget {
   const TweetCard({
     required this.tweet,
-    this.createDelegates = defaultDelegates,
+    this.createDelegates = defaultTweetDelegates,
     this.config = kDefaultTweetCardConfig,
     this.color,
   });
@@ -29,66 +29,17 @@ class TweetCard extends ConsumerWidget {
   final TweetDelegatesCreator createDelegates;
   final Color? color;
 
-  static TweetDelegates defaultDelegates(
-    TweetData tweet,
-    TweetNotifier notifier,
-  ) {
-    // TODO: implement all tweet delegates
-    return TweetDelegates(
-      onTweetTap: (context, read) => read(routerProvider).pushNamed(
-        TweetDetailPage.name,
-        extra: tweet,
-      ),
-      onUserTap: null,
-      onRetweeterTap: null,
-      onFavorite: (_, __) {
-        HapticFeedback.lightImpact();
-        notifier.favorite();
-      },
-      onUnfavorite: (_, __) {
-        HapticFeedback.lightImpact();
-        notifier.unfavorite();
-      },
-      onRetweet: (_, __) {
-        HapticFeedback.lightImpact();
-        notifier.retweet();
-      },
-      onUnretweet: (_, __) {
-        HapticFeedback.lightImpact();
-        notifier.unretweet();
-      },
-      onTranslate: (context, _) {
-        HapticFeedback.lightImpact();
-        notifier.translate(locale: Localizations.localeOf(context));
-      },
-      onShowRetweeters: tweet.retweetCount > 0
-          ? (_, read) => read(routerProvider).pushNamed(
-                RetweetersPage.name,
-                params: {'id': tweet.originalId},
-              )
-          : null,
-      onComposeQuote: null,
-      onComposeReply: null,
-      onDeleteTweet: (_, read) {
-        HapticFeedback.lightImpact();
-        notifier.delete(
-          onDeleted: () =>
-              read(homeTimelineProvider.notifier).removeTweet(tweet),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
-    final state = ref.watch(tweetProvider(tweet));
-    final notifier = ref.watch(tweetProvider(tweet).notifier);
+    final provider = tweetProvider(tweet);
+    final state = ref.watch(provider);
+    final notifier = ref.watch(provider.notifier);
 
     final delegates = createDelegates(state, notifier);
 
     final child = TweetCardContent(
-      tweet: state,
+      provider: provider,
       delegates: delegates,
       outerPadding: display.paddingValue,
       innerPadding: display.smallPaddingValue,
@@ -116,4 +67,53 @@ class TweetCard extends ConsumerWidget {
       ),
     );
   }
+}
+
+TweetDelegates defaultTweetDelegates(
+  TweetData tweet,
+  TweetNotifier notifier,
+) {
+  // TODO: implement all tweet delegates
+  return TweetDelegates(
+    onTweetTap: (context, read) => read(routerProvider).pushNamed(
+      TweetDetailPage.name,
+      extra: tweet,
+    ),
+    onUserTap: null,
+    onRetweeterTap: null,
+    onFavorite: (_, __) {
+      HapticFeedback.lightImpact();
+      notifier.favorite();
+    },
+    onUnfavorite: (_, __) {
+      HapticFeedback.lightImpact();
+      notifier.unfavorite();
+    },
+    onRetweet: (_, __) {
+      HapticFeedback.lightImpact();
+      notifier.retweet();
+    },
+    onUnretweet: (_, __) {
+      HapticFeedback.lightImpact();
+      notifier.unretweet();
+    },
+    onTranslate: (context, _) {
+      HapticFeedback.lightImpact();
+      notifier.translate(locale: Localizations.localeOf(context));
+    },
+    onShowRetweeters: tweet.retweetCount > 0
+        ? (_, read) => read(routerProvider).pushNamed(
+              RetweetersPage.name,
+              params: {'id': tweet.originalId},
+            )
+        : null,
+    onComposeQuote: null,
+    onComposeReply: null,
+    onDeleteTweet: (_, read) {
+      HapticFeedback.lightImpact();
+      notifier.delete(
+        onDeleted: () => read(homeTimelineProvider.notifier).removeTweet(tweet),
+      );
+    },
+  );
 }

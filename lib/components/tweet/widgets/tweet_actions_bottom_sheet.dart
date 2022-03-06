@@ -10,9 +10,9 @@ import 'package:share_plus/share_plus.dart';
 
 void showTweetActionsBottomSheet(
   BuildContext context, {
+  required Reader read,
   required TweetData tweet,
   required TweetDelegates delegates,
-  required Reader read,
 }) {
   final theme = Theme.of(context);
 

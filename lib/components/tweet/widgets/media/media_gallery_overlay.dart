@@ -1,14 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
 class MediaGalleryOverlay extends ConsumerStatefulWidget {
   const MediaGalleryOverlay({
+    required this.provider,
+    required this.delegates,
+    required this.media,
     required this.child,
   });
 
+  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final MediaData media;
+  final TweetDelegates delegates;
   final Widget child;
 
   @override
@@ -65,6 +73,8 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final tweet = ref.watch(widget.provider);
+
     return Stack(
       children: [
         GestureDetector(onTap: Navigator.of(context).pop),
@@ -79,7 +89,11 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
               child!,
               SlideTransition(
                 position: _bottomAnimation,
-                child: const _OverlayActions(),
+                child: _OverlayTweetActions(
+                  tweet: tweet,
+                  media: widget.media,
+                  delegates: widget.delegates,
+                ),
               ),
             ],
           ),
@@ -105,31 +119,42 @@ class _OverlayAppBar extends ConsumerWidget {
     final mediaQuery = MediaQuery.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
-    return Container(
-      alignment: Alignment.centerLeft,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.black87,
-            Colors.transparent,
-          ],
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle.light,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black87,
+              Colors.transparent,
+            ],
+          ),
         ),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
-          .copyWith(top: display.smallPaddingValue + mediaQuery.padding.top),
-      child: HarpyButton.icon(
-        icon: const Icon(CupertinoIcons.xmark),
-        onTap: Navigator.of(context).maybePop,
+        padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
+            .copyWith(top: display.smallPaddingValue + mediaQuery.padding.top),
+        child: HarpyButton.icon(
+          icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
+          onTap: Navigator.of(context).maybePop,
+        ),
       ),
     );
   }
 }
 
-class _OverlayActions extends ConsumerWidget {
-  const _OverlayActions();
+class _OverlayTweetActions extends ConsumerWidget {
+  const _OverlayTweetActions({
+    required this.tweet,
+    required this.media,
+    required this.delegates,
+  });
+
+  final TweetData tweet;
+  final MediaData media;
+  final TweetDelegates delegates;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -151,19 +176,44 @@ class _OverlayActions extends ConsumerWidget {
           .copyWith(bottom: mediaQuery.padding.bottom),
       child: Row(
         children: [
-          HarpyButton.icon(
-            icon: const Icon(CupertinoIcons.heart),
-            onTap: () {},
+          RetweetButton(
+            tweet: tweet,
+            sizeDelta: 2,
+            foregroundColor: Colors.white,
+            onRetweet: delegates.onRetweet,
+            onUnretweet: delegates.onUnretweet,
+            onShowRetweeters: delegates.onShowRetweeters,
+            onComposeQuote: delegates.onComposeQuote,
+          ),
+          FavoriteButton(
+            tweet: tweet,
+            sizeDelta: 2,
+            foregroundColor: Colors.white,
+            onFavorite: delegates.onFavorite,
+            onUnfavorite: delegates.onUnfavorite,
+          ),
+          const Spacer(),
+          DownloadButton(
+            tweet: tweet,
+            sizeDelta: 2,
+            foregroundColor: Colors.white,
+            // TODO: download
+            onDownload: (_, __) {},
+          ),
+          MoreActionsButton(
+            tweet: tweet,
+            sizeDelta: 2,
+            foregroundColor: Colors.white,
+            onViewMoreActions: (context, read) => showMediaActionsBottomSheet(
+              context,
+              read: read,
+              tweet: tweet,
+              media: media,
+              delegates: delegates,
+            ),
           ),
         ],
       ),
-      // TODO: media actions
-      // child: MediaOverlayActionRow(
-      //   onDownload: widget.onDownload,
-      //   onOpenExternally: widget.onOpenExternally,
-      //   onShare: widget.onShare,
-      //   onShowTweet: widget.onShowTweet,
-      // ),
     );
   }
 }

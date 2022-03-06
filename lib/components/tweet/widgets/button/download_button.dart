@@ -3,41 +3,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class FavoriteButton extends ConsumerWidget {
-  const FavoriteButton({
+class DownloadButton extends ConsumerWidget {
+  const DownloadButton({
     required this.tweet,
-    required this.onFavorite,
-    required this.onUnfavorite,
+    required this.onDownload,
     this.sizeDelta = 0,
     this.foregroundColor,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onFavorite;
-  final TweetActionCallback? onUnfavorite;
+  final TweetActionCallback? onDownload;
   final double sizeDelta;
   final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final iconTheme = IconTheme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     final iconSize = iconTheme.size! + sizeDelta;
 
     return TweetActionButton(
-      active: tweet.favorited,
-      value: tweet.favoriteCount,
+      active: false,
       iconBuilder: (_) => Icon(
-        tweet.favorited ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
+        CupertinoIcons.arrow_down_to_line,
         size: iconSize,
       ),
       foregroundColor: foregroundColor,
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activeColor: harpyTheme.colors.favorite,
-      activate: () => onFavorite?.call(context, ref.read),
-      deactivate: () => onUnfavorite?.call(context, ref.read),
+      activate: () => onDownload?.call(context, ref.read),
+      deactivate: null,
     );
   }
 }

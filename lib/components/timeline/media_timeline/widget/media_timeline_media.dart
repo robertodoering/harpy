@@ -18,9 +18,12 @@ class MediaTimelineMedia extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    Widget child;
-
     // TODO: on media tap: show gallery
+    // final tweetState = ref.watch(tweetProvider(entry.tweet));
+    // final tweetNotifier = ref.watch(tweetProvider(entry.tweet).notifier);
+    // final tweetDelegates = defaultTweetDelegates(tweetState, tweetNotifier);
+
+    Widget child;
 
     switch (entry.media.type) {
       case MediaType.image:
@@ -38,16 +41,18 @@ class MediaTimelineMedia extends ConsumerWidget {
             tweet: entry.tweet,
             heroTag: 'media${entry.media.hashCode}',
             compact: true,
-            onGifTap: () => Navigator.of(context).push<void>(
-              HeroDialogRoute(
-                builder: (_) => MediaGalleryOverlay(
-                  child: TweetGalleryGif(
-                    tweet: entry.tweet,
-                    heroTag: 'media${entry.media.hashCode}',
-                  ),
-                ),
-              ),
-            ),
+            // onGifTap: () => Navigator.of(context).push<void>(
+            //   HeroDialogRoute(
+            //     builder: (_) => MediaGalleryOverlay(
+            //       tweet: tweetState,
+            //       delegates: tweetDelegates,
+            //       child: TweetGalleryGif(
+            //         tweet: entry.tweet,
+            //         heroTag: 'media${entry.media.hashCode}',
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ),
         );
         break;
@@ -61,16 +66,18 @@ class MediaTimelineMedia extends ConsumerWidget {
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
               data: data,
               notifier: notifier,
-              onVideoTap: () => Navigator.of(context).push<void>(
-                HeroDialogRoute(
-                  builder: (_) => MediaGalleryOverlay(
-                    child: TweetGalleryVideo(
-                      tweet: entry.tweet,
-                      heroTag: 'media${entry.media.hashCode}',
-                    ),
-                  ),
-                ),
-              ),
+              // onVideoTap: () => Navigator.of(context).push<void>(
+              //   HeroDialogRoute(
+              //     builder: (_) => MediaGalleryOverlay(
+              //       tweet: tweetState,
+              //       delegates: tweetDelegates,
+              //       child: TweetGalleryVideo(
+              //         tweet: entry.tweet,
+              //         heroTag: 'media${entry.media.hashCode}',
+              //       ),
+              //     ),
+              //   ),
+              // ),
               child: child,
             ),
           ),

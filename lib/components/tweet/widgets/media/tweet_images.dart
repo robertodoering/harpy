@@ -6,10 +6,12 @@ import 'package:harpy/core/core.dart';
 
 class TweetImages extends ConsumerWidget {
   const TweetImages({
-    required this.tweet,
+    required this.provider,
+    required this.delegates,
   });
 
-  final TweetData tweet;
+  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetDelegates delegates;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,55 +19,63 @@ class TweetImages extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
+    final tweet = ref.watch(provider);
+
     return TweetImagesLayout(
       onImageTap: (index) => Navigator.of(context).push<void>(
         HeroDialogRoute(
-          builder: (_) => MediaGalleryOverlay(
-            child: MediaGallery(
-              initialIndex: index,
-              itemCount: tweet.media.length,
-              builder: (_, index) => AspectRatio(
-                aspectRatio: tweet.media[index].aspectRatioDouble,
-                child: Hero(
-                  tag: 'tweet${tweet.media[index].hashCode}',
-                  flightShuttleBuilder: (
-                    _,
-                    animation,
-                    flightDirection,
-                    fromHeroContext,
-                    toHeroContext,
-                  ) =>
-                      _flightShuttleBuilder(
-                    _borderRadiusForImage(
-                      harpyTheme.radius,
-                      index,
-                      tweet.media.length,
-                    ),
-                    animation,
-                    flightDirection,
-                    fromHeroContext,
-                    toHeroContext,
+          builder: (_) => MediaGallery(
+            provider: provider,
+            delegates: delegates,
+            initialIndex: index,
+            itemCount: tweet.media.length,
+            builder: (_, index) => AspectRatio(
+              aspectRatio: tweet.media[index].aspectRatioDouble,
+              child: Hero(
+                tag: _tweetImageHeroTag(context, tweet.media[index]),
+                flightShuttleBuilder: (
+                  _,
+                  animation,
+                  flightDirection,
+                  fromHeroContext,
+                  toHeroContext,
+                ) =>
+                    _flightShuttleBuilder(
+                  _borderRadiusForImage(
+                    harpyTheme.radius,
+                    index,
+                    tweet.media.length,
                   ),
-                  child: HarpyImage(
-                    imageUrl: tweet.media[index].appropriateUrl(
-                      mediaPreferences,
-                      connectivity,
-                    ),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
+                  animation,
+                  flightDirection,
+                  fromHeroContext,
+                  toHeroContext,
+                ),
+                child: HarpyImage(
+                  imageUrl: tweet.media[index].appropriateUrl(
+                    mediaPreferences,
+                    connectivity,
                   ),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
               ),
             ),
           ),
         ),
       ),
-      onImageLongPress: (index) {}, // TODO: implement media bottom sheet
+      onImageLongPress: (index) => showMediaActionsBottomSheet(
+        context,
+        read: ref.read,
+        tweet: tweet,
+        media: tweet.media[index],
+        delegates: delegates,
+      ),
       children: [
         for (final image in tweet.media)
           Hero(
-            tag: 'tweet${image.hashCode}',
+            tag: _tweetImageHeroTag(context, image),
             placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(
               imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
@@ -76,6 +86,18 @@ class TweetImages extends ConsumerWidget {
           ),
       ],
     );
+  }
+}
+
+String _tweetImageHeroTag(BuildContext context, MediaData media) {
+  final routeSettings = ModalRoute.of(context)?.settings;
+
+  if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
+    final key = routeSettings.key as ValueKey;
+    // key = current route path
+    return 'tweet${media.hashCode}$key';
+  } else {
+    return 'tweet${media.hashCode}';
   }
 }
 

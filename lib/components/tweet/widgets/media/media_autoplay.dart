@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/rby/rby.dart';
 
+/// Starts initialization for a video player when the child becomes visible.
+///
+/// Requires a [VisibilityChangeListener] to be built above this widget.
 class MediaAutoplay extends ConsumerStatefulWidget {
   const MediaAutoplay({
     required this.child,
