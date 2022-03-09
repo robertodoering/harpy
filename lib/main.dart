@@ -27,7 +27,6 @@ Future<void> main() async {
   ErrorHandler(
     sharedPreferences: sharedPreferences,
     child: ProviderScope(
-      observers: const [ProviderLogger()],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
