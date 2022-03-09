@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 class GifVideoPlayerOverlay extends StatelessWidget {
   const GifVideoPlayerOverlay({
@@ -32,14 +31,15 @@ class GifVideoPlayerOverlay extends StatelessWidget {
               },
           child: child,
         ),
-        if (!data.isPlaying)
-          ImmediateOpacityAnimation(
-            duration: kShortAnimationDuration,
-            child: MediaThumbnailIcon(
-              icon: const Icon(Icons.gif),
-              compact: compact,
-            ),
+        AnimatedOpacity(
+          opacity: data.isPlaying ? 0 : 1,
+          duration: kShortAnimationDuration,
+          curve: Curves.easeInOut,
+          child: MediaThumbnailIcon(
+            icon: const Icon(Icons.gif),
+            compact: compact,
           ),
+        ),
       ],
     );
   }
