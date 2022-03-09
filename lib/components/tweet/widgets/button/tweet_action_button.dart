@@ -129,7 +129,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       ),
     );
 
-    final label = widget.value != null
+    final label = widget.value != null && widget.value != 0
         ? AnimatedDefaultTextStyle(
             duration: kShortAnimationDuration,
             style: textStyle,
@@ -162,6 +162,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       style: style,
       child: AnimatedSize(
         duration: kShortAnimationDuration,
+        alignment: Alignment.centerLeft,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
