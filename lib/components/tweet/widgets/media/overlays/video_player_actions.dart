@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
@@ -149,9 +150,11 @@ class VideoPlayerQualityButton extends ConsumerWidget {
 
 class VideoPlayerFullscreenButton extends ConsumerWidget {
   const VideoPlayerFullscreenButton({
+    required this.tweet,
     this.padding,
   });
 
+  final TweetData tweet;
   final EdgeInsets? padding;
 
   @override
@@ -159,12 +162,28 @@ class VideoPlayerFullscreenButton extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return HarpyButton.icon(
-      icon: const Icon(Icons.fullscreen, color: Colors.white),
+      icon: const Icon(Icons.fullscreen_rounded, color: Colors.white),
       padding: padding ?? EdgeInsets.all(display.smallPaddingValue),
-      // TODO: fullscreen video
-      onTap: () {
-        // HapticFeedback.lightImpact();
-      },
+      onTap: () => Navigator.of(context).push<void>(
+        HeroDialogRoute(
+          builder: (_) => TweetFullscreenVideo(tweet: tweet),
+        ),
+      ),
+    );
+  }
+}
+
+class VideoPlayerCloseFullscreenButton extends ConsumerWidget {
+  const VideoPlayerCloseFullscreenButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final display = ref.watch(displayPreferencesProvider);
+
+    return HarpyButton.icon(
+      icon: const Icon(Icons.fullscreen_exit_rounded, color: Colors.white),
+      padding: EdgeInsets.all(display.smallPaddingValue),
+      onTap: Navigator.of(context).pop,
     );
   }
 }

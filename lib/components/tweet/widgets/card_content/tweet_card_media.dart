@@ -63,6 +63,7 @@ class TweetCardMedia extends ConsumerWidget {
           heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
           onVideoLongPress: () => onMediaLongPress(tweet.media.single),
           overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
+            tweet: tweet,
             data: data,
             notifier: notifier,
             onVideoTap: () => Navigator.of(context).push<void>(

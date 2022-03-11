@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -11,15 +12,17 @@ import 'package:harpy/rby/rby.dart';
 class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
   const SmallVideoPlayerOverlay({
     required this.child,
-    required this.data,
+    required this.tweet,
     required this.notifier,
+    required this.data,
     this.onVideoTap,
     this.onVideoLongPress,
   });
 
   final Widget child;
-  final VideoPlayerStateData data;
+  final TweetData tweet;
   final VideoPlayerNotifier notifier;
+  final VideoPlayerStateData data;
   final VoidCallback? onVideoTap;
   final VoidCallback? onVideoLongPress;
 
@@ -110,6 +113,7 @@ class _SmallVideoPlayerOverlayState
                       SizedBox(width: display.smallPaddingValue / 2),
                       const Spacer(),
                       VideoPlayerFullscreenButton(
+                        tweet: widget.tweet,
                         padding: EdgeInsets.all(display.smallPaddingValue / 2),
                       ),
                       SizedBox(width: display.smallPaddingValue / 2),

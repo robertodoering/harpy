@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -134,6 +135,7 @@ class TweetGalleryVideo extends ConsumerWidget {
         child: state.maybeMap(
           data: (data) => StaticVideoPlayerOverlay(
             data: data,
+            tweet: tweet,
             notifier: notifier,
             onVideoLongPress: onVideoLongPress,
             child: VideoPlayer(notifier.controller),
@@ -151,6 +153,92 @@ class TweetGalleryVideo extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class TweetFullscreenVideo extends ConsumerStatefulWidget {
+  const TweetFullscreenVideo({
+    required this.tweet,
+  });
+
+  final TweetData tweet;
+
+  @override
+  _FullscreenVideoState createState() => _FullscreenVideoState();
+}
+
+class _FullscreenVideoState extends ConsumerState<TweetFullscreenVideo> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [],
+    );
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+    final mediaData = widget.tweet.media.single as VideoMediaData;
+    final arguments = _videoArguments(mediaData);
+
+    final state = ref.watch(videoPlayerProvider(arguments));
+    final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
+
+    final int quarterTurns;
+
+    if (mediaData.aspectRatioDouble > 1) {
+      quarterTurns = orientation == Orientation.portrait ? 1 : 0;
+    } else {
+      quarterTurns = orientation == Orientation.portrait ? 0 : 1;
+    }
+
+    return Stack(
+      children: [
+        Container(color: Colors.black87),
+        GestureDetector(onTap: Navigator.of(context).pop),
+        RotatedBox(
+          quarterTurns: quarterTurns,
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: mediaData.aspectRatioDouble,
+              child: state.maybeMap(
+                data: (data) => DynamicVideoPlayerOverlay(
+                  notifier: notifier,
+                  data: data,
+                  child: VideoPlayer(notifier.controller),
+                ),
+                loading: (_) => MediaThumbnail(
+                  thumbnail: mediaData.thumbnail,
+                  center: const MediaThumbnailIcon(
+                    icon: CircularProgressIndicator(),
+                  ),
+                ),
+                orElse: () => MediaThumbnail(
+                  thumbnail: mediaData.thumbnail,
+                  center: const MediaThumbnailIcon(
+                    icon: Icon(Icons.play_arrow_rounded),
+                  ),
+                  onTap: notifier.initialize,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

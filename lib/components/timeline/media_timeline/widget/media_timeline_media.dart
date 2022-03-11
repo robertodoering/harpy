@@ -75,6 +75,7 @@ class MediaTimelineMedia extends ConsumerWidget {
             compact: true,
             onVideoLongPress: onMediaLongPress,
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
+              tweet: entry.tweet,
               data: data,
               notifier: notifier,
               onVideoTap: onTap,

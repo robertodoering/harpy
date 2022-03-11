@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 final videoAutopauseObserver = Provider(
   (ref) => VideoAutopauseObserver(
@@ -11,7 +12,7 @@ final videoAutopauseObserver = Provider(
 );
 
 /// Uses the [VideoPlayerHandler] to automatically pause every active video on
-/// navigation.
+/// navigation (with some exceptions).
 class VideoAutopauseObserver extends RouteObserver {
   VideoAutopauseObserver({
     required Reader read,
@@ -23,7 +24,7 @@ class VideoAutopauseObserver extends RouteObserver {
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
 
-    if (route is! HeroDialogRoute) {
+    if (route is! HeroDialogRoute && route is! ModalBottomSheetRoute) {
       _read(videoPlayerHandlerProvider).act((notifier) => notifier.pause());
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -8,18 +8,20 @@ import 'package:harpy/rby/rby.dart';
 /// Overlay for video players where the UI elements are always visible.
 ///
 /// Used for videos in tweet cards.
-class StaticVideoPlayerOverlay extends ConsumerStatefulWidget {
+class StaticVideoPlayerOverlay extends StatefulWidget {
   const StaticVideoPlayerOverlay({
     required this.child,
-    required this.data,
+    required this.tweet,
     required this.notifier,
+    required this.data,
     this.onVideoTap,
     this.onVideoLongPress,
   });
 
   final Widget child;
-  final VideoPlayerStateData data;
+  final TweetData tweet;
   final VideoPlayerNotifier notifier;
+  final VideoPlayerStateData data;
   final VoidCallback? onVideoTap;
   final VoidCallback? onVideoLongPress;
 
@@ -28,8 +30,7 @@ class StaticVideoPlayerOverlay extends ConsumerStatefulWidget {
       _StaticVideoPlayerOverlayState();
 }
 
-class _StaticVideoPlayerOverlayState
-    extends ConsumerState<StaticVideoPlayerOverlay> {
+class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay> {
   Widget? _playbackIcon;
 
   void _showPlay() {
@@ -102,7 +103,7 @@ class _StaticVideoPlayerOverlayState
                         data: widget.data,
                         notifier: widget.notifier,
                       ),
-                    const VideoPlayerFullscreenButton(),
+                    VideoPlayerFullscreenButton(tweet: widget.tweet),
                     smallHorizontalSpacer,
                   ],
                 ),
