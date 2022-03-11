@@ -2,9 +2,11 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class MediaTimeline extends ConsumerStatefulWidget {
@@ -26,7 +28,7 @@ class MediaTimeline extends ConsumerStatefulWidget {
 
 class _MediaTimelineState extends ConsumerState<MediaTimeline>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _controller = ScrollController();
+  final AutoScrollController _controller = AutoScrollController();
 
   @override
   bool get wantKeepAlive => true;
@@ -66,7 +68,10 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
               ),
               SliverPadding(
                 padding: display.edgeInsets,
-                sliver: _MediaList(entries: mediaEntries),
+                sliver: _MediaList(
+                  entries: mediaEntries,
+                  controller: _controller,
+                ),
               ),
             ],
             ...?timelineState.mapOrNull(
@@ -90,13 +95,65 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
 class _MediaList extends ConsumerWidget {
   const _MediaList({
     required this.entries,
+    required this.controller,
   });
 
   final BuiltList<MediaTimelineEntry> entries;
+  final AutoScrollController controller;
 
-  Widget _itemBuilder(BuildContext context, int index) {
-    return MediaTimelineMedia(
-      entry: entries[index],
+  Widget _itemBuilder(BuildContext context, Reader read, int index) {
+    return AutoScrollTag(
+      key: ValueKey(entries[index]),
+      controller: controller,
+      index: index,
+      child: MediaTimelineMedia(
+        entry: entries[index],
+        onTap: () => Navigator.of(context).push<void>(
+          HeroDialogRoute(
+            builder: (_) => MediaGallery(
+              initialIndex: index,
+              itemCount: entries.length,
+              onPageChanged: (index) => controller.scrollToIndex(
+                index,
+                duration: kShortAnimationDuration,
+                preferPosition: AutoScrollPosition.middle,
+              ),
+              builder: (index) {
+                final provider = tweetProvider(entries[index].tweet);
+
+                final tweet = read(provider);
+                final tweetNotifier = read(provider.notifier);
+
+                return MediaGalleryEntry(
+                  provider: provider,
+                  delegates: defaultTweetDelegates(tweet, tweetNotifier),
+                  media: entries[index].media,
+                  builder: (_) {
+                    final heroTag =
+                        'media${mediaHeroTag(context, entries[index].media)}';
+
+                    switch (entries[index].media.type) {
+                      case MediaType.image:
+                        return TweetGalleryImage(
+                          media: entries[index].media,
+                          heroTag: heroTag,
+                          borderRadius: read(harpyThemeProvider).borderRadius,
+                        );
+                      case MediaType.gif:
+                        return TweetGalleryGif(tweet: tweet, heroTag: heroTag);
+                      case MediaType.video:
+                        return TweetGalleryVideo(
+                          tweet: tweet,
+                          heroTag: heroTag,
+                        );
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -112,7 +169,7 @@ class _MediaList extends ConsumerWidget {
         crossAxisSpacing: display.smallPaddingValue,
       ),
       delegate: SliverChildBuilderDelegate(
-        _itemBuilder,
+        (context, index) => _itemBuilder(context, ref.read, index),
         childCount: entries.length,
       ),
     );

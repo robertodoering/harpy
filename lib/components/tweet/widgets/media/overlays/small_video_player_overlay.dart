@@ -7,19 +7,21 @@ import 'package:harpy/rby/rby.dart';
 
 /// Overlay for video players that builds compact actions and icons.
 ///
-/// Used in the media timeline.
+/// Used for videos in the media timeline.
 class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
   const SmallVideoPlayerOverlay({
     required this.child,
     required this.data,
     required this.notifier,
     this.onVideoTap,
+    this.onVideoLongPress,
   });
 
   final Widget child;
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
   final VoidCallback? onVideoTap;
+  final VoidCallback? onVideoLongPress;
 
   @override
   _SmallVideoPlayerOverlayState createState() =>
@@ -69,6 +71,7 @@ class _SmallVideoPlayerOverlayState
                   widget.notifier.togglePlayback();
                   widget.data.isPlaying ? _showPause() : _showPlay();
                 },
+            onLongPress: widget.onVideoLongPress,
             child: widget.child,
           ),
           VideoPlayerDoubleTapActions(

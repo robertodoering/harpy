@@ -5,18 +5,23 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
+/// Overlay for video players where the UI elements are always visible.
+///
+/// Used for videos in tweet cards.
 class StaticVideoPlayerOverlay extends ConsumerStatefulWidget {
   const StaticVideoPlayerOverlay({
     required this.child,
     required this.data,
     required this.notifier,
     this.onVideoTap,
+    this.onVideoLongPress,
   });
 
   final Widget child;
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
   final VoidCallback? onVideoTap;
+  final VoidCallback? onVideoLongPress;
 
   @override
   _StaticVideoPlayerOverlayState createState() =>
@@ -61,6 +66,7 @@ class _StaticVideoPlayerOverlayState
                   widget.notifier.togglePlayback();
                   widget.data.isPlaying ? _showPause() : _showPlay();
                 },
+            onLongPress: widget.onVideoLongPress,
             child: widget.child,
           ),
           VideoPlayerDoubleTapActions(

@@ -10,6 +10,7 @@ class GifVideoPlayerOverlay extends StatelessWidget {
     required this.data,
     this.compact = false,
     this.onGifTap,
+    this.onGifLongPress,
   });
 
   final Widget child;
@@ -17,6 +18,7 @@ class GifVideoPlayerOverlay extends StatelessWidget {
   final VideoPlayerStateData data;
   final bool compact;
   final VoidCallback? onGifTap;
+  final VoidCallback? onGifLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class GifVideoPlayerOverlay extends StatelessWidget {
                 HapticFeedback.lightImpact();
                 notifier.togglePlayback();
               },
+          onLongPress: onGifLongPress,
           child: child,
         ),
         AnimatedOpacity(

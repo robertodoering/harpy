@@ -2,21 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:photo_view/photo_view.dart';
 
-class MediaGallery extends ConsumerStatefulWidget {
-  const MediaGallery({
+typedef GalleryEntryBuilder = MediaGalleryEntry Function(int index);
+
+class MediaGalleryEntry {
+  const MediaGalleryEntry({
     required this.provider,
     required this.delegates,
+    required this.media,
     required this.builder,
-    required this.itemCount,
-    this.initialIndex = 0,
   });
 
   final StateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
-  final IndexedWidgetBuilder builder;
+  final MediaData media;
+  final WidgetBuilder builder;
+}
+
+/// Shows multiple tweet media in a [HarpyPhotoGallery].
+///
+/// * Used by [TweetImages] to showcase all images for a tweet in one gallery.
+/// * Used by [MediaTimeline] to show all media entries in a single gallery.
+class MediaGallery extends ConsumerStatefulWidget {
+  const MediaGallery({
+    required this.builder,
+    required this.itemCount,
+    this.initialIndex = 0,
+    this.onPageChanged,
+  });
+
+  final GalleryEntryBuilder builder;
   final int itemCount;
   final int initialIndex;
+  final IndexedVoidCallback? onPageChanged;
 
   @override
   _MediaGalleryState createState() => _MediaGalleryState();
@@ -34,17 +53,24 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
 
   @override
   Widget build(BuildContext context) {
-    final tweet = ref.watch(widget.provider);
+    final entry = widget.builder(_index);
 
     return MediaGalleryOverlay(
-      provider: widget.provider,
-      media: tweet.media[_index],
-      delegates: widget.delegates,
-      child: HarpyImageGallery(
+      provider: entry.provider,
+      media: entry.media,
+      delegates: entry.delegates,
+      child: HarpyPhotoGallery(
         initialIndex: widget.initialIndex,
         itemCount: widget.itemCount,
-        builder: widget.builder,
-        onPageChanged: (index) => setState(() => _index = index),
+        // disallow zooming in on videos
+        maxScale: entry.media.type == MediaType.video
+            ? PhotoViewComputedScale.covered
+            : null,
+        builder: (context, index) => widget.builder(index).builder(context),
+        onPageChanged: (index) {
+          widget.onPageChanged?.call(index);
+          setState(() => _index = index);
+        },
       ),
     );
   }

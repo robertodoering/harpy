@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class HarpyImageGallery extends StatefulWidget {
-  const HarpyImageGallery({
+class HarpyPhotoGallery extends StatefulWidget {
+  const HarpyPhotoGallery({
     required this.builder,
     required this.itemCount,
     this.initialIndex = 0,
+    this.maxScale,
     this.onPageChanged,
   }) : assert(itemCount > 0);
 
   final IndexedWidgetBuilder builder;
   final int itemCount;
   final int initialIndex;
+  final PhotoViewComputedScale? maxScale;
   final ValueChanged<int>? onPageChanged;
 
   @override
-  State<HarpyImageGallery> createState() => _HarpyImageGalleryState();
+  State<HarpyPhotoGallery> createState() => _HarpyPhotoGalleryState();
 }
 
-class _HarpyImageGalleryState extends State<HarpyImageGallery> {
+class _HarpyPhotoGalleryState extends State<HarpyPhotoGallery> {
   @override
   Widget build(BuildContext context) {
     return PhotoViewGallery.builder(
@@ -30,7 +32,8 @@ class _HarpyImageGalleryState extends State<HarpyImageGallery> {
       builder: (_, index) => PhotoViewGalleryPageOptions.customChild(
         initialScale: PhotoViewComputedScale.covered,
         minScale: PhotoViewComputedScale.contained,
-        maxScale: PhotoViewComputedScale.covered * 3,
+        maxScale: widget.maxScale ?? PhotoViewComputedScale.covered * 3,
+        disableGestures: true,
         child: Stack(
           children: [
             GestureDetector(onTap: Navigator.of(context).pop),
@@ -42,6 +45,8 @@ class _HarpyImageGalleryState extends State<HarpyImageGallery> {
   }
 }
 
+/// A flight shuttle builder for a [Hero] to animate the border radius of a
+/// child during the transition.
 Widget borderRadiusFlightShuttleBuilder(
   BorderRadius beginRadius,
   Animation<double> animation,

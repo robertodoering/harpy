@@ -209,7 +209,6 @@ class _OverlayTweetActions extends ConsumerWidget {
               read: read,
               tweet: tweet,
               media: media,
-              delegates: delegates,
             ),
           ),
         ],

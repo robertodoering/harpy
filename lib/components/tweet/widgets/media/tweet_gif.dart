@@ -17,14 +17,18 @@ class TweetGif extends ConsumerWidget {
   const TweetGif({
     required this.tweet,
     required this.heroTag,
+    this.placeholderBuilder,
     this.compact = false,
     this.onGifTap,
+    this.onGifLongPress,
   });
 
   final TweetData tweet;
   final Object heroTag;
+  final HeroPlaceholderBuilder? placeholderBuilder;
   final bool compact;
   final VoidCallback? onGifTap;
+  final VoidCallback? onGifLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,11 +48,13 @@ class TweetGif extends ConsumerWidget {
       child: state.maybeMap(
         data: (value) => Hero(
           tag: heroTag,
+          placeholderBuilder: placeholderBuilder,
           child: GifVideoPlayerOverlay(
             notifier: notifier,
             data: value,
             compact: compact,
             onGifTap: onGifTap,
+            onGifLongPress: onGifLongPress,
             child: OverflowBox(
               maxHeight: double.infinity,
               child: AspectRatio(
@@ -72,6 +78,7 @@ class TweetGif extends ConsumerWidget {
             compact: compact,
           ),
           onTap: () => notifier.initialize(volume: 0),
+          onLongPress: onGifLongPress,
         ),
       ),
     );

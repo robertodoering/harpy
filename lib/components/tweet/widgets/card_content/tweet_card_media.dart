@@ -18,16 +18,23 @@ class TweetCardMedia extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
-
     final tweet = ref.watch(provider);
 
     Widget child;
+
+    void onMediaLongPress(MediaData media) => showMediaActionsBottomSheet(
+          context,
+          read: ref.read,
+          tweet: tweet,
+          media: media,
+        );
 
     switch (tweet.mediaType) {
       case MediaType.image:
         child = TweetImages(
           provider: provider,
           delegates: delegates,
+          onImageLongPress: (index) => onMediaLongPress(tweet.media[index]),
         );
         break;
       case MediaType.gif:
@@ -47,12 +54,14 @@ class TweetCardMedia extends ConsumerWidget {
               ),
             ),
           ),
+          onGifLongPress: () => onMediaLongPress(tweet.media.single),
         );
         break;
       case MediaType.video:
         child = TweetVideo(
           tweet: tweet,
           heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
+          onVideoLongPress: () => onMediaLongPress(tweet.media.single),
           overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
             data: data,
             notifier: notifier,
@@ -64,17 +73,19 @@ class TweetCardMedia extends ConsumerWidget {
                   delegates: delegates,
                   child: TweetGalleryVideo(
                     tweet: tweet,
-                    heroTag:
-                        'tweet${mediaHeroTag(context, tweet.media.single)}',
+                    heroTag: 'tweet'
+                        '${mediaHeroTag(context, tweet.media.single)}',
                   ),
                 ),
               ),
             ),
+            onVideoLongPress: () => onMediaLongPress(tweet.media.single),
             child: child,
           ),
         );
         break;
       case null:
+        assert(false);
         return const SizedBox();
     }
 

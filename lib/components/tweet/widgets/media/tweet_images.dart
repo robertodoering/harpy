@@ -8,10 +8,12 @@ class TweetImages extends ConsumerWidget {
   const TweetImages({
     required this.provider,
     required this.delegates,
+    this.onImageLongPress,
   });
 
   final StateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
+  final IndexedVoidCallback? onImageLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,53 +27,26 @@ class TweetImages extends ConsumerWidget {
       onImageTap: (index) => Navigator.of(context).push<void>(
         HeroDialogRoute(
           builder: (_) => MediaGallery(
-            provider: provider,
-            delegates: delegates,
             initialIndex: index,
             itemCount: tweet.media.length,
-            builder: (_, index) => AspectRatio(
-              aspectRatio: tweet.media[index].aspectRatioDouble,
-              child: Hero(
-                tag: 'tweet${mediaHeroTag(context, tweet.media[index])}',
-                flightShuttleBuilder: (
-                  _,
-                  animation,
-                  flightDirection,
-                  fromHeroContext,
-                  toHeroContext,
-                ) =>
-                    _flightShuttleBuilder(
-                  _borderRadiusForImage(
-                    harpyTheme.radius,
-                    index,
-                    tweet.media.length,
-                  ),
-                  animation,
-                  flightDirection,
-                  fromHeroContext,
-                  toHeroContext,
-                ),
-                child: HarpyImage(
-                  imageUrl: tweet.media[index].appropriateUrl(
-                    mediaPreferences,
-                    connectivity,
-                  ),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
+            builder: (index) => MediaGalleryEntry(
+              provider: provider,
+              delegates: delegates,
+              media: tweet.media[index],
+              builder: (_) => TweetGalleryImage(
+                media: tweet.media[index],
+                heroTag: 'tweet${mediaHeroTag(context, tweet.media[index])}',
+                borderRadius: _borderRadiusForImage(
+                  harpyTheme.radius,
+                  index,
+                  tweet.media.length,
                 ),
               ),
             ),
           ),
         ),
       ),
-      onImageLongPress: (index) => showMediaActionsBottomSheet(
-        context,
-        read: ref.read,
-        tweet: tweet,
-        media: tweet.media[index],
-        delegates: delegates,
-      ),
+      onImageLongPress: onImageLongPress,
       children: [
         for (final image in tweet.media)
           Hero(
@@ -85,6 +60,51 @@ class TweetImages extends ConsumerWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class TweetGalleryImage extends ConsumerWidget {
+  const TweetGalleryImage({
+    required this.media,
+    required this.heroTag,
+    required this.borderRadius,
+  });
+
+  final MediaData media;
+  final Object heroTag;
+  final BorderRadius borderRadius;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mediaPreferences = ref.watch(mediaPreferencesProvider);
+    final connectivity = ref.watch(connectivityProvider);
+
+    return AspectRatio(
+      aspectRatio: media.aspectRatioDouble,
+      child: Hero(
+        tag: heroTag,
+        flightShuttleBuilder: (
+          _,
+          animation,
+          flightDirection,
+          fromHeroContext,
+          toHeroContext,
+        ) =>
+            _flightShuttleBuilder(
+          borderRadius,
+          animation,
+          flightDirection,
+          fromHeroContext,
+          toHeroContext,
+        ),
+        child: HarpyImage(
+          imageUrl: media.appropriateUrl(mediaPreferences, connectivity),
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+      ),
     );
   }
 }

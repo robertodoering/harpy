@@ -11,7 +11,6 @@ void showMediaActionsBottomSheet(
   required Reader read,
   required TweetData tweet,
   required MediaData media,
-  required TweetDelegates delegates,
 }) {
   showHarpyBottomSheet<void>(
     context,

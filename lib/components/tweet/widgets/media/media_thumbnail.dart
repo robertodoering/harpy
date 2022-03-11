@@ -10,11 +10,13 @@ class MediaThumbnail extends ConsumerWidget {
     required this.thumbnail,
     required this.center,
     this.onTap,
+    this.onLongPress,
   });
 
   final ImageMediaData thumbnail;
   final Widget center;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +27,7 @@ class MediaThumbnail extends ConsumerWidget {
       // if no tap handler is given we set an empty one to prevent gestures to
       // propagate
       onTap: onTap ?? () {},
+      onLongPress: onLongPress,
       child: Stack(
         alignment: Alignment.center,
         children: [

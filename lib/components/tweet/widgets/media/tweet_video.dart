@@ -32,13 +32,17 @@ class TweetVideo extends ConsumerWidget {
     required this.tweet,
     required this.overlayBuilder,
     required this.heroTag,
+    this.placeholderBuilder,
+    this.onVideoLongPress,
     this.compact = false,
   });
 
   final TweetData tweet;
   final OverlayBuilder overlayBuilder;
   final Object heroTag;
+  final HeroPlaceholderBuilder? placeholderBuilder;
   final bool compact;
+  final VoidCallback? onVideoLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,6 +63,7 @@ class TweetVideo extends ConsumerWidget {
       child: state.maybeMap(
         data: (data) => Hero(
           tag: heroTag,
+          placeholderBuilder: placeholderBuilder,
           child: overlayBuilder(
             data,
             notifier,
@@ -85,6 +90,7 @@ class TweetVideo extends ConsumerWidget {
             compact: compact,
           ),
           onTap: notifier.initialize,
+          onLongPress: onVideoLongPress,
         ),
       ),
     );
@@ -95,10 +101,12 @@ class TweetGalleryVideo extends ConsumerWidget {
   const TweetGalleryVideo({
     required this.tweet,
     required this.heroTag,
+    this.onVideoLongPress,
   });
 
   final TweetData tweet;
   final Object heroTag;
+  final VoidCallback? onVideoLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -127,6 +135,7 @@ class TweetGalleryVideo extends ConsumerWidget {
           child: StaticVideoPlayerOverlay(
             data: data,
             notifier: notifier,
+            onVideoLongPress: onVideoLongPress,
             child: VideoPlayer(notifier.controller),
           ),
         ),
@@ -139,6 +148,7 @@ class TweetGalleryVideo extends ConsumerWidget {
         thumbnail: mediaData.thumbnail,
         center: const MediaThumbnailIcon(icon: Icon(Icons.play_arrow_rounded)),
         onTap: notifier.initialize,
+        onLongPress: onVideoLongPress,
       ),
     );
   }

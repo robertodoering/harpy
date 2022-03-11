@@ -5,12 +5,15 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
+/// Builds the image, gif or video that is used in the [MediaTimeline].
 class MediaTimelineMedia extends ConsumerWidget {
   const MediaTimelineMedia({
     required this.entry,
+    required this.onTap,
   });
 
   final MediaTimelineEntry entry;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,20 +21,33 @@ class MediaTimelineMedia extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    // TODO: on media tap: show gallery
-    // final tweetState = ref.watch(tweetProvider(entry.tweet));
-    // final tweetNotifier = ref.watch(tweetProvider(entry.tweet).notifier);
-    // final tweetDelegates = defaultTweetDelegates(tweetState, tweetNotifier);
-
     Widget child;
+
+    void onMediaLongPress() => showMediaActionsBottomSheet(
+          context,
+          read: ref.read,
+          tweet: entry.tweet,
+          media: entry.media,
+        );
 
     switch (entry.media.type) {
       case MediaType.image:
-        child = HarpyImage(
-          imageUrl: entry.media.appropriateUrl(mediaPreferences, connectivity),
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
+        child = GestureDetector(
+          onTap: onTap,
+          onLongPress: onMediaLongPress,
+          child: Hero(
+            tag: 'media${mediaHeroTag(context, entry.media)}',
+            placeholderBuilder: (_, __, child) => child,
+            child: HarpyImage(
+              imageUrl: entry.media.appropriateUrl(
+                mediaPreferences,
+                connectivity,
+              ),
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
         );
         break;
       case MediaType.gif:
@@ -40,19 +56,10 @@ class MediaTimelineMedia extends ConsumerWidget {
           child: TweetGif(
             tweet: entry.tweet,
             heroTag: 'media${mediaHeroTag(context, entry.media)}',
+            placeholderBuilder: (_, __, child) => child,
             compact: true,
-            // onGifTap: () => Navigator.of(context).push<void>(
-            //   HeroDialogRoute(
-            //     builder: (_) => MediaGalleryOverlay(
-            //       tweet: tweetState,
-            //       delegates: tweetDelegates,
-            //       child: TweetGalleryGif(
-            //         tweet: entry.tweet,
-            //         heroTag: 'media${mediaHeroTag(context,entry.media)}',
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            onGifTap: onTap,
+            onGifLongPress: onMediaLongPress,
           ),
         );
         break;
@@ -62,22 +69,14 @@ class MediaTimelineMedia extends ConsumerWidget {
           child: TweetVideo(
             tweet: entry.tweet,
             heroTag: 'media${mediaHeroTag(context, entry.media)}',
+            placeholderBuilder: (_, __, child) => child,
             compact: true,
+            onVideoLongPress: onMediaLongPress,
             overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
               data: data,
               notifier: notifier,
-              // onVideoTap: () => Navigator.of(context).push<void>(
-              //   HeroDialogRoute(
-              //     builder: (_) => MediaGalleryOverlay(
-              //       tweet: tweetState,
-              //       delegates: tweetDelegates,
-              //       child: TweetGalleryVideo(
-              //         tweet: entry.tweet,
-              //         heroTag: 'media${mediaHeroTag(context,entry.media)}',
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              onVideoTap: onTap,
+              onVideoLongPress: onMediaLongPress,
               child: child,
             ),
           ),

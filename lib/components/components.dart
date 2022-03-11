@@ -184,7 +184,7 @@ export 'widgets/harpy_circle_avatar.dart';
 export 'widgets/harpy_dialog.dart';
 export 'widgets/harpy_dismissible.dart';
 export 'widgets/harpy_image.dart';
-export 'widgets/harpy_image_gallery.dart';
+export 'widgets/harpy_photo_gallery.dart';
 export 'widgets/harpy_list_card.dart';
 export 'widgets/harpy_list_tile.dart';
 export 'widgets/harpy_pro_card.dart';

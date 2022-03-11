@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
+/// Overlay for video players where the UI elements automatically hide to avoid
+/// obscuring the content.
+///
+/// Used for fullscreen videos.
 class DynamicVideoPlayerOverlay extends StatelessWidget {
   const DynamicVideoPlayerOverlay({
     required this.child,
@@ -14,6 +18,8 @@ class DynamicVideoPlayerOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: build dynamic fullscreen video overlay
+
     return Stack(
       alignment: Alignment.center,
       children: [
