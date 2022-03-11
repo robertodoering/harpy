@@ -4,7 +4,7 @@ import 'dart:typed_data';
 /// widget tests.
 ///
 /// Copied from https://github.com/brianegan/transparent_image.
-final kTransparentImage = Uint8List.fromList([
+final kTransparentImage = Uint8List.fromList(const [
   0x89,
   0x50,
   0x4E,
