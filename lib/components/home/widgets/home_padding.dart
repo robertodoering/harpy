@@ -9,17 +9,10 @@ class HomeTopPadding extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final general = ref.watch(generalPreferencesProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return general.bottomAppBar
         ? SizedBox(height: mediaQuery.padding.top)
-        : SizedBox(
-            height: HomeAppBar.height(
-              context,
-              general: general,
-              display: display,
-            ),
-          );
+        : SizedBox(height: HomeAppBar.height(context, ref.read));
   }
 }
 
@@ -41,16 +34,9 @@ class HomeBottomPadding extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final general = ref.watch(generalPreferencesProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return general.bottomAppBar
-        ? SizedBox(
-            height: HomeAppBar.height(
-              context,
-              general: general,
-              display: display,
-            ),
-          )
+        ? SizedBox(height: HomeAppBar.height(context, ref.read))
         : SizedBox(height: mediaQuery.padding.bottom);
   }
 }

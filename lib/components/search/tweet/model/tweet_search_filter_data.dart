@@ -13,7 +13,7 @@ class TweetSearchFilterData with _$TweetSearchFilterData {
   factory TweetSearchFilterData({
     @Default('') String tweetAuthor,
     @Default('') String replyingTo,
-    @Default(TweetSearchResultType.popular) TweetSearchResultType resultType,
+    @Default(TweetSearchResultType.mixed) TweetSearchResultType resultType,
     @Default(<String>[]) List<String> includesPhrases,
     @Default(<String>[]) List<String> includesHashtags,
     @Default(<String>[]) List<String> includesMentions,
@@ -39,8 +39,6 @@ class TweetSearchFilterData with _$TweetSearchFilterData {
       includesUrls.isNotEmpty;
 
   bool isEmpty() => this == TweetSearchFilterData();
-
-  // TODO: valid flag
 
   String buildQuery() {
     final filters = <String>[];

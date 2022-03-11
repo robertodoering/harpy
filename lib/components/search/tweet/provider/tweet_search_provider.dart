@@ -79,9 +79,14 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
     }
   }
 
-  void clear() {
-    state = const TweetSearchState.initial();
+  Future<void> refresh() {
+    return search(
+      customQuery: state.query,
+      filter: state.filter,
+    );
   }
+
+  void clear() => state = const TweetSearchState.initial();
 }
 
 @freezed

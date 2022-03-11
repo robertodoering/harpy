@@ -7,14 +7,11 @@ import 'package:harpy/core/core.dart';
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar();
 
-  static double height(
-    BuildContext context, {
-    required GeneralPreferences general,
-    required DisplayPreferences display,
-  }) {
+  static double height(BuildContext context, Reader read) {
     final mediaQuery = MediaQuery.of(context);
+    final display = read(displayPreferencesProvider);
 
-    final systemPadding = general.bottomAppBar
+    final systemPadding = read(generalPreferencesProvider).bottomAppBar
         ? mediaQuery.padding.bottom
         : mediaQuery.padding.top;
 

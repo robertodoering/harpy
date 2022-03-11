@@ -55,8 +55,7 @@ class HomeTabView extends ConsumerWidget {
     final general = ref.watch(generalPreferencesProvider);
     final configuration = ref.watch(homeTabConfigurationProvider);
 
-    final appbarHeight =
-        HomeAppBar.height(context, general: general, display: display);
+    final appbarHeight = HomeAppBar.height(context, ref.read);
 
     final refreshIndicatorOffset =
         general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;

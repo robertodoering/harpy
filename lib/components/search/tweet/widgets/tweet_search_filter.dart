@@ -163,12 +163,12 @@ class _FilterGeneralGroup extends ConsumerWidget {
                 value != null ? notifier.setResultType(value) : null,
             items: const [
               DropdownMenuItem(
-                value: TweetSearchResultType.popular,
-                child: Text('popular (default)'),
+                value: TweetSearchResultType.mixed,
+                child: Text('mixed (default)'),
               ),
               DropdownMenuItem(
-                value: TweetSearchResultType.mixed,
-                child: Text('mixed '),
+                value: TweetSearchResultType.popular,
+                child: Text('popular'),
               ),
               DropdownMenuItem(
                 value: TweetSearchResultType.recent,

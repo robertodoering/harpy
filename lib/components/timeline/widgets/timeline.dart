@@ -117,7 +117,10 @@ class _TimelineState extends ConsumerState<Timeline>
         number: _newestVisibleIndex + 1,
       ),
       child: RefreshIndicator(
-        onRefresh: notifier.load,
+        onRefresh: () async {
+          UserScrollDirection.of(context)?.idle();
+          await notifier.load();
+        },
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
         child: LoadMoreHandler(
           controller: _controller,
