@@ -160,7 +160,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
   }
 }
 
-/// Creates a hero tag for the media which is unique for each route.
+/// Creates a hero tag for the media which is unique for each [HarpyPage].
 String mediaHeroTag(BuildContext context, MediaData media) {
   final routeSettings = ModalRoute.of(context)?.settings;
 

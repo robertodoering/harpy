@@ -45,11 +45,11 @@ class TweetGif extends ConsumerWidget {
       state: state,
       notifier: notifier,
       enableAutoplay: mediaPreferences.shouldAutoplayGifs(connectivity),
-      child: state.maybeMap(
-        data: (value) => Hero(
-          tag: heroTag,
-          placeholderBuilder: placeholderBuilder,
-          child: GifVideoPlayerOverlay(
+      child: Hero(
+        tag: heroTag,
+        placeholderBuilder: placeholderBuilder,
+        child: state.maybeMap(
+          data: (value) => GifVideoPlayerOverlay(
             notifier: notifier,
             data: value,
             compact: compact,
@@ -63,22 +63,22 @@ class TweetGif extends ConsumerWidget {
               ),
             ),
           ),
-        ),
-        loading: (_) => MediaThumbnail(
-          thumbnail: mediaData.thumbnail,
-          center: MediaThumbnailIcon(
-            icon: const CircularProgressIndicator(),
-            compact: compact,
+          loading: (_) => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: MediaThumbnailIcon(
+              icon: const CircularProgressIndicator(),
+              compact: compact,
+            ),
           ),
-        ),
-        orElse: () => MediaThumbnail(
-          thumbnail: mediaData.thumbnail,
-          center: MediaThumbnailIcon(
-            icon: const Icon(Icons.gif),
-            compact: compact,
+          orElse: () => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: MediaThumbnailIcon(
+              icon: const Icon(Icons.gif),
+              compact: compact,
+            ),
+            onTap: () => notifier.initialize(volume: 0),
+            onLongPress: onGifLongPress,
           ),
-          onTap: () => notifier.initialize(volume: 0),
-          onLongPress: onGifLongPress,
         ),
       ),
     );
@@ -104,35 +104,35 @@ class TweetGalleryGif extends ConsumerWidget {
     final state = ref.watch(videoPlayerProvider(arguments));
     final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
-    return state.maybeMap(
-      data: (value) => Hero(
-        tag: heroTag,
-        flightShuttleBuilder:
-            (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
-                borderRadiusFlightShuttleBuilder(
-          harpyTheme.borderRadius,
-          animation,
-          flightDirection,
-          fromHeroContext,
-          toHeroContext,
-        ),
-        child: AspectRatio(
-          aspectRatio: mediaData.aspectRatioDouble,
-          child: GifVideoPlayerOverlay(
+    return Hero(
+      tag: heroTag,
+      flightShuttleBuilder:
+          (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
+              borderRadiusFlightShuttleBuilder(
+        harpyTheme.borderRadius,
+        animation,
+        flightDirection,
+        fromHeroContext,
+        toHeroContext,
+      ),
+      child: AspectRatio(
+        aspectRatio: mediaData.aspectRatioDouble,
+        child: state.maybeMap(
+          data: (value) => GifVideoPlayerOverlay(
             notifier: notifier,
             data: value,
             child: VideoPlayer(notifier.controller),
           ),
+          loading: (_) => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
+          ),
+          orElse: () => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: const MediaThumbnailIcon(icon: Icon(Icons.gif)),
+            onTap: () => notifier.initialize(volume: 0),
+          ),
         ),
-      ),
-      loading: (_) => MediaThumbnail(
-        thumbnail: mediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
-      ),
-      orElse: () => MediaThumbnail(
-        thumbnail: mediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: Icon(Icons.gif)),
-        onTap: () => notifier.initialize(volume: 0),
       ),
     );
   }

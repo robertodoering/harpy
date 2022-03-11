@@ -23,6 +23,8 @@ class MediaTimelineMedia extends ConsumerWidget {
 
     Widget child;
 
+    final heroTag = 'media${mediaHeroTag(context, entry.media)}';
+
     void onMediaLongPress() => showMediaActionsBottomSheet(
           context,
           read: ref.read,
@@ -36,7 +38,7 @@ class MediaTimelineMedia extends ConsumerWidget {
           onTap: onTap,
           onLongPress: onMediaLongPress,
           child: Hero(
-            tag: 'media${mediaHeroTag(context, entry.media)}',
+            tag: heroTag,
             placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(
               imageUrl: entry.media.appropriateUrl(
@@ -55,7 +57,7 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetGif(
             tweet: entry.tweet,
-            heroTag: 'media${mediaHeroTag(context, entry.media)}',
+            heroTag: heroTag,
             placeholderBuilder: (_, __, child) => child,
             compact: true,
             onGifTap: onTap,
@@ -68,7 +70,7 @@ class MediaTimelineMedia extends ConsumerWidget {
           detectorKey: ObjectKey(entry),
           child: TweetVideo(
             tweet: entry.tweet,
-            heroTag: 'media${mediaHeroTag(context, entry.media)}',
+            heroTag: heroTag,
             placeholderBuilder: (_, __, child) => child,
             compact: true,
             onVideoLongPress: onMediaLongPress,

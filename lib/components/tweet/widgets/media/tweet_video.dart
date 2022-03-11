@@ -60,11 +60,11 @@ class TweetVideo extends ConsumerWidget {
       state: state,
       notifier: notifier,
       enableAutoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
-      child: state.maybeMap(
-        data: (data) => Hero(
-          tag: heroTag,
-          placeholderBuilder: placeholderBuilder,
-          child: overlayBuilder(
+      child: Hero(
+        tag: heroTag,
+        placeholderBuilder: placeholderBuilder,
+        child: state.maybeMap(
+          data: (data) => overlayBuilder(
             data,
             notifier,
             OverflowBox(
@@ -75,22 +75,22 @@ class TweetVideo extends ConsumerWidget {
               ),
             ),
           ),
-        ),
-        loading: (_) => MediaThumbnail(
-          thumbnail: mediaData.thumbnail,
-          center: MediaThumbnailIcon(
-            icon: const CircularProgressIndicator(),
-            compact: compact,
+          loading: (_) => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: MediaThumbnailIcon(
+              icon: const CircularProgressIndicator(),
+              compact: compact,
+            ),
           ),
-        ),
-        orElse: () => MediaThumbnail(
-          thumbnail: mediaData.thumbnail,
-          center: MediaThumbnailIcon(
-            icon: const Icon(Icons.play_arrow_rounded),
-            compact: compact,
+          orElse: () => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: MediaThumbnailIcon(
+              icon: const Icon(Icons.play_arrow_rounded),
+              compact: compact,
+            ),
+            onTap: notifier.initialize,
+            onLongPress: onVideoLongPress,
           ),
-          onTap: notifier.initialize,
-          onLongPress: onVideoLongPress,
         ),
       ),
     );
@@ -118,37 +118,38 @@ class TweetGalleryVideo extends ConsumerWidget {
     final state = ref.watch(videoPlayerProvider(arguments));
     final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
 
-    return state.maybeMap(
-      data: (data) => Hero(
-        tag: heroTag,
-        flightShuttleBuilder:
-            (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
-                borderRadiusFlightShuttleBuilder(
-          harpyTheme.borderRadius,
-          animation,
-          flightDirection,
-          fromHeroContext,
-          toHeroContext,
-        ),
-        child: AspectRatio(
-          aspectRatio: mediaData.aspectRatioDouble,
-          child: StaticVideoPlayerOverlay(
+    return Hero(
+      tag: heroTag,
+      flightShuttleBuilder:
+          (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
+              borderRadiusFlightShuttleBuilder(
+        harpyTheme.borderRadius,
+        animation,
+        flightDirection,
+        fromHeroContext,
+        toHeroContext,
+      ),
+      child: AspectRatio(
+        aspectRatio: mediaData.aspectRatioDouble,
+        child: state.maybeMap(
+          data: (data) => StaticVideoPlayerOverlay(
             data: data,
             notifier: notifier,
             onVideoLongPress: onVideoLongPress,
             child: VideoPlayer(notifier.controller),
           ),
+          loading: (_) => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
+          ),
+          orElse: () => MediaThumbnail(
+            thumbnail: mediaData.thumbnail,
+            center:
+                const MediaThumbnailIcon(icon: Icon(Icons.play_arrow_rounded)),
+            onTap: notifier.initialize,
+            onLongPress: onVideoLongPress,
+          ),
         ),
-      ),
-      loading: (_) => MediaThumbnail(
-        thumbnail: mediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
-      ),
-      orElse: () => MediaThumbnail(
-        thumbnail: mediaData.thumbnail,
-        center: const MediaThumbnailIcon(icon: Icon(Icons.play_arrow_rounded)),
-        onTap: notifier.initialize,
-        onLongPress: onVideoLongPress,
       ),
     );
   }
