@@ -28,13 +28,11 @@ class MediaGallery extends ConsumerStatefulWidget {
     required this.builder,
     required this.itemCount,
     this.initialIndex = 0,
-    this.onPageChanged,
   });
 
   final GalleryEntryBuilder builder;
   final int itemCount;
   final int initialIndex;
-  final IndexedVoidCallback? onPageChanged;
 
   @override
   _MediaGalleryState createState() => _MediaGalleryState();
@@ -64,10 +62,7 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
         // disallow zooming in on videos
         enableGestures: entry.media.type != MediaType.video,
         builder: (context, index) => widget.builder(index).builder(context),
-        onPageChanged: (index) {
-          widget.onPageChanged?.call(index);
-          setState(() => _index = index);
-        },
+        onPageChanged: (index) => setState(() => _index = index),
       ),
     );
   }
