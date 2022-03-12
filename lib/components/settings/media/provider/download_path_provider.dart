@@ -33,6 +33,8 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
 
     final mediaPaths = await _mediaPaths();
 
+    if (!mounted) return;
+
     if (mediaPaths == null) {
       state = const DownloadPathState.error();
       return;

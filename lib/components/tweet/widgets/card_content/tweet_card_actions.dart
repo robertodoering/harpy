@@ -44,7 +44,7 @@ class TweetCardActions extends ConsumerWidget {
       case TweetCardActionElement.showReplies:
         return Repliesbutton(
           tweet: tweet,
-          onShowReplies: delegates.onTweetTap,
+          onShowReplies: delegates.onShowTweet,
         );
       case TweetCardActionElement.reply:
         return Replybutton(

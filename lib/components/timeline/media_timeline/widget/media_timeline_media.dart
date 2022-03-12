@@ -9,15 +9,18 @@ import 'package:harpy/rby/rby.dart';
 class MediaTimelineMedia extends ConsumerWidget {
   const MediaTimelineMedia({
     required this.entry,
+    required this.delegates,
     required this.onTap,
   });
 
   final MediaTimelineEntry entry;
+  final TweetDelegates delegates;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
+    final layout = ref.watch(layoutPreferencesProvider);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
@@ -27,9 +30,9 @@ class MediaTimelineMedia extends ConsumerWidget {
 
     void onMediaLongPress() => showMediaActionsBottomSheet(
           context,
-          read: ref.read,
-          tweet: entry.tweet,
+          ref.read,
           media: entry.media,
+          delegates: delegates,
         );
 
     switch (entry.media.type) {
@@ -74,14 +77,23 @@ class MediaTimelineMedia extends ConsumerWidget {
             placeholderBuilder: (_, __, child) => child,
             compact: true,
             onVideoLongPress: onMediaLongPress,
-            overlayBuilder: (data, notifier, child) => SmallVideoPlayerOverlay(
-              tweet: entry.tweet,
-              data: data,
-              notifier: notifier,
-              onVideoTap: onTap,
-              onVideoLongPress: onMediaLongPress,
-              child: child,
-            ),
+            overlayBuilder: (data, notifier, child) => layout.mediaTiled
+                ? SmallVideoPlayerOverlay(
+                    tweet: entry.tweet,
+                    data: data,
+                    notifier: notifier,
+                    onVideoTap: onTap,
+                    onVideoLongPress: onMediaLongPress,
+                    child: child,
+                  )
+                : StaticVideoPlayerOverlay(
+                    tweet: entry.tweet,
+                    notifier: notifier,
+                    data: data,
+                    onVideoTap: onTap,
+                    onVideoLongPress: onMediaLongPress,
+                    child: child,
+                  ),
           ),
         );
         break;

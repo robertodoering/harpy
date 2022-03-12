@@ -51,7 +51,7 @@ class TweetCardTopRow extends ConsumerWidget {
               if (retweeter) ...[
                 TweetCardRetweeter(
                   tweet: tweet,
-                  onRetweeterTap: delegates.onRetweeterTap,
+                  onRetweeterTap: delegates.onShowRetweeter,
                   style: TweetCardElement.retweeter.style(config),
                 ),
                 if (avatar && name && handle) SizedBox(height: innerPadding),
@@ -60,13 +60,13 @@ class TweetCardTopRow extends ConsumerWidget {
                 // treat the whitespace between the avatar and name as a
                 // 'on user tap' gesture
                 behavior: HitTestBehavior.translucent,
-                onTap: () => delegates.onUserTap?.call(context, ref.read),
+                onTap: () => delegates.onShowUser?.call(context, ref.read),
                 child: Row(
                   children: [
                     if (avatar) ...[
                       TweetCardAvatar(
                         tweet: tweet,
-                        onUserTap: delegates.onUserTap,
+                        onUserTap: delegates.onShowUser,
                         style: TweetCardElement.avatar.style(config),
                       ),
                       SizedBox(width: outerPadding),
@@ -78,7 +78,7 @@ class TweetCardTopRow extends ConsumerWidget {
                           if (name)
                             TweetCardName(
                               tweet: tweet,
-                              onUserTap: delegates.onUserTap,
+                              onUserTap: delegates.onShowUser,
                               style: TweetCardElement.name.style(config),
                             ),
                           if (name && handle)
@@ -86,7 +86,7 @@ class TweetCardTopRow extends ConsumerWidget {
                           if (handle)
                             TweetCardHandle(
                               tweet: tweet,
-                              onUserTap: delegates.onUserTap,
+                              onUserTap: delegates.onShowUser,
                               style: TweetCardElement.handle.style(config),
                             ),
                         ],

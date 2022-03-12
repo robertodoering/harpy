@@ -24,7 +24,7 @@ class TweetCardQuote extends ConsumerWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => delegates.onTweetTap?.call(context, ref.read),
+      onTap: () => delegates.onShowTweet?.call(context, ref.read),
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: harpyTheme.borderRadius,

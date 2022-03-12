@@ -57,7 +57,9 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
         children: [
           GestureDetector(
             onTap: () {
-              if (widget.data.isFinished || widget.onVideoTap == null) {
+              if (widget.data.isFinished ||
+                  !widget.data.isPlaying ||
+                  widget.onVideoTap == null) {
                 HapticFeedback.lightImpact();
                 widget.notifier.togglePlayback();
               } else {

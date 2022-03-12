@@ -6,13 +6,15 @@ import 'package:harpy/components/components.dart';
 class DownloadButton extends ConsumerWidget {
   const DownloadButton({
     required this.tweet,
+    required this.media,
     required this.onDownload,
     this.sizeDelta = 0,
     this.foregroundColor,
   });
 
   final TweetData tweet;
-  final TweetActionCallback? onDownload;
+  final MediaData media;
+  final MediaActionCallback? onDownload;
   final double sizeDelta;
   final Color? foregroundColor;
 
@@ -31,7 +33,7 @@ class DownloadButton extends ConsumerWidget {
       foregroundColor: foregroundColor,
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onDownload?.call(context, ref.read),
+      activate: () => onDownload?.call(context, ref.read, media),
       deactivate: null,
     );
   }

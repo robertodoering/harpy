@@ -4,9 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/services/message_service.dart';
-import 'package:harpy/rby/rby.dart';
-import 'package:share_plus/share_plus.dart';
 
 void showTweetActionsBottomSheet(
   BuildContext context, {
@@ -37,7 +34,7 @@ void showTweetActionsBottomSheet(
           ],
         ),
       ),
-      if (isAuthenticatedUser && delegates.onDeleteTweet != null)
+      if (isAuthenticatedUser && delegates.onDelete != null)
         HarpyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
@@ -49,7 +46,7 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             HapticFeedback.lightImpact();
-            delegates.onDeleteTweet?.call(context, read);
+            delegates.onDelete?.call(context, read);
             Navigator.of(context).pop();
           },
         ),
@@ -66,8 +63,7 @@ void showTweetActionsBottomSheet(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),
         onTap: () {
-          HapticFeedback.lightImpact();
-          launchUrl(tweet.tweetUrl);
+          delegates.onOpenTweetExternally?.call(context, read);
           Navigator.of(context).pop();
         },
       ),
@@ -76,9 +72,7 @@ void showTweetActionsBottomSheet(
         title: const Text('copy tweet text'),
         enabled: tweet.hasText,
         onTap: () {
-          HapticFeedback.lightImpact();
-          Clipboard.setData(ClipboardData(text: tweet.visibleText));
-          read(messageServiceProvider).showText('copied tweet text');
+          delegates.onCopyText?.call(context, read);
           Navigator.of(context).pop();
         },
       ),
@@ -86,8 +80,7 @@ void showTweetActionsBottomSheet(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share tweet'),
         onTap: () {
-          HapticFeedback.lightImpact();
-          Share.share(tweet.tweetUrl);
+          delegates.onShareTweet?.call(context, read);
           Navigator.of(context).pop();
         },
       ),

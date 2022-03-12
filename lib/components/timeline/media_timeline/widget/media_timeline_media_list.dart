@@ -15,46 +15,47 @@ class MediaTimelineMediaList extends ConsumerWidget {
   final BuiltList<MediaTimelineEntry> entries;
 
   Widget _itemBuilder(BuildContext context, Reader read, int index) {
+    final provider = tweetProvider(entries[index].tweet);
+
+    final tweet = read(provider);
+    final tweetNotifier = read(provider.notifier);
+
+    final delegates = defaultTweetDelegates(tweet, tweetNotifier);
+
     return MediaTimelineMedia(
       entry: entries[index],
+      delegates: delegates,
       onTap: () => Navigator.of(context).push<void>(
         HeroDialogRoute(
           builder: (_) => MediaGallery(
             initialIndex: index,
             itemCount: entries.length,
             actions: _mediaTimelineOverlayActions,
-            builder: (index) {
-              final provider = tweetProvider(entries[index].tweet);
+            builder: (index) => MediaGalleryEntry(
+              provider: provider,
+              delegates: delegates,
+              media: entries[index].media,
+              builder: (_) {
+                final heroTag =
+                    'media${mediaHeroTag(context, entries[index].media)}';
 
-              final tweet = read(provider);
-              final tweetNotifier = read(provider.notifier);
-
-              return MediaGalleryEntry(
-                provider: provider,
-                delegates: defaultTweetDelegates(tweet, tweetNotifier),
-                media: entries[index].media,
-                builder: (_) {
-                  final heroTag =
-                      'media${mediaHeroTag(context, entries[index].media)}';
-
-                  switch (entries[index].media.type) {
-                    case MediaType.image:
-                      return TweetGalleryImage(
-                        media: entries[index].media,
-                        heroTag: heroTag,
-                        borderRadius: read(harpyThemeProvider).borderRadius,
-                      );
-                    case MediaType.gif:
-                      return TweetGalleryGif(tweet: tweet, heroTag: heroTag);
-                    case MediaType.video:
-                      return TweetGalleryVideo(
-                        tweet: tweet,
-                        heroTag: heroTag,
-                      );
-                  }
-                },
-              );
-            },
+                switch (entries[index].media.type) {
+                  case MediaType.image:
+                    return TweetGalleryImage(
+                      media: entries[index].media,
+                      heroTag: heroTag,
+                      borderRadius: read(harpyThemeProvider).borderRadius,
+                    );
+                  case MediaType.gif:
+                    return TweetGalleryGif(tweet: tweet, heroTag: heroTag);
+                  case MediaType.video:
+                    return TweetGalleryVideo(
+                      tweet: tweet,
+                      heroTag: heroTag,
+                    );
+                }
+              },
+            ),
           ),
         ),
       ),

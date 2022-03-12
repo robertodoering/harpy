@@ -17,16 +17,10 @@ class DownloadService with LoggerMixin {
     required String name,
     required String path,
   }) async {
-    try {
-      log.fine('downloading $url');
-
-      await DownloadManager.enqueue(
-        url: url,
-        path: path,
-        name: name,
-      );
-    } catch (e, st) {
-      log.severe('error while trying to download file', e, st);
-    }
+    await DownloadManager.enqueue(
+      url: url,
+      path: path,
+      name: name,
+    ).handleError(logErrorHandler);
   }
 }

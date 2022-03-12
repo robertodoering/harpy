@@ -21,7 +21,7 @@ class TweetDetailCard extends ConsumerWidget {
           tweet: tweet,
           createDelegates: (tweet, notifier) {
             return defaultTweetDelegates(tweet, notifier).copyWith(
-              onTweetTap: null,
+              onShowTweet: null,
             );
           },
           config: _detailTweetCardConfig,

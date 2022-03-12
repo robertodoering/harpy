@@ -178,7 +178,9 @@ class _OverlayTweetActions extends ConsumerWidget {
   final TweetDelegates delegates;
   final Set<MediaOverlayActions> actions;
 
-  Widget _mapAction({
+  Widget _mapAction(
+    BuildContext context,
+    Reader read, {
     required MediaOverlayActions action,
   }) {
     switch (action) {
@@ -205,17 +207,17 @@ class _OverlayTweetActions extends ConsumerWidget {
       case MediaOverlayActions.download:
         return DownloadButton(
           tweet: tweet,
+          media: media,
           sizeDelta: 2,
           foregroundColor: Colors.white,
-          // TODO: download
-          onDownload: (_, __) {},
+          onDownload: delegates.onDownloadMedia,
         );
       case MediaOverlayActions.show:
         return ShowButton(
           tweet: tweet,
           sizeDelta: 2,
           foregroundColor: Colors.white,
-          onShow: delegates.onTweetTap,
+          onShow: delegates.onShowTweet,
         );
       case MediaOverlayActions.actionsButton:
         return MoreActionsButton(
@@ -224,9 +226,9 @@ class _OverlayTweetActions extends ConsumerWidget {
           foregroundColor: Colors.white,
           onViewMoreActions: (context, read) => showMediaActionsBottomSheet(
             context,
-            read: read,
-            tweet: tweet,
+            read,
             media: media,
+            delegates: delegates,
           ),
         );
     }
@@ -252,7 +254,12 @@ class _OverlayTweetActions extends ConsumerWidget {
           .copyWith(bottom: mediaQuery.padding.bottom),
       child: Row(
         children: [
-          for (final action in actions) _mapAction(action: action),
+          for (final action in actions)
+            _mapAction(
+              context,
+              ref.read,
+              action: action,
+            ),
         ],
       ),
     );

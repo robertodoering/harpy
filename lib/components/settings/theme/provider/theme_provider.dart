@@ -21,9 +21,7 @@ final harpyThemeProvider = StateProvider(
 
 final lightThemeProvider = StateProvider(
   (ref) {
-    final lightThemeId = ref.watch(
-      themePreferencesProvider.select((value) => value.lightThemeId),
-    );
+    final lightThemeId = ref.watch(themePreferencesProvider).lightThemeId;
     final customThemes = ref.watch(customHarpyThemesProvider);
     final display = ref.watch(displayPreferencesProvider);
 
@@ -40,9 +38,7 @@ final lightThemeProvider = StateProvider(
 
 final darkThemeProvider = StateProvider(
   (ref) {
-    final darkThemeId = ref.watch(
-      themePreferencesProvider.select((value) => value.darkThemeId),
-    );
+    final darkThemeId = ref.watch(themePreferencesProvider).darkThemeId;
     final customThemes = ref.watch(customHarpyThemesProvider);
     final display = ref.watch(displayPreferencesProvider);
 
