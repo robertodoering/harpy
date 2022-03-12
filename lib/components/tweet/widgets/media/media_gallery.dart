@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:photo_view/photo_view.dart';
 
 typedef GalleryEntryBuilder = MediaGalleryEntry Function(int index);
 
@@ -63,9 +62,7 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
         initialIndex: widget.initialIndex,
         itemCount: widget.itemCount,
         // disallow zooming in on videos
-        maxScale: entry.media.type == MediaType.video
-            ? PhotoViewComputedScale.covered
-            : null,
+        enableGestures: entry.media.type != MediaType.video,
         builder: (context, index) => widget.builder(index).builder(context),
         onPageChanged: (index) {
           widget.onPageChanged?.call(index);

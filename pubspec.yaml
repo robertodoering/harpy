@@ -56,7 +56,7 @@ dependencies:
   path_provider: ^2.0.3
   pedantic: ^1.11.0
   permission_handler: ^8.1.4+2
-  photo_view: # TODO: update from upstream to fix 2.10. issue
+  photo_view:
     # custom photo_view with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git
   provider: ^6.0.0
