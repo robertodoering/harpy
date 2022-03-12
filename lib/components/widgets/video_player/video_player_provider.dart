@@ -60,6 +60,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerController get controller => _controller;
 
   void _controllerListener() {
+    if (!mounted) return;
     Wakelock.toggle(enable: _controller.value.isPlaying);
 
     if (!_controller.value.isInitialized) {
