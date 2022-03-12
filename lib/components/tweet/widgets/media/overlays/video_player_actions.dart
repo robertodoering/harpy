@@ -39,15 +39,11 @@ class VideoPlayerPlaybackButton extends ConsumerWidget {
     required this.data,
     required this.notifier,
     this.padding,
-    this.onPlay,
-    this.onPause,
   });
 
   final VideoPlayerStateData data;
   final VideoPlayerNotifier notifier;
   final EdgeInsets? padding;
-  final VoidCallback? onPlay;
-  final VoidCallback? onPause;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,7 +58,6 @@ class VideoPlayerPlaybackButton extends ConsumerWidget {
       onTap: () {
         HapticFeedback.lightImpact();
         notifier.togglePlayback();
-        data.isPlaying ? onPause?.call() : onPlay?.call();
       },
     );
   }

@@ -75,7 +75,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
         isMuted: _controller.value.volume == 0,
         isFinished: _controller.value.duration != Duration.zero &&
             _controller.value.position >=
-                _controller.value.duration - const Duration(milliseconds: 400),
+                _controller.value.duration - const Duration(milliseconds: 800),
         position: _controller.value.position,
         duration: _controller.value.duration,
       );

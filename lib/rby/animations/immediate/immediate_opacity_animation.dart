@@ -10,6 +10,7 @@ class ImmediateOpacityAnimation extends ImmediateImplicitAnimation<double> {
     double end = 1,
     Curve curve = Curves.easeInOut,
     Duration delay = Duration.zero,
+    Key? key,
   }) : super(
           child: child,
           duration: duration,
@@ -17,6 +18,7 @@ class ImmediateOpacityAnimation extends ImmediateImplicitAnimation<double> {
           end: end,
           curve: curve,
           delay: delay,
+          key: key,
         );
 
   @override

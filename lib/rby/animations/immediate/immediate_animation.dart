@@ -11,7 +11,8 @@ abstract class ImmediateImplicitAnimation<T> extends StatefulWidget {
     required this.end,
     this.curve = Curves.easeInOut,
     this.delay = Duration.zero,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final Widget child;
   final Duration duration;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
@@ -24,34 +26,36 @@ class DynamicVideoPlayerOverlay extends StatefulWidget {
       _DynamicVideoPlayerOverlayState();
 }
 
-class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay> {
+class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
+    with VideoPlayerOverlayMixin {
+  Timer? _timer;
   late bool _showActions = !widget.data.isPlaying;
 
-  Widget? _playbackIcon;
+  @override
+  void initState() {
+    super.initState();
+
+    overlayInit(widget.data);
+  }
 
   @override
   void didUpdateWidget(covariant DynamicVideoPlayerOverlay oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _showActions = !widget.data.isPlaying;
+    if (widget.data.isFinished) {
+      _showActions = true;
+    } else if (oldWidget.data.isPlaying != widget.data.isPlaying) {
+      _showActions = !widget.data.isPlaying;
+    }
+
+    overlayUpdate(oldWidget.data, widget.data);
   }
 
-  void _showPlay() {
-    setState(
-      () => _playbackIcon = AnimatedMediaThumbnailIcon(
-        key: UniqueKey(),
-        icon: const Icon(Icons.play_arrow_rounded),
-      ),
-    );
-  }
-
-  void _showPause() {
-    setState(
-      () => _playbackIcon = AnimatedMediaThumbnailIcon(
-        key: UniqueKey(),
-        icon: const Icon(Icons.pause_rounded),
-      ),
-    );
+  void _scheduleHideActions() {
+    _timer?.cancel();
+    _timer = Timer(const Duration(seconds: 2), () {
+      if (mounted) setState(() => _showActions = !widget.data.isPlaying);
+    });
   }
 
   @override
@@ -65,9 +69,13 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay> {
         children: [
           GestureDetector(
             onTap: () {
-              HapticFeedback.lightImpact();
-              widget.data.isPlaying ? _showPause() : _showPlay();
-              widget.notifier.togglePlayback();
+              if (_showActions) {
+                HapticFeedback.lightImpact();
+                widget.notifier.togglePlayback();
+              } else {
+                setState(() => _showActions = true);
+                _scheduleHideActions();
+              }
             },
             child: widget.child,
           ),
@@ -99,8 +107,6 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay> {
                           VideoPlayerPlaybackButton(
                             notifier: widget.notifier,
                             data: widget.data,
-                            onPlay: _showPlay,
-                            onPause: _showPause,
                           ),
                           VideoPlayerMuteButton(
                             notifier: widget.notifier,
@@ -129,15 +135,8 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay> {
               delay: Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
               child: MediaThumbnailIcon(icon: CircularProgressIndicator()),
-            )
-          else if (widget.data.isFinished)
-            const ImmediateOpacityAnimation(
-              duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
-                icon: Icon(Icons.replay),
-              ),
             ),
-          if (_playbackIcon != null) _playbackIcon!,
+          if (centerIcon != null) centerIcon!,
         ],
       ),
     );

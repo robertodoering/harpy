@@ -32,27 +32,23 @@ class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
 }
 
 class _SmallVideoPlayerOverlayState
-    extends ConsumerState<SmallVideoPlayerOverlay> {
-  Widget? _playbackIcon;
+    extends ConsumerState<SmallVideoPlayerOverlay>
+    with VideoPlayerOverlayMixin {
+  @override
+  final bool compact = true;
 
-  void _showPlay() {
-    setState(
-      () => _playbackIcon = AnimatedMediaThumbnailIcon(
-        key: UniqueKey(),
-        icon: const Icon(Icons.play_arrow_rounded),
-        compact: true,
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+
+    overlayInit(widget.data);
   }
 
-  void _showPause() {
-    setState(
-      () => _playbackIcon = AnimatedMediaThumbnailIcon(
-        key: UniqueKey(),
-        icon: const Icon(Icons.pause_rounded),
-        compact: true,
-      ),
-    );
+  @override
+  void didUpdateWidget(covariant SmallVideoPlayerOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    overlayUpdate(oldWidget.data, widget.data);
   }
 
   @override
@@ -68,12 +64,14 @@ class _SmallVideoPlayerOverlayState
         alignment: Alignment.center,
         children: [
           GestureDetector(
-            onTap: widget.onVideoTap ??
-                () {
-                  HapticFeedback.lightImpact();
-                  widget.notifier.togglePlayback();
-                  widget.data.isPlaying ? _showPause() : _showPlay();
-                },
+            onTap: () {
+              if (widget.data.isFinished || widget.onVideoTap == null) {
+                HapticFeedback.lightImpact();
+                widget.notifier.togglePlayback();
+              } else {
+                widget.onVideoTap?.call();
+              }
+            },
             onLongPress: widget.onVideoLongPress,
             child: widget.child,
           ),
@@ -102,8 +100,6 @@ class _SmallVideoPlayerOverlayState
                         data: widget.data,
                         notifier: widget.notifier,
                         padding: EdgeInsets.all(display.smallPaddingValue / 2),
-                        onPlay: _showPlay,
-                        onPause: _showPause,
                       ),
                       VideoPlayerMuteButton(
                         data: widget.data,
@@ -131,16 +127,8 @@ class _SmallVideoPlayerOverlayState
                 icon: CircularProgressIndicator(),
                 compact: true,
               ),
-            )
-          else if (widget.data.isFinished)
-            const ImmediateOpacityAnimation(
-              duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
-                icon: Icon(Icons.replay),
-                compact: true,
-              ),
             ),
-          if (_playbackIcon != null) _playbackIcon!,
+          if (centerIcon != null) centerIcon!,
         ],
       ),
     );
