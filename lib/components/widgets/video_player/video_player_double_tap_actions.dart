@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
 
 class VideoPlayerDoubleTapActions extends StatefulWidget {
@@ -32,6 +33,7 @@ class _VideoPlayerDoubleTapActionsState
             children: [
               GestureDetector(
                 onDoubleTap: () {
+                  HapticFeedback.lightImpact();
                   widget.notifier.rewind();
 
                   setState(() {
@@ -54,6 +56,7 @@ class _VideoPlayerDoubleTapActionsState
             children: [
               GestureDetector(
                 onDoubleTap: () {
+                  HapticFeedback.lightImpact();
                   widget.notifier.forward();
 
                   setState(() {
