@@ -6,18 +6,37 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+enum MediaOverlayActions {
+  retweet,
+  favorite,
+  spacer,
+  download,
+  show,
+  actionsButton,
+}
+
+const kDefaultOverlayActions = {
+  MediaOverlayActions.retweet,
+  MediaOverlayActions.favorite,
+  MediaOverlayActions.spacer,
+  MediaOverlayActions.download,
+  MediaOverlayActions.actionsButton,
+};
+
 class MediaGalleryOverlay extends ConsumerStatefulWidget {
   const MediaGalleryOverlay({
     required this.provider,
     required this.delegates,
     required this.media,
     required this.child,
+    this.actions = kDefaultOverlayActions,
   });
 
   final StateNotifierProvider<TweetNotifier, TweetData> provider;
   final MediaData media;
   final TweetDelegates delegates;
   final Widget child;
+  final Set<MediaOverlayActions> actions;
 
   @override
   _MediaOverlayState createState() => _MediaOverlayState();
@@ -93,6 +112,7 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
                   tweet: tweet,
                   media: widget.media,
                   delegates: widget.delegates,
+                  actions: widget.actions,
                 ),
               ),
             ],
@@ -150,11 +170,67 @@ class _OverlayTweetActions extends ConsumerWidget {
     required this.tweet,
     required this.media,
     required this.delegates,
+    required this.actions,
   });
 
   final TweetData tweet;
   final MediaData media;
   final TweetDelegates delegates;
+  final Set<MediaOverlayActions> actions;
+
+  Widget _mapAction({
+    required MediaOverlayActions action,
+  }) {
+    switch (action) {
+      case MediaOverlayActions.retweet:
+        return RetweetButton(
+          tweet: tweet,
+          sizeDelta: 2,
+          foregroundColor: Colors.white,
+          onRetweet: delegates.onRetweet,
+          onUnretweet: delegates.onUnretweet,
+          onShowRetweeters: delegates.onShowRetweeters,
+          onComposeQuote: delegates.onComposeQuote,
+        );
+      case MediaOverlayActions.favorite:
+        return FavoriteButton(
+          tweet: tweet,
+          sizeDelta: 2,
+          foregroundColor: Colors.white,
+          onFavorite: delegates.onFavorite,
+          onUnfavorite: delegates.onUnfavorite,
+        );
+      case MediaOverlayActions.spacer:
+        return const Spacer();
+      case MediaOverlayActions.download:
+        return DownloadButton(
+          tweet: tweet,
+          sizeDelta: 2,
+          foregroundColor: Colors.white,
+          // TODO: download
+          onDownload: (_, __) {},
+        );
+      case MediaOverlayActions.show:
+        return ShowButton(
+          tweet: tweet,
+          sizeDelta: 2,
+          foregroundColor: Colors.white,
+          onShow: delegates.onTweetTap,
+        );
+      case MediaOverlayActions.actionsButton:
+        return MoreActionsButton(
+          tweet: tweet,
+          sizeDelta: 2,
+          foregroundColor: Colors.white,
+          onViewMoreActions: (context, read) => showMediaActionsBottomSheet(
+            context,
+            read: read,
+            tweet: tweet,
+            media: media,
+          ),
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -176,41 +252,7 @@ class _OverlayTweetActions extends ConsumerWidget {
           .copyWith(bottom: mediaQuery.padding.bottom),
       child: Row(
         children: [
-          RetweetButton(
-            tweet: tweet,
-            sizeDelta: 2,
-            foregroundColor: Colors.white,
-            onRetweet: delegates.onRetweet,
-            onUnretweet: delegates.onUnretweet,
-            onShowRetweeters: delegates.onShowRetweeters,
-            onComposeQuote: delegates.onComposeQuote,
-          ),
-          FavoriteButton(
-            tweet: tweet,
-            sizeDelta: 2,
-            foregroundColor: Colors.white,
-            onFavorite: delegates.onFavorite,
-            onUnfavorite: delegates.onUnfavorite,
-          ),
-          const Spacer(),
-          DownloadButton(
-            tweet: tweet,
-            sizeDelta: 2,
-            foregroundColor: Colors.white,
-            // TODO: download
-            onDownload: (_, __) {},
-          ),
-          MoreActionsButton(
-            tweet: tweet,
-            sizeDelta: 2,
-            foregroundColor: Colors.white,
-            onViewMoreActions: (context, read) => showMediaActionsBottomSheet(
-              context,
-              read: read,
-              tweet: tweet,
-              media: media,
-            ),
-          ),
+          for (final action in actions) _mapAction(action: action),
         ],
       ),
     );

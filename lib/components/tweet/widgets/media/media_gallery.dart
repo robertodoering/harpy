@@ -28,11 +28,13 @@ class MediaGallery extends ConsumerStatefulWidget {
     required this.builder,
     required this.itemCount,
     this.initialIndex = 0,
+    this.actions = kDefaultOverlayActions,
   });
 
   final GalleryEntryBuilder builder;
   final int itemCount;
   final int initialIndex;
+  final Set<MediaOverlayActions> actions;
 
   @override
   _MediaGalleryState createState() => _MediaGalleryState();
@@ -56,6 +58,7 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
       provider: entry.provider,
       media: entry.media,
       delegates: entry.delegates,
+      actions: widget.actions,
       child: HarpyPhotoGallery(
         initialIndex: widget.initialIndex,
         itemCount: widget.itemCount,
