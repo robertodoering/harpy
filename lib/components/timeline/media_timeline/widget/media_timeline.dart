@@ -110,8 +110,8 @@ class _TopActions extends ConsumerWidget {
             const Spacer(),
             HarpyButton.card(
               icon: layout.mediaTiled
-                  ? const Icon(CupertinoIcons.square_split_1x2)
-                  : const Icon(CupertinoIcons.square_split_2x2),
+                  ? const Icon(CupertinoIcons.square_split_2x2)
+                  : const Icon(CupertinoIcons.square_split_1x2),
               onTap: () {
                 HapticFeedback.lightImpact();
                 layoutNotifier.setMediaTiled(!layout.mediaTiled);

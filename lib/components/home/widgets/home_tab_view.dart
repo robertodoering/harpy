@@ -57,8 +57,7 @@ class HomeTabView extends ConsumerWidget {
 
     final appbarHeight = HomeAppBar.height(context, ref.read);
 
-    final refreshIndicatorOffset =
-        general.bottomAppBar ? 0.0 : appbarHeight + display.paddingValue;
+    final refreshIndicatorOffset = general.bottomAppBar ? 0.0 : appbarHeight;
 
     final scrollToTopOffset =
         general.bottomAppBar ? appbarHeight + display.paddingValue : null;
