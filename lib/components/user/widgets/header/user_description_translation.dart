@@ -53,7 +53,7 @@ class UserDescriptionTranslationButton extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     // final active =
-    //     user.descriptionTranslation != null || state.isTranslatingDescription;
+    //     user.descriptionTranslation != null || state.isTranslatingDescription
 
     return TweetActionButton(
       active: false,
