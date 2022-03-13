@@ -50,6 +50,10 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
   RouteObserver? _observer;
 
+  final _childKey = GlobalKey();
+  final _appBarKey = GlobalKey();
+  final _actionsKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -94,38 +98,52 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
   Widget build(BuildContext context) {
     final tweet = ref.watch(widget.provider);
 
-    return Stack(
+    final overlap = tweet.mediaType != MediaType.video;
+
+    final child = Center(
+      key: _childKey,
+      child: HarpyDismissible(
+        onDismissed: Navigator.of(context).pop,
+        child: widget.child,
+      ),
+    );
+
+    final appBar = Align(
+      key: _appBarKey,
+      alignment: Alignment.topCenter,
+      child: SlideTransition(
+        position: _topAnimation,
+        child: const _OverlayAppBar(),
+      ),
+    );
+
+    final actions = Align(
+      key: _actionsKey,
+      alignment: Alignment.bottomCenter,
+      child: SlideTransition(
+        position: _bottomAnimation,
+        child: _OverlayTweetActions(
+          tweet: tweet,
+          media: widget.media,
+          delegates: widget.delegates,
+          actions: widget.actions,
+        ),
+      ),
+    );
+
+    return Column(
       children: [
-        GestureDetector(onTap: Navigator.of(context).pop),
-        AnimatedBuilder(
-          animation: _controller,
-          builder: (_, child) => Column(
+        if (!overlap) appBar,
+        Expanded(
+          child: Stack(
             children: [
-              SlideTransition(
-                position: _topAnimation,
-                child: const _OverlayAppBar(),
-              ),
-              child!,
-              SlideTransition(
-                position: _bottomAnimation,
-                child: _OverlayTweetActions(
-                  tweet: tweet,
-                  media: widget.media,
-                  delegates: widget.delegates,
-                  actions: widget.actions,
-                ),
-              ),
+              child,
+              if (overlap) appBar,
+              if (overlap) actions,
             ],
           ),
-          child: Expanded(
-            child: Center(
-              child: HarpyDismissible(
-                onDismissed: Navigator.of(context).pop,
-                child: widget.child,
-              ),
-            ),
-          ),
         ),
+        if (!overlap) actions,
       ],
     );
   }
@@ -141,24 +159,27 @@ class _OverlayAppBar extends ConsumerWidget {
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
-      child: Container(
-        alignment: Alignment.centerLeft,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.black87,
-              Colors.transparent,
-            ],
+      child: IntrinsicHeight(
+        child: Container(
+          alignment: Alignment.centerLeft,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black87,
+                Colors.transparent,
+              ],
+            ),
           ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
-            .copyWith(top: display.smallPaddingValue + mediaQuery.padding.top),
-        child: HarpyButton.icon(
-          icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
-          onTap: Navigator.of(context).maybePop,
+          padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
+              .copyWith(
+                  top: display.smallPaddingValue + mediaQuery.padding.top),
+          child: HarpyButton.icon(
+            icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
+            onTap: Navigator.of(context).maybePop,
+          ),
         ),
       ),
     );
@@ -252,15 +273,71 @@ class _OverlayTweetActions extends ConsumerWidget {
       ),
       padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
           .copyWith(bottom: mediaQuery.padding.bottom),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          for (final action in actions)
-            _mapAction(
-              context,
-              ref.read,
-              action: action,
-            ),
+          _OverlayPreviewText(tweet: tweet, delegates: delegates),
+          Row(
+            children: [
+              for (final action in actions)
+                _mapAction(
+                  context,
+                  ref.read,
+                  action: action,
+                ),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _OverlayPreviewText extends ConsumerWidget {
+  const _OverlayPreviewText({
+    required this.tweet,
+    required this.delegates,
+  });
+
+  final TweetData tweet;
+  final TweetDelegates delegates;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+
+    return Padding(
+      padding: display.edgeInsetsSymmetric(horizontal: true) +
+          EdgeInsets.symmetric(vertical: display.smallPaddingValue),
+      child: AnimatedSize(
+        duration: kShortAnimationDuration,
+        alignment: Alignment.bottomCenter,
+        curve: Curves.easeInOut,
+        child: GestureDetector(
+          onTap: () => delegates.onShowTweet?.call(context, ref.read),
+          child: AnimatedSwitcher(
+            duration: kShortAnimationDuration,
+            switchInCurve: Curves.easeInCubic,
+            switchOutCurve: Curves.easeOutCubic,
+            layoutBuilder: (currentChild, previousChildren) => Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                ...previousChildren,
+                if (currentChild != null) currentChild,
+              ],
+            ),
+            child: Text(
+              tweet.visibleText,
+              key: ObjectKey(tweet),
+              style: theme.textTheme.bodyText2!.copyWith(
+                color: Colors.white,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
       ),
     );
   }

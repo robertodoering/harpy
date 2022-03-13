@@ -17,10 +17,10 @@ class MediaTimelineMediaList extends ConsumerWidget {
   Widget _itemBuilder(BuildContext context, Reader read, int index) {
     final provider = tweetProvider(entries[index].tweet);
 
-    final tweet = read(provider);
-    final tweetNotifier = read(provider.notifier);
+    var tweet = read(provider);
+    var tweetNotifier = read(provider.notifier);
 
-    final delegates = defaultTweetDelegates(tweet, tweetNotifier);
+    var delegates = defaultTweetDelegates(tweet, tweetNotifier);
 
     return MediaTimelineMedia(
       entry: entries[index],
@@ -31,31 +31,42 @@ class MediaTimelineMediaList extends ConsumerWidget {
             initialIndex: index,
             itemCount: entries.length,
             actions: _mediaTimelineOverlayActions,
-            builder: (index) => MediaGalleryEntry(
-              provider: provider,
-              delegates: delegates,
-              media: entries[index].media,
-              builder: (_) {
-                final heroTag =
-                    'media${mediaHeroTag(context, entries[index].media)}';
+            builder: (index) {
+              final provider = tweetProvider(entries[index].tweet);
 
-                switch (entries[index].media.type) {
-                  case MediaType.image:
-                    return TweetGalleryImage(
-                      media: entries[index].media,
-                      heroTag: heroTag,
-                      borderRadius: read(harpyThemeProvider).borderRadius,
-                    );
-                  case MediaType.gif:
-                    return TweetGalleryGif(tweet: tweet, heroTag: heroTag);
-                  case MediaType.video:
-                    return TweetGalleryVideo(
-                      tweet: tweet,
-                      heroTag: heroTag,
-                    );
-                }
-              },
-            ),
+              tweet = read(provider);
+              tweetNotifier = read(provider.notifier);
+              delegates = defaultTweetDelegates(tweet, tweetNotifier);
+
+              return MediaGalleryEntry(
+                provider: provider,
+                delegates: delegates,
+                media: entries[index].media,
+                builder: (_) {
+                  final heroTag =
+                      'media${mediaHeroTag(context, entries[index].media)}';
+
+                  switch (entries[index].media.type) {
+                    case MediaType.image:
+                      return TweetGalleryImage(
+                        media: entries[index].media,
+                        heroTag: heroTag,
+                        borderRadius: read(harpyThemeProvider).borderRadius,
+                      );
+                    case MediaType.gif:
+                      return TweetGalleryGif(
+                        tweet: tweet,
+                        heroTag: heroTag,
+                      );
+                    case MediaType.video:
+                      return TweetGalleryVideo(
+                        tweet: tweet,
+                        heroTag: heroTag,
+                      );
+                  }
+                },
+              );
+            },
           ),
         ),
       ),
