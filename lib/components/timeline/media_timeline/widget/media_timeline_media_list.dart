@@ -54,15 +54,9 @@ class MediaTimelineMediaList extends ConsumerWidget {
                         borderRadius: read(harpyThemeProvider).borderRadius,
                       );
                     case MediaType.gif:
-                      return TweetGalleryGif(
-                        tweet: tweet,
-                        heroTag: heroTag,
-                      );
+                      return TweetGif(tweet: tweet, heroTag: heroTag);
                     case MediaType.video:
-                      return TweetGalleryVideo(
-                        tweet: tweet,
-                        heroTag: heroTag,
-                      );
+                      return TweetGalleryVideo(tweet: tweet, heroTag: heroTag);
                   }
                 },
               );

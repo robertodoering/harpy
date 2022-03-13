@@ -137,6 +137,7 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
         Expanded(
           child: Stack(
             children: [
+              GestureDetector(onTap: Navigator.of(context).maybePop),
               child,
               if (overlap) appBar,
               if (overlap) actions,
@@ -175,7 +176,8 @@ class _OverlayAppBar extends ConsumerWidget {
           ),
           padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
               .copyWith(
-                  top: display.smallPaddingValue + mediaQuery.padding.top),
+            top: display.smallPaddingValue + mediaQuery.padding.top,
+          ),
           child: HarpyButton.icon(
             icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
             onTap: Navigator.of(context).maybePop,

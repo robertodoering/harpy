@@ -65,7 +65,12 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
         // disallow zooming in on videos
         enableGestures: entry.media.type != MediaType.video,
         builder: (context, index) => widget.builder(index).builder(context),
-        onPageChanged: (index) => setState(() => _index = index),
+        onPageChanged: (index) {
+          setState(() => _index = index);
+          ref
+              .read(videoPlayerHandlerProvider)
+              .act((notifier) => notifier.pause());
+        },
       ),
     );
   }

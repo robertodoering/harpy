@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:video_player/video_player.dart';
 
 const _qualityNames = ['best', 'normal', 'small'];
@@ -57,40 +58,46 @@ class TweetVideo extends ConsumerWidget {
     final state = ref.watch(provider);
     final notifier = ref.watch(provider.notifier);
 
-    return MediaAutoplay(
-      state: state,
-      notifier: notifier,
-      enableAutoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
-      child: Hero(
-        tag: heroTag,
-        placeholderBuilder: placeholderBuilder,
-        child: state.maybeMap(
-          data: (data) => overlayBuilder(
-            data,
-            notifier,
-            OverflowBox(
-              maxHeight: double.infinity,
-              child: AspectRatio(
-                aspectRatio: mediaData.aspectRatioDouble,
-                child: VideoPlayer(notifier.controller),
+    return VisibilityChangeListener(
+      detectorKey: ObjectKey(heroTag),
+      child: MediaAutoplay(
+        state: state,
+        notifier: notifier,
+        enableAutoplay: mediaPreferences.shouldAutoplayVideos(connectivity),
+        child: Hero(
+          tag: heroTag,
+          placeholderBuilder: placeholderBuilder,
+          child: AspectRatio(
+            aspectRatio: mediaData.aspectRatioDouble,
+            child: state.maybeMap(
+              data: (data) => overlayBuilder(
+                data,
+                notifier,
+                OverflowBox(
+                  maxHeight: double.infinity,
+                  child: AspectRatio(
+                    aspectRatio: mediaData.aspectRatioDouble,
+                    child: VideoPlayer(notifier.controller),
+                  ),
+                ),
+              ),
+              loading: (_) => MediaThumbnail(
+                thumbnail: mediaData.thumbnail,
+                center: MediaThumbnailIcon(
+                  icon: const CircularProgressIndicator(),
+                  compact: compact,
+                ),
+              ),
+              orElse: () => MediaThumbnail(
+                thumbnail: mediaData.thumbnail,
+                center: MediaThumbnailIcon(
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  compact: compact,
+                ),
+                onTap: notifier.initialize,
+                onLongPress: onVideoLongPress,
               ),
             ),
-          ),
-          loading: (_) => MediaThumbnail(
-            thumbnail: mediaData.thumbnail,
-            center: MediaThumbnailIcon(
-              icon: const CircularProgressIndicator(),
-              compact: compact,
-            ),
-          ),
-          orElse: () => MediaThumbnail(
-            thumbnail: mediaData.thumbnail,
-            center: MediaThumbnailIcon(
-              icon: const Icon(Icons.play_arrow_rounded),
-              compact: compact,
-            ),
-            onTap: notifier.initialize,
-            onLongPress: onVideoLongPress,
           ),
         ),
       ),
@@ -111,47 +118,14 @@ class TweetGalleryVideo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
-
-    final mediaData = tweet.media.single as VideoMediaData;
-    final arguments = _videoArguments(mediaData);
-
-    final state = ref.watch(videoPlayerProvider(arguments));
-    final notifier = ref.watch(videoPlayerProvider(arguments).notifier);
-
-    return Hero(
-      tag: heroTag,
-      flightShuttleBuilder:
-          (_, animation, flightDirection, fromHeroContext, toHeroContext) =>
-              borderRadiusFlightShuttleBuilder(
-        harpyTheme.borderRadius,
-        animation,
-        flightDirection,
-        fromHeroContext,
-        toHeroContext,
-      ),
-      child: AspectRatio(
-        aspectRatio: mediaData.aspectRatioDouble,
-        child: state.maybeMap(
-          data: (data) => StaticVideoPlayerOverlay(
-            data: data,
-            tweet: tweet,
-            notifier: notifier,
-            onVideoLongPress: onVideoLongPress,
-            child: VideoPlayer(notifier.controller),
-          ),
-          loading: (_) => MediaThumbnail(
-            thumbnail: mediaData.thumbnail,
-            center: const MediaThumbnailIcon(icon: CircularProgressIndicator()),
-          ),
-          orElse: () => MediaThumbnail(
-            thumbnail: mediaData.thumbnail,
-            center:
-                const MediaThumbnailIcon(icon: Icon(Icons.play_arrow_rounded)),
-            onTap: notifier.initialize,
-            onLongPress: onVideoLongPress,
-          ),
-        ),
+    return TweetVideo(
+      tweet: tweet,
+      heroTag: heroTag,
+      overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
+        tweet: tweet,
+        notifier: notifier,
+        data: data,
+        child: child,
       ),
     );
   }

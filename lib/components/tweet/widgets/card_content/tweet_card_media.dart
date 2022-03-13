@@ -38,19 +38,18 @@ class TweetCardMedia extends ConsumerWidget {
         );
         break;
       case MediaType.gif:
+        final heroTag = 'tweet${mediaHeroTag(context, tweet.media.single)}';
+
         child = TweetGif(
           tweet: tweet,
-          heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
+          heroTag: heroTag,
           onGifTap: () => Navigator.of(context).push<void>(
             HeroDialogRoute(
               builder: (_) => MediaGalleryOverlay(
                 provider: provider,
                 media: tweet.media.single,
                 delegates: delegates,
-                child: TweetGalleryGif(
-                  tweet: tweet,
-                  heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
-                ),
+                child: TweetGif(tweet: tweet, heroTag: heroTag),
               ),
             ),
           ),
@@ -58,9 +57,11 @@ class TweetCardMedia extends ConsumerWidget {
         );
         break;
       case MediaType.video:
+        final heroTag = 'tweet${mediaHeroTag(context, tweet.media.single)}';
+
         child = TweetVideo(
           tweet: tweet,
-          heroTag: 'tweet${mediaHeroTag(context, tweet.media.single)}',
+          heroTag: heroTag,
           onVideoLongPress: () => onMediaLongPress(tweet.media.single),
           overlayBuilder: (data, notifier, child) => StaticVideoPlayerOverlay(
             tweet: tweet,
@@ -72,11 +73,7 @@ class TweetCardMedia extends ConsumerWidget {
                   provider: provider,
                   media: tweet.media.single,
                   delegates: delegates,
-                  child: TweetGalleryVideo(
-                    tweet: tweet,
-                    heroTag: 'tweet'
-                        '${mediaHeroTag(context, tweet.media.single)}',
-                  ),
+                  child: TweetGalleryVideo(tweet: tweet, heroTag: heroTag),
                 ),
               ),
             ),
