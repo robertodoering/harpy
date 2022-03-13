@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image/flutter_image.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// Builds a network [Image] with a shimmer loading animation that fades into
@@ -25,36 +25,39 @@ class HarpyImage extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
 
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Container(
-        color: theme.cardColor,
-        child: FractionallySizedBox(
-          widthFactor: .5,
-          heightFactor: .5,
-          child: FittedBox(
-            child: Icon(
-              Icons.broken_image_outlined,
-              color: theme.iconTheme.color,
-            ),
+    return Container(
+      color: theme.cardColor,
+      width: width,
+      height: height,
+      child: FractionallySizedBox(
+        widthFactor: .5,
+        heightFactor: .5,
+        child: FittedBox(
+          child: Icon(
+            Icons.broken_image_outlined,
+            color: theme.iconTheme.color,
           ),
         ),
       ),
     );
   }
 
-  Widget _loadingBuilder(
+  Widget _frameBuilder(
     BuildContext context,
     Widget child,
-    ImageChunkEvent? loadingProgress,
+    int? frame,
+    bool wasSynchronouslyLoaded,
   ) {
+    if (wasSynchronouslyLoaded) return child;
+
     final theme = Theme.of(context);
 
     return AnimatedSwitcher(
-      duration: kShortAnimationDuration,
-      child: loadingProgress == null
-          ? child
-          : Shimmer(
+      duration: kLongAnimationDuration,
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeOut,
+      child: frame == null
+          ? Shimmer(
               gradient: LinearGradient(
                 colors: [
                   theme.cardTheme.color!.withOpacity(.3),
@@ -65,17 +68,17 @@ class HarpyImage extends StatelessWidget {
                 ],
               ),
               child: Container(color: theme.cardTheme.color),
-            ),
+            )
+          : child,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      imageUrl,
+    return Image(
+      image: NetworkImageWithRetry(imageUrl),
       errorBuilder: _errorBuilder,
-      // remove loading builder in golden tests
-      loadingBuilder: isTest ? null : _loadingBuilder,
+      frameBuilder: _frameBuilder,
       fit: fit,
       width: width,
       height: height,

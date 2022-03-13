@@ -34,6 +34,7 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   flutter_ffmpeg: ^0.4.0
   flutter_hsvcolor_picker: ^1.1.0 # TODO: remove unused dependency after refactoring
+  flutter_image: ^4.1.0
   flutter_keyboard_visibility: ^5.0.1
   flutter_localizations:
     sdk: flutter
