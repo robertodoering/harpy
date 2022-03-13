@@ -18,8 +18,10 @@ class HarpyCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget image = HarpyImage(
-      fit: BoxFit.cover,
       imageUrl: imageUrl,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
     );
 
     if (heroTag != null) {

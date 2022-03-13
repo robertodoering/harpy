@@ -81,7 +81,6 @@ class UserData with _$UserData {
 
   UserData._();
 
-  late final hasDescriptionTranslation = descriptionTranslation != null;
   late final hasDescription = description != null && description!.isNotEmpty;
   late final hasUrl = userUrl != null;
   late final hasLocation = location != null && location!.isNotEmpty;
@@ -92,7 +91,7 @@ class UserData with _$UserData {
     '_bigger',
   );
   late final originalUserImageUrl = profileImageUrl.replaceAll('_normal', '');
-  late final appropriateUserBannerUrl = '$profileBannerUrl/web_retina';
+  late final appropriateUserBannerUrl = '$profileBannerUrl/1500x500';
 }
 
 EntitiesData _userDescriptionEntities(

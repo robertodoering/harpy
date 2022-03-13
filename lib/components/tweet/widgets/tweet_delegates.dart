@@ -18,8 +18,16 @@ TweetDelegates defaultTweetDelegates(
       TweetDetailPage.name,
       extra: tweet,
     ),
-    onShowUser: null,
-    onShowRetweeter: null,
+    onShowUser: (_, read) => read(routerProvider).pushNamed(
+      UserPage.name,
+      params: {'handle': tweet.user.handle},
+      extra: tweet.user,
+    ),
+    onShowRetweeter: (_, read) => read(routerProvider).pushNamed(
+      UserPage.name,
+      params: {'handle': tweet.retweeter!.handle},
+      extra: tweet.retweeter,
+    ),
     onFavorite: (_, __) {
       HapticFeedback.lightImpact();
       notifier.favorite();

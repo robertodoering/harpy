@@ -37,7 +37,7 @@ class TweetCardRetweeter extends ConsumerWidget {
             horizontalSpacer,
             Flexible(
               child: Text(
-                '${tweet.retweetUserName} retweeted',
+                '${tweet.retweeter!.name} retweeted',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: textStyle

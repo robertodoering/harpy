@@ -35,11 +35,10 @@ class TweetData with _$TweetData {
     /// The id of the tweet that this tweet is replying to.
     String? parentTweetId,
 
-    /// The name and handle of the user that retweeted this tweet.
+    /// The user that retweeted this tweet.
     ///
     /// `null` when this tweet is not a retweet.
-    String? retweetUserName,
-    String? retweetUserHandle,
+    UserData? retweeter,
     TweetData? quote,
     String? quoteUrl,
 
@@ -62,12 +61,10 @@ class TweetData with _$TweetData {
   factory TweetData.fromTweet(Tweet tweet) {
     final originalId = tweet.idStr ?? '';
 
-    String? retweetUserName;
-    String? retweetUserHandle;
+    UserData? retweeter;
 
     if (tweet.retweetedStatus != null && tweet.user != null) {
-      retweetUserName = tweet.user!.name;
-      retweetUserHandle = tweet.user!.screenName;
+      retweeter = UserData.fromUser(tweet.user);
       tweet = tweet.retweetedStatus!;
     }
 
@@ -107,8 +104,7 @@ class TweetData with _$TweetData {
       entities: EntitiesData.fromEntities(tweet.entities),
       // optional
       parentTweetId: tweet.inReplyToStatusIdStr,
-      retweetUserName: retweetUserName,
-      retweetUserHandle: retweetUserHandle,
+      retweeter: retweeter,
       quote: quote,
       quoteUrl: quoteUrl,
       // custom
@@ -123,7 +119,7 @@ class TweetData with _$TweetData {
   /// media.
   late final mediaType = media.isNotEmpty ? media[0].type : null;
 
-  late final isRetweet = retweetUserName != null;
+  late final isRetweet = retweeter != null;
   late final hasImages = media.isNotEmpty && media[0].type == MediaType.image;
   late final hasSingleImage = media.length == 1 && hasImages;
   late final hasVideo = media.isNotEmpty && media[0].type == MediaType.video;

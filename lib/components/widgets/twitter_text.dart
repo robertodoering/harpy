@@ -23,11 +23,16 @@ void defaultOnUserMentionTap(
   Reader read,
   UserMentionData mention,
 ) {
-  // TODO: provide user handle to route
-  read(routerProvider).goNamed(UserPage.name);
+  // TODO: don't push if already on the same user
+
+  read(routerProvider).pushNamed(
+    UserPage.name,
+    params: {'handle': mention.handle},
+  );
 }
 
 void defaultOnUrlTap(BuildContext context, Reader read, UrlData url) {
+  HapticFeedback.lightImpact();
   launchUrl(url.expandedUrl);
 }
 

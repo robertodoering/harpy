@@ -35,9 +35,9 @@ class HarpySliverAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final topPadding = MediaQuery.of(context).padding.top;
     final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
-    final topPadding = MediaQuery.of(context).padding.top;
 
     final style = Theme.of(context).textTheme.titleLarge!.copyWith(height: 1);
 

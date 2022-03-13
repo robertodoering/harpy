@@ -117,7 +117,11 @@ class _AuthenticatedUser extends ConsumerWidget {
 
     return InkWell(
       borderRadius: harpyTheme.borderRadius,
-      onTap: () => router.goNamed(UserPage.name),
+      onTap: () => router.goNamed(
+        UserPage.name,
+        params: {'handle': user.handle},
+        extra: user,
+      ),
       child: Card(
         child: Padding(
           padding: padding,
@@ -246,7 +250,11 @@ class _Entries extends ConsumerWidget {
       HarpyListCard(
         leading: const Icon(CupertinoIcons.person),
         title: const Text('profile'),
-        onTap: () => router.goNamed(UserPage.name),
+        onTap: () => router.goNamed(
+          UserPage.name,
+          params: {'handle': user.handle},
+          extra: user,
+        ),
       ),
       verticalSpacer,
       HarpyListCard(
