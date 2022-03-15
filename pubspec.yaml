@@ -56,7 +56,7 @@ dependencies:
   provider: ^6.0.0
   scroll_to_index: ^2.0.0
   sentry_flutter: ^6.0.0
-  share_plus: ^3.0.4
+  share_plus: ^4.0.0
   shared_preferences: ^2.0.7
   shimmer: ^2.0.0
   smooth_page_indicator: ^1.0.0+2
