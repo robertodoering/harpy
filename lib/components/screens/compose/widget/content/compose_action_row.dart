@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/regex/twitter_regex.dart';
 import 'package:harpy/harpy_widgets/harpy_widgets.dart';
 
 class ComposeTweetActionRow extends StatelessWidget {
@@ -31,7 +32,7 @@ class ComposeTweetActionRow extends StatelessWidget {
           padding: config.edgeInsets,
           icon: const Icon(CupertinoIcons.at),
           iconSize: 20,
-          onTap: () => controller.insertString('@'),
+          onTap: null,
         ),
         smallHorizontalSpacer,
         HarpyButton.flat(
@@ -109,8 +110,12 @@ class _PostTweetButtonState extends State<PostTweetButton> {
 
     final bloc = context.watch<ComposeBloc>();
 
-    final canTweet =
+    var canTweet =
         bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
+
+    if (mentionRegex.hasMatch(widget.controller.text.trim())) {
+      canTweet = false;
+    }
 
     return HarpyButton.flat(
       padding: config.edgeInsets,

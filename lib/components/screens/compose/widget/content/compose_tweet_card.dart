@@ -89,6 +89,7 @@ class _ComposeTweetCardState extends State<ComposeTweetCard>
                   padding: EdgeInsets.zero,
                   children: [
                     const _TopRow(),
+                    const _DisabledMentions(),
                     ComposeTextField(
                       controller: _controller!,
                       focusNode: _focusNode,
@@ -101,6 +102,34 @@ class _ComposeTweetCardState extends State<ComposeTweetCard>
             ComposeTweetActionRow(controller: _controller!),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DisabledMentions extends StatelessWidget {
+  const _DisabledMentions();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final config = context.watch<ConfigCubit>().state;
+
+    return Padding(
+      padding: config.edgeInsets.copyWith(top: 0),
+      child: Row(
+        children: [
+          Icon(Icons.warning_rounded, color: theme.primaryColor),
+          horizontalSpacer,
+          Expanded(
+            child: Text(
+              '@mentions are currently disabled',
+              style: theme.textTheme.bodyText1!.copyWith(
+                color: theme.primaryColor.withOpacity(.7),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,0 +1,4 @@
+Version 0.8.4+3
+2022-03-17
+
+· Disabled tweeting with @mentions

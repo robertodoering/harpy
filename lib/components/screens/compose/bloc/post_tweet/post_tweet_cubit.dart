@@ -112,7 +112,7 @@ class PostTweetCubit extends Cubit<PostTweetState> with HarpyLogger {
           mediaIds: mediaIds,
           attachmentUrl: composeBloc.quotedTweet?.tweetUrl,
           inReplyToStatusId: composeBloc.inReplyToStatus?.id,
-          autoPopulateReplyMetadata: true,
+          autoPopulateReplyMetadata: false,
         )
         .then(TweetData.fromTweet)
         .handleError((dynamic error, stackTrace) {
