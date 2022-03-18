@@ -235,6 +235,21 @@ final routesProvider = Provider(
                 restorationId: state.pageKey.value,
                 child: const DisplaySettingsPage(),
               ),
+              routes: [
+                GoRoute(
+                  name: FontSelectionPage.name,
+                  path: 'font',
+                  pageBuilder: (_, state) => HarpyPage(
+                    key: state.pageKey,
+                    restorationId: state.pageKey.value,
+                    child: FontSelectionPage(
+                      title: (state.extra as Map?)?['title'],
+                      selectedFont: (state.extra as Map?)?['selectedFont'],
+                      onChanged: (state.extra as Map?)?['onChanged'],
+                    ),
+                  ),
+                ),
+              ],
             ),
             GoRoute(
               name: GeneralSettingsPage.name,

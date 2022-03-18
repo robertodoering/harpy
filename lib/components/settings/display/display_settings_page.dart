@@ -30,25 +30,21 @@ class DisplaySettingsPage extends ConsumerWidget {
               ),
             ],
           ),
-          SliverFillRemaining(
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: AnimatedPadding(
-                      duration: kShortAnimationDuration,
-                      curve: Curves.easeInOut,
-                      padding: display.edgeInsets,
-                      child: const PreviewTweetCard(),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: display.edgeInsets,
-                  child: const _DisplaySettingsList(),
-                ),
-              ],
-            ),
+          SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              AnimatedPadding(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeInOut,
+                padding: display.edgeInsets,
+                child: const PreviewTweetCard(),
+              ),
+              AnimatedPadding(
+                duration: kShortAnimationDuration,
+                curve: Curves.easeInOut,
+                padding: display.edgeInsets.copyWith(top: 0),
+                child: const _DisplaySettingsList(),
+              )
+            ]),
           ),
           const SliverBottomPadding(),
         ],
@@ -70,7 +66,6 @@ class _DisplaySettingsList extends ConsumerWidget {
       children: [
         ExpansionCard(
           title: const Text('font'),
-          initiallyCollapsed: true,
           children: [
             const HarpyListTile(
               leading: Icon(CupertinoIcons.textformat_size),
@@ -79,7 +74,7 @@ class _DisplaySettingsList extends ConsumerWidget {
             _FontSizeSlider(fontSizeDeltaId: display.fontSizeDeltaId),
             _FontRadioDialogTile(
               title: 'body font',
-              appBarTitle: 'select a body font',
+              pageTitle: 'select a body font',
               leadingIcon: CupertinoIcons.textformat,
               font: display.bodyFont,
               onChanged: (value) {
@@ -89,7 +84,7 @@ class _DisplaySettingsList extends ConsumerWidget {
             ),
             _FontRadioDialogTile(
               title: 'display font',
-              appBarTitle: 'select a display font',
+              pageTitle: 'select a display font',
               leadingIcon: CupertinoIcons.textformat,
               font: display.displayFont,
               borderRadius: BorderRadius.only(
@@ -195,7 +190,7 @@ class _FontSizeSliderState extends ConsumerState<_FontSizeSlider> {
 class _FontRadioDialogTile extends ConsumerWidget {
   const _FontRadioDialogTile({
     required this.title,
-    required this.appBarTitle,
+    required this.pageTitle,
     required this.font,
     required this.onChanged,
     required this.leadingIcon,
@@ -203,7 +198,7 @@ class _FontRadioDialogTile extends ConsumerWidget {
   });
 
   final String title;
-  final String appBarTitle;
+  final String pageTitle;
   final String font;
   final IconData leadingIcon;
   final ValueChanged<String> onChanged;
@@ -211,23 +206,21 @@ class _FontRadioDialogTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final router = ref.watch(routerProvider);
+    final router = ref.watch(routerProvider);
 
     return HarpyListTile(
       title: Text(title),
       leading: Icon(leadingIcon),
       subtitle: Text(font),
       borderRadius: borderRadius,
-      // TODO: font selection page
-      // onTap: () => app<HarpyNavigator>().push<String>(
-      //   HarpyPageRoute(
-      //     builder: (_) => FontSelectionScreen(
-      //       selectedFont: font,
-      //       title: appBarTitle,
-      //       onChanged: onChanged,
-      //     ),
-      //   ),
-      // ),
+      onTap: () => router.goNamed(
+        FontSelectionPage.name,
+        extra: {
+          'title': pageTitle,
+          'selectedFont': font,
+          'onChanged': onChanged,
+        },
+      ),
     );
   }
 }
