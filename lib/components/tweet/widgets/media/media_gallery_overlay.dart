@@ -131,21 +131,24 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
       ),
     );
 
-    return Column(
-      children: [
-        if (!overlap) appBar,
-        Expanded(
-          child: Stack(
-            children: [
-              GestureDetector(onTap: Navigator.of(context).maybePop),
-              child,
-              if (overlap) appBar,
-              if (overlap) actions,
-            ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          if (!overlap) appBar,
+          Expanded(
+            child: Stack(
+              children: [
+                GestureDetector(onTap: Navigator.of(context).maybePop),
+                child,
+                if (overlap) appBar,
+                if (overlap) actions,
+              ],
+            ),
           ),
-        ),
-        if (!overlap) actions,
-      ],
+          if (!overlap) actions,
+        ],
+      ),
     );
   }
 }
@@ -168,10 +171,7 @@ class _OverlayAppBar extends ConsumerWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.black87,
-                Colors.transparent,
-              ],
+              colors: [Colors.black87, Colors.transparent],
             ),
           ),
           padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
@@ -267,10 +267,7 @@ class _OverlayTweetActions extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            Colors.black87,
-          ],
+          colors: [Colors.transparent, Colors.black87],
         ),
       ),
       padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
