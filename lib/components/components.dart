@@ -171,7 +171,6 @@ export 'tweet/widgets/media/tweet_video.dart';
 export 'tweet/widgets/tweet_actions_bottom_sheet.dart';
 export 'tweet/widgets/tweet_card.dart';
 export 'tweet/widgets/tweet_card_content.dart';
-export 'tweet/widgets/tweet_delegates.dart';
 export 'tweet/widgets/tweet_list.dart';
 export 'tweet/widgets/tweet_list_info_message.dart';
 export 'twitter_list/members/provider/twitter_list_members_provider.dart';

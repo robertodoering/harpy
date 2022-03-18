@@ -23,12 +23,14 @@ void defaultOnUserMentionTap(
   Reader read,
   UserMentionData mention,
 ) {
-  // TODO: don't push if already on the same user
+  final router = read(routerProvider);
 
-  read(routerProvider).pushNamed(
-    UserPage.name,
-    params: {'handle': mention.handle},
-  );
+  if (!router.location.endsWith(mention.handle)) {
+    read(routerProvider).pushNamed(
+      UserPage.name,
+      params: {'handle': mention.handle},
+    );
+  }
 }
 
 void defaultOnUrlTap(BuildContext context, Reader read, UrlData url) {
