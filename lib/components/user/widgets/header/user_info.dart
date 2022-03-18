@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +10,13 @@ import 'package:harpy/core/core.dart';
 class UserInfo extends ConsumerWidget {
   const UserInfo({
     required this.user,
+    required this.connections,
+    required this.connectionsNotifier,
   });
 
   final UserData user;
+  final BuiltSet<UserConnection>? connections;
+  final UserConnectionsNotifier connectionsNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,7 +47,24 @@ class UserInfo extends ConsumerWidget {
                       child: _Handle(user: user),
                     ),
                   ),
-                  const _FollowButton(),
+                  AnimatedSize(
+                    duration: kShortAnimationDuration,
+                    curve: Curves.easeOutCubic,
+                    child: AnimatedSwitcher(
+                      duration: kShortAnimationDuration,
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: connections != null
+                          ? _FollowButton(
+                              user: user,
+                              following: connections!.contains(
+                                UserConnection.following,
+                              ),
+                              notifier: connectionsNotifier,
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
                 ],
               ),
               Padding(
@@ -163,14 +185,37 @@ class _Name extends StatelessWidget {
 }
 
 class _FollowButton extends ConsumerWidget {
-  const _FollowButton();
+  const _FollowButton({
+    required this.user,
+    required this.following,
+    required this.notifier,
+  });
+
+  final UserData user;
+  final bool following;
+  final UserConnectionsNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO
-    return HarpyButton.elevated(
-      label: const Text('follow'),
-      onTap: () {},
+    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+    final theme = Theme.of(context);
+
+    return HarpyButton.text(
+      padding: padding,
+      label: following
+          ? const Text('following')
+          : Text(
+              'follow',
+              style: TextStyle(color: theme.colorScheme.onBackground),
+            ),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        if (following) {
+          notifier.unfollow(user.id);
+        } else {
+          notifier.follow(user.id);
+        }
+      },
     );
   }
 }

@@ -67,6 +67,18 @@ final routesProvider = Provider(
               user: state.extra as UserData?,
             ),
           ),
+          routes: [
+            GoRoute(
+              name: UserTimelineFilter.name,
+              path: 'filter',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                fullscreenDialog: true,
+                child: UserTimelineFilter(user: state.extra as UserData),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           name: TweetDetailPage.name,

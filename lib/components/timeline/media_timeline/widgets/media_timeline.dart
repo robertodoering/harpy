@@ -10,6 +10,7 @@ class MediaTimeline extends ConsumerStatefulWidget {
     required this.provider,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
+    this.scrollPosition = 0,
   });
 
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
@@ -17,6 +18,7 @@ class MediaTimeline extends ConsumerStatefulWidget {
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
+  final int scrollPosition;
 
   @override
   _MediaTimelineState createState() => _MediaTimelineState();
@@ -24,14 +26,25 @@ class MediaTimeline extends ConsumerStatefulWidget {
 
 class _MediaTimelineState extends ConsumerState<MediaTimeline>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _controller = ScrollController();
+  ScrollController? _controller;
+  bool _disposeController = false;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_controller == null) {
+      _controller = PrimaryScrollController.of(context) ?? ScrollController();
+      _disposeController = PrimaryScrollController.of(context) == null;
+    }
+  }
+
+  @override
   void dispose() {
-    _controller.dispose();
+    if (_disposeController) _controller?.dispose();
 
     super.dispose();
   }
@@ -47,8 +60,10 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
 
     return ScrollToTop(
       controller: _controller,
+      scrollPosition: widget.scrollPosition,
       child: LoadMoreHandler(
-        controller: _controller,
+        controller: _controller!,
+        scrollPosition: widget.scrollPosition,
         listen: timelineState.canLoadMore,
         onLoadMore: timelineNotifier.loadOlder,
         child: CustomScrollView(

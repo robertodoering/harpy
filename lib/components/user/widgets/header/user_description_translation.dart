@@ -43,20 +43,22 @@ class UserDescriptionTranslation extends ConsumerWidget {
 class UserDescriptionTranslationButton extends ConsumerWidget {
   const UserDescriptionTranslationButton({
     required this.user,
+    required this.notifier,
   });
 
   final UserData user;
+  final UserNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final iconTheme = IconTheme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    // final active =
-    //     user.descriptionTranslation != null || state.isTranslatingDescription
+    final active =
+        user.descriptionTranslation != null || user.isTranslatingDescription;
 
     return TweetActionButton(
-      active: false,
+      active: active,
       iconBuilder: (_) => const Icon(Icons.translate),
       bubblesColor: const BubblesColor(
         primary: Colors.teal,
@@ -70,10 +72,9 @@ class UserDescriptionTranslationButton extends ConsumerWidget {
       ),
       iconSize: iconTheme.size!,
       activeColor: harpyTheme.colors.translate,
-      // ignore: unnecessary_lambdas
       activate: () {
-        // TODO: translate
         HapticFeedback.lightImpact();
+        notifier.translateDescription(locale: Localizations.localeOf(context));
       },
       deactivate: null,
     );

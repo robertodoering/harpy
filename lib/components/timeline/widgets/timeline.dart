@@ -16,6 +16,7 @@ class Timeline extends ConsumerStatefulWidget {
     this.scrollToTopOffset,
     this.onChangeFilter,
     this.onUpdatedTweetVisibility,
+    this.scrollPosition = 0,
   });
 
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
@@ -32,13 +33,21 @@ class Timeline extends ConsumerStatefulWidget {
 
   final ValueChanged<TweetData>? onUpdatedTweetVisibility;
 
+  /// Determines which scroll position the [ScrollToTop] and [LoadMoreHandler]
+  /// should listen to.
+  ///
+  /// Used when a [PrimaryScrollController] is available and has multiple active
+  /// scroll positions (e.g. in the [NestedScrollView] of the [HomePage]).
+  final int scrollPosition;
+
   @override
   _TimelineState createState() => _TimelineState();
 }
 
 class _TimelineState extends ConsumerState<Timeline>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _controller = ScrollController();
+  ScrollController? _controller;
+  bool _disposeController = false;
 
   /// The index of the newest visible tweet.
   int _newestVisibleIndex = 0;
@@ -47,8 +56,18 @@ class _TimelineState extends ConsumerState<Timeline>
   bool get wantKeepAlive => true;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_controller == null) {
+      _controller = PrimaryScrollController.of(context) ?? ScrollController();
+      _disposeController = PrimaryScrollController.of(context) == null;
+    }
+  }
+
+  @override
   void dispose() {
-    _controller.dispose();
+    if (_disposeController) _controller?.dispose();
 
     super.dispose();
   }
@@ -94,8 +113,8 @@ class _TimelineState extends ConsumerState<Timeline>
     if (next.scrollToEnd) {
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        assert(_controller.positions.length == 1);
-        _controller.jumpTo(_controller.positions.first.maxScrollExtent);
+        assert(_controller!.positions.length == 1);
+        _controller!.jumpTo(_controller!.positions.first.maxScrollExtent);
       });
     }
   }
@@ -111,6 +130,7 @@ class _TimelineState extends ConsumerState<Timeline>
 
     return ScrollToTop(
       controller: _controller,
+      scrollPosition: widget.scrollPosition,
       bottomPadding: widget.scrollToTopOffset,
       content: AnimatedNumber(
         duration: kShortAnimationDuration,
@@ -123,7 +143,8 @@ class _TimelineState extends ConsumerState<Timeline>
         },
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
         child: LoadMoreHandler(
-          controller: _controller,
+          controller: _controller!,
+          scrollPosition: widget.scrollPosition,
           listen: state.canLoadMore,
           onLoadMore: notifier.loadOlder,
           child: TweetList(

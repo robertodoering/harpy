@@ -10,6 +10,7 @@ abstract class HarpyButton extends ConsumerWidget {
     required VoidCallback? onTap,
     Widget? icon,
     Widget? label,
+    EdgeInsets? padding,
   }) = _HarpyTextButton;
 
   /// Equivalent to an [ElevatedButton].
@@ -17,6 +18,7 @@ abstract class HarpyButton extends ConsumerWidget {
     required VoidCallback? onTap,
     Widget? icon,
     Widget? label,
+    EdgeInsets? padding,
   }) = _HarpyElevatedButton;
 
   /// A flat transparent icon button.
@@ -45,15 +47,22 @@ class _HarpyTextButton extends HarpyButton {
     required this.onTap,
     this.icon,
     this.label,
+    this.padding,
   });
 
   final Widget? icon;
   final Widget? label;
   final VoidCallback? onTap;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return TextButton(
+      style: theme.textButtonTheme.style?.copyWith(
+        padding: MaterialStateProperty.all(padding),
+      ),
       onPressed: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -72,15 +81,22 @@ class _HarpyElevatedButton extends HarpyButton {
     required this.onTap,
     this.icon,
     this.label,
+    this.padding,
   });
 
   final Widget? icon;
   final Widget? label;
   final VoidCallback? onTap;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+
     return ElevatedButton(
+      style: theme.textButtonTheme.style?.copyWith(
+        padding: MaterialStateProperty.all(padding),
+      ),
       onPressed: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,

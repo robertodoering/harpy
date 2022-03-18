@@ -43,6 +43,9 @@ class UserData with _$UserData {
     @Default(<UrlData>[]) List<UrlData> userDescriptionUrls,
     Translation? descriptionTranslation,
     @Default(EntitiesData()) EntitiesData userDescriptionEntities,
+
+    /// Whether the description is currently being translated.
+    @Default(false) bool isTranslatingDescription,
   }) = _UserData;
 
   /// Parses the [UserData] from the [TwitterApi] returned [User] object.

@@ -9,12 +9,14 @@ class MentionsTimeline extends ConsumerStatefulWidget {
     this.endSlivers = const [SliverBottomPadding()],
     this.refreshIndicatorOffset,
     this.scrollToTopOffset,
+    this.scrollPosition = 0,
   });
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
   final double? refreshIndicatorOffset;
   final double? scrollToTopOffset;
+  final int scrollPosition;
 
   @override
   ConsumerState<MentionsTimeline> createState() => _MentionsTimelineState();
@@ -41,6 +43,7 @@ class _MentionsTimelineState extends ConsumerState<MentionsTimeline> {
         const _TopActions(),
       ],
       endSlivers: widget.endSlivers,
+      scrollPosition: widget.scrollPosition,
     );
   }
 }

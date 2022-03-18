@@ -23,7 +23,7 @@ class UserCard extends ConsumerWidget {
         child: Card(
           child: InkWell(
             borderRadius: harpyTheme.borderRadius,
-            onTap: () => router.goNamed(
+            onTap: () => router.pushNamed(
               UserPage.name,
               params: {'handle': user.handle},
               extra: user,

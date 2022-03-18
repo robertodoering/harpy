@@ -15,6 +15,7 @@ class LoadMoreHandler extends StatefulWidget {
     required this.onLoadMore,
     this.listen = true,
     this.extentTrigger,
+    this.scrollPosition = 0,
   });
 
   final Widget child;
@@ -28,6 +29,9 @@ class LoadMoreHandler extends StatefulWidget {
   /// Defaults to half of the scrollable's viewport size.
   final double? extentTrigger;
 
+  /// Determines which scroll position that should be listened to.
+  final int scrollPosition;
+
   @override
   _LoadMoreHandlerState createState() => _LoadMoreHandlerState();
 }
@@ -39,12 +43,12 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
   void initState() {
     super.initState();
 
-    widget.controller.addListener(_listener);
+    widget.controller.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_listener);
+    widget.controller.removeListener(_scrollListener);
 
     super.dispose();
   }
@@ -56,15 +60,19 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
     // When re-enabling the listener, we want to query the current scroll extent
     // to potentially call the callback.
     if (!oldWidget.listen && widget.listen) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => _listener());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollListener());
     }
   }
 
-  void _listener() {
+  void _scrollListener() {
     if (_loading || !widget.listen || !mounted) return;
-    if (widget.controller.positions.length != 1) return;
 
-    final position = widget.controller.position;
+    assert(widget.controller.hasClients);
+    assert(widget.controller.positions.length > widget.scrollPosition);
+
+    final position = widget.controller.positions.elementAt(
+      widget.scrollPosition,
+    );
 
     if (position.extentAfter <=
         (widget.extentTrigger ?? position.viewportDimension / 2)) {
@@ -81,7 +89,7 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
 
     // After loading more, re-trigger the listener in case the scroll extent is
     // still below the extent trigger.
-    _listener();
+    _scrollListener();
   }
 
   bool _onNotification(ScrollNotification notification) {
