@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:intl/intl.dart';
 
@@ -26,8 +27,10 @@ class TrendCard extends ConsumerWidget {
           subtitle: trend.tweetVolume != null
               ? Text('${_numberFormat.format(trend.tweetVolume)} tweets')
               : null,
-          // TODO: go to tweet search with trend as query
-          onTap: () {},
+          onTap: () => ref.read(routerProvider).pushNamed(
+            TweetSearchPage.name,
+            queryParams: {'query': trend.name ?? ''},
+          ),
         ),
       ),
     );
