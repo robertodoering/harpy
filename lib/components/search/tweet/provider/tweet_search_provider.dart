@@ -25,7 +25,7 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
     required TwitterApi twitterApi,
   })  : _read = read,
         _twitterApi = twitterApi,
-        super(const TweetSearchState.initial()) {}
+        super(const TweetSearchState.initial());
 
   final Reader _read;
   final TwitterApi _twitterApi;
