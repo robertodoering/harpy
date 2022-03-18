@@ -26,7 +26,11 @@ class MediaTimelineMedia extends ConsumerWidget {
 
     Widget child;
 
-    final heroTag = 'media${mediaHeroTag(context, entry.media)}';
+    final heroTag = 'media${mediaHeroTag(
+      context,
+      tweet: entry.tweet,
+      media: entry.media,
+    )}';
 
     void onMediaLongPress() => showMediaActionsBottomSheet(
           context,

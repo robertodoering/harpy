@@ -43,8 +43,11 @@ class MediaTimelineMediaList extends ConsumerWidget {
                 delegates: delegates,
                 media: entries[index].media,
                 builder: (_) {
-                  final heroTag =
-                      'media${mediaHeroTag(context, entries[index].media)}';
+                  final heroTag = 'media${mediaHeroTag(
+                    context,
+                    tweet: entries[index].tweet,
+                    media: entries[index].media,
+                  )}';
 
                   switch (entries[index].media.type) {
                     case MediaType.image:

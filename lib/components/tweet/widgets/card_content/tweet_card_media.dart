@@ -38,7 +38,11 @@ class TweetCardMedia extends ConsumerWidget {
         );
         break;
       case MediaType.gif:
-        final heroTag = 'tweet${mediaHeroTag(context, tweet.media.single)}';
+        final heroTag = 'tweet${mediaHeroTag(
+          context,
+          tweet: tweet,
+          media: tweet.media.single,
+        )}';
 
         child = TweetGif(
           tweet: tweet,
@@ -57,7 +61,11 @@ class TweetCardMedia extends ConsumerWidget {
         );
         break;
       case MediaType.video:
-        final heroTag = 'tweet${mediaHeroTag(context, tweet.media.single)}';
+        final heroTag = 'tweet${mediaHeroTag(
+          context,
+          tweet: tweet,
+          media: tweet.media.single,
+        )}';
 
         child = TweetVideo(
           tweet: tweet,
@@ -159,14 +167,22 @@ class _MediaConstrainedHeight extends ConsumerWidget {
 }
 
 /// Creates a hero tag for the media which is unique for each [HarpyPage].
-String mediaHeroTag(BuildContext context, MediaData media) {
+///
+/// Note: One tweet can have the same media data (e.g. a retweet and the
+///       original tweet). To avoid having the same hero tag we need to
+///       differentiate based on the tweet as well.
+String mediaHeroTag(
+  BuildContext context, {
+  required TweetData tweet,
+  required MediaData media,
+}) {
   final routeSettings = ModalRoute.of(context)?.settings;
 
   if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
     final key = routeSettings.key as ValueKey;
     // key = current route path
-    return '${media.hashCode}$key';
+    return '${tweet.hashCode}${media.hashCode}${key.value}';
   } else {
-    return '${media.hashCode}';
+    return '${tweet.hashCode}${media.hashCode}';
   }
 }

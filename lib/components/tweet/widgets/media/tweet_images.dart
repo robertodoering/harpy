@@ -35,7 +35,11 @@ class TweetImages extends ConsumerWidget {
               media: tweet.media[index],
               builder: (_) => TweetGalleryImage(
                 media: tweet.media[index],
-                heroTag: 'tweet${mediaHeroTag(context, tweet.media[index])}',
+                heroTag: 'tweet${mediaHeroTag(
+                  context,
+                  tweet: tweet,
+                  media: tweet.media[index],
+                )}',
                 borderRadius: _borderRadiusForImage(
                   harpyTheme.radius,
                   index,
@@ -50,7 +54,11 @@ class TweetImages extends ConsumerWidget {
       children: [
         for (final image in tweet.media)
           Hero(
-            tag: 'tweet${mediaHeroTag(context, image)}',
+            tag: 'tweet${mediaHeroTag(
+              context,
+              tweet: tweet,
+              media: image,
+            )}',
             placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(
               imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
