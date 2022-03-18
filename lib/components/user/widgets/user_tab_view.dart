@@ -15,6 +15,7 @@ class UserTabView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mediaQuery = MediaQuery.of(context);
     final display = ref.watch(displayPreferencesProvider);
     final authenticatedUser = ref.watch(authenticationStateProvider).user;
 
@@ -64,7 +65,9 @@ class UserTabView extends ConsumerWidget {
             ),
           ],
           body: TabBarView(
-            // TODO: copy home physics
+            physics: HarpyTabViewScrollPhysics(
+              viewportWidth: mediaQuery.size.width,
+            ),
             children: children,
           ),
         ),

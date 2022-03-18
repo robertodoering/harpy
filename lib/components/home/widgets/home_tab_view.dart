@@ -69,7 +69,7 @@ class HomeTabView extends ConsumerWidget {
         child: Stack(
           children: [
             TabBarView(
-              physics: HomeTabViewScrollPhysics(
+              physics: HarpyTabViewScrollPhysics(
                 viewportWidth: mediaQuery.size.width,
               ),
               children: [

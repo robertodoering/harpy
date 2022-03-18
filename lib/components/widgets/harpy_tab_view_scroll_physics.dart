@@ -5,10 +5,10 @@ import 'package:harpy/components/components.dart';
 /// [dragStartDistanceMotionThreshold] based on the [viewportWidth].
 ///
 /// This is used as the scroll physics for the horizontally scrolled
-/// [HomeTabView] to make vertical scrolling easier in the nested scrollables
-/// of the tab view.
-class HomeTabViewScrollPhysics extends ScrollPhysics {
-  const HomeTabViewScrollPhysics({
+/// [HomeTabView] and [UserTabView] to make vertical scrolling easier in the
+/// nested scrollables of the tab view.
+class HarpyTabViewScrollPhysics extends ScrollPhysics {
+  const HarpyTabViewScrollPhysics({
     required this.viewportWidth,
     ScrollPhysics? parent,
   }) : super(parent: parent);
@@ -16,8 +16,8 @@ class HomeTabViewScrollPhysics extends ScrollPhysics {
   final double viewportWidth;
 
   @override
-  HomeTabViewScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return HomeTabViewScrollPhysics(
+  HarpyTabViewScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return HarpyTabViewScrollPhysics(
       viewportWidth: viewportWidth,
       parent: buildParent(ancestor),
     );
