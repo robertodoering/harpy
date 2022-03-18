@@ -121,9 +121,7 @@ class _GeneralSettingsList extends ConsumerWidget {
             HarpySwitchTile(
               leading: const Icon(CupertinoIcons.rectangle),
               title: const Text('automatically hide app bar'),
-              subtitle: Text(
-                'when scrolling ${general.bottomAppBar ? "up" : "down"}',
-              ),
+              subtitle: const Text('when scrolling down'),
               value: general.hideHomeAppBar,
               onChanged: generalNotifier.setHideHomeAppbar,
             ),

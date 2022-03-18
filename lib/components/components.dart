@@ -19,6 +19,7 @@ export 'home/tab_configuration/model/home_tab_entry.dart';
 export 'home/tab_configuration/model/home_tab_entry.dart';
 export 'home/tab_configuration/provider/home_tab_configuration_provider.dart';
 export 'home/tab_configuration/widgets/home_tab_entry_icon.dart';
+export 'home/widgets/floating_compose_button.dart';
 export 'home/widgets/home_app_bar.dart';
 export 'home/widgets/home_drawer.dart';
 export 'home/widgets/home_media_timeline.dart';
