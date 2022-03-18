@@ -79,20 +79,20 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
 
 void defaultOnHashtagTap(
   BuildContext context,
-  Reader reader,
+  Reader read,
   HashtagData hashtag,
 ) {
-  // final searchQuery = '#${hashtag.text}';
+  final searchQuery = '#${hashtag.text}';
 
-  // TODO: search hashtag
-  // if (ModalRoute.of(context)!.settings.name == TweetSearchScreen.route) {
-  //   // already in tweet search
-  //   context.read<TweetSearchCubit>().search(customQuery: searchQuery);
-  // } else {
-  //   app<HarpyNavigator>().pushTweetSearchScreen(
-  //     initialSearchQuery: '#${hashtag.text}',
-  //   );
-  // }
+  if (read(tweetSearchProvider) != const TweetSearchState.initial()) {
+    // active tweet search already exists
+    read(tweetSearchProvider.notifier).search(customQuery: searchQuery);
+  } else {
+    read(routerProvider).pushNamed(
+      TweetSearchPage.name,
+      queryParams: {'query': searchQuery},
+    );
+  }
 }
 
 /// Builds a [Text] widget with the [entities] parsed in the [text].

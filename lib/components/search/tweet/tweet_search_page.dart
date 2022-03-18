@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-class TweetSearchPage extends ConsumerWidget {
+class TweetSearchPage extends ConsumerStatefulWidget {
   const TweetSearchPage({
     this.initialQuery,
   });
@@ -13,11 +13,27 @@ class TweetSearchPage extends ConsumerWidget {
   static const name = 'tweet_search';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _TweetSearchPageState createState() => _TweetSearchPageState();
+}
+
+class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialQuery != null) {
+      ref
+          .read(tweetSearchProvider.notifier)
+          .search(customQuery: widget.initialQuery);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
-    final state = ref.watch(tweetSearchProvider(initialQuery));
-    final notifier = ref.watch(tweetSearchProvider(initialQuery).notifier);
+    final state = ref.watch(tweetSearchProvider);
+    final notifier = ref.watch(tweetSearchProvider.notifier);
 
     return HarpyScaffold(
       child: ScrollDirectionListener(

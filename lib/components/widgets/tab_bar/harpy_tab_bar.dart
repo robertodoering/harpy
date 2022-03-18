@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-// TODO: refactor
+// FIXME: refactor
 
 class HarpyTabBar extends ConsumerStatefulWidget {
   const HarpyTabBar({

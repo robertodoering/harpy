@@ -9,12 +9,11 @@ import 'package:harpy/rby/rby.dart';
 
 part 'tweet_search_provider.freezed.dart';
 
-final tweetSearchProvider = StateNotifierProvider.autoDispose
-    .family<TweetSearchNotifier, TweetSearchState, String?>(
-  (ref, initialQuery) => TweetSearchNotifier(
+final tweetSearchProvider =
+    StateNotifierProvider.autoDispose<TweetSearchNotifier, TweetSearchState>(
+  (ref) => TweetSearchNotifier(
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
-    initialQuery: initialQuery,
   ),
   name: 'TweetSearchProvider',
 );
@@ -24,12 +23,9 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
   TweetSearchNotifier({
     required Reader read,
     required TwitterApi twitterApi,
-    required String? initialQuery,
   })  : _read = read,
         _twitterApi = twitterApi,
-        super(const TweetSearchState.initial()) {
-    if (initialQuery != null) search(customQuery: initialQuery);
-  }
+        super(const TweetSearchState.initial()) {}
 
   final Reader _read;
   final TwitterApi _twitterApi;
