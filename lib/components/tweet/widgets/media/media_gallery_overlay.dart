@@ -32,7 +32,7 @@ class MediaGalleryOverlay extends ConsumerStatefulWidget {
     this.actions = kDefaultOverlayActions,
   });
 
-  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
   final MediaData media;
   final TweetDelegates delegates;
   final Widget child;

@@ -10,8 +10,8 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 
-final tweetProvider =
-    StateNotifierProvider.family<TweetNotifier, TweetData, TweetData>(
+final tweetProvider = StateNotifierProvider.autoDispose
+    .family<TweetNotifier, TweetData, TweetData>(
   (ref, tweet) => TweetNotifier(
     read: ref.read,
     tweet: tweet,
@@ -21,6 +21,7 @@ final tweetProvider =
     languagePreferences: ref.watch(languagePreferencesProvider),
   ),
   name: 'TweetProvider',
+  cacheTime: const Duration(minutes: 5),
 );
 
 class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {

@@ -12,7 +12,7 @@ class TweetCardContent extends ConsumerWidget {
     required this.config,
   });
 
-  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
   final double outerPadding;
   final double innerPadding;

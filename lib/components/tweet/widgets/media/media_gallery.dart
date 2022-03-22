@@ -13,7 +13,7 @@ class MediaGalleryEntry {
     required this.builder,
   });
 
-  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
   final MediaData media;
   final WidgetBuilder builder;

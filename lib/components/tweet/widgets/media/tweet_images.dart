@@ -11,7 +11,7 @@ class TweetImages extends ConsumerWidget {
     this.onImageLongPress,
   });
 
-  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
   final IndexedVoidCallback? onImageLongPress;
 

@@ -12,7 +12,7 @@ class TweetCardMedia extends ConsumerWidget {
     required this.delegates,
   });
 
-  final StateNotifierProvider<TweetNotifier, TweetData> provider;
+  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
   final TweetDelegates delegates;
 
   @override
