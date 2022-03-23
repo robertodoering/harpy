@@ -75,7 +75,9 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
       ),
       builder: (_, child) => AnnotatedRegion(
         value: ref.watch(harpyThemeProvider).colors.systemUiOverlayStyle,
-        child: Unfocus(child: child),
+        child: SystemGesturePlaceholder(
+          child: Unfocus(child: child),
+        ),
       ),
     );
   }

@@ -237,6 +237,7 @@ export 'widgets/slivers/sliver_fill_loading_error.dart';
 export 'widgets/slivers/sliver_fill_loading_indicator.dart';
 export 'widgets/slivers/sliver_loading_indicator.dart';
 export 'widgets/spacer.dart';
+export 'widgets/system_gesture_placeholder.dart';
 export 'widgets/tab_bar/harpy_tab.dart';
 export 'widgets/tab_bar/harpy_tab_bar.dart';
 export 'widgets/translated_text.dart';
