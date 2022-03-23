@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class HarpyPhotoGallery extends StatefulWidget {
+class HarpyPhotoGallery extends StatelessWidget {
   const HarpyPhotoGallery({
     required this.builder,
     required this.itemCount,
@@ -18,27 +18,22 @@ class HarpyPhotoGallery extends StatefulWidget {
   final ValueChanged<int>? onPageChanged;
 
   @override
-  State<HarpyPhotoGallery> createState() => _HarpyPhotoGalleryState();
-}
-
-class _HarpyPhotoGalleryState extends State<HarpyPhotoGallery> {
-  @override
   Widget build(BuildContext context) {
     return PhotoViewGallery.builder(
-      itemCount: widget.itemCount,
-      pageController: PageController(initialPage: widget.initialIndex),
+      itemCount: itemCount,
+      pageController: PageController(initialPage: initialIndex),
       backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-      onPageChanged: widget.onPageChanged,
+      onPageChanged: onPageChanged,
       builder: (_, index) => PhotoViewGalleryPageOptions.customChild(
         initialScale: PhotoViewComputedScale.covered,
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 3,
         scaleStateCycle: _scaleStateCycle,
-        disableGestures: !widget.enableGestures,
+        disableGestures: !enableGestures,
         child: Stack(
           children: [
             GestureDetector(onTap: Navigator.of(context).pop),
-            Center(child: widget.builder(context, index)),
+            Center(child: builder(context, index)),
           ],
         ),
       ),

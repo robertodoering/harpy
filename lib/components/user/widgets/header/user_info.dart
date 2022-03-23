@@ -98,16 +98,7 @@ class _Avatar extends ConsumerWidget {
         theme.textTheme.headline6!.fontSize!;
 
     return GestureDetector(
-      onTap: () => Navigator.of(context).push<void>(
-        HeroDialogRoute(
-          builder: (_) => HarpyImage(
-            imageUrl: user.originalUserImageUrl,
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
+      onTap: () => _showFullscreenAvatar(context, user: user),
       child: SizedBox(
         width: avatarSize,
         height: avatarSize,
@@ -119,6 +110,42 @@ class _Avatar extends ConsumerWidget {
       ),
     );
   }
+}
+
+void _showFullscreenAvatar(
+  BuildContext context, {
+  required UserData user,
+}) {
+  Navigator.of(context).push<void>(
+    HeroDialogRoute(
+      builder: (_) => HarpyDismissible(
+        onDismissed: Navigator.of(context).pop,
+        child: HarpyPhotoGallery(
+          itemCount: 1,
+          builder: (_, __) => Hero(
+            tag: user.originalUserImageUrl,
+            flightShuttleBuilder: (
+              flightContext,
+              animation,
+              flightDirection,
+              fromHeroContext,
+              toHeroContext,
+            ) =>
+                borderRadiusFlightShuttleBuilder(
+              BorderRadius.circular(48),
+              animation,
+              flightDirection,
+              fromHeroContext,
+              toHeroContext,
+            ),
+            child: HarpyImage(
+              imageUrl: user.originalUserImageUrl,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _Handle extends ConsumerWidget {

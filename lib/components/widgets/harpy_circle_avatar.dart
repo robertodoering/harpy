@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 
+// FIXME: refactor
+
 /// Builds a [CircleAvatar] with a [HarpyImage].
 class HarpyCircleAvatar extends StatelessWidget {
   const HarpyCircleAvatar({

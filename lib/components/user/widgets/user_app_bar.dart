@@ -65,19 +65,9 @@ class _UserBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push<void>(
-        HeroDialogRoute(
-          builder: (_) => HarpyImage(
-            imageUrl: url,
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-      ),
+      onTap: () => _showFullscreenBanner(context, url: url),
       child: Hero(
         tag: url,
-        placeholderBuilder: (_, __, child) => child,
         child: HarpyImage(
           imageUrl: url,
           width: double.infinity,
@@ -87,4 +77,26 @@ class _UserBanner extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showFullscreenBanner(
+  BuildContext context, {
+  required String url,
+}) {
+  Navigator.of(context).push<void>(
+    HeroDialogRoute(
+      builder: (_) => HarpyDismissible(
+        onDismissed: Navigator.of(context).pop,
+        child: HarpyPhotoGallery(
+          itemCount: 1,
+          builder: (_, __) => Hero(
+            tag: url,
+            child: HarpyImage(
+              imageUrl: url,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
