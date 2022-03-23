@@ -20,7 +20,6 @@ final tweetProvider = StateNotifierProvider.autoDispose
     messageService: ref.watch(messageServiceProvider),
     languagePreferences: ref.watch(languagePreferencesProvider),
   ),
-  name: 'TweetProvider',
   cacheTime: const Duration(minutes: 5),
 );
 

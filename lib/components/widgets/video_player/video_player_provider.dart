@@ -29,7 +29,6 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
 
     return notifier;
   },
-  name: 'VideoPlayerProvider',
 );
 
 class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {

@@ -10,9 +10,11 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
     Object? value,
     ProviderContainer container,
   ) {
-    log
-      ..info(_msg('added', provider))
-      ..info('         ${value.runtimeType}');
+    if (provider.name != null) {
+      log
+        ..info(_msg('added', provider))
+        ..info('         ${value.runtimeType}');
+    }
   }
 
   @override
@@ -22,9 +24,11 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
     Object? newValue,
     ProviderContainer container,
   ) {
-    log
-      ..info(_msg('updated', provider))
-      ..info('         ${newValue.runtimeType}');
+    if (provider.name != null) {
+      log
+        ..info(_msg('updated', provider))
+        ..info('         ${newValue.runtimeType}');
+    }
 
     if (newValue is AsyncError) {
       log.warning('async error', newValue.error, newValue.stackTrace);
@@ -34,19 +38,17 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
   @override
   void didDisposeProvider(
     ProviderBase provider,
-    ProviderContainer containers,
+    ProviderContainer container,
   ) {
-    log.info(_msg('disposed', provider));
+    if (provider.name != null) {
+      log.info(_msg('disposed', provider));
+    }
   }
 
   String _msg(String type, ProviderBase provider) {
-    final buffer = StringBuffer(type.padRight(9));
-
-    if (provider.name != null) {
-      buffer.write('"${provider.name}" ');
-    }
-
-    buffer.write('${provider.runtimeType}');
+    final buffer = StringBuffer(type.padRight(9))
+      ..write('"${provider.name}" ')
+      ..write('${provider.runtimeType}');
 
     return buffer.toString();
   }
