@@ -25,17 +25,21 @@ class HarpyImage extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
 
-    return Container(
-      color: theme.cardColor,
-      width: width,
-      height: height,
-      child: FractionallySizedBox(
-        widthFactor: .5,
-        heightFactor: .5,
-        child: FittedBox(
-          child: Icon(
-            Icons.broken_image_outlined,
-            color: theme.iconTheme.color,
+    return GestureDetector(
+      // empty on tap to prevent tap gestures on error widget
+      onTap: () {},
+      child: Container(
+        color: theme.cardColor,
+        width: width,
+        height: height,
+        child: FractionallySizedBox(
+          widthFactor: .5,
+          heightFactor: .5,
+          child: FittedBox(
+            child: Icon(
+              Icons.broken_image_outlined,
+              color: theme.iconTheme.color,
+            ),
           ),
         ),
       ),
@@ -57,17 +61,21 @@ class HarpyImage extends StatelessWidget {
       switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeOut,
       child: frame == null
-          ? Shimmer(
-              gradient: LinearGradient(
-                colors: [
-                  theme.cardTheme.color!.withOpacity(.3),
-                  theme.cardTheme.color!.withOpacity(.3),
-                  theme.colorScheme.secondary,
-                  theme.cardTheme.color!.withOpacity(.3),
-                  theme.cardTheme.color!.withOpacity(.3),
-                ],
+          ? GestureDetector(
+              // empty on tap to prevent tap gestures on loading shimmer
+              onTap: () {},
+              child: Shimmer(
+                gradient: LinearGradient(
+                  colors: [
+                    theme.cardTheme.color!.withOpacity(.3),
+                    theme.cardTheme.color!.withOpacity(.3),
+                    theme.colorScheme.secondary,
+                    theme.cardTheme.color!.withOpacity(.3),
+                    theme.cardTheme.color!.withOpacity(.3),
+                  ],
+                ),
+                child: Container(color: theme.cardTheme.color),
               ),
-              child: Container(color: theme.cardTheme.color),
             )
           : child,
     );
