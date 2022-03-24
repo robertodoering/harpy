@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 class ListCardAnimation extends ConsumerStatefulWidget {
@@ -20,7 +19,6 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
 
   VisibilityChange? _visibilityChange;
@@ -31,17 +29,15 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
 
     _controller = AnimationController(
       vsync: this,
-      duration: kShortAnimationDuration,
+      duration: const Duration(milliseconds: 200),
     );
 
-    _fadeAnimation = CurveTween(curve: Curves.easeOut).animate(_controller);
-
-    _slideAnimation = Tween(begin: const Offset(0, 25), end: Offset.zero)
-        .chain(CurveTween(curve: Curves.easeOutCubic))
-        .animate(_controller);
+    _fadeAnimation = CurveTween(
+      curve: const Interval(0, .5, curve: Curves.easeOut),
+    ).animate(_controller);
 
     _scaleAnimation = Tween<double>(begin: .95, end: 1)
-        .chain(CurveTween(curve: Curves.easeOut))
+        .chain(CurveTween(curve: Curves.easeOutCubic))
         .animate(_controller);
   }
 
@@ -93,13 +89,10 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
             animation: _controller,
             builder: (_, __) => FadeTransition(
               opacity: _fadeAnimation,
-              child: Transform.translate(
-                offset: _slideAnimation.value,
-                child: Transform.scale(
-                  scale: _scaleAnimation.value,
-                  alignment: Alignment.bottomCenter,
-                  child: widget.child,
-                ),
+              child: Transform.scale(
+                scale: _scaleAnimation.value,
+                alignment: Alignment.bottomCenter,
+                child: widget.child,
               ),
             ),
           );
