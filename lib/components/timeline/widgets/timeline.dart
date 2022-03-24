@@ -111,10 +111,15 @@ class _TimelineState extends ConsumerState<Timeline>
 
   void _providerListener(TimelineState? previous, TimelineState next) {
     if (next.scrollToEnd) {
+      final mediaQuery = MediaQuery.of(context);
+      final position = _controller!.positions.elementAt(widget.scrollPosition);
+
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        assert(_controller!.positions.length == 1);
-        _controller!.jumpTo(_controller!.positions.first.maxScrollExtent);
+        _controller!.jumpTo(
+          // + extra height to make sure we reach the end
+          position.maxScrollExtent + mediaQuery.size.height * 3,
+        );
       });
     }
   }
