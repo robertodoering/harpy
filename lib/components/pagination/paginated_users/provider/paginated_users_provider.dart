@@ -12,7 +12,7 @@ import 'package:harpy/rby/rby.dart';
 /// For example implementations, see:
 /// * [FollowersNotifier]
 /// * [FollowingNotifier]
-/// * [TwitterListMembersNotifier]
+/// * [ListsMembersNotifier]
 abstract class PaginatedUsersNotifier
     extends StateNotifier<PaginatedState<BuiltList<UserData>>>
     with

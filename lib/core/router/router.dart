@@ -188,6 +188,27 @@ final routesProvider = Provider(
           ],
         ),
         GoRoute(
+          name: ListShowPage.name,
+          path: 'lists/:userId',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            restorationId: state.pageKey.value,
+            child: ListShowPage(userId: state.params['userId']!),
+          ),
+        ),
+        GoRoute(
+          name: ListMembersPage.name,
+          path: 'list/:listId/members',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            restorationId: state.pageKey.value,
+            child: ListMembersPage(
+              listId: state.params['listId']!,
+              listName: state.queryParams['name']!,
+            ),
+          ),
+        ),
+        GoRoute(
           name: SettingsPage.name,
           path: 'settings',
           pageBuilder: (_, state) => HarpyPage(

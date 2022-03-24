@@ -1,3 +1,4 @@
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 
@@ -18,6 +19,20 @@ class TwitterListData with _$TwitterListData {
     UserData? user,
     @Default(false) bool following,
   }) = _TwitterListData;
+
+  factory TwitterListData.fromTwitterList(TwitterList list) {
+    return TwitterListData(
+      name: list.name ?? '',
+      createdAt: list.createdAt,
+      subscriberCount: list.subscriberCount,
+      id: list.idStr ?? '',
+      memberCount: list.memberCount,
+      mode: list.mode ?? 'public',
+      description: list.description ?? '',
+      user: list.user != null ? UserData.fromUser(list.user) : null,
+      following: list.following ?? false,
+    );
+  }
 
   TwitterListData._();
 

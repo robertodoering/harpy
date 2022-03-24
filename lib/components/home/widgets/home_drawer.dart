@@ -242,9 +242,7 @@ class _Entries extends ConsumerWidget {
     final general = ref.watch(generalPreferencesProvider);
     final user = ref.watch(authenticationStateProvider).user;
 
-    if (user == null) {
-      return const SizedBox();
-    }
+    if (user == null) return const SizedBox();
 
     final children = [
       HarpyListCard(
@@ -266,7 +264,10 @@ class _Entries extends ConsumerWidget {
       HarpyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
-        onTap: () => router.goNamed(ListsPage.name),
+        onTap: () => router.goNamed(
+          ListShowPage.name,
+          params: {'userId': user.id},
+        ),
       ),
       verticalSpacer,
       HarpyListCard(
@@ -311,9 +312,7 @@ class _Entries extends ConsumerWidget {
             builder: (_) => const LogoutDialog(),
           );
 
-          if (result ?? false) {
-            ref.read(logoutProvider).logout().ignore();
-          }
+          if (result ?? false) ref.read(logoutProvider).logout().ignore();
         },
       ),
     ];

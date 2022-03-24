@@ -5,18 +5,18 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-final twitterListMembersProvider = StateNotifierProvider.autoDispose.family<
-    TwitterListMembersNotifier, PaginatedState<BuiltList<UserData>>, String>(
-  (ref, listId) => TwitterListMembersNotifier(
+final listMembersProvider = StateNotifierProvider.autoDispose
+    .family<ListsMembersNotifier, PaginatedState<BuiltList<UserData>>, String>(
+  (ref, listId) => ListsMembersNotifier(
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
     listId: listId,
   ),
-  name: 'TwitterListMembersProvider',
+  name: 'ListMembersProvider',
 );
 
-class TwitterListMembersNotifier extends PaginatedUsersNotifier {
-  TwitterListMembersNotifier({
+class ListsMembersNotifier extends PaginatedUsersNotifier {
+  ListsMembersNotifier({
     required Reader read,
     required TwitterApi twitterApi,
     required String listId,

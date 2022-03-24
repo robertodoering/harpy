@@ -10,7 +10,7 @@ import 'package:harpy/rby/rby.dart';
 /// For example implementations, see:
 /// * [FollowersPage]
 /// * [FollowingPage]
-/// * [TwitterListMembersPage]
+/// * [ListMembersPage]
 class PaginatedUsersPage extends ConsumerWidget {
   const PaginatedUsersPage({
     required this.provider,
