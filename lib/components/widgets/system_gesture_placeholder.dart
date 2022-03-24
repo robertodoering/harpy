@@ -37,7 +37,10 @@ class SystemGesturePlaceholder extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: SizedBox(
             height: mediaQuery.size.height * .044,
-            child: GestureDetector(onVerticalDragStart: (_) {}),
+            child: GestureDetector(
+              onHorizontalDragStart: (_) {},
+              onVerticalDragStart: (_) {},
+            ),
           ),
         ),
       ],
