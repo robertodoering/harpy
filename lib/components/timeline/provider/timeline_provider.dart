@@ -29,6 +29,8 @@ abstract class TimelineNotifier<T extends Object>
     required Ref ref,
   })  : _read = ref.read,
         super(const TimelineState.initial()) {
+    filter = currentFilter();
+
     ref.listen(
       timelineFilterProvider,
       (_, __) {
@@ -36,11 +38,11 @@ abstract class TimelineNotifier<T extends Object>
         final newFilter = currentFilter();
 
         if (filter != newFilter) {
+          log.fine('updated timeline filter');
           filter = newFilter;
           load(clearPrevious: true);
         }
       },
-      fireImmediately: true,
     );
   }
 
