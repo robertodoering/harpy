@@ -45,8 +45,12 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _visibilityChange ??= VisibilityChange.of(context)
-      ?..addCallback(_onVisibilityChanged);
+    if (_visibilityChange == null) {
+      _visibilityChange = VisibilityChange.of(context)
+        ?..addCallback(_onVisibilityChanged);
+
+      if (_visibilityChange?.isVisible ?? false) _showChild();
+    }
 
     assert(_visibilityChange != null);
   }
@@ -59,24 +63,24 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
     super.dispose();
   }
 
-  void _onVisibilityChanged(bool visible) {
-    if (mounted && visible) {
-      final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
+  void _showChild() {
+    final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
 
-      if (scrollDirection != ScrollDirection.forward) {
-        // idle or scrolling down
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          // start the controller after one frame to prevent issues when
-          // animation plays during navigation
-          if (mounted) _controller.forward(from: 0);
-        });
-      } else {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          // scrolling up, skip animation
-          if (mounted) _controller.forward(from: 1);
-        });
-      }
+    if (scrollDirection != ScrollDirection.forward) {
+      // idle or scrolling down -> animate
+      if (mounted) _controller.forward(from: 0);
+    } else {
+      // scrolling up, skip animation
+      if (mounted) _controller.forward(from: 1);
     }
+  }
+
+  void _onVisibilityChanged(bool visible) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // start the controller after one frame to prevent issues when
+      // animation plays during navigation
+      if (mounted && visible && !_controller.isAnimating) _showChild();
+    });
   }
 
   @override

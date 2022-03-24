@@ -128,6 +128,8 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
 
   void _listener() {
     if (mounted && _userScrollDirection?.direction != ScrollDirection.forward) {
+      // prevent the list card animation from triggering when navigating between
+      // tabs
       _userScrollDirection?.forward();
     }
   }

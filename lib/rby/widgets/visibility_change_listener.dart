@@ -67,6 +67,7 @@ class _VisibilityChangeListenerState extends State<VisibilityChangeListener> {
       key: widget.detectorKey,
       onVisibilityChanged: _onVisibilityChanged,
       child: VisibilityChange(
+        isVisible: _visible,
         addCallback: _callbacks.add,
         removeCallback: _callbacks.remove,
         child: widget.child,
@@ -78,10 +79,13 @@ class _VisibilityChangeListenerState extends State<VisibilityChangeListener> {
 /// Inherited widget to add and remove visibility change callbacks.
 class VisibilityChange extends InheritedWidget {
   const VisibilityChange({
+    required this.isVisible,
     required this.addCallback,
     required this.removeCallback,
     required Widget child,
   }) : super(child: child);
+
+  final bool isVisible;
 
   final void Function(ValueChanged<bool> callback) addCallback;
   final void Function(ValueChanged<bool> callback) removeCallback;
