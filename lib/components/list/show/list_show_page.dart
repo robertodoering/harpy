@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
+/// Shows an overview of available Twitter lists for the [userId].
 class ListShowPage extends StatelessWidget {
   const ListShowPage({
     required this.userId,

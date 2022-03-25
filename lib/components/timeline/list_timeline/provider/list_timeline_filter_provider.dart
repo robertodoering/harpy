@@ -1,14 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:tuple/tuple.dart';
 
 final listTimelineFilterProvider = StateNotifierProvider.autoDispose.family<
     ListTimelineFilterNotifier,
     TimelineFilterSelectionState,
-    TimelineFilterArguments>(
+    Tuple2<String, String>>(
   (ref, args) => ListTimelineFilterNotifier(
     read: ref.read,
-    listId: args.listId,
-    listName: args.listName,
+    listId: args.item1,
+    listName: args.item2,
   ),
   name: 'ListTimelineFilterprovider',
 );

@@ -197,6 +197,33 @@ final routesProvider = Provider(
           ),
         ),
         GoRoute(
+          name: ListTimelinePage.name,
+          path: 'list/:listId',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            restorationId: state.pageKey.value,
+            child: ListTimelinePage(
+              listId: state.params['listId']!,
+              listName: state.queryParams['name']!,
+            ),
+          ),
+          routes: [
+            GoRoute(
+              name: ListTimelineFilter.name,
+              path: 'filter',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                fullscreenDialog: true,
+                child: ListTimelineFilter(
+                  listId: state.params['listId']!,
+                  listName: state.queryParams['name']!,
+                ),
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
           name: ListMembersPage.name,
           path: 'list/:listId/members',
           pageBuilder: (_, state) => HarpyPage(

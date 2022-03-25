@@ -31,11 +31,11 @@ class TwitterLists extends ConsumerWidget {
         list: list,
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
-            : () {}, // TODO: list timeline
-        // : () => app<HarpyNavigator>().pushListTimelineScreen(
-        //       listId: list.id,
-        //       listName: list.name,
-        //     ),
+            : () => read(routerProvider).pushNamed(
+                  ListTimelinePage.name,
+                  params: {'listId': list.id},
+                  queryParams: {'name': list.name},
+                ),
         onLongPress: () => _showListActionBottomSheet(
           context,
           read,
