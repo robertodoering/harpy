@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 class HomeTabBar extends ConsumerWidget {
@@ -31,23 +32,24 @@ class HomeTabBar extends ConsumerWidget {
     final configuration = ref.watch(homeTabConfigurationProvider);
 
     return HarpyTabBar(
+      controller: HomeTabController.of(context),
       padding: padding,
       tabs: [
-        const _DrawerTab(),
+        const _HomeDrawerTab(),
         for (final entry in configuration.visibleEntries)
           _mapEntryTabs(
             entry: entry,
             cardColor: harpyTheme.colors.alternateCardColor,
             padding: padding,
           ),
+        const _HomeCustomizationTab(),
       ],
-      endWidgets: const [_CustomizeHomeTab()],
     );
   }
 }
 
-class _DrawerTab extends ConsumerWidget {
-  const _DrawerTab();
+class _HomeDrawerTab extends ConsumerWidget {
+  const _HomeDrawerTab();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,30 +93,22 @@ class _MentionsTab extends ConsumerWidget {
   }
 }
 
-class _CustomizeHomeTab extends StatelessWidget {
-  const _CustomizeHomeTab();
+class _HomeCustomizationTab extends ConsumerWidget {
+  const _HomeCustomizationTab();
 
   @override
-  Widget build(BuildContext context) {
-    // final child = HarpyButton.flat(
-    //   padding: EdgeInsets.all(HarpyTab.tabPadding(context)),
-    //   icon: const Icon(FeatherIcons.settings),
-    //   onTap: () => app<HarpyNavigator>().pushHomeTabCustomizationScreen(
-    //     model: context.read<HomeTabModel>(),
-    //   ),
-    // );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final iconTheme = IconTheme.of(context);
 
-    // TODO: implement home customization tab
-    return const SizedBox();
-
-    // if (isFree) {
-    //   return Bubbled(
-    //     bubble: const FlareIcon.shiningStar(),
-    //     bubbleOffset: const Offset(2, -2),
-    //     child: child,
-    //   );
-    // } else {
-    //   return child;
-    // }
+    return Badge.custom(
+      // analyzer false positive
+      // ignore: avoid_redundant_argument_values
+      show: isFree,
+      badge: FlareIcon.shiningStar(iconSize: iconTheme.size! - 4),
+      child: const HarpyTab(
+        icon: Icon(Icons.settings_rounded),
+        cardColor: Colors.transparent,
+      ),
+    );
   }
 }

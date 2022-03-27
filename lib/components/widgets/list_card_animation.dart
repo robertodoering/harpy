@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 class ListCardAnimation extends ConsumerStatefulWidget {
@@ -29,11 +30,11 @@ class _ListCardAnimationState extends ConsumerState<ListCardAnimation>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: kShortAnimationDuration,
     );
 
     _fadeAnimation = CurveTween(
-      curve: const Interval(0, .5, curve: Curves.easeOut),
+      curve: const Interval(0, .66, curve: Curves.easeOut),
     ).animate(_controller);
 
     _scaleAnimation = Tween<double>(begin: .95, end: 1)

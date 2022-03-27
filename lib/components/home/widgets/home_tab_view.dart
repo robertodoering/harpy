@@ -8,6 +8,8 @@ class HomeTabView extends ConsumerWidget {
 
   static const _indexOffset = 1;
 
+  // TODO: set scrollPosition for scroll views in home page
+
   Widget _mapEntryContent({
     required HomeTabEntry entry,
     required double? refreshIndicatorOffset,
@@ -62,26 +64,30 @@ class HomeTabView extends ConsumerWidget {
     final scrollToTopOffset =
         general.bottomAppBar ? appbarHeight + display.paddingValue : null;
 
-    return DefaultTabController(
-      length: configuration.visibleEntries.length + 1,
+    return HomeTabController(
+      length: configuration.visibleEntries.length + 2,
       initialIndex: _indexOffset,
       child: _HomeTabListener(
         child: Stack(
           children: [
-            TabBarView(
-              physics: HarpyTabViewScrollPhysics(
-                viewportWidth: mediaQuery.size.width,
-              ),
-              children: [
-                const HomeDrawer(),
-                ...configuration.visibleEntries.map(
-                  (entry) => _mapEntryContent(
-                    entry: entry,
-                    refreshIndicatorOffset: refreshIndicatorOffset,
-                    scrollToTopOffset: scrollToTopOffset,
-                  ),
+            Builder(
+              builder: (context) => TabBarView(
+                controller: HomeTabController.of(context),
+                physics: HarpyTabViewScrollPhysics(
+                  viewportWidth: mediaQuery.size.width,
                 ),
-              ],
+                children: [
+                  const HomeDrawer(),
+                  ...configuration.visibleEntries.map(
+                    (entry) => _mapEntryContent(
+                      entry: entry,
+                      refreshIndicatorOffset: refreshIndicatorOffset,
+                      scrollToTopOffset: scrollToTopOffset,
+                    ),
+                  ),
+                  const HomeTabCustomization(),
+                ],
+              ),
             ),
             const HomeAppBar(),
           ],
@@ -110,12 +116,15 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller ??= DefaultTabController.of(context)
-      ?..animation?.addListener(_listener);
+    if (_controller == null) {
+      _controller = HomeTabController.of(context)
+        ?..animation?.addListener(_listener);
+
+      assert(_controller != null);
+    }
 
     _userScrollDirection ??= UserScrollDirection.of(context);
 
-    assert(_controller != null);
     assert(_userScrollDirection != null);
   }
 
@@ -129,8 +138,10 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
   void _listener() {
     if (mounted && _userScrollDirection?.direction != ScrollDirection.forward) {
       // prevent the list card animation from triggering when navigating between
-      // tabs
-      _userScrollDirection?.forward();
+      // tabs and show the tab bar
+      WidgetsBinding.instance!.addPostFrameCallback(
+        (_) => _userScrollDirection?.forward(),
+      );
     }
   }
 

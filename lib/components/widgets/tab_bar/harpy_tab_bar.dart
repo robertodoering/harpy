@@ -11,6 +11,7 @@ class HarpyTabBar extends ConsumerStatefulWidget {
     required this.tabs,
     required this.padding,
     this.endWidgets,
+    this.controller,
   });
 
   final List<Widget> tabs;
@@ -21,29 +22,45 @@ class HarpyTabBar extends ConsumerStatefulWidget {
   /// Padding around the [tabs] inside the scroll view.
   final EdgeInsets padding;
 
+  final TabController? controller;
+
   @override
   _HarpyTapBarState createState() => _HarpyTapBarState();
 }
 
 class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
-  late AutoScrollController? _scrollController;
-  late TabController? _tabController;
+  final _scrollController = AutoScrollController(axis: Axis.horizontal);
+
+  TabController? _tabController;
+  double _animationValue = 0;
 
   int _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController = AutoScrollController(axis: Axis.horizontal);
-  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _tabController = DefaultTabController.of(context);
-    _tabController?.animation?.addListener(_tabControllerListener);
+    if (_tabController == null) {
+      _tabController = widget.controller ?? DefaultTabController.of(context);
+      _tabController?.animation?.addListener(_tabControllerListener);
+      _animationValue = _tabController?.animation?.value ?? 0;
+      assert(_tabController != null);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant HarpyTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.controller != null &&
+        oldWidget.controller != widget.controller) {
+      _tabController = widget.controller!
+        ..animation?.addListener(_tabControllerListener);
+      // we set the animation value to the last entry to prevent the animation
+      // to flicker when updating the controller (which only happens when we are
+      // on the last tab)
+      _animationValue = widget.controller!.length - 1;
+    }
   }
 
   @override
@@ -51,13 +68,17 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
     super.dispose();
 
     _tabController?.animation?.removeListener(_tabControllerListener);
-    _scrollController?.dispose();
+    _scrollController.dispose();
   }
 
   void _tabControllerListener() {
     if (mounted) {
       // rebuild tabs with new animation value
-      setState(() {});
+      WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => setState(
+          () => _animationValue = _tabController?.animation?.value ?? 0,
+        ),
+      );
 
       final newIndex = _tabController?.animation?.value.round() ?? 0;
 
@@ -79,27 +100,27 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
   }
 
   void _scrollToIndex(int index) {
-    _scrollController?.scrollToIndex(
+    _scrollController.scrollToIndex(
       index,
       duration: kLongAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
     );
   }
 
-  double _animationValue(int index) =>
-      (_tabController!.animation!.value - index).clamp(-1, 1).abs().toDouble();
+  double _tabAnimationValue(int index) =>
+      (_animationValue - index).clamp(-1, 1).abs().toDouble();
 
   Widget _buildTab(HarpyTheme harpyTheme, int index) {
     return AutoScrollTag(
       key: ValueKey<int>(index),
-      controller: _scrollController!,
+      controller: _scrollController,
       index: index,
       child: InkWell(
         borderRadius: harpyTheme.borderRadius,
         onTap: () => _tabController!.animateTo(index),
         child: HarpyTabScope(
           index: index,
-          animationValue: _animationValue(index),
+          animationValue: _tabAnimationValue(index),
           child: widget.tabs[index],
         ),
       ),

@@ -55,31 +55,25 @@ class _DrawerAnimationListener extends StatefulWidget {
 
 class _DrawerAnimationListenerState extends State<_DrawerAnimationListener>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late AnimationController _controller;
+  late final AnimationController _controller = AnimationController(vsync: this);
 
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(vsync: this);
-  }
+  TabController? _tabController;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final tabController = DefaultTabController.of(context);
-    assert(tabController != null);
-    assert(tabController?.animation != null);
-
-    _tabController = tabController!
-      ..animation?.addListener(_tabControllerListener);
+    if (_tabController == null) {
+      _tabController = HomeTabController.of(context)
+        ?..animation?.addListener(_tabControllerListener);
+      assert(_tabController != null);
+      assert(_tabController?.animation != null);
+    }
   }
 
   @override
   void dispose() {
-    _tabController.animation?.removeListener(_tabControllerListener);
+    _tabController?.animation?.removeListener(_tabControllerListener);
     _controller.dispose();
 
     super.dispose();
@@ -87,7 +81,7 @@ class _DrawerAnimationListenerState extends State<_DrawerAnimationListener>
 
   void _tabControllerListener() {
     if (mounted) {
-      final value = 1 - _tabController.animation!.value;
+      final value = 1 - _tabController!.animation!.value;
 
       if (value >= 0 && value <= 1 && value != _controller.value) {
         _controller.value = value;

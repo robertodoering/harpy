@@ -23,6 +23,7 @@ class ListShowPage extends StatelessWidget {
         child: ScrollToTop(
           child: TwitterLists(
             userId: userId,
+            onListSelected: onListSelected,
           ),
         ),
       ),

@@ -193,7 +193,10 @@ final routesProvider = Provider(
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
             restorationId: state.pageKey.value,
-            child: ListShowPage(userId: state.params['userId']!),
+            child: ListShowPage(
+              userId: state.params['userId']!,
+              onListSelected: state.extra as ValueChanged<TwitterListData>?,
+            ),
           ),
         ),
         GoRoute(

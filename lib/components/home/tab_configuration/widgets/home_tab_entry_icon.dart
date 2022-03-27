@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class HomeTabEntryIcon extends StatelessWidget {
   const HomeTabEntryIcon(
     this.iconName, {
-    this.size,
+    this.color,
   });
 
   /// The name that matches the icon data in [iconNameMap].
@@ -13,10 +12,10 @@ class HomeTabEntryIcon extends StatelessWidget {
   /// instead.
   final String? iconName;
 
-  final double? size;
+  final Color? color;
 
   /// Maps the name of an icon to its [IconData].
-  static const Map<String, IconData> iconNameMap = <String, IconData>{
+  static const iconNameMap = <String, IconData>{
     // default
     'home': CupertinoIcons.home,
     'photo': CupertinoIcons.photo,
@@ -74,7 +73,7 @@ class HomeTabEntryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = this.size ?? Theme.of(context).iconTheme.size;
+    final size = IconTheme.of(context).size;
 
     if (iconName?.length == 1) {
       return Container(
@@ -86,6 +85,7 @@ class HomeTabEntryIcon extends StatelessWidget {
           style: TextStyle(
             fontSize: size,
             height: 1,
+            color: color,
           ),
           overflow: TextOverflow.clip,
         ),
@@ -94,6 +94,7 @@ class HomeTabEntryIcon extends StatelessWidget {
       return Icon(
         iconNameMap[iconName] ?? CupertinoIcons.circle,
         size: size,
+        color: color,
       );
     }
   }
