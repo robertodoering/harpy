@@ -33,6 +33,7 @@ class TweetGif extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final harpyTheme = ref.watch(harpyThemeProvider);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
@@ -51,6 +52,20 @@ class TweetGif extends ConsumerWidget {
         child: Hero(
           tag: heroTag,
           placeholderBuilder: placeholderBuilder,
+          flightShuttleBuilder: (
+            _,
+            animation,
+            flightDirection,
+            fromHeroContext,
+            toHeroContext,
+          ) =>
+              borderRadiusFlightShuttleBuilder(
+            harpyTheme.borderRadius,
+            animation,
+            flightDirection,
+            fromHeroContext,
+            toHeroContext,
+          ),
           child: AspectRatio(
             aspectRatio: mediaData.aspectRatioDouble,
             child: state.maybeMap(
