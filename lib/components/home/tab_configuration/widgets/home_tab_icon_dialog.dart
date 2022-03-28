@@ -11,21 +11,13 @@ class HomeTabIconDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String title;
-
-    if (entry.name != null && entry.name!.isNotEmpty) {
-      title = '${entry.name} icon';
-    } else {
-      title = 'icon';
-    }
-
     return HarpyDialog(
-      title: Text(title),
+      title: Text(entry.name.isNotEmpty ? '${entry.name} icon' : 'icon'),
       content: Wrap(
         spacing: 4,
         runSpacing: 4,
         children: [
-          if (entry.hasName) _IconButton(iconName: entry.name![0]),
+          if (entry.name.isNotEmpty) _IconButton(iconName: entry.name[0]),
           for (String iconName in HomeTabEntryIcon.iconNameMap.keys)
             _IconButton(iconName: iconName)
         ],

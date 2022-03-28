@@ -4,7 +4,6 @@ export 'harpy_theme/harpy_theme_data.dart';
 export 'harpy_theme/predefined_themes.dart';
 export 'misc/environment.dart';
 export 'misc/error_handler.dart';
-export 'misc/filename_editing_controller.dart';
 export 'misc/list_utils.dart';
 export 'misc/request_lock_mixin.dart';
 export 'misc/string_utils.dart';

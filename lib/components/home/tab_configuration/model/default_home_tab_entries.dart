@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:harpy/components/components.dart';
 
 /// The default entries for the that determine the default views in the home
@@ -27,4 +28,4 @@ final defaultHomeTabEntries = [
     icon: 'search',
     name: 'search',
   ),
-];
+].toBuiltList();

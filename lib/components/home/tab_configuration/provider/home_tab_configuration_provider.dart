@@ -66,8 +66,6 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
     }
   }
 
-  // TODO: cleanup entries list manipulation
-
   void setToDefault() {
     if (isFree) return;
     state = HomeTabConfiguration.defaultConfiguration();
@@ -82,12 +80,12 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
     final entry = state.entries[oldIndex];
     final index = oldIndex < newIndex ? newIndex - 1 : newIndex;
 
-    final newEntries = List.of(state.entries);
-
     state = state.copyWith(
-      entries: newEntries
-        ..removeAt(oldIndex)
-        ..insert(index, entry),
+      entries: state.entries.rebuild(
+        (builder) => builder
+          ..removeAt(oldIndex)
+          ..insert(index, entry),
+      ),
     );
 
     _persistValue();
@@ -97,14 +95,13 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
     if (isFree) return;
     log.fine('toggling visibility for $index');
 
-    final entry = state.entries[index].copyWith(
-      visible: !(state.entries[index].visible ?? false),
+    state = state.copyWith(
+      entries: state.entries.rebuild(
+        (builder) => builder[index] = builder[index].copyWith(
+          visible: !builder[index].visible,
+        ),
+      ),
     );
-
-    final newEntries = List.of(state.entries);
-    newEntries[index] = entry;
-
-    state = state.copyWith(entries: newEntries);
 
     _persistValue();
   }
@@ -113,12 +110,11 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
     if (isFree) return;
     log.fine('changing name to $name');
 
-    final entry = state.entries[index].copyWith(name: name);
-
-    final newEntries = List.of(state.entries);
-    newEntries[index] = entry;
-
-    state = state.copyWith(entries: newEntries);
+    state = state.copyWith(
+      entries: state.entries.rebuild(
+        (builder) => builder[index] = builder[index].copyWith(name: name),
+      ),
+    );
 
     _persistValue();
   }
@@ -129,7 +125,9 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
 
     if (state.entries[index].removable) {
       state = state.copyWith(
-        entries: state.entries..removeAt(index),
+        entries: state.entries.rebuild(
+          (builder) => builder.removeAt(index),
+        ),
       );
     }
 
@@ -138,12 +136,12 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
 
   void changeIcon(int index, String icon) {
     if (isFree) return;
-    final entry = state.entries[index].copyWith(icon: icon);
 
-    final newEntries = List.of(state.entries);
-    newEntries[index] = entry;
-
-    state = state.copyWith(entries: newEntries);
+    state = state.copyWith(
+      entries: state.entries.rebuild(
+        (builder) => builder[index] = builder[index].copyWith(icon: icon),
+      ),
+    );
 
     _persistValue();
   }
@@ -169,8 +167,8 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
             .first;
 
     state = state.copyWith(
-      entries: List.of(state.entries)
-        ..add(
+      entries: state.entries.rebuild(
+        (builder) => builder.add(
           HomeTabEntry(
             id: list.id,
             type: HomeTabEntryType.list,
@@ -178,6 +176,7 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
             name: list.name,
           ),
         ),
+      ),
     );
 
     _persistValue();

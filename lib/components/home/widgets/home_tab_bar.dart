@@ -21,7 +21,7 @@ class HomeTabBar extends ConsumerWidget {
         ? _MentionsTab(entry: entry)
         : HarpyTab(
             icon: HomeTabEntryIcon(entry.icon),
-            text: entry.hasName ? Text(entry.name!) : null,
+            text: entry.name.isNotEmpty ? Text(entry.name) : null,
             cardColor: cardColor,
           );
   }
@@ -82,7 +82,7 @@ class _MentionsTab extends ConsumerWidget {
 
     final child = HarpyTab(
       icon: HomeTabEntryIcon(entry.icon),
-      text: entry.hasName ? Text(entry.name!) : null,
+      text: entry.name.isNotEmpty ? Text(entry.name) : null,
       cardColor: harpyTheme.colors.alternateCardColor,
     );
 

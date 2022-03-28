@@ -33,12 +33,12 @@ class HomeTabEntry with _$HomeTabEntry {
     /// The name of this tab.
     ///
     /// Can be empty if the tab should not built text with the icon.
-    @Default('') String? name,
+    @Default('') String name,
 
     /// Whether this tab should be visible or hidden.
     ///
     /// Only `default` tabs can be hidden. Lists can only be removed.
-    @Default(true) bool? visible,
+    @Default(true) bool visible,
   }) = _HomeTabEntry;
 
   factory HomeTabEntry.fromJson(Map<String, dynamic> json) =>
@@ -48,8 +48,6 @@ class HomeTabEntry with _$HomeTabEntry {
 
   /// Whether the entry can be removed from the configuration.
   late final bool removable = type != HomeTabEntryType.defaultType;
-
-  late final bool hasName = name != null && name!.isNotEmpty;
 
   /// Whether we can assume that the entry is correct and has not been
   /// modified externally.

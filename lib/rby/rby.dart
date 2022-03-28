@@ -8,6 +8,7 @@ export 'animations/immediate/immediate_opacity_animation.dart';
 export 'animations/immediate/immediate_scale_animation.dart';
 export 'animations/immediate/immediate_slide_animation.dart';
 export 'animations/implicit/animated_number.dart';
+export 'core/converter/built_list_converter.dart';
 export 'core/handle_error_extension.dart';
 export 'core/log_error_handler.dart';
 export 'core/logger.dart';

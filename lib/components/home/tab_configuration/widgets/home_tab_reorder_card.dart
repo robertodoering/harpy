@@ -23,7 +23,7 @@ class HomeTabReorderCard extends ConsumerWidget {
 
     return AnimatedOpacity(
       duration: kShortAnimationDuration,
-      opacity: entry.visible! ? 1 : .6,
+      opacity: entry.visible ? 1 : .6,
       child: Card(
         margin: EdgeInsets.only(bottom: display.smallPaddingValue),
         child: Row(
@@ -108,11 +108,11 @@ class _HomeTabVisibility extends ConsumerWidget {
 
     return HarpyButton.icon(
       icon: Icon(
-        entry.visible! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+        entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         color: theme.colorScheme.primary,
       ),
       // prevent hiding the last entry
-      onTap: configuration.visibleEntries.length < 2 && (entry.visible ?? false)
+      onTap: configuration.visibleEntries.length < 2 && entry.visible
           ? null
           : () {
               HapticFeedback.lightImpact();
