@@ -15,40 +15,53 @@ class TweetImages extends ConsumerWidget {
   final TweetDelegates delegates;
   final IndexedVoidCallback? onImageLongPress;
 
+  void _onImageTap(
+    BuildContext context,
+    Reader read, {
+    required int index,
+    required TweetData tweet,
+  }) {
+    Navigator.of(context).push<void>(
+      HeroDialogRoute(
+        builder: (_) => MediaGallery(
+          initialIndex: index,
+          itemCount: tweet.media.length,
+          builder: (index) => MediaGalleryEntry(
+            provider: provider,
+            delegates: delegates,
+            media: tweet.media[index],
+            builder: (_) => TweetGalleryImage(
+              media: tweet.media[index],
+              heroTag: 'tweet${mediaHeroTag(
+                context,
+                tweet: tweet,
+                media: tweet.media[index],
+              )}',
+              borderRadius: _borderRadiusForImage(
+                read(harpyThemeProvider).radius,
+                index,
+                tweet.media.length,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
     final tweet = ref.watch(provider);
 
     return TweetImagesLayout(
-      onImageTap: (index) => Navigator.of(context).push<void>(
-        HeroDialogRoute(
-          builder: (_) => MediaGallery(
-            initialIndex: index,
-            itemCount: tweet.media.length,
-            builder: (index) => MediaGalleryEntry(
-              provider: provider,
-              delegates: delegates,
-              media: tweet.media[index],
-              builder: (_) => TweetGalleryImage(
-                media: tweet.media[index],
-                heroTag: 'tweet${mediaHeroTag(
-                  context,
-                  tweet: tweet,
-                  media: tweet.media[index],
-                )}',
-                borderRadius: _borderRadiusForImage(
-                  harpyTheme.radius,
-                  index,
-                  tweet.media.length,
-                ),
-              ),
-            ),
-          ),
-        ),
+      onImageTap: (index) => _onImageTap(
+        context,
+        ref.read,
+        index: index,
+        tweet: tweet,
       ),
       onImageLongPress: onImageLongPress,
       children: [

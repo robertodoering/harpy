@@ -164,16 +164,14 @@ class _BubblesPainter extends CustomPainter {
   _BubblesPainter({
     required this.currentProgress,
     required this.bubblesColor,
-    this.bubblesCount = 7,
   }) {
-    _outerBubblesPositionAngle = 36.0 / bubblesCount;
+    _outerBubblesPositionAngle = 36.0 / _bubblesCount;
 
     _circlePaints = List.filled(4, Paint()..style = PaintingStyle.fill);
   }
 
   final double currentProgress;
   final BubblesColor bubblesColor;
-  final int bubblesCount;
 
   late final double _outerBubblesPositionAngle;
   late final List<Paint> _circlePaints;
@@ -186,6 +184,8 @@ class _BubblesPainter extends CustomPainter {
   double _currentDotSize1 = 0;
   double _currentDotSize2 = 0;
   double _currentRadius2 = 0;
+
+  static const _bubblesCount = 7;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -334,7 +334,7 @@ class _BubblesPainter extends CustomPainter {
   void _drawOuterBubblesFrame(Canvas canvas, Size size) {
     final start = _outerBubblesPositionAngle / 4 * 3;
 
-    for (var i = 0; i < bubblesCount; i++) {
+    for (var i = 0; i < _bubblesCount; i++) {
       final cX = size.width / 2 +
           _currentRadius1 *
               math.cos((start + _outerBubblesPositionAngle * i).toRad);
@@ -355,7 +355,7 @@ class _BubblesPainter extends CustomPainter {
     final start = _outerBubblesPositionAngle / 4.0 * 3.0 -
         _outerBubblesPositionAngle / 2.0;
 
-    for (var i = 0; i < bubblesCount; i++) {
+    for (var i = 0; i < _bubblesCount; i++) {
       final cX = size.width / 2 +
           _currentRadius2 *
               math.cos((start + _outerBubblesPositionAngle * i).toRad);
@@ -374,8 +374,7 @@ class _BubblesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _BubblesPainter oldDelegate) {
-    return oldDelegate.bubblesCount != bubblesCount ||
-        oldDelegate.currentProgress != currentProgress ||
+    return oldDelegate.currentProgress != currentProgress ||
         oldDelegate.bubblesColor != bubblesColor;
   }
 }
