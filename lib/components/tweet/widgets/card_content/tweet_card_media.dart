@@ -142,7 +142,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
 
     switch (tweet.mediaType) {
       case MediaType.image:
-        child = tweet.hasSingleImage
+        child = tweet.hasSingleImage && !mediaPreferences.cropImage
             ? _constrainedAspectRatio(
                 mediaPreferences.cropImage
                     ? min(tweet.media.single.aspectRatioDouble, 16 / 9)
