@@ -85,7 +85,7 @@ class UserConnectionsNotifier
     );
 
     await _twitterApi.userService
-        .friendshipsCreate(userId: userId)
+        .friendshipsDestroy(userId: userId)
         .handleError((dynamic e, st) {
       twitterErrorHandler(_read, e, st);
       if (!mounted) return;
