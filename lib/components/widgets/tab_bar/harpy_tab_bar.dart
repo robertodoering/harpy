@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 // FIXME: refactor
@@ -131,24 +132,27 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
   Widget build(BuildContext context) {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    return SingleChildScrollView(
-      controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      padding: widget.padding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (int i = 0; i < widget.tabs.length; i++) ...[
-            _buildTab(harpyTheme, i),
-            if (i != widget.tabs.length - 1) smallHorizontalSpacer,
-          ],
-          if (widget.endWidgets != null) ...[
-            for (Widget widget in widget.endWidgets!) ...[
-              smallHorizontalSpacer,
-              widget,
+    return ScrollConfiguration(
+      behavior: const BasicScrollBehavior(),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        padding: widget.padding,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (int i = 0; i < widget.tabs.length; i++) ...[
+              _buildTab(harpyTheme, i),
+              if (i != widget.tabs.length - 1) smallHorizontalSpacer,
+            ],
+            if (widget.endWidgets != null) ...[
+              for (Widget widget in widget.endWidgets!) ...[
+                smallHorizontalSpacer,
+                widget,
+              ],
             ],
           ],
-        ],
+        ),
       ),
     );
   }
