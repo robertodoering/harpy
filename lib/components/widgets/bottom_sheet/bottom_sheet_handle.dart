@@ -11,8 +11,8 @@ class BottomSheetHandle extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     return Container(
-      width: 40,
-      height: 3,
+      width: 50,
+      height: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: harpyTheme.borderRadius,

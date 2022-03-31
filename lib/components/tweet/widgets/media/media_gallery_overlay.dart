@@ -164,23 +164,26 @@ class _OverlayAppBar extends ConsumerWidget {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: IntrinsicHeight(
-        child: Container(
-          alignment: Alignment.centerLeft,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.black87, Colors.transparent],
+        child: GestureDetector(
+          onTap: Navigator.of(context).maybePop,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black87, Colors.transparent],
+              ),
             ),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
-              .copyWith(
-            top: display.smallPaddingValue + mediaQuery.padding.top,
-          ),
-          child: HarpyButton.icon(
-            icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
-            onTap: Navigator.of(context).maybePop,
+            padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
+                .copyWith(
+              top: display.smallPaddingValue + mediaQuery.padding.top,
+            ),
+            child: HarpyButton.icon(
+              icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
+              onTap: Navigator.of(context).maybePop,
+            ),
           ),
         ),
       ),

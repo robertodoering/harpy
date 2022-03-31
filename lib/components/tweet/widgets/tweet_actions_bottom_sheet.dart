@@ -21,6 +21,11 @@ void showTweetActionsBottomSheet(
     MaterialLocalizations,
   )!;
 
+  final date = l10n.formatFullDate(tweet.createdAt.toLocal());
+  final time = l10n.formatTimeOfDay(
+    TimeOfDay.fromDateTime(tweet.createdAt.toLocal()),
+  );
+
   showHarpyBottomSheet<void>(
     context,
     harpyTheme: read(harpyThemeProvider),
@@ -28,9 +33,15 @@ void showTweetActionsBottomSheet(
       BottomSheetHeader(
         child: Column(
           children: [
-            Text('tweet from ${tweet.user.name}'),
+            Text(tweet.user.name),
             smallVerticalSpacer,
-            Text(l10n.formatFullDate(tweet.createdAt.toLocal())),
+            Wrap(
+              children: [
+                Text(time),
+                const Text(' \u00b7 '),
+                Text(date),
+              ],
+            ),
           ],
         ),
       ),
