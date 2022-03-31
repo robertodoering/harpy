@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,11 +9,10 @@ class HomeTabView extends ConsumerWidget {
 
   static const _indexOffset = 1;
 
-  // TODO: set scrollPosition for scroll views in home page
-
   Widget _mapEntryContent({
+    required int index,
     required HomeTabEntry entry,
-    required double? refreshIndicatorOffset,
+    required double refreshIndicatorOffset,
     required double? scrollToTopOffset,
   }) {
     if (entry.type == HomeTabEntryType.defaultType) {
@@ -21,20 +21,25 @@ class HomeTabView extends ConsumerWidget {
           return HomeTimeline(
             refreshIndicatorOffset: refreshIndicatorOffset,
             scrollToTopOffset: scrollToTopOffset,
+            scrollPosition: index,
           );
         case 'media':
-          return const HomeMediaTimeline();
+          return HomeMediaTimeline(
+            scrollPosition: index,
+          );
         case 'mentions':
           return MentionsTimeline(
             beginSlivers: const [HomeTopSliverPadding()],
             endSlivers: const [HomeBottomSliverPadding()],
             refreshIndicatorOffset: refreshIndicatorOffset,
             scrollToTopOffset: scrollToTopOffset,
+            scrollPosition: index,
           );
         case 'search':
-          return const SearchPageContent(
-            beginSlivers: [HomeTopSliverPadding()],
-            endSlivers: [HomeBottomSliverPadding()],
+          return SearchPageContent(
+            beginSlivers: const [HomeTopSliverPadding()],
+            endSlivers: const [HomeBottomSliverPadding()],
+            scrollPosition: index,
           );
         default:
           return const SizedBox();
@@ -78,8 +83,9 @@ class HomeTabView extends ConsumerWidget {
                 ),
                 children: [
                   const HomeDrawer(),
-                  ...configuration.visibleEntries.map(
-                    (entry) => _mapEntryContent(
+                  ...configuration.visibleEntries.mapIndexed(
+                    (index, entry) => _mapEntryContent(
+                      index: index,
                       entry: entry,
                       refreshIndicatorOffset: refreshIndicatorOffset,
                       scrollToTopOffset: scrollToTopOffset,

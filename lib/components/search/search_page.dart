@@ -25,10 +25,12 @@ class SearchPageContent extends ConsumerStatefulWidget {
   const SearchPageContent({
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
+    this.scrollPosition = 0,
   });
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
+  final int scrollPosition;
 
   @override
   ConsumerState<SearchPageContent> createState() => _SearchPageContentState();
@@ -46,6 +48,7 @@ class _SearchPageContentState extends ConsumerState<SearchPageContent>
     final display = ref.watch(displayPreferencesProvider);
 
     return ScrollToTop(
+      scrollPosition: widget.scrollPosition,
       child: CustomScrollView(
         slivers: [
           ...widget.beginSlivers,

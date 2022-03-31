@@ -7,10 +7,12 @@ class HomeTimeline extends ConsumerWidget {
   const HomeTimeline({
     required this.refreshIndicatorOffset,
     required this.scrollToTopOffset,
+    required this.scrollPosition,
   });
 
-  final double? refreshIndicatorOffset;
+  final double refreshIndicatorOffset;
   final double? scrollToTopOffset;
+  final int scrollPosition;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,6 +30,7 @@ class HomeTimeline extends ConsumerWidget {
       ],
       endSlivers: const [HomeBottomSliverPadding()],
       onChangeFilter: () => router.pushNamed(HomeTimelineFilter.name),
+      scrollPosition: scrollPosition,
     );
   }
 }

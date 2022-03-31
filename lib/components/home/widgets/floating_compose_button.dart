@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+// TODO: don't show when in drawer or settings
+
 class FloatingComposeButton extends ConsumerWidget {
   const FloatingComposeButton({
     required this.child,
