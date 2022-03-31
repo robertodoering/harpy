@@ -3,6 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/core/core.dart';
 
+/// Scroll direction changes will only be updated if the affected scroll view
+/// has a `maxScrollExtent` of this threshold.
+const _maxScrollExtentThreshold = 200;
+
 /// Listens to [UserScrollNotification] that bubble up the tree to expose
 /// changes to the [ScrollDirection] to its children.
 ///
@@ -67,6 +71,7 @@ class _ScrollDirectionListenerState
 
     if (mounted &&
         notification.direction != ScrollDirection.idle &&
+        notification.metrics.maxScrollExtent > _maxScrollExtentThreshold &&
         _direction != notification.direction) {
       setState(() => _direction = notification.direction);
     }
