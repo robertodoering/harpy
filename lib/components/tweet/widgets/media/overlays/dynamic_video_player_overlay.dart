@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -13,13 +15,17 @@ import 'package:harpy/rby/rby.dart';
 class DynamicVideoPlayerOverlay extends StatefulWidget {
   const DynamicVideoPlayerOverlay({
     required this.child,
+    required this.tweet,
     required this.notifier,
     required this.data,
+    this.isFullscreen = false,
   });
 
   final Widget child;
+  final TweetData tweet;
   final VideoPlayerNotifier notifier;
   final VideoPlayerStateData data;
+  final bool isFullscreen;
 
   @override
   State<DynamicVideoPlayerOverlay> createState() =>
@@ -29,13 +35,19 @@ class DynamicVideoPlayerOverlay extends StatefulWidget {
 class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     with VideoPlayerOverlayMixin {
   Timer? _timer;
-  late bool _showActions = !widget.data.isPlaying;
+  bool _showActions = true;
 
   @override
   void initState() {
     super.initState();
 
     overlayInit(widget.data);
+
+    if (widget.data.isPlaying) {
+      SchedulerBinding.instance?.addPostFrameCallback(
+        (_) => setState(() => _showActions = false),
+      );
+    }
   }
 
   @override
@@ -85,46 +97,51 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: IgnorePointer(
-              ignoring: !_showActions,
-              child: AnimatedSlide(
-                offset: _showActions ? Offset.zero : const Offset(0, .33),
-                duration: kShortAnimationDuration,
-                curve: Curves.easeOut,
-                child: AnimatedOpacity(
-                  opacity: _showActions ? 1 : 0,
+            child: ClipRect(
+              child: IgnorePointer(
+                ignoring: !_showActions,
+                child: AnimatedSlide(
+                  offset: _showActions ? Offset.zero : const Offset(0, .33),
                   duration: kShortAnimationDuration,
-                  curve: Curves.easeInOut,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      VideoPlayerProgressIndicator(notifier: widget.notifier),
-                      VideoPlayerActions(
-                        data: widget.data,
-                        notifier: widget.notifier,
-                        children: [
-                          smallHorizontalSpacer,
-                          VideoPlayerPlaybackButton(
-                            notifier: widget.notifier,
-                            data: widget.data,
-                          ),
-                          VideoPlayerMuteButton(
-                            notifier: widget.notifier,
-                            data: widget.data,
-                          ),
-                          smallHorizontalSpacer,
-                          VideoPlayerProgressText(data: widget.data),
-                          const Spacer(),
-                          if (widget.data.qualities.length > 1)
-                            VideoPlayerQualityButton(
-                              data: widget.data,
+                  curve: Curves.easeOut,
+                  child: AnimatedOpacity(
+                    opacity: _showActions ? 1 : 0,
+                    duration: kShortAnimationDuration,
+                    curve: Curves.easeInOut,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        VideoPlayerProgressIndicator(notifier: widget.notifier),
+                        VideoPlayerActions(
+                          data: widget.data,
+                          notifier: widget.notifier,
+                          children: [
+                            smallHorizontalSpacer,
+                            VideoPlayerPlaybackButton(
                               notifier: widget.notifier,
+                              data: widget.data,
                             ),
-                          const VideoPlayerCloseFullscreenButton(),
-                          smallHorizontalSpacer,
-                        ],
-                      ),
-                    ],
+                            VideoPlayerMuteButton(
+                              notifier: widget.notifier,
+                              data: widget.data,
+                            ),
+                            smallHorizontalSpacer,
+                            VideoPlayerProgressText(data: widget.data),
+                            const Spacer(),
+                            if (widget.data.qualities.length > 1)
+                              VideoPlayerQualityButton(
+                                data: widget.data,
+                                notifier: widget.notifier,
+                              ),
+                            if (widget.isFullscreen)
+                              const VideoPlayerCloseFullscreenButton()
+                            else
+                              VideoPlayerFullscreenButton(tweet: widget.tweet),
+                            smallHorizontalSpacer,
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -120,6 +120,7 @@ export 'timeline/media_timeline/widgets/media_timeline_media.dart';
 export 'timeline/media_timeline/widgets/media_timeline_media_list.dart';
 export 'timeline/mentions_timeline/provider/mentions_timeline_provider.dart';
 export 'timeline/mentions_timeline/widgets/mentions_timeline.dart';
+export 'timeline/mentions_timeline/widgets/mentions_timeline_top_actions.dart';
 export 'timeline/provider/timeline_provider.dart';
 export 'timeline/user_timeline/provider/user_timeline_filter_provider.dart';
 export 'timeline/user_timeline/provider/user_timeline_provider.dart';

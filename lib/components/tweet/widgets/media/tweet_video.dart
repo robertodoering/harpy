@@ -138,6 +138,7 @@ class TweetGalleryVideo extends ConsumerWidget {
       heroTag: heroTag,
       overlayBuilder: (data, notifier, child) => DynamicVideoPlayerOverlay(
         notifier: notifier,
+        tweet: tweet,
         data: data,
         child: child,
       ),
@@ -206,7 +207,9 @@ class _FullscreenVideoState extends ConsumerState<TweetFullscreenVideo> {
               child: state.maybeMap(
                 data: (data) => DynamicVideoPlayerOverlay(
                   notifier: notifier,
+                  tweet: widget.tweet,
                   data: data,
+                  isFullscreen: true,
                   child: VideoPlayer(notifier.controller),
                 ),
                 loading: (_) => MediaThumbnail(
