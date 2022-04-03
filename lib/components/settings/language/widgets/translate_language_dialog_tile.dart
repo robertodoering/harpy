@@ -58,6 +58,8 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
 
     final groupValue = language.activeTranslateLanguage(locale);
 
+    // TODO: show system language as separate entry and make it selectable
+
     return HarpyDialog(
       title: const Text('change the language used to translate tweets'),
       contentPadding: EdgeInsets.zero,
