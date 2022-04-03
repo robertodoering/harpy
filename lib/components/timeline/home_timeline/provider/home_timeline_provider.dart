@@ -7,6 +7,7 @@ import 'package:harpy/components/components.dart';
 final homeTimelineProvider =
     StateNotifierProvider.autoDispose<HomeTimelineNotifier, TimelineState>(
   (ref) => HomeTimelineNotifier(ref: ref),
+  cacheTime: const Duration(minutes: 5),
   name: 'HomeTimelineProvider',
 );
 

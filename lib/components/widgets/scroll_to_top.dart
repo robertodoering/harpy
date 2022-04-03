@@ -20,16 +20,12 @@ class ScrollToTop extends ConsumerStatefulWidget {
     this.content,
     this.bottomPadding,
     this.controller,
-    this.scrollPosition = 0,
   });
 
   final Widget child;
   final Widget? content;
   final double? bottomPadding;
   final ScrollController? controller;
-
-  /// Determines which scroll position that should be listened to.
-  final int scrollPosition;
 
   @override
   _ScrollToTopState createState() => _ScrollToTopState();
@@ -57,16 +53,13 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
   void _scrollListener() {
     if (_controller == null) return;
     if (!mounted) return;
-
     assert(_controller!.hasClients);
-    assert(_controller!.positions.length > widget.scrollPosition);
+    if (_controller!.positions.length != 1) return;
 
     final mediaQuery = MediaQuery.of(context);
     final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
 
-    final position = _controller!.positions.elementAt(widget.scrollPosition);
-
-    final show = position.pixels > mediaQuery.size.height &&
+    final show = _controller!.positions.first.pixels > mediaQuery.size.height &&
         scrollDirection == ScrollDirection.forward;
 
     if (mounted && show != _show) setState(() => _show = show);
@@ -78,7 +71,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
     final mediaQuery = MediaQuery.of(context);
     final animationOffsetLimit = mediaQuery.size.height * 5;
 
-    final position = _controller!.positions.elementAt(widget.scrollPosition);
+    final position = _controller!.positions.first;
 
     if (position.pixels > animationOffsetLimit) {
       position.jumpTo(0);

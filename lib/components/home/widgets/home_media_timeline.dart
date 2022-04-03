@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
 class HomeMediaTimeline extends ConsumerWidget {
-  const HomeMediaTimeline({
-    required this.scrollPosition,
-  });
-
-  final int scrollPosition;
+  const HomeMediaTimeline();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +11,6 @@ class HomeMediaTimeline extends ConsumerWidget {
       provider: homeTimelineProvider,
       beginSlivers: const [HomeTopSliverPadding()],
       endSlivers: const [HomeBottomSliverPadding()],
-      scrollPosition: scrollPosition,
     );
   }
 }

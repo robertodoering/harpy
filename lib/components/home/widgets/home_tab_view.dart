@@ -21,25 +21,20 @@ class HomeTabView extends ConsumerWidget {
           return HomeTimeline(
             refreshIndicatorOffset: refreshIndicatorOffset,
             scrollToTopOffset: scrollToTopOffset,
-            scrollPosition: index,
           );
         case 'media':
-          return HomeMediaTimeline(
-            scrollPosition: index,
-          );
+          return const HomeMediaTimeline();
         case 'mentions':
           return MentionsTimeline(
             beginSlivers: const [HomeTopSliverPadding()],
             endSlivers: const [HomeBottomSliverPadding()],
             refreshIndicatorOffset: refreshIndicatorOffset,
             scrollToTopOffset: scrollToTopOffset,
-            scrollPosition: index,
           );
         case 'search':
-          return SearchPageContent(
-            beginSlivers: const [HomeTopSliverPadding()],
-            endSlivers: const [HomeBottomSliverPadding()],
-            scrollPosition: index,
+          return const SearchPageContent(
+            beginSlivers: [HomeTopSliverPadding()],
+            endSlivers: [HomeBottomSliverPadding()],
           );
         default:
           return const SizedBox();

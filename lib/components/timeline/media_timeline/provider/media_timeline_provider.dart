@@ -27,5 +27,6 @@ final mediaTimelineProvider = Provider.autoDispose
 
     return entries.toBuiltList();
   },
+  cacheTime: const Duration(minutes: 5),
   name: 'MediaTimelineProvider',
 );

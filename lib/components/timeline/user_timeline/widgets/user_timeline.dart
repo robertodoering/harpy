@@ -7,11 +7,9 @@ import 'package:harpy/core/core.dart';
 class UserTimeline extends ConsumerWidget {
   const UserTimeline({
     required this.user,
-    required this.scrollPosition,
   });
 
   final UserData user;
-  final int scrollPosition;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,8 +17,8 @@ class UserTimeline extends ConsumerWidget {
 
     return Timeline(
       provider: userTimelineProvider(user.id),
+      listKey: PageStorageKey('user_timeline_${user.id}'),
       beginSlivers: [UserTimelineTopActions(user: user)],
-      scrollPosition: scrollPosition,
       onChangeFilter: () => router.pushNamed(
         UserTimelineFilter.name,
         params: {'handle': user.handle},

@@ -10,14 +10,12 @@ class ListTimeline extends ConsumerWidget {
     required this.listName,
     this.beginSlivers = const [],
     this.endSlivers = const [],
-    this.scrollPosition = 0,
   });
 
   final String listId;
   final String listName;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
-  final int scrollPosition;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +23,7 @@ class ListTimeline extends ConsumerWidget {
 
     return Timeline(
       provider: listTimelineProvider(listId),
+      listKey: PageStorageKey('list_timeline_$listId'),
       beginSlivers: [
         ...beginSlivers,
         ListTimelineTopActions(
@@ -32,7 +31,6 @@ class ListTimeline extends ConsumerWidget {
           listName: listName,
         ),
       ],
-      scrollPosition: scrollPosition,
       onChangeFilter: () => router.pushNamed(
         ListTimelineFilter.name,
         params: {'listId': listId},

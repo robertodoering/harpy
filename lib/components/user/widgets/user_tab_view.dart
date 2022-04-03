@@ -22,10 +22,10 @@ class UserTabView extends ConsumerWidget {
     final isAuthenticatedUser = user.id == authenticatedUser?.id;
 
     final children = [
-      UserTimeline(user: user, scrollPosition: 0),
-      MediaTimeline(provider: userTimelineProvider(user.id), scrollPosition: 1),
-      if (isAuthenticatedUser) const MentionsTimeline(scrollPosition: 2),
-      LikesTimeline(user: user, scrollPosition: isAuthenticatedUser ? 3 : 2),
+      UserTimeline(user: user),
+      MediaTimeline(provider: userTimelineProvider(user.id)),
+      if (isAuthenticatedUser) const MentionsTimeline(),
+      LikesTimeline(user: user),
     ];
 
     final tabs = [

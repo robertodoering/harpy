@@ -10,13 +10,14 @@ import 'package:harpy/rby/rby.dart';
 
 part 'trends_provider.freezed.dart';
 
-final trendsProvider =
-    StateNotifierProvider<TrendsProviderNotifier, AsyncValue<TrendsState>>(
+final trendsProvider = StateNotifierProvider.autoDispose<TrendsProviderNotifier,
+    AsyncValue<TrendsState>>(
   (ref) => TrendsProviderNotifier(
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
     userLocation: ref.watch(userTrendsLocationProvider),
   ),
+  cacheTime: const Duration(minutes: 5),
   name: 'TrendsProvider',
 );
 

@@ -21,37 +21,23 @@ class SearchPage extends ConsumerWidget {
   }
 }
 
-class SearchPageContent extends ConsumerStatefulWidget {
+class SearchPageContent extends ConsumerWidget {
   const SearchPageContent({
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
-    this.scrollPosition = 0,
   });
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
-  final int scrollPosition;
 
   @override
-  ConsumerState<SearchPageContent> createState() => _SearchPageContentState();
-}
-
-class _SearchPageContentState extends ConsumerState<SearchPageContent>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
 
     return ScrollToTop(
-      scrollPosition: widget.scrollPosition,
       child: CustomScrollView(
         slivers: [
-          ...widget.beginSlivers,
+          ...beginSlivers,
           SliverPadding(
             padding: display.edgeInsets.copyWith(bottom: 0),
             sliver: SliverList(
@@ -66,7 +52,7 @@ class _SearchPageContentState extends ConsumerState<SearchPageContent>
           const TrendsSelectionHeader(),
           sliverVerticalSpacer,
           const TrendsList(),
-          ...widget.endSlivers,
+          ...endSlivers,
         ],
       ),
     );

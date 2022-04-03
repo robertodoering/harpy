@@ -15,7 +15,6 @@ class LoadMoreHandler extends StatefulWidget {
     required this.onLoadMore,
     this.listen = true,
     this.extentTrigger,
-    this.scrollPosition = 0,
   });
 
   final Widget child;
@@ -28,9 +27,6 @@ class LoadMoreHandler extends StatefulWidget {
   ///
   /// Defaults to half of the scrollable's viewport size.
   final double? extentTrigger;
-
-  /// Determines which scroll position that should be listened to.
-  final int scrollPosition;
 
   @override
   _LoadMoreHandlerState createState() => _LoadMoreHandlerState();
@@ -66,13 +62,10 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
 
   void _scrollListener() {
     if (_loading || !widget.listen || !mounted) return;
-
     assert(widget.controller.hasClients);
-    assert(widget.controller.positions.length > widget.scrollPosition);
+    if (widget.controller.positions.length != 1) return;
 
-    final position = widget.controller.positions.elementAt(
-      widget.scrollPosition,
-    );
+    final position = widget.controller.positions.first;
 
     if (position.extentAfter <=
         (widget.extentTrigger ?? position.viewportDimension / 2)) {

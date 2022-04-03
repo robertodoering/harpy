@@ -6,6 +6,7 @@ import 'package:harpy/components/components.dart';
 final userTimelineProvider = StateNotifierProvider.autoDispose
     .family<UserTimelineNotifier, TimelineState, String>(
   (ref, userId) => UserTimelineNotifier(ref: ref, userId: userId),
+  cacheTime: const Duration(minutes: 5),
   name: 'UserTimelineProvider',
 );
 

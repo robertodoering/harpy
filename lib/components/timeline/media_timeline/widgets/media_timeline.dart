@@ -10,7 +10,6 @@ class MediaTimeline extends ConsumerStatefulWidget {
     required this.provider,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
-    this.scrollPosition = 0,
   });
 
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
@@ -18,19 +17,14 @@ class MediaTimeline extends ConsumerStatefulWidget {
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
-  final int scrollPosition;
 
   @override
   _MediaTimelineState createState() => _MediaTimelineState();
 }
 
-class _MediaTimelineState extends ConsumerState<MediaTimeline>
-    with AutomaticKeepAliveClientMixin {
+class _MediaTimelineState extends ConsumerState<MediaTimeline> {
   ScrollController? _controller;
   bool _disposeController = false;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
@@ -51,8 +45,6 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     final display = ref.watch(displayPreferencesProvider);
     final timelineState = ref.watch(widget.provider);
     final timelineNotifier = ref.watch(widget.provider.notifier);
@@ -60,13 +52,12 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
 
     return ScrollToTop(
       controller: _controller,
-      scrollPosition: widget.scrollPosition,
       child: LoadMoreHandler(
         controller: _controller!,
-        scrollPosition: widget.scrollPosition,
         listen: timelineState.canLoadMore,
         onLoadMore: timelineNotifier.loadOlder,
         child: CustomScrollView(
+          key: const PageStorageKey('media_timeline'),
           controller: _controller,
           slivers: [
             ...widget.beginSlivers,
@@ -83,10 +74,18 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline>
               ),
             ],
             ...?timelineState.mapOrNull(
+              data: (_) => [
+                if (mediaEntries.isEmpty)
+                  const SliverFillInfoMessage(
+                    secondaryMessage: Text('no media'),
+                  ),
+              ],
               loading: (_) => [const SliverFillLoadingIndicator()],
-              loadingMore: (_) => [
-                const SliverLoadingIndicator(),
-                sliverVerticalSpacer,
+              loadingMore: (state) => [
+                if (mediaEntries.isEmpty)
+                  const SliverFillLoadingIndicator()
+                else
+                  const SliverLoadingIndicator(),
               ],
               noData: (_) => [
                 const SliverFillInfoMessage(secondaryMessage: Text('no media')),

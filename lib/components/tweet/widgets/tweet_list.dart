@@ -18,9 +18,9 @@ class TweetList extends ConsumerWidget {
     this.onLayoutFinished,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
-  });
+    Key? key,
+  }) : super(key: key);
 
-  /// The list of tweets to be displayed in this list.
   final List<TweetData> tweets;
   final ScrollController? controller;
   final TweetBuilder tweetBuilder;

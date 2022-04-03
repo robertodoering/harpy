@@ -9,6 +9,7 @@ import 'package:harpy/rby/rby.dart';
 class Timeline extends ConsumerStatefulWidget {
   const Timeline({
     required this.provider,
+    this.listKey,
     this.tweetBuilder = TweetList.defaultTweetBuilder,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
@@ -16,11 +17,11 @@ class Timeline extends ConsumerStatefulWidget {
     this.scrollToTopOffset,
     this.onChangeFilter,
     this.onUpdatedTweetVisibility,
-    this.scrollPosition = 0,
   });
 
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
       provider;
+  final Key? listKey;
   final TweetBuilder tweetBuilder;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
@@ -33,27 +34,16 @@ class Timeline extends ConsumerStatefulWidget {
 
   final ValueChanged<TweetData>? onUpdatedTweetVisibility;
 
-  /// Determines which scroll position the [ScrollToTop] and [LoadMoreHandler]
-  /// should listen to.
-  ///
-  /// Used when a [PrimaryScrollController] is available and has multiple active
-  /// scroll positions (e.g. in the [NestedScrollView] of the [HomePage]).
-  final int scrollPosition;
-
   @override
   _TimelineState createState() => _TimelineState();
 }
 
-class _TimelineState extends ConsumerState<Timeline>
-    with AutomaticKeepAliveClientMixin {
+class _TimelineState extends ConsumerState<Timeline> {
   ScrollController? _controller;
   bool _disposeController = false;
 
   /// The index of the newest visible tweet.
   int _newestVisibleIndex = 0;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
@@ -112,7 +102,10 @@ class _TimelineState extends ConsumerState<Timeline>
   void _providerListener(TimelineState? previous, TimelineState next) {
     if (next.scrollToEnd) {
       final mediaQuery = MediaQuery.of(context);
-      final position = _controller!.positions.elementAt(widget.scrollPosition);
+      final position = _controller!.positions.first;
+
+      // TODO: position might not be the timeline if the user navigated while
+      //  loading
 
       // scroll to the end after the list has been built
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -126,8 +119,6 @@ class _TimelineState extends ConsumerState<Timeline>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     final state = ref.watch(widget.provider);
     final notifier = ref.watch(widget.provider.notifier);
 
@@ -135,7 +126,6 @@ class _TimelineState extends ConsumerState<Timeline>
 
     return ScrollToTop(
       controller: _controller,
-      scrollPosition: widget.scrollPosition,
       bottomPadding: widget.scrollToTopOffset,
       content: AnimatedNumber(
         duration: kShortAnimationDuration,
@@ -149,11 +139,11 @@ class _TimelineState extends ConsumerState<Timeline>
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
         child: LoadMoreHandler(
           controller: _controller!,
-          scrollPosition: widget.scrollPosition,
           listen: state.canLoadMore,
           onLoadMore: notifier.loadOlder,
           child: TweetList(
             state.tweets.toList(),
+            key: widget.listKey,
             controller: _controller,
             tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
             onLayoutFinished: (firstIndex, lastIndex) => _onLayoutFinished(
