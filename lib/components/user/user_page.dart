@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -28,7 +29,9 @@ class _UserPageState extends ConsumerState<UserPage> {
   void initState() {
     super.initState();
 
-    ref.read(userProvider(widget.handle).notifier).load(widget.user);
+    SchedulerBinding.instance?.addPostFrameCallback(
+      (_) => ref.read(userProvider(widget.handle).notifier).load(widget.user),
+    );
 
     final authenticatedUser = ref.read(authenticationStateProvider).user;
 

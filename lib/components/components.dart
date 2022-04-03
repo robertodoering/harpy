@@ -201,6 +201,7 @@ export 'user/widgets/header/user_followers_count.dart';
 export 'user/widgets/header/user_header.dart';
 export 'user/widgets/header/user_info.dart';
 export 'user/widgets/user_app_bar.dart';
+export 'user/widgets/user_banner.dart';
 export 'user/widgets/user_card.dart';
 export 'user/widgets/user_connections_count.dart';
 export 'user/widgets/user_list.dart';

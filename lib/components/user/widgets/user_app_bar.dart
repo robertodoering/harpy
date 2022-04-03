@@ -34,7 +34,7 @@ class UserAppBar extends StatelessWidget {
       expandedHeight: user.hasBanner ? expandedHeight : null,
       flexibleSpace: user.hasBanner
           ? FlexibleSpaceBar(
-              background: _UserBanner(url: user.appropriateUserBannerUrl),
+              background: UserBanner(url: user.appropriateUserBannerUrl),
             )
           : null,
       leadingWidth: double.infinity,
@@ -77,50 +77,4 @@ class _BackButton extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _UserBanner extends StatelessWidget {
-  const _UserBanner({
-    required this.url,
-  });
-
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _showFullscreenBanner(context, url: url),
-      child: Hero(
-        tag: url,
-        child: HarpyImage(
-          imageUrl: url,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-}
-
-void _showFullscreenBanner(
-  BuildContext context, {
-  required String url,
-}) {
-  Navigator.of(context).push<void>(
-    HeroDialogRoute(
-      builder: (_) => HarpyDismissible(
-        onDismissed: Navigator.of(context).pop,
-        child: HarpyPhotoGallery(
-          itemCount: 1,
-          builder: (_, __) => Hero(
-            tag: url,
-            child: HarpyImage(
-              imageUrl: url,
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }
