@@ -45,11 +45,12 @@ class HomeTabView extends ConsumerWidget {
           return const SizedBox();
       }
     } else if (entry.type == HomeTabEntryType.list) {
-      // return HomeListTimeline(
-      //   listId: entry.id,
-      //   listName: entry.name ?? 'list',
-      // );
-      return const SizedBox();
+      return ListTimeline(
+        listId: entry.id,
+        listName: entry.name,
+        beginSlivers: const [HomeTopSliverPadding()],
+        endSlivers: const [HomeBottomSliverPadding()],
+      );
     } else {
       return const SizedBox();
     }

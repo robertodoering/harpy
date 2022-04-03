@@ -9,12 +9,14 @@ class ListTimeline extends ConsumerWidget {
     required this.listId,
     required this.listName,
     this.beginSlivers = const [],
+    this.endSlivers = const [],
     this.scrollPosition = 0,
   });
 
   final String listId;
   final String listName;
   final List<Widget> beginSlivers;
+  final List<Widget> endSlivers;
   final int scrollPosition;
 
   @override
