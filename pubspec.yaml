@@ -26,7 +26,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.0-dev.2
-  flutter_displaymode: ^0.3.1-nullsafety.0
+  flutter_displaymode: ^0.4.0
   flutter_feather_icons: ^2.0.0+1
   flutter_ffmpeg: ^0.4.0
   flutter_hsvcolor_picker: ^1.1.0
