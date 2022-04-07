@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/foundation.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -16,6 +18,8 @@ mixin LoggerMixin {
 /// [Logger.detached] to create local short-living logger that can be
 /// garbage-collected later.
 void initializeLogger({String? prefix}) {
+  if (kReleaseMode || isTest) return;
+
   Logger.root.level = Level.ALL;
 
   const separator = ' | ';

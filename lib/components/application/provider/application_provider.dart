@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -22,9 +21,7 @@ class Application with LoggerMixin {
   final Reader _read;
 
   Future<void> initialize() async {
-    if (!kReleaseMode && !isTest) {
-      initializeLogger();
-    }
+    initializeLogger();
 
     // set the visibility detector controller update interval to fire more
     // frequently
