@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 class ComposeTweetActions extends ConsumerWidget {
@@ -50,7 +51,7 @@ class ComposeTweetActions extends ConsumerWidget {
   }
 }
 
-class _PostTweetButton extends StatefulWidget {
+class _PostTweetButton extends ConsumerStatefulWidget {
   const _PostTweetButton({
     required this.controller,
   });
@@ -61,7 +62,7 @@ class _PostTweetButton extends StatefulWidget {
   _PostTweetButtonState createState() => _PostTweetButtonState();
 }
 
-class _PostTweetButtonState extends State<_PostTweetButton> {
+class _PostTweetButtonState extends ConsumerState<_PostTweetButton> {
   @override
   void initState() {
     super.initState();
@@ -77,50 +78,45 @@ class _PostTweetButtonState extends State<_PostTweetButton> {
   }
 
   void _listener() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
-  // Future<void> _showDialog(ComposeBloc bloc) async {
-  //   FocusScope.of(context).unfocus();
+  Future<void> _showDialog(ComposeState state) async {
+    FocusScope.of(context).unfocus();
 
-  //   final sentTweet = await showDialog<TweetData>(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) => PostTweetDialog(
-  //       composeBloc: bloc,
-  //       controller: widget.controller,
-  //     ),
-  //   );
+    final sentTweet = await showDialog<TweetData>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PostTweetDialog(
+        text: widget.controller.text,
+        attachmentUrl: state.quotedTweet?.tweetUrl,
+        inReplyToStatusId: state.parentTweet?.id,
+        media: state.media,
+        mediaType: state.type,
+      ),
+    );
 
-  //   if (sentTweet != null) {
-  //     // since no navigation can happen while the dialog is showing, we can
-  //     // that the context is still valid
-  //     // ignore: use_build_context_synchronously
-  //     context.read<HomeTimelineCubit>().addTweet(sentTweet);
+    if (sentTweet != null) {
+      ref.read(homeTimelineProvider.notifier).addTweet(sentTweet);
 
-  //     // ignore: use_build_context_synchronously
-  //     Navigator.popUntil(
-  //       context,
-  //       (route) => route.settings.name == HomeScreen.route,
-  //     );
-  //   }
-  // }
+      if (mounted) {
+        Navigator.popUntil(
+          context,
+          (route) => route.settings.name == HomePage.name,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final config = context.watch<ConfigCubit>().state;
+    final state = ref.watch(composeProvider);
 
-    // final bloc = context.watch<ComposeBloc>();
-
-    // final canTweet =
-    //     bloc.state.hasMedia || widget.controller.text.trim().isNotEmpty;
-
-    // TODO:
+    final canTweet = state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
     return HarpyButton.icon(
       icon: const Icon(Icons.send),
-      // onTap: canTweet ? () => _showDialog(bloc) : null,
-      onTap: () {},
+      onTap: canTweet ? () => _showDialog(state) : null,
     );
   }
 }

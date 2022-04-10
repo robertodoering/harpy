@@ -10,6 +10,8 @@ export 'twitter/data/user_data.dart';
 export 'twitter/find_tweet_replies.dart';
 export 'twitter/handle_tweets.dart';
 export 'twitter/media_type.dart';
+export 'twitter/media_upload_service.dart';
+export 'twitter/media_video_converter.dart';
 export 'twitter/parse_entities.dart';
 export 'twitter/tweet_text_count.dart';
 export 'twitter/twitter_api_provider.dart';

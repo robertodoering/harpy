@@ -26,8 +26,8 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
     TweetData? parentTweet,
     TweetData? quotedTweet,
   }) {
-    state = state.copyWith(
-      inReplyToStatus: parentTweet,
+    state = ComposeState(
+      parentTweet: parentTweet,
       quotedTweet: quotedTweet,
     );
   }
@@ -110,7 +110,7 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
 @freezed
 class ComposeState with _$ComposeState {
   factory ComposeState({
-    TweetData? inReplyToStatus,
+    TweetData? parentTweet,
     TweetData? quotedTweet,
     BuiltList<PlatformFile>? media,
     MediaType? type,

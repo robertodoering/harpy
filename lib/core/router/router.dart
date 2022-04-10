@@ -50,6 +50,7 @@ final routesProvider = Provider(
       pageBuilder: (_, state) => HarpyPage(
         key: state.pageKey,
         restorationId: state.pageKey.value,
+        name: HomePage.name,
         pageRouteType: ['splash', 'login'].contains(state.queryParams['origin'])
             ? PageRouteType.fade
             : PageRouteType.harpy,

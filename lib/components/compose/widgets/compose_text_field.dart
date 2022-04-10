@@ -29,7 +29,7 @@ class ComposeTextField extends ConsumerWidget {
           maxLines: null,
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
-            hintText: state.inReplyToStatus != null
+            hintText: state.parentTweet != null
                 ? 'tweet your reply'
                 : "what's happening?",
             isDense: true,

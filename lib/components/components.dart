@@ -8,6 +8,8 @@ export 'authentication/widgets/login_webview.dart';
 export 'authentication/widgets/retry_authentication_dialog.dart';
 export 'changelog/changelog_page.dart';
 export 'compose/compose_page.dart';
+export 'compose/post_tweet/provider/post_tweet_provider.dart';
+export 'compose/post_tweet/widgets/post_tweet_dialog.dart';
 export 'compose/provider/compose_provider.dart';
 export 'compose/widgets/compose_max_length.dart';
 export 'compose/widgets/compose_media.dart';

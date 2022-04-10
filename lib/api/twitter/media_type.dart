@@ -12,6 +12,19 @@ enum MediaType {
   video,
 }
 
+extension MediaTypeExtension on MediaType {
+  String get toMediaCategory {
+    switch (this) {
+      case MediaType.image:
+        return 'TWEET_IMAGE';
+      case MediaType.gif:
+        return 'TWEET_GIF';
+      case MediaType.video:
+        return 'TWEET_VIDEO';
+    }
+  }
+}
+
 /// Uses [mime] to find the [MediaType] from a file path.
 MediaType? mediaTypeFromPath(String? path) {
   final mimeType = mime(path);
