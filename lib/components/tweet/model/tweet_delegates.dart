@@ -26,24 +26,24 @@ typedef MediaActionCallback = void Function(
 @freezed
 class TweetDelegates with _$TweetDelegates {
   const factory TweetDelegates({
-    required TweetActionCallback? onShowTweet,
-    required TweetActionCallback? onShowUser,
-    required TweetActionCallback? onShowRetweeter,
-    required TweetActionCallback? onFavorite,
-    required TweetActionCallback? onUnfavorite,
-    required TweetActionCallback? onRetweet,
-    required TweetActionCallback? onUnretweet,
-    required TweetActionCallback? onTranslate,
-    required TweetActionCallback? onShowRetweeters,
-    required TweetActionCallback? onComposeQuote,
-    required TweetActionCallback? onComposeReply,
-    required TweetActionCallback? onDelete,
-    required TweetActionCallback? onOpenTweetExternally,
-    required TweetActionCallback? onCopyText,
-    required TweetActionCallback? onShareTweet,
-    required MediaActionCallback? onOpenMediaExternally,
-    required MediaActionCallback? onDownloadMedia,
-    required MediaActionCallback? onShareMedia,
+    TweetActionCallback? onShowTweet,
+    TweetActionCallback? onShowUser,
+    TweetActionCallback? onShowRetweeter,
+    TweetActionCallback? onFavorite,
+    TweetActionCallback? onUnfavorite,
+    TweetActionCallback? onRetweet,
+    TweetActionCallback? onUnretweet,
+    TweetActionCallback? onTranslate,
+    TweetActionCallback? onShowRetweeters,
+    TweetActionCallback? onComposeQuote,
+    TweetActionCallback? onComposeReply,
+    TweetActionCallback? onDelete,
+    TweetActionCallback? onOpenTweetExternally,
+    TweetActionCallback? onCopyText,
+    TweetActionCallback? onShareTweet,
+    MediaActionCallback? onOpenMediaExternally,
+    MediaActionCallback? onDownloadMedia,
+    MediaActionCallback? onShareMedia,
   }) = _TweetDelegates;
 }
 
@@ -105,8 +105,14 @@ TweetDelegates defaultTweetDelegates(
               params: {'id': tweet.originalId},
             )
         : null,
-    onComposeQuote: null,
-    onComposeReply: null,
+    onComposeQuote: (_, read) => read(routerProvider).pushNamed(
+      ComposePage.name,
+      extra: {'quotedTweet': tweet},
+    ),
+    onComposeReply: (_, read) => read(routerProvider).pushNamed(
+      ComposePage.name,
+      extra: {'parentTweet': tweet},
+    ),
     onDelete: (_, read) {
       HapticFeedback.lightImpact();
       notifier.delete(

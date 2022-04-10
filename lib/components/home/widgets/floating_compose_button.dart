@@ -54,6 +54,7 @@ class _ComposeButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final general = ref.watch(generalPreferencesProvider);
+    final router = ref.watch(routerProvider);
     final display = ref.watch(displayPreferencesProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
@@ -71,9 +72,7 @@ class _ComposeButton extends ConsumerWidget {
         borderRadius: harpyTheme.borderRadius,
         child: InkWell(
           borderRadius: harpyTheme.borderRadius,
-          onTap: () {
-            // TODO: go to compose
-          },
+          onTap: () => router.goNamed(ComposePage.name),
           child: Padding(
             padding: display.edgeInsets,
             child: const Icon(FeatherIcons.feather),

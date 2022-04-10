@@ -239,6 +239,18 @@ final routesProvider = Provider(
           ),
         ),
         GoRoute(
+          name: ComposePage.name,
+          path: 'compose',
+          pageBuilder: (_, state) => HarpyPage(
+            key: state.pageKey,
+            restorationId: state.pageKey.value,
+            child: ComposePage(
+              parentTweet: (state.extra as Map?)?['parentTweet'],
+              quotedTweet: (state.extra as Map?)?['quotedTweet'],
+            ),
+          ),
+        ),
+        GoRoute(
           name: SettingsPage.name,
           path: 'settings',
           pageBuilder: (_, state) => HarpyPage(

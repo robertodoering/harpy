@@ -61,11 +61,12 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
           leading: const Icon(FeatherIcons.repeat),
           title: Text(widget.tweet.retweeted ? 'unretweet' : 'retweet'),
         ),
-        const HarpyPopupMenuItem(
-          value: 1,
-          leading: Icon(FeatherIcons.feather),
-          title: Text('quote tweet'),
-        ),
+        if (widget.onComposeQuote != null)
+          const HarpyPopupMenuItem(
+            value: 1,
+            leading: Icon(FeatherIcons.feather),
+            title: Text('quote tweet'),
+          ),
         if (widget.onShowRetweeters != null)
           const HarpyPopupMenuItem(
             value: 2,

@@ -56,12 +56,13 @@ class _ComposeButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     final state = ref.watch(homeTimelineProvider);
 
     return HarpyButton.card(
       icon: const Icon(FeatherIcons.feather),
       onTap: state.tweets.isNotEmpty
-          ? () {} // TODO: navigate to compose page
+          ? () => router.goNamed(ComposePage.name)
           : null,
     );
   }

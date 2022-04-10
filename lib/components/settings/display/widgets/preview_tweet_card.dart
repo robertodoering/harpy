@@ -34,26 +34,7 @@ Make sure to follow @harpy_app for news and updates about the app''',
 
     return TweetCard(
       tweet: tweet,
-      createDelegates: (_, __) => const TweetDelegates(
-        onShowTweet: null,
-        onShowUser: null,
-        onShowRetweeter: null,
-        onFavorite: null,
-        onUnfavorite: null,
-        onRetweet: null,
-        onUnretweet: null,
-        onTranslate: null,
-        onShowRetweeters: null,
-        onComposeQuote: null,
-        onComposeReply: null,
-        onDelete: null,
-        onOpenTweetExternally: null,
-        onCopyText: null,
-        onShareTweet: null,
-        onOpenMediaExternally: null,
-        onDownloadMedia: null,
-        onShareMedia: null,
-      ),
+      createDelegates: (_, __) => const TweetDelegates(),
     );
   }
 }
