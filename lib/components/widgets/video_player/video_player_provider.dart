@@ -150,10 +150,10 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
 
       await controller
           .initialize()
-          .then((_) async => controller.seekTo(position ?? Duration.zero))
-          .then((_) async => controller.setVolume(volume))
-          .then((_) async => isPlaying ? controller.play() : controller.pause())
-          .then((_) async => controller.setLooping(isLooping))
+          .then((_) => controller.seekTo(position ?? Duration.zero))
+          .then((_) => controller.setVolume(volume))
+          .then((_) => isPlaying ? controller.play() : controller.pause())
+          .then((_) => controller.setLooping(isLooping))
           .then((_) => controller.addListener(_controllerListener))
           .handleError(logErrorHandler);
 
