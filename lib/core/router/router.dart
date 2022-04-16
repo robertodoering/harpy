@@ -45,6 +45,15 @@ final routesProvider = Provider(
       ),
     ),
     GoRoute(
+      name: SetupPage.name,
+      path: '/setup',
+      pageBuilder: (_, state) => HarpyPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: const SetupPage(),
+      ),
+    ),
+    GoRoute(
       name: HomePage.name,
       path: '/home',
       pageBuilder: (_, state) => HarpyPage(

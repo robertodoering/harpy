@@ -238,9 +238,9 @@ class _FollowButton extends ConsumerWidget {
       onTap: () {
         HapticFeedback.lightImpact();
         if (following) {
-          notifier.unfollow(user.id);
+          notifier.unfollow(user.handle);
         } else {
-          notifier.follow(user.id);
+          notifier.follow(user.handle);
         }
       },
     );

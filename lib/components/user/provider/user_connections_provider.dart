@@ -8,7 +8,7 @@ import 'package:harpy/rby/rby.dart';
 
 /// Provides the [UserConnection] for a list of users.
 ///
-/// Connections are mapped to the user id.
+/// Connections are mapped to the user handle.
 final userConnectionsProvider = StateNotifierProvider.autoDispose.family<
     UserConnectionsNotifier,
     BuiltMap<String, BuiltSet<UserConnection>>,
@@ -48,52 +48,52 @@ class UserConnectionsNotifier
     });
   }
 
-  Future<void> follow(String userId) async {
-    log.fine('follow $userId');
+  Future<void> follow(String handle) async {
+    log.fine('follow $handle');
 
     state = state.rebuild(
-      (builder) => builder[userId] = _addOrCreateConnection(
-        builder[userId],
+      (builder) => builder[handle] = _addOrCreateConnection(
+        builder[handle],
         UserConnection.following,
       ),
     );
 
     await _twitterApi.userService
-        .friendshipsCreate(userId: userId)
+        .friendshipsCreate(screenName: handle)
         .handleError((dynamic e, st) {
       twitterErrorHandler(_read, e, st);
       if (!mounted) return;
 
       // assume still not following
       state = state.rebuild(
-        (builder) => builder[userId] = _removeOrCreateConnection(
-          builder[userId],
+        (builder) => builder[handle] = _removeOrCreateConnection(
+          builder[handle],
           UserConnection.following,
         ),
       );
     });
   }
 
-  Future<void> unfollow(String userId) async {
-    log.fine('unfollow $userId');
+  Future<void> unfollow(String handle) async {
+    log.fine('unfollow $handle');
 
     state = state.rebuild(
-      (builder) => builder[userId] = _removeOrCreateConnection(
-        builder[userId],
+      (builder) => builder[handle] = _removeOrCreateConnection(
+        builder[handle],
         UserConnection.following,
       ),
     );
 
     await _twitterApi.userService
-        .friendshipsDestroy(userId: userId)
+        .friendshipsDestroy(screenName: handle)
         .handleError((dynamic e, st) {
       twitterErrorHandler(_read, e, st);
       if (!mounted) return;
 
       // assume still following
       state = state.rebuild(
-        (builder) => builder[userId] = _addOrCreateConnection(
-          builder[userId],
+        (builder) => builder[handle] = _addOrCreateConnection(
+          builder[handle],
           UserConnection.following,
         ),
       );
@@ -125,14 +125,14 @@ BuiltMap<String, BuiltSet<UserConnection>> _mapConnections(
   final mappedConnections = <String, BuiltSet<UserConnection>>{};
 
   for (final friendship in friendships) {
-    if (friendship.idStr != null) {
+    if (friendship.screenName != null) {
       final connections = <UserConnection>{};
 
       if (friendship.connections != null) {
         connections.addAll(friendship.connections!.map(parseUserConnection));
       }
 
-      mappedConnections[friendship.idStr!] = connections.toBuiltSet();
+      mappedConnections[friendship.screenName!] = connections.toBuiltSet();
     }
   }
 
