@@ -37,7 +37,7 @@ dependencies:
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   http: ^0.13.3
-  humanizer: ^1.0.0
+  humanizer: ^2.0.0
   intl: ^0.17.0
   json_annotation: ^4.3.0
   like_button: ^2.0.3
