@@ -9,48 +9,6 @@ class HomeTabView extends ConsumerWidget {
 
   static const _indexOffset = 1;
 
-  Widget _mapEntryContent({
-    required int index,
-    required HomeTabEntry entry,
-    required double refreshIndicatorOffset,
-    required double? scrollToTopOffset,
-  }) {
-    if (entry.type == HomeTabEntryType.defaultType) {
-      switch (entry.id) {
-        case 'home':
-          return HomeTimeline(
-            refreshIndicatorOffset: refreshIndicatorOffset,
-            scrollToTopOffset: scrollToTopOffset,
-          );
-        case 'media':
-          return const HomeMediaTimeline();
-        case 'mentions':
-          return MentionsTimeline(
-            beginSlivers: const [HomeTopSliverPadding()],
-            endSlivers: const [HomeBottomSliverPadding()],
-            refreshIndicatorOffset: refreshIndicatorOffset,
-            scrollToTopOffset: scrollToTopOffset,
-          );
-        case 'search':
-          return const SearchPageContent(
-            beginSlivers: [HomeTopSliverPadding()],
-            endSlivers: [HomeBottomSliverPadding()],
-          );
-        default:
-          return const SizedBox();
-      }
-    } else if (entry.type == HomeTabEntryType.list) {
-      return ListTimeline(
-        listId: entry.id,
-        listName: entry.name,
-        beginSlivers: const [HomeTopSliverPadding()],
-        endSlivers: const [HomeBottomSliverPadding()],
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
@@ -98,6 +56,50 @@ class HomeTabView extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+Widget _mapEntryContent({
+  required int index,
+  required HomeTabEntry entry,
+  required double refreshIndicatorOffset,
+  required double? scrollToTopOffset,
+}) {
+  if (entry.type == HomeTabEntryType.defaultType) {
+    switch (entry.id) {
+      case 'home':
+        return HomeTimeline(
+          refreshIndicatorOffset: refreshIndicatorOffset,
+          scrollToTopOffset: scrollToTopOffset,
+        );
+      case 'media':
+        return const HomeMediaTimeline();
+      case 'mentions':
+        return MentionsTimeline(
+          beginSlivers: const [HomeTopSliverPadding()],
+          endSlivers: const [HomeBottomSliverPadding()],
+          refreshIndicatorOffset: refreshIndicatorOffset,
+          scrollToTopOffset: scrollToTopOffset,
+        );
+      case 'search':
+        return const SearchPageContent(
+          beginSlivers: [HomeTopSliverPadding()],
+          endSlivers: [HomeBottomSliverPadding()],
+        );
+      default:
+        return const SizedBox();
+    }
+  } else if (entry.type == HomeTabEntryType.list) {
+    return ListTimeline(
+      listId: entry.id,
+      listName: entry.name,
+      beginSlivers: const [HomeTopSliverPadding()],
+      endSlivers: const [HomeBottomSliverPadding()],
+      refreshIndicatorOffset: refreshIndicatorOffset,
+      scrollToTopOffset: scrollToTopOffset,
+    );
+  } else {
+    return const SizedBox();
   }
 }
 

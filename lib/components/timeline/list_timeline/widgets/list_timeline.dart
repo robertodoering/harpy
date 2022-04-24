@@ -10,12 +10,16 @@ class ListTimeline extends ConsumerWidget {
     required this.listName,
     this.beginSlivers = const [],
     this.endSlivers = const [],
+    this.refreshIndicatorOffset,
+    this.scrollToTopOffset,
   });
 
   final String listId;
   final String listName;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
+  final double? refreshIndicatorOffset;
+  final double? scrollToTopOffset;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,6 +35,8 @@ class ListTimeline extends ConsumerWidget {
           listName: listName,
         ),
       ],
+      refreshIndicatorOffset: refreshIndicatorOffset,
+      scrollToTopOffset: scrollToTopOffset,
       onChangeFilter: () => router.pushNamed(
         ListTimelineFilter.name,
         params: {'listId': listId},
