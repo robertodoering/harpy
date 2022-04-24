@@ -132,14 +132,19 @@ class TweetData with _$TweetData {
   ///
   /// If [replies] is empty or the only reply author in [replies] is the same
   /// as the [user], an empty string is returned.
-  // FIXME: we should limit the amount of authors that are displayed in the
-  //  replies in case there are a lot
-  late final replyAuthors = replies.fold<String>(
-    '',
-    (previousValue, reply) => previousValue.isNotEmpty
-        ? '$previousValue, ${reply.user.name}'
-        : reply.user.name,
-  );
+  String get replyAuthors {
+    final names = replies.map((reply) => reply.user.name).toSet();
+
+    final concatenated = names.take(5).fold<String>(
+          '',
+          (previousValue, name) =>
+              previousValue.isNotEmpty ? '$previousValue, $name' : name,
+        );
+
+    return names.length > 5
+        ? '$concatenated and ${names.length - 5} more'
+        : concatenated;
+  }
 
   bool translatable(String translateLanguage) =>
       hasText && lang != 'und' && !translateLanguage.startsWith(lang);
