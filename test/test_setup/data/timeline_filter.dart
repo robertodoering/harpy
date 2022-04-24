@@ -1,4 +1,4 @@
-import 'package:harpy/legacy/legacy.dart';
+import 'package:harpy/components/components.dart';
 
 const timelineFilter1 = TimelineFilter(
   uuid: '1337',

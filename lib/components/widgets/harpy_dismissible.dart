@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/legacy/harpy_widgets/harpy_widgets.dart';
+import 'package:harpy/core/core.dart';
 
 const _threshold = .05;
 
