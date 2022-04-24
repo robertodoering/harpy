@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/components/components.dart';
 
-import '../../../test_setup/data/changelogs.dart';
+import '../../test_setup/data/changelog_data.dart';
 
 void main() {
   group('changelog parser', () {

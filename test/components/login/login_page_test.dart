@@ -5,8 +5,8 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:harpy/components/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../test_setup/devices.dart';
-import '../../../test_setup/setup.dart';
+import '../../test_setup/devices.dart';
+import '../../test_setup/setup.dart';
 
 void main() {
   setUpAll(() async {

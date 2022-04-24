@@ -5,8 +5,8 @@ import 'package:harpy/core/core.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../test_setup/data/users.dart';
-import '../../../test_setup/mocks.dart';
+import '../../test_setup/data/user_data.dart';
+import '../../test_setup/mocks.dart';
 
 void main() {
   group('application', () {

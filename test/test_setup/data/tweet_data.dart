@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:harpy/api/api.dart';
 
-import 'users.dart';
+import 'user_data.dart';
 
 final exampleTweet = TweetData(
   createdAt: DateTime(2021, 07, 29),
