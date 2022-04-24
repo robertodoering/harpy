@@ -55,10 +55,10 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
     final languageNotifier = ref.watch(languagePreferencesProvider.notifier);
 
     final locale = Localizations.localeOf(context);
+    final groupValue = language.translateLanguage;
 
-    final groupValue = language.activeTranslateLanguage(locale);
-
-    // TODO: show system language as separate entry and make it selectable
+    final systemLanguage =
+        kTranslateLanguages[translateLanguageFromLocale(locale) ?? 'en'];
 
     return HarpyDialog(
       title: const Text('change the language used to translate tweets'),
@@ -75,6 +75,20 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
       ),
       content: Column(
         children: [
+          HarpyRadioTile<String>(
+            title: Text('System ($systemLanguage)'),
+            value: '',
+            groupValue: groupValue,
+            leadingPadding: display.edgeInsets / 4,
+            contentPadding: display.edgeInsets / 4,
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+              if (value != groupValue) {
+                languageNotifier.setTranslateLanguage(value);
+              }
+            },
+          ),
           for (final entry in _entries.entries)
             HarpyRadioTile<String>(
               title: entry.value,
