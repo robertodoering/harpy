@@ -51,7 +51,6 @@ TweetDelegates defaultTweetDelegates(
   TweetData tweet,
   TweetNotifier notifier,
 ) {
-  // TODO: implement all tweet delegates
   return TweetDelegates(
     onShowTweet: (context, read) => read(routerProvider).pushNamed(
       TweetDetailPage.name,
