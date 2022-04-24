@@ -27,9 +27,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       child: HarpyScaffold(
         child: ScrollDirectionListener(
           depth: 1,
-          child: FloatingComposeButton(
-            child: HomeTabView(),
-          ),
+          child: HomeTabView(),
         ),
       ),
     );

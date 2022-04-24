@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-// TODO: don't show when in drawer or settings
-
-class FloatingComposeButton extends ConsumerWidget {
+class FloatingComposeButton extends ConsumerStatefulWidget {
   const FloatingComposeButton({
     required this.child,
   });
@@ -15,19 +13,55 @@ class FloatingComposeButton extends ConsumerWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _FloatingComposeButtonState createState() => _FloatingComposeButtonState();
+}
+
+class _FloatingComposeButtonState extends ConsumerState<FloatingComposeButton> {
+  TabController? _controller;
+
+  bool _show = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_controller == null) {
+      _controller = HomeTabController.of(context)
+        ?..animation?.addListener(_listener);
+
+      assert(_controller != null);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller?.removeListener(_listener);
+  }
+
+  void _listener() {
+    if (mounted) {
+      final show = _controller!.index != 0 &&
+          _controller!.index != _controller!.length - 1;
+
+      if (_show != show) setState(() => _show = show);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final general = ref.watch(generalPreferencesProvider);
 
-    if (!general.floatingComposeButton) {
-      return child;
-    }
+    if (!general.floatingComposeButton) return widget.child;
 
-    final show = UserScrollDirection.scrollDirectionOf(context) ==
-        ScrollDirection.forward;
+    final show = _show &&
+        UserScrollDirection.scrollDirectionOf(context) !=
+            ScrollDirection.reverse;
 
     return Stack(
       children: [
-        child,
+        widget.child,
         Align(
           alignment: Alignment.bottomRight,
           child: AnimatedOpacity(

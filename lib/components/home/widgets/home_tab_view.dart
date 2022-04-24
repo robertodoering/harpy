@@ -72,23 +72,25 @@ class HomeTabView extends ConsumerWidget {
         child: Stack(
           children: [
             Builder(
-              builder: (context) => TabBarView(
-                controller: HomeTabController.of(context),
-                physics: HarpyTabViewScrollPhysics(
-                  viewportWidth: mediaQuery.size.width,
-                ),
-                children: [
-                  const HomeDrawer(),
-                  ...configuration.visibleEntries.mapIndexed(
-                    (index, entry) => _mapEntryContent(
-                      index: index,
-                      entry: entry,
-                      refreshIndicatorOffset: refreshIndicatorOffset,
-                      scrollToTopOffset: scrollToTopOffset,
-                    ),
+              builder: (context) => FloatingComposeButton(
+                child: TabBarView(
+                  controller: HomeTabController.of(context),
+                  physics: HarpyTabViewScrollPhysics(
+                    viewportWidth: mediaQuery.size.width,
                   ),
-                  const HomeTabCustomization(),
-                ],
+                  children: [
+                    const HomeDrawer(),
+                    ...configuration.visibleEntries.mapIndexed(
+                      (index, entry) => _mapEntryContent(
+                        index: index,
+                        entry: entry,
+                        refreshIndicatorOffset: refreshIndicatorOffset,
+                        scrollToTopOffset: scrollToTopOffset,
+                      ),
+                    ),
+                    const HomeTabCustomization(),
+                  ],
+                ),
               ),
             ),
             const HomeAppBar(),
