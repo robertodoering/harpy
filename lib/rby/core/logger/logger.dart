@@ -35,30 +35,51 @@ void initializeLogger({String? prefix}) {
       ],
       rec.level.name.padRight(7),
       separator,
-      rec.loggerName.padRight(22),
-      separator,
+      if (rec.loggerName.isNotEmpty) ...[
+        rec.loggerName.padRight(22),
+        separator,
+      ],
       rec.message,
     ];
 
-    print(content.join());
+    final color = _colorForLevel(rec.level);
+
+    print(color(content.join()));
 
     if (rec.error != null) {
-      print(horizontalSeparator);
-      print('ERROR');
+      print(color(horizontalSeparator));
+      print(color('ERROR'));
 
       if (rec.error is Response) {
-        print((rec.error as Response).body);
+        print(color((rec.error as Response).body));
       } else {
-        print(rec.error.toString());
+        print(color(rec.error.toString()));
       }
 
-      print(horizontalSeparator);
+      print(color(horizontalSeparator));
 
       if (rec.stackTrace != null) {
-        print('STACK TRACE');
-        rec.stackTrace.toString().trim().split('\n').forEach(print);
-        print(horizontalSeparator);
+        print(color('STACK TRACE'));
+        for (final line in rec.stackTrace.toString().trim().split('\n')) {
+          print(color(line));
+        }
+        print(color(horizontalSeparator));
       }
     }
   });
+}
+
+final _levelColors = {
+  Level.FINEST: AnsiColor.fg(AnsiColor.grey(0.5)),
+  Level.FINER: AnsiColor.fg(AnsiColor.grey(0.5)),
+  Level.FINE: AnsiColor.fg(AnsiColor.grey(0.5)),
+  Level.CONFIG: AnsiColor.fg(12),
+  Level.INFO: AnsiColor.fg(12),
+  Level.WARNING: AnsiColor.fg(208),
+  Level.SEVERE: AnsiColor.fg(196),
+  Level.SHOUT: AnsiColor.fg(199),
+};
+
+AnsiColor _colorForLevel(Level level) {
+  return _levelColors[level] ?? AnsiColor.none();
 }

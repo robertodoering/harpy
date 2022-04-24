@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:logging/logging.dart';
 
-class ProviderLogger extends ProviderObserver with LoggerMixin {
-  const ProviderLogger();
+class ProviderLogger extends ProviderObserver {
+  final Logger _log = Logger('');
 
   @override
   void didAddProvider(
@@ -11,7 +11,7 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
     ProviderContainer container,
   ) {
     if (provider.name != null) {
-      log
+      _log
         ..info(_msg('added', provider))
         ..info('         ${value.runtimeType}');
     }
@@ -25,13 +25,13 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
     ProviderContainer container,
   ) {
     if (provider.name != null) {
-      log
+      _log
         ..info(_msg('updated', provider))
         ..info('         ${newValue.runtimeType}');
     }
 
     if (newValue is AsyncError) {
-      log.warning('async error', newValue.error, newValue.stackTrace);
+      _log.warning('async error', newValue.error, newValue.stackTrace);
     }
   }
 
@@ -41,7 +41,7 @@ class ProviderLogger extends ProviderObserver with LoggerMixin {
     ProviderContainer container,
   ) {
     if (provider.name != null) {
-      log.info(_msg('disposed', provider));
+      _log.info(_msg('disposed', provider));
     }
   }
 

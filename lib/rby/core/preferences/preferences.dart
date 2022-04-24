@@ -1,5 +1,5 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:harpy/rby/core/logger.dart';
+import 'package:harpy/rby/core/logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// [SharedPreferences] wrapper that allows for prefixed keys.
