@@ -40,13 +40,21 @@ class _TranslateLanguageDialog extends ConsumerStatefulWidget {
 class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
   String _filter = '';
 
-  Map<String, Widget> get _entries => Map.fromEntries(
-        kTranslateLanguages.entries.where(
-          (entry) =>
-              entry.key.toLowerCase().contains(_filter.toLowerCase()) ||
-              entry.value.toLowerCase().contains(_filter.toLowerCase()),
-        ),
-      ).map((key, value) => MapEntry(key, Text(value)));
+  Map<String, Widget> _entries(Locale locale) {
+    final systemLanguage =
+        kTranslateLanguages[translateLanguageFromLocale(locale) ?? 'en'];
+
+    return Map.fromEntries(
+      [
+        MapEntry('', 'System ($systemLanguage)'),
+        ...kTranslateLanguages.entries,
+      ].where(
+        (entry) =>
+            entry.key.toLowerCase().contains(_filter.toLowerCase()) ||
+            entry.value.toLowerCase().contains(_filter.toLowerCase()),
+      ),
+    ).map((key, value) => MapEntry(key, Text(value)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +64,6 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
 
     final locale = Localizations.localeOf(context);
     final groupValue = language.translateLanguage;
-
-    final systemLanguage =
-        kTranslateLanguages[translateLanguageFromLocale(locale) ?? 'en'];
 
     return HarpyDialog(
       title: const Text('change the language used to translate tweets'),
@@ -75,21 +80,7 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
       ),
       content: Column(
         children: [
-          HarpyRadioTile<String>(
-            title: Text('System ($systemLanguage)'),
-            value: '',
-            groupValue: groupValue,
-            leadingPadding: display.edgeInsets / 4,
-            contentPadding: display.edgeInsets / 4,
-            onChanged: (value) {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-              if (value != groupValue) {
-                languageNotifier.setTranslateLanguage(value);
-              }
-            },
-          ),
-          for (final entry in _entries.entries)
+          for (final entry in _entries(locale).entries)
             HarpyRadioTile<String>(
               title: entry.value,
               value: entry.key,
