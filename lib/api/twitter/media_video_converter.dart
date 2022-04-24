@@ -29,8 +29,6 @@ class MediaVideoConverter with LoggerMixin {
       'converting video from: $sourcePath to destinationPath: $outputPath',
     );
 
-    // TODO: also limit length of video
-
     final result = await _ffmpeg.execute(
       // override existing output
       '-y '
