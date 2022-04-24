@@ -112,7 +112,7 @@ class _SummaryCard extends ConsumerWidget {
               topLeft: harpyTheme.radius,
               topRight: harpyTheme.radius,
             ),
-            onTap: () => router.goNamed(ChangelogPage.name),
+            onTap: () => router.pushNamed(ChangelogPage.name),
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.github),

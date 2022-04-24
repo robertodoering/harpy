@@ -1,0 +1,6 @@
+Version 0.1.2
+2020-08-09
+
+- Added zooming & panning when viewing Tweet images
+- Added pre-compiled shaders to improve initial performance
+- Fixed animation when viewing user profiles

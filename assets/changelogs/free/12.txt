@@ -1,0 +1,8 @@
+Version 0.2.0
+2020-08-18
+
+- Added about screen
+- Added theme selection settings with 4 predefined themes
+- Added setup screen for the first login
+- Changed the design for info messages
+- Fixed video player central replay button not working

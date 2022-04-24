@@ -23,7 +23,7 @@ dependencies:
   download_manager:
     git: https://github.com/robertodoering/download_manager
   encrypt: ^5.0.1
-  equatable: ^2.0.0
+  equatable: ^2.0.0 # TODO: remove unused dependency after refactoring
   file_picker: ^4.0.1
   flare_flutter: ^3.0.2
   flutter:
@@ -38,6 +38,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_markdown: ^0.6.10
   flutter_riverpod: ^2.0.0-dev.5
   freezed_annotation: ^1.0.0
   get_it: ^7.2.0
@@ -93,8 +94,8 @@ flutter:
 
   assets:
     - assets/flare/
-    - android/fastlane/metadata/android/free/en-US/changelogs/
-    - android/fastlane/metadata/android/pro/en-US/changelogs/
+    - assets/changelogs/free/
+    - assets/changelogs/pro/
 
   fonts:
     - family: Comfortaa

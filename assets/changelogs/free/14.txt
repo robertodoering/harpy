@@ -1,0 +1,8 @@
+Version 0.2.2
+2020-09-11
+
+- Changed App bar to hide automatically when scrolling down the home timeline
+- Changed video full screen rotation to no longer change the device's orientation
+- Changed tweet creation time text
+- Changed logout icon
+- Fixed 'Jump to top' not scrolling to the top in the user profile screen

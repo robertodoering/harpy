@@ -1,0 +1,12 @@
+Version 0.5.2
+2021-04-04
+
+- Added media timeline tab in home screen
+- Added mentions timeline in home screen
+  - You will be notified when new mentions exist upon opening the app
+- Added mentions timeline in user profile screen
+- Added haptic feedback on many actions
+- Added media timeline tiling mode will be saved cross-session
+- Added search tab in home screen
+- Fixed immersive mode not resetting when dismissing fullscreen image
+- Minor style improvements

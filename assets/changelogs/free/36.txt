@@ -1,0 +1,7 @@
+Version 0.4.4
+2021-02-23
+
+- Added home timeline filter
+- Fixed playing GIFs and videos pauses system audio (music / podcasts) (Thanks Daniele!)
+- Fixed image overlay animation in reply & compose tweet screen
+- Fixed sometimes not showing new tweets text

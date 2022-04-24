@@ -1,0 +1,11 @@
+Version 0.8.2
+2021-12-31
+
+- Added download dialog to customize filename & download path
+  - Can be disabled in `settings › media › show download dialog`
+- Added 'retweeted by' screen (thanks Demondre!)
+- Added following & followers count for user cards (thanks Demondre!)
+- Added compose text default sentence capitalization
+- Changed default download location to `Pictures/harpy/`
+- Fixed not returning to home screen after composing a Tweet
+- Fixed default theme on first login

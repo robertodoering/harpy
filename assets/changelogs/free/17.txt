@@ -1,0 +1,8 @@
+Version 0.2.5
+2020-10-31
+
+- Added Tweet media download
+- Added additional home timeline refresh button
+- Changed full-screen media overlay
+- Disabled gif autoplay (temporarily)
+- Removed expensive overlay transition animation

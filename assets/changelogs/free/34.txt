@@ -1,0 +1,10 @@
+Version 0.4.2
+2021-02-17
+
+- Added replying to tweets
+- Added support for attaching videos when composing tweets
+- Changed returning to home timeline after posting a new tweet
+- Changed icons & general layout improvements
+- Fixed sometimes not parsing @mention in the tweet text (Thanks Darren!)
+- Fixed some UI elements hidden behind navigation bar on Android 11
+- Fixed keeping home timeline position cross session when switching accounts

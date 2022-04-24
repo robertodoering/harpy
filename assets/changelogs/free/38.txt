@@ -1,0 +1,7 @@
+Version 0.4.6
+2021-03-09
+
+- Added user timeline filtering
+- Changed pull to refresh to trigger more easily (Thanks armandojrod)
+- Changed button styling
+- Fixed unable to load replies for some users

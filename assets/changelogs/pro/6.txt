@@ -1,0 +1,11 @@
+Version 0.8.3
+2022-01-26
+
+- Added timeline filter selection for list timelines
+- Updated selecting and creating timeline filters
+  - Filters can now be saved and shared across timelines
+- Updated privacy policy link
+  - harpy does not collect or store any data. A proper privacy policy was still necessary and is now available
+- Changed pressing the retweet button now always shows the retweet menu
+- Fixed tweets sometimes stayed hidden until the first scroll
+- Style and stability improvements

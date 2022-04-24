@@ -352,6 +352,17 @@ final routesProvider = Provider(
             restorationId: state.pageKey.value,
             child: const AboutPage(),
           ),
+          routes: [
+            GoRoute(
+              name: ChangelogPage.name,
+              path: 'changelog',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: const ChangelogPage(),
+              ),
+            ),
+          ],
         ),
       ],
     ),

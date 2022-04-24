@@ -16,6 +16,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
+    ChangelogDialog.maybeShow(context, ref.read);
+
     ref.read(mentionsTimelineProvider.notifier).loadInitial();
   }
 
