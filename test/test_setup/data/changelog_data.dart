@@ -52,6 +52,27 @@ final changelogFull = ChangelogData(
   ].toBuiltList(),
 );
 
+final changelogRich = ChangelogData(
+  title: 'Version header',
+  date: DateTime(2022, 7, 29),
+  summary: [
+    'Check out harpy on [GitHub](https://github.com/robertodoering/harpy)!',
+  ].toBuiltList(),
+  entries: [
+    ChangelogEntry(
+      line: 'Added feature thanks ([@harpy_app](user/harpy_app))',
+      type: ChangelogEntryType.added,
+      subEntries: [
+        ChangelogEntry(
+          line: 'In `settings › general`',
+          type: ChangelogEntryType.other,
+          subEntries: BuiltList(),
+        ),
+      ].toBuiltList(),
+    ),
+  ].toBuiltList(),
+);
+
 final changelogOnlyEntries = ChangelogData(
   title: null,
   date: null,

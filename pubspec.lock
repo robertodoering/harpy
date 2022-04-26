@@ -558,9 +558,11 @@ packages:
   golden_toolkit:
     dependency: "direct dev"
     description:
-      name: golden_toolkit
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "packages/golden_toolkit"
+      ref: HEAD
+      resolved-ref: f6f53095ef71a09f0c7137282000e9e56e67ecc2
+      url: "https://github.com/robertodoering/flutter_glove_box"
+    source: git
     version: "0.13.0"
   google_fonts:
     dependency: "direct main"

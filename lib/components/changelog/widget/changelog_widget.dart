@@ -109,7 +109,7 @@ class _ChangelogEntry extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(entry.line),
+              HarpyMarkdown(entry.line),
               if (entry.subEntries.isNotEmpty)
                 Column(
                   children: [

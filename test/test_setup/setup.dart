@@ -12,19 +12,21 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'http_overrides.dart';
 import 'mocks.dart';
 
-Widget buildAppBase(
+Future<Widget> buildAppBase(
   Widget child, {
-  SharedPreferences? sharedPreferences,
+  Map<String, Object> preferences = const {},
   List<Override>? providerOverrides,
-}) {
+}) async {
   WidgetsApp.debugAllowBannerOverride = false;
   HttpOverrides.global = MockHttpOverrides();
   VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
+  SharedPreferences.setMockInitialValues(preferences);
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   return ProviderScope(
     overrides: [
-      if (sharedPreferences != null)
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       applicationProvider.overrideWithValue(MockApplication()),
       routesProvider.overrideWithValue([
         GoRoute(
@@ -38,5 +40,17 @@ Widget buildAppBase(
       ...?providerOverrides,
     ],
     child: const HarpyApp(),
+  );
+}
+
+Future<Widget> buildListItemBase(
+  Widget child, {
+  Map<String, Object> preferences = const {},
+  List<Override>? providerOverrides,
+}) async {
+  return buildAppBase(
+    HarpyScaffold(child: ListView(children: [child])),
+    preferences: preferences,
+    providerOverrides: providerOverrides,
   );
 }

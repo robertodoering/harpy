@@ -13,7 +13,7 @@ void main() {
       _mockChangelog(_changelogFull);
       final data = await const ChangelogParser().parse(buildNumber: '');
 
-      expect(data, changelogFull);
+      expect(data, changelogRich);
     });
 
     test('parses changelog with only entries and subentries', () async {

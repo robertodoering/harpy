@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:harpy/components/components.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../test_setup/devices.dart';
 import '../../test_setup/setup.dart';
@@ -17,15 +16,9 @@ void main() {
 
   group('login page', () {
     testGoldens('builds login page', (tester) async {
-      SharedPreferences.setMockInitialValues({});
-      final sharedPreferences = await SharedPreferences.getInstance();
-
       await tester.pumpWidgetBuilder(
         const LoginPage(),
-        wrapper: (child) => buildAppBase(
-          child,
-          sharedPreferences: sharedPreferences,
-        ),
+        wrapper: buildAppBase,
         surfaceSize: Device.phone.size,
       );
 
@@ -45,14 +38,11 @@ void main() {
     });
 
     testGoldens('builds login page with light theme', (tester) async {
-      SharedPreferences.setMockInitialValues({'lightThemeId': 1});
-      final sharedPreferences = await SharedPreferences.getInstance();
-
       await tester.pumpWidgetBuilder(
         const LoginPage(),
         wrapper: (child) => buildAppBase(
           child,
-          sharedPreferences: sharedPreferences,
+          preferences: {'lightThemeId': 1},
         ),
         surfaceSize: Device.phone.size,
       );
@@ -73,15 +63,9 @@ void main() {
     });
 
     testGoldens('builds login page in landscape', (tester) async {
-      SharedPreferences.setMockInitialValues({});
-      final sharedPreferences = await SharedPreferences.getInstance();
-
       await tester.pumpWidgetBuilder(
         const LoginPage(),
-        wrapper: (child) => buildAppBase(
-          child,
-          sharedPreferences: sharedPreferences,
-        ),
+        wrapper: buildAppBase,
         surfaceSize: phoneLandscape.size,
       );
 
