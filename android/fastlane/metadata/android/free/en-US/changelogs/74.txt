@@ -1,0 +1,7 @@
+Version 0.8.4+2
+2022-03-15
+
+Some issues with Twitter are causing temporary re-appearing authentication issues.
+We are working on preventing these issues. Sorry for the inconvenience.
+
+· Fixed authentication issues with Twitter
