@@ -11,29 +11,22 @@ environment:
 
 dependencies:
   android_path_provider: ^0.3.0
-  args: ^2.3.0
-  bloc: ^8.0.0-dev.3 # TODO: remove unused dependency after refactoring
-  bloc_concurrency: ^0.2.0-dev.1 # TODO: remove unused dependency after refactoring
   built_collection: ^5.1.1
   collection: ^1.15.0
   connectivity_plus: ^2.0.2
-  cupertino_icons: ^1.0.2
   dart_twitter_api: ^0.5.4
   device_info_plus: ^3.1.1
   download_manager:
     git: https://github.com/robertodoering/download_manager
   encrypt: ^5.0.1
-  equatable: ^2.0.0 # TODO: remove unused dependency after refactoring
   file_picker: ^4.0.1
   flare_flutter: ^3.0.2
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.0.0-dev.2 # TODO: remove unused dependency after refactoring
   flutter_colorpicker: ^1.0.3
   flutter_displaymode: ^0.4.0
   flutter_feather_icons: ^2.0.0+1
   flutter_ffmpeg: ^0.4.0
-  flutter_hsvcolor_picker: ^1.1.0 # TODO: remove unused dependency after refactoring
   flutter_image: ^4.1.0
   flutter_keyboard_visibility: ^5.0.1
   flutter_localizations:
@@ -41,27 +34,22 @@ dependencies:
   flutter_markdown: ^0.6.10
   flutter_riverpod: ^2.0.0-dev.5
   freezed_annotation: ^1.0.0
-  get_it: ^7.2.0
   go_router: ^3.0.1
   google_fonts: ^2.1.0
   http: ^0.13.3
-  humanizer: ^1.0.0
+  humanizer: ^2.0.0
   intl: ^0.17.0
   json_annotation: ^4.4.0
-  like_button: ^2.0.3 # TODO: remove unused dependency after refactoring
   location: ^4.1.1
   logging: ^1.0.1
   mime_type: ^1.0.0
   modal_bottom_sheet: ^2.0.0
-  oauth1: ^2.0.0
   package_info_plus: ^1.3.0
   path_provider: ^2.0.3
-  pedantic: ^1.11.0
   permission_handler: ^9.2.0
   photo_view:
     # photo_view fork with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git
-  provider: ^6.0.0
   scroll_to_index: ^2.0.0
   sentry_flutter: ^6.0.0
   share_plus: ^4.0.4
@@ -74,13 +62,12 @@ dependencies:
   url_launcher: ^6.0.10
   uuid: ^3.0.5
   video_player: ^2.1.15
-  visibility_detector: ^0.2.0
+  visibility_detector: ^0.3.0
   wakelock: ^0.6.0
   waterfall_flow: ^3.0.1
   webview_flutter: ^3.0.0
 
 dev_dependencies:
-  bloc_test: ^9.0.0-dev.3
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter
