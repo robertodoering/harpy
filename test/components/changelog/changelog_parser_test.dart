@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:harpy/components/components.dart';
 
@@ -13,7 +12,7 @@ void main() {
       _mockChangelog(_changelogFull);
       final data = await const ChangelogParser().parse(buildNumber: '');
 
-      expect(data, changelogRich);
+      expect(data, changelogFull);
     });
 
     test('parses changelog with only entries and subentries', () async {
@@ -62,7 +61,8 @@ void main() {
 
 void _mockChangelog(String changelog) {
   TestWidgetsFlutterBinding.ensureInitialized();
-  ServicesBinding.instance!.defaultBinaryMessenger.setMockMessageHandler(
+  TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+      .setMockMessageHandler(
     'flutter/assets',
     (message) async => utf8.encoder.convert(changelog).buffer.asByteData(),
   );
