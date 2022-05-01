@@ -1340,7 +1340,7 @@ packages:
       name: visibility_detector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.2"
   vm_service:
     dependency: transitive
     description:
@@ -1469,4 +1469,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.16.0 <3.0.0"
-  flutter: ">=2.10.5"
+  flutter: ">=2.10.0"
