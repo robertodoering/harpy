@@ -1,0 +1,10 @@
+Version 0.4.0
+2021-02-01
+
+- Added tweet search
+- Moved user search to home drawer
+- Changed typography & iconography
+- Changed 'harpy' theme secondary background color
+- Fixed some urls were unable to be launched on Android 11
+- Fixed media downloads failed on Android 10
+- Fixed tweet timestamp vertical alignment

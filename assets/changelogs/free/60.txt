@@ -1,0 +1,11 @@
+Version 0.6.11
+2021-08-09
+
+**Re-login required after update**
+
+- Updated home app bar
+- Added option to show home app bar at the bottom 
+  - in `settings › general`
+- Enabled transparent navigation bar for Android 10 and below (Thanks Steve-Mr!)
+- Minor style improvements
+- Fixed frequent 'rate limit reached' errors (requires re-login)

@@ -1,13 +1,24 @@
 import 'dart:io';
 
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/misc/misc.dart';
 import 'package:mime_type/mime_type.dart';
 
+final mediaUploadService = Provider(
+  (ref) => MediaUploadService(
+    twitterApi: ref.watch(twitterApiProvider),
+  ),
+  name: 'MediaUploadService',
+);
+
 class MediaUploadService {
-  const MediaUploadService();
+  const MediaUploadService({
+    required TwitterApi twitterApi,
+  }) : _twitterApi = twitterApi;
+
+  final TwitterApi _twitterApi;
 
   static const _maxChunkSize = 500000;
 
@@ -19,48 +30,45 @@ class MediaUploadService {
   /// Throws an exception when a request returns an error or times out.
   Future<String?> upload(
     File media, {
-    MediaType? type,
+    required MediaType type,
   }) async {
     final mediaBytes = media.readAsBytesSync();
     final totalBytes = mediaBytes.length;
-    final mediaType = mime(media.path);
+    final mediaMime = mime(media.path);
 
-    if (totalBytes == 0 || mediaType == null) {
+    if (totalBytes == 0 || mediaMime == null) {
       // unknown type or empty file
       return null;
     }
 
     // initialize the upload
-    final uploadInit = await app<TwitterApi>().mediaService.uploadInit(
-          totalBytes: totalBytes,
-          mediaType: mediaType,
-          mediaCategory: mediaCategoryFromType(type),
-        );
+    final uploadInit = await _twitterApi.mediaService.uploadInit(
+      totalBytes: totalBytes,
+      mediaType: mediaMime,
+      mediaCategory: type.toMediaCategory,
+    );
 
     final mediaId = uploadInit.mediaIdString!;
 
     // `splitList` splits the media bytes into lists with the max length of
     // 500000 (the max chunk size in bytes)
-    final mediaChunks = splitList(
-      mediaBytes,
-      _maxChunkSize,
-    );
+    final mediaChunks = splitList(mediaBytes, _maxChunkSize);
 
     // upload each chunk
     for (var i = 0; i < mediaChunks.length; i++) {
       final chunk = mediaChunks[i];
 
-      await app<TwitterApi>().mediaService.uploadAppend(
-            mediaId: mediaId,
-            media: chunk,
-            segmentIndex: i,
-          );
+      await _twitterApi.mediaService.uploadAppend(
+        mediaId: mediaId,
+        media: chunk,
+        segmentIndex: i,
+      );
     }
 
     // finalize the upload
-    final uploadFinalize = await app<TwitterApi>().mediaService.uploadFinalize(
-          mediaId: mediaId,
-        );
+    final uploadFinalize = await _twitterApi.mediaService.uploadFinalize(
+      mediaId: mediaId,
+    );
 
     if (uploadFinalize.processingInfo?.pending ?? false) {
       // asynchronous upload of media
@@ -88,9 +96,9 @@ class MediaUploadService {
   }) async {
     await Future<void>.delayed(Duration(seconds: sleep));
 
-    final uploadStatus = await app<TwitterApi>().mediaService.uploadStatus(
-          mediaId: mediaId,
-        );
+    final uploadStatus = await _twitterApi.mediaService.uploadStatus(
+      mediaId: mediaId,
+    );
 
     if (uploadStatus.processingInfo != null &&
         uploadStatus.processingInfo!.succeeded) {

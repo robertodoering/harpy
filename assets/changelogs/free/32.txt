@@ -1,0 +1,10 @@
+Version 0.4.1
+2021-02-09
+
+- Added keeping home timeline position cross session
+  - If the last viewed tweet is in the newest 200 tweets when re-opening harpy
+- Added long press on tweet media to show media actions
+- Added button to go to the about screen in the login screen
+- Added show retweet user's profile on retweet user name tap
+- Added catching back button tap in home screen to exit harpy
+- Fixed an issue when adding media to a composed tweet

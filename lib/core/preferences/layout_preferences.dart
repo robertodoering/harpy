@@ -1,18 +1,40 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
-class LayoutPreferences {
-  const LayoutPreferences();
+part 'layout_preferences.freezed.dart';
 
-  /// Whether the media in a media timeline should be tiled.
-  ///
-  /// This is set automatically when switching the tiling mode in a media
-  /// timeline rather than being accessible through a settings screen.
-  bool get mediaTiled => app<HarpyPreferences>().getBool('mediaTiled', true);
-  set mediaTiled(bool value) =>
-      app<HarpyPreferences>().setBool('mediaTiled', value);
+final layoutPreferencesProvider =
+    StateNotifierProvider<LayoutPreferencesNotifier, LayoutPreferences>(
+  (ref) => LayoutPreferencesNotifier(
+    preferences: ref.watch(preferencesProvider(null)),
+  ),
+  name: 'LayoutPreferencesProvider',
+);
 
-  /// The id of the tab that is used by the harpy color picker.
-  int get colorPickerTab => app<HarpyPreferences>().getInt('colorPickerTab', 0);
-  set colorPickerTab(int value) =>
-      app<HarpyPreferences>().setInt('colorPickerTab', value);
+class LayoutPreferencesNotifier extends StateNotifier<LayoutPreferences> {
+  LayoutPreferencesNotifier({
+    required Preferences preferences,
+  })  : _preferences = preferences,
+        super(
+          LayoutPreferences(
+            mediaTiled: preferences.getBool('mediaTiled', true),
+          ),
+        );
+
+  final Preferences _preferences;
+
+  void setMediaTiled(bool value) {
+    state = state.copyWith(mediaTiled: value);
+    _preferences.setBool('mediaTiled', value);
+  }
+}
+
+@freezed
+class LayoutPreferences with _$LayoutPreferences {
+  const factory LayoutPreferences({
+    /// Whether the media in a media timeline should be tiled.
+    required bool mediaTiled,
+  }) = _LayoutPreferences;
 }

@@ -1,38 +1,41 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 
-class TwitterListData {
-  TwitterListData.fromTwitterList(TwitterList list) {
-    name = list.name ?? '';
-    createdAt = list.createdAt;
-    subscriberCount = list.subscriberCount;
-    id = list.idStr ?? '';
-    memberCount = list.memberCount;
-    mode = list.mode ?? 'public';
-    description = list.description;
-    user = list.user != null ? UserData.fromUser(list.user) : null;
-    following = list.following ?? false;
+part 'twitter_list_data.freezed.dart';
+
+@freezed
+class TwitterListData with _$TwitterListData {
+  factory TwitterListData({
+    @Default('') String name,
+    DateTime? createdAt,
+    int? subscriberCount,
+    @Default('') String id,
+    int? memberCount,
+
+    /// Can be 'private' or 'public'.
+    @Default('public') String mode,
+    @Default('') String description,
+    UserData? user,
+    @Default(false) bool following,
+  }) = _TwitterListData;
+
+  factory TwitterListData.fromTwitterList(TwitterList list) {
+    return TwitterListData(
+      name: list.name ?? '',
+      createdAt: list.createdAt,
+      subscriberCount: list.subscriberCount,
+      id: list.idStr ?? '',
+      memberCount: list.memberCount,
+      mode: list.mode ?? 'public',
+      description: list.description ?? '',
+      user: list.user != null ? UserData.fromUser(list.user) : null,
+      following: list.following ?? false,
+    );
   }
 
-  late String name;
-  DateTime? createdAt;
-  int? subscriberCount;
-  late String id;
-  int? memberCount;
+  TwitterListData._();
 
-  /// Can be 'private' or 'public'.
-  late String mode;
-
-  String? description;
-  UserData? user;
-  late bool following;
-
-  /// Whether a description for this list exist.
-  bool get hasDescription => description != null && description!.isNotEmpty;
-
-  /// Whether is is a private list.
-  bool get isPrivate => mode == 'private';
-
-  /// Whether this is a public list.
-  bool get isPublic => mode == 'public';
+  late final isPrivate = mode == 'private';
+  late final isPublic = !isPrivate;
 }

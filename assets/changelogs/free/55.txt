@@ -1,0 +1,11 @@
+Version 0.6.7
+2021-06-24
+
+- Updated tweet detail screen (replies screen)
+- Added additional tweet infos in the detail screen:
+  - Tweet source (Twitter Web, Twitter for iPhone, Harpy for Twitter, etc.)
+  - Absolute time of tweet creation
+- Added tweet character limit counter in compose tweet screen
+- Updated font size option to also affect tweet avatar and icon sizes
+- Improved performance in tweet lists
+- Fixed threads are not displayed correctly sometimes (Thanks Darren!)

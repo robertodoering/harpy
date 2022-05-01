@@ -1,0 +1,8 @@
+Version 0.3.4
+2021-01-17
+
+- Added user search
+- Added transparent navigation bar for Android 11
+- Added transparent status bar color
+- Added app bar color transparency
+- Improved Following / Followers screen list

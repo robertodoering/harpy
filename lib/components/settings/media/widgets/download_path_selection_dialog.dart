@@ -1,12 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:harpy/misc/misc.dart';
-import 'package:provider/provider.dart';
 
 /// A dialog to select one of a couple predefined external storage media
 /// directories for a type of media.
@@ -18,7 +15,7 @@ import 'package:provider/provider.dart';
 /// selection was denied due to this.
 ///
 /// See https://developer.android.com/training/data-storage/shared/media.
-class DownloadPathSelectionDialog extends StatelessWidget {
+class DownloadPathSelectionDialog extends ConsumerStatefulWidget {
   const DownloadPathSelectionDialog({
     required this.type,
   });
@@ -26,65 +23,63 @@ class DownloadPathSelectionDialog extends StatelessWidget {
   final String type;
 
   @override
+  ConsumerState<DownloadPathSelectionDialog> createState() =>
+      _DownloadPathSelectionDialogState();
+}
+
+class _DownloadPathSelectionDialogState
+    extends ConsumerState<DownloadPathSelectionDialog> {
+  @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<DownloadPathCubit>();
+    final display = ref.watch(displayPreferencesProvider);
+    final downloadPath = ref.watch(downloadPathProvider);
 
-    return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
-      child: HarpyDialog(
-        animationType: DialogAnimationType.slide,
-        title: Text('$type download location'),
-        contentPadding: const EdgeInsets.only(top: 24),
-        content: SizedBox(
-          height: 450,
-          child: cubit.state.when(
-            data: (mediaPaths, entries) {
-              final entry = entries.firstWhereOrNull(
-                (entry) => entry.type == type,
-              );
+    return HarpyDialog(
+      title: Text('${widget.type} download location'),
+      contentPadding: display.edgeInsetsSymmetric(vertical: true),
+      content: downloadPath.when(
+        data: (mediaPaths, entries) {
+          final entry = entries.firstWhereOrNull(
+            (entry) => entry.type == widget.type,
+          );
 
-              if (entry != null) {
-                return _PathSelection(
-                  type: type,
-                  cubit: cubit,
-                  mediaPaths: mediaPaths,
-                  entry: entry,
-                );
-              } else {
-                return const LoadingDataError(
-                  message: Text('error loading download paths'),
-                );
-              }
-            },
-            error: () => const LoadingDataError(
+          if (entry != null) {
+            return _PathSelection(
+              type: widget.type,
+              mediaPaths: mediaPaths,
+              entry: entry,
+            );
+          } else {
+            return const LoadingError(
               message: Text('error loading download paths'),
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-          ),
+            );
+          }
+        },
+        error: () => const LoadingError(
+          message: Text('error loading download paths'),
         ),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
 }
 
-class _PathSelection extends StatefulWidget {
+class _PathSelection extends ConsumerStatefulWidget {
   const _PathSelection({
     required this.type,
-    required this.cubit,
     required this.mediaPaths,
     required this.entry,
   });
 
   final String type;
-  final DownloadPathCubit cubit;
   final BuiltList<String> mediaPaths;
   final DownloadPathEntry entry;
 
   @override
-  State<_PathSelection> createState() => _PathSelectionState();
+  ConsumerState<_PathSelection> createState() => _PathSelectionState();
 }
 
-class _PathSelectionState extends State<_PathSelection> {
+class _PathSelectionState extends ConsumerState<_PathSelection> {
   late String _selectedPath;
   late String _subDirectory;
 
@@ -99,48 +94,44 @@ class _PathSelectionState extends State<_PathSelection> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: ListView(
-            children: [
-              HarpyListTile(
-                title: _SubDirectoryTextField(
-                  initialName: _subDirectory,
-                  onChanged: (value) => _subDirectory = value,
-                ),
-              ),
-              ...widget.mediaPaths.map(
-                (mediaPath) => RadioListTile<String>(
-                  title: Text(mediaPath.split('/').last),
-                  subtitle: Text(mediaPath),
-                  value: mediaPath,
-                  groupValue: _selectedPath,
-                  onChanged: (value) {
-                    HapticFeedback.lightImpact();
-                    setState(() => _selectedPath = value!);
-                  },
-                ),
-              ),
-            ],
+        HarpyListTile(
+          title: ClearableTextField(
+            text: _subDirectory,
+            decoration: const InputDecoration(labelText: 'sub directory'),
+            onChanged: (value) => _subDirectory = value,
+            onClear: () => _subDirectory = '',
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DialogAction<void>(
-              text: 'cancel',
+        ...widget.mediaPaths.map(
+          (mediaPath) => HarpyRadioTile<String>(
+            title: Text(mediaPath.split('/').last),
+            subtitle: Text(mediaPath),
+            value: mediaPath,
+            groupValue: _selectedPath,
+            onChanged: (value) {
+              setState(() => _selectedPath = value);
+            },
+          ),
+        ),
+        verticalSpacer,
+        HarpyDialogActionBar(
+          actions: [
+            HarpyButton.text(
+              label: const Text('cancel'),
               onTap: Navigator.of(context).pop,
             ),
-            DialogAction<void>(
-              text: 'confirm',
+            HarpyButton.elevated(
+              label: const Text('confirm'),
               onTap: () {
                 HapticFeedback.lightImpact();
 
-                widget.cubit.updateEntry(
-                  type: widget.type,
-                  path: _selectedPath,
-                  subDir: _subDirectory,
-                );
+                ref.watch(downloadPathProvider.notifier).updateEntry(
+                      type: widget.type,
+                      path: _selectedPath,
+                      subDir: _subDirectory,
+                    );
 
                 Navigator.of(context).pop();
               },
@@ -148,63 +139,6 @@ class _PathSelectionState extends State<_PathSelection> {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _SubDirectoryTextField extends StatefulWidget {
-  const _SubDirectoryTextField({
-    required this.initialName,
-    required this.onChanged,
-  });
-
-  final String initialName;
-  final ValueChanged<String> onChanged;
-
-  @override
-  _SubDirectoryTextFieldState createState() => _SubDirectoryTextFieldState();
-}
-
-class _SubDirectoryTextFieldState extends State<_SubDirectoryTextField> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = FilenameEditingController(text: widget.initialName)
-      ..addListener(() {
-        // rebuild to update clear button
-        setState(() {});
-      });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        label: const Text('sub directory'),
-        suffixIcon: HarpyButton.flat(
-          dense: true,
-          icon: const Icon(CupertinoIcons.xmark),
-          onTap: _controller.text.isNotEmpty
-              ? () {
-                  _controller.clear();
-                  widget.onChanged('');
-                  FocusScope.of(context).unfocus();
-                }
-              : null,
-        ),
-      ),
     );
   }
 }

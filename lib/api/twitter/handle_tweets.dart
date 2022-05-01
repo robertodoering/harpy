@@ -1,26 +1,25 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/misc/misc.dart';
+import 'package:harpy/core/core.dart';
 
 /// Handles a tweet list response in an isolate.
 ///
-/// Every [Tweet] is turned into a [TweetData] and their replies are added to
-/// [TweetData.replies].
-///
-/// Only the parent [TweetData] of a reply chain will be in the returned list.
-Future<List<TweetData>> handleTweets(
+/// Only the parent [TweetData] of a reply chain will be in the returned list
+/// and will include all of its replies.
+Future<BuiltList<TweetData>> handleTweets(
   List<Tweet> tweets, [
   TimelineFilter? filter,
 ]) {
-  return compute<List<dynamic>, List<TweetData>>(
+  return compute<List<dynamic>, BuiltList<TweetData>>(
     _isolateHandleTweets,
     <dynamic>[tweets, filter],
   );
 }
 
-List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
+BuiltList<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
   final List<Tweet> tweets = arguments[0];
   final TimelineFilter? filter = arguments[1];
 
@@ -40,10 +39,9 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
         if (olderTweet.id == tweet.parentTweetId) {
           // found parent tweet, remove child tweet from list and add it to
           //   the replies of the parent tweet
-          olderTweet.replies = [
-            ...olderTweet.replies,
-            tweet,
-          ];
+          tweetDataList[j] = olderTweet.copyWith(
+            replies: [...olderTweet.replies, tweet],
+          );
 
           tweetDataList.removeAt(i);
           i--;
@@ -65,7 +63,7 @@ List<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
     return originalIdB.compareTo(originalIdA);
   });
 
-  return tweetDataList;
+  return tweetDataList.toBuiltList();
 }
 
 bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
@@ -166,14 +164,14 @@ bool _filterTweet(Tweet tweet, TimelineFilter? filter) {
 String? _prepareHashtag(String hashtag) {
   return removePrependedSymbol(
     hashtag.toLowerCase(),
-    const ['#', '＃'],
+    const {'#', '＃'},
   );
 }
 
 String? _prepareMention(String mention) {
   return removePrependedSymbol(
     mention.toLowerCase(),
-    const ['@'],
+    const {'@'},
   );
 }
 

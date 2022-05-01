@@ -6,8 +6,8 @@ analyzer:
   errors:
     # treat missing returns as a warning (not a hint)
     missing_return: warning
-    todo: ignore
   exclude:
+    - "**/legacy/**/*"
     # ignore all generated files
     - "**/*.g.dart"
     - "**/*.freezed.dart"
@@ -19,7 +19,7 @@ analyzer:
 linter:
   rules:
     - always_declare_return_types
-    - always_put_control_body_on_new_line
+    # - always_put_control_body_on_new_line
     - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters
     # - always_specify_types # we omit local variable types when they are inferred
@@ -33,7 +33,7 @@ linter:
     # - avoid_double_and_int_checks # only makes sense when targeting web
     - avoid_dynamic_calls
     - avoid_empty_else
-    - avoid_equals_and_hash_code_on_mutable_classes
+    # - avoid_equals_and_hash_code_on_mutable_classes # requires using @immutable annotation
     - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
     # - avoid_final_parameters # causes false-positives with freezed models
@@ -108,7 +108,7 @@ linter:
     - no_leading_underscores_for_library_prefixes
     - no_leading_underscores_for_local_identifiers
     - no_logic_in_create_state
-    - no_runtimeType_toString
+    # - no_runtimeType_toString
     - non_constant_identifier_names
     - noop_primitive_operations
     - null_check_on_nullable_type_parameter

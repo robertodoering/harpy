@@ -1,0 +1,10 @@
+Version 0.6.0
+2021-05-03
+
+This update introduces more customization options for Harpy in the form of home screen customization.
+
+Most of the customization is only accessible in the pro version, which will become available with the 1.0 release in the near future!
+
+- Added home screen customization
+- Added best media quality option in media settings
+- Fixed incorrectly parsing @mentions and #hashtags in the user profile description (Thanks ADcorpo!)

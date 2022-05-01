@@ -1,0 +1,10 @@
+Version 0.1.3
+2020-08-12
+
+- Added Twitter Media settings:
+    - Set the quality when using WiFi
+    - Set the quality when using mobile data
+    - Autoplay gifs
+- Added launching urls when tapping a url
+- Fixed animation when viewing user profiles
+- Fixed Tweet animation abruptly stopping when changing scroll direction

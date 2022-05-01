@@ -1,13 +1,16 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class EntitiesData extends Equatable {
-  const EntitiesData({
-    this.hashtags = const [],
-    this.media = const [],
-    this.urls = const [],
-    this.userMentions = const [],
-  });
+part 'entities_data.freezed.dart';
+
+@freezed
+class EntitiesData with _$EntitiesData {
+  const factory EntitiesData({
+    @Default(<HashtagData>[]) List<HashtagData> hashtags,
+    @Default(<EntitiesMediaData>[]) List<EntitiesMediaData> media,
+    @Default(<UrlData>[]) List<UrlData> urls,
+    @Default(<UserMentionData>[]) List<UserMentionData> userMentions,
+  }) = _EntitiesData;
 
   factory EntitiesData.fromEntities(Entities? entities) {
     final hashtags = entities?.hashtags ?? [];
@@ -22,82 +25,54 @@ class EntitiesData extends Equatable {
       userMentions: userMentions.map(UserMentionData.fromUserMention).toList(),
     );
   }
-
-  final List<HashtagData> hashtags;
-  final List<EntitiesMediaData> media;
-  final List<UrlData> urls;
-  final List<UserMentionData> userMentions;
-
-  @override
-  List<Object?> get props => [
-        hashtags,
-        media,
-        urls,
-        userMentions,
-      ];
-
-  EntitiesData copyWith({
-    List<HashtagData>? hashtags,
-    List<EntitiesMediaData>? media,
-    List<UrlData>? urls,
-    List<UserMentionData>? userMentions,
-  }) {
-    return EntitiesData(
-      hashtags: hashtags ?? this.hashtags,
-      media: media ?? this.media,
-      urls: urls ?? this.urls,
-      userMentions: userMentions ?? this.userMentions,
-    );
-  }
 }
 
-class HashtagData extends Equatable {
-  const HashtagData({
-    required this.text,
-  });
+@freezed
+class HashtagData with _$HashtagData {
+  const factory HashtagData({
+    /// Name of the hashtag, minus the leading `#` character.
+    required String text,
+  }) = _HashtagData;
 
   factory HashtagData.fromHashtag(Hashtag hashtag) {
     return HashtagData(
       text: hashtag.text ?? '',
     );
   }
-
-  /// Name of the hashtag, minus the leading `#` character.
-  final String text;
-
-  @override
-  List<Object?> get props => [
-        text,
-      ];
 }
 
-class EntitiesMediaData extends Equatable {
-  const EntitiesMediaData({
-    required this.url,
-  });
+@freezed
+class EntitiesMediaData with _$EntitiesMediaData {
+  const factory EntitiesMediaData({
+    /// Wrapped Url for the media link, corresponding to the value embedded
+    /// directly into the raw tweet text.
+    required String url,
+  }) = _EntitiesMediaData;
 
   factory EntitiesMediaData.fromMedia(Media media) {
     return EntitiesMediaData(
       url: media.url ?? '',
     );
   }
-
-  /// Wrapped Url for the media link, corresponding to the value embedded
-  /// directly into the raw tweet text.
-  final String url;
-
-  @override
-  List<Object?> get props => [
-        url,
-      ];
 }
 
-class UrlData extends Equatable {
-  const UrlData({
-    required this.displayUrl,
-    required this.expandedUrl,
-    required this.url,
-  });
+@freezed
+class UrlData with _$UrlData {
+  const factory UrlData({
+    /// Url pasted/typed into the tweet.
+    ///
+    /// Example: 'bit.ly/2so49n2'
+    required String displayUrl,
+
+    /// Expanded version of [displayUrl].
+    ///
+    /// Example: 'http://bit.ly/2so49n2'
+    required String expandedUrl,
+
+    /// Wrapped Url, corresponding to the value embedded directly into the raw
+    /// tweet text.
+    required String url,
+  }) = _UrlData;
 
   factory UrlData.fromUrl(Url url) {
     return UrlData(
@@ -106,45 +81,18 @@ class UrlData extends Equatable {
       url: url.url ?? '',
     );
   }
-
-  /// Url pasted/typed into the tweet.
-  ///
-  /// Example: 'bit.ly/2so49n2'
-  final String displayUrl;
-
-  /// Expanded version of [displayUrl].
-  ///
-  /// Example: 'http://bit.ly/2so49n2'
-  final String expandedUrl;
-
-  /// Wrapped Url, corresponding to the value embedded directly into the raw
-  /// tweet text.
-  final String url;
-
-  @override
-  List<Object?> get props => [
-        displayUrl,
-        expandedUrl,
-        url,
-      ];
 }
 
-class UserMentionData extends Equatable {
-  const UserMentionData({
-    required this.handle,
-  });
+@freezed
+class UserMentionData with _$UserMentionData {
+  const factory UserMentionData({
+    /// The handle of the user, minus the leading `@` character.
+    required String handle,
+  }) = _UserMentionData;
 
   factory UserMentionData.fromUserMention(UserMention userMention) {
     return UserMentionData(
       handle: userMention.screenName ?? '',
     );
   }
-
-  /// The handle of the user, minus the leading `@` character.
-  final String handle;
-
-  @override
-  List<Object?> get props => [
-        handle,
-      ];
 }

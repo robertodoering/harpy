@@ -1,0 +1,8 @@
+Version 0.6.9
+2021-07-21
+
+- Improved theme customization (harpy pro)
+- Added support for system light & dark themes (harpy pro)
+- Updated default themes
+- Removed 'phoenix' theme
+- Lots of minor style improvements

@@ -36,6 +36,9 @@
 # golden test failures
 **/failures/*.png
 
+# test coverage
+coverage/
+
 # Web related
 lib/generated_plugin_registrant.dart
 

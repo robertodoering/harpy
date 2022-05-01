@@ -1,0 +1,12 @@
+Version 0.3.0
+2020-12-23
+
+You can now use Harpy to Tweet!
+
+This release will add basic functionality for tweeting with additional features coming in future releases.
+Please try it out and send me your feedback!
+
+- Added 'Composing Tweets'
+- Added fallback font to display a wider range of characters (Thanks Taya)
+- Added link to privacy policy in about screen
+- Fixed being able to go back to the splash screen

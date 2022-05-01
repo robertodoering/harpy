@@ -1,0 +1,8 @@
+Version 0.3.1
+2021-01-07
+
+- Added Tweet actions
+- Added Tweet media actions
+- Improved dismissing full-screen images
+- Fixed 'Jump to top' button prevents drag gesture when hidden (Thanks SONNY)
+- Temporarily disabled adding videos due to an issue

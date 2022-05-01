@@ -13,21 +13,20 @@ enum MediaType {
 }
 
 extension MediaTypeExtension on MediaType {
-  /// The human readable name of the type.
-  String get name {
+  String get toMediaCategory {
     switch (this) {
-      case MediaType.gif:
-        return 'gif';
-      case MediaType.video:
-        return 'video';
       case MediaType.image:
-        return 'image';
+        return 'TWEET_IMAGE';
+      case MediaType.gif:
+        return 'TWEET_GIF';
+      case MediaType.video:
+        return 'TWEET_VIDEO';
     }
   }
 }
 
 /// Uses [mime] to find the [MediaType] from a file path.
-MediaType? findMediaType(String? path) {
+MediaType? mediaTypeFromPath(String? path) {
   final mimeType = mime(path);
 
   if (mimeType == null) {
@@ -40,18 +39,5 @@ MediaType? findMediaType(String? path) {
     return MediaType.image;
   } else {
     return null;
-  }
-}
-
-String? mediaCategoryFromType(MediaType? type) {
-  switch (type) {
-    case MediaType.image:
-      return 'TWEET_IMAGE';
-    case MediaType.gif:
-      return 'TWEET_GIF';
-    case MediaType.video:
-      return 'TWEET_VIDEO';
-    case null:
-      return null;
   }
 }
