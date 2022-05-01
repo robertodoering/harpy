@@ -7,9 +7,7 @@ import '../../test_setup/data/changelog_data.dart';
 import '../../test_setup/setup.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
+  setUpAll(loadAppFonts);
 
   group('changelog widget', () {
     testGoldens(
