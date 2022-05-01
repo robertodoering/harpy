@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image/flutter_image.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// Builds a network [Image] with a shimmer loading animation that fades into
@@ -84,7 +85,10 @@ class HarpyImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: NetworkImageWithRetry(imageUrl),
+      // fallback to NetworkImage in tests because we can't use mocked http
+      // overrides for NetworkImageWithRetry
+      image: (isTest ? NetworkImage(imageUrl) : NetworkImageWithRetry(imageUrl))
+          as ImageProvider,
       errorBuilder: _errorBuilder,
       frameBuilder: _frameBuilder,
       fit: fit,

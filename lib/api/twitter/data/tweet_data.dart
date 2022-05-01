@@ -1,4 +1,5 @@
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
@@ -129,11 +130,11 @@ class TweetData with _$TweetData {
   late final tweetUrl = 'https://twitter.com/${user.handle}/status/$id';
 
   /// A concatenated string of the user names from the [replies].
-  ///
-  /// If [replies] is empty or the only reply author in [replies] is the same
-  /// as the [user], an empty string is returned.
   String get replyAuthors {
     final names = replies.map((reply) => reply.user.name).toSet();
+
+    // return an empty string if the only replier is the author of this tweet
+    if (setEquals(names, {user.name})) return '';
 
     final concatenated = names.take(5).fold<String>(
           '',

@@ -49,7 +49,12 @@ Future<Widget> buildListItemBase(
   List<Override>? providerOverrides,
 }) async {
   return buildAppBase(
-    HarpyScaffold(child: ListView(children: [child])),
+    HarpyScaffold(
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [child],
+      ),
+    ),
     preferences: preferences,
     providerOverrides: providerOverrides,
   );
