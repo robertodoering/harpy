@@ -25,12 +25,13 @@ class TweetCardName extends ConsumerWidget {
         child: Row(
           children: [
             Flexible(
-              child: Text(
-                tweet.user.name,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyText2!
-                    .copyWith(height: 1)
-                    .apply(fontSizeDelta: style.sizeDelta),
+              child: FittedBox(
+                child: Text(
+                  tweet.user.name,
+                  style: theme.textTheme.bodyText2!
+                      .copyWith(height: 1)
+                      .apply(fontSizeDelta: style.sizeDelta),
+                ),
               ),
             ),
             if (tweet.user.verified) ...[
