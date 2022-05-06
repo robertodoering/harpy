@@ -7,6 +7,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
+import 'package:harpy/components/compose/post_tweet/preferences/post_tweet_preferences.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 import 'package:humanizer/humanizer.dart';
@@ -45,6 +47,9 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
     MediaType? mediaType,
   }) async {
     List<String>? mediaIds;
+
+    await _verifyMentionsConnections(text);
+    if (state is PostTweetError) return;
 
     if (media != null && media.isNotEmpty && mediaType != null) {
       mediaIds = await _uploadmedia(media, mediaType);
@@ -96,6 +101,51 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
     }
   }
 
+  Future<void> _verifyMentionsConnections(String text) async {
+    state = const PostTweetState.inProgress();
+
+    final mentions = mentionRegex
+        .allMatches(text)
+        .map((match) => removePrependedSymbol(match.group(0), ['@']))
+        .whereType<String>()
+        .toList();
+
+    if (mentions.isEmpty) return;
+
+    try {
+      final friendships = await _twitterApi.userService
+          .friendshipsLookup(screenNames: mentions);
+
+      final unrelatedMentionsCount = friendships
+          .map((friendship) => friendship.connections ?? <String>[])
+          .where(
+            (connections) =>
+                !connections.contains('following') &&
+                !connections.contains('followed_by'),
+          )
+          .length;
+
+      final valid = _read(postTweetPreferencesProvider.notifier)
+          .addAndVerifyUnrelatedMentions(unrelatedMentionsCount + 5);
+
+      if (!valid) {
+        state = const PostTweetState.error(
+          message: 'more than 5 mentions to unrelated users in the past 24h',
+          additionalInfo: 'Twitter limits the amount of times you can '
+              '@mention users that you have no connection to.\n'
+              'Please wait a bit before mentioning other users in your Tweet',
+        );
+      }
+    } catch (e, st) {
+      logErrorHandler(e, st);
+
+      state = const PostTweetState.error(
+        message: 'error posting tweet',
+        additionalInfo: 'Please try again later.',
+      );
+    }
+  }
+
   Future<List<String>?> _uploadmedia(
     BuiltList<PlatformFile> media,
     MediaType type,
@@ -121,7 +171,7 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
       } else {
         state = const PostTweetState.error(
           message: 'error preparing video',
-          additionalInfo: 'the video format may not be supported',
+          additionalInfo: 'The video format may not be supported.',
         );
       }
     } else {

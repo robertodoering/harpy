@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,6 +65,10 @@ class _PostTweetDialogState extends ConsumerState<PostTweetDialog> {
           curve: Curves.easeOutCubic,
           child: Column(
             children: [
+              if (state is PostTweetError) ...[
+                const _ErrorIndicator(),
+                verticalSpacer,
+              ],
               if (state.message != null) _StateMessage(state: state),
               if (state is PostTweetInProgress) ...[
                 SizedBox(height: display.paddingValue * 2),
@@ -82,6 +87,29 @@ class _PostTweetDialogState extends ConsumerState<PostTweetDialog> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ErrorIndicator extends StatelessWidget {
+  const _ErrorIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.warning_rounded, color: theme.colorScheme.error),
+        horizontalSpacer,
+        const Flexible(
+          child: Text(
+            'error while tweeting',
+            style: TextStyle(height: 1),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -106,6 +134,7 @@ class _StateMessage extends StatelessWidget {
           Text(
             state.message!,
             key: Key(state.message!),
+            textAlign: TextAlign.center,
           ),
           if (state.additionalInfo != null) ...[
             smallVerticalSpacer,
