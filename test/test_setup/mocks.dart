@@ -1,3 +1,4 @@
+import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -16,3 +17,45 @@ class MockConnectivityService extends Mock implements ConnectivityNotifier {
 }
 
 class MockRouter extends Mock implements GoRouter {}
+
+class MockTwitterApi extends Mock implements TwitterApi {
+  @override
+  final userService = MockUserService();
+
+  @override
+  final tweetService = MockTweetService();
+
+  @override
+  final tweetSearchService = MockTweetSearchService();
+
+  @override
+  final timelineService = MockTimelineService();
+
+  @override
+  final mediaService = MockMediaService();
+
+  @override
+  final listsService = MockListsService();
+
+  @override
+  final directMessagesService = MockDirectMessagesService();
+
+  @override
+  final trendsService = MockTrendsService();
+}
+
+class MockUserService extends Mock implements UserService {}
+
+class MockTweetService extends Mock implements TweetService {}
+
+class MockTweetSearchService extends Mock implements TweetSearchService {}
+
+class MockTimelineService extends Mock implements TimelineService {}
+
+class MockMediaService extends Mock implements MediaService {}
+
+class MockListsService extends Mock implements ListsService {}
+
+class MockDirectMessagesService extends Mock implements DirectMessagesService {}
+
+class MockTrendsService extends Mock implements TrendsService {}
