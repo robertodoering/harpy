@@ -11,7 +11,7 @@ class SetupProContent extends ConsumerWidget {
   const SetupProContent();
 
   void _openHarpyPro() {
-    launchUrl(
+    launch(
       'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
     );
   }

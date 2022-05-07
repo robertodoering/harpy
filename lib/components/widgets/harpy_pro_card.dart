@@ -66,7 +66,7 @@ class HarpyProCard extends ConsumerWidget {
               type: MaterialType.transparency,
               child: InkWell(
                 borderRadius: harpyTheme.borderRadius,
-                onTap: () => launchUrl(
+                onTap: () => launch(
                   'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
                 ),
                 child: Padding(
