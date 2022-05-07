@@ -31,6 +31,7 @@ class HarpyAnimatedSwitcher extends StatelessWidget {
       duration: duration,
       switchInCurve: Curves.easeIn,
       switchOutCurve: Curves.easeOut,
+      transitionBuilder: transitionBuilder,
       layoutBuilder: layoutBuilder,
       child: child,
     );

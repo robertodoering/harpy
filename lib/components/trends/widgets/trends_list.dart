@@ -3,8 +3,6 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/harpy_theme/harpy_theme.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 class TrendsList extends ConsumerWidget {
   const TrendsList();
@@ -17,8 +15,7 @@ class TrendsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
 
-    return SliverAnimatedSwitcher(
-      duration: kShortAnimationDuration,
+    return HarpyAnimatedSwitcher.sliver(
       child: ref.watch(trendsProvider).when(
             loading: () => const TrendsListLoadingSliver(),
             data: (state) => state.trends.isNotEmpty
