@@ -120,7 +120,7 @@ TweetDelegates defaultTweetDelegates(
     },
     onOpenTweetExternally: (context, read) {
       HapticFeedback.lightImpact();
-      launch(tweet.tweetUrl);
+      safeLaunchUrl(tweet.tweetUrl);
     },
     onCopyText: (context, read) {
       HapticFeedback.lightImpact();
@@ -133,7 +133,7 @@ TweetDelegates defaultTweetDelegates(
     },
     onOpenMediaExternally: (_, __, media) {
       HapticFeedback.lightImpact();
-      launch(media.bestUrl);
+      safeLaunchUrl(media.bestUrl);
     },
     onDownloadMedia: _downloadMedia,
     onShareMedia: (context, read, media) {

@@ -281,7 +281,7 @@ class _Entries extends ConsumerWidget {
         HarpyListCard(
           leading: const FlareIcon.shiningStar(),
           title: const Text('harpy pro'),
-          onTap: () => launch(
+          onTap: () => safeLaunchUrl(
             'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
           ),
         ),
