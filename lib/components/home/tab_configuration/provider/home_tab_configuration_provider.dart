@@ -136,6 +136,7 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
 
   void changeIcon(int index, String icon) {
     if (isFree) return;
+    log.fine('changing icon to $icon');
 
     state = state.copyWith(
       entries: state.entries.rebuild(
@@ -154,8 +155,8 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
     required TwitterListData list,
     String? icon,
   }) {
+    if (isFree) return;
     if (!state.canAddMoreLists) return;
-
     log.fine('adding list ${list.name}');
 
     // randomize the icon if it's null (but skip the default icons)
