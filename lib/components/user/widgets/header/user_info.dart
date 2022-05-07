@@ -50,10 +50,7 @@ class UserInfo extends ConsumerWidget {
                   AnimatedSize(
                     duration: kShortAnimationDuration,
                     curve: Curves.easeOutCubic,
-                    child: AnimatedSwitcher(
-                      duration: kShortAnimationDuration,
-                      switchInCurve: Curves.easeIn,
-                      switchOutCurve: Curves.easeOut,
+                    child: HarpyAnimatedSwitcher(
                       child: connections != null
                           ? _FollowButton(
                               user: user,

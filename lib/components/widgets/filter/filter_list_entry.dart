@@ -103,12 +103,7 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
       child = const SizedBox();
     }
 
-    return AnimatedSwitcher(
-      duration: kShortAnimationDuration,
-      switchInCurve: Curves.easeInOut,
-      switchOutCurve: Curves.easeInOut,
-      child: child,
-    );
+    return HarpyAnimatedSwitcher(child: child);
   }
 
   @override

@@ -134,58 +134,70 @@ class _TimelineState extends ConsumerState<Timeline> {
           await notifier.load();
         },
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
-        child: LoadMoreHandler(
-          controller: _controller!,
-          listen: state.canLoadMore,
-          onLoadMore: notifier.loadOlder,
-          child: TweetList(
-            state.tweets.toList(),
-            key: widget.listKey,
-            controller: _controller,
-            tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
-            onLayoutFinished: (firstIndex, lastIndex) => _onLayoutFinished(
-              tweets: state.tweets,
-              firstIndex: firstIndex,
-              lastIndex: lastIndex,
+        child: HarpyAnimatedSwitcher(
+          child: state.maybeWhen(
+            loading: () => CustomScrollView(
+              slivers: [
+                ...widget.beginSlivers,
+                sliverVerticalSpacer,
+                const TweetListLoadingSliver(),
+                ...widget.endSlivers,
+              ],
             ),
-            beginSlivers: [
-              ...widget.beginSlivers,
-              ...?state.mapOrNull(
-                loading: (_) => const [
-                  sliverVerticalSpacer,
-                  TweetListLoadingSliver(),
-                ],
-                error: (_) => [
-                  SliverFillLoadingError(
-                    message: const Text('error loading tweets'),
-                    onRetry: () => notifier.load(clearPrevious: true),
+            error: () => CustomScrollView(
+              slivers: [
+                ...widget.beginSlivers,
+                SliverFillLoadingError(
+                  message: const Text('error loading tweets'),
+                  onRetry: () => notifier.load(clearPrevious: true),
+                ),
+                ...widget.endSlivers,
+              ],
+            ),
+            noData: () => CustomScrollView(
+              slivers: [
+                ...widget.beginSlivers,
+                SliverFillLoadingError(
+                  message: const Text('no tweets found'),
+                  onChangeFilter:
+                      notifier.filter != null ? widget.onChangeFilter : null,
+                ),
+                ...widget.endSlivers,
+              ],
+            ),
+            orElse: () => LoadMoreHandler(
+              controller: _controller!,
+              listen: state.canLoadMore,
+              onLoadMore: notifier.loadOlder,
+              child: TweetList(
+                state.tweets.toList(),
+                key: widget.listKey,
+                controller: _controller,
+                tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
+                onLayoutFinished: (firstIndex, lastIndex) => _onLayoutFinished(
+                  tweets: state.tweets,
+                  firstIndex: firstIndex,
+                  lastIndex: lastIndex,
+                ),
+                beginSlivers: widget.beginSlivers,
+                endSlivers: [
+                  ...?state.mapOrNull(
+                    data: (data) => [
+                      if (!data.canLoadMore) ...[
+                        const SliverFillInfoMessage(
+                          secondaryMessage: Text('no more tweets available'),
+                        ),
+                      ],
+                    ],
+                    loadingMore: (_) => [
+                      const SliverLoadingIndicator(),
+                      sliverVerticalSpacer,
+                    ],
                   ),
+                  ...widget.endSlivers,
                 ],
               ),
-            ],
-            endSlivers: [
-              ...?state.mapOrNull(
-                data: (data) => [
-                  if (!data.canLoadMore) ...[
-                    const SliverFillInfoMessage(
-                      secondaryMessage: Text('no more tweets available'),
-                    ),
-                  ],
-                ],
-                noData: (_) => [
-                  SliverFillLoadingError(
-                    message: const Text('no tweets found'),
-                    onChangeFilter:
-                        notifier.filter != null ? widget.onChangeFilter : null,
-                  ),
-                ],
-                loadingMore: (_) => [
-                  const SliverLoadingIndicator(),
-                  sliverVerticalSpacer,
-                ],
-              ),
-              ...widget.endSlivers,
-            ],
+            ),
           ),
         ),
       ),

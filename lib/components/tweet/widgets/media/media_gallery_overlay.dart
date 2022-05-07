@@ -318,10 +318,7 @@ class _OverlayPreviewText extends ConsumerWidget {
         curve: Curves.easeInOut,
         child: GestureDetector(
           onTap: () => delegates.onShowTweet?.call(context, ref.read),
-          child: AnimatedSwitcher(
-            duration: kShortAnimationDuration,
-            switchInCurve: Curves.easeInCubic,
-            switchOutCurve: Curves.easeOutCubic,
+          child: HarpyAnimatedSwitcher(
             layoutBuilder: (currentChild, previousChildren) => Stack(
               alignment: Alignment.bottomCenter,
               children: [

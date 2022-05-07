@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:video_player/video_player.dart';
 
@@ -57,10 +57,7 @@ class _ComposeVideoState extends State<ComposeVideo> {
       onTap: _controller.value.isPlaying ? _controller.pause : _controller.play,
       child: AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
-        child: AnimatedSwitcher(
-          duration: kShortAnimationDuration,
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
+        child: HarpyAnimatedSwitcher(
           child: _controller.value.isInitialized
               ? VideoPlayer(_controller)
               : const Center(child: CircularProgressIndicator()),

@@ -89,8 +89,7 @@ class TwitterLists extends ConsumerWidget {
           padding: display.edgeInsetsOnly(bottom: true),
           sliver: SliverToBoxAdapter(
             child: Center(
-              child: AnimatedSwitcher(
-                duration: kShortAnimationDuration,
+              child: HarpyAnimatedSwitcher(
                 child: hasMore
                     ? HarpyButton.text(
                         label: const Text('load more'),

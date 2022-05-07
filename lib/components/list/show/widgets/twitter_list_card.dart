@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
 
 class TwitterListCard extends ConsumerWidget {
   const TwitterListCard({
@@ -22,28 +21,23 @@ class TwitterListCard extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    return VisibilityChangeListener(
-      detectorKey: ValueKey(list.hashCode),
-      child: ListCardAnimation(
-        child: InkWell(
-          borderRadius: harpyTheme.borderRadius,
-          onLongPress: onLongPress,
-          onTap: onSelected,
-          child: Card(
-            child: Padding(
-              padding: display.edgeInsets,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _ListCardTitle(list: list),
-                  if (list.description.isNotEmpty) _ListDescription(list: list),
-                  if (list.user != null) ...[
-                    smallVerticalSpacer,
-                    _ListUser(list: list),
-                  ],
-                ],
-              ),
-            ),
+    return InkWell(
+      borderRadius: harpyTheme.borderRadius,
+      onLongPress: onLongPress,
+      onTap: onSelected,
+      child: Card(
+        child: Padding(
+          padding: display.edgeInsets,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _ListCardTitle(list: list),
+              if (list.description.isNotEmpty) _ListDescription(list: list),
+              if (list.user != null) ...[
+                smallVerticalSpacer,
+                _ListUser(list: list),
+              ],
+            ],
           ),
         ),
       ),

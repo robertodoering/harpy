@@ -14,10 +14,7 @@ class FoundTrendsLocations extends ConsumerWidget {
     final trendsNotifier = ref.watch(trendsProvider.notifier);
     final state = ref.watch(findTrendsLocationProvider);
 
-    return AnimatedSwitcher(
-      duration: kShortAnimationDuration,
-      switchInCurve: Curves.easeInOut,
-      switchOutCurve: Curves.easeInOut,
+    return HarpyAnimatedSwitcher(
       layoutBuilder: (currentChild, previousChildren) => Stack(
         alignment: Alignment.topCenter,
         children: [

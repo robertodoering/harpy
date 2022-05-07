@@ -75,10 +75,8 @@ class _ComposeTweetCardState extends ConsumerState<ComposeTweetCard>
               controller: _controller!,
               focusNode: _focusNode,
             ),
-            AnimatedSwitcher(
-              duration: kShortAnimationDuration,
+            HarpyAnimatedSwitcher(
               reverseDuration: Duration.zero,
-              switchInCurve: Curves.easeIn,
               child: state.hasMedia ? const ComposeMedia() : const SizedBox(),
             ),
             ComposeTweetActions(

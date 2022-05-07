@@ -79,10 +79,7 @@ class _InvalidFilterInfo extends ConsumerWidget {
     return AnimatedSize(
       duration: kShortAnimationDuration,
       curve: Curves.easeOutCubic,
-      child: AnimatedSwitcher(
-        duration: kShortAnimationDuration,
-        switchInCurve: Curves.easeInOut,
-        switchOutCurve: Curves.easeInOut,
+      child: HarpyAnimatedSwitcher(
         child: !filter.isEmpty() && !filter.isValid
             ? Padding(
                 padding: display.edgeInsets.copyWith(top: 0),

@@ -124,10 +124,8 @@ class _StateMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AnimatedSwitcher(
+    return HarpyAnimatedSwitcher(
       duration: kShortAnimationDuration ~/ 2,
-      switchOutCurve: Curves.easeOut,
-      switchInCurve: Curves.easeIn,
       child: Column(
         children: [
           Text(
