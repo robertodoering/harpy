@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/misc/twitter_error_handler.dart';
 import 'package:harpy/core/services/message_service.dart';
 import 'package:harpy/rby/rby.dart';
 
@@ -66,7 +67,7 @@ class UserNotifier extends StateNotifier<AsyncValue<UserData>>
 
       final translation = await _translateService
           .translate(text: user.description ?? '', to: translateLanguage)
-          .handleError(logErrorHandler);
+          .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
 
       if (!mounted) return;
 
