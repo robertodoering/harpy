@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-class HomeTimeline extends ConsumerWidget {
+class HomeTimeline extends ConsumerStatefulWidget {
   const HomeTimeline({
     required this.refreshIndicatorOffset,
     required this.scrollToTopOffset,
@@ -13,15 +13,29 @@ class HomeTimeline extends ConsumerWidget {
   final double? scrollToTopOffset;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _HomeTimelineState createState() => _HomeTimelineState();
+}
+
+class _HomeTimelineState extends ConsumerState<HomeTimeline> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ref.read(homeTimelineProvider.notifier).loadInitial();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
 
     return Timeline(
       provider: homeTimelineProvider,
       listKey: const PageStorageKey('home_timeline'),
-      refreshIndicatorOffset: refreshIndicatorOffset,
-      scrollToTopOffset: scrollToTopOffset,
+      refreshIndicatorOffset: widget.refreshIndicatorOffset,
+      scrollToTopOffset: widget.scrollToTopOffset,
       onUpdatedTweetVisibility: tweetVisibility.updateVisibleTweet,
       beginSlivers: const [
         HomeTopSliverPadding(),
