@@ -111,13 +111,10 @@ class _HomeTabVisibility extends ConsumerWidget {
         entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         color: theme.colorScheme.primary,
       ),
-      // prevent hiding the last entry
-      onTap: configuration.visibleEntries.length < 2 && entry.visible
-          ? null
-          : () {
-              HapticFeedback.lightImpact();
-              notifier.toggleVisible(index);
-            },
+      onTap: () {
+        HapticFeedback.lightImpact();
+        notifier.toggleVisible(index);
+      },
     );
   }
 }
