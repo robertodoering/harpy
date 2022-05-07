@@ -27,7 +27,8 @@ abstract class TimelineNotifier<T extends Object>
     extends StateNotifier<TimelineState<T>> with RequestLock, LoggerMixin {
   TimelineNotifier({
     required Ref ref,
-  })  : _read = ref.read,
+    required this.twitterApi,
+  })  : read = ref.read,
         super(const TimelineState.initial()) {
     filter = currentFilter();
 
@@ -46,7 +47,11 @@ abstract class TimelineNotifier<T extends Object>
     );
   }
 
-  final Reader _read;
+  @protected
+  final Reader read;
+
+  @protected
+  final TwitterApi twitterApi;
 
   TimelineFilter? filter;
 
@@ -131,7 +136,7 @@ abstract class TimelineNotifier<T extends Object>
           return tweets;
         })
         .then((tweets) => handleTweets(tweets, filter))
-        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((dynamic e, st) => twitterErrorHandler(read, e, st));
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweets');
@@ -177,7 +182,7 @@ abstract class TimelineNotifier<T extends Object>
             return tweets;
           })
           .then((tweets) => handleTweets(tweets, filter))
-          .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+          .handleError((dynamic e, st) => twitterErrorHandler(read, e, st));
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');

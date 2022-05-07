@@ -5,7 +5,11 @@ import 'package:harpy/components/components.dart';
 
 final likesTimelineProvider = StateNotifierProvider.autoDispose
     .family<LikesTimelineNotifier, TimelineState, String>(
-  (ref, userId) => LikesTimelineNotifier(ref: ref, userId: userId),
+  (ref, userId) => LikesTimelineNotifier(
+    ref: ref,
+    twitterApi: ref.watch(twitterApiProvider),
+    userId: userId,
+  ),
   cacheTime: const Duration(minutes: 5),
   name: 'LikesTimelineProvider',
 );
@@ -13,23 +17,22 @@ final likesTimelineProvider = StateNotifierProvider.autoDispose
 class LikesTimelineNotifier extends TimelineNotifier {
   LikesTimelineNotifier({
     required Ref ref,
+    required TwitterApi twitterApi,
     required String userId,
-  })  : _read = ref.read,
-        _userId = userId,
-        super(ref: ref) {
+  })  : _userId = userId,
+        super(ref: ref, twitterApi: twitterApi) {
     loadInitial();
   }
 
-  final Reader _read;
   final String _userId;
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _read(twitterApiProvider).tweetService.listFavorites(
-          userId: _userId,
-          count: 200,
-          sinceId: sinceId,
-          maxId: maxId,
-        );
+    return twitterApi.tweetService.listFavorites(
+      userId: _userId,
+      count: 200,
+      sinceId: sinceId,
+      maxId: maxId,
+    );
   }
 }

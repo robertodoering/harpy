@@ -6,7 +6,10 @@ import 'package:harpy/components/components.dart';
 
 final homeTimelineProvider =
     StateNotifierProvider.autoDispose<HomeTimelineNotifier, TimelineState>(
-  (ref) => HomeTimelineNotifier(ref: ref),
+  (ref) => HomeTimelineNotifier(
+    ref: ref,
+    twitterApi: ref.watch(twitterApiProvider),
+  ),
   cacheTime: const Duration(minutes: 5),
   name: 'HomeTimelineProvider',
 );
@@ -14,36 +17,34 @@ final homeTimelineProvider =
 class HomeTimelineNotifier extends TimelineNotifier {
   HomeTimelineNotifier({
     required Ref ref,
-  })  : _read = ref.read,
-        super(ref: ref) {
+    required TwitterApi twitterApi,
+  }) : super(ref: ref, twitterApi: twitterApi) {
     loadInitial();
   }
 
-  final Reader _read;
-
   @override
   TimelineFilter? currentFilter() {
-    final state = _read(timelineFilterProvider);
+    final state = read(timelineFilterProvider);
     return state.filterByUuid(state.activeHomeFilter()?.uuid);
   }
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _read(twitterApiProvider).timelineService.homeTimeline(
-          count: 200,
-          sinceId: sinceId,
-          maxId: maxId,
-          excludeReplies: filter?.excludes.replies,
-        );
+    return twitterApi.timelineService.homeTimeline(
+      count: 200,
+      sinceId: sinceId,
+      maxId: maxId,
+      excludeReplies: filter?.excludes.replies,
+    );
   }
 
   @override
   bool get restoreInitialPosition =>
-      _read(generalPreferencesProvider).keepLastHomeTimelinePosition;
+      read(generalPreferencesProvider).keepLastHomeTimelinePosition;
 
   @override
   int get restoredTweetId =>
-      _read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
+      read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
 
   void addTweet(TweetData tweet) {
     final currentState = state;

@@ -6,25 +6,29 @@ import 'package:harpy/components/components.dart';
 
 final mentionsTimelineProvider =
     StateNotifierProvider<MentionsTimelineNotifier, TimelineState<bool>>(
-  (ref) => MentionsTimelineNotifier(ref: ref),
+  (ref) => MentionsTimelineNotifier(
+    ref: ref,
+    twitterApi: ref.watch(twitterApiProvider),
+  ),
   name: 'MentionsTimelineProvider',
 );
 
 class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   MentionsTimelineNotifier({
     required Ref ref,
+    required TwitterApi twitterApi,
   })  : _read = ref.read,
-        super(ref: ref);
+        super(ref: ref, twitterApi: twitterApi);
 
   final Reader _read;
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
-    return _read(twitterApiProvider).timelineService.mentionsTimeline(
-          count: 200,
-          maxId: maxId,
-          sinceId: sinceId,
-        );
+    return twitterApi.timelineService.mentionsTimeline(
+      count: 200,
+      maxId: maxId,
+      sinceId: sinceId,
+    );
   }
 
   @override
