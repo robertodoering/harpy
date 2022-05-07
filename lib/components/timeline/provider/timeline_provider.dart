@@ -74,6 +74,7 @@ abstract class TimelineNotifier<T extends Object>
   T? buildCustomData(BuiltList<TweetData> tweets) => null;
 
   Future<void> loadInitial() async {
+    if (state is! TimelineStateInitial) return;
     log.fine('loading initial timeline');
     state = const TimelineState.loading();
 
