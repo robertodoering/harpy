@@ -56,6 +56,7 @@ dependencies:
   share_plus: ^4.0.4
   shared_preferences: ^2.0.7
   shimmer: ^2.0.0
+  sliver_tools: ^0.2.6
   smooth_page_indicator: ^1.0.0+2
   timeago: ^3.0.2
   tuple: ^2.0.0
