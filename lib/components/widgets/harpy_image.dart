@@ -83,7 +83,7 @@ class HarpyImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image(
       // fallback to NetworkImage in tests because we can't use mocked http
-      // overrides for NetworkImageWithRetry
+      // overrides for `NetworkImageWithRetry`
       image: (isTest ? NetworkImage(imageUrl) : NetworkImageWithRetry(imageUrl))
           as ImageProvider,
       errorBuilder: _errorBuilder,

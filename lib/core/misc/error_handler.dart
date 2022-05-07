@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_image/flutter_image.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -51,6 +52,12 @@ class ErrorHandler with LoggerMixin {
   /// Forwards the error to the [_handleError] handler when in release mode.
   /// Prints it to the console otherwise.
   Future<void> _handleFlutterError(FlutterErrorDetails details) async {
+    if (details.exception is FetchFailure) {
+      // caught when the `NetworkImageWithRetry` fails loading an image
+      log.info('ignoring fetch failure');
+      return;
+    }
+
     log.severe('caught flutter error');
 
     if (kReleaseMode) {
