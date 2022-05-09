@@ -39,7 +39,7 @@ class _PostTweetDialogState extends ConsumerState<PostTweetDialog> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       ref.read(postTweetProvider.notifier).post(
             widget.text,
             attachmentUrl: widget.attachmentUrl,

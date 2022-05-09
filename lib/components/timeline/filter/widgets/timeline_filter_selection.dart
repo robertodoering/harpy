@@ -27,7 +27,7 @@ class _TimelineFilterSelectionState
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(widget.provider.notifier).sortTimelineFilters();
     });
   }
@@ -42,7 +42,7 @@ class _TimelineFilterSelectionState
 
   @override
   void didPopNext() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(widget.provider.notifier).sortTimelineFilters();
     });
   }

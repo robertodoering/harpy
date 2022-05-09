@@ -56,7 +56,7 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
     // When re-enabling the listener, we want to query the current scroll extent
     // to potentially call the callback.
     if (!oldWidget.listen && widget.listen) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollListener());
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollListener());
     }
   }
 
@@ -88,7 +88,7 @@ class _LoadMoreHandlerState extends State<LoadMoreHandler> {
   bool _onNotification(ScrollNotification notification) {
     if (notification.metrics.extentAfter <=
         (widget.extentTrigger ?? notification.metrics.viewportDimension / 2)) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => _loadMore());
+      WidgetsBinding.instance.addPostFrameCallback((_) => _loadMore());
     }
 
     return false;

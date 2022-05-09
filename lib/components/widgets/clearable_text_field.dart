@@ -43,7 +43,7 @@ class _ClearableTextFieldState extends ConsumerState<ClearableTextField> {
     if (widget.text != null &&
         widget.text != oldWidget.text &&
         widget.text != _controller.text) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.text = widget.text!;
       });
     }

@@ -71,6 +71,7 @@ class HarpyTheme {
       ),
     ).copyWith(
       textTheme: text.textTheme,
+      useMaterial3: true,
 
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
 

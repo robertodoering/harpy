@@ -21,7 +21,7 @@ class _HomeTimelineState extends ConsumerState<HomeTimeline> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(homeTimelineProvider.notifier).loadInitial();
     });
   }

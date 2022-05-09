@@ -24,7 +24,7 @@ class _MentionsTimelineState extends ConsumerState<MentionsTimeline> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(mentionsTimelineProvider.notifier).updateViewedMentions();
     });
   }

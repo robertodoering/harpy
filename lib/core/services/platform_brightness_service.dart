@@ -4,19 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final platformBrightnessProvider = StateProvider(
   (ref) {
-    assert(WidgetsBinding.instance != null);
-
     final observer = _PlatformBrightnessObserver(
       onBrightnessChanged: (brightness) {
         ref.read(platformBrightnessProvider.notifier).state = brightness;
       },
     );
 
-    WidgetsBinding.instance?.addObserver(observer);
-    ref.onDispose(() => WidgetsBinding.instance?.removeObserver(observer));
+    WidgetsBinding.instance.addObserver(observer);
+    ref.onDispose(() => WidgetsBinding.instance.removeObserver(observer));
 
-    return WidgetsBinding.instance?.platformDispatcher.platformBrightness ??
-        Brightness.light;
+    return WidgetsBinding.instance.platformDispatcher.platformBrightness;
   },
   name: 'PlatformBrightnessProvider',
 );
@@ -31,8 +28,7 @@ class _PlatformBrightnessObserver with WidgetsBindingObserver {
   @override
   void didChangePlatformBrightness() {
     onBrightnessChanged(
-      WidgetsBinding.instance?.platformDispatcher.platformBrightness ??
-          Brightness.light,
+      WidgetsBinding.instance.platformDispatcher.platformBrightness,
     );
   }
 }

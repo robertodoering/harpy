@@ -29,7 +29,7 @@ class _UserPageState extends ConsumerState<UserPage> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance?.addPostFrameCallback(
+    SchedulerBinding.instance.addPostFrameCallback(
       (_) => ref.read(userProvider(widget.handle).notifier).load(widget.user),
     );
 

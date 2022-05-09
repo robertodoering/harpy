@@ -75,7 +75,7 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
   void _tabControllerListener() {
     if (mounted) {
       // rebuild tabs with new animation value
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => setState(
           () => _animationValue = _tabController?.animation?.value ?? 0,
         ),
