@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "31.0.0"
+    version: "38.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.0"
+    version: "3.4.1"
   android_path_provider:
     dependency: "direct main"
     description:
@@ -127,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  cli_util:
-    dependency: transitive
-    description:
-      name: cli_util
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.5"
   clock:
     dependency: transitive
     description:
@@ -453,7 +446,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.5"
+    version: "2.0.0-dev.7"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -470,14 +463,14 @@ packages:
       name: freezed
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.3+1"
   freezed_annotation:
     dependency: "direct main"
     description:
       name: freezed_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.3"
   frontend_server_client:
     dependency: transitive
     description:
@@ -595,9 +588,11 @@ packages:
   location:
     dependency: "direct main"
     description:
-      name: location
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "packages/location"
+      ref: flutter-3-compatibility
+      resolved-ref: bd8fa5217d32fd22bcb31a8023e0f05a31a7253a
+      url: "https://github.com/TabooSun/flutterlocation.git"
+    source: git
     version: "4.3.0"
   location_platform_interface:
     dependency: transitive
@@ -922,7 +917,7 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-dev.5"
+    version: "2.0.0-dev.7"
   scroll_to_index:
     dependency: "direct main"
     description:
@@ -1221,7 +1216,7 @@ packages:
       name: twitter_webview_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.1.0"
   typed_data:
     dependency: transitive
     description:
@@ -1340,7 +1335,7 @@ packages:
       name: visibility_detector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.2"
+    version: "0.3.3"
   vm_service:
     dependency: transitive
     description:
@@ -1468,5 +1463,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=2.10.0"
+  dart: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
