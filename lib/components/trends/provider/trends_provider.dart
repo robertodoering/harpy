@@ -3,16 +3,13 @@ import 'dart:convert';
 import 'package:built_collection/built_collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/rby/rby.dart';
 
-part 'trends_provider.freezed.dart';
-
-final trendsProvider = StateNotifierProvider.autoDispose<TrendsProviderNotifier,
-    AsyncValue<TrendsState>>(
-  (ref) => TrendsProviderNotifier(
+final trendsProvider = StateNotifierProvider.autoDispose<TrendsNotifier,
+    AsyncValue<BuiltList<Trend>>>(
+  (ref) => TrendsNotifier(
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
     userLocation: ref.watch(userTrendsLocationProvider),
@@ -21,9 +18,9 @@ final trendsProvider = StateNotifierProvider.autoDispose<TrendsProviderNotifier,
   name: 'TrendsProvider',
 );
 
-class TrendsProviderNotifier extends StateNotifier<AsyncValue<TrendsState>>
+class TrendsNotifier extends StateNotifier<AsyncValue<BuiltList<Trend>>>
     with LoggerMixin {
-  TrendsProviderNotifier({
+  TrendsNotifier({
     required Reader read,
     required TwitterApi twitterApi,
     required TrendsLocationData userLocation,
@@ -54,7 +51,7 @@ class TrendsProviderNotifier extends StateNotifier<AsyncValue<TrendsState>>
                 ),
             );
 
-        return TrendsState(trends: trends.toBuiltList());
+        return trends.toBuiltList();
       },
     );
   }
@@ -73,39 +70,3 @@ class TrendsProviderNotifier extends StateNotifier<AsyncValue<TrendsState>>
     }
   }
 }
-
-@freezed
-class TrendsState with _$TrendsState {
-  factory TrendsState({
-    required BuiltList<Trend> trends,
-  }) = _TrendsState;
-
-  TrendsState._();
-
-  // late final BuiltList<Trend> hashtags = trends
-  //     .where((trend) => trend.name?.startsWith('#') ?? false)
-  //     .toBuiltList();
-}
-
-// extension TrendsStateExtension on TrendsState {
-//   TrendsLocationData? get location => mapOrNull(
-//         data: (value) => value.location,
-//         loading: (value) => value.location,
-//         error: (value) => value.location,
-//       );
-
-//   String get locationName {
-//     if (location != null) {
-//       return location!.woeid == 1
-//           ? 'worldwide trends'
-//           : 'trends in ${location!.name}';
-//     } else {
-//       return 'trends';
-//     }
-//   }
-
-//   BuiltList<Trend> get hashtags => maybeMap(
-//         data: (value) => value.hashtags,
-//         orElse: BuiltList.new,
-//       );
-// }

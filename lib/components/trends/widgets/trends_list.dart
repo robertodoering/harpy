@@ -18,13 +18,13 @@ class TrendsList extends ConsumerWidget {
     return HarpyAnimatedSwitcher.sliver(
       child: ref.watch(trendsProvider).when(
             loading: () => const TrendsListLoadingSliver(),
-            data: (state) => state.trends.isNotEmpty
+            data: (trends) => trends.isNotEmpty
                 ? SliverPadding(
                     padding: display.edgeInsets.copyWith(top: 0),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (_, index) => _itemBuilder(index, state.trends),
-                        childCount: state.trends.length * 2 - 1,
+                        (_, index) => _itemBuilder(index, trends),
+                        childCount: trends.length * 2 - 1,
                       ),
                     ),
                   )
