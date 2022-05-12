@@ -66,7 +66,7 @@ class HarpyTheme {
         onError: colors.onError,
         background: colors.averageBackgroundColor,
         onBackground: colors.onBackground,
-        surface: colors.backgroundColors.last,
+        surface: colors.averageBackgroundColor,
         onSurface: colors.onBackground,
       ),
     ).copyWith(
@@ -145,6 +145,16 @@ class HarpyTheme {
           minimumSize: MaterialStateProperty.all(Size.zero),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: borderRadius),
+          ),
+          backgroundColor: MaterialStateProperty.resolveWith(
+            (states) => states.contains(MaterialState.disabled)
+                ? colors.primary.withOpacity(.12)
+                : colors.primary,
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith(
+            (states) => states.contains(MaterialState.disabled)
+                ? colors.onPrimary.withOpacity(.38)
+                : colors.onPrimary,
           ),
         ),
       ),
