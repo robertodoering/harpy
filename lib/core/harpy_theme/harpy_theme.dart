@@ -156,6 +156,16 @@ class HarpyTheme {
                 ? colors.onPrimary.withOpacity(.38)
                 : colors.onPrimary,
           ),
+          overlayColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.hovered)) {
+              return colors.onPrimary.withOpacity(0.08);
+            } else if (states.contains(MaterialState.focused) ||
+                states.contains(MaterialState.pressed)) {
+              return colors.onPrimary.withOpacity(0.24);
+            } else {
+              return null;
+            }
+          }),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
