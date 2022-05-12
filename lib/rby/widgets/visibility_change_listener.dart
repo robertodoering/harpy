@@ -36,7 +36,7 @@ class _VisibilityChangeListenerState extends State<VisibilityChangeListener> {
       _callbacks.add(widget.onVisibilityChanged!);
     }
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // makes sure we trigger the visibility detector initially to update this
       // listener's visibility
       VisibilityDetectorController.instance.notifyNow();

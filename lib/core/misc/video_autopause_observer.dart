@@ -25,7 +25,7 @@ class VideoAutopauseObserver extends RouteObserver {
     super.didPush(route, previousRoute);
 
     if (route is! HeroDialogRoute && route is! ModalBottomSheetRoute) {
-      WidgetsBinding.instance!.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => _read(videoPlayerHandlerProvider).act(
           (notifier) => notifier.pause(),
         ),

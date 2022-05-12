@@ -44,7 +44,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
     overlayInit(widget.data);
 
     if (widget.data.isPlaying) {
-      SchedulerBinding.instance?.addPostFrameCallback(
+      SchedulerBinding.instance.addPostFrameCallback(
         (_) => setState(() => _showActions = false),
       );
     }

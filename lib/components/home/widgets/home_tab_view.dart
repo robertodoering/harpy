@@ -145,7 +145,7 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
     if (mounted && _userScrollDirection?.direction != ScrollDirection.forward) {
       // prevent the list card animation from triggering when navigating between
       // tabs and show the tab bar
-      WidgetsBinding.instance!.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => _userScrollDirection?.forward(),
       );
     }

@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -67,7 +68,6 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
             users: oldUsers.toBuiltList(),
             query: query,
           ),
-          cursor: null,
         );
       }
     }

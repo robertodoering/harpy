@@ -72,7 +72,7 @@ class _TimelineState extends ConsumerState<Timeline> {
     if (tweets.isNotEmpty && _newestVisibleIndex != index) {
       final tweet = tweets[index];
 
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => _newestVisibleIndex = index);
 
         // wait a second to see whether this tweet is still visible before
@@ -105,7 +105,7 @@ class _TimelineState extends ConsumerState<Timeline> {
       final position = _controller!.positions.first;
 
       // scroll to the end after the list has been built
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller!.jumpTo(
           // + extra height to make sure we reach the end
           position.maxScrollExtent + mediaQuery.size.height * 3,
