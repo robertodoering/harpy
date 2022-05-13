@@ -101,7 +101,7 @@ TweetDelegates defaultTweetDelegates(
     onShowRetweeters: tweet.retweetCount > 0
         ? (_, read) => read(routerProvider).pushNamed(
               RetweetersPage.name,
-              params: {'id': tweet.originalId},
+              params: {'id': tweet.id},
             )
         : null,
     onComposeQuote: (_, read) => read(routerProvider).pushNamed(
