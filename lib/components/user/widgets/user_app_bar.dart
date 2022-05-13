@@ -28,6 +28,7 @@ class UserAppBar extends StatelessWidget {
 
     return SliverAppBar(
       elevation: 0,
+      scrolledUnderElevation: 0,
       pinned: true,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
