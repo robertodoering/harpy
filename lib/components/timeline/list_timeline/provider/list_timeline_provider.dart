@@ -11,6 +11,7 @@ final listTimelineProvider = StateNotifierProvider.autoDispose
     listId: listId,
   ),
   name: 'ListTimelineProvider',
+  cacheTime: const Duration(minutes: 5),
 );
 
 class ListTimelineNotifier extends TimelineNotifier {
