@@ -126,7 +126,7 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
           .length;
 
       final valid = _read(postTweetPreferencesProvider.notifier)
-          .addAndVerifyUnrelatedMentions(unrelatedMentionsCount + 5);
+          .addAndVerifyUnrelatedMentions(unrelatedMentionsCount);
 
       if (!valid) {
         state = const PostTweetState.error(

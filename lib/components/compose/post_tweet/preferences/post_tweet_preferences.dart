@@ -57,10 +57,13 @@ class PostTweetPreferencesNotifier extends StateNotifier<PostTweetPreferences> {
       final entriesStringList =
           entries.map((entry) => jsonEncode(entry.toJson())).toList();
 
-      _preferences.setStringList('unrelatedMentions', entriesStringList);
-      state = state.copyWith(unrelatedMentions: entriesStringList);
-
-      return total < 5;
+      if (total < 5) {
+        _preferences.setStringList('unrelatedMentions', entriesStringList);
+        state = state.copyWith(unrelatedMentions: entriesStringList);
+        return true;
+      } else {
+        return false;
+      }
     } catch (e, st) {
       logErrorHandler(e, st);
 
