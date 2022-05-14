@@ -249,6 +249,7 @@ export 'widgets/harpy_photo_gallery.dart';
 export 'widgets/harpy_pro_card.dart';
 export 'widgets/harpy_radio_dialog_tile.dart';
 export 'widgets/harpy_radio_tile.dart';
+export 'widgets/harpy_reorderable_drag_start_listener.dart';
 export 'widgets/harpy_scaffold.dart';
 export 'widgets/harpy_switch_tile.dart';
 export 'widgets/harpy_tab_view_scroll_physics.dart';

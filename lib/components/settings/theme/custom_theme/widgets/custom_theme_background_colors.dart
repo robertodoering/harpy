@@ -49,7 +49,7 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
         final color = harpyTheme.colors.backgroundColors[index].value;
 
         final trailing = notifier.canReorderBackgroundColor
-            ? ReorderableDragStartListener(
+            ? HarpyReorderableDragStartListener(
                 index: index,
                 child: Container(
                   color: Colors.transparent,

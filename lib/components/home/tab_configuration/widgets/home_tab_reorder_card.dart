@@ -48,7 +48,7 @@ class HomeTabReorderCard extends ConsumerWidget {
               )
             else
               _HomeTabVisibility(index: index),
-            ReorderableDragStartListener(
+            HarpyReorderableDragStartListener(
               index: index,
               child: Container(
                 padding: display.edgeInsets.copyWith(left: 0),
