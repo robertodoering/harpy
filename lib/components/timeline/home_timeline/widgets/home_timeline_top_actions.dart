@@ -61,7 +61,7 @@ class _ComposeButton extends ConsumerWidget {
 
     return HarpyButton.card(
       icon: const Icon(FeatherIcons.feather),
-      onTap: state.tweets.isNotEmpty
+      onTap: state is! TimelineStateLoading
           ? () => router.goNamed(ComposePage.name)
           : null,
     );
@@ -78,18 +78,18 @@ class _FilterButton extends ConsumerWidget {
     final state = ref.watch(homeTimelineProvider);
     final notifier = ref.watch(homeTimelineProvider.notifier);
 
+    final enable = state is! TimelineStateLoading;
+
     return HarpyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
-              color: state.tweets.isNotEmpty
+              color: enable
                   ? theme.colorScheme.primary
                   : theme.colorScheme.primary.withOpacity(.5),
             )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: state.tweets.isNotEmpty
-          ? () => router.pushNamed(HomeTimelineFilter.name)
-          : null,
+      onTap: enable ? () => router.pushNamed(HomeTimelineFilter.name) : null,
     );
   }
 }

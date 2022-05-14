@@ -71,16 +71,18 @@ class _FilterButton extends ConsumerWidget {
     final state = ref.watch(userTimelineProvider(user.id));
     final notifier = ref.watch(userTimelineProvider(user.id).notifier);
 
+    final enable = state is! TimelineStateLoading;
+
     return HarpyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
-              color: state.tweets.isNotEmpty
+              color: enable
                   ? theme.colorScheme.primary
                   : theme.colorScheme.primary.withOpacity(.5),
             )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: state.tweets.isNotEmpty
+      onTap: enable
           ? () => router.pushNamed(
                 UserTimelineFilter.name,
                 params: {'handle': user.handle},

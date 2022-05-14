@@ -76,7 +76,7 @@ class _ListMembersButton extends ConsumerWidget {
 
     return HarpyButton.card(
       icon: const Icon(CupertinoIcons.person_2),
-      onTap: state.tweets.isNotEmpty
+      onTap: state is! TimelineStateLoading
           ? () => router.pushNamed(
                 ListMembersPage.name,
                 params: {'listId': listId},
@@ -103,16 +103,18 @@ class _FilterButton extends ConsumerWidget {
     final state = ref.watch(listTimelineProvider(listId));
     final notifier = ref.watch(listTimelineProvider(listId).notifier);
 
+    final enable = state is! TimelineStateLoading;
+
     return HarpyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
-              color: state.tweets.isNotEmpty
+              color: enable
                   ? theme.colorScheme.primary
                   : theme.colorScheme.primary.withOpacity(.5),
             )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: state.tweets.isNotEmpty
+      onTap: enable
           ? () => router.pushNamed(
                 ListTimelineFilter.name,
                 params: {'listId': listId},
