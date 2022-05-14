@@ -27,6 +27,15 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
   bool _disposeController = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeTimelineProvider.notifier).loadInitial();
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
