@@ -25,12 +25,7 @@ class _FloatingComposeButtonState extends ConsumerState<FloatingComposeButton> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_controller == null) {
-      _controller = HomeTabController.of(context)
-        ?..animation?.addListener(_listener);
-
-      assert(_controller != null);
-    }
+    _controller = HomeTabController.of(context)!..addListener(_listener);
   }
 
   @override

@@ -63,12 +63,8 @@ class _DrawerAnimationListenerState extends State<_DrawerAnimationListener>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_tabController == null) {
-      _tabController = HomeTabController.of(context)
-        ?..animation?.addListener(_tabControllerListener);
-      assert(_tabController != null);
-      assert(_tabController?.animation != null);
-    }
+    _tabController = HomeTabController.of(context)!
+      ..animation!.addListener(_tabControllerListener);
   }
 
   @override
