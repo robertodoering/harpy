@@ -9,12 +9,12 @@ typedef TweetDelegatesCreator = TweetDelegates Function(
 );
 
 class TweetCard extends ConsumerWidget {
-  const TweetCard({
+  TweetCard({
     required this.tweet,
     this.createDelegates = defaultTweetDelegates,
     this.config = kDefaultTweetCardConfig,
     this.color,
-  });
+  }) : super(key: ObjectKey(tweet));
 
   final TweetData tweet;
   final TweetCardConfig config;
