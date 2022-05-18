@@ -92,7 +92,7 @@ flutter:
   assets:
     - assets/flare/
     - assets/changelogs/free/
-    - assets/changelogs/pro/
+    - assets/changelogs/
 
   fonts:
     - family: Comfortaa

@@ -92,13 +92,13 @@ Future<String?> _changelogString({
 
   if (isFree) {
     changelogString = await rootBundle
-        .loadString('assets/changelogs/free/$buildNumber.txt', cache: false)
+        .loadString('assets/changelogs/free/$buildNumber.txt', cache: !isTest)
         .handleError();
   }
 
   return changelogString ??
       await rootBundle
-          .loadString('assets/changelogs/$buildNumber.txt')
+          .loadString('assets/changelogs/$buildNumber.txt', cache: !isTest)
           .handleError();
 }
 
