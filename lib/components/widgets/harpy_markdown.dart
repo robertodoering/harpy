@@ -14,6 +14,7 @@ class HarpyMarkdown extends StatelessWidget {
       data: data,
       padding: EdgeInsets.zero,
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       styleSheet: MarkdownStyleSheet(
         code: theme.textTheme.bodyText2!.copyWith(
           backgroundColor: theme.colorScheme.onBackground.withOpacity(.07),
