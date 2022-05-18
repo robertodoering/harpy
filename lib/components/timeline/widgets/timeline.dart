@@ -100,16 +100,13 @@ class _TimelineState extends ConsumerState<Timeline> {
   }
 
   void _providerListener(TimelineState? previous, TimelineState next) {
-    if (next.scrollToEnd && _controller!.positions.length == 1) {
-      final mediaQuery = MediaQuery.of(context);
-      final position = _controller!.positions.first;
-
+    if (next.scrollToEnd) {
       // scroll to the end after the list has been built
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller!.jumpTo(
-          // + extra height to make sure we reach the end
-          position.maxScrollExtent + mediaQuery.size.height * 3,
-        );
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+        if (_controller!.positions.length == 1) {
+          _controller!.jumpTo(_controller!.positions.first.maxScrollExtent);
+        }
       });
     }
   }
