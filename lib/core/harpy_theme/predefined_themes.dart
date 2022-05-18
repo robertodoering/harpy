@@ -11,7 +11,6 @@ const predefinedProThemes = [
   _nord,
   _dracula,
   _monokai,
-  _gruvbox,
 ];
 
 const _crow = HarpyThemeData(
@@ -72,14 +71,4 @@ const _monokai = HarpyThemeData(
   cardColor: 0x283579a8,
   statusBarColor: 0x00101010,
   navBarColor: 0x00101010,
-);
-
-const _gruvbox = HarpyThemeData(
-  name: 'gruvbox',
-  backgroundColors: [0xff1d2021],
-  primaryColor: 0xff458588,
-  secondaryColor: 0xffb16286,
-  cardColor: 0x6c101213,
-  statusBarColor: 0x001d2021,
-  navBarColor: 0x001d2021,
 );
