@@ -264,20 +264,24 @@ class _TwitterTextState extends ConsumerState<TwitterText> {
           color: theme.colorScheme.secondary,
         );
 
-    return Text.rich(
-      TextSpan(
-        children: [
-          for (final textSpan in _textSpans)
-            TextSpan(
-              text: textSpan.text,
-              recognizer: textSpan.recognizer,
-              style: textSpan.isEntity ? entityStyle : null,
-            ),
-        ],
+    // we prevent semantics for the text because the MultiTapGestureRecognizer
+    // is not supported and throws assertions
+    return ExcludeSemantics(
+      child: Text.rich(
+        TextSpan(
+          children: [
+            for (final textSpan in _textSpans)
+              TextSpan(
+                text: textSpan.text,
+                recognizer: textSpan.recognizer,
+                style: textSpan.isEntity ? entityStyle : null,
+              ),
+          ],
+        ),
+        style: widget.style,
+        maxLines: widget.maxLines,
+        overflow: widget.overflow,
       ),
-      style: widget.style,
-      maxLines: widget.maxLines,
-      overflow: widget.overflow,
     );
   }
 }
