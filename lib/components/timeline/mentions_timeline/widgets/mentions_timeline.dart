@@ -31,9 +31,13 @@ class _MentionsTimelineState extends ConsumerState<MentionsTimeline> {
 
   @override
   Widget build(BuildContext context) {
+    final general = ref.watch(generalPreferencesProvider);
+
     return Timeline(
       provider: mentionsTimelineProvider,
-      listKey: const PageStorageKey('mentions_timeline'),
+      listKey: general.restoreScrollPositions
+          ? const PageStorageKey('mentions_timeline')
+          : null,
       refreshIndicatorOffset: widget.refreshIndicatorOffset,
       scrollToTopOffset: widget.scrollToTopOffset,
       beginSlivers: [

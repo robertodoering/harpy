@@ -24,10 +24,13 @@ class ListTimeline extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final general = ref.watch(generalPreferencesProvider);
 
     return Timeline(
       provider: listTimelineProvider(listId),
-      listKey: PageStorageKey('list_timeline_$listId'),
+      listKey: general.restoreScrollPositions
+          ? PageStorageKey('list_timeline_$listId')
+          : null,
       beginSlivers: [
         ...beginSlivers,
         ListTimelineTopActions(

@@ -39,6 +39,10 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
             ),
             hideHomeAppBar: preferences.getBool('hideHomeTabBar', true),
             bottomAppBar: preferences.getBool('bottomAppBar', false),
+            restoreScrollPositions: preferences.getBool(
+              'restoreScrollPositions',
+              false,
+            ),
           ),
         );
 
@@ -49,10 +53,11 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
     setShowChangelogDialog(true);
     setPerformanceMode(false);
     setCrashReports(true);
-    setHomeTimelinePositionBehavior(1);
+    setHomeTimelinePositionBehavior(0);
     setFloatingComposeButton(false);
     setHideHomeAppbar(true);
     setBottomAppBar(false);
+    setRestoreScrollPositions(false);
   }
 
   void setShowChangelogDialog(bool value) {
@@ -88,6 +93,11 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
   void setBottomAppBar(bool value) {
     state = state.copyWith(bottomAppBar: value);
     _preferences.setBool('bottomAppBar', value);
+  }
+
+  void setRestoreScrollPositions(bool value) {
+    state = state.copyWith(restoreScrollPositions: value);
+    _preferences.setBool('restoreScrollPositions', value);
   }
 
   void updateLastShownVersion() {
@@ -144,6 +154,9 @@ class GeneralPreferences with _$GeneralPreferences {
     /// Whether the app bar should be built at the bottom of the home screen
     /// instead of the top.
     required bool bottomAppBar,
+
+    /// Whether lists should remember their scroll position.
+    required bool restoreScrollPositions,
   }) = _GeneralPreferences;
 
   GeneralPreferences._();

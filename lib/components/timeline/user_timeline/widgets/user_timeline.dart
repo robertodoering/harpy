@@ -14,10 +14,13 @@ class UserTimeline extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final general = ref.watch(generalPreferencesProvider);
 
     return Timeline(
       provider: userTimelineProvider(user.id),
-      listKey: PageStorageKey('user_timeline_${user.id}'),
+      listKey: general.restoreScrollPositions
+          ? PageStorageKey('user_timeline_${user.id}')
+          : null,
       beginSlivers: [UserTimelineTopActions(user: user)],
       onChangeFilter: () => router.pushNamed(
         UserTimelineFilter.name,
