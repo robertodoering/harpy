@@ -45,12 +45,10 @@ class _MediaSettingsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final media = ref.watch(mediaPreferencesProvider);
     final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
     final downloadPath = ref.watch(downloadPathProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
@@ -72,26 +70,7 @@ class _MediaSettingsList extends ConsumerWidget {
           ),
         ),
         verticalSpacer,
-        Row(
-          children: [
-            // align with the text in the list tile
-            horizontalSpacer,
-            Icon(
-              CupertinoIcons.info,
-              color: theme.colorScheme.primary,
-            ),
-            SizedBox(width: display.paddingValue * 2),
-            Expanded(
-              child: Text(
-                'media is always downloaded in the best quality',
-                style: theme.textTheme.titleSmall!.apply(
-                  fontSizeDelta: -2,
-                  color: theme.colorScheme.onBackground.withOpacity(.7),
-                ),
-              ),
-            ),
-          ],
-        ),
+        const _MediaInfoMessage(),
         verticalSpacer,
         Card(
           child: HarpySwitchTile(
@@ -181,6 +160,38 @@ class _MediaSettingsList extends ConsumerWidget {
           ],
         ),
       ]),
+    );
+  }
+}
+
+class _MediaInfoMessage extends ConsumerWidget {
+  const _MediaInfoMessage();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+
+    return Row(
+      children: [
+        // align with the text in the list tile
+        horizontalSpacer,
+        Icon(
+          CupertinoIcons.info,
+          color: theme.colorScheme.primary,
+        ),
+        SizedBox(width: display.paddingValue * 2),
+        Expanded(
+          child: Text(
+            'media is always downloaded in the best quality',
+            style: theme.textTheme.titleSmall!.apply(
+              fontSizeDelta: -2,
+              color: theme.colorScheme.onBackground.withOpacity(.7),
+            ),
+          ),
+        ),
+        horizontalSpacer,
+      ],
     );
   }
 }
