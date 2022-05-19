@@ -83,8 +83,10 @@ class TweetData with _$TweetData {
       for (final media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
           mediaData.add(ImageMediaData.fromMedia(media));
-        } else if (media.type == kMediaVideo || media.type == kMediaGif) {
+        } else if (mediaData.isEmpty && media.type == kMediaVideo ||
+            media.type == kMediaGif) {
           mediaData.add(VideoMediaData.fromMedia(media));
+          break;
         }
       }
     }
