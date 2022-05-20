@@ -136,6 +136,15 @@ class _HomeTabNameTextFieldState extends State<_HomeTabNameTextField> {
   late final _controller = TextEditingController(text: widget.entry.name);
 
   @override
+  void didUpdateWidget(covariant _HomeTabNameTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (_controller.text != widget.entry.name) {
+      _controller.text = widget.entry.name;
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
 
