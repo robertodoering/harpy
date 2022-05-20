@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
-final videoPlayerHandlerProvider = Provider.autoDispose(
+final videoPlayerHandlerProvider = Provider(
   (ref) => VideoPlayerHandler(),
   name: 'VideoPlayerHandlerProvider',
 );
