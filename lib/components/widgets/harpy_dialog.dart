@@ -65,7 +65,9 @@ class HarpyDialog extends ConsumerWidget {
                   padding: contentPadding ?? display.edgeInsets,
                   child: DefaultTextStyle(
                     style: theme.textTheme.subtitle2!,
-                    child: SingleChildScrollView(child: content),
+                    child: Scrollbar(
+                      child: SingleChildScrollView(child: content),
+                    ),
                   ),
                 ),
               ),

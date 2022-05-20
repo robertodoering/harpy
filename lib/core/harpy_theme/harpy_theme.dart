@@ -191,6 +191,7 @@ class HarpyTheme {
           color: colors.primary,
         ),
       ),
+      scrollbarTheme: ScrollbarThemeData(radius: radius),
     );
   }
 
