@@ -172,8 +172,7 @@ class _ScrollPositionWarning extends ConsumerWidget {
         SizedBox(width: display.paddingValue * 2),
         Expanded(
           child: Text(
-            'restoring the scroll positions might have a significant '
-            'performance impact',
+            'restoring the scroll positions might have a performance impact',
             style: theme.textTheme.titleSmall!.apply(
               fontSizeDelta: -2,
               color: theme.colorScheme.onBackground.withOpacity(.7),
