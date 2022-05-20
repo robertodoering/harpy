@@ -31,7 +31,7 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
             crashReports: preferences.getBool('crashReports', true),
             homeTimelinePositionBehavior: preferences.getInt(
               'timelinePositionBehavior',
-              0,
+              2,
             ),
             floatingComposeButton: preferences.getBool(
               'floatingComposeButton',
@@ -53,7 +53,7 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
     setShowChangelogDialog(true);
     setPerformanceMode(false);
     setCrashReports(true);
-    setHomeTimelinePositionBehavior(0);
+    setHomeTimelinePositionBehavior(2);
     setFloatingComposeButton(false);
     setHideHomeAppbar(true);
     setBottomAppBar(false);
