@@ -157,7 +157,7 @@ class _ClearFilterCard extends ConsumerWidget {
         child: HarpyListCard(
           color: Colors.transparent,
           border: Border.all(color: theme.dividerColor),
-          title: const Text('clear selection'),
+          title: const Text('remove filter'),
           onTap: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();

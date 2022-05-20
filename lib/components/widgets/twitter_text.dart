@@ -57,7 +57,7 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
       ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
-        title: const Text('copy url text'),
+        title: const Text('copy url'),
         onTap: () {
           HapticFeedback.lightImpact();
           Clipboard.setData(ClipboardData(text: url.expandedUrl));
