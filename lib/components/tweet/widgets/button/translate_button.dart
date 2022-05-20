@@ -22,11 +22,11 @@ class TranslateButton extends ConsumerWidget {
 
     final iconSize = iconTheme.size! + sizeDelta;
 
+    final tweetActive = tweet.translation != null || tweet.isTranslating;
+    final quoteActive = _quoteActiveTranslation(context, ref, tweet: tweet);
+
     return TweetActionButton(
-      active: tweet.translation != null ||
-          tweet.isTranslating ||
-          tweet.quote?.translation != null ||
-          (tweet.quote?.isTranslating ?? false),
+      active: tweetActive || quoteActive,
       iconBuilder: (_) => Icon(Icons.translate, size: iconSize),
       bubblesColor: const BubblesColor(
         primary: Colors.teal,
@@ -44,5 +44,28 @@ class TranslateButton extends ConsumerWidget {
       activate: () => onTranslate?.call(context, ref.read),
       deactivate: null,
     );
+  }
+}
+
+bool _quoteActiveTranslation(
+  BuildContext context,
+  WidgetRef ref, {
+  required TweetData tweet,
+}) {
+  if (tweet.quote == null) return false;
+
+  final locale = Localizations.localeOf(context);
+  final languagePreferences = ref.watch(languagePreferencesProvider);
+
+  final quoteTranslatable = tweet.quote!.translatable(
+    languagePreferences.activeTranslateLanguage(locale),
+  );
+
+  if (quoteTranslatable) {
+    final quote = ref.watch(tweetProvider(tweet.quote!));
+
+    return quote.translation != null || quote.isTranslating;
+  } else {
+    return false;
   }
 }
