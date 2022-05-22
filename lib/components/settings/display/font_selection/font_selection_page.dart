@@ -1,8 +1,11 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
 class FontSelectionPage extends ConsumerStatefulWidget {
   const FontSelectionPage({
@@ -59,6 +62,10 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
                     ),
                   ),
                 SliverPadding(
+                  padding: display.edgeInsets.copyWith(bottom: 0),
+                  sliver: const _PreviewHint(),
+                ),
+                SliverPadding(
                   padding: display.edgeInsets,
                   sliver: _AssetFonts(
                     selectedFont: _selectedFont,
@@ -81,6 +88,64 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PreviewHint extends StatefulWidget {
+  const _PreviewHint();
+
+  @override
+  _PreviewHintState createState() => _PreviewHintState();
+}
+
+class _PreviewHintState extends State<_PreviewHint> {
+  late final _gestureRecognizer = TapGestureRecognizer()
+    ..onTap = () => safeLaunchUrl('https://fonts.google.com/');
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _gestureRecognizer.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SliverToBoxAdapter(
+      child: Row(
+        children: [
+          horizontalSpacer,
+          Icon(
+            CupertinoIcons.info,
+            color: theme.colorScheme.primary,
+          ),
+          horizontalSpacer,
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  const TextSpan(text: 'preview fonts on '),
+                  TextSpan(
+                    text: 'fonts.google.com',
+                    recognizer: _gestureRecognizer,
+                    style: TextStyle(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              style: theme.textTheme.titleSmall!.apply(
+                fontSizeDelta: -2,
+              ),
+            ),
+          ),
+          horizontalSpacer,
+        ],
       ),
     );
   }
