@@ -16,7 +16,7 @@ class AnimatedTransform extends ImplicitlyAnimatedWidget {
     required super.duration,
     required Offset offset,
     super.curve = Curves.easeInOut,
-  })  : transform = Matrix4.translationValues(offset.dx, offset.dy, 0);
+  }) : transform = Matrix4.translationValues(offset.dx, offset.dy, 0);
 
   final Widget child;
   final Matrix4 transform;

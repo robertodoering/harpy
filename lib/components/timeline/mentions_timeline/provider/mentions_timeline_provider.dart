@@ -17,7 +17,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   MentionsTimelineNotifier({
     required super.ref,
     required super.twitterApi,
-  })  : _read = ref.read;
+  }) : _read = ref.read;
 
   final Reader _read;
 
