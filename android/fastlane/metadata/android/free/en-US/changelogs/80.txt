@@ -1,0 +1,5 @@
+Version 0.9.1
+2022-05-22
+
+· Added 105 new selectable fonts
+· Fixed downloading with disabled download dialog didn't work (Thanks @Miku_998)
