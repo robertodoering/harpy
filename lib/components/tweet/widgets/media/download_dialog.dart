@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -20,6 +21,15 @@ class DownloadDialog extends ConsumerStatefulWidget {
 
 class _DownloadDialogState extends ConsumerState<DownloadDialog> {
   late String _name = widget.initialName;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ref.read(downloadPathProvider.notifier).initialize();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

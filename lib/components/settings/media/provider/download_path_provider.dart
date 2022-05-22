@@ -13,7 +13,7 @@ part 'download_path_provider.freezed.dart';
 part 'download_path_provider.g.dart';
 
 final downloadPathProvider =
-    StateNotifierProvider.autoDispose<DownloadPathNotifier, DownloadPathState>(
+    StateNotifierProvider<DownloadPathNotifier, DownloadPathState>(
   (ref) => DownloadPathNotifier(read: ref.read),
   name: 'DownloadPathProvider',
 );
@@ -23,9 +23,7 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
   DownloadPathNotifier({
     required Reader read,
   })  : _read = read,
-        super(const DownloadPathState.loading()) {
-    initialize();
-  }
+        super(const DownloadPathState.loading());
 
   final Reader _read;
 

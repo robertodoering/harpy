@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
@@ -48,7 +49,6 @@ class _MediaSettingsList extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
     final media = ref.watch(mediaPreferencesProvider);
     final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
-    final downloadPath = ref.watch(downloadPathProvider);
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
@@ -117,49 +117,77 @@ class _MediaSettingsList extends ConsumerWidget {
           ],
         ),
         verticalSpacer,
-        ExpansionCard(
-          title: const Text('download'),
-          children: [
-            HarpySwitchTile(
-              leading: const Icon(CupertinoIcons.arrow_down_to_line),
-              title: const Text('show download dialog'),
-              value: media.showDownloadDialog,
-              onChanged: mediaNotifier.setShowDownloadDialog,
-            ),
-            HarpyListTile(
-              leading: const Icon(CupertinoIcons.folder),
-              title: const Text('image download location'),
-              subtitle: Text(downloadPath.imageFullPath ?? ''),
-              onTap: () => showDialog<void>(
-                context: context,
-                builder: (_) => const DownloadPathSelectionDialog(
-                  type: 'image',
-                ),
-              ),
-            ),
-            HarpyListTile(
-              leading: const Icon(CupertinoIcons.folder),
-              title: const Text('gif download location'),
-              subtitle: Text(downloadPath.gifFullPath ?? ''),
-              onTap: () => showDialog<void>(
-                context: context,
-                builder: (_) => const DownloadPathSelectionDialog(type: 'gif'),
-              ),
-            ),
-            HarpyListTile(
-              leading: const Icon(CupertinoIcons.folder),
-              title: const Text('video download location'),
-              subtitle: Text(downloadPath.videoFullPath ?? ''),
-              onTap: () => showDialog<void>(
-                context: context,
-                builder: (_) => const DownloadPathSelectionDialog(
-                  type: 'video',
-                ),
-              ),
-            ),
-          ],
-        ),
+        const _MediaDownloadSettings(),
       ]),
+    );
+  }
+}
+
+class _MediaDownloadSettings extends ConsumerStatefulWidget {
+  const _MediaDownloadSettings();
+
+  @override
+  _MediaDownloadSettingsState createState() => _MediaDownloadSettingsState();
+}
+
+class _MediaDownloadSettingsState
+    extends ConsumerState<_MediaDownloadSettings> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      ref.read(downloadPathProvider.notifier).initialize();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final media = ref.watch(mediaPreferencesProvider);
+    final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
+    final downloadPath = ref.watch(downloadPathProvider);
+
+    return ExpansionCard(
+      title: const Text('download'),
+      children: [
+        HarpySwitchTile(
+          leading: const Icon(CupertinoIcons.arrow_down_to_line),
+          title: const Text('show download dialog'),
+          value: media.showDownloadDialog,
+          onChanged: mediaNotifier.setShowDownloadDialog,
+        ),
+        HarpyListTile(
+          leading: const Icon(CupertinoIcons.folder),
+          title: const Text('image download location'),
+          subtitle: Text(downloadPath.imageFullPath ?? ''),
+          onTap: () => showDialog<void>(
+            context: context,
+            builder: (_) => const DownloadPathSelectionDialog(
+              type: 'image',
+            ),
+          ),
+        ),
+        HarpyListTile(
+          leading: const Icon(CupertinoIcons.folder),
+          title: const Text('gif download location'),
+          subtitle: Text(downloadPath.gifFullPath ?? ''),
+          onTap: () => showDialog<void>(
+            context: context,
+            builder: (_) => const DownloadPathSelectionDialog(type: 'gif'),
+          ),
+        ),
+        HarpyListTile(
+          leading: const Icon(CupertinoIcons.folder),
+          title: const Text('video download location'),
+          subtitle: Text(downloadPath.videoFullPath ?? ''),
+          onTap: () => showDialog<void>(
+            context: context,
+            builder: (_) => const DownloadPathSelectionDialog(
+              type: 'video',
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

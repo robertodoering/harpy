@@ -1,0 +1,4 @@
+Version 0.9.1
+2022-05-xx
+
+- Fixed downloading with disabled download dialog didn't work (Thanks @Miku_998)

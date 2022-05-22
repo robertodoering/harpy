@@ -174,6 +174,7 @@ Future<void> _downloadMedia(
     }
   }
 
+  await read(downloadPathProvider.notifier).initialize();
   final path = read(downloadPathProvider).fullPathForType(media.type);
 
   if (path == null) {
