@@ -13,11 +13,10 @@ final userTimelineFilterProvider = StateNotifierProvider.autoDispose
 
 class UserTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   UserTimelineFilterNotifier({
-    required Reader read,
+    required super.read,
     required UserData user,
   })  : _read = read,
-        _user = user,
-        super(read: read);
+        _user = user;
 
   final Reader _read;
   final UserData _user;

@@ -79,8 +79,8 @@ class _TabControllerScope extends InheritedWidget {
   const _TabControllerScope({
     required this.controller,
     required this.enabled,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   final TabController controller;
   final bool enabled;

@@ -9,9 +9,8 @@ final homeTimelineFilterProvider = StateNotifierProvider<
 
 class HomeTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   HomeTimelineFilterNotifier({
-    required Reader read,
-  })  : _read = read,
-        super(read: read);
+    required super.read,
+  })  : _read = read;
 
   final Reader _read;
 

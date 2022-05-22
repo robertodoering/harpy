@@ -4,20 +4,13 @@ import 'package:harpy/rby/rby.dart';
 /// Animates the scale for the [child] immediately or after the given [delay].
 class ImmediateScaleAnimation extends ImmediateImplicitAnimation<double> {
   const ImmediateScaleAnimation({
-    required Widget child,
-    required Duration duration,
-    double begin = 1,
-    double end = 1,
-    Curve curve = Curves.easeInOut,
-    Duration delay = Duration.zero,
-  }) : super(
-          child: child,
-          duration: duration,
-          begin: begin,
-          end: end,
-          curve: curve,
-          delay: delay,
-        );
+    required super.child,
+    required super.duration,
+    super.begin = 1,
+    super.end = 1,
+    super.curve,
+    super.delay,
+  });
 
   @override
   ImmediateImplictAnimationState<ImmediateImplicitAnimation, double>

@@ -10,8 +10,8 @@ import 'package:harpy/components/components.dart';
 class HarpyTabViewScrollPhysics extends ScrollPhysics {
   const HarpyTabViewScrollPhysics({
     required this.viewportWidth,
-    ScrollPhysics? parent,
-  }) : super(parent: parent);
+    super.parent,
+  });
 
   final double viewportWidth;
 

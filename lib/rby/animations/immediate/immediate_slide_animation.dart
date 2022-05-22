@@ -5,20 +5,13 @@ import 'package:harpy/rby/animations/immediate/immediate_animation.dart';
 /// after the given [delay].
 class ImmediateSlideAnimation extends ImmediateImplicitAnimation<Offset> {
   const ImmediateSlideAnimation({
-    required Widget child,
-    required Duration duration,
-    Offset begin = Offset.zero,
-    Offset end = Offset.zero,
-    Curve curve = Curves.easeInOut,
-    Duration delay = Duration.zero,
-  }) : super(
-          child: child,
-          duration: duration,
-          begin: begin,
-          end: end,
-          curve: curve,
-          delay: delay,
-        );
+    required super.child,
+    required super.duration,
+    super.begin = Offset.zero,
+    super.end = Offset.zero,
+    super.curve,
+    super.delay,
+  });
 
   @override
   ImmediateImplictAnimationState<ImmediateImplicitAnimation, Offset>

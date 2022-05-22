@@ -13,16 +13,11 @@ class HarpyPage<T> extends Page<T> {
     this.maintainState = true,
     this.fullscreenDialog = false,
     this.pageRouteType = PageRouteType.harpy,
-    LocalKey? key,
-    String? name,
-    Object? arguments,
-    String? restorationId,
-  }) : super(
-          key: key,
-          name: name,
-          arguments: arguments,
-          restorationId: restorationId,
-        );
+    super.key,
+    super.name,
+    super.arguments,
+    super.restorationId,
+  });
 
   /// The content to be shown in the [Route] created by this page.
   final Widget child;

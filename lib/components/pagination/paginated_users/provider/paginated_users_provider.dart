@@ -19,8 +19,7 @@ abstract class PaginatedUsersNotifier
         RequestLock,
         LoggerMixin,
         PaginatedNotifierMixin<PaginatedUsers, BuiltList<UserData>> {
-  PaginatedUsersNotifier(PaginatedState<BuiltList<UserData>> initialState)
-      : super(initialState);
+  PaginatedUsersNotifier(super.initialState);
 
   @override
   Future<void> onInitialResponse(PaginatedUsers response) async {

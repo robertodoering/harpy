@@ -6,18 +6,17 @@ import 'package:flutter/widgets.dart';
 class AnimatedTransform extends ImplicitlyAnimatedWidget {
   const AnimatedTransform({
     required this.child,
-    required Duration duration,
+    required super.duration,
     required this.transform,
-    Curve curve = Curves.easeInOut,
-  }) : super(duration: duration, curve: curve);
+    super.curve = Curves.easeInOut,
+  });
 
   AnimatedTransform.translate({
     required this.child,
-    required Duration duration,
+    required super.duration,
     required Offset offset,
-    Curve curve = Curves.easeInOut,
-  })  : transform = Matrix4.translationValues(offset.dx, offset.dy, 0),
-        super(duration: duration, curve: curve);
+    super.curve = Curves.easeInOut,
+  })  : transform = Matrix4.translationValues(offset.dx, offset.dy, 0);
 
   final Widget child;
   final Matrix4 transform;

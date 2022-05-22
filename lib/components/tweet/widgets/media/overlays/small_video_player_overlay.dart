@@ -122,10 +122,10 @@ class _SmallVideoPlayerOverlayState
             ),
           ),
           if (widget.data.isBuffering)
-            const ImmediateOpacityAnimation(
-              delay: Duration(milliseconds: 500),
+            ImmediateOpacityAnimation(
+              delay: const Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
+              child: const MediaThumbnailIcon(
                 icon: CircularProgressIndicator(),
                 compact: true,
               ),

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 /// What characters are invalid depend on the file system. Invalid characters
 /// that we check for are `|\\?*<":>+[]/\'`.
 class FilenameEditingController extends TextEditingController {
-  FilenameEditingController({String? text}) : super(text: text);
+  FilenameEditingController({super.text});
 
   /// A single capturing group with invalid filename characters.
   ///

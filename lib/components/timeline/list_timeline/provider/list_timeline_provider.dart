@@ -16,12 +16,11 @@ final listTimelineProvider = StateNotifierProvider.autoDispose
 
 class ListTimelineNotifier extends TimelineNotifier {
   ListTimelineNotifier({
-    required Ref ref,
-    required TwitterApi twitterApi,
+    required super.ref,
+    required super.twitterApi,
     required String listId,
   })  : _read = ref.read,
-        _listId = listId,
-        super(ref: ref, twitterApi: twitterApi) {
+        _listId = listId {
     loadInitial();
   }
 

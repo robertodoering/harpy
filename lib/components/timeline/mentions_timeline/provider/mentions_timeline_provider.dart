@@ -15,10 +15,9 @@ final mentionsTimelineProvider =
 
 class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   MentionsTimelineNotifier({
-    required Ref ref,
-    required TwitterApi twitterApi,
-  })  : _read = ref.read,
-        super(ref: ref, twitterApi: twitterApi);
+    required super.ref,
+    required super.twitterApi,
+  })  : _read = ref.read;
 
   final Reader _read;
 

@@ -82,8 +82,8 @@ class VisibilityChange extends InheritedWidget {
     required this.isVisible,
     required this.addCallback,
     required this.removeCallback,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   final bool isVisible;
 

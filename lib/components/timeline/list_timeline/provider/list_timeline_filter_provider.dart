@@ -16,13 +16,12 @@ final listTimelineFilterProvider = StateNotifierProvider.autoDispose.family<
 
 class ListTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   ListTimelineFilterNotifier({
-    required Reader read,
+    required super.read,
     required String listId,
     required String listName,
   })  : _read = read,
         _listId = listId,
-        _listName = listName,
-        super(read: read);
+        _listName = listName;
 
   final Reader _read;
   final String _listId;

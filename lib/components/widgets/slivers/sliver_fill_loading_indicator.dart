@@ -8,11 +8,11 @@ class SliverFillLoadingIndicator extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const SliverFillRemaining(
+    return SliverFillRemaining(
       hasScrollBody: false,
       child: ImmediateOpacityAnimation(
         duration: kShortAnimationDuration,
-        child: Center(child: CircularProgressIndicator()),
+        child: const Center(child: CircularProgressIndicator()),
       ),
     );
   }

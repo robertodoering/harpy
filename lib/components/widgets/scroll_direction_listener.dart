@@ -101,12 +101,12 @@ class _ScrollDirectionListenerState
 /// Inherited widget to provide the current [ScrollDirection] to its children.
 class UserScrollDirection extends InheritedWidget {
   const UserScrollDirection({
-    required Widget child,
+    required super.child,
     required this.direction,
     required this.idle,
     required this.reverse,
     required this.forward,
-  }) : super(child: child);
+  });
 
   final ScrollDirection direction;
   final VoidCallback idle;

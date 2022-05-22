@@ -108,10 +108,12 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
             ),
           ),
           if (widget.data.isBuffering)
-            const ImmediateOpacityAnimation(
-              delay: Duration(milliseconds: 500),
+            ImmediateOpacityAnimation(
+              delay: const Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(icon: CircularProgressIndicator()),
+              child: const MediaThumbnailIcon(
+                icon: CircularProgressIndicator(),
+              ),
             ),
           if (centerIcon != null) centerIcon!,
         ],

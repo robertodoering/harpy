@@ -16,9 +16,9 @@ final homeTimelineProvider =
 
 class HomeTimelineNotifier extends TimelineNotifier {
   HomeTimelineNotifier({
-    required Ref ref,
-    required TwitterApi twitterApi,
-  }) : super(ref: ref, twitterApi: twitterApi);
+    required super.ref,
+    required super.twitterApi,
+  });
 
   @override
   TimelineFilter? currentFilter() {

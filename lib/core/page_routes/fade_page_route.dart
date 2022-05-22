@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class FadePageRoute<T> extends PageRoute<T> {
   FadePageRoute({
     required this.builder,
-    RouteSettings? settings,
+    super.settings,
     this.maintainState = true,
-    bool fullscreenDialog = false,
+    super.fullscreenDialog,
     this.duration = const Duration(milliseconds: 300),
-  }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
+  });
 
   /// Builds the primary contents of the route.
   final WidgetBuilder builder;

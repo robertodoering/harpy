@@ -9,10 +9,10 @@ class HarpyPageRoute<T> extends PageRoute<T>
     with _HarpyRouteTransitionMixin<T> {
   HarpyPageRoute({
     required this.builder,
-    RouteSettings? settings,
+    super.settings,
     this.maintainState = true,
-    bool fullscreenDialog = false,
-  }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
+    super.fullscreenDialog,
+  });
 
   /// Builds the primary contents of the route.
   final WidgetBuilder builder;

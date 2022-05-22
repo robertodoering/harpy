@@ -16,11 +16,10 @@ final likesTimelineProvider = StateNotifierProvider.autoDispose
 
 class LikesTimelineNotifier extends TimelineNotifier {
   LikesTimelineNotifier({
-    required Ref ref,
-    required TwitterApi twitterApi,
+    required super.ref,
+    required super.twitterApi,
     required String userId,
-  })  : _userId = userId,
-        super(ref: ref, twitterApi: twitterApi) {
+  })  : _userId = userId {
     loadInitial();
   }
 

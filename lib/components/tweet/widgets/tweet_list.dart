@@ -18,8 +18,8 @@ class TweetList extends ConsumerWidget {
     this.onLayoutFinished,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<TweetData> tweets;
   final ScrollController? controller;
@@ -62,12 +62,10 @@ class TweetList extends ConsumerWidget {
 
 class _TweetListBuilderDelegate extends SliverChildBuilderDelegate {
   _TweetListBuilderDelegate(
-    NullableIndexedWidgetBuilder builder, {
+    super.builder, {
     this.onLayoutFinished,
-    int? childCount,
+    super.childCount,
   }) : super(
-          builder,
-          childCount: childCount,
           addAutomaticKeepAlives: false,
         );
 

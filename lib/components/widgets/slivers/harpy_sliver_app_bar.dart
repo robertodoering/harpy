@@ -17,8 +17,8 @@ class HarpySliverAppBar extends ConsumerWidget {
     this.leading,
     this.actions,
     this.fittedTitle = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget? title;
   final Widget? leading;

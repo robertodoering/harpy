@@ -89,8 +89,8 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
   const AnimatedMediaThumbnailIcon({
     required this.icon,
     this.compact = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget icon;
   final bool compact;

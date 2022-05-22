@@ -16,12 +16,11 @@ final userTimelineProvider = StateNotifierProvider.autoDispose
 
 class UserTimelineNotifier extends TimelineNotifier {
   UserTimelineNotifier({
-    required Ref ref,
-    required TwitterApi twitterApi,
+    required super.ref,
+    required super.twitterApi,
     required String userId,
   })  : _read = ref.read,
-        _userId = userId,
-        super(ref: ref, twitterApi: twitterApi) {
+        _userId = userId {
     loadInitial();
   }
 

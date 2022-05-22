@@ -197,7 +197,7 @@ class _FullscreenVideoState extends ConsumerState<TweetFullscreenVideo> {
 
     return Stack(
       children: [
-        Container(color: Colors.black87),
+        const ColoredBox(color: Colors.black87),
         GestureDetector(onTap: Navigator.of(context).pop),
         RotatedBox(
           quarterTurns: quarterTurns,

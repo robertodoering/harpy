@@ -4,9 +4,9 @@ import 'package:harpy/core/core.dart';
 /// A [TextEditingController] for the compose screen.
 class ComposeTextController extends TextEditingController {
   ComposeTextController({
-    String? text,
+    super.text,
     this.textStyleMap = const <RegExp, TextStyle>{},
-  }) : super(text: text) {
+  }) {
     addListener(_listener);
   }
 

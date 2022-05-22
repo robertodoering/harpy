@@ -77,7 +77,7 @@ class _PopupMenu<T> extends StatelessWidget {
 
       if (route.initialValue != null &&
           route.items[i].represents(route.initialValue)) {
-        item = Container(
+        item = ColoredBox(
           color: Theme.of(context).highlightColor,
           child: item,
         );
@@ -316,8 +316,8 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
 class _MenuItem extends SingleChildRenderObjectWidget {
   const _MenuItem({
     required this.onLayout,
-    required Widget? child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   final ValueChanged<Size> onLayout;
 

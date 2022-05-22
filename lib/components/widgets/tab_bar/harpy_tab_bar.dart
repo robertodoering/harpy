@@ -162,8 +162,8 @@ class HarpyTabScope extends InheritedWidget {
   const HarpyTabScope({
     required this.index,
     required this.animationValue,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   final int index;
 
