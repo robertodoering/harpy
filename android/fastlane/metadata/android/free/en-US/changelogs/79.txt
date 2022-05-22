@@ -1,0 +1,7 @@
+Version 0.9.0
+2022-05-20
+
+This updates comes with a complete technical rewrite of the app to generally improve performance and allow for easier implementation of new features.
+Thanks a lot for for testing harpy and providing feedback!
+
+For a full list of changes please refer to the in-app changelog.
