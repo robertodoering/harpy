@@ -12,8 +12,6 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          cache: true
-          cache-key: ${{ runner.os }}-flutter
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
       - run: flutter analyze
