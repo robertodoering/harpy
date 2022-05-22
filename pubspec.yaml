@@ -55,7 +55,7 @@ dependencies:
   photo_view:
     # photo_view fork with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git
-  scroll_to_index: ^2.0.0
+  scroll_to_index: ^3.0.0
   sentry_flutter: ^6.0.0
   share_plus: ^4.0.4
   shared_preferences: ^2.0.7
