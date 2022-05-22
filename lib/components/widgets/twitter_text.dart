@@ -26,7 +26,7 @@ void defaultOnUserMentionTap(
   final router = read(routerProvider);
 
   if (!router.location.endsWith(mention.handle)) {
-    read(routerProvider).pushNamed(
+    router.pushNamed(
       UserPage.name,
       params: {'handle': mention.handle},
     );
