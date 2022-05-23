@@ -1216,7 +1216,7 @@ packages:
       name: twitter_webview_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   typed_data:
     dependency: transitive
     description:
