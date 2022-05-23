@@ -107,7 +107,7 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
       final versionInt = int.tryParse(version);
 
       if (versionInt != null) {
-        state.copyWith(lastShownVersion: versionInt);
+        state = state.copyWith(lastShownVersion: versionInt);
         _preferences.setInt('lastShownVersion', versionInt);
       }
     }
