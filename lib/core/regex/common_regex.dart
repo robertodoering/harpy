@@ -24,4 +24,7 @@ final emojiRegex = RegExp(
 ///
 /// * Starting with an optional `#`
 /// * 1 to 8 digits in base 16
-final validHexColorCharacters = RegExp('^#?[0-9a-fA-F]{0,8}');
+final validHexColorCharactersRegex = RegExp('^#?[0-9a-fA-F]{0,8}');
+
+/// A single capturing group with invalid filename characters.
+final invalidFilenameRegex = RegExp(r'''[|\\?*<":>+\[\]/']''');

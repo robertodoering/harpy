@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
 
 class DownloadDialog extends ConsumerStatefulWidget {
   const DownloadDialog({
@@ -108,7 +109,7 @@ class _NameTextFieldState extends State<_NameTextField> {
       }
     }
 
-    _controller = FilenameEditingController(text: filename);
+    _controller = TextEditingController(text: filename);
   }
 
   @override
@@ -123,6 +124,7 @@ class _NameTextFieldState extends State<_NameTextField> {
           widget.onChanged(value);
         }
       },
+      inputFormatters: [FilteringTextInputFormatter.deny(invalidFilenameRegex)],
       decoration: InputDecoration(
         suffixText: _suffix,
         labelText: 'filename',

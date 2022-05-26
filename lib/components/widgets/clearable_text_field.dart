@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
@@ -11,6 +12,7 @@ class ClearableTextField extends ConsumerStatefulWidget {
     this.onClear,
     this.autofocus = false,
     this.decoration,
+    this.inputFormatters,
   });
 
   final String? text;
@@ -19,6 +21,7 @@ class ClearableTextField extends ConsumerStatefulWidget {
   final VoidCallback? onClear;
   final bool autofocus;
   final InputDecoration? decoration;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   _ClearableTextFieldState createState() => _ClearableTextFieldState();
@@ -67,6 +70,7 @@ class _ClearableTextFieldState extends ConsumerState<ClearableTextField> {
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
       autofocus: widget.autofocus,
+      inputFormatters: widget.inputFormatters,
       decoration: InputDecoration(
         label: widget.decoration?.label,
         labelText: widget.decoration?.labelText,

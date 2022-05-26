@@ -237,7 +237,7 @@ class _ColorPickerInputState extends State<_ColorPickerInput> {
       controller: _textEditingController,
       inputFormatters: [
         LowerCaseTextFormatter(),
-        FilteringTextInputFormatter.allow(validHexColorCharacters),
+        FilteringTextInputFormatter.allow(validHexColorCharactersRegex),
       ],
       decoration: const InputDecoration(
         isDense: true,

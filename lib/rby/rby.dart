@@ -10,7 +10,6 @@ export 'animations/immediate/immediate_slide_animation.dart';
 export 'animations/implicit/animated_number.dart';
 export 'core/basic_scroll_behavior.dart';
 export 'core/converter/built_list_converter.dart';
-export 'core/filename_editing_controller.dart';
 export 'core/handle_error_extension.dart';
 export 'core/log_error_handler.dart';
 export 'core/logger/ansi_color.dart';

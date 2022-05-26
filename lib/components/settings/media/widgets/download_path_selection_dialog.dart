@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 /// A dialog to select one of a couple predefined external storage media
 /// directories for a type of media.
@@ -100,6 +101,9 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
           title: ClearableTextField(
             text: _subDirectory,
             decoration: const InputDecoration(labelText: 'sub directory'),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(invalidFilenameRegex),
+            ],
             onChanged: (value) => _subDirectory = value,
             onClear: () => _subDirectory = '',
           ),
