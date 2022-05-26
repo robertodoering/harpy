@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-
-// FIXME: fork `flutter_colorpicker` package for style improvements
 
 class ColorPickerDialog extends ConsumerStatefulWidget {
   const ColorPickerDialog({
@@ -21,30 +18,27 @@ class ColorPickerDialog extends ConsumerStatefulWidget {
 }
 
 class _ColorPickerDialogState extends ConsumerState<ColorPickerDialog> {
-  late Color _color;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _color = widget.color;
-  }
+  late Color _color = widget.color;
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
+    final display = ref.watch(displayPreferencesProvider);
 
     return HarpyDialog(
       contentPadding: EdgeInsets.zero,
-      content: ClipRRect(
-        borderRadius: harpyTheme.borderRadius,
-        child: SingleChildScrollView(
-          child: ColorPicker(
+      clipBehavior: Clip.antiAlias,
+      content: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (_, constraints) => HarpyColorPicker(
             pickerColor: widget.color,
+            contentPadding: display.paddingValue,
             enableAlpha: widget.enableAlpha,
             pickerAreaBorderRadius: harpyTheme.borderRadius,
-            hexInputBar: true,
-            labelTypes: const [],
+            colorPickerWidth: mediaQuery.orientation == Orientation.portrait
+                ? constraints.maxWidth
+                : 200,
             onColorChanged: (color) {
               _color = color;
               widget.onColorChanged?.call(color);
