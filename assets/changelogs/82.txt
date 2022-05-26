@@ -1,0 +1,5 @@
+Version 0.9.3
+2022-xx-xx
+
+- Updated color picker styling
+
