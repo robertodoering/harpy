@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -28,7 +29,9 @@ class ChangelogDialog extends StatelessWidget {
     }
 
     // always set to current shown version
-    generalNotifier.updateLastShownVersion();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      generalNotifier.updateLastShownVersion();
+    });
   }
 
   @override
