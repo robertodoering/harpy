@@ -21,7 +21,11 @@ dependencies:
     git: https://github.com/robertodoering/download_manager
   encrypt: ^5.0.1
   file_picker: ^4.0.1
-  flare_flutter: ^3.0.2
+  flare_flutter :
+    git:
+      url: https://github.com/mdpe-ir/Flare-Flutter
+      path: flare_flutter
+      ref: stable
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.0.3
@@ -40,7 +44,7 @@ dependencies:
   http: ^0.13.3
   humanizer: ^2.0.0
   intl: ^0.17.0
-  json_annotation: ^4.4.0
+  json_annotation: ^4.5.0
   location: # TODO: change to pub version once updated
     git:
       url: https://github.com/TabooSun/flutterlocation.git

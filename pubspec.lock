@@ -356,10 +356,12 @@ packages:
   flare_flutter:
     dependency: "direct main"
     description:
-      name: flare_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.2"
+      path: flare_flutter
+      ref: stable
+      resolved-ref: ecd35f911b12460141c4bd49422c4a29cda04d30
+      url: "https://github.com/mdpe-ir/Flare-Flutter"
+    source: git
+    version: "3.0.5"
   flutter:
     dependency: "direct main"
     description: flutter
