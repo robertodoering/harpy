@@ -30,7 +30,7 @@ class LanguagePreferencesNotifier extends StateNotifier<LanguagePreferences> {
 
   void setTranslateLanguage(String value) {
     state = state.copyWith(translateLanguage: value);
-    _preferences.setString('translateLanguage', '');
+    _preferences.setString('translateLanguage', value);
   }
 }
 
