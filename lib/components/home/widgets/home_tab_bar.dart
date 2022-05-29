@@ -10,12 +10,12 @@ class HomeTabBar extends ConsumerWidget {
     required this.padding,
   });
 
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   Widget _mapEntryTabs({
     required HomeTabEntry entry,
     required Color cardColor,
-    required EdgeInsets padding,
+    required EdgeInsetsGeometry padding,
   }) {
     return entry.type == HomeTabEntryType.defaultType && entry.id == 'mentions'
         ? _MentionsTab(entry: entry)

@@ -63,9 +63,9 @@ class _BackButton extends ConsumerWidget {
         curve: Curves.easeInOut,
         duration: kShortAnimationDuration,
         child: UnconstrainedBox(
-          alignment: Alignment.topLeft,
+          alignment: AlignmentDirectional.topStart,
           child: Padding(
-            padding: display.edgeInsetsOnly(left: true) / 2,
+            padding: display.edgeInsetsOnly(start: true) / 2,
             child: HarpyButton.card(
               icon: Transform.translate(
                 offset: const Offset(-1, 0),

@@ -27,7 +27,7 @@ class TweetDetailHeader extends ConsumerWidget {
       child: AnimatedSize(
         duration: kLongAnimationDuration,
         curve: Curves.easeOutCubic,
-        alignment: Alignment.topCenter,
+        alignment: AlignmentDirectional.topCenter,
         child: parent != null
             ? Column(
                 children: [

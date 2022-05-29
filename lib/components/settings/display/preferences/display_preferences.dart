@@ -85,29 +85,31 @@ class DisplayPreferences with _$DisplayPreferences {
   late final fontSizeDelta = _fontSizeDeltaIdMap[fontSizeDeltaId] ?? 0;
   late final paddingValue = compactMode ? 12.0 : 16.0;
   late final smallPaddingValue = paddingValue / 2;
-  late final edgeInsets = EdgeInsets.all(paddingValue);
+  late final edgeInsets = EdgeInsetsDirectional.all(paddingValue);
 
-  EdgeInsets edgeInsetsOnly({
-    bool left = false,
-    bool right = false,
+  EdgeInsetsDirectional edgeInsetsOnly({
+    bool start = false,
+    bool end = false,
     bool top = false,
     bool bottom = false,
   }) {
-    return EdgeInsets.only(
-      left: left ? paddingValue : 0,
-      right: right ? paddingValue : 0,
+    return EdgeInsetsDirectional.only(
+      start: start ? paddingValue : 0,
+      end: end ? paddingValue : 0,
       top: top ? paddingValue : 0,
       bottom: bottom ? paddingValue : 0,
     );
   }
 
-  EdgeInsets edgeInsetsSymmetric({
+  EdgeInsetsDirectional edgeInsetsSymmetric({
     bool horizontal = false,
     bool vertical = false,
   }) {
-    return EdgeInsets.symmetric(
-      horizontal: horizontal ? paddingValue : 0,
-      vertical: vertical ? paddingValue : 0,
+    return EdgeInsetsDirectional.only(
+      start: horizontal ? paddingValue : 0,
+      end: horizontal ? paddingValue : 0,
+      top: vertical ? paddingValue : 0,
+      bottom: vertical ? paddingValue : 0,
     );
   }
 }
@@ -120,3 +122,19 @@ const _fontSizeDeltaIdMap = <int, double>{
   1: 2,
   2: 4,
 };
+
+extension EdgeInsetsDirectionalExtension on EdgeInsetsDirectional {
+  EdgeInsetsDirectional copyWith({
+    double? start,
+    double? end,
+    double? top,
+    double? bottom,
+  }) {
+    return EdgeInsetsDirectional.only(
+      start: start ?? this.start,
+      end: end ?? this.end,
+      top: top ?? this.top,
+      bottom: bottom ?? this.bottom,
+    );
+  }
+}

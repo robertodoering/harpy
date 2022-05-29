@@ -33,16 +33,17 @@ class HomeAppBar extends ConsumerWidget {
         ? mediaQuery.padding.bottom + display.paddingValue / 2
         : 0.0;
 
-    final padding = EdgeInsets.only(
+    final padding = EdgeInsetsDirectional.only(
       top: topPadding,
       bottom: bottomPadding,
-      left: display.paddingValue,
-      right: display.paddingValue,
+      start: display.paddingValue,
+      end: display.paddingValue,
     );
 
     return Align(
-      alignment:
-          general.bottomAppBar ? Alignment.bottomCenter : Alignment.topCenter,
+      alignment: general.bottomAppBar
+          ? AlignmentDirectional.bottomCenter
+          : AlignmentDirectional.topCenter,
       child: general.hideHomeAppBar
           ? _DynamicAppBar(padding: padding)
           : HomeTabBar(padding: padding),
@@ -55,7 +56,7 @@ class _DynamicAppBar extends ConsumerWidget {
     required this.padding,
   });
 
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

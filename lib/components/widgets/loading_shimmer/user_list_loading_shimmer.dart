@@ -19,7 +19,9 @@ class UserListLoadingSliver extends ConsumerWidget {
           children: List.filled(
             25,
             Padding(
-              padding: EdgeInsets.only(bottom: display.paddingValue * 2),
+              padding: EdgeInsetsDirectional.only(
+                bottom: display.paddingValue * 2,
+              ),
               child: const UserPlaceholder(),
             ),
           ),

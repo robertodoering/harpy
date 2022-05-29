@@ -25,7 +25,9 @@ class TweetListLoadingSliver extends ConsumerWidget {
                 ...List.filled(
                   15,
                   Padding(
-                    padding: EdgeInsets.only(bottom: display.paddingValue * 2),
+                    padding: EdgeInsetsDirectional.only(
+                      bottom: display.paddingValue * 2,
+                    ),
                     child: const TweetPlaceholder(),
                   ),
                 ),

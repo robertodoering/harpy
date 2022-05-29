@@ -30,7 +30,7 @@ class ComposeMedia extends ConsumerWidget {
             else if (state.type == MediaType.video)
               ComposeVideo(media: state.media!.single),
             Align(
-              alignment: Alignment.topRight,
+              alignment: AlignmentDirectional.topEnd,
               child: HarpyButton.card(
                 icon: const Icon(CupertinoIcons.xmark),
                 onTap: notifier.clear,

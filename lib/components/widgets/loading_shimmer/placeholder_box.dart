@@ -9,7 +9,7 @@ class PlaceholderBox extends ConsumerWidget {
     this.widthFactor,
     this.heightFactor,
     this.shape = BoxShape.rectangle,
-    this.alignment = Alignment.center,
+    this.alignment = AlignmentDirectional.center,
   });
 
   final double? width;
@@ -17,7 +17,7 @@ class PlaceholderBox extends ConsumerWidget {
   final double? widthFactor;
   final double? heightFactor;
   final BoxShape shape;
-  final Alignment alignment;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 
 typedef AnimatedWidgetBuilder = Widget Function(
   AnimationController controller,
@@ -149,7 +149,7 @@ class _AuthenticatedUser extends ConsumerWidget {
 class _FollowersCount extends ConsumerWidget {
   const _FollowersCount();
 
-  static final _numberFormat = NumberFormat.compact();
+  static final _numberFormat = intl.NumberFormat.compact();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -202,12 +202,22 @@ class _Entries extends ConsumerWidget {
 
   final AnimationController controller;
 
-  List<Widget> _animate(List<Widget> children) {
+  List<Widget> _animate(
+    List<Widget> children, {
+    required TextDirection directionality,
+  }) {
     final animated = <Widget>[];
 
     for (var i = 0; i < children.length; i++) {
       final offsetAnimation = Tween<Offset>(
-        begin: Offset(lerpDouble(-.3, -2, i / children.length)!, 0),
+        begin: Offset(
+          lerpDouble(
+            directionality == TextDirection.ltr ? -.3 : .3,
+            directionality == TextDirection.ltr ? -2 : 2,
+            i / children.length,
+          )!,
+          0,
+        ),
         end: Offset.zero,
       ).animate(controller);
 
@@ -231,6 +241,8 @@ class _Entries extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final general = ref.watch(generalPreferencesProvider);
     final user = ref.watch(authenticationStateProvider).user;
+
+    final directionality = Directionality.of(context);
 
     if (user == null) return const SizedBox();
 
@@ -310,7 +322,12 @@ class _Entries extends ConsumerWidget {
     return AnimatedBuilder(
       animation: controller,
       builder: (_, __) => Column(
-        children: general.performanceMode ? children : _animate(children),
+        children: general.performanceMode
+            ? children
+            : _animate(
+                children,
+                directionality: directionality,
+              ),
       ),
     );
   }

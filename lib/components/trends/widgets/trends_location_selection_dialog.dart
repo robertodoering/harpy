@@ -67,7 +67,7 @@ class _LocationSelectionDialogState
           if (locations is AsyncLoading)
             Container(
               padding: display.edgeInsets,
-              alignment: Alignment.center,
+              alignment: AlignmentDirectional.center,
               child: const CircularProgressIndicator(),
             )
         ],

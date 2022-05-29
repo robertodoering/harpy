@@ -152,7 +152,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       overlayColor: MaterialStateProperty.all(theme.highlightColor),
       elevation: MaterialStateProperty.all(0),
       padding: MaterialStateProperty.all(
-        display.edgeInsets + EdgeInsets.all(widget.sizeDelta),
+        display.edgeInsets + EdgeInsetsDirectional.all(widget.sizeDelta),
       ),
     );
 
@@ -162,7 +162,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       style: style,
       child: AnimatedSize(
         duration: kShortAnimationDuration,
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,

@@ -79,7 +79,7 @@ class HomeTabEntryIcon extends StatelessWidget {
       return Container(
         width: size,
         height: size,
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         child: Text(
           iconName!,
           style: TextStyle(

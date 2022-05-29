@@ -27,7 +27,9 @@ class UserDescriptionTranslation extends ConsumerWidget {
         child: user.descriptionTranslation != null &&
                 user.descriptionTranslation!.isTranslated
             ? Padding(
-                padding: EdgeInsets.only(top: display.smallPaddingValue),
+                padding: EdgeInsetsDirectional.only(
+                  top: display.smallPaddingValue,
+                ),
                 child: TranslatedText(
                   user.descriptionTranslation!.text,
                   language: user.descriptionTranslation!.language,

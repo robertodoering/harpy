@@ -126,9 +126,9 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
         clipBehavior: Clip.none,
         children: [
           // bubbles
-          Positioned(
+          PositionedDirectional(
             top: (size - bubbleSize) / 2.0,
-            left: (size - bubbleSize) / 2.0,
+            start: (size - bubbleSize) / 2.0,
             child: CustomPaint(
               size: Size(bubbleSize, bubbleSize),
               painter: _BubblesPainter(
@@ -139,9 +139,9 @@ class _BubbleAnimationState extends State<BubbleAnimation> {
           ),
 
           // circle
-          Positioned(
+          PositionedDirectional(
             top: (size - circleSize) / 2,
-            left: (size - circleSize) / 2,
+            start: (size - circleSize) / 2,
             child: CustomPaint(
               size: Size(circleSize, circleSize),
               painter: _CirclePainter(

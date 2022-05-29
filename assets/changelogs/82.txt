@@ -1,5 +1,9 @@
 Version 0.9.3
 2022-xx-xx
 
+- Fixed & improved layout for right-to-left languages throughout the app
+  - For Arabic, Persian, Hebrew, Pashto and Urdu
+  - Tweet text is now laid out based on the Tweet's language
+  - This does not include the description of a user
 - Updated color picker styling
 

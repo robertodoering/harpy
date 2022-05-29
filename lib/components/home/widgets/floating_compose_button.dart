@@ -58,7 +58,7 @@ class _FloatingComposeButtonState extends ConsumerState<FloatingComposeButton> {
       children: [
         widget.child,
         Align(
-          alignment: Alignment.bottomRight,
+          alignment: AlignmentDirectional.bottomEnd,
           child: AnimatedOpacity(
             opacity: show ? 1 : 0,
             curve: Curves.easeInOut,
@@ -92,9 +92,9 @@ class _ComposeButton extends ConsumerWidget {
         : display.paddingValue + mediaQuery.padding.bottom;
 
     return Padding(
-      padding: EdgeInsets.only(
+      padding: EdgeInsetsDirectional.only(
         bottom: bottomPadding,
-        right: display.paddingValue,
+        end: display.paddingValue,
       ),
       child: Material(
         color: harpyTheme.colors.alternateCardColor,

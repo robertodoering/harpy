@@ -61,7 +61,7 @@ class _SmallVideoPlayerOverlayState
       // the overlay)
       onTap: () {},
       child: Stack(
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -83,7 +83,7 @@ class _SmallVideoPlayerOverlayState
             compact: true,
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: AlignmentDirectional.bottomCenter,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

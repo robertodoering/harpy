@@ -23,9 +23,9 @@ class HarpyDialog extends ConsumerWidget {
 
   final Clip clipBehavior;
 
-  final EdgeInsets? titlePadding;
-  final EdgeInsets? contentPadding;
-  final EdgeInsets? actionsPadding;
+  final EdgeInsetsGeometry? titlePadding;
+  final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsetsGeometry? actionsPadding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,7 +53,7 @@ class HarpyDialog extends ConsumerWidget {
         child: AnimatedSize(
           duration: kShortAnimationDuration,
           curve: Curves.easeInOut,
-          alignment: Alignment.topCenter,
+          alignment: AlignmentDirectional.topCenter,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -91,7 +91,7 @@ class HarpyDialogActionBar extends ConsumerWidget {
   });
 
   final List<Widget> actions;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

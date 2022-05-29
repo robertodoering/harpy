@@ -130,6 +130,7 @@ class TweetData with _$TweetData {
   late final hasText = visibleText.isNotEmpty;
   late final hasParent = parentTweetId != null && parentTweetId!.isNotEmpty;
   late final tweetUrl = 'https://twitter.com/${user.handle}/status/$id';
+  late final isRtlLanguage = rtlLanguageCodes.contains(lang);
 
   /// A concatenated string of the user names from the [replies].
   String get replyAuthors {

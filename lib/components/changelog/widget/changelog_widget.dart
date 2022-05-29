@@ -101,7 +101,7 @@ class _ChangelogEntry extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 2),
+          padding: const EdgeInsetsDirectional.only(top: 2),
           child: entry.type.asIcon,
         ),
         horizontalSpacer,

@@ -41,7 +41,7 @@ class _FindCustomTrendsLocationState
           children: [
             AnimatedSize(
               duration: kShortAnimationDuration,
-              alignment: Alignment.topCenter,
+              alignment: AlignmentDirectional.topCenter,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: display.smallPaddingValue,

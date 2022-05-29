@@ -78,7 +78,7 @@ class TweetCardContent extends ConsumerWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (var i = 0; i < content.length; i++) ...[
           if (!content.keys.elementAt(i).requiresPadding)

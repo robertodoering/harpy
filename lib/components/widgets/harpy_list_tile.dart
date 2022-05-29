@@ -30,9 +30,9 @@ class HarpyListTile extends ConsumerWidget {
   final VoidCallback? onTap;
   final bool enabled;
 
-  final EdgeInsets? contentPadding;
-  final EdgeInsets? leadingPadding;
-  final EdgeInsets? trailingPadding;
+  final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsetsGeometry? leadingPadding;
+  final EdgeInsetsGeometry? trailingPadding;
   final CrossAxisAlignment verticalAlignment;
   final bool multilineTitle;
   final bool multilineSubtitle;

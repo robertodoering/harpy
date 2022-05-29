@@ -110,7 +110,7 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
     final appBar = Align(
       key: _appBarKey,
-      alignment: Alignment.topCenter,
+      alignment: AlignmentDirectional.topCenter,
       child: SlideTransition(
         position: _topAnimation,
         child: const _OverlayAppBar(),
@@ -119,7 +119,7 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
     final actions = Align(
       key: _actionsKey,
-      alignment: Alignment.bottomCenter,
+      alignment: AlignmentDirectional.bottomCenter,
       child: SlideTransition(
         position: _bottomAnimation,
         child: _OverlayTweetActions(
@@ -167,12 +167,12 @@ class _OverlayAppBar extends ConsumerWidget {
         child: GestureDetector(
           onTap: Navigator.of(context).maybePop,
           child: Container(
-            alignment: Alignment.centerLeft,
+            alignment: AlignmentDirectional.centerStart,
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+                begin: AlignmentDirectional.topCenter,
+                end: AlignmentDirectional.bottomCenter,
                 colors: [Colors.black87, Colors.transparent],
               ),
             ),
@@ -268,8 +268,8 @@ class _OverlayTweetActions extends ConsumerWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: AlignmentDirectional.topCenter,
+          end: AlignmentDirectional.bottomCenter,
           colors: [Colors.transparent, Colors.black87],
         ),
       ),
@@ -310,17 +310,21 @@ class _OverlayPreviewText extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return Padding(
-      padding: display.edgeInsetsSymmetric(horizontal: true) +
-          EdgeInsets.symmetric(vertical: display.smallPaddingValue),
+      padding: EdgeInsetsDirectional.only(
+        start: display.paddingValue,
+        end: display.paddingValue,
+        top: display.smallPaddingValue,
+        bottom: display.smallPaddingValue,
+      ),
       child: AnimatedSize(
         duration: kShortAnimationDuration,
-        alignment: Alignment.bottomCenter,
+        alignment: AlignmentDirectional.bottomCenter,
         curve: Curves.easeInOut,
         child: GestureDetector(
           onTap: () => delegates.onShowTweet?.call(context, ref.read),
           child: HarpyAnimatedSwitcher(
             layoutBuilder: (currentChild, previousChildren) => Stack(
-              alignment: Alignment.bottomCenter,
+              alignment: AlignmentDirectional.bottomCenter,
               children: [
                 ...previousChildren,
                 if (currentChild != null) currentChild,

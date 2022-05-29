@@ -77,7 +77,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
       // the overlay)
       onTap: () {},
       child: Stack(
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -96,7 +96,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             data: widget.data,
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: AlignmentDirectional.bottomCenter,
             child: ClipRect(
               child: IgnorePointer(
                 ignoring: !_showActions,

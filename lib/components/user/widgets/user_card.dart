@@ -48,6 +48,7 @@ class UserCard extends ConsumerWidget {
                 children: [
                   Text(
                     '@${user.handle}',
+                    textDirection: TextDirection.ltr,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                   ),

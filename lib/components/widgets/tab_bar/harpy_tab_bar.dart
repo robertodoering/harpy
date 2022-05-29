@@ -21,7 +21,7 @@ class HarpyTabBar extends ConsumerStatefulWidget {
   final List<Widget>? endWidgets;
 
   /// Padding around the [tabs] inside the scroll view.
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   final TabController? controller;
 

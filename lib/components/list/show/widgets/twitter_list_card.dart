@@ -127,6 +127,7 @@ class _ListUser extends StatelessWidget {
         smallHorizontalSpacer,
         Text(
           '@${list.user!.handle}',
+          textDirection: TextDirection.ltr,
           style: theme.textTheme.bodyText1,
           softWrap: false,
           overflow: TextOverflow.fade,

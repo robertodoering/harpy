@@ -10,7 +10,7 @@ abstract class HarpyButton extends ConsumerWidget {
     required VoidCallback? onTap,
     Widget? icon,
     Widget? label,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
   }) = _HarpyTextButton;
 
   /// Equivalent to an [ElevatedButton].
@@ -18,7 +18,7 @@ abstract class HarpyButton extends ConsumerWidget {
     required VoidCallback? onTap,
     Widget? icon,
     Widget? label,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
   }) = _HarpyElevatedButton;
 
   /// A flat transparent icon button.
@@ -27,7 +27,7 @@ abstract class HarpyButton extends ConsumerWidget {
     Widget? icon,
     Widget? label,
     VoidCallback? onLongPress,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
   }) = _HarpyIconButton;
 
   /// A flat button that matches a [Card].
@@ -36,7 +36,7 @@ abstract class HarpyButton extends ConsumerWidget {
     Widget? icon,
     Widget? label,
     VoidCallback? onLongPress,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     Color? foregroundColor,
     Color? backgroundColor,
   }) = _HarpyCardButton;
@@ -53,7 +53,7 @@ class _HarpyTextButton extends HarpyButton {
   final Widget? icon;
   final Widget? label;
   final VoidCallback? onTap;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,7 +87,7 @@ class _HarpyElevatedButton extends HarpyButton {
   final Widget? icon;
   final Widget? label;
   final VoidCallback? onTap;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,7 +125,7 @@ class _HarpyCardButton extends HarpyButton {
   final Widget? label;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final Color? foregroundColor;
   final Color? backgroundColor;
 
@@ -180,7 +180,7 @@ class _HarpyIconButton extends HarpyButton {
 
   final Widget? icon;
   final Widget? label;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 

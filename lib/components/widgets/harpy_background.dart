@@ -19,8 +19,8 @@ class HarpyBackground extends ConsumerWidget {
       duration: kShortAnimationDuration,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: AlignmentDirectional.topCenter,
+          end: AlignmentDirectional.bottomCenter,
           colors: colors.length == 1
               ? List.filled(2, colors.single)
               : colors.toList(),

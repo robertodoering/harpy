@@ -20,21 +20,21 @@ class SystemGesturePlaceholder extends StatelessWidget {
       children: [
         child,
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerEnd,
           child: SizedBox(
             width: mediaQuery.size.width * .066,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
           ),
         ),
         Align(
-          alignment: Alignment.centerRight,
+          alignment: AlignmentDirectional.centerEnd,
           child: SizedBox(
             width: mediaQuery.size.width * .066,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
           ),
         ),
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: AlignmentDirectional.bottomCenter,
           child: SizedBox(
             height: mediaQuery.size.height * .044,
             child: GestureDetector(

@@ -4,7 +4,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 
 class TrendCard extends ConsumerWidget {
   const TrendCard({
@@ -13,13 +13,16 @@ class TrendCard extends ConsumerWidget {
 
   final Trend trend;
 
-  static final _numberFormat = NumberFormat.compact();
+  static final _numberFormat = intl.NumberFormat.compact();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return HarpyListCard(
       leading: const Icon(FeatherIcons.trendingUp, size: 18),
-      title: Text(trend.name ?? ''),
+      title: Text(
+        trend.name ?? '',
+        textDirection: TextDirection.ltr,
+      ),
       subtitle: trend.tweetVolume != null
           ? Text('${_numberFormat.format(trend.tweetVolume)} tweets')
           : null,

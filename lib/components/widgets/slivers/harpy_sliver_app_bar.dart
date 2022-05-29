@@ -128,7 +128,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     if (child != null) {
       return Padding(
-        padding: EdgeInsets.only(left: paddingValue / 2),
+        padding: EdgeInsetsDirectional.only(start: paddingValue / 2),
         child: child,
       );
     } else {
@@ -157,7 +157,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     if (child != null) {
       return Padding(
-        padding: EdgeInsets.only(right: paddingValue / 2),
+        padding: EdgeInsetsDirectional.only(end: paddingValue / 2),
         child: child,
       );
     } else {
@@ -187,8 +187,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return BoxDecoration(
       gradient: LinearGradient(
         colors: [begin.withOpacity(.8), end.withOpacity(.8)],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+        begin: AlignmentDirectional.topCenter,
+        end: AlignmentDirectional.bottomCenter,
       ),
     );
   }
@@ -208,7 +208,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
       child: Material(
         type: MaterialType.transparency,
         child: Padding(
-          padding: EdgeInsets.only(top: topPadding),
+          padding: EdgeInsetsDirectional.only(top: topPadding),
           child: NavigationToolbar(
             leading: _leading(context),
             middle: title != null
