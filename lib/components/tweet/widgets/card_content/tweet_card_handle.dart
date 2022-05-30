@@ -22,37 +22,48 @@ class TweetCardHandle extends ConsumerWidget {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
+    final directionality = Directionality.of(context);
+
+    final textSpans = [
+      TextSpan(
+        text: '@${tweet.user.handle}',
+        style: theme.textTheme.bodyText1!
+            .copyWith(height: 1)
+            .apply(fontSizeDelta: style.sizeDelta),
+      ),
+      TextSpan(
+        text: ' \u00b7 ',
+        style: theme.textTheme.bodyText1!
+            .copyWith(height: 1)
+            .apply(fontSizeDelta: style.sizeDelta),
+      ),
+      WidgetSpan(
+        alignment: PlaceholderAlignment.baseline,
+        baseline: TextBaseline.alphabetic,
+        child: display.absoluteTweetTime
+            ? _CreatedAtAbsoluteTime(
+                localCreatedAt: tweet.createdAt.toLocal(),
+                sizeDelta: style.sizeDelta,
+              )
+            : _CreatedAtRelativeTime(
+                localCreatedAt: tweet.createdAt.toLocal(),
+                sizeDelta: style.sizeDelta,
+              ),
+      ),
+    ];
+
     return FittedBox(
       child: GestureDetector(
         onTap: () => onUserTap?.call(context, ref.read),
         child: Text.rich(
+          // we force the text direction to ltr, otherwise the `@handle` gets
+          // reversed to `handle@` for rtl languages
+          textDirection: TextDirection.ltr,
           TextSpan(
             children: [
-              TextSpan(
-                text: '@${tweet.user.handle}',
-                style: theme.textTheme.bodyText1!
-                    .copyWith(height: 1)
-                    .apply(fontSizeDelta: style.sizeDelta),
-              ),
-              TextSpan(
-                text: ' \u00b7 ',
-                style: theme.textTheme.bodyText1!
-                    .copyWith(height: 1)
-                    .apply(fontSizeDelta: style.sizeDelta),
-              ),
-              WidgetSpan(
-                alignment: PlaceholderAlignment.baseline,
-                baseline: TextBaseline.alphabetic,
-                child: display.absoluteTweetTime
-                    ? _CreatedAtAbsoluteTime(
-                        localCreatedAt: tweet.createdAt.toLocal(),
-                        sizeDelta: style.sizeDelta,
-                      )
-                    : _CreatedAtRelativeTime(
-                        localCreatedAt: tweet.createdAt.toLocal(),
-                        sizeDelta: style.sizeDelta,
-                      ),
-              ),
+              ...directionality == TextDirection.ltr
+                  ? textSpans
+                  : textSpans.reversed,
             ],
           ),
         ),
@@ -107,6 +118,7 @@ class _CreatedAtRelativeTimeState extends State<_CreatedAtRelativeTime> {
 
     return Text(
       timeago.format(widget.localCreatedAt, locale: languageCode),
+      textDirection: TextDirection.ltr,
       style: theme.textTheme.bodyText1!
           .copyWith(height: 1)
           .apply(fontSizeDelta: widget.sizeDelta),
@@ -137,6 +149,7 @@ class _CreatedAtAbsoluteTime extends StatelessWidget {
     return FittedBox(
       child: Text(
         '$time \u00b7 $date',
+        textDirection: TextDirection.ltr,
         style: theme.textTheme.bodyText1!
             .copyWith(height: 1)
             .apply(fontSizeDelta: sizeDelta),

@@ -199,7 +199,7 @@ class _SkipButtonState extends ConsumerState<_SkipButton> {
       opacity: _opacity,
       child: Container(
         padding: display.edgeInsetsSymmetric(horizontal: true),
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: HarpyButton.text(
           padding: display.edgeInsets,
           label: const Text('skip'),
@@ -256,7 +256,7 @@ class _PrevButtonState extends ConsumerState<_PrevButton> {
       opacity: _opacity,
       child: Container(
         padding: display.edgeInsetsSymmetric(horizontal: true),
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: HarpyButton.text(
           padding: display.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_left),
@@ -323,7 +323,7 @@ class _NextButtonState extends ConsumerState<_NextButton> {
       opacity: _opacity,
       child: Container(
         padding: display.edgeInsetsSymmetric(horizontal: true),
-        alignment: Alignment.centerRight,
+        alignment: AlignmentDirectional.centerEnd,
         child: HarpyButton.text(
           padding: display.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_right),

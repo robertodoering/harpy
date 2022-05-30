@@ -94,7 +94,7 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
       children: [
         widget.child,
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: AlignmentDirectional.bottomCenter,
           child: AnimatedOpacity(
             opacity: _show ? 1 : 0,
             curve: Curves.easeInOut,

@@ -20,12 +20,14 @@ Future<void> warmupFlare() async {
 
 class FlareAnimation extends StatelessWidget {
   const FlareAnimation.harpyTitle({
+    // ignore: non_directional
     this.alignment = Alignment.center,
     this.animation,
     this.color,
   }) : name = 'harpy_title';
 
   const FlareAnimation.harpyLogo({
+    // ignore: non_directional
     this.alignment = Alignment.center,
     this.animation,
     this.color,

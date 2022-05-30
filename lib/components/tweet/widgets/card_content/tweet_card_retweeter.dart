@@ -36,16 +36,18 @@ class TweetCardRetweeter extends ConsumerWidget {
             ),
             horizontalSpacer,
             Flexible(
-              child: Text(
-                '${tweet.retweeter!.name} retweeted',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle
-                    .copyWith(
-                      color: textStyle.color?.withOpacity(.8),
-                      height: 1,
-                    )
-                    .apply(fontSizeDelta: style.sizeDelta),
+              child: FittedBox(
+                child: Text(
+                  '${tweet.retweeter!.name} retweeted',
+                  textDirection: TextDirection.ltr,
+                  maxLines: 1,
+                  style: textStyle
+                      .copyWith(
+                        color: textStyle.color?.withOpacity(.8),
+                        height: 1,
+                      )
+                      .apply(fontSizeDelta: style.sizeDelta),
+                ),
               ),
             ),
           ],

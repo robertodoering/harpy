@@ -23,7 +23,7 @@ class GifVideoPlayerOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: AlignmentDirectional.center,
       children: [
         GestureDetector(
           onTap: onGifTap ??

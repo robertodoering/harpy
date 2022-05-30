@@ -100,7 +100,7 @@ class _HarpyTabState extends ConsumerState<HarpyTab>
       opacity: _textOpacityAnimation.value,
       child: Align(
         widthFactor: 1 - _animationController.value,
-        alignment: Alignment.centerRight,
+        alignment: AlignmentDirectional.centerEnd,
         child: Row(
           children: [
             smallHorizontalSpacer,

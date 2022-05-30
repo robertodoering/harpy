@@ -25,7 +25,7 @@ class HomeTabReorderCard extends ConsumerWidget {
       duration: kShortAnimationDuration,
       opacity: entry.visible ? 1 : .6,
       child: Card(
-        margin: EdgeInsets.only(bottom: display.smallPaddingValue),
+        margin: EdgeInsetsDirectional.only(bottom: display.smallPaddingValue),
         child: Row(
           children: [
             _HomeTabIcon(index: index, entry: entry),
@@ -51,7 +51,7 @@ class HomeTabReorderCard extends ConsumerWidget {
             HarpyReorderableDragStartListener(
               index: index,
               child: Container(
-                padding: display.edgeInsets.copyWith(left: 0),
+                padding: display.edgeInsets.copyWith(start: 0),
                 color: Colors.transparent,
                 child: const Icon(CupertinoIcons.bars),
               ),

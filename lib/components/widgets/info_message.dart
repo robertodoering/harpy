@@ -25,7 +25,7 @@ class InfoMessage extends ConsumerWidget {
       duration: kShortAnimationDuration,
       child: Container(
         padding: display.edgeInsets,
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -21,8 +21,8 @@ class VideoPlayerActions extends ConsumerWidget {
     return DecoratedBox(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
+          begin: AlignmentDirectional.bottomCenter,
+          end: AlignmentDirectional.topCenter,
           colors: [
             Colors.black45,
             Colors.transparent,

@@ -16,4 +16,5 @@ jobs:
       - run: flutter packages pub run build_runner build
       - run: flutter analyze
       - run: flutter format . --set-exit-if-changed
+      - run: flutter pub run code_rules.dart
       - run: flutter test

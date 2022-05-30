@@ -50,8 +50,8 @@ class HarpyProCard extends ConsumerWidget {
         child: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: AlignmentDirectional.topStart,
+              end: AlignmentDirectional.bottomEnd,
               colors: [
                 Color(0xff8B00FD),
                 Color(0xffBC0492),

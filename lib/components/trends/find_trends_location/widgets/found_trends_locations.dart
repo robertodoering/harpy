@@ -15,7 +15,7 @@ class FoundTrendsLocations extends ConsumerWidget {
 
     return HarpyAnimatedSwitcher(
       layoutBuilder: (currentChild, previousChildren) => Stack(
-        alignment: Alignment.topCenter,
+        alignment: AlignmentDirectional.topCenter,
         children: [
           ...previousChildren,
           if (currentChild != null) currentChild,

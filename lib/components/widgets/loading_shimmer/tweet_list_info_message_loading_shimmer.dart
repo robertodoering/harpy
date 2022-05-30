@@ -44,7 +44,7 @@ class InfoRowPlaceholder extends ConsumerWidget {
           child: PlaceholderBox(
             widthFactor: .3,
             height: 15,
-            alignment: Alignment.centerLeft,
+            alignment: AlignmentDirectional.centerStart,
           ),
         ),
       ],

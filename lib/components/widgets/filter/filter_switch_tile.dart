@@ -26,10 +26,10 @@ class FilterSwitchTile extends ConsumerWidget {
 
     return SwitchListTile(
       value: value,
-      contentPadding: EdgeInsets.only(
-        left: display.paddingValue,
+      contentPadding: EdgeInsetsDirectional.only(
+        start: display.paddingValue,
         // - 8 since the check box icon has a padding of 8
-        right: max(display.paddingValue - 8, 0),
+        end: max(display.paddingValue - 8, 0),
       ),
       title: Text(
         text,

@@ -20,9 +20,9 @@ class HarpyRadioTile<T> extends ConsumerWidget {
 
   final Widget? title;
   final Widget? subtitle;
-  final EdgeInsets? contentPadding;
-  final EdgeInsets? leadingPadding;
-  final EdgeInsets? trailingPadding;
+  final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsetsGeometry? leadingPadding;
+  final EdgeInsetsGeometry? trailingPadding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

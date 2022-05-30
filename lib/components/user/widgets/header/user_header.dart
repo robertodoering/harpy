@@ -50,7 +50,7 @@ class UserHeader extends ConsumerWidget {
             AnimatedSize(
               duration: kShortAnimationDuration,
               curve: Curves.easeOutCubic,
-              alignment: Alignment.topCenter,
+              alignment: AlignmentDirectional.topCenter,
               child: Padding(
                 padding: display.edgeInsetsSymmetric(horizontal: true),
                 child: UserAdditionalInfo(user: user, connections: connections),

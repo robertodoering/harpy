@@ -68,7 +68,9 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
 
         return Padding(
           key: ValueKey(hashValues(color, index)),
-          padding: EdgeInsets.only(bottom: display.smallPaddingValue),
+          padding: EdgeInsetsDirectional.only(
+            bottom: display.smallPaddingValue,
+          ),
           child: ClipRRect(
             borderRadius: harpyTheme.borderRadius,
             child: CustomThemeColor(

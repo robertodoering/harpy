@@ -53,7 +53,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
       // the overlay)
       onTap: () {},
       child: Stack(
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -74,7 +74,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
             data: widget.data,
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: AlignmentDirectional.bottomCenter,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

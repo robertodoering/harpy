@@ -29,7 +29,7 @@ class MediaThumbnail extends ConsumerWidget {
       onTap: onTap ?? () {},
       onLongPress: onLongPress,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         children: [
           HarpyImage(
             imageUrl: thumbnail.appropriateUrl(mediaPreferences, connectivity),

@@ -15,11 +15,15 @@ class TweetCardText extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return TwitterText(
-      tweet.text,
-      entities: tweet.entities,
-      urlToIgnore: tweet.quoteUrl,
-      style: theme.textTheme.bodyText2!.apply(fontSizeDelta: style.sizeDelta),
+    return Directionality(
+      textDirection:
+          tweet.isRtlLanguage ? TextDirection.rtl : TextDirection.ltr,
+      child: TwitterText(
+        tweet.text,
+        entities: tweet.entities,
+        urlToIgnore: tweet.quoteUrl,
+        style: theme.textTheme.bodyText2!.apply(fontSizeDelta: style.sizeDelta),
+      ),
     );
   }
 }

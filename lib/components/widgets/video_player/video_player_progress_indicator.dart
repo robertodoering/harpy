@@ -16,12 +16,13 @@ class VideoPlayerProgressIndicator extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Transform(
-      alignment: Alignment.bottomCenter,
+      alignment: AlignmentDirectional.bottomCenter,
       transform: Matrix4.diagonal3Values(1, compact ? .33 : .66, 1),
       transformHitTests: false,
       child: VideoProgressIndicator(
         notifier.controller,
         allowScrubbing: true,
+        // ignore: non_directional
         padding: EdgeInsets.only(top: compact ? 12 : 24),
         colors: VideoProgressColors(
           playedColor: theme.colorScheme.primary.withOpacity(.7),

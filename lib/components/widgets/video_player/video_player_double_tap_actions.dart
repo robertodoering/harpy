@@ -29,7 +29,7 @@ class _VideoPlayerDoubleTapActionsState
       children: [
         Expanded(
           child: Stack(
-            alignment: Alignment.center,
+            alignment: AlignmentDirectional.center,
             children: [
               GestureDetector(
                 onDoubleTap: () {
@@ -52,7 +52,7 @@ class _VideoPlayerDoubleTapActionsState
         const Spacer(),
         Expanded(
           child: Stack(
-            alignment: Alignment.center,
+            alignment: AlignmentDirectional.center,
             children: [
               GestureDetector(
                 onDoubleTap: () {

@@ -38,12 +38,11 @@ class UserInfo extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: display
-                          .edgeInsetsOnly(
-                            top: true,
-                            right: true,
-                          )
-                          .copyWith(bottom: display.paddingValue),
+                      padding: display.edgeInsetsOnly(
+                        top: true,
+                        end: true,
+                        bottom: true,
+                      ),
                       child: _Handle(user: user),
                     ),
                   ),
@@ -65,7 +64,7 @@ class UserInfo extends ConsumerWidget {
                 ],
               ),
               Padding(
-                padding: display.edgeInsetsOnly(right: true),
+                padding: display.edgeInsetsOnly(end: true),
                 child: _Name(user: user),
               ),
             ],
@@ -166,8 +165,12 @@ class _Handle extends ConsumerWidget {
       },
       child: FittedBox(
         fit: BoxFit.scaleDown,
-        alignment: Alignment.centerLeft,
-        child: Text(handle, style: theme.textTheme.subtitle1),
+        alignment: AlignmentDirectional.centerStart,
+        child: Text(
+          handle,
+          textDirection: TextDirection.ltr,
+          style: theme.textTheme.subtitle1,
+        ),
       ),
     );
   }

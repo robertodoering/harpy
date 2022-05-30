@@ -19,7 +19,7 @@ class NewTweetsText extends ConsumerWidget {
 
     return Container(
       padding: display.edgeInsetsSymmetric(horizontal: true),
-      alignment: Alignment.center,
+      alignment: AlignmentDirectional.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

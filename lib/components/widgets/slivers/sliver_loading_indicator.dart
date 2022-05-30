@@ -17,7 +17,7 @@ class SliverLoadingIndicator extends ConsumerWidget {
         duration: kShortAnimationDuration,
         child: Container(
           padding: display.edgeInsets,
-          alignment: Alignment.center,
+          alignment: AlignmentDirectional.center,
           child: const CircularProgressIndicator(),
         ),
       ),

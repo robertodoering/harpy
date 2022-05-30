@@ -4,7 +4,7 @@ class Badge extends StatelessWidget {
   const Badge({
     required this.child,
     this.offset = Offset.zero,
-    this.alignment = Alignment.topRight,
+    this.alignment = AlignmentDirectional.topStart,
     this.show = true,
   }) : badge = const _Bubble();
 
@@ -12,7 +12,7 @@ class Badge extends StatelessWidget {
     required this.child,
     required this.badge,
     this.offset = Offset.zero,
-    this.alignment = Alignment.topRight,
+    this.alignment = AlignmentDirectional.topEnd,
     this.show = true,
   });
 

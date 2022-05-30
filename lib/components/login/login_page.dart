@@ -96,7 +96,7 @@ class _AboutButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Align(
-      alignment: Alignment.topRight,
+      alignment: AlignmentDirectional.topEnd,
       child: HarpyButton.icon(
         icon: const Icon(Icons.info_outline),
         onTap: () => Navigator.of(context).push(
@@ -123,6 +123,7 @@ class _HarpyTitle extends StatelessWidget {
         curve: Curves.easeOutCubic,
         begin: const Offset(0, .5),
         child: FlareAnimation.harpyTitle(
+          // ignore: non_directional
           alignment: Alignment.bottomCenter,
           animation: 'show',
           color: theme.colorScheme.onBackground,
