@@ -23,14 +23,7 @@ class ExpansionCard extends ConsumerStatefulWidget {
 }
 
 class _ExpansionCardState extends ConsumerState<ExpansionCard> {
-  late bool _collapsed;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _collapsed = widget.initiallyCollapsed;
-  }
+  late bool _collapsed = widget.initiallyCollapsed;
 
   @override
   Widget build(BuildContext context) {
