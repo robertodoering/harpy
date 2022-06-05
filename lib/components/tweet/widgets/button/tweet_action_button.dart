@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
+import 'package:intl/intl.dart';
 
 /// Builds the icon for an [TweetActionButton].
 typedef IconBuilder = Widget Function(bool active);
@@ -137,6 +138,9 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
             child: AnimatedNumber(
               duration: kShortAnimationDuration,
               number: widget.value!,
+              numberFormat: NumberFormat.compact(
+                locale: Localizations.localeOf(context).toLanguageTag(),
+              ),
             ),
           )
         : null;

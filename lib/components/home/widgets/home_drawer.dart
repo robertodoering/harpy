@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
-import 'package:intl/intl.dart' as intl;
 
 typedef AnimatedWidgetBuilder = Widget Function(
   AnimationController controller,
@@ -28,7 +27,7 @@ class HomeDrawer extends ConsumerWidget {
           const HomeTopPadding(),
           const _AuthenticatedUser(),
           verticalSpacer,
-          const _FollowersCount(),
+          const _ConnectionsCount(),
           verticalSpacer,
           verticalSpacer,
           _Entries(controller),
@@ -146,10 +145,8 @@ class _AuthenticatedUser extends ConsumerWidget {
   }
 }
 
-class _FollowersCount extends ConsumerWidget {
-  const _FollowersCount();
-
-  static final _numberFormat = intl.NumberFormat.compact();
+class _ConnectionsCount extends ConsumerWidget {
+  const _ConnectionsCount();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -160,16 +157,13 @@ class _FollowersCount extends ConsumerWidget {
       return const SizedBox();
     }
 
-    final friendsCount = _numberFormat.format(user.friendsCount);
-    final followersCount = _numberFormat.format(user.followersCount);
-
     return Row(
       children: [
         Expanded(
-          child: Tooltip(
-            message: '${user.friendsCount}',
-            child: HarpyListCard(
-              title: Text('$friendsCount  following'),
+          child: ConnectionCount(
+            count: user.friendsCount,
+            builder: (count) => HarpyListCard(
+              title: Text('$count  following'),
               multilineTitle: true,
               onTap: () => router.goNamed(
                 FollowingPage.name,
@@ -180,10 +174,10 @@ class _FollowersCount extends ConsumerWidget {
         ),
         horizontalSpacer,
         Expanded(
-          child: Tooltip(
-            message: '${user.followersCount}',
-            child: HarpyListCard(
-              title: Text('$followersCount  followers'),
+          child: ConnectionCount(
+            count: user.followersCount,
+            builder: (count) => HarpyListCard(
+              title: Text('$count  followers'),
               multilineTitle: true,
               onTap: () => router.goNamed(
                 FollowersPage.name,

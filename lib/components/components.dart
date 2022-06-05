@@ -232,6 +232,7 @@ export 'widgets/bottom_sheet/bottom_sheet_header.dart';
 export 'widgets/bottom_sheet/harpy_bottom_sheet.dart';
 export 'widgets/clearable_text_field.dart';
 export 'widgets/color_picker/harpy_color_picker.dart';
+export 'widgets/connection_count.dart';
 export 'widgets/expansion_card.dart';
 export 'widgets/filter/filter_list_entry.dart';
 export 'widgets/filter/filter_switch_tile.dart';

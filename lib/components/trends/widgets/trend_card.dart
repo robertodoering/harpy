@@ -13,10 +13,11 @@ class TrendCard extends ConsumerWidget {
 
   final Trend trend;
 
-  static final _numberFormat = intl.NumberFormat.compact();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final numberFormat = intl.NumberFormat.compact(locale: locale);
+
     return HarpyListCard(
       leading: const Icon(FeatherIcons.trendingUp, size: 18),
       title: Text(
@@ -24,7 +25,7 @@ class TrendCard extends ConsumerWidget {
         textDirection: TextDirection.ltr,
       ),
       subtitle: trend.tweetVolume != null
-          ? Text('${_numberFormat.format(trend.tweetVolume)} tweets')
+          ? Text('${numberFormat.format(trend.tweetVolume)} tweets')
           : null,
       onTap: () => ref.read(routerProvider).pushNamed(
         TweetSearchPage.name,

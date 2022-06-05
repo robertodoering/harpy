@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:intl/intl.dart';
 
 class UserConnectionsCount extends ConsumerWidget {
   const UserConnectionsCount({
@@ -14,22 +13,17 @@ class UserConnectionsCount extends ConsumerWidget {
   final UserData user;
   final bool compact;
 
-  static final _numberFormat = NumberFormat.compact();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
     final router = ref.watch(routerProvider);
 
-    final friendsCount = _numberFormat.format(user.friendsCount);
-    final followersCount = _numberFormat.format(user.followersCount);
-
     return Wrap(
       children: [
-        Tooltip(
-          message: '${user.friendsCount}',
-          child: HarpyButton.icon(
-            label: Text('$friendsCount following'),
+        ConnectionCount(
+          count: user.friendsCount,
+          builder: (count) => HarpyButton.icon(
+            label: Text('$count following'),
             padding: compact
                 ? EdgeInsets.symmetric(
                     horizontal: display.paddingValue,
@@ -42,10 +36,10 @@ class UserConnectionsCount extends ConsumerWidget {
             ),
           ),
         ),
-        Tooltip(
-          message: '${user.followersCount}',
-          child: HarpyButton.icon(
-            label: Text('$followersCount followers'),
+        ConnectionCount(
+          count: user.followersCount,
+          builder: (count) => HarpyButton.icon(
+            label: Text('$count followers'),
             padding: compact
                 ? EdgeInsets.symmetric(
                     horizontal: display.paddingValue,

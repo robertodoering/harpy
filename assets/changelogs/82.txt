@@ -5,5 +5,7 @@ Version 0.9.3
   - For Arabic, Persian, Hebrew, Pashto and Urdu
   - Tweet text is now laid out based on the Tweet's language (this does not include the description of a user)
   - This does not include the description of a user
-- Fixed translate language setting not persisting across sessions
+- Added localized compact number formats
 - Updated color picker styling
+- Updated connection count tooltip
+- Fixed translate language setting not persisting across sessions
