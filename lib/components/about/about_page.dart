@@ -39,8 +39,10 @@ class AboutPage extends ConsumerWidget {
                 verticalSpacer,
                 _DonationCard(),
                 verticalSpacer,
-                _ProCard(),
-                verticalSpacer,
+                if (isFree) ...[
+                  _ProCard(),
+                  verticalSpacer,
+                ],
                 _CreditsCard(),
                 verticalSpacer,
                 _PrivacyPolicyCard(),
