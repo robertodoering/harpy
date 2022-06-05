@@ -193,6 +193,12 @@ class HarpyTheme {
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(radius: radius),
+      // only used in license page
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        color: colors.averageBackgroundColor,
+      ),
     );
   }
 
