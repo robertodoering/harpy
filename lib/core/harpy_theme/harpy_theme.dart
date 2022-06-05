@@ -186,6 +186,7 @@ class HarpyTheme {
         textStyle: text.textTheme.subtitle2
             ?.copyWith(color: colors.onPrimary)
             .apply(fontSizeDelta: -2),
+        preferBelow: false,
         decoration: BoxDecoration(
           borderRadius: borderRadius,
           color: colors.primary,

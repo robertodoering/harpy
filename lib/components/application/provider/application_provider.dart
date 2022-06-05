@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/painting.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -22,6 +23,9 @@ class Application with LoggerMixin {
 
   Future<void> initialize() async {
     initializeLogger();
+
+    // for smooth gradients
+    Paint.enableDithering = true;
 
     // set the visibility detector controller update interval to fire more
     // frequently
