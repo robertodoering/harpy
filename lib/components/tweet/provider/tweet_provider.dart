@@ -10,11 +10,10 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 
-final tweetProvider = StateNotifierProvider.autoDispose
-    .family<TweetNotifier, TweetData, TweetData>(
-  (ref, tweet) => TweetNotifier(
+final tweetProvider =
+    StateNotifierProvider.autoDispose.family<TweetNotifier, TweetData?, String>(
+  (ref, id) => TweetNotifier(
     read: ref.read,
-    tweet: tweet,
     twitterApi: ref.watch(twitterApiProvider),
     translateService: ref.watch(translateServiceProvider),
     messageService: ref.watch(messageServiceProvider),
@@ -23,10 +22,9 @@ final tweetProvider = StateNotifierProvider.autoDispose
   cacheTime: const Duration(minutes: 5),
 );
 
-class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
+class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
   TweetNotifier({
     required Reader read,
-    required TweetData tweet,
     required TwitterApi twitterApi,
     required TranslateService translateService,
     required MessageService messageService,
@@ -36,7 +34,7 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
         _translateService = translateService,
         _messageService = messageService,
         _languagePreferences = languagePreferences,
-        super(tweet);
+        super(null);
 
   final Reader _read;
   final TwitterApi _twitterApi;
@@ -44,27 +42,34 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   final MessageService _messageService;
   final LanguagePreferences _languagePreferences;
 
+  void initialize(TweetData tweet) {
+    if (mounted && state == null) state = tweet;
+  }
+
   Future<void> retweet() async {
-    if (state.retweeted) {
+    final tweet = state;
+    if (tweet == null) return;
+
+    if (tweet.retweeted) {
       log.fine('already retweeted');
       return;
     }
 
-    state = state.copyWith(
+    state = tweet.copyWith(
       retweeted: true,
-      retweetCount: state.retweetCount + 1,
+      retweetCount: tweet.retweetCount + 1,
     );
 
     try {
-      await _twitterApi.tweetService.retweet(id: state.id);
+      await _twitterApi.tweetService.retweet(id: tweet.id);
 
-      log.fine('retweeted ${state.id}');
+      log.fine('retweeted ${tweet.id}');
     } catch (e, st) {
-      log.warning('error retweeting ${state.id}', e, st);
+      log.warning('error retweeting ${tweet.id}', e, st);
 
-      state = state.copyWith(
+      state = tweet.copyWith(
         retweeted: false,
-        retweetCount: math.max(0, state.retweetCount - 1),
+        retweetCount: math.max(0, tweet.retweetCount - 1),
       );
 
       twitterErrorHandler(_read, e, st);
@@ -72,27 +77,30 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   }
 
   Future<void> unretweet() async {
-    if (!state.retweeted) {
+    final tweet = state;
+    if (tweet == null) return;
+
+    if (!tweet.retweeted) {
       log.fine('already not retweeted');
       return;
     }
 
-    state = state.copyWith(
+    state = tweet.copyWith(
       retweeted: false,
-      retweetCount: math.max(0, state.retweetCount - 1),
+      retweetCount: math.max(0, tweet.retweetCount - 1),
     );
 
     try {
-      await _twitterApi.tweetService.unretweet(id: state.id);
+      await _twitterApi.tweetService.unretweet(id: tweet.id);
 
-      log.fine('un-retweeted ${state.id}');
+      log.fine('un-retweeted ${tweet.id}');
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        log.warning('error un-retweeting ${state.id}', e, st);
+        log.warning('error un-retweeting ${tweet.id}', e, st);
 
-        state = state.copyWith(
+        state = tweet.copyWith(
           retweeted: true,
-          retweetCount: state.retweetCount + 1,
+          retweetCount: tweet.retweetCount + 1,
         );
 
         twitterErrorHandler(_read, e, st);
@@ -101,27 +109,30 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   }
 
   Future<void> favorite() async {
-    if (state.favorited) {
+    final tweet = state;
+    if (tweet == null) return;
+
+    if (tweet.favorited) {
       log.fine('already favorited');
       return;
     }
 
-    state = state.copyWith(
+    state = tweet.copyWith(
       favorited: true,
-      favoriteCount: state.favoriteCount + 1,
+      favoriteCount: tweet.favoriteCount + 1,
     );
 
     try {
-      await _twitterApi.tweetService.createFavorite(id: state.id);
+      await _twitterApi.tweetService.createFavorite(id: tweet.id);
 
-      log.fine('favorited ${state.id}');
+      log.fine('favorited ${tweet.id}');
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        log.warning('error favoriting ${state.id}', e, st);
+        log.warning('error favoriting ${tweet.id}', e, st);
 
-        state = state.copyWith(
+        state = tweet.copyWith(
           favorited: false,
-          favoriteCount: math.max(0, state.favoriteCount - 1),
+          favoriteCount: math.max(0, tweet.favoriteCount - 1),
         );
 
         twitterErrorHandler(_read, e, st);
@@ -130,27 +141,30 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   }
 
   Future<void> unfavorite() async {
-    if (!state.favorited) {
+    final tweet = state;
+    if (tweet == null) return;
+
+    if (!tweet.favorited) {
       log.fine('already not favorited');
       return;
     }
 
-    state = state.copyWith(
+    state = tweet.copyWith(
       favorited: false,
-      favoriteCount: math.max(0, state.favoriteCount - 1),
+      favoriteCount: math.max(0, tweet.favoriteCount - 1),
     );
 
     try {
-      await _twitterApi.tweetService.destroyFavorite(id: state.id);
+      await _twitterApi.tweetService.destroyFavorite(id: tweet.id);
 
-      log.fine('un-favorited ${state.id}');
+      log.fine('un-favorited ${tweet.id}');
     } catch (e, st) {
       if (!_actionPerformed(e)) {
-        log.warning('error favoriting ${state.id}', e, st);
+        log.warning('error favoriting ${tweet.id}', e, st);
 
-        state = state.copyWith(
+        state = tweet.copyWith(
           favorited: true,
-          favoriteCount: state.favoriteCount + 1,
+          favoriteCount: tweet.favoriteCount + 1,
         );
 
         twitterErrorHandler(_read, e, st);
@@ -161,14 +175,17 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   Future<void> translate({
     required Locale locale,
   }) async {
+    final tweet = state;
+    if (tweet == null) return;
+
     final translateLanguage =
         _languagePreferences.activeTranslateLanguage(locale);
 
-    final translatable = state.translatable(translateLanguage);
+    final translatable = tweet.translatable(translateLanguage);
 
-    if (state.quote != null && state.quote!.translatable(translateLanguage)) {
+    if (tweet.quote != null && tweet.quote!.translatable(translateLanguage)) {
       // also translate quote if one exist
-      _read(tweetProvider(state.quote!).notifier)
+      _read(tweetProvider(tweet.quote!.originalId).notifier)
           .translate(locale: locale)
           .ignore();
     }
@@ -178,17 +195,17 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
       return;
     }
 
-    state = state.copyWith(isTranslating: true);
+    state = tweet.copyWith(isTranslating: true);
 
     final translation = await _translateService
-        .translate(text: state.visibleText, to: translateLanguage)
+        .translate(text: tweet.visibleText, to: translateLanguage)
         .handleError(logErrorHandler);
 
     if (translation != null && !translation.isTranslated) {
       _messageService.showText('tweet not translated');
     }
 
-    state = state.copyWith(
+    state = tweet.copyWith(
       isTranslating: false,
       translation: translation,
     );
@@ -197,13 +214,16 @@ class TweetNotifier extends StateNotifier<TweetData> with LoggerMixin {
   Future<void> delete({
     VoidCallback? onDeleted,
   }) async {
+    final tweet = state;
+    if (tweet == null) return;
+
     log.fine('deleting tweet');
 
-    final tweet = await _twitterApi.tweetService
-        .destroy(id: state.id, trimUser: true)
+    final result = await _twitterApi.tweetService
+        .destroy(id: tweet.id, trimUser: true)
         .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
 
-    if (tweet != null) {
+    if (result != null) {
       _messageService.showText('tweet deleted');
       onDeleted?.call();
     } else {

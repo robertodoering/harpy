@@ -3,17 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-typedef GalleryEntryBuilder = MediaGalleryEntry Function(int index);
+typedef GalleryEntryBuilder = MediaGalleryEntry? Function(int index);
 
 class MediaGalleryEntry {
   const MediaGalleryEntry({
-    required this.provider,
+    required this.tweet,
     required this.delegates,
     required this.media,
     required this.builder,
   });
 
-  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetData tweet;
   final TweetDelegates delegates;
   final MediaData media;
   final WidgetBuilder builder;
@@ -54,8 +54,10 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
   Widget build(BuildContext context) {
     final entry = widget.builder(_index);
 
+    if (entry == null) return const SizedBox();
+
     return MediaGalleryOverlay(
-      provider: entry.provider,
+      tweet: entry.tweet,
       media: entry.media,
       delegates: entry.delegates,
       actions: widget.actions,
@@ -64,7 +66,8 @@ class _MediaGalleryState extends ConsumerState<MediaGallery> {
         itemCount: widget.itemCount,
         // disallow zooming in on videos
         enableGestures: entry.media.type != MediaType.video,
-        builder: (context, index) => widget.builder(index).builder(context),
+        builder: (context, index) =>
+            widget.builder(index)?.builder(context) ?? const SizedBox(),
         onPageChanged: (index) {
           setState(() => _index = index);
           ref

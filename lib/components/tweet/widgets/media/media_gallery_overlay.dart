@@ -25,14 +25,14 @@ const kDefaultOverlayActions = {
 
 class MediaGalleryOverlay extends ConsumerStatefulWidget {
   const MediaGalleryOverlay({
-    required this.provider,
+    required this.tweet,
     required this.delegates,
     required this.media,
     required this.child,
     this.actions = kDefaultOverlayActions,
   });
 
-  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetData tweet;
   final MediaData media;
   final TweetDelegates delegates;
   final Widget child;
@@ -96,7 +96,9 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final tweet = ref.watch(widget.provider);
+    final tweet = ref.watch(tweetProvider(widget.tweet.originalId));
+
+    if (tweet == null) return const SizedBox();
 
     final overlap = tweet.mediaType != MediaType.video;
 

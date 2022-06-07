@@ -5,26 +5,28 @@ import 'package:harpy/components/components.dart';
 
 class TweetCardContent extends ConsumerWidget {
   const TweetCardContent({
-    required this.provider,
+    required this.tweet,
+    required this.notifier,
     required this.delegates,
     required this.outerPadding,
     required this.innerPadding,
     required this.config,
+    this.index,
   });
 
-  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetData tweet;
+  final TweetNotifier notifier;
   final TweetDelegates delegates;
   final double outerPadding;
   final double innerPadding;
   final TweetCardConfig config;
+  final int? index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = Localizations.localeOf(context);
     final translateLanguage =
         ref.watch(languagePreferencesProvider).activeTranslateLanguage(locale);
-
-    final tweet = ref.watch(provider);
 
     final text = TweetCardElement.text.shouldBuild(tweet, config);
     final translation = TweetCardElement.translation.shouldBuild(tweet, config);
@@ -57,10 +59,15 @@ class TweetCardContent extends ConsumerWidget {
         ),
       if (media)
         TweetCardElement.media: TweetCardMedia(
-          provider: provider,
+          tweet: tweet,
           delegates: delegates,
+          index: index,
         ),
-      if (quote) TweetCardElement.quote: TweetCardQuote(tweet: tweet),
+      if (quote)
+        TweetCardElement.quote: TweetCardQuote(
+          tweet: tweet,
+          index: index,
+        ),
       if (details)
         TweetCardElement.details: TweetCardDetails(
           tweet: tweet,

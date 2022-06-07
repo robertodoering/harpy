@@ -15,10 +15,12 @@ class MediaTimelineMediaList extends ConsumerWidget {
   final BuiltList<MediaTimelineEntry> entries;
 
   Widget _itemBuilder(BuildContext context, Reader read, int index) {
-    final provider = tweetProvider(entries[index].tweet);
+    final provider = tweetProvider(entries[index].tweet.originalId);
 
     var tweet = read(provider);
     var tweetNotifier = read(provider.notifier);
+
+    if (tweet == null) return const SizedBox();
 
     var delegates = defaultTweetDelegates(tweet, tweetNotifier);
 
@@ -32,14 +34,17 @@ class MediaTimelineMediaList extends ConsumerWidget {
             itemCount: entries.length,
             actions: _mediaTimelineOverlayActions,
             builder: (index) {
-              final provider = tweetProvider(entries[index].tweet);
+              final provider = tweetProvider(entries[index].tweet.originalId);
 
               tweet = read(provider);
               tweetNotifier = read(provider.notifier);
-              delegates = defaultTweetDelegates(tweet, tweetNotifier);
+
+              if (tweet == null) return null;
+
+              delegates = defaultTweetDelegates(tweet!, tweetNotifier);
 
               return MediaGalleryEntry(
-                provider: provider,
+                tweet: tweet!,
                 delegates: delegates,
                 media: entries[index].media,
                 builder: (_) {
@@ -57,9 +62,9 @@ class MediaTimelineMediaList extends ConsumerWidget {
                         borderRadius: read(harpyThemeProvider).borderRadius,
                       );
                     case MediaType.gif:
-                      return TweetGif(tweet: tweet, heroTag: heroTag);
+                      return TweetGif(tweet: tweet!, heroTag: heroTag);
                     case MediaType.video:
-                      return TweetGalleryVideo(tweet: tweet, heroTag: heroTag);
+                      return TweetGalleryVideo(tweet: tweet!, heroTag: heroTag);
                   }
                 },
               );

@@ -8,17 +8,18 @@ import 'package:harpy/core/core.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
-    required this.provider,
+    required this.tweet,
     required this.delegates,
+    this.index,
   });
 
-  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetData tweet;
   final TweetDelegates delegates;
+  final int? index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final harpyTheme = ref.watch(harpyThemeProvider);
-    final tweet = ref.watch(provider);
 
     Widget child;
 
@@ -32,8 +33,9 @@ class TweetCardMedia extends ConsumerWidget {
     switch (tweet.mediaType) {
       case MediaType.image:
         child = TweetImages(
-          provider: provider,
+          tweet: tweet,
           delegates: delegates,
+          tweetIndex: index,
           onImageLongPress: (index) => onMediaLongPress(tweet.media[index]),
         );
         break;
@@ -42,6 +44,7 @@ class TweetCardMedia extends ConsumerWidget {
           context,
           tweet: tweet,
           media: tweet.media.single,
+          index: index,
         )}';
 
         child = TweetGif(
@@ -50,7 +53,7 @@ class TweetCardMedia extends ConsumerWidget {
           onGifTap: () => Navigator.of(context).push<void>(
             HeroDialogRoute(
               builder: (_) => MediaGalleryOverlay(
-                provider: provider,
+                tweet: tweet,
                 media: tweet.media.single,
                 delegates: delegates,
                 child: TweetGif(tweet: tweet, heroTag: heroTag),
@@ -65,6 +68,7 @@ class TweetCardMedia extends ConsumerWidget {
           context,
           tweet: tweet,
           media: tweet.media.single,
+          index: index,
         )}';
 
         child = TweetVideo(
@@ -78,7 +82,7 @@ class TweetCardMedia extends ConsumerWidget {
             onVideoTap: () => Navigator.of(context).push<void>(
               HeroDialogRoute(
                 builder: (_) => MediaGalleryOverlay(
-                  provider: provider,
+                  tweet: tweet,
                   media: tweet.media.single,
                   delegates: delegates,
                   child: TweetGalleryVideo(tweet: tweet, heroTag: heroTag),
@@ -175,14 +179,19 @@ String mediaHeroTag(
   BuildContext context, {
   required TweetData tweet,
   required MediaData media,
+  int? index,
 }) {
   final routeSettings = ModalRoute.of(context)?.settings;
+
+  final buffer = StringBuffer('${tweet.hashCode}${media.hashCode}');
 
   if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
     final key = routeSettings.key as ValueKey;
     // key = current route path
-    return '${tweet.hashCode}${media.hashCode}${key.value}';
-  } else {
-    return '${tweet.hashCode}${media.hashCode}';
+    buffer.write('${key.value}');
   }
+
+  if (index != null) buffer.write('$index');
+
+  return '$buffer';
 }

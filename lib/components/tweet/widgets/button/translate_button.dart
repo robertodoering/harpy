@@ -62,9 +62,9 @@ bool _quoteActiveTranslation(
   );
 
   if (quoteTranslatable) {
-    final quote = ref.watch(tweetProvider(tweet.quote!));
+    final quote = ref.watch(tweetProvider(tweet.quote!.originalId));
 
-    return quote.translation != null || quote.isTranslating;
+    return quote?.translation != null || (quote?.isTranslating ?? false);
   } else {
     return false;
   }

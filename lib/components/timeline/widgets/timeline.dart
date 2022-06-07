@@ -86,17 +86,17 @@ class _TimelineState extends ConsumerState<Timeline> {
     }
   }
 
-  Widget _tweetBuilder(TimelineState state, TweetData tweet) {
+  Widget _tweetBuilder(TimelineState state, TweetData tweet, int index) {
     return state.showNewTweetsExist(tweet.originalId)
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               NewTweetsText(state.initialResultsCount),
               verticalSpacer,
-              widget.tweetBuilder(tweet),
+              widget.tweetBuilder(tweet, index),
             ],
           )
-        : widget.tweetBuilder(tweet);
+        : widget.tweetBuilder(tweet, index);
   }
 
   void _providerListener(TimelineState? previous, TimelineState next) {
@@ -170,7 +170,11 @@ class _TimelineState extends ConsumerState<Timeline> {
                 state.tweets.toList(),
                 key: widget.listKey,
                 controller: _controller,
-                tweetBuilder: (tweet) => _tweetBuilder(state, tweet),
+                tweetBuilder: (tweet, index) => _tweetBuilder(
+                  state,
+                  tweet,
+                  index,
+                ),
                 onLayoutFinished: (firstIndex, lastIndex) => _onLayoutFinished(
                   tweets: state.tweets,
                   firstIndex: firstIndex,

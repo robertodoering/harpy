@@ -6,13 +6,15 @@ import 'package:harpy/core/core.dart';
 
 class TweetImages extends ConsumerWidget {
   const TweetImages({
-    required this.provider,
+    required this.tweet,
     required this.delegates,
+    this.tweetIndex,
     this.onImageLongPress,
   });
 
-  final AutoDisposeStateNotifierProvider<TweetNotifier, TweetData> provider;
+  final TweetData tweet;
   final TweetDelegates delegates;
+  final int? tweetIndex;
   final IndexedVoidCallback? onImageLongPress;
 
   void _onImageTap(
@@ -27,7 +29,7 @@ class TweetImages extends ConsumerWidget {
           initialIndex: index,
           itemCount: tweet.media.length,
           builder: (index) => MediaGalleryEntry(
-            provider: provider,
+            tweet: tweet,
             delegates: delegates,
             media: tweet.media[index],
             builder: (_) => TweetGalleryImage(
@@ -36,6 +38,7 @@ class TweetImages extends ConsumerWidget {
                 context,
                 tweet: tweet,
                 media: tweet.media[index],
+                index: tweetIndex,
               )}',
               borderRadius: _borderRadiusForImage(
                 read(harpyThemeProvider).radius,
@@ -54,8 +57,6 @@ class TweetImages extends ConsumerWidget {
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    final tweet = ref.watch(provider);
-
     return TweetImagesLayout(
       onImageTap: (index) => _onImageTap(
         context,
@@ -71,6 +72,7 @@ class TweetImages extends ConsumerWidget {
               context,
               tweet: tweet,
               media: image,
+              index: tweetIndex,
             )}',
             placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-typedef TweetBuilder = Widget Function(TweetData tweet);
+typedef TweetBuilder = Widget Function(TweetData tweet, int index);
 
 /// Signature for a function that is called at the end of layout in the list
 /// builder.
@@ -29,10 +29,15 @@ class TweetList extends ConsumerWidget {
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
 
-  static Widget defaultTweetBuilder(TweetData tweet) => TweetCard(tweet: tweet);
+  static Widget defaultTweetBuilder(TweetData tweet, int index) => TweetCard(
+        tweet: tweet,
+        index: index,
+      );
 
   Widget _itemBuilder(BuildContext context, int index) {
-    return index.isEven ? tweetBuilder(tweets[index ~/ 2]) : verticalSpacer;
+    return index.isEven
+        ? tweetBuilder(tweets[index ~/ 2], index ~/ 2)
+        : verticalSpacer;
   }
 
   @override

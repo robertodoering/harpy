@@ -136,7 +136,7 @@ TweetDelegates defaultTweetDelegates(
       safeLaunchUrl(media.bestUrl);
     },
     onDownloadMedia: _downloadMedia,
-    onShareMedia: (context, read, media) {
+    onShareMedia: (_, __, media) {
       HapticFeedback.lightImpact();
       Share.share(media.bestUrl);
     },
