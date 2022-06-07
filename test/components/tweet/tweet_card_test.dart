@@ -284,11 +284,13 @@ void main() {
       await tester.pumpWidgetBuilder(
         TweetCard(
           tweet: TweetData(
+            originalId: '1',
             createdAt: DateTime.now(),
             user: harpyAppUser,
             text: 'text',
             visibleText: 'text',
             quote: TweetData(
+              originalId: '2',
               createdAt: DateTime.now(),
               user: harpyAppUser,
               text: 'quote text',
