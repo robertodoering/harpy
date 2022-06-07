@@ -59,7 +59,7 @@ information about the progress.
 
 ## About
 
-**harpy** is a fully featured Twitter client that focuses on a nice user experience and great design.
+**harpy** is a feature rich Twitter client that focuses on a nice user experience and great design.
 
 This project aims to provide a good example for a medium-big sized Flutter app
 in hopes that it will be useful for some.
