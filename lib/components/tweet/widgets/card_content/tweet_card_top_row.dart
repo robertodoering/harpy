@@ -57,9 +57,6 @@ class TweetCardTopRow extends ConsumerWidget {
                 if (avatar && name && handle) SizedBox(height: innerPadding),
               ],
               GestureDetector(
-                // treat the whitespace between the avatar and name as a
-                // 'on user tap' gesture
-                behavior: HitTestBehavior.translucent,
                 onTap: () => delegates.onShowUser?.call(context, ref.read),
                 child: Row(
                   children: [
