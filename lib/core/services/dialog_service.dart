@@ -14,7 +14,7 @@ class DialogService {
 
   final Reader _read;
 
-  Future<T?> show<T>({required Widget child}) async {
+  Future<T?> show<T extends Object>({required Widget child}) async {
     assert(_read(routerProvider).navigator != null);
 
     return showDialog<T>(
