@@ -132,7 +132,7 @@ class _SummaryCard extends ConsumerWidget {
               bottomRight: harpyTheme.radius,
             ),
             onTap: isAuthenticated
-                ? () => router.goNamed(
+                ? () => router.pushNamed(
                       UserPage.name,
                       params: {'handle': 'harpy_app'},
                     )
