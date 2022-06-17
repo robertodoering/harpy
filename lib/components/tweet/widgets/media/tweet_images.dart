@@ -74,7 +74,6 @@ class TweetImages extends ConsumerWidget {
               media: image,
               index: tweetIndex,
             )}',
-            placeholderBuilder: (_, __, child) => child,
             child: HarpyImage(
               imageUrl: image.appropriateUrl(mediaPreferences, connectivity),
               fit: BoxFit.cover,
