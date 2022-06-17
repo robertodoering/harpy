@@ -25,7 +25,10 @@ class MediaSettingsPage extends ConsumerWidget {
                   ref.read(downloadPathProvider.notifier).initialize();
                 },
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(title: Text('reset to default')),
+                  HarpyPopupMenuItem(
+                    value: true,
+                    title: Text('reset to default'),
+                  ),
                 ],
               ),
             ],

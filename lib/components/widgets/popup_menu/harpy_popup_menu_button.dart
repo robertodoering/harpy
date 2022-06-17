@@ -5,22 +5,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
 /// A custom popup menu button that calls [showHarpyMenu] to show a menu.
-class HarpyPopupMenuButton<T extends Object> extends ConsumerStatefulWidget {
+class HarpyPopupMenuButton<T> extends ConsumerStatefulWidget {
   const HarpyPopupMenuButton({
     required this.itemBuilder,
     this.onSelected,
+    this.onCancelled,
     this.enabled = true,
   });
 
   final PopupMenuItemBuilder<T> itemBuilder;
-  final PopupMenuItemSelected<T?>? onSelected;
+  final PopupMenuItemSelected<T>? onSelected;
+  final VoidCallback? onCancelled;
   final bool enabled;
 
   @override
   _HarpyPopupMenuButtonState createState() => _HarpyPopupMenuButtonState<T>();
 }
 
-class _HarpyPopupMenuButtonState<T extends Object>
+class _HarpyPopupMenuButtonState<T>
     extends ConsumerState<HarpyPopupMenuButton<T>> {
   void showButtonMenu() {
     final popupMenuTheme = PopupMenuTheme.of(context);
@@ -41,17 +43,20 @@ class _HarpyPopupMenuButtonState<T extends Object>
 
     final items = widget.itemBuilder(context);
 
-    // Only show the menu if there is something to show
     if (items.isNotEmpty) {
-      showHarpyMenu<T?>(
+      showHarpyMenu(
         context: context,
         elevation: popupMenuTheme.elevation,
         items: items,
         position: position,
         shape: popupMenuTheme.shape,
         color: popupMenuTheme.color,
-      ).then<void>((newValue) {
-        if (mounted) {
+      ).then((newValue) {
+        if (!mounted) return;
+
+        if (newValue == null) {
+          widget.onCancelled?.call();
+        } else {
           HapticFeedback.lightImpact();
           widget.onSelected?.call(newValue);
         }
@@ -68,12 +73,12 @@ class _HarpyPopupMenuButtonState<T extends Object>
   }
 }
 
-class HarpyPopupMenuItem<T extends Object> extends PopupMenuEntry<T> {
+class HarpyPopupMenuItem<T> extends PopupMenuEntry<T> {
   const HarpyPopupMenuItem({
+    required this.value,
     this.leading,
     this.title,
     this.trailing,
-    this.value,
     this.enabled = true,
   });
 
@@ -82,6 +87,9 @@ class HarpyPopupMenuItem<T extends Object> extends PopupMenuEntry<T> {
   final Widget? trailing;
 
   /// The value that will be returned by [showMenu] if this entry is selected.
+  ///
+  /// When `null`, [HarpyPopupMenuButton.onCancelled] will be called if this
+  /// item is selected.
   final T? value;
 
   /// Whether the user is permitted to select this item.
@@ -98,7 +106,7 @@ class HarpyPopupMenuItem<T extends Object> extends PopupMenuEntry<T> {
       HarpyPopupMenuItemState<T, HarpyPopupMenuItem<T>>();
 }
 
-class HarpyPopupMenuItemState<T extends Object, W extends HarpyPopupMenuItem<T>>
+class HarpyPopupMenuItemState<T, W extends HarpyPopupMenuItem<T>>
     extends State<W> {
   @override
   Widget build(BuildContext context) {

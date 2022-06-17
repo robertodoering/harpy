@@ -25,7 +25,10 @@ class DisplaySettingsPage extends ConsumerWidget {
                     .read(displayPreferencesProvider.notifier)
                     .defaultSettings(),
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(title: Text('reset to default')),
+                  HarpyPopupMenuItem(
+                    value: true,
+                    title: Text('reset to default'),
+                  ),
                 ],
               ),
             ],

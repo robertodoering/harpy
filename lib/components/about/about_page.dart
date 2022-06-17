@@ -24,7 +24,10 @@ class AboutPage extends ConsumerWidget {
               HarpyPopupMenuButton(
                 onSelected: (_) => showLicensePage(context: context),
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(title: Text('licenses')),
+                  HarpyPopupMenuItem(
+                    value: true,
+                    title: Text('licenses'),
+                  ),
                 ],
               ),
             ],
