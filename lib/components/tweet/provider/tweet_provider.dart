@@ -48,12 +48,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
   Future<void> retweet() async {
     final tweet = state;
-    if (tweet == null) return;
-
-    if (tweet.retweeted) {
-      log.fine('already retweeted');
-      return;
-    }
+    if (tweet == null || tweet.retweeted) return;
 
     state = tweet.copyWith(
       retweeted: true,
@@ -67,10 +62,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
     } catch (e, st) {
       log.warning('error retweeting ${tweet.id}', e, st);
 
-      state = tweet.copyWith(
-        retweeted: false,
-        retweetCount: math.max(0, tweet.retweetCount - 1),
-      );
+      state = tweet;
 
       twitterErrorHandler(_read, e, st);
     }
@@ -78,12 +70,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
   Future<void> unretweet() async {
     final tweet = state;
-    if (tweet == null) return;
-
-    if (!tweet.retweeted) {
-      log.fine('already not retweeted');
-      return;
-    }
+    if (tweet == null || !tweet.retweeted) return;
 
     state = tweet.copyWith(
       retweeted: false,
@@ -98,10 +85,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
       if (!_actionPerformed(e)) {
         log.warning('error un-retweeting ${tweet.id}', e, st);
 
-        state = tweet.copyWith(
-          retweeted: true,
-          retweetCount: tweet.retweetCount + 1,
-        );
+        state = tweet;
 
         twitterErrorHandler(_read, e, st);
       }
@@ -110,12 +94,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
   Future<void> favorite() async {
     final tweet = state;
-    if (tweet == null) return;
-
-    if (tweet.favorited) {
-      log.fine('already favorited');
-      return;
-    }
+    if (tweet == null || tweet.favorited) return;
 
     state = tweet.copyWith(
       favorited: true,
@@ -130,10 +109,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
       if (!_actionPerformed(e)) {
         log.warning('error favoriting ${tweet.id}', e, st);
 
-        state = tweet.copyWith(
-          favorited: false,
-          favoriteCount: math.max(0, tweet.favoriteCount - 1),
-        );
+        state = tweet;
 
         twitterErrorHandler(_read, e, st);
       }
@@ -142,12 +118,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
   Future<void> unfavorite() async {
     final tweet = state;
-    if (tweet == null) return;
-
-    if (!tweet.favorited) {
-      log.fine('already not favorited');
-      return;
-    }
+    if (tweet == null || !tweet.favorited) return;
 
     state = tweet.copyWith(
       favorited: false,
@@ -162,10 +133,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
       if (!_actionPerformed(e)) {
         log.warning('error favoriting ${tweet.id}', e, st);
 
-        state = tweet.copyWith(
-          favorited: true,
-          favoriteCount: tweet.favoriteCount + 1,
-        );
+        state = tweet;
 
         twitterErrorHandler(_read, e, st);
       }
