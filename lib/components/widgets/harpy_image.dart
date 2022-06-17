@@ -72,7 +72,9 @@ class HarpyImage extends StatelessWidget {
                     theme.cardTheme.color!.withOpacity(.3),
                   ],
                 ),
-                child: ColoredBox(color: theme.cardTheme.color!),
+                child: SizedBox.expand(
+                  child: ColoredBox(color: theme.cardTheme.color!),
+                ),
               ),
             )
           : child,

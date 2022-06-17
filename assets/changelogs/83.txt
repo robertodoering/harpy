@@ -1,5 +1,6 @@
 Version 0.9.4
 2022-xx-xx
 
+- Fixed image loading animation not showing
 - Minor bug fixes & improvements
 
