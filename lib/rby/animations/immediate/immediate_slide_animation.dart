@@ -14,7 +14,7 @@ class ImmediateSlideAnimation extends ImmediateImplicitAnimation<Offset> {
   });
 
   @override
-  ImmediateImplictAnimationState<ImmediateImplicitAnimation, Offset>
+  ImmediateImplictAnimationState<ImmediateImplicitAnimation<Offset>, Offset>
       createState() => _ImmediateSlideAnimationState();
 }
 

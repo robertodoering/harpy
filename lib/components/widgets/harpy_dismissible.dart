@@ -18,7 +18,7 @@ class HarpyDismissible extends StatefulWidget {
   final bool enabled;
 
   @override
-  _HarpyDismissibleState createState() => _HarpyDismissibleState();
+  State<HarpyDismissible> createState() => _HarpyDismissibleState();
 }
 
 class _HarpyDismissibleState extends State<HarpyDismissible>

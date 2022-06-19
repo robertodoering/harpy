@@ -25,7 +25,7 @@ class TweetCard extends ConsumerStatefulWidget {
   final int? index;
 
   @override
-  _TweetCardState createState() => _TweetCardState();
+  ConsumerState<TweetCard> createState() => _TweetCardState();
 }
 
 class _TweetCardState extends ConsumerState<TweetCard> {

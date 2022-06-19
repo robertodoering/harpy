@@ -24,7 +24,7 @@ class ClearableTextField extends ConsumerStatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   @override
-  _ClearableTextFieldState createState() => _ClearableTextFieldState();
+  ConsumerState<ClearableTextField> createState() => _ClearableTextFieldState();
 }
 
 class _ClearableTextFieldState extends ConsumerState<ClearableTextField> {

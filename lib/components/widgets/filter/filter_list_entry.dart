@@ -21,7 +21,7 @@ class FilterListEntry extends ConsumerStatefulWidget {
   final ValueChanged<int> onDeleted;
 
   @override
-  _FilterListEntryState createState() => _FilterListEntryState();
+  ConsumerState<FilterListEntry> createState() => _FilterListEntryState();
 }
 
 class _FilterListEntryState extends ConsumerState<FilterListEntry> {

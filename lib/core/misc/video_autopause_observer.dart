@@ -21,7 +21,7 @@ class VideoAutopauseObserver extends RouteObserver {
   final Reader _read;
 
   @override
-  void didPush(Route route, Route? previousRoute) {
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
 
     if (route is! HeroDialogRoute && route is! ModalBottomSheetRoute) {

@@ -25,15 +25,15 @@ class RetweetButton extends ConsumerStatefulWidget {
   final Color? foregroundColor;
 
   @override
-  _RetweetButtonState createState() => _RetweetButtonState();
+  ConsumerState<RetweetButton> createState() => _RetweetButtonState();
 }
 
 class _RetweetButtonState extends ConsumerState<RetweetButton> {
   Future<void> _showMenu() async {
     final popupMenuTheme = PopupMenuTheme.of(context);
-    final renderBox = context.findRenderObject() as RenderBox;
+    final renderBox = context.findRenderObject()! as RenderBox;
     final overlay =
-        Overlay.of(context)!.context.findRenderObject() as RenderBox;
+        Overlay.of(context)!.context.findRenderObject()! as RenderBox;
 
     final position = RelativeRect.fromRect(
       Rect.fromPoints(

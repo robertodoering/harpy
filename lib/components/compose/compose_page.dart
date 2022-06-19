@@ -18,7 +18,7 @@ class ComposePage extends ConsumerStatefulWidget {
   static const name = 'compose';
 
   @override
-  _ComposePageState createState() => _ComposePageState();
+  ConsumerState<ComposePage> createState() => _ComposePageState();
 }
 
 class _ComposePageState extends ConsumerState<ComposePage> {

@@ -189,7 +189,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
     final result = await _twitterApi.tweetService
         .destroy(id: tweet.id, trimUser: true)
-        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (result != null) {
       _messageService.showText('tweet deleted');
@@ -206,14 +206,14 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 /// 327: already retweeted
 /// 144: tweet with id not found (trying to unfavorite a tweet twice) or
 /// trying to delete a tweet that has already been deleted before.
-bool _actionPerformed(dynamic error) {
+bool _actionPerformed(Object error) {
   if (error is Response) {
     try {
-      final Map<String, dynamic> body = jsonDecode(error.body);
-      final List<dynamic>? errors = body['errors'];
+      final body = jsonDecode(error.body) as Map<String, dynamic>;
+      final errors = body['errors'] as List<dynamic>?;
 
       return errors?.any(
-            (dynamic error) =>
+            (error) =>
                 error is Map<String, dynamic> &&
                 (error['code'] == 139 ||
                     error['code'] == 327 ||

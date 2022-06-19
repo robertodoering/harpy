@@ -36,7 +36,7 @@ class _AnimatedTranslateState
     _matrix = visitor(
       _matrix,
       widget.transform,
-      (dynamic value) => Matrix4Tween(begin: value as Matrix4),
+      (value) => Matrix4Tween(begin: value as Matrix4),
     ) as Matrix4Tween?;
   }
 

@@ -13,7 +13,8 @@ class FloatingComposeButton extends ConsumerStatefulWidget {
   final Widget child;
 
   @override
-  _FloatingComposeButtonState createState() => _FloatingComposeButtonState();
+  ConsumerState<FloatingComposeButton> createState() =>
+      _FloatingComposeButtonState();
 }
 
 class _FloatingComposeButtonState extends ConsumerState<FloatingComposeButton> {

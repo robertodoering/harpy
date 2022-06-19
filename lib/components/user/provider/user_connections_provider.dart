@@ -42,10 +42,8 @@ class UserConnectionsNotifier
     state = await _twitterApi.userService
         .friendshipsLookup(screenNames: _handles.toList())
         .then(_mapConnections)
-        .catchError((dynamic e, dynamic st) {
-      logErrorHandler(e, st);
-      return BuiltMap<String, BuiltSet<UserConnection>>();
-    });
+        .handleError(logErrorHandler)
+        .then((value) => value ?? BuiltMap<String, BuiltSet<UserConnection>>());
   }
 
   Future<void> follow(String handle) async {
@@ -60,7 +58,7 @@ class UserConnectionsNotifier
 
     await _twitterApi.userService
         .friendshipsCreate(screenName: handle)
-        .handleError((dynamic e, st) {
+        .handleError((e, st) {
       twitterErrorHandler(_read, e, st);
       if (!mounted) return;
 
@@ -86,7 +84,7 @@ class UserConnectionsNotifier
 
     await _twitterApi.userService
         .friendshipsDestroy(screenName: handle)
-        .handleError((dynamic e, st) {
+        .handleError((e, st) {
       twitterErrorHandler(_read, e, st);
       if (!mounted) return;
 

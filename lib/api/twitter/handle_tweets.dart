@@ -20,8 +20,8 @@ Future<BuiltList<TweetData>> handleTweets(
 }
 
 BuiltList<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
-  final List<Tweet> tweets = arguments[0];
-  final TimelineFilter? filter = arguments[1];
+  final tweets = arguments[0] as List<Tweet>;
+  final filter = arguments[1] as TimelineFilter?;
 
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
@@ -175,7 +175,7 @@ String? _prepareMention(String mention) {
   );
 }
 
-extension on Iterable {
+extension on Iterable<dynamic> {
   bool containsNot(Object? element) {
     return !contains(element);
   }

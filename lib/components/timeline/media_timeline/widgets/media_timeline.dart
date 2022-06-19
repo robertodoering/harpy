@@ -19,7 +19,7 @@ class MediaTimeline extends ConsumerStatefulWidget {
   final List<Widget> endSlivers;
 
   @override
-  _MediaTimelineState createState() => _MediaTimelineState();
+  ConsumerState<MediaTimeline> createState() => _MediaTimelineState();
 }
 
 class _MediaTimelineState extends ConsumerState<MediaTimeline> {

@@ -14,7 +14,7 @@ class ColorPickerDialog extends ConsumerStatefulWidget {
   final ValueChanged<Color>? onColorChanged;
 
   @override
-  _ColorPickerDialogState createState() => _ColorPickerDialogState();
+  ConsumerState<ColorPickerDialog> createState() => _ColorPickerDialogState();
 }
 
 class _ColorPickerDialogState extends ConsumerState<ColorPickerDialog> {

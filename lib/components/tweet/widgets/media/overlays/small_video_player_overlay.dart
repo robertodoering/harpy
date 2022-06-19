@@ -27,7 +27,7 @@ class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
   final VoidCallback? onVideoLongPress;
 
   @override
-  _SmallVideoPlayerOverlayState createState() =>
+  ConsumerState<SmallVideoPlayerOverlay> createState() =>
       _SmallVideoPlayerOverlayState();
 }
 

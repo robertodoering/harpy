@@ -13,7 +13,7 @@ class FindCustomTrendsLocation extends ConsumerStatefulWidget {
   final ValueChanged<Tuple2<String, String>> onSearch;
 
   @override
-  _FindCustomTrendsLocationState createState() =>
+  ConsumerState<FindCustomTrendsLocation> createState() =>
       _FindCustomTrendsLocationState();
 }
 

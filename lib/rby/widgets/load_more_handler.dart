@@ -29,7 +29,7 @@ class LoadMoreHandler extends StatefulWidget {
   final double? extentTrigger;
 
   @override
-  _LoadMoreHandlerState createState() => _LoadMoreHandlerState();
+  State<LoadMoreHandler> createState() => _LoadMoreHandlerState();
 }
 
 class _LoadMoreHandlerState extends State<LoadMoreHandler> {

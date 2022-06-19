@@ -63,7 +63,7 @@ class TweetActionButton extends ConsumerStatefulWidget {
   }
 
   @override
-  _TweetActionButtonState createState() => _TweetActionButtonState();
+  ConsumerState<TweetActionButton> createState() => _TweetActionButtonState();
 }
 
 class _TweetActionButtonState extends ConsumerState<TweetActionButton>

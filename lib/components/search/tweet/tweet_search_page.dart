@@ -13,7 +13,7 @@ class TweetSearchPage extends ConsumerStatefulWidget {
   static const name = 'tweet_search';
 
   @override
-  _TweetSearchPageState createState() => _TweetSearchPageState();
+  ConsumerState<TweetSearchPage> createState() => _TweetSearchPageState();
 }
 
 class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {

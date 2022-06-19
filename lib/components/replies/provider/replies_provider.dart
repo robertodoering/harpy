@@ -83,7 +83,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   Future<BuiltList<TweetData>?> _loadAllReplies(TweetData tweet) async {
     final result = await _twitterApi.tweetSearchService
         .findReplies(tweet)
-        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (result != null) {
       log.fine('found ${result.replies.length} replies');

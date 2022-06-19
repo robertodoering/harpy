@@ -20,7 +20,7 @@ class MediaAutoplay extends ConsumerStatefulWidget {
   final bool enableAutoplay;
 
   @override
-  _MediaAutoplayState createState() => _MediaAutoplayState();
+  ConsumerState<MediaAutoplay> createState() => _MediaAutoplayState();
 }
 
 class _MediaAutoplayState extends ConsumerState<MediaAutoplay> {

@@ -26,7 +26,7 @@ class HarpyTabBar extends ConsumerStatefulWidget {
   final TabController? controller;
 
   @override
-  _HarpyTapBarState createState() => _HarpyTapBarState();
+  ConsumerState<HarpyTabBar> createState() => _HarpyTapBarState();
 }
 
 class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {

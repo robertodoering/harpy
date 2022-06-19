@@ -19,7 +19,7 @@ class VisibilityChangeListener extends StatefulWidget {
   final ValueChanged<bool>? onVisibilityChanged;
 
   @override
-  _VisibilityChangeListenerState createState() =>
+  State<VisibilityChangeListener> createState() =>
       _VisibilityChangeListenerState();
 }
 

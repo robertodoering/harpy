@@ -35,7 +35,7 @@ class Timeline extends ConsumerStatefulWidget {
   final ValueChanged<TweetData>? onUpdatedTweetVisibility;
 
   @override
-  _TimelineState createState() => _TimelineState();
+  ConsumerState<Timeline> createState() => _TimelineState();
 }
 
 class _TimelineState extends ConsumerState<Timeline> {

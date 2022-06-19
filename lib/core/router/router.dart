@@ -85,7 +85,7 @@ final routesProvider = Provider(
                 key: state.pageKey,
                 restorationId: state.pageKey.value,
                 fullscreenDialog: true,
-                child: UserTimelineFilter(user: state.extra as UserData),
+                child: UserTimelineFilter(user: state.extra! as UserData),
               ),
             ),
           ],
@@ -96,7 +96,7 @@ final routesProvider = Provider(
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
             restorationId: state.pageKey.value,
-            child: TweetDetailPage(tweet: state.extra as TweetData),
+            child: TweetDetailPage(tweet: state.extra! as TweetData),
           ),
         ),
         GoRoute(
@@ -117,9 +117,10 @@ final routesProvider = Provider(
             restorationId: state.pageKey.value,
             fullscreenDialog: true,
             child: TimelineFilterCreation(
-              initialTimelineFilter:
-                  (state.extra as Map?)?['initialTimelineFilter'],
-              onSaved: (state.extra as Map?)?['onSaved'],
+              initialTimelineFilter: (state.extra
+                  as Map?)?['initialTimelineFilter'] as TimelineFilter?,
+              onSaved: (state.extra as Map?)?['onSaved']
+                  as ValueChanged<TimelineFilter>?,
             ),
           ),
         ),
@@ -188,8 +189,10 @@ final routesProvider = Provider(
                     restorationId: state.pageKey.value,
                     fullscreenDialog: true,
                     child: TweetSearchFilter(
-                      initialFilter: (state.extra as Map?)?['initialFilter'],
-                      onSaved: (state.extra as Map?)?['onSaved'],
+                      initialFilter: (state.extra as Map?)?['initialFilter']
+                          as TweetSearchFilterData?,
+                      onSaved: (state.extra as Map?)?['onSaved']
+                          as ValueChanged<TweetSearchFilterData>?,
                     ),
                   ),
                 ),
@@ -255,8 +258,8 @@ final routesProvider = Provider(
             key: state.pageKey,
             restorationId: state.pageKey.value,
             child: ComposePage(
-              parentTweet: (state.extra as Map?)?['parentTweet'],
-              quotedTweet: (state.extra as Map?)?['quotedTweet'],
+              parentTweet: (state.extra as Map?)?['parentTweet'] as TweetData?,
+              quotedTweet: (state.extra as Map?)?['quotedTweet'] as TweetData?,
             ),
           ),
         ),
@@ -316,9 +319,11 @@ final routesProvider = Provider(
                     key: state.pageKey,
                     restorationId: state.pageKey.value,
                     child: FontSelectionPage(
-                      title: (state.extra as Map?)?['title'],
-                      selectedFont: (state.extra as Map?)?['selectedFont'],
-                      onChanged: (state.extra as Map?)?['onChanged'],
+                      title: (state.extra as Map?)?['title'] as String,
+                      selectedFont:
+                          (state.extra as Map?)?['selectedFont'] as String,
+                      onChanged: (state.extra as Map?)?['onChanged']
+                          as ValueChanged<String>,
                     ),
                   ),
                 ),

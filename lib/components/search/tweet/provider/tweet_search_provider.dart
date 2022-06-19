@@ -54,7 +54,7 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
         .then(
           (result) => result.statuses?.map(TweetData.fromTweet).toBuiltList(),
         )
-        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (tweets != null) {
       if (tweets.isEmpty) {

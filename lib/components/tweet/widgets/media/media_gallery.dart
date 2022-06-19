@@ -37,7 +37,7 @@ class MediaGallery extends ConsumerStatefulWidget {
   final Set<MediaOverlayActions> actions;
 
   @override
-  _MediaGalleryState createState() => _MediaGalleryState();
+  ConsumerState<MediaGallery> createState() => _MediaGalleryState();
 }
 
 class _MediaGalleryState extends ConsumerState<MediaGallery> {

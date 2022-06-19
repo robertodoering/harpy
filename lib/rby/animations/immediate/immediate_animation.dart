@@ -20,9 +20,6 @@ abstract class ImmediateImplicitAnimation<T> extends StatefulWidget {
   final T end;
   final Curve curve;
   final Duration delay;
-
-  @override
-  ImmediateImplictAnimationState createState();
 }
 
 abstract class ImmediateImplictAnimationState<

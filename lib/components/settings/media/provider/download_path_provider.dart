@@ -49,7 +49,7 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
       );
     } else {
       try {
-        final Map<String, dynamic> json = jsonDecode(downloadPathData);
+        final json = jsonDecode(downloadPathData) as Map<String, dynamic>;
 
         final data = DownloadPathData.fromJson(json);
 

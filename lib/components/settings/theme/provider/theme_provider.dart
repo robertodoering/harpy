@@ -79,7 +79,9 @@ HarpyThemeData? _themeDataFromId(
 
 HarpyThemeData? _decodeThemeData(String themeDataJson) {
   try {
-    return HarpyThemeData.fromJson(jsonDecode(themeDataJson));
+    return HarpyThemeData.fromJson(
+      jsonDecode(themeDataJson) as Map<String, dynamic>,
+    );
   } catch (e, st) {
     Logger.detached('_decodeThemeData')
         .warning('unable to decode custom theme data', e, st);

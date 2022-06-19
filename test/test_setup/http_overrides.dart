@@ -15,7 +15,7 @@ class MockHttpOverrides extends HttpOverrides {
     final client = _MockHttpClient();
 
     when(() => client.getUrl(any())).thenAnswer((invocation) async {
-      final Uri uri = invocation.positionalArguments[0];
+      final uri = invocation.positionalArguments[0] as Uri;
 
       return _MockHttpClientRequest(uri);
     });
@@ -63,10 +63,12 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
         cancelOnError: any(named: 'cancelOnError'),
       ),
     ).thenAnswer((invocation) {
-      final void Function(List<int>) onData = invocation.positionalArguments[0];
-      final void Function() onDone = invocation.namedArguments[#onDone];
-      final Function onError = invocation.namedArguments[#onError];
-      final bool cancelOnError = invocation.namedArguments[#cancelOnError];
+      final onData = invocation.positionalArguments[0] as void Function(
+        List<int>,
+      );
+      final onDone = invocation.namedArguments[#onDone] as void Function();
+      final onError = invocation.namedArguments[#onError] as Function;
+      final cancelOnError = invocation.namedArguments[#cancelOnError] as bool;
 
       return Stream<List<int>>.fromIterable([imageData]).listen(
         onData,

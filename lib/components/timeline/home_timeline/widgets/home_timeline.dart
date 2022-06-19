@@ -13,7 +13,7 @@ class HomeTimeline extends ConsumerStatefulWidget {
   final double? scrollToTopOffset;
 
   @override
-  _HomeTimelineState createState() => _HomeTimelineState();
+  ConsumerState<HomeTimeline> createState() => _HomeTimelineState();
 }
 
 class _HomeTimelineState extends ConsumerState<HomeTimeline> {

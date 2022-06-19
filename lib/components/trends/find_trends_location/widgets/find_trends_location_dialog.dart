@@ -12,7 +12,8 @@ class FindTrendsLocationDialog extends ConsumerStatefulWidget {
   const FindTrendsLocationDialog();
 
   @override
-  _FindLocationDialogState createState() => _FindLocationDialogState();
+  ConsumerState<FindTrendsLocationDialog> createState() =>
+      _FindLocationDialogState();
 }
 
 class _FindLocationDialogState extends ConsumerState<FindTrendsLocationDialog>

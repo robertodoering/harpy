@@ -9,7 +9,7 @@ class SplashPage extends ConsumerStatefulWidget {
   static const name = 'splash';
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {

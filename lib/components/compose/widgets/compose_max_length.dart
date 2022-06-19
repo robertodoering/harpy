@@ -12,7 +12,7 @@ class ComposeMaxLength extends StatefulWidget {
   final ComposeTextController controller;
 
   @override
-  _ComposeMaxLengthState createState() => _ComposeMaxLengthState();
+  State<ComposeMaxLength> createState() => _ComposeMaxLengthState();
 }
 
 class _ComposeMaxLengthState extends State<ComposeMaxLength> {

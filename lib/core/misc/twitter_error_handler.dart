@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 
 /// Handles an error from a Twitter api request to potentially show a message to
 /// the user.
-void twitterErrorHandler(Reader read, dynamic error, [StackTrace? stackTrace]) {
+void twitterErrorHandler(Reader read, Object error, [StackTrace? stackTrace]) {
   Logger('error handler').info(
     'handling twitter error',
     error,

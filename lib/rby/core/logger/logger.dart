@@ -51,7 +51,7 @@ void initializeLogger({String? prefix}) {
       print(color('ERROR'));
 
       if (rec.error is Response) {
-        print(color((rec.error as Response).body));
+        print(color((rec.error! as Response).body));
       } else {
         print(color(rec.error.toString()));
       }

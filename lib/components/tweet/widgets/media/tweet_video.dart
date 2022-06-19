@@ -154,7 +154,7 @@ class TweetFullscreenVideo extends ConsumerStatefulWidget {
   final TweetData tweet;
 
   @override
-  _FullscreenVideoState createState() => _FullscreenVideoState();
+  ConsumerState<TweetFullscreenVideo> createState() => _FullscreenVideoState();
 }
 
 class _FullscreenVideoState extends ConsumerState<TweetFullscreenVideo> {

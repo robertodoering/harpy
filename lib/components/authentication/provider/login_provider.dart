@@ -83,7 +83,7 @@ class _Login with LoggerMixin {
           _read(routerProvider).goNamed(LoginPage.name);
         }
       },
-      failure: (dynamic e, st) {
+      failure: (e, st) {
         log.warning(
           'login failed\n\n'
           'If this issue is persistent, see\n'

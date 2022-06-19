@@ -21,7 +21,7 @@ class FontSelectionPage extends ConsumerStatefulWidget {
   static const name = 'font_selection';
 
   @override
-  _FontSelectionPageState createState() => _FontSelectionPageState();
+  ConsumerState<FontSelectionPage> createState() => _FontSelectionPageState();
 }
 
 class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {

@@ -26,7 +26,7 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
   final VoidCallback? onVideoLongPress;
 
   @override
-  _StaticVideoPlayerOverlayState createState() =>
+  State<StaticVideoPlayerOverlay> createState() =>
       _StaticVideoPlayerOverlayState();
 }
 

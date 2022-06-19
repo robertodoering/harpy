@@ -10,7 +10,7 @@ class CustomThemeName extends ConsumerStatefulWidget {
   final CustomThemeNotifier notifier;
 
   @override
-  _CustomThemeNameState createState() => _CustomThemeNameState();
+  ConsumerState<CustomThemeName> createState() => _CustomThemeNameState();
 }
 
 class _CustomThemeNameState extends ConsumerState<CustomThemeName> {

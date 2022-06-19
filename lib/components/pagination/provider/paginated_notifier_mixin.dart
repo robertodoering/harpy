@@ -53,8 +53,8 @@ mixin PaginatedNotifierMixin<R, D>
   Future<void> loadMore() async {
     if (lock()) return;
 
-    if (state is PaginatedStateData && state.canLoadMore) {
-      final currentState = state as PaginatedStateData;
+    if (state is PaginatedStateData<D> && state.canLoadMore) {
+      final currentState = state as PaginatedStateData<D>;
 
       state = PaginatedState.loadingMore(data: currentState.data);
 

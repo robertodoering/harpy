@@ -177,7 +177,7 @@ class _EncryptedPreferences extends Preferences with LoggerMixin {
     return _encrypter.encrypt(super._buildKey(unencryptedKey), iv: iv).base64;
   }
 
-  void _setAndEncryptValue(String unencryptedKey, dynamic unencryptedValue) {
+  void _setAndEncryptValue(String unencryptedKey, Object unencryptedValue) {
     final iv = IV.fromSecureRandom(16);
     final encrypted = _encrypter.encrypt('$unencryptedValue', iv: iv);
 

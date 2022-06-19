@@ -36,13 +36,13 @@ class TranslateService {
   }
 
   Translation _transformResponse(Response response) {
-    final List<dynamic> body = jsonDecode(response.body);
+    final body = jsonDecode(response.body) as List<dynamic>;
 
     final original = StringBuffer();
     final translated = StringBuffer();
 
-    for (final List<dynamic> translationText in body[0]) {
-      original.write(translationText[1]);
+    for (final translationText in body[0] as List<dynamic>) {
+      original.write((translationText as List<dynamic>)[1]);
       translated.write(translationText[0]);
     }
 
@@ -50,7 +50,7 @@ class TranslateService {
       original: original.toString(),
       text: translated.toString(),
       // ignore: avoid_dynamic_calls
-      languageCode: body.last[0][0],
+      languageCode: body.last[0][0] as String?,
       // ignore: avoid_dynamic_calls
       language: kTranslateLanguages[body.last[0][0]],
     );

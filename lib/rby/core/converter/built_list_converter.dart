@@ -8,7 +8,7 @@ class BuiltListConverter<T> implements JsonConverter<BuiltList<T>, Object?> {
 
   @override
   BuiltList<T> fromJson(Object? jsonList) {
-    return (jsonList as List<dynamic>).map((dynamic json) {
+    return (jsonList! as List<dynamic>).map((json) {
       if (json is Map<String, dynamic>) {
         return valueFromJson(json);
       } else {

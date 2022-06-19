@@ -29,7 +29,7 @@ class ScrollDirectionListener extends ConsumerStatefulWidget {
   final int? depth;
 
   @override
-  _ScrollDirectionListenerState createState() =>
+  ConsumerState<ScrollDirectionListener> createState() =>
       _ScrollDirectionListenerState();
 }
 

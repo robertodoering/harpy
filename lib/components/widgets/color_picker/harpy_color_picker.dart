@@ -25,7 +25,7 @@ class HarpyColorPicker extends StatefulWidget {
   final double contentPadding;
 
   @override
-  _ColorPickerState createState() => _ColorPickerState();
+  State<HarpyColorPicker> createState() => _ColorPickerState();
 }
 
 class _ColorPickerState extends State<HarpyColorPicker> {

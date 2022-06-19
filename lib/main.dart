@@ -40,7 +40,7 @@ class HarpyApp extends ConsumerStatefulWidget {
   const HarpyApp();
 
   @override
-  _HarpyAppState createState() => _HarpyAppState();
+  ConsumerState<HarpyApp> createState() => _HarpyAppState();
 }
 
 class _HarpyAppState extends ConsumerState<HarpyApp> {

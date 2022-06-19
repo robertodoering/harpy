@@ -17,7 +17,7 @@ class AnimatedNumber extends StatefulWidget {
   final NumberFormat numberFormat;
 
   @override
-  _AnimatedNumberState createState() => _AnimatedNumberState();
+  State<AnimatedNumber> createState() => _AnimatedNumberState();
 }
 
 class _AnimatedNumberState extends State<AnimatedNumber>

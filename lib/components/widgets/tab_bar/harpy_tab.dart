@@ -31,7 +31,7 @@ class HarpyTab extends ConsumerStatefulWidget {
   }
 
   @override
-  _HarpyTabState createState() => _HarpyTabState();
+  ConsumerState<HarpyTab> createState() => _HarpyTabState();
 }
 
 class _HarpyTabState extends ConsumerState<HarpyTab>

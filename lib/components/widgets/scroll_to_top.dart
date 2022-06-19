@@ -28,7 +28,7 @@ class ScrollToTop extends ConsumerStatefulWidget {
   final ScrollController? controller;
 
   @override
-  _ScrollToTopState createState() => _ScrollToTopState();
+  ConsumerState<ScrollToTop> createState() => _ScrollToTopState();
 }
 
 class _ScrollToTopState extends ConsumerState<ScrollToTop> {

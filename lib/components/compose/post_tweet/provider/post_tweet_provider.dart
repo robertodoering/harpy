@@ -72,7 +72,7 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
           autoPopulateReplyMetadata: true,
         )
         .then(TweetData.fromTweet)
-        .handleError((dynamic e, st) {
+        .handleError((e, st) {
       if (e is Response) {
         final message = _responseErrorMessage(e.body);
         log.info(
@@ -254,8 +254,9 @@ extension on MediaType {
 /// actual:30528 (MediaId: snf:1338982061273714688)"}]}
 String? _responseErrorMessage(String body) {
   try {
-    // ignore: avoid_dynamic_calls
-    return jsonDecode(body)['errors'][0]['message'];
+    final json = jsonDecode(body) as Map<String, dynamic>;
+    final errors = json['errors'] as List<dynamic>;
+    return (errors[0] as Map<String, dynamic>)['message'] as String;
   } catch (e, st) {
     logErrorHandler(e, st);
     return null;

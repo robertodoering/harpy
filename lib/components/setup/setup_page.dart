@@ -14,7 +14,7 @@ class SetupPage extends ConsumerStatefulWidget {
   static const name = 'setup';
 
   @override
-  _SetupPageState createState() => _SetupPageState();
+  ConsumerState<SetupPage> createState() => _SetupPageState();
 }
 
 class _SetupPageState extends ConsumerState<SetupPage> {

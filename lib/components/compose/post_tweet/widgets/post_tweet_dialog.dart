@@ -31,7 +31,7 @@ class PostTweetDialog extends ConsumerStatefulWidget {
   final MediaType? mediaType;
 
   @override
-  _PostTweetDialogState createState() => _PostTweetDialogState();
+  ConsumerState<PostTweetDialog> createState() => _PostTweetDialogState();
 }
 
 class _PostTweetDialogState extends ConsumerState<PostTweetDialog> {

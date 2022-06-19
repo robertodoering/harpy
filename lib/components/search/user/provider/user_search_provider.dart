@@ -44,7 +44,7 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
             (newUser) => oldUsers.any((oldUser) => newUser.id == oldUser.id),
           ),
         )
-        .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (newUsers != null) {
       log.fine('found ${newUsers.length} new users');

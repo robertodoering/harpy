@@ -186,7 +186,7 @@ String mediaHeroTag(
   final buffer = StringBuffer('${tweet.hashCode}${media.hashCode}');
 
   if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
-    final key = routeSettings.key as ValueKey;
+    final key = routeSettings.key! as ValueKey;
     // key = current route path
     buffer.write('${key.value}');
   }

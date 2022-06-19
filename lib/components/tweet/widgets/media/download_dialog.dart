@@ -17,7 +17,7 @@ class DownloadDialog extends ConsumerStatefulWidget {
   final MediaType type;
 
   @override
-  _DownloadDialogState createState() => _DownloadDialogState();
+  ConsumerState<DownloadDialog> createState() => _DownloadDialogState();
 }
 
 class _DownloadDialogState extends ConsumerState<DownloadDialog> {

@@ -17,7 +17,7 @@ class UserPage extends ConsumerStatefulWidget {
   static const name = 'user';
 
   @override
-  _UserPageState createState() => _UserPageState();
+  ConsumerState<UserPage> createState() => _UserPageState();
 }
 
 class _UserPageState extends ConsumerState<UserPage> {

@@ -15,7 +15,7 @@ class TimelineFilterSelection extends ConsumerStatefulWidget {
       TimelineFilterSelectionState> provider;
 
   @override
-  _TimelineFilterSelectionState createState() =>
+  ConsumerState<TimelineFilterSelection> createState() =>
       _TimelineFilterSelectionState();
 }
 

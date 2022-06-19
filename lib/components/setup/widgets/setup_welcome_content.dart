@@ -12,7 +12,8 @@ class SetupWelcomeContent extends ConsumerStatefulWidget {
   final VoidCallback onStart;
 
   @override
-  _SetupWelcomeContentState createState() => _SetupWelcomeContentState();
+  ConsumerState<SetupWelcomeContent> createState() =>
+      _SetupWelcomeContentState();
 }
 
 class _SetupWelcomeContentState extends ConsumerState<SetupWelcomeContent>

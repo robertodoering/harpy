@@ -39,7 +39,9 @@ class HomeTabConfigurationNotifier extends StateNotifier<HomeTabConfiguration>
       state = HomeTabConfiguration.defaultConfiguration();
     } else {
       try {
-        final configuration = HomeTabConfiguration.fromJson(jsonDecode(json));
+        final configuration = HomeTabConfiguration.fromJson(
+          jsonDecode(json) as Map<String, dynamic>,
+        );
 
         // verify configuration validity
         if (configuration.defaultEntries.length !=

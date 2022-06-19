@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+@immutable
 class BubblesColor {
   const BubblesColor({
     required this.primary,
@@ -36,6 +37,7 @@ class BubblesColor {
       );
 }
 
+@immutable
 class CircleColor {
   const CircleColor({
     required this.start,
@@ -87,7 +89,7 @@ class BubbleAnimation extends StatefulWidget {
   );
 
   @override
-  _BubbleAnimationState createState() => _BubbleAnimationState();
+  State<BubbleAnimation> createState() => _BubbleAnimationState();
 }
 
 class _BubbleAnimationState extends State<BubbleAnimation> {

@@ -11,7 +11,7 @@ class ComposeTweetCard extends ConsumerStatefulWidget {
   const ComposeTweetCard();
 
   @override
-  _ComposeTweetCardState createState() => _ComposeTweetCardState();
+  ConsumerState<ComposeTweetCard> createState() => _ComposeTweetCardState();
 }
 
 class _ComposeTweetCardState extends ConsumerState<ComposeTweetCard>

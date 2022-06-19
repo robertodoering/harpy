@@ -19,7 +19,8 @@ class HarpyPopupMenuButton<T> extends ConsumerStatefulWidget {
   final bool enabled;
 
   @override
-  _HarpyPopupMenuButtonState createState() => _HarpyPopupMenuButtonState<T>();
+  ConsumerState<HarpyPopupMenuButton<T>> createState() =>
+      _HarpyPopupMenuButtonState<T>();
 }
 
 class _HarpyPopupMenuButtonState<T>

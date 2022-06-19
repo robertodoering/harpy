@@ -46,7 +46,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
     final responses = await Future.wait([
       _twitterApi.listsService.ownerships(userId: _userId),
       _twitterApi.listsService.subscriptions(userId: _userId),
-    ]).handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+    ]).handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (responses != null && responses.length == 2) {
       paginatedOwnerships = responses[0];
@@ -109,7 +109,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
             userId: _userId,
             cursor: currentState.ownershipsCursor,
           )
-          .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+          .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
       if (paginatedOwnerships != null) {
         final newOwnerships = paginatedOwnerships.lists!
@@ -150,7 +150,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
             userId: _userId,
             cursor: currentState.subscriptionsCursor,
           )
-          .handleError((dynamic e, st) => twitterErrorHandler(_read, e, st));
+          .handleError((e, st) => twitterErrorHandler(_read, e, st));
 
       if (paginatedSubscriptions != null) {
         final newSubscriptions =

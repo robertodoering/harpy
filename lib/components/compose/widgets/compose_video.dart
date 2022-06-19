@@ -17,7 +17,7 @@ class ComposeVideo extends StatefulWidget {
   final PlatformFile media;
 
   @override
-  _ComposeVideoState createState() => _ComposeVideoState();
+  State<ComposeVideo> createState() => _ComposeVideoState();
 }
 
 class _ComposeVideoState extends State<ComposeVideo> {

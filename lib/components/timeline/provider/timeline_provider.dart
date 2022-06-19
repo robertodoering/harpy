@@ -137,7 +137,7 @@ abstract class TimelineNotifier<T extends Object>
           return tweets;
         })
         .then((tweets) => handleTweets(tweets, filter))
-        .handleError((dynamic e, st) => twitterErrorHandler(read, e, st));
+        .handleError((e, st) => twitterErrorHandler(read, e, st));
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweets');
@@ -183,7 +183,7 @@ abstract class TimelineNotifier<T extends Object>
             return tweets;
           })
           .then((tweets) => handleTweets(tweets, filter))
-          .handleError((dynamic e, st) => twitterErrorHandler(read, e, st));
+          .handleError((e, st) => twitterErrorHandler(read, e, st));
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');

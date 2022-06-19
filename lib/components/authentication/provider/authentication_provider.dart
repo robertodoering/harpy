@@ -92,7 +92,7 @@ class Authentication with LoggerMixin {
     final user = await twitterApi.userService
         .usersShow(userId: userId)
         .then(UserData.fromUser)
-        .handleError((dynamic e, st) {
+        .handleError((e, st) {
       error = e;
       logErrorHandler(e, st);
     });

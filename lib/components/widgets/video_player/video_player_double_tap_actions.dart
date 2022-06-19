@@ -14,7 +14,7 @@ class VideoPlayerDoubleTapActions extends StatefulWidget {
   final bool compact;
 
   @override
-  _VideoPlayerDoubleTapActionsState createState() =>
+  State<VideoPlayerDoubleTapActions> createState() =>
       _VideoPlayerDoubleTapActionsState();
 }
 

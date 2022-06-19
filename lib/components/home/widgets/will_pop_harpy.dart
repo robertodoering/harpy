@@ -11,7 +11,7 @@ class WillPopHarpy extends ConsumerStatefulWidget {
   final Widget child;
 
   @override
-  _WillPopHarpyState createState() => _WillPopHarpyState();
+  ConsumerState<WillPopHarpy> createState() => _WillPopHarpyState();
 }
 
 class _WillPopHarpyState extends ConsumerState<WillPopHarpy> {

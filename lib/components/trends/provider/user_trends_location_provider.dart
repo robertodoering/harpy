@@ -14,7 +14,9 @@ final userTrendsLocationProvider = Provider(
 
     if (jsonString.isNotEmpty) {
       try {
-        return TrendsLocationData.fromJson(jsonDecode(jsonString));
+        return TrendsLocationData.fromJson(
+          jsonDecode(jsonString) as Map<String, dynamic>,
+        );
       } catch (e) {
         // ignore
       }

@@ -6,7 +6,7 @@ class ProviderLogger extends ProviderObserver {
 
   @override
   void didAddProvider(
-    ProviderBase provider,
+    ProviderBase<dynamic> provider,
     Object? value,
     ProviderContainer container,
   ) {
@@ -19,7 +19,7 @@ class ProviderLogger extends ProviderObserver {
 
   @override
   void didUpdateProvider(
-    ProviderBase provider,
+    ProviderBase<dynamic> provider,
     Object? previousValue,
     Object? newValue,
     ProviderContainer container,
@@ -37,7 +37,7 @@ class ProviderLogger extends ProviderObserver {
 
   @override
   void didDisposeProvider(
-    ProviderBase provider,
+    ProviderBase<dynamic> provider,
     ProviderContainer container,
   ) {
     if (provider.name != null) {
@@ -45,7 +45,7 @@ class ProviderLogger extends ProviderObserver {
     }
   }
 
-  String _msg(String type, ProviderBase provider) {
+  String _msg(String type, ProviderBase<dynamic> provider) {
     final buffer = StringBuffer(type.padRight(9))
       ..write('"${provider.name}" ')
       ..write('${provider.runtimeType}');

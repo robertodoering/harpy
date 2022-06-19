@@ -144,7 +144,7 @@ class TwitterText extends ConsumerStatefulWidget {
   final EntityTapped<UserMentionData>? onUserMentionTap;
 
   @override
-  _TwitterTextState createState() => _TwitterTextState();
+  ConsumerState<TwitterText> createState() => _TwitterTextState();
 }
 
 class _TwitterTextState extends ConsumerState<TwitterText> {
