@@ -27,7 +27,11 @@ class TweetCardName extends ConsumerWidget {
             Flexible(
               child: FittedBox(
                 child: Text(
-                  tweet.user.name,
+                  // The additional space prevents an issue where a name
+                  // consisting of only zero width characters cause the
+                  // rendering of the fitted box to throw exceptions due to the
+                  // text having a width of 0.
+                  '${tweet.user.name} ',
                   style: theme.textTheme.bodyText2!
                       .copyWith(height: 1)
                       .apply(fontSizeDelta: style.sizeDelta),
@@ -35,7 +39,7 @@ class TweetCardName extends ConsumerWidget {
               ),
             ),
             if (tweet.user.verified) ...[
-              const SizedBox(width: 4),
+              const SizedBox(width: 2),
               Icon(
                 CupertinoIcons.checkmark_seal_fill,
                 size: 16 + style.sizeDelta,

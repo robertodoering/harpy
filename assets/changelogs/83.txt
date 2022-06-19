@@ -3,6 +3,7 @@ Version 0.9.4
 
 - Added option to hide sensitive media
   - Can be enabled in `settings › general`
+- Fixed an issue where a name with zero-width characters caused the Tweet to not display
 - Fixed image loading animation not showing
 - Fixed spamming like / retweet caused the count to decrement (Thanks AliceGrey!)
 - Minor bug fixes & improvements

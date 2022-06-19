@@ -50,6 +50,46 @@ void main() {
       expect(find.byType(TweetCardTopRow), findsOneWidget);
     });
 
+    testGoldens('builds top row with empty name and handle', (tester) async {
+      await tester.pumpWidgetBuilder(
+        TweetCard(
+          tweet: TweetData(
+            createdAt: DateTime.now(),
+            user: harpyAppUser.copyWith(
+              name: '',
+              handle: '',
+            ),
+          ),
+        ),
+        wrapper: buildListItemBase,
+        surfaceSize: Device.phone.size,
+      );
+
+      await screenMatchesGolden(tester, 'top_row_empty_name');
+
+      expect(find.byType(TweetCardTopRow), findsOneWidget);
+    });
+
+    testGoldens('builds top row with zero width name', (tester) async {
+      await tester.pumpWidgetBuilder(
+        TweetCard(
+          tweet: TweetData(
+            createdAt: DateTime.now(),
+            user: harpyAppUser.copyWith(
+              name: '\u064E',
+              handle: '',
+            ),
+          ),
+        ),
+        wrapper: buildListItemBase,
+        surfaceSize: Device.phone.size,
+      );
+
+      await screenMatchesGolden(tester, 'top_row_zero_width_name');
+
+      expect(find.byType(TweetCardTopRow), findsOneWidget);
+    });
+
     testGoldens('builds text', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
