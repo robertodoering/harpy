@@ -42,8 +42,12 @@ class _SensitiveMediaOverlayState extends ConsumerState<SensitiveMediaOverlay> {
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: ColoredBox(
                         color: theme.colorScheme.primary.withOpacity(.7),
-                        child: const Center(
-                          child: Icon(CupertinoIcons.eye_slash_fill, size: 48),
+                        child: Center(
+                          child: Icon(
+                            CupertinoIcons.eye_slash_fill,
+                            size: 48,
+                            color: theme.colorScheme.onPrimary,
+                          ),
                         ),
                       ),
                     ),
