@@ -1,7 +1,8 @@
 Version 0.9.4
 2022-xx-xx
 
+- Added option to hide sensitive media
+  - Can be enabled in `settings › general`
 - Fixed image loading animation not showing
 - Fixed spamming like / retweet caused the count to decrement (Thanks AliceGrey!)
 - Minor bug fixes & improvements
-
