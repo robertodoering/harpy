@@ -25,6 +25,7 @@ class TweetData with _$TweetData {
     @Default(0) int favoriteCount,
     @Default(false) bool retweeted,
     @Default(false) bool favorited,
+    @Default(false) bool possiblySensitive,
 
     /// The BCP 47 language identifier corresponding to the machine-detected
     /// language of the Tweet text, or `und` if no language could be detected.
@@ -102,6 +103,7 @@ class TweetData with _$TweetData {
       favoriteCount: tweet.favoriteCount ?? 0,
       retweeted: tweet.retweeted ?? false,
       favorited: tweet.favorited ?? false,
+      possiblySensitive: tweet.possiblySensitive ?? false,
       lang: tweet.lang ?? 'und',
       user: UserData.fromUser(tweet.user),
       entities: EntitiesData.fromEntities(tweet.entities),

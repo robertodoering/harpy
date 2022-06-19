@@ -106,9 +106,12 @@ class MediaTimelineMedia extends ConsumerWidget {
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
       borderRadius: harpyTheme.borderRadius,
-      child: AspectRatio(
-        aspectRatio: entry.media.aspectRatioDouble,
-        child: child,
+      child: SensitiveMediaOverlay(
+        tweet: entry.tweet,
+        child: AspectRatio(
+          aspectRatio: entry.media.aspectRatioDouble,
+          child: child,
+        ),
       ),
     );
   }

@@ -30,6 +30,9 @@ class SetupFinishContent extends ConsumerWidget {
                 const _CrashReports(),
                 verticalSpacer,
                 verticalSpacer,
+                const _HideSensitiveMedia(),
+                verticalSpacer,
+                verticalSpacer,
                 _FollowHarpy(connections: connections, notifier: notifier),
               ],
             ),
@@ -73,10 +76,32 @@ class _CrashReports extends ConsumerWidget {
           'anonymously report errors to improve harpy',
           style: theme.textTheme.subtitle2,
         ),
-        onChanged: (value) {
-          HapticFeedback.lightImpact();
-          generalNotifier.setCrashReports(value);
-        },
+        onChanged: generalNotifier.setCrashReports,
+      ),
+    );
+  }
+}
+
+class _HideSensitiveMedia extends ConsumerWidget {
+  const _HideSensitiveMedia();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final harpyTheme = ref.watch(harpyThemeProvider);
+    final media = ref.watch(mediaPreferencesProvider);
+    final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
+
+    return Card(
+      child: HarpySwitchTile(
+        value: media.hidePossiblySensitive,
+        borderRadius: harpyTheme.borderRadius,
+        title: Text(
+          'hide possibly sensitive media',
+          style: theme.textTheme.headline5,
+          maxLines: 2,
+        ),
+        onChanged: mediaNotifier.setHidePossiblySensitive,
       ),
     );
   }
