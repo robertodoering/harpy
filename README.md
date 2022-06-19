@@ -36,14 +36,8 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 <br>
 
 <p align="center">
-harpy is currently still in development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
+harpy is actively being development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
 information about the progress.
-</p>
-
-<br>
-
-<p align="center">
-  <a href="https://ko-fi.com/robertodoering" target="_blank"><img height="35" src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
 </p>
 
 <br>
@@ -65,28 +59,27 @@ information about the progress.
 
 ## About
 
-harpy is a fully featured Twitter client that focuses on great UI/UX and a clean experience.
+**harpy** is a feature rich Twitter client that focuses on a nice user experience and great design.
 
 This project aims to provide a good example for a medium-big sized Flutter app
 in hopes that it will be useful for some.
 
 Some interesting features of the app include:
 
-* [flutter_bloc](https://pub.dev/packages/flutter_bloc) for the main state management, using blocs and cubits.
-* [get_it](https://pub.dev/packages/get_it) as a service provider that includes
-  the ability to navigate and to show on screen messages from anywhere in the app.
-* [sentry](https://pub.dev/packages/sentry) as an online error tracking service to report unhandled exceptions.
-* Fully featured theme customization.
+* [riverpod](https://pub.dev/packages/riverpod)
+  * for state management using the included [state_notifier](https://pub.dev/packages/state_notifier)
+  * for dependency injection / service locators with easily mockable dependencies
+* [go_router](https://pub.dev/packages/go_router) for routing
+* [sentry](https://pub.dev/packages/sentry) as an online error tracking service to report unhandled exceptions
+* Fully featured theme customization
 * Fully featured video player using the
   [video_player](https://pub.dev/packages/video_player) package.
 * A 'pro' and 'free' android
-  [product flavor](https://developer.android.com/studio/build/build-variants).
+  [product flavor](https://developer.android.com/studio/build/build-variants)
+* Many customized animations sprinkled around the app, including custom logo animations created with [Rive](https://flare.rive.app/a/rbyd/files/recent/all)
 
 
 ### Development / Setup
-
-harpy is being released in the Play Store for Android, therefore only
-Android devices are used for testing the builds.
 
 Run the build runner once after cloning the project
 - `flutter packages pub run build_runner build`

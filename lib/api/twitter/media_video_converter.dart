@@ -1,10 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
-import 'package:harpy/core/core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/rby/rby.dart';
 import 'package:path_provider/path_provider.dart';
 
-class MediaVideoConverter with HarpyLogger {
+final mediaVideoConverter = Provider(
+  (ref) => MediaVideoConverter(),
+  name: 'mediaVideoConverter',
+);
+
+class MediaVideoConverter with LoggerMixin {
   final FlutterFFmpeg _ffmpeg = FlutterFFmpeg();
 
   /// Uses [FlutterFFmpeg] to convert the [sourcePath] file to follow the
@@ -22,8 +28,6 @@ class MediaVideoConverter with HarpyLogger {
     log.fine(
       'converting video from: $sourcePath to destinationPath: $outputPath',
     );
-
-    // TODO: also limit length of video
 
     final result = await _ffmpeg.execute(
       // override existing output

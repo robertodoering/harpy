@@ -1,0 +1,6 @@
+Version 0.6.8
+2021-06-27
+
+- Added copying user handle on long press in user screen (Thanks B8CA0939!) 
+- Fixed tweets not updating correctly when rebuilt on screen after favoriting / retweeting a tweet
+- Minor style improvements

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/harpy_widgets/harpy_widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/rby.dart';
 
-class FilterListEntry extends StatefulWidget {
+// FIXME: refactor
+
+class FilterListEntry extends ConsumerStatefulWidget {
   const FilterListEntry({
     required this.labelText,
     required this.activeFilters,
@@ -18,10 +21,10 @@ class FilterListEntry extends StatefulWidget {
   final ValueChanged<int> onDeleted;
 
   @override
-  _FilterListEntryState createState() => _FilterListEntryState();
+  ConsumerState<FilterListEntry> createState() => _FilterListEntryState();
 }
 
-class _FilterListEntryState extends State<FilterListEntry> {
+class _FilterListEntryState extends ConsumerState<FilterListEntry> {
   final TextEditingController _controller = TextEditingController();
 
   bool _showAddButton = false;
@@ -40,12 +43,15 @@ class _FilterListEntryState extends State<FilterListEntry> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _controller.dispose();
+
+    super.dispose();
   }
 
-  List<Widget> _buildActiveFilters(Config config, ThemeData theme) {
+  List<Widget> _buildActiveFilters(
+    ThemeData theme,
+    DisplayPreferences display,
+  ) {
     if (widget.activeFilters.isNotEmpty) {
       final foregroundColor = theme.colorScheme.onSecondary;
       final backgroundColor = theme.colorScheme.secondary;
@@ -53,11 +59,12 @@ class _FilterListEntryState extends State<FilterListEntry> {
       return [
         smallVerticalSpacer,
         Wrap(
-          spacing: config.smallPaddingValue,
-          runSpacing: config.smallPaddingValue,
+          spacing: display.smallPaddingValue,
+          runSpacing: display.smallPaddingValue,
           children: [
             for (int i = 0; i < widget.activeFilters.length; i++)
-              FadeAnimation(
+              ImmediateOpacityAnimation(
+                duration: kShortAnimationDuration,
                 child: Chip(
                   backgroundColor: backgroundColor,
                   deleteIconColor: foregroundColor,
@@ -83,8 +90,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
     Widget child;
 
     if (_showAddButton) {
-      child = HarpyButton.flat(
-        dense: true,
+      child = HarpyButton.icon(
         icon: const Icon(CupertinoIcons.add),
         onTap: _controller.text.isEmpty
             ? null
@@ -97,21 +103,16 @@ class _FilterListEntryState extends State<FilterListEntry> {
       child = const SizedBox();
     }
 
-    return AnimatedSwitcher(
-      duration: kShortAnimationDuration,
-      switchInCurve: Curves.easeInOut,
-      switchOutCurve: Curves.easeInOut,
-      child: child,
-    );
+    return HarpyAnimatedSwitcher(child: child);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final config = context.watch<ConfigCubit>().state;
+    final display = ref.watch(displayPreferencesProvider);
 
     return Padding(
-      padding: config.edgeInsetsSymmetric(horizontal: true),
+      padding: display.edgeInsetsSymmetric(horizontal: true),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +136,7 @@ class _FilterListEntryState extends State<FilterListEntry> {
               ),
             ],
           ),
-          ..._buildActiveFilters(config, theme),
+          ..._buildActiveFilters(theme, display),
         ],
       ),
     );

@@ -1,22 +1,22 @@
 {
-	"Media query": {
-		"prefix": "mqof",
+	"display": {
+		"prefix": "display",
 		"scope": "dart",
-		"body": "final mediaQuery = MediaQuery.of(context);"
+		"body": "final display = ref.watch(displayPreferencesProvider);"
 	},
-	"Theme": {
-		"prefix": "thof",
+	"padding": {
+		"prefix": "padding",
 		"scope": "dart",
-		"body": "final theme = Theme.of(context);"
+		"body": "final padding = ref.watch(displayPreferencesProvider).edgeInsets;"
 	},
-	"HarpyTheme": {
-		"prefix": "harpythof",
+	"router": {
+		"prefix": "router",
 		"scope": "dart",
-		"body": "final harpyTheme = context.watch<HarpyTheme>();"
+		"body": "final router = ref.watch(routerProvider);"
 	},
-	"Config": {
-		"prefix": "configof",
+	"harpy theme": {
+		"prefix": "harpytheme",
 		"scope": "dart",
-		"body": "final config = context.watch<ConfigCubit>().state;"
+		"body": "final harpyTheme = ref.watch(harpyThemeProvider);"
 	},
 }

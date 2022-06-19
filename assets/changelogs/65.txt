@@ -1,0 +1,9 @@
+Version 0.7.2
+2021-11-08
+
+- Added font customization (pro) (thanks Nino)
+  - In `settings › display`
+- Updated user profile banner
+- Fixed retweet menu text color for light themes (thanks @Miku_998)
+- Fixed a bug that caused the composed text to reset when replying or quoting a tweet
+- Fixed a bug that caused the new mentions notifications to always show

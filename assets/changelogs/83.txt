@@ -1,0 +1,7 @@
+Version 0.9.4
+2022-xx-xx
+
+- Fixed image loading animation not showing
+- Fixed spamming like / retweet caused the count to decrement (Thanks AliceGrey!)
+- Minor bug fixes & improvements
+

@@ -1,0 +1,12 @@
+Version 0.3.2
+2021-01-09
+
+- Added performance mode setting
+  - Reduces animations and effects
+  - In `settings › general › performance mode
+
+- Added beta info screen
+- Improved layout padding for Tweets
+- Increased button hit target size
+- Fixed media overlay icon color for bright themes
+- Fixed a rare issue where some Tweet text was unable to be displayed

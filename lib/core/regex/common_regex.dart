@@ -19,3 +19,12 @@ final urlRegex = RegExp(
 final emojiRegex = RegExp(
   r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])',
 );
+
+/// Matches a string that can form a valid hex color string.
+///
+/// * Starting with an optional `#`
+/// * 1 to 8 digits in base 16
+final validHexColorCharactersRegex = RegExp('^#?[0-9a-fA-F]{0,8}');
+
+/// A single capturing group with invalid filename characters.
+final invalidFilenameRegex = RegExp(r'''[|\\?*<":>+\[\]/']''');

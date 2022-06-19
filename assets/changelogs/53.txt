@@ -1,0 +1,7 @@
+Version 0.6.5
+2021-06-07
+
+- Added font size customization
+- Improved tweet timeline scrolling performance
+- Fixed memory issues in the media timeline
+- Minor style improvements

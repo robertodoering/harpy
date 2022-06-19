@@ -1,0 +1,24 @@
+Version 0.9.0
+2022-05-20
+
+This updates comes with a complete technical rewrite of the app to generally improve performance and allow for easier implementation of new features.
+Thanks a lot for for testing harpy and providing feedback!
+
+- Fixed tweeting with mentions was not possible
+- Fixed saving images & videos didn't show up in media galleries
+- Added android 12 overscroll effect
+- Added showing exact follower / following count on long press
+- Improved video player
+  - Updated design
+  - Added quality selection
+  - Seeking is now more sensitive and easier
+  - Videos will now pause when off-screen
+  - Videos will now pause when another video is played
+- Improved loading images
+  - Image loading will now be retried up to 5 times before showing the error placeholder
+- Added option to remember scroll positions in lists when switching tabs
+  - In `settings › general` (disabled by default)
+- Fixed applying invalid tweet search filter was possible
+- Date & time formatting is now based on device locale
+- Horizontally scrolling in the home page is now less sensitive
+- Many style and UX improvements

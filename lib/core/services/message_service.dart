@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/core/core.dart';
+
+final messageServiceProvider = Provider(
+  (ref) => MessageService(read: ref.read),
+  name: 'MessageServiceProvider',
+);
 
 class MessageService {
-  const MessageService();
+  const MessageService({
+    required Reader read,
+  }) : _read = read;
 
-  HarpyMessageState get messageState => HarpyMessage.globalKey.currentState!;
+  final Reader _read;
 
-  /// Shows a global [SnackBar] using the [HarpyMessage].
-  void show(String message, [SnackBarAction? action]) =>
-      messageState.show(message);
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showText(
+    String text,
+  ) {
+    return showSnackbar(SnackBar(content: Text(text)));
+  }
 
-  /// Shows a global custom [snackBar]using the [HarpyMessage].
-  void showCustom(SnackBar snackBar) => messageState.showCustom(snackBar);
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackbar(
+    SnackBar snackBar,
+  ) {
+    final context = _read(routerProvider).navigator?.context;
+    assert(context != null);
+
+    if (context != null) {
+      final messenger = ScaffoldMessenger.maybeOf(context);
+      assert(messenger != null);
+
+      return messenger?.showSnackBar(snackBar);
+    } else {
+      return null;
+    }
+  }
 }

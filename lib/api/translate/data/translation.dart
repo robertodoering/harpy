@@ -1,27 +1,21 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'translation.g.dart';
+part 'translation.freezed.dart';
 
-@JsonSerializable(
-  fieldRename: FieldRename.snake,
-)
-class Translation {
-  const Translation({
-    this.original,
-    this.text,
-    this.languageCode,
-    this.language,
-  });
+@freezed
+class Translation with _$Translation {
+  factory Translation({
+    required String original,
+    required String text,
+    required String? languageCode,
+    required String? language,
+  }) = _Translation;
 
-  factory Translation.fromJson(Map<String, dynamic> json) =>
-      _$TranslationFromJson(json);
+  Translation._();
 
-  final String? original;
-  final String? text;
-  final String? languageCode;
-  final String? language;
-
-  bool get unchanged => original == text;
-
-  Map<String, dynamic> toJson() => _$TranslationToJson(this);
+  /// Whether the translated text differs from the original.
+  ///
+  /// This is not the case when the translation service is unable to translate
+  /// the text.
+  late final isTranslated = original != text;
 }

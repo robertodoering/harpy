@@ -1,0 +1,8 @@
+Version 0.5.0
+2021-03-17
+
+- Added user media timeline
+- Added user likes timeline
+- Added pinch to zoom for images
+- Added text to show whether a user is following you in the user profile screen
+- Minor style improvements

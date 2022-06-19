@@ -1,25 +1,52 @@
 import 'package:dart_twitter_api/twitter_api.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 
-class UserData extends Equatable {
-  const UserData({
-    this.id = '',
-    this.name = '',
-    this.handle = '',
-    this.verified = false,
-    this.followersCount = 0,
-    this.friendsCount = 0,
-    this.profileImageUrl = '',
-    this.profileBannerUrl,
-    this.createdAt,
-    this.location,
-    this.description,
-    this.descriptionTranslation,
-    this.userUrl,
-    this.userDescriptionUrls = const [],
-    this.userDescriptionEntities = const EntitiesData(),
-  });
+part 'user_data.freezed.dart';
+
+@freezed
+class UserData with _$UserData {
+  factory UserData({
+    @Default('') String id,
+
+    /// The display name of the user.
+    ///
+    /// e.g. 'harpy'.
+    @Default('') String name,
+
+    /// The handle or alias that this user identifies themselves with.
+    ///
+    /// Handles are unique but subject to change.
+    ///
+    /// Typically a maximum of 15 characters long, but some historical accounts
+    /// may exist with longer names.
+    ///
+    /// e.g. 'harpy_app'.
+    @Default('') String handle,
+    @Default(false) bool verified,
+    @Default(0) int followersCount,
+
+    /// The number of users this user is following.
+    @Default(0) int friendsCount,
+    @Default('') String profileImageUrl,
+
+    // optional user fields
+
+    String? profileBannerUrl,
+    DateTime? createdAt,
+    String? location,
+    String? description,
+
+    // custom fields
+
+    UrlData? userUrl,
+    @Default(<UrlData>[]) List<UrlData> userDescriptionUrls,
+    Translation? descriptionTranslation,
+    @Default(EntitiesData()) EntitiesData userDescriptionEntities,
+
+    /// Whether the description is currently being translated.
+    @Default(false) bool isTranslatingDescription,
+  }) = _UserData;
 
   /// Parses the [UserData] from the [TwitterApi] returned [User] object.
   factory UserData.fromUser(User? user) {
@@ -55,125 +82,19 @@ class UserData extends Equatable {
     );
   }
 
-  // required user fields
+  UserData._();
 
-  final String id;
-
-  /// The display name of the user.
-  ///
-  /// e.g. 'Google Developers'.
-  final String name;
-
-  /// The handle or alias that this user identifies themselves with.
-  ///
-  /// Handles are unique but subject to change.
-  ///
-  /// Typically a maximum of 15 characters long, but some historical accounts
-  /// may exist with longer names.
-  ///
-  /// e.g. 'googledevs'.
-  final String handle;
-
-  final bool verified;
-  final int followersCount;
-
-  /// The number of users this user is following.
-  final int friendsCount;
-
-  final String profileImageUrl;
-
-  // optional user fields
-
-  final String? profileBannerUrl;
-  final DateTime? createdAt;
-  final String? location;
-  final String? description;
-
-  // custom fields
-
-  final UrlData? userUrl;
-  final List<UrlData> userDescriptionUrls;
-  final Translation? descriptionTranslation;
-
-  final EntitiesData userDescriptionEntities;
-
-  UserData copyWith({
-    String? id,
-    String? name,
-    String? handle,
-    bool? verified,
-    int? followersCount,
-    int? friendsCount,
-    String? profileBannerUrl,
-    String? profileImageUrl,
-    DateTime? createdAt,
-    String? location,
-    String? description,
-    UrlData? userUrl,
-    List<UrlData>? userDescriptionUrls,
-    Translation? descriptionTranslation,
-    EntitiesData? userDescriptionEntities,
-  }) {
-    return UserData(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      handle: handle ?? this.handle,
-      verified: verified ?? this.verified,
-      followersCount: followersCount ?? this.followersCount,
-      friendsCount: friendsCount ?? this.friendsCount,
-      profileBannerUrl: profileBannerUrl ?? this.profileBannerUrl,
-      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
-      createdAt: createdAt ?? this.createdAt,
-      location: location ?? this.location,
-      description: description ?? this.description,
-      userUrl: userUrl ?? this.userUrl,
-      userDescriptionUrls: userDescriptionUrls ?? this.userDescriptionUrls,
-      descriptionTranslation:
-          descriptionTranslation ?? this.descriptionTranslation,
-      userDescriptionEntities:
-          userDescriptionEntities ?? this.userDescriptionEntities,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        id,
-        name,
-        handle,
-        verified,
-        followersCount,
-        friendsCount,
-        profileBannerUrl,
-        profileImageUrl,
-        createdAt,
-        location,
-        description,
-        userUrl,
-        userDescriptionUrls,
-        descriptionTranslation,
-        userDescriptionEntities,
-      ];
-}
-
-extension UserDataExtension on UserData {
-  bool get hasDescriptionTranslation => descriptionTranslation != null;
-
-  bool get hasDescription => description != null && description!.isNotEmpty;
-
-  bool get hasUrl => userUrl != null;
-
-  bool get hasLocation => location != null && location!.isNotEmpty;
-
-  bool get hasCreatedAt => createdAt != null;
-
-  bool get hasBanner => profileBannerUrl != null;
-
-  String get appropriateUserImageUrl =>
-      profileImageUrl.replaceFirst('_normal', '_bigger');
-
-  String get originalUserImageUrl => profileImageUrl.replaceAll('_normal', '');
-
-  String get appropriateUserBannerUrl => '$profileBannerUrl/web_retina';
+  late final hasDescription = description != null && description!.isNotEmpty;
+  late final hasUrl = userUrl != null;
+  late final hasLocation = location != null && location!.isNotEmpty;
+  late final hasCreatedAt = createdAt != null;
+  late final hasBanner = profileBannerUrl != null;
+  late final appropriateUserImageUrl = profileImageUrl.replaceFirst(
+    '_normal',
+    '_bigger',
+  );
+  late final originalUserImageUrl = profileImageUrl.replaceAll('_normal', '');
+  late final appropriateUserBannerUrl = '$profileBannerUrl/1500x500';
 }
 
 EntitiesData _userDescriptionEntities(
@@ -184,11 +105,11 @@ EntitiesData _userDescriptionEntities(
     final descriptionEntities = parseEntities(description);
 
     return descriptionEntities.copyWith(
-      urls: userDescriptionUrls,
+      urls: userDescriptionUrls.toList(),
     );
   } else {
     return EntitiesData(
-      urls: userDescriptionUrls,
+      urls: userDescriptionUrls.toList(),
     );
   }
 }

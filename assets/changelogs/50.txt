@@ -1,0 +1,6 @@
+Version 0.6.2
+2021-05-17
+
+- Added viewing full sized images in the media timeline (Removed image crop)
+- Fixed timeline jumping when loading images
+- Fixed user profile screen transition
