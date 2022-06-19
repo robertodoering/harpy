@@ -24,6 +24,10 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
             cropImage: preferences.getBool('cropImage', false),
             autoplayGifs: preferences.getInt('autoplayMedia', 1),
             autoplayVideos: preferences.getInt('autoplayVideos', 2),
+            hidePossiblySensitive: preferences.getBool(
+              'hidePossiblySensitive',
+              false,
+            ),
             openLinksExternally: preferences.getBool(
               'openLinksExternally',
               false,
@@ -40,6 +44,7 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
     setCropImage(false);
     setAutoplayGifs(1);
     setAutoplayVideos(2);
+    setHidePossiblySensitive(false);
     setOpenLinksExternally(false);
     setShowDownloadDialog(true);
     setDownloadPathData('');
@@ -64,6 +69,11 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
   void setAutoplayVideos(int value) {
     state = state.copyWith(autoplayVideos: value);
     _preferences.setInt('autoplayVideos', value);
+  }
+
+  void setHidePossiblySensitive(bool value) {
+    state = state.copyWith(hidePossiblySensitive: value);
+    _preferences.setBool('hidePossiblySensitive', value);
   }
 
   void setOpenLinksExternally(bool value) {
@@ -113,8 +123,12 @@ class MediaPreferences with _$MediaPreferences {
     /// 2: never autoplay
     required int autoplayVideos,
 
+    /// Whether possibly sensitive (NSFW) media should be hidden by default.
+    required bool hidePossiblySensitive,
+
     /// Whether links should open externally instead of using a built in web
     /// view.
+    // NOTE: not currently used
     required bool openLinksExternally,
 
     /// Whether the download dialog should show when downloading media.

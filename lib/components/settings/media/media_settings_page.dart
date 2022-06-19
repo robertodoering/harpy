@@ -86,6 +86,16 @@ class _MediaSettingsList extends ConsumerWidget {
           ),
         ),
         verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.eye_slash_fill),
+            title: const Text('hide possibly sensitive media'),
+            value: media.hidePossiblySensitive,
+            borderRadius: harpyTheme.borderRadius,
+            onChanged: mediaNotifier.setHidePossiblySensitive,
+          ),
+        ),
+        verticalSpacer,
         ExpansionCard(
           title: const Text('autoplay'),
           children: [

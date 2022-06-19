@@ -203,6 +203,7 @@ export 'tweet/widgets/media/overlays/small_video_player_overlay.dart';
 export 'tweet/widgets/media/overlays/static_video_player_overlay.dart';
 export 'tweet/widgets/media/overlays/video_player_actions.dart';
 export 'tweet/widgets/media/overlays/video_player_overlay_mixin.dart';
+export 'tweet/widgets/media/sensitive_media_overlay.dart';
 export 'tweet/widgets/media/tweet_gif.dart';
 export 'tweet/widgets/media/tweet_images.dart';
 export 'tweet/widgets/media/tweet_images_layout.dart';
