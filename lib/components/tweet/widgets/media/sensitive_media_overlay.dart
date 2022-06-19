@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,16 +36,13 @@ class _SensitiveMediaOverlayState extends ConsumerState<SensitiveMediaOverlay> {
                     _showOverlay
                 ? GestureDetector(
                     onTap: () => setState(() => _showOverlay = false),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: ColoredBox(
-                        color: theme.colorScheme.primary.withOpacity(.7),
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.eye_slash_fill,
-                            size: 48,
-                            color: theme.colorScheme.onPrimary,
-                          ),
+                    child: ColoredBox(
+                      color: theme.colorScheme.primary,
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.eye_slash_fill,
+                          size: 48,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                     ),
