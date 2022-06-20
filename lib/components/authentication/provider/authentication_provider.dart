@@ -103,7 +103,7 @@ class Authentication with LoggerMixin {
       final retry = await _read(dialogServiceProvider)
           .show<bool>(child: const RetryAuthenticationDialog());
 
-      if (retry != null && retry) {
+      if (retry ?? false) {
         return _initializeUser(userId);
       }
     }
