@@ -39,7 +39,7 @@ dependencies:
   flutter_markdown: ^0.6.10
   flutter_riverpod: ^2.0.0-dev.9
   freezed_annotation: ^2.0.3
-  go_router: ^3.0.1
+  go_router: ^4.0.0
   google_fonts: ^3.0.0
   http: ^0.13.3
   humanizer: ^2.0.0
@@ -55,7 +55,7 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   package_info_plus: ^1.3.0
   path_provider: ^2.0.3
-  permission_handler: ^9.2.0
+  permission_handler: ^10.0.0
   photo_view:
     # photo_view fork with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git

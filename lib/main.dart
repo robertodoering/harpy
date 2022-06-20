@@ -69,6 +69,8 @@ class _HarpyAppState extends ConsumerState<HarpyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      routeInformationProvider:
+          ref.watch(routerProvider).routeInformationProvider,
       routeInformationParser: ref.watch(routerProvider).routeInformationParser,
       routerDelegate: ref.watch(routerProvider).routerDelegate,
       builder: (_, child) => AnnotatedRegion(

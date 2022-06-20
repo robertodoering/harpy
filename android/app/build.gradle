@@ -50,7 +50,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-  compileSdk 31
+  compileSdk 33
 
   defaultConfig {
     minSdk 21
