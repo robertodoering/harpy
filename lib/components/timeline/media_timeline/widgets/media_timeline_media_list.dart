@@ -73,8 +73,8 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
     final entry = widget.entries[widget.index];
     final provider = tweetProvider(entry.tweet.originalId);
 
-    var tweet = ref.read(provider);
-    var tweetNotifier = ref.read(provider.notifier);
+    var tweet = ref.watch(provider);
+    var tweetNotifier = ref.watch(provider.notifier);
 
     if (tweet == null) return const SizedBox();
 
