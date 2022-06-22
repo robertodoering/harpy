@@ -73,7 +73,9 @@ Widget _mapEntryContent({
           scrollToTopOffset: scrollToTopOffset,
         );
       case 'media':
-        return const HomeMediaTimeline();
+        return HomeMediaTimeline(
+          scrollToTopOffset: scrollToTopOffset,
+        );
       case 'mentions':
         return MentionsTimeline(
           beginSlivers: const [HomeTopSliverPadding()],
@@ -82,9 +84,10 @@ Widget _mapEntryContent({
           scrollToTopOffset: scrollToTopOffset,
         );
       case 'search':
-        return const SearchPageContent(
-          beginSlivers: [HomeTopSliverPadding()],
-          endSlivers: [HomeBottomSliverPadding()],
+        return SearchPageContent(
+          beginSlivers: const [HomeTopSliverPadding()],
+          endSlivers: const [HomeBottomSliverPadding()],
+          scrollToTopOffset: scrollToTopOffset,
         );
       default:
         return const SizedBox();

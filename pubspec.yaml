@@ -19,6 +19,7 @@ dependencies:
   device_info_plus: ^4.0.0
   download_manager:
     git: https://github.com/robertodoering/download_manager
+  dynamic_color: ^1.4.0
   encrypt: ^5.0.1
   file_picker: ^4.0.1
   flare_flutter :

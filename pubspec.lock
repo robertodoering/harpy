@@ -304,6 +304,13 @@ packages:
       url: "https://github.com/robertodoering/download_manager"
     source: git
     version: "0.0.0"
+  dynamic_color:
+    dependency: "direct main"
+    description:
+      name: dynamic_color
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   encrypt:
     dependency: "direct main"
     description:

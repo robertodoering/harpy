@@ -8,6 +8,7 @@ import 'package:harpy/rby/rby.dart';
 class MediaTimeline extends ConsumerStatefulWidget {
   const MediaTimeline({
     required this.provider,
+    this.scrollToTopOffset,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
   });
@@ -15,6 +16,7 @@ class MediaTimeline extends ConsumerStatefulWidget {
   final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
       provider;
 
+  final double? scrollToTopOffset;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
 
@@ -62,6 +64,7 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
 
     return ScrollToTop(
       controller: _controller,
+      bottomPadding: widget.scrollToTopOffset,
       child: LoadMoreHandler(
         controller: _controller!,
         listen: timelineState.canLoadMore,

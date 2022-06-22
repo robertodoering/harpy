@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -51,6 +52,15 @@ final darkThemeProvider = StateProvider(
     );
   },
   name: 'DarkThemeProvider',
+);
+
+// TODO: maybe initialize and override?
+// TODO: re-create when app comes into foreground
+final materialYouThemeProvider = FutureProvider(
+  (ref) async {
+    final palette = await DynamicColorPlugin.getCorePalette();
+  },
+  name: 'DynamicThemeProvider',
 );
 
 final customHarpyThemesProvider = StateProvider(

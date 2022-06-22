@@ -23,10 +23,12 @@ class SearchPage extends ConsumerWidget {
 
 class SearchPageContent extends ConsumerWidget {
   const SearchPageContent({
+    this.scrollToTopOffset,
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
   });
 
+  final double? scrollToTopOffset;
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
 
@@ -35,6 +37,7 @@ class SearchPageContent extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return ScrollToTop(
+      bottomPadding: scrollToTopOffset,
       child: CustomScrollView(
         slivers: [
           ...beginSlivers,
