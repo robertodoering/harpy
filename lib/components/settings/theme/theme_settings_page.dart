@@ -15,6 +15,7 @@ class ThemeSettingsPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(title: Text('theme')),
+          _MaterialYouThemes(),
           _PredefinedThemes(),
           if (isPro) _CustomThemes(),
           SliverToBoxAdapter(child: smallVerticalSpacer),
@@ -22,6 +23,96 @@ class ThemeSettingsPage extends ConsumerWidget {
           if (isFree) _LockedProThemes(),
           SliverBottomPadding(),
         ],
+      ),
+    );
+  }
+}
+
+class _MaterialYouThemes extends ConsumerWidget {
+  const _MaterialYouThemes();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final display = ref.watch(displayPreferencesProvider);
+    final brightness = ref.watch(platformBrightnessProvider);
+    final themePreferences = ref.watch(themePreferencesProvider);
+    final notifier = ref.watch(themePreferencesProvider.notifier);
+
+    final lightThemeId = themePreferences.lightThemeId;
+    final darkThemeId = themePreferences.darkThemeId;
+
+    final materialYouLight = ref.watch(materialYouLightProvider);
+    final materialYouDark = ref.watch(materialYouDarkProvider);
+    final lightData = materialYouLight.asData?.value;
+    final darkData = materialYouDark.asData?.value;
+
+    return SliverPadding(
+      padding: display.edgeInsetsSymmetric(horizontal: true),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate.fixed([
+          if (lightData != null)
+            ThemeCard(
+              HarpyTheme(
+                data: lightData,
+                fontSizeDelta: display.fontSizeDelta,
+                displayFont: display.displayFont,
+                bodyFont: display.bodyFont,
+                paddingValue: display.paddingValue,
+              ),
+              selectedLightTheme: lightThemeId == -2,
+              selectedDarkTheme: darkThemeId == -2,
+              onTap: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newLightThemeId:
+                    isFree || brightness == Brightness.light ? -2 : null,
+                newDarkThemeId:
+                    isFree || brightness == Brightness.dark ? -2 : null,
+              ),
+              onSelectLightTheme: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newLightThemeId: -2,
+              ),
+              onSelectDarkTheme: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newDarkThemeId: -2,
+              ),
+            ),
+          if (lightData != null && darkData != null) smallVerticalSpacer,
+          if (darkData != null)
+            ThemeCard(
+              HarpyTheme(
+                data: darkData,
+                fontSizeDelta: display.fontSizeDelta,
+                displayFont: display.displayFont,
+                bodyFont: display.bodyFont,
+                paddingValue: display.paddingValue,
+              ),
+              selectedLightTheme: lightThemeId == -1,
+              selectedDarkTheme: darkThemeId == -1,
+              onTap: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newLightThemeId:
+                    isFree || brightness == Brightness.light ? -1 : null,
+                newDarkThemeId:
+                    isFree || brightness == Brightness.dark ? -1 : null,
+              ),
+              onSelectLightTheme: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newLightThemeId: -1,
+              ),
+              onSelectDarkTheme: () => selectTheme(
+                themePreferences: themePreferences,
+                themePreferencesNotifier: notifier,
+                newDarkThemeId: -1,
+              ),
+            ),
+          if (lightData != null || darkData != null) smallVerticalSpacer,
+        ]),
       ),
     );
   }

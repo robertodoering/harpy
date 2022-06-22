@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -26,8 +25,17 @@ final lightThemeProvider = StateProvider(
     final customThemes = ref.watch(customHarpyThemesProvider);
     final display = ref.watch(displayPreferencesProvider);
 
+    final materialYouLight = ref.watch(materialYouLightProvider);
+    final materialYouDark = ref.watch(materialYouDarkProvider);
+
     return HarpyTheme(
-      data: _themeDataFromId(lightThemeId, customThemes) ?? predefinedThemes[1],
+      data: _themeDataFromId(
+            lightThemeId,
+            customThemes: customThemes,
+            materialYouLight: materialYouLight.asData?.value,
+            materialYouDark: materialYouDark.asData?.value,
+          ) ??
+          predefinedThemes[1],
       fontSizeDelta: display.fontSizeDelta,
       displayFont: display.displayFont,
       bodyFont: display.bodyFont,
@@ -43,8 +51,17 @@ final darkThemeProvider = StateProvider(
     final customThemes = ref.watch(customHarpyThemesProvider);
     final display = ref.watch(displayPreferencesProvider);
 
+    final materialYouLight = ref.watch(materialYouLightProvider);
+    final materialYouDark = ref.watch(materialYouDarkProvider);
+
     return HarpyTheme(
-      data: _themeDataFromId(darkThemeId, customThemes) ?? predefinedThemes[0],
+      data: _themeDataFromId(
+            darkThemeId,
+            customThemes: customThemes,
+            materialYouLight: materialYouLight.asData?.value,
+            materialYouDark: materialYouDark.asData?.value,
+          ) ??
+          predefinedThemes[0],
       fontSizeDelta: display.fontSizeDelta,
       displayFont: display.displayFont,
       bodyFont: display.bodyFont,
@@ -52,15 +69,6 @@ final darkThemeProvider = StateProvider(
     );
   },
   name: 'DarkThemeProvider',
-);
-
-// TODO: maybe initialize and override?
-// TODO: re-create when app comes into foreground
-final materialYouThemeProvider = FutureProvider(
-  (ref) async {
-    final palette = await DynamicColorPlugin.getCorePalette();
-  },
-  name: 'DynamicThemeProvider',
 );
 
 final customHarpyThemesProvider = StateProvider(
@@ -72,11 +80,23 @@ final customHarpyThemesProvider = StateProvider(
   name: 'CustomThemesProvider',
 );
 
+/// Returns the appropriate theme data based on the id.
+///
+/// -2: material you light
+/// -1: material you dark
+/// 0..10: predefined theme (+ reserved)
+/// 11+: custom theme
 HarpyThemeData? _themeDataFromId(
-  int id,
-  BuiltList<HarpyThemeData> customThemes,
-) {
-  if (id >= 0 && id < predefinedThemes.length) {
+  int id, {
+  required BuiltList<HarpyThemeData> customThemes,
+  required HarpyThemeData? materialYouLight,
+  required HarpyThemeData? materialYouDark,
+}) {
+  if (id == -2) {
+    return materialYouLight;
+  } else if (id == -1) {
+    return materialYouDark;
+  } else if (id >= 0 && id < predefinedThemes.length) {
     return predefinedThemes[id];
   } else if (id >= 10) {
     if (id - 10 < customThemes.length) {
