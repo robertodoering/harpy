@@ -1,6 +1,7 @@
 Version 0.9.4
 2022-xx-xx
 
+- Added **Material You** light and dark themes (for Android 12+)
 - Added option to hide sensitive media
   - Can be enabled in `settings › media`
 - Fixed image loading animation not showing
