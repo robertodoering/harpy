@@ -50,7 +50,7 @@ class _MaterialYouThemes extends ConsumerWidget {
       padding: display.edgeInsetsSymmetric(horizontal: true),
       sliver: SliverList(
         delegate: SliverChildListDelegate.fixed([
-          if (lightData != null)
+          if (lightData != null) ...[
             ThemeCard(
               HarpyTheme(
                 data: lightData,
@@ -80,8 +80,9 @@ class _MaterialYouThemes extends ConsumerWidget {
                 newDarkThemeId: -2,
               ),
             ),
-          if (lightData != null && darkData != null) smallVerticalSpacer,
-          if (darkData != null)
+            smallVerticalSpacer,
+          ],
+          if (darkData != null) ...[
             ThemeCard(
               HarpyTheme(
                 data: darkData,
@@ -111,7 +112,8 @@ class _MaterialYouThemes extends ConsumerWidget {
                 newDarkThemeId: -1,
               ),
             ),
-          if (lightData != null || darkData != null) smallVerticalSpacer,
+            smallVerticalSpacer,
+          ],
         ]),
       ),
     );
