@@ -82,6 +82,7 @@ class _Theme extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
     final brightness = ref.watch(platformBrightnessProvider);
     final themePreferences = ref.watch(themePreferencesProvider);
     final notifier = ref.watch(themePreferencesProvider.notifier);
@@ -91,6 +92,11 @@ class _Theme extends ConsumerWidget {
 
     final predefinedThemes = ref.watch(predefinedThemesProvider);
 
+    final materialYouLightData =
+        ref.watch(materialYouLightProvider).asData?.value;
+    final materialYouDarkData =
+        ref.watch(materialYouDarkProvider).asData?.value;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -99,6 +105,70 @@ class _Theme extends ConsumerWidget {
           style: theme.textTheme.headline5,
         ),
         const _AnimatedVerticalSpacer(),
+        if (materialYouLightData != null) ...[
+          ThemeCard(
+            HarpyTheme(
+              data: materialYouLightData,
+              fontSizeDelta: display.fontSizeDelta,
+              displayFont: display.displayFont,
+              bodyFont: display.bodyFont,
+              paddingValue: display.paddingValue,
+            ),
+            selectedLightTheme: lightThemeId == -2,
+            selectedDarkTheme: darkThemeId == -2,
+            onTap: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newLightThemeId:
+                  isFree || brightness == Brightness.light ? -2 : null,
+              newDarkThemeId:
+                  isFree || brightness == Brightness.dark ? -2 : null,
+            ),
+            onSelectLightTheme: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newLightThemeId: -2,
+            ),
+            onSelectDarkTheme: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newDarkThemeId: -2,
+            ),
+          ),
+          const _AnimatedSmallVerticalSpacer(),
+        ],
+        if (materialYouDarkData != null) ...[
+          ThemeCard(
+            HarpyTheme(
+              data: materialYouDarkData,
+              fontSizeDelta: display.fontSizeDelta,
+              displayFont: display.displayFont,
+              bodyFont: display.bodyFont,
+              paddingValue: display.paddingValue,
+            ),
+            selectedLightTheme: lightThemeId == -1,
+            selectedDarkTheme: darkThemeId == -1,
+            onTap: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newLightThemeId:
+                  isFree || brightness == Brightness.light ? -1 : null,
+              newDarkThemeId:
+                  isFree || brightness == Brightness.dark ? -1 : null,
+            ),
+            onSelectLightTheme: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newLightThemeId: -1,
+            ),
+            onSelectDarkTheme: () => selectTheme(
+              themePreferences: themePreferences,
+              themePreferencesNotifier: notifier,
+              newDarkThemeId: -1,
+            ),
+          ),
+          const _AnimatedSmallVerticalSpacer(),
+        ],
         for (var i = 0; i < predefinedThemes.length; i++) ...[
           ThemeCard(
             predefinedThemes[i],
