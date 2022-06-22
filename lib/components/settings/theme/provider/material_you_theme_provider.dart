@@ -13,7 +13,7 @@ final materialYouLightProvider = FutureProvider(
       return HarpyThemeData.fromCorePalette(
         corePalette,
         brightness: Brightness.light,
-        name: 'Material You light',
+        name: 'Material You · light',
       );
     } else {
       return null;
@@ -31,7 +31,7 @@ final materialYouDarkProvider = FutureProvider(
       return HarpyThemeData.fromCorePalette(
         corePalette,
         brightness: Brightness.dark,
-        name: 'Material You dark',
+        name: 'Material You · dark',
       );
     } else {
       return null;
