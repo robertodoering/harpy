@@ -57,8 +57,10 @@ class TweetCardTopRow extends ConsumerWidget {
                 if (avatar && name && handle) SizedBox(height: innerPadding),
               ],
               GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () => delegates.onShowUser?.call(context, ref.read),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     if (avatar) ...[
                       TweetCardAvatar(
@@ -68,7 +70,7 @@ class TweetCardTopRow extends ConsumerWidget {
                       ),
                       SizedBox(width: outerPadding),
                     ],
-                    Expanded(
+                    Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
