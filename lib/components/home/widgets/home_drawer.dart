@@ -95,6 +95,7 @@ class _AuthenticatedUser extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final padding = ref.watch(displayPreferencesProvider).edgeInsets;
@@ -127,12 +128,12 @@ class _AuthenticatedUser extends ConsumerWidget {
                   children: [
                     Text(
                       user.name,
-                      style: Theme.of(context).textTheme.headline5,
+                      style: theme.textTheme.headline5,
                     ),
                     smallVerticalSpacer,
                     Text(
                       '@${user.handle}',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: theme.textTheme.subtitle1,
                     ),
                   ],
                 ),

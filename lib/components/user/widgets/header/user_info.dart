@@ -22,55 +22,42 @@ class UserInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final display = ref.watch(displayPreferencesProvider);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: display.edgeInsets,
-          child: _Avatar(user: user),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: display.edgeInsetsOnly(
-                        top: true,
-                        end: true,
-                        bottom: true,
-                      ),
-                      child: _Handle(user: user),
-                    ),
-                  ),
-                  AnimatedSize(
-                    duration: kShortAnimationDuration,
-                    curve: Curves.easeOutCubic,
-                    child: HarpyAnimatedSwitcher(
-                      child: connections != null
-                          ? _FollowButton(
-                              user: user,
-                              following: connections!.contains(
-                                UserConnection.following,
-                              ),
-                              notifier: connectionsNotifier,
-                            )
-                          : const SizedBox(),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: display.edgeInsetsOnly(end: true),
-                child: _Name(user: user),
-              ),
-            ],
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: display.edgeInsets,
+            child: _Avatar(user: user),
           ),
-        ),
-      ],
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _Name(user: user),
+                smallVerticalSpacer,
+                _Handle(user: user),
+              ],
+            ),
+          ),
+          AnimatedSize(
+            duration: kShortAnimationDuration,
+            curve: Curves.easeOutCubic,
+            child: HarpyAnimatedSwitcher(
+              child: connections != null
+                  ? _FollowButton(
+                      user: user,
+                      following: connections!.contains(
+                        UserConnection.following,
+                      ),
+                      notifier: connectionsNotifier,
+                    )
+                  : const SizedBox(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -84,25 +71,12 @@ class _Avatar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
-
-    // approximate height of available space for handle & name
-    final avatarSize = display.paddingValue +
-        display.smallPaddingValue +
-        theme.textTheme.subtitle1!.fontSize! +
-        theme.textTheme.headline6!.fontSize!;
-
     return GestureDetector(
       onTap: () => _showFullscreenAvatar(context, user: user),
-      child: SizedBox(
-        width: avatarSize,
-        height: avatarSize,
-        child: HarpyCircleAvatar(
-          radius: 36,
-          imageUrl: user.originalUserImageUrl,
-          heroTag: user.originalUserImageUrl,
-        ),
+      child: HarpyCircleAvatar(
+        radius: 28,
+        imageUrl: user.originalUserImageUrl,
+        heroTag: user.originalUserImageUrl,
       ),
     );
   }
@@ -190,6 +164,7 @@ class _Name extends StatelessWidget {
     return FittedBox(
       child: Text.rich(
         TextSpan(
+          style: theme.textTheme.headline5,
           children: [
             TextSpan(text: user.name),
             if (user.verified) ...[
@@ -200,11 +175,9 @@ class _Name extends StatelessWidget {
                   size: theme.iconTheme.size! + 2,
                 ),
                 baseline: TextBaseline.alphabetic,
-                alignment: PlaceholderAlignment.baseline,
               ),
             ],
           ],
-          style: theme.textTheme.headline6,
         ),
       ),
     );
