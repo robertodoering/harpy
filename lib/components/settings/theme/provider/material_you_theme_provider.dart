@@ -4,38 +4,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
+final corePaletteProvider = FutureProvider(
+  (ref) => DynamicColorPlugin.getCorePalette().handleError(logErrorHandler),
+  name: 'CorePaletteProvider',
+);
+
 final materialYouLightProvider = FutureProvider(
   (ref) async {
-    final corePalette =
-        await DynamicColorPlugin.getCorePalette().handleError(logErrorHandler);
+    final corePalette = ref.watch(corePaletteProvider).asData?.value;
 
-    if (corePalette != null) {
-      return HarpyThemeData.fromCorePalette(
-        corePalette,
-        brightness: Brightness.light,
-        name: 'Material You · light',
-      );
-    } else {
-      return null;
-    }
+    return corePalette != null
+        ? HarpyThemeData.fromCorePalette(
+            corePalette,
+            brightness: Brightness.light,
+            name: 'Material You · light',
+          )
+        : null;
   },
   name: 'MaterialYouLightProvider',
 );
 
 final materialYouDarkProvider = FutureProvider(
   (ref) async {
-    final corePalette =
-        await DynamicColorPlugin.getCorePalette().handleError(logErrorHandler);
+    final corePalette = ref.watch(corePaletteProvider).asData?.value;
 
-    if (corePalette != null) {
-      return HarpyThemeData.fromCorePalette(
-        corePalette,
-        brightness: Brightness.dark,
-        name: 'Material You · dark',
-      );
-    } else {
-      return null;
-    }
+    return corePalette != null
+        ? HarpyThemeData.fromCorePalette(
+            corePalette,
+            brightness: Brightness.dark,
+            name: 'Material You · dark',
+          )
+        : null;
   },
   name: 'MaterialYouDarkProvider',
 );
