@@ -1,0 +1,10 @@
+Version 0.9.4
+2022-06-24
+
+· Added **Material You** light and dark themes (for Android 12+)
+· Added option to hide sensitive media
+· · Can be enabled in `settings › media`
+· Fixed image loading animation not showing
+· Fixed spamming like / retweet caused the count to decrement (Thanks AliceGrey!)
+· Fixed scroll-to-top button sometimes overlaps with the bottom app bar (Thanks corylowry12!)
+· Minor bug fixes & improvements

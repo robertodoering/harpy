@@ -1,5 +1,5 @@
 Version 0.9.4
-2022-xx-xx
+2022-06-24
 
 - Added **Material You** light and dark themes (for Android 12+)
 - Added option to hide sensitive media
