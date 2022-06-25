@@ -1,0 +1,4 @@
+Version 0.9.5
+2022-06-25
+
+· Fixed restoring home timeline position doesn't work (Thanks David Nestico!)
