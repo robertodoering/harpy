@@ -47,12 +47,12 @@ class _TweetCardState extends ConsumerState<TweetCard> {
     final state = ref.watch(provider);
     final notifier = ref.watch(provider.notifier);
 
-    if (state == null) return const SizedBox();
+    final tweet = state ?? widget.tweet;
 
-    final delegates = widget.createDelegates(state, notifier);
+    final delegates = widget.createDelegates(tweet, notifier);
 
     final child = TweetCardContent(
-      tweet: state,
+      tweet: tweet,
       notifier: notifier,
       delegates: delegates,
       outerPadding: display.paddingValue,
@@ -66,12 +66,12 @@ class _TweetCardState extends ConsumerState<TweetCard> {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => delegates.onShowTweet?.call(context, ref.read),
-        child: state.replies.isEmpty
+        child: tweet.replies.isEmpty
             ? child
             : Column(
                 children: [
                   child,
-                  TweetCardReplies(tweet: state, color: widget.color),
+                  TweetCardReplies(tweet: tweet, color: widget.color),
                 ],
               ),
       ),
