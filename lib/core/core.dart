@@ -17,6 +17,8 @@ export 'preferences/layout_preferences.dart';
 export 'preferences/preferences_provider.dart';
 export 'regex/common_regex.dart';
 export 'regex/twitter_regex.dart';
+export 'router/handle_redirect.dart';
+export 'router/route_utils.dart';
 export 'router/router.dart';
 export 'services/connectivity_service.dart';
 export 'services/device_info_service.dart';

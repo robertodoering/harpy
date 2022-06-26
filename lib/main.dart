@@ -36,23 +36,11 @@ Future<void> main() async {
   );
 }
 
-class HarpyApp extends ConsumerStatefulWidget {
+class HarpyApp extends ConsumerWidget {
   const HarpyApp();
 
   @override
-  ConsumerState<HarpyApp> createState() => _HarpyAppState();
-}
-
-class _HarpyAppState extends ConsumerState<HarpyApp> {
-  @override
-  void initState() {
-    super.initState();
-
-    ref.read(applicationProvider).initialize();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       title: 'harpy',
       color: ref.watch(platformBrightnessProvider) == Brightness.light

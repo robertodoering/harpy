@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/painting.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
@@ -8,6 +8,11 @@ import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+final applicationStateProvider = StateProvider(
+  (ref) => ApplicationState.uninitialized,
+  name: 'ApplicationStateProvider',
+);
 
 final applicationProvider = Provider(
   (ref) => Application(read: ref.read),
@@ -21,7 +26,7 @@ class Application with LoggerMixin {
 
   final Reader _read;
 
-  Future<void> initialize() async {
+  Future<void> initialize({String? redirect}) async {
     initializeLogger();
 
     // for smooth gradients
@@ -45,13 +50,20 @@ class Application with LoggerMixin {
       _read(authenticationProvider).restoreSession(),
     ]);
 
+    _read(applicationStateProvider.notifier).state =
+        ApplicationState.initialized;
+
     if (_read(authenticationStateProvider).isAuthenticated) {
       log.fine('authenticated after initialization');
 
-      _read(routerProvider).goNamed(
-        HomePage.name,
-        queryParams: {'origin': 'splash'},
-      );
+      if (redirect != null) {
+        _read(routerProvider).go(redirect);
+      } else {
+        _read(routerProvider).goNamed(
+          redirect ?? HomePage.name,
+          queryParams: {'origin': 'splash'},
+        );
+      }
     } else {
       log.fine('not authenticated after initialization');
 
@@ -61,4 +73,9 @@ class Application with LoggerMixin {
       );
     }
   }
+}
+
+enum ApplicationState {
+  uninitialized,
+  initialized,
 }

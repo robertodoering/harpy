@@ -9,6 +9,7 @@ class LoginPage extends ConsumerStatefulWidget {
   const LoginPage();
 
   static const name = 'login';
+  static const path = '/login';
 
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();

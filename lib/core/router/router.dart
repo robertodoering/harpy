@@ -5,6 +5,12 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+/*
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/home/user/harpy_app"
+*/
+
 final routeObserver = Provider(
   (ref) => RouteObserver(),
   name: 'RouteObserver',
@@ -13,6 +19,9 @@ final routeObserver = Provider(
 final routerProvider = Provider(
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
+    // initialLocation: SplashPage.path,
+    initialLocation: '/test', // TODO: remove
+    redirect: (state) => handleRedirect(ref.read, state),
     observers: [
       ref.watch(routeObserver),
       ref.watch(videoAutopauseObserver),
@@ -23,18 +32,29 @@ final routerProvider = Provider(
 
 final routesProvider = Provider(
   (ref) => [
+    // TODO: remove
     GoRoute(
-      name: SplashPage.name,
-      path: '/',
+      path: '/test',
       pageBuilder: (_, state) => HarpyPage(
         key: state.pageKey,
         restorationId: state.pageKey.value,
-        child: const SplashPage(),
+        child: const HarpyScaffold(child: Center(child: Text('test'))),
+      ),
+    ),
+    GoRoute(
+      name: SplashPage.name,
+      path: SplashPage.path, // '/splash'
+      pageBuilder: (_, state) => HarpyPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: SplashPage(
+          redirect: state.queryParams['redirect'],
+        ),
       ),
     ),
     GoRoute(
       name: LoginPage.name,
-      path: '/login',
+      path: LoginPage.path, // '/login'
       pageBuilder: (_, state) => HarpyPage(
         key: state.pageKey,
         restorationId: state.pageKey.value,
@@ -55,7 +75,7 @@ final routesProvider = Provider(
     ),
     GoRoute(
       name: HomePage.name,
-      path: '/home',
+      path: '/',
       pageBuilder: (_, state) => HarpyPage(
         key: state.pageKey,
         restorationId: state.pageKey.value,
