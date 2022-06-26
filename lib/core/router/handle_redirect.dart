@@ -3,6 +3,20 @@ import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+// deeplinks:
+// - https://twitter.com/home: home
+// - https://twitter.com/notifications: home with mentions tab
+// - https://twitter.com/$user: user profile
+// - https://twitter.com/$user/status/$id: tweet detail
+// - https://twitter.com/$user/status/$id/retweets: tweet retweets
+// - https://twitter.com/compose/tweet: tweet compose
+// - https://twitter.com/i/trends: home with trends tab
+// - https://twitter.com/explore: home with trends tab
+// - https://twitter.com/search?q=test: search with query
+// - https://twitter.com/$user/lists: lists
+// - https://twitter.com/i/lists/$id: list timeline
+// - https://twitter.com/i/lists/$id/members: list members
+
 // - when navigating to the splash page don't redirect
 // - when not initialized, redirect to the splash page and then go to the
 //   expected location after initialization
@@ -32,8 +46,8 @@ String? handleRedirect(Reader read, GoRouterState state) {
   return null;
 }
 
-/// Returns the [SplashPage] location if the app is not initialized and
-/// navigates to the target location after initialization.
+/// Returns the [SplashPage] location if the app is not initialized with the
+/// target location as a redirect.
 String? _handleColdDeeplink(Reader read, GoRouterState state) {
   final isInitialized =
       read(applicationStateProvider) == ApplicationState.initialized;
