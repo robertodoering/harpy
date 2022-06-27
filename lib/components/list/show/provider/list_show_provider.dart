@@ -10,8 +10,8 @@ part 'list_show_provider.freezed.dart';
 
 final listShowProvider = StateNotifierProvider.autoDispose
     .family<ListShowNotifier, ListShowState, String>(
-  (ref, userId) => ListShowNotifier(
-    userId: userId,
+  (ref, handle) => ListShowNotifier(
+    handle: handle,
     read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
   ),
@@ -20,17 +20,17 @@ final listShowProvider = StateNotifierProvider.autoDispose
 
 class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
   ListShowNotifier({
-    required String userId,
+    required String handle,
     required Reader read,
     required TwitterApi twitterApi,
-  })  : _userId = userId,
+  })  : _handle = handle,
         _read = read,
         _twitterApi = twitterApi,
         super(const ListShowState.loading()) {
     load();
   }
 
-  final String _userId;
+  final String _handle;
 
   final Reader _read;
   final TwitterApi _twitterApi;
@@ -44,8 +44,8 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
     PaginatedTwitterLists? paginatedSubscriptions;
 
     final responses = await Future.wait([
-      _twitterApi.listsService.ownerships(userId: _userId),
-      _twitterApi.listsService.subscriptions(userId: _userId),
+      _twitterApi.listsService.ownerships(screenName: _handle),
+      _twitterApi.listsService.subscriptions(screenName: _handle),
     ]).handleError((e, st) => twitterErrorHandler(_read, e, st));
 
     if (responses != null && responses.length == 2) {
@@ -106,7 +106,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
 
       final paginatedOwnerships = await _twitterApi.listsService
           .ownerships(
-            userId: _userId,
+            screenName: _handle,
             cursor: currentState.ownershipsCursor,
           )
           .handleError((e, st) => twitterErrorHandler(_read, e, st));
@@ -147,7 +147,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
 
       final paginatedSubscriptions = await _twitterApi.listsService
           .subscriptions(
-            userId: _userId,
+            screenName: _handle,
             cursor: currentState.subscriptionsCursor,
           )
           .handleError((e, st) => twitterErrorHandler(_read, e, st));

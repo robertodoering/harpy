@@ -107,7 +107,7 @@ class _AuthenticatedUser extends ConsumerWidget {
 
     return InkWell(
       borderRadius: harpyTheme.borderRadius,
-      onTap: () => router.goNamed(
+      onTap: () => router.pushNamed(
         UserPage.name,
         params: {'handle': user.handle},
         extra: user,
@@ -166,9 +166,9 @@ class _ConnectionsCount extends ConsumerWidget {
             builder: (count) => HarpyListCard(
               title: Text('$count  following'),
               multilineTitle: true,
-              onTap: () => router.goNamed(
+              onTap: () => router.pushNamed(
                 FollowingPage.name,
-                params: {'id': user.id},
+                params: {'handle': user.handle},
               ),
             ),
           ),
@@ -180,9 +180,9 @@ class _ConnectionsCount extends ConsumerWidget {
             builder: (count) => HarpyListCard(
               title: Text('$count  followers'),
               multilineTitle: true,
-              onTap: () => router.goNamed(
+              onTap: () => router.pushNamed(
                 FollowersPage.name,
-                params: {'id': user.id},
+                params: {'handle': user.handle},
               ),
             ),
           ),
@@ -245,7 +245,7 @@ class _Entries extends ConsumerWidget {
       HarpyListCard(
         leading: const Icon(CupertinoIcons.person),
         title: const Text('profile'),
-        onTap: () => router.goNamed(
+        onTap: () => router.pushNamed(
           UserPage.name,
           params: {'handle': user.handle},
           extra: user,
@@ -255,29 +255,29 @@ class _Entries extends ConsumerWidget {
       HarpyListCard(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('search'),
-        onTap: () => router.goNamed(SearchPage.name),
+        onTap: () => router.pushNamed(SearchPage.name),
       ),
       verticalSpacer,
       HarpyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
-        onTap: () => router.goNamed(
+        onTap: () => router.pushNamed(
           ListShowPage.name,
-          params: {'userId': user.id},
+          params: {'handle': user.handle},
         ),
       ),
       verticalSpacer,
       HarpyListCard(
         leading: const Icon(FeatherIcons.feather),
         title: const Text('compose'),
-        onTap: () => router.goNamed(ComposePage.name),
+        onTap: () => router.pushNamed(ComposePage.name),
       ),
       verticalSpacer,
       verticalSpacer,
       HarpyListCard(
         leading: const Icon(Icons.settings_rounded),
         title: const Text('settings'),
-        onTap: () => router.goNamed(SettingsPage.name),
+        onTap: () => router.pushNamed(SettingsPage.name),
       ),
       verticalSpacer,
       if (isFree) ...[
@@ -293,7 +293,7 @@ class _Entries extends ConsumerWidget {
       HarpyListCard(
         leading: const FlareIcon.harpyLogo(),
         title: const Text('about'),
-        onTap: () => router.goNamed(AboutPage.name),
+        onTap: () => router.pushNamed(AboutPage.name),
       ),
       verticalSpacer,
       verticalSpacer,

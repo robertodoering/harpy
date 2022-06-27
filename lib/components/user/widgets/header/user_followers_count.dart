@@ -27,7 +27,7 @@ class UserFollowersCount extends ConsumerWidget {
             label: Text('$count following'),
             onTap: () => router.goNamed(
               FollowingPage.name,
-              params: {'id': user.id},
+              params: {'handle': user.handle},
             ),
           ),
         ),
@@ -37,7 +37,7 @@ class UserFollowersCount extends ConsumerWidget {
             label: Text('$count followers'),
             onTap: () => router.goNamed(
               FollowersPage.name,
-              params: {'id': user.id},
+              params: {'handle': user.handle},
             ),
           ),
         ),

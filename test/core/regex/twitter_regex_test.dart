@@ -73,4 +73,88 @@ void main() {
       expect(mentionStartRegex.hasMatch('@username'), isTrue);
     });
   });
+
+  group('twitter path regex', () {
+    test('user profile', () {
+      expect(
+        userProfilePathRegex.firstMatch('/harpy_app'),
+        isA<RegExpMatch>().having(
+          (match) => match.group(1) == 'harpy_app',
+          'user handle',
+          isTrue,
+        ),
+      );
+      expect(userProfilePathRegex.hasMatch('harpy_app'), isFalse);
+      expect(userProfilePathRegex.hasMatch('/harpy_app/'), isFalse);
+      expect(userProfilePathRegex.hasMatch('/harpy_app/asdf'), isFalse);
+    });
+
+    test('user followers', () {
+      expect(
+        userFollowersPathRegex.firstMatch('/harpy_app/followers'),
+        isA<RegExpMatch>().having(
+          (match) => match.group(1) == 'harpy_app',
+          'user handle',
+          isTrue,
+        ),
+      );
+      expect(userFollowersPathRegex.hasMatch('/harpy_app'), isFalse);
+      expect(
+        userFollowersPathRegex.hasMatch('/harpy_app/followers/asdf'),
+        isFalse,
+      );
+    });
+
+    test('user following', () {
+      expect(
+        userFollowingPathRegex.firstMatch('/harpy_app/following'),
+        isA<RegExpMatch>().having(
+          (match) => match.group(1) == 'harpy_app',
+          'user handle',
+          isTrue,
+        ),
+      );
+      expect(userFollowingPathRegex.hasMatch('/harpy_app'), isFalse);
+      expect(
+        userFollowingPathRegex.hasMatch('/harpy_app/following/asdf'),
+        isFalse,
+      );
+    });
+
+    test('user lists', () {
+      expect(
+        userListsPathRegex.firstMatch('/harpy_app/lists'),
+        isA<RegExpMatch>().having(
+          (match) => match.group(1) == 'harpy_app',
+          'user handle',
+          isTrue,
+        ),
+      );
+      expect(userListsPathRegex.hasMatch('/harpy_app'), isFalse);
+      expect(userListsPathRegex.hasMatch('/harpy_app/lists/asdf'), isFalse);
+    });
+
+    test('status', () {
+      expect(
+        statusPathRegex.firstMatch('/harpy_app/status/1463545080837509120'),
+        isA<RegExpMatch>()
+          ..having(
+            (match) => match.group(1) == 'harpy_app',
+            'user handle',
+            isTrue,
+          )
+          ..having(
+            (match) => match.group(2) == '1463545080837509120',
+            'status id',
+            isTrue,
+          ),
+      );
+      expect(
+        statusPathRegex.hasMatch('/harpy_app/status/1463545080837509120/asdf'),
+        isFalse,
+      );
+      expect(statusPathRegex.hasMatch('/harpy_app/status'), isFalse);
+      expect(statusPathRegex.hasMatch('/harpy_app/status/asdf'), isFalse);
+    });
+  });
 }

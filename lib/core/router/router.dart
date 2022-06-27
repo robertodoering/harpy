@@ -19,8 +19,7 @@ final routeObserver = Provider(
 final routerProvider = Provider(
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
-    // initialLocation: SplashPage.path,
-    initialLocation: '/test', // TODO: remove
+    initialLocation: SplashPage.path,
     redirect: (state) => handleRedirect(ref.read, state),
     observers: [
       ref.watch(routeObserver),
@@ -32,15 +31,6 @@ final routerProvider = Provider(
 
 final routesProvider = Provider(
   (ref) => [
-    // TODO: remove
-    GoRoute(
-      path: '/test',
-      pageBuilder: (_, state) => HarpyPage(
-        key: state.pageKey,
-        restorationId: state.pageKey.value,
-        child: const HarpyScaffold(child: Center(child: Text('test'))),
-      ),
-    ),
     GoRoute(
       name: SplashPage.name,
       path: SplashPage.path, // '/splash'
@@ -99,6 +89,36 @@ final routesProvider = Provider(
           ),
           routes: [
             GoRoute(
+              name: FollowingPage.name,
+              path: 'following',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: FollowingPage(handle: state.params['handle']!),
+              ),
+            ),
+            GoRoute(
+              name: FollowersPage.name,
+              path: 'followers',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: FollowersPage(userId: state.params['handle']!),
+              ),
+            ),
+            GoRoute(
+              name: ListShowPage.name,
+              path: 'lists',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: ListShowPage(
+                  handle: state.params['handle']!,
+                  onListSelected: state.extra as ValueChanged<TwitterListData>?,
+                ),
+              ),
+            ),
+            GoRoute(
               name: UserTimelineFilter.name,
               path: 'filter',
               pageBuilder: (_, state) => HarpyPage(
@@ -108,16 +128,28 @@ final routesProvider = Provider(
                 child: UserTimelineFilter(user: state.extra! as UserData),
               ),
             ),
+            GoRoute(
+              name: TweetDetailPage.name,
+              path: 'status/:id',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: TweetDetailPage(tweet: state.extra! as TweetData),
+              ),
+              routes: [
+                GoRoute(
+                  name: RetweetersPage.name,
+                  path: 'retweets',
+                  pageBuilder: (_, state) => HarpyPage(
+                    key: state.pageKey,
+                    restorationId: state.pageKey.value,
+                    fullscreenDialog: true,
+                    child: RetweetersPage(tweetId: state.params['id']!),
+                  ),
+                ),
+              ],
+            ),
           ],
-        ),
-        GoRoute(
-          name: TweetDetailPage.name,
-          path: 'detail',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            child: TweetDetailPage(tweet: state.extra! as TweetData),
-          ),
         ),
         GoRoute(
           name: HomeTimelineFilter.name,
@@ -128,49 +160,23 @@ final routesProvider = Provider(
             fullscreenDialog: true,
             child: const HomeTimelineFilter(),
           ),
-        ),
-        GoRoute(
-          name: TimelineFilterCreation.name,
-          path: 'filter/create',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            fullscreenDialog: true,
-            child: TimelineFilterCreation(
-              initialTimelineFilter: (state.extra
-                  as Map?)?['initialTimelineFilter'] as TimelineFilter?,
-              onSaved: (state.extra as Map?)?['onSaved']
-                  as ValueChanged<TimelineFilter>?,
+          routes: [
+            GoRoute(
+              name: TimelineFilterCreation.name,
+              path: 'create',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                fullscreenDialog: true,
+                child: TimelineFilterCreation(
+                  initialTimelineFilter: (state.extra
+                      as Map?)?['initialTimelineFilter'] as TimelineFilter?,
+                  onSaved: (state.extra as Map?)?['onSaved']
+                      as ValueChanged<TimelineFilter>?,
+                ),
+              ),
             ),
-          ),
-        ),
-        GoRoute(
-          name: RetweetersPage.name,
-          path: 'retweeters/:id',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            fullscreenDialog: true,
-            child: RetweetersPage(tweetId: state.params['id']!),
-          ),
-        ),
-        GoRoute(
-          name: FollowingPage.name,
-          path: 'following/:id',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            child: FollowingPage(userId: state.params['id']!),
-          ),
-        ),
-        GoRoute(
-          name: FollowersPage.name,
-          path: 'followers/:id',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            child: FollowersPage(userId: state.params['id']!),
-          ),
+          ],
         ),
         GoRoute(
           name: SearchPage.name,
@@ -221,20 +227,8 @@ final routesProvider = Provider(
           ],
         ),
         GoRoute(
-          name: ListShowPage.name,
-          path: 'lists/:userId',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            child: ListShowPage(
-              userId: state.params['userId']!,
-              onListSelected: state.extra as ValueChanged<TwitterListData>?,
-            ),
-          ),
-        ),
-        GoRoute(
           name: ListTimelinePage.name,
-          path: 'list/:listId',
+          path: 'i/lists/:listId',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
             restorationId: state.pageKey.value,
@@ -244,6 +238,18 @@ final routesProvider = Provider(
             ),
           ),
           routes: [
+            GoRoute(
+              name: ListMembersPage.name,
+              path: 'members',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                restorationId: state.pageKey.value,
+                child: ListMembersPage(
+                  listId: state.params['listId']!,
+                  listName: state.queryParams['name']!,
+                ),
+              ),
+            ),
             GoRoute(
               name: ListTimelineFilter.name,
               path: 'filter',
@@ -260,20 +266,8 @@ final routesProvider = Provider(
           ],
         ),
         GoRoute(
-          name: ListMembersPage.name,
-          path: 'list/:listId/members',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
-            child: ListMembersPage(
-              listId: state.params['listId']!,
-              listName: state.queryParams['name']!,
-            ),
-          ),
-        ),
-        GoRoute(
           name: ComposePage.name,
-          path: 'compose',
+          path: 'compose/tweet',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
             restorationId: state.pageKey.value,

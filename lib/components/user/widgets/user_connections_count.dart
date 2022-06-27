@@ -32,7 +32,7 @@ class UserConnectionsCount extends ConsumerWidget {
                 : null,
             onTap: () => router.pushNamed(
               FollowingPage.name,
-              params: {'id': user.id},
+              params: {'handle': user.handle},
             ),
           ),
         ),
@@ -48,7 +48,7 @@ class UserConnectionsCount extends ConsumerWidget {
                 : null,
             onTap: () => router.pushNamed(
               FollowersPage.name,
-              params: {'id': user.id},
+              params: {'handle': user.handle},
             ),
           ),
         ),
