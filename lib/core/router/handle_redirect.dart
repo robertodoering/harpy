@@ -12,21 +12,34 @@ import 'package:harpy/core/core.dart';
 // - otherwise don't redirect
 // NOTE: state.name is always `null`
 String? handleRedirect(Reader read, GoRouterState state) {
+  final isInitialized =
+      read(applicationStateProvider) == ApplicationState.initialized;
+
+  if (!isInitialized && state.subloc != SplashPage.path) {
+    return '${SplashPage.path}?redirect=${state.location}';
+  }
+  // TODO: properly redirect without an initial route
+
+  return null;
+
+  final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
+
   if (state.subloc == SplashPage.path) return null;
+  if (state.subloc == LoginPage.path) return null;
 
   final coldDeeplink = _handleColdDeeplink(read, state);
   if (coldDeeplink != null) return coldDeeplink;
 
-  final unauthenticated = _handleUnauthenticated(read, state);
+  final unauthenticated = _handleUnauthenticated(isAuthenticated, state);
   if (unauthenticated != null) return unauthenticated;
-
-  final mappedLocation = _mapTwitterPath(state);
-  if (mappedLocation != null) return mappedLocation;
 
   if (!locationHasRouteMatch(
     location: state.location,
     routes: read(routesProvider),
   )) {
+    final mappedLocation = _mapTwitterPath(state);
+    if (mappedLocation != null) return mappedLocation;
+
     // if the location doesn't exist navigate to home instead
     return '/';
   }
@@ -48,8 +61,7 @@ String? _handleColdDeeplink(Reader read, GoRouterState state) {
 
 /// Returns the [LoginPage] location if the app tried to navigate to a location
 /// that expects an authenticated user.
-String? _handleUnauthenticated(Reader read, GoRouterState state) {
-  final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
+String? _handleUnauthenticated(bool isAuthenticated, GoRouterState state) {
   final unprotectedRoutes = [SplashPage.path, LoginPage.path];
 
   return !isAuthenticated && !unprotectedRoutes.contains(state.subloc)

@@ -8,7 +8,7 @@ import 'package:harpy/core/core.dart';
 /*
 adb shell am start -a android.intent.action.VIEW \
  -c android.intent.category.BROWSABLE \
- -d "https://twitter.com/home/user/harpy_app"
+ -d "https://twitter.com/harpy_app"
 */
 
 final routeObserver = Provider(
@@ -19,7 +19,6 @@ final routeObserver = Provider(
 final routerProvider = Provider(
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
-    initialLocation: SplashPage.path,
     redirect: (state) => handleRedirect(ref.read, state),
     observers: [
       ref.watch(routeObserver),
