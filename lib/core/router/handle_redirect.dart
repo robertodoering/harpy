@@ -13,7 +13,7 @@ const _unprotectedRoutes = [SplashPage.path, LoginPage.path];
 // - when the location doesn't exist, redirect to the home page
 // - otherwise don't redirect
 String? handleRedirect(Reader read, GoRouterState state) {
-  if (state.subloc != SplashPage.path) return null;
+  if (state.subloc == SplashPage.path) return null;
 
   // handle redirect when uninitialized
   final coldDeeplink = _handleColdDeeplink(read, state);
@@ -104,7 +104,7 @@ String? _mapTwitterPath(GoRouterState state) {
     case '/search':
       // TODO: user search if `f=user`
       return Uri(
-        path: '/search/tweets',
+        path: '/harpy_search/tweets',
         queryParameters: {
           if (uri.queryParameters['q'] != null)
             'query': uri.queryParameters['q'],
@@ -119,24 +119,23 @@ String? _mapTwitterPath(GoRouterState state) {
 
   final userFollowersMatch = userFollowersPathRegex.firstMatch(uri.path);
   if (userFollowersMatch?.group(1) != null) {
-    return '/user/${userProfileMatch!.group(1)}/followers';
+    return '/user/${userFollowersMatch!.group(1)}/followers';
   }
 
   final userFollowingMatch = userFollowingPathRegex.firstMatch(uri.path);
   if (userFollowingMatch?.group(1) != null) {
-    return '/user/${userProfileMatch!.group(1)}/following';
+    return '/user/${userFollowingMatch!.group(1)}/following';
   }
 
   final userListsMatch = userListsPathRegex.firstMatch(uri.path);
   if (userListsMatch?.group(1) != null) {
-    // TODO: breaks
-    return '/user/${userProfileMatch!.group(1)}/lists';
+    return '/user/${userListsMatch!.group(1)}/lists';
   }
 
   final statusMatch = statusPathRegex.firstMatch(uri.path);
   if (statusMatch?.group(1) != null && statusMatch?.group(2) != null) {
-    return '/user/${userProfileMatch!.group(1)}'
-        '/status/${statusMatch!.group(2)}';
+    return '/user/${statusMatch!.group(1)}'
+        '/status/${statusMatch.group(2)}';
   }
 
   return null;

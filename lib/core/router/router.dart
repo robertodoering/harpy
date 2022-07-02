@@ -180,7 +180,8 @@ final routesProvider = Provider(
         ),
         GoRoute(
           name: SearchPage.name,
-          path: 'search',
+          // unique path to prevent the same as the existing twitter path
+          path: 'harpy_search',
           pageBuilder: (_, state) => HarpyPage(
             key: state.pageKey,
             restorationId: state.pageKey.value,
