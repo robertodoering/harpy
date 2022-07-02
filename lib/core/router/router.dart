@@ -18,6 +18,7 @@ final routeObserver = Provider(
 
 final routerProvider = Provider(
   (ref) => GoRouter(
+    // TODO: override error page builder
     routes: ref.watch(routesProvider),
     redirect: (state) => handleRedirect(ref.read, state),
     observers: [

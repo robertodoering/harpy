@@ -3,40 +3,32 @@ import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+/// Paths that an unauthenticated user can access,
+const _unprotectedRoutes = [SplashPage.path, LoginPage.path];
+
 // - when navigating to the splash page don't redirect
 // - when not initialized, redirect to the splash page and then go to the
 //   expected location after initialization
-//   (app has been opened with a deep link)
 // - when not authenticated, redirect to the login page
 // - when the location doesn't exist, redirect to the home page
 // - otherwise don't redirect
-// NOTE: state.name is always `null`
 String? handleRedirect(Reader read, GoRouterState state) {
-  final isInitialized =
-      read(applicationStateProvider) == ApplicationState.initialized;
+  if (state.subloc != SplashPage.path) return null;
 
-  if (!isInitialized && state.subloc != SplashPage.path) {
-    return '${SplashPage.path}?redirect=${state.location}';
-  }
-  // TODO: properly redirect without an initial route
-
-  return null;
-
-  final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
-
-  if (state.subloc == SplashPage.path) return null;
-  if (state.subloc == LoginPage.path) return null;
-
+  // handle redirect when uninitialized
   final coldDeeplink = _handleColdDeeplink(read, state);
   if (coldDeeplink != null) return coldDeeplink;
 
-  final unauthenticated = _handleUnauthenticated(isAuthenticated, state);
+  // handle redirect when unauthenticated
+  final unauthenticated = _handleUnauthenticated(read, state);
   if (unauthenticated != null) return unauthenticated;
 
   if (!locationHasRouteMatch(
     location: state.location,
     routes: read(routesProvider),
   )) {
+    // handle the location if it's a twitter path that can be mapped to a harpy
+    // path
     final mappedLocation = _mapTwitterPath(state);
     if (mappedLocation != null) return mappedLocation;
 
@@ -47,8 +39,8 @@ String? handleRedirect(Reader read, GoRouterState state) {
   return null;
 }
 
-/// Returns the [SplashPage] location if the app is not initialized with the
-/// target location as a redirect.
+/// Returns the [SplashPage.path] with the target location as a redirect if the
+/// app is not initialized.
 String? _handleColdDeeplink(Reader read, GoRouterState state) {
   final isInitialized =
       read(applicationStateProvider) == ApplicationState.initialized;
@@ -59,12 +51,12 @@ String? _handleColdDeeplink(Reader read, GoRouterState state) {
       : null;
 }
 
-/// Returns the [LoginPage] location if the app tried to navigate to a location
-/// that expects an authenticated user.
-String? _handleUnauthenticated(bool isAuthenticated, GoRouterState state) {
-  final unprotectedRoutes = [SplashPage.path, LoginPage.path];
+/// Returns the [LoginPage.path] if the user is not authenticated and tried to
+/// navigate to a protected route.
+String? _handleUnauthenticated(Reader read, GoRouterState state) {
+  final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
 
-  return !isAuthenticated && !unprotectedRoutes.contains(state.subloc)
+  return !isAuthenticated && !_unprotectedRoutes.contains(state.subloc)
       // TODO: maybe add a redirect after successful login?
       ? LoginPage.path
       : null;

@@ -1,4 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -10,8 +12,11 @@ class MockApplication extends Mock implements Application {
   }
 }
 
-class MockConnectivityService extends Mock implements ConnectivityNotifier {
-  MockConnectivityService() {
+class MockConnectivityNotifier extends StateNotifier<ConnectivityResult>
+    with Mock
+    implements ConnectivityNotifier {
+  MockConnectivityNotifier([ConnectivityResult? state])
+      : super(state ?? ConnectivityResult.mobile) {
     when(initialize).thenAnswer((_) async {});
   }
 }
