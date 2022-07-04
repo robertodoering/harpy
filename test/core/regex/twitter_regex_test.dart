@@ -79,9 +79,9 @@ void main() {
       expect(
         userProfilePathRegex.firstMatch('/harpy_app'),
         isA<RegExpMatch>().having(
-          (match) => match.group(1) == 'harpy_app',
+          (match) => match.group(1),
           'user handle',
-          isTrue,
+          equals('harpy_app'),
         ),
       );
       expect(userProfilePathRegex.hasMatch('harpy_app'), isFalse);
@@ -93,9 +93,9 @@ void main() {
       expect(
         userFollowersPathRegex.firstMatch('/harpy_app/followers'),
         isA<RegExpMatch>().having(
-          (match) => match.group(1) == 'harpy_app',
+          (match) => match.group(1),
           'user handle',
-          isTrue,
+          equals('harpy_app'),
         ),
       );
       expect(userFollowersPathRegex.hasMatch('/harpy_app'), isFalse);
@@ -109,9 +109,9 @@ void main() {
       expect(
         userFollowingPathRegex.firstMatch('/harpy_app/following'),
         isA<RegExpMatch>().having(
-          (match) => match.group(1) == 'harpy_app',
+          (match) => match.group(1),
           'user handle',
-          isTrue,
+          equals('harpy_app'),
         ),
       );
       expect(userFollowingPathRegex.hasMatch('/harpy_app'), isFalse);
@@ -125,9 +125,9 @@ void main() {
       expect(
         userListsPathRegex.firstMatch('/harpy_app/lists'),
         isA<RegExpMatch>().having(
-          (match) => match.group(1) == 'harpy_app',
+          (match) => match.group(1),
           'user handle',
-          isTrue,
+          equals('harpy_app'),
         ),
       );
       expect(userListsPathRegex.hasMatch('/harpy_app'), isFalse);
@@ -139,14 +139,14 @@ void main() {
         statusPathRegex.firstMatch('/harpy_app/status/1463545080837509120'),
         isA<RegExpMatch>()
           ..having(
-            (match) => match.group(1) == 'harpy_app',
+            (match) => match.group(1),
             'user handle',
-            isTrue,
+            equals('harpy_app'),
           )
           ..having(
-            (match) => match.group(2) == '1463545080837509120',
+            (match) => match.group(2),
             'status id',
-            isTrue,
+            equals('1463545080837509120'),
           ),
       );
       expect(
