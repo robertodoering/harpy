@@ -1,42 +1,40 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-/*
-adb shell am start -a android.intent.action.VIEW \
- -c android.intent.category.BROWSABLE \
- -d "https://twitter.com/harpy_app"
-*/
-
 final routeObserver = Provider(
-  (ref) => RouteObserver(),
   name: 'RouteObserver',
+  (ref) => RouteObserver(),
 );
 
 final routerProvider = Provider(
+  name: 'RouterProvider',
   (ref) => GoRouter(
-    // TODO: override error page builder
     routes: ref.watch(routesProvider),
     redirect: (state) => handleRedirect(ref.read, state),
+    errorPageBuilder: (_, state) => HarpyPage(
+      pageRouteType: PageRouteType.fade,
+      child: ErrorPage(error: state.error),
+    ),
     observers: [
       ref.watch(routeObserver),
       ref.watch(videoAutopauseObserver),
     ],
   ),
-  name: 'RouterProvider',
 );
 
 final routesProvider = Provider(
+  name: 'RoutesProvider',
   (ref) => [
     GoRoute(
       name: SplashPage.name,
       path: SplashPage.path, // '/splash'
-      pageBuilder: (_, state) => HarpyPage(
-        key: state.pageKey,
-        restorationId: state.pageKey.value,
+      pageBuilder: (_, state) => _createPage(
+        state: state,
         child: SplashPage(
           redirect: state.queryParams['redirect'],
         ),
@@ -45,43 +43,33 @@ final routesProvider = Provider(
     GoRoute(
       name: LoginPage.name,
       path: LoginPage.path, // '/login'
-      pageBuilder: (_, state) => HarpyPage(
-        key: state.pageKey,
-        restorationId: state.pageKey.value,
-        pageRouteType: ['splash', 'home'].contains(state.queryParams['origin'])
-            ? PageRouteType.fade
-            : PageRouteType.harpy,
+      pageBuilder: (_, state) => _createPage(
+        state: state,
         child: const LoginPage(),
       ),
     ),
     GoRoute(
       name: SetupPage.name,
       path: '/setup',
-      pageBuilder: (_, state) => HarpyPage(
-        key: state.pageKey,
-        restorationId: state.pageKey.value,
+      pageBuilder: (_, state) => _createPage(
+        state: state,
         child: const SetupPage(),
       ),
     ),
     GoRoute(
       name: HomePage.name,
       path: '/',
-      pageBuilder: (_, state) => HarpyPage(
-        key: state.pageKey,
-        restorationId: state.pageKey.value,
+      pageBuilder: (_, state) => _createPage(
+        state: state,
         name: HomePage.name,
-        pageRouteType: ['splash', 'login'].contains(state.queryParams['origin'])
-            ? PageRouteType.fade
-            : PageRouteType.harpy,
         child: const HomePage(),
       ),
       routes: [
         GoRoute(
           name: UserPage.name,
           path: 'user/:handle',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: UserPage(
               handle: state.params['handle']!,
               user: state.extra as UserData?,
@@ -91,27 +79,24 @@ final routesProvider = Provider(
             GoRoute(
               name: FollowingPage.name,
               path: 'following',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: FollowingPage(handle: state.params['handle']!),
               ),
             ),
             GoRoute(
               name: FollowersPage.name,
               path: 'followers',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: FollowersPage(userId: state.params['handle']!),
               ),
             ),
             GoRoute(
               name: ListShowPage.name,
               path: 'lists',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: ListShowPage(
                   handle: state.params['handle']!,
                   onListSelected: state.extra as ValueChanged<TwitterListData>?,
@@ -121,9 +106,8 @@ final routesProvider = Provider(
             GoRoute(
               name: UserTimelineFilter.name,
               path: 'filter',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 fullscreenDialog: true,
                 child: UserTimelineFilter(user: state.extra! as UserData),
               ),
@@ -131,18 +115,16 @@ final routesProvider = Provider(
             GoRoute(
               name: TweetDetailPage.name,
               path: 'status/:id',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: TweetDetailPage(tweet: state.extra! as TweetData),
               ),
               routes: [
                 GoRoute(
                   name: RetweetersPage.name,
                   path: 'retweets',
-                  pageBuilder: (_, state) => HarpyPage(
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value,
+                  pageBuilder: (_, state) => _createPage(
+                    state: state,
                     fullscreenDialog: true,
                     child: RetweetersPage(tweetId: state.params['id']!),
                   ),
@@ -154,9 +136,8 @@ final routesProvider = Provider(
         GoRoute(
           name: HomeTimelineFilter.name,
           path: 'filter',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             fullscreenDialog: true,
             child: const HomeTimelineFilter(),
           ),
@@ -164,9 +145,8 @@ final routesProvider = Provider(
             GoRoute(
               name: TimelineFilterCreation.name,
               path: 'create',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 fullscreenDialog: true,
                 child: TimelineFilterCreation(
                   initialTimelineFilter: (state.extra
@@ -182,27 +162,24 @@ final routesProvider = Provider(
           name: SearchPage.name,
           // unique path to prevent the same as the existing twitter path
           path: 'harpy_search',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: const SearchPage(),
           ),
           routes: [
             GoRoute(
               name: UserSearchPage.name,
               path: 'users',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const UserSearchPage(),
               ),
             ),
             GoRoute(
               name: TweetSearchPage.name,
               path: 'tweets',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: TweetSearchPage(
                   initialQuery: state.queryParams['query'],
                 ),
@@ -211,9 +188,8 @@ final routesProvider = Provider(
                 GoRoute(
                   name: TweetSearchFilter.name,
                   path: 'filter',
-                  pageBuilder: (_, state) => HarpyPage(
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value,
+                  pageBuilder: (_, state) => _createPage(
+                    state: state,
                     fullscreenDialog: true,
                     child: TweetSearchFilter(
                       initialFilter: (state.extra as Map?)?['initialFilter']
@@ -230,9 +206,8 @@ final routesProvider = Provider(
         GoRoute(
           name: ListTimelinePage.name,
           path: 'i/lists/:listId',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: ListTimelinePage(
               listId: state.params['listId']!,
               listName: state.queryParams['name']!,
@@ -242,9 +217,8 @@ final routesProvider = Provider(
             GoRoute(
               name: ListMembersPage.name,
               path: 'members',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: ListMembersPage(
                   listId: state.params['listId']!,
                   listName: state.queryParams['name']!,
@@ -254,9 +228,8 @@ final routesProvider = Provider(
             GoRoute(
               name: ListTimelineFilter.name,
               path: 'filter',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 fullscreenDialog: true,
                 child: ListTimelineFilter(
                   listId: state.params['listId']!,
@@ -269,9 +242,8 @@ final routesProvider = Provider(
         GoRoute(
           name: ComposePage.name,
           path: 'compose/tweet',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: ComposePage(
               parentTweet: (state.extra as Map?)?['parentTweet'] as TweetData?,
               quotedTweet: (state.extra as Map?)?['quotedTweet'] as TweetData?,
@@ -281,36 +253,32 @@ final routesProvider = Provider(
         GoRoute(
           name: SettingsPage.name,
           path: 'settings',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: const SettingsPage(),
           ),
           routes: [
             GoRoute(
               name: MediaSettingsPage.name,
               path: 'media',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const MediaSettingsPage(),
               ),
             ),
             GoRoute(
               name: ThemeSettingsPage.name,
               path: 'theme',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const ThemeSettingsPage(),
               ),
               routes: [
                 GoRoute(
                   name: CustomThemePage.name,
                   path: 'custom',
-                  pageBuilder: (_, state) => HarpyPage(
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value,
+                  pageBuilder: (_, state) => _createPage(
+                    state: state,
                     child: CustomThemePage(
                       themeId: int.tryParse(state.queryParams['themeId'] ?? ''),
                     ),
@@ -321,18 +289,16 @@ final routesProvider = Provider(
             GoRoute(
               name: DisplaySettingsPage.name,
               path: 'display',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const DisplaySettingsPage(),
               ),
               routes: [
                 GoRoute(
                   name: FontSelectionPage.name,
                   path: 'font',
-                  pageBuilder: (_, state) => HarpyPage(
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value,
+                  pageBuilder: (_, state) => _createPage(
+                    state: state,
                     child: FontSelectionPage(
                       title: (state.extra as Map?)?['title'] as String,
                       selectedFont:
@@ -347,18 +313,16 @@ final routesProvider = Provider(
             GoRoute(
               name: GeneralSettingsPage.name,
               path: 'general',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const GeneralSettingsPage(),
               ),
             ),
             GoRoute(
               name: LanguageSettingsPage.name,
               path: 'language',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const LanguageSettingsPage(),
               ),
             ),
@@ -367,18 +331,16 @@ final routesProvider = Provider(
         GoRoute(
           name: AboutPage.name,
           path: 'about',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            restorationId: state.pageKey.value,
+          pageBuilder: (_, state) => _createPage(
+            state: state,
             child: const AboutPage(),
           ),
           routes: [
             GoRoute(
               name: ChangelogPage.name,
               path: 'changelog',
-              pageBuilder: (_, state) => HarpyPage(
-                key: state.pageKey,
-                restorationId: state.pageKey.value,
+              pageBuilder: (_, state) => _createPage(
+                state: state,
                 child: const ChangelogPage(),
               ),
             ),
@@ -387,5 +349,28 @@ final routesProvider = Provider(
       ],
     ),
   ],
-  name: 'RoutesProvider',
 );
+
+HarpyPage<T> _createPage<T>({
+  required Widget child,
+  required GoRouterState state,
+  bool maintainState = true,
+  bool fullscreenDialog = false,
+  String? name,
+  Map<String, String>? arguments,
+}) {
+  final pageRouteType = state.queryParams['transition'] == 'fade'
+      ? PageRouteType.fade
+      : PageRouteType.harpy;
+
+  return HarpyPage(
+    child: child,
+    key: ValueKey(state.location),
+    restorationId: state.location,
+    pageRouteType: pageRouteType,
+    maintainState: maintainState,
+    fullscreenDialog: fullscreenDialog,
+    name: name,
+    arguments: arguments,
+  );
+}

@@ -27,7 +27,7 @@ class Logout with LoggerMixin {
 
     _read(routerProvider).goNamed(
       LoginPage.name,
-      queryParams: {'origin': 'home'},
+      queryParams: {'transition': 'fade'},
     );
 
     // invalidate session after navigation to avoid building the home screen

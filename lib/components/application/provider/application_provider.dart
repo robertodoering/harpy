@@ -61,7 +61,7 @@ class Application with LoggerMixin {
       } else {
         _read(routerProvider).goNamed(
           redirect ?? HomePage.name,
-          queryParams: {'origin': 'splash'},
+          queryParams: {'transition': 'fade'},
         );
       }
     } else {
@@ -69,7 +69,7 @@ class Application with LoggerMixin {
 
       _read(routerProvider).goNamed(
         LoginPage.name,
-        queryParams: {'origin': 'splash'},
+        queryParams: {'transition': 'fade'},
       );
     }
   }

@@ -3,6 +3,34 @@ import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
+/*
+example deeplinks
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/harpy_app"
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/search?q=cute+cat"
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/search?q=harpy+app&f=user"
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/harpy_app/status/1463545080837509120"
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/harpy_app/status/1463545080837509120/retweets"
+
+adb shell am start -a android.intent.action.VIEW \
+ -c android.intent.category.BROWSABLE \
+ -d "https://twitter.com/harpy_app/followers"
+*/
+
 /// Paths that an unauthenticated user can access,
 const _unprotectedRoutes = [SplashPage.path, LoginPage.path];
 
@@ -46,8 +74,9 @@ String? _handleColdDeeplink(Reader read, GoRouterState state) {
       read(applicationStateProvider) == ApplicationState.initialized;
 
   return !isInitialized
-      // TODO: add origin here before the redirect to change animation?
-      ? '${SplashPage.path}?redirect=${state.location}'
+      ? '${SplashPage.path}'
+          '?transition=fade'
+          '&redirect=${state.location}'
       : null;
 }
 
@@ -134,8 +163,10 @@ String? _mapTwitterPath(GoRouterState state) {
 
   final statusMatch = statusPathRegex.firstMatch(uri.path);
   if (statusMatch?.group(1) != null && statusMatch?.group(2) != null) {
-    return '/user/${statusMatch!.group(1)}'
-        '/status/${statusMatch.group(2)}';
+    // TODO: support loading tweet details from id
+    return '/';
+    // return '/user/${statusMatch!.group(1)}'
+    //     '/status/${statusMatch.group(2)}';
   }
 
   return null;
