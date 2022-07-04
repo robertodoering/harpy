@@ -86,7 +86,6 @@ String? _handleUnauthenticated(Reader read, GoRouterState state) {
   final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
 
   return !isAuthenticated && !_unprotectedRoutes.contains(state.subloc)
-      // TODO: maybe add a redirect after successful login?
       ? LoginPage.path
       : null;
 }
