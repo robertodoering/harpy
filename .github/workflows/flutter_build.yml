@@ -30,10 +30,10 @@ jobs:
           channel: ${{ env.flutter-channel }}
 
       - name: Storing key.properties
-        run: echo "${{ secrets.KEYPROP_PROD }}" | base64 --decode > android/key.properties
+        run: echo "${{ secrets.KEY_PROPERTIES_FREE }}" | base64 --decode > android/key.properties
 
       - name: Storing keystore
-        run: echo "${{ secrets.KEYJKS_PROD }}" | base64 --decode > android/key.jks #TODO verify name
+        run: echo "${{ secrets.KEYSTORE_FREE }}" | base64 --decode > android/key.jks #TODO verify name
 
       - name: Get dependencies
         run: flutter pub get
@@ -42,9 +42,19 @@ jobs:
         run: flutter packages pub run build_runner build
 
       - name: Build APK
-        run: flutter build apk --split-per-abi --release
+        run: > 
+          flutter build apk
+          --split-per-abi 
+          --release
+          --flavor free
+          --dart-define flavor=free
+          --dart-define twitter_consumer_key=${{ secrets.CONSUMER_KEY_FREE }}
+          --dart-define twitter_consumer_secret=${{ secrets.CONSUMER_SECRET_FREE }}
+          --dart-define sentry_dsn=${{ secrets.SENTRY_DSN_FREE }}
+          --dart-define aes_key=${{ secrets.AES_KEY_FREE }}
 
       - name: Upload .apks to artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: build/app/outputs/apk/release/*.apk #TODO verify path
+          path: build/app/outputs/apk/freeRelease/*.apk #TODO verify path
+          
