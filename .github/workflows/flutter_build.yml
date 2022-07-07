@@ -5,10 +5,6 @@ name: CD
 #     types: [published]
 on: [ push ]
 
-concurrency:
-  group: ${{ github.head_commit.id }}
-  cancel-in-progress: true
-
 env:
   flutter-channel: "stable"
 
