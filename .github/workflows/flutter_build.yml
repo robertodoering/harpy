@@ -1,8 +1,9 @@
 name: CD
 
-on:
-  release:
-    types: [published]
+# on:
+#   release:
+#     types: [published]
+on: [ push ]
 
 concurrency:
   group: ${{ github.head_commit.id }}
@@ -55,5 +56,8 @@ jobs:
       - name: Upload .apks to artifacts
         uses: svenstaro/upload-release-action@v2
         with:
-          tag: ${{ github.release.tag_name }}
+          # tag: ${{ github.release.tag_name }}
+          tag: "0.9.5"
+          asset_name: "app bundle"
+          overwrite: true
           file: build/app/outputs/bundle/freeRelease/app-free-release.aab
