@@ -29,18 +29,18 @@ jobs:
           channel: ${{ env.flutter-channel }}
 
       - name: Storing key.properties
-        run: echo "${{ secrets.KEY_PROPERTIES_FREE }}" | base64 --decode > android/key.properties #TODO verify name and add to secrets
+        run: echo "${{ secrets.KEY_PROPERTIES_FREE }}" | base64 --decode > android/key.properties
 
       - name: Storing keystore
-        run: echo "${{ secrets.KEYSTORE_FREE }}" | base64 --decode > android/key.jks #TODO verify name and add to secrets
+        run: echo "${{ secrets.KEYSTORE_FREE }}" | base64 --decode > android/key.jks
 
       - name: Get dependencies
         run: flutter pub get
 
       - name: Generate files
-        run: flutter packages pub run build_runner build
+        run: flutter pub run build_runner build
 
-      - name: Build APK # TODO add secrets
+      - name: Build APK
         run: > 
           flutter build apk
           --split-per-abi 
@@ -56,4 +56,4 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.release.tag_name }}
-          file: build/app/outputs/apk/freeRelease/*.apk # TODO verify path
+          file: build/app/outputs/bundle/freeRelease/app-free-release.aab
