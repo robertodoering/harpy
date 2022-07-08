@@ -58,4 +58,4 @@ jobs:
           asset_name: "app bundle"
           overwrite: true
           file_glob: true
-          file: build/app/outputs/flutter-apk/*
+          file: build/app/outputs/flutter-apk/app-*
