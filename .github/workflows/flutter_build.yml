@@ -1,9 +1,8 @@
 name: CD
 
-# on:
-#   release:
-#     types: [published]
-on: [ push ]
+on:
+  release:
+    types: [published]
 
 env:
   flutter-channel: "stable"
@@ -53,8 +52,7 @@ jobs:
       - name: Upload .apks to artifacts
         uses: svenstaro/upload-release-action@v2
         with:
-          # tag: ${{ github.release.tag_name }}
-          tag: 0.9.5
+          tag: ${{ github.release.tag_name }}
           asset_name: "app bundle"
           overwrite: true
           file_glob: true
