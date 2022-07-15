@@ -156,5 +156,40 @@ void main() {
       expect(statusPathRegex.hasMatch('/harpy_app/status'), isFalse);
       expect(statusPathRegex.hasMatch('/harpy_app/status/asdf'), isFalse);
     });
+
+    test('status retweets', () {
+      expect(
+        statusRetweetsPathRegex.firstMatch(
+          '/harpy_app/status/1463545080837509120/retweets',
+        ),
+        isA<RegExpMatch>()
+          ..having(
+            (match) => match.group(1),
+            'user handle',
+            equals('harpy_app'),
+          )
+          ..having(
+            (match) => match.group(2),
+            'status id',
+            equals('1463545080837509120'),
+          ),
+      );
+      expect(
+        statusRetweetsPathRegex.hasMatch(
+          '/harpy_app/status/1463545080837509120/retweets/asdf',
+        ),
+        isFalse,
+      );
+      expect(
+        statusRetweetsPathRegex.hasMatch(
+          '/harpy_app/status/1463545080837509120',
+        ),
+        isFalse,
+      );
+      expect(
+        statusRetweetsPathRegex.hasMatch('/harpy_app/status/asdf/retweets'),
+        isFalse,
+      );
+    });
   });
 }

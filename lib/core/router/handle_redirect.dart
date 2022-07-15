@@ -162,10 +162,16 @@ String? _mapTwitterPath(GoRouterState state) {
 
   final statusMatch = statusPathRegex.firstMatch(uri.path);
   if (statusMatch?.group(1) != null && statusMatch?.group(2) != null) {
-    // TODO: support loading tweet details from id
-    return '/';
-    // return '/user/${statusMatch!.group(1)}'
-    //     '/status/${statusMatch.group(2)}';
+    return '/user/${statusMatch!.group(1)}'
+        '/status/${statusMatch.group(2)}';
+  }
+
+  final statusRetweetsMatch = statusRetweetsPathRegex.firstMatch(uri.path);
+  if (statusRetweetsMatch?.group(1) != null &&
+      statusRetweetsMatch?.group(2) != null) {
+    return '/user/${statusRetweetsMatch!.group(1)}'
+        '/status/${statusRetweetsMatch.group(2)}'
+        '/retweets';
   }
 
   return null;

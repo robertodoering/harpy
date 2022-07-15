@@ -49,3 +49,6 @@ final userListsPathRegex = RegExp(r'^\/(\w+)\/lists$');
 
 // `/harpy_app/status/1463545080837509120`
 final statusPathRegex = RegExp(r'^\/(\w+)\/status\/(\d+)$');
+
+// `/harpy_app/status/1463545080837509120/retweets`
+final statusRetweetsPathRegex = RegExp(r'^\/(\w+)\/status\/(\d+)\/retweets$');

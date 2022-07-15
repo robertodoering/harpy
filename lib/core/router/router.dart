@@ -117,7 +117,10 @@ final routesProvider = Provider(
               path: 'status/:id',
               pageBuilder: (_, state) => _createPage(
                 state: state,
-                child: TweetDetailPage(tweet: state.extra! as TweetData),
+                child: TweetDetailPage(
+                  id: state.params['id']!,
+                  tweet: state.extra as TweetData?,
+                ),
               ),
               routes: [
                 GoRoute(
