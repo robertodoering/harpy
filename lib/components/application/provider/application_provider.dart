@@ -60,7 +60,7 @@ class Application with LoggerMixin {
         _read(routerProvider).go(redirect);
       } else {
         _read(routerProvider).goNamed(
-          redirect ?? HomePage.name,
+          HomePage.name,
           queryParams: {'transition': 'fade'},
         );
       }

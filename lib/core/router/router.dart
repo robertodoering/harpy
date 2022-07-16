@@ -61,7 +61,6 @@ final routesProvider = Provider(
       path: '/',
       pageBuilder: (_, state) => _createPage(
         state: state,
-        name: HomePage.name,
         child: const HomePage(),
       ),
       routes: [
@@ -357,10 +356,7 @@ final routesProvider = Provider(
 HarpyPage<T> _createPage<T>({
   required Widget child,
   required GoRouterState state,
-  bool maintainState = true,
   bool fullscreenDialog = false,
-  String? name,
-  Map<String, String>? arguments,
 }) {
   final pageRouteType = state.queryParams['transition'] == 'fade'
       ? PageRouteType.fade
@@ -371,9 +367,6 @@ HarpyPage<T> _createPage<T>({
     key: ValueKey(state.location),
     restorationId: state.location,
     pageRouteType: pageRouteType,
-    maintainState: maintainState,
     fullscreenDialog: fullscreenDialog,
-    name: name,
-    arguments: arguments,
   );
 }
