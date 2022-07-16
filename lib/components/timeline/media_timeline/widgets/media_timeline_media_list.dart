@@ -73,10 +73,8 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
     final entry = widget.entries[widget.index];
     final provider = tweetProvider(entry.tweet.originalId);
 
-    var tweet = ref.watch(provider);
+    var tweet = ref.watch(provider) ?? entry.tweet;
     var tweetNotifier = ref.watch(provider.notifier);
-
-    if (tweet == null) return const SizedBox();
 
     var delegates = defaultTweetDelegates(tweet, tweetNotifier);
 
@@ -93,7 +91,7 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
               final provider = tweetProvider(
                 widget.entries[index].tweet.originalId,
               );
-              tweet = ref.read(provider);
+              tweet = ref.read(provider) ?? widget.entries[index].tweet;
 
               // We need to initialize the tweet in case it's not yet
               // initialized. This can happen if the user scroll the gallery and
@@ -104,20 +102,18 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
               });
 
               delegates = defaultTweetDelegates(
-                tweet ?? widget.entries[index].tweet,
+                tweet,
                 tweetNotifier,
               );
 
-              if (tweet == null) return null;
-
               return MediaGalleryEntry(
-                tweet: tweet!,
+                tweet: tweet,
                 delegates: delegates,
                 media: widget.entries[index].media,
                 builder: (_) {
                   final heroTag = 'media${mediaHeroTag(
                     context,
-                    tweet: tweet!,
+                    tweet: tweet,
                     media: widget.entries[index].media,
                   )}';
 
@@ -129,9 +125,9 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
                         borderRadius: ref.read(harpyThemeProvider).borderRadius,
                       );
                     case MediaType.gif:
-                      return TweetGif(tweet: tweet!, heroTag: heroTag);
+                      return TweetGif(tweet: tweet, heroTag: heroTag);
                     case MediaType.video:
-                      return TweetGalleryVideo(tweet: tweet!, heroTag: heroTag);
+                      return TweetGalleryVideo(tweet: tweet, heroTag: heroTag);
                   }
                 },
               );
