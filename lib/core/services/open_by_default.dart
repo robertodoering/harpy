@@ -8,7 +8,6 @@ const MethodChannel _channel = MethodChannel(
 
 final hasUnapprovedDomainsProvider = FutureProvider.autoDispose(
   name: 'hasUnapprovedDomainsProvider',
-  cacheTime: const Duration(minutes: 1),
   (ref) => _channel
       .invokeMethod<bool>('hasUnapprovedDomains')
       .handleError(logErrorHandler)
