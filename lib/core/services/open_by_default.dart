@@ -21,6 +21,11 @@ Future<void> showOpenByDefault() {
       .handleError(logErrorHandler);
 }
 
+/// Whether the user has not approved every deeplink that harpy can handle
+/// (twitter urls).
+///
+/// On Android 12+ the urls will always be unapproved by dewfault since you need
+/// to verify ownership of the url.
 Future<bool> hasUnapprovedDomains() {
   return _channel
       .invokeMethod<bool>('hasUnapprovedDomains')
