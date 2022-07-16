@@ -1,4 +1,7 @@
 Version 0.9.6
-2022-06-xx
+2022-07-xx
 
+- Added support for opening Twitter links with harpy
+  - Can be enabled in `settings › open twitter links` for Android 12+
 - Fixed scrolling in the user media timeline caused the app to crash in rare cases (Thanks Reuben!)
+- Fixed timeline sometimes jumping when scrolling up (Thanks Nehemoth!)
