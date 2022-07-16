@@ -1,12 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
-  const SplashPage();
+  const SplashPage({
+    this.redirect,
+  });
+
+  /// The name of the route the user should be redirected to after
+  /// initialization.
+  final String? redirect;
 
   static const name = 'splash';
+  static const path = '/splash';
 
   @override
   ConsumerState<SplashPage> createState() => _SplashPageState();
@@ -19,12 +28,13 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   void initState() {
     super.initState();
 
-    _startTimer();
+    // start app initialization
+    ref.read(applicationProvider).initialize(redirect: widget.redirect);
+
+    Timer(const Duration(seconds: 2), _timerCallback);
   }
 
-  Future<void> _startTimer() async {
-    await Future<void>.delayed(const Duration(seconds: 2));
-
+  Future<void> _timerCallback() async {
     if (mounted) setState(() => _showLoading = true);
   }
 
@@ -46,6 +56,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           AnimatedOpacity(
             opacity: _showLoading ? 1 : 0,
             duration: kLongAnimationDuration,
+            curve: Curves.easeInOut,
             child: const CircularProgressIndicator(),
           ),
         ],

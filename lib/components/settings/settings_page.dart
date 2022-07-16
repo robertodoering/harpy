@@ -103,6 +103,12 @@ class _OtherSettingsCard extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
+    final hasUnapprovedDomains =
+        ref.watch(hasUnapprovedDomainsProvider).maybeWhen(
+              data: (data) => data,
+              orElse: () => false,
+            );
+
     return ExpansionCard(
       title: const Text('other'),
       children: [
@@ -114,12 +120,25 @@ class _OtherSettingsCard extends ConsumerWidget {
         HarpyListTile(
           leading: const Icon(Icons.translate),
           title: const Text('language'),
-          borderRadius: BorderRadius.only(
-            bottomLeft: harpyTheme.radius,
-            bottomRight: harpyTheme.radius,
-          ),
+          borderRadius: hasUnapprovedDomains
+              ? null
+              : BorderRadius.only(
+                  bottomLeft: harpyTheme.radius,
+                  bottomRight: harpyTheme.radius,
+                ),
           onTap: () => router.goNamed(LanguageSettingsPage.name),
         ),
+        if (hasUnapprovedDomains)
+          HarpyListTile(
+            leading: const Icon(CupertinoIcons.share),
+            title: const Text('open twitter links'),
+            subtitle: const Text('allow harpy to open twitter links'),
+            borderRadius: BorderRadius.only(
+              bottomLeft: harpyTheme.radius,
+              bottomRight: harpyTheme.radius,
+            ),
+            onTap: showOpenByDefault,
+          ),
       ],
     );
   }

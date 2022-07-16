@@ -4,17 +4,17 @@ import 'package:harpy/components/components.dart';
 // NOTE: "Following users" are also referred to as "friends" in the twitter api.
 class FollowingPage extends StatelessWidget {
   const FollowingPage({
-    required this.userId,
+    required this.handle,
   });
 
-  final String userId;
+  final String handle;
 
   static const name = 'following';
 
   @override
   Widget build(BuildContext context) {
     return PaginatedUsersPage(
-      provider: followingProvider(userId),
+      provider: followingProvider(handle),
       title: 'following',
       errorMessage: 'error loading following users',
       noDataMessage: 'no following users exist',

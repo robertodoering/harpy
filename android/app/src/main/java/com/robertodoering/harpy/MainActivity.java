@@ -1,17 +1,27 @@
 package com.robertodoering.harpy;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.verify.domain.DomainVerificationManager;
+import android.content.pm.verify.domain.DomainVerificationUserState;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
     GeneratedPluginRegistrant.registerWith(flutterEngine);
+
+    handleMethodCalls(flutterEngine);
 
     final View view = findViewById(android.R.id.content);
 
@@ -25,5 +35,58 @@ public class MainActivity extends FlutterActivity {
           View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
       );
     }
+  }
+
+  private void handleMethodCalls(@NonNull FlutterEngine flutterEngine) {
+    new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), "com.robertodoering.harpy")
+      .setMethodCallHandler(
+        (call, result) -> {
+          if (call.method.equals("showOpenByDefault")) {
+            showOpenByDefault();
+            result.success(true);
+          } else if (call.method.equals("hasUnapprovedDomains")) {
+            result.success(hasUnapprovedDomains());
+          } else {
+            result.notImplemented();
+          }
+        }
+      );
+  }
+
+  private void showOpenByDefault() {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+      final Context context = getContext();
+      final Intent intent = new Intent(
+        Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+        Uri.parse("package:" + context.getPackageName())
+      );
+
+      context.startActivity(intent);
+    }
+  }
+
+  private boolean hasUnapprovedDomains() {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+      final Context context = getContext();
+      final DomainVerificationManager manager = context.getSystemService(DomainVerificationManager.class);
+
+      DomainVerificationUserState userState;
+
+      try {
+        userState = manager.getDomainVerificationUserState(context.getPackageName());
+      } catch (PackageManager.NameNotFoundException e) {
+        return false;
+      }
+
+      return userState.getHostToStateMap()
+        .values()
+        .stream()
+        .anyMatch((stateValue) ->
+          stateValue != DomainVerificationUserState.DOMAIN_STATE_VERIFIED &&
+          stateValue != DomainVerificationUserState.DOMAIN_STATE_SELECTED
+        );
+    }
+
+    return false;
   }
 }

@@ -29,7 +29,7 @@ class HomeTabAddListCard extends ConsumerWidget {
               )
           : () => router.pushNamed(
                 ListShowPage.name,
-                params: {'userId': authentication.user!.id},
+                params: {'handle': authentication.user!.handle},
                 // ignore: avoid_types_on_closure_parameters
                 extra: (TwitterListData list) {
                   HapticFeedback.lightImpact();

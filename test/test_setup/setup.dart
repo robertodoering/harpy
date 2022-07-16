@@ -28,15 +28,20 @@ Future<Widget> buildAppBase(
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       applicationProvider.overrideWithValue(MockApplication()),
-      routesProvider.overrideWithValue([
-        GoRoute(
-          path: '/',
-          pageBuilder: (_, state) => HarpyPage(
-            key: state.pageKey,
-            child: child,
-          ),
+      connectivityProvider.overrideWithValue(MockConnectivityNotifier()),
+      routerProvider.overrideWithValue(
+        GoRouter(
+          routes: [
+            GoRoute(
+              path: '/',
+              pageBuilder: (_, state) => HarpyPage(
+                key: state.pageKey,
+                child: child,
+              ),
+            ),
+          ],
         ),
-      ]),
+      ),
       ...?providerOverrides,
     ],
     child: const HarpyApp(),

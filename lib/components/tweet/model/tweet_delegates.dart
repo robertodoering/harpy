@@ -54,6 +54,7 @@ TweetDelegates defaultTweetDelegates(
   return TweetDelegates(
     onShowTweet: (context, read) => read(routerProvider).pushNamed(
       TweetDetailPage.name,
+      params: {'handle': tweet.user.handle, 'id': tweet.id},
       extra: tweet,
     ),
     onShowUser: (_, read) {
@@ -101,7 +102,7 @@ TweetDelegates defaultTweetDelegates(
     onShowRetweeters: tweet.retweetCount > 0
         ? (_, read) => read(routerProvider).pushNamed(
               RetweetersPage.name,
-              params: {'id': tweet.id},
+              params: {'handle': tweet.user.handle, 'id': tweet.id},
             )
         : null,
     onComposeQuote: (_, read) => read(routerProvider).pushNamed(

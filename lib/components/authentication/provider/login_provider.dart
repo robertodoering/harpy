@@ -74,7 +74,7 @@ class _Login with LoggerMixin {
           if (_read(setupPreferencesProvider).performedSetup) {
             _read(routerProvider).goNamed(
               HomePage.name,
-              queryParams: {'origin': 'login'},
+              queryParams: {'transition': 'fade'},
             );
           } else {
             _read(routerProvider).goNamed(SetupPage.name);

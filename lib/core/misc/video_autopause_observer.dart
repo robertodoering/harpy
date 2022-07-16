@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
@@ -25,7 +26,7 @@ class VideoAutopauseObserver extends RouteObserver {
     super.didPush(route, previousRoute);
 
     if (route is! HeroDialogRoute && route is! ModalBottomSheetRoute) {
-      WidgetsBinding.instance.addPostFrameCallback(
+      SchedulerBinding.instance.addPostFrameCallback(
         (_) => _read(videoPlayerHandlerProvider).act(
           (notifier) => notifier.pause(),
         ),

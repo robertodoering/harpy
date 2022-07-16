@@ -9,11 +9,11 @@ import 'package:harpy/core/core.dart';
 
 class TwitterLists extends ConsumerWidget {
   const TwitterLists({
-    required this.userId,
+    required this.handle,
     this.onListSelected,
   });
 
-  final String userId;
+  final String handle;
   final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(
@@ -105,8 +105,8 @@ class TwitterLists extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(listShowProvider(userId));
-    final notifier = ref.watch(listShowProvider(userId).notifier);
+    final state = ref.watch(listShowProvider(handle));
+    final notifier = ref.watch(listShowProvider(handle).notifier);
 
     return CustomScrollView(
       slivers: [

@@ -34,3 +34,21 @@ final nonHashtagCharactersRegex = RegExp(
   r'[^0-9_\p{L}]',
   unicode: true,
 );
+
+// `/harpy_app`
+final userProfilePathRegex = RegExp(r'^\/(\w+)$');
+
+// `/harpy_app/followers`
+final userFollowersPathRegex = RegExp(r'^\/(\w+)\/followers$');
+
+// `/harpy_app/following`
+final userFollowingPathRegex = RegExp(r'^\/(\w+)\/following$');
+
+// `/harpy_app/lists`
+final userListsPathRegex = RegExp(r'^\/(\w+)\/lists$');
+
+// `/harpy_app/status/1463545080837509120`
+final statusPathRegex = RegExp(r'^\/(\w+)\/status\/(\d+)$');
+
+// `/harpy_app/status/1463545080837509120/retweets`
+final statusRetweetsPathRegex = RegExp(r'^\/(\w+)\/status\/(\d+)\/retweets$');

@@ -2,10 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:harpy/core/core.dart';
 
 /// The page route type that determines the transition of the [HarpyPage].
-enum PageRouteType {
-  harpy,
-  fade,
-}
+enum PageRouteType { harpy, fade }
 
 class HarpyPage<T> extends Page<T> {
   const HarpyPage({
