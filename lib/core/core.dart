@@ -25,4 +25,5 @@ export 'services/device_info_service.dart';
 export 'services/dialog_service.dart';
 export 'services/download_service.dart';
 export 'services/message_service.dart';
+export 'services/open_by_default.dart';
 export 'services/platform_brightness_service.dart';

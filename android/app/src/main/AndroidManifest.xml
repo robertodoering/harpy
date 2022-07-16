@@ -27,7 +27,7 @@
       </intent-filter>
 
       <meta-data android:name="flutter_deeplinking_enabled"
-      android:value="true" />
+        android:value="true" />
 
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
