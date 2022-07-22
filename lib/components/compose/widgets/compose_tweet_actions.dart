@@ -99,12 +99,7 @@ class _PostTweetButtonState extends ConsumerState<_PostTweetButton> {
     if (sentTweet != null) {
       ref.read(homeTimelineProvider.notifier).addTweet(sentTweet);
 
-      if (mounted) {
-        Navigator.popUntil(
-          context,
-          (route) => route.settings.name == HomePage.name,
-        );
-      }
+      if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
 
