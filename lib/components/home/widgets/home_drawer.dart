@@ -164,8 +164,7 @@ class _ConnectionsCount extends ConsumerWidget {
           child: ConnectionCount(
             count: user.friendsCount,
             builder: (count) => HarpyListCard(
-              title: Text('$count  following'),
-              multilineTitle: true,
+              title: FittedBox(child: Text('$count  following')),
               onTap: () => router.pushNamed(
                 FollowingPage.name,
                 params: {'handle': user.handle},
@@ -178,8 +177,7 @@ class _ConnectionsCount extends ConsumerWidget {
           child: ConnectionCount(
             count: user.followersCount,
             builder: (count) => HarpyListCard(
-              title: Text('$count  followers'),
-              multilineTitle: true,
+              title: FittedBox(child: Text('$count  followers')),
               onTap: () => router.pushNamed(
                 FollowersPage.name,
                 params: {'handle': user.handle},
