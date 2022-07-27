@@ -21,7 +21,7 @@ dependencies:
     git: https://github.com/robertodoering/download_manager
   dynamic_color: ^1.4.0
   encrypt: ^5.0.1
-  file_picker: ^4.0.1
+  file_picker: ^5.0.0
   flare_flutter :
     git:
       url: https://github.com/mdpe-ir/Flare-Flutter
