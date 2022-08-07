@@ -36,7 +36,7 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
     final display = ref.watch(displayPreferencesProvider);
 
     final provider = tweetProvider(widget.tweet.quote!.originalId);
-    final tweet = ref.watch(provider) ?? widget.tweet;
+    final tweet = ref.watch(provider) ?? widget.tweet.quote!;
     final notifier = ref.watch(provider.notifier);
 
     final delegates = defaultTweetDelegates(tweet, notifier);
