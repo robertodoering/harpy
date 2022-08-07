@@ -86,7 +86,7 @@ Run the build runner once after cloning the project
 
 ### Twitter API key
 
-Follow [these instructions](https://github.com/robertodoering/harpy/wiki/Twitter-key-setup) for setting up your Twitter API key.
+Follow [these instructions](https://github.com/robertodoering/harpy/wiki/Twitter-api-key-setup) for setting up your Twitter API key.
 
 ### Building
 
