@@ -36,12 +36,10 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
     final display = ref.watch(displayPreferencesProvider);
 
     final provider = tweetProvider(widget.tweet.quote!.originalId);
-    final state = ref.watch(provider);
+    final tweet = ref.watch(provider) ?? widget.tweet;
     final notifier = ref.watch(provider.notifier);
 
-    if (state == null) return const SizedBox();
-
-    final delegates = defaultTweetDelegates(state, notifier);
+    final delegates = defaultTweetDelegates(tweet, notifier);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -54,7 +52,7 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
         child: ClipRRect(
           borderRadius: harpyTheme.borderRadius,
           child: TweetCardContent(
-            tweet: state,
+            tweet: tweet,
             notifier: notifier,
             delegates: delegates,
             outerPadding: display.smallPaddingValue,

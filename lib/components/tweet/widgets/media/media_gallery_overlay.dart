@@ -96,9 +96,8 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final tweet = ref.watch(tweetProvider(widget.tweet.originalId));
-
-    if (tweet == null) return const SizedBox();
+    final tweet =
+        ref.watch(tweetProvider(widget.tweet.originalId)) ?? widget.tweet;
 
     final overlap = tweet.mediaType != MediaType.video;
 

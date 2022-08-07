@@ -1,0 +1,4 @@
+Version 0.9.8
+2022-xx-xx
+
+- Fixed timeline sometimes jumping when scrolling up (Thanks Jebeditis!)
