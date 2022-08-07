@@ -56,10 +56,20 @@ public class MainActivity extends FlutterActivity {
   private void showOpenByDefault() {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
       final Context context = getContext();
-      final Intent intent = new Intent(
-        Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
-        Uri.parse("package:" + context.getPackageName())
-      );
+      Intent intent;
+
+      if (Build.MANUFACTURER.equalsIgnoreCase("samsung")) {
+        // samsung crashes when trying to open the 'open by default' settings page :^)
+        // https://stackoverflow.com/questions/70953672/android-12-deep-link-association-by-user-fails-because-of-crash-in-samsung-setti
+        intent = new Intent();
+        intent.setAction("android.settings.MANAGE_DOMAIN_URLS");
+      }
+      else {
+        intent = new Intent(
+          Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+          Uri.parse("package:" + context.getPackageName())
+        );
+      }
 
       context.startActivity(intent);
     }
