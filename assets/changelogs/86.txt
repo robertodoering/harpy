@@ -2,3 +2,4 @@ Version 0.9.7
 2022-07-22
 
 - Fixed black screen after posting a new Tweet (Thanks robsonsobral!)
+- Fixed "open twitter links" settings page link caused the app to crash on Samsung phones (Thanks monee121!)
