@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.verify.domain.DomainVerificationManager;
 import android.content.pm.verify.domain.DomainVerificationUserState;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.view.View;
 
@@ -60,9 +61,9 @@ public class MainActivity extends FlutterActivity {
 
       if (Build.MANUFACTURER.equalsIgnoreCase("samsung")) {
         // samsung crashes when trying to open the 'open by default' settings page :^)
+        // so we open samsung's 'apps that can open links' settings page instead
         // https://stackoverflow.com/questions/70953672/android-12-deep-link-association-by-user-fails-because-of-crash-in-samsung-setti
-        intent = new Intent();
-        intent.setAction("android.settings.MANAGE_DOMAIN_URLS");
+        intent = new Intent("android.settings.MANAGE_DOMAIN_URLS");
       }
       else {
         intent = new Intent(
