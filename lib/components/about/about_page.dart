@@ -10,6 +10,7 @@ class AboutPage extends ConsumerWidget {
   const AboutPage();
 
   static const name = 'about';
+  static const path = '/about_harpy';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

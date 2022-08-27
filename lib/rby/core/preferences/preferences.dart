@@ -140,14 +140,15 @@ class _EncryptedPreferences extends Preferences with LoggerMixin {
 
   @override
   bool getBool(String key, bool defaultValue) {
-    final value = _getAndDecryptValue(key);
+    final value = _getAndDecryptValue(key) ?? '$defaultValue';
 
-    return value == 'true' || value == 'false' ? value == 'true' : defaultValue;
+    return value == 'true';
   }
 
   @override
-  String getString(String key, String defaultValue) =>
-      _getAndDecryptValue(key) ?? defaultValue;
+  String getString(String key, String defaultValue) {
+    return _getAndDecryptValue(key) ?? defaultValue;
+  }
 
   @override
   List<String> getStringList(String key, List<String> defaultValue) =>
@@ -163,7 +164,13 @@ class _EncryptedPreferences extends Preferences with LoggerMixin {
   void setBool(String key, bool value) => _setAndEncryptValue(key, value);
 
   @override
-  void setString(String key, String value) => _setAndEncryptValue(key, value);
+  void setString(String key, String value) {
+    if (value.isEmpty) {
+      _sharedPreferences.setString(_buildKey(key), value);
+    } else {
+      _setAndEncryptValue(key, value);
+    }
+  }
 
   @override
   void setStringList(String key, List<String> value) =>
@@ -192,6 +199,8 @@ class _EncryptedPreferences extends Preferences with LoggerMixin {
 
     if (value == null) {
       return null;
+    } else if (value.isEmpty) {
+      return value;
     } else {
       try {
         final pair = value.split(':');

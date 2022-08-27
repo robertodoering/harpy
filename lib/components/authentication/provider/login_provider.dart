@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -49,9 +50,12 @@ class _Login with LoggerMixin {
     _read(authenticationStateProvider.notifier).state =
         const AuthenticationState.awaitingAuthentication();
 
+    final key = _read(consumerKeyProvider);
+    final secret = _read(consumerSecretProvider);
+
     final result = await TwitterAuth(
-      consumerKey: _environment.twitterConsumerKey,
-      consumerSecret: _environment.twitterConsumerSecret,
+      consumerKey: key,
+      consumerSecret: secret,
       callbackUrl: 'harpy://',
     ).authenticateWithTwitter(
       webviewNavigation: _webviewNavigation,

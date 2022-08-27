@@ -24,6 +24,8 @@ export 'compose/widgets/compose_tweet_actions.dart';
 export 'compose/widgets/compose_tweet_card.dart';
 export 'compose/widgets/compose_tweet_card_with_parent.dart';
 export 'compose/widgets/compose_video.dart';
+export 'custom_api/custom_api_page.dart';
+export 'custom_api/preferences/custom_api_preferences.dart';
 export 'error/error_page.dart';
 export 'followers/followers_page.dart';
 export 'followers/provider/followers_provider.dart';
