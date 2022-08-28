@@ -25,7 +25,7 @@ class CustomApiPage extends ConsumerWidget {
             ),
             sliver: const SliverFillRemaining(
               hasScrollBody: false,
-              child: _Form(),
+              child: _Content(),
             ),
           ),
         ],
@@ -34,16 +34,11 @@ class CustomApiPage extends ConsumerWidget {
   }
 }
 
-class _Form extends ConsumerStatefulWidget {
-  const _Form();
+class _Content extends ConsumerWidget {
+  const _Content();
 
   @override
-  _FormState createState() => _FormState();
-}
-
-class _FormState extends ConsumerState<_Form> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final customApiPreferences = ref.watch(customApiPreferencesProvider);
     final customApiPreferencesNotifier = ref.watch(
       customApiPreferencesProvider.notifier,
