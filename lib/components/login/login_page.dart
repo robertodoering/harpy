@@ -102,10 +102,13 @@ class _AboutButton extends ConsumerWidget {
       alignment: AlignmentDirectional.topEnd,
       child: HarpyPopupMenuButton(
         onSelected: (value) {
-          if (value == 0) {
-            context.pushNamed(AboutPage.name);
-          } else if (value == 1) {
-            context.pushNamed(CustomApiPage.name);
+          switch (value) {
+            case 0:
+              context.pushNamed(AboutPage.name);
+              break;
+            case 1:
+              context.pushNamed(CustomApiPage.name);
+              break;
           }
         },
         itemBuilder: (_) => const [

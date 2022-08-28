@@ -146,9 +146,8 @@ class _EncryptedPreferences extends Preferences with LoggerMixin {
   }
 
   @override
-  String getString(String key, String defaultValue) {
-    return _getAndDecryptValue(key) ?? defaultValue;
-  }
+  String getString(String key, String defaultValue) =>
+      _getAndDecryptValue(key) ?? defaultValue;
 
   @override
   List<String> getStringList(String key, List<String> defaultValue) =>
