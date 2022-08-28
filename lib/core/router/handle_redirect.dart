@@ -31,8 +31,16 @@ adb shell am start -a android.intent.action.VIEW \
  -d "https://twitter.com/harpy_app/followers"
 */
 
-/// Paths that an unauthenticated user can access,
-const _unprotectedRoutes = [SplashPage.path, LoginPage.path];
+/// Paths that an unauthenticated user can access.
+///
+/// If the requested path is a sublocation of an unprotected path, it can still
+/// be accessed.
+const _unprotectedRoutes = [
+  SplashPage.path,
+  LoginPage.path,
+  AboutPage.path,
+  CustomApiPage.path,
+];
 
 // - when navigating to the splash page don't redirect
 // - when not initialized, redirect to the splash page and then go to the
@@ -85,7 +93,8 @@ String? _handleColdDeeplink(Reader read, GoRouterState state) {
 String? _handleUnauthenticated(Reader read, GoRouterState state) {
   final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
 
-  return !isAuthenticated && !_unprotectedRoutes.contains(state.subloc)
+  return !isAuthenticated &&
+          !_unprotectedRoutes.any((path) => state.subloc.startsWith(path))
       ? LoginPage.path
       : null;
 }

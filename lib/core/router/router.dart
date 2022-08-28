@@ -49,6 +49,33 @@ final routesProvider = Provider(
       ),
     ),
     GoRoute(
+      name: CustomApiPage.name,
+      path: CustomApiPage.path, // '/custom_api'
+      pageBuilder: (_, state) => _createPage(
+        state: state,
+        fullscreenDialog: true,
+        child: const CustomApiPage(),
+      ),
+    ),
+    GoRoute(
+      name: AboutPage.name,
+      path: AboutPage.path, // '/about_harpy'
+      pageBuilder: (_, state) => _createPage(
+        state: state,
+        child: const AboutPage(),
+      ),
+      routes: [
+        GoRoute(
+          name: ChangelogPage.name,
+          path: 'changelog',
+          pageBuilder: (_, state) => _createPage(
+            state: state,
+            child: const ChangelogPage(),
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
       name: SetupPage.name,
       path: '/setup',
       pageBuilder: (_, state) => _createPage(
@@ -326,24 +353,6 @@ final routesProvider = Provider(
               pageBuilder: (_, state) => _createPage(
                 state: state,
                 child: const LanguageSettingsPage(),
-              ),
-            ),
-          ],
-        ),
-        GoRoute(
-          name: AboutPage.name,
-          path: 'about',
-          pageBuilder: (_, state) => _createPage(
-            state: state,
-            child: const AboutPage(),
-          ),
-          routes: [
-            GoRoute(
-              name: ChangelogPage.name,
-              path: 'changelog',
-              pageBuilder: (_, state) => _createPage(
-                state: state,
-                child: const ChangelogPage(),
               ),
             ),
           ],

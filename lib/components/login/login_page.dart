@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
@@ -98,13 +100,29 @@ class _AboutButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: AlignmentDirectional.topEnd,
-      child: HarpyButton.icon(
-        icon: const Icon(Icons.info_outline),
-        onTap: () => Navigator.of(context).push(
-          HarpyPageRoute<void>(
-            builder: (_) => const AboutPage(),
+      child: HarpyPopupMenuButton(
+        onSelected: (value) {
+          switch (value) {
+            case 0:
+              context.pushNamed(AboutPage.name);
+              break;
+            case 1:
+              context.pushNamed(CustomApiPage.name);
+              break;
+          }
+        },
+        itemBuilder: (_) => const [
+          HarpyPopupMenuItem(
+            value: 0,
+            leading: Icon(Icons.info_outline_rounded),
+            title: Text('about'),
           ),
-        ),
+          HarpyPopupMenuItem(
+            value: 1,
+            leading: Icon(CupertinoIcons.slider_horizontal_3),
+            title: Text('custom api key'),
+          ),
+        ],
       ),
     );
   }
