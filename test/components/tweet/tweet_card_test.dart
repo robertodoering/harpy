@@ -271,6 +271,7 @@ void main() {
                   ..type = kMediaVideo
                   ..videoInfo = (VideoInfo()
                     ..aspectRatio = [16, 9]
+                    ..durationMillis = 817000
                     ..variants = [
                       Variant()
                         ..bitrate = 1

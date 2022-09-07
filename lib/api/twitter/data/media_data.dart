@@ -77,6 +77,7 @@ class ImageMediaData with _$ImageMediaData, MediaData {
 class VideoMediaData with _$VideoMediaData, MediaData {
   factory VideoMediaData({
     required double aspectRatioDouble,
+    required Duration? duration,
 
     /// The video variants sorted by their quality (best quality first).
     required List<Variant> variants,
@@ -91,6 +92,8 @@ class VideoMediaData with _$VideoMediaData, MediaData {
 
     final aspectRatioDouble =
         aspectRatio.length == 2 ? aspectRatio[0] / aspectRatio[1] : 16 / 9;
+
+    final durationMillis = media.videoInfo?.durationMillis;
 
     // removes variants that does not have a bitrate (content type:
     // 'application/x-mpeg') and then sorts them by the bitrate descending
@@ -110,6 +113,9 @@ class VideoMediaData with _$VideoMediaData, MediaData {
 
     return VideoMediaData(
       aspectRatioDouble: aspectRatioDouble,
+      duration: durationMillis != null
+          ? Duration(milliseconds: durationMillis)
+          : null,
       variants: variants ?? [],
       thumbnail: thumbnail,
       type: media.type == kMediaGif ? MediaType.gif : MediaType.video,

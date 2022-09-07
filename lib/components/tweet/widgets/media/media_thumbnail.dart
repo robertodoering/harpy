@@ -9,12 +9,14 @@ class MediaThumbnail extends ConsumerWidget {
   const MediaThumbnail({
     required this.thumbnail,
     required this.center,
+    this.duration,
     this.onTap,
     this.onLongPress,
   });
 
   final ImageMediaData thumbnail;
   final Widget center;
+  final Duration? duration;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -38,6 +40,7 @@ class MediaThumbnail extends ConsumerWidget {
             height: double.infinity,
           ),
           center,
+          if (duration != null) _ThumbnailDuration(duration: duration!),
         ],
       ),
     );
@@ -109,6 +112,33 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
         child: MediaThumbnailIcon(
           icon: icon,
           compact: compact,
+        ),
+      ),
+    );
+  }
+}
+
+class _ThumbnailDuration extends ConsumerWidget {
+  const _ThumbnailDuration({
+    required this.duration,
+  });
+
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final display = ref.watch(displayPreferencesProvider);
+
+    return Align(
+      alignment: AlignmentDirectional.bottomStart,
+      child: Padding(
+        padding: EdgeInsets.all(display.smallPaddingValue),
+        child: Text(
+          prettyPrintDuration(duration),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: Colors.white.withOpacity(.8),
+          ),
         ),
       ),
     );

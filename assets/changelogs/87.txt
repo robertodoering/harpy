@@ -2,4 +2,5 @@ Version 0.9.8
 2022-xx-xx
 
 - Added support to set a custom api key
+- Added video duration in thumbnail
 - Fixed timeline sometimes jumping when scrolling up (Thanks Jebeditis!)

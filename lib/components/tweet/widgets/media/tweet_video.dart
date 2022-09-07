@@ -98,6 +98,7 @@ class TweetVideo extends ConsumerWidget {
               ),
               loading: (_) => MediaThumbnail(
                 thumbnail: mediaData.thumbnail,
+                duration: mediaData.duration,
                 center: MediaThumbnailIcon(
                   icon: const CircularProgressIndicator(),
                   compact: compact,
@@ -105,6 +106,7 @@ class TweetVideo extends ConsumerWidget {
               ),
               orElse: () => MediaThumbnail(
                 thumbnail: mediaData.thumbnail,
+                duration: mediaData.duration,
                 center: MediaThumbnailIcon(
                   icon: const Icon(Icons.play_arrow_rounded),
                   compact: compact,
