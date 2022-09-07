@@ -148,10 +148,10 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             ),
           ),
           if (widget.data.isBuffering)
-            ImmediateOpacityAnimation(
-              delay: const Duration(milliseconds: 500),
+            const ImmediateOpacityAnimation(
+              delay: Duration(milliseconds: 500),
               duration: kLongAnimationDuration,
-              child: const MediaThumbnailIcon(
+              child: MediaThumbnailIcon(
                 icon: CircularProgressIndicator(),
               ),
             ),

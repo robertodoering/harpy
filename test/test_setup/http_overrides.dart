@@ -26,8 +26,8 @@ class MockHttpOverrides extends HttpOverrides {
 
 class _MockHttpClient extends Mock implements HttpClient {
   _MockHttpClient() {
-    void _fallback() {}
-    registerFallbackValue(_fallback);
+    void fallback() {}
+    registerFallbackValue(fallback);
     registerFallbackValue(Uri());
   }
 }

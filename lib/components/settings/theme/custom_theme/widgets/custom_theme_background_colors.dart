@@ -67,7 +67,7 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
               );
 
         return Padding(
-          key: ValueKey(hashValues(color, index)),
+          key: ValueKey(Object.hash(color, index)),
           padding: EdgeInsetsDirectional.only(
             bottom: display.smallPaddingValue,
           ),

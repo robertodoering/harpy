@@ -29,7 +29,7 @@ class BubblesColor {
   }
 
   @override
-  int get hashCode => hashValues(
+  int get hashCode => Object.hash(
         primary,
         secondary,
         tertiary,
@@ -55,7 +55,7 @@ class CircleColor {
   }
 
   @override
-  int get hashCode => hashValues(start.hashCode, end.hashCode);
+  int get hashCode => Object.hash(start.hashCode, end.hashCode);
 }
 
 /// An animation modified from the
