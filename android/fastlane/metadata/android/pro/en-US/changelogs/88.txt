@@ -1,0 +1,4 @@
+Version 0.9.9
+2022-09-08
+
+- Fixed persisting wrong custom api value

@@ -36,7 +36,7 @@ class CustomApiPreferencesNotifier extends StateNotifier<CustomApiPreferences> {
     );
     _preferences
       ..setString('customKey', key)
-      ..setString('customSecret', key);
+      ..setString('customSecret', secret);
   }
 }
 
