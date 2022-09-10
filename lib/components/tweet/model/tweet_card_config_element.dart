@@ -14,6 +14,7 @@ enum TweetCardElement {
   actionsButton,
   actionsRow,
   details,
+  linkPreview,
 }
 
 /// The actions used in the [TweetCardElement.actionsRow].
@@ -41,6 +42,8 @@ extension TweetCardElementExtension on TweetCardElement {
           return tweet.quote != null;
         case TweetCardElement.media:
           return tweet.media.isNotEmpty;
+        case TweetCardElement.linkPreview:
+          return tweet.previewUrl != null;
         case TweetCardElement.topRow:
         case TweetCardElement.translation:
         case TweetCardElement.actionsButton:
@@ -67,6 +70,7 @@ extension TweetCardElementExtension on TweetCardElement {
       case TweetCardElement.quote:
       case TweetCardElement.media:
       case TweetCardElement.details:
+      case TweetCardElement.linkPreview:
         return true;
       case TweetCardElement.translation:
       case TweetCardElement.topRow:

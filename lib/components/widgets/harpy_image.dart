@@ -87,16 +87,22 @@ class HarpyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      // fallback to NetworkImage in tests because we can't use mocked http
-      // overrides for `NetworkImageWithRetry`
-      image: (isTest ? NetworkImage(imageUrl) : NetworkImageWithRetry(imageUrl))
-          as ImageProvider,
-      errorBuilder: _errorBuilder,
-      frameBuilder: _frameBuilder,
-      fit: fit,
+    // TODO: check if SizedBox does not break anything.
+    return SizedBox(
       width: width,
       height: height,
+      child: Image(
+        // fallback to NetworkImage in tests because we can't use mocked http
+        // overrides for `NetworkImageWithRetry`
+        image: (isTest
+            ? NetworkImage(imageUrl)
+            : NetworkImageWithRetry(imageUrl)) as ImageProvider,
+        errorBuilder: _errorBuilder,
+        frameBuilder: _frameBuilder,
+        fit: fit,
+        width: width,
+        height: height,
+      ),
     );
   }
 }

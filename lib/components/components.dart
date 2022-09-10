@@ -187,6 +187,7 @@ export 'tweet/widgets/card_content/tweet_card_actions_button.dart';
 export 'tweet/widgets/card_content/tweet_card_avatar.dart';
 export 'tweet/widgets/card_content/tweet_card_details.dart';
 export 'tweet/widgets/card_content/tweet_card_handle.dart';
+export 'tweet/widgets/card_content/tweet_card_link_preview.dart';
 export 'tweet/widgets/card_content/tweet_card_media.dart';
 export 'tweet/widgets/card_content/tweet_card_name.dart';
 export 'tweet/widgets/card_content/tweet_card_quote.dart';
