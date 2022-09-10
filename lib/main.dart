@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
