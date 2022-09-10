@@ -87,7 +87,6 @@ class HarpyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: check if SizedBox does not break anything.
     return SizedBox(
       width: width,
       height: height,
