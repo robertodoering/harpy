@@ -12,12 +12,16 @@ class HarpyImage extends StatelessWidget {
     this.fit,
     this.width,
     this.height,
+    this.catchGesturesOnError = true,
   });
 
   final String imageUrl;
   final BoxFit? fit;
   final double? width;
   final double? height;
+
+  /// Whether on tap gestures should be caught in the error builder.
+  final bool catchGesturesOnError;
 
   Widget _errorBuilder(
     BuildContext context,
@@ -28,7 +32,7 @@ class HarpyImage extends StatelessWidget {
 
     return GestureDetector(
       // empty on tap to prevent tap gestures on error widget
-      onTap: () {},
+      onTap: catchGesturesOnError ? () {} : null,
       child: Container(
         color: theme.cardColor,
         width: width,

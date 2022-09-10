@@ -38,6 +38,7 @@ class MediaThumbnail extends ConsumerWidget {
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
+            catchGesturesOnError: false,
           ),
           center,
           if (duration != null) _ThumbnailDuration(duration: duration!),
@@ -128,16 +129,26 @@ class _ThumbnailDuration extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
 
-    return Align(
-      alignment: AlignmentDirectional.bottomStart,
-      child: Padding(
-        padding: EdgeInsets.all(display.smallPaddingValue),
-        child: Text(
-          prettyPrintDuration(duration),
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: Colors.white.withOpacity(.8),
+    return IgnorePointer(
+      child: Align(
+        alignment: AlignmentDirectional.bottomStart,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: display.paddingValue / 2,
+            vertical: display.paddingValue / 3,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.black45,
+            borderRadius: harpyTheme.borderRadius,
+          ),
+          child: Text(
+            prettyPrintDuration(duration),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: Colors.white.withOpacity(.8),
+            ),
           ),
         ),
       ),
