@@ -155,6 +155,7 @@ class _LinkPreviewText extends ConsumerWidget {
                 Text(
                   metadata.desc ?? '',
                   maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyText2
                       ?.copyWith(height: 1.15)
                       .apply(
