@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -51,7 +53,10 @@ class HarpyApp extends ConsumerWidget {
       themeMode: ref.watch(platformBrightnessProvider) == Brightness.light
           ? ThemeMode.light
           : ThemeMode.dark,
-      supportedLocales: kMaterialSupportedLanguages.map(Locale.new),
+      supportedLocales: [
+        ...WidgetsBinding.instance.platformDispatcher.locales,
+        const Locale('en' 'US'),
+      ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
