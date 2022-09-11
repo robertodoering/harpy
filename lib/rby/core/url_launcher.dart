@@ -3,22 +3,12 @@ import 'package:harpy/components/settings/media/preferences/media_preferences.da
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final launcherProvider = Provider(
-  (ref) => Launcher(
-    read: ref.read,
-  ),
-);
+typedef UrlLauncher = Future<void> Function(String url);
 
-class Launcher {
-  const Launcher({
-    required this.read,
-  });
-
-  final Reader read;
-
-  Future<void> safeLaunchUrl(String url) async {
+final launcherProvider = Provider<UrlLauncher>(
+  (ref) => (url) async {
     final shouldOpenExternally =
-        read(mediaPreferencesProvider).openLinksExternally;
+        ref.read(mediaPreferencesProvider).openLinksExternally;
 
     try {
       await launchUrl(
@@ -30,5 +20,5 @@ class Launcher {
     } catch (e) {
       Logger('UrlLauncher').warning('cant launch url $url', e);
     }
-  }
-}
+  },
+);

@@ -102,8 +102,7 @@ class _PreviewHint extends ConsumerStatefulWidget {
 
 class _PreviewHintState extends ConsumerState<_PreviewHint> {
   late final _gestureRecognizer = TapGestureRecognizer()
-    ..onTap = () =>
-        ref.read(launcherProvider).safeLaunchUrl('https://fonts.google.com/');
+    ..onTap = () => ref.read(launcherProvider)('https://fonts.google.com/');
 
   @override
   void dispose() {

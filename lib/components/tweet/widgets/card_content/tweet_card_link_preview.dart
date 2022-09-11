@@ -21,7 +21,7 @@ class TweetCardLinkPreview extends ConsumerWidget {
     final launcher = ref.watch(launcherProvider);
 
     return GestureDetector(
-      onTap: () => launcher.safeLaunchUrl('${tweet.previewUrl}'),
+      onTap: () => launcher('${tweet.previewUrl}'),
       child: AnyLinkPreview.builder(
         link: '${tweet.previewUrl}',
         placeholderWidget: const _LinkPreviewPlaceholder(),

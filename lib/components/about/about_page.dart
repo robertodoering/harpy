@@ -125,8 +125,7 @@ class _SummaryCard extends ConsumerWidget {
             leading: const Icon(FeatherIcons.github),
             title: const Text('harpy on GitHub'),
             subtitle: Text('github.com/robertodoering/harpy', style: style),
-            onTap: () => launcher
-                .safeLaunchUrl('https://github.com/robertodoering/harpy'),
+            onTap: () => launcher('https://github.com/robertodoering/harpy'),
           ),
           HarpyListTile(
             title: const Text('harpy on Twitter'),
@@ -141,7 +140,7 @@ class _SummaryCard extends ConsumerWidget {
                       UserPage.name,
                       params: {'handle': 'harpy_app'},
                     )
-                : () => launcher.safeLaunchUrl('https://twitter.com/harpy_app'),
+                : () => launcher('https://twitter.com/harpy_app'),
           ),
         ],
       ),
@@ -173,8 +172,7 @@ class _DonationCard extends ConsumerWidget {
           HarpyListTile(
             leading: const Icon(FeatherIcons.coffee),
             title: const Text('buy me a coffee'),
-            onTap: () =>
-                launcher.safeLaunchUrl('https://ko-fi.com/robertodoering'),
+            onTap: () => launcher('https://ko-fi.com/robertodoering'),
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.dollarSign),
@@ -183,7 +181,7 @@ class _DonationCard extends ConsumerWidget {
               bottomLeft: harpyTheme.radius,
               bottomRight: harpyTheme.radius,
             ),
-            onTap: () => launcher.safeLaunchUrl(
+            onTap: () => launcher(
               'https://paypal.com/paypalme/robertodoering',
             ),
           ),
@@ -235,7 +233,7 @@ class _ProCard extends ConsumerWidget {
               bottomLeft: harpyTheme.radius,
               bottomRight: harpyTheme.radius,
             ),
-            onTap: () => launcher.safeLaunchUrl(
+            onTap: () => launcher(
               'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
             ),
           ),
@@ -271,7 +269,7 @@ class _CreditsCard extends ConsumerWidget {
         ),
       ),
       subtitle: const Text('thank you for your feedback and bug reports!'),
-      onTap: () => launcher.safeLaunchUrl(
+      onTap: () => launcher(
         'mailto:support@harpyapp.com?'
         'subject=${isPro ? "harpy pro" : "harpy"}',
       ),
@@ -289,7 +287,7 @@ class _PrivacyPolicyCard extends ConsumerWidget {
     return HarpyListCard(
       leading: const Icon(CupertinoIcons.exclamationmark_shield),
       title: const Text('privacy policy'),
-      onTap: () => launcher.safeLaunchUrl(
+      onTap: () => launcher(
         'https://github.com/robertodoering/harpy/blob/master/PRIVACY.md',
       ),
     );

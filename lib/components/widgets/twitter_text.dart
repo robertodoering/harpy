@@ -35,7 +35,7 @@ void defaultOnUserMentionTap(
 
 void defaultOnUrlTap(BuildContext context, Reader read, UrlData url) {
   HapticFeedback.lightImpact();
-  read(launcherProvider).safeLaunchUrl(url.expandedUrl);
+  read(launcherProvider)(url.expandedUrl);
 }
 
 void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
@@ -51,7 +51,7 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
         title: const Text('open url externally'),
         onTap: () {
           HapticFeedback.lightImpact();
-          read(launcherProvider).safeLaunchUrl(url.expandedUrl);
+          read(launcherProvider)(url.expandedUrl);
           Navigator.of(context).pop();
         },
       ),

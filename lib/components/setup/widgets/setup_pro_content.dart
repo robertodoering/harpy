@@ -10,8 +10,8 @@ import 'package:harpy/rby/rby.dart';
 class SetupProContent extends ConsumerWidget {
   const SetupProContent();
 
-  void _openHarpyPro(Launcher launcher) {
-    launcher.safeLaunchUrl(
+  void _openHarpyPro(UrlLauncher launcher) {
+    launcher(
       'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
     );
   }

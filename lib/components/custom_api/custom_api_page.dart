@@ -53,7 +53,7 @@ class _Content extends ConsumerWidget {
           child: HarpyButton.text(
             icon: const Icon(CupertinoIcons.info),
             label: const Text('setup guide'),
-            onTap: () => launcher.safeLaunchUrl(
+            onTap: () => launcher(
               'https://github.com/robertodoering/harpy/wiki/Twitter-api-key-setup',
             ),
           ),

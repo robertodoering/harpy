@@ -25,7 +25,7 @@ class HomeTabAddListCard extends ConsumerWidget {
       trailing: isFree ? const FlareIcon.shiningStar() : null,
       border: Border.all(color: theme.dividerColor),
       onTap: isFree
-          ? () => launcher.safeLaunchUrl(
+          ? () => launcher(
                 'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
               )
           : () => router.pushNamed(
