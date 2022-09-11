@@ -53,6 +53,9 @@ class TweetData with _$TweetData {
     /// Does not contain optional media and quote links and the shortened urls
     /// are replaced with their display urls.
     @Default('') String visibleText,
+
+    /// The url to preview if a tweet contains a single url and no media.
+    Uri? previewUrl,
     @Default(<MediaData>[]) List<MediaData> media,
     Translation? translation,
 
@@ -92,6 +95,26 @@ class TweetData with _$TweetData {
       }
     }
 
+    Uri? previewUrl;
+
+    final allUrls = tweet.entities?.urls;
+
+    if (mediaData.isEmpty && allUrls != null && allUrls.isNotEmpty) {
+      final urls = List.of(allUrls)..removeWhere((url) => url.url == quoteUrl);
+
+      if (urls.length == 1) {
+        final urlString = urls.single.expandedUrl;
+
+        if (urlString != null) {
+          final uri = Uri.parse(urlString);
+
+          if (uri.host != 'youtu.be' && !uri.host.startsWith('youtube')) {
+            previewUrl = uri;
+          }
+        }
+      }
+    }
+
     return TweetData(
       // required
       originalId: originalId,
@@ -115,6 +138,7 @@ class TweetData with _$TweetData {
       // custom
       visibleText: _visibleText(tweet.fullText ?? '', quoteUrl, tweet.entities),
       media: mediaData,
+      previewUrl: previewUrl,
     );
   }
 

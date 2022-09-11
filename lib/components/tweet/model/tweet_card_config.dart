@@ -36,6 +36,7 @@ const kDefaultTweetCardConfig = TweetCardConfig(
     TweetCardElement.media,
     TweetCardElement.actionsButton,
     TweetCardElement.actionsRow,
+    TweetCardElement.linkPreview,
   },
   actions: {
     TweetCardActionElement.retweet,

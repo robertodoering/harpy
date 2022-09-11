@@ -8,14 +8,23 @@ import 'package:shimmer/shimmer.dart';
 /// the loaded image.
 class HarpyImage extends StatelessWidget {
   const HarpyImage({
-    required this.imageUrl,
+    required String this.imageUrl,
     this.fit,
     this.width,
     this.height,
     this.catchGesturesOnError = true,
-  });
+  }) : imageProvider = null;
 
-  final String imageUrl;
+  const HarpyImage.fromImageProvider({
+    required ImageProvider this.imageProvider,
+    this.fit,
+    this.width,
+    this.height,
+    this.catchGesturesOnError = true,
+  }) : imageUrl = null;
+
+  final String? imageUrl;
+  final ImageProvider? imageProvider;
   final BoxFit? fit;
   final double? width;
   final double? height;
@@ -87,16 +96,22 @@ class HarpyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      // fallback to NetworkImage in tests because we can't use mocked http
-      // overrides for `NetworkImageWithRetry`
-      image: (isTest ? NetworkImage(imageUrl) : NetworkImageWithRetry(imageUrl))
-          as ImageProvider,
-      errorBuilder: _errorBuilder,
-      frameBuilder: _frameBuilder,
-      fit: fit,
+    return SizedBox(
       width: width,
       height: height,
+      child: Image(
+        // fallback to NetworkImage in tests because we can't use mocked http
+        // overrides for `NetworkImageWithRetry`
+        image: imageProvider ??
+            (isTest
+                ? NetworkImage(imageUrl!)
+                : NetworkImageWithRetry(imageUrl!)) as ImageProvider,
+        errorBuilder: _errorBuilder,
+        frameBuilder: _frameBuilder,
+        fit: fit,
+        width: width,
+        height: height,
+      ),
     );
   }
 }

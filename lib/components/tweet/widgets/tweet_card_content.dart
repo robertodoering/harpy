@@ -32,6 +32,7 @@ class TweetCardContent extends ConsumerWidget {
     final translation = TweetCardElement.translation.shouldBuild(tweet, config);
     final media = TweetCardElement.media.shouldBuild(tweet, config);
     final quote = TweetCardElement.quote.shouldBuild(tweet, config);
+    final linkPreview = TweetCardElement.linkPreview.shouldBuild(tweet, config);
     final details = TweetCardElement.details.shouldBuild(tweet, config);
     final actionsRow = TweetCardElement.actionsRow.shouldBuild(tweet, config);
 
@@ -68,6 +69,8 @@ class TweetCardContent extends ConsumerWidget {
           tweet: tweet,
           index: index,
         ),
+      if (linkPreview)
+        TweetCardElement.linkPreview: TweetCardLinkPreview(tweet: tweet),
       if (details)
         TweetCardElement.details: TweetCardDetails(
           tweet: tweet,
@@ -100,8 +103,8 @@ class TweetCardContent extends ConsumerWidget {
               SizedBox(
                 height: i == content.length - 1 ? outerPadding : innerPadding,
               ),
-          ]
-        ]
+          ],
+        ],
       ],
     );
   }

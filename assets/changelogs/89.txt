@@ -1,0 +1,6 @@
+Version 0.9.10
+2022-xx-xx
+
+- Added link previews in Tweets
+- Updated video thumbnail duration design
+- Fixed date & time format was wrong for some countries
