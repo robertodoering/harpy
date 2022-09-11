@@ -16,6 +16,7 @@ class HarpyProCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
+    final launcher = ref.watch(launcherProvider);
 
     final headline = theme.textTheme.headline6!.copyWith(
       fontWeight: FontWeight.normal,
@@ -66,7 +67,7 @@ class HarpyProCard extends ConsumerWidget {
               type: MaterialType.transparency,
               child: InkWell(
                 borderRadius: harpyTheme.borderRadius,
-                onTap: () => safeLaunchUrl(
+                onTap: () => launcher.safeLaunchUrl(
                   'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
                 ),
                 child: Padding(
