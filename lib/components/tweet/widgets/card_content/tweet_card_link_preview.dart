@@ -1,4 +1,5 @@
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
@@ -23,7 +24,7 @@ class TweetCardLinkPreview extends ConsumerWidget {
       child: AnyLinkPreview.builder(
         link: '${tweet.previewUrl}',
         placeholderWidget: const _LinkPreviewPlaceholder(),
-        errorWidget: const _LinkPreviewError(),
+        errorWidget: _LinkPreviewError(url: tweet.previewUrl!),
         itemBuilder: (_, metadata, imageProvider) => Container(
           decoration: BoxDecoration(
             borderRadius: harpyTheme.borderRadius,
@@ -32,17 +33,17 @@ class TweetCardLinkPreview extends ConsumerWidget {
           height: 100,
           child: Row(
             children: [
-              if (metadata.image != null)
+              if (imageProvider != null)
                 ClipRRect(
                   borderRadius: BorderRadius.only(
                     bottomLeft: harpyTheme.radius,
                     topLeft: harpyTheme.radius,
                   ),
-                  child: HarpyImage(
+                  child: HarpyImage.fromImageProvider(
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
-                    imageUrl: metadata.image!,
+                    imageProvider: imageProvider,
                   ),
                 ),
               Expanded(
@@ -91,33 +92,67 @@ class _LinkPreviewPlaceholder extends ConsumerWidget {
 }
 
 class _LinkPreviewError extends ConsumerWidget {
-  const _LinkPreviewError();
+  const _LinkPreviewError({
+    required this.url,
+  });
+
+  final Uri url;
+
+  String get urlStr {
+    final urlString = '$url';
+
+    if (urlString.length > 40) {
+      return '${urlString.substring(0, 40)}...';
+    }
+
+    return urlString;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
+    final display = ref.watch(displayPreferencesProvider);
 
-    return GestureDetector(
-      // empty on tap to prevent tap gestures on error widget
-      onTap: () {},
-      child: Container(
-        width: double.infinity,
-        height: 100,
-        decoration: BoxDecoration(
-          color: theme.cardColor,
-          borderRadius: harpyTheme.borderRadius,
-        ),
-        child: FractionallySizedBox(
-          widthFactor: .5,
-          heightFactor: .5,
-          child: FittedBox(
-            child: Icon(
-              Icons.broken_image_outlined,
-              color: theme.iconTheme.color,
+    return Container(
+      width: double.infinity,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: harpyTheme.borderRadius,
+        border: Border.all(color: theme.dividerColor),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: display.edgeInsets,
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.only(
+                topLeft: harpyTheme.radius,
+                bottomLeft: harpyTheme.radius,
+              ),
+            ),
+            child: FittedBox(
+              child: Icon(
+                CupertinoIcons.link,
+                color: theme.iconTheme.color,
+              ),
             ),
           ),
-        ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(display.smallPaddingValue),
+              child: FittedBox(
+                child: Text(
+                  urlStr,
+                  style: theme.textTheme.subtitle2,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
