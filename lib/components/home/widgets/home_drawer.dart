@@ -234,6 +234,7 @@ class _Entries extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final general = ref.watch(generalPreferencesProvider);
     final user = ref.watch(authenticationStateProvider).user;
+    final launcher = ref.watch(launcherProvider);
 
     final directionality = Directionality.of(context);
 
@@ -282,7 +283,7 @@ class _Entries extends ConsumerWidget {
         HarpyListCard(
           leading: const FlareIcon.shiningStar(),
           title: const Text('harpy pro'),
-          onTap: () => safeLaunchUrl(
+          onTap: () => launcher(
             'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
           ),
         ),

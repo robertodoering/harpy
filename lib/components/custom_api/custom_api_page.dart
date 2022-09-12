@@ -39,6 +39,7 @@ class _Content extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final launcher = ref.watch(launcherProvider);
     final customApiPreferences = ref.watch(customApiPreferencesProvider);
     final customApiPreferencesNotifier = ref.watch(
       customApiPreferencesProvider.notifier,
@@ -52,7 +53,7 @@ class _Content extends ConsumerWidget {
           child: HarpyButton.text(
             icon: const Icon(CupertinoIcons.info),
             label: const Text('setup guide'),
-            onTap: () => safeLaunchUrl(
+            onTap: () => launcher(
               'https://github.com/robertodoering/harpy/wiki/Twitter-api-key-setup',
             ),
           ),

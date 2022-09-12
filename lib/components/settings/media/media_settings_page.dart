@@ -96,6 +96,16 @@ class _MediaSettingsList extends ConsumerWidget {
           ),
         ),
         verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.link),
+            title: const Text('open links externally'),
+            value: media.openLinksExternally,
+            borderRadius: harpyTheme.borderRadius,
+            onChanged: mediaNotifier.setOpenLinksExternally,
+          ),
+        ),
+        verticalSpacer,
         ExpansionCard(
           title: const Text('autoplay'),
           children: [

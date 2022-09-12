@@ -93,16 +93,16 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
   }
 }
 
-class _PreviewHint extends StatefulWidget {
+class _PreviewHint extends ConsumerStatefulWidget {
   const _PreviewHint();
 
   @override
   _PreviewHintState createState() => _PreviewHintState();
 }
 
-class _PreviewHintState extends State<_PreviewHint> {
+class _PreviewHintState extends ConsumerState<_PreviewHint> {
   late final _gestureRecognizer = TapGestureRecognizer()
-    ..onTap = () => safeLaunchUrl('https://fonts.google.com/');
+    ..onTap = () => ref.read(launcherProvider)('https://fonts.google.com/');
 
   @override
   void dispose() {

@@ -2,5 +2,8 @@ Version 0.9.10
 2022-xx-xx
 
 - Added link previews in Tweets
+- Added option to open link in internal webview
+  - Enabled by default
+  - Can be disabled in `settings › media › open links externally`
 - Updated video thumbnail duration design
 - Fixed date & time format was wrong for some countries

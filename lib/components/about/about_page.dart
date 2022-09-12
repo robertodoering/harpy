@@ -96,6 +96,7 @@ class _SummaryCard extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
     final router = ref.watch(routerProvider);
     final version = ref.watch(deviceInfoProvider).packageInfo?.version;
+    final launcher = ref.watch(launcherProvider);
 
     final isAuthenticated =
         ref.watch(authenticationStateProvider).isAuthenticated;
@@ -124,8 +125,7 @@ class _SummaryCard extends ConsumerWidget {
             leading: const Icon(FeatherIcons.github),
             title: const Text('harpy on GitHub'),
             subtitle: Text('github.com/robertodoering/harpy', style: style),
-            onTap: () =>
-                safeLaunchUrl('https://github.com/robertodoering/harpy'),
+            onTap: () => launcher('https://github.com/robertodoering/harpy'),
           ),
           HarpyListTile(
             title: const Text('harpy on Twitter'),
@@ -140,7 +140,7 @@ class _SummaryCard extends ConsumerWidget {
                       UserPage.name,
                       params: {'handle': 'harpy_app'},
                     )
-                : () => safeLaunchUrl('https://twitter.com/harpy_app'),
+                : () => launcher('https://twitter.com/harpy_app'),
           ),
         ],
       ),
@@ -156,6 +156,7 @@ class _DonationCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+    final launcher = ref.watch(launcherProvider);
 
     return Card(
       child: Column(
@@ -171,7 +172,7 @@ class _DonationCard extends ConsumerWidget {
           HarpyListTile(
             leading: const Icon(FeatherIcons.coffee),
             title: const Text('buy me a coffee'),
-            onTap: () => safeLaunchUrl('https://ko-fi.com/robertodoering'),
+            onTap: () => launcher('https://ko-fi.com/robertodoering'),
           ),
           HarpyListTile(
             leading: const Icon(FeatherIcons.dollarSign),
@@ -180,7 +181,7 @@ class _DonationCard extends ConsumerWidget {
               bottomLeft: harpyTheme.radius,
               bottomRight: harpyTheme.radius,
             ),
-            onTap: () => safeLaunchUrl(
+            onTap: () => launcher(
               'https://paypal.com/paypalme/robertodoering',
             ),
           ),
@@ -198,6 +199,7 @@ class _ProCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
+    final launcher = ref.watch(launcherProvider);
 
     final style = TextStyle(
       color: theme.colorScheme.primary,
@@ -231,7 +233,7 @@ class _ProCard extends ConsumerWidget {
               bottomLeft: harpyTheme.radius,
               bottomRight: harpyTheme.radius,
             ),
-            onTap: () => safeLaunchUrl(
+            onTap: () => launcher(
               'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
             ),
           ),
@@ -241,11 +243,12 @@ class _ProCard extends ConsumerWidget {
   }
 }
 
-class _CreditsCard extends StatelessWidget {
+class _CreditsCard extends ConsumerWidget {
   const _CreditsCard();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final launcher = ref.watch(launcherProvider);
     final theme = Theme.of(context);
 
     final style = TextStyle(
@@ -266,7 +269,7 @@ class _CreditsCard extends StatelessWidget {
         ),
       ),
       subtitle: const Text('thank you for your feedback and bug reports!'),
-      onTap: () => safeLaunchUrl(
+      onTap: () => launcher(
         'mailto:support@harpyapp.com?'
         'subject=${isPro ? "harpy pro" : "harpy"}',
       ),
@@ -274,15 +277,17 @@ class _CreditsCard extends StatelessWidget {
   }
 }
 
-class _PrivacyPolicyCard extends StatelessWidget {
+class _PrivacyPolicyCard extends ConsumerWidget {
   const _PrivacyPolicyCard();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final launcher = ref.watch(launcherProvider);
+
     return HarpyListCard(
       leading: const Icon(CupertinoIcons.exclamationmark_shield),
       title: const Text('privacy policy'),
-      onTap: () => safeLaunchUrl(
+      onTap: () => launcher(
         'https://github.com/robertodoering/harpy/blob/master/PRIVACY.md',
       ),
     );

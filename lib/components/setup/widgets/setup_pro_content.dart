@@ -10,8 +10,8 @@ import 'package:harpy/rby/rby.dart';
 class SetupProContent extends ConsumerWidget {
   const SetupProContent();
 
-  void _openHarpyPro() {
-    safeLaunchUrl(
+  void _openHarpyPro(UrlLauncher launcher) {
+    launcher(
       'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
     );
   }
@@ -21,6 +21,7 @@ class SetupProContent extends ConsumerWidget {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final display = ref.watch(displayPreferencesProvider);
+    final launcher = ref.watch(launcherProvider);
 
     return Padding(
       padding: display.edgeInsets,
@@ -32,7 +33,7 @@ class SetupProContent extends ConsumerWidget {
               children: [
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: _openHarpyPro,
+                  onTap: () => _openHarpyPro(launcher),
                   child: Row(
                     children: [
                       const FlareIcon.shiningStar(iconSize: 72),
@@ -91,7 +92,7 @@ class SetupProContent extends ConsumerWidget {
                   HarpyButton.text(
                     label: const Text('harpy pro'),
                     icon: const FlareIcon.shiningStar(),
-                    onTap: _openHarpyPro,
+                    onTap: () => _openHarpyPro(launcher),
                   ),
                   HarpyButton.elevated(
                     label: const Text('finish setup'),

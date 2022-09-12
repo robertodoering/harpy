@@ -16,6 +16,7 @@ class HomeTabAddListCard extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final authentication = ref.watch(authenticationStateProvider);
     final notifier = ref.watch(homeTabConfigurationProvider.notifier);
+    final launcher = ref.watch(launcherProvider);
 
     return HarpyListCard(
       color: Colors.transparent,
@@ -24,7 +25,7 @@ class HomeTabAddListCard extends ConsumerWidget {
       trailing: isFree ? const FlareIcon.shiningStar() : null,
       border: Border.all(color: theme.dividerColor),
       onTap: isFree
-          ? () => safeLaunchUrl(
+          ? () => launcher(
                 'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
               )
           : () => router.pushNamed(
