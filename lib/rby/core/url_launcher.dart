@@ -3,11 +3,14 @@ import 'package:harpy/components/settings/media/preferences/media_preferences.da
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-typedef UrlLauncher = Future<void> Function(String url);
+typedef UrlLauncher = Future<void> Function(
+  String url, {
+  bool alwaysOpenExternally,
+});
 
 final launcherProvider = Provider<UrlLauncher>(
-  (ref) => (url) async {
-    final shouldOpenExternally =
+  (ref) => (url, {alwaysOpenExternally = false}) async {
+    final shouldOpenExternally = alwaysOpenExternally ||
         ref.read(mediaPreferencesProvider).openLinksExternally;
 
     try {

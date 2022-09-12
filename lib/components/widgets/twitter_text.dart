@@ -51,7 +51,7 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
         title: const Text('open url externally'),
         onTap: () {
           HapticFeedback.lightImpact();
-          read(launcherProvider)(url.expandedUrl);
+          read(launcherProvider)(url.expandedUrl, alwaysOpenExternally: true);
           Navigator.of(context).pop();
         },
       ),
