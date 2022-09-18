@@ -101,13 +101,15 @@ class _OtherSettingsCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     final hasUnapprovedDomains =
         ref.watch(hasUnapprovedDomainsProvider).maybeWhen(
               data: (data) => data,
               orElse: () => false,
             );
+
+    final usingCustomApi =
+        ref.watch(customApiPreferencesProvider).hasCustomApiKeyAndSecret;
 
     return ExpansionCard(
       title: const Text('other'),
@@ -120,24 +122,35 @@ class _OtherSettingsCard extends ConsumerWidget {
         HarpyListTile(
           leading: const Icon(Icons.translate),
           title: const Text('language'),
-          borderRadius: hasUnapprovedDomains
-              ? null
-              : BorderRadius.only(
-                  bottomLeft: harpyTheme.radius,
-                  bottomRight: harpyTheme.radius,
-                ),
           onTap: () => router.goNamed(LanguageSettingsPage.name),
         ),
         if (hasUnapprovedDomains)
-          HarpyListTile(
-            leading: const Icon(CupertinoIcons.share),
-            title: const Text('open twitter links'),
-            subtitle: const Text('allow harpy to open twitter links'),
-            borderRadius: BorderRadius.only(
-              bottomLeft: harpyTheme.radius,
-              bottomRight: harpyTheme.radius,
-            ),
+          const HarpyListTile(
+            leading: Icon(CupertinoIcons.share),
+            title: Text('open twitter links'),
+            subtitle: Text('allow harpy to open twitter links'),
             onTap: showOpenByDefault,
+          ),
+        if (!usingCustomApi)
+          HarpyListTile(
+            leading: const Icon(FeatherIcons.twitter),
+            title: const Text('use custom api key'),
+            subtitle: const Text(
+              'connect to Twitter with your own api credentials',
+            ),
+            onTap: () async {
+              final result = await showDialog<bool>(
+                context: context,
+                builder: (_) => const CustomApiDialog(),
+              );
+
+              if (result ?? false) {
+                ref
+                    .read(logoutProvider)
+                    .logout(target: CustomApiPage.name)
+                    .ignore();
+              }
+            },
           ),
       ],
     );

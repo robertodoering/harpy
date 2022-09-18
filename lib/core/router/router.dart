@@ -47,15 +47,17 @@ final routesProvider = Provider(
         state: state,
         child: const LoginPage(),
       ),
-    ),
-    GoRoute(
-      name: CustomApiPage.name,
-      path: CustomApiPage.path, // '/custom_api'
-      pageBuilder: (_, state) => _createPage(
-        state: state,
-        fullscreenDialog: true,
-        child: const CustomApiPage(),
-      ),
+      routes: [
+        GoRoute(
+          name: CustomApiPage.name,
+          path: CustomApiPage.path, // 'custom_api'
+          pageBuilder: (_, state) => _createPage(
+            state: state,
+            fullscreenDialog: true,
+            child: const CustomApiPage(),
+          ),
+        ),
+      ],
     ),
     GoRoute(
       name: AboutPage.name,

@@ -22,11 +22,13 @@ class Logout with LoggerMixin {
   final Reader _read;
 
   /// Navigates to the [LoginPage] and invalidates the active session.
-  Future<void> logout() async {
+  Future<void> logout({
+    String target = LoginPage.name,
+  }) async {
     log.fine('logging out');
 
     _read(routerProvider).goNamed(
-      LoginPage.name,
+      target,
       queryParams: {'transition': 'fade'},
     );
 

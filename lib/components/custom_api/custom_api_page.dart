@@ -8,7 +8,7 @@ class CustomApiPage extends ConsumerWidget {
   const CustomApiPage();
 
   static const name = 'custom_api';
-  static const path = '/custom_api';
+  static const path = 'custom_api';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
