@@ -39,7 +39,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.10
-  flutter_riverpod: 2.0.0-dev.9
+  flutter_riverpod: 2.0.0
   freezed_annotation: ^2.1.0
   go_router: ^5.0.5
   google_fonts: ^3.0.0
