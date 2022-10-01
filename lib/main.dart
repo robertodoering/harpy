@@ -60,10 +60,7 @@ class HarpyApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      routeInformationProvider:
-          ref.watch(routerProvider).routeInformationProvider,
-      routeInformationParser: ref.watch(routerProvider).routeInformationParser,
-      routerDelegate: ref.watch(routerProvider).routerDelegate,
+      routerConfig: ref.watch(routerProvider),
       builder: (_, child) => AnnotatedRegion(
         value: ref.watch(harpyThemeProvider).colors.systemUiOverlayStyle,
         child: SystemGesturePlaceholder(
