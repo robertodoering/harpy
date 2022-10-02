@@ -12,7 +12,7 @@ final listShowProvider = StateNotifierProvider.autoDispose
     .family<ListShowNotifier, ListShowState, String>(
   (ref, handle) => ListShowNotifier(
     handle: handle,
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
   ),
   name: 'ListShowProvider',
@@ -21,10 +21,10 @@ final listShowProvider = StateNotifierProvider.autoDispose
 class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
   ListShowNotifier({
     required String handle,
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
   })  : _handle = handle,
-        _read = read,
+        _ref = ref,
         _twitterApi = twitterApi,
         super(const ListShowState.loading()) {
     load();
@@ -32,7 +32,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
 
   final String _handle;
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
 
   Future<void> load() async {
@@ -46,7 +46,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
     final responses = await Future.wait([
       _twitterApi.listsService.ownerships(screenName: _handle),
       _twitterApi.listsService.subscriptions(screenName: _handle),
-    ]).handleError((e, st) => twitterErrorHandler(_read, e, st));
+    ]).handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
     if (responses != null && responses.length == 2) {
       paginatedOwnerships = responses[0];
@@ -109,7 +109,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
             screenName: _handle,
             cursor: currentState.ownershipsCursor,
           )
-          .handleError((e, st) => twitterErrorHandler(_read, e, st));
+          .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
       if (paginatedOwnerships != null) {
         final newOwnerships = paginatedOwnerships.lists!
@@ -150,7 +150,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
             screenName: _handle,
             cursor: currentState.subscriptionsCursor,
           )
-          .handleError((e, st) => twitterErrorHandler(_read, e, st));
+          .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
       if (paginatedSubscriptions != null) {
         final newSubscriptions =

@@ -12,17 +12,18 @@ class ChangelogDialog extends StatelessWidget {
 
   final ChangelogData data;
 
-  static Future<void> maybeShow(BuildContext context, Reader read) async {
-    final general = read(generalPreferencesProvider);
-    final generalNotifier = read(generalPreferencesProvider.notifier);
-    final deviceInfo = read(deviceInfoProvider);
+  static Future<void> maybeShow(WidgetRef ref) async {
+    final general = ref.read(generalPreferencesProvider);
+    final generalNotifier = ref.read(generalPreferencesProvider.notifier);
+    final deviceInfo = ref.read(deviceInfoProvider);
 
     if (general.shouldShowChangelogDialog(deviceInfo)) {
-      final data = await read(currentChangelogProvider.future).handleError();
+      final data =
+          await ref.read(currentChangelogProvider.future).handleError();
 
       if (data != null) {
         showDialog<void>(
-          context: context,
+          context: ref.context,
           builder: (_) => ChangelogDialog(data: data),
         ).ignore();
       }

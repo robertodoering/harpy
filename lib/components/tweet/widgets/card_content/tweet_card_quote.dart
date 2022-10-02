@@ -43,7 +43,7 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => delegates.onShowTweet?.call(context, ref.read),
+      onTap: () => delegates.onShowTweet?.call(ref),
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: harpyTheme.borderRadius,

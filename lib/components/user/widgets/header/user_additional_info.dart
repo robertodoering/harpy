@@ -38,12 +38,8 @@ class UserAdditionalInfo extends ConsumerWidget {
         _InfoRow(
           icon: const Icon(CupertinoIcons.link),
           child: GestureDetector(
-            onTap: () => defaultOnUrlTap(context, ref.read, user.userUrl!),
-            onLongPress: () => defaultOnUrlLongPress(
-              context,
-              ref.read,
-              user.userUrl!,
-            ),
+            onTap: () => defaultOnUrlTap(ref, user.userUrl!),
+            onLongPress: () => defaultOnUrlLongPress(ref, user.userUrl!),
             child: Text(
               user.userUrl!.displayUrl,
               style: theme.textTheme.bodyText1!.copyWith(

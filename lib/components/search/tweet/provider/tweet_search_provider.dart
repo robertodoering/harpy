@@ -12,7 +12,7 @@ part 'tweet_search_provider.freezed.dart';
 final tweetSearchProvider =
     StateNotifierProvider.autoDispose<TweetSearchNotifier, TweetSearchState>(
   (ref) => TweetSearchNotifier(
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
   ),
   name: 'TweetSearchProvider',
@@ -21,13 +21,13 @@ final tweetSearchProvider =
 class TweetSearchNotifier extends StateNotifier<TweetSearchState>
     with LoggerMixin {
   TweetSearchNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         super(const TweetSearchState.initial());
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
 
   Future<void> search({
@@ -54,7 +54,7 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
         .then(
           (result) => result.statuses?.map(TweetData.fromTweet).toBuiltList(),
         )
-        .handleError((e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
     if (tweets != null) {
       if (tweets.isEmpty) {

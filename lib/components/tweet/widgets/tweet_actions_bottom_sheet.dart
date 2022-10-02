@@ -6,18 +6,17 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
 void showTweetActionsBottomSheet(
-  BuildContext context, {
-  required Reader read,
+  WidgetRef ref, {
   required TweetData tweet,
   required TweetDelegates delegates,
 }) {
-  final theme = Theme.of(context);
+  final theme = Theme.of(ref.context);
 
-  final authenticationState = read(authenticationStateProvider);
+  final authenticationState = ref.read(authenticationStateProvider);
   final isAuthenticatedUser = tweet.user.id == authenticationState.user?.id;
 
   final l10n = Localizations.of<MaterialLocalizations>(
-    context,
+    ref.context,
     MaterialLocalizations,
   )!;
 
@@ -27,8 +26,8 @@ void showTweetActionsBottomSheet(
   );
 
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Column(
@@ -57,8 +56,8 @@ void showTweetActionsBottomSheet(
           ),
           onTap: () {
             HapticFeedback.lightImpact();
-            delegates.onDelete?.call(context, read);
-            Navigator.of(context).pop();
+            delegates.onDelete?.call(ref);
+            Navigator.of(ref.context).pop();
           },
         ),
       if (delegates.onComposeReply != null)
@@ -66,16 +65,16 @@ void showTweetActionsBottomSheet(
           leading: const Icon(CupertinoIcons.reply),
           title: const Text('reply'),
           onTap: () async {
-            delegates.onComposeReply?.call(context, read);
-            Navigator.of(context).pop();
+            delegates.onComposeReply?.call(ref);
+            Navigator.of(ref.context).pop();
           },
         ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),
         onTap: () {
-          delegates.onOpenTweetExternally?.call(context, read);
-          Navigator.of(context).pop();
+          delegates.onOpenTweetExternally?.call(ref);
+          Navigator.of(ref.context).pop();
         },
       ),
       HarpyListTile(
@@ -83,16 +82,16 @@ void showTweetActionsBottomSheet(
         title: const Text('copy tweet text'),
         enabled: tweet.hasText,
         onTap: () {
-          delegates.onCopyText?.call(context, read);
-          Navigator.of(context).pop();
+          delegates.onCopyText?.call(ref);
+          Navigator.of(ref.context).pop();
         },
       ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share tweet'),
         onTap: () {
-          delegates.onShareTweet?.call(context, read);
-          Navigator.of(context).pop();
+          delegates.onShareTweet?.call(ref);
+          Navigator.of(ref.context).pop();
         },
       ),
     ],

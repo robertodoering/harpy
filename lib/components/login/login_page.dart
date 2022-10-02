@@ -24,7 +24,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void initState() {
     super.initState();
 
-    ChangelogDialog.maybeShow(context, ref.read);
+    ChangelogDialog.maybeShow(ref);
   }
 
   Future<void> _startLogin() async {

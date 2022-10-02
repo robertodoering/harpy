@@ -25,7 +25,7 @@ class TweetCardAvatar extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return GestureDetector(
-      onTap: () => onUserTap?.call(context, ref.read),
+      onTap: () => onUserTap?.call(ref),
       child: HarpyCircleAvatar(
         imageUrl: tweet.user.appropriateUserImageUrl,
         radius: defaultRadius(display.fontSizeDelta) + style.sizeDelta,

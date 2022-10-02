@@ -14,8 +14,8 @@ final userConnectionsProvider = StateNotifierProvider.autoDispose.family<
     BuiltMap<String, BuiltSet<UserConnection>>,
     BuiltList<String>>(
   (ref, handles) => UserConnectionsNotifier(
+    ref: ref,
     handles: handles,
-    read: ref.read,
     twitterApi: ref.watch(twitterApiProvider),
   ),
   name: 'UserConnectionsProvider',
@@ -25,17 +25,17 @@ class UserConnectionsNotifier
     extends StateNotifier<BuiltMap<String, BuiltSet<UserConnection>>>
     with LoggerMixin {
   UserConnectionsNotifier({
+    required Ref ref,
     required BuiltList<String> handles,
-    required Reader read,
     required TwitterApi twitterApi,
   })  : assert(handles.isNotEmpty),
+        _ref = ref,
         _handles = handles,
-        _read = read,
         _twitterApi = twitterApi,
         super(BuiltMap());
 
+  final Ref _ref;
   final BuiltList<String> _handles;
-  final Reader _read;
   final TwitterApi _twitterApi;
 
   Future<void> load() async {
@@ -59,7 +59,7 @@ class UserConnectionsNotifier
     await _twitterApi.userService
         .friendshipsCreate(screenName: handle)
         .handleError((e, st) {
-      twitterErrorHandler(_read, e, st);
+      twitterErrorHandler(_ref, e, st);
       if (!mounted) return;
 
       // assume still not following
@@ -85,7 +85,7 @@ class UserConnectionsNotifier
     await _twitterApi.userService
         .friendshipsDestroy(screenName: handle)
         .handleError((e, st) {
-      twitterErrorHandler(_read, e, st);
+      twitterErrorHandler(_ref, e, st);
       if (!mounted) return;
 
       // assume still following

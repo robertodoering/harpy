@@ -3,13 +3,18 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
-final mentionsTimelineProvider =
-    StateNotifierProvider<MentionsTimelineNotifier, TimelineState<bool>>(
-  (ref) => MentionsTimelineNotifier(
-    ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
-  ),
+final mentionsTimelineProvider = StateNotifierProvider.autoDispose<
+    MentionsTimelineNotifier, TimelineState<bool>>(
+  (ref) {
+    ref.cacheFor(const Duration(minutes: 15));
+
+    return MentionsTimelineNotifier(
+      ref: ref,
+      twitterApi: ref.watch(twitterApiProvider),
+    );
+  },
   name: 'MentionsTimelineProvider',
 );
 
@@ -17,9 +22,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   MentionsTimelineNotifier({
     required super.ref,
     required super.twitterApi,
-  }) : _read = ref.read;
-
-  final Reader _read;
+  });
 
   @override
   Future<List<Tweet>> request({String? sinceId, String? maxId}) {
@@ -33,7 +36,8 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   @override
   bool? buildCustomData(BuiltList<TweetData> tweets) {
     final newId = int.tryParse(tweets.first.originalId);
-    final lastId = _read(tweetVisibilityPreferencesProvider).lastViewedMention;
+    final lastId =
+        ref.read(tweetVisibilityPreferencesProvider).lastViewedMention;
 
     return newId != null && lastId < newId;
   }
@@ -48,7 +52,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
       final id = int.tryParse(currentState.tweets.first.originalId);
 
       if (id != null) {
-        _read(tweetVisibilityPreferencesProvider).lastViewedMention = id;
+        ref.read(tweetVisibilityPreferencesProvider).lastViewedMention = id;
 
         state = currentState.copyWith(customData: false);
       }

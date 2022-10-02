@@ -5,7 +5,7 @@ import 'package:harpy/components/components.dart';
 final userTimelineFilterProvider = StateNotifierProvider.autoDispose
     .family<UserTimelineFilterNotifier, TimelineFilterSelectionState, UserData>(
   (ref, user) => UserTimelineFilterNotifier(
-    read: ref.read,
+    ref: ref,
     user: user,
   ),
   name: 'UserTimelineFilterprovider',
@@ -13,17 +13,15 @@ final userTimelineFilterProvider = StateNotifierProvider.autoDispose
 
 class UserTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   UserTimelineFilterNotifier({
-    required super.read,
+    required super.ref,
     required UserData user,
-  })  : _read = read,
-        _user = user;
+  }) : _user = user;
 
-  final Reader _read;
   final UserData _user;
 
   @override
   ActiveTimelineFilter? get activeFilter =>
-      _read(timelineFilterProvider).activeUserFilter(_user.id);
+      ref.read(timelineFilterProvider).activeUserFilter(_user.id);
 
   @override
   bool get showUnique => true;
@@ -35,18 +33,18 @@ class UserTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   void selectTimelineFilter(String uuid) {
     log.fine('selecting user timeline filter');
 
-    _read(timelineFilterProvider.notifier).selectUserTimelineFilter(
-      uuid,
-      user: state.isUnique ? _user : null,
-    );
+    ref.read(timelineFilterProvider.notifier).selectUserTimelineFilter(
+          uuid,
+          user: state.isUnique ? _user : null,
+        );
   }
 
   @override
   void removeTimelineFilterSelection() {
     log.fine('removing user timeline filter selection');
 
-    _read(timelineFilterProvider.notifier).removeUserTimelineFilter(
-      user: state.isUnique ? _user : null,
-    );
+    ref.read(timelineFilterProvider.notifier).removeUserTimelineFilter(
+          user: state.isUnique ? _user : null,
+        );
   }
 }

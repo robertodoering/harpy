@@ -16,9 +16,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
-    ChangelogDialog.maybeShow(context, ref.read);
+    ChangelogDialog.maybeShow(ref);
 
-    ref.read(mentionsTimelineProvider.notifier).loadInitial();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(mentionsTimelineProvider.notifier).loadInitial();
+    });
   }
 
   @override

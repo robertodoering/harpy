@@ -10,16 +10,16 @@ import 'package:harpy/rby/rby.dart';
 /// * [loginProvider]
 /// * [logoutProvider]
 final logoutProvider = Provider(
-  (ref) => Logout(read: ref.read),
+  (ref) => Logout(ref: ref),
   name: 'LogoutProvider',
 );
 
 class Logout with LoggerMixin {
   const Logout({
-    required Reader read,
-  }) : _read = read;
+    required Ref ref,
+  }) : _ref = ref;
 
-  final Reader _read;
+  final Ref _ref;
 
   /// Navigates to the [LoginPage] and invalidates the active session.
   Future<void> logout({
@@ -27,7 +27,7 @@ class Logout with LoggerMixin {
   }) async {
     log.fine('logging out');
 
-    _read(routerProvider).goNamed(
+    _ref.read(routerProvider).goNamed(
       target,
       queryParams: {'transition': 'fade'},
     );
@@ -35,6 +35,6 @@ class Logout with LoggerMixin {
     // invalidate session after navigation to avoid building the home screen
     // without the user data
     await Future<void>.delayed(const Duration(milliseconds: 300));
-    await _read(authenticationProvider).onLogout();
+    await _ref.read(authenticationProvider).onLogout();
   }
 }

@@ -18,7 +18,7 @@ part 'post_tweet_provider.freezed.dart';
 final postTweetProvider =
     StateNotifierProvider<PostTweetNotifier, PostTweetState>(
   (ref) => PostTweetNotifier(
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
   ),
   name: 'PostTweetProvider',
@@ -26,13 +26,13 @@ final postTweetProvider =
 
 class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
   PostTweetNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         super(const PostTweetState.inProgress());
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
 
   Future<void> post(
@@ -125,7 +125,8 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
           )
           .length;
 
-      final valid = _read(postTweetPreferencesProvider.notifier)
+      final valid = _ref
+          .read(postTweetPreferencesProvider.notifier)
           .addAndVerifyUnrelatedMentions(unrelatedMentionsCount);
 
       if (!valid) {
@@ -161,10 +162,10 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
         additionalInfo: 'this may take a moment',
       );
 
-      final converted = await _read(mediaVideoConverter).convertVideo(
-        media.single.path,
-        media.single.extension,
-      );
+      final converted = await _ref.read(mediaVideoConverter).convertVideo(
+            media.single.path,
+            media.single.extension,
+          );
 
       if (converted != null) {
         mediaFiles.add(converted);
@@ -185,10 +186,10 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
           additionalInfo: 'this may take a moment',
         );
 
-        final mediaId = await _read(mediaUploadService).upload(
-          mediaFiles[i],
-          type: type,
-        );
+        final mediaId = await _ref.read(mediaUploadService).upload(
+              mediaFiles[i],
+              type: type,
+            );
 
         if (mediaId != null) mediaIds.add(mediaId);
       }

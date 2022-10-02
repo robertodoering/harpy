@@ -25,10 +25,11 @@ class HarpySliverAppBar extends ConsumerWidget {
   final List<Widget>? actions;
   final bool fittedTitle;
 
-  static double height(BuildContext context, Reader read) {
-    final topPadding = MediaQuery.of(context).padding.top;
-    final paddingValue = read(displayPreferencesProvider).paddingValue;
-    final style = Theme.of(context).textTheme.titleLarge!.copyWith(height: 1);
+  static double height(WidgetRef ref) {
+    final topPadding = MediaQuery.of(ref.context).padding.top;
+    final paddingValue = ref.read(displayPreferencesProvider).paddingValue;
+    final style =
+        Theme.of(ref.context).textTheme.titleLarge!.copyWith(height: 1);
 
     return topPadding + paddingValue * 2 + style.fontSize!;
   }

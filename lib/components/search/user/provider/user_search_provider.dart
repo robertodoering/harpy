@@ -13,7 +13,7 @@ part 'user_search_provider.freezed.dart';
 final userSearchProvider = StateNotifierProvider.autoDispose<UserSearchNotifier,
     PaginatedState<UsersSearchData>>(
   (ref) => UserSearchNotifier(
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
   ),
   name: 'UserSearchProvider',
@@ -22,13 +22,13 @@ final userSearchProvider = StateNotifierProvider.autoDispose<UserSearchNotifier,
 class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
     with RequestLock, LoggerMixin {
   UserSearchNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         super(const PaginatedState.initial());
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
 
   Future<void> _load({
@@ -44,7 +44,7 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
             (newUser) => oldUsers.any((oldUser) => newUser.id == oldUser.id),
           ),
         )
-        .handleError((e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
     if (newUsers != null) {
       log.fine('found ${newUsers.length} new users');

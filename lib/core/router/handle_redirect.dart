@@ -48,20 +48,20 @@ const _unprotectedRoutes = [
 // - when not authenticated, redirect to the login page
 // - when the location doesn't exist, redirect to the home page
 // - otherwise don't redirect
-String? handleRedirect(Reader read, GoRouterState state) {
+String? handleRedirect(Ref ref, GoRouterState state) {
   if (state.subloc == SplashPage.path) return null;
 
   // handle redirect when uninitialized
-  final coldDeeplink = _handleColdDeeplink(read, state);
+  final coldDeeplink = _handleColdDeeplink(ref, state);
   if (coldDeeplink != null) return coldDeeplink;
 
   // handle redirect when unauthenticated
-  final unauthenticated = _handleUnauthenticated(read, state);
+  final unauthenticated = _handleUnauthenticated(ref, state);
   if (unauthenticated != null) return unauthenticated;
 
   if (!locationHasRouteMatch(
     location: state.location,
-    routes: read(routesProvider),
+    routes: ref.read(routesProvider),
   )) {
     // handle the location if it's a twitter path that can be mapped to a harpy
     // path
@@ -77,9 +77,9 @@ String? handleRedirect(Reader read, GoRouterState state) {
 
 /// Returns the [SplashPage.path] with the target location as a redirect if the
 /// app is not initialized.
-String? _handleColdDeeplink(Reader read, GoRouterState state) {
+String? _handleColdDeeplink(Ref ref, GoRouterState state) {
   final isInitialized =
-      read(applicationStateProvider) == ApplicationState.initialized;
+      ref.read(applicationStateProvider) == ApplicationState.initialized;
 
   return !isInitialized
       ? '${SplashPage.path}'
@@ -90,8 +90,8 @@ String? _handleColdDeeplink(Reader read, GoRouterState state) {
 
 /// Returns the [LoginPage.path] if the user is not authenticated and tried to
 /// navigate to a protected route.
-String? _handleUnauthenticated(Reader read, GoRouterState state) {
-  final isAuthenticated = read(authenticationStateProvider).isAuthenticated;
+String? _handleUnauthenticated(Ref ref, GoRouterState state) {
+  final isAuthenticated = ref.read(authenticationStateProvider).isAuthenticated;
 
   return !isAuthenticated &&
           !_unprotectedRoutes.any((path) => state.subloc.startsWith(path))

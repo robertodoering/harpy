@@ -23,7 +23,7 @@ class TweetCardRetweeter extends ConsumerWidget {
     final textStyle = theme.textTheme.bodyText2!;
 
     return GestureDetector(
-      onTap: () => onRetweeterTap?.call(context, ref.read),
+      onTap: () => onRetweeterTap?.call(ref),
       child: IntrinsicWidth(
         child: Row(
           children: [

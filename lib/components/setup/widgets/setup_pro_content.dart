@@ -96,7 +96,7 @@ class SetupProContent extends ConsumerWidget {
                   ),
                   HarpyButton.elevated(
                     label: const Text('finish setup'),
-                    onTap: () => finishSetup(ref.read),
+                    onTap: () => finishSetup(ref),
                   ),
                 ],
               ),
