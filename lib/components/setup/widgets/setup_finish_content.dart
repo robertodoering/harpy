@@ -43,7 +43,7 @@ class SetupFinishContent extends ConsumerWidget {
               child: Center(
                 child: HarpyButton.text(
                   label: const Text('finish setup'),
-                  onTap: () => finishSetup(ref.read),
+                  onTap: () => finishSetup(ref),
                 ),
               ),
             ),

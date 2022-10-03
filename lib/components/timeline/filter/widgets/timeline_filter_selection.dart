@@ -11,7 +11,7 @@ class TimelineFilterSelection extends ConsumerStatefulWidget {
     required this.provider,
   });
 
-  final StateNotifierProviderOverrideMixin<TimelineFilterSelectionNotifier,
+  final AutoDisposeStateNotifierProvider<TimelineFilterSelectionNotifier,
       TimelineFilterSelectionState> provider;
 
   @override

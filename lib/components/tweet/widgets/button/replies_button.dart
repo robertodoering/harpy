@@ -25,7 +25,7 @@ class Repliesbutton extends ConsumerWidget {
       iconBuilder: (_) => Icon(CupertinoIcons.bubble_left, size: iconSize),
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onShowReplies?.call(context, ref.read),
+      activate: () => onShowReplies?.call(ref),
       deactivate: null,
     );
   }

@@ -36,8 +36,8 @@ class FavoriteButton extends ConsumerWidget {
       iconSize: iconSize,
       sizeDelta: sizeDelta,
       activeColor: harpyTheme.colors.favorite,
-      activate: () => onFavorite?.call(context, ref.read),
-      deactivate: () => onUnfavorite?.call(context, ref.read),
+      activate: () => onFavorite?.call(ref),
+      deactivate: () => onUnfavorite?.call(ref),
     );
   }
 }

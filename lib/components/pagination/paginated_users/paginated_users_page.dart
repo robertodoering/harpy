@@ -19,7 +19,7 @@ class PaginatedUsersPage extends ConsumerWidget {
     required this.errorMessage,
   });
 
-  final StateNotifierProviderOverrideMixin<PaginatedUsersNotifier,
+  final AutoDisposeStateNotifierProvider<PaginatedUsersNotifier,
       PaginatedState<BuiltList<UserData>>> provider;
 
   final String title;

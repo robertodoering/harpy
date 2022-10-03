@@ -54,7 +54,7 @@ class TweetCardHandle extends ConsumerWidget {
 
     return FittedBox(
       child: GestureDetector(
-        onTap: () => onUserTap?.call(context, ref.read),
+        onTap: () => onUserTap?.call(ref),
         child: Text.rich(
           // we force the text direction to ltr, otherwise the `@handle` gets
           // reversed to `handle@` for rtl languages

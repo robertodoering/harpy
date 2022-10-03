@@ -33,8 +33,7 @@ class MediaTimelineMedia extends ConsumerWidget {
     )}';
 
     void onMediaLongPress() => showMediaActionsBottomSheet(
-          context,
-          ref.read,
+          ref,
           media: entry.media,
           delegates: delegates,
         );

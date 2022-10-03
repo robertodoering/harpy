@@ -12,31 +12,34 @@ import 'package:http/http.dart';
 
 final tweetProvider =
     StateNotifierProvider.autoDispose.family<TweetNotifier, TweetData?, String>(
-  (ref, id) => TweetNotifier(
-    read: ref.read,
-    twitterApi: ref.watch(twitterApiProvider),
-    translateService: ref.watch(translateServiceProvider),
-    messageService: ref.watch(messageServiceProvider),
-    languagePreferences: ref.watch(languagePreferencesProvider),
-  ),
-  cacheTime: const Duration(minutes: 5),
+  (ref, id) {
+    ref.cacheFor(const Duration(minutes: 5));
+
+    return TweetNotifier(
+      ref: ref,
+      twitterApi: ref.watch(twitterApiProvider),
+      translateService: ref.watch(translateServiceProvider),
+      messageService: ref.watch(messageServiceProvider),
+      languagePreferences: ref.watch(languagePreferencesProvider),
+    );
+  },
 );
 
 class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
   TweetNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
     required TranslateService translateService,
     required MessageService messageService,
     required LanguagePreferences languagePreferences,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         _translateService = translateService,
         _messageService = messageService,
         _languagePreferences = languagePreferences,
         super(null);
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
   final TranslateService _translateService;
   final MessageService _messageService;
@@ -64,7 +67,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
       state = tweet;
 
-      twitterErrorHandler(_read, e, st);
+      twitterErrorHandler(_ref, e, st);
     }
   }
 
@@ -87,7 +90,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
         state = tweet;
 
-        twitterErrorHandler(_read, e, st);
+        twitterErrorHandler(_ref, e, st);
       }
     }
   }
@@ -111,7 +114,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
         state = tweet;
 
-        twitterErrorHandler(_read, e, st);
+        twitterErrorHandler(_ref, e, st);
       }
     }
   }
@@ -135,7 +138,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
         state = tweet;
 
-        twitterErrorHandler(_read, e, st);
+        twitterErrorHandler(_ref, e, st);
       }
     }
   }
@@ -153,7 +156,8 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
     if (tweet.quote != null && tweet.quote!.translatable(translateLanguage)) {
       // also translate quote if one exist
-      _read(tweetProvider(tweet.quote!.originalId).notifier)
+      _ref
+          .read(tweetProvider(tweet.quote!.originalId).notifier)
           .translate(locale: locale)
           .ignore();
     }
@@ -189,7 +193,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
 
     final result = await _twitterApi.tweetService
         .destroy(id: tweet.id, trimUser: true)
-        .handleError((e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
     if (result != null) {
       _messageService.showText('tweet deleted');

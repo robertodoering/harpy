@@ -41,7 +41,7 @@ class TranslateButton extends ConsumerWidget {
       iconSize: iconSize,
       sizeDelta: sizeDelta,
       activeColor: harpyTheme.colors.translate,
-      activate: () => onTranslate?.call(context, ref.read),
+      activate: () => onTranslate?.call(ref),
       deactivate: null,
     );
   }

@@ -33,8 +33,7 @@ class TimelineFilterCard extends ConsumerWidget {
               Navigator.of(context).pop();
             },
       onLongPress: () => _showTimelineFilterCardBottomSheet(
-        context,
-        read: ref.read,
+        ref,
         filter: sortedFilter.timelineFilter,
         notifier: notifier,
       ),
@@ -69,8 +68,7 @@ class TimelineFilterCard extends ConsumerWidget {
           HarpyButton.icon(
             icon: const Icon(CupertinoIcons.ellipsis_vertical),
             onTap: () => _showTimelineFilterCardBottomSheet(
-              context,
-              read: ref.read,
+              ref,
               filter: sortedFilter.timelineFilter,
               notifier: notifier,
             ),
@@ -173,16 +171,15 @@ class _AppliedFiltersText extends StatelessWidget {
 }
 
 void _showTimelineFilterCardBottomSheet(
-  BuildContext context, {
-  required Reader read,
+  WidgetRef ref, {
   required TimelineFilter filter,
   required TimelineFilterSelectionNotifier notifier,
 }) {
-  final theme = Theme.of(context);
+  final theme = Theme.of(ref.context);
 
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Text(
@@ -202,11 +199,12 @@ void _showTimelineFilterCardBottomSheet(
         onTap: () {
           HapticFeedback.lightImpact();
 
-          read(timelineFilterProvider.notifier)
+          ref
+              .read(timelineFilterProvider.notifier)
               .removeTimelineFilter(filter.uuid);
           notifier.sortTimelineFilters();
 
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
         },
       ),
       HarpyListTile(
@@ -214,9 +212,9 @@ void _showTimelineFilterCardBottomSheet(
         title: const Text('edit'),
         onTap: () {
           HapticFeedback.lightImpact();
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
 
-          read(routerProvider).pushNamed(
+          ref.read(routerProvider).pushNamed(
             TimelineFilterCreation.name,
             extra: {'initialTimelineFilter': filter},
           );
@@ -228,11 +226,12 @@ void _showTimelineFilterCardBottomSheet(
         onTap: () {
           HapticFeedback.lightImpact();
 
-          read(timelineFilterProvider.notifier)
+          ref
+              .read(timelineFilterProvider.notifier)
               .duplicateTimelineFilter(filter.uuid);
           notifier.sortTimelineFilters();
 
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
         },
       ),
     ],

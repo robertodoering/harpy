@@ -3,14 +3,18 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 final homeTimelineProvider =
     StateNotifierProvider.autoDispose<HomeTimelineNotifier, TimelineState>(
-  (ref) => HomeTimelineNotifier(
-    ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
-  ),
-  cacheTime: const Duration(minutes: 5),
+  (ref) {
+    ref.cacheFor(const Duration(minutes: 5));
+
+    return HomeTimelineNotifier(
+      ref: ref,
+      twitterApi: ref.watch(twitterApiProvider),
+    );
+  },
   name: 'HomeTimelineProvider',
 );
 
@@ -22,7 +26,7 @@ class HomeTimelineNotifier extends TimelineNotifier {
 
   @override
   TimelineFilter? currentFilter() {
-    final state = read(timelineFilterProvider);
+    final state = ref.read(timelineFilterProvider);
     return state.filterByUuid(state.activeHomeFilter()?.uuid);
   }
 
@@ -38,11 +42,11 @@ class HomeTimelineNotifier extends TimelineNotifier {
 
   @override
   bool get restoreInitialPosition =>
-      read(generalPreferencesProvider).keepLastHomeTimelinePosition;
+      ref.read(generalPreferencesProvider).keepLastHomeTimelinePosition;
 
   @override
   int get restoredTweetId =>
-      read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
+      ref.read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
 
   void addTweet(TweetData tweet) {
     final currentState = state;

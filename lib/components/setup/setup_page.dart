@@ -203,7 +203,7 @@ class _SkipButtonState extends ConsumerState<_SkipButton> {
         child: HarpyButton.text(
           padding: display.edgeInsets,
           label: const Text('skip'),
-          onTap: () => finishSetup(ref.read),
+          onTap: () => finishSetup(ref),
         ),
       ),
     );
@@ -338,8 +338,8 @@ class _NextButtonState extends ConsumerState<_NextButton> {
   }
 }
 
-void finishSetup(Reader read) {
+void finishSetup(WidgetRef ref) {
   HapticFeedback.lightImpact();
-  read(setupPreferencesProvider).performedSetup = true;
-  read(routerProvider).goNamed(HomePage.name);
+  ref.read(setupPreferencesProvider).performedSetup = true;
+  ref.read(routerProvider).goNamed(HomePage.name);
 }

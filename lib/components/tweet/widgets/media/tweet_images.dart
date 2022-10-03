@@ -18,12 +18,11 @@ class TweetImages extends ConsumerWidget {
   final IndexedVoidCallback? onImageLongPress;
 
   void _onImageTap(
-    BuildContext context,
-    Reader read, {
+    WidgetRef ref, {
     required int index,
     required TweetData tweet,
   }) {
-    Navigator.of(context).push<void>(
+    Navigator.of(ref.context).push<void>(
       HeroDialogRoute(
         builder: (_) => MediaGallery(
           initialIndex: index,
@@ -35,13 +34,13 @@ class TweetImages extends ConsumerWidget {
             builder: (_) => TweetGalleryImage(
               media: tweet.media[index],
               heroTag: 'tweet${mediaHeroTag(
-                context,
+                ref.context,
                 tweet: tweet,
                 media: tweet.media[index],
                 index: tweetIndex,
               )}',
               borderRadius: _borderRadiusForImage(
-                read(harpyThemeProvider).radius,
+                ref.read(harpyThemeProvider).radius,
                 index,
                 tweet.media.length,
               ),
@@ -59,8 +58,7 @@ class TweetImages extends ConsumerWidget {
 
     return TweetImagesLayout(
       onImageTap: (index) => _onImageTap(
-        context,
-        ref.read,
+        ref,
         index: index,
         tweet: tweet,
       ),

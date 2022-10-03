@@ -2,15 +2,19 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 
 final likesTimelineProvider = StateNotifierProvider.autoDispose
     .family<LikesTimelineNotifier, TimelineState, String>(
-  (ref, userId) => LikesTimelineNotifier(
-    ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
-    userId: userId,
-  ),
-  cacheTime: const Duration(minutes: 5),
+  (ref, userId) {
+    ref.cacheFor(const Duration(minutes: 5));
+
+    return LikesTimelineNotifier(
+      ref: ref,
+      twitterApi: ref.watch(twitterApiProvider),
+      userId: userId,
+    );
+  },
   name: 'LikesTimelineProvider',
 );
 

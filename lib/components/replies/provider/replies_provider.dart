@@ -11,7 +11,7 @@ part 'replies_provider.freezed.dart';
 final repliesProvider = StateNotifierProvider.autoDispose
     .family<RepliesNotifier, RepliesState, TweetData>(
   (ref, tweet) => RepliesNotifier(
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
     tweet: tweet,
   ),
@@ -20,17 +20,17 @@ final repliesProvider = StateNotifierProvider.autoDispose
 
 class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   RepliesNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
     required TweetData tweet,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         _tweet = tweet,
         super(const RepliesState.loading()) {
     load();
   }
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
   final TweetData _tweet;
 
@@ -83,7 +83,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   Future<BuiltList<TweetData>?> _loadAllReplies(TweetData tweet) async {
     final result = await _twitterApi.tweetSearchService
         .findReplies(tweet)
-        .handleError((e, st) => twitterErrorHandler(_read, e, st));
+        .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
     if (result != null) {
       log.fine('found ${result.replies.length} replies');

@@ -20,9 +20,8 @@ class TweetCardActionsButton extends StatelessWidget {
     return MoreActionsButton(
       tweet: tweet,
       sizeDelta: style.sizeDelta,
-      onViewMoreActions: (context, read) => showTweetActionsBottomSheet(
-        context,
-        read: read,
+      onViewMoreActions: (ref) => showTweetActionsBottomSheet(
+        ref,
         tweet: tweet,
         delegates: delegates,
       ),

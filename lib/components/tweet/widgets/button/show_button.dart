@@ -29,7 +29,7 @@ class ShowButton extends ConsumerWidget {
       foregroundColor: foregroundColor,
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onShow?.call(context, ref.read),
+      activate: () => onShow?.call(ref),
       deactivate: null,
     );
   }

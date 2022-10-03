@@ -12,18 +12,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:tuple/tuple.dart';
 
 /// Signature for callbacks that are called when an entity has been tapped.
-typedef EntityTapped<T> = void Function(
-  BuildContext context,
-  Reader reader,
-  T value,
-);
+typedef EntityTapped<T> = void Function(WidgetRef ref, T value);
 
-void defaultOnUserMentionTap(
-  BuildContext context,
-  Reader read,
-  UserMentionData mention,
-) {
-  final router = read(routerProvider);
+void defaultOnUserMentionTap(WidgetRef ref, UserMentionData mention) {
+  final router = ref.read(routerProvider);
 
   if (!router.location.endsWith(mention.handle)) {
     router.pushNamed(
@@ -33,15 +25,15 @@ void defaultOnUserMentionTap(
   }
 }
 
-void defaultOnUrlTap(BuildContext context, Reader read, UrlData url) {
+void defaultOnUrlTap(WidgetRef ref, UrlData url) {
   HapticFeedback.lightImpact();
-  read(launcherProvider)(url.expandedUrl);
+  ref.read(launcherProvider)(url.expandedUrl);
 }
 
-void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
+void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Text(url.expandedUrl),
@@ -51,8 +43,11 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
         title: const Text('open url externally'),
         onTap: () {
           HapticFeedback.lightImpact();
-          read(launcherProvider)(url.expandedUrl, alwaysOpenExternally: true);
-          Navigator.of(context).pop();
+          ref.read(launcherProvider)(
+            url.expandedUrl,
+            alwaysOpenExternally: true,
+          );
+          Navigator.of(ref.context).pop();
         },
       ),
       HarpyListTile(
@@ -61,7 +56,7 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
         onTap: () {
           HapticFeedback.lightImpact();
           Clipboard.setData(ClipboardData(text: url.expandedUrl));
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
         },
       ),
       HarpyListTile(
@@ -70,25 +65,21 @@ void defaultOnUrlLongPress(BuildContext context, Reader read, UrlData url) {
         onTap: () {
           HapticFeedback.lightImpact();
           Share.share(url.expandedUrl);
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
         },
       ),
     ],
   );
 }
 
-void defaultOnHashtagTap(
-  BuildContext context,
-  Reader read,
-  HashtagData hashtag,
-) {
+void defaultOnHashtagTap(WidgetRef ref, HashtagData hashtag) {
   final searchQuery = '#${hashtag.text}';
 
-  if (read(tweetSearchProvider) != const TweetSearchState.initial()) {
+  if (ref.read(tweetSearchProvider) != const TweetSearchState.initial()) {
     // active tweet search already exists
-    read(tweetSearchProvider.notifier).search(customQuery: searchQuery);
+    ref.read(tweetSearchProvider.notifier).search(customQuery: searchQuery);
   } else {
-    read(routerProvider).pushNamed(
+    ref.read(routerProvider).pushNamed(
       TweetSearchPage.name,
       queryParams: {'query': searchQuery},
     );
@@ -206,7 +197,7 @@ class _TwitterTextState extends ConsumerState<TwitterText> {
 
     if (value is HashtagData) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onHashtagTap?.call(context, ref.read, value);
+        ..onTap = () => widget.onHashtagTap?.call(ref, value);
 
       text = '#${value.text}';
     } else if (value is UrlData) {
@@ -217,17 +208,13 @@ class _TwitterTextState extends ConsumerState<TwitterText> {
       }
 
       recognizer = MultiTapGestureRecognizer(longTapDelay: kLongPressTimeout)
-        ..onTap = ((_) => widget.onUrlTap?.call(context, ref.read, value))
-        ..onLongTapDown = (_, __) => widget.onUrlLongPress.call(
-              context,
-              ref.read,
-              value,
-            );
+        ..onTap = ((_) => widget.onUrlTap?.call(ref, value))
+        ..onLongTapDown = (_, __) => widget.onUrlLongPress.call(ref, value);
 
       text = value.displayUrl;
     } else if (value is UserMentionData) {
       recognizer = TapGestureRecognizer()
-        ..onTap = () => widget.onUserMentionTap?.call(context, ref.read, value);
+        ..onTap = () => widget.onUserMentionTap?.call(ref, value);
 
       text = '@${value.handle}';
     }

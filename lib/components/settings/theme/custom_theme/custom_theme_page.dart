@@ -30,7 +30,9 @@ class CustomThemePage extends ConsumerWidget {
 
     return ProviderScope(
       overrides: [
-        harpyThemeProvider.overrideWithValue(StateController(harpyTheme)),
+        harpyThemeProvider.overrideWithProvider(
+          StateProvider((ref) => harpyTheme),
+        ),
       ],
       child: Theme(
         data: harpyTheme.themeData,

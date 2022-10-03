@@ -8,7 +8,7 @@ import 'package:harpy/core/core.dart';
 final followingProvider = StateNotifierProvider.autoDispose
     .family<FollowingNotifier, PaginatedState<BuiltList<UserData>>, String>(
   (ref, handle) => FollowingNotifier(
-    read: ref.read,
+    ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
     handle: handle,
   ),
@@ -17,23 +17,23 @@ final followingProvider = StateNotifierProvider.autoDispose
 
 class FollowingNotifier extends PaginatedUsersNotifier {
   FollowingNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
     required String handle,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         _handle = handle,
         super(const PaginatedState.loading()) {
     loadInitial();
   }
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
   final String _handle;
 
   @override
   Future<void> onRequestError(Object error, StackTrace stackTrace) async =>
-      twitterErrorHandler(_read, error, stackTrace);
+      twitterErrorHandler(_ref, error, stackTrace);
 
   @override
   Future<PaginatedUsers> request([int? cursor]) {

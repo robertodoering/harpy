@@ -89,7 +89,7 @@ class _ComposeButton extends ConsumerWidget {
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     final bottomPadding = general.bottomAppBar
-        ? HomeAppBar.height(context, ref.read) + display.paddingValue
+        ? HomeAppBar.height(ref) + display.paddingValue
         : display.paddingValue + mediaQuery.padding.bottom;
 
     return Padding(

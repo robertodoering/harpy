@@ -9,7 +9,7 @@ import 'package:harpy/rby/rby.dart';
 final userProvider = StateNotifierProvider.autoDispose
     .family<UserNotifier, AsyncValue<UserData>, String>(
   (ref, handle) => UserNotifier(
-    read: ref.read,
+    ref: ref,
     handle: handle,
     languagePreferences: ref.watch(languagePreferencesProvider),
     translateService: ref.watch(translateServiceProvider),
@@ -21,19 +21,19 @@ final userProvider = StateNotifierProvider.autoDispose
 class UserNotifier extends StateNotifier<AsyncValue<UserData>>
     with LoggerMixin {
   UserNotifier({
-    required Reader read,
+    required Ref ref,
     required String handle,
     required LanguagePreferences languagePreferences,
     required TranslateService translateService,
     required TwitterApi twitterApi,
-  })  : _read = read,
+  })  : _ref = ref,
         _handle = handle,
         _languagePreferences = languagePreferences,
         _translateService = translateService,
         _twitterApi = twitterApi,
         super(const AsyncValue.loading());
 
-  final Reader _read;
+  final Ref _ref;
   final String _handle;
   final LanguagePreferences _languagePreferences;
   final TranslateService _translateService;
@@ -71,7 +71,9 @@ class UserNotifier extends StateNotifier<AsyncValue<UserData>>
       if (!mounted) return;
 
       if (translation != null && !translation.isTranslated) {
-        _read(messageServiceProvider).showText('description not translated');
+        _ref
+            .read(messageServiceProvider)
+            .showText('description not translated');
       }
 
       state = AsyncData(

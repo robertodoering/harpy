@@ -26,10 +26,9 @@ part 'timeline_provider.freezed.dart';
 abstract class TimelineNotifier<T extends Object>
     extends StateNotifier<TimelineState<T>> with RequestLock, LoggerMixin {
   TimelineNotifier({
-    required Ref ref,
+    required this.ref,
     required this.twitterApi,
-  })  : read = ref.read,
-        super(const TimelineState.initial()) {
+  }) : super(const TimelineState.initial()) {
     filter = currentFilter();
 
     ref.listen(
@@ -48,7 +47,7 @@ abstract class TimelineNotifier<T extends Object>
   }
 
   @protected
-  final Reader read;
+  final Ref ref;
 
   @protected
   final TwitterApi twitterApi;
@@ -137,7 +136,7 @@ abstract class TimelineNotifier<T extends Object>
           return tweets;
         })
         .then((tweets) => handleTweets(tweets, filter))
-        .handleError((e, st) => twitterErrorHandler(read, e, st));
+        .handleError((e, st) => twitterErrorHandler(ref, e, st));
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweets');
@@ -183,7 +182,7 @@ abstract class TimelineNotifier<T extends Object>
             return tweets;
           })
           .then((tweets) => handleTweets(tweets, filter))
-          .handleError((e, st) => twitterErrorHandler(read, e, st));
+          .handleError((e, st) => twitterErrorHandler(ref, e, st));
 
       if (tweets != null) {
         log.fine('found ${tweets.length} older tweets');

@@ -17,13 +17,13 @@ part 'timeline_fillter_selection_provider.freezed.dart';
 abstract class TimelineFilterSelectionNotifier
     extends StateNotifier<TimelineFilterSelectionState> with LoggerMixin {
   TimelineFilterSelectionNotifier({
-    required Reader read,
-  })  : _read = read,
-        super(const TimelineFilterSelectionState.initial()) {
+    required this.ref,
+  }) : super(const TimelineFilterSelectionState.initial()) {
     sortTimelineFilters();
   }
 
-  final Reader _read;
+  @protected
+  final Ref ref;
 
   /// Whether the filter can have a unique selection.
   @protected
@@ -45,7 +45,7 @@ abstract class TimelineFilterSelectionNotifier
   void sortTimelineFilters() {
     log.fine('sorting timeline filters');
 
-    final timelineFilterState = _read(timelineFilterProvider);
+    final timelineFilterState = ref.read(timelineFilterProvider);
 
     final selectedTimelineFilter = timelineFilterState.filterByUuid(
       activeFilter?.uuid,
@@ -118,9 +118,10 @@ abstract class TimelineFilterSelectionNotifier
     final currentState = state;
 
     if (currentState is _Data) {
-      final selectedTimelineFilter = _read(timelineFilterProvider).filterByUuid(
-        currentState.activeFilter?.uuid,
-      );
+      final selectedTimelineFilter =
+          ref.read(timelineFilterProvider).filterByUuid(
+                currentState.activeFilter?.uuid,
+              );
 
       if (selectedTimelineFilter != null) {
         // a filter is already selected

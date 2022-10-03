@@ -17,8 +17,7 @@ class TwitterLists extends ConsumerWidget {
   final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(
-    BuildContext context,
-    Reader read,
+    WidgetRef ref,
     int index,
     BuiltList<TwitterListData> lists,
   ) {
@@ -31,14 +30,13 @@ class TwitterLists extends ConsumerWidget {
         list: list,
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
-            : () => read(routerProvider).pushNamed(
+            : () => ref.read(routerProvider).pushNamed(
                   ListTimelinePage.name,
                   params: {'listId': list.id},
                   queryParams: {'name': list.name},
                 ),
         onLongPress: () => _showListActionBottomSheet(
-          context,
-          read,
+          ref,
           list: list,
         ),
       );
@@ -60,14 +58,14 @@ class TwitterLists extends ConsumerWidget {
   }
 
   List<Widget> _buildLists({
-    required Reader read,
+    required WidgetRef ref,
     required String title,
     required BuiltList<TwitterListData> lists,
     required bool hasMore,
     required bool loadingMore,
     required VoidCallback onLoadMore,
   }) {
-    final display = read(displayPreferencesProvider);
+    final display = ref.read(displayPreferencesProvider);
 
     return [
       SliverPadding(
@@ -78,7 +76,7 @@ class TwitterLists extends ConsumerWidget {
         padding: display.edgeInsets,
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => _itemBuilder(context, read, index, lists),
+            (context, index) => _itemBuilder(ref, index, lists),
             findChildIndexCallback: (key) => _indexCallback(key, lists),
             childCount: lists.length * 2 - 1,
           ),
@@ -122,7 +120,7 @@ class TwitterLists extends ConsumerWidget {
           data: (value) => [
             if (value.ownerships.isNotEmpty)
               ..._buildLists(
-                read: ref.read,
+                ref: ref,
                 title: 'owned',
                 lists: value.ownerships,
                 hasMore: value.hasMoreOwnerships,
@@ -131,7 +129,7 @@ class TwitterLists extends ConsumerWidget {
               ),
             if (value.subscriptions.isNotEmpty)
               ..._buildLists(
-                read: ref.read,
+                ref: ref,
                 title: 'subscribed',
                 lists: value.subscriptions,
                 hasMore: value.hasMoreSubscriptions,
@@ -152,21 +150,20 @@ class TwitterLists extends ConsumerWidget {
 }
 
 void _showListActionBottomSheet(
-  BuildContext context,
-  Reader read, {
+  WidgetRef ref, {
   required TwitterListData list,
 }) {
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       HarpyListTile(
         leading: const Icon(CupertinoIcons.person_2),
         title: const Text('show members'),
         onTap: () {
           HapticFeedback.lightImpact();
-          Navigator.of(context).pop();
-          read(routerProvider).pushNamed(
+          Navigator.of(ref.context).pop();
+          ref.read(routerProvider).pushNamed(
             ListMembersPage.name,
             params: {'listId': list.id},
             queryParams: {'name': list.name},
