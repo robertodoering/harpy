@@ -43,8 +43,10 @@ void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
         title: const Text('open url externally'),
         onTap: () {
           HapticFeedback.lightImpact();
-          ref.read(launcherProvider)(url.expandedUrl,
-              alwaysOpenExternally: true);
+          ref.read(launcherProvider)(
+            url.expandedUrl,
+            alwaysOpenExternally: true,
+          );
           Navigator.of(ref.context).pop();
         },
       ),
