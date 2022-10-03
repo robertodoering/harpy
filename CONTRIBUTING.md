@@ -32,7 +32,7 @@ First off, thanks for taking the time to contribute! 💙
 - Be familiar with [flutter](https://flutter.dev/)
 - [Setup the project for development](https://github.com/robertodoering/harpy/wiki/Project-setup-for-development)
 - Check out the issues to find one that you might be interested in.
-  - [Issues marked as easy](https://github.com/robertodoering/harpy/projects/1) might be a good start.
+  - [Issues in the 'help wanted' column](https://github.com/robertodoering/harpy/projects/1) might be a good start.
   - If you can't find a good first issue, feel free to ask for one.
 - If you need help during the development, feel free to ask for advice at any point.
 - Once you are happy with your patch just open up a PR and we can go from there!
