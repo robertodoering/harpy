@@ -70,7 +70,7 @@ Some interesting features of the app include:
 * [riverpod](https://pub.dev/packages/riverpod)
   * for state management using the included [state_notifier](https://pub.dev/packages/state_notifier)
   * for dependency injection / service locators with easily mockable dependencies
-* [go_router](https://pub.dev/packages/go_router) for routing
+* [go_router](https://pub.dev/packages/go_router) for routing with suport for Twitter url deeplinks
 * [sentry](https://pub.dev/packages/sentry) as an online error tracking service to report unhandled exceptions
 * Fully featured theme customization
 * Fully featured video player using the
