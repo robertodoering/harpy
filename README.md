@@ -86,4 +86,4 @@ Contributions are welcome! Check out the [contributing guidelines](https://githu
 
 ### Development / Setup
 
-Follow the [Project setup for building harpy](https://github.com/robertodoering/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.
+Follow the [project setup for building harpy](https://github.com/robertodoering/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.
