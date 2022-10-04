@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/settings/media/preferences/media_preferences.dart';
-import 'package:harpy/components/webview/webview_page.dart';
+import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
