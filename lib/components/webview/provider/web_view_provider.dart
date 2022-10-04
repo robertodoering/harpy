@@ -47,8 +47,12 @@ class WebviewStateNotifier extends StateNotifier<WebViewState> {
 
 @freezed
 class WebViewState with _$WebViewState {
-  const factory WebViewState({
+  factory WebViewState({
     required String currentUrl,
     String? title,
   }) = _WebViewState;
+
+  WebViewState._();
+
+  late final hasTitle = title != null && title!.isNotEmpty;
 }

@@ -23,7 +23,7 @@ class WebviewPage extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
           HarpySliverAppBar(
-            title: state.title != null && state.title.isNotEmpty ? Text(state.title!) : null,
+            title: state.hasTitle ? Text(state.title!) : null,
             actions: [
               HarpyPopupMenuButton(
                 onSelected: (_) async {
