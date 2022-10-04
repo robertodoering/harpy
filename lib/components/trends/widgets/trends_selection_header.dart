@@ -31,7 +31,7 @@ class TrendsSelectionHeader extends ConsumerWidget {
                   userLocation.displayName,
                   style: TextStyle(color: theme.colorScheme.primary),
                 ),
-                onTap: () => _showTrendsSelection(context, ref.read),
+                onTap: () => _showTrendsSelection(ref),
               ),
             ),
             horizontalSpacer,
@@ -52,23 +52,23 @@ class TrendsSelectionHeader extends ConsumerWidget {
   }
 }
 
-void _showTrendsSelection(BuildContext context, Reader read) {
+void _showTrendsSelection(WidgetRef ref) {
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
-        child: Text(read(userTrendsLocationProvider).displayName),
+        child: Text(ref.read(userTrendsLocationProvider).displayName),
       ),
       HarpyListTile(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('select location'),
-        subtitle: Text(read(userTrendsLocationProvider).name),
+        subtitle: Text(ref.read(userTrendsLocationProvider).name),
         onTap: () {
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
           HapticFeedback.lightImpact();
           showDialog<void>(
-            context: context,
+            context: ref.context,
             builder: (_) => const TrendsLocationSelectionDialog(),
           );
         },
@@ -77,10 +77,10 @@ void _showTrendsSelection(BuildContext context, Reader read) {
         leading: const Icon(CupertinoIcons.search),
         title: const Text('find location'),
         onTap: () {
-          Navigator.of(context).pop();
+          Navigator.of(ref.context).pop();
           HapticFeedback.lightImpact();
           showDialog<void>(
-            context: context,
+            context: ref.context,
             builder: (_) => const FindTrendsLocationDialog(),
           );
         },

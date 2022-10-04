@@ -20,7 +20,7 @@ class TweetCardName extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: () => onUserTap?.call(context, ref.read),
+      onTap: () => onUserTap?.call(ref),
       child: IntrinsicWidth(
         child: Row(
           children: [

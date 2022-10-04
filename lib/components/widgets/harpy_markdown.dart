@@ -3,6 +3,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/core/core.dart';
 
+// TODO: use MarkdownBody
+
 class HarpyMarkdown extends ConsumerWidget {
   const HarpyMarkdown(this.data);
 
@@ -17,7 +19,7 @@ class HarpyMarkdown extends ConsumerWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      onTapLink: (_, href, __) => _onLinkTap(context, ref.read, href: href),
+      onTapLink: (_, href, __) => _onLinkTap(ref, href: href),
       styleSheet: MarkdownStyleSheet(
         code: theme.textTheme.bodyText2!.copyWith(
           backgroundColor: theme.colorScheme.onBackground.withOpacity(.07),
@@ -29,10 +31,10 @@ class HarpyMarkdown extends ConsumerWidget {
   }
 }
 
-void _onLinkTap(BuildContext context, Reader read, {required String? href}) {
+void _onLinkTap(WidgetRef ref, {required String? href}) {
   if (href == null) return;
 
-  final router = read(routerProvider);
+  final router = ref.read(routerProvider);
 
   if (router.location.startsWith('/home')) router.go(href);
 }

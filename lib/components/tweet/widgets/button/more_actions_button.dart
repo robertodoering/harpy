@@ -31,7 +31,7 @@ class MoreActionsButton extends ConsumerWidget {
       foregroundColor: foregroundColor,
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onViewMoreActions?.call(context, ref.read),
+      activate: () => onViewMoreActions?.call(ref),
       deactivate: null,
     );
   }

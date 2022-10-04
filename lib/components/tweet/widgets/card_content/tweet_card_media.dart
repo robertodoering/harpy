@@ -25,8 +25,7 @@ class TweetCardMedia extends ConsumerWidget {
     Widget child;
 
     void onMediaLongPress(MediaData media) => showMediaActionsBottomSheet(
-          context,
-          ref.read,
+          ref,
           media: media,
           delegates: delegates,
         );

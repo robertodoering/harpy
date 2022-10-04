@@ -15,16 +15,16 @@ final applicationStateProvider = StateProvider(
 );
 
 final applicationProvider = Provider(
-  (ref) => Application(read: ref.read),
+  (ref) => Application(ref: ref),
   name: 'ApplicationProvider',
 );
 
 class Application with LoggerMixin {
   const Application({
-    required Reader read,
-  }) : _read = read;
+    required Ref ref,
+  }) : _ref = ref;
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> initialize({String? redirect}) async {
     initializeLogger();
@@ -45,21 +45,21 @@ class Application with LoggerMixin {
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(logErrorHandler),
-      _read(deviceInfoProvider.notifier).initialize(),
-      _read(connectivityProvider.notifier).initialize(),
-      _read(authenticationProvider).restoreSession(),
+      _ref.read(deviceInfoProvider.notifier).initialize(),
+      _ref.read(connectivityProvider.notifier).initialize(),
+      _ref.read(authenticationProvider).restoreSession(),
     ]);
 
-    _read(applicationStateProvider.notifier).state =
+    _ref.read(applicationStateProvider.notifier).state =
         ApplicationState.initialized;
 
-    if (_read(authenticationStateProvider).isAuthenticated) {
+    if (_ref.read(authenticationStateProvider).isAuthenticated) {
       log.fine('authenticated after initialization');
 
       if (redirect != null) {
-        _read(routerProvider).go(redirect);
+        _ref.read(routerProvider).go(redirect);
       } else {
-        _read(routerProvider).goNamed(
+        _ref.read(routerProvider).goNamed(
           HomePage.name,
           queryParams: {'transition': 'fade'},
         );
@@ -67,7 +67,7 @@ class Application with LoggerMixin {
     } else {
       log.fine('not authenticated after initialization');
 
-      _read(routerProvider).goNamed(
+      _ref.read(routerProvider).goNamed(
         LoginPage.name,
         queryParams: {'transition': 'fade'},
       );

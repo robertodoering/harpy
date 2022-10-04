@@ -206,8 +206,7 @@ class _OverlayTweetActions extends ConsumerWidget {
   final Set<MediaOverlayActions> actions;
 
   Widget _mapAction(
-    BuildContext context,
-    Reader read, {
+    WidgetRef ref, {
     required MediaOverlayActions action,
   }) {
     switch (action) {
@@ -251,9 +250,8 @@ class _OverlayTweetActions extends ConsumerWidget {
           tweet: tweet,
           sizeDelta: 2,
           foregroundColor: Colors.white,
-          onViewMoreActions: (context, read) => showMediaActionsBottomSheet(
-            context,
-            read,
+          onViewMoreActions: (ref) => showMediaActionsBottomSheet(
+            ref,
             media: media,
             delegates: delegates,
           ),
@@ -282,12 +280,7 @@ class _OverlayTweetActions extends ConsumerWidget {
           _OverlayPreviewText(tweet: tweet, delegates: delegates),
           Row(
             children: [
-              for (final action in actions)
-                _mapAction(
-                  context,
-                  ref.read,
-                  action: action,
-                ),
+              for (final action in actions) _mapAction(ref, action: action),
             ],
           ),
         ],
@@ -322,7 +315,7 @@ class _OverlayPreviewText extends ConsumerWidget {
         alignment: AlignmentDirectional.bottomCenter,
         curve: Curves.easeInOut,
         child: GestureDetector(
-          onTap: () => delegates.onShowTweet?.call(context, ref.read),
+          onTap: () => delegates.onShowTweet?.call(ref),
           child: HarpyAnimatedSwitcher(
             layoutBuilder: (currentChild, previousChildren) => Stack(
               alignment: AlignmentDirectional.bottomCenter,

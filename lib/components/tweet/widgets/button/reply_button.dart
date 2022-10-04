@@ -25,7 +25,7 @@ class Replybutton extends ConsumerWidget {
       iconBuilder: (_) => Icon(CupertinoIcons.reply, size: iconSize),
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onComposeReply?.call(context, ref.read),
+      activate: () => onComposeReply?.call(ref),
       deactivate: null,
     );
   }

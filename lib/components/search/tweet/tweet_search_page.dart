@@ -44,8 +44,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                 UserScrollDirection.of(context)?.idle();
                 await notifier.refresh();
               },
-              edgeOffset: HarpySliverAppBar.height(context, ref.read) +
-                  display.paddingValue,
+              edgeOffset: HarpySliverAppBar.height(ref) + display.paddingValue,
               child: TweetList(
                 state.tweets.toList(),
                 beginSlivers: [
@@ -62,8 +61,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                               )
                             : const Icon(Icons.filter_alt_outlined),
                         onTap: () => _openSearchFilter(
-                          context,
-                          ref.read,
+                          ref,
                           initialFilter: state.filter,
                           notifier: notifier,
                         ),
@@ -77,8 +75,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                           icon: const Icon(Icons.filter_alt_outlined),
                           label: const Text('advanced query'),
                           onTap: () => _openSearchFilter(
-                            context,
-                            ref.read,
+                            ref,
                             initialFilter: state.filter,
                             notifier: notifier,
                           ),
@@ -117,14 +114,13 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
 }
 
 void _openSearchFilter(
-  BuildContext context,
-  Reader read, {
+  WidgetRef ref, {
   required TweetSearchFilterData? initialFilter,
   required TweetSearchNotifier notifier,
 }) {
-  FocusScope.of(context).unfocus();
+  FocusScope.of(ref.context).unfocus();
 
-  read(routerProvider).pushNamed(
+  ref.read(routerProvider).pushNamed(
     TweetSearchFilter.name,
     extra: {
       'initialFilter': initialFilter,

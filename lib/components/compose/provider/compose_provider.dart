@@ -10,17 +10,17 @@ part 'compose_provider.freezed.dart';
 
 final composeProvider =
     StateNotifierProvider.autoDispose<ComposeNotifier, ComposeState>(
-  (ref) => ComposeNotifier(read: ref.read),
+  (ref) => ComposeNotifier(ref: ref),
   name: 'ComposeProvider',
 );
 
 class ComposeNotifier extends StateNotifier<ComposeState> {
   ComposeNotifier({
-    required Reader read,
-  })  : _read = read,
+    required Ref ref,
+  })  : _ref = ref,
         super(ComposeState());
 
-  final Reader _read;
+  final Ref _ref;
 
   void initialize({
     TweetData? parentTweet,
@@ -49,10 +49,10 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
       } else if (result.pickedVideos) {
         _addVideo(result);
       } else {
-        _read(messageServiceProvider).showText(
-          'invalid selection\n'
-          'add up to 4 images, 1 gif or 1 video',
-        );
+        _ref.read(messageServiceProvider).showText(
+              'invalid selection\n'
+              'add up to 4 images, 1 gif or 1 video',
+            );
       }
     }
   }
@@ -71,9 +71,9 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
     }
 
     if (newMedia.length > 4) {
-      _read(messageServiceProvider).showText(
-        'only up to 4 images can be attached',
-      );
+      _ref.read(messageServiceProvider).showText(
+            'only up to 4 images can be attached',
+          );
 
       newMedia = newMedia.sublist(0, 4);
     }
@@ -86,7 +86,9 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
 
   void _addGif(FilePickerResult result) {
     if (result.files.length > 1) {
-      _read(messageServiceProvider).showText('only one gif can be attached');
+      _ref
+          .read(messageServiceProvider)
+          .showText('only one gif can be attached');
     } else {
       state = state.copyWith(
         media: [result.files.single].toBuiltList(),
@@ -97,7 +99,9 @@ class ComposeNotifier extends StateNotifier<ComposeState> {
 
   void _addVideo(FilePickerResult result) {
     if (result.files.length > 1) {
-      _read(messageServiceProvider).showText('only one video can be attached');
+      _ref
+          .read(messageServiceProvider)
+          .showText('only one video can be attached');
     } else {
       state = state.copyWith(
         media: [result.files.single].toBuiltList(),

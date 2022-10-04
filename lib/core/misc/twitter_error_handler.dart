@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 
 /// Handles an error from a Twitter api request to potentially show a message to
 /// the user.
-void twitterErrorHandler(Reader read, Object error, [StackTrace? stackTrace]) {
+void twitterErrorHandler(Ref ref, Object error, [StackTrace? stackTrace]) {
   Logger('error handler').info(
     'handling twitter error',
     error,
@@ -37,9 +37,9 @@ void twitterErrorHandler(Reader read, Object error, [StackTrace? stackTrace]) {
             content: Text(message),
             action: SnackBarAction(
               label: 'info',
-              onPressed: () => read(dialogServiceProvider).show(
-                child: const _RateLimitReachedDialog(),
-              ),
+              onPressed: () => ref.read(dialogServiceProvider).show(
+                    child: const _RateLimitReachedDialog(),
+                  ),
             ),
           );
         }
@@ -62,9 +62,9 @@ void twitterErrorHandler(Reader read, Object error, [StackTrace? stackTrace]) {
   }
 
   if (snackBar != null) {
-    read(messageServiceProvider).showSnackbar(snackBar);
+    ref.read(messageServiceProvider).showSnackbar(snackBar);
   } else {
-    read(messageServiceProvider).showText(message);
+    ref.read(messageServiceProvider).showText(message);
   }
 }
 

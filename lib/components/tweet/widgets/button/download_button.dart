@@ -33,7 +33,7 @@ class DownloadButton extends ConsumerWidget {
       foregroundColor: foregroundColor,
       iconSize: iconSize,
       sizeDelta: sizeDelta,
-      activate: () => onDownload?.call(context, ref.read, media),
+      activate: () => onDownload?.call(ref, media),
       deactivate: null,
     );
   }

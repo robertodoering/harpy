@@ -14,18 +14,17 @@ part 'download_path_provider.g.dart';
 
 final downloadPathProvider =
     StateNotifierProvider<DownloadPathNotifier, DownloadPathState>(
-  (ref) => DownloadPathNotifier(read: ref.read),
+  (ref) => DownloadPathNotifier(ref: ref),
   name: 'DownloadPathProvider',
 );
 
 class DownloadPathNotifier extends StateNotifier<DownloadPathState>
     with LoggerMixin {
-  DownloadPathNotifier({
-    required Reader read,
-  })  : _read = read,
+  DownloadPathNotifier({required Ref ref})
+      : _ref = ref,
         super(const DownloadPathState.loading());
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> initialize() async {
     state = const DownloadPathState.loading();
@@ -39,7 +38,8 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
       return;
     }
 
-    final downloadPathData = _read(mediaPreferencesProvider).downloadPathData;
+    final downloadPathData =
+        _ref.read(mediaPreferencesProvider).downloadPathData;
 
     if (downloadPathData.isEmpty) {
       // use default
@@ -65,7 +65,7 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
         log.severe('error decoding downloda path data', e, st);
 
         // reset saved preferences and use default
-        _read(mediaPreferencesProvider.notifier).setDownloadPathData('');
+        _ref.read(mediaPreferencesProvider.notifier).setDownloadPathData('');
 
         state = DownloadPathState.data(
           mediaPaths: mediaPaths,
@@ -95,9 +95,9 @@ class DownloadPathNotifier extends StateNotifier<DownloadPathState>
         );
 
         try {
-          _read(mediaPreferencesProvider.notifier).setDownloadPathData(
-            jsonEncode(DownloadPathData(entries: entries).toJson()),
-          );
+          _ref.read(mediaPreferencesProvider.notifier).setDownloadPathData(
+                jsonEncode(DownloadPathData(entries: entries).toJson()),
+              );
 
           state = currentState.copyWith(entries: entries.toBuiltList());
         } catch (e, st) {

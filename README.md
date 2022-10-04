@@ -36,8 +36,8 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 <br>
 
 <p align="center">
-harpy is actively being development. See the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
-information about the progress.
+harpy is in active development. Check out the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
+information about upcoming features.
 </p>
 
 <br>
@@ -59,38 +59,31 @@ information about the progress.
 
 ## About
 
-**harpy** is a feature rich Twitter client that focuses on a nice user experience and great design.
+**harpy** is an alternative Twitter client that focuses on a nice user experience with unique features.
 
-This project aims to provide a good example for a medium-big sized Flutter app
-in hopes that it will be useful for some.
+This project has been in development since 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
+
+It's currently available on the PlayStore as a [free](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free) and a paid [pro](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro) version and is used by over 50.000 users.
 
 Some interesting features of the app include:
 
 * [riverpod](https://pub.dev/packages/riverpod)
   * for state management using the included [state_notifier](https://pub.dev/packages/state_notifier)
   * for dependency injection / service locators with easily mockable dependencies
-* [go_router](https://pub.dev/packages/go_router) for routing
+* [go_router](https://pub.dev/packages/go_router) for routing with support for Twitter url deeplinks
 * [sentry](https://pub.dev/packages/sentry) as an online error tracking service to report unhandled exceptions
 * Fully featured theme customization
 * Fully featured video player using the
-  [video_player](https://pub.dev/packages/video_player) package.
+  [video_player](https://pub.dev/packages/video_player) package
+* My own [twitter_api](https://github.com/robertodoering/twitter_api) package to make use of the official Twitter api
 * A 'pro' and 'free' android
   [product flavor](https://developer.android.com/studio/build/build-variants)
 * Many customized animations sprinkled around the app, including custom logo animations created with [Rive](https://flare.rive.app/a/rbyd/files/recent/all)
 
+### Contributing
+
+Contributions are welcome! Check out the [contributing guidelines](https://github.com/robertodoering/harpy/blob/master/CONTRIBUTING.md).
 
 ### Development / Setup
 
-Run the build runner once after cloning the project
-- `flutter packages pub run build_runner build`
-
-### Twitter API key
-
-Follow [these instructions](https://github.com/robertodoering/harpy/wiki/Twitter-api-key-setup) for setting up your Twitter API key.
-
-### Building
-
-The app can be built with the "free" or "pro" flavor by running:
-
-* `flutter run --flavor free --dart-define=flavor=free --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
-* `flutter run --flavor pro --dart-define=flavor=pro --dart-define=twitter_consumer_key=your_consumer_key --dart-define=twitter_consumer_secret=your_consumer_secret`
+Follow the [project setup for building harpy](https://github.com/robertodoering/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.

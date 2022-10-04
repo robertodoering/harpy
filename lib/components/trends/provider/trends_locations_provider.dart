@@ -3,14 +3,18 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 final trendsLocationsProvider = StateNotifierProvider.autoDispose<
     TrendsLocationsNotifier, AsyncValue<BuiltList<TrendsLocationData>>>(
-  (ref) => TrendsLocationsNotifier(
-    twitterApi: ref.watch(twitterApiProvider),
-  ),
-  cacheTime: const Duration(minutes: 5),
+  (ref) {
+    ref.cacheFor(const Duration(minutes: 5));
+
+    return TrendsLocationsNotifier(
+      twitterApi: ref.watch(twitterApiProvider),
+    );
+  },
   name: 'TrendsLocationsProvider',
 );
 

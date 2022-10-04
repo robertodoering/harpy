@@ -58,7 +58,7 @@ class TweetCardTopRow extends ConsumerWidget {
               ],
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => delegates.onShowUser?.call(context, ref.read),
+                onTap: () => delegates.onShowUser?.call(ref),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

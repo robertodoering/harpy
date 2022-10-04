@@ -11,16 +11,9 @@ import 'package:share_plus/share_plus.dart';
 
 part 'tweet_delegates.freezed.dart';
 
-typedef TweetActionCallback = void Function(
-  BuildContext context,
-  Reader read,
-);
+typedef TweetActionCallback = void Function(WidgetRef ref);
 
-typedef MediaActionCallback = void Function(
-  BuildContext context,
-  Reader read,
-  MediaData media,
-);
+typedef MediaActionCallback = void Function(WidgetRef ref, MediaData media);
 
 /// Delegates used by the [TweetCard] and its content.
 @freezed
@@ -52,13 +45,13 @@ TweetDelegates defaultTweetDelegates(
   TweetNotifier notifier,
 ) {
   return TweetDelegates(
-    onShowTweet: (context, read) => read(routerProvider).pushNamed(
-      TweetDetailPage.name,
-      params: {'handle': tweet.user.handle, 'id': tweet.id},
-      extra: tweet,
-    ),
-    onShowUser: (_, read) {
-      final router = read(routerProvider);
+    onShowTweet: (ref) => ref.read(routerProvider).pushNamed(
+          TweetDetailPage.name,
+          params: {'handle': tweet.user.handle, 'id': tweet.id},
+          extra: tweet,
+        ),
+    onShowUser: (ref) {
+      final router = ref.read(routerProvider);
 
       if (!router.location.endsWith(tweet.user.handle)) {
         router.pushNamed(
@@ -68,8 +61,8 @@ TweetDelegates defaultTweetDelegates(
         );
       }
     },
-    onShowRetweeter: (_, read) {
-      final router = read(routerProvider);
+    onShowRetweeter: (ref) {
+      final router = ref.read(routerProvider);
 
       if (!router.location.endsWith(tweet.retweeter!.handle)) {
         router.pushNamed(
@@ -79,65 +72,66 @@ TweetDelegates defaultTweetDelegates(
         );
       }
     },
-    onFavorite: (_, __) {
+    onFavorite: (_) {
       HapticFeedback.lightImpact();
       notifier.favorite();
     },
-    onUnfavorite: (_, __) {
+    onUnfavorite: (_) {
       HapticFeedback.lightImpact();
       notifier.unfavorite();
     },
-    onRetweet: (_, __) {
+    onRetweet: (_) {
       HapticFeedback.lightImpact();
       notifier.retweet();
     },
-    onUnretweet: (_, __) {
+    onUnretweet: (_) {
       HapticFeedback.lightImpact();
       notifier.unretweet();
     },
-    onTranslate: (context, _) {
+    onTranslate: (ref) {
       HapticFeedback.lightImpact();
-      notifier.translate(locale: Localizations.localeOf(context));
+      notifier.translate(locale: Localizations.localeOf(ref.context));
     },
     onShowRetweeters: tweet.retweetCount > 0
-        ? (_, read) => read(routerProvider).pushNamed(
+        ? (ref) => ref.read(routerProvider).pushNamed(
               RetweetersPage.name,
               params: {'handle': tweet.user.handle, 'id': tweet.id},
             )
         : null,
-    onComposeQuote: (_, read) => read(routerProvider).pushNamed(
+    onComposeQuote: (ref) => ref.read(routerProvider).pushNamed(
       ComposePage.name,
       extra: {'quotedTweet': tweet},
     ),
-    onComposeReply: (_, read) => read(routerProvider).pushNamed(
+    onComposeReply: (ref) => ref.read(routerProvider).pushNamed(
       ComposePage.name,
       extra: {'parentTweet': tweet},
     ),
-    onDelete: (_, read) {
+    onDelete: (ref) {
       HapticFeedback.lightImpact();
       notifier.delete(
-        onDeleted: () => read(homeTimelineProvider.notifier).removeTweet(tweet),
+        onDeleted: () =>
+            ref.read(homeTimelineProvider.notifier).removeTweet(tweet),
       );
     },
-    onOpenTweetExternally: (context, read) {
+    onOpenTweetExternally: (ref) {
       HapticFeedback.lightImpact();
-      read(launcherProvider)(tweet.tweetUrl, alwaysOpenExternally: true);
+      ref.read(launcherProvider)(tweet.tweetUrl, alwaysOpenExternally: true);
     },
-    onCopyText: (context, read) {
+    onCopyText: (ref) {
       HapticFeedback.lightImpact();
       Clipboard.setData(ClipboardData(text: tweet.visibleText));
-      read(messageServiceProvider).showText('copied tweet text');
+      ref.read(messageServiceProvider).showText('copied tweet text');
     },
-    onShareTweet: (context, read) {
+    onShareTweet: (ref) {
       HapticFeedback.lightImpact();
       Share.share(tweet.tweetUrl);
     },
-    onOpenMediaExternally: (_, read, media) {
+    onOpenMediaExternally: (ref, media) {
       HapticFeedback.lightImpact();
-      read(launcherProvider)(media.bestUrl, alwaysOpenExternally: true);
+      ref.read(launcherProvider)(media.bestUrl, alwaysOpenExternally: true);
     },
     onDownloadMedia: _downloadMedia,
-    onShareMedia: (_, __, media) {
+    onShareMedia: (_, media) {
       HapticFeedback.lightImpact();
       Share.share(media.bestUrl);
     },
@@ -145,8 +139,7 @@ TweetDelegates defaultTweetDelegates(
 }
 
 Future<void> _downloadMedia(
-  BuildContext context,
-  Reader read,
+  WidgetRef ref,
   MediaData media,
 ) async {
   var name = filenameFromUrl(media.bestUrl) ?? 'media';
@@ -154,13 +147,13 @@ Future<void> _downloadMedia(
   final storagePermission = await Permission.storage.request();
 
   if (!storagePermission.isGranted) {
-    read(messageServiceProvider).showText('storage permission not granted');
+    ref.read(messageServiceProvider).showText('storage permission not granted');
     return;
   }
 
-  if (read(mediaPreferencesProvider).showDownloadDialog) {
+  if (ref.read(mediaPreferencesProvider).showDownloadDialog) {
     final customName = await showDialog<String>(
-      context: context,
+      context: ref.context,
       builder: (_) => DownloadDialog(
         initialName: name,
         type: media.type,
@@ -175,19 +168,19 @@ Future<void> _downloadMedia(
     }
   }
 
-  await read(downloadPathProvider.notifier).initialize();
-  final path = read(downloadPathProvider).fullPathForType(media.type);
+  await ref.read(downloadPathProvider.notifier).initialize();
+  final path = ref.read(downloadPathProvider).fullPathForType(media.type);
 
   if (path == null) {
     assert(false);
     return;
   }
 
-  await read(downloadServiceProvider).download(
-    url: media.bestUrl,
-    name: name,
-    path: path,
-  );
+  await ref.read(downloadServiceProvider).download(
+        url: media.bestUrl,
+        name: name,
+        path: path,
+      );
 
-  read(messageServiceProvider).showText('download started');
+  ref.read(messageServiceProvider).showText('download started');
 }

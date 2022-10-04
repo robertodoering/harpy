@@ -65,7 +65,7 @@ class _TweetCardState extends ConsumerState<TweetCard> {
       color: widget.color,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => delegates.onShowTweet?.call(context, ref.read),
+        onTap: () => delegates.onShowTweet?.call(ref),
         child: tweet.replies.isEmpty
             ? child
             : Column(

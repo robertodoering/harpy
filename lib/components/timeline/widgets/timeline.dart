@@ -21,7 +21,7 @@ class Timeline extends ConsumerStatefulWidget {
     this.onUpdatedTweetVisibility,
   });
 
-  final StateNotifierProviderOverrideMixin<TimelineNotifier, TimelineState>
+  final AutoDisposeStateNotifierProvider<TimelineNotifier, TimelineState>
       provider;
   final Key? listKey;
   final TweetBuilder tweetBuilder;

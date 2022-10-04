@@ -134,8 +134,7 @@ class VideoPlayerQualityButton extends ConsumerWidget {
       ),
       padding: EdgeInsets.all(display.smallPaddingValue),
       onTap: () => _showQualityBottomSheet(
-        context,
-        ref.read,
+        ref,
         notifier: notifier,
         data: data,
       ),
@@ -184,14 +183,13 @@ class VideoPlayerCloseFullscreenButton extends ConsumerWidget {
 }
 
 void _showQualityBottomSheet(
-  BuildContext context,
-  Reader read, {
+  WidgetRef ref, {
   required VideoPlayerStateData data,
   required VideoPlayerNotifier notifier,
 }) {
   showHarpyBottomSheet<void>(
-    context,
-    harpyTheme: read(harpyThemeProvider),
+    ref.context,
+    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       const BottomSheetHeader(child: Text('video quality')),
       for (final quality in data.qualities.entries)
@@ -201,7 +199,7 @@ void _showQualityBottomSheet(
           onChanged: (value) {
             HapticFeedback.lightImpact();
             notifier.changeQuality(value);
-            Navigator.of(context).pop();
+            Navigator.of(ref.context).pop();
           },
           title: Text(quality.key),
         ),

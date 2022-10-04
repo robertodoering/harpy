@@ -28,7 +28,7 @@ Future<Widget> buildAppBase(
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       applicationProvider.overrideWithValue(MockApplication()),
-      connectivityProvider.overrideWithValue(MockConnectivityNotifier()),
+      connectivityProvider.overrideWithProvider(mockConnectivityNotifier),
       routerProvider.overrideWithValue(
         GoRouter(
           routes: [

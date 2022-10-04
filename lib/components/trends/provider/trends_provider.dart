@@ -5,33 +5,37 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:harpy/core/core.dart';
 import 'package:harpy/rby/rby.dart';
 
 final trendsProvider = StateNotifierProvider.autoDispose<TrendsNotifier,
     AsyncValue<BuiltList<Trend>>>(
-  (ref) => TrendsNotifier(
-    read: ref.read,
-    twitterApi: ref.watch(twitterApiProvider),
-    userLocation: ref.watch(userTrendsLocationProvider),
-  ),
-  cacheTime: const Duration(minutes: 5),
+  (ref) {
+    ref.cacheFor(const Duration(minutes: 5));
+
+    return TrendsNotifier(
+      ref: ref,
+      twitterApi: ref.watch(twitterApiProvider),
+      userLocation: ref.watch(userTrendsLocationProvider),
+    );
+  },
   name: 'TrendsProvider',
 );
 
 class TrendsNotifier extends StateNotifier<AsyncValue<BuiltList<Trend>>>
     with LoggerMixin {
   TrendsNotifier({
-    required Reader read,
+    required Ref ref,
     required TwitterApi twitterApi,
     required TrendsLocationData userLocation,
-  })  : _read = read,
+  })  : _ref = ref,
         _twitterApi = twitterApi,
         _trendsLocationData = userLocation,
         super(const AsyncValue.loading()) {
     load();
   }
 
-  final Reader _read;
+  final Ref _ref;
   final TwitterApi _twitterApi;
   final TrendsLocationData _trendsLocationData;
 
@@ -62,9 +66,9 @@ class TrendsNotifier extends StateNotifier<AsyncValue<BuiltList<Trend>>>
     log.fine('updating trends location');
 
     try {
-      _read(trendsLocationPreferencesProvider.notifier).setTrendsLocationData(
-        jsonEncode(location.toJson()),
-      );
+      _ref
+          .read(trendsLocationPreferencesProvider.notifier)
+          .setTrendsLocationData(jsonEncode(location.toJson()));
     } catch (e, st) {
       log.severe('unable to update trends location', e, st);
     }

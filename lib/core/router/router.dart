@@ -15,7 +15,7 @@ final routerProvider = Provider(
   name: 'RouterProvider',
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
-    redirect: (state) => handleRedirect(ref.read, state),
+    redirect: (_, state) => handleRedirect(ref, state),
     errorPageBuilder: (_, state) => HarpyPage(
       pageRouteType: PageRouteType.fade,
       child: ErrorPage(error: state.error),

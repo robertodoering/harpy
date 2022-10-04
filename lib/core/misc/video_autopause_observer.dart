@@ -7,7 +7,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 final videoAutopauseObserver = Provider(
   (ref) => VideoAutopauseObserver(
-    read: ref.read,
+    ref: ref,
   ),
   name: 'VideoAutopauseObserver',
 );
@@ -16,10 +16,10 @@ final videoAutopauseObserver = Provider(
 /// navigation (with some exceptions).
 class VideoAutopauseObserver extends RouteObserver {
   VideoAutopauseObserver({
-    required Reader read,
-  }) : _read = read;
+    required Ref ref,
+  }) : _ref = ref;
 
-  final Reader _read;
+  final Ref _ref;
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -27,9 +27,9 @@ class VideoAutopauseObserver extends RouteObserver {
 
     if (route is! HeroDialogRoute && route is! ModalBottomSheetRoute) {
       SchedulerBinding.instance.addPostFrameCallback(
-        (_) => _read(videoPlayerHandlerProvider).act(
-          (notifier) => notifier.pause(),
-        ),
+        (_) => _ref.read(videoPlayerHandlerProvider).act(
+              (notifier) => notifier.pause(),
+            ),
       );
     }
   }
