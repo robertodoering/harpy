@@ -9,6 +9,7 @@ export 'misc/request_lock_mixin.dart';
 export 'misc/rtl_language_codes.dart';
 export 'misc/string_utils.dart';
 export 'misc/twitter_error_handler.dart';
+export 'misc/url_launcher.dart';
 export 'misc/video_autopause_observer.dart';
 export 'page_routes/fade_page_route.dart';
 export 'page_routes/harpy_page.dart';
