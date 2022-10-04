@@ -237,6 +237,7 @@ export 'user/widgets/user_tab_view.dart';
 export 'webview/provider/web_view_provider.dart';
 export 'webview/webview_page.dart';
 export 'webview/widgets/harpy_web_view.dart';
+export 'webview/widgets/web_view_actions.dart';
 export 'widgets/bottom_sheet/bottom_sheet_handle.dart';
 export 'widgets/bottom_sheet/bottom_sheet_header.dart';
 export 'widgets/bottom_sheet/harpy_bottom_sheet.dart';
