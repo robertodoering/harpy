@@ -14,7 +14,7 @@ class RetryAuthenticationDialog extends StatelessWidget {
       ),
       actions: [
         HarpyButton.text(
-          label: const Text('cancel'),
+          label: const Text('logout'),
           onTap: Navigator.of(context).pop,
         ),
         HarpyButton.elevated(
