@@ -125,7 +125,7 @@ class HarpyPopupMenuItemState<T, W extends HarpyPopupMenuItem<T>>
 class HarpyPopupMenuItemRow<T> extends PopupMenuEntry<T> {
   const HarpyPopupMenuItemRow({
     required this.children,
-  });
+  }) : assert(children.length <= 4);
 
   final List<HarpyPopupMenuIconItem<T>> children;
 
