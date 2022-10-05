@@ -38,28 +38,29 @@ class WebViewActions extends StatelessWidget {
         }
       },
       itemBuilder: (_) => [
+        HarpyPopupMenuItemRow(
+          children: [
+            HarpyPopupMenuIconItem(
+              icon: const Icon(Icons.arrow_back),
+              value: WebViewAction.back,
+              enabled: state.canGoBack,
+            ),
+            HarpyPopupMenuIconItem(
+              icon: const Icon(Icons.arrow_forward),
+              value: WebViewAction.forward,
+              enabled: state.canGoForward,
+            ),
+            const HarpyPopupMenuIconItem(
+              value: WebViewAction.reload,
+              icon: Icon(Icons.refresh),
+            ),
+          ],
+        ),
         const HarpyPopupMenuItem(
           leading: Icon(Icons.share),
           title: Text('share url'),
           value: WebViewAction.share,
         ),
-        const HarpyPopupMenuItem(
-          leading: Icon(Icons.refresh),
-          value: WebViewAction.reload,
-          title: Text('reload'),
-        ),
-        HarpyPopupMenuItem(
-          leading: const Icon(Icons.arrow_back),
-          value: WebViewAction.back,
-          title: const Text('backward'),
-          enabled: state.canGoBack,
-        ),
-        HarpyPopupMenuItem(
-          leading: const Icon(Icons.arrow_forward),
-          value: WebViewAction.forward,
-          title: const Text('forward'),
-          enabled: state.canGoForward,
-        )
       ],
     );
   }
