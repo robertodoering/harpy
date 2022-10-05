@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:harpy/rby/core/url_launcher.dart';
 
 /*
 example deeplinks
@@ -68,7 +71,11 @@ String? handleRedirect(Ref ref, GoRouterState state) {
     final mappedLocation = _mapTwitterPath(state);
     if (mappedLocation != null) return mappedLocation;
 
-    // if the location doesn't exist navigate to home instead
+    // if the location doesn't exist, launch it and navigate to home instead
+    final launcher = ref.watch(launcherProvider);
+    launcher(state.location).onError((error, stackTrace) {
+      log('failed to launch url: $error');
+    });
     return '/';
   }
 
