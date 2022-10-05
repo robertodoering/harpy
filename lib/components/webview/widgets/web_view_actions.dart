@@ -41,23 +41,23 @@ class WebViewActions extends StatelessWidget {
         HarpyPopupMenuItemRow(
           children: [
             HarpyPopupMenuIconItem(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back_rounded),
               value: WebViewAction.back,
               enabled: state.canGoBack,
             ),
             HarpyPopupMenuIconItem(
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(Icons.arrow_forward_rounded),
               value: WebViewAction.forward,
               enabled: state.canGoForward,
             ),
             const HarpyPopupMenuIconItem(
               value: WebViewAction.reload,
-              icon: Icon(Icons.refresh),
+              icon: Icon(Icons.refresh_rounded),
             ),
           ],
         ),
         const HarpyPopupMenuItem(
-          leading: Icon(Icons.share),
+          leading: Icon(Icons.share_rounded),
           title: Text('share url'),
           value: WebViewAction.share,
         ),
