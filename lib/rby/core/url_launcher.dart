@@ -13,9 +13,17 @@ final launcherProvider = Provider<UrlLauncher>(
     final shouldOpenExternally = alwaysOpenExternally ||
         ref.read(mediaPreferencesProvider).openLinksExternally;
 
+    var uri = Uri.parse(url);
+    if (shouldOpenExternally && uri.host == 'twitter.com') {
+      // When harpy is set to open twitter urls we can't open twitter urls
+      // externally anymore. Instead we change the host to mobile.twitter.com
+      // which we are not set to open.
+      uri = uri.replace(host: 'mobile.twitter.com');
+    }
+
     try {
       await launchUrl(
-        Uri.parse(url),
+        uri,
         mode: shouldOpenExternally
             ? LaunchMode.externalApplication
             : LaunchMode.inAppWebView,
