@@ -18,43 +18,41 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
     required String initialUrl,
   }) : super(WebViewState(currentUrl: initialUrl));
 
-  final Completer<WebViewController> _controllerCreation = Completer();
+  late final WebViewController? _controller;
 
   Future<void> onControllerCreated(WebViewController controller) async {
-    _controllerCreation.complete(controller);
+    _controller = controller;
 
     state = await _stateByCurrentController(url: state.currentUrl);
   }
 
   Future<void> onPageLoaded(String url) async {
-    if (_controllerCreation.isCompleted) {
-      state = await _stateByCurrentController(url: url);
-    }
+    state = await _stateByCurrentController(url: url);
   }
 
   Future<void> reload() async {
-    final controller = await _controllerCreation.future;
-    return controller.reload();
+    return _controller?.reload();
   }
 
   Future<void> goBack() async {
-    final controller = await _controllerCreation.future;
-    return controller.goBack();
+    return _controller?.goBack();
   }
 
   Future<void> goForward() async {
-    final controller = await _controllerCreation.future;
-    return controller.goForward();
+    return _controller?.goForward();
   }
 
   Future<WebViewState> _stateByCurrentController({
     required String url,
   }) async {
-    final controller = await _controllerCreation.future;
+    if (_controller == null) {
+      /// if controller is not set up yet don't emit a new state
+      return state;
+    }
 
-    final title = await controller.getTitle();
-    final canGoBack = await controller.canGoBack();
-    final canGoForward = await controller.canGoForward();
+    final title = await _controller!.getTitle();
+    final canGoBack = await _controller!.canGoBack();
+    final canGoForward = await _controller!.canGoForward();
 
     return WebViewState(
       currentUrl: url,
