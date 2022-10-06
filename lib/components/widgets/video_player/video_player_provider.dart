@@ -17,6 +17,7 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
     final notifier = VideoPlayerNotifier(
       urls: arguments.urls,
       loop: arguments.loop,
+      ref: ref,
       onInitialized: arguments.isVideo
           ? () => handler.act((notifier) => notifier.pause())
           : null,
@@ -35,11 +36,13 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerNotifier({
     required BuiltMap<String, String> urls,
     required bool loop,
+    required Ref ref,
     VoidCallback? onInitialized,
   })  : assert(urls.isNotEmpty),
         _onInitialized = onInitialized,
         _urls = urls,
         _loop = loop,
+        _ref = ref,
         super(const VideoPlayerState.uninitialized()) {
     _quality = urls.keys.first;
 
@@ -52,6 +55,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   final BuiltMap<String, String> _urls;
   final bool _loop;
   final VoidCallback? _onInitialized;
+  final Ref _ref;
 
   late String _quality;
 
@@ -85,6 +89,13 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   /// Starts loading the video and then plays it.
   Future<void> initialize({double volume = 1}) async {
     state = const VideoPlayerState.loading();
+
+    final startVideoPlaybackMuted =
+        _ref.read(mediaPreferencesProvider).startVideoPlaybackMuted;
+
+    if (startVideoPlaybackMuted) {
+      volume = 0;
+    }
 
     await _controller
         .initialize()

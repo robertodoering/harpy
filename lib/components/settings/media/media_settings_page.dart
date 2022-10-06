@@ -140,6 +140,16 @@ class _MediaSettingsList extends ConsumerWidget {
           ],
         ),
         verticalSpacer,
+        Card(
+          child: HarpySwitchTile(
+            leading: const Icon(CupertinoIcons.volume_off),
+            title: const Text('start video playback muted'),
+            value: media.startVideoPlaybackMuted,
+            borderRadius: harpyTheme.borderRadius,
+            onChanged: mediaNotifier.setStartVideoPlaybackMuted,
+          ),
+        ),
+        verticalSpacer,
         const _MediaDownloadSettings(),
       ]),
     );
