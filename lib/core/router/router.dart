@@ -60,6 +60,17 @@ final routesProvider = Provider(
       ],
     ),
     GoRoute(
+      name: WebviewPage.name,
+      path: WebviewPage.path,
+      pageBuilder: (_, state) => _createPage(
+        fullscreenDialog: true,
+        state: state,
+        child: WebviewPage(
+          initialUrl: state.queryParams['initialUrl']!,
+        ),
+      ),
+    ),
+    GoRoute(
       name: AboutPage.name,
       path: AboutPage.path, // '/about_harpy'
       pageBuilder: (_, state) => _createPage(

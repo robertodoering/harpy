@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
 
 class HarpyProCard extends ConsumerWidget {
   const HarpyProCard({

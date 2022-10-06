@@ -121,3 +121,73 @@ class HarpyPopupMenuItemState<T, W extends HarpyPopupMenuItem<T>>
     );
   }
 }
+
+class HarpyPopupMenuItemRow<T> extends PopupMenuEntry<T> {
+  const HarpyPopupMenuItemRow({
+    required this.children,
+  }) : assert(children.length <= 4);
+
+  final List<HarpyPopupMenuIconItem<T>> children;
+
+  @override
+  double get height => kMinInteractiveDimension;
+
+  @override
+  bool represents(T? value) => false;
+
+  @override
+  HarpyPopupMenuItemRowState<T, HarpyPopupMenuItemRow<T>> createState() =>
+      HarpyPopupMenuItemRowState<T, HarpyPopupMenuItemRow<T>>();
+}
+
+class HarpyPopupMenuItemRowState<T, W extends HarpyPopupMenuItemRow<T>>
+    extends State<W> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: widget.children,
+    );
+  }
+}
+
+class HarpyPopupMenuIconItem<T> extends PopupMenuEntry<T> {
+  const HarpyPopupMenuIconItem({
+    required this.value,
+    required this.icon,
+    this.enabled = true,
+  });
+
+  final Widget icon;
+
+  /// The value that will be returned by [showMenu] if this entry is selected.
+  ///
+  /// When `null`, [HarpyPopupMenuButton.onCancelled] will be called if this
+  /// item is selected.
+  final T? value;
+
+  /// Whether the user is permitted to select this item.
+  final bool enabled;
+
+  @override
+  double get height => kMinInteractiveDimension;
+
+  @override
+  bool represents(T? value) => value == this.value;
+
+  @override
+  HarpyPopupMenuIconItemState<T, HarpyPopupMenuIconItem<T>> createState() =>
+      HarpyPopupMenuIconItemState<T, HarpyPopupMenuIconItem<T>>();
+}
+
+class HarpyPopupMenuIconItemState<T, W extends HarpyPopupMenuIconItem<T>>
+    extends State<W> {
+  @override
+  Widget build(BuildContext context) {
+    return HarpyButton.icon(
+      icon: widget.icon,
+      onTap:
+          widget.enabled ? () => Navigator.of(context).pop(widget.value) : null,
+    );
+  }
+}
