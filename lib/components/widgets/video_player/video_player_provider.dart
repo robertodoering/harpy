@@ -13,12 +13,11 @@ final videoPlayerProvider = StateNotifierProvider.autoDispose
     .family<VideoPlayerNotifier, VideoPlayerState, VideoPlayerArguments>(
   (ref, arguments) {
     final handler = ref.watch(videoPlayerHandlerProvider);
-    final mediaPreferences = ref.watch(mediaPreferencesProvider);
 
     final notifier = VideoPlayerNotifier(
       urls: arguments.urls,
       loop: arguments.loop,
-      startVideoPlaybackMuted: mediaPreferences.startVideoPlaybackMuted,
+      ref: ref,
       onInitialized: arguments.isVideo
           ? () => handler.act((notifier) => notifier.pause())
           : null,
@@ -37,13 +36,13 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   VideoPlayerNotifier({
     required BuiltMap<String, String> urls,
     required bool loop,
-    required bool startVideoPlaybackMuted,
+    required Ref ref,
     VoidCallback? onInitialized,
   })  : assert(urls.isNotEmpty),
         _onInitialized = onInitialized,
         _urls = urls,
         _loop = loop,
-        _startVideoPlaybackMuted = startVideoPlaybackMuted,
+        _ref = ref,
         super(const VideoPlayerState.uninitialized()) {
     _quality = urls.keys.first;
 
@@ -56,7 +55,7 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   final BuiltMap<String, String> _urls;
   final bool _loop;
   final VoidCallback? _onInitialized;
-  final bool _startVideoPlaybackMuted;
+  final Ref _ref;
 
   late String _quality;
 
@@ -91,7 +90,10 @@ class VideoPlayerNotifier extends StateNotifier<VideoPlayerState> {
   Future<void> initialize({double volume = 1}) async {
     state = const VideoPlayerState.loading();
 
-    if (_startVideoPlaybackMuted) {
+    final startVideoPlaybackMuted =
+        _ref.read(mediaPreferencesProvider).startVideoPlaybackMuted;
+
+    if (startVideoPlaybackMuted) {
       volume = 0;
     }
 
