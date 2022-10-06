@@ -36,9 +36,7 @@
         <category android:name="android.intent.category.BROWSABLE" />
 
         <data android:host="twitter.com" />
-        <data android:host="mobile.twitter.com" />
         <data android:host="www.twitter.com" />
-        <data android:host="www.mobile.twitter.com" />
         <data android:scheme="http" />
         <data android:scheme="https" />
       </intent-filter>
