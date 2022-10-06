@@ -24,6 +24,10 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
             cropImage: preferences.getBool('cropImage', false),
             autoplayGifs: preferences.getInt('autoplayMedia', 1),
             autoplayVideos: preferences.getInt('autoplayVideos', 2),
+            startVideoPlaybackMuted: preferences.getBool(
+              'startVideoPlaybackMuted',
+              false,
+            ),
             hidePossiblySensitive: preferences.getBool(
               'hidePossiblySensitive',
               false,
@@ -44,6 +48,7 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
     setCropImage(false);
     setAutoplayGifs(1);
     setAutoplayVideos(2);
+    setStartVideoPlaybackMuted(false);
     setHidePossiblySensitive(false);
     setOpenLinksExternally(false);
     setShowDownloadDialog(true);
@@ -69,6 +74,11 @@ class MediaPreferencesNotifier extends StateNotifier<MediaPreferences> {
   void setAutoplayVideos(int value) {
     state = state.copyWith(autoplayVideos: value);
     _preferences.setInt('autoplayVideos', value);
+  }
+
+  void setStartVideoPlaybackMuted(bool value) {
+    state = state.copyWith(startVideoPlaybackMuted: value);
+    _preferences.setBool('startVideoPlaybackMuted', value);
   }
 
   void setHidePossiblySensitive(bool value) {
@@ -122,6 +132,9 @@ class MediaPreferences with _$MediaPreferences {
     /// 1: only autoplay when using wifi
     /// 2: never autoplay
     required int autoplayVideos,
+
+    /// Whether video playback should start with volume 0 by default.
+    required bool startVideoPlaybackMuted,
 
     /// Whether possibly sensitive (NSFW) media should be hidden by default.
     required bool hidePossiblySensitive,
