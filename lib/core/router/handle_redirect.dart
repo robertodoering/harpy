@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
@@ -33,6 +31,9 @@ adb shell am start -a android.intent.action.VIEW \
  -c android.intent.category.BROWSABLE \
  -d "https://twitter.com/harpy_app/followers"
 */
+
+/// Twitter prefix URL constant
+const String twitterPrefix = 'https://twitter.com/';
 
 /// Paths that an unauthenticated user can access.
 ///
@@ -73,9 +74,7 @@ String? handleRedirect(Ref ref, GoRouterState state) {
 
     // if the location doesn't exist, launch it and navigate to home instead
     final launcher = ref.watch(launcherProvider);
-    launcher(state.location).onError((error, stackTrace) {
-      log('failed to launch url: $error');
-    });
+    launcher(twitterPrefix + state.location);
     return '/';
   }
 
