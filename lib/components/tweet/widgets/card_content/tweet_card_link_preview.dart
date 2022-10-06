@@ -19,9 +19,18 @@ class TweetCardLinkPreview extends ConsumerWidget {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final launcher = ref.watch(launcherProvider);
+    final urlString = tweet.previewUrl.toString();
 
     return GestureDetector(
-      onTap: () => launcher('${tweet.previewUrl}'),
+      onTap: () => launcher(urlString),
+      onLongPress: () => defaultOnUrlLongPress(
+        ref,
+        UrlData(
+          expandedUrl: urlString,
+          displayUrl: urlString,
+          url: urlString,
+        ),
+      ),
       child: AnyLinkPreview.builder(
         link: '${tweet.previewUrl}',
         placeholderWidget: const _LinkPreviewPlaceholder(),
