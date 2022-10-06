@@ -46,7 +46,7 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
     required String url,
   }) async {
     if (_controller == null) {
-      /// if controller is not set up yet don't emit a new state
+      // if controller is not set up yet don't emit a new state
       return state;
     }
 
