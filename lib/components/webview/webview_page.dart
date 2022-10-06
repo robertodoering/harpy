@@ -22,7 +22,10 @@ class WebviewPage extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           HarpySliverAppBar(
-            title: state.hasTitle ? Text(state.title!) : null,
+            title: state.hasTitle
+                ? Text(state.title!, overflow: TextOverflow.ellipsis)
+                : null,
+            fittedTitle: false,
             actions: [
               WebViewActions(
                 notifier: notifier,
