@@ -68,7 +68,9 @@ String? handleRedirect(Ref ref, GoRouterState state) {
     final mappedLocation = _mapTwitterPath(state);
     if (mappedLocation != null) return mappedLocation;
 
-    // if the location doesn't exist navigate to home instead
+    // if the location doesn't exist, launch it and navigate to home instead
+    final launcher = ref.watch(launcherProvider);
+    launcher('https://twitter.com${state.location}');
     return '/';
   }
 
