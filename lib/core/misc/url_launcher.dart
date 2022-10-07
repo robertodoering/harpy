@@ -24,10 +24,7 @@ final launcherProvider = Provider<UrlLauncher>(
 
     try {
       if (shouldOpenExternally) {
-        await launchUrl(
-          Uri.parse(url),
-          mode: LaunchMode.externalApplication,
-        );
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         ref.read(routerProvider).pushNamed(
           WebviewPage.name,
