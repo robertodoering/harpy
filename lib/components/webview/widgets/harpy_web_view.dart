@@ -20,7 +20,8 @@ class HarpyWebView extends ConsumerWidget {
       initialUrl: initialUrl,
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: notifier.onControllerCreated,
-      onPageFinished: notifier.onPageLoaded,
+      onPageStarted: notifier.onPageStarted,
+      onPageFinished: notifier.onPageFinished,
       gestureRecognizers: const {Factory(EagerGestureRecognizer.new)},
     );
   }

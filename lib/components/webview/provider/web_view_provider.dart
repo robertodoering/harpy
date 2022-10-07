@@ -22,12 +22,21 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
 
   Future<void> onControllerCreated(WebViewController controller) async {
     _controller = controller;
-
-    state = await _stateByCurrentController(url: state.currentUrl);
   }
 
-  Future<void> onPageLoaded(String url) async {
-    state = await _stateByCurrentController(url: url);
+  Future<void> onPageStarted(String url) async {
+    state = state.copyWith(
+      currentUrl: url,
+      canGoBack: await _controller?.canGoBack() ?? false,
+      canGoForward: await _controller?.canGoForward() ?? false,
+    );
+  }
+
+  Future<void> onPageFinished(String url) async {
+    state = state.copyWith(
+      currentUrl: url,
+      title: await _controller?.getTitle(),
+    );
   }
 
   Future<void> reload() async {
@@ -40,26 +49,6 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
 
   Future<void> goForward() async {
     return _controller?.goForward();
-  }
-
-  Future<WebViewState> _stateByCurrentController({
-    required String url,
-  }) async {
-    if (_controller == null) {
-      // if controller is not set up yet don't emit a new state
-      return state;
-    }
-
-    final title = await _controller!.getTitle();
-    final canGoBack = await _controller!.canGoBack();
-    final canGoForward = await _controller!.canGoForward();
-
-    return WebViewState(
-      currentUrl: url,
-      title: title,
-      canGoBack: canGoBack,
-      canGoForward: canGoForward,
-    );
   }
 }
 
