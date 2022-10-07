@@ -32,9 +32,6 @@ adb shell am start -a android.intent.action.VIEW \
  -d "https://twitter.com/harpy_app/followers"
 */
 
-/// Twitter prefix URL constant
-const String twitterPrefix = 'https://twitter.com/';
-
 /// Paths that an unauthenticated user can access.
 ///
 /// If the requested path is a sublocation of an unprotected path, it can still
