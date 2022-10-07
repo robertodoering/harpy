@@ -74,7 +74,7 @@ String? handleRedirect(Ref ref, GoRouterState state) {
 
     // if the location doesn't exist, launch it and navigate to home instead
     final launcher = ref.watch(launcherProvider);
-    launcher(twitterPrefix + state.location);
+    launcher('https://twitter.com${state.location}');
     return '/';
   }
 
