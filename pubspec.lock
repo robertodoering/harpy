@@ -1181,7 +1181,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
+      ref: "2195a329cc6aacb2312038cd3fc24568ab1559d8"
       resolved-ref: "2195a329cc6aacb2312038cd3fc24568ab1559d8"
       url: "https://github.com/superlistapp/super_sliver_list"
     source: git
