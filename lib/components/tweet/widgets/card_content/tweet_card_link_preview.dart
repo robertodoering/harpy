@@ -204,7 +204,7 @@ class _LinkPreviewText extends ConsumerWidget {
                 ],
                 if (desc?.isNotEmpty ?? false)
                   Text(
-                    metadata.desc ?? '',
+                    desc!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyText2
