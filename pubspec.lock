@@ -1177,6 +1177,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  super_sliver_list:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "2195a329cc6aacb2312038cd3fc24568ab1559d8"
+      url: "https://github.com/superlistapp/super_sliver_list"
+    source: git
+    version: "0.0.3"
   term_glyph:
     dependency: transitive
     description:

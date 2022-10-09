@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 typedef TweetBuilder = Widget Function(TweetData tweet, int index);
 
@@ -51,7 +52,7 @@ class TweetList extends ConsumerWidget {
         ...beginSlivers,
         SliverPadding(
           padding: display.edgeInsets,
-          sliver: SliverList(
+          sliver: SuperSliverList(
             delegate: _TweetListBuilderDelegate(
               _itemBuilder,
               onLayoutFinished: onLayoutFinished,
