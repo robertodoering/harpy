@@ -29,14 +29,11 @@ class _HomeTimelineState extends ConsumerState<HomeTimeline> {
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
-    final general = ref.watch(generalPreferencesProvider);
     final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
 
     return Timeline(
       provider: homeTimelineProvider,
-      listKey: general.restoreScrollPositions
-          ? const PageStorageKey('home_timeline')
-          : null,
+      listKey: const PageStorageKey('home_timeline'),
       refreshIndicatorOffset: widget.refreshIndicatorOffset,
       scrollToTopOffset: widget.scrollToTopOffset,
       onUpdatedTweetVisibility: tweetVisibility.updateVisibleTweet,

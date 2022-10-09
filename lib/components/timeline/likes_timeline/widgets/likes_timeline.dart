@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class LikesTimeline extends ConsumerWidget {
+class LikesTimeline extends StatelessWidget {
   const LikesTimeline({
     required this.user,
   });
@@ -11,13 +10,9 @@ class LikesTimeline extends ConsumerWidget {
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final general = ref.watch(generalPreferencesProvider);
-
+  Widget build(BuildContext context) {
     return Timeline(
-      listKey: general.restoreScrollPositions
-          ? const PageStorageKey('likes_timeline')
-          : null,
+      listKey: const PageStorageKey('likes_timeline'),
       provider: likesTimelineProvider(user.id),
     );
   }

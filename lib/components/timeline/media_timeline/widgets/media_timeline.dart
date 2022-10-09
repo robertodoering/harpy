@@ -57,7 +57,6 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
   @override
   Widget build(BuildContext context) {
     final display = ref.watch(displayPreferencesProvider);
-    final general = ref.watch(generalPreferencesProvider);
     final timelineState = ref.watch(widget.provider);
     final timelineNotifier = ref.watch(widget.provider.notifier);
     final mediaEntries = ref.watch(mediaTimelineProvider(timelineState.tweets));
@@ -70,9 +69,7 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
         listen: timelineState.canLoadMore,
         onLoadMore: timelineNotifier.loadOlder,
         child: CustomScrollView(
-          key: general.restoreScrollPositions
-              ? const PageStorageKey('media_timeline')
-              : null,
+          key: const PageStorageKey('media_timeline'),
           controller: _controller,
           slivers: [
             ...widget.beginSlivers,
