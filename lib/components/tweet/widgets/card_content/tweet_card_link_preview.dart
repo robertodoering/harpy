@@ -180,6 +180,9 @@ class _LinkPreviewText extends ConsumerWidget {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
+    final title = metadata.title != 'null' ? metadata.title : null;
+    final desc = metadata.desc != 'null' ? metadata.desc : null;
+
     return Padding(
       padding: EdgeInsets.all(display.smallPaddingValue),
       child: Column(
@@ -189,32 +192,35 @@ class _LinkPreviewText extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  child: Text(
-                    metadata.title ?? '',
-                    maxLines: 1,
-                    style: theme.textTheme.subtitle2,
+                if (title?.isNotEmpty ?? false) ...[
+                  FittedBox(
+                    child: Text(
+                      limitLength(title!, 40),
+                      maxLines: 2,
+                      style: theme.textTheme.subtitle2,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  metadata.desc ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyText2
-                      ?.copyWith(height: 1.15)
-                      .apply(
-                        fontSizeDelta: -4,
-                        color: theme.colorScheme.onBackground.withOpacity(.9),
-                      ),
-                ),
+                  const SizedBox(height: 2),
+                ],
+                if (desc?.isNotEmpty ?? false)
+                  Text(
+                    desc!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyText2
+                        ?.copyWith(height: 1.15)
+                        .apply(
+                          fontSizeDelta: -4,
+                          color: theme.colorScheme.onBackground.withOpacity(.9),
+                        ),
+                  ),
               ],
             ),
           ),
           Text(
             metadata.url ?? '',
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.visible,
             style: theme.textTheme.caption?.apply(fontSizeDelta: -4),
           )
         ],

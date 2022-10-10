@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 
@@ -24,7 +25,7 @@ class TrendsSelectionHeader extends ConsumerWidget {
             Expanded(
               child: HarpyListCard(
                 leading: Icon(
-                  CupertinoIcons.location,
+                  FeatherIcons.mapPin,
                   color: theme.colorScheme.primary,
                 ),
                 title: Text(

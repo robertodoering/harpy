@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 /// Builds a [CustomScrollView] for the [users].
 class UserList extends ConsumerWidget {
@@ -29,7 +30,7 @@ class UserList extends ConsumerWidget {
         ...beginSlivers,
         SliverPadding(
           padding: display.edgeInsets,
-          sliver: SliverList(
+          sliver: SuperSliverList(
             delegate: SliverChildBuilderDelegate(
               _itemBuilder,
               childCount: users.length * 2 - 1,

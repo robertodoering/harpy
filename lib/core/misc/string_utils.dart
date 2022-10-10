@@ -172,3 +172,11 @@ String? filenameFromUrl(String? url) {
     return null;
   }
 }
+
+String limitLength(String value, int length) {
+  if (value.length > length) {
+    return '${value.substring(0, length)}...';
+  }
+
+  return value;
+}

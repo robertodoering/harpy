@@ -100,36 +100,22 @@ class _GeneralSettingsList extends ConsumerWidget {
           ),
         ),
         verticalSpacer,
-        ExpansionCard(
-          title: const Text('lists & scrolling'),
-          children: [
-            HarpyRadioDialogTile(
-              leading: const Icon(CupertinoIcons.square_list),
-              title: const Text('restore home timeline position on app start'),
-              dialogTitle: const Text(
-                'change how the app behaves when opening the home timeline',
-              ),
-              entries: const {
-                0: Text('show newest already-read tweet'),
-                1: Text('show last read tweet'),
-                2: Text("show newest tweet (don't restore position)"),
-              },
-              groupValue: general.homeTimelinePositionBehavior,
-              onChanged: generalNotifier.setHomeTimelinePositionBehavior,
+        Card(
+          child: HarpyRadioDialogTile(
+            leading: const Icon(CupertinoIcons.square_list),
+            title: const Text('restore home timeline position on app start'),
+            dialogTitle: const Text(
+              'change how the app behaves when opening the home timeline',
             ),
-            HarpySwitchTile(
-              leading: const Icon(CupertinoIcons.square_list),
-              title: const Text('restore scroll positions'),
-              subtitle: const Text('when switching tabs'),
-              value: general.restoreScrollPositions,
-              onChanged: generalNotifier.setRestoreScrollPositions,
-            ),
-            if (general.restoreScrollPositions) ...[
-              smallVerticalSpacer,
-              const _ScrollPositionWarning(),
-              verticalSpacer,
-            ],
-          ],
+            entries: const {
+              0: Text('show newest already-read tweet'),
+              1: Text('show last read tweet'),
+              2: Text("show newest tweet (don't restore position)"),
+            },
+            groupValue: general.homeTimelinePositionBehavior,
+            borderRadius: harpyTheme.borderRadius,
+            onChanged: generalNotifier.setHomeTimelinePositionBehavior,
+          ),
         ),
         verticalSpacer,
         ExpansionCard(
@@ -152,38 +138,6 @@ class _GeneralSettingsList extends ConsumerWidget {
           ],
         ),
       ]),
-    );
-  }
-}
-
-class _ScrollPositionWarning extends ConsumerWidget {
-  const _ScrollPositionWarning();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
-
-    return Row(
-      children: [
-        // align with the text in the list tile
-        horizontalSpacer,
-        Icon(
-          CupertinoIcons.exclamationmark_circle,
-          color: theme.colorScheme.primary,
-        ),
-        SizedBox(width: display.paddingValue * 2),
-        Expanded(
-          child: Text(
-            'restoring the scroll positions might have a performance impact',
-            style: theme.textTheme.titleSmall!.apply(
-              fontSizeDelta: -2,
-              color: theme.colorScheme.onBackground.withOpacity(.7),
-            ),
-          ),
-        ),
-        horizontalSpacer,
-      ],
     );
   }
 }

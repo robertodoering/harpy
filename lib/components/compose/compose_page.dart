@@ -26,10 +26,12 @@ class _ComposePageState extends ConsumerState<ComposePage> {
   void initState() {
     super.initState();
 
-    ref.read(composeProvider.notifier).initialize(
-          parentTweet: widget.parentTweet,
-          quotedTweet: widget.quotedTweet,
-        );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(composeProvider.notifier).initialize(
+            parentTweet: widget.parentTweet,
+            quotedTweet: widget.quotedTweet,
+          );
+    });
   }
 
   @override
