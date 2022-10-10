@@ -64,7 +64,7 @@ dependencies:
     git: https://github.com/robertodoering/photo_view.git
   scroll_to_index: ^3.0.0
   sentry_flutter: ^6.9.1
-  share_plus: ^4.0.4
+  share_plus: ^5.0.0
   shared_preferences: ^2.0.7
   shimmer: ^2.0.0
   sliver_tools: ^0.2.6
