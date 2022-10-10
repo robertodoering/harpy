@@ -56,7 +56,7 @@ dependencies:
   material_color_utilities: ^0.1.5
   mime_type: ^1.0.0
   modal_bottom_sheet: ^2.0.0
-  package_info_plus: ^1.3.0
+  package_info_plus: ^2.0.0
   path_provider: ^2.0.3
   permission_handler: ^10.0.0
   photo_view:
