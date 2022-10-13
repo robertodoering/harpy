@@ -1,0 +1,11 @@
+Version 0.9.11
+2022-10-10
+
+- Added option to start video playback muted (by S-ecki)
+- Added long press on link previews (by S-ecki)
+- Improved internal webview (by nplettenberg)
+- Fixed opening tweets externally didn't work when harpy was set to handle Twitter urls
+- Fixed 'scroll-to-top' caused the app to drop frames
+- Removed 'restore scroll position on tab change' option
+  - Scroll position is now always restored when switching tabs
+- Minor bug fixes & improvements
