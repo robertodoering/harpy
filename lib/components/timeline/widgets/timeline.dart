@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class Timeline extends ConsumerStatefulWidget {
   const Timeline({
@@ -94,7 +93,7 @@ class _TimelineState extends ConsumerState<Timeline> {
             mainAxisSize: MainAxisSize.min,
             children: [
               NewTweetsText(state.initialResultsCount),
-              verticalSpacer,
+              VerticalSpacer.normal,
               widget.tweetBuilder(tweet, index),
             ],
           )
@@ -126,6 +125,7 @@ class _TimelineState extends ConsumerState<Timeline> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final state = ref.watch(widget.provider);
     final notifier = ref.watch(widget.provider.notifier);
 
@@ -135,7 +135,7 @@ class _TimelineState extends ConsumerState<Timeline> {
       controller: _controller,
       bottomPadding: widget.scrollToTopOffset,
       content: AnimatedNumber(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         number: _newestVisibleIndex + 1,
       ),
       child: RefreshIndicator(
@@ -144,12 +144,12 @@ class _TimelineState extends ConsumerState<Timeline> {
           await notifier.load();
         },
         edgeOffset: widget.refreshIndicatorOffset ?? 0,
-        child: HarpyAnimatedSwitcher(
+        child: RbyAnimatedSwitcher(
           child: state.maybeWhen(
             loading: () => CustomScrollView(
               slivers: [
                 ...widget.beginSlivers,
-                sliverVerticalSpacer,
+                VerticalSpacer.normalSliver,
                 const TweetListLoadingSliver(),
                 ...widget.endSlivers,
               ],
@@ -205,7 +205,7 @@ class _TimelineState extends ConsumerState<Timeline> {
                     ],
                     loadingMore: (_) => [
                       const SliverLoadingIndicator(),
-                      sliverVerticalSpacer,
+                      VerticalSpacer.normalSliver,
                     ],
                   ),
                   ...widget.endSlivers,

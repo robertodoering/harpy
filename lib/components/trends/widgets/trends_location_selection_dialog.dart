@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/components/trends/provider/trends_locations_provider.dart';
+import 'package:rby/rby.dart';
 
 /// Builds a list of predetermined trends locations that are provided by
 /// Twitter.
@@ -31,17 +31,17 @@ class _LocationSelectionDialogState
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final trendsNotifier = ref.watch(trendsProvider.notifier);
     final userLocation = ref.watch(userTrendsLocationProvider);
     final locations = ref.watch(trendsLocationsProvider);
 
-    return HarpyDialog(
+    return RbyDialog(
       title: const Text('change the trends location'),
       contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       stickyContent: Padding(
-        padding: display.edgeInsets,
+        padding: theme.spacing.edgeInsets,
         child: TextField(
           decoration: InputDecoration(hintText: userLocation.name),
           onChanged: (value) => setState(() => _filter = value),
@@ -50,12 +50,12 @@ class _LocationSelectionDialogState
       content: Column(
         children: [
           for (final location in filteredLocations(locations.asData?.value))
-            HarpyRadioTile<TrendsLocationData>(
+            RbyRadioTile<TrendsLocationData>(
               title: Text(location.name),
               value: location,
               groupValue: userLocation,
-              leadingPadding: display.edgeInsets / 4,
-              contentPadding: display.edgeInsets / 4,
+              leadingPadding: theme.spacing.edgeInsets / 4,
+              contentPadding: theme.spacing.edgeInsets / 4,
               onChanged: (value) {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -66,7 +66,7 @@ class _LocationSelectionDialogState
             ),
           if (locations is AsyncLoading)
             Container(
-              padding: display.edgeInsets,
+              padding: theme.spacing.edgeInsets,
               alignment: AlignmentDirectional.center,
               child: const CircularProgressIndicator(),
             )

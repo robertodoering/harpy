@@ -1,10 +1,11 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 /// Builds a [SliverWaterfallFlow] for the media of the [MediaTimeline].
@@ -17,14 +18,14 @@ class MediaTimelineMediaList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final layout = ref.watch(layoutPreferencesProvider);
 
     return SliverWaterfallFlow(
       gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
         crossAxisCount: layout.mediaTiled ? 2 : 1,
-        mainAxisSpacing: display.smallPaddingValue,
-        crossAxisSpacing: display.smallPaddingValue,
+        mainAxisSpacing: theme.spacing.small,
+        crossAxisSpacing: theme.spacing.small,
       ),
       delegate: SliverChildBuilderDelegate(
         (context, index) => _MediaEntryItem(
@@ -70,6 +71,7 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final entry = widget.entries[widget.index];
     final provider = tweetProvider(entry.tweet.originalId);
 
@@ -122,7 +124,7 @@ class _MediaEntryItemState extends ConsumerState<_MediaEntryItem> {
                       return TweetGalleryImage(
                         media: widget.entries[index].media,
                         heroTag: heroTag,
-                        borderRadius: ref.read(harpyThemeProvider).borderRadius,
+                        borderRadius: theme.shape.borderRadius,
                       );
                     case MediaType.gif:
                       return TweetGif(tweet: tweet, heroTag: heroTag);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-/// A [HarpyListCard] that is styled for content in the setup screen.
+/// A [RbyListCard] that is styled for content in the setup screen.
 class SetupListCard extends StatelessWidget {
   const SetupListCard({
     required this.text,
@@ -17,7 +17,7 @@ class SetupListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return HarpyListCard(
+    return RbyListCard(
       title: Center(
         child: Text(
           text,

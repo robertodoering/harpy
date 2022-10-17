@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardReplies extends ConsumerWidget {
   const TweetCardReplies({
@@ -33,7 +34,7 @@ class TweetCardReplies extends ConsumerWidget {
       children: [
         if (tweet.replyAuthors.isNotEmpty)
           Padding(
-            padding: display.edgeInsets.copyWith(top: 0),
+            padding: theme.spacing.edgeInsets.copyWith(top: 0),
             child: Row(
               children: [
                 SizedBox(
@@ -44,7 +45,7 @@ class TweetCardReplies extends ConsumerWidget {
                     size: 18 + display.fontSizeDelta,
                   ),
                 ),
-                horizontalSpacer,
+                HorizontalSpacer.normal,
                 Expanded(
                   child: Text(
                     '${tweet.replyAuthors} replied',
@@ -59,7 +60,7 @@ class TweetCardReplies extends ConsumerWidget {
             tweet: reply,
             color: _cardColor(harpyTheme),
           ),
-          if (reply != tweet.replies.last) verticalSpacer,
+          if (reply != tweet.replies.last) VerticalSpacer.normal,
         ],
       ],
     );

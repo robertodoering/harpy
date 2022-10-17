@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TwitterLists extends ConsumerWidget {
   const TwitterLists({
@@ -17,7 +18,7 @@ class TwitterLists extends ConsumerWidget {
   final ValueChanged<TwitterListData>? onListSelected;
 
   Widget _itemBuilder(
-    WidgetRef ref,
+    BuildContext context,
     int index,
     BuiltList<TwitterListData> lists,
   ) {
@@ -30,18 +31,18 @@ class TwitterLists extends ConsumerWidget {
         list: list,
         onSelected: onListSelected != null
             ? () => onListSelected!(list)
-            : () => ref.read(routerProvider).pushNamed(
+            : () => context.pushNamed(
                   ListTimelinePage.name,
                   params: {'listId': list.id},
                   queryParams: {'name': list.name},
                 ),
         onLongPress: () => _showListActionBottomSheet(
-          ref,
+          context,
           list: list,
         ),
       );
     } else {
-      return verticalSpacer;
+      return VerticalSpacer.normal;
     }
   }
 
@@ -58,25 +59,25 @@ class TwitterLists extends ConsumerWidget {
   }
 
   List<Widget> _buildLists({
-    required WidgetRef ref,
+    required BuildContext context,
     required String title,
     required BuiltList<TwitterListData> lists,
     required bool hasMore,
     required bool loadingMore,
     required VoidCallback onLoadMore,
   }) {
-    final display = ref.read(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return [
       SliverPadding(
-        padding: display.edgeInsetsSymmetric(horizontal: true),
+        padding: theme.spacing.symmetric(horizontal: true),
         sliver: SliverBoxInfoMessage(primaryMessage: Text(title)),
       ),
       SliverPadding(
-        padding: display.edgeInsets,
+        padding: theme.spacing.edgeInsets,
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => _itemBuilder(ref, index, lists),
+            (context, index) => _itemBuilder(context, index, lists),
             findChildIndexCallback: (key) => _indexCallback(key, lists),
             childCount: lists.length * 2 - 1,
           ),
@@ -84,12 +85,12 @@ class TwitterLists extends ConsumerWidget {
       ),
       if (hasMore || loadingMore)
         SliverPadding(
-          padding: display.edgeInsetsOnly(bottom: true),
+          padding: theme.spacing.only(bottom: true),
           sliver: SliverToBoxAdapter(
             child: Center(
-              child: HarpyAnimatedSwitcher(
+              child: RbyAnimatedSwitcher(
                 child: hasMore
-                    ? HarpyButton.text(
+                    ? RbyButton.text(
                         label: const Text('load more'),
                         onTap: onLoadMore,
                       )
@@ -120,7 +121,7 @@ class TwitterLists extends ConsumerWidget {
           data: (value) => [
             if (value.ownerships.isNotEmpty)
               ..._buildLists(
-                ref: ref,
+                context: context,
                 title: 'owned',
                 lists: value.ownerships,
                 hasMore: value.hasMoreOwnerships,
@@ -129,7 +130,7 @@ class TwitterLists extends ConsumerWidget {
               ),
             if (value.subscriptions.isNotEmpty)
               ..._buildLists(
-                ref: ref,
+                context: context,
                 title: 'subscribed',
                 lists: value.subscriptions,
                 hasMore: value.hasMoreSubscriptions,
@@ -150,20 +151,19 @@ class TwitterLists extends ConsumerWidget {
 }
 
 void _showListActionBottomSheet(
-  WidgetRef ref, {
+  BuildContext context, {
   required TwitterListData list,
 }) {
-  showHarpyBottomSheet<void>(
-    ref.context,
-    harpyTheme: ref.read(harpyThemeProvider),
+  showRbyBottomSheet<void>(
+    context,
     children: [
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.person_2),
         title: const Text('show members'),
         onTap: () {
           HapticFeedback.lightImpact();
-          Navigator.of(ref.context).pop();
-          ref.read(routerProvider).pushNamed(
+          Navigator.of(context).pop();
+          context.pushNamed(
             ListMembersPage.name,
             params: {'listId': list.id},
             queryParams: {'name': list.name},

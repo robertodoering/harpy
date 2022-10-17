@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ChangelogPage extends ConsumerWidget {
   const ChangelogPage();
@@ -35,7 +36,7 @@ class ChangelogPage extends ConsumerWidget {
   }
 }
 
-class _ChangelogList extends ConsumerWidget {
+class _ChangelogList extends StatelessWidget {
   const _ChangelogList({
     required this.changelog,
   });
@@ -45,15 +46,15 @@ class _ChangelogList extends ConsumerWidget {
   Widget _itemBuilder(BuildContext context, int index) {
     return index.isEven
         ? Card(child: ChangelogWidget(data: changelog[index ~/ 2]))
-        : verticalSpacer;
+        : VerticalSpacer.normal;
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverPadding(
-      padding: display.edgeInsets,
+      padding: theme.spacing.edgeInsets,
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           _itemBuilder,

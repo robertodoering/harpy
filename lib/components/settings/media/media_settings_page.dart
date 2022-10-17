@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class MediaSettingsPage extends ConsumerWidget {
   const MediaSettingsPage();
@@ -11,7 +12,7 @@ class MediaSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
@@ -19,13 +20,13 @@ class MediaSettingsPage extends ConsumerWidget {
           HarpySliverAppBar(
             title: const Text('media'),
             actions: [
-              HarpyPopupMenuButton(
+              RbyPopupMenuButton(
                 onSelected: (_) {
                   ref.read(mediaPreferencesProvider.notifier).defaultSettings();
                   ref.read(downloadPathProvider.notifier).initialize();
                 },
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(
+                  RbyPopupMenuListTile(
                     value: true,
                     title: Text('reset to default'),
                   ),
@@ -34,7 +35,7 @@ class MediaSettingsPage extends ConsumerWidget {
             ],
           ),
           SliverPadding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             sliver: const _MediaSettingsList(),
           ),
           const SliverBottomPadding(),
@@ -49,7 +50,7 @@ class _MediaSettingsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final media = ref.watch(mediaPreferencesProvider);
     final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
 
@@ -59,7 +60,7 @@ class _MediaSettingsList extends ConsumerWidget {
           child: HarpyRadioDialogTile(
             leading: const Icon(CupertinoIcons.photo),
             title: const Text('tweet image quality'),
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             dialogTitle: const Text(
               'change when tweet images use the best quality',
             ),
@@ -72,40 +73,40 @@ class _MediaSettingsList extends ConsumerWidget {
             onChanged: mediaNotifier.setBestMediaQuality,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         const _MediaInfoMessage(),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.crop),
             title: const Text('crop tweet image'),
             subtitle: const Text('reduces height'),
             value: media.cropImage,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: mediaNotifier.setCropImage,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.eye_slash_fill),
             title: const Text('hide possibly sensitive media'),
             value: media.hidePossiblySensitive,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: mediaNotifier.setHidePossiblySensitive,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.link),
             title: const Text('open links externally'),
             value: media.openLinksExternally,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: mediaNotifier.setOpenLinksExternally,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         ExpansionCard(
           title: const Text('autoplay'),
           children: [
@@ -139,17 +140,17 @@ class _MediaSettingsList extends ConsumerWidget {
             ),
           ],
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.volume_off),
             title: const Text('start video playback muted'),
             value: media.startVideoPlaybackMuted,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: mediaNotifier.setStartVideoPlaybackMuted,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         const _MediaDownloadSettings(),
       ]),
     );
@@ -183,13 +184,13 @@ class _MediaDownloadSettingsState
     return ExpansionCard(
       title: const Text('download'),
       children: [
-        HarpySwitchTile(
+        RbySwitchTile(
           leading: const Icon(CupertinoIcons.arrow_down_to_line),
           title: const Text('show download dialog'),
           value: media.showDownloadDialog,
           onChanged: mediaNotifier.setShowDownloadDialog,
         ),
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(CupertinoIcons.folder),
           title: const Text('image download location'),
           subtitle: Text(downloadPath.imageFullPath ?? ''),
@@ -200,7 +201,7 @@ class _MediaDownloadSettingsState
             ),
           ),
         ),
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(CupertinoIcons.folder),
           title: const Text('gif download location'),
           subtitle: Text(downloadPath.gifFullPath ?? ''),
@@ -209,7 +210,7 @@ class _MediaDownloadSettingsState
             builder: (_) => const DownloadPathSelectionDialog(type: 'gif'),
           ),
         ),
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(CupertinoIcons.folder),
           title: const Text('video download location'),
           subtitle: Text(downloadPath.videoFullPath ?? ''),
@@ -225,23 +226,22 @@ class _MediaDownloadSettingsState
   }
 }
 
-class _MediaInfoMessage extends ConsumerWidget {
+class _MediaInfoMessage extends StatelessWidget {
   const _MediaInfoMessage();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Row(
       children: [
         // align with the text in the list tile
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         Icon(
           CupertinoIcons.info,
           color: theme.colorScheme.primary,
         ),
-        SizedBox(width: display.paddingValue * 2),
+        SizedBox(width: theme.spacing.base * 2),
         Expanded(
           child: Text(
             'media is always downloaded in the best quality',
@@ -251,7 +251,7 @@ class _MediaInfoMessage extends ConsumerWidget {
             ),
           ),
         ),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
       ],
     );
   }

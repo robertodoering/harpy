@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class FoundTrendsLocations extends ConsumerWidget {
   const FoundTrendsLocations();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final trendsNotifier = ref.watch(trendsProvider.notifier);
     final state = ref.watch(findTrendsLocationProvider);
 
-    return HarpyAnimatedSwitcher(
+    return RbyAnimatedSwitcher(
       layoutBuilder: (currentChild, previousChildren) => Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
@@ -28,7 +29,7 @@ class FoundTrendsLocations extends ConsumerWidget {
           child: Column(
             children: [
               for (final location in locations)
-                HarpyListTile(
+                RbyListTile(
                   leading: const Icon(CupertinoIcons.location),
                   title: Text(location.name),
                   subtitle: location.isTown && location.country != null
@@ -44,19 +45,19 @@ class FoundTrendsLocations extends ConsumerWidget {
           ),
         ),
         serviceDisabled: () => Padding(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           child: const Center(
             child: Text('location service is unavailable'),
           ),
         ),
         permissionDenied: () => Padding(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           child: const Center(
             child: Text('location permissions have been denied'),
           ),
         ),
         orElse: () => Padding(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           child: const Center(
             child: Text('no locations found'),
           ),

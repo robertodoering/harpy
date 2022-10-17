@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 typedef TweetDelegatesCreator = TweetDelegates Function(
   TweetData tweet,
@@ -42,7 +43,7 @@ class _TweetCardState extends ConsumerState<TweetCard> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final provider = tweetProvider(widget.tweet.originalId);
     final state = ref.watch(provider);
     final notifier = ref.watch(provider.notifier);
@@ -55,8 +56,8 @@ class _TweetCardState extends ConsumerState<TweetCard> {
       tweet: tweet,
       notifier: notifier,
       delegates: delegates,
-      outerPadding: display.paddingValue,
-      innerPadding: display.smallPaddingValue,
+      outerPadding: theme.spacing.base,
+      innerPadding: theme.spacing.small,
       config: widget.config,
       index: widget.index,
     );

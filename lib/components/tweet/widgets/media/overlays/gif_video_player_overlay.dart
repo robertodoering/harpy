@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class GifVideoPlayerOverlay extends StatelessWidget {
   const GifVideoPlayerOverlay({
@@ -22,6 +22,8 @@ class GifVideoPlayerOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
@@ -36,7 +38,7 @@ class GifVideoPlayerOverlay extends StatelessWidget {
         ),
         AnimatedOpacity(
           opacity: data.isPlaying ? 0 : 1,
-          duration: kShortAnimationDuration,
+          duration: theme.animation.short,
           curve: Curves.easeInOut,
           child: MediaThumbnailIcon(
             icon: const Icon(Icons.gif),

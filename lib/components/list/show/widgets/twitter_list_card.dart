@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-class TwitterListCard extends ConsumerWidget {
+class TwitterListCard extends StatelessWidget {
   const TwitterListCard({
     required Key key,
     required this.list,
@@ -17,24 +17,23 @@ class TwitterListCard extends ConsumerWidget {
   final VoidCallback? onLongPress;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return InkWell(
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       onLongPress: onLongPress,
       onTap: onSelected,
       child: Card(
         child: Padding(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _ListCardTitle(list: list),
               if (list.description.isNotEmpty) _ListDescription(list: list),
               if (list.user != null) ...[
-                smallVerticalSpacer,
+                VerticalSpacer.small,
                 _ListUser(list: list),
               ],
             ],
@@ -45,7 +44,7 @@ class TwitterListCard extends ConsumerWidget {
   }
 }
 
-class _ListCardTitle extends ConsumerWidget {
+class _ListCardTitle extends StatelessWidget {
   const _ListCardTitle({
     required this.list,
   });
@@ -53,9 +52,8 @@ class _ListCardTitle extends ConsumerWidget {
   final TwitterListData list;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Row(
       children: [
@@ -68,7 +66,7 @@ class _ListCardTitle extends ConsumerWidget {
           ),
         ),
         if (list.isPrivate) ...[
-          SizedBox(width: display.smallPaddingValue / 2),
+          SizedBox(width: theme.spacing.small / 2),
           const Icon(CupertinoIcons.padlock),
         ],
       ],
@@ -115,7 +113,7 @@ class _ListUser extends StatelessWidget {
           imageUrl: list.user!.profileImageUrl,
           radius: 8,
         ),
-        smallHorizontalSpacer,
+        HorizontalSpacer.small,
         Flexible(
           child: Text(
             list.user!.name,
@@ -124,7 +122,7 @@ class _ListUser extends StatelessWidget {
             overflow: TextOverflow.fade,
           ),
         ),
-        smallHorizontalSpacer,
+        HorizontalSpacer.small,
         Text(
           '@${list.user!.handle}',
           textDirection: TextDirection.ltr,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class HarpyBackground extends ConsumerWidget {
   const HarpyBackground({
@@ -12,11 +12,12 @@ class HarpyBackground extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
     final colors = harpyTheme.colors.backgroundColors;
 
     return AnimatedContainer(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: AlignmentDirectional.topCenter,

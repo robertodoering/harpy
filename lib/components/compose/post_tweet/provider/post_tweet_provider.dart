@@ -9,7 +9,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/compose/post_tweet/preferences/post_tweet_preferences.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 import 'package:http/http.dart';
 import 'package:humanizer/humanizer.dart';
 

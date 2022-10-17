@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class GeneralSettingsPage extends ConsumerWidget {
   const GeneralSettingsPage();
@@ -11,7 +12,7 @@ class GeneralSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
@@ -19,12 +20,12 @@ class GeneralSettingsPage extends ConsumerWidget {
           HarpySliverAppBar(
             title: const Text('general'),
             actions: [
-              HarpyPopupMenuButton(
+              RbyPopupMenuButton(
                 onSelected: (_) => ref
                     .read(generalPreferencesProvider.notifier)
                     .defaultSettings(),
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(
+                  RbyPopupMenuListTile(
                     value: true,
                     title: Text('reset to default'),
                   ),
@@ -33,7 +34,7 @@ class GeneralSettingsPage extends ConsumerWidget {
             ],
           ),
           SliverPadding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             sliver: const _GeneralSettingsList(),
           ),
           const SliverBottomPadding(),
@@ -48,58 +49,58 @@ class _GeneralSettingsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final general = ref.watch(generalPreferencesProvider);
     final generalNotifier = ref.watch(generalPreferencesProvider.notifier);
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(Icons.update),
             title: const Text('show changelog dialog'),
             subtitle: const Text('when the app has been updated'),
             value: general.showChangelogDialog,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: generalNotifier.setShowChangelogDialog,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(Icons.bug_report_outlined),
             title: const Text('automatic crash reports'),
             subtitle: const Text('anonymously report errors to improve harpy'),
             value: general.crashReports,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: generalNotifier.setCrashReports,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(Icons.speed),
             title: const Text('performance mode'),
             subtitle: const Text('reduces animations and effects'),
             value: general.performanceMode,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: generalNotifier.setPerformanceMode,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(FeatherIcons.feather),
             title: const Text('floating compose button'),
             subtitle: const Text(
               'display a floating compose button in the home screen',
             ),
             value: general.floatingComposeButton,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: generalNotifier.setFloatingComposeButton,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
           child: HarpyRadioDialogTile(
             leading: const Icon(CupertinoIcons.square_list),
@@ -113,22 +114,22 @@ class _GeneralSettingsList extends ConsumerWidget {
               2: Text("show newest tweet (don't restore position)"),
             },
             groupValue: general.homeTimelinePositionBehavior,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: generalNotifier.setHomeTimelinePositionBehavior,
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         ExpansionCard(
           title: const Text('home app bar'),
           children: [
-            HarpySwitchTile(
+            RbySwitchTile(
               leading: const Icon(CupertinoIcons.rectangle),
               title: const Text('automatically hide app bar'),
               subtitle: const Text('when scrolling down'),
               value: general.hideHomeAppBar,
               onChanged: generalNotifier.setHideHomeAppbar,
             ),
-            HarpySwitchTile(
+            RbySwitchTile(
               leading: const Icon(CupertinoIcons.rectangle_dock),
               title: const Text('bottom app bar'),
               subtitle: const Text('position the app bar at the bottom'),

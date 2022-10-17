@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// A dialog to select one of a couple predefined external storage media
 /// directories for a type of media.
@@ -32,12 +33,12 @@ class _DownloadPathSelectionDialogState
     extends ConsumerState<DownloadPathSelectionDialog> {
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final downloadPath = ref.watch(downloadPathProvider);
 
-    return HarpyDialog(
+    return RbyDialog(
       title: Text('${widget.type} download location'),
-      contentPadding: display.edgeInsetsSymmetric(vertical: true),
+      contentPadding: theme.spacing.symmetric(vertical: true),
       content: downloadPath.when(
         data: (mediaPaths, entries) {
           final entry = entries.firstWhereOrNull(
@@ -97,7 +98,7 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        HarpyListTile(
+        RbyListTile(
           title: ClearableTextField(
             text: _subDirectory,
             decoration: const InputDecoration(labelText: 'sub directory'),
@@ -109,7 +110,7 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
           ),
         ),
         ...widget.mediaPaths.map(
-          (mediaPath) => HarpyRadioTile<String>(
+          (mediaPath) => RbyRadioTile<String>(
             title: Text(mediaPath.split('/').last),
             subtitle: Text(mediaPath),
             value: mediaPath,
@@ -119,14 +120,14 @@ class _PathSelectionState extends ConsumerState<_PathSelection> {
             },
           ),
         ),
-        verticalSpacer,
-        HarpyDialogActionBar(
+        VerticalSpacer.normal,
+        RbyDialogActionBar(
           actions: [
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('cancel'),
               onTap: Navigator.of(context).pop,
             ),
-            HarpyButton.elevated(
+            RbyButton.elevated(
               label: const Text('confirm'),
               onTap: () {
                 HapticFeedback.lightImpact();

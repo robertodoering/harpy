@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class UserTimelineTopActions extends ConsumerWidget {
+class UserTimelineTopActions extends StatelessWidget {
   const UserTimelineTopActions({
     required this.user,
   });
@@ -14,12 +15,12 @@ class UserTimelineTopActions extends ConsumerWidget {
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsets.copyWith(bottom: 0),
+        padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: [
             _RefreshButton(user: user),
@@ -44,7 +45,7 @@ class _RefreshButton extends ConsumerWidget {
     final state = ref.watch(userTimelineProvider(user.id));
     final notifier = ref.watch(userTimelineProvider(user.id).notifier);
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: const Icon(CupertinoIcons.refresh),
       onTap: state.tweets.isNotEmpty
           ? () {
@@ -67,13 +68,12 @@ class _FilterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final router = ref.watch(routerProvider);
     final state = ref.watch(userTimelineProvider(user.id));
     final notifier = ref.watch(userTimelineProvider(user.id).notifier);
 
     final enable = state is! TimelineStateLoading;
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
@@ -83,7 +83,7 @@ class _FilterButton extends ConsumerWidget {
             )
           : const Icon(Icons.filter_alt_outlined),
       onTap: enable
-          ? () => router.pushNamed(
+          ? () => context.pushNamed(
                 UserTimelineFilter.name,
                 params: {'handle': user.handle},
                 extra: user,

@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
@@ -20,7 +20,7 @@ class TweetCardMedia extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
 
     Widget child;
 
@@ -101,7 +101,7 @@ class TweetCardMedia extends ConsumerWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       child: SensitiveMediaOverlay(
         tweet: tweet,
         child: _MediaConstrainedHeight(

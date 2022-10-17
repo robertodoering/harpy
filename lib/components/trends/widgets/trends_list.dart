@@ -3,24 +3,27 @@ import 'package:dart_twitter_api/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TrendsList extends ConsumerWidget {
   const TrendsList();
 
   Widget _itemBuilder(int index, BuiltList<Trend> trends) {
-    return index.isEven ? TrendCard(trend: trends[index ~/ 2]) : verticalSpacer;
+    return index.isEven
+        ? TrendCard(trend: trends[index ~/ 2])
+        : VerticalSpacer.normal;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
-    return HarpyAnimatedSwitcher.sliver(
+    return RbyAnimatedSwitcher.sliver(
       child: ref.watch(trendsProvider).when(
             loading: () => const TrendsListLoadingSliver(),
             data: (trends) => trends.isNotEmpty
                 ? SliverPadding(
-                    padding: display.edgeInsets.copyWith(top: 0),
+                    padding: theme.spacing.edgeInsets.copyWith(top: 0),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (_, index) => _itemBuilder(index, trends),

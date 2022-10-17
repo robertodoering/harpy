@@ -5,7 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// A dialog that uses the [PostTweetNotifier] to post a tweet.
 ///
@@ -52,32 +52,32 @@ class _PostTweetDialogState extends ConsumerState<PostTweetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final state = ref.watch(postTweetProvider);
 
     return _WillPopDialog(
       state: state,
-      child: HarpyDialog(
+      child: RbyDialog(
         title: const Text('tweeting'),
         content: AnimatedSize(
-          duration: kShortAnimationDuration,
+          duration: theme.animation.short,
           curve: Curves.easeOutCubic,
           child: Column(
             children: [
               if (state is PostTweetError) ...[
                 const _ErrorIndicator(),
-                verticalSpacer,
+                VerticalSpacer.normal,
               ],
               if (state.message != null) _StateMessage(state: state),
               if (state is PostTweetInProgress) ...[
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.large),
                 const Center(child: CircularProgressIndicator()),
               ],
             ],
           ),
         ),
         actions: [
-          HarpyButton.text(
+          RbyButton.text(
             label: const Text('ok'),
             // need to use `maybePop` to trigger the `WillPopScope`
             onTap: state is PostTweetInProgress
@@ -101,7 +101,7 @@ class _ErrorIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.warning_rounded, color: theme.colorScheme.error),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         const Flexible(
           child: Text(
             'error while tweeting',
@@ -124,8 +124,8 @@ class _StateMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return HarpyAnimatedSwitcher(
-      duration: kShortAnimationDuration ~/ 2,
+    return RbyAnimatedSwitcher(
+      duration: theme.animation.short ~/ 2,
       child: Column(
         children: [
           Text(
@@ -134,7 +134,7 @@ class _StateMessage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           if (state.additionalInfo != null) ...[
-            smallVerticalSpacer,
+            VerticalSpacer.small,
             Text(
               state.additionalInfo!,
               style: theme.textTheme.bodyText1,

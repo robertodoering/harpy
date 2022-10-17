@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class HarpyScaffold extends StatelessWidget {
   const HarpyScaffold({

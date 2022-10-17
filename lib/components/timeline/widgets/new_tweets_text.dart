@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-class NewTweetsText extends ConsumerWidget {
+class NewTweetsText extends StatelessWidget {
   const NewTweetsText(this.amount);
 
   final int amount;
@@ -13,18 +12,17 @@ class NewTweetsText extends ConsumerWidget {
       : 'new tweets since last visit';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Container(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       alignment: AlignmentDirectional.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(FeatherIcons.chevronsUp),
-          horizontalSpacer,
+          HorizontalSpacer.normal,
           Text(_text, style: theme.textTheme.subtitle2),
         ],
       ),

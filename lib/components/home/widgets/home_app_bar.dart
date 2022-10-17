@@ -2,42 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar();
 
   static double height(WidgetRef ref) {
+    final theme = Theme.of(ref.context);
     final mediaQuery = MediaQuery.of(ref.context);
-    final display = ref.read(displayPreferencesProvider);
 
     final systemPadding = ref.read(generalPreferencesProvider).bottomAppBar
         ? mediaQuery.padding.bottom
         : mediaQuery.padding.top;
 
-    return HarpyTab.height(ref.context, display) +
+    return HarpyTab.height(ref.context) +
         systemPadding +
-        display.paddingValue / 2;
+        theme.spacing.base / 2;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
 
     final topPadding = general.bottomAppBar
         ? 0.0
-        : mediaQuery.padding.top + display.paddingValue / 2;
+        : mediaQuery.padding.top + theme.spacing.base / 2;
     final bottomPadding = general.bottomAppBar
-        ? mediaQuery.padding.bottom + display.paddingValue / 2
+        ? mediaQuery.padding.bottom + theme.spacing.base / 2
         : 0.0;
 
     final padding = EdgeInsetsDirectional.only(
       top: topPadding,
       bottom: bottomPadding,
-      start: display.paddingValue,
-      end: display.paddingValue,
+      start: theme.spacing.base,
+      end: theme.spacing.base,
     );
 
     return Align(
@@ -60,13 +60,14 @@ class _DynamicAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final scrollDirection = UserScrollDirection.scrollDirectionOf(context);
     assert(scrollDirection != null);
 
     final general = ref.watch(generalPreferencesProvider);
 
     return AnimatedSlide(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       curve: Curves.easeInOut,
       offset: scrollDirection == ScrollDirection.reverse
           ? general.bottomAppBar

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardDetails extends StatelessWidget {
   const TweetCardDetails({
@@ -32,7 +33,7 @@ class TweetCardDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         Wrap(
           children: [
             Text(time, style: textStyle),

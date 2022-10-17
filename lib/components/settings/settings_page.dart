@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage();
@@ -12,20 +14,20 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
           const HarpySliverAppBar(title: Text('settings')),
           SliverPadding(
-            padding: padding,
+            padding: theme.spacing.edgeInsets,
             sliver: const SliverList(
               delegate: SliverChildListDelegate.fixed([
                 _TweetSettingsCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _AppearanceSettingsCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _OtherSettingsCard(),
               ]),
             ),
@@ -42,21 +44,20 @@ class _TweetSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
 
     return ExpansionCard(
       title: const Text('tweet'),
       children: [
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(CupertinoIcons.photo),
           title: const Text('media'),
           subtitle: const Text('settings for tweet videos, images and gifs'),
           borderRadius: BorderRadius.only(
-            bottomLeft: harpyTheme.radius,
-            bottomRight: harpyTheme.radius,
+            bottomLeft: theme.shape.radius,
+            bottomRight: theme.shape.radius,
           ),
-          onTap: () => router.goNamed(MediaSettingsPage.name),
+          onTap: () => context.goNamed(MediaSettingsPage.name),
         ),
       ],
     );
@@ -68,27 +69,26 @@ class _AppearanceSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
 
     return ExpansionCard(
       title: const Text('appearance'),
       children: [
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(Icons.color_lens),
           title: const Text('theme'),
           subtitle: const Text('select your theme'),
-          onTap: () => router.goNamed(ThemeSettingsPage.name),
+          onTap: () => context.goNamed(ThemeSettingsPage.name),
         ),
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(FeatherIcons.layout),
           title: const Text('display'),
           subtitle: const Text('change the look of harpy'),
           borderRadius: BorderRadius.only(
-            bottomLeft: harpyTheme.radius,
-            bottomRight: harpyTheme.radius,
+            bottomLeft: theme.shape.radius,
+            bottomRight: theme.shape.radius,
           ),
-          onTap: () => router.goNamed(DisplaySettingsPage.name),
+          onTap: () => context.goNamed(DisplaySettingsPage.name),
         ),
       ],
     );
@@ -100,8 +100,6 @@ class _OtherSettingsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-
     final hasUnapprovedDomains =
         ref.watch(hasUnapprovedDomainsProvider).maybeWhen(
               data: (data) => data,
@@ -114,25 +112,25 @@ class _OtherSettingsCard extends ConsumerWidget {
     return ExpansionCard(
       title: const Text('other'),
       children: [
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(FeatherIcons.sliders),
           title: const Text('general'),
-          onTap: () => router.goNamed(GeneralSettingsPage.name),
+          onTap: () => context.goNamed(GeneralSettingsPage.name),
         ),
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(Icons.translate),
           title: const Text('language'),
-          onTap: () => router.goNamed(LanguageSettingsPage.name),
+          onTap: () => context.goNamed(LanguageSettingsPage.name),
         ),
         if (hasUnapprovedDomains)
-          const HarpyListTile(
+          const RbyListTile(
             leading: Icon(CupertinoIcons.share),
             title: Text('open twitter links'),
             subtitle: Text('allow harpy to open twitter links'),
             onTap: showOpenByDefault,
           ),
         if (!usingCustomApi)
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(FeatherIcons.twitter),
             title: const Text('use custom api key'),
             subtitle: const Text(

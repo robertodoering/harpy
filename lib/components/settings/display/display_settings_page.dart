@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class DisplaySettingsPage extends ConsumerWidget {
   const DisplaySettingsPage();
@@ -12,7 +13,7 @@ class DisplaySettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
@@ -20,12 +21,12 @@ class DisplaySettingsPage extends ConsumerWidget {
           HarpySliverAppBar(
             title: const Text('display'),
             actions: [
-              HarpyPopupMenuButton(
+              RbyPopupMenuButton(
                 onSelected: (_) => ref
                     .read(displayPreferencesProvider.notifier)
                     .defaultSettings(),
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(
+                  RbyPopupMenuListTile(
                     value: true,
                     title: Text('reset to default'),
                   ),
@@ -36,15 +37,15 @@ class DisplaySettingsPage extends ConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               AnimatedPadding(
-                duration: kShortAnimationDuration,
+                duration: theme.animation.short,
                 curve: Curves.easeInOut,
-                padding: display.edgeInsets,
+                padding: theme.spacing.edgeInsets,
                 child: const PreviewTweetCard(),
               ),
               AnimatedPadding(
-                duration: kShortAnimationDuration,
+                duration: theme.animation.short,
                 curve: Curves.easeInOut,
-                padding: display.edgeInsets.copyWith(top: 0),
+                padding: theme.spacing.edgeInsets.copyWith(top: 0),
                 child: const _DisplaySettingsList(),
               )
             ]),
@@ -61,7 +62,7 @@ class _DisplaySettingsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
     final notifier = ref.watch(displayPreferencesProvider.notifier);
 
@@ -70,7 +71,7 @@ class _DisplaySettingsList extends ConsumerWidget {
         ExpansionCard(
           title: const Text('font'),
           children: [
-            const HarpyListTile(
+            const RbyListTile(
               leading: Icon(CupertinoIcons.textformat_size),
               title: Text('font size'),
             ),
@@ -91,8 +92,8 @@ class _DisplaySettingsList extends ConsumerWidget {
               leadingIcon: CupertinoIcons.textformat,
               font: display.displayFont,
               borderRadius: BorderRadius.only(
-                bottomLeft: harpyTheme.radius,
-                bottomRight: harpyTheme.radius,
+                bottomLeft: theme.shape.radius,
+                bottomRight: theme.shape.radius,
               ),
               onChanged: (value) {
                 HapticFeedback.lightImpact();
@@ -101,27 +102,27 @@ class _DisplaySettingsList extends ConsumerWidget {
             ),
           ],
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.rectangle_compress_vertical),
             title: const Text('compact layout'),
             subtitle: const Text('use a visually dense layout'),
             value: display.compactMode,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: (value) {
               HapticFeedback.lightImpact();
               notifier.setCompactMode(value);
             },
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Card(
-          child: HarpySwitchTile(
+          child: RbySwitchTile(
             leading: const Icon(CupertinoIcons.calendar),
             title: const Text('show absolute tweet time'),
             value: display.absoluteTweetTime,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onChanged: (value) {
               HapticFeedback.lightImpact();
               notifier.setAbsoluteTweetTime(value);
@@ -190,7 +191,7 @@ class _FontSizeSliderState extends ConsumerState<_FontSizeSlider> {
   }
 }
 
-class _FontRadioDialogTile extends ConsumerWidget {
+class _FontRadioDialogTile extends StatelessWidget {
   const _FontRadioDialogTile({
     required this.title,
     required this.pageTitle,
@@ -208,15 +209,13 @@ class _FontRadioDialogTile extends ConsumerWidget {
   final BorderRadius? borderRadius;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-
-    return HarpyListTile(
+  Widget build(BuildContext context) {
+    return RbyListTile(
       title: Text(title),
       leading: Icon(leadingIcon),
       subtitle: Text(font),
       borderRadius: borderRadius,
-      onTap: () => router.goNamed(
+      onTap: () => context.goNamed(
         FontSelectionPage.name,
         extra: {
           'title': pageTitle,

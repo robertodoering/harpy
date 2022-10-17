@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TimelineFilterCreation extends ConsumerStatefulWidget {
   const TimelineFilterCreation({
@@ -37,7 +38,7 @@ class _TimelineFilterCreationState
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     final filter = ref.watch(
       timelineFilterCreationProvider(_initialTimelineFilter),
@@ -63,7 +64,7 @@ class _TimelineFilterCreationState
               ],
             ),
             SliverPadding(
-              padding: display.edgeInsets,
+              padding: theme.spacing.edgeInsets,
               sliver: _FilterGroups(
                 filter: filter,
                 notifier: notifier,
@@ -94,7 +95,7 @@ class _SaveFilterAction extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final timelineFilterNotifier = ref.watch(timelineFilterProvider.notifier);
 
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: const Icon(FeatherIcons.check),
       onTap: notifier.valid
           ? () {
@@ -134,7 +135,7 @@ class _FilterGroups extends StatelessWidget {
           notifier: notifier,
           initialName: filter.name,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         ExpansionCard(
           title: const Text('includes'),
           children: [
@@ -153,31 +154,31 @@ class _FilterGroups extends StatelessWidget {
               value: filter.includes.video,
               onChanged: notifier.updateIncludeVideo,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'keyword / phrase',
               activeFilters: filter.includes.phrases,
               onSubmitted: notifier.addIncludingPhrase,
               onDeleted: notifier.removeIncludingPhrase,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'hashtags',
               activeFilters: filter.includes.hashtags,
               onSubmitted: notifier.addIncludingHashtags,
               onDeleted: notifier.removeIncludingHashtags,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'mentions',
               activeFilters: filter.includes.mentions,
               onSubmitted: notifier.addIncludingMentions,
               onDeleted: notifier.removeIncludingMentions,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
           ],
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         ExpansionCard(
           title: const Text('excludes'),
           children: [
@@ -191,28 +192,28 @@ class _FilterGroups extends StatelessWidget {
               value: filter.excludes.retweets,
               onChanged: notifier.updateExcludeRetweets,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'keyword / phrase',
               activeFilters: filter.excludes.phrases,
               onSubmitted: notifier.addExcludingPhrase,
               onDeleted: notifier.removeExcludingPhrase,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'hashtags',
               activeFilters: filter.excludes.hashtags,
               onSubmitted: notifier.addExcludingHashtags,
               onDeleted: notifier.removeExcludingHashtags,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
             FilterListEntry(
               labelText: 'mentions',
               activeFilters: filter.excludes.mentions,
               onSubmitted: notifier.addExcludingMentions,
               onDeleted: notifier.removeExcludingMentions,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
           ],
         ),
       ]),
@@ -277,14 +278,14 @@ class _WillPopFilterCreation extends StatelessWidget {
       // ask to discard changes before exiting
       final discard = await showDialog<bool>(
         context: context,
-        builder: (_) => HarpyDialog(
+        builder: (_) => RbyDialog(
           title: const Text('discard changes?'),
           actions: [
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('cancel'),
               onTap: Navigator.of(context).pop,
             ),
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('discard'),
               onTap: () => Navigator.of(context).pop(true),
             ),

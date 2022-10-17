@@ -3,18 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the second page for the [SetupPage].
-class SetupAppearanceContent extends ConsumerWidget {
+class SetupAppearanceContent extends StatelessWidget {
   const SetupAppearanceContent();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return AnimatedPadding(
-      duration: kShortAnimationDuration,
-      padding: display.edgeInsets,
+      duration: theme.animation.short,
+      padding: theme.spacing.edgeInsets,
       child: ListView(
         padding: EdgeInsets.zero,
         children: const [
@@ -37,7 +38,6 @@ class _Layout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-
     final display = ref.watch(displayPreferencesProvider);
     final notifier = ref.watch(displayPreferencesProvider.notifier);
 
@@ -112,7 +112,7 @@ class _Theme extends ConsumerWidget {
               fontSizeDelta: display.fontSizeDelta,
               displayFont: display.displayFont,
               bodyFont: display.bodyFont,
-              paddingValue: display.paddingValue,
+              compact: display.compactMode,
             ),
             selectedLightTheme: lightThemeId == -2,
             selectedDarkTheme: darkThemeId == -2,
@@ -144,7 +144,7 @@ class _Theme extends ConsumerWidget {
               fontSizeDelta: display.fontSizeDelta,
               displayFont: display.displayFont,
               bodyFont: display.bodyFont,
-              paddingValue: display.paddingValue,
+              compact: display.compactMode,
             ),
             selectedLightTheme: lightThemeId == -1,
             selectedDarkTheme: darkThemeId == -1,
@@ -201,44 +201,44 @@ class _Theme extends ConsumerWidget {
   }
 }
 
-class _AnimatedVerticalSpacer extends ConsumerWidget {
+class _AnimatedVerticalSpacer extends StatelessWidget {
   const _AnimatedVerticalSpacer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return AnimatedContainer(
-      duration: kShortAnimationDuration,
-      height: display.paddingValue,
+      duration: theme.animation.short,
+      height: theme.spacing.base,
     );
   }
 }
 
-class _AnimatedHorizontalSpacer extends ConsumerWidget {
+class _AnimatedHorizontalSpacer extends StatelessWidget {
   const _AnimatedHorizontalSpacer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return AnimatedContainer(
-      duration: kShortAnimationDuration,
-      width: display.paddingValue,
+      duration: theme.animation.short,
+      width: theme.spacing.base,
     );
   }
 }
 
-class _AnimatedSmallVerticalSpacer extends ConsumerWidget {
+class _AnimatedSmallVerticalSpacer extends StatelessWidget {
   const _AnimatedSmallVerticalSpacer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return AnimatedContainer(
-      duration: kShortAnimationDuration,
-      height: display.smallPaddingValue,
+      duration: theme.animation.short,
+      height: theme.spacing.small,
     );
   }
 }

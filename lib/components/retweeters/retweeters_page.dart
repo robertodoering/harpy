@@ -21,7 +21,7 @@ class RetweetersPage extends ConsumerWidget {
           child: UserList(
             state.whenOrNull(data: (users) => users.toList()) ?? [],
             beginSlivers: const [
-              HarpySliverAppBar(title: Text('retweeted by')),
+              HarpySliverAppBar(title: Text('retweeted by'))
             ],
             endSlivers: [
               ...?state.whenOrNull(

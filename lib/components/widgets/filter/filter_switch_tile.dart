@@ -1,12 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 // FIXME: refactor
 
-class FilterSwitchTile extends ConsumerWidget {
+class FilterSwitchTile extends StatelessWidget {
   const FilterSwitchTile({
     required this.text,
     required this.value,
@@ -20,16 +19,15 @@ class FilterSwitchTile extends ConsumerWidget {
   final bool enabled;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return SwitchListTile(
       value: value,
       contentPadding: EdgeInsetsDirectional.only(
-        start: display.paddingValue,
+        start: theme.spacing.base,
         // - 8 since the check box icon has a padding of 8
-        end: max(display.paddingValue - 8, 0),
+        end: max(theme.spacing.base - 8, 0),
       ),
       title: Text(
         text,

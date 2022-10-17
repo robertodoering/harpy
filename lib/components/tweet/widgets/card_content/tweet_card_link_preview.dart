@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TweetCardLinkPreview extends ConsumerWidget {
@@ -17,7 +18,6 @@ class TweetCardLinkPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final launcher = ref.watch(launcherProvider);
     final urlString = tweet.previewUrl.toString();
 
@@ -37,7 +37,7 @@ class TweetCardLinkPreview extends ConsumerWidget {
         errorWidget: _LinkPreviewError(url: tweet.previewUrl!),
         itemBuilder: (_, metadata, imageProvider) => Container(
           decoration: BoxDecoration(
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             border: Border.all(color: theme.dividerColor),
           ),
           height: 100,
@@ -46,8 +46,8 @@ class TweetCardLinkPreview extends ConsumerWidget {
               if (imageProvider != null)
                 ClipRRect(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: harpyTheme.radius,
-                    topLeft: harpyTheme.radius,
+                    bottomLeft: theme.shape.radius,
+                    topLeft: theme.shape.radius,
                   ),
                   child: HarpyImage.fromImageProvider(
                     width: 100,
@@ -67,13 +67,12 @@ class TweetCardLinkPreview extends ConsumerWidget {
   }
 }
 
-class _LinkPreviewPlaceholder extends ConsumerWidget {
+class _LinkPreviewPlaceholder extends StatelessWidget {
   const _LinkPreviewPlaceholder();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     return GestureDetector(
       // empty on tap to prevent tap gestures on loading shimmer
@@ -93,7 +92,7 @@ class _LinkPreviewPlaceholder extends ConsumerWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: theme.cardTheme.color,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
           ),
         ),
       ),
@@ -101,7 +100,7 @@ class _LinkPreviewPlaceholder extends ConsumerWidget {
   }
 }
 
-class _LinkPreviewError extends ConsumerWidget {
+class _LinkPreviewError extends StatelessWidget {
   const _LinkPreviewError({
     required this.url,
   });
@@ -119,29 +118,27 @@ class _LinkPreviewError extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Container(
       width: double.infinity,
       height: 100,
       decoration: BoxDecoration(
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         border: Border.all(color: theme.dividerColor),
       ),
       child: Row(
         children: [
           Container(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             width: 100,
             height: 100,
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.only(
-                topLeft: harpyTheme.radius,
-                bottomLeft: harpyTheme.radius,
+                topLeft: theme.shape.radius,
+                bottomLeft: theme.shape.radius,
               ),
             ),
             child: FittedBox(
@@ -153,7 +150,7 @@ class _LinkPreviewError extends ConsumerWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(display.smallPaddingValue),
+              padding: EdgeInsets.all(theme.spacing.small),
               child: FittedBox(
                 child: Text(
                   urlStr,
@@ -168,7 +165,7 @@ class _LinkPreviewError extends ConsumerWidget {
   }
 }
 
-class _LinkPreviewText extends ConsumerWidget {
+class _LinkPreviewText extends StatelessWidget {
   const _LinkPreviewText({
     required this.metadata,
   });
@@ -176,15 +173,14 @@ class _LinkPreviewText extends ConsumerWidget {
   final Metadata metadata;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     final title = metadata.title != 'null' ? metadata.title : null;
     final desc = metadata.desc != 'null' ? metadata.desc : null;
 
     return Padding(
-      padding: EdgeInsets.all(display.smallPaddingValue),
+      padding: EdgeInsets.all(theme.spacing.small),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

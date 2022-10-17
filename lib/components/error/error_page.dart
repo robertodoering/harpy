@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 /// Shown when the navigator was unable to navigate to a page.
 ///
@@ -30,8 +31,8 @@ class ErrorPage extends StatelessWidget {
                   'oops! something went wrong',
                   style: theme.textTheme.subtitle2,
                 ),
-                verticalSpacer,
-                HarpyButton.text(
+                VerticalSpacer.normal,
+                RbyButton.text(
                   label: const Text('home'),
                   onTap: () => context.goNamed(HomePage.name),
                 ),

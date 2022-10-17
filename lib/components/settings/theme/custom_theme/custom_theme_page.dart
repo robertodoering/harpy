@@ -3,6 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class CustomThemePage extends ConsumerWidget {
   const CustomThemePage({
@@ -16,6 +17,7 @@ class CustomThemePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
     final customThemeData = ref.watch(customThemeProvider(themeId));
     final notifier = ref.watch(customThemeProvider(themeId).notifier);
@@ -25,7 +27,7 @@ class CustomThemePage extends ConsumerWidget {
       fontSizeDelta: display.fontSizeDelta,
       displayFont: display.displayFont,
       bodyFont: display.bodyFont,
-      paddingValue: display.paddingValue,
+      compact: display.compactMode,
     );
 
     return ProviderScope(
@@ -50,7 +52,7 @@ class CustomThemePage extends ConsumerWidget {
                     ],
                   ),
                   SliverPadding(
-                    padding: display.edgeInsets,
+                    padding: theme.spacing.edgeInsets,
                     sliver: _CustomThemeList(notifier: notifier),
                   ),
                   const SliverBottomPadding(),
@@ -77,20 +79,20 @@ class _CustomThemeList extends ConsumerWidget {
       delegate: SliverChildListDelegate.fixed([
         if (isFree) ...const [
           CustomThemeProCard(),
-          verticalSpacer,
+          VerticalSpacer.normal,
         ],
         CustomThemeName(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemePrimaryColor(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemeSecondaryColor(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemeCardColor(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemeStatusBarColor(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemeNavBarColor(notifier: notifier),
-        verticalSpacer,
+        VerticalSpacer.normal,
         CustomThemeBackgroundColors(notifier: notifier),
       ]),
     );
@@ -113,14 +115,14 @@ class _WillPopCustomTheme extends StatelessWidget {
       // ask to discard changes before exiting customization
       final discard = await showDialog<bool>(
         context: context,
-        builder: (_) => HarpyDialog(
+        builder: (_) => RbyDialog(
           title: const Text('discard changes?'),
           actions: [
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('cancel'),
               onTap: Navigator.of(context).pop,
             ),
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('discard'),
               onTap: () => Navigator.of(context).pop(true),
             ),
@@ -163,7 +165,7 @@ class _SaveThemeAction extends ConsumerWidget {
     final lightThemeId = themePreferences.lightThemeId;
     final darkThemeId = themePreferences.darkThemeId;
 
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: const Icon(FeatherIcons.check),
       onTap: notifier.canSaveTheme
           ? () {

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class HomeTabReorderCard extends ConsumerWidget {
   const HomeTabReorderCard({
@@ -16,16 +17,15 @@ class HomeTabReorderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final configuration = ref.watch(homeTabConfigurationProvider);
     final notifier = ref.watch(homeTabConfigurationProvider.notifier);
     final entry = configuration.entries[index];
 
     return AnimatedOpacity(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       opacity: entry.visible ? 1 : .6,
       child: Card(
-        margin: EdgeInsetsDirectional.only(bottom: display.smallPaddingValue),
+        margin: EdgeInsetsDirectional.only(bottom: theme.spacing.small),
         child: Row(
           children: [
             _HomeTabIcon(index: index, entry: entry),
@@ -36,7 +36,7 @@ class HomeTabReorderCard extends ConsumerWidget {
               ),
             ),
             if (entry.removable)
-              HarpyButton.icon(
+              RbyButton.transparent(
                 icon: Icon(
                   CupertinoIcons.xmark,
                   color: theme.colorScheme.primary,
@@ -51,7 +51,7 @@ class HomeTabReorderCard extends ConsumerWidget {
             HarpyReorderableDragStartListener(
               index: index,
               child: Container(
-                padding: display.edgeInsets.copyWith(start: 0),
+                padding: theme.spacing.edgeInsets.copyWith(start: 0),
                 color: Colors.transparent,
                 child: const Icon(CupertinoIcons.bars),
               ),
@@ -77,7 +77,7 @@ class _HomeTabIcon extends ConsumerWidget {
     final theme = Theme.of(context);
     final notifier = ref.watch(homeTabConfigurationProvider.notifier);
 
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: HomeTabEntryIcon(
         entry.icon,
         color: theme.colorScheme.primary,
@@ -106,7 +106,7 @@ class _HomeTabVisibility extends ConsumerWidget {
     final notifier = ref.watch(homeTabConfigurationProvider.notifier);
     final entry = configuration.entries[index];
 
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: Icon(
         entry.visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
         color: theme.colorScheme.primary,

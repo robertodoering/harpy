@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Overlay for video players that builds compact actions and icons.
 ///
 /// Used for videos in the media timeline.
-class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
+class SmallVideoPlayerOverlay extends StatefulWidget {
   const SmallVideoPlayerOverlay({
     required this.child,
     required this.tweet,
@@ -27,12 +25,11 @@ class SmallVideoPlayerOverlay extends ConsumerStatefulWidget {
   final VoidCallback? onVideoLongPress;
 
   @override
-  ConsumerState<SmallVideoPlayerOverlay> createState() =>
+  State<SmallVideoPlayerOverlay> createState() =>
       _SmallVideoPlayerOverlayState();
 }
 
-class _SmallVideoPlayerOverlayState
-    extends ConsumerState<SmallVideoPlayerOverlay>
+class _SmallVideoPlayerOverlayState extends State<SmallVideoPlayerOverlay>
     with VideoPlayerOverlayMixin {
   @override
   final bool compact = true;
@@ -53,8 +50,8 @@ class _SmallVideoPlayerOverlayState
 
   @override
   Widget build(BuildContext context) {
-    final iconTheme = IconTheme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
+    final iconTheme = theme.iconTheme;
 
     return GestureDetector(
       // eat all tap gestures that are not handled otherwise (e.g. tapping on
@@ -97,24 +94,24 @@ class _SmallVideoPlayerOverlayState
                     data: widget.data,
                     notifier: widget.notifier,
                     children: [
-                      SizedBox(width: display.smallPaddingValue / 2),
+                      SizedBox(width: theme.spacing.small / 2),
                       VideoPlayerPlaybackButton(
                         data: widget.data,
                         notifier: widget.notifier,
-                        padding: EdgeInsets.all(display.smallPaddingValue / 2),
+                        padding: EdgeInsets.all(theme.spacing.small / 2),
                       ),
                       VideoPlayerMuteButton(
                         data: widget.data,
                         notifier: widget.notifier,
-                        padding: EdgeInsets.all(display.smallPaddingValue / 2),
+                        padding: EdgeInsets.all(theme.spacing.small / 2),
                       ),
-                      SizedBox(width: display.smallPaddingValue / 2),
+                      SizedBox(width: theme.spacing.small / 2),
                       const Spacer(),
                       VideoPlayerFullscreenButton(
                         tweet: widget.tweet,
-                        padding: EdgeInsets.all(display.smallPaddingValue / 2),
+                        padding: EdgeInsets.all(theme.spacing.small / 2),
                       ),
-                      SizedBox(width: display.smallPaddingValue / 2),
+                      SizedBox(width: theme.spacing.small / 2),
                     ],
                   ),
                 ),
@@ -122,10 +119,10 @@ class _SmallVideoPlayerOverlayState
             ),
           ),
           if (widget.data.isBuffering)
-            const ImmediateOpacityAnimation(
-              delay: Duration(milliseconds: 500),
-              duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
+            ImmediateOpacityAnimation(
+              delay: const Duration(milliseconds: 500),
+              duration: theme.animation.long,
+              child: const MediaThumbnailIcon(
                 icon: CircularProgressIndicator(),
                 compact: true,
               ),

@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class CustomApiPage extends ConsumerWidget {
+class CustomApiPage extends StatelessWidget {
   const CustomApiPage();
 
   static const name = 'custom_api';
   static const path = 'custom_api';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
@@ -20,8 +21,8 @@ class CustomApiPage extends ConsumerWidget {
           const HarpySliverAppBar(title: Text('custom api key')),
           SliverPadding(
             padding: EdgeInsets.symmetric(
-              vertical: display.paddingValue,
-              horizontal: display.paddingValue * 2,
+              vertical: theme.spacing.base,
+              horizontal: theme.spacing.base * 2,
             ),
             sliver: const SliverFillRemaining(
               hasScrollBody: false,
@@ -50,7 +51,7 @@ class _Content extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: HarpyButton.text(
+          child: RbyButton.text(
             icon: const Icon(CupertinoIcons.info),
             label: const Text('setup guide'),
             onTap: () => launcher(
@@ -59,10 +60,10 @@ class _Content extends ConsumerWidget {
           ),
         ),
         if (customApiPreferences.hasCustomApiKeyAndSecret) const _Table(),
-        verticalSpacer,
-        HarpyDialogActionBar(
+        VerticalSpacer.normal,
+        RbyDialogActionBar(
           actions: [
-            HarpyButton.text(
+            RbyButton.text(
               label: const Text('remove'),
               onTap: customApiPreferences.hasCustomApiKeyAndSecret
                   ? () {
@@ -73,7 +74,7 @@ class _Content extends ConsumerWidget {
                     }
                   : null,
             ),
-            HarpyButton.elevated(
+            RbyButton.elevated(
               label: customApiPreferences.hasCustomApiKeyAndSecret
                   ? const Text('change')
                   : const Text('set'),
@@ -99,7 +100,7 @@ class _Table extends ConsumerWidget {
 
     return Column(
       children: [
-        verticalSpacer,
+        VerticalSpacer.normal,
         Column(
           children: [
             Row(
@@ -110,7 +111,7 @@ class _Table extends ConsumerWidget {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                smallHorizontalSpacer,
+                HorizontalSpacer.small,
                 Flexible(child: Text(customApiPreferences.customKey)),
               ],
             ),
@@ -122,7 +123,7 @@ class _Table extends ConsumerWidget {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                smallHorizontalSpacer,
+                HorizontalSpacer.small,
                 Flexible(child: Text(customApiPreferences.customSecret)),
               ],
             ),
@@ -173,7 +174,7 @@ class _FormDialogState extends ConsumerState<_FormDialog> {
       customApiPreferencesProvider.notifier,
     );
 
-    return HarpyDialog(
+    return RbyDialog(
       content: Column(
         children: [
           TextField(
@@ -182,7 +183,7 @@ class _FormDialogState extends ConsumerState<_FormDialog> {
               label: Text('key'),
             ),
           ),
-          verticalSpacer,
+          VerticalSpacer.normal,
           TextField(
             controller: _secretController,
             decoration: const InputDecoration(
@@ -192,11 +193,11 @@ class _FormDialogState extends ConsumerState<_FormDialog> {
         ],
       ),
       actions: [
-        HarpyButton.text(
+        RbyButton.text(
           label: const Text('cancel'),
           onTap: Navigator.of(context).pop,
         ),
-        HarpyButton.elevated(
+        RbyButton.elevated(
           label: const Text('apply'),
           onTap: _keyController.text.trim().isNotEmpty &&
                   _secretController.text.trim().isNotEmpty

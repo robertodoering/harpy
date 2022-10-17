@@ -920,6 +920,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  rby:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: a02f6b1aafaf0490249dc2be27458949f6713b41
+      url: "https://github.com/robertodoering/rby.dart"
+    source: git
+    version: "0.0.1"
   riverpod:
     dependency: transitive
     description:
@@ -1488,5 +1497,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.0 <3.0.0"
+  dart: ">=2.17.1 <3.0.0"
   flutter: ">=3.3.0"

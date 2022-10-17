@@ -3,25 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class HomeTimelineTopActions extends ConsumerWidget {
+class HomeTimelineTopActions extends StatelessWidget {
   const HomeTimelineTopActions();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsets.copyWith(bottom: 0),
+        padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: const [
             _RefreshButton(),
             Spacer(),
             _ComposeButton(),
-            horizontalSpacer,
+            HorizontalSpacer.normal,
             _FilterButton(),
           ],
         ),
@@ -38,7 +39,7 @@ class _RefreshButton extends ConsumerWidget {
     final state = ref.watch(homeTimelineProvider);
     final notifier = ref.watch(homeTimelineProvider.notifier);
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: const Icon(CupertinoIcons.refresh),
       onTap: state.tweets.isNotEmpty
           ? () {
@@ -56,13 +57,12 @@ class _ComposeButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
     final state = ref.watch(homeTimelineProvider);
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: const Icon(FeatherIcons.feather),
       onTap: state is! TimelineStateLoading
-          ? () => router.goNamed(ComposePage.name)
+          ? () => context.goNamed(ComposePage.name)
           : null,
     );
   }
@@ -74,13 +74,12 @@ class _FilterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final router = ref.watch(routerProvider);
     final state = ref.watch(homeTimelineProvider);
     final notifier = ref.watch(homeTimelineProvider.notifier);
 
     final enable = state is! TimelineStateLoading;
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
@@ -89,7 +88,7 @@ class _FilterButton extends ConsumerWidget {
                   : theme.colorScheme.primary.withOpacity(.5),
             )
           : const Icon(Icons.filter_alt_outlined),
-      onTap: enable ? () => router.pushNamed(HomeTimelineFilter.name) : null,
+      onTap: enable ? () => context.pushNamed(HomeTimelineFilter.name) : null,
     );
   }
 }

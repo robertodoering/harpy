@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 
-class ListTimeline extends ConsumerWidget {
+class ListTimeline extends StatelessWidget {
   const ListTimeline({
     required this.listId,
     required this.listName,
@@ -22,9 +21,7 @@ class ListTimeline extends ConsumerWidget {
   final double? scrollToTopOffset;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-
+  Widget build(BuildContext context) {
     return Timeline(
       provider: listTimelineProvider(listId),
       listKey: PageStorageKey('list_timeline_$listId'),
@@ -37,7 +34,7 @@ class ListTimeline extends ConsumerWidget {
       ],
       refreshIndicatorOffset: refreshIndicatorOffset,
       scrollToTopOffset: scrollToTopOffset,
-      onChangeFilter: () => router.pushNamed(
+      onChangeFilter: () => context.pushNamed(
         ListTimelineFilter.name,
         params: {'listId': listId},
         queryParams: {'name': listName},

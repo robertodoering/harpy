@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class FontSelectionPage extends ConsumerStatefulWidget {
+class FontSelectionPage extends StatefulWidget {
   const FontSelectionPage({
     required this.title,
     required this.selectedFont,
@@ -20,10 +21,10 @@ class FontSelectionPage extends ConsumerStatefulWidget {
   static const name = 'font_selection';
 
   @override
-  ConsumerState<FontSelectionPage> createState() => _FontSelectionPageState();
+  State<FontSelectionPage> createState() => _FontSelectionPageState();
 }
 
-class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
+class _FontSelectionPageState extends State<FontSelectionPage> {
   late String _selectedFont = widget.selectedFont;
 
   Future<bool> _onWillPop() async {
@@ -36,7 +37,7 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -48,7 +49,7 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
                 HarpySliverAppBar(title: Text(widget.title)),
                 if (isFree)
                   SliverPadding(
-                    padding: display.edgeInsets.copyWith(bottom: 0),
+                    padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
                     sliver: const SliverToBoxAdapter(
                       child: HarpyProCard(
                         children: [
@@ -61,22 +62,22 @@ class _FontSelectionPageState extends ConsumerState<FontSelectionPage> {
                     ),
                   ),
                 SliverPadding(
-                  padding: display.edgeInsets.copyWith(bottom: 0),
+                  padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
                   sliver: const _PreviewHint(),
                 ),
                 SliverPadding(
-                  padding: display.edgeInsets,
+                  padding: theme.spacing.edgeInsets,
                   sliver: _AssetFonts(
                     selectedFont: _selectedFont,
                     onSelect: (font) => setState(() => _selectedFont = font),
                   ),
                 ),
                 SliverPadding(
-                  padding: display.edgeInsetsSymmetric(horizontal: true),
+                  padding: theme.spacing.symmetric(horizontal: true),
                   sliver: const _FontsFilterTextField(),
                 ),
                 SliverPadding(
-                  padding: display.edgeInsets,
+                  padding: theme.spacing.edgeInsets,
                   sliver: _SelectableFonts(
                     selectedFont: _selectedFont,
                     onSelect: (font) => setState(() => _selectedFont = font),
@@ -117,12 +118,12 @@ class _PreviewHintState extends ConsumerState<_PreviewHint> {
     return SliverToBoxAdapter(
       child: Row(
         children: [
-          horizontalSpacer,
+          HorizontalSpacer.normal,
           Icon(
             CupertinoIcons.info,
             color: theme.colorScheme.primary,
           ),
-          horizontalSpacer,
+          HorizontalSpacer.normal,
           Expanded(
             child: Text.rich(
               TextSpan(
@@ -143,7 +144,7 @@ class _PreviewHintState extends ConsumerState<_PreviewHint> {
               ),
             ),
           ),
-          horizontalSpacer,
+          HorizontalSpacer.normal,
         ],
       ),
     );
@@ -188,7 +189,7 @@ class _AssetFonts extends StatelessWidget {
             onSelect: () => onSelect(font),
             onConfirm: Navigator.of(context).maybePop,
           ),
-          if (font != kAssetFonts.last) smallVerticalSpacer,
+          if (font != kAssetFonts.last) VerticalSpacer.small,
         ],
       ]),
     );
@@ -217,7 +218,7 @@ class _SelectableFonts extends ConsumerWidget {
             onSelect: () => onSelect(fonts[index ~/ 2]),
             onConfirm: Navigator.of(context).maybePop,
           )
-        : smallVerticalSpacer;
+        : VerticalSpacer.small;
   }
 
   @override

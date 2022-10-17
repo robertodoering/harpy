@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class UserConnectionsCount extends ConsumerWidget {
+class UserConnectionsCount extends StatelessWidget {
   const UserConnectionsCount({
     required this.user,
     this.compact = false,
@@ -14,23 +14,22 @@ class UserConnectionsCount extends ConsumerWidget {
   final bool compact;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final router = ref.watch(routerProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Wrap(
       children: [
         ConnectionCount(
           count: user.friendsCount,
-          builder: (count) => HarpyButton.icon(
+          builder: (count) => RbyButton.transparent(
             label: Text('$count following'),
             padding: compact
                 ? EdgeInsets.symmetric(
-                    horizontal: display.paddingValue,
-                    vertical: display.smallPaddingValue,
+                    horizontal: theme.spacing.base,
+                    vertical: theme.spacing.small,
                   )
                 : null,
-            onTap: () => router.pushNamed(
+            onTap: () => context.pushNamed(
               FollowingPage.name,
               params: {'handle': user.handle},
             ),
@@ -38,15 +37,15 @@ class UserConnectionsCount extends ConsumerWidget {
         ),
         ConnectionCount(
           count: user.followersCount,
-          builder: (count) => HarpyButton.icon(
+          builder: (count) => RbyButton.transparent(
             label: Text('$count followers'),
             padding: compact
                 ? EdgeInsets.symmetric(
-                    horizontal: display.paddingValue,
-                    vertical: display.smallPaddingValue,
+                    horizontal: theme.spacing.base,
+                    vertical: theme.spacing.small,
                   )
                 : null,
-            onTap: () => router.pushNamed(
+            onTap: () => context.pushNamed(
               FollowersPage.name,
               params: {'handle': user.handle},
             ),

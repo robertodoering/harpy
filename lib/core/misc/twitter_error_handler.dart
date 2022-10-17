@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
+import 'package:rby/rby.dart';
 
 /// Handles an error from a Twitter api request to potentially show a message to
 /// the user.
@@ -86,7 +86,7 @@ class _RateLimitReachedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyDialog(
+    return RbyDialog(
       title: const Text('rate limit reached'),
       content: const Text(
         '''
@@ -95,7 +95,7 @@ Due to limitations from Twitter, harpy runs into rate limits (e.g. when liking a
 Unfortunately you'll have to wait a bit and try again later.''',
       ),
       actions: [
-        HarpyButton.text(
+        RbyButton.text(
           label: const Text('ok'),
           onTap: Navigator.of(context).pop,
         ),

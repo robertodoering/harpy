@@ -1,5 +1,5 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:harpy/rby/core/logger/logger.dart';
+import 'package:harpy/core/logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// [SharedPreferences] wrapper that allows for prefixed keys.
@@ -45,9 +45,9 @@ abstract class Preferences {
   String _buildKey(String key) {
     if (_prefix?.isNotEmpty ?? false) {
       return '$_prefix.$key';
-    } else {
-      return key;
     }
+
+    return key;
   }
 }
 

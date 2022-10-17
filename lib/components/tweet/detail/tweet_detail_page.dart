@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/components/tweet/detail/provider/tweet_detail_provider.dart';
+import 'package:rby/rby.dart';
 
 class TweetDetailPage extends ConsumerStatefulWidget {
   const TweetDetailPage({
@@ -40,7 +41,7 @@ class _TweetDetailPageState extends ConsumerState<TweetDetailPage> {
     return HarpyScaffold(
       child: widget.tweet != null
           ? _TweetDetailContent(tweet: widget.tweet!)
-          : HarpyAnimatedSwitcher(
+          : RbyAnimatedSwitcher(
               child: tweetDetailState.when(
                 data: (tweet) => _TweetDetailContent(tweet: tweet),
                 loading: _TweetDetailLoading.new,

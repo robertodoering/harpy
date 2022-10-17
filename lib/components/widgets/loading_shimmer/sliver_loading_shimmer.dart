@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SliverLoadingShimmer extends StatelessWidget {
@@ -16,7 +15,7 @@ class SliverLoadingShimmer extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: ImmediateOpacityAnimation(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         child: Shimmer(
           gradient: LinearGradient(
             colors: [

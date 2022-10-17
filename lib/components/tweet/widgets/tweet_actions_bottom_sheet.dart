@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 void showTweetActionsBottomSheet(
   WidgetRef ref, {
@@ -25,15 +26,14 @@ void showTweetActionsBottomSheet(
     TimeOfDay.fromDateTime(tweet.createdAt.toLocal()),
   );
 
-  showHarpyBottomSheet<void>(
+  showRbyBottomSheet<void>(
     ref.context,
-    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Column(
           children: [
             Text(tweet.user.name),
-            smallVerticalSpacer,
+            VerticalSpacer.small,
             Wrap(
               children: [
                 Text(time),
@@ -45,7 +45,7 @@ void showTweetActionsBottomSheet(
         ),
       ),
       if (isAuthenticatedUser && delegates.onDelete != null)
-        HarpyListTile(
+        RbyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
             'delete',
@@ -61,7 +61,7 @@ void showTweetActionsBottomSheet(
           },
         ),
       if (delegates.onComposeReply != null)
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(CupertinoIcons.reply),
           title: const Text('reply'),
           onTap: () async {
@@ -69,7 +69,7 @@ void showTweetActionsBottomSheet(
             Navigator.of(ref.context).pop();
           },
         ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open tweet externally'),
         onTap: () {
@@ -77,7 +77,7 @@ void showTweetActionsBottomSheet(
           Navigator.of(ref.context).pop();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy tweet text'),
         enabled: tweet.hasText,
@@ -86,7 +86,7 @@ void showTweetActionsBottomSheet(
           Navigator.of(ref.context).pop();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share tweet'),
         onTap: () {

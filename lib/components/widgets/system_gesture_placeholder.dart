@@ -16,6 +16,8 @@ class SystemGesturePlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
+    // TODO: use mediaQuery.systemGestureInsets
+
     return Stack(
       children: [
         child,

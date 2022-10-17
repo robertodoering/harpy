@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 
 final setupPreferencesProvider = Provider(
   (ref) => SetupPreferences(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class HarpyRadioDialogTile<T> extends ConsumerWidget {
   const HarpyRadioDialogTile({
@@ -26,9 +26,9 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
-    return HarpyListTile(
+    return RbyListTile(
       leading: leading,
       title: title,
       subtitle: entries[groupValue],
@@ -36,14 +36,14 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
       borderRadius: borderRadius,
       onTap: () => showDialog<void>(
         context: context,
-        builder: (context) => HarpyDialog(
+        builder: (context) => RbyDialog(
           title: dialogTitle,
-          contentPadding: display.edgeInsetsOnly(top: true),
+          contentPadding: theme.spacing.only(top: true),
           clipBehavior: Clip.antiAlias,
           content: Column(
             children: [
               for (final entry in entries.entries)
-                HarpyRadioTile<T>(
+                RbyRadioTile<T>(
                   title: entry.value,
                   value: entry.key,
                   groupValue: groupValue,

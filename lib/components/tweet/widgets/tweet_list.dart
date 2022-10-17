@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 typedef TweetBuilder = Widget Function(TweetData tweet, int index);
@@ -11,7 +11,7 @@ typedef TweetBuilder = Widget Function(TweetData tweet, int index);
 typedef OnLayoutFinished = void Function(int firstIndex, int lastIndex);
 
 /// Builds a [CustomScrollView] for the [tweets].
-class TweetList extends ConsumerWidget {
+class TweetList extends StatelessWidget {
   const TweetList(
     this.tweets, {
     this.controller,
@@ -38,12 +38,12 @@ class TweetList extends ConsumerWidget {
   Widget _itemBuilder(BuildContext context, int index) {
     return index.isEven
         ? tweetBuilder(tweets[index ~/ 2], index ~/ 2)
-        : verticalSpacer;
+        : VerticalSpacer.normal;
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return CustomScrollView(
       controller: controller,
@@ -51,7 +51,7 @@ class TweetList extends ConsumerWidget {
       slivers: [
         ...beginSlivers,
         SliverPadding(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           sliver: SuperSliverList(
             delegate: _TweetListBuilderDelegate(
               _itemBuilder,

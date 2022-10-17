@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TrendsSelectionHeader extends ConsumerWidget {
   const TrendsSelectionHeader();
@@ -11,19 +12,18 @@ class TrendsSelectionHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     final state = ref.watch(trendsProvider);
     final notifier = ref.watch(trendsProvider.notifier);
     final userLocation = ref.watch(userTrendsLocationProvider);
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverToBoxAdapter(
         child: Row(
           children: [
             Expanded(
-              child: HarpyListCard(
+              child: RbyListCard(
                 leading: Icon(
                   FeatherIcons.mapPin,
                   color: theme.colorScheme.primary,
@@ -35,8 +35,8 @@ class TrendsSelectionHeader extends ConsumerWidget {
                 onTap: () => _showTrendsSelection(ref),
               ),
             ),
-            horizontalSpacer,
-            HarpyButton.card(
+            HorizontalSpacer.normal,
+            RbyButton.card(
               icon: const Icon(CupertinoIcons.refresh),
               onTap: state is AsyncLoading
                   ? null
@@ -54,14 +54,13 @@ class TrendsSelectionHeader extends ConsumerWidget {
 }
 
 void _showTrendsSelection(WidgetRef ref) {
-  showHarpyBottomSheet<void>(
+  showRbyBottomSheet<void>(
     ref.context,
-    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Text(ref.read(userTrendsLocationProvider).displayName),
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('select location'),
         subtitle: Text(ref.read(userTrendsLocationProvider).name),
@@ -74,7 +73,7 @@ void _showTrendsSelection(WidgetRef ref) {
           );
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('find location'),
         onTap: () {

@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// A loading indicator for the beginning or end of a [CustomScrollView].
-class SliverLoadingIndicator extends ConsumerWidget {
+class SliverLoadingIndicator extends StatelessWidget {
   const SliverLoadingIndicator();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
       child: ImmediateOpacityAnimation(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         child: Container(
-          padding: display.edgeInsets,
+          padding: theme.spacing.edgeInsets,
           alignment: AlignmentDirectional.center,
           child: const CircularProgressIndicator(),
         ),

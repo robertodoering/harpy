@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The app can be built with the 'free' or 'pro' flavor by running

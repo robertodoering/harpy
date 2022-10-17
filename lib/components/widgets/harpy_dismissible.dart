@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 const _threshold = .05;
 
@@ -36,11 +36,18 @@ class _HarpyDismissibleState extends State<HarpyDismissible>
     super.initState();
 
     _moveController = AnimationController(
-      duration: kLongAnimationDuration,
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
     _updateMoveAnimation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _moveController.duration = Theme.of(context).animation.long;
   }
 
   @override

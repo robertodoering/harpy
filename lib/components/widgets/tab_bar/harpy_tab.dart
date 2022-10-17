@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 // FIXME: refactor
 
@@ -20,14 +21,15 @@ class HarpyTab extends ConsumerStatefulWidget {
   final Color? selectedCardColor;
   final Color? selectedForegroundColor;
 
-  static double height(BuildContext context, DisplayPreferences display) {
-    final iconSize = IconTheme.of(context).size!;
+  static double height(BuildContext context) {
+    final theme = Theme.of(context);
+    final iconSize = theme.iconTheme.size!;
 
-    return tabPadding(display) * 2 + iconSize;
+    return tabPadding(theme) * 2 + iconSize;
   }
 
-  static double tabPadding(DisplayPreferences display) {
-    return display.paddingValue;
+  static double tabPadding(ThemeData theme) {
+    return theme.spacing.base;
   }
 
   @override
@@ -103,7 +105,7 @@ class _HarpyTabState extends ConsumerState<HarpyTab>
         alignment: AlignmentDirectional.centerEnd,
         child: Row(
           children: [
-            smallHorizontalSpacer,
+            HorizontalSpacer.small,
             widget.text!,
           ],
         ),
@@ -115,14 +117,13 @@ class _HarpyTabState extends ConsumerState<HarpyTab>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final iconTheme = IconTheme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return AnimatedBuilder(
       animation: _animationController,
       builder: (_, __) => Card(
         color: _cardColorAnimation.value,
         child: Padding(
-          padding: EdgeInsets.all(HarpyTab.tabPadding(display)),
+          padding: EdgeInsets.all(HarpyTab.tabPadding(theme)),
           child: IconTheme(
             data: iconTheme.copyWith(
               color: _foregroundColorAnimation.value,

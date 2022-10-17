@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class MediaThumbnail extends ConsumerWidget {
   const MediaThumbnail({
@@ -101,13 +101,15 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ImmediateScaleAnimation(
-      duration: kLongAnimationDuration,
+      duration: theme.animation.long,
       curve: Curves.easeOutCubic,
       begin: .8,
       end: 1.2,
       child: ImmediateOpacityAnimation(
-        duration: kLongAnimationDuration,
+        duration: theme.animation.long,
         begin: 1,
         end: 0,
         child: MediaThumbnailIcon(
@@ -119,7 +121,7 @@ class AnimatedMediaThumbnailIcon extends StatelessWidget {
   }
 }
 
-class _ThumbnailDuration extends ConsumerWidget {
+class _ThumbnailDuration extends StatelessWidget {
   const _ThumbnailDuration({
     required this.duration,
   });
@@ -127,22 +129,20 @@ class _ThumbnailDuration extends ConsumerWidget {
   final Duration duration;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return IgnorePointer(
       child: Align(
         alignment: AlignmentDirectional.bottomStart,
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: display.paddingValue / 2,
-            vertical: display.paddingValue / 3,
+            horizontal: theme.spacing.base / 2,
+            vertical: theme.spacing.base / 3,
           ),
           decoration: BoxDecoration(
             color: Colors.black45,
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
           ),
           child: Text(
             prettyPrintDuration(duration),

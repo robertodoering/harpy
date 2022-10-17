@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class CustomThemeColor extends ConsumerWidget {
   const CustomThemeColor({
@@ -58,7 +59,7 @@ class CustomThemeColor extends ConsumerWidget {
           onBackground: _onBackground(harpyTheme.colors.averageBackgroundColor),
         ),
       ),
-      child: HarpyListCard(
+      child: RbyListCard(
         title: title,
         subtitle: subtitle,
         leading: leading,

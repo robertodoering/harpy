@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ComposeTextField extends ConsumerWidget {
   const ComposeTextField({
@@ -15,11 +16,10 @@ class ComposeTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final state = ref.watch(composeProvider);
 
     return Padding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 70),
         child: TextField(

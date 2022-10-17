@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Builds an [icon] and [text] in a row with padding for the icon that matches
 /// the size of a [TweetCard] avatar.
@@ -23,11 +22,11 @@ class TweetListInfoMessage extends ConsumerWidget {
     final display = ref.watch(displayPreferencesProvider);
 
     return ImmediateOpacityAnimation(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: display.paddingValue * 2,
-          vertical: display.smallPaddingValue,
+          horizontal: theme.spacing.base * 2,
+          vertical: theme.spacing.small,
         ),
         child: Row(
           children: [
@@ -38,7 +37,7 @@ class TweetListInfoMessage extends ConsumerWidget {
                 child: icon,
               ),
             ),
-            horizontalSpacer,
+            HorizontalSpacer.normal,
             Expanded(
               child: DefaultTextStyle(
                 style: theme.textTheme.subtitle1!,

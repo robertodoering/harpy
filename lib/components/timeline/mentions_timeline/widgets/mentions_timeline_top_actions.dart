@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class MentionsTimelineTopActions extends ConsumerWidget {
   const MentionsTimelineTopActions();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final state = ref.read(mentionsTimelineProvider);
     final notifier = ref.read(mentionsTimelineProvider.notifier);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsets.copyWith(bottom: 0),
+        padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: [
-            HarpyButton.card(
+            RbyButton.card(
               icon: const Icon(CupertinoIcons.refresh),
               onTap: state.tweets.isNotEmpty
                   ? () {

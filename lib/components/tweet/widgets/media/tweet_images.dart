@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetImages extends ConsumerWidget {
   const TweetImages({
@@ -18,11 +19,13 @@ class TweetImages extends ConsumerWidget {
   final IndexedVoidCallback? onImageLongPress;
 
   void _onImageTap(
-    WidgetRef ref, {
+    BuildContext context, {
     required int index,
     required TweetData tweet,
   }) {
-    Navigator.of(ref.context).push<void>(
+    final theme = Theme.of(context);
+
+    Navigator.of(context).push<void>(
       HeroDialogRoute(
         builder: (_) => MediaGallery(
           initialIndex: index,
@@ -34,13 +37,13 @@ class TweetImages extends ConsumerWidget {
             builder: (_) => TweetGalleryImage(
               media: tweet.media[index],
               heroTag: 'tweet${mediaHeroTag(
-                ref.context,
+                context,
                 tweet: tweet,
                 media: tweet.media[index],
                 index: tweetIndex,
               )}',
               borderRadius: _borderRadiusForImage(
-                ref.read(harpyThemeProvider).radius,
+                theme.shape.radius,
                 index,
                 tweet.media.length,
               ),
@@ -58,7 +61,7 @@ class TweetImages extends ConsumerWidget {
 
     return TweetImagesLayout(
       onImageTap: (index) => _onImageTap(
-        ref,
+        context,
         index: index,
         tweet: tweet,
       ),

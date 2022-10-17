@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class UserSearchPage extends ConsumerWidget {
   const UserSearchPage();
@@ -34,7 +34,7 @@ class UserSearchPage extends ConsumerWidget {
                   loading: (_) => const [UserListLoadingSliver()],
                   loadingMore: (_) => const [
                     SliverLoadingIndicator(),
-                    sliverVerticalSpacer,
+                    VerticalSpacer.normalSliver,
                   ],
                   noData: (_) => const [
                     SliverFillInfoMessage(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class UserAdditionalInfo extends ConsumerWidget {
   const UserAdditionalInfo({required this.user, required this.connections});
@@ -14,7 +15,6 @@ class UserAdditionalInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     final l10n = Localizations.of<MaterialLocalizations>(
       context,
@@ -63,8 +63,7 @@ class UserAdditionalInfo extends ConsumerWidget {
       children: [
         for (final child in children) ...[
           child,
-          if (child != children.last)
-            SizedBox(height: display.smallPaddingValue / 2),
+          if (child != children.last) SizedBox(height: theme.spacing.small / 2),
         ],
       ],
     );
@@ -91,7 +90,7 @@ class _InfoRow extends StatelessWidget {
         child: Row(
           children: [
             icon,
-            horizontalSpacer,
+            HorizontalSpacer.normal,
             Expanded(child: child),
           ],
         ),

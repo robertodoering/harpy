@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
 import 'package:intl/intl.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the icon for an [TweetActionButton].
 typedef IconBuilder = Widget Function(bool active);
@@ -14,7 +12,7 @@ typedef IconAnimationBuilder = Widget Function(
   Widget icon,
 );
 
-class TweetActionButton extends ConsumerStatefulWidget {
+class TweetActionButton extends StatefulWidget {
   const TweetActionButton({
     required this.iconBuilder,
     required this.active,
@@ -63,10 +61,10 @@ class TweetActionButton extends ConsumerStatefulWidget {
   }
 
   @override
-  ConsumerState<TweetActionButton> createState() => _TweetActionButtonState();
+  State<TweetActionButton> createState() => _TweetActionButtonState();
 }
 
-class _TweetActionButtonState extends ConsumerState<TweetActionButton>
+class _TweetActionButtonState extends State<TweetActionButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -100,7 +98,6 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     final textStyle = theme.textTheme.button!.copyWith(
       fontSize: widget.iconSize - 4,
@@ -110,7 +107,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
     );
 
     final icon = AnimatedTheme(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       data: theme.copyWith(
         iconTheme: theme.iconTheme.copyWith(
           color: widget.active ? widget.activeColor : widget.foregroundColor,
@@ -132,11 +129,11 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
 
     final label = widget.value != null && widget.value != 0
         ? AnimatedDefaultTextStyle(
-            duration: kShortAnimationDuration,
+            duration: theme.animation.short,
             style: textStyle,
             maxLines: 1,
             child: AnimatedNumber(
-              duration: kShortAnimationDuration,
+              duration: theme.animation.short,
               number: widget.value!,
               numberFormat: NumberFormat.compact(
                 locale: Localizations.localeOf(context).toLanguageTag(),
@@ -156,7 +153,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       overlayColor: MaterialStateProperty.all(theme.highlightColor),
       elevation: MaterialStateProperty.all(0),
       padding: MaterialStateProperty.all(
-        display.edgeInsets + EdgeInsetsDirectional.all(widget.sizeDelta),
+        theme.spacing.edgeInsets + EdgeInsetsDirectional.all(widget.sizeDelta),
       ),
     );
 
@@ -165,7 +162,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
       onLongPress: widget.onLongPress,
       style: style,
       child: AnimatedSize(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         alignment: AlignmentDirectional.centerStart,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -173,7 +170,7 @@ class _TweetActionButtonState extends ConsumerState<TweetActionButton>
           children: [
             icon,
             if (label != null) ...[
-              smallHorizontalSpacer,
+              HorizontalSpacer.small,
               label,
             ],
           ],

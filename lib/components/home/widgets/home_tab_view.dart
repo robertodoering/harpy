@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class HomeTabView extends ConsumerWidget {
   const HomeTabView();
@@ -11,8 +12,8 @@ class HomeTabView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final general = ref.watch(generalPreferencesProvider);
     final configuration = ref.watch(homeTabConfigurationProvider);
 
@@ -21,7 +22,7 @@ class HomeTabView extends ConsumerWidget {
     final refreshIndicatorOffset = general.bottomAppBar ? 0.0 : appbarHeight;
 
     final scrollToTopOffset =
-        general.bottomAppBar ? appbarHeight + display.paddingValue : null;
+        general.bottomAppBar ? appbarHeight + theme.spacing.base : null;
 
     return HomeTabController(
       length: configuration.visibleEntries.length + 2,

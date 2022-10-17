@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 // FIXME: refactor
@@ -101,9 +99,11 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
   }
 
   void _scrollToIndex(int index) {
+    final theme = Theme.of(context);
+
     _scrollController.scrollToIndex(
       index,
-      duration: kLongAnimationDuration,
+      duration: theme.animation.long,
       preferPosition: AutoScrollPosition.middle,
     );
   }
@@ -111,13 +111,13 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
   double _tabAnimationValue(int index) =>
       (_animationValue - index).clamp(-1, 1).abs().toDouble();
 
-  Widget _buildTab(HarpyTheme harpyTheme, int index) {
+  Widget _buildTab(ThemeData theme, int index) {
     return AutoScrollTag(
       key: ValueKey<int>(index),
       controller: _scrollController,
       index: index,
       child: InkWell(
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         onTap: () => _tabController!.animateTo(index),
         child: HarpyTabScope(
           index: index,
@@ -130,7 +130,7 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
 
     return ScrollConfiguration(
       behavior: const BasicScrollBehavior(),
@@ -142,12 +142,12 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             for (int i = 0; i < widget.tabs.length; i++) ...[
-              _buildTab(harpyTheme, i),
-              if (i != widget.tabs.length - 1) smallHorizontalSpacer,
+              _buildTab(theme, i),
+              if (i != widget.tabs.length - 1) HorizontalSpacer.small,
             ],
             if (widget.endWidgets != null) ...[
               for (Widget widget in widget.endWidgets!) ...[
-                smallHorizontalSpacer,
+                HorizontalSpacer.small,
                 widget,
               ],
             ],

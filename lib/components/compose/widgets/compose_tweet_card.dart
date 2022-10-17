@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class ComposeTweetCard extends ConsumerStatefulWidget {
   const ComposeTweetCard();
@@ -75,7 +76,7 @@ class _ComposeTweetCardState extends ConsumerState<ComposeTweetCard>
               controller: _controller!,
               focusNode: _focusNode,
             ),
-            HarpyAnimatedSwitcher(
+            RbyAnimatedSwitcher(
               reverseDuration: Duration.zero,
               child: state.hasMedia ? const ComposeMedia() : const SizedBox(),
             ),
@@ -95,7 +96,7 @@ class _TopRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final authentication = ref.watch(authenticationStateProvider);
 
     return TweetCardTopRow(
@@ -104,8 +105,8 @@ class _TopRow extends ConsumerWidget {
         user: authentication.user!,
       ),
       delegates: const TweetDelegates(),
-      innerPadding: display.smallPaddingValue,
-      outerPadding: display.paddingValue,
+      innerPadding: theme.spacing.small,
+      outerPadding: theme.spacing.base,
       config: const TweetCardConfig(
         elements: {
           TweetCardElement.avatar,

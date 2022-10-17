@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Overlay for video players where the UI elements are always visible.
 ///
@@ -48,6 +47,8 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       // eat all tap gestures that are not handled otherwise (e.g. tapping on
       // the overlay)
@@ -83,7 +84,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
                   data: widget.data,
                   notifier: widget.notifier,
                   children: [
-                    smallHorizontalSpacer,
+                    HorizontalSpacer.small,
                     VideoPlayerPlaybackButton(
                       notifier: widget.notifier,
                       data: widget.data,
@@ -92,7 +93,7 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
                       notifier: widget.notifier,
                       data: widget.data,
                     ),
-                    smallHorizontalSpacer,
+                    HorizontalSpacer.small,
                     VideoPlayerProgressText(data: widget.data),
                     const Spacer(),
                     if (widget.data.qualities.length > 1)
@@ -101,17 +102,17 @@ class _StaticVideoPlayerOverlayState extends State<StaticVideoPlayerOverlay>
                         notifier: widget.notifier,
                       ),
                     VideoPlayerFullscreenButton(tweet: widget.tweet),
-                    smallHorizontalSpacer,
+                    HorizontalSpacer.small,
                   ],
                 ),
               ],
             ),
           ),
           if (widget.data.isBuffering)
-            const ImmediateOpacityAnimation(
-              delay: Duration(milliseconds: 500),
-              duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
+            ImmediateOpacityAnimation(
+              delay: const Duration(milliseconds: 500),
+              duration: theme.animation.long,
+              child: const MediaThumbnailIcon(
                 icon: CircularProgressIndicator(),
               ),
             ),

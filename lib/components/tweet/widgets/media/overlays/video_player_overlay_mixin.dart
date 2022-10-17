@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Mixin for video player overlays that show an icon in the center depending
 /// its [VideoPlayerStateData].
@@ -49,9 +48,11 @@ class _ReplayIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ImmediateOpacityAnimation(
       key: UniqueKey(),
-      duration: kLongAnimationDuration,
+      duration: theme.animation.long,
       child: MediaThumbnailIcon(
         icon: const Icon(Icons.replay),
         compact: compact,
