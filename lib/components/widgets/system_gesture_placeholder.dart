@@ -16,29 +16,39 @@ class SystemGesturePlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    // TODO: use mediaQuery.systemGestureInsets
-
     return Stack(
       children: [
         child,
         Align(
-          alignment: AlignmentDirectional.centerEnd,
+          // ignore: non_directional
+          alignment: Alignment.centerLeft,
           child: SizedBox(
-            width: mediaQuery.size.width * .066,
+            width: mediaQuery.systemGestureInsets.left,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
           ),
         ),
         Align(
-          alignment: AlignmentDirectional.centerEnd,
+          // ignore: non_directional
+          alignment: Alignment.centerRight,
           child: SizedBox(
-            width: mediaQuery.size.width * .066,
+            width: mediaQuery.systemGestureInsets.right,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
+          ),
+        ),
+        Align(
+          alignment: AlignmentDirectional.topCenter,
+          child: SizedBox(
+            height: mediaQuery.systemGestureInsets.top,
+            child: GestureDetector(
+              onHorizontalDragStart: (_) {},
+              onVerticalDragStart: (_) {},
+            ),
           ),
         ),
         Align(
           alignment: AlignmentDirectional.bottomCenter,
           child: SizedBox(
-            height: mediaQuery.size.height * .044,
+            height: mediaQuery.systemGestureInsets.bottom,
             child: GestureDetector(
               onHorizontalDragStart: (_) {},
               onVerticalDragStart: (_) {},
